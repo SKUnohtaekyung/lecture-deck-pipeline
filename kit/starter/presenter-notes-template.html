@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>발표자 노트 — {{강의명·주차}}</title>
+<!--
+  발표자 노트 스타터 — vibecoding-deck
+  ─────────────────────────────────────────────────────────────
+  메인 덱과 별개의 독립 문서다. 강사가 발표 중/전에 참고한다.
+  콘텐츠 초안의 💬(농담)·👀(시연 큐)·🗣(막힐 때 힌트)를 슬라이드 순서대로 모은다.
+  · 🗣는 여기선 "펼쳐진" 상태 — 강사는 안전망 예시를 미리 다 봐야 한다(수강생 화면과 반대).
+  · 1280×720 캔버스 제약 없음. 읽기·인쇄 친화 세로 문서.
+  · deck.css를 링크하지 않는다(슬라이드 display:none 규칙이 문서 레이아웃을 깨므로) — 팔레트만 아래 :root로 미러.
+  조립 시: {{...}} 자리표시자를 채우고, .pn-slide 블록을 슬라이드 수만큼 복제한다.
+  멘트 없는 슬라이드는 목록에서 생략해도 된다(노트가 있는 슬라이드만 실어도 무방).
+-->
+<style>
+  :root{
+    --blue:#1D4ED8; --mint-deep:#0F766E; --coral-deep:#C2452F; --ink:#141821;
+    --gray-700:#4F4F4F; --gray-400:#9A9A9A; --white:#fff;
+    --surface:#F3F5F8; --line:#E5E8F0; --paper:#F4F8FB;
+    --blue-soft:#EEF3FE; --mint-soft:#E9F8F5; --coral-soft:#FEF0ED;
+    --r-lg:20px; --r-md:14px; --r-pill:999px;
+    --font-mono:"JetBrains Mono","D2Coding",ui-monospace,SFMono-Regular,Menlo,monospace;
+    --font:"Pretendard",system-ui,-apple-system,"Malgun Gothic",sans-serif;
+  }
+  *{ box-sizing:border-box; }
+  body{ margin:0; padding:32px 20px 64px; background:var(--paper); color:var(--ink);
+    font-family:var(--font); line-height:1.6; -webkit-font-smoothing:antialiased; }
+  .pn-wrap{ max-width:840px; margin:0 auto; }
+
+  /* 헤더 */
+  .pn-head{ border-bottom:2px solid var(--blue); padding-bottom:16px; margin-bottom:28px; }
+  .pn-kicker{ font-size:14px; font-weight:800; color:var(--blue); letter-spacing:.02em; }
+  .pn-title{ font-size:30px; font-weight:800; margin:6px 0 4px; }
+  .pn-note{ font-size:15px; color:var(--gray-700); margin:0; }
+  .pn-legend{ display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }
+  .pn-legend span{ font-size:13px; font-weight:700; border-radius:var(--r-pill); padding:4px 11px; border:1px solid var(--line); }
+  .lg-joke{ background:var(--blue-soft); color:var(--blue); }
+  .lg-demo{ background:var(--coral-soft); color:var(--coral-deep); }
+  .lg-hint{ background:var(--mint-soft); color:var(--mint-deep); }
+
+  /* 슬라이드 블록 */
+  .pn-slide{ border:1px solid var(--line); border-radius:var(--r-lg); background:var(--white);
+    padding:18px 20px; margin:0 0 16px; break-inside:avoid; }
+  .pn-slide-head{ display:flex; align-items:baseline; gap:12px; margin-bottom:10px; }
+  .pn-no{ flex:0 0 auto; font-size:14px; font-weight:800; color:var(--white); background:var(--blue);
+    border-radius:var(--r-pill); padding:3px 11px; }
+  .pn-slide-title{ font-size:19px; font-weight:800; margin:0; }
+
+  /* 멘트 항목 — 종류별 좌측 컬러 바 + 라벨 */
+  .pn-item{ border-left:4px solid var(--line); padding:8px 0 8px 14px; margin:8px 0; }
+  .pn-item .lbl{ display:inline-block; font-size:12px; font-weight:800; margin-bottom:3px; }
+  .pn-item p{ margin:0; font-size:16px; color:var(--gray-700); }
+  .pn-joke{ border-left-color:var(--blue); } .pn-joke .lbl{ color:var(--blue); }
+  .pn-demo{ border-left-color:var(--coral-deep); } .pn-demo .lbl{ color:var(--coral-deep); }
+  .pn-hint{ border-left-color:var(--mint-deep); background:var(--mint-soft);
+    border-radius:0 var(--r-md) var(--r-md) 0; }
+  .pn-hint .lbl{ color:var(--mint-deep); }
+  .pn-hint .prompt{ font-family:var(--font-mono); font-size:14.5px; color:var(--ink);
+    background:var(--white); border:1px solid var(--line); border-radius:var(--r-md);
+    padding:10px 12px; margin-top:4px; white-space:pre-wrap; }
+  .pn-hint .aside{ font-size:12.5px; color:var(--gray-400); margin-top:5px; }
+
+  @media print{
+    body{ background:var(--white); padding:0 8mm; }
+    .pn-slide{ box-shadow:none; }
+  }
+</style>
+</head>
+<body>
+<div class="pn-wrap">
+
+  <header class="pn-head">
+    <div class="pn-kicker">발표자 노트 · {{주차}}</div>
+    <h1 class="pn-title">{{강의명}}</h1>
+    <p class="pn-note">강사용 참고 문서입니다. 수강생 화면(덱)에는 <strong>💬 농담·👀 시연 큐가 보이지 않고</strong>, 🗣 힌트는 <strong>접힌 상태</strong>로 들어갑니다. 여기서는 모두 펼쳐 둡니다.</p>
+    <div class="pn-legend">
+      <span class="lg-joke">💬 농담·애드리브</span>
+      <span class="lg-demo">👀 시연·관찰 큐</span>
+      <span class="lg-hint">🗣 막힐 때 힌트(수강생 화면엔 접힘)</span>
+    </div>
+  </header>
+
+  <!-- ▼ 아래 .pn-slide 블록을 슬라이드 순서대로 복제. 노트 없는 슬라이드는 생략 가능. -->
+
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">3-7</span>
+      <h2 class="pn-slide-title">실습 ③ 첫 파일 만들기</h2>
+    </div>
+    <div class="pn-item pn-hint">
+      <span class="lbl">🗣 막힐 때 힌트</span>
+      <div class="prompt">현재 폴더에 첫메모.txt 파일을 만들고, 첫 줄에 'Codex 첫 연습'이라고 써 주세요. 만든 파일 이름만 알려 주세요.</div>
+      <p class="aside">수강생이 스스로 못 쓰고 막힐 때만 펼쳐서 보여줍니다.</p>
+    </div>
+  </section>
+
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">3-9</span>
+      <h2 class="pn-slide-title">허용창이 뜨면?</h2>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담</span>
+      <p>"낯선 팝업이라고 겁먹지 마세요. 연습 폴더 안이라 안전합니다."</p>
+    </div>
+  </section>
+
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">4-1</span>
+      <h2 class="pn-slide-title">(예시) 시연 큐가 있는 슬라이드</h2>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰</span>
+      <p>강사 화면으로 index.html을 더블클릭해 브라우저에서 열리는 장면을 함께 봅니다.</p>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>

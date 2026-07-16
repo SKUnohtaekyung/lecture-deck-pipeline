@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1400">
+<title>표지 지오메트리 G1·G8·G9 계열 10안 — vibecoding-deck</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+<style>
+:root{
+  --blue:#1D4ED8; --mint:#14B8A6; --on-mint:#083B36; --mint-deep:#0F766E; --coral:#F97360;
+  --ink:#141821; --gray-700:#3A3D45; --gray-400:#6B7280;
+  --line:#E5E8F0; --blue-soft:#EEF3FE; --mint-soft:#E9F8F5; --periwinkle:#93A7E8;
+  --bw:#F4F8FB;
+  --shadow-blue:0 10px 26px rgba(29,78,216,.28);
+  --dot:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28'%3E%3Ccircle cx='1.6' cy='1.6' r='1.6' fill='%231D4ED8' fill-opacity='0.05'/%3E%3C/svg%3E");
+}
+*{ box-sizing:border-box; margin:0; padding:0; }
+body{ background:#e9ecf2; font-family:"Pretendard",-apple-system,sans-serif; color:var(--ink); padding:36px 24px 100px; }
+.head{ max-width:1360px; margin:0 auto 28px; }
+.head h1{ font-size:28px; font-weight:800; letter-spacing:-.02em; }
+.head p{ margin-top:9px; font-size:14px; line-height:1.6; color:#4a4f5c; max-width:980px; }
+.grid{ max-width:1360px; margin:0 auto; display:grid; grid-template-columns:repeat(2,640px); gap:40px; justify-content:center; }
+@media (max-width:1380px){ .grid{ grid-template-columns:640px; } }
+.item .lab{ display:flex; align-items:baseline; gap:9px; margin-bottom:9px; }
+.item .lab .no{ font:800 15px/1 "Pretendard"; color:#8790a3; }
+.item .lab .no.star{ color:var(--mint-deep); }
+.item .lab .nm{ font-size:16px; font-weight:800; }
+.item .lab .md{ font-size:12px; color:#7a8092; }
+.frame{ width:640px; height:360px; overflow:hidden; border-radius:14px; box-shadow:0 12px 34px rgba(20,24,33,.16); }
+.stage{ width:1280px; height:720px; transform:scale(.5); transform-origin:top left; position:relative; overflow:hidden; background:var(--bw); }
+.stage::before{ content:""; position:absolute; inset:0; background-image:var(--dot); background-size:28px 28px; z-index:0; }
+@keyframes blink{ 0%,49%{opacity:1} 50%,100%{opacity:0} }
+.geo{ position:absolute; inset:0; z-index:0; pointer-events:none; }
+.gh{ position:absolute; top:46px; left:64px; right:64px; display:flex; align-items:center; gap:16px; z-index:3; }
+.glogo{ width:60px; height:60px; border-radius:15px; background:var(--blue); color:#fff; display:grid; place-items:center; font-size:30px; font-weight:800; box-shadow:var(--shadow-blue); }
+.gbrand b{ display:block; color:var(--ink); font-size:28px; font-weight:800; line-height:1; }
+.gbrand span{ display:block; font:700 13px/1 "Pretendard"; color:var(--blue); margin-top:6px; letter-spacing:.16em; }
+.gteam{ margin-left:auto; color:var(--gray-400); font:600 15px/1.5 "Pretendard"; text-align:right; }
+.gp{ position:absolute; left:64px; top:196px; z-index:2; display:inline-flex; align-items:center; gap:10px; font:700 19px/1 "Pretendard"; color:var(--gray-700); }
+.gp .pfx{ color:var(--mint-deep); font-weight:800; font-size:22px; }
+.gt{ position:absolute; left:62px; top:250px; z-index:2; font:800 92px/1.07 "Pretendard"; letter-spacing:-.03em; color:var(--ink); }
+.gt .cur{ display:inline-block; width:14px; height:66px; background:var(--mint); margin-left:10px; vertical-align:-8px; border-radius:3px; animation:blink 1.1s step-end infinite; }
+.gpre{ position:absolute; right:64px; bottom:46px; z-index:3; color:var(--gray-400); font:500 16px/1 "Pretendard"; }
+</style>
+</head>
+<body>
+<div class="head">
+  <h1>표지 지오메트리 — G1·G8·G9 계열 10안</h1>
+  <p>고른 세 느낌(<b>벤토 G1 · 링/벤 G8 · 아이소 G9</b>)으로 재구성 + 하이브리드. <b style="color:#0F766E">V1 = 제 개선안</b>(겹치는 렌즈를 민트-소프트로 채워 "협업의 결과물"을 또렷하게).
+     베이스(브랜드-화이트 · Pretendard · 모노 없음 · `&gt;_` · 결과물 없음) 고정, 도형만 변주. 각 1280×720(50%).</p>
+</div>
+<div class="grid">
+
+  <!-- V1 ★개선안 -->
+  <div class="item"><div class="lab"><span class="no star">V1 ★</span><span class="nm">오프셋 링 + 민트 렌즈</span><span class="md">겹침을 민트-소프트로 채움 · "AI+나=결과" (개선안)</span></div>
+    <div class="frame"><div class="stage">
+      <svg class="geo" viewBox="0 0 1280 720" fill="none">
+        <defs><clipPath id="v1c"><circle cx="1006" cy="366" r="128"/></clipPath></defs>
+        <circle cx="1168" cy="366" r="128" fill="#E9F8F5" clip-path="url(#v1c)"/>
+        <circle cx="1006" cy="366" r="128" fill="none" stroke="#1D4ED8" stroke-width="3"/>
+        <circle cx="1168" cy="366" r="128" fill="none" stroke="#14B8A6" stroke-width="3"/>
+        <circle cx="1006" cy="366" r="9" fill="#1D4ED8"/><circle cx="1168" cy="366" r="9" fill="#14B8A6"/>
+        <circle cx="1087" cy="366" r="8" fill="#0F766E"/>
+      </svg>
+      <header class="gh"><span class="glogo">◆</span><div class="gbrand"><b>바이브코딩</b><span>3주 아카데미</span></div><div class="gteam">WEEK 01 / 06</div></header>
+      <div class="gp"><span class="pfx">&gt;_</span>WEEK 01 · AI와 첫 웹페이지</div>
+      <h1 class="gt">AI와 협업해<br>첫 웹페이지 만들기<span class="cur"></span></h1>
+      <div class="gpre">발표자 이름</div>
+    </div></div></div>
+
+  <!-- V2 -->
+  <div class="item"><div class="lab"><span class="no">V2</span><span class="nm">트리플 링</span><span class="md">세 원 겹침 · AI·나·결과, 중심 채움</span></div>
+    <div class="frame"><div class="stage">
+      <svg class="geo" viewBox="0 0 1280 720" fill="none">
+        <circle cx="1088" cy="356" r="34" fill="#E9F8F5"/>
+        <circle cx="1022" cy="302" r="108" fill="none" stroke="#1D4ED8" stroke-width="3"/>
+        <circle cx="1154" cy="302" r="108" fill="none" stroke="#14B8A6" stroke-width="3"/>
+        <circle cx="1088" cy="416" r="108" fill="none" stroke="#93A7E8" stroke-width="3"/>
+        <circle cx="1088" cy="356" r="9" fill="#0F766E"/>
+      </svg>
+      <header class="gh"><span class="glogo">◆</span><div class="gbrand"><b>바이브코딩</b><span>3주 아카데미</span></div><div class="gteam">WEEK 01 / 06</div></header>
+      <div class="gp"><span class="pfx">&gt;_</span>WEEK 01 · AI와 첫 웹페이지</div>
+      <h1 class="gt">AI와 협업해<br>첫 웹페이지 만들기<span class="cur"></span></h1>
+      <div class="gpre">발표자 이름</div>
+    </div></div></div>
+
+  <!-- V3 -->
+  <div class="item"><div class="lab"><span class="no">V3</span><span class="nm">필드 링 페어</span><span class="md">한쪽 채움 + 한쪽 아웃라인 · 볼드</span></div>
+    <div class="frame"><div class="stage">
+      <svg class="geo" viewBox="0 0 1280 720" fill="none">
+        <circle cx="1010" cy="366" r="128" fill="#EEF3FE" stroke="#1D4ED8" stroke-width="2.5"/>
+        <circle cx="1168" cy="366" r="128" fill="none" stroke="#14B8A6" stroke-width="3"/>
+        <circle cx="1089" cy="366" r="8" fill="#0F766E"/>
+        <circle cx="1010" cy="366" r="9" fill="#1D4ED8"/>
+      </svg>
+      <header class="gh"><span class="glogo">◆</span><div class="gbrand"><b>바이브코딩</b><span>3주 아카데미</span></div><div class="gteam">WEEK 01 / 06</div></header>
+      <div class="gp"><span class="pfx">&gt;_</span>WEEK 01 · AI와 첫 웹페이지</div>
+      <h1 class="gt">AI와 협업해<br>첫 웹페이지 만들기<span class="cur"></span></h1>
+      <div class="gpre">발표자 이름</div>
+    </div></div></div>
+
+  <!-- V4 -->
+  <div class="item"><div class="lab"><span class="no">V4</span><span class="nm">궤도 링</span><span class="md">원 위 도트 궤도 · 민트 노드</span></div>
+    <div class="frame"><div class="stage">
+      <svg class="geo" viewBox="0 0 1280 720" fill="none">
+        <circle cx="1088" cy="368" r="140" fill="none" stroke="#1D4ED8" stroke-width="2.5"/>
+        <circle cx="1088" cy="368" r="20" fill="#EEF3FE" stroke="#1D4ED8" stroke-width="2"/>
+        <circle cx="1187" cy="269" r="17" fill="#14B8A6"/>
+        <circle cx="1228" cy="368" r="9" fill="#1D4ED8"/>
+        <circle cx="1088" cy="508" r="9" fill="#93A7E8"/>
+        <circle cx="948" cy="368" r="9" fill="#1D4ED8"/>
+      </svg>
+      <header class="gh"><span class="glogo">◆</span><div class="gbrand"><b>바이브코딩</b><span>3주 아카데미</span></div><div class="gteam">WEEK 01 / 06</div></header>
+      <div class="gp"><span class="pfx">&gt;_</span>WEEK 01 · AI와 첫 웹페이지</div>
+      <h1 class="gt">AI와 협업해<br>첫 웹페이지 만들기<span class="cur"></span></h1>
+      <div class="gpre">발표자 이름</div>
+    </div></div></div>
+
+  <!-- B1 -->
+  <div class="item"><div class="lab"><span class="no">B1</span><span class="nm">모듈 벤토 (클린)</span><span class="md">라운드 사각 4블록 · 토스 모듈러</span></div>
+    <div class="frame"><div class="stage">
+      <svg class="geo" viewBox="0 0 1280 720" fill="none">
+        <rect x="932" y="168" width="284" height="150" rx="22" fill="#EEF3FE"/>
+        <circle cx="990" cy="243" r="22" fill="#1D4ED8"/>
+        <rect x="932" y="334" width="134" height="134" rx="20" fill="#14B8A6"/>
+        <rect x="1082" y="334" width="134" height="62" rx="14" fill="#1D4ED8"/>
+        <rect x="1082" y="410" width="134" height="58" rx="14" fill="none" stroke="#93A7E8" stroke-width="2"/>
+      </svg>
+      <header class="gh"><span class="glogo">◆</span><div class="gbrand"><b>바이브코딩</b><span>3주 아카데미</span></div><div class="gteam">WEEK 01 / 06</div></header>
+      <div class="gp"><span class="pfx">&gt;_</span>WEEK 01 · AI와 첫 웹페이지</div>
+      <h1 class="gt">AI와 협업해<br>첫 웹페이지 만들기<span class="cur"></span></h1>
+      <div class="gpre">발표자 이름</div>
+    </div></div></div>
+
+  <!-- B2 -->
+  <div class="item"><div class="lab"><span class="no">B2</span><span class="nm">비대칭 벤토</span><span class="md">큰 세로 블록 + 컷 서클 · 에디토리얼</span></div>
+    <div class="frame"><div class="stage">
+      <svg class="geo" viewBox="0 0 1280 720" fill="none">
+        <rect x="922" y="162" width="180" height="300" rx="24" fill="#EEF3FE"/>
+        <circle cx="1012" cy="250" r="40" fill="#1D4ED8"/>
+        <rect x="1006" y="352" width="80" height="80" rx="14" fill="none" stroke="#1D4ED8" stroke-width="2"/>
+        <rect x="1118" y="162" width="108" height="140" rx="20" fill="#14B8A6"/>
+        <rect x="1118" y="318" width="108" height="144" rx="20" fill="none" stroke="#1D4ED8" stroke-width="2.5"/>
+      </svg>
+      <header class="gh"><span class="glogo">◆</span><div class="gbrand"><b>바이브코딩</b><span>3주 아카데미</span></div><div class="gteam">WEEK 01 / 06</div></header>
+      <div class="gp"><span class="pfx">&gt;_</span>WEEK 01 · AI와 첫 웹페이지</div>
+      <h1 class="gt">AI와 협업해<br>첫 웹페이지 만들기<span class="cur"></span></h1>
+      <div class="gpre">발표자 이름</div>
+    </div></div></div>
+
+  <!-- B3 -->
+  <div class="item"><div class="lab"><span class="no">B3</span><span class="nm">벤토 × 링 (하이브리드)</span><span class="md">벤토 블록 + 겹친 링 · G1×G8</span></div>
+    <div class="frame"><div class="stage">
+      <svg class="geo" viewBox="0 0 1280 720" fill="none">
+        <rect x="946" y="212" width="150" height="150" rx="22" fill="#EEF3FE"/>
+        <rect x="946" y="378" width="150" height="88" rx="16" fill="#14B8A6"/>
+        <circle cx="1158" cy="332" r="118" fill="none" stroke="#1D4ED8" stroke-width="3"/>
+        <circle cx="1158" cy="332" r="10" fill="#0F766E"/>
+      </svg>
+      <header class="gh"><span class="glogo">◆</span><div class="gbrand"><b>바이브코딩</b><span>3주 아카데미</span></div><div class="gteam">WEEK 01 / 06</div></header>
+      <div class="gp"><span class="pfx">&gt;_</span>WEEK 01 · AI와 첫 웹페이지</div>
+      <h1 class="gt">AI와 협업해<br>첫 웹페이지 만들기<span class="cur"></span></h1>
+      <div class="gpre">발표자 이름</div>
+    </div></div></div>
+
+  <!-- I1 -->
+  <div class="item"><div class="lab"><span class="no">I1</span><span class="nm">아이소 큐브 (싱글)</span><span class="md">플랫 3D 큐브 · 빌딩블록</span></div>
+    <div class="frame"><div class="stage">
+      <svg class="geo" viewBox="0 0 1280 720" fill="none">
+        <polygon points="1090,262 1196,314 1090,366 984,314" fill="#EEF3FE"/>
+        <polygon points="984,314 1090,366 1090,482 984,430" fill="#1D4ED8"/>
+        <polygon points="1090,366 1196,314 1196,430 1090,482" fill="#14B8A6"/>
+        <circle cx="994" cy="250" r="13" fill="#F97360"/>
+      </svg>
+      <header class="gh"><span class="glogo">◆</span><div class="gbrand"><b>바이브코딩</b><span>3주 아카데미</span></div><div class="gteam">WEEK 01 / 06</div></header>
+      <div class="gp"><span class="pfx">&gt;_</span>WEEK 01 · AI와 첫 웹페이지</div>
+      <h1 class="gt">AI와 협업해<br>첫 웹페이지 만들기<span class="cur"></span></h1>
+      <div class="gpre">발표자 이름</div>
+    </div></div></div>
+
+  <!-- I2 -->
+  <div class="item"><div class="lab"><span class="no">I2</span><span class="nm">아이소 스택 3단</span><span class="md">쌓아 올린 큐브 · "만들어 간다"</span></div>
+    <div class="frame"><div class="stage">
+      <svg class="geo" viewBox="0 0 1280 720" fill="none">
+        <polygon points="1170,300 1226,328 1170,356 1114,328" fill="#EEF3FE"/>
+        <polygon points="1114,328 1170,356 1170,414 1114,386" fill="#1D4ED8"/>
+        <polygon points="1170,356 1226,328 1226,386 1170,414" fill="#14B8A6"/>
+        <polygon points="1084,352 1140,380 1084,408 1028,380" fill="#EEF3FE"/>
+        <polygon points="1028,380 1084,408 1084,466 1028,438" fill="#1D4ED8"/>
+        <polygon points="1084,408 1140,380 1140,438 1084,466" fill="#14B8A6"/>
+        <polygon points="998,404 1054,432 998,460 942,432" fill="#EEF3FE"/>
+        <polygon points="942,432 998,460 998,518 942,490" fill="#1D4ED8"/>
+        <polygon points="998,460 1054,432 1054,490 998,518" fill="#14B8A6"/>
+      </svg>
+      <header class="gh"><span class="glogo">◆</span><div class="gbrand"><b>바이브코딩</b><span>3주 아카데미</span></div><div class="gteam">WEEK 01 / 06</div></header>
+      <div class="gp"><span class="pfx">&gt;_</span>WEEK 01 · AI와 첫 웹페이지</div>
+      <h1 class="gt">AI와 협업해<br>첫 웹페이지 만들기<span class="cur"></span></h1>
+      <div class="gpre">발표자 이름</div>
+    </div></div></div>
+
+  <!-- I3 -->
+  <div class="item"><div class="lab"><span class="no">I3</span><span class="nm">아이소 × 링 (하이브리드)</span><span class="md">큐브 + 뒤 배경 링 · G8×G9</span></div>
+    <div class="frame"><div class="stage">
+      <svg class="geo" viewBox="0 0 1280 720" fill="none">
+        <circle cx="1090" cy="366" r="140" fill="none" stroke="#14B8A6" stroke-width="2.5" opacity=".7"/>
+        <polygon points="1090,286 1180,330 1090,374 1000,330" fill="#EEF3FE"/>
+        <polygon points="1000,330 1090,374 1090,468 1000,424" fill="#1D4ED8"/>
+        <polygon points="1090,374 1180,330 1180,424 1090,468" fill="#14B8A6"/>
+      </svg>
+      <header class="gh"><span class="glogo">◆</span><div class="gbrand"><b>바이브코딩</b><span>3주 아카데미</span></div><div class="gteam">WEEK 01 / 06</div></header>
+      <div class="gp"><span class="pfx">&gt;_</span>WEEK 01 · AI와 첫 웹페이지</div>
+      <h1 class="gt">AI와 협업해<br>첫 웹페이지 만들기<span class="cur"></span></h1>
+      <div class="gpre">발표자 이름</div>
+    </div></div></div>
+
+</div>
+</body>
+</html>

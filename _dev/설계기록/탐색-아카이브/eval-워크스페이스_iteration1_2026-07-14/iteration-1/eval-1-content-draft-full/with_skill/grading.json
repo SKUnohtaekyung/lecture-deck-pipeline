@@ -1,0 +1,16 @@
+{
+  "eval_id": 1,
+  "eval_name": "content-draft-full-deck-part-confirm",
+  "config": "with_skill",
+  "expectations": [
+    {"text": "교시→PART 매핑을 사용자에게 확인 요청함(임의 하드코딩 아님)", "passed": true, "evidence": "_NOTE.md §1에 정확한 확인 질문 문장을 적고, 비대화형이라 기본값(2 PART)으로 진행하며 가정 명시."},
+    {"text": "part-divider 수 = 확인된 파트 수, 진행 도트 is-active 정확", "passed": true, "evidence": "verify: 'part-divider 2 = 파트 2' PASS. --parts 2."},
+    {"text": "표지·도입(s02)·아젠다(s03)·마무리(concept-recap) 고정 슬라이드 존재", "passed": true, "evidence": "verify: cover/s02/s03/recap 4개 모두 PASS."},
+    {"text": "슬라이드 제목·본문이 초안 원문 그대로(재작성 없음)", "passed": true, "evidence": "초안 슬라이드(1-4,1-10,2-3,2-5,0-4)는 원문 보존. S02 도입은 초안에 소스가 없는 고정 슬롯이라 스킬이 프레이밍 작성(예상된 동작)."},
+    {"text": "시각화 의도 입력 없어도 정보 모양 직접 판단, 구도 다양(3연속 없음)", "passed": true, "evidence": "verify: 구도 다양성 4종/본문 4장, 최장 연속 1. concept→classification→flow→contrast, split 0."},
+    {"text": "이모지 마커(💬/🗣/👀)가 최종 HTML에 남지 않음", "passed": true, "evidence": "verify: '원고 아이콘 마커 누출 0' PASS. 2-5 💬는 주석 처리 시 이모지 문자 제거."},
+    {"text": "numeric/flow/comparison은 코드 시각화, 오버플로 0·본문 22px", "passed": true, "evidence": "verify: 코드viz 14≥이미지0. 브라우저: 10슬라이드 오버플로 0, .s-body computed 22px, 콘솔 0."},
+    {"text": "raw #hex 없음, navy·그라데이션 없음", "passed": true, "evidence": "verify: 토큰만 사용/navy 0/그라디언트 0 모두 PASS. 요약 FAIL 0·WARN 0·PASS 30."}
+  ],
+  "notes": "판단 이슈(에이전트가 사용자 확인용으로 플래그): S03 아젠다를 6-스텝 여정 보존 위해 노드 4→6으로 확장(콘텐츠 소유권상 4개로 못 쳐냄) — '×4 노드타임라인' 고정 기본값을 굽힘, 오버플로 0 확인. 이 부분만 사용자 승인 필요."
+}

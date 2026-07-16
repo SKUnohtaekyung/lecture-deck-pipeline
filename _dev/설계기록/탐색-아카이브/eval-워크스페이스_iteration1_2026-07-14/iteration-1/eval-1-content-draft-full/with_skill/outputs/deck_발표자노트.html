@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>발표자 노트 — 1주차 · AI와 함께, 나의 첫 웹페이지 만들기</title>
+<!--
+  발표자 노트 — vibecoding-deck (SKILL §7)
+  메인 덱(deck.html)과 별개의 독립 문서. 강사가 발표 중/전에 참고한다.
+  콘텐츠 초안의 💬(농담)·👀(시연 큐)·🗣(막힐 때 힌트) + 아이콘 없는 일반 부연을 슬라이드 순서대로 모은다.
+  이 슬라이스엔 🗣/👀 없음 — 💬(2-5) 1건 + 아이콘 없는 부연(1-4) 1건.
+  deck.css 링크 안 함(슬라이드 display:none 규칙이 문서 레이아웃을 깸) — 팔레트만 :root로 미러.
+-->
+<style>
+  :root{
+    --blue:#1D4ED8; --mint-deep:#0F766E; --coral-deep:#C2452F; --ink:#141821;
+    --gray-700:#4F4F4F; --gray-400:#9A9A9A; --white:#fff;
+    --surface:#F3F5F8; --line:#E5E8F0; --paper:#F4F8FB;
+    --blue-soft:#EEF3FE; --mint-soft:#E9F8F5; --coral-soft:#FEF0ED;
+    --r-lg:20px; --r-md:14px; --r-pill:999px;
+    --font-mono:"JetBrains Mono","D2Coding",ui-monospace,SFMono-Regular,Menlo,monospace;
+    --font:"Pretendard",system-ui,-apple-system,"Malgun Gothic",sans-serif;
+  }
+  *{ box-sizing:border-box; }
+  body{ margin:0; padding:32px 20px 64px; background:var(--paper); color:var(--ink);
+    font-family:var(--font); line-height:1.6; -webkit-font-smoothing:antialiased; }
+  .pn-wrap{ max-width:840px; margin:0 auto; }
+  .pn-head{ border-bottom:2px solid var(--blue); padding-bottom:16px; margin-bottom:28px; }
+  .pn-kicker{ font-size:14px; font-weight:800; color:var(--blue); letter-spacing:.02em; }
+  .pn-title{ font-size:30px; font-weight:800; margin:6px 0 4px; }
+  .pn-note{ font-size:15px; color:var(--gray-700); margin:0; }
+  .pn-legend{ display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }
+  .pn-legend span{ font-size:13px; font-weight:700; border-radius:var(--r-pill); padding:4px 11px; border:1px solid var(--line); }
+  .lg-joke{ background:var(--blue-soft); color:var(--blue); }
+  .lg-demo{ background:var(--coral-soft); color:var(--coral-deep); }
+  .lg-hint{ background:var(--mint-soft); color:var(--mint-deep); }
+  .lg-note{ background:var(--surface); color:var(--gray-700); }
+  .pn-slide{ border:1px solid var(--line); border-radius:var(--r-lg); background:var(--white);
+    padding:18px 20px; margin:0 0 16px; break-inside:avoid; }
+  .pn-slide-head{ display:flex; align-items:baseline; gap:12px; margin-bottom:10px; }
+  .pn-no{ flex:0 0 auto; font-size:14px; font-weight:800; color:var(--white); background:var(--blue);
+    border-radius:var(--r-pill); padding:3px 11px; }
+  .pn-slide-title{ font-size:19px; font-weight:800; margin:0; }
+  .pn-item{ border-left:4px solid var(--line); padding:8px 0 8px 14px; margin:8px 0; }
+  .pn-item .lbl{ display:inline-block; font-size:12px; font-weight:800; margin-bottom:3px; }
+  .pn-item p{ margin:0; font-size:16px; color:var(--gray-700); }
+  .pn-joke{ border-left-color:var(--blue); } .pn-joke .lbl{ color:var(--blue); }
+  .pn-note-item{ border-left-color:var(--gray-400); } .pn-note-item .lbl{ color:var(--gray-700); }
+  @media print{ body{ background:var(--white); padding:0 8mm; } .pn-slide{ box-shadow:none; } }
+</style>
+</head>
+<body>
+<div class="pn-wrap">
+
+  <header class="pn-head">
+    <div class="pn-kicker">발표자 노트 · 1주차</div>
+    <h1 class="pn-title">AI와 함께, 나의 첫 웹페이지 만들기</h1>
+    <p class="pn-note">강사용 참고 문서입니다. 수강생 화면(덱)에는 <strong>💬 농담과 부연 메모가 보이지 않습니다</strong>(HTML 주석으로만 심어 둠). 이 주차 슬라이스엔 🗣 힌트·👀 시연 큐는 없습니다.</p>
+    <div class="pn-legend">
+      <span class="lg-joke">💬 농담·애드리브</span>
+      <span class="lg-note">부연 메모(아이콘 없음)</span>
+      <span class="lg-demo">👀 시연·관찰 큐 (이번 주차 없음)</span>
+      <span class="lg-hint">🗣 막힐 때 힌트 (이번 주차 없음)</span>
+    </div>
+  </header>
+
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">1-4</span>
+      <h2 class="pn-slide-title">생성형 AI는 뭐가 달라요?</h2>
+    </div>
+    <div class="pn-item pn-note-item">
+      <span class="lbl">부연 메모</span>
+      <p>보통 AI는 이미 있는 것 중에서 골라주기, 생성형 AI는 새로 만들어주기 — 이 대비로 설명하면 이해가 빠릅니다.</p>
+    </div>
+  </section>
+
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">2-5</span>
+      <h2 class="pn-slide-title">"예쁘게"의 함정</h2>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담</span>
+      <p>"알아서 예쁘게"는 미용실에서 제일 위험한 말이죠.</p>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>

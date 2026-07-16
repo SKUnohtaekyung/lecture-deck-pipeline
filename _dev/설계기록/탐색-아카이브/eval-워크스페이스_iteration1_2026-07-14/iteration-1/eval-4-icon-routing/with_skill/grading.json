@@ -1,0 +1,14 @@
+{
+  "eval_id": 4,
+  "eval_name": "icon-routing-hint-reveal-and-presenter-notes",
+  "config": "with_skill",
+  "expectations": [
+    {"text": "🗣 요청문 원문이 본문에 그대로 노출되지 않고 기본 접힘 .hint-reveal(details/summary) 안에 위치", "passed": true, "evidence": "3-7 🗣 → <details class=hint-reveal> open=false, .hr-body에 프롬프트 원문. summary='힌트 보기 / 막힐 때만' + 모노크롬 ▸."},
+    {"text": "힌트 안 텍스트가 초안 원문 그대로(재작성 없음)", "passed": true, "evidence": "'현재 폴더에 첫메모.txt 파일을 만들고…' verbatim 보존."},
+    {"text": "💬·👀 멘트는 화면 미렌더 HTML 주석으로 들어감", "passed": true, "evidence": "3-6 👀→<!-- 발표노트(시연): … -->, 3-9 💬→<!-- 발표노트(농담): … -->. 렌더 안 됨."},
+    {"text": "이모지 마커가 최종 덱 HTML에 노출되지 않음(verify 아이콘 누출 FAIL 아님)", "passed": true, "evidence": "verify: '누출 0' PASS. 인라인된 deck.css 주석에 딸려온 🗣 1건까지 제거, DOM 스캔 emojiLeak:[]."},
+    {"text": "별도 발표자 노트 HTML 생성, 거기선 🗣가 펼쳐진 상태", "passed": true, "evidence": "deck_발표자노트.html: 3-6/3-7/3-9 순, 🗣는 <details> 아닌 펼친 .prompt 모노블록으로 노출. (여기 이모지 허용 — verify는 덱만 검사)"},
+    {"text": "verify 신규 체크(아이콘 누출·힌트 summary) 통과, .hint-reveal 닫힘·열림 둘 다 오버플로 0", "passed": true, "evidence": "verify: '힌트 리빌 summary 있음'+'아이콘 누출 0' PASS 31/0/0. 브라우저: 힌트 슬라이드 닫힘·열림 모두 scrollHeight 720, 8슬라이드 오버플로 0, 콘솔 0."}
+  ],
+  "notes": "헤드라인 신기능 케이스 6/6 통과. 열린 상태 오버플로(내가 SKILL §8에 명시한 우려)가 실측으로 문제없음 확인됨."
+}

@@ -1,0 +1,666 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1400">
+<title>아젠다 슬라이드 초안 10종 — 라이트 지오메트리 무드</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+<style>
+/* 갤러리 공유 셸 — 슬라이드 초안 조립용. 각 초안 css는 .KEY 스코프로 뒤에 붙임. */
+:root{
+  --blue:#1D4ED8; --mint:#14B8A6; --on-mint:#083B36; --mint-deep:#0F766E; --coral:#F97360; --coral-deep:#C2452F;
+  --ink:#141821; --gray-700:#3A3D45; --gray-400:#6B7280; --white:#FFFFFF;
+  --surface:#F3F5F8; --line:#E5E8F0; --blue-soft:#EEF3FE; --mint-soft:#E9F8F5; --periwinkle:#93A7E8;
+  --paper:#F4F8FB; --r-lg:20px; --r-md:14px; --r-sm:10px; --r-pill:999px;
+  --shadow-sm:0 6px 16px rgba(20,24,33,.05); --shadow-md:0 10px 30px rgba(29,78,216,.07); --shadow-blue:0 10px 26px rgba(29,78,216,.28);
+  --dot:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28'%3E%3Ccircle cx='1.6' cy='1.6' r='1.6' fill='%231D4ED8' fill-opacity='0.05'/%3E%3C/svg%3E");
+}
+*{ box-sizing:border-box; margin:0; padding:0; }
+body{ background:#e9ecf2; font-family:"Pretendard",-apple-system,sans-serif; color:var(--ink); padding:36px 24px 100px; }
+.gv-head{ max-width:1360px; margin:0 auto 28px; }
+.gv-head h1{ font-size:28px; font-weight:800; letter-spacing:-.02em; }
+.gv-head p{ margin-top:9px; font-size:14px; line-height:1.6; color:#4a4f5c; max-width:980px; }
+.gv-grid{ max-width:1360px; margin:0 auto; display:grid; grid-template-columns:repeat(2,640px); gap:40px; justify-content:center; }
+@media (max-width:1380px){ .gv-grid{ grid-template-columns:640px; } }
+.gv-lab{ display:flex; align-items:baseline; gap:9px; margin-bottom:9px; }
+.gv-lab .gv-no{ font:800 15px/1 "Pretendard"; color:#8790a3; }
+.gv-lab .gv-no.geo{ color:var(--mint-deep); }
+.gv-lab .gv-nm{ font-size:16px; font-weight:800; }
+.gv-lab .gv-md{ font-size:12px; color:#7a8092; }
+.gv-frame{ width:640px; height:360px; overflow:hidden; border-radius:14px; box-shadow:0 12px 34px rgba(20,24,33,.16); }
+.stage{ width:1280px; height:720px; transform:scale(.5); transform-origin:top left; position:relative; overflow:hidden; background:var(--paper); }
+.stage::before{ content:""; position:absolute; inset:0; background-image:var(--dot); background-size:28px 28px; z-index:0; }
+.draft{ position:absolute; inset:0; }   /* KEY 스코프 컨테이너 — inset로 채워 스테이지 치수 보호(width 강제 X) */
+/* 공유 헤더(.dh-*) — 팀명·발표자 없음 */
+.dh-head{ position:absolute; top:40px; left:64px; right:64px; display:flex; align-items:center; gap:14px; z-index:5; }
+.dh-logo{ width:40px; height:40px; flex:0 0 auto; }
+.dh-brand{ font-size:22px; font-weight:800; color:var(--ink); letter-spacing:-.01em; }
+.dh-line{ flex:1; height:2px; background:var(--line); margin-left:6px; }
+@keyframes cbl{ 0%,49%{opacity:1} 50%,100%{opacity:0} }
+
+/* ag_iso */
+.ag_iso .ag-wrap{position:absolute;top:96px;left:64px;right:64px;bottom:30px;display:flex;gap:56px;}
+.ag_iso .ag-left{width:400px;flex-shrink:0;display:flex;flex-direction:column;padding-top:22px;}
+.ag_iso .ag-title{font-size:40px;line-height:1.25;font-weight:800;color:var(--ink);margin:0 0 26px;}
+.ag_iso .ag-intro{font-size:19px;line-height:1.68;font-weight:500;color:var(--gray-700);margin:0;}
+.ag_iso .ag-intro em{font-style:normal;font-weight:800;color:var(--mint-deep);}
+.ag_iso .ag-deco{margin-top:44px;width:132px;height:132px;filter:drop-shadow(var(--shadow-sm));}
+.ag_iso .ag-deco svg{width:100%;height:100%;display:block;}
+.ag_iso .ag-right{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:space-between;}
+.ag_iso .ag-item{display:flex;align-items:center;gap:24px;}
+.ag_iso .ag-cube{flex-shrink:0;width:76px;height:76px;filter:drop-shadow(var(--shadow-sm));}
+.ag_iso .ag-cube svg{width:100%;height:100%;display:block;}
+.ag_iso .ag-num{font-family:inherit;font-weight:800;}
+.ag_iso .ag-text{min-width:0;}
+.ag_iso .ag-itemtitle{font-size:22px;font-weight:800;color:var(--blue);margin:0 0 6px;display:flex;align-items:center;}
+.ag_iso .ag-itemtitle .spark{display:inline-block;width:9px;height:9px;border-radius:var(--r-pill);background:var(--coral);margin-right:10px;flex-shrink:0;}
+.ag_iso .ag-itemdesc{font-size:17px;line-height:1.6;font-weight:500;color:var(--gray-700);margin:0;}
+/* ag_bento */
+.ag_bento{position:absolute;inset:0;}
+.ag_bento .ag_left{position:absolute;left:64px;top:140px;width:356px;}
+.ag_bento .ag_title{margin:0 0 28px;font-size:38px;font-weight:800;line-height:1.25;color:var(--ink);}
+.ag_bento .ag_intro{margin:0;font-size:18px;line-height:1.7;color:var(--gray-700);}
+.ag_bento .ag_em{color:var(--mint-deep);font-weight:700;}
+.ag_bento .ag_grid{position:absolute;left:456px;top:120px;width:744px;height:570px;}
+.ag_bento .ag_card{position:absolute;border-radius:var(--r-lg);box-shadow:var(--shadow-sm);padding:40px 26px 26px;box-sizing:border-box;}
+.ag_bento .ag_card--1{left:0;top:0;width:362px;height:330px;background:var(--blue-soft);}
+.ag_bento .ag_card--2{left:382px;top:0;width:362px;height:220px;background:var(--white);border:1px solid var(--line);}
+.ag_bento .ag_card--3{left:382px;top:240px;width:362px;height:330px;background:var(--mint-soft);}
+.ag_bento .ag_card--4{left:0;top:350px;width:362px;height:220px;background:var(--white);border:1px solid var(--line);}
+.ag_bento .ag_badge{position:absolute;top:-16px;left:-16px;width:44px;height:44px;border-radius:50%;background:var(--blue);color:var(--white);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800;box-shadow:var(--shadow-blue);}
+.ag_bento .ag_spark{position:absolute;top:18px;right:20px;width:10px;height:10px;border-radius:50%;background:var(--coral);}
+.ag_bento .ag_card-title{margin:0 0 12px;font-size:20px;font-weight:800;color:var(--blue);line-height:1.3;}
+.ag_bento .ag_card-desc{margin:0;font-size:17px;line-height:1.55;color:var(--gray-700);}
+/* ag_ring */
+.ag_ring .ag_body{box-sizing:border-box;width:1280px;padding:26px 64px 0;}
+.ag_ring .ag_title{margin:0;font-size:34px;font-weight:800;color:var(--ink);letter-spacing:-.01em;}
+.ag_ring .ag_intro{margin:16px 0 0;}
+.ag_ring .ag_intro p{margin:0;font-size:18px;line-height:1.6;color:var(--gray-700);font-weight:500;}
+.ag_ring .ag_intro .hl{color:var(--mint-deep);font-weight:800;}
+.ag_ring .ag_list{list-style:none;margin:30px 0 0;padding:0;display:flex;flex-direction:column;gap:20px;}
+.ag_ring .ag_item{display:flex;align-items:center;gap:24px;}
+.ag_ring .ag_badge{flex:0 0 64px;width:64px;height:64px;filter:drop-shadow(var(--shadow-sm));}
+.ag_ring .ag_num{font-size:20px;font-weight:800;fill:var(--blue);}
+.ag_ring .ag_text{min-width:0;max-width:980px;}
+.ag_ring .ag_item-title{margin:0 0 5px;font-size:21px;font-weight:800;color:var(--blue);}
+.ag_ring .ag_item-desc{margin:0;font-size:17px;line-height:1.5;color:var(--gray-700);font-weight:500;}
+/* ag_node */
+.ag_node{position:absolute;inset:0;}
+.ag_node .an-spark{position:absolute;left:452px;top:122px;width:9px;height:9px;border-radius:var(--r-pill);background:var(--coral);}
+.ag_node .an-left{position:absolute;left:64px;top:150px;width:420px;}
+.ag_node .an-title{margin:0 0 28px;font-size:44px;line-height:1.2;font-weight:800;color:var(--ink);}
+.ag_node .an-intro{margin:0;font-size:19px;line-height:1.7;color:var(--gray-700);font-weight:500;}
+.ag_node .an-intro .hl{color:var(--mint-deep);font-weight:800;}
+.ag_node .an-right{position:absolute;left:560px;right:64px;top:0;bottom:0;}
+.ag_node .an-track{position:absolute;left:24px;top:170px;width:2px;height:450px;background:var(--line);}
+.ag_node .an-item{position:absolute;left:0;right:0;display:flex;align-items:flex-start;gap:24px;}
+.ag_node .an-item.i1{top:146px;}
+.ag_node .an-item.i2{top:296px;}
+.ag_node .an-item.i3{top:446px;}
+.ag_node .an-item.i4{top:596px;}
+.ag_node .an-num{flex:0 0 auto;width:48px;height:48px;border-radius:var(--r-pill);background:var(--blue);color:var(--white);display:flex;align-items:center;justify-content:center;font-size:19px;font-weight:800;box-shadow:var(--shadow-blue);}
+.ag_node .an-body{flex:1 1 auto;padding-top:2px;}
+.ag_node .an-h{font-size:21px;font-weight:700;color:var(--ink);margin:0 0 6px;line-height:1.3;}
+.ag_node .an-d{font-size:17px;line-height:1.5;color:var(--gray-700);margin:0;}
+/* ag_nested */
+.ag_nested{position:relative;width:100%;height:100%;}
+.ag_nested-deco{position:absolute;inset:0;z-index:0;}
+.ag_nested-title{position:absolute;left:64px;top:108px;margin:0;font-size:40px;font-weight:800;color:var(--ink);line-height:1.2;}
+.ag_nested-intro{position:absolute;left:64px;top:172px;width:620px;}
+.ag_nested-intro p{margin:0 0 2px 0;font-size:19px;line-height:1.6;color:var(--gray-700);}
+.ag_nested-intro p:last-child{margin-bottom:0;}
+.ag_nested-intro .hl{color:var(--mint-deep);font-weight:700;}
+.ag_nested-list{position:absolute;left:64px;top:300px;width:660px;list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:24px;}
+.ag_nested-list li{display:flex;align-items:flex-start;gap:16px;}
+.ag_nested-list .num{flex:0 0 44px;width:44px;height:44px;border-radius:var(--r-pill);background:var(--blue);color:var(--white);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800;box-shadow:var(--shadow-blue);}
+.ag_nested-list .txt{padding-top:2px;max-width:600px;}
+.ag_nested-list .txt strong{display:block;font-size:20px;font-weight:800;color:var(--blue);}
+.ag_nested-list .txt p{margin:6px 0 0;font-size:17px;line-height:1.5;color:var(--gray-700);}
+/* ag_toss */
+.ag_toss .title{position:absolute;left:64px;top:120px;margin:0;font-size:34px;font-weight:800;letter-spacing:-.02em;color:var(--ink);}
+.ag_toss .intro{position:absolute;left:64px;top:174px;margin:0;font-size:17px;line-height:1.62;color:var(--gray-700);}
+.ag_toss .intro .hl{color:var(--mint-deep);font-weight:700;}
+.ag_toss .cards{position:absolute;left:64px;top:302px;width:1152px;height:368px;display:grid;grid-template-columns:567px 567px;grid-template-rows:175px 175px;gap:18px;}
+.ag_toss .card{position:relative;box-sizing:border-box;background:var(--white);border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--shadow-sm);padding:22px;display:flex;flex-direction:column;gap:10px;}
+.ag_toss .card.active{background:var(--mint-soft);border-color:transparent;box-shadow:var(--shadow-md);}
+.ag_toss .num{width:40px;height:40px;border-radius:var(--r-pill);background:var(--blue);color:var(--white);display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:800;flex:none;}
+.ag_toss .card.active .num{background:var(--mint);color:var(--on-mint);}
+.ag_toss .ctext h3{margin:0 0 5px;font-size:19px;font-weight:800;line-height:1.25;color:var(--ink);}
+.ag_toss .ctext p{margin:0;font-size:16px;line-height:1.5;color:var(--gray-700);}
+.ag_toss .spark{position:absolute;top:18px;right:18px;width:8px;height:8px;border-radius:var(--r-pill);background:var(--coral);}
+/* ag_ghost */
+.ag_ghost .title{position:absolute;left:64px;top:108px;font-size:40px;font-weight:800;color:var(--ink);letter-spacing:-0.02em;margin:0;}
+.ag_ghost .intro{position:absolute;left:64px;top:170px;width:760px;}
+.ag_ghost .intro p{margin:0 0 6px;font-size:20px;line-height:28px;color:var(--gray-700);font-weight:500;}
+.ag_ghost .intro p:last-child{margin-bottom:0;}
+.ag_ghost .accent{color:var(--mint-deep);font-weight:800;}
+.ag_ghost .items{position:absolute;left:64px;top:280px;width:1152px;}
+.ag_ghost .item{position:relative;display:flex;align-items:center;height:88px;border-bottom:1px solid var(--line);}
+.ag_ghost .item:last-child{border-bottom:none;}
+.ag_ghost .ghost{flex:0 0 150px;font-size:92px;font-weight:800;line-height:0.9;color:var(--paper);-webkit-text-stroke:2px var(--line);letter-spacing:-3px;user-select:none;}
+.ag_ghost .itxt{flex:1;padding-left:14px;min-width:0;}
+.ag_ghost .itl{font-size:22px;font-weight:700;color:var(--blue);margin:0 0 4px;}
+.ag_ghost .ids{font-size:18px;line-height:26px;color:var(--gray-700);margin:0;}
+/* ag_swiss */
+.ag_swiss .title{position:absolute;left:64px;top:114px;font-size:38px;font-weight:800;color:var(--ink);letter-spacing:-0.01em;}
+.ag_swiss .intro{position:absolute;left:64px;top:176px;}
+.ag_swiss .intro p{margin:0;font-size:18px;line-height:28px;color:var(--gray-700);font-weight:500;}
+.ag_swiss .intro .hl{color:var(--mint-deep);font-weight:700;}
+.ag_swiss .grid{position:absolute;left:64px;top:260px;width:1152px;height:400px;border-top:1px solid var(--line);}
+.ag_swiss .vrule{position:absolute;left:116px;top:0;bottom:0;width:1px;background:var(--line);}
+.ag_swiss .row{position:relative;display:flex;align-items:center;height:100px;border-bottom:1px solid var(--line);}
+.ag_swiss .num{position:relative;width:116px;flex-shrink:0;display:flex;align-items:center;}
+.ag_swiss .badge{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:19px;font-weight:800;position:relative;}
+.ag_swiss .badge.blue{background:var(--blue);color:var(--white);}
+.ag_swiss .badge.mint{background:var(--mint);color:var(--on-mint);}
+.ag_swiss .spark{position:absolute;top:-3px;right:-3px;width:9px;height:9px;border-radius:50%;background:var(--coral);box-shadow:0 0 0 2px var(--paper);}
+.ag_swiss .text{flex:1;padding-left:40px;}
+.ag_swiss .t{font-size:22px;font-weight:700;color:var(--ink);}
+.ag_swiss .row.active .t{font-weight:800;}
+.ag_swiss .d{font-size:18px;color:var(--gray-700);margin-top:6px;}
+/* ag_split */
+.ag_split{position:absolute;inset:0;}
+.ag_split .ag-left{
+  position:absolute; left:64px; top:140px; width:440px; height:460px;
+  background:var(--surface); border-radius:var(--r-lg); box-shadow:var(--shadow-sm);
+  box-sizing:border-box; padding:44px 40px;
+  display:flex; flex-direction:column; justify-content:center; gap:26px;
+}
+.ag_split .ag-title{
+  margin:0; font-weight:800; color:var(--ink); font-size:44px; line-height:1.28;
+  word-break:keep-all;
+}
+.ag_split .ag-intro{
+  margin:0; font-size:18px; line-height:1.75; color:var(--gray-700); font-weight:500;
+}
+.ag_split .ag-intro .hl{ color:var(--mint-deep); font-weight:800; }
+.ag_split .ag-right{
+  position:absolute; left:536px; top:132px; width:616px; height:520px;
+  display:flex; flex-direction:column; justify-content:center; gap:26px;
+  box-sizing:border-box;
+}
+.ag_split .ag-item{
+  display:flex; align-items:flex-start; gap:20px;
+}
+.ag_split .ag-num{
+  position:relative; flex:0 0 auto; width:44px; height:44px; border-radius:var(--r-pill);
+  background:var(--blue); color:var(--white); font-weight:800; font-size:19px;
+  display:flex; align-items:center; justify-content:center; box-shadow:var(--shadow-blue);
+}
+.ag_split .ag-num .spark{
+  position:absolute; top:-3px; right:-3px; width:11px; height:11px; border-radius:var(--r-pill);
+  background:var(--coral); border:2px solid var(--paper);
+}
+.ag_split .ag-body{ flex:1 1 auto; min-width:0; padding-top:2px; }
+.ag_split .ag-body h3{
+  margin:0 0 6px 0; font-size:22px; font-weight:800; color:var(--blue); line-height:1.3;
+}
+.ag_split .ag-body p{
+  margin:0; font-size:17px; line-height:1.6; color:var(--gray-700); font-weight:500;
+}
+.ag_split .ag-divider{
+  position:absolute; left:520px; top:150px; width:1px; height:440px; background:var(--line);
+}
+/* ag_magazine */
+.ag_magazine{position:absolute;left:64px;right:64px;top:112px;bottom:30px;display:flex;flex-direction:column;gap:22px;}
+.ag_magazine .ag-head{display:flex;flex-direction:column;}
+.ag_magazine .ag-title{font-size:34px;font-weight:800;color:var(--ink);margin:0 0 12px;letter-spacing:-0.01em;}
+.ag_magazine .ag-intro{font-size:18px;line-height:1.6;color:var(--gray-700);margin:0;font-weight:500;}
+.ag_magazine .ag-hl{color:var(--mint-deep);font-weight:800;}
+.ag_magazine .ag-list{display:flex;flex-direction:column;flex:1;justify-content:space-between;}
+.ag_magazine .ag-item{display:flex;gap:24px;align-items:flex-start;padding-bottom:16px;border-bottom:1px dashed var(--line);}
+.ag_magazine .ag-item:last-child{border-bottom:none;padding-bottom:0;}
+.ag_magazine .ag-num{font-size:34px;font-weight:800;color:var(--blue);min-width:52px;line-height:1;flex-shrink:0;}
+.ag_magazine .ag-body{flex:1;display:flex;flex-direction:column;gap:6px;min-width:0;}
+.ag_magazine .ag-row{display:flex;align-items:baseline;gap:12px;}
+.ag_magazine .ag-title2{font-size:21px;font-weight:700;color:var(--ink);white-space:nowrap;flex-shrink:0;}
+.ag_magazine .ag-leader{flex:1;border-bottom:2px dotted var(--gray-400);height:0;transform:translateY(-6px);min-width:40px;}
+.ag_magazine .ag-desc{font-size:17px;color:var(--gray-700);margin:0;line-height:1.5;}
+.ag_magazine .ag-dot{width:8px;height:8px;border-radius:var(--r-pill);background:var(--coral);display:inline-block;margin-right:2px;flex-shrink:0;}
+</style>
+</head>
+<body>
+<div class="gv-head"><h1>아젠다 슬라이드 초안 10종 — 라이트 지오메트리 무드</h1><p>표지(브랜드-화이트+아이소메트릭)와 같은 무드로. 지오메트리 5(ag_iso·bento·ring·node·nested) + 기타무드 5(toss·ghost·swiss·split·magazine). 팀명·발표자 없음. 각 1280×720(50%).</p></div>
+<div class="gv-grid">
+  <div class="gv-item"><div class="gv-lab"><span class="gv-no geo">ag_iso</span><span class="gv-nm">아이소메트릭 어젠다</span><span class="gv-md">지오메트리</span></div><div class="gv-frame"><div class="stage"><div class="draft ag_iso"><header class="dh-head"><svg class="dh-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="dh-brand">바이브코딩</span><span class="dh-line"></span></header>
+
+<div class="ag-wrap">
+  <div class="ag-left">
+    <h1 class="ag-title">오늘 배우게 될 것</h1>
+    <p class="ag-intro">AI에게 <em>일</em>을 시키려면<br>맥락과 기준을 문서로 넘기고<br>그 결과를 사람이 검증해야 합니다</p>
+    <div class="ag-deco" aria-hidden="true">
+      <svg viewBox="0 0 132 132">
+        <polygon class="c-top" fill="var(--blue-soft)" points="66,28 104,49 66,70 28,49"/>
+        <polygon class="c-left" fill="var(--blue)" points="28,49 66,70 66,112 28,91"/>
+        <polygon class="c-right" fill="var(--mint)" points="66,70 104,49 104,91 66,112"/>
+      </svg>
+    </div>
+  </div>
+
+  <div class="ag-right">
+    <div class="ag-item">
+      <div class="ag-cube">
+        <svg viewBox="0 0 100 100">
+          <polygon class="c-top" fill="var(--blue-soft)" points="50,16 79,32 50,48 21,32"/>
+          <polygon class="c-left" fill="var(--blue)" points="21,32 50,48 50,84 21,68"/>
+          <polygon class="c-right" fill="var(--mint)" points="50,48 79,32 79,68 50,84"/>
+          <text class="ag-num" x="50" y="38" text-anchor="middle" font-size="21" fill="var(--ink)">1</text>
+        </svg>
+      </div>
+      <div class="ag-text">
+        <div class="ag-itemtitle">AI Agent 이해하기</div>
+        <div class="ag-itemdesc">요약이 아니라 일을 시키는 도구 — LLM과 Agent의 차이</div>
+      </div>
+    </div>
+
+    <div class="ag-item">
+      <div class="ag-cube">
+        <svg viewBox="0 0 100 100">
+          <polygon class="c-top" fill="var(--blue-soft)" points="50,16 79,32 50,48 21,32"/>
+          <polygon class="c-left" fill="var(--blue)" points="21,32 50,48 50,84 21,68"/>
+          <polygon class="c-right" fill="var(--mint)" points="50,48 79,32 79,68 50,84"/>
+          <text class="ag-num" x="50" y="38" text-anchor="middle" font-size="21" fill="var(--ink)">2</text>
+        </svg>
+      </div>
+      <div class="ag-text">
+        <div class="ag-itemtitle">기획 문서 만들기</div>
+        <div class="ag-itemdesc">prd.md·design.md에 무엇을·왜 / 어떻게 보이게를 정리</div>
+      </div>
+    </div>
+
+    <div class="ag-item">
+      <div class="ag-cube">
+        <svg viewBox="0 0 100 100">
+          <polygon class="c-top" fill="var(--blue-soft)" points="50,16 79,32 50,48 21,32"/>
+          <polygon class="c-left" fill="var(--blue)" points="21,32 50,48 50,84 21,68"/>
+          <polygon class="c-right" fill="var(--mint)" points="50,48 79,32 79,68 50,84"/>
+          <text class="ag-num" x="50" y="38" text-anchor="middle" font-size="21" fill="var(--ink)">3</text>
+        </svg>
+      </div>
+      <div class="ag-text">
+        <div class="ag-itemtitle"><span class="spark"></span>실습 — 체감 서비스 만들기</div>
+        <div class="ag-itemdesc">교수님이 보면 한숨, 학생들은 박수칠 서비스 만들기</div>
+      </div>
+    </div>
+
+    <div class="ag-item">
+      <div class="ag-cube">
+        <svg viewBox="0 0 100 100">
+          <polygon class="c-top" fill="var(--blue-soft)" points="50,16 79,32 50,48 21,32"/>
+          <polygon class="c-left" fill="var(--blue)" points="21,32 50,48 50,84 21,68"/>
+          <polygon class="c-right" fill="var(--mint)" points="50,48 79,32 79,68 50,84"/>
+          <text class="ag-num" x="50" y="38" text-anchor="middle" font-size="21" fill="var(--ink)">4</text>
+        </svg>
+      </div>
+      <div class="ag-text">
+        <div class="ag-itemtitle">검증과 기획자의 역할</div>
+        <div class="ag-itemdesc">결과를 사람이 검증하고, 기준을 Agent에게 넘긴다</div>
+      </div>
+    </div>
+  </div>
+</div></div></div></div></div>
+  <div class="gv-item"><div class="gv-lab"><span class="gv-no geo">ag_bento</span><span class="gv-nm">아젠다 벤토</span><span class="gv-md">지오메트리</span></div><div class="gv-frame"><div class="stage"><div class="draft ag_bento"><header class="dh-head"><svg class="dh-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="dh-brand">바이브코딩</span><span class="dh-line"></span></header>
+
+<div class="ag_bento">
+  <div class="ag_left">
+    <h1 class="ag_title">오늘 배우게 될 것</h1>
+    <p class="ag_intro">AI에게 <span class="ag_em">일</span>을 시키려면<br>맥락과 기준을 문서로 넘기고<br>그 결과를 사람이 검증해야 합니다</p>
+  </div>
+
+  <div class="ag_grid">
+    <div class="ag_card ag_card--1">
+      <span class="ag_badge">1</span>
+      <h3 class="ag_card-title">AI Agent 이해하기</h3>
+      <p class="ag_card-desc">요약이 아니라 일을 시키는 도구 — LLM과 Agent의 차이</p>
+    </div>
+    <div class="ag_card ag_card--2">
+      <span class="ag_badge">2</span>
+      <h3 class="ag_card-title">기획 문서 만들기</h3>
+      <p class="ag_card-desc">prd.md·design.md에 무엇을·왜 / 어떻게 보이게를 정리</p>
+    </div>
+    <div class="ag_card ag_card--3">
+      <span class="ag_badge">3</span>
+      <span class="ag_spark"></span>
+      <h3 class="ag_card-title">실습</h3>
+      <p class="ag_card-desc">교수님이 보면 한숨, 학생들은 박수칠 서비스 만들기</p>
+    </div>
+    <div class="ag_card ag_card--4">
+      <span class="ag_badge">4</span>
+      <h3 class="ag_card-title">검증과 기획자의 역할</h3>
+      <p class="ag_card-desc">결과를 사람이 검증하고, 기준을 Agent에게 넘긴다</p>
+    </div>
+  </div>
+</div></div></div></div></div>
+  <div class="gv-item"><div class="gv-lab"><span class="gv-no geo">ag_ring</span><span class="gv-nm">오늘의 아젠다 (오프셋 링 배지)</span><span class="gv-md">지오메트리</span></div><div class="gv-frame"><div class="stage"><div class="draft ag_ring"><header class="dh-head"><svg class="dh-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="dh-brand">바이브코딩</span><span class="dh-line"></span></header>
+<div class="ag_body">
+  <h1 class="ag_title">오늘 배우게 될 것</h1>
+  <div class="ag_intro">
+    <p>AI에게 <span class="hl">일</span>을 시키려면</p>
+    <p>맥락과 기준을 문서로 넘기고</p>
+    <p>그 결과를 사람이 검증해야 합니다</p>
+  </div>
+  <ol class="ag_list">
+    <li class="ag_item">
+      <svg class="ag_badge" viewBox="0 0 64 64" aria-hidden="true">
+        <circle cx="26" cy="32" r="20" fill="none" stroke="var(--blue)" stroke-width="3"/>
+        <circle cx="38" cy="32" r="20" fill="none" stroke="var(--mint)" stroke-width="3"/>
+        <path d="M32,12.92 A20,20 0 0,1 32,51.08 A20,20 0 0,1 32,12.92 Z" fill="var(--mint-soft)"/>
+        <text x="32" y="38" text-anchor="middle" class="ag_num">1</text>
+      </svg>
+      <div class="ag_text">
+        <div class="ag_item-title">AI Agent 이해하기</div>
+        <div class="ag_item-desc">요약이 아니라 일을 시키는 도구 — LLM과 Agent의 차이</div>
+      </div>
+    </li>
+    <li class="ag_item">
+      <svg class="ag_badge" viewBox="0 0 64 64" aria-hidden="true">
+        <circle cx="26" cy="32" r="20" fill="none" stroke="var(--blue)" stroke-width="3"/>
+        <circle cx="38" cy="32" r="20" fill="none" stroke="var(--mint)" stroke-width="3"/>
+        <path d="M32,12.92 A20,20 0 0,1 32,51.08 A20,20 0 0,1 32,12.92 Z" fill="var(--mint-soft)"/>
+        <text x="32" y="38" text-anchor="middle" class="ag_num">2</text>
+      </svg>
+      <div class="ag_text">
+        <div class="ag_item-title">기획 문서 만들기</div>
+        <div class="ag_item-desc">prd.md·design.md에 무엇을·왜 / 어떻게 보이게를 정리</div>
+      </div>
+    </li>
+    <li class="ag_item">
+      <svg class="ag_badge" viewBox="0 0 64 64" aria-hidden="true">
+        <circle cx="26" cy="32" r="20" fill="none" stroke="var(--blue)" stroke-width="3"/>
+        <circle cx="38" cy="32" r="20" fill="none" stroke="var(--mint)" stroke-width="3"/>
+        <path d="M32,12.92 A20,20 0 0,1 32,51.08 A20,20 0 0,1 32,12.92 Z" fill="var(--mint-soft)"/>
+        <text x="32" y="38" text-anchor="middle" class="ag_num">3</text>
+      </svg>
+      <div class="ag_text">
+        <div class="ag_item-title">실습</div>
+        <div class="ag_item-desc">교수님이 보면 한숨, 학생들은 박수칠 서비스 만들기</div>
+      </div>
+    </li>
+    <li class="ag_item">
+      <svg class="ag_badge" viewBox="0 0 64 64" aria-hidden="true">
+        <circle cx="26" cy="32" r="20" fill="none" stroke="var(--blue)" stroke-width="3"/>
+        <circle cx="38" cy="32" r="20" fill="none" stroke="var(--mint)" stroke-width="3"/>
+        <path d="M32,12.92 A20,20 0 0,1 32,51.08 A20,20 0 0,1 32,12.92 Z" fill="var(--mint-soft)"/>
+        <text x="32" y="38" text-anchor="middle" class="ag_num">4</text>
+      </svg>
+      <div class="ag_text">
+        <div class="ag_item-title">검증과 기획자의 역할</div>
+        <div class="ag_item-desc">결과를 사람이 검증하고, 기준을 Agent에게 넘긴다</div>
+      </div>
+    </li>
+  </ol>
+</div></div></div></div></div>
+  <div class="gv-item"><div class="gv-lab"><span class="gv-no geo">ag_node</span><span class="gv-nm">아젠다-노드형</span><span class="gv-md">지오메트리</span></div><div class="gv-frame"><div class="stage"><div class="draft ag_node"><header class="dh-head"><svg class="dh-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="dh-brand">바이브코딩</span><span class="dh-line"></span></header>
+
+<div class="ag_node">
+  <span class="an-spark" aria-hidden="true"></span>
+
+  <div class="an-left">
+    <h1 class="an-title">오늘 배우게 될 것</h1>
+    <p class="an-intro">
+      AI에게 <span class="hl">일</span>을 시키려면<br>
+      맥락과 기준을 문서로 넘기고<br>
+      그 결과를 사람이 검증해야 합니다
+    </p>
+  </div>
+
+  <div class="an-right">
+    <div class="an-track" aria-hidden="true"></div>
+
+    <div class="an-item i1">
+      <div class="an-num">1</div>
+      <div class="an-body">
+        <div class="an-h">AI Agent 이해하기</div>
+        <div class="an-d">요약이 아니라 일을 시키는 도구 — LLM과 Agent의 차이</div>
+      </div>
+    </div>
+
+    <div class="an-item i2">
+      <div class="an-num">2</div>
+      <div class="an-body">
+        <div class="an-h">기획 문서 만들기</div>
+        <div class="an-d">prd.md·design.md에 무엇을·왜 / 어떻게 보이게를 정리</div>
+      </div>
+    </div>
+
+    <div class="an-item i3">
+      <div class="an-num">3</div>
+      <div class="an-body">
+        <div class="an-h">실습</div>
+        <div class="an-d">교수님이 보면 한숨, 학생들은 박수칠 서비스 만들기</div>
+      </div>
+    </div>
+
+    <div class="an-item i4">
+      <div class="an-num">4</div>
+      <div class="an-body">
+        <div class="an-h">검증과 기획자의 역할</div>
+        <div class="an-d">결과를 사람이 검증하고, 기준을 Agent에게 넘긴다</div>
+      </div>
+    </div>
+  </div>
+</div></div></div></div></div>
+  <div class="gv-item"><div class="gv-lab"><span class="gv-no geo">ag_nested</span><span class="gv-nm">아젠다 - 중첩 스퀘어</span><span class="gv-md">지오메트리</span></div><div class="gv-frame"><div class="stage"><div class="draft ag_nested"><header class="dh-head"><svg class="dh-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="dh-brand">바이브코딩</span><span class="dh-line"></span></header>
+<div class="ag_nested">
+  <svg class="ag_nested-deco" viewBox="0 0 1280 720" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <rect x="750" y="210" width="440" height="440" fill="none" stroke="var(--blue)" stroke-width="2" opacity="0.35"/>
+    <rect x="805" y="265" width="330" height="330" fill="none" stroke="var(--mint)" stroke-width="2.5" opacity="0.5"/>
+    <rect x="860" y="320" width="220" height="220" fill="none" stroke="var(--blue)" stroke-width="3" opacity="0.75"/>
+    <rect x="915" y="375" width="110" height="110" fill="var(--mint-soft)" stroke="var(--mint)" stroke-width="3"/>
+    <circle cx="970" cy="430" r="6" fill="var(--coral)"/>
+  </svg>
+  <h1 class="ag_nested-title">오늘 배우게 될 것</h1>
+  <div class="ag_nested-intro">
+    <p>AI에게 <span class="hl">일</span>을 시키려면</p>
+    <p>맥락과 기준을 문서로 넘기고</p>
+    <p>그 결과를 사람이 검증해야 합니다</p>
+  </div>
+  <ol class="ag_nested-list">
+    <li><span class="num">1</span><div class="txt"><strong>AI Agent 이해하기</strong><p>요약이 아니라 일을 시키는 도구 · LLM과 Agent의 차이</p></div></li>
+    <li><span class="num">2</span><div class="txt"><strong>기획 문서 만들기</strong><p>prd.md·design.md에 무엇을·왜, 어떻게 보이게를 정리</p></div></li>
+    <li><span class="num">3</span><div class="txt"><strong>실습</strong><p>교수님이 보면 한숨, 학생들은 박수칠 서비스 만들기</p></div></li>
+    <li><span class="num">4</span><div class="txt"><strong>검증과 기획자의 역할</strong><p>결과를 사람이 검증하고, 기준을 Agent에게 넘긴다</p></div></li>
+  </ol>
+</div></div></div></div></div>
+  <div class="gv-item"><div class="gv-lab"><span class="gv-no">ag_toss</span><span class="gv-nm">아젠다 카드형</span><span class="gv-md">기타무드</span></div><div class="gv-frame"><div class="stage"><div class="draft ag_toss"><header class="dh-head"><svg class="dh-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="dh-brand">바이브코딩</span><span class="dh-line"></span></header>
+
+<h1 class="title">오늘 배우게 될 것</h1>
+
+<p class="intro">AI에게 <b class="hl">일</b>을 시키려면<br>맥락과 기준을 문서로 넘기고<br>그 결과를 사람이 검증해야 합니다</p>
+
+<div class="cards">
+  <div class="card">
+    <div class="num">1</div>
+    <div class="ctext">
+      <h3>AI Agent 이해하기</h3>
+      <p>요약이 아니라 일을 시키는 도구 — LLM과 Agent의 차이</p>
+    </div>
+  </div>
+  <div class="card">
+    <div class="num">2</div>
+    <div class="ctext">
+      <h3>기획 문서 만들기</h3>
+      <p>prd.md·design.md에 무엇을·왜, 어떻게 보이게를 정리</p>
+    </div>
+  </div>
+  <div class="card active">
+    <span class="spark"></span>
+    <div class="num">3</div>
+    <div class="ctext">
+      <h3>실습</h3>
+      <p>교수님이 보면 한숨, 학생들은 박수칠 서비스 만들기</p>
+    </div>
+  </div>
+  <div class="card">
+    <div class="num">4</div>
+    <div class="ctext">
+      <h3>검증과 기획자의 역할</h3>
+      <p>결과를 사람이 검증하고, 기준을 Agent에게 넘긴다</p>
+    </div>
+  </div>
+</div></div></div></div></div>
+  <div class="gv-item"><div class="gv-lab"><span class="gv-no">ag_ghost</span><span class="gv-nm">고스트 넘버 아젠다</span><span class="gv-md">기타무드</span></div><div class="gv-frame"><div class="stage"><div class="draft ag_ghost"><header class="dh-head"><svg class="dh-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="dh-brand">바이브코딩</span><span class="dh-line"></span></header>
+<h1 class="title">오늘 배우게 될 것</h1>
+<div class="intro">
+  <p>AI에게 <span class="accent">일</span>을 시키려면</p>
+  <p>맥락과 기준을 문서로 넘기고</p>
+  <p>그 결과를 사람이 검증해야 합니다</p>
+</div>
+<div class="items">
+  <div class="item">
+    <span class="ghost">01</span>
+    <div class="itxt">
+      <p class="itl">AI Agent 이해하기</p>
+      <p class="ids">요약이 아니라 일을 시키는 도구 — LLM과 Agent의 차이</p>
+    </div>
+  </div>
+  <div class="item">
+    <span class="ghost">02</span>
+    <div class="itxt">
+      <p class="itl">기획 문서 만들기</p>
+      <p class="ids">prd.md·design.md에 무엇을·왜 / 어떻게 보이게를 정리</p>
+    </div>
+  </div>
+  <div class="item">
+    <span class="ghost">03</span>
+    <div class="itxt">
+      <p class="itl">실습</p>
+      <p class="ids">교수님이 보면 한숨, 학생들은 박수칠 서비스 만들기</p>
+    </div>
+  </div>
+  <div class="item">
+    <span class="ghost">04</span>
+    <div class="itxt">
+      <p class="itl">검증과 기획자의 역할</p>
+      <p class="ids">결과를 사람이 검증하고, 기준을 Agent에게 넘긴다</p>
+    </div>
+  </div>
+</div></div></div></div></div>
+  <div class="gv-item"><div class="gv-lab"><span class="gv-no">ag_swiss</span><span class="gv-nm">스위스 넘버드 아젠다</span><span class="gv-md">기타무드</span></div><div class="gv-frame"><div class="stage"><div class="draft ag_swiss"><header class="dh-head"><svg class="dh-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="dh-brand">바이브코딩</span><span class="dh-line"></span></header>
+<div class="title">오늘 배우게 될 것</div>
+<div class="intro">
+  <p>AI에게 <span class="hl">일</span>을 시키려면</p>
+  <p>맥락과 기준을 문서로 넘기고</p>
+  <p>그 결과를 사람이 검증해야 합니다</p>
+</div>
+<div class="grid">
+  <div class="vrule"></div>
+  <div class="row">
+    <div class="num"><div class="badge blue">01</div></div>
+    <div class="text">
+      <div class="t">AI Agent 이해하기</div>
+      <div class="d">요약이 아니라 일을 시키는 도구 — LLM과 Agent의 차이</div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="num"><div class="badge blue">02</div></div>
+    <div class="text">
+      <div class="t">기획 문서 만들기</div>
+      <div class="d">prd.md·design.md에 무엇을·왜 / 어떻게 보이게를 정리</div>
+    </div>
+  </div>
+  <div class="row active">
+    <div class="num"><div class="badge mint">03<span class="spark"></span></div></div>
+    <div class="text">
+      <div class="t">실습</div>
+      <div class="d">교수님이 보면 한숨, 학생들은 박수칠 서비스 만들기</div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="num"><div class="badge blue">04</div></div>
+    <div class="text">
+      <div class="t">검증과 기획자의 역할</div>
+      <div class="d">결과를 사람이 검증하고, 기준을 Agent에게 넘긴다</div>
+    </div>
+  </div>
+</div></div></div></div></div>
+  <div class="gv-item"><div class="gv-lab"><span class="gv-no">ag_split</span><span class="gv-nm">아젠다 좌우분할</span><span class="gv-md">기타무드</span></div><div class="gv-frame"><div class="stage"><div class="draft ag_split"><header class="dh-head"><svg class="dh-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="dh-brand">바이브코딩</span><span class="dh-line"></span></header>
+
+<div class="ag-left">
+  <h1 class="ag-title">오늘 배우게 될 것</h1>
+  <p class="ag-intro">AI에게 <span class="hl">일</span>을 시키려면<br>맥락과 기준을 문서로 넘기고<br>그 결과를 사람이 검증해야 합니다</p>
+</div>
+
+<div class="ag-divider"></div>
+
+<div class="ag-right">
+  <div class="ag-item">
+    <span class="ag-num">1</span>
+    <div class="ag-body">
+      <h3>AI Agent 이해하기</h3>
+      <p>요약이 아니라 일을 시키는 도구 — LLM과 Agent의 차이</p>
+    </div>
+  </div>
+  <div class="ag-item">
+    <span class="ag-num">2</span>
+    <div class="ag-body">
+      <h3>기획 문서 만들기</h3>
+      <p>prd.md·design.md에 무엇을·왜, 어떻게 보이게를 정리</p>
+    </div>
+  </div>
+  <div class="ag-item">
+    <span class="ag-num">3<span class="spark"></span></span>
+    <div class="ag-body">
+      <h3>실습</h3>
+      <p>교수님이 보면 한숨, 학생들은 박수칠 서비스 만들기</p>
+    </div>
+  </div>
+  <div class="ag-item">
+    <span class="ag-num">4</span>
+    <div class="ag-body">
+      <h3>검증과 기획자의 역할</h3>
+      <p>결과를 사람이 검증하고, 기준을 Agent에게 넘긴다</p>
+    </div>
+  </div>
+</div></div></div></div></div>
+  <div class="gv-item"><div class="gv-lab"><span class="gv-no">ag_magazine</span><span class="gv-nm">매거진형 아젠다</span><span class="gv-md">기타무드</span></div><div class="gv-frame"><div class="stage"><div class="draft ag_magazine"><header class="dh-head"><svg class="dh-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="dh-brand">바이브코딩</span><span class="dh-line"></span></header>
+<div class="ag-head">
+  <h1 class="ag-title">오늘 배우게 될 것</h1>
+  <p class="ag-intro">AI에게 <span class="ag-hl">일</span>을 시키려면<br>맥락과 기준을 문서로 넘기고<br>그 결과를 사람이 검증해야 합니다</p>
+</div>
+<div class="ag-list">
+  <div class="ag-item">
+    <span class="ag-num">01</span>
+    <div class="ag-body">
+      <div class="ag-row">
+        <span class="ag-title2">AI Agent 이해하기</span>
+        <span class="ag-leader"></span>
+      </div>
+      <p class="ag-desc">요약이 아니라 일을 시키는 도구 — LLM과 Agent의 차이</p>
+    </div>
+  </div>
+  <div class="ag-item">
+    <span class="ag-num">02</span>
+    <div class="ag-body">
+      <div class="ag-row">
+        <span class="ag-title2">기획 문서 만들기</span>
+        <span class="ag-leader"></span>
+      </div>
+      <p class="ag-desc">prd.md·design.md에 무엇을·왜 / 어떻게 보이게를 정리</p>
+    </div>
+  </div>
+  <div class="ag-item">
+    <span class="ag-num">03</span>
+    <div class="ag-body">
+      <div class="ag-row">
+        <span class="ag-dot"></span>
+        <span class="ag-title2">실습</span>
+        <span class="ag-leader"></span>
+      </div>
+      <p class="ag-desc">교수님이 보면 한숨, 학생들은 박수칠 서비스 만들기</p>
+    </div>
+  </div>
+  <div class="ag-item">
+    <span class="ag-num">04</span>
+    <div class="ag-body">
+      <div class="ag-row">
+        <span class="ag-title2">검증과 기획자의 역할</span>
+        <span class="ag-leader"></span>
+      </div>
+      <p class="ag-desc">결과를 사람이 검증하고, 기준을 Agent에게 넘긴다</p>
+    </div>
+  </div>
+</div></div></div></div></div>
+</div>
+</body>
+</html>

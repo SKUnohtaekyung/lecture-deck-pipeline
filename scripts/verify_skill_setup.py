@@ -1,0 +1,327 @@
+#!/usr/bin/env python3
+"""Codex/Claude Skill 어댑터와 공통 자원의 정합성을 정적으로 검증한다."""
+
+from __future__ import annotations
+
+import hashlib
+import re
+import sys
+from pathlib import Path
+
+
+ROOT = Path(__file__).resolve().parents[1]
+
+
+class Check:
+    def __init__(self) -> None:
+        self.failed = 0
+
+    def __call__(self, ok: bool, success: str, failure: str) -> None:
+        if ok:
+            print(f"PASS | {success}")
+        else:
+            self.failed += 1
+            print(f"FAIL | {failure}")
+
+
+def text(path: Path) -> str:
+    return path.read_text(encoding="utf-8")
+
+
+def frontmatter(path: Path) -> tuple[str, str]:
+    source = text(path)
+    match = re.match(r"^---\s*\n(.*?)\n---\s*\n", source, re.S)
+    if not match:
+        return "", ""
+    header = match.group(1)
+    name_match = re.search(r"(?m)^name:\s*[\"']?([^\"'\n]+)", header)
+    desc_match = re.search(r"(?ms)^description:\s*(.*)$", header)
+    name = name_match.group(1).strip() if name_match else ""
+    description = " ".join(desc_match.group(1).split()) if desc_match else ""
+    return name, description
+
+
+def digest(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def comparable_files(base: Path) -> dict[str, str]:
+    result: dict[str, str] = {}
+    for path in base.rglob("*"):
+        if not path.is_file():
+            continue
+        rel = path.relative_to(base).as_posix()
+        if rel == "SKILL.md" or rel == "agents/openai.yaml":
+            continue
+        if "__pycache__" in path.parts or path.suffix == ".pyc":
+            continue
+        if rel == "scripts/search.py":
+            source = text(path).replace("agent consumption", "platform consumption")
+            source = source.replace("Claude consumption", "platform consumption")
+            result[rel] = hashlib.sha256(source.encode("utf-8")).hexdigest()
+        else:
+            result[rel] = digest(path)
+    return result
+
+
+def contains_all(source: str, needles: tuple[str, ...]) -> bool:
+    """Return True when every contract marker is present in *source*."""
+    return all(needle in source for needle in needles)
+
+
+def markdown_files(base: Path) -> list[Path]:
+    if not base.is_dir():
+        return []
+    return [path for path in base.rglob("*.md") if path.is_file()]
+
+
+def main() -> int:
+    check = Check()
+    canonical = ROOT / "SKILL.md"
+    check(canonical.is_file(), "공통 SKILL.md 존재", "루트 SKILL.md 없음")
+    canonical_name, canonical_desc = frontmatter(canonical)
+    check(
+        canonical_name == "vibecoding-deck" and bool(canonical_desc),
+        "공통 frontmatter name/description 유효",
+        "공통 frontmatter name/description 오류",
+    )
+
+    adapters = {
+        "Codex": ROOT / ".agents/skills/vibecoding-deck/SKILL.md",
+        "Claude Code": ROOT / ".claude/skills/vibecoding-deck/SKILL.md",
+    }
+    for platform, adapter in adapters.items():
+        check(adapter.is_file(), f"{platform} 어댑터 존재", f"{platform} 어댑터 없음: {adapter}")
+        if not adapter.is_file():
+            continue
+        name, description = frontmatter(adapter)
+        check(
+            (name, description) == (canonical_name, canonical_desc),
+            f"{platform} metadata가 공통 정본과 일치",
+            f"{platform} metadata가 루트 SKILL.md와 불일치",
+        )
+        body = text(adapter)
+        canonical_ref = (adapter.parent / "../../../SKILL.md").resolve()
+        check(
+            "../../../SKILL.md" in body and canonical_ref == canonical.resolve(),
+            f"{platform} 어댑터가 공통 정본을 참조",
+            f"{platform} 어댑터의 ../../../SKILL.md 참조가 루트 정본으로 연결되지 않음",
+        )
+        check(
+            "[STYLE CONTRACT: VIBECODING PAPER-CUT v1]" not in body
+            and "#F4F8FB" not in body
+            and "SUBJECT: [slide-specific subject or metaphor]" not in body,
+            f"{platform} 어댑터가 공통 이미지 프롬프트를 복제하지 않음",
+            f"{platform} 어댑터에 공통 이미지 프롬프트가 중복됨",
+        )
+
+    openai_yaml = ROOT / ".agents/skills/vibecoding-deck/agents/openai.yaml"
+    yaml_text = text(openai_yaml) if openai_yaml.is_file() else ""
+    check(
+        openai_yaml.is_file()
+        and 'display_name: "' in yaml_text
+        and 'short_description: "' in yaml_text
+        and "$vibecoding-deck" in yaml_text,
+        "Codex agents/openai.yaml 유효 필드 존재",
+        "Codex agents/openai.yaml 또는 필수 UI metadata 누락",
+    )
+
+    required = [
+        "references/콘텐츠초안-입력형식.md",
+        "references/조립-리듬-불변요소.md",
+        "references/이미지-스크린샷-배포.md",
+        "references/이미지-디렉션-프롬프트.md",
+        "kit/guide/정보모양-taxonomy.md",
+        "kit/guide/디자인시스템.md",
+        "kit/guide/토큰-치트시트.md",
+        "kit/layouts/by-shape.md",
+        "kit/charts/by-shape.md",
+        "kit/layouts/catalog.html",
+        "kit/charts/catalog.html",
+        "kit/starter/deck-template.html",
+        "kit/starter/presenter-notes-template.html",
+        "입력양식/콘텐츠초안템플릿.md",
+        "데모_제작규칙.html",
+        "scripts/verify_deck.py",
+        "scripts/inline_deck.py",
+    ]
+    missing = [rel for rel in required if not (ROOT / rel).is_file()]
+    check(not missing, "공통 read-path 파일 모두 존재", f"공통 read-path 누락: {missing}")
+
+    image_direction = ROOT / "references/이미지-디렉션-프롬프트.md"
+    designboard = ROOT / "kit/images/paper-cut-v1/designboard.png"
+    image_source = text(image_direction) if image_direction.is_file() else ""
+    canonical_source = text(canonical) if canonical.is_file() else ""
+
+    check(
+        image_direction.is_file(),
+        "이미지 디렉션·프롬프트 정본 존재",
+        "references/이미지-디렉션-프롬프트.md 누락",
+    )
+    check(
+        designboard.is_file() and designboard.stat().st_size > 0,
+        "paper-cut-v1 디자인보드 존재",
+        "kit/images/paper-cut-v1/designboard.png 누락 또는 빈 파일",
+    )
+    check(
+        contains_all(
+            canonical_source,
+            (
+                "references/이미지-디렉션-프롬프트.md",
+                "IMAGE_MODE",
+                "generate_now",
+                "prompt_only",
+            ),
+        ),
+        "루트 SKILL이 이미지 정본과 IMAGE_MODE 두 분기를 참조",
+        "루트 SKILL에 이미지 정본/IMAGE_MODE/generate_now/prompt_only 계약 누락",
+    )
+
+    prompt_markers = (
+        "[STYLE CONTRACT: VIBECODING PAPER-CUT v1]",
+        "Use case: stylized-concept",
+        "SUBJECT:",
+        "ROLE:",
+        "COMPOSITION:",
+        "TEXT_SAFE_SIDE:",
+        "#F4F8FB",
+        "#F3F5F8",
+        "#1D4ED8",
+        "#EEF3FE",
+        "#14B8A6",
+        "#0F766E",
+        "#F97360",
+        "#141821",
+        "NO_IMAGE",
+        "cover-object",
+        "hero",
+        "support",
+        "spot",
+        "section-overlay",
+        "genuine alpha",
+        "네 모서리가 투명",
+        "IMAGE_MODE = generate_now | prompt_only",
+        "이미지가 필요한 슬라이드는 N장입니다. 어떤 방식으로 진행할까요?",
+    )
+    check(
+        contains_all(image_source, prompt_markers),
+        "이미지 정본에 공통 프롬프트·색·역할·알파 QA·모드 질문 계약 존재",
+        "이미지 정본의 공통 프롬프트 핵심 계약이 불완전함",
+    )
+    mode_output_markers = (
+        "$imagegen",
+        "remove_chroma_key.py",
+        "sessions/N주차/자료/images/",
+        "sessions/N주차/자료/이미지-프롬프트.md",
+        "산출물은 재현 가능한 프롬프트 패키지와 대응 이미지 슬롯이다",
+        "답변을 받은 뒤 선택한 모드의 산출 분기부터 실행한다",
+        "권장 화면비",
+        "검은 할로",
+        "승인·반려 사유",
+        "항목별 1–5점과 한 줄 근거",
+        "사용자 승인 문장",
+        "스타일 이탈 조건",
+    )
+    check(
+        contains_all(image_source, mode_output_markers),
+        "이미지 정본에 generate_now·prompt_only 산출 및 중단 계약 존재",
+        "이미지 정본의 모드별 도구·저장·중단 계약이 불완전함",
+    )
+
+    archive = ROOT / "_dev/설계기록/탐색-아카이브/slide-image-director-premerge"
+    active_director = ROOT / "slide-image-director"
+    check(
+        not archive.exists(),
+        "흡수 완료된 slide-image-director 개발 아카이브 제거됨",
+        "흡수 완료 후에도 slide-image-director 개발 아카이브가 남아 있음",
+    )
+    check(
+        not active_director.exists(),
+        "독립 slide-image-director 활성 폴더 제거됨",
+        "루트 slide-image-director 활성 폴더가 남아 있음",
+    )
+
+    exclusion_patterns = (
+        re.compile(r"likelion.{0,40}(배제|제외|금지|참조하지|상속하지)", re.I | re.S),
+        re.compile(r"(배제|제외|금지|참조하지|상속하지).{0,40}likelion", re.I | re.S),
+    )
+    director_docs = [image_direction] if image_direction.is_file() else []
+    if active_director.is_dir():
+        director_docs.extend(markdown_files(active_director))
+    exclusion_hits = [
+        path.relative_to(ROOT).as_posix()
+        for path in director_docs
+        if any(pattern.search(text(path)) for pattern in exclusion_patterns)
+    ]
+    check(
+        not exclusion_hits,
+        "활성 이미지 디렉터 문서에 likelion 배제 규칙 없음",
+        f"likelion 배제 규칙 잔존: {exclusion_hits}",
+    )
+
+    image_policy_files = [
+        canonical,
+        ROOT / "references/이미지-스크린샷-배포.md",
+        image_direction,
+        ROOT / "kit/starter/deck-template.html",
+        ROOT / "kit/starter/presenter-notes-template.html",
+    ]
+    obsolete_policies = ("선택 3D 이미지",)
+    obsolete_hits = [
+        path.relative_to(ROOT).as_posix()
+        for path in image_policy_files
+        if path.is_file() and any(policy in text(path) for policy in obsolete_policies)
+    ]
+    check(
+        not obsolete_hits,
+        "이미지 관련 정본에 오래된 비생성·3D 정책 없음",
+        f"오래된 이미지 정책 잔존: {obsolete_hits}",
+    )
+
+    claude_md = text(ROOT / "CLAUDE.md") if (ROOT / "CLAUDE.md").is_file() else ""
+    check("@AGENTS.md" in claude_md, "Claude가 AGENTS.md 공통 지침을 import", "CLAUDE.md의 @AGENTS.md import 누락")
+    claude_memory = ROOT / ".claude/agent-memory/vibecoding-deck/MEMORY.md"
+    check(
+        claude_memory.is_file()
+        and "../../../.agents/agent-memory/vibecoding-deck/MEMORY.md" in text(claude_memory),
+        "Claude 메모리가 공통 정본 포인터만 유지",
+        "Claude 메모리가 공통 .agents 메모리 정본을 참조하지 않음",
+    )
+
+    for platform_dir, prefix in (
+        (".agents", "python .agents/skills/ui-ux-pro-max/scripts/search.py"),
+        (".claude", "python .claude/skills/ui-ux-pro-max/scripts/search.py"),
+    ):
+        skill = ROOT / platform_dir / "skills/ui-ux-pro-max/SKILL.md"
+        source = text(skill) if skill.is_file() else ""
+        check(
+            skill.is_file()
+            and prefix in source
+            and "python3 skills/ui-ux-pro-max/scripts/search.py" not in source,
+            f"{platform_dir} ui-ux-pro-max Windows 명령 경로 일치",
+            f"{platform_dir} ui-ux-pro-max에 잘못된 Python/상대 경로가 남음",
+        )
+        check(
+            "design-system/<project-slug>/MASTER.md" in source
+            and "design-system/<project-slug>/pages/" in source,
+            f"{platform_dir} ui-ux-pro-max persist 문서가 구현 경로와 일치",
+            f"{platform_dir} ui-ux-pro-max persist 출력 경로 문서 불일치",
+        )
+
+    codex_ui = ROOT / ".agents/skills/ui-ux-pro-max"
+    claude_ui = ROOT / ".claude/skills/ui-ux-pro-max"
+    check(
+        comparable_files(codex_ui) == comparable_files(claude_ui),
+        "ui-ux-pro-max 실행 스크립트·데이터 양 플랫폼 동기화",
+        "ui-ux-pro-max 실행 스크립트 또는 데이터가 플랫폼 간 드리프트",
+    )
+
+    if check.failed:
+        print(f"RESULT | FAIL | {check.failed}개 실패")
+        return 1
+    print("RESULT | PASS | Codex·Claude Skill 설정 정합")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

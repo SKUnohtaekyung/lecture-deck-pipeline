@@ -1,0 +1,13 @@
+{
+  "eval_id": 4,
+  "eval_name": "icon-routing-hint-reveal-and-presenter-notes",
+  "prompt": "이 3교시 실습 표로 슬라이드 만들어줘. 실습 완성 프롬프트는 화면에 그대로 노출하지 말고 막힐 때만 보게 해줘. (3-6 👀, 3-7 🗣, 3-9 💬)",
+  "assertions": [
+    "🗣 요청문 원문이 본문에 그대로 노출되지 않고 기본 접힘 .hint-reveal(details/summary) 안에 위치",
+    "힌트 안 텍스트가 초안 원문 그대로(재작성 없음)",
+    "💬·👀 멘트는 화면 미렌더 HTML 주석으로 들어감",
+    "이모지 마커가 최종 덱 HTML에 노출되지 않음(verify 아이콘 누출 FAIL 아님)",
+    "별도 발표자 노트 HTML 생성, 거기선 🗣가 펼쳐진 상태",
+    "verify 신규 체크(아이콘 누출·힌트 summary) 통과, .hint-reveal 닫힘·열림 둘 다 오버플로 0"
+  ]
+}

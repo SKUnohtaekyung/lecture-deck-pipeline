@@ -1,0 +1,231 @@
+/* =====================================================================
+   patterns.css — 코드 코어(검증된 레이아웃/element CSS 라이브러리)
+   ---------------------------------------------------------------------
+   출처: 브라우저 검증된 실덱(데모_제작규칙.html + P6 검증 조립본)에서
+   수확·토큰 정리한 재사용 CSS. deck.css + legibility-40s.css **다음에** 로드한다.
+   목적: 조립 때 CSS를 매번 새로 짜지 않게(오버플로·토큰 실수 재발 방지).
+   각 블록은 카탈로그 ID에 대응 — 마크업 실물은 위 두 덱의 해당 슬라이드 참조.
+   신규 항목은 검증 후 여기에 추가(코드 코어 확장).
+   ===================================================================== */
+
+/* 헤더 로고: 확정 V-마크(민트 왼팔·블루 오른팔·잉크 접점·26°)를 각 헤더에 인라인 <svg class="s-logo">로 삽입.
+   사이징 = deck.css .s-logo(40) / .cover-head .s-logo(60). 색 = 토큰(민트·블루·잉크). 플레이스홀더 .logo-ph 폐지(2026-07-13). */
+
+/* ============ diagram-centric 공통 무대 (host: L-dc-hero 등) ============ */
+.dc-title{ position:absolute; left:64px; right:64px; top:118px; }
+.dc-stage{ position:absolute; left:64px; right:64px; top:224px; bottom:40px;
+  display:flex; flex-direction:column; align-items:center; justify-content:center; }
+.dc-cap{ margin-top:14px; font-size:19px; color:var(--gray-700); text-align:center; }
+.dc-cap strong{ color:var(--blue); font-weight:800; }
+
+/* ============ D-concentric (동심 포함도) — containment ============ */
+.viz-concentric{ position:relative; width:400px; height:400px; margin:0 auto; }
+.vc-ring{ position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
+  border-radius:50%; display:flex; align-items:flex-start; justify-content:center; }
+.vc-o{ width:400px; height:400px; background:var(--surface); border:2px solid var(--blue-line-strong); }
+.vc-m{ width:264px; height:264px; background:var(--periwinkle); }
+.vc-i{ width:150px; height:150px; background:var(--blue);
+  box-shadow:0 14px 32px rgba(29,78,216,.4); align-items:center; }
+.vc-lab{ font-weight:800; font-size:19px; color:var(--ink); }
+.vc-o > .vc-lab{ margin-top:16px; }
+.vc-m > .vc-lab{ margin-top:14px; color:var(--ink); }
+.vc-i > .vc-lab{ margin-top:0; color:var(--white); font-size:22px; text-align:center; line-height:1.2; }
+.vc-i small{ display:block; font-size:14px; color:var(--white); opacity:.82; font-weight:700; margin-top:4px; }
+
+/* ============ D-cycle (순환 루프) — flow ============ */
+.viz-cycle{ position:relative; width:440px; height:440px; margin:0 auto; }
+.viz-cycle svg{ position:absolute; inset:0; width:440px; height:440px; }
+.cyc-node{ position:absolute; transform:translate(-50%,-50%); width:150px;
+  background:var(--white); border:1px solid var(--blue-line-strong); border-radius:16px; padding:12px 10px;
+  box-shadow:0 8px 18px rgba(20,24,33,.07); text-align:center; }
+.cyc-node .cn{ display:inline-grid; place-items:center; width:28px; height:28px; border-radius:50%;
+  background:var(--blue); color:var(--white); font-weight:800; font-size:14px; margin-bottom:6px; }
+.cyc-node b{ display:block; font-size:18px; color:var(--ink); font-weight:800; line-height:1.25; }
+.cyc-center{ position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
+  background:var(--blue-soft); border:1px solid var(--blue-line); color:var(--blue); font-weight:800;
+  font-size:17px; border-radius:999px; padding:10px 20px; }
+
+/* ============ D-radial (방사 허브) — containment/structure ============ */
+.viz-radial{ position:relative; width:900px; height:360px; margin:0 auto; }
+.viz-radial svg{ position:absolute; inset:0; width:900px; height:360px; }
+.rad-hub{ position:absolute; left:450px; top:200px; transform:translate(-50%,-50%);
+  width:150px; height:150px; border-radius:50%; background:var(--blue); color:var(--white);
+  display:grid; place-items:center; text-align:center; box-shadow:0 14px 32px rgba(29,78,216,.4); }
+.rad-hub b{ font-size:20px; font-weight:800; line-height:1.25; }
+.rad-hub small{ display:block; font-size:14px; color:var(--white); opacity:.82; font-weight:700; margin-top:4px; }
+.rad-sat{ position:absolute; transform:translate(-50%,-50%); width:236px;
+  background:var(--white); border:1px solid var(--blue-line-strong); border-radius:18px; padding:16px 18px;
+  box-shadow:0 10px 24px rgba(20,24,33,.06); }
+.rad-sat h3{ margin:0 0 6px; font-size:22px; font-weight:800; color:var(--ink); }
+.rad-sat p{ margin:0; font-size:17px; line-height:1.5; color:var(--gray-700); }
+.rad-sat.focus{ border:2px solid var(--blue); background:var(--blue-soft); }
+.rad-sat .tag{ display:inline-block; margin-top:8px; font-size:14px; font-weight:800; color:var(--white);
+  background:var(--blue); border-radius:999px; padding:3px 11px; }
+.rad-sat .opt{ display:inline-block; margin-top:8px; font-size:14px; font-weight:800; color:var(--gray-700);
+  background:var(--surface); border-radius:999px; padding:3px 11px; }
+
+/* ============ D-tree (위계 트리) — containment/structure (host: L-ct-figure) ============ */
+.ct-figure{ position:absolute; left:64px; right:64px; top:118px; bottom:44px;
+  display:flex; flex-direction:column; }
+.ct-figure .fig-lead{ font-size:22px; line-height:1.7; color:var(--gray-700); margin:6px 0 0; max-width:960px; }
+.ct-figure .fig-lead strong{ color:var(--blue); font-weight:800; }
+.fig-stage{ flex:1 1 auto; display:grid; grid-template-columns:1fr 320px; gap:30px; align-items:center; }
+.viz-tree{ display:flex; flex-direction:column; align-items:center; }
+.vt-root{ background:var(--blue); color:var(--white); font-weight:800; font-size:22px;
+  border-radius:14px; padding:16px 26px; box-shadow:0 10px 24px rgba(29,78,216,.28); }
+.vt-root small{ display:block; font-size:14px; color:var(--white); opacity:.82; font-weight:700; margin-top:3px; }
+.vt-wire{ display:block; }
+.vt-leaves{ display:flex; gap:22px; }
+.vt-leaf{ background:var(--surface); border:1px solid var(--blue-line-strong); border-radius:14px;
+  padding:14px 18px; text-align:center; min-width:150px; }
+.vt-leaf b{ display:block; font-size:19px; font-weight:800; color:var(--ink); }
+.vt-leaf span{ display:block; font-size:14px; color:var(--gray-700); margin-top:3px; }
+.fig-note{ align-self:center; }
+
+/* ============ L-cs-central-contrast (대비 · 가운데 ≠ 커넥터) ============ */
+.cc-full{ bottom:44px; display:flex; flex-direction:column; }
+.cc-grid{ flex:1 1 auto; display:grid; grid-template-columns:1fr 84px 1fr; align-items:center; margin:12px 0; }
+.cc-side{ border:1px solid var(--blue-line-strong); border-radius:20px; background:var(--white); padding:24px 26px;
+  box-shadow:0 10px 24px rgba(20,24,33,.05); align-self:stretch; display:flex; flex-direction:column; }
+.cc-side.human{ border-color:var(--mint-line); }
+.cc-side h3{ margin:0 0 12px; font-size:25px; font-weight:800; }
+.cc-side.ai h3{ color:var(--blue); }
+.cc-side.human h3{ color:var(--mint-deep); }
+.cc-side ul{ margin:0; padding:0; list-style:none; display:flex; flex-direction:column; gap:9px; }
+.cc-side li{ font-size:20px; line-height:1.5; color:var(--gray-700); padding-left:22px; position:relative; }
+.cc-side li::before{ content:"·"; position:absolute; left:6px; color:var(--gray-400); font-weight:800; }
+.cc-neq{ text-align:center; font-size:52px; font-weight:800; color:var(--blue); }
+
+/* ============ L-gm-quad (분류 · 4항목 사분면) ============ */
+.quad-full{ bottom:44px; display:flex; flex-direction:column; }
+.quad-grid{ flex:1 1 auto; display:grid; grid-template-columns:1fr 1fr; grid-template-rows:1fr 1fr;
+  gap:18px; margin-top:16px; }
+.quad-card{ border:1px solid var(--blue-line-strong); border-radius:20px; background:var(--white); padding:22px 26px;
+  box-shadow:0 10px 24px rgba(20,24,33,.05); display:flex; flex-direction:column; gap:9px; }
+.quad-card .qn{ width:40px; height:40px; border-radius:50%; background:var(--blue); color:var(--white);
+  display:grid; place-items:center; font-weight:800; font-size:18px; }
+.quad-card h3{ margin:0; font-size:23px; font-weight:800; color:var(--ink); }
+.quad-card p{ margin:0; font-size:22px; line-height:1.55; color:var(--gray-700); }
+
+/* ============ L-vf-numbered-stack (세로 번호 스텝) — deck.css .work-step 확장 ============ */
+.steps-full{ bottom:44px; display:flex; flex-direction:column; }
+.eval-steps{ flex:1 1 auto; display:flex; flex-direction:column; justify-content:center; gap:10px; margin-top:8px; }
+.eval-steps .work-step{ grid-template-columns:46px 1fr; padding:12px 18px; }
+.eval-steps .work-step .n{ width:46px; height:46px; font-size:20px; }
+.eval-steps .work-step b{ font-size:21px; margin-bottom:2px; }
+.eval-steps .work-step b:last-child{ margin-bottom:0; }
+.eval-steps .work-step span{ font-size:18px; line-height:1.45; }
+
+/* ============ L-td-table 보조 노트 · L-ct-definition (개념 정의) ============ */
+.tbl-note{ margin:12px 0 0; font-size:18px; }
+.def-msg{ max-width:840px; top:150px; bottom:54px; display:flex; flex-direction:column; justify-content:center; }
+.def-term{ display:inline-block; align-self:flex-start; background:var(--blue); color:var(--white);
+  font-weight:800; font-size:20px; border-radius:999px; padding:8px 20px; margin-bottom:20px; }
+
+/* =====================================================================
+   2026-07-15 확충 — HIGH 빈칸 6종 (element ×2 · layout ×4)
+   출처: _dev/설계기록/HIGH-6종-스펙_2026-07-15.md(author→auditor→revise) 코드화.
+   ===================================================================== */
+
+/* ============ E-code · 주석 코드 블록 (host: L-dc-hero) — concept ============
+   구현 메모: 스펙 원안의 SVG 리더선 대신, num/src/note 3열을 한 CSS 그리드에
+   .co-row{display:contents}로 흘려 "행 정렬 자체가 리더선" 역할을 하게 해
+   좌표 계산 없이 강조 줄 ↔ 콜아웃을 견고하게 짝짓는다(재구현·기존 카탈로그의
+   좌표기반 SVG보다 콘텐츠 교체에 안전). 콜아웃 없는 행은 .co-note가 비어
+   :empty로 구분선이 자동으로 사라진다. */
+.viz-code{ background:var(--surface); border-radius:var(--r-md); box-shadow:var(--shadow-md);
+  font-family:var(--font-mono); overflow:hidden; }
+.co-bar{ padding:10px 20px; font-size:17px; font-weight:700; color:var(--gray-700);
+  background:var(--white); border-bottom:1px solid var(--line); }
+.co-rows{ display:grid; grid-template-columns:2.6em 1fr minmax(240px,320px); }
+.co-row{ display:contents; }
+.co-row.is-hl .co-num, .co-row.is-hl .co-src{ background:var(--blue-soft); }
+.co-num{ padding:6px 10px; text-align:right; color:var(--gray-400); font-size:20px;
+  font-family:var(--font-mono); user-select:none; }
+.co-src{ padding:6px 4px; font-size:20px; font-family:var(--font-mono); line-height:1.5;
+  color:var(--ink); white-space:pre; }
+.co-note{ padding:4px 20px 4px 16px; border-left:1px solid var(--line);
+  display:flex; align-items:flex-start; gap:10px; }
+.co-note:empty{ border-left:0; }
+.co-note .cn{ flex:0 0 auto; width:24px; height:24px; border-radius:50%; background:var(--blue);
+  color:var(--white); display:grid; place-items:center; font-size:12px; font-weight:800; margin-top:2px; }
+.co-note p{ margin:0; font-size:17px; line-height:1.4; color:var(--gray-700); }
+
+/* ============ D-gantt · 비례 시간축·간트 (host: diagram-centric / top-down) — flow+numeric ============
+   좌 라벨열(고정폭) + 우 플롯(축·행 공유 좌표계 %). .vg-now는 축 아래부터 마지막 행까지
+   플롯 컨테이너 기준 top/bottom 절대배치로 스팬 — 행 수가 바뀌어도 자동으로 전체 높이를 덮는다. */
+.viz-gantt{ display:flex; gap:16px; width:1000px; margin:0 auto; }
+.vg-labels{ flex:0 0 190px; display:flex; flex-direction:column; }
+.vg-lab-spacer{ height:32px; }
+.vg-label{ height:56px; display:flex; align-items:center; font-size:18px; font-weight:700; color:var(--ink); }
+.vg-plot{ position:relative; flex:1 1 auto; padding-right:70px; }
+.vg-axis{ position:relative; height:32px; border-bottom:1px solid var(--line); }
+.vg-tick{ position:absolute; top:6px; font-size:17px; font-weight:700; color:var(--gray-700); transform:translateX(-2px); }
+.vg-row{ position:relative; height:56px; border-top:1px solid var(--line); }
+.vg-bar{ position:absolute; top:18px; height:20px; border-radius:var(--r-pill); background:var(--periwinkle); }
+.vg-bar.is-key{ background:var(--blue); }
+.vg-bar.is-risk{ background:var(--coral-deep); }
+.vg-ms{ position:absolute; top:12px; transform:translateX(6px); font-size:17px; font-weight:800;
+  color:var(--blue); white-space:nowrap; }
+.vg-now{ position:absolute; top:32px; bottom:0; border-left:2px dashed var(--ink); }
+
+/* ============ L-td-glossary · 용어 정의 리스트 (host: top-down shell) — classification ============
+   6~7행 카드가 548px 예산에 들어가도록 밴드(eyebrow·title·accent-bar) 마진을 로컬로 조인다
+   (공유 프리미티브 자체는 안 건드림 — 다른 구도에 영향 없음). */
+.dl-list .s-full{ bottom:54px; display:flex; flex-direction:column; }
+.dl-list .s-eyebrow{ margin-bottom:8px; }
+.dl-list .s-title{ margin-bottom:10px; }
+.dl-list .accent-bar{ margin:2px 0 8px; }
+.dl-rows{ flex:1 1 auto; display:flex; flex-direction:column; gap:6px; margin-top:6px; justify-content:center; }
+.dl-row.card{ display:flex; align-items:flex-start; gap:20px; padding:10px 20px; }
+.dl-term{ flex:0 0 220px; font-size:22px; font-weight:800; color:var(--ink); }
+.dl-row .s-body{ margin:0; }
+
+/* ============ L-td-claim-rationale · 주장·근거 밴드 (host: top-down shell) — structure ============ */
+.claim-rationale .s-full{ bottom:54px; display:flex; flex-direction:column; }
+.cr-spine{ text-align:center; color:var(--blue); font-weight:800; font-size:19px; margin:8px 0; }
+.claim-rationale .grid-3{ flex:1 1 auto; align-content:center; }
+.cr-card{ display:flex; flex-direction:column; gap:8px; }
+.cr-card .timing{ align-self:flex-start; }
+.cr-card h3{ margin:0; font-size:22px; font-weight:800; color:var(--ink); }
+.cr-card p{ margin:0; font-size:22px; line-height:1.6; color:var(--gray-700); }
+
+/* ============ L-vf-case-acts · 사례 3막 카드 (host: vertical-flow shell) — concept+flow ============
+   band 마진·act 내부 간격을 로컬로 조여 3막(각 pill+lead+body)이 548px 예산에 들어가게 한다.
+   .s-body를 <p class="s-body">로 직접 쓰면 deck.css `.s-body p{margin:0 0 12px}`(자손 선택자)가
+   안 걸려 브라우저 기본 단락 마진이 남는다 — 반드시 margin:0으로 명시 리셋. */
+.case-acts .s-full{ bottom:54px; display:flex; flex-direction:column; }
+.case-acts .s-eyebrow{ margin-bottom:8px; }
+.case-acts .s-title{ margin-bottom:10px; }
+.case-acts .accent-bar{ margin:2px 0 8px; }
+.ca-lead{ margin:0 0 12px; font-size:19px; color:var(--gray-700); font-weight:600; }
+.ca-stack{ flex:1 1 auto; display:flex; flex-direction:column; justify-content:center; gap:4px; }
+.ca-act{ padding:10px 22px; }
+.ca-act .pill{ color:var(--blue); border-color:var(--blue-soft); background:var(--blue-soft); font-size:15px; margin-bottom:4px; }
+.ca-act .s-lead{ font-size:22px; margin:0 0 4px; }
+.ca-act .s-body{ font-size:19px; margin:0; }
+.ca-down{ margin:0; text-align:center; color:var(--blue); font-weight:800; font-size:19px; line-height:1; }
+
+/* ============ L-gm-pitfalls · 함정·주의 세트 (host: grid-mosaic shell) — checklist ============ */
+.pitfalls .s-full{ bottom:54px; display:flex; flex-direction:column; }
+.pf-lead{ margin:0 0 12px; font-size:19px; color:var(--gray-700); font-weight:600; }
+.pf-list{ flex:1 1 auto; display:flex; flex-direction:column; gap:10px; justify-content:center; }
+.pf-band{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:18px; align-items:start;
+  padding:14px 22px; border-left:4px solid var(--coral); }
+.pf-risk{ display:flex; align-items:center; gap:6px; font-size:20px; font-weight:800; color:var(--coral-deep); margin:0; }
+.pf-reason{ margin:0; font-size:19px; line-height:1.6; color:var(--gray-700); }
+.pf-alt{ margin:0; font-size:19px; line-height:1.6; color:var(--ink); }
+.pf-alt .ok{ color:var(--mint-deep); font-weight:800; margin-right:4px; }
+
+/* ============ 세로 균형 유틸(하단 여백 방지) — 정보량이 적은 s-full에 얹는다 ============
+   .fill = 격자/표가 남는 세로를 채움 · .solo = 콜아웃 하나가 아래 공간 중앙에 크게 앉음.
+   제목·eyebrow는 위에 그대로 두고, 그 아래 콘텐츠만 확장/중앙정렬해 캔버스를 균형 있게 쓴다. */
+.s-full.fill{ bottom:54px; display:flex; flex-direction:column; }
+.s-full.fill > .grid-2, .s-full.fill > .grid-3{ flex:1 1 auto; align-content:center; }
+.s-full.fill > .grid-2 > .card, .s-full.fill > .grid-3 > .card,
+.s-full.fill > .grid-2 > .callout, .s-full.fill > .grid-3 > .callout{
+  display:flex; flex-direction:column; justify-content:center; }
+/* 콜아웃을 늘려서 채우지 않고, 자기 크기 그대로 남는 공간의 가운데 앉힌다(박스 크기=정보량과 통일). */
+.s-full.solo{ bottom:54px; display:flex; flex-direction:column; justify-content:center; }
+.s-full.solo > .callout{ width:fit-content; max-width:860px; margin-left:auto; margin-right:auto;
+  align-self:center; text-align:center; font-size:26px; line-height:1.5; }

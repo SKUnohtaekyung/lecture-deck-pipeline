@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>vibecoding-deck 디자인 시스템 선택안 — 파트별 5종</title>
+<style>
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono&family=IBM+Plex+Mono&family=Fira+Code&family=Source+Code+Pro&family=Nanum+Gothic+Coding&display=swap');
+
+:root{
+  --bg:#F4F7FB; --surface:#FFFFFF; --text:#172033; --muted:#637083;
+  --line:#DDE4EE; --soft:#EEF2F7;
+  /* 확정 베이스 3색 */
+  --b:#1D4ED8;   /* 구조 */
+  --m:#14B8A6;   /* 행동 */
+  --c:#F97360;   /* 주의 */
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{margin:0;color:var(--text);background:var(--bg);
+  font-family:Pretendard,"Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  line-height:1.6;word-break:keep-all;-webkit-font-smoothing:antialiased;}
+.container{width:min(1180px,calc(100% - 40px));margin:0 auto;}
+a{color:inherit;}
+
+/* ── 헤더 ── */
+.hero{padding:56px 0 30px;border-bottom:1px solid var(--line);}
+.kicker{display:inline-flex;align-items:center;gap:8px;padding:7px 12px;background:#fff;
+  border:1px solid var(--line);border-radius:999px;color:#315071;font-size:13px;font-weight:800;}
+.kicker::before{content:"";width:9px;height:9px;border-radius:50%;
+  background:linear-gradient(135deg,var(--b),var(--m));}
+h1{margin:18px 0 12px;font-size:clamp(30px,4.4vw,50px);line-height:1.1;letter-spacing:-.04em;}
+.hero p{max-width:780px;margin:0;color:var(--muted);font-size:17px;}
+
+/* 확정 베이스 배너 */
+.base{display:flex;flex-wrap:wrap;gap:12px;margin-top:22px;}
+.base-chip{display:flex;align-items:center;gap:11px;padding:12px 16px;background:#fff;
+  border:1px solid var(--line);border-radius:16px;box-shadow:0 8px 24px rgba(31,48,78,.05);}
+.base-chip i{width:34px;height:34px;border-radius:9px;flex:0 0 auto;}
+.base-chip b{display:block;font-size:14px;}
+.base-chip span{display:block;font-size:12px;color:var(--muted);font-family:"JetBrains Mono",monospace;}
+
+/* ── 네비 ── */
+.nav{position:sticky;top:0;z-index:30;border-bottom:1px solid var(--line);
+  background:rgba(244,247,251,.9);backdrop-filter:blur(12px);}
+.nav-inner{display:flex;gap:6px;padding:10px 0;overflow-x:auto;scrollbar-width:none;}
+.nav-inner::-webkit-scrollbar{display:none;}
+.nav a{flex:0 0 auto;padding:8px 12px;border-radius:9px;text-decoration:none;color:#536276;
+  font-size:13px;font-weight:750;white-space:nowrap;}
+.nav a:hover{background:#fff;color:var(--text);}
+
+/* ── 섹션 ── */
+section{padding:44px 0 8px;}
+.sec-head{margin-bottom:20px;}
+.sec-head small{display:block;margin-bottom:7px;color:var(--b);font-weight:850;letter-spacing:.07em;font-size:13px;}
+.sec-head h2{margin:0 0 6px;font-size:clamp(23px,3vw,32px);letter-spacing:-.03em;}
+.sec-head p{margin:0;color:var(--muted);max-width:820px;font-size:15px;}
+.sec-head .cite{margin-top:8px;font-size:12.5px;color:#5a6b8c;background:#eef3fb;
+  border:1px solid #e0e8f5;border-radius:8px;padding:6px 10px;display:inline-block;}
+
+/* ── 초안 그리드 ── */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(228px,1fr));gap:16px;}
+.draft{position:relative;display:flex;flex-direction:column;background:var(--surface);
+  border:1.5px solid var(--line);border-radius:18px;padding:0;overflow:hidden;cursor:pointer;
+  transition:transform .15s ease,box-shadow .15s ease,border-color .15s ease;}
+.draft:hover{transform:translateY(-3px);box-shadow:0 14px 34px rgba(31,48,78,.1);}
+.draft input{position:absolute;opacity:0;pointer-events:none;}
+.draft:has(input:checked){border-color:var(--b);box-shadow:0 0 0 3px rgba(29,78,216,.18);}
+.draft:has(input:checked)::after{content:"✓ 선택됨";position:absolute;top:10px;right:10px;z-index:2;
+  background:var(--b);color:#fff;font-size:11px;font-weight:800;padding:3px 9px;border-radius:999px;}
+.d-demo{padding:16px 16px 4px;}
+.d-info{padding:12px 16px 16px;margin-top:auto;}
+.d-tag{display:inline-block;font-size:11px;font-weight:900;color:var(--b);letter-spacing:.06em;}
+.d-rec{display:inline-block;margin-left:6px;font-size:10px;font-weight:900;color:#0a7c5a;
+  background:#e6f7f0;border-radius:999px;padding:2px 7px;}
+.d-info h4{margin:3px 0 6px;font-size:17px;letter-spacing:-.02em;}
+.d-info .why{margin:0;font-size:12.5px;color:var(--muted);line-height:1.5;}
+.d-vals{margin:7px 0 0;font-size:10.5px;color:#7a869a;font-family:"JetBrains Mono",monospace;
+  word-break:break-all;}
+
+/* 역할 칩 (Part A) */
+.roles{display:flex;flex-direction:column;gap:6px;}
+.role{display:flex;align-items:center;gap:8px;font-size:12px;}
+.role i{width:26px;height:18px;border-radius:5px;flex:0 0 auto;}
+.role b{font-weight:700;min-width:66px;}
+.role s{color:#a0392f;text-decoration:none;font-size:11px;}
+.role .strike{text-decoration:line-through;color:#9aa4b2;}
+
+/* 색 스와치 행 (Part B/C) */
+.sw-row{display:flex;gap:7px;}
+.sw{flex:1;height:52px;border-radius:9px;display:flex;align-items:flex-end;justify-content:center;
+  padding-bottom:5px;font-size:9px;font-weight:800;color:#fff;font-family:"JetBrains Mono",monospace;}
+.callout{border-radius:12px;padding:11px 13px;font-size:12px;margin-bottom:7px;}
+.callout b{display:block;font-size:11px;font-weight:800;margin-bottom:2px;}
+
+/* 미니 차트 (Part D) */
+.chart{display:flex;align-items:flex-end;gap:8px;height:96px;padding:8px 4px 0;}
+.chart .bar{flex:1;border-radius:6px 6px 0 0;position:relative;}
+.chart .bar span{position:absolute;top:-15px;left:0;right:0;text-align:center;font-size:10px;
+  font-weight:800;color:var(--muted);}
+
+/* 형태 데모 (Part E) */
+.form-demo{display:flex;flex-direction:column;gap:10px;align-items:flex-start;}
+.fd-card{width:100%;background:#fff;padding:13px 15px;font-size:12px;color:var(--text);}
+.fd-card b{font-weight:800;}
+.fd-btn{color:#fff;font-size:12px;font-weight:800;padding:8px 15px;}
+.fd-pill{font-size:11px;font-weight:800;padding:5px 12px;}
+
+/* 표지 모크 (Part F) */
+.cover{aspect-ratio:16/9;border-radius:12px;overflow:hidden;border:1px solid var(--line);
+  padding:16px 17px;display:flex;flex-direction:column;justify-content:space-between;}
+.cover .ct{font-size:10px;font-weight:800;opacity:.85;}
+.cover .cb{font-size:19px;font-weight:800;line-height:1.15;letter-spacing:-.02em;}
+.cover .cc{display:flex;gap:6px;}
+.cover .cc i{width:26px;height:8px;border-radius:4px;}
+
+/* 타이포 데모 (Part G) */
+.type-demo h5{margin:0 0 5px;font-size:19px;font-weight:800;letter-spacing:-.02em;color:var(--text);}
+.type-demo p{margin:0 0 9px;font-size:13px;color:#3A3D45;line-height:1.6;}
+.type-demo p strong{color:var(--b);}
+.type-demo code{display:block;background:#0f1729;color:#d7e3ff;border-radius:9px;
+  padding:10px 12px;font-size:12px;line-height:1.55;white-space:pre;overflow-x:auto;}
+.type-demo code .k{color:#7dd3fc;} .type-demo code .s{color:#6ee7b7;} .type-demo code .c{color:#8b98b8;}
+
+/* ── 요약 바 ── */
+.summary{position:sticky;bottom:0;z-index:40;margin-top:40px;
+  background:rgba(23,32,51,.97);color:#fff;border-radius:16px 16px 0 0;
+  box-shadow:0 -10px 40px rgba(0,0,0,.25);backdrop-filter:blur(10px);}
+.summary .container{padding:16px 0;}
+.summary-top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:10px;}
+.summary-top b{font-size:15px;}
+.summary-top button{font:inherit;font-weight:800;font-size:13px;cursor:pointer;border:0;
+  background:var(--m);color:#08312c;border-radius:10px;padding:9px 16px;}
+.summary-top button:hover{filter:brightness(1.05);}
+.picks{display:flex;flex-wrap:wrap;gap:8px;}
+.pick{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.16);border-radius:9px;
+  padding:6px 11px;font-size:12px;}
+.pick em{color:#9fb4ff;font-style:normal;font-weight:800;margin-right:6px;}
+.toast{position:fixed;left:50%;bottom:120px;transform:translate(-50%,20px);padding:11px 16px;
+  color:#fff;background:#0a7c5a;border-radius:11px;opacity:0;pointer-events:none;transition:.2s;
+  z-index:99;font-weight:800;font-size:13px;}
+.toast.show{opacity:1;transform:translate(-50%,0);}
+footer{padding:26px 0 46px;color:var(--muted);font-size:13px;}
+@media(max-width:560px){.grid{grid-template-columns:1fr 1fr;}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="container">
+    <div class="kicker">vibecoding-deck · 디자인 시스템 선택</div>
+    <h1>파트별 초안 5종<br>골라서 시스템을 확정하세요</h1>
+    <p>확정된 브랜드 3색(블루·민트·코랄) 위에, 색 교체가 연쇄로 부르는 결정들을 파트별 5개 안으로 시각화했습니다. 각 파트에서 하나씩 고르면 맨 아래에 조합이 요약됩니다. <strong>ui-ux-pro-max</strong> 데이터로 근거를 붙였고, 파일·토큰은 확정 전까지 수정하지 않습니다.</p>
+
+    <div class="base">
+      <div class="base-chip"><i style="background:var(--b)"></i><div><b>구조 · MAIN</b><span>#1D4ED8</span></div></div>
+      <div class="base-chip"><i style="background:var(--m)"></i><div><b>행동 · SUB</b><span>#14B8A6</span></div></div>
+      <div class="base-chip"><i style="background:var(--c)"></i><div><b>주의 · ACCENT</b><span>#F97360</span></div></div>
+    </div>
+  </div>
+</header>
+
+<nav class="nav"><div class="container nav-inner">
+  <a href="#A">A 의미 색 매핑</a>
+  <a href="#B">B 깊이·보조색</a>
+  <a href="#C">C 소프트 틴트</a>
+  <a href="#D">D 데이터 시각화</a>
+  <a href="#E">E 형태(라운드·섀도우)</a>
+  <a href="#F">F 표지·클로징</a>
+  <a href="#G">G 타이포·코드폰트</a>
+</div></nav>
+
+<main class="container">
+
+<!-- ══════════ PART A ══════════ -->
+<section id="A">
+  <div class="sec-head">
+    <small>PART A · 최우선</small>
+    <h2>의미 색 매핑 — "색은 문법"의 뼈대</h2>
+    <p>민트(행동)·코랄(주의)이 들어오면서 성공·경고·오류 슬롯을 다시 배정해야 합니다. 동시에 코드에 흩어진 따뜻한 색(#F84818 오렌지·#F97316 focus-tag)이 새 코랄 #F97360과 겹치는 문제를 정리합니다.</p>
+    <span class="cite">ui-ux-pro-max: 개발도구 관례 = 초록 #22C55E(성공/실행)·레드 #EF4444(오류) · "색만으로 의미 전달 금지 → 아이콘·텍스트 병기"</span>
+  </div>
+  <div class="grid">
+    <label class="draft"><input type="radio" name="A" value="3색 순정(민트=행동·성공 / 코랄=주의·경고 / 레드=오류)" checked>
+      <div class="d-demo"><div class="roles">
+        <div class="role"><i style="background:#14B8A6"></i><b>행동·성공</b>민트</div>
+        <div class="role"><i style="background:#F97360"></i><b>주의·경고</b>코랄</div>
+        <div class="role"><i style="background:#DC2626"></i><b>오류</b>레드</div>
+        <div class="role"><span class="strike">#F84818 · #F97316</span> <s>→ 폐기</s></div>
+      </div></div>
+      <div class="d-info"><span class="d-tag">A1</span><span class="d-rec">권장</span>
+        <h4>3색 순정</h4>
+        <p class="why">따뜻한 색을 코랄 하나로 통합. 최소 색·최고 일관성. 민트가 행동과 성공을 겸함.</p></div>
+    </label>
+
+    <label class="draft"><input type="radio" name="A" value="성공=초록 분리(민트=행동 / 초록=성공 / 코랄=주의 / 레드=오류)">
+      <div class="d-demo"><div class="roles">
+        <div class="role"><i style="background:#14B8A6"></i><b>행동</b>민트</div>
+        <div class="role"><i style="background:#15A34A"></i><b>성공·안전</b>그린</div>
+        <div class="role"><i style="background:#F97360"></i><b>주의·경고</b>코랄</div>
+        <div class="role"><i style="background:#DC2626"></i><b>오류</b>레드</div>
+      </div></div>
+      <div class="d-info"><span class="d-tag">A2</span>
+        <h4>성공=초록 분리</h4>
+        <p class="why">행동(민트)과 성공(초록)을 분리해 "실행 ≠ 완료"가 또렷. 개발도구 관례와 일치.</p></div>
+    </label>
+
+    <label class="draft"><input type="radio" name="A" value="5슬롯 리치(민트=행동 / 초록=성공 / 코랄=강조 / 앰버=경고 / 레드=오류)">
+      <div class="d-demo"><div class="roles">
+        <div class="role"><i style="background:#14B8A6"></i><b>행동</b>민트</div>
+        <div class="role"><i style="background:#15A34A"></i><b>성공</b>그린</div>
+        <div class="role"><i style="background:#F97360"></i><b>강조</b>코랄</div>
+        <div class="role"><i style="background:#F59E0B"></i><b>경고</b>앰버</div>
+        <div class="role"><i style="background:#DC2626"></i><b>오류</b>레드</div>
+      </div></div>
+      <div class="d-info"><span class="d-tag">A3</span>
+        <h4>5슬롯 리치</h4>
+        <p class="why">코랄=순수 스포트라이트, 경고는 앰버가 맡음. 표현력 최대·색 관리 부담 최대.</p></div>
+    </label>
+
+    <label class="draft"><input type="radio" name="A" value="코랄 최소·오렌지 유지(코랄=비교의 나쁜예만)">
+      <div class="d-demo"><div class="roles">
+        <div class="role"><i style="background:#14B8A6"></i><b>행동·성공</b>민트</div>
+        <div class="role"><i style="background:#F84818"></i><b>경고</b>오렌지(유지)</div>
+        <div class="role"><i style="background:#D80000"></i><b>오류</b>레드(유지)</div>
+        <div class="role"><i style="background:#F97360"></i><b>비교</b>코랄=나쁜예만</div>
+      </div></div>
+      <div class="d-info"><span class="d-tag">A4</span>
+        <h4>코랄 최소·기존 유지</h4>
+        <p class="why">기존 오렌지·레드 토큰 유지, 변경 최소. 코랄은 비교 슬라이드 "before"에만 제한.</p></div>
+    </label>
+
+    <label class="draft"><input type="radio" name="A" value="코랄 없음·쿨(민트=행동·성공 / 앰버=주의 / 레드=오류)">
+      <div class="d-demo"><div class="roles">
+        <div class="role"><i style="background:#14B8A6"></i><b>행동·성공</b>민트</div>
+        <div class="role"><i style="background:#F59E0B"></i><b>주의·경고</b>앰버</div>
+        <div class="role"><i style="background:#DC2626"></i><b>오류</b>레드</div>
+        <div class="role"><span class="strike">코랄 미사용</span></div>
+      </div></div>
+      <div class="d-info"><span class="d-tag">A5</span>
+        <h4>코랄 없음(쿨)</h4>
+        <p class="why">코랄이 과하다 판단되면. 따뜻한 신호는 앰버 하나. 프로젝터에서 앰버가 더 견고.</p></div>
+    </label>
+  </div>
+</section>
+
+<!-- ══════════ PART B ══════════ -->
+<section id="B">
+  <div class="sec-head">
+    <small>PART B</small>
+    <h2>깊이·보조 색 — #1D4ED8족으로 재파생</h2>
+    <p>기존 <code>--navy #233B66 · --periwinkle #92ADF1 · --ice #8EC3FF</code>가 전부 코발트족입니다. 새 블루에 맞춰 깊이(다크 층)·비강조 막대·헤더 라인 색을 다시 뽑습니다. 순서: 네이비 / 페리윙클 / 아이스.</p>
+  </div>
+  <div class="grid">
+    <label class="draft"><input type="radio" name="B" value="로열 정통 (#16277A/#93A7E8/#A9C6FF)" checked>
+      <div class="d-demo"><div class="sw-row">
+        <span class="sw" style="background:#16277A">navy</span>
+        <span class="sw" style="background:#93A7E8;color:#1b2a52">peri</span>
+        <span class="sw" style="background:#A9C6FF;color:#1b2a52">ice</span>
+      </div></div>
+      <div class="d-info"><span class="d-tag">B1</span><span class="d-rec">권장</span>
+        <h4>로열 정통</h4>
+        <p class="why">#1D4ED8의 정직한 명도 계열. 브랜드 블루와 가장 자연스럽게 이어짐.</p>
+        <p class="d-vals">#16277A · #93A7E8 · #A9C6FF</p></div>
+    </label>
+
+    <label class="draft"><input type="radio" name="B" value="딥 인디고 (#1E1B7A/#A5A9F0/#B7C4FF)">
+      <div class="d-demo"><div class="sw-row">
+        <span class="sw" style="background:#1E1B7A">navy</span>
+        <span class="sw" style="background:#A5A9F0;color:#241f52">peri</span>
+        <span class="sw" style="background:#B7C4FF;color:#241f52">ice</span>
+      </div></div>
+      <div class="d-info"><span class="d-tag">B2</span>
+        <h4>딥 인디고</h4>
+        <p class="why">보라끼를 살짝. 생성형 AI 뉘앙스가 강해짐(유행감 주의).</p>
+        <p class="d-vals">#1E1B7A · #A5A9F0 · #B7C4FF</p></div>
+    </label>
+
+    <label class="draft"><input type="radio" name="B" value="슬레이트 쿨 (#1E3A6B/#97A9CE/#AFC9F2)">
+      <div class="d-demo"><div class="sw-row">
+        <span class="sw" style="background:#1E3A6B">navy</span>
+        <span class="sw" style="background:#97A9CE;color:#1b2a52">peri</span>
+        <span class="sw" style="background:#AFC9F2;color:#1b2a52">ice</span>
+      </div></div>
+      <div class="d-info"><span class="d-tag">B3</span>
+        <h4>슬레이트 쿨</h4>
+        <p class="why">채도를 낮춘 차분한 네이비. 기관·공공 톤. 강조가 덜 튐.</p>
+        <p class="d-vals">#1E3A6B · #97A9CE · #AFC9F2</p></div>
+    </label>
+
+    <label class="draft"><input type="radio" name="B" value="비비드 스카이 (#14357F/#8FB2F5/#BEDBFF)">
+      <div class="d-demo"><div class="sw-row">
+        <span class="sw" style="background:#14357F">navy</span>
+        <span class="sw" style="background:#8FB2F5;color:#12224a">peri</span>
+        <span class="sw" style="background:#BEDBFF;color:#12224a">ice</span>
+      </div></div>
+      <div class="d-info"><span class="d-tag">B4</span>
+        <h4>비비드 스카이</h4>
+        <p class="why">밝고 경쾌한 하늘 계열. 친근함↑, 하지만 프로젝터에서 아이스가 옅어질 수.</p>
+        <p class="d-vals">#14357F · #8FB2F5 · #BEDBFF</p></div>
+    </label>
+
+    <label class="draft"><input type="radio" name="B" value="잉크 네이비 (#101E52/#8A9FD6/#A2C0FF)">
+      <div class="d-demo"><div class="sw-row">
+        <span class="sw" style="background:#101E52">navy</span>
+        <span class="sw" style="background:#8A9FD6;color:#0f1a45">peri</span>
+        <span class="sw" style="background:#A2C0FF;color:#0f1a45">ice</span>
+      </div></div>
+      <div class="d-info"><span class="d-tag">B5</span>
+        <h4>잉크 네이비</h4>
+        <p class="why">아주 짙은 네이비로 대비 극대화. 프로젝터·큰 강의실에 강함. 다소 무거움.</p>
+        <p class="d-vals">#101E52 · #8A9FD6 · #A2C0FF</p></div>
+    </label>
+  </div>
+</section>
+
+<!-- ══════════ PART C ══════════ -->
+<section id="C">
+  <div class="sec-head">
+    <small>PART C</small>
+    <h2>소프트 틴트 — 콜아웃 배경 스타일</h2>
+    <p>파란/민트/코랄 콜아웃의 연한 배경 처리 방식입니다. 데모는 블루·민트·코랄 3종 콜아웃으로 보여줍니다.</p>
+    <span class="cite">ui-ux-pro-max: 접근성 = 색만으로 구분 금지 → 좌측 컬러 보더·아이콘·라벨 병기 권장</span>
+  </div>
+  <div class="grid">
+    <label class="draft"><input type="radio" name="C" value="테두리 강조 (연한 틴트 + 4px 좌측 컬러보더)" checked>
+      <div class="d-demo">
+        <div class="callout" style="background:#EEF3FE;border-left:4px solid var(--b)"><b style="color:var(--b)">구조</b>파란 콜아웃</div>
+        <div class="callout" style="background:#E9F8F5;border-left:4px solid #0E9C8E"><b style="color:#0E9C8E">행동</b>민트 콜아웃</div>
+        <div class="callout" style="background:#FEF0ED;border-left:4px solid #E1553F"><b style="color:#E1553F">주의</b>코랄 콜아웃</div>
+      </div>
+      <div class="d-info"><span class="d-tag">C1</span><span class="d-rec">권장</span>
+        <h4>테두리 강조</h4>
+        <p class="why">연한 틴트 + 좌측 컬러 보더. 색문법을 가장 또렷하게 지지(접근성 권장).</p></div>
+    </label>
+
+    <label class="draft"><input type="radio" name="C" value="미니멀 초연 (틴트만, 4%)">
+      <div class="d-demo">
+        <div class="callout" style="background:#EEF3FE"><b style="color:var(--b)">구조</b>파란 콜아웃</div>
+        <div class="callout" style="background:#E9F8F5"><b style="color:#0E9C8E">행동</b>민트 콜아웃</div>
+        <div class="callout" style="background:#FEF0ED"><b style="color:#E1553F">주의</b>코랄 콜아웃</div>
+      </div>
+      <div class="d-info"><span class="d-tag">C2</span>
+        <h4>미니멀 초연</h4>
+        <p class="why">아주 연한 틴트만. 가장 조용하고 콘텐츠 우선. 경계가 약할 수.</p></div>
+    </label>
+
+    <label class="draft"><input type="radio" name="C" value="파스텔 소프트 (틴트 8%)">
+      <div class="d-demo">
+        <div class="callout" style="background:#E1EAFD"><b style="color:var(--b)">구조</b>파란 콜아웃</div>
+        <div class="callout" style="background:#D6F3EE"><b style="color:#0E9C8E">행동</b>민트 콜아웃</div>
+        <div class="callout" style="background:#FEE4DE"><b style="color:#E1553F">주의</b>코랄 콜아웃</div>
+      </div>
+      <div class="d-info"><span class="d-tag">C3</span>
+        <h4>파스텔 소프트</h4>
+        <p class="why">채도를 조금 올린 파스텔. 따뜻하고 눈에 띔. 넓게 쓰면 산만해질 수.</p></div>
+    </label>
+
+    <label class="draft"><input type="radio" name="C" value="카드 아웃라인 (흰 배경 + 컬러 풀보더)">
+      <div class="d-demo">
+        <div class="callout" style="background:#fff;border:1.5px solid var(--b)"><b style="color:var(--b)">구조</b>파란 콜아웃</div>
+        <div class="callout" style="background:#fff;border:1.5px solid #0E9C8E"><b style="color:#0E9C8E">행동</b>민트 콜아웃</div>
+        <div class="callout" style="background:#fff;border:1.5px solid #E1553F"><b style="color:#E1553F">주의</b>코랄 콜아웃</div>
+      </div>
+      <div class="d-info"><span class="d-tag">C4</span>
+        <h4>카드 아웃라인</h4>
+        <p class="why">흰 배경 + 컬러 풀 보더. 깔끔·경량. 프로젝터에서 얇은 선이 약할 수.</p></div>
+    </label>
+
+    <label class="draft"><input type="radio" name="C" value="솔리드 헤더 (컬러 헤더띠 + 흰 본문)">
+      <div class="d-demo">
+        <div class="callout" style="background:#fff;border:1px solid var(--line);padding:0;overflow:hidden">
+          <div style="background:var(--b);color:#fff;padding:5px 11px;font-size:11px;font-weight:800">구조</div>
+          <div style="padding:8px 11px">파란 콜아웃</div></div>
+        <div class="callout" style="background:#fff;border:1px solid var(--line);padding:0;overflow:hidden">
+          <div style="background:#14B8A6;color:#08312c;padding:5px 11px;font-size:11px;font-weight:800">행동</div>
+          <div style="padding:8px 11px">민트 콜아웃</div></div>
+      </div>
+      <div class="d-info"><span class="d-tag">C5</span>
+        <h4>솔리드 헤더</h4>
+        <p class="why">컬러 헤더 띠 + 흰 본문. 위계가 강하고 라벨이 명확. 현재 미니슬라이드 톤과 유사.</p></div>
+    </label>
+  </div>
+</section>
+
+<!-- ══════════ PART D ══════════ -->
+<section id="D">
+  <div class="sec-head">
+    <small>PART D</small>
+    <h2>데이터 시각화 색 — 차트 21종 규칙</h2>
+    <p>현재는 "강조 1개만 진한 색 + 나머지는 무채 램프(무지개 금지)" 모델입니다. 새 블루로 강조를 옮기고, 민트·코랄이 차트에서 의미를 가질지 결정합니다.</p>
+    <span class="cite">ui-ux-pro-max: 색맹 대응 = 색+모양/패턴 병기, 데이터 테이블 대안 제공</span>
+  </div>
+  <div class="grid">
+    <label class="draft"><input type="radio" name="D" value="모노 강조 (블루 1 + 페리윙클 램프, 현행 계승)" checked>
+      <div class="d-demo"><div class="chart">
+        <div class="bar" style="height:45%;background:#93A7E8"></div>
+        <div class="bar" style="height:70%;background:#93A7E8"></div>
+        <div class="bar" style="height:100%;background:#1D4ED8"><span>강조</span></div>
+        <div class="bar" style="height:55%;background:#93A7E8"></div>
+        <div class="bar" style="height:38%;background:#93A7E8"></div>
+      </div></div>
+      <div class="d-info"><span class="d-tag">D1</span><span class="d-rec">권장</span>
+        <h4>모노 강조 (현행 계승)</h4>
+        <p class="why">강조 1개만 블루, 나머지 페리윙클. 시선 위계가 명확하고 무지개 함정 회피.</p></div>
+    </label>
+
+    <label class="draft"><input type="radio" name="D" value="블루+민트 2계열">
+      <div class="d-demo"><div class="chart">
+        <div class="bar" style="height:60%;background:#1D4ED8"></div>
+        <div class="bar" style="height:80%;background:#14B8A6"></div>
+        <div class="bar" style="height:45%;background:#1D4ED8"></div>
+        <div class="bar" style="height:65%;background:#14B8A6"></div>
+      </div></div>
+      <div class="d-info"><span class="d-tag">D2</span>
+        <h4>블루+민트 2계열</h4>
+        <p class="why">before/after·두 그룹 비교에 적합. 2계열까지만(3계열↑는 혼란).</p></div>
+    </label>
+
+    <label class="draft"><input type="radio" name="D" value="의미색 차트 (달성=민트·미달=코랄·오류=레드)">
+      <div class="d-demo"><div class="chart">
+        <div class="bar" style="height:90%;background:#14B8A6"></div>
+        <div class="bar" style="height:55%;background:#F97360"></div>
+        <div class="bar" style="height:100%;background:#14B8A6"></div>
+        <div class="bar" style="height:40%;background:#F97360"></div>
+      </div></div>
+      <div class="d-info"><span class="d-tag">D3</span>
+        <h4>의미색 차트</h4>
+        <p class="why">막대 색이 곧 상태(달성/미달). 직관적이나 색문법을 엄격히 지켜야 함.</p></div>
+    </label>
+
+    <label class="draft"><input type="radio" name="D" value="블루 단색 순차 램프 (magnitude)">
+      <div class="d-demo"><div class="chart">
+        <div class="bar" style="height:38%;background:#BEDBFF"></div>
+        <div class="bar" style="height:55%;background:#8FB2F5"></div>
+        <div class="bar" style="height:72%;background:#4F7BE0"></div>
+        <div class="bar" style="height:90%;background:#2350C9"></div>
+        <div class="bar" style="height:100%;background:#16277A"></div>
+      </div></div>
+      <div class="d-info"><span class="d-tag">D4</span>
+        <h4>블루 순차 램프</h4>
+        <p class="why">크기·순위를 명도로 표현(연→진). 정렬 데이터에 우아함. 범주 비교엔 부적합.</p></div>
+    </label>
+
+    <label class="draft"><input type="radio" name="D" value="3색 카테고리 + 패턴(색맹 대응)">
+      <div class="d-demo"><div class="chart">
+        <div class="bar" style="height:70%;background:#1D4ED8"></div>
+        <div class="bar" style="height:90%;background:#14B8A6"></div>
+        <div class="bar" style="height:55%;background:#F97360;background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.35) 0 4px,transparent 4px 8px)"></div>
+        <div class="bar" style="height:78%;background:#1D4ED8"></div>
+      </div></div>
+      <div class="d-info"><span class="d-tag">D5</span>
+        <h4>3색 카테고리 + 패턴</h4>
+        <p class="why">범주 최대 3색 + 패턴 채움 병기. 색맹 안전(ui-ux-pro-max). 관리 복잡.</p></div>
+    </label>
+  </div>
+</section>
+
+<!-- ══════════ PART E ══════════ -->
+<section id="E">
+  <div class="sec-head">
+    <small>PART E</small>
+    <h2>형태 언어 — 라운드 + 섀도우</h2>
+    <p>지금 라운드(6~20px)·섀도우가 토큰 없이 난립하고, 그림자가 코발트 틴트라 새 블루로 바꿔야 합니다. 촉감(둥근 정도 + 떠 있는 정도)을 한 세트로 고릅니다.</p>
+    <span class="cite">ui-ux-pro-max(Bento/Apple): 라운드 16–24px + 소프트 섀도우 + hover scale 1.02가 "친근·현대·프로" 조합</span>
+  </div>
+  <div class="grid">
+    <label class="draft"><input type="radio" name="E" value="소프트 벤토 (r20/14/10 · soft shadow)" checked>
+      <div class="d-demo"><div class="form-demo">
+        <div class="fd-card" style="border:1px solid var(--line);border-radius:14px;box-shadow:0 10px 30px rgba(29,78,216,.07)"><b>카드</b> r14 · 소프트</div>
+        <div style="display:flex;gap:8px">
+          <span class="fd-btn" style="background:var(--b);border-radius:10px">버튼</span>
+          <span class="fd-pill" style="background:var(--soft);color:var(--b);border-radius:999px">pill</span>
+        </div>
+      </div></div>
+      <div class="d-info"><span class="d-tag">E1</span><span class="d-rec">권장</span>
+        <h4>소프트 벤토</h4>
+        <p class="why">r 20/14/10 + 은은한 블루 그림자. 친근·현대·프로의 균형(ui-ux-pro-max 기준).</p></div>
+    </label>
+
+    <label class="draft"><input type="radio" name="E" value="타이트 프로 (r12/8/6 · subtle shadow)">
+      <div class="d-demo"><div class="form-demo">
+        <div class="fd-card" style="border:1px solid var(--line);border-radius:8px;box-shadow:0 6px 16px rgba(20,24,33,.05)"><b>카드</b> r8 · 서브틀</div>
+        <div style="display:flex;gap:8px">
+          <span class="fd-btn" style="background:var(--b);border-radius:6px">버튼</span>
+          <span class="fd-pill" style="background:var(--soft);color:var(--b);border-radius:6px">pill</span>
+        </div>
+      </div></div>
+      <div class="d-info"><span class="d-tag">E2</span>
+        <h4>타이트 프로</h4>
+        <p class="why">각진 r 12/8/6, 얕은 그림자. 정밀·기업·대시보드 톤. 다소 딱딱.</p></div>
+    </label>
+
+    <label class="draft"><input type="radio" name="E" value="라운드 프렌들리 (r24/18/12 · medium shadow)">
+      <div class="d-demo"><div class="form-demo">
+        <div class="fd-card" style="border:1px solid var(--line);border-radius:18px;box-shadow:0 12px 34px rgba(29,78,216,.08)"><b>카드</b> r18 · 미디엄</div>
+        <div style="display:flex;gap:8px">
+          <span class="fd-btn" style="background:var(--b);border-radius:14px">버튼</span>
+          <span class="fd-pill" style="background:var(--soft);color:var(--b);border-radius:999px">pill</span>
+        </div>
+      </div></div>
+      <div class="d-info"><span class="d-tag">E3</span>
+        <h4>라운드 프렌들리</h4>
+        <p class="why">아주 둥근 r 24/18/12. 40~50대에 가장 부드러움. 정보 밀도 높을 땐 공간 손해.</p></div>
+    </label>
+
+    <label class="draft"><input type="radio" name="E" value="플랫 라인 (r12/8 · 무섀도우 · 보더)">
+      <div class="d-demo"><div class="form-demo">
+        <div class="fd-card" style="border:1.5px solid var(--line);border-radius:8px"><b>카드</b> r8 · 무섀도우</div>
+        <div style="display:flex;gap:8px">
+          <span class="fd-btn" style="background:var(--b);border-radius:6px">버튼</span>
+          <span class="fd-pill" style="border:1.5px solid var(--b);color:var(--b);border-radius:6px">pill</span>
+        </div>
+      </div></div>
+      <div class="d-info"><span class="d-tag">E4</span>
+        <h4>플랫 라인</h4>
+        <p class="why">그림자 없이 보더만. 인쇄·프로젝터에 가장 안전·명료. 깊이감은 약함.</p></div>
+    </label>
+
+    <label class="draft"><input type="radio" name="E" value="엘리베이티드 카드 (r18/12 · strong layered shadow)">
+      <div class="d-demo"><div class="form-demo">
+        <div class="fd-card" style="border:1px solid #EAEEF6;border-radius:12px;box-shadow:0 16px 40px rgba(20,24,33,.14)"><b>카드</b> r12 · 강한 층</div>
+        <div style="display:flex;gap:8px">
+          <span class="fd-btn" style="background:var(--b);border-radius:10px;box-shadow:0 8px 18px rgba(29,78,216,.35)">버튼</span>
+          <span class="fd-pill" style="background:#fff;box-shadow:0 6px 14px rgba(20,24,33,.1);color:var(--b);border-radius:999px">pill</span>
+        </div>
+      </div></div>
+      <div class="d-info"><span class="d-tag">E5</span>
+        <h4>엘리베이티드 카드</h4>
+        <p class="why">카드가 떠 있는 강한 그림자. 위계·주목도↑. 슬라이드가 다소 무거워질 수.</p></div>
+    </label>
+  </div>
+</section>
+
+<!-- ══════════ PART F ══════════ -->
+<section id="F">
+  <div class="sec-head">
+    <small>PART F</small>
+    <h2>표지·클로징 처리</h2>
+    <p>현재 표지·클로징은 다크 배경(<code>#1A1A1A</code>) + electric(<code>#2F6BF8</code>)입니다. 다크를 유지할지, 새 블루로 갈지 고릅니다. (본문 슬라이드는 밝게 유지, 그라데이션은 표지에만.)</p>
+  </div>
+  <div class="grid">
+    <label class="draft"><input type="radio" name="F" value="다크 네이비 유지 (#101E52 + 민트·블루 강조)" checked>
+      <div class="d-demo"><div class="cover" style="background:#101E52;color:#fff">
+        <div class="ct" style="color:#8FB2F5">VIBE CODING · 1주차</div>
+        <div class="cb">AI와 함께<br><span style="color:#14B8A6">웹페이지</span> 만들기</div>
+        <div class="cc"><i style="background:#14B8A6"></i><i style="background:#1D4ED8"></i></div>
+      </div></div>
+      <div class="d-info"><span class="d-tag">F1</span><span class="d-rec">권장</span>
+        <h4>다크 네이비 유지</h4>
+        <p class="why">기존 다크 표지의 무게감 유지 + 새 블루/민트. 변화 최소, 극적.</p></div>
+    </label>
+
+    <label class="draft"><input type="radio" name="F" value="블루→민트 그라데이션">
+      <div class="d-demo"><div class="cover" style="background:linear-gradient(135deg,#1D4ED8,#14B8A6);color:#fff">
+        <div class="ct">VIBE CODING · 1주차</div>
+        <div class="cb">AI와 함께<br>웹페이지 만들기</div>
+        <div class="cc"><i style="background:#fff;opacity:.8"></i><i style="background:#fff;opacity:.5"></i></div>
+      </div></div>
+      <div class="d-info"><span class="d-tag">F2</span>
+        <h4>블루→민트 그라데</h4>
+        <p class="why">브랜드 2색 그라데(표지 한정). 생동감 최대. 자칫 흔한 AI 서비스 느낌 주의.</p></div>
+    </label>
+
+    <label class="draft"><input type="radio" name="F" value="라이트 표지 (#F4F6FB + 블루 타이틀)">
+      <div class="d-demo"><div class="cover" style="background:#F4F6FB;color:#172033">
+        <div class="ct" style="color:var(--b)">VIBE CODING · 1주차</div>
+        <div class="cb">AI와 함께<br><span style="color:var(--b)">웹페이지</span> 만들기</div>
+        <div class="cc"><i style="background:#14B8A6"></i><i style="background:#F97360"></i></div>
+      </div></div>
+      <div class="d-info"><span class="d-tag">F3</span>
+        <h4>라이트 표지</h4>
+        <p class="why">본문과 톤 통일. 가장 밝고 친근·개방적. 극적인 임팩트는 덜함.</p></div>
+    </label>
+
+    <label class="draft"><input type="radio" name="F" value="잉크 블랙 미니멀 (#111318 + 블루 1점)">
+      <div class="d-demo"><div class="cover" style="background:#111318;color:#fff">
+        <div class="ct" style="color:#6B7280">VIBE CODING · 1주차</div>
+        <div class="cb">AI와 함께<br>웹페이지 만들기</div>
+        <div class="cc"><i style="background:#1D4ED8"></i></div>
+      </div></div>
+      <div class="d-info"><span class="d-tag">F4</span>
+        <h4>잉크 블랙 미니멀</h4>
+        <p class="why">거의 블랙 + 블루 한 점. 절제·프리미엄. 차갑게 보일 수 있어 둥근 카드로 완화.</p></div>
+    </label>
+
+    <label class="draft"><input type="radio" name="F" value="솔리드 블루 (#1D4ED8 풀블리드)">
+      <div class="d-demo"><div class="cover" style="background:#1D4ED8;color:#fff">
+        <div class="ct" style="color:#BEDBFF">VIBE CODING · 1주차</div>
+        <div class="cb">AI와 함께<br><span style="color:#8BF0E4">웹페이지</span> 만들기</div>
+        <div class="cc"><i style="background:#14B8A6"></i><i style="background:#fff;opacity:.6"></i></div>
+      </div></div>
+      <div class="d-info"><span class="d-tag">F5</span>
+        <h4>솔리드 블루</h4>
+        <p class="why">브랜드 블루로 화면을 꽉. 강한 브랜드 각인. 민트 강조로 포인트.</p></div>
+    </label>
+  </div>
+</section>
+
+<!-- ══════════ PART G ══════════ -->
+<section id="G">
+  <div class="sec-head">
+    <small>PART G</small>
+    <h2>타이포 & 코드 폰트</h2>
+    <p>본문은 Pretendard 유지(한글 최적·가독). 결정할 것은 <b>강조 굵기 정책</b>과 <b>코드용 monospace 폰트</b>입니다. 코드 시각화가 스킬 핵심이라 코드 폰트가 중요합니다. 데모의 제목·본문·코드로 비교하세요.</p>
+    <span class="cite">ui-ux-pro-max google-fonts: 검증된 monospace 계열에서 강의·코드 가독 우선으로 선별</span>
+  </div>
+  <div class="grid">
+    <label class="draft"><input type="radio" name="G" value="Pretendard + JetBrains Mono (강조 800)" checked>
+      <div class="d-demo"><div class="type-demo">
+        <h5 style="font-weight:800">요청은 구체적으로</h5>
+        <p><strong>목적·조건·완료기준</strong>을 함께 적으면 결과가 좋아집니다.</p>
+        <code style="font-family:'JetBrains Mono',monospace"><span class="c"># 프롬프트</span>
+<span class="k">def</span> ask(ai):
+  <span class="k">return</span> ai.<span class="s">"명확히"</span></code>
+      </div></div>
+      <div class="d-info"><span class="d-tag">G1</span><span class="d-rec">권장</span>
+        <h4>+ JetBrains Mono</h4>
+        <p class="why">개발자 표준 코드 폰트, 판독성 최고. 강조 800으로 색+굵기 이중 강조.</p></div>
+    </label>
+
+    <label class="draft"><input type="radio" name="G" value="Pretendard + IBM Plex Mono (강조 700)">
+      <div class="d-demo"><div class="type-demo">
+        <h5 style="font-weight:700">요청은 구체적으로</h5>
+        <p><strong>목적·조건·완료기준</strong>을 함께 적으면 결과가 좋아집니다.</p>
+        <code style="font-family:'IBM Plex Mono',monospace"><span class="c"># 프롬프트</span>
+<span class="k">def</span> ask(ai):
+  <span class="k">return</span> ai.<span class="s">"명확히"</span></code>
+      </div></div>
+      <div class="d-info"><span class="d-tag">G2</span>
+        <h4>+ IBM Plex Mono</h4>
+        <p class="why">휴머니스트 톤이 Pretendard와 잘 어울림. 강조 700으로 조금 가볍게.</p></div>
+    </label>
+
+    <label class="draft"><input type="radio" name="G" value="Pretendard + 나눔고딕코딩/D2Coding (한글 코드, 강조 800)">
+      <div class="d-demo"><div class="type-demo">
+        <h5 style="font-weight:800">요청은 구체적으로</h5>
+        <p><strong>목적·조건·완료기준</strong>을 함께 적으면 결과가 좋아집니다.</p>
+        <code style="font-family:'Nanum Gothic Coding',monospace"><span class="c"># 프롬프트 주석</span>
+<span class="k">def</span> ask(ai):  <span class="c"># 한글정렬</span>
+  <span class="k">return</span> <span class="s">"명확히"</span></code>
+      </div></div>
+      <div class="d-info"><span class="d-tag">G3</span>
+        <h4>+ 나눔고딕코딩/D2Coding</h4>
+        <p class="why">한글 코드·주석이 등폭으로 정렬. 한글 코드 예시가 많으면 최적.</p></div>
+    </label>
+
+    <label class="draft"><input type="radio" name="G" value="Pretendard + Fira Code (리거처, 강조 700)">
+      <div class="d-demo"><div class="type-demo">
+        <h5 style="font-weight:700">요청은 구체적으로</h5>
+        <p><strong>목적·조건·완료기준</strong>을 함께 적으면 결과가 좋아집니다.</p>
+        <code style="font-family:'Fira Code',monospace"><span class="c">// 화살표 리거처</span>
+const f = () <span class="k">=></span> {
+  <span class="k">return</span> <span class="s">"=> 예쁨"</span> }</code>
+      </div></div>
+      <div class="d-info"><span class="d-tag">G4</span>
+        <h4>+ Fira Code</h4>
+        <p class="why">=> 같은 리거처로 코드가 예쁨. 단, 초보자에겐 리거처가 낯설 수 있음.</p></div>
+    </label>
+
+    <label class="draft"><input type="radio" name="G" value="Pretendard + Source Code Pro (강조 800)">
+      <div class="d-demo"><div class="type-demo">
+        <h5 style="font-weight:800">요청은 구체적으로</h5>
+        <p><strong>목적·조건·완료기준</strong>을 함께 적으면 결과가 좋아집니다.</p>
+        <code style="font-family:'Source Code Pro',monospace"><span class="c"># 프롬프트</span>
+<span class="k">def</span> ask(ai):
+  <span class="k">return</span> ai.<span class="s">"명확히"</span></code>
+      </div></div>
+      <div class="d-info"><span class="d-tag">G5</span>
+        <h4>+ Source Code Pro</h4>
+        <p class="why">Adobe의 중립적이고 깔끔한 코드 폰트. 무난하고 안정적.</p></div>
+    </label>
+  </div>
+</section>
+
+</main>
+
+<!-- ══════════ 요약 ══════════ -->
+<div class="summary">
+  <div class="container">
+    <div class="summary-top">
+      <b>내 선택 조합</b>
+      <button id="copyBtn" type="button">선택 요약 복사</button>
+    </div>
+    <div class="picks" id="picks"></div>
+  </div>
+</div>
+
+<footer><div class="container">
+  파트 A–G는 <b>색·형태·타이포 시스템</b>(색 교체가 부르는 결정 전부)입니다. 아이콘·로고는 이 조합이 확정된 뒤 라운드 2로 별도 5종 초안을 만드는 게 자연스럽습니다.
+</div></footer>
+
+<div class="toast" id="toast">복사되었습니다</div>
+
+<script>
+const LABELS={A:'A 의미매핑',B:'B 깊이·보조',C:'C 소프트틴트',D:'D 데이터시각화',E:'E 형태',F:'F 표지',G:'G 타이포·코드'};
+const picks=document.getElementById('picks');
+function render(){
+  picks.innerHTML='';
+  Object.keys(LABELS).forEach(k=>{
+    const sel=document.querySelector(`input[name="${k}"]:checked`);
+    const div=document.createElement('div');
+    div.className='pick';
+    div.innerHTML=`<em>${LABELS[k]}</em>${sel?sel.value:'미선택'}`;
+    picks.appendChild(div);
+  });
+}
+document.querySelectorAll('.draft input').forEach(i=>i.addEventListener('change',render));
+render();
+document.getElementById('copyBtn').addEventListener('click',async()=>{
+  let txt='vibecoding-deck 디자인 시스템 선택\n';
+  Object.keys(LABELS).forEach(k=>{
+    const sel=document.querySelector(`input[name="${k}"]:checked`);
+    txt+=`\n[${LABELS[k]}] ${sel?sel.value:'미선택'}`;
+  });
+  try{await navigator.clipboard.writeText(txt);}catch(e){}
+  const t=document.getElementById('toast');t.classList.add('show');
+  clearTimeout(window.__t);window.__t=setTimeout(()=>t.classList.remove('show'),1600);
+});
+</script>
+</body>
+</html>

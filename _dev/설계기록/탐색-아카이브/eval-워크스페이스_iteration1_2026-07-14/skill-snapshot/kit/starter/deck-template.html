@@ -1,0 +1,351 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=1280">
+  <title>강의덱 제목 — 바이브코딩</title><!-- ✏️ 덱 제목 -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 96'><line x1='28.8' y1='28.7' x2='49' y2='70' stroke='%2314B8A6' stroke-width='18' stroke-linecap='round'/><line x1='70.9' y1='25.1' x2='49' y2='70' stroke='%231D4ED8' stroke-width='19' stroke-linecap='round'/><circle cx='49' cy='70' r='9.5' fill='%23141821'/></svg>">
+  <!-- 폰트: Pretendard (문서가 인정하는 유일한 외부 의존성) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+  <!-- ▼ 킷 상속: deck.css(베이스) → legibility-40s.css(40~50대 가독성) 순서 고정.
+       덱을 패키지 밖에 생성할 땐 이 두 파일을 옆에 복사하거나 <style>로 인라인(base64 단일파일 배포). -->
+  <link rel="stylesheet" href="../styles/deck.css">
+  <link rel="stylesheet" href="../styles/legibility-40s.css">
+  <link rel="stylesheet" href="../styles/patterns.css"><!-- 코드 코어: 검증된 레이아웃/element CSS(재사용) -->
+  <style id="kit-additions">
+    /* ▼ 여기에 kit/charts·layouts의 코드 element/section이 쓰는 신규 CSS를 붙여넣는다(catalog.html에서 복사). */
+  </style>
+  <!--
+    ┌── 새 덱 만드는 법 ─────────────────────────────────────────────┐
+    │ 1) 이 파일을 복사. 고정 1·2·3(표지·도입·아젠다) 텍스트를 교체.   │
+    │ 2) 파트 수만큼 part-divider 배치(진행 도트 is-active 이동).      │
+    │ 3) 각 슬라이드: 정보 모양 판단 → kit/layouts/by-shape.md에서     │
+    │    레이아웃 후보 → (필요시) kit/charts/by-shape.md에서 element.  │
+    │    직전 슬라이드와 같은 구도 패밀리 회피, split은 희소하게.      │
+    │ 4) 레이아웃 <section>은 kit/layouts/catalog.html(코드 코어)에서  │
+    │    복사하거나 families/*.md 스펙대로 조립(토큰-치트시트 준수).   │
+    │ 5) 브라우저 검증(측정 우선) → base64 단일파일 배포.             │
+    └────────────────────────────────────────────────────────────────┘
+  -->
+</head>
+<body>
+  <div class="deck">
+
+    <!-- ============ 1 · 표지 (불변요소 · 라이트 지오메트리 최종) ============ -->
+    <section class="slide cover" data-slide="S01">
+      <svg class="cover-geo" viewBox="0 0 1280 720" fill="none" aria-hidden="true"><!-- 아이소메트릭 3단 스택: data-cube 3개 × 면 3개 + 코랄 스파크. fill=토큰 -->
+        <g data-cube="top">
+        <polygon points="1170,300 1226,328 1170,356 1114,328" fill="var(--blue-soft)"/>
+        <polygon points="1114,328 1170,356 1170,414 1114,386" fill="var(--blue)"/>
+        <polygon points="1170,356 1226,328 1226,386 1170,414" fill="var(--mint)"/>
+        </g>
+        <g data-cube="middle">
+        <polygon points="1084,352 1140,380 1084,408 1028,380" fill="var(--blue-soft)"/>
+        <polygon points="1028,380 1084,408 1084,466 1028,438" fill="var(--blue)"/>
+        <polygon points="1084,408 1140,380 1140,438 1084,466" fill="var(--mint)"/>
+        </g>
+        <g data-cube="base">
+        <polygon points="998,404 1054,432 998,460 942,432" fill="var(--blue-soft)"/>
+        <polygon points="942,432 998,460 998,518 942,490" fill="var(--blue)"/>
+        <polygon points="998,460 1054,432 1054,490 998,518" fill="var(--mint)"/>
+        </g>
+        <circle cx="1170" cy="256" r="13" fill="var(--coral)"/>
+      </svg>
+      <header class="s-head cover-head">
+        <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg>
+        <div class="brand-stack">
+          <span class="s-brand">바이브코딩</span><!-- ✏️ 브랜드 -->
+          <span class="track">3주 아카데미</span><!-- ✏️ 부제 -->
+        </div>
+        <div class="s-team">WEEK 00 / 00</div><!-- ✏️ 주차/전체 -->
+      </header>
+      <div class="cover-lead">WEEK 00 · 한 줄 리드</div><!-- ✏️ 주차·키커(짧게) -->
+      <div class="cover-title">
+        <h1 class="ko">강의 제목 첫 줄<br>강의 <span class="hl">핵심어</span> 둘째 줄</h1><!-- ✏️ 표지 제목(2줄 권장) · 강조어는 <span class="hl">로 감싸면 초록(민트) -->
+      </div>
+      <div class="cover-terminal"><span class="pfx">&gt;_</span><span class="q">이번 주에 배울 핵심을 AI에게 한 문장으로 요청</span><span class="cur" aria-hidden="true"></span></div><!-- ✏️ 예: "첫 웹페이지 만들어줘" -->
+      <div class="cover-presenter">발표자 이름</div><!-- ✏️ 발표자 -->
+    </section>
+
+    <!-- ============ 2 · 도입 (불변요소·구조 고정) ============ -->
+    <section class="slide s02-slide" data-slide="S02">
+      <header class="s-head">
+        <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">바이브코딩</span>
+        <span class="s-line"></span><div class="s-team">팀명<br>부제</div>
+      </header>
+      <div class="s-body-wrap">
+        <p class="s-eyebrow">00주차</p><!-- ✏️ -->
+        <h2 class="s-title">오늘의 주제 한 줄</h2><!-- ✏️ 결론으로 -->
+        <p class="s-lead">핵심 질문을 여기에.</p><!-- ✏️ -->
+        <div class="s-body">오늘 무엇을 어떤 순서로<br>다루는지 한두 문장 소개.</div>
+      </div>
+      <!-- 도입 3D 이미지 슬롯(선택): <img class="asset s02" src="img/slides/s02_intro.png" alt=""> -->
+    </section>
+
+    <!-- ============ 3 · 아젠다 (불변요소·구조 고정) = 파트 수만큼 · 노드-타임라인 ============ -->
+    <section class="slide s03-slide" data-slide="S03">
+      <header class="s-head">
+        <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">바이브코딩</span>
+        <span class="s-line"></span><!-- ✏️ 팀명 없음(지오메트리 헤더) -->
+      </header>
+      <span class="an-spark" aria-hidden="true"></span>
+      <div class="an-left">
+        <h2 class="an-title">오늘 배울 것</h2><!-- ✏️ 결론으로 -->
+        <p class="an-intro">핵심 문장을 <span class="hl">강조어</span>와 함께<br>두세 줄로 짧게<br>정리합니다</p><!-- ✏️ 강조어는 <span class="hl">로 감싸면 초록 -->
+      </div>
+      <div class="an-right">
+        <div class="an-track" aria-hidden="true"></div>
+        <div class="an-item i1"><div class="an-num">1</div><div class="an-body"><div class="an-h">아젠다 1</div><div class="an-d">한 줄 설명</div></div></div>
+        <div class="an-item i2"><div class="an-num">2</div><div class="an-body"><div class="an-h">아젠다 2</div><div class="an-d">한 줄 설명</div></div></div>
+        <div class="an-item i3"><div class="an-num">3</div><div class="an-body"><div class="an-h">아젠다 3</div><div class="an-d">한 줄 설명</div></div></div>
+        <div class="an-item i4"><div class="an-num">4</div><div class="an-body"><div class="an-h">아젠다 4</div><div class="an-d">한 줄 설명</div></div></div>
+      </div>
+    </section>
+
+    <!-- ============ PART 1 전환 (불변요소 — 모든 파트 앞 필수 · 헤더 없음 · 아이소 큐브 클러스터) ============ -->
+    <section class="slide part-divider" data-slide="P1">
+      <svg class="dv-hero" viewBox="0 0 1280 720" fill="none" aria-hidden="true"><!-- 아이소메트릭 큐브 클러스터(표지 §11과 동일 토큰) + 코랄 스파크 -->
+        <polygon points="640,230 710,265 640,300 570,265" fill="var(--blue-soft)"/>
+        <polygon points="570,265 640,300 640,370 570,335" fill="var(--blue)"/>
+        <polygon points="640,300 710,265 710,335 640,370" fill="var(--mint)"/>
+
+        <polygon points="560,150 620,180 560,210 500,180" fill="var(--blue-soft)"/>
+        <polygon points="500,180 560,210 560,270 500,240" fill="var(--blue)"/>
+        <polygon points="560,210 620,180 620,240 560,270" fill="var(--mint)"/>
+
+        <polygon points="650,110 700,135 650,160 600,135" fill="var(--blue-soft)"/>
+        <polygon points="600,135 650,160 650,210 600,185" fill="var(--blue)"/>
+        <polygon points="650,160 700,135 700,185 650,210" fill="var(--mint)"/>
+
+        <circle cx="718" cy="122" r="7" fill="var(--coral)"/>
+      </svg>
+      <div class="pd-dots" aria-hidden="true"><!-- ✏️ 파트 수만큼 도트, 현재 파트에 is-active -->
+        <span class="pd-dot is-active"></span><span class="pd-dot"></span>
+        <span class="pd-dot"></span><span class="pd-dot"></span>
+      </div>
+      <p class="pd-eyebrow">PART 1 / 4</p><!-- ✏️ N=전체 파트 수 -->
+      <h2 class="pd-title">파트 제목</h2><!-- ✏️ 12자 이내 권장(96px·한 줄 고정, nowrap) -->
+      <p class="pd-sub">이 파트에서 다루는 것 한 줄</p>
+    </section>
+
+    <!-- ============================================================
+         ▼▼▼ 본문 슬롯 ▼▼▼
+         슬라이드마다: 정보 모양 판단(kit/guide/정보모양-taxonomy.md)
+         → kit/layouts/by-shape.md 후보 레이아웃 + (필요시) kit/charts/by-shape.md element
+         → kit/layouts/catalog.html에서 <section> 복사 또는 families/*.md 스펙대로 조립.
+         직전 슬라이드와 같은 구도 패밀리 회피 · split 희소 · 색은 문법.
+         ============================================================ -->
+
+    <!-- [예시 자리 — 지우고 본문 슬라이드로 교체] -->
+
+    <!-- ▲▲▲ 본문 슬롯 끝 ▲▲▲ -->
+
+    <!-- ============ 마무리 · 개념 정리 (불변요소·기본 마무리) ============ -->
+    <section class="slide concept-recap" data-slide="END">
+      <header class="s-head">
+        <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">바이브코딩</span>
+        <span class="s-line"></span><div class="s-team">팀명<br>부제</div>
+      </header>
+      <div class="concept-panel">
+        <p class="s-eyebrow">세션 요약</p>
+        <h2 class="s-title">오늘 <span class="hl">한 장</span>으로 남기기</h2>
+        <p class="concept-lead">오늘의 핵심을 <strong>한 문장</strong>으로.</p>
+        <div class="concept-flow"><span>단계 1</span><b>→</b><span>단계 2</span><b>→</b><span>단계 3</span><b>→</b><span>단계 4</span></div>
+        <div class="concept-cards">
+          <div class="concept-card"><h3>핵심 1</h3><p>한 줄 설명</p></div>
+          <div class="concept-card"><h3>핵심 2</h3><p>한 줄 설명</p></div>
+          <div class="concept-card"><h3>핵심 3</h3><p>한 줄 설명</p></div>
+          <div class="concept-card"><h3>핵심 4</h3><p>한 줄 설명</p></div>
+        </div>
+        <div class="concept-bottom">이 세션을 한 문장으로 남깁니다.<small>다음 시간으로 이어지는 훅.</small></div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- 발표 리모컨 + 상세 메뉴 (불변요소 · 브라우저 검증된 엔진) -->
+  <div class="controls" id="controls">
+    <div class="navbar">
+      <button class="nav-btn" id="prevBtn" aria-label="이전 슬라이드">‹</button>
+      <button class="nav-counter" id="counter" aria-label="상세 발표 메뉴 열기" aria-expanded="false">1 / 1</button>
+      <button class="nav-btn" id="nextBtn" aria-label="다음 슬라이드">›</button>
+      <span class="nav-sep"></span>
+      <button class="nav-btn menu" id="menuBtn" aria-label="상세 발표 메뉴 열기" aria-expanded="false" title="상세 메뉴 (G)">☰</button>
+      <button class="nav-btn fs" id="fsBtn" aria-label="전체화면 (F)" title="전체화면 (F)">⛶</button>
+    </div>
+  </div>
+  <section class="presentation-menu" id="presentationMenu" role="dialog" aria-label="발표 상세 메뉴" hidden>
+    <div class="menu-head">
+      <div><p class="menu-eyebrow" id="menuPart">현재 슬라이드</p><p class="menu-title" id="menuTitle">슬라이드 제목</p></div>
+      <button class="menu-close" id="menuClose" aria-label="상세 메뉴 닫기">×</button>
+    </div>
+    <div class="menu-actions">
+      <button class="menu-action" id="homeBtn" aria-label="표지로 이동" title="홈">⌂</button>
+      <label class="page-jump" aria-label="페이지 번호로 이동"><input id="pageInput" type="number" min="1" inputmode="numeric" placeholder="페이지 번호"><button class="menu-go" id="goBtn">이동</button></label>
+      <button class="menu-action" id="pdfBtn" aria-label="PDF로 출력">PDF</button>
+      <button class="menu-action" id="helpBtn" aria-label="단축키 안내" title="단축키">?</button>
+    </div>
+    <div class="slide-list" id="slideList" aria-label="전체 슬라이드 목록"></div>
+  </section>
+  <section class="keyboard-help" id="keyboardHelp" role="dialog" aria-label="발표 단축키" hidden>
+    <button class="menu-close" id="helpClose" aria-label="단축키 안내 닫기">×</button>
+    <h2>발표 단축키</h2>
+    <dl><dt>← / →</dt><dd>이전·다음 슬라이드</dd><dt>Home / End</dt><dd>표지·마지막으로 이동</dd><dt>G</dt><dd>상세 메뉴 열기</dd><dt>B</dt><dd>화면 가리기</dd><dt>F</dt><dd>전체화면</dd><dt>?</dt><dd>이 안내 열기</dd><dt>Esc</dt><dd>열린 창 또는 화면 가리기 닫기</dd></dl>
+  </section>
+  <div class="presentation-blackout" id="blackout" aria-label="화면 가리기, 클릭하면 해제" hidden></div>
+
+  <script>
+  (function(){
+    var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+    var totalParts = 0;
+    slides.forEach(function(s){ if (/\bpart-divider\b/.test(s.className)) totalParts++; });
+    var curPart = 0;
+    slides.forEach(function(s, i){
+      if (/\bpart-divider\b/.test(s.className)) curPart++;
+      var fixed = /\b(cover|s02-slide|s03-slide|part-divider|concept-recap|closing)\b/.test(s.className);
+      if (!/\b(cover|concept-recap|closing)\b/.test(s.className)) {
+        var pg = document.createElement('div');
+        pg.className = 's-pageno';
+        pg.textContent = (i + 1) + ' / ' + slides.length;
+        s.appendChild(pg);
+      }
+      if (!fixed && curPart >= 1 && totalParts >= 1) {
+        var team = s.querySelector('.s-head .s-team');
+        if (team) {
+          var h = '<span class="lbl">PART ' + curPart + ' / ' + totalParts + '</span><span class="dots">';
+          for (var d = 1; d <= totalParts; d++) h += '<span class="pd' + (d === curPart ? ' on' : '') + '"></span>';
+          team.className = 's-part';
+          team.innerHTML = h + '</span>';
+        }
+      }
+    });
+    var controls = document.getElementById('controls');
+    var counter  = document.getElementById('counter');
+    var prevBtn  = document.getElementById('prevBtn');
+    var nextBtn  = document.getElementById('nextBtn');
+    var fsBtn    = document.getElementById('fsBtn');
+    var menuBtn  = document.getElementById('menuBtn');
+    var menu     = document.getElementById('presentationMenu');
+    var menuClose = document.getElementById('menuClose');
+    var homeBtn  = document.getElementById('homeBtn');
+    var pageInput = document.getElementById('pageInput');
+    var goBtn    = document.getElementById('goBtn');
+    var pdfBtn   = document.getElementById('pdfBtn');
+    var helpBtn  = document.getElementById('helpBtn');
+    var help     = document.getElementById('keyboardHelp');
+    var helpClose = document.getElementById('helpClose');
+    var blackout = document.getElementById('blackout');
+    var slideList = document.getElementById('slideList');
+    var menuTitle = document.getElementById('menuTitle');
+    var menuPart = document.getElementById('menuPart');
+    var idx = 0, hideTimer = null;
+    var storageKey = 'vibecoding-deck';  /* ✏️ 덱마다 고유 문자열로 바꾸면 위치 기억이 분리됨 */
+
+    function initialIndex(){
+      var m = String(location.hash || '').match(/slide=(\d+)/i);
+      if (m) return Math.max(0, parseInt(m[1], 10) - 1);
+      try { var saved = parseInt(localStorage.getItem(storageKey), 10); return isNaN(saved) ? 0 : saved; }
+      catch (e) { return 0; }
+    }
+    function fit(){
+      var s = Math.min(window.innerWidth / 1280, window.innerHeight / 720);
+      document.documentElement.style.setProperty('--scale', s);
+    }
+    function show(i){
+      idx = Math.max(0, Math.min(slides.length - 1, i));
+      for (var n = 0; n < slides.length; n++){ slides[n].classList.toggle('is-active', n === idx); }
+      counter.textContent = (idx + 1) + ' / ' + slides.length;
+      prevBtn.disabled = (idx === 0);
+      nextBtn.disabled = (idx === slides.length - 1);
+      updateMenu();
+      try { localStorage.setItem(storageKey, String(idx)); } catch (e) {}
+      try { history.replaceState(null, '', '#slide=' + (idx + 1)); } catch (e) {}
+    }
+    function next(){ show(idx + 1); }
+    function prev(){ show(idx - 1); }
+    function slideName(s, i){
+      var heading = s.querySelector('h1,h2,h3');
+      var text = heading ? heading.textContent.replace(/\s+/g, ' ').trim() : '';
+      return text || s.getAttribute('data-slide') || ('슬라이드 ' + (i + 1));
+    }
+    function slidePart(s){
+      var el = s.querySelector('.s-part .lbl');
+      return el ? el.textContent : (s.classList.contains('cover') ? '표지' : '발표 슬라이드');
+    }
+    function buildSlideList(){
+      slides.forEach(function(s, i){
+        var btn = document.createElement('button');
+        var number = document.createElement('span');
+        var label = document.createElement('span');
+        btn.type = 'button'; btn.dataset.slideIndex = i;
+        number.className = 'list-num'; number.textContent = String(i + 1).padStart(3, '0');
+        label.textContent = slideName(s, i); btn.appendChild(number); btn.appendChild(label);
+        btn.addEventListener('click', function(){ show(i); closeMenu(); poke(); });
+        slideList.appendChild(btn);
+      });
+    }
+    function updateMenu(){
+      var current = slides[idx];
+      menuTitle.textContent = slideName(current, idx);
+      menuPart.textContent = slidePart(current);
+      pageInput.value = idx + 1;
+      Array.prototype.forEach.call(slideList.children, function(btn, i){ btn.classList.toggle('is-current', i === idx); });
+    }
+    function openMenu(){
+      menu.hidden = false; help.hidden = true; blackout.hidden = true;
+      menuBtn.setAttribute('aria-expanded', 'true'); counter.setAttribute('aria-expanded', 'true');
+      controls.classList.add('show'); clearTimeout(hideTimer); updateMenu();
+      setTimeout(function(){ pageInput.focus(); pageInput.select(); }, 0);
+    }
+    function closeMenu(){
+      menu.hidden = true; menuBtn.setAttribute('aria-expanded', 'false'); counter.setAttribute('aria-expanded', 'false');
+      poke();
+    }
+    function toggleMenu(){ menu.hidden ? openMenu() : closeMenu(); }
+    function openHelp(){ help.hidden = false; menu.hidden = true; menuBtn.setAttribute('aria-expanded', 'false'); counter.setAttribute('aria-expanded', 'false'); controls.classList.add('show'); clearTimeout(hideTimer); helpClose.focus(); }
+    function closeHelp(){ help.hidden = true; poke(); }
+    function jumpToInput(){ var n = parseInt(pageInput.value, 10); if (!isNaN(n)) { show(n - 1); closeMenu(); } }
+    function toggleBlackout(){ blackout.hidden = !blackout.hidden; if (blackout.hidden) poke(); }
+    function poke(){ controls.classList.add('show'); clearTimeout(hideTimer);
+      if (!menu.hidden || !help.hidden || !blackout.hidden) return;
+      hideTimer = setTimeout(function(){ controls.classList.remove('show'); }, 1000); }
+    function toggleFullscreen(){
+      if (!document.fullscreenElement){ (document.documentElement.requestFullscreen || function(){}).call(document.documentElement); }
+      else { (document.exitFullscreen || function(){}).call(document); }
+    }
+    document.addEventListener('keydown', function(e){
+      if (e.key === 'Escape') { if (!blackout.hidden) { blackout.hidden = true; } else if (!help.hidden) { closeHelp(); } else if (!menu.hidden) { closeMenu(); } return; }
+      if ((e.key === 'g' || e.key === 'G') && !e.ctrlKey && !e.metaKey) { toggleMenu(); e.preventDefault(); return; }
+      if (e.key === '?' && !e.ctrlKey && !e.metaKey) { openHelp(); e.preventDefault(); return; }
+      if ((e.key === 'b' || e.key === 'B') && !e.ctrlKey && !e.metaKey) { toggleBlackout(); e.preventDefault(); return; }
+      if (!menu.hidden || !help.hidden || !blackout.hidden) return;
+      switch (e.key){
+        case 'ArrowRight': case 'PageDown': case ' ': case 'Spacebar': next(); poke(); e.preventDefault(); break;
+        case 'ArrowLeft': case 'PageUp': prev(); poke(); e.preventDefault(); break;
+        case 'Home': show(0); poke(); e.preventDefault(); break;
+        case 'End':  show(slides.length - 1); poke(); e.preventDefault(); break;
+        case 'f': case 'F': toggleFullscreen(); poke(); break;
+      }
+    });
+    prevBtn.addEventListener('click', function(){ prev(); poke(); });
+    nextBtn.addEventListener('click', function(){ next(); poke(); });
+    fsBtn.addEventListener('click', function(e){ e.stopPropagation(); toggleFullscreen(); poke(); });
+    menuBtn.addEventListener('click', function(e){ e.stopPropagation(); toggleMenu(); });
+    counter.addEventListener('click', function(e){ e.stopPropagation(); toggleMenu(); });
+    menuClose.addEventListener('click', closeMenu);
+    homeBtn.addEventListener('click', function(){ show(0); closeMenu(); });
+    goBtn.addEventListener('click', jumpToInput);
+    pageInput.addEventListener('keydown', function(e){ if (e.key === 'Enter') { jumpToInput(); e.preventDefault(); } });
+    pdfBtn.addEventListener('click', function(){ window.print(); });
+    helpBtn.addEventListener('click', openHelp);
+    helpClose.addEventListener('click', closeHelp);
+    blackout.addEventListener('click', toggleBlackout);
+    document.addEventListener('fullscreenchange', fit);
+    window.addEventListener('mousemove', poke);
+    window.addEventListener('resize', fit);
+    buildSlideList();
+    fit(); show(initialIndex()); poke();
+  })();
+  </script>
+</body>
+</html>

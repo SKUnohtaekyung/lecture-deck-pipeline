@@ -1,0 +1,31 @@
+/* =====================================================================
+   40~50대 가독성 레이어 — vibecoding-deck
+   ---------------------------------------------------------------------
+   deck.css(likelion 베이스) *다음에* 로드한다. 룩은 유지하고 "읽힘"만 상향.
+   원칙: 기본 글씨 ↑ · 본문 대비 ↑ · 작은 글자 바닥 ↑ · 줄간격 여유.
+   v0.1 제안값 — 디자인 검토·프로젝터 실측 후 조정. 근거: guide/디자인시스템.md
+   ===================================================================== */
+
+/* 보조 텍스트를 한 단계 진하게(중장년 대비 확보) */
+:root{
+  --gray-700:#3A3D45;   /* was #4F4F4F : 본문 보조 대비 ↑ */
+  --gray-400:#6B7280;   /* was #9A9A9A : 캡션도 읽히게 */
+}
+
+/* 본문·리드 크게 */
+.s-body{ font-size:22px; line-height:1.78; }
+.center-v .s-body{ font-size:23px; line-height:1.85; }
+.s-lead{ font-size:27px; }
+.s-eyebrow{ font-size:19px; }
+.callout{ font-size:19px; line-height:1.66; }
+
+/* 작은 글자 바닥 올리기 */
+table.t{ font-size:17px; }
+table.t th, table.t td{ padding:12px 14px; }
+.pill{ font-size:14px; }
+.s-foot{ font-size:14px; }
+.callout .note{ font-size:15px; }
+.agenda-item p{ font-size:20px; }
+
+/* 강조는 색 + 굵기 이중으로 (한 번 더 또렷하게) */
+.s-body strong{ font-weight:800; }

@@ -1,0 +1,427 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=1280">
+  <title>코드 코어 카탈로그 — 레이아웃</title>
+  <!-- 폰트: Pretendard (문서가 인정하는 유일한 외부 의존성) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+  <!-- ▼ 킷 상속: deck.css(베이스) → legibility-40s.css(40~50대 가독성) → patterns.css(코드 코어) 순서 고정.
+       이 파일은 kit/layouts/에 있으므로 ../styles/ 상대링크. -->
+  <link rel="stylesheet" href="../styles/deck.css">
+  <link rel="stylesheet" href="../styles/legibility-40s.css">
+  <link rel="stylesheet" href="../styles/patterns.css"><!-- 코드 코어: 검증된 레이아웃/element CSS(재사용) -->
+  <style id="kit-additions">
+    /* L-fb-statement — 풀블리드 큰 선언(88~120px 디스플레이) */
+    .fb-statement .center-msg{ top:110px; bottom:54px; max-width:1040px;
+      display:flex; flex-direction:column; justify-content:center; }
+    .fb-statement .cm-title{ font-size:104px; line-height:1.12; margin:0; }
+
+    /* L-ct-definition — 정의 특성 태그 줄 */
+    .def-tags{ display:flex; flex-wrap:wrap; gap:10px; margin-top:16px; }
+
+    /* L-td-metric-row — KPI 스트립(밴드 + 큰 숫자 카드 한 줄) */
+    .metric-strip .s-full{ bottom:54px; display:flex; flex-direction:column; }
+    .metric-strip .grid-3{ flex:1 1 auto; align-content:center; margin-top:16px; }
+    .metric-strip .card{ display:flex; flex-direction:column; gap:8px; justify-content:center; }
+    .kpi-val{ font-size:56px; font-weight:800; line-height:1; color:var(--ink); }
+    .kpi-val.key{ color:var(--blue); }
+    .kpi-label{ font-size:22px; font-weight:800; color:var(--ink); }
+    .kpi-delta{ align-self:flex-start; font-size:15px; font-weight:800; border-radius:999px; padding:4px 12px; }
+    .kpi-delta.up{ color:var(--mint-deep); background:var(--mint-soft); }
+    .kpi-delta.down{ color:var(--coral-deep); background:var(--coral-soft); }
+
+    /* L-vf-numbered-stack — 스텝 사이 아래 커넥터(순서 명시) */
+    .eval-steps .vf-down{ text-align:center; color:var(--blue); font-weight:800; font-size:20px; line-height:1; }
+
+    /* L-dc-hero — 무대 안 간단 도해 placeholder(3-스텝 흐름) */
+    .viz-flow-ph{ display:flex; align-items:center; gap:20px; }
+    .fl-node{ background:var(--surface); border:1px solid var(--blue-line-strong); border-radius:16px;
+      padding:26px 34px; font-size:24px; font-weight:800; color:var(--ink);
+      box-shadow:0 8px 18px rgba(20,24,33,.06); }
+    .fl-node.key{ background:var(--blue); color:var(--white); border-color:var(--blue);
+      box-shadow:0 14px 32px rgba(29,78,216,.4); }
+    .fl-arrow{ font-size:34px; font-weight:800; color:var(--blue); }
+  </style>
+  <!--
+    ┌── 이 파일은 무엇인가 ───────────────────────────────────────────┐
+    │ kit/layouts/catalog.html = 조립 시 붙여쓰는 "코드 코어" 덱.       │
+    │ 각 슬라이드 = 하나의 레이아웃 항목. 방향키로 넘겨 고른 뒤          │
+    │ 해당 <section>을 통째로 복사해 새 덱에 붙이고 내용만 교체한다.     │
+    │ 복사 후 우하단 <div class="s-foot">ID</div> 라벨은 반드시 지운다. │
+    │ 담긴 콘텐츠는 전부 플레이스홀더. 색은 문법(구조·주 강조=블루 · │
+    │ 코랄=주의·경고 · 레드=오류 · 민트=안전 · periwinkle=비강조).      │
+    └──────────────────────────────────────────────────────────────────┘
+  -->
+</head>
+<body>
+  <div class="deck">
+
+    <!-- ============ 안내 (카탈로그 사용법) — 항목 아님, s-foot 없음 ============ -->
+    <section class="slide center-msg-a" data-slide="GUIDE">
+      <header class="s-head">
+        <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">바이브코딩</span>
+        <span class="s-line"></span><div class="s-team">코드 코어<br>레이아웃 카탈로그</div>
+      </header>
+      <div class="center-msg">
+        <p class="cm-sub">코드 코어 · 레이아웃 카탈로그</p>
+        <h2 class="cm-title">한 슬라이드 = <span class="hl">한 항목</span></h2>
+        <div class="callout blue">방향키로 넘기며 필요한 레이아웃 <strong>&lt;section&gt;</strong>을 통째로 복사해 붙입니다. 우하단 <strong>ID 라벨(.s-foot)</strong>은 붙여넣은 뒤 반드시 지웁니다. 담긴 내용은 전부 플레이스홀더입니다.</div>
+      </div>
+    </section>
+
+    <!-- ============ L-fb-statement · full-bleed 큰 선언 (.center-msg) ============ -->
+    <section class="slide fb-statement" data-slide="L-fb-statement">
+      <header class="s-head">
+        <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">바이브코딩</span>
+        <span class="s-line"></span><div class="s-team">팀명<br>부제</div>
+      </header>
+      <div class="center-msg">
+        <p class="s-eyebrow">FULL-BLEED · 선언</p>
+        <h2 class="cm-title">측정하지 않으면<br><span class="hl">고칠 수 없다</span></h2>
+      </div>
+      <div class="s-foot">L-fb-statement</div>
+    </section>
+
+    <!-- ============ L-ct-definition · 중앙 개념 정의 (.def-msg / .def-term) ============ -->
+    <section class="slide" data-slide="L-ct-definition">
+      <header class="s-head">
+        <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">바이브코딩</span>
+        <span class="s-line"></span><div class="s-team">팀명<br>부제</div>
+      </header>
+      <div class="center-msg def-msg">
+        <span class="def-term">상위 분류 라벨</span>
+        <h2 class="cm-title">개념 <span class="hl">이름</span></h2>
+        <div class="callout blue">이 개념이 무엇인지 한두 문장으로 정의합니다. 왜 그렇게 부르는지, 핵심 성질만 담아 못박습니다.</div>
+        <div class="def-tags">
+          <span class="pill">특성 A</span>
+          <span class="pill">특성 B</span>
+          <span class="pill">특성 C</span>
+        </div>
+      </div>
+      <div class="s-foot">L-ct-definition</div>
+    </section>
+
+    <!-- ============ L-td-table · 정보표 밴드 (canvas-fill + table.t) ============ -->
+    <section class="slide canvas-fill" data-slide="L-td-table">
+      <header class="s-head">
+        <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">바이브코딩</span>
+        <span class="s-line"></span><div class="s-team">팀명<br>부제</div>
+      </header>
+      <div class="s-full">
+        <p class="s-eyebrow">TOP-DOWN · 정보표</p>
+        <h2 class="s-title">한 줄 <span class="hl">인사이트</span> 제목</h2>
+        <div class="accent-bar"></div>
+        <table class="t">
+          <thead>
+            <tr><th style="width:220px;">항목</th><th>A열</th><th>B열</th><th>C열</th><th>D열</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>행 1</td><td>값</td><td>값</td><td>값</td><td>값</td></tr>
+            <tr><td>행 2</td><td>값</td><td>값</td><td>값</td><td>값</td></tr>
+            <tr><td>행 3</td><td>값</td><td>값</td><td>값</td><td>값</td></tr>
+            <tr><td>행 4</td><td>값</td><td>값</td><td>값</td><td>값</td></tr>
+            <tr><td>행 5</td><td>값</td><td>값</td><td>값</td><td>값</td></tr>
+            <tr><td>행 6</td><td>값</td><td>값</td><td>값</td><td>값</td></tr>
+          </tbody>
+        </table>
+        <p class="tbl-note callout blue">표 아래 보조 노트(선택) — 표가 증명하는 결론 한 줄.</p>
+      </div>
+      <div class="s-foot">L-td-table</div>
+    </section>
+
+    <!-- ============ L-td-metric-row · 지표 스트립 (.grid-3 카드 + 큰 숫자) ============ -->
+    <section class="slide metric-strip" data-slide="L-td-metric-row">
+      <header class="s-head">
+        <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">바이브코딩</span>
+        <span class="s-line"></span><div class="s-team">팀명<br>부제</div>
+      </header>
+      <div class="s-full">
+        <p class="s-eyebrow">TOP-DOWN · 지표</p>
+        <h2 class="s-title">핵심 지표를 <span class="hl">큰 숫자</span>로 먼저</h2>
+        <div class="accent-bar"></div>
+        <div class="grid-3">
+          <div class="card">
+            <div class="kpi-val key">82%</div>
+            <div class="kpi-label">지표 라벨 A</div>
+            <span class="kpi-delta up">▲ 전기 대비 12%</span>
+          </div>
+          <div class="card">
+            <div class="kpi-val">1.4M</div>
+            <div class="kpi-label">지표 라벨 B</div>
+            <span class="kpi-delta up">▲ 전기 대비 6%</span>
+          </div>
+          <div class="card">
+            <div class="kpi-val">3.2x</div>
+            <div class="kpi-label">지표 라벨 C</div>
+            <span class="kpi-delta down">▼ 전기 대비 4%</span>
+          </div>
+        </div>
+      </div>
+      <div class="s-foot">L-td-metric-row</div>
+    </section>
+
+    <!-- ============ L-gm-quad · 2×2 사분면 (.quad-full / .quad-grid / .quad-card) ============ -->
+    <section class="slide" data-slide="L-gm-quad">
+      <header class="s-head">
+        <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">바이브코딩</span>
+        <span class="s-line"></span><div class="s-team">팀명<br>부제</div>
+      </header>
+      <div class="s-full quad-full">
+        <p class="s-eyebrow">GRID-MOSAIC · 사분면</p>
+        <h2 class="s-title">4항목 <span class="hl">동시 조망</span></h2>
+        <div class="quad-grid">
+          <div class="quad-card"><span class="qn">1</span><h3>사분면 소제목</h3><p>이 칸의 소주제를 짧게 설명하는 본문 한두 줄.</p></div>
+          <div class="quad-card"><span class="qn">2</span><h3>사분면 소제목</h3><p>이 칸의 소주제를 짧게 설명하는 본문 한두 줄.</p></div>
+          <div class="quad-card"><span class="qn">3</span><h3>사분면 소제목</h3><p>이 칸의 소주제를 짧게 설명하는 본문 한두 줄.</p></div>
+          <div class="quad-card"><span class="qn">4</span><h3>사분면 소제목</h3><p>이 칸의 소주제를 짧게 설명하는 본문 한두 줄.</p></div>
+        </div>
+      </div>
+      <div class="s-foot">L-gm-quad</div>
+    </section>
+
+    <!-- ============ L-cs-central-contrast · 중앙 커넥터 대비 (.cc-full / .cc-grid / .cc-side / .cc-neq) ============ -->
+    <section class="slide" data-slide="L-cs-central-contrast">
+      <header class="s-head">
+        <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">바이브코딩</span>
+        <span class="s-line"></span><div class="s-team">팀명<br>부제</div>
+      </header>
+      <div class="s-full cc-full">
+        <p class="s-eyebrow">COMPARISON · 대비</p>
+        <h2 class="s-title">두 입장의 <span class="hl">대립</span></h2>
+        <div class="cc-grid">
+          <div class="cc-side ai">
+            <h3>입장 A</h3>
+            <ul>
+              <li>이 입장이 강조하는 점 하나.</li>
+              <li>두 번째 특징 한 줄.</li>
+              <li>세 번째 특징 한 줄.</li>
+            </ul>
+          </div>
+          <div class="cc-neq" aria-hidden="true">≠</div>
+          <div class="cc-side human">
+            <h3>입장 B</h3>
+            <ul>
+              <li>이 입장이 강조하는 점 하나.</li>
+              <li>두 번째 특징 한 줄.</li>
+              <li>세 번째 특징 한 줄.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="s-foot">L-cs-central-contrast</div>
+    </section>
+
+    <!-- ============ L-vf-numbered-stack · 번호 스텝 스택 (.steps-full / .eval-steps + .work-step) ============ -->
+    <section class="slide" data-slide="L-vf-numbered-stack">
+      <header class="s-head">
+        <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">바이브코딩</span>
+        <span class="s-line"></span><div class="s-team">팀명<br>부제</div>
+      </header>
+      <div class="s-full steps-full">
+        <p class="s-eyebrow">VERTICAL-FLOW · 번호 스텝</p>
+        <h2 class="s-title">절차를 <span class="hl">세로로</span> 쌓기</h2>
+        <div class="eval-steps">
+          <div class="work-step"><span class="n">1</span><div><b>헤드라인 스텝 1</b><span>이 단계에서 하는 일을 한 줄로 설명.</span></div></div>
+          <div class="vf-down" aria-hidden="true">↓</div>
+          <div class="work-step"><span class="n">2</span><div><b>헤드라인 스텝 2</b><span>이 단계에서 하는 일을 한 줄로 설명.</span></div></div>
+          <div class="vf-down" aria-hidden="true">↓</div>
+          <div class="work-step"><span class="n">3</span><div><b>헤드라인 스텝 3</b><span>이 단계에서 하는 일을 한 줄로 설명.</span></div></div>
+          <div class="vf-down" aria-hidden="true">↓</div>
+          <div class="work-step"><span class="n">4</span><div><b>헤드라인 스텝 4</b><span>이 단계에서 하는 일을 한 줄로 설명.</span></div></div>
+        </div>
+      </div>
+      <div class="s-foot">L-vf-numbered-stack</div>
+    </section>
+
+    <!-- ============ L-td-glossary · 용어 정의 리스트 (.dl-list / .dl-rows / .dl-term) ============ -->
+    <section class="slide dl-list" data-slide="L-td-glossary">
+      <header class="s-head">
+        <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">바이브코딩</span>
+        <span class="s-line"></span><div class="s-team">팀명<br>부제</div>
+      </header>
+      <div class="s-full">
+        <p class="s-eyebrow">TOP-DOWN · 용어 정의 리스트</p>
+        <h2 class="s-title">오늘 쓸 <span class="hl">용어</span> 정리</h2>
+        <div class="accent-bar"></div>
+        <div class="dl-rows">
+          <div class="card surface dl-row"><span class="dl-term">용어 1</span><p class="s-body">이 용어가 가리키는 뜻을 한 문장으로 정의합니다.</p></div>
+          <div class="card surface dl-row"><span class="dl-term">용어 2</span><p class="s-body">이 용어가 가리키는 뜻을 한 문장으로 정의합니다.</p></div>
+          <div class="card surface dl-row"><span class="dl-term">용어 3</span><p class="s-body">이 용어가 가리키는 뜻을 한 문장으로 정의합니다.</p></div>
+          <div class="card surface dl-row"><span class="dl-term">용어 4</span><p class="s-body">이 용어가 가리키는 뜻을 한 문장으로 정의합니다.</p></div>
+          <div class="card surface dl-row"><span class="dl-term">용어 5</span><p class="s-body">이 용어가 가리키는 뜻을 한 문장으로 정의합니다.</p></div>
+          <div class="card surface dl-row"><span class="dl-term">용어 6</span><p class="s-body">이 용어가 가리키는 뜻을 한 문장으로 정의합니다.</p></div>
+        </div>
+      </div>
+      <div class="s-foot">L-td-glossary</div>
+    </section>
+
+    <!-- ============ L-td-claim-rationale · 주장·근거 밴드 (.claim-rationale / .cr-spine / .cr-card) ============ -->
+    <section class="slide claim-rationale" data-slide="L-td-claim-rationale">
+      <header class="s-head">
+        <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">바이브코딩</span>
+        <span class="s-line"></span><div class="s-team">팀명<br>부제</div>
+      </header>
+      <div class="s-full">
+        <p class="s-eyebrow">TOP-DOWN · 주장·근거</p>
+        <h2 class="s-title">이 주장이 <span class="hl">참인 이유</span></h2>
+        <div class="accent-bar"></div>
+        <p class="cr-spine">↓ 왜냐면</p>
+        <div class="grid-3">
+          <div class="card surface cr-card"><span class="timing">1</span><h3>근거 소제목</h3><p>이 근거를 뒷받침하는 본문 두세 줄.</p></div>
+          <div class="card surface cr-card"><span class="timing">2</span><h3>근거 소제목</h3><p>이 근거를 뒷받침하는 본문 두세 줄.</p></div>
+          <div class="card surface cr-card"><span class="timing">3</span><h3>근거 소제목</h3><p>이 근거를 뒷받침하는 본문 두세 줄.</p></div>
+        </div>
+      </div>
+      <div class="s-foot">L-td-claim-rationale</div>
+    </section>
+
+    <!-- ============ L-vf-case-acts · 사례 3막 카드 (.case-acts / .ca-stack / .ca-act) ============ -->
+    <section class="slide case-acts" data-slide="L-vf-case-acts">
+      <header class="s-head">
+        <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">바이브코딩</span>
+        <span class="s-line"></span><div class="s-team">팀명<br>부제</div>
+      </header>
+      <div class="s-full">
+        <p class="s-eyebrow">VERTICAL-FLOW · 사례 3막</p>
+        <h2 class="s-title">한 <span class="hl">사례</span>로 확인하기</h2>
+        <div class="accent-bar"></div>
+        <div class="ca-stack">
+          <div class="card surface ca-act"><span class="pill">상황</span><p class="s-lead">사례의 배경이 되는 상황 한 줄.</p><p class="s-body">무슨 상황이었는지 한두 줄로 설명.</p></div>
+          <p class="ca-down">↓</p>
+          <div class="card surface ca-act"><span class="pill">행동</span><p class="s-lead">그때 실제로 한 행동 한 줄.</p><p class="s-body">무엇을 어떻게 했는지 한두 줄로 설명.</p></div>
+          <p class="ca-down">↓</p>
+          <div class="card surface ca-act"><span class="pill">결과</span><p class="s-lead"><span class="hl-mint-text">결과가 좋았던</span> 지점 한 줄.</p><p class="s-body">그래서 어떻게 됐는지 한두 줄로 설명.</p></div>
+        </div>
+      </div>
+      <div class="s-foot">L-vf-case-acts</div>
+    </section>
+
+    <!-- ============ L-gm-pitfalls · 함정·주의 세트 (.pitfalls / .pf-list / .pf-band) ============ -->
+    <section class="slide pitfalls" data-slide="L-gm-pitfalls">
+      <header class="s-head">
+        <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">바이브코딩</span>
+        <span class="s-line"></span><div class="s-team">팀명<br>부제</div>
+      </header>
+      <div class="s-full">
+        <p class="s-eyebrow">GRID-MOSAIC · 함정·주의</p>
+        <h2 class="s-title">이런 <span class="hl">함정</span>은 피하세요</h2>
+        <div class="accent-bar"></div>
+        <div class="pf-list">
+          <div class="card surface pf-band">
+            <p class="pf-risk">⚠ 위험 신호 하나</p>
+            <p class="pf-reason">왜 위험한지 이유를 한두 줄로 설명합니다.</p>
+            <p class="pf-alt"><span class="ok">✓</span>대신 이렇게 하세요 한두 줄.</p>
+          </div>
+          <div class="card surface pf-band">
+            <p class="pf-risk">⚠ 위험 신호 둘</p>
+            <p class="pf-reason">왜 위험한지 이유를 한두 줄로 설명합니다.</p>
+            <p class="pf-alt"><span class="ok">✓</span>대신 이렇게 하세요 한두 줄.</p>
+          </div>
+          <div class="card surface pf-band">
+            <p class="pf-risk">⚠ 위험 신호 셋</p>
+            <p class="pf-reason">왜 위험한지 이유를 한두 줄로 설명합니다.</p>
+            <p class="pf-alt"><span class="ok">✓</span>대신 이렇게 하세요 한두 줄.</p>
+          </div>
+        </div>
+      </div>
+      <div class="s-foot">L-gm-pitfalls</div>
+    </section>
+
+    <!-- ============ L-dc-hero · 다이어그램 히어로 (.dc-title / .dc-stage / .dc-cap) ============ -->
+    <section class="slide" data-slide="L-dc-hero">
+      <header class="s-head">
+        <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">바이브코딩</span>
+        <span class="s-line"></span><div class="s-team">팀명<br>부제</div>
+      </header>
+      <div class="dc-title">
+        <p class="s-eyebrow">DIAGRAM-CENTRIC · 히어로</p>
+        <h2 class="s-title">한 장의 <span class="hl">그림</span>이 곧 논지</h2>
+      </div>
+      <div class="dc-stage">
+        <div class="viz-flow-ph" role="img" aria-label="입력에서 처리를 거쳐 출력에 이르는 3단계 흐름 도해 플레이스홀더">
+          <div class="fl-node">입력</div>
+          <div class="fl-arrow" aria-hidden="true">→</div>
+          <div class="fl-node key">처리</div>
+          <div class="fl-arrow" aria-hidden="true">→</div>
+          <div class="fl-node">출력</div>
+        </div>
+        <p class="dc-cap">이 <strong>그림</strong>이 말하는 것을 한 줄 캡션으로 요약.</p>
+      </div>
+      <div class="s-foot">L-dc-hero</div>
+    </section>
+
+  </div>
+
+  <!-- 방향키 리모컨 + PDF 버튼 (불변요소 · 스타터 엔진 그대로) -->
+  <div class="controls" id="controls">
+    <div class="navbar">
+      <button class="nav-btn" id="prevBtn" aria-label="이전 슬라이드">‹</button>
+      <span class="nav-counter" id="counter">1 / 1</span>
+      <button class="nav-btn" id="nextBtn" aria-label="다음 슬라이드">›</button>
+      <span class="nav-sep"></span>
+      <button class="nav-btn fs" id="fsBtn" aria-label="전체화면 (F)" title="전체화면 (F)">⛶</button>
+    </div>
+  </div>
+  <button class="dl-btn" id="dlBtn" onclick="window.print()">↓ PDF 다운로드</button>
+
+  <script>
+  (function(){
+    var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+    var controls = document.getElementById('controls');
+    var counter  = document.getElementById('counter');
+    var prevBtn  = document.getElementById('prevBtn');
+    var nextBtn  = document.getElementById('nextBtn');
+    var fsBtn    = document.getElementById('fsBtn');
+    var dlBtn    = document.getElementById('dlBtn');
+    var idx = 0, hideTimer = null;
+    var storageKey = 'vibecoding-catalog';
+
+    function initialIndex(){
+      var m = String(location.hash || '').match(/slide=(\d+)/i);
+      if (m) return Math.max(0, parseInt(m[1], 10) - 1);
+      try { var saved = parseInt(localStorage.getItem(storageKey), 10); return isNaN(saved) ? 0 : saved; }
+      catch (e) { return 0; }
+    }
+    function fit(){
+      var s = Math.min(window.innerWidth / 1280, window.innerHeight / 720);
+      document.documentElement.style.setProperty('--scale', s);
+    }
+    function show(i){
+      idx = Math.max(0, Math.min(slides.length - 1, i));
+      for (var n = 0; n < slides.length; n++){ slides[n].classList.toggle('is-active', n === idx); }
+      counter.textContent = (idx + 1) + ' / ' + slides.length;
+      prevBtn.disabled = (idx === 0);
+      nextBtn.disabled = (idx === slides.length - 1);
+      dlBtn.style.display = (idx === 0) ? '' : 'none';
+      try { localStorage.setItem(storageKey, String(idx)); } catch (e) {}
+    }
+    function next(){ show(idx + 1); }
+    function prev(){ show(idx - 1); }
+    function poke(){ controls.classList.add('show'); clearTimeout(hideTimer);
+      hideTimer = setTimeout(function(){ controls.classList.remove('show'); }, 1000); }
+    function toggleFullscreen(){
+      if (!document.fullscreenElement){ (document.documentElement.requestFullscreen || function(){}).call(document.documentElement); }
+      else { (document.exitFullscreen || function(){}).call(document); }
+    }
+    document.addEventListener('keydown', function(e){
+      switch (e.key){
+        /* 슬라이드 전환은 리모컨을 노출하지 않는다 — 리모컨은 마우스 이동(mousemove→poke)에만 나타난다. */
+        case 'ArrowRight': case 'PageDown': case ' ': case 'Spacebar': next(); e.preventDefault(); break;
+        case 'ArrowLeft': case 'PageUp': prev(); e.preventDefault(); break;
+        case 'Home': show(0); e.preventDefault(); break;
+        case 'End':  show(slides.length - 1); e.preventDefault(); break;
+        case 'f': case 'F': toggleFullscreen(); break;
+      }
+    });
+    prevBtn.addEventListener('click', function(){ prev(); poke(); });
+    nextBtn.addEventListener('click', function(){ next(); poke(); });
+    fsBtn.addEventListener('click', function(e){ e.stopPropagation(); toggleFullscreen(); poke(); });
+    document.addEventListener('fullscreenchange', fit);
+    window.addEventListener('mousemove', poke);
+    window.addEventListener('resize', fit);
+    fit(); show(initialIndex()); poke();
+  })();
+  </script>
+</body>
+</html>

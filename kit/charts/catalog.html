@@ -1,0 +1,408 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=1280">
+  <title>차트·다이어그램 카탈로그 — 코드 코어 (붙여쓰는 검증본)</title>
+  <!-- 폰트: Pretendard (문서가 인정하는 유일한 외부 의존성) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+  <!-- ▼ 킷 상속: deck.css(베이스) → legibility-40s.css(40~50대 가독성) → patterns.css(코드 코어) 순서 고정 -->
+  <link rel="stylesheet" href="../styles/deck.css">
+  <link rel="stylesheet" href="../styles/legibility-40s.css">
+  <link rel="stylesheet" href="../styles/patterns.css"><!-- 코드 코어: 검증된 레이아웃/element CSS(재사용) -->
+  <style id="kit-additions">
+    /* ── C-bar · D-mapping 은 patterns.css에 없는 데모 프리미티브 → 여기 인라인.
+         데모_제작규칙.html의 <style id="kit-additions">에서 수확, raw 흰색 리터럴 → var(--white) 치환. ── */
+    /* 좌 설명 + 우 시각화 2분할 (코드차트 슬라이드 공용) */
+    .viz-split{ display:grid; grid-template-columns:1fr 1fr; gap:44px; align-items:center; margin-top:20px; }
+    .viz-note p{ font-size:21px; line-height:1.72; color:var(--gray-700); margin:0 0 16px; }
+    .viz-note strong{ color:var(--blue); font-weight:800; }
+
+    /* [C-bar] 코드 막대 차트 */
+    .code-chart{ width:100%; }
+    .cc-plot{ display:flex; align-items:flex-end; justify-content:space-around;
+      height:300px; border-bottom:2px solid var(--line); padding:0 6px; }
+    .cc-bar{ display:flex; flex-direction:column; align-items:center; justify-content:flex-end; }
+    .cc-fill{ width:92px; background:var(--periwinkle); border-radius:10px 10px 0 0;
+      box-shadow:0 8px 18px rgba(29,78,216,.16); }
+    .cc-fill.is-key{ background:var(--blue); }
+    .cc-val{ font-weight:800; font-size:22px; color:var(--blue); margin-bottom:8px; }
+    .cc-axis{ display:flex; justify-content:space-around; margin-top:12px; padding:0 6px; }
+    .cc-axis span{ width:92px; text-align:center; font-size:19px; font-weight:800; color:var(--ink); }
+
+    /* [D-mapping] 코드 관계 다이어그램 (root → leaves 매핑) */
+    .code-diagram{ display:flex; flex-direction:column; align-items:center; margin-top:26px; }
+    .cd-root{ background:var(--blue); color:var(--white); font-weight:800; font-size:22px;
+      border-radius:14px; padding:18px 34px; box-shadow:0 12px 28px rgba(29,78,216,.28); }
+    .cd-arrow{ font-size:30px; color:var(--blue); font-weight:800; margin:8px 0 2px; }
+    .cd-leaves{ display:grid; grid-template-columns:repeat(4,1fr); gap:18px; width:100%; margin-top:8px; }
+    .cd-leaf{ border:1px solid var(--blue-line-strong); border-radius:16px; background:var(--white); padding:20px 14px;
+      text-align:center; box-shadow:0 10px 22px rgba(20,24,33,.05);
+      display:flex; flex-direction:column; align-items:center; gap:7px; }
+    .cd-in{ font-size:16px; color:var(--gray-700); font-weight:700; }
+    .cd-to{ color:var(--gray-400); font-size:22px; font-weight:800; line-height:.8; }
+    .cd-out{ font-size:19px; color:var(--blue); font-weight:800; line-height:1.2; }
+
+    /* SVG 커넥터 색(토큰만) — cycle 곡선 화살표 · radial 스포크 · tree 와이어 */
+    .viz-cycle .cyc-wire{ fill:none; stroke:var(--blue); stroke-width:3; }
+    .viz-radial .rad-spoke{ stroke:var(--line); stroke-width:2; }
+    .viz-radial .rad-spoke.on{ stroke:var(--blue); stroke-width:3; }
+    .vt-wire .vt-line{ fill:none; stroke:var(--blue); stroke-width:2.5; }
+  </style>
+</head>
+<body>
+  <div class="deck">
+
+    <!-- ============ 0 · 사용 안내 (카탈로그 표지/가이드 · 라이트 지오메트리 최종) ============ -->
+    <section class="slide cover" data-slide="GUIDE">
+      <svg class="cover-geo" viewBox="0 0 1280 720" fill="none" aria-hidden="true"><!-- 아이소메트릭 3단 스택: data-cube 3개 × 면 3개 + 코랄 스파크. fill=토큰(표지 §11 동일) -->
+        <g data-cube="top">
+        <polygon points="1170,300 1226,328 1170,356 1114,328" fill="var(--blue-soft)"/>
+        <polygon points="1114,328 1170,356 1170,414 1114,386" fill="var(--blue)"/>
+        <polygon points="1170,356 1226,328 1226,386 1170,414" fill="var(--mint)"/>
+        </g>
+        <g data-cube="middle">
+        <polygon points="1084,352 1140,380 1084,408 1028,380" fill="var(--blue-soft)"/>
+        <polygon points="1028,380 1084,408 1084,466 1028,438" fill="var(--blue)"/>
+        <polygon points="1084,408 1140,380 1140,438 1084,466" fill="var(--mint)"/>
+        </g>
+        <g data-cube="base">
+        <polygon points="998,404 1054,432 998,460 942,432" fill="var(--blue-soft)"/>
+        <polygon points="942,432 998,460 998,518 942,490" fill="var(--blue)"/>
+        <polygon points="998,460 1054,432 1054,490 998,518" fill="var(--mint)"/>
+        </g>
+        <circle cx="1170" cy="256" r="13" fill="var(--coral)"/>
+      </svg>
+      <header class="s-head cover-head">
+        <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg>
+        <div class="brand-stack">
+          <span class="s-brand">바이브코딩</span>
+          <span class="track">차트·다이어그램 코드 코어</span>
+        </div>
+        <div class="s-team">킷 · kit/charts<br>catalog.html</div>
+      </header>
+      <div class="cover-lead">CODE CORE · 붙여쓰는 검증본</div>
+      <div class="cover-title">
+        <h1 class="ko">고르고<br><span class="hl">복사</span>해 조립</h1>
+      </div>
+      <div class="cover-terminal"><span class="pfx">&gt;_</span><span class="q">정보 모양에 맞는 차트·다이어그램을 골라보세요</span><span class="cur" aria-hidden="true"></span></div>
+      <div class="cover-presenter">한 항목 = 한 슬라이드 · 복사 후 우하단 .s-foot 라벨 삭제</div>
+    </section>
+
+    <!-- ============ D-concentric · 동심 포함도 (host: L-dc-hero / diagram-centric) ============ -->
+    <section class="slide" data-slide="C1">
+      <header class="s-head">
+        <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">바이브코딩</span>
+        <span class="s-line"></span><div class="s-team">코드 코어<br>diagram · containment</div>
+      </header>
+      <div class="dc-title">
+        <p class="s-eyebrow">D-concentric · 동심 포함도</p>
+        <h2 class="s-title">한 요소가 <span class="hl">완전히 속할</span> 때</h2>
+      </div>
+      <div class="dc-stage">
+        <div class="viz-concentric" role="img"
+             aria-label="동심 포함도: 바깥 전체 범주가 중간 상위 분야를, 그 안에 오늘의 주제를 완전히 포함">
+          <div class="vc-ring vc-o"><span class="vc-lab">전체 범주</span></div>
+          <div class="vc-ring vc-m"><span class="vc-lab">상위 분야</span></div>
+          <div class="vc-ring vc-i"><span class="vc-lab">오늘의 주제<small>여기가 지금 다룰 곳</small></span></div>
+        </div>
+        <p class="dc-cap">바깥 → 안으로 <strong>완전 포함</strong>(A ⊂ B ⊂ C). 강조 링 하나로 "여기"를 못박는다.</p>
+      </div>
+      <div class="s-foot">D-concentric</div>
+    </section>
+
+    <!-- ============ D-cycle · 순환 루프 (host: L-dc-hero / diagram-centric) ============ -->
+    <section class="slide" data-slide="C2">
+      <header class="s-head">
+        <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">바이브코딩</span>
+        <span class="s-line"></span><div class="s-team">코드 코어<br>diagram · cycle</div>
+      </header>
+      <div class="dc-title">
+        <p class="s-eyebrow">D-cycle · 순환 루프</p>
+        <h2 class="s-title">끝이 처음으로 <span class="hl">되돌아가는</span> 흐름</h2>
+      </div>
+      <div class="dc-stage">
+        <div class="viz-cycle" role="img"
+             aria-label="순환 루프: 1 계획 → 2 실행 → 3 측정 → 4 개선 → 다시 1로 돌아가는 4단계 순환">
+          <!-- 원주 반지름 150, 중심(220,220) 기준 노드 사이 시계방향 곡선 화살표(간격 40°, 호 50°) -->
+          <svg viewBox="0 0 440 440" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <defs>
+              <marker id="cyc-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                <path d="M0,0 L10,5 L0,10 z" fill="var(--blue)"/>
+              </marker>
+            </defs>
+            <path class="cyc-wire" d="M271,79 A150,150 0 0 1 361,169" marker-end="url(#cyc-arrow)"/>
+            <path class="cyc-wire" d="M361,271 A150,150 0 0 1 271,361" marker-end="url(#cyc-arrow)"/>
+            <path class="cyc-wire" d="M169,361 A150,150 0 0 1 79,271" marker-end="url(#cyc-arrow)"/>
+            <path class="cyc-wire" d="M79,169 A150,150 0 0 1 169,79" marker-end="url(#cyc-arrow)"/>
+          </svg>
+          <div class="cyc-node" style="left:220px;top:60px;"><span class="cn">1</span><b>계획</b></div>
+          <div class="cyc-node" style="left:380px;top:220px;"><span class="cn">2</span><b>실행</b></div>
+          <div class="cyc-node" style="left:220px;top:380px;"><span class="cn">3</span><b>측정</b></div>
+          <div class="cyc-node" style="left:60px;top:220px;"><span class="cn">4</span><b>개선</b></div>
+          <div class="cyc-center">반복 루프</div>
+        </div>
+        <p class="dc-cap">단계가 <strong>순환</strong>하며 매 바퀴 나아진다 — 시계방향 화살표가 방향을 못박는다.</p>
+      </div>
+      <div class="s-foot">D-cycle</div>
+    </section>
+
+    <!-- ============ D-radial · 방사 허브 (host: L-dc-radial-hub / diagram-centric) ============ -->
+    <section class="slide" data-slide="C3">
+      <header class="s-head">
+        <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">바이브코딩</span>
+        <span class="s-line"></span><div class="s-team">코드 코어<br>diagram · radial</div>
+      </header>
+      <div class="dc-title">
+        <p class="s-eyebrow">D-radial · 방사 허브</p>
+        <h2 class="s-title">중심에서 <span class="hl">뻗어 나가는</span> 구성 요소</h2>
+      </div>
+      <div class="dc-stage">
+        <div class="viz-radial" role="img"
+             aria-label="방사 허브: 중심 핵심 주제에서 위성 다섯(대상, 범위, 도구, 산출물, 리듬)이 스포크로 뻗음. 대상이 초점">
+          <!-- 허브 중심(450,200) → 각 위성 중심으로 스포크 라인 -->
+          <svg viewBox="0 0 900 360" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <line class="rad-spoke on" x1="450" y1="200" x2="175" y2="80"/>
+            <line class="rad-spoke"    x1="450" y1="200" x2="450" y2="58"/>
+            <line class="rad-spoke"    x1="450" y1="200" x2="725" y2="80"/>
+            <line class="rad-spoke"    x1="450" y1="200" x2="280" y2="300"/>
+            <line class="rad-spoke"    x1="450" y1="200" x2="620" y2="300"/>
+          </svg>
+          <div class="rad-hub"><b>핵심 주제<small>hub</small></b></div>
+          <div class="rad-sat focus" style="left:175px;top:80px;"><h3>대상</h3><p>누구를 위한 것인가</p></div>
+          <div class="rad-sat" style="left:450px;top:58px;"><h3>범위</h3><p>어디까지 다루나</p></div>
+          <div class="rad-sat" style="left:725px;top:80px;"><h3>도구</h3><p>무엇으로 만드나</p></div>
+          <div class="rad-sat" style="left:280px;top:300px;"><h3>산출물</h3><p>무엇이 남나</p></div>
+          <div class="rad-sat" style="left:620px;top:300px;"><h3>리듬</h3><p>어떤 순서로</p></div>
+        </div>
+        <p class="dc-cap">위성끼리 <strong>순서·연결이 없는</strong> 허브-스포크 — 초점 하나만 블루로 강조.</p>
+      </div>
+      <div class="s-foot">D-radial</div>
+    </section>
+
+    <!-- ============ D-tree · 위계 트리 (host: L-dc-hero / diagram-centric) ============ -->
+    <section class="slide" data-slide="C4">
+      <header class="s-head">
+        <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">바이브코딩</span>
+        <span class="s-line"></span><div class="s-team">코드 코어<br>diagram · structure</div>
+      </header>
+      <div class="dc-title">
+        <p class="s-eyebrow">D-tree · 위계 트리</p>
+        <h2 class="s-title">하나가 <span class="hl">여러 갈래로</span> 나뉠 때</h2>
+      </div>
+      <div class="dc-stage">
+        <div class="viz-tree" role="img"
+             aria-label="위계 트리: 루트 개념 아래 갈래 A, 갈래 B, 갈래 C 세 자식으로 분기">
+          <div class="vt-root">루트 개념<small>root</small></div>
+          <!-- 루트 중심(250)→ 가로바(y16)→ 3잎 중심(83·250·417)으로 내려가는 와이어 -->
+          <svg class="vt-wire" viewBox="0 0 500 48" width="500" height="48" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path class="vt-line" d="M250,0 V16"/>
+            <path class="vt-line" d="M83,16 H417"/>
+            <path class="vt-line" d="M83,16 V48"/>
+            <path class="vt-line" d="M250,16 V48"/>
+            <path class="vt-line" d="M417,16 V48"/>
+          </svg>
+          <div class="vt-leaves">
+            <div class="vt-leaf"><b>갈래 A</b><span>하위 요소</span></div>
+            <div class="vt-leaf"><b>갈래 B</b><span>하위 요소</span></div>
+            <div class="vt-leaf"><b>갈래 C</b><span>하위 요소</span></div>
+          </div>
+        </div>
+        <p class="dc-cap">부모 → 자식 <strong>분기 위계</strong>(≤3단·≤12노드). 루트만 블루로 위계의 꼭대기.</p>
+      </div>
+      <div class="s-foot">D-tree</div>
+    </section>
+
+    <!-- ============ E-code · 주석 코드 블록 (host: L-dc-hero / diagram-centric) ============ -->
+    <section class="slide" data-slide="C-code">
+      <header class="s-head">
+        <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">바이브코딩</span>
+        <span class="s-line"></span><div class="s-team">코드 코어<br>element · concept</div>
+      </header>
+      <div class="dc-title">
+        <p class="s-eyebrow">E-code · 주석 코드 블록</p>
+        <h2 class="s-title">코드 한 줄, <span class="hl">그 줄의 역할</span></h2>
+      </div>
+      <div class="dc-stage">
+        <div class="viz-code" role="img" aria-label="주석 코드 블록(Python app.py, 6줄): 3번째 줄 = 화면 제목을 그린다, 4번째 줄 = 사용자 입력을 받는다, 6번째 줄 = AI에게 보낼 프롬프트를 만든다">
+          <div class="co-bar">app.py</div>
+          <div class="co-rows">
+            <div class="co-row"><span class="co-num">1</span><span class="co-src">import streamlit as st</span><span class="co-note"></span></div>
+            <div class="co-row"><span class="co-num">2</span><span class="co-src">&nbsp;</span><span class="co-note"></span></div>
+            <div class="co-row is-hl"><span class="co-num">3</span><span class="co-src">st.title("내 프롬프트 도우미")</span><span class="co-note"><span class="cn">1</span><p>화면 제목을 그린다</p></span></div>
+            <div class="co-row is-hl"><span class="co-num">4</span><span class="co-src">topic = st.text_input("주제")</span><span class="co-note"><span class="cn">2</span><p>사용자 입력을 받는다</p></span></div>
+            <div class="co-row"><span class="co-num">5</span><span class="co-src">if st.button("생성"):</span><span class="co-note"></span></div>
+            <div class="co-row is-hl"><span class="co-num">6</span><span class="co-src">    st.write(f"{topic}에 대해 설명해줘")</span><span class="co-note"><span class="cn">3</span><p>AI에게 보낼 프롬프트를 만든다</p></span></div>
+          </div>
+        </div>
+        <p class="dc-cap">강조 줄 옆 <strong>블루 번호</strong>가 그 줄의 역할을 짚는다 — 무지개 구문강조 없이 강조 배경 하나로.</p>
+      </div>
+      <div class="s-foot">E-code</div>
+    </section>
+
+    <!-- ============ D-gantt · 비례 시간축·간트 (host: diagram-centric — 일정·로드맵·연혁) ============ -->
+    <section class="slide" data-slide="C-gantt">
+      <header class="s-head">
+        <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">바이브코딩</span>
+        <span class="s-line"></span><div class="s-team">코드 코어<br>element · flow+numeric</div>
+      </header>
+      <div class="dc-title">
+        <p class="s-eyebrow">D-gantt · 비례 시간축</p>
+        <h2 class="s-title">언제 · 얼마나 · <span class="hl">겹쳐서</span> 진행하나</h2>
+      </div>
+      <div class="dc-stage">
+        <div class="viz-gantt" role="img" aria-label="비례 시간축 간트: 1월~5월 기간, 작업 5개 — 기획 1월~2월(강조), 설계 2월~3월(기획과 병렬), 개발 2월~4월, 테스트 4월~5월(지연 위험), 출시 4월 말~5월(강조, 출시 마일스톤). 오늘은 4월 중순.">
+          <div class="vg-labels">
+            <div class="vg-lab-spacer"></div>
+            <div class="vg-label">기획</div>
+            <div class="vg-label">설계</div>
+            <div class="vg-label">개발</div>
+            <div class="vg-label">테스트</div>
+            <div class="vg-label">출시</div>
+          </div>
+          <div class="vg-plot">
+            <div class="vg-axis">
+              <span class="vg-tick" style="left:0%">1월</span>
+              <span class="vg-tick" style="left:25%">2월</span>
+              <span class="vg-tick" style="left:50%">3월</span>
+              <span class="vg-tick" style="left:75%">4월</span>
+              <span class="vg-tick" style="left:97%">5월</span>
+              <div class="vg-now" style="left:70%"></div>
+            </div>
+            <div class="vg-row"><div class="vg-bar is-key" style="left:0%;width:22%"></div></div>
+            <div class="vg-row"><div class="vg-bar" style="left:16%;width:24%"></div></div>
+            <div class="vg-row"><div class="vg-bar" style="left:30%;width:34%"></div></div>
+            <div class="vg-row"><div class="vg-bar is-risk" style="left:70%;width:22%"></div></div>
+            <div class="vg-row"><div class="vg-bar is-key" style="left:88%;width:10%"></div><span class="vg-ms" style="left:97%">◆ 출시</span></div>
+          </div>
+        </div>
+        <p class="dc-cap">막대 <strong>폭·위치</strong>가 실제 기간에 비례 — 세로 겹침이 병렬 진행을, 파선이 오늘을 말한다.</p>
+      </div>
+      <div class="s-foot">D-gantt</div>
+    </section>
+
+    <!-- ============ C-bar · 코드 막대 차트 (host: L-sp / split — 좌 설명 + 우 차트) ============ -->
+    <section class="slide" data-slide="C5">
+      <header class="s-head">
+        <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">바이브코딩</span>
+        <span class="s-line"></span><div class="s-team">코드 코어<br>chart · numeric</div>
+      </header>
+      <div class="s-full">
+        <p class="s-eyebrow">C-bar · 코드 막대 차트</p>
+        <h2 class="s-title">수치·비율은 <span class="hl">코드 막대</span>로</h2>
+        <div class="viz-split">
+          <div class="viz-note">
+            <p>계획서의 <strong>데이터</strong> 항목(예: 기획 40% · 개발 35% · 검증 25%)을 이미지가 아니라 <strong>CSS 막대</strong>로 그립니다.</p>
+            <div class="callout blue">코드라서 — 수정 즉시 반영 · 항상 선명 · 파일 용량 0. 강조 계열 1개만 <strong>블루</strong>.</div>
+          </div>
+          <div class="code-chart" role="img" aria-label="비율 막대 차트: 기획 40퍼센트, 개발 35퍼센트, 검증 25퍼센트">
+            <div class="cc-plot">
+              <div class="cc-bar"><span class="cc-val">40%</span><div class="cc-fill is-key" style="height:240px"></div></div>
+              <div class="cc-bar"><span class="cc-val">35%</span><div class="cc-fill" style="height:210px"></div></div>
+              <div class="cc-bar"><span class="cc-val">25%</span><div class="cc-fill" style="height:150px"></div></div>
+            </div>
+            <div class="cc-axis"><span>기획</span><span>개발</span><span>검증</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="s-foot">C-bar</div>
+    </section>
+
+    <!-- ============ D-mapping · 코드 관계 다이어그램 (host: L-dc / diagram-centric — root→leaves) ============ -->
+    <section class="slide" data-slide="C6">
+      <header class="s-head">
+        <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">바이브코딩</span>
+        <span class="s-line"></span><div class="s-team">코드 코어<br>diagram · mapping</div>
+      </header>
+      <div class="s-full">
+        <p class="s-eyebrow">D-mapping · 코드 관계 다이어그램</p>
+        <h2 class="s-title">정보의 <span class="hl">모양</span>을 도형으로 매핑</h2>
+        <div class="code-diagram" role="img"
+             aria-label="관계 매핑: 루트 입력이 수치는 코드 차트, 구조는 코드 다이어그램, 순서는 흐름 레이아웃, 화면은 주석 스크린샷으로 대응">
+          <div class="cd-root">입력 · &ldquo;정보 모양&rdquo;</div>
+          <div class="cd-arrow">↓</div>
+          <div class="cd-leaves">
+            <div class="cd-leaf"><span class="cd-in">수치·비율</span><span class="cd-to">↓</span><b class="cd-out">코드 차트</b></div>
+            <div class="cd-leaf"><span class="cd-in">구조·관계</span><span class="cd-to">↓</span><b class="cd-out">코드 다이어그램</b></div>
+            <div class="cd-leaf"><span class="cd-in">순서·단계</span><span class="cd-to">↓</span><b class="cd-out">흐름 레이아웃</b></div>
+            <div class="cd-leaf"><span class="cd-in">화면 조작</span><span class="cd-to">↓</span><b class="cd-out">주석 스크린샷</b></div>
+          </div>
+        </div>
+      </div>
+      <div class="s-foot">D-mapping</div>
+    </section>
+
+  </div>
+
+  <!-- 방향키 리모컨 + PDF 버튼 (불변요소 · 스타터 엔진 그대로) -->
+  <div class="controls" id="controls">
+    <div class="navbar">
+      <button class="nav-btn" id="prevBtn" aria-label="이전 슬라이드">‹</button>
+      <span class="nav-counter" id="counter">1 / 1</span>
+      <button class="nav-btn" id="nextBtn" aria-label="다음 슬라이드">›</button>
+      <span class="nav-sep"></span>
+      <button class="nav-btn fs" id="fsBtn" aria-label="전체화면 (F)" title="전체화면 (F)">⛶</button>
+    </div>
+  </div>
+  <button class="dl-btn" id="dlBtn" onclick="window.print()">↓ PDF 다운로드</button>
+
+  <script>
+  (function(){
+    var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+    var controls = document.getElementById('controls');
+    var counter  = document.getElementById('counter');
+    var prevBtn  = document.getElementById('prevBtn');
+    var nextBtn  = document.getElementById('nextBtn');
+    var fsBtn    = document.getElementById('fsBtn');
+    var dlBtn    = document.getElementById('dlBtn');
+    var idx = 0, hideTimer = null;
+    var storageKey = 'vibecoding-charts-catalog';
+
+    function initialIndex(){
+      var m = String(location.hash || '').match(/slide=(\d+)/i);
+      if (m) return Math.max(0, parseInt(m[1], 10) - 1);
+      try { var saved = parseInt(localStorage.getItem(storageKey), 10); return isNaN(saved) ? 0 : saved; }
+      catch (e) { return 0; }
+    }
+    function fit(){
+      var s = Math.min(window.innerWidth / 1280, window.innerHeight / 720);
+      document.documentElement.style.setProperty('--scale', s);
+    }
+    function show(i){
+      idx = Math.max(0, Math.min(slides.length - 1, i));
+      for (var n = 0; n < slides.length; n++){ slides[n].classList.toggle('is-active', n === idx); }
+      counter.textContent = (idx + 1) + ' / ' + slides.length;
+      prevBtn.disabled = (idx === 0);
+      nextBtn.disabled = (idx === slides.length - 1);
+      dlBtn.style.display = (idx === 0) ? '' : 'none';
+      try { localStorage.setItem(storageKey, String(idx)); } catch (e) {}
+    }
+    function next(){ show(idx + 1); }
+    function prev(){ show(idx - 1); }
+    function poke(){ controls.classList.add('show'); clearTimeout(hideTimer);
+      hideTimer = setTimeout(function(){ controls.classList.remove('show'); }, 1000); }
+    function toggleFullscreen(){
+      if (!document.fullscreenElement){ (document.documentElement.requestFullscreen || function(){}).call(document.documentElement); }
+      else { (document.exitFullscreen || function(){}).call(document); }
+    }
+    document.addEventListener('keydown', function(e){
+      switch (e.key){
+        /* 슬라이드 전환은 리모컨을 노출하지 않는다 — 리모컨은 마우스 이동(mousemove→poke)에만 나타난다. */
+        case 'ArrowRight': case 'PageDown': case ' ': case 'Spacebar': next(); e.preventDefault(); break;
+        case 'ArrowLeft': case 'PageUp': prev(); e.preventDefault(); break;
+        case 'Home': show(0); e.preventDefault(); break;
+        case 'End':  show(slides.length - 1); e.preventDefault(); break;
+        case 'f': case 'F': toggleFullscreen(); break;
+      }
+    });
+    prevBtn.addEventListener('click', function(){ prev(); poke(); });
+    nextBtn.addEventListener('click', function(){ next(); poke(); });
+    fsBtn.addEventListener('click', function(e){ e.stopPropagation(); toggleFullscreen(); poke(); });
+    document.addEventListener('fullscreenchange', fit);
+    window.addEventListener('mousemove', poke);
+    window.addEventListener('resize', fit);
+    fit(); show(initialIndex()); poke();
+  })();
+  </script>
+</body>
+</html>
