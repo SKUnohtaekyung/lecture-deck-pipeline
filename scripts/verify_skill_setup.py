@@ -4,12 +4,22 @@
 from __future__ import annotations
 
 import hashlib
+import json
 import re
 import sys
 from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
+
+# T4: 팀 워크플로 스킬 3종(리서치·콘텐츠·검토)의 정본/어댑터 정합 검사용 데이터.
+# body_markers는 "이 게이트가 정본 본문에 실제로 문서화됐다"는 증거로 쓰는 문자열이며,
+# 동시에 어댑터 본문에는 있으면 안 되는 규칙 복제 방지 마커이기도 하다.
+TEAM_SKILLS = {
+    "리서치": {"body_markers": ("3개월", "출처 URL", "확인 날짜", "deep-research", "조사 범위")},
+    "콘텐츠": {"body_markers": ("자료 충분성", "콘텐츠초안템플릿", "출처 추적", "분할 제안")},
+    "검토": {"body_markers": ("읽기 전용", "FAIL", "WARN", "검토보고")},
+}
 
 
 class Check:
@@ -73,6 +83,119 @@ def markdown_files(base: Path) -> list[Path]:
     if not base.is_dir():
         return []
     return [path for path in base.rglob("*.md") if path.is_file()]
+
+
+def body_only(path: Path) -> str:
+    """Return *path*'s text with a leading YAML frontmatter block stripped.
+
+    Mirrors the frontmatter() regex so body-marker checks never accidentally
+    match against the name/description fields instead of real content.
+    """
+    source = text(path)
+    match = re.match(r"^---\s*\n.*?\n---\s*\n", source, re.S)
+    return source[match.end():] if match else source
+
+
+def verify_team_skills(check: Check) -> None:
+    """T4: 팀 워크플로 스킬 3종(리서치·콘텐츠·검토)의 정본/어댑터 정합 검사.
+
+    T1~T3가 병행 작업 중이므로 실행 시점에 일부 파일이 없어 FAIL이 나는 것은
+    정상이다 — 통합 단계에서 리더가 최종 PASS를 확인한다.
+    """
+    for name, spec in TEAM_SKILLS.items():
+        body_markers = spec["body_markers"]
+
+        canonical = ROOT / "skills" / name / "SKILL.md"
+        canonical_ok = canonical.is_file()
+        canonical_name, canonical_desc = frontmatter(canonical) if canonical_ok else ("", "")
+        check(
+            canonical_ok and canonical_name == name and bool(canonical_desc),
+            f"[{name}] 정본 skills/{name}/SKILL.md 존재 + frontmatter name/description 유효",
+            f"[{name}] 정본 skills/{name}/SKILL.md 없음 또는 frontmatter name/description 오류",
+        )
+        check(
+            "명시 호출" in canonical_desc,
+            f"[{name}] description에 '명시 호출' 마커 존재",
+            f"[{name}] description에 '명시 호출' 마커 없음",
+        )
+        canonical_body = body_only(canonical) if canonical_ok else ""
+        check(
+            canonical_ok and contains_all(canonical_body, body_markers),
+            f"[{name}] 정본 본문에 필수 게이트 마커 모두 존재",
+            f"[{name}] 정본 본문에 필수 게이트 마커 누락(정본 없음 포함): {body_markers}",
+        )
+
+        team_adapters = (
+            ("Claude Code", ROOT / ".claude" / "skills" / name / "SKILL.md"),
+            ("Codex", ROOT / ".agents" / "skills" / name / "SKILL.md"),
+        )
+        for platform, adapter in team_adapters:
+            check(
+                adapter.is_file(),
+                f"[{name}] {platform} 어댑터 존재",
+                f"[{name}] {platform} 어댑터 없음: {adapter}",
+            )
+            if not adapter.is_file():
+                continue
+            adapter_name, adapter_desc = frontmatter(adapter)
+            check(
+                (adapter_name, adapter_desc) == (canonical_name, canonical_desc),
+                f"[{name}] {platform} metadata(name/description)가 정본과 문자열 동일",
+                f"[{name}] {platform} metadata가 정본과 불일치",
+            )
+            adapter_body = body_only(adapter)
+            expected_ref = f"../../../skills/{name}/SKILL.md"
+            check(
+                expected_ref in adapter_body,
+                f"[{name}] {platform} 어댑터가 정본을 참조",
+                f"[{name}] {platform} 어댑터에 {expected_ref} 참조 없음",
+            )
+            leaked = [marker for marker in body_markers if marker in adapter_body]
+            check(
+                not leaked,
+                f"[{name}] {platform} 어댑터 본문에 규칙 복제 없음",
+                f"[{name}] {platform} 어댑터 본문에 정본 마커 복제됨: {leaked}",
+            )
+
+        openai_yaml = ROOT / ".agents" / "skills" / name / "agents" / "openai.yaml"
+        yaml_source = text(openai_yaml) if openai_yaml.is_file() else ""
+        check(
+            openai_yaml.is_file()
+            and "display_name" in yaml_source
+            and "short_description" in yaml_source
+            and f"${name}" in yaml_source,
+            f"[{name}] Codex agents/openai.yaml 유효 필드 존재",
+            f"[{name}] Codex agents/openai.yaml 또는 필수 필드(display_name/short_description/${name}) 누락",
+        )
+
+    evals_path = ROOT / "evals" / "team-skills-eval.json"
+    allowed_targets = {"리서치", "콘텐츠", "검토", "vibecoding-deck", None}
+    evals_ok = False
+    if evals_path.is_file():
+        try:
+            payload = json.loads(text(evals_path))
+        except json.JSONDecodeError:
+            payload = None
+        routing = payload.get("routing") if isinstance(payload, dict) else None
+        if isinstance(routing, list):
+            evals_ok = all(
+                isinstance(case, dict) and case.get("expected_skill", "__missing__") in allowed_targets
+                for case in routing
+            )
+    check(
+        evals_ok,
+        "evals/team-skills-eval.json 존재 + JSON 파싱 성공 + routing expected_skill 값 모두 유효",
+        "evals/team-skills-eval.json 없음, JSON 파싱 실패, 또는 routing expected_skill 값이 허용 집합 밖",
+    )
+
+    readme_path = ROOT / "skills" / "README.md"
+    readme_source = text(readme_path) if readme_path.is_file() else ""
+    missing_names = [name for name in TEAM_SKILLS if name not in readme_source]
+    check(
+        readme_path.is_file() and not missing_names,
+        "skills/README.md가 팀 스킬 3종 이름을 모두 등재",
+        f"skills/README.md 등재 누락(파일 없음 포함): {missing_names}",
+    )
 
 
 def main() -> int:
@@ -315,6 +438,8 @@ def main() -> int:
         "ui-ux-pro-max 실행 스크립트·데이터 양 플랫폼 동기화",
         "ui-ux-pro-max 실행 스크립트 또는 데이터가 플랫폼 간 드리프트",
     )
+
+    verify_team_skills(check)
 
     if check.failed:
         print(f"RESULT | FAIL | {check.failed}개 실패")
