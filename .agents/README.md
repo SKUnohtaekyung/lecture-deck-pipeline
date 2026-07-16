@@ -33,3 +33,7 @@ python scripts/inline_deck.py <덱>.html --offline
 python .agents/skills/ui-ux-pro-max/scripts/search.py ...
 python scripts/verify_skill_setup.py
 ```
+
+## 팀 워크플로 스킬
+
+이 폴더의 `skills/리서치/`·`skills/콘텐츠/`·`skills/검토/` 어댑터 정본은 저장소 루트 `skills/<이름>/SKILL.md`다. 등재·계약·호출 규약은 루트 `skills/README.md` 참조(여기에 복제하지 않는다).

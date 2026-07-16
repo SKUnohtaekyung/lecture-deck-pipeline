@@ -31,3 +31,7 @@ python .claude/skills/ui-ux-pro-max/scripts/search.py ...
 - `../../../SKILL.md`가 실제 루트 공통 정본을 가리키는가
 - `/vibecoding-deck` 명시 호출과 일반 강의덱 요청의 자동 호출이 새 세션에서 동작하는가
 - 공통 문서의 상대 경로가 어댑터 폴더가 아니라 저장소 루트에서 해석되는가
+
+## 팀 워크플로 스킬
+
+리서치·콘텐츠·검토 어댑터의 정본은 루트 `skills/<이름>/SKILL.md` — 등재·계약·호출 규약은 `skills/README.md` 참조(여기에 복제하지 않는다).

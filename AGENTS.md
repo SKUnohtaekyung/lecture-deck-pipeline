@@ -2,12 +2,13 @@
 
 이 폴더는 **`vibecoding-deck` 스킬을 개발·보관**하는 프로젝트다. 루트 `SKILL.md`와 `kit/`·`references/`·`scripts/`가 플랫폼 공통 정본이며, `.agents/skills/vibecoding-deck/`와 `.claude/skills/vibecoding-deck/`는 이 정본을 로드하는 얇은 탐색 어댑터다. Codex는 이 파일을 직접 읽고, Claude Code는 루트 `CLAUDE.md`의 `@AGENTS.md` import로 같은 규칙을 읽는다. 변하는 현재 상태와 다음 할 일은 여기 두지 말고 `.agents/agent-memory/vibecoding-deck/MEMORY.md`의 `## 미해결`에 둔다.
 
-## 구조 (섞지 말 것 · ①②③=스킬 3층, ④=작업물)
+## 구조 (섞지 말 것 · ①②③=스킬 3층, ④=작업물, ⑤=팀 스킬)
 
 - **① 포터블 스킬(루트, 배포 대상)**: `SKILL.md`(진입점) · `kit/` · `references/` · `scripts/` · `입력양식/` · `데모_제작규칙.html` · `outputs/`(레이아웃 아틀라스). 사람용 개요는 `README.md`.
 - **② 개발자료 `_dev/`(배포 제외)**: `강의자료/`(콘텐츠 원천) · `설계기록/`(빌드·결정 기록 · `탐색-아카이브/` 미채택본).
 - **③ 플랫폼 어댑터**: `.agents/skills/vibecoding-deck/`(Codex) · `.claude/skills/vibecoding-deck/`(Claude Code). 공통 규칙을 복제하지 않고 루트 `SKILL.md`만 로드한다. 누적 규칙·버그 정본은 `.agents/agent-memory/vibecoding-deck/MEMORY.md` 하나이며 Claude Code도 이 파일을 읽는다. `ui-ux-pro-max`만 각 플랫폼 탐색 위치에 실행 자원과 함께 둔다.
 - **④ 주차별 작업물 `sessions/`(배포 제외)**: `N주차/`에 그 주차의 `초안.md`·`강의덱.html`·`강의덱_발표자노트.html`·`자료/`. 새 주차는 `sessions/_template/` 복사, 규약은 `sessions/README.md`. 1주차 덱만 루트 CSS 상대경로 때문에 예외적으로 루트 `1주차_강의덱.html`을 유지한다.
+- **⑤ 팀 워크플로 스킬 `skills/`(배포 제외)**: 강의 제작 팀 역할 스킬 3종(리서치·콘텐츠·검토)의 정본. scripts/·sessions/ 규약에 하드 결합된 이식 불가 자산이라 포터블 스킬 배포 복사에서 제외한다. 등재·계약·호출 규약 정본은 `skills/README.md`.
 
 > git으로 관리한다(2026-07-16 초기 커밋, 브랜치 `main`). 의미 있는 변경은 verify 통과 후 커밋해 복구 지점을 만든다. 설계 탐색 산출물 폐기는 관례대로 `_dev/설계기록/`(탐색-아카이브) 이동을 유지한다. 대규모 정리와 대량 갱신은 먼저 영향 범위를 확인한다.
 
@@ -22,6 +23,7 @@
 - **Codex**: `.agents/skills/vibecoding-deck/SKILL.md`가 발견된다. `$vibecoding-deck`으로 명시 호출하거나 PPT·강의덱·HTML 웹덱 제작 요청으로 자동 호출한다.
 - **Claude Code**: `.claude/skills/vibecoding-deck/SKILL.md`가 발견된다. `/vibecoding-deck`으로 명시 호출하거나 같은 자연어 요청으로 자동 호출한다.
 - 두 어댑터는 반드시 루트 `SKILL.md`를 완전히 읽고, 그 안의 상대 경로를 저장소 루트 기준으로 해석한다. 어댑터에 디자인 규칙이나 워크플로를 복제하지 않는다.
+- 팀 워크플로 스킬 3종(`/리서치`·`/콘텐츠`·`/검토`)은 **명시 호출 전용**이다(자동 발동 없음 — "명시 호출"의 정의는 `skills/README.md`가 정본). vibecoding-deck만 기존대로 자동 발동을 유지한다. 파이프라인 순서: `/리서치` → `/콘텐츠` → `/vibecoding-deck` → `/검토`(횡단).
 
 ## 스킬의 역할
 
