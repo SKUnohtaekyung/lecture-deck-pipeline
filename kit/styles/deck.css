@@ -447,11 +447,12 @@ table.t tr:nth-child(even) td{ background:var(--surface-row); }
       ::after 커넥터 끔(선형 은유가 2열에서 깨짐, 번호 배지가 순서 전달).
    =================================================================== */
 .s03-slide .s-head .s-team{ display:none; }
-.s03-slide .an-spark{ position:absolute; left:452px; top:122px; width:9px; height:9px;
-  border-radius:var(--r-pill); background:var(--coral); }
 .s03-slide .an-left{ position:absolute; left:64px; top:150px; bottom:56px; width:420px;
   height:fit-content; margin:auto 0; }   /* 세로 중앙(v3) — 절대배치 밴드 안 auto 마진 */
-.s03-slide .an-title{ margin:0 0 16px; font-size:44px; line-height:1.2; font-weight:800; color:var(--ink); }
+.s03-slide .an-spark{ position:absolute; left:-28px; top:-36px; width:9px; height:9px;
+  border-radius:var(--r-pill); background:var(--coral); }
+  /* v3: .an-left 내부 첫 자식(마크업 고정) — 고정 제목 "오" 좌상단 대각, 세로 중앙을 따라감 */
+.s03-slide .an-title{ margin:0 0 16px; font-size:48px; line-height:1.2; font-weight:800; color:var(--ink); }
 .s03-slide .an-bar{ width:96px; height:10px; border-radius:var(--r-pill); background:var(--mint);
   margin:0 0 24px; }   /* 고정 제목 아래 민트 pill 바(v3) */
 .s03-slide .an-intro{ margin:0; font-size:24px; line-height:1.7; color:var(--gray-700); font-weight:500; }
