@@ -137,7 +137,19 @@
 - **스크립트(Pillow 필요)**: `prepare_image_asset.py`(크로마 프리플라이트=균일 경계·키 충돌 거부, 경계연결 flood-fill 키잉, 부분알파 RGB 최근접 복구, 알파 타이트크롭 ≤10% 여백) · `verify_image_assets.py`(PNG/RGBA/투명 네모서리/여백/마젠타 프린지 + 레지스트리 계약 + manifest 참조). `verify_deck.py`에 `image_contract_checks`·`count_code_viz` 추가(회귀 없음 — 1주차 이미지 계약 11 PASS). `inline_deck.py`=asset-slot/`<picture>`/srcset/CSS `url()` 인라인 + 오프라인 외부의존 차단.
 - **검증 커맨드**: `python -m unittest tests.test_image_pipeline`(14 PASS) · `python evals/verify_image_contract.py`(프롬프트층·레지스트리·manifest 템플릿) · `python scripts/verify_image_assets.py --registry kit/images/paper-cut-v1/registry.json`. `evals/image-contract-eval.json`=수동 채점 9케이스(routing/contract). ⚠️ `verify_image_contract.py`는 아직 독립 실행 — 통합 러너 미연결.
 
+## 2단계 산출물 파이프라인 (2026-07-17) — 편집본 조각 + 단일 자립 배포본
+- **모델**: 편집본(조각) → 배포본(단일 자립). **조립기 하나가 미리보기·최종본 둘을 만들어** "미리보기≠배포본" 원천 차단. 사용자 확정 결정(조각 편집·자동 조립 통합본·폰트 사용글자 서브셋·배포본 별도 파일).
+- **조각 구조**: `sessions/N주차/강의덱.초안/` = `shell.html`(head·CSS 외부링크·고정 슬롯 cover/s02/s03·`<!-- ::PARTS:: -->` 마커·concept-recap·controls·JS) + `part-NN.html`(파트전환+해당 파트 섹션 조각) + `order.txt`(선택). 골격 정본 `sessions/_template/강의덱.초안/`. ⚠️ shell CSS 링크는 **출력**(sessions/N주차/강의덱.html) 기준 `../../kit/styles/…`.
+- **조립**: `scripts/assemble_deck.py <draft>` → 마커를 정렬된 part로 치환해 `강의덱.html`(외부링크 미리보기). `--watch`(0.5s 폴링 재조립)·`--livereload`(watch 전용). head·JS는 shell에 한 번만 → 중복 없음.
+- **최종본**: `scripts/build_release.py <draft>` = assemble → verify_deck(파트 자동 산출) → `inline_deck.py --offline` → `verify_distributable.py` → `강의덱_배포.html`.
+- **폰트 자립(핵심)**: Pretendard CDN 링크가 유일한 외부 의존이었음. `kit/fonts/PretendardVariable.woff2`(2MB·wght축·OFL) 벤더링 + `scripts/font_embed.py`가 **최종 인라인 html에서** 글리프 수집 → fonttools 서브셋(woff2) → base64 `@font-face`, CDN 링크 제거. 실측 703글리프→123KB. ⚠️ 글리프 수집은 정적 텍스트+**CSS `content:` 한글**+**CSS `\hex` 이스케이프(▸▾)**+**JS 리터럴('표지'·'발표 슬라이드')**+ASCII base 전부(누락=유일 실패모드라 과수집이 정답). ▸▾(U+25B8/BE)는 Pretendard에 없어 시스템 폴백(CDN 시절과 동일, 회귀 아님). fonttools+brotli 필요(`requirements-dev.txt`). ⚠️ heredoc은 `\\`→`\` 뭉갬 — 백슬래시 테스트는 파일로.
+- **자립성 강제(fail-closed)**: `inline_deck.py`는 에러 있으면 파일 안 씀(기존). Pretendard 링크는 인라인 단계가 건드리지 않고 남겨 `embed_font`가 마지막에 처리. postcheck에 폰트 단언 추가. `verify_distributable.py`=독립 아티팩트 게이트(외부 link/script/@import(http) 0·모든 src·url() `data:`·`@font-face` woff2≥1·pretendard CDN 0·이미지 계약 승계). build_release가 매번 통과 강제.
+- ⚠️ **주석 인식 수정(부수·선재 버그)**: `verify_deck`(main·image_contract_checks)·`inline_deck.bundle`이 HTML 주석 속 예시 마크업(`<!-- <img src=…> -->`)을 라이브로 스캔하던 버그 → `<!--…-->` 제거. 이 버그로 `deck-template.html`이 이미지 계약 v1 이후 계속 verify FAIL이었음 → 이제 FAIL 0·WARN 0. (템플릿 S02 이미지 슬롯 3종은 원래 주석 예시였고 정상.)
+- 검증: `tests/test_deck_pipeline.py`(10)+`test_image_pipeline`(14)=24 PASS. 커밋 4235c7b·4fa8409·b33d307·fde3c87.
+- ⚠️ **서브에이전트 파일 삭제 재발**: 조립기 레인 executor가 `sessions/1주차/` 디렉터리를 통째로 삭제(스코프 밖·자기 보고엔 없다고 함). `git status --short` 검토로 발견 → `git checkout HEAD -- sessions/1주차`로 무손실 복구. **서브에이전트 수용 전 git status 필수**(기존 경고 재확인).
+
 ## 미해결 (상태·TODO 정본)
+- ✅ **2단계 산출물 파이프라인 완료**(2026-07-17, 커밋 4235c7b·4fa8409·b33d307·fde3c87) — 편집본 조각+단일 자립 배포본, 전용 섹션 참조. 후속: 실전 주차(2주차~)에서 조각 편집→`build_release` 첫 사용으로 검증. `--livereload`는 실서버 미검증(개발 편의), 폰트 서브셋은 매 빌드 재계산이라 빌드본 직접 편집 금지.
 - ✅ **이미지 에셋 파이프라인 v1 커밋 완료**(2026-07-17, f819bf6) — 전용 섹션 참조. 후속: (a) 레지스트리 `assets` 비어 있음(실전 덱 생성 때 채워짐, 블로커 아님) (b) `designboard.png` candidate→계약 일치 새 보드+`--paper` 미리보기 승인 필요 (c) `evals/verify_image_contract.py` 통합 러너 미연결. ⚠️ 미커밋 상태로 방치돼 있던 WIP였음 — 이후 큰 WIP는 verify 통과 즉시 복구지점 커밋(미해결에도 기록).
 - ✅ **로고 확정**(2026-07-13) → V-마크(민트 왼팔·블루 오른팔·잉크 접점) 인라인 `<svg class="s-logo">`. 사이징=`deck.css .s-logo`(40)/`.cover-head .s-logo`(60). 표준자산 `kit/starter/logo.svg`. 전 파일 스윕 완료(2026-07-14).
 - 항목별 `catalog.html`(목표 캐노니컬 50+element 23=73 `<section>`) 미완 — 현재 layouts 14·charts 9(≈32%). patterns.css 시드 + 1주차 실전 덱(verify 통과 73장)의 섹션 역수확으로 확장.
