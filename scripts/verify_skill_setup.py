@@ -302,8 +302,12 @@ def main() -> int:
 
     prompt_markers = (
         "[STYLE CONTRACT: VIBECODING PAPER-CUT v1]",
-        "Use case: stylized-concept",
-        "SUBJECT:",
+        "LEARNING_POINT:",
+        "SOURCE_METAPHOR:",
+        "METAPHOR_MAPPING:",
+        "MUST_SHOW:",
+        "MUST_NOT_IMPLY:",
+        "ALT_TEXT:",
         "ROLE:",
         "COMPOSITION:",
         "TEXT_SAFE_SIDE:",
@@ -316,6 +320,9 @@ def main() -> int:
         "#F97360",
         "#141821",
         "NO_IMAGE",
+        "IMAGE_EXPLANATORY",
+        "IMAGE_MNEMONIC",
+        "IMAGE_DECORATIVE_OPTIONAL",
         "cover-object",
         "hero",
         "support",
@@ -324,7 +331,7 @@ def main() -> int:
         "genuine alpha",
         "네 모서리가 투명",
         "IMAGE_MODE = generate_now | prompt_only",
-        "이미지가 필요한 슬라이드는 N장입니다. 어떤 방식으로 진행할까요?",
+        "새로 생성하거나 변형할 이미지는 N장입니다. 어떤 방식으로 진행할까요?",
     )
     check(
         contains_all(image_source, prompt_markers),
@@ -332,18 +339,17 @@ def main() -> int:
         "이미지 정본의 공통 프롬프트 핵심 계약이 불완전함",
     )
     mode_output_markers = (
-        "$imagegen",
-        "remove_chroma_key.py",
+        "[OUTPUT CONTRACT: BUILT-IN CHROMA SOURCE]",
+        "perfectly uniform solid magenta #FF00FF",
+        "[OUTPUT CONTRACT: APPROVED NATIVE ALPHA]",
         "sessions/N주차/자료/images/",
-        "sessions/N주차/자료/이미지-프롬프트.md",
-        "산출물은 재현 가능한 프롬프트 패키지와 대응 이미지 슬롯이다",
-        "답변을 받은 뒤 선택한 모드의 산출 분기부터 실행한다",
-        "권장 화면비",
-        "검은 할로",
-        "승인·반려 사유",
-        "항목별 1–5점과 한 줄 근거",
-        "사용자 승인 문장",
-        "스타일 이탈 조건",
+        "sessions/N주차/자료/이미지-에셋.json",
+        "이미지-프롬프트.md",
+        'data-image-state="expected"',
+        "의미·스타일 교정은 1회",
+        "알파 문제는 후처리 1회",
+        "중단하고 보고",
+        "`rejected` 사유를 기록하고 생략",
     )
     check(
         contains_all(image_source, mode_output_markers),

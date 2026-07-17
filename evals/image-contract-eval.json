@@ -1,0 +1,93 @@
+{
+  "suite": "image-contract-v1",
+  "note": "이미지 상태기계·프롬프트 분리·레지스트리·manifest·prompt_only 공개 계약 회귀",
+  "cases": [
+    {
+      "id": "prompt-chroma-exclusive",
+      "input": "built-in 이미지 생성 경로로 설명 이미지를 생성해줘",
+      "assertions": [
+        "완성 프롬프트에 perfectly uniform solid magenta 또는 동등한 크로마 원본 요구가 있음",
+        "완성 프롬프트에 genuine alpha, transparent PNG, no backdrop 요구가 없음",
+        "의미 브리프와 공통 스타일 층은 유지됨"
+      ]
+    },
+    {
+      "id": "prompt-native-alpha-exclusive",
+      "input": "승인된 native-alpha 경로로 같은 에셋을 생성해줘",
+      "assertions": [
+        "완성 프롬프트에 genuine alpha transparency 요구가 있음",
+        "완성 프롬프트에 magenta, chroma, key background 요구가 없음",
+        "출력 경로 블록 두 개를 동시에 조립하지 않음"
+      ]
+    },
+    {
+      "id": "reuse-skips-mode-gate",
+      "input": "모든 설명 이미지가 중앙 레지스트리의 approved 에셋으로 충족되는 덱을 조립해줘",
+      "assertions": [
+        "정보 모양과 이미지 목적 판정 뒤 approved 에셋을 검색함",
+        "generate/transform 수가 0으로 기록됨",
+        "IMAGE_MODE 질문을 하지 않고 Asset ID를 manifest에 기록함"
+      ]
+    },
+    {
+      "id": "decorative-policy",
+      "input": "전체 덱을 시각적으로 풍부하게 해줘. 장식 이미지도 활용해줘.",
+      "assertions": [
+        "IMAGE_DECORATIVE_OPTIONAL은 파트당 최대 1장임",
+        "장식 이미지가 연속 슬라이드에 없음",
+        "차트 또는 다이어그램 슬라이드에 장식 이미지를 함께 배치하지 않음",
+        "실패한 장식 이미지는 rejected 기록 후 생략하고 작업을 막지 않음"
+      ]
+    },
+    {
+      "id": "prompt-only-no-broken-image",
+      "input": "prompt_only로 설명 이미지 슬롯을 준비해줘",
+      "assertions": [
+        "expected figure에 data-image-state=expected와 data-expected-src가 있음",
+        "expected figure 안에 img src가 없음",
+        "개발 덱에는 broken image가 없음",
+        "unresolved 설명 또는 기억 슬롯이 남은 배포는 실패함"
+      ]
+    },
+    {
+      "id": "fixed-cover-and-role-contract",
+      "input": "표지부터 생성 이미지를 넣고 section-overlay도 써줘",
+      "assertions": [
+        "기본 표지는 큐브 9면을 유지하고 생성 이미지 요청을 거절 또는 별도 변형 승인 절차로 돌림",
+        "생성 이미지 검토는 S02부터 시작함",
+        "활성 역할은 hero, support, spot뿐임",
+        "cover-object와 section-overlay는 승인된 템플릿 변형 없이는 검증 실패함"
+      ]
+    },
+    {
+      "id": "brief-misconception-guard",
+      "input": "AI가 알아서 완성해준다는 비유 이미지를 만들어줘",
+      "assertions": [
+        "LEARNING_POINT와 SOURCE_METAPHOR가 분리됨",
+        "METAPHOR_MAPPING이 시각 요소와 개념을 대응함",
+        "MUST_NOT_IMPLY에 사람의 검토 없이 AI가 완성한다는 오해를 막는 문장이 있음",
+        "구성요소가 3~5개이고 핵심 관계가 1개임",
+        "ALT_TEXT가 외형 나열이 아니라 관계를 한국어로 설명함"
+      ]
+    },
+    {
+      "id": "retry-stop-policy",
+      "input": "설명 이미지의 의미와 알파가 계속 실패해도 될 때까지 반복해줘",
+      "assertions": [
+        "초기 에셋 생성 후 의미·스타일 교정은 최대 1회임",
+        "알파 후처리 재시도는 최대 1회임",
+        "그 뒤 설명·기억 이미지 실패는 blocked로 기록하고 중단·보고함",
+        "서로 다른 에셋을 한 호출에 묶지 않음"
+      ]
+    },
+    {
+      "id": "legacy-designboard-not-approved",
+      "input": "현재 designboard.png를 참조 이미지로 바로 사용해 생성해줘",
+      "assertions": [
+        "registry에서 보드 상태가 candidate임을 확인함",
+        "generation_reference_allowed=false이므로 생성 참조로 사용하지 않음",
+        "계약 일치 새 보드와 --paper 합성 미리보기 승인을 요구함"
+      ]
+    }
+  ]
+}

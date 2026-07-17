@@ -1,0 +1,168 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://vibecoding-deck.local/schemas/session-image-assets.schema.json",
+  "title": "vibecoding-deck session image manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "session", "image_mode", "slides"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "schema_version": { "const": "1.0" },
+    "session": { "type": "string", "minLength": 1 },
+    "image_mode": { "enum": ["not_required", "reuse_only", "generate_now", "prompt_only", "pending"] },
+    "slides": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/slide" }
+    }
+  },
+  "$defs": {
+    "nullableString": { "type": ["string", "null"] },
+    "qaResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["static", "pixel", "visual", "notes"],
+      "properties": {
+        "static": { "enum": ["pass", "fail", "pending", "not_applicable"] },
+        "pixel": { "enum": ["pass", "fail", "pending", "not_applicable"] },
+        "visual": { "enum": ["pass", "fail", "pending", "not_applicable"] },
+        "notes": { "type": "string" }
+      }
+    },
+    "brief": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "learning_point", "source_metaphor", "metaphor_mapping", "must_show",
+        "must_not_imply", "alt_text", "audience", "components", "key_relationship"
+      ],
+      "properties": {
+        "learning_point": { "$ref": "#/$defs/nullableString" },
+        "source_metaphor": { "$ref": "#/$defs/nullableString" },
+        "metaphor_mapping": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["visual", "concept"],
+            "properties": {
+              "visual": { "type": "string", "minLength": 1 },
+              "concept": { "type": "string", "minLength": 1 }
+            }
+          }
+        },
+        "must_show": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+        "must_not_imply": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+        "alt_text": { "$ref": "#/$defs/nullableString" },
+        "audience": { "type": "string", "minLength": 1 },
+        "components": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "minItems": 0,
+          "maxItems": 5
+        },
+        "key_relationship": { "enum": ["flow", "containment", "transformation", "comparison", "cause", "none"] }
+      }
+    },
+    "slide": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "slide_id", "part", "decision", "decision_reason", "purpose", "role",
+        "brief", "expected_file", "method", "asset_id", "parent_asset_ids",
+        "prompt_id", "status", "qa"
+      ],
+      "properties": {
+        "slide_id": { "type": "string", "minLength": 1 },
+        "part": { "type": ["integer", "null"], "minimum": 0 },
+        "decision": {
+          "enum": ["NO_IMAGE", "IMAGE_EXPLANATORY", "IMAGE_MNEMONIC", "IMAGE_DECORATIVE_OPTIONAL"]
+        },
+        "decision_reason": { "type": "string", "minLength": 1 },
+        "purpose": { "enum": ["none", "explanatory", "mnemonic", "decorative"] },
+        "role": { "enum": ["none", "hero", "support", "spot"] },
+        "brief": { "$ref": "#/$defs/brief" },
+        "expected_file": { "$ref": "#/$defs/nullableString" },
+        "method": { "enum": ["none", "reuse", "generate", "transform"] },
+        "asset_id": {
+          "anyOf": [
+            { "type": "null" },
+            { "type": "string", "pattern": "^ASSET-[0-9]{3,}$" }
+          ]
+        },
+        "parent_asset_ids": {
+          "type": "array",
+          "items": { "type": "string", "pattern": "^ASSET-[0-9]{3,}$" },
+          "uniqueItems": true
+        },
+        "prompt_id": { "$ref": "#/$defs/nullableString" },
+        "status": { "enum": ["not_needed", "expected", "processing", "ready", "rejected", "blocked"] },
+        "qa": { "$ref": "#/$defs/qaResult" }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "decision": { "const": "NO_IMAGE" } } },
+          "then": {
+            "properties": {
+              "purpose": { "const": "none" },
+              "role": { "const": "none" },
+              "method": { "const": "none" },
+              "status": { "const": "not_needed" },
+              "expected_file": { "type": "null" }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "decision": { "const": "IMAGE_EXPLANATORY" } } },
+          "then": { "properties": { "purpose": { "const": "explanatory" } } }
+        },
+        {
+          "if": { "properties": { "decision": { "const": "IMAGE_MNEMONIC" } } },
+          "then": { "properties": { "purpose": { "const": "mnemonic" } } }
+        },
+        {
+          "if": { "properties": { "decision": { "const": "IMAGE_DECORATIVE_OPTIONAL" } } },
+          "then": { "properties": { "purpose": { "const": "decorative" } } }
+        },
+        {
+          "if": {
+            "properties": {
+              "decision": { "not": { "const": "NO_IMAGE" } }
+            }
+          },
+          "then": {
+            "properties": {
+              "brief": {
+                "properties": {
+                  "components": { "minItems": 3, "maxItems": 5 },
+                  "key_relationship": { "enum": ["flow", "containment", "transformation", "comparison", "cause"] }
+                }
+              },
+              "expected_file": { "type": "string", "minLength": 1 },
+              "role": { "enum": ["hero", "support", "spot"] }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "purpose": { "enum": ["explanatory", "mnemonic"] } } },
+          "then": {
+            "properties": {
+              "brief": {
+                "properties": {
+                  "alt_text": { "type": "string", "minLength": 1 }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "method": { "const": "reuse" } } },
+          "then": {
+            "properties": {
+              "asset_id": { "type": "string", "pattern": "^ASSET-[0-9]{3,}$" }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

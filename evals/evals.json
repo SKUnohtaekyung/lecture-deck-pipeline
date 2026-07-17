@@ -68,11 +68,13 @@
     {
       "id": 5,
       "name": "image-mode-gate-stops-before-user-choice",
-      "prompt": "40~50대 초보자 대상 바이브코딩 강의덱을 만들어줘. 표지에는 AI에게 막연한 아이디어를 건네면 작동하는 웹앱으로 조립되는 과정을 보여주는 페이퍼 컷 이미지를 넣고 싶어. 이미지 제작 방식은 아직 정하지 않았어.",
-      "expected_output": "슬라이드별 이미지 필요성을 먼저 판정하고 IMAGE_REQUIRED 수를 산출한다. 필요한 이미지가 있으므로 generate_now와 prompt_only 중 하나를 고르는 질문에서 일시 정지하고, 답변을 받은 뒤 선택한 모드의 산출 분기와 덱 조립을 실행한다.",
+      "prompt": "40~50대 초보자 대상 바이브코딩 강의덱을 만들어줘. S02 도입에는 AI에게 막연한 아이디어를 건네면 작동하는 웹앱으로 조립되는 과정을 보여주는 페이퍼 컷 이미지를 넣고 싶어. 이미지 제작 방식은 아직 정하지 않았어.",
+      "expected_output": "정보 모양·코드 element를 먼저 결정하고 네 가지 이미지 목적 상태를 판정한다. 승인 에셋 재사용 검색 뒤 신규 generate/transform 수를 산출한다. 신규 작업이 있으므로 generate_now와 prompt_only 중 하나를 고르는 질문에서 일시 정지한다.",
       "files": [],
       "assertions": [
-        "이미지 필요 슬라이드 수 N을 제시한 뒤 '이미지 바로 생성'과 '프롬프트만 제작' 두 선택지를 질문함",
+        "NO_IMAGE | IMAGE_EXPLANATORY | IMAGE_MNEMONIC | IMAGE_DECORATIVE_OPTIONAL 중 하나를 슬라이드마다 기록함",
+        "중앙 레지스트리에서 approved 재사용 후보를 먼저 검색하고 신규 generate/transform 수 N을 제시함",
+        "'이미지 바로 생성'과 '프롬프트만 제작' 두 선택지를 질문함",
         "사용자가 IMAGE_MODE를 선택하는 시점까지 이미지 생성 도구 호출 수가 0임",
         "사용자가 IMAGE_MODE를 선택하는 시점까지 이미지 프롬프트 시트와 최종 이미지 슬롯이 미확정 상태임",
         "이미지 필요성 판정은 코드 차트·다이어그램으로 표현할 슬라이드를 이미지 대상에서 제외함"
@@ -82,12 +84,14 @@
       "id": 6,
       "name": "image-mode-generate-now",
       "prompt": "바이브코딩 입문 강의덱을 만들고 필요한 페이퍼 컷 이미지는 바로 생성해줘. generate_now 방식으로 진행해. 표지는 아이디어 카드가 코드 블록을 지나 작은 웹앱 모듈로 조립되는 비유로 해줘.",
-      "expected_output": "이미 IMAGE_MODE=generate_now가 명시되었으므로 같은 질문을 반복하지 않는다. paper-cut-v1 정본 프롬프트로 에셋별 생성·크로마키 제거·알파 QA를 수행하고 최종 파일을 sessions/N주차/자료/images/에 저장한 뒤 검수를 통과한 파일만 덱에 연결한다.",
+      "expected_output": "이미 IMAGE_MODE=generate_now가 명시되었으므로 같은 질문을 반복하지 않는다. 기본 표지는 큐브 9면을 유지한다. S02 이후 paper-cut-v1 에셋을 개별 생성하며 built-in 프롬프트에는 균일 마젠타 배경만, native-alpha 프롬프트에는 투명 배경만 들어간다.",
       "files": [],
       "assertions": [
         "사용자가 generate_now를 명시했으므로 이미지 모드 질문을 반복하지 않음",
-        "각 에셋을 별도 이미지 생성 호출로 만들고 paper-cut-v1 스타일 계약을 사용함",
+        "기본 표지는 생성 이미지로 바꾸지 않고 고정 큐브 9면을 유지함",
+        "각 에셋을 별도 이미지 생성 호출로 만들고 paper-cut-v1 투명 오브젝트 계약을 사용함",
         "기본 Codex 경로에서 평면 크로마키 원본을 생성한 뒤 로컬 제거를 수행함",
+        "크로마 원본 프롬프트에 genuine alpha/no backdrop 문구가 없고 native-alpha 프롬프트에 magenta/chroma 문구가 없음",
         "최종 PNG에 알파 채널·투명 모서리·유효한 피사체 범위가 있고 키 컬러 프린지가 없음",
         "QA를 통과한 최종 파일만 sessions/N주차/자료/images/에 저장하고 HTML에 연결함",
         "투명화 실패나 true native transparency 모델 전환이 필요할 때 사용자 승인 없이 자동 다운그레이드하지 않음"
@@ -97,13 +101,14 @@
       "id": 7,
       "name": "image-mode-prompt-only",
       "prompt": "이번 바이브코딩 강의덱은 prompt_only로 진행해줘. 필요한 이미지의 생성 프롬프트와 들어갈 자리만 준비해줘.",
-      "expected_output": "이미 IMAGE_MODE=prompt_only가 명시되었으므로 모드 질문을 반복하지 않고 프롬프트 패키지 분기를 실행한다. 슬라이드별 역할·권장 화면비·SUBJECT·COMPOSITION·TEXT_SAFE_SIDE·예상 파일명·완성 프롬프트를 이미지-프롬프트.md에 기록하고 HTML에는 동일한 경로의 슬롯을 둔다.",
+      "expected_output": "이미 IMAGE_MODE=prompt_only가 명시되었으므로 모드 질문을 반복하지 않는다. 의미 브리프와 예상 파일을 두 문서에 기록하고 HTML에는 img 없는 expected figure만 둔다.",
       "files": [],
       "assertions": [
         "사용자가 prompt_only를 명시했으므로 이미지 모드 질문을 반복하지 않음",
         "실제 이미지 생성 단계 없이 프롬프트 패키지만 산출함",
-        "sessions/N주차/자료/이미지-프롬프트.md에 슬라이드 ID·역할·권장 화면비·SUBJECT·COMPOSITION·안전 여백·예상 파일명·완성 프롬프트가 있음",
-        "HTML 이미지 슬롯의 경로가 프롬프트 시트의 예상 파일명과 일치함",
+        "sessions/N주차/자료/이미지-에셋.json에 판정·목적·역할·학습 포인트·예상 파일·상태가 있음",
+        "이미지-프롬프트.md에 LEARNING_POINT·SOURCE_METAPHOR·METAPHOR_MAPPING·MUST_SHOW·MUST_NOT_IMPLY·ALT_TEXT와 완성 프롬프트가 있음",
+        "HTML figure의 data-image-state=expected와 data-expected-src가 문서의 예상 파일명과 일치하며 실제 <img>가 없음",
         "데이터·코드 중심 슬라이드는 프롬프트를 만들지 않고 NO_IMAGE 사유를 남김"
       ]
     },
@@ -111,11 +116,11 @@
       "id": 8,
       "name": "no-image-skips-mode-gate",
       "prompt": "바이브코딩 프로젝트의 기획 40%, 개발 35%, 검증 25%를 보여주는 한 장과 2024~2026 수강생 증가 추세 한 장을 강의덱에 추가해줘. 이미지는 필요 없어.",
-      "expected_output": "두 슬라이드는 데이터 중심이므로 IMAGE_REQUIRED=0 및 NO_IMAGE로 판정한다. 이미지 모드 질문 없이 접근 가능한 코드 차트만 산출한다.",
+      "expected_output": "두 슬라이드는 데이터 중심이므로 NO_IMAGE로 판정한다. 신규 generate/transform=0이므로 이미지 모드 질문 없이 접근 가능한 코드 차트만 산출한다.",
       "files": [],
       "assertions": [
         "두 슬라이드 모두 NO_IMAGE 판정과 사유가 기록됨",
-        "IMAGE_REQUIRED=0이므로 generate_now/prompt_only 질문을 생략함",
+        "신규 generate/transform=0이므로 generate_now/prompt_only 질문을 생략함",
         "이미지 생성 도구 호출 수와 프롬프트 시트 수가 모두 0임",
         "비율과 추세를 정보 모양에 맞는 접근 가능한 코드 차트로 구현함"
       ]

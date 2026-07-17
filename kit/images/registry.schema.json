@@ -1,0 +1,125 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://vibecoding-deck.local/schemas/image-registry.schema.json",
+  "title": "vibecoding-deck approved image registry",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "style_version", "reference_boards", "assets"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "schema_version": { "const": "1.0" },
+    "style_version": { "type": "string", "minLength": 1 },
+    "reference_boards": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/referenceBoard" }
+    },
+    "assets": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/asset" }
+    }
+  },
+  "$defs": {
+    "status": {
+      "enum": ["candidate", "approved", "rejected", "retired"]
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "referenceBoard": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "file", "sha256", "status", "generation_reference_allowed", "notes"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^BOARD-[A-Z0-9-]+$" },
+        "file": { "type": "string", "minLength": 1 },
+        "sha256": { "$ref": "#/$defs/sha256" },
+        "status": { "$ref": "#/$defs/status" },
+        "generation_reference_allowed": { "type": "boolean" },
+        "paper_preview": { "type": ["string", "null"] },
+        "notes": { "type": "string", "minLength": 1 }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "status": { "not": { "const": "approved" } } } },
+          "then": { "properties": { "generation_reference_allowed": { "const": false } } }
+        },
+        {
+          "if": { "properties": { "generation_reference_allowed": { "const": true } } },
+          "then": {
+            "properties": {
+              "status": { "const": "approved" },
+              "paper_preview": { "type": "string", "minLength": 1 }
+            }
+          }
+        }
+      ]
+    },
+    "asset": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "asset_id", "file", "sha256", "style_version", "metaphor",
+        "role", "aspect_ratio", "text_safe_side", "lineage", "status",
+        "qa", "notes"
+      ],
+      "properties": {
+        "asset_id": { "type": "string", "pattern": "^ASSET-[0-9]{3,}$" },
+        "file": { "type": "string", "pattern": "\\.png$" },
+        "sha256": { "$ref": "#/$defs/sha256" },
+        "style_version": { "type": "string", "minLength": 1 },
+        "metaphor": { "type": "string", "minLength": 1 },
+        "role": { "enum": ["hero", "support", "spot"] },
+        "aspect_ratio": { "type": "string", "pattern": "^[0-9]+:[0-9]+$" },
+        "text_safe_side": { "enum": ["left", "right", "top", "none"] },
+        "lineage": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["method", "parent_asset_ids", "source_prompt_id"],
+          "properties": {
+            "method": { "enum": ["generate", "transform", "import"] },
+            "parent_asset_ids": {
+              "type": "array",
+              "items": { "type": "string", "pattern": "^ASSET-[0-9]{3,}$" },
+              "uniqueItems": true
+            },
+            "source_prompt_id": { "type": ["string", "null"] }
+          }
+        },
+        "status": { "$ref": "#/$defs/status" },
+        "used_by": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "qa": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["pixel", "visual", "approved_at"],
+          "properties": {
+            "pixel": { "enum": ["pass", "fail", "pending"] },
+            "visual": { "enum": ["pass", "fail", "pending"] },
+            "approved_at": { "type": ["string", "null"], "format": "date-time" }
+          }
+        },
+        "notes": { "type": "string" }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "status": { "const": "approved" } } },
+          "then": {
+            "properties": {
+              "qa": {
+                "properties": {
+                  "pixel": { "const": "pass" },
+                  "visual": { "const": "pass" },
+                  "approved_at": { "type": "string", "format": "date-time" }
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

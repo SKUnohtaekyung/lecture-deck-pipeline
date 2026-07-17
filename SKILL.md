@@ -22,7 +22,7 @@ kit/guide/   정보모양-taxonomy.md · 카탈로그-규격.md · 토큰-치트
 kit/layouts/ by-shape.md(역인덱스) · families/*.md(캐노니컬 50 · 물리 54, 4개는 구도중복 variant_of로 접힘) · README.md · catalog.html(코드 코어)
 kit/charts/  by-shape.md(역인덱스) · charts-*.md · diagrams-*.md · elements-code.md(총 23) · README.md · catalog.html
 kit/styles/  deck.css · legibility-40s.css · patterns.css(코드 코어)   kit/starter/ deck-template.html
-kit/images/  paper-cut-v1 디자인보드·승인 이미지 스타일 기준
+kit/images/  paper-cut-v1 후보 보드·승인 에셋 중앙 레지스트리
 kit/screenshots/  주석 스크린샷 element
 kit/starter/ deck-template.html · presenter-notes-template.html(발표자 노트) · logo.svg
 references/  조립-리듬-불변요소.md · 이미지-디렉션-프롬프트.md · 이미지-스크린샷-배포.md · 콘텐츠초안-입력형식.md
@@ -36,7 +36,7 @@ scripts/     verify_deck.py(검증) · inline_deck.py(배포)      evals/ evals.
 1. **고정 슬라이드**: 표지(`cover`)·도입(`s02-slide`)·아젠다(`s03-slide`)·마무리(`concept-recap`)는 `kit/starter/deck-template.html`의 구조·CSS 그대로. 표지는 `data-cube` 3개(각 3면, 총 polygon 9개)와 코랄 스파크 1개를 반드시 유지한다. 아젠다(`s03-slide`)는 팀명 없는 로고+브랜드+라인 헤더 + 좌측 고정 제목 **"오늘 배우게 될 것"**(초안의 아젠다 행 제목과 무관하게 항상 이 문구 — verify 강제)·민트 바(`.an-bar`)·1~2줄 리드 + 노드-타임라인(`.an-item`을 항목 수만큼 — 파트 수 또는 여정 단계 수, 3~6 권장, 번호=블루 fill 64px 플랫(그림자 금지)·항목 제목 `.an-h`=블루) 구조를, 파트전환(`part-divider`)은 헤더 없이 표지와 동일한 아이소 큐브 클러스터(`.dv-hero`, 9면)+진행 도트(`.pd-dot`)+타이틀 구조를 유지한다. 텍스트 슬롯·이미지만 교체.
 2. **하단 네비게이션 바**(`.controls > .navbar`)와 **상세 발표 메뉴**(`.presentation-menu`) — Apple Liquid Glass 원칙을 응용한다. 기본 바는 고투명 재질을 유지하고, 펼쳐지는 상세 메뉴는 배경과 구분되는 **옅은 쿨그레이 반투명 유리**(`--glass-thick`)로 만든다. 강한 배경 블러·채도 보존·얇은 빛 테두리·안쪽 하이라이트·다층 그림자를 함께 쓰며, 완전 투명하거나 불투명한 흰색 패널처럼 만들지 않는다. 상세 메뉴는 현재 제목·한 줄 조작부·슬라이드 목록만 보이는 단순 구조이며 홈·페이지 이동·PDF·단축키를 제공한다. `G`로 열고 `Esc`로 닫는다. `B`는 화면 가리기, `F`는 전체화면이다. **리모컨은 마우스를 움직일 때만 나타난다** — 슬라이드 전환(방향키 등)으로는 노출하지 않아 발표 화면을 깨끗이 유지한다(스타터 JS의 keydown 분기엔 `poke()`를 넣지 않는다).
 3. **모든 파트는 파트 전환(`part-divider`) 슬라이드로 시작 — PART 1 포함.** 각 파트 첫 슬라이드 앞에 반드시. **파트 수 = divider 수.** 진행 도트 `is-active`는 현재 파트에, `PART n / N`의 N은 전체 파트 수.
-4. **이미지 모드 게이트** — 시각화는 항상 **코드 차트·다이어그램을 우선**하고, 그 뒤 슬라이드마다 `IMAGE_REQUIRED` 또는 `NO_IMAGE`를 판정한다. 필요한 이미지가 1장 이상이면 `IMAGE_MODE = generate_now | prompt_only` 중 하나를 사용자에게 확인하고 **답을 받기 전에는 이미지 생성·프롬프트 시트 작성·이미지 슬롯 조립을 시작하지 않는다**. 사용자가 요청에서 이미 모드를 명시했다면 재질문하지 않으며, 0장이면 `NO_IMAGE` 이유를 기록하고 질문을 생략한다. 세부 계약은 [`references/이미지-디렉션-프롬프트.md`](references/이미지-디렉션-프롬프트.md)를 따른다.
+4. **이미지 판정·모드 게이트** — `정보 모양·코드 element 결정 → 이미지 목적 판정 → 중앙 레지스트리에서 승인 에셋 재사용 검색 → generate/transform 수 산출 → IMAGE_MODE 확인` 순서를 지킨다. 판정은 `NO_IMAGE | IMAGE_EXPLANATORY | IMAGE_MNEMONIC | IMAGE_DECORATIVE_OPTIONAL` 네 가지다. 승인 에셋 재사용만으로 충족되거나 신규 작업이 0장이면 모드 질문을 생략한다. 신규 생성·변형이 1장 이상이면 `IMAGE_MODE = generate_now | prompt_only` 중 하나를 확인하고 **답을 받기 전에는 생성·프롬프트 시트 확정·실제 이미지 연결을 시작하지 않는다**. 세부 계약은 [`references/이미지-디렉션-프롬프트.md`](references/이미지-디렉션-프롬프트.md)를 따른다.
 5. **템플릿 규칙(v2.1)** — **navy 금지**(어두운=`--ink`) · **그라데이션 금지**(cover 포함) · **번호배지 민트**는 `.num-circle`·`.work-step .n`·`.pd-dot.is-active` **셋만**(다이어그램/플로우 노드·`.timing`은 블루) · **헤더 파트진행**(본문 슬라이드 우측 `PART n/N`+민트 도트, `.s-part` JS 주입) · **하단 페이지네이션**(`n/전체`, `.s-pageno` JS 주입, 표지·마무리 제외). 운영 정본은 shipped `kit/guide/디자인시스템.md`·`kit/guide/토큰-치트시트.md`(설계 배경·전체 명세는 `_dev/설계기록/색시스템-v2-명세.md` — 배포 제외).
 
 > 스타터를 복사하면 1·2가 자동 보존된다. 3은 조립 때 파트 수만큼 배치. 검증(8단계)에서 확인.
@@ -78,17 +78,17 @@ scripts/     verify_deck.py(검증) · inline_deck.py(배포)      evals/ evals.
 | # | 정보 모양 | 구도 패밀리 | element(선택) | 이미지 판정·역할 | 직전과 다른 패밀리? |
 |---|---|---|---|---|---|
 | B01 | flow | vertical-flow | D-flow-v | `NO_IMAGE` · 코드 흐름으로 충분 | (첫 본문) |
-| B02 | concept | centered | — | `IMAGE_REQUIRED` · `hero` | ✓ 다름 |
+| B02 | concept | centered | — | `IMAGE_EXPLANATORY` · `hero` · 재사용 검색 | ✓ 다름 |
 
 - **직전 콘텐츠 슬라이드와 같은 구도 패밀리를 피한다.** split(좌우 비대칭)은 희소하게, **연속 금지**.
 - 차트/다이어그램이 필요하면 **element를 골라 레이아웃에 얹는다** — 레이아웃 ≠ 다이어그램(옛 venn-slide처럼 결합하지 않음). 예: `containment` → 레이아웃 `L-ct-concentric` + element `D-concentric`.
 - 선택은 각 항목의 `data_shape`·`when_to_use`·`when_to_avoid`로 검증.
 - `🗣`가 있던 슬라이드는 결정표에 **`힌트카드`** 메모를 남겨, element 선택 때 `.hint-reveal` 배치를 놓치지 않게 한다. 이 결정표(정보 모양·PART·힌트카드 유무)를 **조립 전 사용자에게 확인**받는다.
-- 코드 element 후보까지 결정한 뒤 [`references/이미지-디렉션-프롬프트.md`](references/이미지-디렉션-프롬프트.md)의 기준으로 이미지 필요성을 판정한다. `IMAGE_REQUIRED`가 1장 이상이고 요청에 모드가 없으면 아래 **두 선택지만 정확히 제시하고 답을 기다린다**:
+- 코드 element 후보까지 결정한 뒤 [`references/이미지-디렉션-프롬프트.md`](references/이미지-디렉션-프롬프트.md)의 기준으로 네 상태 중 하나를 판정한다. 장식 이미지는 사용자가 시각적 풍부함을 명시한 경우에만 `IMAGE_DECORATIVE_OPTIONAL` 후보가 되며, 파트당 최대 1장·비연속·차트/다이어그램과 동시 사용 금지다. 이어 `kit/images/paper-cut-v1/registry.json`에서 `approved` 에셋을 먼저 찾고, 재사용으로 충족되지 않는 generate/transform 수가 1장 이상이며 요청에 모드가 없으면 아래 **두 선택지만 정확히 제시하고 답을 기다린다**:
   > 이미지가 필요한 슬라이드는 N장입니다. 어떤 방식으로 진행할까요?  
   > 1. 이미지 바로 생성 — 생성·투명화·검수 후 덱에 삽입  
   > 2. 프롬프트만 제작 — 파일명과 슬롯, 생성용 프롬프트 시트만 작성
-- 이 게이트의 답을 받기 전에는 5단계 조립으로 넘어가지 않는다. 이미지가 0장이면 슬라이드별 `NO_IMAGE` 이유를 결정표에 남기고 질문 없이 진행한다.
+- 이 게이트의 답을 받기 전에는 5단계 조립으로 넘어가지 않는다. 신규 생성·변형이 0장이면 슬라이드별 판정과 재사용 Asset ID 또는 `NO_IMAGE` 이유를 결정표와 `자료/이미지-에셋.json`에 남기고 질문 없이 진행한다.
 
 ### 5. 조립
 `kit/starter/deck-template.html`을 기반으로(검증된 CSS는 `kit/styles/patterns.css`를 deck.css·legibility **뒤에** 로드하면 재사용 — 매번 새로 짜지 않는다):
@@ -97,13 +97,15 @@ scripts/     verify_deck.py(검증) · inline_deck.py(배포)      evals/ evals.
 - **토큰만 사용**([`kit/guide/토큰-치트시트.md`](kit/guide/토큰-치트시트.md)) · **가독성 하한**(본문 22px·표 17px) · **색은 문법**(구조·주 강조 블루, 행동·안전 민트, 주의 코랄, 오류 레드) · **오버플로 0**(세로예산 548px·행높이 계산식).
 - **아이콘 라우팅 반영**: `🗣` 슬라이드는 본문 슬롯에 `.hint-reveal`(`kit/styles/deck.css`) — 안전망 예시 원문 그대로, 레이아웃 무관 삽입. `💬`·`👀`는 `<!-- 발표노트: … -->` 주석으로. **이모지 문자 자체는 마크업에 남기지 않는다.**
 - 채울 수 있는 레이아웃은 본문 안전 영역을 적극 사용한다. 단, centered·일부 full-bleed처럼 여백 자체가 메시지인 구도는 의도적 여백을 유지한다.
+- 이미지 슬롯은 `<figure class="asset-slot asset-slot--hero" data-image-purpose="explanatory" ...>` 계약을 사용하고 활성 역할은 `hero | support | spot`뿐이다. 설명·기억 이미지는 관계를 설명하는 한국어 `alt`가 필수이며 장식 이미지는 `alt="" aria-hidden="true"`다. `prompt_only`는 `<img>`를 만들지 않고 figure에 `data-image-state="expected" data-expected-src="…"`만 둔다. `cover-object`·`section-overlay`는 승인된 별도 템플릿 변형이 없으므로 사용하지 않는다.
 - 조립 문법·리듬·불변요소 상세: [`references/조립-리듬-불변요소.md`](references/조립-리듬-불변요소.md).
 - **산출 위치**: 세션 폴더(`sessions/N주차/`)에 쓰면 kit CSS 링크를 `../../kit/styles/…`로(루트에 바로 산출하면 `kit/styles/…`). 배포 단일파일은 `scripts/inline_deck.py`(9단계).
 
 ### 6. 이미지 모드 실행 · 스크린샷 핸드오프
-- 공통 스타일 계약·슬라이드별 프롬프트 조립·`NO_IMAGE`·에셋 재사용·투명 PNG QA는 [`references/이미지-디렉션-프롬프트.md`](references/이미지-디렉션-프롬프트.md)를 따른다. 상세 프롬프트를 이 문서나 플랫폼 어댑터에 복제하지 않는다.
-- **`generate_now`**: Codex에서는 `$imagegen`을 사용해 에셋별로 한 번씩 생성한다. 기본 경로는 마젠타 크로마키 원본 → 로컬 배경 제거 → 알파·투명 모서리·색상·프린지·금지 요소 QA이며, 통과한 최종 PNG만 `sessions/N주차/자료/images/`에 저장한 뒤 덱에 연결한다. 생성 도구의 외부 기본 폴더에만 프로젝트 이미지를 남기지 않는다. 네이티브 투명도나 다른 모델·CLI 경로가 필요하면 조용히 바꾸지 말고 먼저 사용자 승인을 받는다. Claude Code에서는 사용 가능한 이미지 생성 기능을 먼저 확인하며, 없으면 `prompt_only`로 임의 전환하지 않고 보고한 뒤 중단한다.
-- **`prompt_only`**: 실제 이미지 대신 `sessions/N주차/자료/이미지-프롬프트.md`에 슬라이드 ID·역할·권장 화면비·SUBJECT·COMPOSITION·안전 여백·예상 파일명·완성 프롬프트를 쓰고, 덱에는 같은 예상 경로의 슬롯만 배치한다.
+- 이미지 판정·의미 브리프·출력 경로별 프롬프트·재사용·투명 PNG QA는 [`references/이미지-디렉션-프롬프트.md`](references/이미지-디렉션-프롬프트.md)를 따른다. 중앙 승인 정본은 `kit/images/paper-cut-v1/registry.json`, 세션 실행 정본은 `sessions/N주차/자료/이미지-에셋.json`, 사람용 대응 문서는 `이미지-프롬프트.md`다. 상세 계약을 이 문서나 플랫폼 어댑터에 복제하지 않는다.
+- 기본 표지는 고정 큐브 9면을 유지하고 생성 이미지를 넣지 않는다. 생성 이미지는 S02부터 검토하며, `paper-cut-v1`은 투명 오브젝트 전용이다. 사진·풀블리드는 사용자 제공 자산 또는 별도 승인 스타일만 사용한다.
+- **`generate_now`**: 에셋별 초기 생성은 한 번씩 별도 호출한다. built-in 경로는 **균일 마젠타 배경만** 요구하는 크로마 원본 프롬프트를 쓰며 native alpha 문구를 섞지 않는다. 승인된 native-alpha 경로는 **진짜 투명 배경만** 요구하고 크로마 문구를 섞지 않는다. 의미·스타일 교정은 1회, 알파 후처리 재시도는 1회까지다. 이후 설명·기억 이미지는 중단·보고하고, 장식 이미지는 반려 기록 후 생략한다. 통과한 최종 PNG만 `sessions/N주차/자료/images/`에 저장·등록·연결한다.
+- **`prompt_only`**: `sessions/N주차/자료/이미지-프롬프트.md`와 `이미지-에셋.json`에 의미 브리프·역할·예상 파일·프롬프트를 기록한다. HTML figure는 `data-image-state="expected"`와 `data-expected-src`만 가지며 실제 `<img src>`는 두지 않는다. 개발 덱에서는 깨진 이미지가 없어야 하고 배포는 unresolved 설명·기억 슬롯 때문에 실패해야 한다.
 - 화면 조작 안내(`screen-operation`)는 이미지 모드와 별개다. 실제 화면은 사용자가 캡처하고, 번호·테두리 overlay는 **주석 스크린샷** 킷([`kit/screenshots/`](kit/screenshots/))으로 구현한다. 파일 배치·캡처·배포 상세는 [`references/이미지-스크린샷-배포.md`](references/이미지-스크린샷-배포.md)를 따른다.
 - 참고: 초안의 `💬`/`🗣`/`👀`는 텍스트라 이 단계 대상이 아니다 — 라우팅은 1·5단계·[`references/콘텐츠초안-입력형식.md`](references/콘텐츠초안-입력형식.md).
 

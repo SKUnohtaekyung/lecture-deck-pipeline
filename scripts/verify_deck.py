@@ -8,7 +8,7 @@
   - part-divider 수 (= --parts N 이면 일치 검사)
   - 네비 엔진(.navbar) · 상세 메뉴 PDF 출력 버튼(#pdfBtn)
   - deck.css + legibility-40s.css 로드(링크 또는 인라인)
-  - 코드 시각화(.viz-*/.code-*/<svg>/막대) vs <img> 개수 (code-viz 우선 원칙)
+  - 코드 시각화(.viz-* 또는 data-viz) vs 실제 <img> 개수 (로고·표지 SVG는 집계 제외)
   - 콘텐츠 슬라이드 구도 다양성: 서로 다른 구조 시그니처 수 · 같은 구도 최장 연속
   - raw #hex 색이 :root/토큰 밖에서 쓰였는지(토큰-only 대략 검사)
   - 덱 인라인 <style>/style= 그라디언트 금지(flat-fill) · 덱 인라인 var(--navy) 금지 · 진행/페이지 자동주입 스크립트(s-pageno+s-part)
@@ -21,8 +21,9 @@
 브라우저로만 되는 것(오버플로·콘솔·가독성 computed)은 이 스크립트가 안 하고 리마인더만 출력.
 종료코드: FAIL 있으면 1, 아니면 0.
 """
-import sys, re, os, argparse
+import sys, re, os, argparse, json
 from pathlib import Path
+from urllib.parse import unquote, urlsplit
 try:
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")  # Windows cp949 콘솔 대응
 except Exception:
@@ -52,7 +53,7 @@ def family_signature(cls, inner):
     # 콘텐츠 마커
     if re.search(r'class="[^"]*\bgrid-[23]\b', inner) or 'revenue-grid' in inner: sig.append("grid")
     if 'table' in inner and re.search(r'class="t\b', inner): sig.append("table")
-    if re.search(r'class="[^"]*\bviz-', inner) or 'code-chart' in inner or 'code-diagram' in inner or '<svg' in inner: sig.append("viz")
+    if re.search(r'class="[^"]*\bviz-', inner) or re.search(r'\bdata-viz(?:\s*=|\s|>)', inner): sig.append("viz")
     if 'compare2' in inner: sig.append("compare")
     if 'work-step' in inner or 'flow-step' in inner: sig.append("flow")
     if 'shot-annot' in inner or 'shot-win' in inner: sig.append("shot")
@@ -92,9 +93,305 @@ def local_linked_css(html, deck_path):
                 pass
     return "\n".join(chunks)
 
+
+def _attr(tag, name):
+    match = re.search(rf'\b{re.escape(name)}\s*=\s*(["\'])(.*?)\1', tag, re.I | re.S)
+    return match.group(2) if match else None
+
+
+def _is_remote(reference):
+    return bool(re.match(r'^(?:https?:)?//', reference or '', re.I))
+
+
+def _local_reference(reference, base):
+    if not reference or reference.startswith(('data:', '#')) or _is_remote(reference):
+        return None
+    return (base / unquote(urlsplit(reference).path)).resolve()
+
+
+def _srcset_references(value):
+    for candidate in (value or '').split(','):
+        pieces = candidate.strip().split(None, 1)
+        if pieces:
+            yield pieces[0]
+
+
+def _figure_slots(html):
+    slots = []
+    for match in re.finditer(r'<figure\b([^>]*)>(.*?)</figure>', html, re.I | re.S):
+        attrs, body = match.group(1), match.group(2)
+        classes = _attr(attrs, 'class') or ''
+        if re.search(r'\basset-slot\b', classes):
+            slots.append((attrs, body, classes))
+    return slots
+
+
+def count_code_viz(html):
+    """Count explicit visualization owner elements once, even with two markers."""
+    count = 0
+    for tag in re.findall(r'<[a-z][^>]*>', html, re.I):
+        classes = _attr(tag, 'class') or ''
+        if re.search(r'(?:^|\s)viz-[a-z0-9_-]+(?:\s|$)', classes, re.I) or re.search(
+            r'\bdata-viz(?:\s*=|\s|>)', tag, re.I
+        ):
+            count += 1
+    return count
+
+
+def _slide_section_ranges(html):
+    """Return (start, end, classes, opening_tag) for quoted HTML slide sections."""
+    openings = []
+    for match in re.finditer(r'<section\b[^>]*>', html, re.I):
+        classes = _attr(match.group(0), 'class') or ''
+        if re.search(r'(?:^|\s)slide(?:\s|$)', classes):
+            openings.append((match.start(), classes, match.group(0)))
+    ranges = []
+    for index, (start, classes, tag) in enumerate(openings):
+        end = openings[index + 1][0] if index + 1 < len(openings) else len(html)
+        ranges.append((start, end, classes, tag))
+    return ranges
+
+
+def validate_manifest_document(data):
+    """Validate the session image-manifest contract at runtime."""
+    errors = []
+    if not isinstance(data, dict):
+        return ['manifest root must be an object']
+    required_root = {'schema_version', 'session', 'image_mode', 'slides'}
+    missing_root = sorted(required_root - set(data))
+    if missing_root:
+        errors.append(f'manifest missing required fields {missing_root}')
+    if data.get('schema_version') != '1.0':
+        errors.append("manifest schema_version must be '1.0'")
+    if not isinstance(data.get('session'), str) or not data.get('session', '').strip():
+        errors.append('manifest session must be a nonempty string')
+    if data.get('image_mode') not in {'not_required', 'reuse_only', 'generate_now', 'prompt_only', 'pending'}:
+        errors.append('manifest image_mode is invalid')
+    slides = data.get('slides')
+    if not isinstance(slides, list):
+        errors.append('manifest slides must be an array')
+        return errors
+
+    required_slide = {
+        'slide_id', 'part', 'decision', 'decision_reason', 'purpose', 'role', 'brief',
+        'expected_file', 'method', 'asset_id', 'parent_asset_ids', 'prompt_id', 'status', 'qa',
+    }
+    decisions = {
+        'NO_IMAGE': 'none',
+        'IMAGE_EXPLANATORY': 'explanatory',
+        'IMAGE_MNEMONIC': 'mnemonic',
+        'IMAGE_DECORATIVE_OPTIONAL': 'decorative',
+    }
+    for index, slide in enumerate(slides):
+        prefix = f'manifest slide {index}'
+        if not isinstance(slide, dict):
+            errors.append(f'{prefix} must be an object')
+            continue
+        missing = sorted(required_slide - set(slide))
+        if missing:
+            errors.append(f'{prefix} missing required fields {missing}')
+        decision = slide.get('decision')
+        purpose = slide.get('purpose')
+        if decision not in decisions:
+            errors.append(f'{prefix} decision is invalid')
+        elif purpose != decisions[decision]:
+            errors.append(f'{prefix} decision-purpose mismatch')
+        if purpose not in {'none', 'explanatory', 'mnemonic', 'decorative'}:
+            errors.append(f'{prefix} purpose is invalid')
+        role = slide.get('role')
+        status = slide.get('status')
+        method = slide.get('method')
+        if role not in {'none', 'hero', 'support', 'spot'}:
+            errors.append(f'{prefix} role is invalid')
+        if status not in {'not_needed', 'expected', 'processing', 'ready', 'rejected', 'blocked'}:
+            errors.append(f'{prefix} status is invalid')
+        if method not in {'none', 'reuse', 'generate', 'transform'}:
+            errors.append(f'{prefix} method is invalid')
+        if decision == 'NO_IMAGE':
+            if role != 'none' or status != 'not_needed' or method != 'none' or slide.get('expected_file') is not None:
+                errors.append(f'{prefix} NO_IMAGE state is inconsistent')
+        elif role not in {'hero', 'support', 'spot'} or not isinstance(slide.get('expected_file'), str) or not slide.get('expected_file'):
+            errors.append(f'{prefix} image decision requires active role and expected_file')
+        if not isinstance(slide.get('parent_asset_ids'), list):
+            errors.append(f'{prefix} parent_asset_ids must be an array')
+        if not isinstance(slide.get('brief'), dict) or not isinstance(slide.get('qa'), dict):
+            errors.append(f'{prefix} brief and qa must be objects')
+    return errors
+
+
+def image_contract_checks(html, deck_path, *, release=False, manifest_path=None, registry_path=None):
+    """Return static image-contract violations and informational notes."""
+    errors, notes = [], []
+    base = Path(deck_path).resolve().parent
+
+    # Broken local image references include picture/srcset, but prompt_only slots
+    # deliberately have no img src and are handled separately below.
+    for tag in re.findall(r'<(?:img|source)\b[^>]*>', html, re.I):
+        for name in ('src',):
+            reference = _attr(tag, name)
+            path = _local_reference(reference, base)
+            if path is not None and not path.is_file():
+                errors.append(f'missing local image: {reference}')
+        for reference in _srcset_references(_attr(tag, 'srcset')):
+            path = _local_reference(reference, base)
+            if path is not None and not path.is_file():
+                errors.append(f'missing local srcset image: {reference}')
+
+    allowed_roles = {'hero', 'support', 'spot'}
+    allowed_purposes = {'explanatory', 'mnemonic', 'decorative'}
+    slots = _figure_slots(html)
+    expected_required = 0
+    expected_total = 0
+    for attrs, body, classes in slots:
+        purpose = (_attr(attrs, 'data-image-purpose') or '').lower()
+        state = (_attr(attrs, 'data-image-state') or 'ready').lower()
+        role_match = re.search(r'\basset-slot--([a-z0-9-]+)\b', classes)
+        role = role_match.group(1) if role_match else (_attr(attrs, 'data-image-role') or '')
+        kind = (_attr(attrs, 'data-asset-kind') or 'paper-cut-v1').lower()
+        img = re.search(r'<img\b[^>]*>', body, re.I | re.S)
+        if purpose not in allowed_purposes:
+            errors.append(f'asset slot has invalid image purpose: {purpose or "missing"}')
+        if role not in allowed_roles:
+            errors.append(f'asset slot has inactive or invalid role: {role or "missing"}')
+        if kind not in {'paper-cut-v1', 'screenshot', 'photo', 'user-provided'}:
+            errors.append(f'asset slot has invalid asset kind: {kind}')
+        if kind == 'paper-cut-v1' and role not in allowed_roles:
+            errors.append('paper-cut-v1 cannot use cover-object or section-overlay')
+        if state == 'expected':
+            expected_total += 1
+            if img and _attr(img.group(0), 'src'):
+                errors.append('prompt_only expected slot must not emit an img src')
+            if not _attr(attrs, 'data-expected-src'):
+                errors.append('expected slot is missing data-expected-src')
+            if purpose in {'explanatory', 'mnemonic'}:
+                expected_required += 1
+        elif purpose in {'explanatory', 'mnemonic'}:
+            if not img:
+                errors.append(f'{purpose} slot is missing img')
+            else:
+                src = _attr(img.group(0), 'src')
+                if not src or not src.strip():
+                    errors.append(f'{purpose} ready image requires nonempty src')
+                alt = _attr(img.group(0), 'alt')
+                if not alt or not alt.strip():
+                    errors.append(f'{purpose} image requires relational alt text')
+        elif purpose == 'decorative':
+            if img:
+                alt = _attr(img.group(0), 'alt')
+                hidden = (_attr(img.group(0), 'aria-hidden') or '').lower()
+                if alt != '' or hidden != 'true':
+                    errors.append('decorative image requires alt="" and aria-hidden="true"')
+    if release and expected_total:
+        errors.append(f'unresolved required/expected image slots: {expected_total}')
+    elif expected_required:
+        if not release:
+            notes.append(f'prompt_only expected slots: {expected_required} (development only)')
+
+    # S02 uses a dedicated width contract when it contains a ready hero/support image.
+    section_ranges = _slide_section_ranges(html)
+    for start, end, classes, _tag in section_ranges:
+        section = html[start:end]
+        if re.search(r'\bs02-slide\b', classes):
+            ready_wide_slot = False
+            for figure_tag in re.findall(r'<figure\b[^>]*>', section, re.I):
+                figure_classes = _attr(figure_tag, 'class') or ''
+                role_match = re.search(r'\basset-slot--(hero|support)\b', figure_classes)
+                state = (_attr(figure_tag, 'data-image-state') or 'ready').lower()
+                if role_match and state == 'ready':
+                    ready_wide_slot = True
+                    break
+            if ready_wide_slot and not re.search(r'\bhas-image\b', classes):
+                errors.append('S02 ready hero/support image requires section class has-image')
+
+    # Content images are public components, never bare img tags. Fixed logos are exempt.
+    slot_spans = [match.span() for match in re.finditer(r'<figure\b[^>]*class=["\'][^"\']*\basset-slot\b[^"\']*["\'][^>]*>.*?</figure>', html, re.I | re.S)]
+    for image_match in re.finditer(r'<img\b[^>]*>', html, re.I):
+        position = image_match.start()
+        containing_section = None
+        for start, end, classes, tag in section_ranges:
+            if start <= position < end:
+                containing_section = (start, end, classes, tag)
+                break
+        if containing_section is None or any(start <= position < end for start, end in slot_spans):
+            continue
+        image_classes = _attr(image_match.group(0), 'class') or ''
+        if re.search(r'(?:^|\s)(?:s-logo|brand-logo|favicon|cover-logo)(?:\s|$)', image_classes, re.I):
+            continue
+        errors.append('content img outside asset-slot; screenshots require figure.asset-slot kind=screenshot')
+
+    # Decorative images: one per part, never consecutive, never with a code viz.
+    decorative_indexes, by_part, part = [], {}, 0
+    for index, (start, end, classes, _tag) in enumerate(section_ranges):
+        section = html[start:end]
+        if re.search(r'\bpart-divider\b', classes):
+            part += 1
+        if re.search(r'data-image-purpose\s*=\s*["\']decorative["\']', section, re.I):
+            decorative_indexes.append(index)
+            by_part[part] = by_part.get(part, 0) + 1
+            if count_code_viz(section):
+                errors.append(f'decorative image shares slide {index + 1} with code visualization')
+    if any(b == a + 1 for a, b in zip(decorative_indexes, decorative_indexes[1:])):
+        errors.append('decorative images may not appear on consecutive slides')
+    for part_number, count in by_part.items():
+        if count > 1:
+            errors.append(f'part {part_number} has {count} decorative images (maximum 1)')
+
+    # Optional HTML/manifest/registry cross-check. Only explicit asset IDs are
+    # matched, avoiding guesses for user-provided photos and screenshots.
+    manifest = None
+    if manifest_path:
+        try:
+            manifest = json.loads(Path(manifest_path).read_text(encoding='utf-8'))
+            errors.extend(validate_manifest_document(manifest))
+        except (OSError, json.JSONDecodeError) as exc:
+            errors.append(f'image manifest cannot be read: {exc}')
+    registry = None
+    if registry_path:
+        try:
+            registry = json.loads(Path(registry_path).read_text(encoding='utf-8'))
+            try:
+                from .verify_image_assets import verify_registry
+            except ImportError:
+                from verify_image_assets import verify_registry
+            registry_reports, registry_errors = verify_registry(Path(registry_path))
+            errors.extend(f'image registry: {error}' for error in registry_errors)
+            for report in registry_reports:
+                errors.extend(f'image registry: {error}' for error in report.errors)
+        except (OSError, json.JSONDecodeError) as exc:
+            errors.append(f'image registry cannot be read: {exc}')
+    entries = []
+    if isinstance(registry, dict) and isinstance(registry.get('assets'), list):
+        entries = registry['assets']
+    registry_by_id = {str(item.get('id') or item.get('asset_id')): item for item in entries if isinstance(item, dict)}
+    for attrs, body, _classes in slots:
+        asset_id = _attr(attrs, 'data-asset-id')
+        if not asset_id:
+            continue
+        entry = registry_by_id.get(asset_id)
+        if registry is not None and entry is None:
+            errors.append(f'HTML references unknown registry asset: {asset_id}')
+        elif entry and entry.get('status') != 'approved':
+            errors.append(f'HTML references non-approved asset: {asset_id}')
+        elif entry:
+            img = re.search(r'<img\b[^>]*>', body, re.I | re.S)
+            src = _attr(img.group(0), 'src') if img else _attr(attrs, 'data-expected-src')
+            registered = str(entry.get('file') or entry.get('path') or '')
+            if src and registered and not Path(src).as_posix().endswith(Path(registered).as_posix()):
+                errors.append(f'HTML path for {asset_id} does not match registry')
+    if manifest is not None:
+        manifest_text = json.dumps(manifest, ensure_ascii=False)
+        for attrs, _body, _classes in slots:
+            asset_id = _attr(attrs, 'data-asset-id')
+            if asset_id and asset_id not in manifest_text:
+                errors.append(f'HTML asset {asset_id} is missing from session manifest')
+    return errors, notes
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("deck"); ap.add_argument("--parts", type=int, default=None)
+    ap.add_argument("--release", action="store_true", help="배포 기준으로 expected 필수 슬롯을 실패 처리")
+    ap.add_argument("--manifest", help="세션 자료/이미지-에셋.json 경로")
+    ap.add_argument("--registry", help="중앙 이미지 registry.json 경로")
     a = ap.parse_args()
     try:
         html = open(a.deck, encoding="utf-8").read()
@@ -185,9 +482,23 @@ def main():
         f".s-eyebrow에 PART 형식 잔존 {part_dup[:5]} — 헤더 .s-part와 중복(삭제 대상)")
 
     imgs = len(re.findall(r'<img\b', html))
-    viz = len(re.findall(r'class="[^"]*\bviz-', html)) + len(re.findall(r'\bcode-(chart|diagram)\b', html)) + len(re.findall(r'<svg\b', html))
+    # Header logos, cover cubes, and annotation SVGs are not code visualizations.
+    # Only explicit .viz-* or data-viz ownership is counted.
+    viz = count_code_viz(html)
     chk(viz >= imgs, f"코드 시각화 {viz} ≥ 이미지 {imgs} (code-viz 우선)",
         f"이미지 {imgs} > 코드 시각화 {viz} — 코드 우선 원칙 위배 소지", warn=True)
+
+    image_errors, image_notes = image_contract_checks(
+        html,
+        a.deck,
+        release=a.release,
+        manifest_path=a.manifest,
+        registry_path=a.registry,
+    )
+    chk(not image_errors, "이미지 경로·목적·역할·배치 계약 준수",
+        "이미지 계약 위반: " + " | ".join(image_errors))
+    for note in image_notes:
+        results.append(("WARN", note))
 
     # 콘텐츠 슬라이드(고정/divider 제외) 다양성
     content = [(c, inr) for (c, inr) in secs
