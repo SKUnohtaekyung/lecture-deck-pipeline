@@ -1,0 +1,5 @@
+# 개발/빌드 의존성 (배포 스킬 런타임은 표준 라이브러리만 사용)
+# 배포본 폰트 서브셋 임베드에 필요 — scripts/inline_deck.py 최종본 빌드 경로.
+fonttools>=4.50
+brotli>=1.1        # woff2 압축
+Pillow>=10         # 이미지 에셋 파이프라인(prepare_image_asset.py·verify_image_assets.py)
