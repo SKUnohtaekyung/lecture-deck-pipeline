@@ -34,6 +34,8 @@
 - 색은 토큰만 사용한다. raw `#hex`, navy, 그라데이션을 쓰지 않는다. 흰색은 `var(--white)`를 쓴다.
 - 민트·코랄 fill 위에 흰 글자를 쓰지 않는다. 각각 `--on-mint`, `--on-coral`을 쓴다.
 - 민트 fill 번호 배지는 `.num-circle`, `.work-step .n`, `.pd-dot.is-active` 세 종류만 허용한다. 다른 다이어그램·플로우 노드는 블루다.
+- 카드/박스 표면은 흰색-온-흰색 금지: 의미 틴트 fill(블루 기본·민트=행동·코랄=주의) + 같은 계열 보더, 또는 흰 fill + 유색 보더(`--blue-line-strong`/`--mint-line`/`--coral-line`). 흰 fill + `--line` 근백색 보더 단독 조합은 verify FAIL. `--line`은 내부 구분선 전용.
+- 원형 배지+텍스트 행(`.work-step`·`.agenda-item`)은 텍스트를 배지 기준 수직 중앙(`align-items:center`)에 둔다.
 - 조립 전에 `정보 모양 분류 → 역인덱스 → 레이아웃과 element를 별도 선택` 순서를 따른다.
 - 직전 슬라이드와 같은 구도를 피하고 split 계열을 희소하게 쓴다.
 - 상세·최신 규칙은 `.agents/agent-memory/vibecoding-deck/MEMORY.md`를 정본으로 삼는다.

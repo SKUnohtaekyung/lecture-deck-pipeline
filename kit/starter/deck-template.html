@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=1280">
-  <title>강의덱 제목 — 바이브코딩</title><!-- ✏️ 덱 제목 -->
+  <title>강의덱 제목 — VIBECODING</title><!-- ✏️ 덱 제목 -->
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 96'><line x1='28.8' y1='28.7' x2='49' y2='70' stroke='%2314B8A6' stroke-width='18' stroke-linecap='round'/><line x1='70.9' y1='25.1' x2='49' y2='70' stroke='%231D4ED8' stroke-width='19' stroke-linecap='round'/><circle cx='49' cy='70' r='9.5' fill='%23141821'/></svg>">
   <!-- 폰트: Pretendard (문서가 인정하는 유일한 외부 의존성) -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
@@ -54,7 +54,7 @@
       <header class="s-head cover-head">
         <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg>
         <div class="brand-stack">
-          <span class="s-brand">바이브코딩</span><!-- ✏️ 브랜드 -->
+          <span class="s-brand">VIBECODING</span><!-- ✏️ 브랜드 -->
           <span class="track">3주 아카데미</span><!-- ✏️ 부제 -->
         </div>
         <div class="s-team">WEEK 00 / 00</div><!-- ✏️ 주차/전체 -->
@@ -70,7 +70,7 @@
     <!-- ============ 2 · 도입 (불변요소·구조 고정) ============ -->
     <section class="slide s02-slide" data-slide="S02">
       <header class="s-head">
-        <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">바이브코딩</span>
+        <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
         <span class="s-line"></span><div class="s-team">팀명<br>부제</div>
       </header>
       <div class="s-body-wrap">
@@ -82,17 +82,20 @@
       <!-- 도입 페이퍼 컷 이미지 슬롯(선택): <img class="asset s02" src="자료/images/s02_intro.png" alt=""> -->
     </section>
 
-    <!-- ============ 3 · 아젠다 (불변요소·구조 고정) · 노드-타임라인 ============
-         노드 수 가변: .an-item을 아젠다 항목 수만큼 반복(파트 수 또는 여정 단계 수). 권장 3~6, an-d는 짧게. -->
+    <!-- ============ 3 · 아젠다 (불변요소·구조 고정) · 노드-타임라인 (v3) ============
+         제목은 고정 멘트 "오늘 배우게 될 것"(verify 강제) + 민트 바(.an-bar) + 리드 1~2줄.
+         노드 수 가변: .an-item을 아젠다 항목 수만큼 반복(파트 수 또는 여정 단계 수). 권장 3~6, an-d는 짧게.
+         ⚠️ 4개 초과 시 .an-right에 an-2col 부여(크기 축소 금지, 2열 자동 균형분배·세로 중앙 — verify가 강제). ≤4는 미부여. -->
     <section class="slide s03-slide" data-slide="S03">
       <header class="s-head">
-        <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">바이브코딩</span>
+        <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
         <span class="s-line"></span><!-- ✏️ 팀명 없음(지오메트리 헤더) -->
       </header>
       <span class="an-spark" aria-hidden="true"></span>
       <div class="an-left">
-        <h2 class="an-title">오늘 배울 것</h2><!-- ✏️ 결론으로 -->
-        <p class="an-intro">핵심 문장을 <span class="hl">강조어</span>와 함께<br>두세 줄로 짧게<br>정리합니다</p><!-- ✏️ 강조어는 <span class="hl">로 감싸면 초록 -->
+        <h2 class="an-title">오늘 배우게 될 것</h2><!-- ⚠️ 고정 멘트(verify 강제) — 주차마다 자유 작성 금지 -->
+        <div class="an-bar"></div>
+        <p class="an-intro">핵심 문장을 <span class="hl">강조어</span>와 함께<br>한두 줄로 짧게 정리합니다</p><!-- ✏️ 강조어는 <span class="hl">로 감싸면 초록 -->
       </div>
       <div class="an-right"><!-- ✏️ .an-item을 항목 수만큼 반복(3~6 권장). 연결선·간격 자동. -->
         <div class="an-item"><div class="an-num">1</div><div class="an-body"><div class="an-h">아젠다 1</div><div class="an-d">한 줄 설명</div></div></div>
@@ -146,7 +149,7 @@
          프로세스 3~6단계·카드 3~6장 어떤 조합이든 이 마크업 구조 그대로 개수만 늘리면 된다. -->
     <section class="slide concept-recap" data-slide="END">
       <header class="s-head">
-        <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">바이브코딩</span>
+        <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
         <span class="s-line"></span><div class="s-team">팀명<br>부제</div>
       </header>
       <div class="concept-panel">

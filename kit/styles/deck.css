@@ -167,7 +167,7 @@ body{ font-family:"Pretendard","Pretendard Variable",-apple-system,"Apple SD Got
 .s-head{ position:absolute; top:34px; left:56px; right:56px; height:40px;
   display:flex; align-items:center; gap:14px; }
 .s-logo{ width:40px; height:40px; object-fit:contain; flex:0 0 auto; }
-.s-brand{ font-weight:800; font-size:30px; color:var(--black); letter-spacing:-.01em; }
+.s-brand{ font-weight:800; font-size:30px; color:var(--black); letter-spacing:.02em; }  /* 영문 대문자 브랜드(VIBECODING) 트래킹 — 한글 시절 -.01em에서 상향 */
 .s-line{ flex:1; height:2px; background:var(--blue); margin:0 18px; border-radius:0; }
 .s-team{ font-size:16px; line-height:1.35; color:var(--ink); text-align:right;
   white-space:nowrap; font-weight:500; }
@@ -382,33 +382,51 @@ table.t tr:nth-child(even) td{ background:var(--surface-row); }
 .asset.s02{ right:10px; bottom:30px; width:580px; }
 
 /* ===================================================================
-   §13 아젠다 (Agenda) — 노드-타임라인 (최종 · 2026-07, 노드 수 가변화 2026-07-14)
-   ── 헤더는 로고+브랜드+라인만(팀명 제거) · 좌측 제목/인트로 · 우측 세로 트랙 + N개 번호 노드.
-   ── 번호 노드(.an-num)는 블루 fill(구조 노드 — v2.1 배지 split 규칙, 민트 아님).
+   §13 아젠다 (Agenda) — 노드-타임라인 (v3 · 2026-07-17 고정 제목·민트 바·확대 사이징·세로 균형)
+   ── 헤더는 로고+브랜드+라인만(팀명 제거) · 좌측 제목/민트 바/리드 · 우측 N개 번호 노드.
+   ── ⚠️ 제목은 고정 멘트 "오늘 배우게 될 것"(verify 강제 — 주차마다 자유 작성 금지).
+      제목 아래 민트 pill 바(.an-bar), 그 아래 리드(.an-intro)는 1~2줄로 짧게.
+   ── 번호 노드(.an-num)는 블루 fill(구조 노드 — v2.1 배지 split 규칙, 민트 아님)·그림자 없음(플랫, verify 강제).
+      항목 제목(.an-h)은 블루 텍스트(구조색 — 2026-07-17 확정).
    ── ⚠️ 노드 수 고정 아님: `.an-item`을 아젠다 항목 수만큼 반복(파트 수 또는 여정 단계 수).
       우측 트랙은 flex 세로 배치라 3~7개를 자동 수용·수직 중앙정렬. 연결선은 노드 간 ::after로 자동.
-      세로예산(top150~bottom56 ≈ 514px): 항목당 ≈ max(48, 헤드27+본문줄수×26)+gap16.
-      권장 3~6(본문 1줄). 7개↑이거나 본문 2줄이면 an-d를 줄이거나 파트로 분할.
+      세로예산(top150~bottom56 ≈ 514px): 항목당 ≈ max(64, 헤드34+본문줄수×29)+gap16.
+      권장 3~6(본문 1줄).
+   ── ⚠️ 4개 초과 시 `.an-right`에 `an-2col`을 부여(크기 축소 금지 — 항목·배지·폰트 크기 그대로 2열 배치,
+      column-count가 임의 N을 자동 균형분배: 5→3+2, 6→3+3). ≤4개는 1열 유지·an-2col 미부여(verify가 강제).
+      2열도 수직 중앙(v3 — height:fit-content+margin:auto 밴드 중앙, 옛 "상단 정렬 예외" 폐지),
+      ::after 커넥터 끔(선형 은유가 2열에서 깨짐, 번호 배지가 순서 전달).
    =================================================================== */
 .s03-slide .s-head .s-team{ display:none; }
 .s03-slide .an-spark{ position:absolute; left:452px; top:122px; width:9px; height:9px;
   border-radius:var(--r-pill); background:var(--coral); }
-.s03-slide .an-left{ position:absolute; left:64px; top:150px; width:420px; }
-.s03-slide .an-title{ margin:0 0 28px; font-size:44px; line-height:1.2; font-weight:800; color:var(--ink); }
+.s03-slide .an-left{ position:absolute; left:64px; top:150px; bottom:56px; width:420px;
+  height:fit-content; margin:auto 0; }   /* 세로 중앙(v3) — 절대배치 밴드 안 auto 마진 */
+.s03-slide .an-title{ margin:0 0 16px; font-size:44px; line-height:1.2; font-weight:800; color:var(--ink); }
+.s03-slide .an-bar{ width:96px; height:10px; border-radius:var(--r-pill); background:var(--mint);
+  margin:0 0 24px; }   /* 고정 제목 아래 민트 pill 바(v3) */
 .s03-slide .an-intro{ margin:0; font-size:19px; line-height:1.7; color:var(--gray-700); font-weight:500; }
 .s03-slide .an-intro .hl{ color:var(--mint-deep); font-weight:800; }
 .s03-slide .an-right{ position:absolute; left:560px; right:64px; top:150px; bottom:56px;
   display:flex; flex-direction:column; justify-content:center; gap:16px; }
 .s03-slide .an-track{ display:none; }   /* 고정 높이 트랙 폐지 — 연결선은 노드 간 ::after로 자동(노드 수 가변) */
 .s03-slide .an-item{ position:relative; display:flex; align-items:flex-start; gap:24px; }
-.s03-slide .an-item:not(:last-child)::after{ content:""; position:absolute; left:23px; top:24px;
-  bottom:-40px; width:2px; background:var(--line); z-index:0; }   /* 이 노드 중심→다음 노드 중심(gap16+반지름24) */
-.s03-slide .an-num{ position:relative; z-index:1; flex:0 0 auto; width:48px; height:48px; border-radius:var(--r-pill);
+.s03-slide .an-item:not(:last-child)::after{ content:""; position:absolute; left:31px; top:32px;
+  bottom:-48px; width:2px; background:var(--line); z-index:0; }   /* 이 노드 중심→다음 노드 중심(gap16+반지름32) */
+.s03-slide .an-num{ position:relative; z-index:1; flex:0 0 auto; width:64px; height:64px; border-radius:var(--r-pill);
   background:var(--blue); color:var(--white); display:flex; align-items:center; justify-content:center;
-  font-size:19px; font-weight:800; box-shadow:var(--shadow-blue); }
-.s03-slide .an-body{ flex:1 1 auto; padding-top:2px; }
-.s03-slide .an-h{ font-size:21px; font-weight:700; color:var(--ink); margin:0 0 6px; line-height:1.3; }
-.s03-slide .an-d{ font-size:17px; line-height:1.5; color:var(--gray-700); margin:0; }
+  font-size:24px; font-weight:800; }   /* v3: 확대(48→64)·그림자 제거(플랫) */
+.s03-slide .an-body{ flex:1 1 auto; padding-top:4px; }
+.s03-slide .an-h{ font-size:26px; font-weight:700; color:var(--blue); margin:0 0 8px; line-height:1.3; }
+.s03-slide .an-d{ font-size:19px; line-height:1.5; color:var(--gray-700); margin:0; }
+/* an-2col: an-item 4개 초과 시 조립 시 수동 부여(verify 강제). display:block이 필수 —
+   column-count는 flex 컨테이너에서 무효. 세로 중앙은 height:fit-content+margin:auto(v3, §13 주석 참조),
+   커넥터 억제는 의도된 동작. */
+.s03-slide .an-right.an-2col{ display:block; height:fit-content; margin:auto 0;
+  column-count:2; column-gap:48px; column-fill:balance; }
+.s03-slide .an-2col .an-item{ break-inside:avoid; -webkit-column-break-inside:avoid; margin-bottom:24px; }
+.s03-slide .an-2col .an-item:last-child{ margin-bottom:0; }
+.s03-slide .an-2col .an-item::after{ display:none; }
 
 /* ===================================================================
    §14 파트 전환 (Part Divider) — 라이트 지오메트리 아이소 큐브 클러스터 (최종 · 2026-07)

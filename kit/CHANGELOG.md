@@ -1,5 +1,21 @@
 # CHANGELOG — vibecoding-deck kit
 
+## 0.6.0-wip — 아젠다 2열·브랜드 영문화·PART eyebrow 폐지 (2026-07-17)
+- **아젠다 2열(an-2col)**: `.an-item` 4개 초과 시 크기 축소 대신 `.an-right.an-2col`로 2열 확장(deck.css §13 신규 4규칙 — `display:block`+`column-count:2` 자동 균형분배, `::after` 커넥터 억제, **상단 정렬=의도된 동작**). ≤4는 1열·미부여. 1주차 덱(6항목) 적용.
+- **브랜드 영문화(라벨만)**: 헤더 `.s-brand`·`<title>`·팀명·표지 조직명 → **VIBECODING** (`letter-spacing -.01em→.02em`). 컨텍스트 앵커 치환으로 강의 콘텐츠 개념어 "바이브코딩"(정의 슬라이드 제목·아젠다 항목·간지 부제 등 1주차 6건+발표자노트 1건)은 **원문 유지**. 대상: 1주차 69 · 데모 32 · 스타터 5 · 카탈로그 13+9 · 아틀라스 정적 84+생성기 2곳(8행 head()·91행 표지) · logo.svg aria-label.
+- **PART eyebrow 폐지**: 본문 `.s-eyebrow`의 "PART n · 파트명" 형식 삭제(헤더 `.s-part` 진행과 중복) — 1주차 44건 삭제+timing 동거 11건은 `.timing` 배지만 `.s-title` 위 독립 줄로 이설, 데모 11건 삭제. 의미형 eyebrow는 유지. 규칙 문서 교체(조립-리듬 §파트구조·§eyebrow).
+- **verify_deck.py 확장**: 브랜드 한글 잔존 FAIL · 아젠다 개수-an-2col 정합 FAIL/WARN · eyebrow `PART n ·` 패턴 FAIL — 3종 네거티브 테스트로 검출 확인.
+- **아틀라스**: 프로즌 CSS 통짜 재동기화(프로즌==deck.css 어서션) + s-brand 84건 치환. evals id=1 어서션 3줄 추가.
+- **아젠다 v3 — 고정 제목·민트 바·확대·세로 균형(2026-07-17 후속)**: 제목=고정 멘트 **"오늘 배우게 될 것"** + 민트 pill 바 `.an-bar`(96×10) + 리드 1~2줄. `.an-num` 48→64px **플랫(그림자 제거)** · `.an-h` 21→26px **블루** · `.an-d` 17→19px · 1열 커넥터 좌표 재계산(left31/top32/bottom-48). **2열 an-2col "상단 정렬=의도" 예외 폐지** — `.an-right.an-2col`·`.an-left`에 `height:fit-content`+`margin:auto 0`으로 좌·우 블록 모두 세로 중앙(공통 세로 균형 규칙 편입). verify 신규 3검사: 고정 제목 FAIL(`--parts 0` 카탈로그 제외)·`.an-bar` 부재 FAIL·`.an-num` box-shadow FAIL. 적용: 1주차 덱·데모·스타터·아틀라스(프로즌 CSS 재동기화+s03 마크업), 문서 동기화 6곳(SKILL·조립-리듬·치트시트·디자인시스템·MEMORY·evals).
+
+## 0.5.0-wip — 박스 표면 규칙 + 넘버 행 수직 중앙 (2026-07-16)
+- **박스 표면 규칙 신설**: 흰 캔버스 위 카드/박스의 "흰 fill + `--line` 근백색 보더" 조합 금지(사용자 리포트 — 박스 구분 안 됨). ① 의미 틴트 fill(`--blue-soft` 기본/`--mint-soft`/`--coral-soft`)+계열 보더 또는 ② 흰 fill+유색 보더(`--blue-line-strong`/`--mint-line`/`--coral-line`). deck.css 20곳+patterns.css 7곳+kit-additions 3파일 교체. 신규 토큰 `--mint-line:#C9EAE4`. `.card`=블루-소프트, `.card.surface`=블루-패널(뮤트), `.work-step`=민트-소프트(행동 문법), 촘촘한 그리드(rev-card·lc·metric 등)=흰 fill+블루-라인-스트롱.
+- **넘버 행 수직 중앙**: `.work-step`·`.agenda-item` `align-items:start/flex-start`→`center`(원형 배지 대비 텍스트 중앙, `<b>`만 있어도). 고아 마진 픽스 `b:last-child{margin-bottom:0}`(deck.css+patterns.css 양쪽 — 로드 순서상 둘 다 필요). `.s03-slide .an-item`은 커넥터 좌표 전제라 제외.
+- **`verify_deck.py` 확장**: 박스 표면 체크(kit CSS+덱 인라인, 방향 보더는 내부 구분선으로 합법) FAIL · `.work-step align-items:center` 계약 FAIL · `need_tokens`+`--mint-line`. 네거티브 테스트로 검출 확인.
+- **아틀라스 재동기화**: `outputs/vibecoding-deck-layout-atlas.html` 프로즌 CSS 블록을 현재 deck.css로 통짜 교체(hug-center·concept-recap v2 드리프트 동시 해소).
+- **문서**: 색시스템-v2-명세 §1b · 토큰-치트시트 · 디자인시스템 · SKILL.md · 조립-리듬-불변요소 · families 6곳(색 지시 문구) · AGENTS.md · MEMORY.md · evals.
+- **데모 콘텐츠 동기화**: `데모_제작규칙.html`에 규칙 ④(박스 표면·수직 중앙 시연 슬라이드 B07b) 추가, ④⑤→⑤⑥ 재번호. 마크업 드리프트 정리 — 폐기된 "슬라이드 계획서·시각화 의도" 용어→콘텐츠 초안, 이미지 핸드오프 문구→generate_now/prompt_only 모드, B11 참조 표→현행 파일명(정보모양-taxonomy·by-shape·조립-리듬-불변요소·이미지-스크린샷-배포), KIT 버전 표기 v0.1→v0.5.
+
 ## 0.4.0-wip — 입력 형식 교체: 콘텐츠 초안 (2026-07-14)
 - **공식 입력 템플릿 교체**: 옛 13라벨 `시각화 의도` 폼(`입력양식/슬라이드계획서템플릿.md`) 폐기 → **`입력양식/콘텐츠초안템플릿.md`**(교시별 `#·슬라이드 제목·본문 문구·비유·멘트` 4열 표 + 아이콘 범례). 폐기 폼은 `_dev/설계기록/폐기된-슬라이드계획서템플릿.md`로 이동. `시각화 의도` 입력 칸이 없어져 **정보 모양 판단을 스킬이 항상 전담**(taxonomy의 13라벨 조인표 제거, 12 정준 모양 유지).
 - **아이콘 라우팅(고정)**: `💬`·`👀`→ HTML 주석(화면 비노출) · `🗣`→ 신규 `.hint-reveal`(접힘 힌트, `kit/styles/deck.css`). 이모지 마커 최종 HTML 누출 금지.

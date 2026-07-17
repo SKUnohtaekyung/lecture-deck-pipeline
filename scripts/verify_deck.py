@@ -121,12 +121,41 @@ def main():
         "표지 3큐브·9면·코랄 스파크 유지",
         f"표지 도형 불완전: cube={cube_count}, polygon={cover_faces}, coral spark={spark_count}")
 
+    # ── 브랜드 표기: 헤더/표지 .s-brand는 영문 VIBECODING (2026-07-17) ──
+    brand_texts = re.findall(r'<span class="[^"]*\bs-brand\b[^"]*"[^>]*>(.*?)</span>', html, re.S)
+    bad_brand = [t for t in brand_texts if '바이브코딩' in t]
+    chk(not bad_brand, "브랜드 텍스트 VIBECODING(영문)",
+        f".s-brand에 한글 브랜드 잔존 {len(bad_brand)}건 — VIBECODING으로 교체")
+
     dividers = len(re.findall(r'class="[^"]*\bpart-divider\b', html))
     if a.parts is not None:
         chk(dividers == a.parts, f"part-divider {dividers} = 파트 {a.parts}",
             f"part-divider {dividers} ≠ 파트 {a.parts} (모든 파트 앞 divider 필수)")
     else:
         chk(dividers >= 1, f"part-divider {dividers}개", "part-divider 없음", warn=True)
+
+    # ── 아젠다 2열 규칙: an-item 4개 초과면 .an-right에 an-2col 필수(크기 축소 금지) (2026-07-17) ──
+    s03_inner = next((inner for cls, inner in secs if re.search(r'\bs03-slide\b', cls)), None)
+    if s03_inner is not None:
+        an_items = len(re.findall(r'class="[^"]*\ban-item\b[^"]*"', s03_inner))
+        m03 = re.search(r'<div class="([^"]*\ban-right\b[^"]*)"', s03_inner)
+        an_right_cls = m03.group(1) if m03 else ''
+        if an_items > 4:
+            chk('an-2col' in an_right_cls, f"아젠다 {an_items}항목 → an-2col 적용(2열 확장)",
+                f"아젠다 {an_items}항목(>4)인데 an-2col 없음 — 크기 축소 대신 .an-right에 an-2col 부여")
+        elif an_items > 0:
+            chk('an-2col' not in an_right_cls, f"아젠다 {an_items}항목 → 1열 유지",
+                f"아젠다 {an_items}항목(≤4)인데 an-2col 불필요 적용", warn=True)
+
+        # ── 아젠다 v3: 제목 고정 멘트 + 민트 바 (2026-07-17) ──
+        #   .an-title이 있는 아젠다에만 적용. 카탈로그(--parts 0)는 검사 제외(MEMORY 규약).
+        m_title = re.search(r'<h2 class="[^"]*\ban-title\b[^"]*"[^>]*>(.*?)</h2>', s03_inner, re.S)
+        if m_title is not None and a.parts != 0:
+            title_txt = re.sub(r'<[^>]+>', '', m_title.group(1)).strip()
+            chk(title_txt == '오늘 배우게 될 것', '아젠다 제목 고정 멘트 "오늘 배우게 될 것"',
+                f'아젠다 제목 "{title_txt}" — 고정 멘트 "오늘 배우게 될 것"으로(자유 작성 금지)')
+            chk('an-bar' in s03_inner, "아젠다 민트 바(.an-bar) 존재",
+                "아젠다 .an-bar 없음 — 고정 제목 아래 민트 pill 바 필수")
 
     chk('class="navbar"' in html or "id=\"controls\"" in html, "네비 엔진 존재", "네비바(.navbar) 없음")
     chk('id="pdfBtn"' in html or "id='pdfBtn'" in html or 'dl-btn' in html,
@@ -138,10 +167,22 @@ def main():
     chk('--glass-white' in rendered_css and re.search(r'backdrop-filter\s*:\s*blur', rendered_css),
         "흰색 글래스 내비게이션 토큰 존재", "글래스 내비게이션 토큰/효과 없음")
 
+    # ── 아젠다 배지 플랫: .an-num 선언에 box-shadow 금지 (2026-07-17, kit CSS+덱 인라인 모두) ──
+    an_num_shadow = re.findall(r'\.an-num\b[^{]*\{[^}]*box-shadow[^}]*\}', rendered_css)
+    chk(not an_num_shadow, ".an-num 플랫(box-shadow 없음)",
+        f".an-num 선언에 box-shadow {len(an_num_shadow)}건 — v3 플랫 배지(그림자 제거)")
+
     css_ok = 'deck.css' in html or ('<style' in html and '--blue' in html)
     leg_ok = 'legibility-40s.css' in html or ('<style' in html and 'legibility' in html) or ('font-size:22px' in html)
     chk(css_ok, "deck.css 상속(링크/인라인)", "deck.css 미로드")
     chk(leg_ok, "40~50대 가독성 레이어 로드", "legibility-40s 미로드(본문 22px 하한 위험)", warn=True)
+
+    # ── 본문 eyebrow의 PART 중복 금지: 헤더 .s-part(PART n/N)가 위치를 전담 (2026-07-17) ──
+    #   .pd-eyebrow(파트전환, 'PART n/N' 슬래시 포맷)는 별개 클래스라 스캔 대상 아님.
+    eyebrow_texts = re.findall(r'<p class="[^"]*\bs-eyebrow\b[^"]*"[^>]*>(.*?)</p>', html, re.S)
+    part_dup = [re.sub(r'<[^>]+>', '', t).strip()[:30] for t in eyebrow_texts if re.search(r'PART\s*\d+\s*·', t)]
+    chk(not part_dup, "본문 eyebrow에 PART n·파트명 중복 없음",
+        f".s-eyebrow에 PART 형식 잔존 {part_dup[:5]} — 헤더 .s-part와 중복(삭제 대상)")
 
     imgs = len(re.findall(r'<img\b', html))
     viz = len(re.findall(r'class="[^"]*\bviz-', html)) + len(re.findall(r'\bcode-(chart|diagram)\b', html)) + len(re.findall(r'<svg\b', html))

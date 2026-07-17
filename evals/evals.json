@@ -16,7 +16,13 @@
         "시각화 의도 입력이 없어도 슬라이드별 정보 모양을 스킬이 직접 판단해 구도가 다양함(같은 패밀리 3연속 없음)",
         "이모지 마커(💬/🗣/👀)가 최종 HTML에 남지 않음(verify FAIL 아님)",
         "numeric/flow/comparison 슬라이드는 <img>가 아니라 코드 시각화 사용, 전 슬라이드 오버플로 0·본문 22px",
-        "raw #hex 없음(토큰만), navy·그라데이션 없음"
+        "raw #hex 없음(토큰만), navy·그라데이션 없음",
+        "카드·박스 표면이 흰색-온-흰색 아님 — 의미 틴트 fill(블루 기본/민트/코랄) 또는 흰 fill+유색 보더, 흰 fill+--line 근백색 보더 단독 조합 없음(verify 박스 표면 체크 PASS)",
+        ".work-step 넘버 원형 배지 기준 우측 텍스트가 수직 중앙(본문 span 없이 <b>만 있어도, verify align-items:center 계약 PASS)",
+        "아젠다(.s03-slide) an-item이 4개를 초과하면 .an-right에 an-2col 적용(항목·배지·폰트 크기 그대로 2열 균형분배·세로 중앙 v3), ≤4개는 1열 유지 — verify 정합 체크 PASS",
+        "아젠다 제목은 고정 멘트 '오늘 배우게 될 것'(초안 아젠다 행 제목과 무관) + 민트 바(.an-bar) + 리드 1~2줄, .an-num 플랫(box-shadow 없음)·.an-h 블루 — verify 신규 체크 PASS",
+        "본문 .s-eyebrow에 'PART n · 파트명' 형식 없음(헤더 .s-part와 중복 금지) — 의미형 eyebrow는 허용, verify PASS",
+        "헤더·표지 브랜드 텍스트(.s-brand)는 영문 VIBECODING(한글 바이브코딩 아님) — 단 강의 콘텐츠 속 개념어 '바이브코딩'은 원문 유지"
       ]
     },
     {

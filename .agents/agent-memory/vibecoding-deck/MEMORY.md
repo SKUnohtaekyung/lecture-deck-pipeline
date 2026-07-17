@@ -34,7 +34,13 @@
   - 조립 중 박스 완성 직후 스스로 자문("내용보다 커 보이나?") + SKILL.md §8 브라우저 검증에도 체크 포함.
 - **줄바꿈은 문맥 경계에서**: 수동 `<br>`은 단어를 끊지 않고 구·절 경계(조사·어미가 앞줄에 매달리지 않게).
 - 기타 확정 규칙: eyebrow=`--blue-soft` 배경 pill(본문 슬라이드만) · accent-bar 64×5px · work-step padding11px/gap10px · 헤더 파트진행(`.s-part`)·하단 페이지네이션(`.s-pageno`) JS 자동주입 · 그라데이션 금지(cover 포함) · 민트·코랄 fill 위 흰 글자 금지(`.hl-mint-mark` 예외).
-- ⚠️ **atlas 프로즌 CSS 미동기화**: `outputs/vibecoding-deck-layout-atlas.html`에 이 절의 세로/가로 균형 변경분 전부 미반영(§프로즌 CSS 드리프트 참조). 사용자 요청 시 처리.
+- ⚠️ **박스 표면 규칙(2026-07-16, verify 강제)**: 흰 캔버스 위 카드/박스는 ① 의미 틴트 fill(구조=`--blue-soft` 기본 / 행동=`--mint-soft` / 주의=`--coral-soft`)+계열 보더 또는 ② 흰 fill+유색 보더(`--blue-line-strong`/`--mint-line`(신규 #C9EAE4)/`--coral-line`). **흰 fill+`--line` 근백색 보더 단독 조합 금지**(verify가 kit CSS+덱 인라인 모두 FAIL). `--line`은 내부 구분선(방향 보더·표 셀선) 전용. 예외: 코드/터미널 표면·`.shot-*`·`.pd-dot`·표. 매핑: `.card`=블루-소프트 · `.card.surface`=블루-패널(뮤트, `--surface` 아님 — 토큰 값 재조정 금지) · `.work-step`=민트-소프트 · 촘촘한 그리드(rev-card·cmp·lc·risk·metric·mapc·concept-card·다이어그램 노드)=흰 fill+블루-라인-스트롱(블루 도배 방지). 정본: 색시스템-v2-명세 §1b.
+- ⚠️ **넘버 행 수직 중앙(2026-07-16, verify 강제)**: `.work-step`·`.agenda-item`=`align-items:center`(원형 배지 대비 텍스트 중앙 — 본문 `<span>` 없이 `<b>`만 있어도). 고아 마진은 `b:last-child{margin-bottom:0}`을 **deck.css와 patterns.css(`.eval-steps` 스코프) 양쪽**에 둬야 함(로드 순서상 patterns.css가 이김). **`.s03-slide .an-item`은 예외** — `::after` 커넥터 좌표가 상단 정렬 전제.
+- ✅ **atlas 프로즌 CSS 재동기화 완료(2026-07-16)**: 박스 표면 규칙 반영 시 통짜 교체 — 그간 미반영이던 세로/가로 균형 변경분(hug-center·concept-recap v2)도 함께 해소. 이후 kit CSS 구조 변경 시 §프로즌 CSS 드리프트 절차 반복 필요. (2026-07-17 an-2col 반영 시 재실행 — 프로즌==deck.css 어서션 포함. 같은 날 아젠다 v3 반영 시 3차 재실행 — splice 스크립트+동일 어서션. ⚠️ 생성기 리빌드 불가 상태, `## 미해결` 참조.)
+- ⚠️ **아젠다 2열 an-2col(2026-07-17, verify 강제)**: `.an-item` 4개 초과 시 **크기 축소 금지** → `.an-right`에 `an-2col` 부여(deck.css §13 — `display:block`이 핵심, column-count는 flex에서 무효). column-count:2가 임의 N 자동 균형분배(5→3+2, 6→3+3). **2열도 수직 중앙(v3 — `height:fit-content`+`margin:auto 0` 절대배치 밴드 중앙, 옛 "상단 정렬 예외" 폐지)·`::after` 커넥터 끔**. ≤4는 1열·미부여(WARN). 1열 `.an-item::after` 좌표(배지 64px 기준 left:31/top:32/bottom:-48)·`.an-track{display:none}`은 불변.
+- ⚠️ **아젠다 v3(2026-07-17, verify 강제)**: 제목=고정 멘트 **"오늘 배우게 될 것"**(초안 아젠다 행 제목과 무관하게 항상 이 문구 — 초안 문서는 안 고침). 제목 아래 민트 pill 바 `.an-bar`(96×10)+리드 1~2줄(장문 금지). `.an-num` 64px **플랫(box-shadow 금지)**·`.an-h` 26px **블루**(구조색 — "블루 도배 금지"(위 v2.1)와 무관, 사용자 확정이므로 되돌리지 말 것)·`.an-d` 19px. 좌측 `.an-left`도 세로 중앙(`margin:auto 0`). verify 신규 2검사: ① s03 제목 고정 문구(--parts 0 카탈로그 모드 스킵) ② `.an-num` box-shadow 금지(kit CSS+덱 인라인). 스타터·데모 마크업 동기화 완료(아틀라스는 프로즌 CSS 재동기화 절차 참조).
+- ⚠️ **브랜드 표기(2026-07-17)**: 헤더/표지 `.s-brand`·`<title>`·팀명·조직명 = **VIBECODING**(영문, letter-spacing .02em). **강의 콘텐츠 속 개념어 "바이브코딩"은 원문 유지**(1주차 덱 6건: 103·318 주석, 182 an-d, 224 pd-sub, 325 def-term, 326 cm-title / 발표자노트 L83) — 블라인드 replace_all 금지, 컨텍스트 앵커 치환만. 아틀라스 **생성기**(build_layout_atlas.mjs)에 브랜드 리터럴 2곳(8행 head()·91행 표지) — 정적 HTML만 고치면 리빌드 시 회귀.
+- ⚠️ **본문 eyebrow PART 형식 금지(2026-07-17, verify 강제)**: `.s-eyebrow`에 "PART n · 파트명"을 쓰지 않는다(헤더 `.s-part` 진행과 중복). 의미형 eyebrow만 허용. 활동 `.timing` 배지는 eyebrow가 아니라 **`.s-title` 바로 위 독립 줄**에 단독 배치(inline-block+margin으로 CSS 수정 0). `.pd-eyebrow`(파트전환, `PART n/N` 슬래시 포맷)는 별개 클래스 — 대상 아님.
 
 ## 표지 v4 — 라이트 지오메트리 (최종·2026-07-13) — 탐색사: `_dev/설계기록/탐색-아카이브/`
 - 배경=`--paper #F4F8FB`(브랜드-화이트, 블루 언더톤) + 블루 도트그리드(그라데 아님). 도형=아이소메트릭 3단 큐브 스택(`data-cube`×3·polygon×9, fill=토큰)+코랄 스파크 1. 큐브면=blue-soft(top)/blue(left)/mint(right).
@@ -49,7 +55,7 @@
 - `deck.css`를 외부링크하는 실 덱은 이 마크업 변경의 영향을 받는다(데모 파일 등 — 이미 동기화 완료).
 
 ## ⚠️ 프로즌 CSS 드리프트 (2026-07-14 · `outputs/vibecoding-deck-layout-atlas.html`)
-`deck.css`를 **인라인/얼려 복사**한 산출물(outputs/ 스냅샷)은 kit 원본이 바뀌어도 자동으로 안 따라옴 → 구조적 CSS 규칙 변경 시 이 파일 내장 CSS 블록(`/* SKU LIKELION */`~`/* layout atlas additions */`)을 **현재 deck.css로 통짜 재동기화**할 것. 반대로 **외부 링크** 파일(`데모_제작규칙.html`)은 CSS는 최신이나 마크업이 드리프트 → "CSS 얼림"·"마크업 얼림" 둘 다 체크.
+`deck.css`를 **인라인/얼려 복사**한 산출물(outputs/ 스냅샷)은 kit 원본이 바뀌어도 자동으로 안 따라옴 → 구조적 CSS 규칙 변경 시 이 파일 내장 CSS 블록(`/* SKU LIKELION */`~`/* layout atlas additions */`)을 **현재 deck.css로 통짜 재동기화**할 것. 반대로 **외부 링크** 파일(`데모_제작규칙.html`)은 CSS는 최신이나 마크업이 드리프트 → "CSS 얼림"·"마크업 얼림" 둘 다 체크. (최근 재동기화: 2026-07-16 박스 표면 규칙 패스 — 아틀라스=CSS 통짜 교체(1~17행 유지 + deck.css 전문 + `/* layout atlas additions */` 이후 유지), 데모=마크업 콘텐츠 동기화(규칙 ④ 슬라이드 추가·계획서/시각화 의도→콘텐츠 초안·이미지 모드 문구·B11 참조 표·v0.5).)
 
 ## concept-recap v2 — 풀폭 상하 밴드 (2026-07-15 · 재사용 템플릿 조건)
 마무리 슬라이드가 `.concept-panel{width:700px}` 좌측 컬럼 고정이라 우측 ~460px가 항상 비었던 문제. 10안 시안(`_dev/설계기록/탐색-아카이브/마무리_초안_10안.html`) 중 **"상하 3단 풀폭"**을 "**계속 재사용할 템플릿**" 조건으로 채택 — 좌우분할·1:1 노드-카드 결합·고정 그리드 좌표 안은 카드/단계 개수가 덱마다 달라지면 코드를 다시 짜야 해 재사용 부적합.
@@ -118,6 +124,11 @@
 - **검토 스킬 실전 성과(도입 당일)**: 1주차 덱에서 정적 verify가 못 잡는 소유권 위반 검출 → 수정 완료(간지 부제 재작성 2곳 원문 복원, 4-3 멘트 노출→주석+발표자노트, 1-8 본문 원문 복원, 2-7 멘트 의역 콜아웃 제거). 인수인계서 §6 결정 9건이 무기록 확정된 파이프라인 단절 발견 → `1주차_결정요청사항.md` 소급 생성(총괄 확인 대기).
 - 테스트발 개선 3건 반영: 리서치 게이트A 범위표 형식·상세안 없는 주차 역산-제안 규칙 / 콘텐츠 폴더 생성은 게이트A 통과 후 / 검토 종합판정 기준표(통과=FAIL 0·조건부=국소 FAIL·재작업=구조 계약 위반).
 
+## 장식 목적 이미지 허용 (2026-07-17)
+- 이미지 게이트(`references/이미지-디렉션-프롬프트.md` §3) 완화: 설명력 증대 외에 **장식 목적**(시각적 리듬·생동감)도 `IMAGE_REQUIRED` 사유로 인정.
+- 제약(숫자 상한 없이 재량+가이드 문구로 통제): 표지(`cover-object`) 제외, 적용 역할은 `section-overlay`·`support`·`spot`만, 같은 덱에서 드물게·비연속, 이미 차트가 있는 슬라이드엔 추가 금지.
+- `generate_now`/`prompt_only` 확인 질문(§5)은 변경 없음 — 장식 목적이어도 매번 그대로 받는다. 코드 시각화 우선 원칙(AGENTS.md 30행)도 불변, 기본값은 여전히 `NO_IMAGE`.
+
 ## 미해결 (상태·TODO 정본)
 - ✅ **로고 확정**(2026-07-13) → V-마크(민트 왼팔·블루 오른팔·잉크 접점) 인라인 `<svg class="s-logo">`. 사이징=`deck.css .s-logo`(40)/`.cover-head .s-logo`(60). 표준자산 `kit/starter/logo.svg`. 전 파일 스윕 완료(2026-07-14).
 - 항목별 `catalog.html`(목표 캐노니컬 50+element 23=73 `<section>`) 미완 — 현재 layouts 14·charts 9(≈32%). patterns.css 시드 + 1주차 실전 덱(verify 통과 73장)의 섹션 역수확으로 확장.
@@ -126,3 +137,4 @@
 - **1주차 결정요청 9건 총괄 확인 대기** — `sessions/1주차/자료/1주차_결정요청사항.md`(소급 기록). 승인/수정 지시 후 해당 행에 결정일 추기.
 - 1-4 대비 패널 라벨("골라주기/새로 만들어주기" — 멘트 유래 텍스트의 시각화 사용) 경계 사례 — 시각화 재량 vs 라우팅 엄격 적용, 총괄 판단 필요.
 - 초안.md 서두 "약 60장" vs 실제 73행 불일치 + `(선택)` 태그 0건(검토보고 W3, 담당 콘텐츠).
+- **아틀라스 생성기 리빌드 불가(2026-07-17 발견)** — `outputs/build_layout_atlas.mjs`의 개수 어서션(50 layouts/21 elements)이 현재 카탈로그(물리 54/22)와 불일치해 `node` 실행이 즉시 실패. 생성기를 variant_of 접힘 반영으로 갱신하거나 어서션을 조정해야 함. 그 전까지 프로즌 CSS 재동기화는 splice 스크립트(deck.css 헤더~`/* layout atlas additions */` 구간 통짜 교체+어서션)로 수행.
