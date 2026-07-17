@@ -223,6 +223,7 @@ def image_contract_checks(html, deck_path, *, release=False, manifest_path=None,
     """Return static image-contract violations and informational notes."""
     errors, notes = [], []
     base = Path(deck_path).resolve().parent
+    html = re.sub(r"<!--.*?-->", "", html, flags=re.S)  # commented example markup is not live
 
     # Broken local image references include picture/srcset, but prompt_only slots
     # deliberately have no img src and are handled separately below.
@@ -397,6 +398,7 @@ def main():
         html = open(a.deck, encoding="utf-8").read()
     except OSError as e:
         print(f"[FAIL] 파일 열기: {e}"); sys.exit(1)
+    html = re.sub(r"<!--.*?-->", "", html, flags=re.S)  # commented markup (examples, presenter notes) is not live
 
     results = []  # (level, msg)  level in PASS/WARN/FAIL
     def chk(cond, ok, bad, warn=False):

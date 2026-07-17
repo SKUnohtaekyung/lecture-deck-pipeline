@@ -289,6 +289,7 @@ def bundle(deck: Path, *, output: Path, offline: bool, root: Path | None = None)
         errors = [f"cannot read deck: {exc}"]
         remove_stale(errors)
         return False, errors, []
+    html = re.sub(r"<!--.*?-->", "", html, flags=re.S)  # commented examples must not be inlined/validated
     bundler = Bundler(deck, root=root_path, offline=offline)
     bundler.validate_slots(html)
     html = bundler.inline_stylesheets(html)
