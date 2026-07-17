@@ -19,6 +19,11 @@ except Exception:
 
 REMOTE = re.compile(r"^(?:https?:)?//", re.I)
 
+try:  # dual-context import: package (tests) or script (CLI)
+    from scripts import font_embed
+except ImportError:
+    import font_embed
+
 
 def _find_repo_root(start: Path) -> Path:
     current = start.resolve()
@@ -36,6 +41,9 @@ class Bundler:
         self.offline = offline
         self.errors: list[str] = []
         self.log: list[str] = []
+        self.font_source = font_embed.DEFAULT_FONT
+        self.needs_font = False
+        self.font_embedded = False
 
     def _resolve(self, reference: str, base: Path | None = None) -> Path | None:
         clean = unquote(urlsplit(reference).path)
@@ -88,6 +96,8 @@ class Bundler:
                     return ""
                 return tag
             if REMOTE.match(href):
+                if "pretendard" in href.lower():
+                    return tag  # left for embed_font() to replace with a subset @font-face
                 if self.offline:
                     self.errors.append(f"offline external dependency: {href}")
                     self.log.append(f"external stylesheet removed: {href}")
@@ -170,6 +180,29 @@ class Bundler:
 
         return re.sub(r"(?i)(?<=\sstyle=)(['\"])(.*?)\1", replace_style, html)
 
+    def embed_font(self, html: str) -> str:
+        """Replace the Pretendard CDN link with an embedded, subset @font-face.
+
+        Runs after CSS is inlined so glyph collection covers ``content:`` text and
+        CSS unicode escapes; the subset is computed from the final HTML.
+        """
+        if not font_embed.PRETENDARD_LINK.search(html):
+            return html
+        self.needs_font = True
+        try:
+            style, glyphs, size = font_embed.build_font_style(html, source=self.font_source)
+        except font_embed.FontEmbedError as exc:
+            self.errors.append(f"cannot embed Pretendard font: {exc}")
+            return html
+        html = font_embed.PRETENDARD_LINK.sub("", html, count=1)
+        if "</head>" in html:
+            html = html.replace("</head>", style + "\n</head>", 1)
+        else:
+            html = style + html
+        self.font_embedded = True
+        self.log.append(f"font embedded: {size // 1024}KB subset ({glyphs} glyphs)")
+        return html
+
     def validate_slots(self, html: str) -> None:
         for match in re.finditer(r"<figure\b([^>]*)>(.*?)</figure>", html, re.I | re.S):
             attributes, body = match.group(1), match.group(2)
@@ -193,6 +226,13 @@ class Bundler:
             for value in re.findall(r"url\(\s*['\"]?([^)'\"]+)", html, re.I):
                 if REMOTE.match(value):
                     self.errors.append(f"external CSS request remains after bundling: {value}")
+            if re.search(r"href\s*=\s*['\"][^'\"]*pretendard", html, re.I):
+                self.errors.append("external Pretendard font link remains after bundling")
+            if self.needs_font and not (
+                re.search(r"@font-face", html, re.I)
+                and re.search(r"url\(\s*['\"]?data:font/woff2", html, re.I)
+            ):
+                self.errors.append("self-contained bundle is missing an embedded @font-face")
         for tag in re.findall(r"<(?:link|script|img|source|video)\b[^>]*>", html, re.I):
             for attribute in ("src", "poster"):
                 value = _attribute(tag, attribute)
@@ -255,6 +295,7 @@ def bundle(deck: Path, *, output: Path, offline: bool, root: Path | None = None)
     html = bundler.inline_scripts(html)
     html = bundler.inline_media(html)
     html = bundler.inline_css_blocks(html)
+    html = bundler.embed_font(html)
     bundler.postcheck(html)
     if bundler.errors:
         remove_stale(bundler.errors)
