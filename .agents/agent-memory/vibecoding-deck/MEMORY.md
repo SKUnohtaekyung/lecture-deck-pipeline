@@ -129,7 +129,16 @@
 - 제약(숫자 상한 없이 재량+가이드 문구로 통제): 표지(`cover-object`) 제외, 적용 역할은 `section-overlay`·`support`·`spot`만, 같은 덱에서 드물게·비연속, 이미 차트가 있는 슬라이드엔 추가 금지.
 - `generate_now`/`prompt_only` 확인 질문(§5)은 변경 없음 — 장식 목적이어도 매번 그대로 받는다. 코드 시각화 우선 원칙(AGENTS.md 30행)도 불변, 기본값은 여전히 `NO_IMAGE`.
 
+## 이미지 에셋 파이프라인 v1 (2026-07-17, 커밋 f819bf6) — 계약·검증 정본
+- **판정 4상태**: `NO_IMAGE | IMAGE_EXPLANATORY | IMAGE_MNEMONIC | IMAGE_DECORATIVE_OPTIONAL`. 순서=정보모양·코드 element 결정 → 목적 판정 → 중앙 레지스트리 `approved` 재사용 검색 → 신규 generate/transform 수 산출 → IMAGE_MODE 확인(신규 0장이면 질문 생략). 설명·기억 판정엔 의미 브리프 6키(LEARNING_POINT/SOURCE_METAPHOR/METAPHOR_MAPPING/MUST_SHOW/MUST_NOT_IMPLY/ALT_TEXT)+구성요소 3~5개·핵심관계 1개 필수.
+- **프롬프트 2경로 배타**: built-in 크로마 원본=균일 마젠타 `#FF00FF`만(native-alpha 문구 금지), 승인 native-alpha=진짜 투명만(magenta/chroma 문구 금지). `evals/verify_image_contract.py`가 `이미지-디렉션-프롬프트.md` §5.1/§5.2 text 블록으로 기계 강제. `verify_skill_setup.py` 프롬프트 마커도 이 6키+3상태+출력계약으로 갱신.
+- **정본 2층**: 중앙 승인=`kit/images/paper-cut-v1/registry.json`(+`registry.schema.json`), 세션 실행=`sessions/N주차/자료/이미지-에셋.json`(+`references/이미지-에셋-manifest.schema.json`). `_template/자료/`에 빈-슬라이드 manifest+프롬프트 문서 시드. `designboard.png`=candidate·`generation_reference_allowed=false`(계약 일치 새 보드+`--paper` 합성 미리보기 승인 전까지 생성 참조 금지).
+- **HTML 계약**: `<figure class="asset-slot asset-slot--{hero|support|spot}" data-image-purpose=…>`. 활성 역할 3종만. 설명/기억=관계설명 한국어 `alt` 필수, 장식=`alt="" aria-hidden="true"`. prompt_only=`<img>` 없이 `data-image-state="expected" data-expected-src`만 → 개발덱 깨진 이미지 0, 배포(release/inline)는 unresolved 설명·기억 슬롯이면 FAIL. 표지 고정(큐브 9면 유지)·`cover-object`/`section-overlay` 미승인. 장식=파트당 ≤1·비연속·차트/다이어그램 슬라이드와 동시 금지.
+- **스크립트(Pillow 필요)**: `prepare_image_asset.py`(크로마 프리플라이트=균일 경계·키 충돌 거부, 경계연결 flood-fill 키잉, 부분알파 RGB 최근접 복구, 알파 타이트크롭 ≤10% 여백) · `verify_image_assets.py`(PNG/RGBA/투명 네모서리/여백/마젠타 프린지 + 레지스트리 계약 + manifest 참조). `verify_deck.py`에 `image_contract_checks`·`count_code_viz` 추가(회귀 없음 — 1주차 이미지 계약 11 PASS). `inline_deck.py`=asset-slot/`<picture>`/srcset/CSS `url()` 인라인 + 오프라인 외부의존 차단.
+- **검증 커맨드**: `python -m unittest tests.test_image_pipeline`(14 PASS) · `python evals/verify_image_contract.py`(프롬프트층·레지스트리·manifest 템플릿) · `python scripts/verify_image_assets.py --registry kit/images/paper-cut-v1/registry.json`. `evals/image-contract-eval.json`=수동 채점 9케이스(routing/contract). ⚠️ `verify_image_contract.py`는 아직 독립 실행 — 통합 러너 미연결.
+
 ## 미해결 (상태·TODO 정본)
+- ✅ **이미지 에셋 파이프라인 v1 커밋 완료**(2026-07-17, f819bf6) — 전용 섹션 참조. 후속: (a) 레지스트리 `assets` 비어 있음(실전 덱 생성 때 채워짐, 블로커 아님) (b) `designboard.png` candidate→계약 일치 새 보드+`--paper` 미리보기 승인 필요 (c) `evals/verify_image_contract.py` 통합 러너 미연결. ⚠️ 미커밋 상태로 방치돼 있던 WIP였음 — 이후 큰 WIP는 verify 통과 즉시 복구지점 커밋(미해결에도 기록).
 - ✅ **로고 확정**(2026-07-13) → V-마크(민트 왼팔·블루 오른팔·잉크 접점) 인라인 `<svg class="s-logo">`. 사이징=`deck.css .s-logo`(40)/`.cover-head .s-logo`(60). 표준자산 `kit/starter/logo.svg`. 전 파일 스윕 완료(2026-07-14).
 - 항목별 `catalog.html`(목표 캐노니컬 50+element 23=73 `<section>`) 미완 — 현재 layouts 14·charts 9(≈32%). patterns.css 시드 + 1주차 실전 덱(verify 통과 73장)의 섹션 역수확으로 확장.
 - 차트 스펙 잔여 대비 팔로업 — 밝은 램프 위 텍스트(피라미드처럼).
