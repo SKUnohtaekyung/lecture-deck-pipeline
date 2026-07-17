@@ -310,6 +310,12 @@ def main():
             add(f"파일:{files['registry'].name}", "FAIL", "파일 없음")
         else:
             reg_ids = check_registry(rtxt)
+        stext = read(data / f"{wk}주차_리서치_종합정리.md")
+        if stext is None:
+            add("종합정리:존재(필수)", "FAIL", "N주차_리서치_종합정리.md 없음 — 사람 읽기용 종합 요약본은 필수")
+        else:
+            add("종합정리:존재(필수)", "PASS")
+            add("종합정리:성격표기", "PASS" if ("정본" in stext and ("요약" in stext or "종합" in stext)) else "WARN", "서두에 '정본은 3파일' 명시 권장")
 
     if args.target in ("초안", "all"):
         dtxt = read(files["draft"])
