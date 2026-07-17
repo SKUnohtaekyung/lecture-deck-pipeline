@@ -294,12 +294,57 @@ table.t tr:nth-child(even) td{ background:var(--surface-row); }
 .model-table td:nth-child(2){ font-weight:800; color:var(--ink); }
 
 /* ===================================================================
-   §8 3D 에셋 배치 헬퍼
+   §8 이미지 에셋 슬롯 · 주석 스크린샷
    =================================================================== */
+/* 새 공개 계약: figure.asset-slot + hero/support/spot 중 하나.
+   모든 슬롯은 헤더(상단 96px), 페이지 번호·컨트롤(하단 48px), 좌우 56px 안전영역 안에 머문다. */
+.asset-slot{ position:absolute; z-index:1; margin:0; display:grid; place-items:center;
+  overflow:hidden; pointer-events:none; }
+.asset-slot > img,.asset-slot > picture,.asset-slot > picture > img{
+  display:block; width:100%; height:100%; max-width:100%; max-height:100%;
+  object-fit:contain; object-position:center; }
+.asset-slot--hero{ right:56px; top:116px; bottom:56px; width:500px; max-width:500px; max-height:548px; }
+.asset-slot--support{ right:56px; top:144px; width:340px; height:390px; max-width:340px; max-height:390px; }
+.asset-slot--spot{ right:56px; top:120px; width:240px; height:240px; max-width:240px; max-height:240px; }
+/* prompt_only: 깨진 img를 만들지 않는다. 개발 덱에는 예상 슬롯만 표시하고 배포 검증은 unresolved로 막는다. */
+.asset-slot[data-image-state="expected"]{ border:2px dashed var(--blue-line-strong);
+  border-radius:var(--r-lg); background:var(--blue-soft); }
+.asset-slot[data-image-state="expected"]::before{ content:"이미지 예정"; color:var(--blue);
+  font-size:22px; font-weight:800; }
+/* 승인된 활성 역할이 아닌 고정 표지·파트전환 변형은 렌더하지 않는다(정적 검증에서도 FAIL 대상). */
+.asset-slot--cover-object,.asset-slot--section-overlay{ display:none !important; }
+
+/* 레거시 호환: 기존 완성 덱의 .asset 마크업은 유지한다. 새 덱에서는 .asset-slot을 사용한다. */
 .asset{ position:absolute; }
 .asset.hero{ right:40px; bottom:56px; width:430px; }
 .asset.spot{ right:48px; top:120px; width:240px; }
 .asset img{ width:100%; height:auto; display:block; }
+
+/* screen-operation 공용 fragment: 캡처는 이미지, 단계 관계는 실제 텍스트 캡션으로 제공한다. */
+.shot-annot{ position:relative; width:100%; max-width:560px; margin:0 auto; }
+.shot-frame,.shot-win{ border:1px solid var(--line); border-radius:12px; overflow:hidden;
+  box-shadow:0 16px 40px rgba(20,24,33,.16); background:var(--white); }
+.shot-frame img{ display:block; width:100%; height:auto; object-fit:contain; }
+.shot-badge{ position:absolute; width:42px; height:42px; border-radius:50%;
+  background:var(--blue); color:var(--white); font-weight:800; font-size:22px;
+  display:grid; place-items:center; box-shadow:0 8px 18px rgba(29,78,216,.4); }
+.shot-hl{ position:absolute; border:3px solid var(--blue); border-radius:8px; pointer-events:none; }
+.shot-caption,.shot-cap{ margin:10px 0 0; font-size:22px; line-height:1.55;
+  color:var(--gray-700); font-weight:700; }
+.shot-caption strong{ color:var(--blue); font-weight:800; }
+/* 실제 캡처가 없을 때 쓰는 텍스트 목업. 배포 이미지로 위장하지 않고 단계 구조만 확인한다. */
+.shot-bar{ min-height:48px; background:var(--surface); display:flex; align-items:center;
+  gap:8px; padding:0 16px; border-bottom:1px solid var(--line); }
+.shot-dot{ width:12px; height:12px; border-radius:50%; background:var(--gray-400); }
+.shot-bar .shot-cap{ margin:0 0 0 10px; }
+.shot-body{ position:relative; padding:20px 20px 20px 74px; }
+.shot-row{ min-height:58px; display:flex; align-items:center; border:1px solid var(--blue-line-strong);
+  border-radius:10px; background:var(--white); padding:0 16px; font-size:22px; font-weight:700;
+  color:var(--ink); margin-bottom:12px; }
+.shot-row:last-child{ margin-bottom:0; }
+.shot-row.on{ border-color:var(--blue); background:var(--blue-soft); color:var(--blue);
+  box-shadow:0 0 0 3px rgba(29,78,216,.16); }
+.shot-badge.b1{ top:28px; }.shot-badge.b2{ top:98px; }.shot-badge.b3{ top:168px; }
 
 /* ===================================================================
    §9 풀폭 본문 · 센터 메시지 · 페이지 번호
@@ -380,6 +425,10 @@ table.t tr:nth-child(even) td{ background:var(--surface-row); }
 .s02-slide .s-lead{ font-size:30px; margin:0 0 26px; }
 .s02-slide .s-body{ font-size:22px; line-height:1.7; }
 .asset.s02{ right:10px; bottom:30px; width:580px; }
+/* S02에 이미지가 있을 때만 명시적으로 has-image를 붙인다. 570px 텍스트 + 500px 이미지 사이에 82px 거터 확보. */
+.s02-slide.has-image .s-body-wrap{ width:570px; }
+.s02-slide.has-image .s-title{ white-space:normal; }
+.s02-slide.has-image .asset-slot--hero{ right:56px; top:124px; bottom:64px; width:500px; }
 
 /* ===================================================================
    §13 아젠다 (Agenda) — 노드-타임라인 (v3 · 2026-07-17 고정 제목·민트 바·확대 사이징·세로 균형)
@@ -390,7 +439,7 @@ table.t tr:nth-child(even) td{ background:var(--surface-row); }
       항목 제목(.an-h)은 블루 텍스트(구조색 — 2026-07-17 확정).
    ── ⚠️ 노드 수 고정 아님: `.an-item`을 아젠다 항목 수만큼 반복(파트 수 또는 여정 단계 수).
       우측 트랙은 flex 세로 배치라 3~7개를 자동 수용·수직 중앙정렬. 연결선은 노드 간 ::after로 자동.
-      세로예산(top150~bottom56 ≈ 514px): 항목당 ≈ max(64, 헤드34+본문줄수×29)+gap16.
+      세로예산(top150~bottom56 ≈ 514px): 항목당 ≈ max(64, 헤드39+본문줄수×33)+gap16.
       권장 3~6(본문 1줄).
    ── ⚠️ 4개 초과 시 `.an-right`에 `an-2col`을 부여(크기 축소 금지 — 항목·배지·폰트 크기 그대로 2열 배치,
       column-count가 임의 N을 자동 균형분배: 5→3+2, 6→3+3). ≤4개는 1열 유지·an-2col 미부여(verify가 강제).
@@ -405,7 +454,7 @@ table.t tr:nth-child(even) td{ background:var(--surface-row); }
 .s03-slide .an-title{ margin:0 0 16px; font-size:44px; line-height:1.2; font-weight:800; color:var(--ink); }
 .s03-slide .an-bar{ width:96px; height:10px; border-radius:var(--r-pill); background:var(--mint);
   margin:0 0 24px; }   /* 고정 제목 아래 민트 pill 바(v3) */
-.s03-slide .an-intro{ margin:0; font-size:19px; line-height:1.7; color:var(--gray-700); font-weight:500; }
+.s03-slide .an-intro{ margin:0; font-size:24px; line-height:1.7; color:var(--gray-700); font-weight:500; }
 .s03-slide .an-intro .hl{ color:var(--mint-deep); font-weight:800; }
 .s03-slide .an-right{ position:absolute; left:560px; right:64px; top:150px; bottom:56px;
   display:flex; flex-direction:column; justify-content:center; gap:16px; }
@@ -415,10 +464,10 @@ table.t tr:nth-child(even) td{ background:var(--surface-row); }
   bottom:-48px; width:2px; background:var(--line); z-index:0; }   /* 이 노드 중심→다음 노드 중심(gap16+반지름32) */
 .s03-slide .an-num{ position:relative; z-index:1; flex:0 0 auto; width:64px; height:64px; border-radius:var(--r-pill);
   background:var(--blue); color:var(--white); display:flex; align-items:center; justify-content:center;
-  font-size:24px; font-weight:800; }   /* v3: 확대(48→64)·그림자 제거(플랫) */
+  font-size:26px; font-weight:800; }   /* v3: 확대(48→64)·그림자 제거(플랫) */
 .s03-slide .an-body{ flex:1 1 auto; padding-top:4px; }
-.s03-slide .an-h{ font-size:26px; font-weight:700; color:var(--blue); margin:0 0 8px; line-height:1.3; }
-.s03-slide .an-d{ font-size:19px; line-height:1.5; color:var(--gray-700); margin:0; }
+.s03-slide .an-h{ font-size:30px; font-weight:700; color:var(--blue); margin:0 0 8px; line-height:1.3; }
+.s03-slide .an-d{ font-size:22px; line-height:1.5; color:var(--gray-700); margin:0; }
 /* an-2col: an-item 4개 초과 시 조립 시 수동 부여(verify 강제). display:block이 필수 —
    column-count는 flex 컨테이너에서 무효. 세로 중앙은 height:fit-content+margin:auto(v3, §13 주석 참조),
    커넥터 억제는 의도된 동작. */
