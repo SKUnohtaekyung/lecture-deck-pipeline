@@ -115,7 +115,7 @@ def check_research_result(text):
         add(f"{tag}:메타헤더", "FAIL", "작성일·기준·대상 헤더 누락")
     else:
         add(f"{tag}:메타헤더", "PASS")
-    secs = [(h, b) for h, b in split_sections(text) if "구간" in h]
+    secs = [(h, b) for h, b in split_sections(text) if re.match(r"^\d+\s*구간", h)]
     if len(secs) < 6:
         add(f"{tag}:구간수", "FAIL", f"구간 섹션 {len(secs)}개(<6)")
     else:
@@ -141,7 +141,7 @@ def check_practice(text):
         add(f"{tag}:메타헤더", "FAIL", "메타 헤더 누락")
     else:
         add(f"{tag}:메타헤더", "PASS")
-    secs = [(h, b) for h, b in split_sections(text) if "실습" in h]
+    secs = [(h, b) for h, b in split_sections(text) if re.match(r"^실습\s*\d", h)]
     if not secs:
         add(f"{tag}:실습섹션", "FAIL", "실습 섹션(## …실습…) 0개")
     else:
