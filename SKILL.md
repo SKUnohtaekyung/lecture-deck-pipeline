@@ -26,7 +26,7 @@ kit/images/  paper-cut-v1 후보 보드·승인 에셋 중앙 레지스트리
 kit/screenshots/  주석 스크린샷 element
 kit/starter/ deck-template.html · presenter-notes-template.html(발표자 노트) · logo.svg
 references/  조립-리듬-불변요소.md · 이미지-디렉션-프롬프트.md · 이미지-스크린샷-배포.md · 콘텐츠초안-입력형식.md
-scripts/     verify_deck.py(검증) · inline_deck.py(배포)      evals/ evals.json(회귀)
+scripts/     verify_deck.py(검증) · assemble_deck.py(조각→미리보기) · build_release.py(최종본 빌드) · inline_deck.py+verify_distributable.py(인라인·자립성 강제) · font_embed.py(폰트 서브셋)   evals/ evals.json(회귀)
 ```
 
 ---
@@ -99,7 +99,7 @@ scripts/     verify_deck.py(검증) · inline_deck.py(배포)      evals/ evals.
 - 채울 수 있는 레이아웃은 본문 안전 영역을 적극 사용한다. 단, centered·일부 full-bleed처럼 여백 자체가 메시지인 구도는 의도적 여백을 유지한다.
 - 이미지 슬롯은 `<figure class="asset-slot asset-slot--hero" data-image-purpose="explanatory" ...>` 계약을 사용하고 활성 역할은 `hero | support | spot`뿐이다. 설명·기억 이미지는 관계를 설명하는 한국어 `alt`가 필수이며 장식 이미지는 `alt="" aria-hidden="true"`다. `prompt_only`는 `<img>`를 만들지 않고 figure에 `data-image-state="expected" data-expected-src="…"`만 둔다. `cover-object`·`section-overlay`는 승인된 별도 템플릿 변형이 없으므로 사용하지 않는다.
 - 조립 문법·리듬·불변요소 상세: [`references/조립-리듬-불변요소.md`](references/조립-리듬-불변요소.md).
-- **산출 위치**: 세션 폴더(`sessions/N주차/`)에 쓰면 kit CSS 링크를 `../../kit/styles/…`로(루트에 바로 산출하면 `kit/styles/…`). 배포 단일파일은 `scripts/inline_deck.py`(9단계).
+- **산출 위치·2단계 구조**: 편집본은 `sessions/N주차/강의덱.초안/`에 **파트별 조각**으로 쓴다 — `shell.html`(head·고정 슬라이드·`<!-- ::PARTS:: -->` 마커·JS) + PART마다 `part-NN.html`(`sessions/_template/강의덱.초안/` 골격 복사). 대화형 수정은 조각이 빠르고 정확하다. 미리보기 통합본은 `python scripts/assemble_deck.py sessions/N주차/강의덱.초안`(`--watch` 자동 재조립) → `강의덱.html`. kit CSS 링크는 `../../kit/styles/…`(세션 폴더 2단계). 최종 단일 자립본은 9단계 `build_release.py`.
 
 ### 6. 이미지 모드 실행 · 스크린샷 핸드오프
 - 이미지 판정·의미 브리프·출력 경로별 프롬프트·재사용·투명 PNG QA는 [`references/이미지-디렉션-프롬프트.md`](references/이미지-디렉션-프롬프트.md)를 따른다. 중앙 승인 정본은 `kit/images/paper-cut-v1/registry.json`, 세션 실행 정본은 `sessions/N주차/자료/이미지-에셋.json`, 사람용 대응 문서는 `이미지-프롬프트.md`다. 상세 계약을 이 문서나 플랫폼 어댑터에 복제하지 않는다.
@@ -117,8 +117,11 @@ scripts/     verify_deck.py(검증) · inline_deck.py(배포)      evals/ evals.
 **② 브라우저로 오버플로·콘솔·가독성**(스크립트가 못 재는 것): 로컬 http 서버 서빙(패널은 `file://` 불가) 후 슬라이드별 `scrollWidth/Height ≤ client`(오버플로 0) · 콘솔 에러 0 · Pretendard 로드 · 본문 22px. **`.hint-reveal`이 있는 슬라이드는 닫힌 상태 + 강제로 연 상태 둘 다 오버플로 검사**(548px 세로예산은 열림 상태에서 초과할 수 있고, 기본 DOM 훑기로는 안 잡힌다). **박스 패딩 과다도 이 단계에서 확인**: 배너·콜아웃·카드 눈에 띄면 `offsetHeight` vs `padding:0` 임시적용 시 높이를 비교해 패딩 비중을 재본다(1/3 넘으면 줄임 — §핵심 규칙 참조).
 - 스크린샷은 정적이라 불안정·느림 → **측정 우선, 스크린샷은 증빙 최소**.
 
-### 9. (선택) 배포 — 단일 파일
-이미지·CSS를 base64/인라인해 `<덱>_배포.html`(단일 파일)로. 목표 3~8MB. 상세: `references/이미지-스크린샷-배포.md`.
+### 9. 배포 — 단일 자립 파일 (강제)
+학생 배포본은 CSS·이미지·**폰트**가 전부 인라인/임베드된 단일 HTML이어야 한다(오프라인에서 파일 하나로 완전 렌더).
+- **한 커맨드**: `python scripts/build_release.py sessions/N주차/강의덱.초안` = 조립 → `verify_deck` → `inline_deck --offline`(CSS·이미지 인라인 + Pretendard **사용 글자 서브셋** `@font-face` 임베드) → `verify_distributable`(자립성 강제) → `강의덱_배포.html`.
+- **강제 게이트**: 외부 `<link/script href=http>` 0 · 모든 `src`/`url()` `data:` · 임베드 `@font-face` 존재 + Pretendard CDN 부재 · unresolved 설명·기억 슬롯 0. 하나라도 위반하면 파일을 쓰지 않는다(fail-closed) — 통과 전엔 "완성"이 아니다.
+- 빌드된 배포본은 손대지 말고 **조각을 고쳐 재빌드**한다(폰트 서브셋이 매 빌드 최종 텍스트에서 재계산되므로 글자 누락이 없다). 이미지 스크린샷·주석 상세: `references/이미지-스크린샷-배포.md`.
 
 ---
 
@@ -140,7 +143,9 @@ scripts/     verify_deck.py(검증) · inline_deck.py(배포)      evals/ evals.
 | `kit/starter/presenter-notes-template.html` | 7단계 — 발표자 노트 HTML 복제 원본 |
 | `데모_제작규칙.html` | 5단계 — 완성 덱의 실제 마크업을 본뜰 때 |
 | `scripts/verify_deck.py` | 8단계 — 정적 검증 자동 채점 |
-| `scripts/inline_deck.py` | 9단계 — 단일파일 배포(CSS 인라인·이미지 base64) |
+| `scripts/assemble_deck.py` | 5·8단계 — 조각(`강의덱.초안/`) → 미리보기 통합본 조립(`--watch`) |
+| `scripts/build_release.py` | 9단계 — 최종본 빌드(조립→검증→인라인→자립성 강제) |
+| `scripts/inline_deck.py` · `verify_distributable.py` · `font_embed.py` | 9단계 — CSS·이미지 인라인 + 폰트 서브셋 임베드 · 자립성 강제 게이트 |
 
 ## 핵심 규칙 (요약)
 - **no-default**: 모든 레이아웃·element는 동급. 정보 모양이 고른다. 좌우분할은 희소·비연속.

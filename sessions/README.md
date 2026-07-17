@@ -9,7 +9,9 @@ sessions/
   _template/              새 주차 시작 시 복사할 빈 골격
   1주차/
     초안.md               채워진 콘텐츠 초안 (입력양식/콘텐츠초안템플릿.md 형식)
-    강의덱.html            산출 덱
+    강의덱.초안/           편집본 조각(파트별) — shell.html + part-NN.html (+ order.txt 선택)
+    강의덱.html            조립 미리보기(자동 재조립·외부링크 CSS) — 편집 중 통합본 확인용
+    강의덱_배포.html        배포 단일본(CSS·이미지·폰트 전부 인라인 — 오프라인 자립)
     강의덱_발표자노트.html   산출 발표자 노트 (멘트 💬/👀/🗣가 있을 때만)
     자료/                 원본 리서치·인수인계·참고 자료
       이미지-에셋.json     슬라이드 이미지 판정·상태 정본
@@ -26,9 +28,10 @@ cp "입력양식/콘텐츠초안템플릿.md" "sessions/2주차/초안.md"   # �
 
 ## 스킬 입출력 규약 (SKILL.md 1·5·7단계와 연결)
 - **입력**: `sessions/N주차/초안.md`를 콘텐츠 초안으로 읽는다. 원본 근거가 필요하면 `sessions/N주차/자료/` 참고.
-- **산출**: 덱과 발표자 노트를 **같은 폴더**(`sessions/N주차/`)에 쓴다.
-  - ⚠️ 덱은 kit CSS를 **상대경로**로 링크한다. 세션 폴더는 루트에서 2단계 깊이이므로 `<link href="../../kit/styles/…">`로 쓴다(루트에 바로 산출하면 `kit/styles/…`).
-  - 배포용 단일 파일은 `python scripts/inline_deck.py sessions/N주차/강의덱.html` — CSS·이미지를 인라인해 위치와 무관하게 열린다.
+- **산출(2단계)**: 편집본(조각) → 배포본(단일 자립). 발표자 노트는 같은 폴더에 별도 산출.
+  - **편집본** `강의덱.초안/`: 파트별 `shell.html`(head·고정 슬라이드·`<!-- ::PARTS:: -->` 마커·JS) + PART마다 `part-NN.html`. 대화하며 파트 단위로 고친다(조각이 대화형 수정에 빠르고 정확). 미리보기 통합본은 `python scripts/assemble_deck.py sessions/N주차/강의덱.초안`(`--watch`면 저장 시 자동 재조립) → `강의덱.html`(항상 최신). ⚠️ CSS는 `../../kit/styles/…` 상대경로(세션 폴더 2단계 깊이).
+  - **배포본** `강의덱_배포.html`: `python scripts/build_release.py sessions/N주차/강의덱.초안` 한 커맨드 = 조립 → `verify_deck` → `inline_deck --offline`(CSS·이미지 인라인 + Pretendard 사용 글자 서브셋 `@font-face` 임베드) → `verify_distributable`(자립성 강제). 외부 의존이 하나라도 남으면 FAIL — 학생에게 이 파일 하나만 줘도 오프라인에서 다 보인다.
+  - 조각 없이 단일 `강의덱.html`을 바로 편집하는 옛 방식도 유효하다(→ `inline_deck.py`로 배포). 단, 폰트 자립·자립성 강제는 `build_release.py` 경로에서 보장된다.
 - **이미지 계약**: `자료/이미지-에셋.json`은 [`../references/이미지-에셋-manifest.schema.json`](../references/이미지-에셋-manifest.schema.json)을 따르는 상태 정본이다. `NO_IMAGE | IMAGE_EXPLANATORY | IMAGE_MNEMONIC | IMAGE_DECORATIVE_OPTIONAL` 판정, 재사용 Asset ID, 예상 파일, 생성 방식, QA 결과를 기록한다. `prompt_only`의 expected 슬롯에는 실제 `<img>`를 만들지 않는다.
 
 ## 팀 스킬 표준 산출 파일

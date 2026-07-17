@@ -8,14 +8,14 @@ cp -r sessions/_template "sessions/N주차"
 cp "입력양식/콘텐츠초안템플릿.md" "sessions/N주차/초안.md"
 ```
 
-## 제작 체크리스트
+## 제작 체크리스트 (2단계: 편집본 조각 → 배포 단일본)
 1. [ ] `초안.md`를 `입력양식/콘텐츠초안템플릿.md` 형식으로 채운다(교시별 4열 표 `#·슬라이드 제목·본문 문구·비유·멘트` + 아이콘 범례 서두).
 2. [ ] 원본 리서치·자료를 `자료/`에 넣는다.
 3. [ ] `자료/이미지-에셋.json`에 슬라이드별 네 상태 판정과 재사용·생성 상태를 기록한다. `prompt_only`면 `자료/이미지-프롬프트.md`도 채운다.
-4. [ ] 스킬에 "N주차 덱 만들어줘" 요청 → 정보 모양 판단·레이아웃·조립(SKILL.md 워크플로). PART 매핑은 스킬이 확인받는다.
-5. [ ] `python scripts/verify_deck.py sessions/N주차/강의덱.html --parts <파트수>` 통과(FAIL 0).
-6. [ ] 로컬 서버(`python -m http.server`)로 오버플로·콘솔 육안 — `.hint-reveal`은 닫힘+강제로 연 상태 둘 다.
-7. [ ] (선택) `python scripts/inline_deck.py sessions/N주차/강의덱.html`로 단일 파일 배포본. unresolved 설명·기억 expected 슬롯이 있으면 먼저 실제 에셋을 준비한다.
+4. [ ] 스킬에 "N주차 덱 만들어줘" 요청 → 정보 모양 판단·레이아웃·조립(SKILL.md 워크플로). 편집본은 `강의덱.초안/`에 **파트별 조각**(`shell.html` 고정슬롯 + PART마다 `part-NN.html`)으로 둔다. PART 매핑은 스킬이 확인받는다.
+5. [ ] 미리보기: `python scripts/assemble_deck.py sessions/N주차/강의덱.초안 --watch` → 브라우저로 `강의덱.html`을 열고 대화하며 조각을 수정(저장 시 통합본 자동 갱신).
+6. [ ] `python scripts/verify_deck.py sessions/N주차/강의덱.html --parts <파트수>` 통과(FAIL 0). 로컬 서버로 오버플로·콘솔 육안 — `.hint-reveal`은 닫힘+강제로 연 상태 둘 다.
+7. [ ] 최종본: `python scripts/build_release.py sessions/N주차/강의덱.초안` → `강의덱_배포.html`(단일 자립본, 폰트 임베드). **자립성 강제 게이트를 통과해야 완성**. unresolved 설명·기억 슬롯이 있으면 먼저 실제 에셋을 준비한다.
 
 ## 팀 스킬 파이프라인으로 시작 (선택)
 
