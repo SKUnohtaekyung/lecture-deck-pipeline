@@ -57,9 +57,31 @@ def verify_prompt_layers() -> None:
         "MUST_SHOW:",
         "MUST_NOT_IMPLY:",
         "ALT_TEXT:",
+        "최종 선택 에셋과 세션에서 제시하는 에셋 후보는 반드시 유효 알파를 가진 투명 PNG(RGBA)여야 한다.",
+        "built-in 마젠타는 중간 크로마 원본에만 허용한다.",
+        "키 제거와 알파 QA를 마친 투명 PNG만 최종 선택하거나 세션 에셋 후보로 제시한다.",
+        "별도 viewing board",
+        "relationship or role readable within five seconds",
+        "components individually identifiable",
+        "Do not add meaningless decoration",
+        "CHARACTER_DECISION:",
+        "non_character | character_general | human_ai_handoff",
+        "person + clearly distinct AI-agent robot/machine pair",
+        "Character decision (optional, never default):",
+        "Do not default to a character.",
+        "does not increase the misconception risk in MUST_NOT_IMPLY",
+        "Prefer text, charts, diagrams, or object metaphors",
+        "simple, text-free, friendly paper-cut character is allowed",
+        "non-identifiable, symbolic, and subordinate to the one key relationship",
+        "human-to-AI-agent role handoff or responsibility relationship",
+        "show the person alone as the AI counterpart",
+        "3 to 5 semantic components",
+        "work tool or action, output, and verification marker",
+        "photorealistic people, identifiable faces",
+        "fake screenshots",
     ):
         if marker not in text:
-            fail(f"semantic brief marker missing: {marker}")
+            fail(f"prompt contract marker missing: {marker}")
 
 
 def sha256(path: Path) -> str:
