@@ -242,6 +242,35 @@ def check_draft(text):
     return ok
 
 
+def check_capability_claims(root, wk):
+    """자기투사(리서치 §0 G6) 휴리스틱: 'AI/제품이 관찰·캡처를 못 한다'류 능력 단정을
+    WARN으로 surface한다. 기계는 판정하지 않고 표면화만 — 능력 vs 범위 구분은 사람이 확인."""
+    # 관찰·지각 대상 바로 뒤(~12자)에 부정이 오는 경우만 → "AI가 화면을 못 본다"류 능력 단정.
+    # 프록시미티로 "Codex 위치 못 찾음 … 실측 필요"처럼 주어가 학생인 오탐을 배제.
+    neg = ("못", "할 수 없", "없", "불가", "안 돼", "안 됨", "안됨")
+    obs_re = re.compile(r"캡처|스크린샷|화면|관찰|실측")
+    targets = [
+        ("콘텐츠리서치", root / "sessions" / f"{wk}주차" / "자료" / f"{wk}주차_콘텐츠리서치_결과.md"),
+        ("실습안", root / "sessions" / f"{wk}주차" / "자료" / f"{wk}주차_실습안_검증결과.md"),
+        ("종합정리", root / "sessions" / f"{wk}주차" / "자료" / f"{wk}주차_리서치_종합정리.md"),
+        ("초안", root / "sessions" / f"{wk}주차" / "초안.md"),
+    ]
+    hits = []
+    for label, p in targets:
+        t = read(p)
+        if not t:
+            continue
+        for i, line in enumerate(t.splitlines(), 1):
+            for m in obs_re.finditer(line):
+                if any(n in line[m.end():m.end() + 12] for n in neg):
+                    hits.append(f"{label}:{i} «{line.strip()[:50]}»")
+                    break
+    if hits:
+        add("자기투사:능력클레임", "WARN", "능력 vs 범위 확인 필요(G6): " + " / ".join(hits[:6]))
+    else:
+        add("자기투사:능력클레임", "PASS", "관찰·캡처 능력 단정 라인 없음")
+
+
 def check_scope(base, target):
     try:
         out = subprocess.run(
@@ -332,6 +361,8 @@ def main():
             add("출처매핑:참조해소", "FAIL", f"레지스트리에 없는 출처ID {', '.join(dangling)}")
         else:
             add("출처매핑:참조해소", "PASS", f"참조 {len(used_refs)}개 전부 해소")
+
+    check_capability_claims(root, args.week)
 
     if args.base:
         check_scope(args.base, "자료" if args.target == "all" else args.target)
