@@ -224,15 +224,17 @@
         <h2 class="s-title">코드 한 줄, <span class="hl">그 줄의 역할</span></h2>
       </div>
       <div class="dc-stage">
-        <div class="viz-code" role="img" aria-label="주석 코드 블록(Python app.py, 6줄): 3번째 줄 = 화면 제목을 그린다, 4번째 줄 = 사용자 입력을 받는다, 6번째 줄 = AI에게 보낼 프롬프트를 만든다">
-          <div class="co-bar">app.py</div>
+        <div class="viz-code" role="img" aria-label="주석 코드 블록(HTML index.html, 8줄): 3번째 줄 = 화면에 무엇이 들어가는지 정한다, 5번째 줄 = 색과 크기를 꾸민다, 7번째 줄 = 누르면 반응하게 만든다">
+          <div class="co-bar">index.html</div>
           <div class="co-rows">
-            <div class="co-row"><span class="co-num">1</span><span class="co-src">import streamlit as st</span><span class="co-note"></span></div>
-            <div class="co-row"><span class="co-num">2</span><span class="co-src">&nbsp;</span><span class="co-note"></span></div>
-            <div class="co-row is-hl"><span class="co-num">3</span><span class="co-src">st.title("내 프롬프트 도우미")</span><span class="co-note"><span class="cn">1</span><p>화면 제목을 그린다</p></span></div>
-            <div class="co-row is-hl"><span class="co-num">4</span><span class="co-src">topic = st.text_input("주제")</span><span class="co-note"><span class="cn">2</span><p>사용자 입력을 받는다</p></span></div>
-            <div class="co-row"><span class="co-num">5</span><span class="co-src">if st.button("생성"):</span><span class="co-note"></span></div>
-            <div class="co-row is-hl"><span class="co-num">6</span><span class="co-src">    st.write(f"{topic}에 대해 설명해줘")</span><span class="co-note"><span class="cn">3</span><p>AI에게 보낼 프롬프트를 만든다</p></span></div>
+            <div class="co-row"><span class="co-num">1</span><span class="co-src">&lt;!DOCTYPE html&gt;</span><span class="co-note"></span></div>
+            <div class="co-row"><span class="co-num">2</span><span class="co-src">&lt;body&gt;</span><span class="co-note"></span></div>
+            <div class="co-row is-hl"><span class="co-num">3</span><span class="co-src">  &lt;h1&gt;안녕하세요, 저는 민지입니다&lt;/h1&gt;</span><span class="co-note"><span class="cn">1</span><p>화면에 무엇이 들어가는지 정한다</p></span></div>
+            <div class="co-row"><span class="co-num">4</span><span class="co-src">  &lt;style&gt;</span><span class="co-note"></span></div>
+            <div class="co-row is-hl"><span class="co-num">5</span><span class="co-src">    h1 { color: teal; font-size: 32px; }</span><span class="co-note"><span class="cn">2</span><p>색과 크기를 꾸민다</p></span></div>
+            <div class="co-row"><span class="co-num">6</span><span class="co-src">  &lt;/style&gt;</span><span class="co-note"></span></div>
+            <div class="co-row is-hl"><span class="co-num">7</span><span class="co-src">  &lt;button onclick="alert('반가워요!')"&gt;인사하기&lt;/button&gt;</span><span class="co-note"><span class="cn">3</span><p>누르면 반응하게 만든다</p></span></div>
+            <div class="co-row"><span class="co-num">8</span><span class="co-src">&lt;/body&gt;</span><span class="co-note"></span></div>
           </div>
         </div>
         <p class="dc-cap">강조 줄 옆 <strong>블루 번호</strong>가 그 줄의 역할을 짚는다 — 무지개 구문강조 없이 강조 배경 하나로.</p>

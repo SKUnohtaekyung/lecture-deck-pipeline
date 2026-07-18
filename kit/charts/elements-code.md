@@ -24,8 +24,8 @@
 - **kind**: `code`  *(차트/다이어그램이 아닌 신설 element 종. `chart|diagram` 스키마의 3번째 종으로, 소스코드 전시물을 가리킨다.)*
 - **info_shapes**: `[concept]`
   - *(rationale: 정보모양-taxonomy 12개 중 이 element가 서비스하는 모양은 `concept`("A란 무엇인가"를 코드 한 조각 + 줄별 설명으로 전달). `screen-operation`의 **주석 문법**(번호·테두리로 특정 지점 지시)을 빌려오지만, `screen-operation`은 "실제 UI 화면 단계(버튼→메뉴→클릭)"라 스크린샷이 대상이고 코드가 아니다 — 그래서 인접일 뿐 값은 `concept`. 코드로 **절차**를 보이면 보조로 `flow`가 겹칠 수 있으나, "이 줄이 뭘 하나"의 주 모양은 개념 설명이다.)*
-- **data_shape**: 짧은 소스코드 한 조각(함수·설정·프롬프트 응답·스니펫) + **특정 줄 몇 개**를 지목해 설명. 줄들 사이에 순서·인과가 핵심이 아니라 "이 줄의 역할"이 초점일 때. 판별: 순서 절차가 핵심이면 flow-v(단계 스택), UI 화면 조작이면 screen-operation(주석 스크린샷), 코드를 배경 분위기로만 깔면 full-bleed 코드(주석 없음), 값 비교면 차트.
-- **when_to_use**: 실제 코드 한 조각을 띄우고 **특정 줄을 짚어** "이 줄이 무엇을 하는지" 초보에게 풀이할 때 — 바이브코딩 프롬프트가 만든 코드 읽기, 설정 파일 키 설명, 함수의 핵심 라인 해설. (소스: Material for MkDocs — `hl_lines`로 "Specific lines can be highlighted", code annotations는 "a comfortable and friendly way to attach arbitrary content to specific sections of code blocks by adding numeric markers".)
+- **data_shape**: 짧은 HTML·CSS·JavaScript 코드 한 조각(HTML 태그·CSS 규칙·JavaScript 동작) + **특정 줄 몇 개**를 지목해 설명. 줄들 사이에 순서·인과가 핵심이 아니라 "이 줄의 역할"이 초점일 때. 판별: 순서 절차가 핵심이면 flow-v(단계 스택), UI 화면 조작이면 screen-operation(주석 스크린샷), 코드를 배경 분위기로만 깔면 full-bleed 코드(주석 없음), 값 비교면 차트.
+- **when_to_use**: 실제 코드 한 조각을 띄우고 **특정 줄을 짚어** "이 줄이 무엇을 하는지" 초보에게 풀이할 때 — 바이브코딩이 만든 HTML·CSS·JavaScript 코드 읽기, CSS 규칙의 역할 설명, JavaScript 동작 한 줄 해설. (소스: Material for MkDocs — `hl_lines`로 "Specific lines can be highlighted", code annotations는 "a comfortable and friendly way to attach arbitrary content to specific sections of code blocks by adding numeric markers".)
 - **when_to_avoid**: 코드가 ~12줄을 넘겨 한 화면에 안 들어갈 때(→ 발췌·다중 슬라이드), 특정 줄을 지목하지 않고 통째로만 보일 때(→ 주석 없는 코드 패널/full-bleed), 대상이 코드가 아니라 UI 화면 단계일 때(→ `screen-operation` 주석 스크린샷), 터미널 명령·출력 로그일 때(→ 터미널 블록), 줄별 설명이 초보에게 과부하면(→ 개념 흐름 flow-v로 추상화). **어떤 element도 기본이 아니다** — data_shape가 "코드 + 지목할 줄"일 때만 고른다.
 - **capacity**: 코드 **6~12줄**(줄당 ≤~50자, 초과 시 줄바꿈 위험) + **강조 줄 ≤4** + **여백 콜아웃 ≤4**(각 ≤2줄·≤18어, **풀이 텍스트 ≥17px** — 다이어그램 라벨/캡션 하한 준수). 선택적 상단 `.vc-bar`(파일명/언어) 1줄(≥17px). 강조가 5줄↑이면 "강조가 곧 평문"이 되어 무의미 → 캡. (산식: 코드 mono 20px×line-height 1.6 ≈ 32px/줄 → 세로예산 548px에서 패널 여백·`.vc-bar` 제하면 물리적으로 ≤12줄.)
 - **content_slots**: `filename_bar`(선택 · 파일명/언어) · `code_lines[6..12]`(`.vc-line`, 라인번호 gutter 포함) · `highlight_lines[≤4]`(`.is-hl` 지목 줄) · `callouts[≤4]`(`.cn` 블루 번호 + 풀이 ≤2줄) · `lead_lines`(강조 줄↔콜아웃 잇는 블루 리더선)
@@ -36,13 +36,16 @@
 - **sketch**:
 ```
 ┌──────────────────────────────────────────────────────────┐
-│  app.py                                    (파일명 바·선택) │
+│  index.html                                (파일명 바·선택) │
 │ ┌──────────────────────────────┐                          │
-│ │ 1  import streamlit as st     │                          │
-│ │ 2  st.title("내 앱")  ░░░░░░░░ │ ──①── 화면 제목을 그린다   │
-│ │ 3  n = st.slider("값", 0, 100)│ ──②── 슬라이더 입력을 받음 │
-│ │ 4  st.write(n * 2)  ░░░░░░░░░░ │ ──③── 입력을 2배로 출력    │
-│ │ 5  # 끝                        │                          │
+│ │ 1  <!DOCTYPE html>            │                          │
+│ │ 2  <body>                     │                          │
+│ │ 3    <h1>안녕하세요...</h1> ░░ │ ──①── 화면에 무엇이 들어가는지 정한다 │
+│ │ 4    <style>                  │                          │
+│ │ 5      h1 { color: teal; }░░░ │ ──②── 색과 크기를 꾸민다   │
+│ │ 6    </style>                 │                          │
+│ │ 7    <button onclick=...>░░░░ │ ──③── 누르면 반응하게 만든다 │
+│ │ 8  </body>                    │                          │
 │ └──────────────────────────────┘   └ 얇은 블루 리더선       │
 │   ░░ = 강조 줄(blue-soft 배경)   ①②③ = 블루 콜아웃 번호      │
 └──────────────────────────────────────────────────────────┘
