@@ -34,4 +34,4 @@ python .claude/skills/ui-ux-pro-max/scripts/search.py ...
 
 ## 팀 워크플로 스킬
 
-리서치·콘텐츠·검토 어댑터의 정본은 루트 `skills/<이름>/SKILL.md` — 등재·계약·호출 규약은 `skills/README.md` 참조(여기에 복제하지 않는다).
+리서치·콘텐츠·검토 어댑터의 정본은 루트 `skills/<이름>/SKILL.md` — 등재·계약·호출 규약은 `skills/README.md` 참조(여기에 복제하지 않는다). 횡단 오케스트레이션 프로토콜 `하네스`(파이프라인 역할 아님)도 같은 방식의 어댑터를 `.claude/skills/하네스/`에 둔다.
