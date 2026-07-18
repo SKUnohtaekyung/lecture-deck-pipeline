@@ -268,6 +268,7 @@ def main() -> int:
         "데모_제작규칙.html",
         "scripts/verify_deck.py",
         "scripts/inline_deck.py",
+        "scripts/verify_kit.py",
     ]
     missing = [rel for rel in required if not (ROOT / rel).is_file()]
     check(not missing, "공통 read-path 파일 모두 존재", f"공통 read-path 누락: {missing}")

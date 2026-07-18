@@ -18,6 +18,7 @@ from scripts.font_embed import (
 )
 from scripts.inline_deck import bundle
 from scripts.verify_distributable import self_containment_violations
+from scripts import verify_kit
 
 
 SHELL = (
@@ -169,6 +170,13 @@ class DistributableGateTests(unittest.TestCase):
             '<figure class="asset-slot" data-image-purpose="explanatory" data-image-state="expected"></figure>',
             require_font=False,
         )))
+
+
+class VerifyKitExemptTests(unittest.TestCase):
+    def test_exempt_is_empty(self):
+        # EXEMPT가 조용히 자라면 verify_kit.py의 고아 클래스 게이트가 무의미해진다.
+        # 추가할 땐 반드시 이유를 적고(verify_kit.py 주석 참고) 이 테스트를 함께 갱신한다.
+        self.assertEqual(verify_kit.EXEMPT, set())
 
 
 if __name__ == "__main__":

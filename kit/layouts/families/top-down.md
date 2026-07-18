@@ -94,7 +94,7 @@
 └───────────┴───────────┴───────────┴──────────┘
 ```
 - **coded**: no
-- **density_note**: 큰 숫자는 40s 하한 위(≥44px), 라벨 22px·델타 캡션 19px 하한. 델타 방향은 민트(개선)·코랄(악화)·레드(미달/오류) 문법. 한 행 유지 위해 카드 ≤ 5.
+- **density_note**: 큰 숫자는 가독성 하한 위(≥44px), 라벨 22px·델타 캡션 19px 하한. 델타 방향은 민트(개선)·코랄(악화)·레드(미달/오류) 문법. 한 행 유지 위해 카드 ≤ 5.
 - **source**: https://www.setproduct.com/blog/dashboard-ui-design (verified — 헤더 아래 KPI 카드 한 줄, 각 카드 = 지표 + 전기 대비 델타, 3~7개, 최상단 시각 비중 최대 확인)
 - **adaptation_note**: 대시보드 "헤더→KPI행→차트" 세로 리딩만 차용, UI 크롬은 버린다. 밴드=`.s-title`, KPI행=`.grid-3`/4열 `.card.surface`, 델타=`.pill`(민트/코랄)로 재표현. 원본의 스파크라인·계정 스위처 등은 생략해 숫자에 집중. 블루는 강조 지표 1곳만.
 
@@ -257,7 +257,7 @@
 - **coded**: no
 - **density_note**: 12열 grid에 span으로 타일 크기 분배(hero 6~7열×2행, 소형 3~4열). 최소 타일도 라벨 22px + 1줄이 상한 — 그 이하로 조밀해지면 하한 붕괴. 히어로 타일 하나만 블루 강조, 나머지 뮤트 블루-패널(`.card.surface`).
 - **source**: https://www.wearedevelopers.com/en/magazine/682/building-a-bento-grid-layout-with-modern-css-grid-682 (verified — 12열 공유 그리드에 span/dense로 히어로+소형 비대칭 타일 배치 확인)
-- **adaptation_note**: 벤토의 "공유 12열 그리드 + 비대칭 span 타일" 골격만 차용. Apple/SaaS 랜딩 비주얼을 복제하지 않고 `.card.surface` 타일 + grid span으로 재표현. 히어로에 대표 항목·소형에 단일 사실 하나씩. 40s 하한 탓에 6~7 타일로 제한(원본 landing의 9+ 타일 밀도는 축약).
+- **adaptation_note**: 벤토의 "공유 12열 그리드 + 비대칭 span 타일" 골격만 차용. Apple/SaaS 랜딩 비주얼을 복제하지 않고 `.card.surface` 타일 + grid span으로 재표현. 히어로에 대표 항목·소형에 단일 사실 하나씩. 가독성 하한 탓에 6~7 타일로 제한(원본 landing의 9+ 타일 밀도는 축약).
 
 
 ---

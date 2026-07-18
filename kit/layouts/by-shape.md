@@ -102,13 +102,14 @@
 ## screen-operation (화면 조작) — 실제 UI 단계
 > 전용 레이아웃 없음 — **주석 스크린샷 element**(`../screenshots/`, P5)를 아래 host에 얹는다.
 1. `L-dc-annotated` — 한 화면의 여러 지점을 번호로 짚음
-2. `L-vf-numbered-stack` — 여러 화면 단계를 세로로
-3. `L-dc-hero` — 단일 화면 크게
+2. `L-dc-hero` — 단일 화면 크게
+> 여러 단계는 한 슬라이드에 묶지 말고 단계마다 슬라이드를 나눈다(기준안 §6 원칙 9). 상세 → `../screenshots/주석스크린샷.md`
+> 조작 슬라이드들 앞에 두는 전체 흐름 개요 1장에는 `L-vf-numbered-stack`을 쓴다(단계 목록이므로 `flow`)
 
 ---
 
 ## 커버리지 감사
 
-- **12 모양 전부** 후보 ≥2 확보(screen-operation은 host 3 + element).
+- **12 모양 전부** 후보 ≥2 확보(screen-operation은 host 2 + element).
 - **split은 어느 모양에서도 1순위 아님** — concept·comparison에서만 후순위 등장.
 - numeric·structure·containment·flow·mapping은 레이아웃 + `../charts/` element **조합**으로 완성.

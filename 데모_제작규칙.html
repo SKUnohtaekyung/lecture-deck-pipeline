@@ -9,39 +9,10 @@
   <!-- ▼ 킷 상속: deck.css(베이스) 다음에 legibility.css(강의장 가독성) 순서 고정 -->
   <link rel="stylesheet" href="kit/styles/deck.css">
   <link rel="stylesheet" href="kit/styles/legibility.css">
-  <!-- ▼ 이 덱이 새로 더한 코드 시각화 프리미티브 (P3·P4에서 kit/charts·kit/screenshots 로 승격 예정)
-       likelion 킷에는 없던 것: 막대차트 · 관계 다이어그램 · 주석 스크린샷. 전부 디자인 토큰만 사용. -->
+  <link rel="stylesheet" href="kit/styles/patterns.css"><!-- 코드 코어: 검증된 레이아웃/element CSS(재사용) -->
+  <!-- ▼ 이 덱이 새로 더한 코드 시각화 프리미티브 중 patterns.css에 없는 것만 여기 남긴다.
+       막대차트·관계 다이어그램은 patterns.css로 승격 완료(중복 제거). 주석 스크린샷은 아래 참고. -->
   <style id="kit-additions">
-    /* 좌 설명 + 우 시각화 2분할 (코드차트·스크린샷 슬라이드 공용) */
-    .viz-split{ display:grid; grid-template-columns:1fr 1fr; gap:44px; align-items:center; margin-top:20px; }
-    .viz-note p{ font-size:21px; line-height:1.72; color:var(--gray-700); margin:0 0 16px; }
-    .viz-note strong{ color:var(--blue); font-weight:800; }
-
-    /* [NEW] 코드 막대 차트 — 계획서 '데이터' → CSS 막대 */
-    .code-chart{ width:100%; }
-    .cc-plot{ display:flex; align-items:flex-end; justify-content:space-around;
-      height:300px; border-bottom:2px solid var(--line); padding:0 6px; }
-    .cc-bar{ display:flex; flex-direction:column; align-items:center; justify-content:flex-end; }
-    .cc-fill{ width:92px; background:var(--periwinkle); border-radius:10px 10px 0 0;
-      box-shadow:0 8px 18px rgba(29,78,216,.16); }
-    .cc-fill.is-key{ background:var(--blue); }
-    .cc-val{ font-weight:800; font-size:22px; color:var(--blue); margin-bottom:8px; }
-    .cc-axis{ display:flex; justify-content:space-around; margin-top:12px; padding:0 6px; }
-    .cc-axis span{ width:92px; text-align:center; font-size:19px; font-weight:800; color:var(--ink); }
-
-    /* [NEW] 코드 관계 다이어그램 — 계획서 '시각화 의도' → 도형 매핑 */
-    .code-diagram{ display:flex; flex-direction:column; align-items:center; margin-top:26px; }
-    .cd-root{ background:var(--blue); color:var(--white); font-weight:800; font-size:22px;
-      border-radius:14px; padding:18px 34px; box-shadow:0 12px 28px rgba(29,78,216,.28); }
-    .cd-arrow{ font-size:30px; color:var(--blue); font-weight:800; margin:8px 0 2px; }
-    .cd-leaves{ display:grid; grid-template-columns:repeat(4,1fr); gap:18px; width:100%; margin-top:8px; }
-    .cd-leaf{ border:1px solid var(--blue-line-strong); border-radius:16px; background:var(--white); padding:20px 14px;
-      text-align:center; box-shadow:0 10px 22px rgba(20,24,33,.05);
-      display:flex; flex-direction:column; align-items:center; gap:7px; }
-    .cd-in{ font-size:16px; color:var(--gray-700); font-weight:700; }
-    .cd-to{ color:var(--gray-400); font-size:22px; font-weight:800; line-height:.8; }
-    .cd-out{ font-size:19px; color:var(--blue); font-weight:800; line-height:1.2; }
-
     /* 주석 스크린샷 .shot-*는 kit/styles/deck.css 공용 컴포넌트를 사용한다. */
   </style>
 </head>
@@ -177,7 +148,7 @@
         <div class="s-team">VIBECODING 팀<br>강의덱 KIT · v0.5</div>
       </header>
       <div class="center-msg">
-        <p class="cm-sub">대상 = 코딩 경험이 없는 입문자</p>
+        <p class="cm-sub">대상 = 입문자 중심의 혼합군</p>
         <h2 class="cm-title">한 장에 <span class="hl">한 메시지</span></h2>
         <div class="callout blue">큰 글씨 · 고대비 · 친숙한 비유 · <strong>용어보다 결과를 먼저</strong> 경험시킨다.</div>
       </div>
@@ -410,19 +381,17 @@
             <p>실습의 화면 단계는 실제 캡처 위에 <strong>번호와 테두리</strong>를 얹어 안내합니다. &ldquo;여기&rdquo; 대신 실제 버튼·위치를 짚습니다.</p>
             <div class="callout blue">캡처는 사람이(핸드오프) · 번호·테두리 <strong>overlay는 킷이 코드로</strong></div>
           </div>
-          <figure class="shot-annot" aria-label="바탕화면 우클릭에서 새로 만들기, 폴더까지 3단계 주석 스크린샷">
+          <figure class="shot-annot" aria-label="바탕화면 우클릭 메뉴에서 새로 만들기를 여는 단일 단계 주석 스크린샷">
             <div class="shot-win">
               <div class="shot-bar"><span class="shot-dot"></span><span class="shot-dot"></span><span class="shot-dot"></span><span class="shot-cap">바탕화면</span></div>
               <div class="shot-body">
                 <div class="shot-row">마우스 우클릭</div>
-                <div class="shot-row">새로 만들기 ▸</div>
-                <div class="shot-row on">폴더</div>
+                <div class="shot-row on">새로 만들기 ▸</div>
+                <div class="shot-row">폴더</div>
                 <span class="shot-badge b1" aria-hidden="true">1</span>
-                <span class="shot-badge b2" aria-hidden="true">2</span>
-                <span class="shot-badge b3" aria-hidden="true">3</span>
               </div>
             </div>
-            <figcaption class="shot-caption"><strong>1.</strong> 바탕화면 우클릭 → <strong>2.</strong> 새로 만들기 → <strong>3.</strong> 폴더 선택</figcaption>
+            <figcaption class="shot-caption">바탕화면 빈 곳을 우클릭해 <strong>새로 만들기</strong>를 엽니다.</figcaption>
           </figure>
         </div>
       </div>

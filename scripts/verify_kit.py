@@ -42,9 +42,7 @@ CATALOGS = [
 
 # 마크업에 나타나지만 CSS 정의를 요구하지 않는 클래스.
 # 여기에 추가할 땐 반드시 이유를 적는다 — 이 목록이 조용히 자라면 게이트가 무의미해진다.
-EXEMPT = {
-    # (현재 없음)
-}
+EXEMPT: set[str] = set()  # (현재 없음)
 
 _fail = 0
 _passed = 0
@@ -61,7 +59,12 @@ def chk(cond: bool, ok: str, bad: str) -> None:
 
 
 def css_class_selectors(text: str) -> set[str]:
-    """CSS에서 정의된 클래스 이름을 뽑는다(선언 블록 밖 셀렉터의 .name)."""
+    """CSS에서 정의된 클래스 이름을 뽑는다(선언 블록 밖 셀렉터의 .name).
+
+    미지원 문법(이 저장소가 쓰지 않아 정규식을 넓히지 않음):
+      `._X`(밑줄로 시작하는 클래스) · `.md\\:flex`(콜론 이스케이프) ·
+      `[class~="X"]`(속성 셀렉터). 이런 문법이 새로 쓰이면 오탐 가능.
+    """
     text = re.sub(r"/\*.*?\*/", " ", text, flags=re.S)
     out: set[str] = set()
     for m in re.finditer(r"([^{}]+)\{", text):
@@ -70,21 +73,45 @@ def css_class_selectors(text: str) -> set[str]:
     return out
 
 
-def split_html(text: str) -> tuple[str, str]:
-    """(인라인 style 내용, style/script/주석 제거된 마크업)"""
+def split_html(text: str) -> tuple[str, str, str]:
+    """(인라인 style 내용, script 내용, style/script/주석 제거된 마크업)"""
     styles = "\n".join(re.findall(r"<style[^>]*>(.*?)</style>", text, flags=re.S))
+    scripts = "\n".join(re.findall(r"<script[^>]*>(.*?)</script>", text, flags=re.S))
     markup = re.sub(r"<style[^>]*>.*?</style>", " ", text, flags=re.S)
     markup = re.sub(r"<script[^>]*>.*?</script>", " ", markup, flags=re.S)
     markup = re.sub(r"<!--.*?-->", " ", markup, flags=re.S)
-    return styles, markup
+    return styles, scripts, markup
 
 
 def markup_classes(markup: str) -> set[str]:
+    """마크업의 class 속성값에서 클래스 이름을 뽑는다.
+
+    대소문자 무시(`CLASS="값"`)와 따옴표 생략(`class=값`, HTML5에서 공백·
+    따옴표·`<`·`>`·backtick이 없으면 유효)을 모두 대응한다.
+    """
     out: set[str] = set()
-    for m in re.finditer(r'class\s*=\s*"([^"]*)"', markup):
+    for m in re.finditer(r'class\s*=\s*"([^"]*)"', markup, flags=re.I):
         out.update(m.group(1).split())
-    for m in re.finditer(r"class\s*=\s*'([^']*)'", markup):
+    for m in re.finditer(r"class\s*=\s*'([^']*)'", markup, flags=re.I):
         out.update(m.group(1).split())
+    for m in re.finditer(r'class\s*=\s*([^\s"\'=<>`]+)', markup, flags=re.I):
+        out.update(m.group(1).split())
+    return out
+
+
+def script_classes(script_text: str) -> set[str]:
+    """`<script>`의 `classList.add(...)`/`classList.toggle(...)`로 부여되는 클래스.
+
+    `split_html()`이 마크업에서 `<script>`를 통째로 지우므로, 지우기 전에
+    이 함수로 스크립트 텍스트에서 먼저 뽑아야 한다.
+    """
+    out: set[str] = set()
+    for call in re.finditer(
+        r"classList\s*\.\s*(?:add|toggle)\s*\(([^)]*)\)", script_text, flags=re.I
+    ):
+        args = call.group(1)
+        for lit in re.finditer(r"""(['"])((?:(?!\1).)*)\1""", args):
+            out.update(lit.group(2).split())
     return out
 
 
@@ -108,8 +135,8 @@ def main() -> int:
             chk(False, "", f"{rel} 없음")
             continue
         text = path.read_text(encoding="utf-8")
-        styles, markup = split_html(text)
-        used = markup_classes(markup)
+        styles, scripts, markup = split_html(text)
+        used = markup_classes(markup) | script_classes(scripts)
 
         orphans = sorted(c for c in used if c not in defined and c not in EXEMPT)
         chk(
