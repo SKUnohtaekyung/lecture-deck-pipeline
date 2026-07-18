@@ -1,5 +1,9 @@
 # CHANGELOG — vibecoding-deck kit
 
+## 0.7.0-wip — 대상 정의 정정·가독성 레이어 개명 (2026-07-19)
+- **대상 정의 정정**: "40~50대 초보자" 표현을 커리큘럼 정본(`sessions/바이브코딩_커리큘럼_기준안.md` §4.1)에 맞춰 "코딩 경험이 없는 입문자 중심의 혼합군(연령·경험 수준 다양)"으로 저장소 전역 정정. 수치·CSS 값은 변경 없음, 근거 문장만 교체.
+- **`legibility-40s.css` → `legibility.css` 개명**: 특정 연령대가 아니라 강의장 조건(뒷자리 판독·저조도 대비) 근거로 이름 정정. `git mv` + 참조 전 파일 갱신(`verify_deck.py` 포함).
+
 ## 0.6.0-wip — 아젠다 2열·브랜드 영문화·PART eyebrow 폐지 (2026-07-17)
 - **이미지 생성 신뢰성·설명력 시스템**: 4상태 판정(`NO_IMAGE | IMAGE_EXPLANATORY | IMAGE_MNEMONIC | IMAGE_DECORATIVE_OPTIONAL`)과 재사용 우선 모드 게이트, 의미 브리프/크로마/native-alpha 프롬프트 분리, 중앙 registry·세션 manifest·expected figure 계약을 도입. `paper-cut-v1`은 투명 오브젝트로 제한하고 기존 디자인보드는 승인 전 생성 참조를 차단.
 - **픽셀·배포 검증 강화**: 프로젝트 전용 크로마 래퍼(외곽 균일성·경계 접촉·키 충돌·부분 알파 RGB 복원·tight crop), PNG/해시/계보 검사기, 실제 `.viz-*`·`data-viz`만 세는 덱 검사, 누락·외부 의존·unresolved 슬롯이면 출력하지 않는 strict inline 배포를 추가. 합성 픽셀·prompt_only·장식 배치·`picture/srcset/CSS url()` 회귀를 포함한다.

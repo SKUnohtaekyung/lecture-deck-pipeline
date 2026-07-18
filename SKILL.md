@@ -3,8 +3,8 @@ name: vibecoding-deck
 description: >-
   바이브코딩(AI와 함께 코딩) 강의덱·발표자료를 1280×720 HTML 웹덱으로 조립하는 자립형 스킬.
   채워진 콘텐츠 초안(교시별 표·본문·강사 멘트)을 읽어(없으면 자료·브리프로 계획을 먼저 초안·확인)
-  방향키 발표·PDF·base64 단일파일 덱과 강사용 발표자 노트 HTML을 만든다. 대상은 40~50대
-  초보자(큰 글씨·고대비·친숙한 비유). 이미지보다 코드 차트·다이어그램을 우선하고 실습 화면은
+  방향키 발표·PDF·base64 단일파일 덱과 강사용 발표자 노트 HTML을 만든다. 대상은 코딩 경험이
+  없는 입문자(큰 글씨·고대비·친숙한 비유). 이미지보다 코드 차트·다이어그램을 우선하고 실습 화면은
   주석 스크린샷으로 안내한다. "강의덱·세션·발표자료·교육 슬라이드 만들어줘", "다음 주차 덱",
   "이 초안/계획서/자료로 덱 조립", "PPT를 HTML로", "슬라이드에 비교·흐름·수치 차트 추가" 같은
   요청에 쓴다. "템플릿"·"스킬"을 명시하지 않아도, 강의·교육 슬라이드를 만들거나 초안·자료를
@@ -21,7 +21,7 @@ description: >-
 kit/guide/   정보모양-taxonomy.md · 카탈로그-규격.md · 토큰-치트시트.md · 디자인시스템.md
 kit/layouts/ by-shape.md(역인덱스) · families/*.md(캐노니컬 50 · 물리 54, 4개는 구도중복 variant_of로 접힘) · README.md · catalog.html(코드 코어)
 kit/charts/  by-shape.md(역인덱스) · charts-*.md · diagrams-*.md · elements-code.md(총 23) · README.md · catalog.html
-kit/styles/  deck.css · legibility-40s.css · patterns.css(코드 코어)   kit/starter/ deck-template.html
+kit/styles/  deck.css · legibility.css · patterns.css(코드 코어)   kit/starter/ deck-template.html
 kit/images/  paper-cut-v1 후보 보드·승인 에셋 중앙 레지스트리
 kit/screenshots/  주석 스크린샷 element
 kit/starter/ deck-template.html · presenter-notes-template.html(발표자 노트) · logo.svg

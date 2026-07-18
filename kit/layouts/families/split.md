@@ -35,7 +35,7 @@
 - **coded**: no
 - **density_note**: 좌 컬럼 폭 560px·본문 22px/1.78에서 한 줄 ≈24~27자(keep-all), 제목/eyebrow 포함 세로 여유상 본문 5줄이 상한. 우 시각은 세로 ≈480px·가로 ≈540px 박스 안에 하나만—붐비면 시각을 element 카탈로그로 분리.
 - **source**: https://www.slidewhizz.com/post/asymmetrical-layouts-in-presentations (WebFetch 확인 2026-07-12 · 열림 · verified) — 비대칭 균형: 한쪽 무거운 요소를 반대쪽 여백·대비로 상쇄, "의도된" 배치로 읽힘.
-- **adaptation_note**: 원본은 웹/슬라이드용 자유 비대칭. 재표현 시 원본 복제 없이 deck.css 격자에 고정 — 좌측을 `.s-body-wrap`(560px 고정 컬럼)으로 못박고 우측 시각을 그 여백에 앉힌다. 무게 균형은 원본의 "다른 크기·색"이 아니라 토큰 문법으로: 강조는 블루 1곳(`.hl` 또는 콜아웃), 우 시각은 `--surface` 패널 위에 단색 다이어그램. 40~50대 하한(본문 22px)이 좌 컬럼 줄수를 강제하므로 원본보다 글을 덜 담고 여백을 더 준다.
+- **adaptation_note**: 원본은 웹/슬라이드용 자유 비대칭. 재표현 시 원본 복제 없이 deck.css 격자에 고정 — 좌측을 `.s-body-wrap`(560px 고정 컬럼)으로 못박고 우측 시각을 그 여백에 앉힌다. 무게 균형은 원본의 "다른 크기·색"이 아니라 토큰 문법으로: 강조는 블루 1곳(`.hl` 또는 콜아웃), 우 시각은 `--surface` 패널 위에 단색 다이어그램. 가독성 하한(본문 22px)이 좌 컬럼 줄수를 강제하므로 원본보다 글을 덜 담고 여백을 더 준다.
 
 ---
 
@@ -136,4 +136,4 @@
 - **coded**: no
 - **density_note**: 세로 룰은 `--line`(#E5E8F0) 1px—시선 경계만, 색 강조 아님. 우 글 컬럼 ≈480px에 본문 22px 5줄 상한, 제목은 `.s-title` 44px 2줄까지. 좌 패널 시각은 하나만—여러 요소면 element 카탈로그로 분리하고 이 슬라이드엔 대표 하나.
 - **source**: https://www.printmag.com/featured/swiss-style-principles-typefaces-designers/ (WebFetch 확인 2026-07-12 · 열림 · verified) — 스위스 스타일: 수학적 격자, 비대칭 배치, 사진>일러스트, 명료·객관. 세로 격자 분할과 고립된 강한 시각이 원리적 뿌리.
-- **adaptation_note**: 원본은 스위스 격자 이론(룰·flush-left·고립 이미지). 복제 없이 원리만 차용 — 가운데 `--line` 세로 룰로 좌 시각/우 글을 끊고, 우 텍스트는 flush-left ragged-right(오른정렬 금지). 구조·주 강조는 deck.css의 `--blue`로 통일한다. 우글 방향이라 텍스트 컬럼을 우측 앵커로 미러 배치, 40~50대 하한(22px)에서 우 컬럼 줄수 5줄을 수용량 경고로 사용한다.
+- **adaptation_note**: 원본은 스위스 격자 이론(룰·flush-left·고립 이미지). 복제 없이 원리만 차용 — 가운데 `--line` 세로 룰로 좌 시각/우 글을 끊고, 우 텍스트는 flush-left ragged-right(오른정렬 금지). 구조·주 강조는 deck.css의 `--blue`로 통일한다. 우글 방향이라 텍스트 컬럼을 우측 앵커로 미러 배치, 가독성 하한(22px)에서 우 컬럼 줄수 5줄을 수용량 경고로 사용한다.

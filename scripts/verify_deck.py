@@ -7,7 +7,7 @@
   - 슬라이드 수 · 고정 슬라이드(cover/s02/s03/concept-recap) 존재
   - part-divider 수 (= --parts N 이면 일치 검사)
   - 네비 엔진(.navbar) · 상세 메뉴 PDF 출력 버튼(#pdfBtn)
-  - deck.css + legibility-40s.css 로드(링크 또는 인라인)
+  - deck.css + legibility.css 로드(링크 또는 인라인)
   - 코드 시각화(.viz-* 또는 data-viz) vs 실제 <img> 개수 (로고·표지 SVG는 집계 제외)
   - 콘텐츠 슬라이드 구도 다양성: 서로 다른 구조 시그니처 수 · 같은 구도 최장 연속
   - raw #hex 색이 :root/토큰 밖에서 쓰였는지(토큰-only 대략 검사)
@@ -472,9 +472,9 @@ def main():
         f".an-num 선언에 box-shadow {len(an_num_shadow)}건 — v3 플랫 배지(그림자 제거)")
 
     css_ok = 'deck.css' in html or ('<style' in html and '--blue' in html)
-    leg_ok = 'legibility-40s.css' in html or ('<style' in html and 'legibility' in html) or ('font-size:22px' in html)
+    leg_ok = 'legibility.css' in html or ('<style' in html and 'legibility' in html) or ('font-size:22px' in html)
     chk(css_ok, "deck.css 상속(링크/인라인)", "deck.css 미로드")
-    chk(leg_ok, "40~50대 가독성 레이어 로드", "legibility-40s 미로드(본문 22px 하한 위험)", warn=True)
+    chk(leg_ok, "강의장 가독성 레이어 로드", "legibility 미로드(본문 22px 하한 위험)", warn=True)
 
     # ── 본문 eyebrow의 PART 중복 금지: 헤더 .s-part(PART n/N)가 위치를 전담 (2026-07-17) ──
     #   .pd-eyebrow(파트전환, 'PART n/N' 슬래시 포맷)는 별개 클래스라 스캔 대상 아님.

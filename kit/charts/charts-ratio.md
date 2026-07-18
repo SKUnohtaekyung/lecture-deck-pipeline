@@ -3,7 +3,7 @@
 > 이 파일의 항목은 **whole-slide가 아니라 레이아웃 위에 얹는 재사용 fragment(element)** 다 — 레이아웃 ≠ 다이어그램(카탈로그-규격 §5). 각 항목은 `element_vs_slide`로 fragment(`.viz-<slug>`)를 whole-slide와 분리 선언하고, 얹을 레이아웃은 카탈로그에서 **따로** 골라 그 안에 얹는다.
 > 판단 축: [`정보모양-taxonomy.md`](../guide/정보모양-taxonomy.md) 12모양(값은 이 안에서만) · 스키마: [`카탈로그-규격.md §5`](../guide/카탈로그-규격.md) · 토큰·세로예산: [`토큰-치트시트.md`](../guide/토큰-치트시트.md).
 > 전부 **코드-viz**(CSS/SVG, 이미지 아님) — 숫자·틱·라벨은 텍스트로 선택·복사 가능. 색은 문법: **강조 조각/값 1곳 `--blue` · 주의·경고 `--coral-deep` · 오류 `--red` · 안전·달성 `--mint-deep` · 비강조는 `--periwinkle`/`--surface`**.
-> 캔버스 기준: `.s-full` 사용역 = 폭 1152px(1280−64−64) · 세로 약 548px(top 118 → bottom 54). 아래 capacity는 전부 이 값과 40~50대 폰트 하한(본문 22px·틱/라벨 ≥19px)에서 스크롤·오버플로 없이 성립하도록 검산했다.
+> 캔버스 기준: `.s-full` 사용역 = 폭 1152px(1280−64−64) · 세로 약 548px(top 118 → bottom 54). 아래 capacity는 전부 이 값과 가독성 하한(본문 22px·틱/라벨 ≥19px)에서 스크롤·오버플로 없이 성립하도록 검산했다.
 > **no-default**: 어떤 element도 "기본/가장 흔한 차트"로 규정하지 않는다 — 5종은 데이터 모양에 따라 동급으로 갈린다.
 
 ---
@@ -66,7 +66,7 @@
 ```
 - **coded**: no
 - **source**: https://www.beautiful.ai/blog/battle-of-the-charts-pie-chart-vs-donut-chart (WebFetch 검증 2026-07-12, 열림 — "use a donut chart so you can take advantage of the space in the middle", "between 2 and 4 categories, go with a donut chart")
-- **adaptation_note**: 대시보드 위젯의 네온 그라데이션·그림자 링 복제 금지. 링은 `--periwinkle`/`--surface` 비강조 + 강조 조각 1개 `--blue`로 재표현하고, 중앙 요약은 `.viz-donut-center`에 큰 숫자(≤5자) + 라벨 1줄로 40~50대 가독성 하한을 지킨다. 조각 강조와 중앙 숫자 중 **블루는 한 곳만** — 둘 다 블루로 칠하지 않는다.
+- **adaptation_note**: 대시보드 위젯의 네온 그라데이션·그림자 링 복제 금지. 링은 `--periwinkle`/`--surface` 비강조 + 강조 조각 1개 `--blue`로 재표현하고, 중앙 요약은 `.viz-donut-center`에 큰 숫자(≤5자) + 라벨 1줄로 가독성 하한을 지킨다. 조각 강조와 중앙 숫자 중 **블루는 한 곳만** — 둘 다 블루로 칠하지 않는다.
 
 ---
 
