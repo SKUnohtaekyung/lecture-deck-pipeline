@@ -86,14 +86,17 @@
 - ⚠️ **카탈로그 검증 주의**: `catalog.html`류는 카탈로그이지 완성 덱이 아니므로 `--parts 0`으로 실행하고 표지·토큰·민트배지 검사만 해석한다.
 
 ## 파일 지도
-- **입력 형식(공식)**: `입력양식/콘텐츠초안템플릿.md` + 상세 절차 `references/콘텐츠초안-입력형식.md`. (실례: `sessions/1주차/초안.md`. 주차별 입력·산출은 `sessions/N주차/` — 규약 `sessions/README.md`.)
+- **입력 형식(공식)**: `입력양식/콘텐츠초안템플릿.md`(형식 정본) + 상세 절차 `references/콘텐츠초안-입력형식.md`. 주차별 입력·산출은 `sessions/N주차/` — 규약 `sessions/README.md`. (실례로 쓰던 `sessions/1주차/초안.md`는 2026-07-19 폐기 — 템플릿만으로 판독 가능해야 한다.)
+- **커리큘럼 정본**: `sessions/바이브코딩_커리큘럼_기준안.md`. **§4(대상)·§5(범위)·§6(교육 원칙)은 덱 설계에 직접 구속력이 있고, 스킬 규칙과 충돌하면 기준안이 이긴다.** 조립 전 read-path 최상단(루트 `SKILL.md`).
 - 판단축·규격·토큰: `kit/guide/`. 카탈로그: `kit/layouts/`(캐노니컬 50, 물리 54 — `variant_of` 4개 접힘)·`kit/charts/`(23) + 각 `by-shape.md`. 구도 반복은 패밀리와 별개인 `composition_shape` 축으로도 확인한다.
 - 코드 코어: `kit/styles/patterns.css`(검증된 CSS) · `데모_제작규칙.html`(마크업 예시). 범용 컴포넌트(`.callout`·`.pill`·`.hint-reveal` 등)는 `kit/styles/deck.css`.
 - 스타터: `kit/starter/deck-template.html`(deck.css→legibility→patterns.css 순 로드) · `kit/starter/presenter-notes-template.html`(발표자 노트, 자립 문서).
 - **탐색 아카이브**: `_dev/설계기록/탐색-아카이브/` — 표지·아젠다·파트전환·색시스템·마무리 초안 HTML 전부. 배포 대상(①층) 아님, 참고용.
 
-## 1주차 강의덱 — 첫 실전 조립 (2026-07-15)
-초안 73행(`sessions/1주차/초안.md` — 이후 `입력양식/`에서 세션 폴더로 이관, 규약 `sessions/README.md`)을 메인(Opus)+교시별 Sonnet 빌더 7 병렬로 조립. 산출: 루트 `1주차_강의덱.html`(73장, 외부 kit CSS 링크)·`_발표자노트.html`. **2·3주차 재사용 패턴:**
+## 1주차 강의덱 — 첫 실전 조립 (2026-07-15) · ⚠️ 산출물 폐기됨 (2026-07-19)
+> **덱과 초안 모두 제거됐다.** 사용자 판정으로 `1주차_강의덱.html`(73장)·`sessions/1주차/초안.md`·집필노트·검토보고가 커밋 `2b6371f`에서 삭제됐다. **그 덱을 예시나 재사용 원본으로 삼지 말 것.** 1주차는 리서치 산출물(`sessions/1주차/자료/` 5종)만 유효하며 콘텐츠 단계부터 다시 만든다. 복원이 필요하면 `git show d89abfb:"경로"`.
+>
+> 아래는 **조립 과정에서 얻은 기술적 교훈**이라 산출물 폐기와 무관하게 유효하다. 구조 매핑·병렬 빌드·오버플로·기호 처리 항목은 계속 참고한다.
 - **구조 매핑**: 도입부=파트 밖 인트로(표지·s02·아젠다=여정노드·본문). **간지 슬라이드=파트전환**(pd-title 12자 축약, 간지 원문=pd-sub). "(마무리)"행=concept-recap. **교시=PART**(사용자 확인).
 - **병렬 빌드 열쇠**: 메인이 조립 전 **전역 결정표**(#·정보모양·시그니처·element·힌트)로 다양성을 덱 전체 확정(청크경계 넘어 maxrun≤2). 빌더엔 공유 `builder-spec.md`(반환형식·헤더 규칙·SIG별 마크업·토큰·아이콘·오버플로 산식)+교시별 결정행·원문. "결정표대로만". PART본문=`.s-team` 포함(JS가 PART배지 주입), 도입본문(0-x)=s-team 생략.
 - ⚠️ **family_signature `<svg` 오검**: 헤더 로고 SVG 때문에 시그니처가 전 본문에 "viz" 균일 추가 → maxrun 판정엔 무영향. 다양성 WARN(`distinct≥content//2`)은 60+장 덱 상시·무시 가능, **실제 FAIL은 maxrun≤2뿐**.
@@ -164,15 +167,18 @@
 - 게이트 6기준 중 **정합·정적검증·스코프는 기계 신호로만**(종료코드·`git status`), 소유권 등만 표적 재독.
 
 ## 미해결 (상태·TODO 정본)
+- 🔴 **기준안 정합 작업 진행 중(2026-07-19)** — 커리큘럼 정본 `sessions/바이브코딩_커리큘럼_기준안.md`와 스킬 전반을 대조해 정정 중이다. **뿌리 원인: 덱 스킬이 기준안을 read-path에 갖고 있지 않았다**(리서치 스킬만 읽었음) → 2단계에서 추가. 완료: ①타겟을 §4.1 혼합군으로 정합(42파일, `legibility-40s.css`→`legibility.css` 개명, 커밋 3687b71) ②`screen-operation` 밀도 예외·조작 단계 1슬라이드 규칙(§6 원칙 9) ③기준안 §6 원칙 9에서 GIF·녹화 삭제(정적 캡처로 통일 — 사용자 결정) ④코드 견본 Python/Streamlit→HTML/JS(§5.1 위반이었음). 남은 순서: 3단계 코어 CSS 승격+계약 게이트 → 4단계 `verify_deck.py` 재설계 → 5단계 차트 코어 8 → 6단계 파이프라인 계약 5건 → 7단계 개념 깊이 3단계 필드(§6 원칙 4)+1주차 소급.
+- 🔴 **`verify_deck.py` 신뢰도 결함(2026-07-19 감사)** — 고칠 때까지 "verify PASS = 규칙 준수"로 읽지 말 것. ①`_read_css`가 하드코딩 경로라 **토큰·`.work-step`·민트배지 등 8개 어서션이 인자로 준 덱이 아니라 저장소 kit CSS를 검사**한다(아무 HTML이나 넣어도 같은 결과) ②raw `#hex`가 WARN이고 BEM `--` 셀렉터·미니파이 1줄 CSS·8자리 hex·SVG fill·`rgba()`를 미탐 — **`inline_deck.py` 통과한 배포본은 색 검사가 통째로 스킵** ③흰-온-흰 보더 FAIL이 `@media`·`background-color` longhand·`.slide` 스코핑 등 6가지로 우회 ④다양성 임계값 `본문/2`는 도달 불가(63장이면 31종 요구, 시그니처 상한 10종)라 상시 WARN=무의미 신호 ⑤`.agenda-item` align 검사는 SKILL.md가 "verify 강제"라 쓰지만 **코드에 없음**.
+- 🔴 **초안↔덱 diff 게이트 부재** — `skills/검토/SKILL.md`가 "무단 재작성 검출=FAIL"을 핵심으로 규정하나 `verify_deck.py`에 `초안` 문자열이 0건이다. 콘텐츠 소유권 경계의 방어선이 육안뿐.
 - ✅ **2단계 산출물 파이프라인 완료**(2026-07-17, 커밋 4235c7b·4fa8409·b33d307·fde3c87) — 편집본 조각+단일 자립 배포본, 전용 섹션 참조. 후속: 실전 주차(2주차~)에서 조각 편집→`build_release` 첫 사용으로 검증. `--livereload`는 실서버 미검증(개발 편의), 폰트 서브셋은 매 빌드 재계산이라 빌드본 직접 편집 금지.
 - ✅ **이미지 에셋 파이프라인 v1 커밋 완료**(2026-07-17, f819bf6) — 전용 섹션 참조. 후속: (a) 레지스트리 `assets` 비어 있음(실전 덱 생성 때 채워짐, 블로커 아님) (b) `designboard.png` candidate→계약 일치 새 보드+`--paper` 미리보기 승인 필요 (c) `evals/verify_image_contract.py` 통합 러너 미연결. ⚠️ 미커밋 상태로 방치돼 있던 WIP였음 — 이후 큰 WIP는 verify 통과 즉시 복구지점 커밋(미해결에도 기록).
 - ✅ **로고 확정**(2026-07-13) → V-마크(민트 왼팔·블루 오른팔·잉크 접점) 인라인 `<svg class="s-logo">`. 사이징=`deck.css .s-logo`(40)/`.cover-head .s-logo`(60). 표준자산 `kit/starter/logo.svg`. 전 파일 스윕 완료(2026-07-14).
-- 항목별 `catalog.html`(목표 캐노니컬 50+element 23=73 `<section>`) 미완 — 현재 layouts 14·charts 9(≈32%). patterns.css 시드 + 1주차 실전 덱(verify 통과 73장)의 섹션 역수확으로 확장.
+- **카탈로그 방침 확정(2026-07-19)** — `catalog.html`을 54/23 전부로 채우지 않는다. **`by-shape.md`의 54개는 추천 어휘집이고, 실제 코드는 코어 12개(레이아웃)+코어 8개(차트)만 두고 거기서 변형**한다. 따라서 "미완"이 아니라 의도된 설계다. 단 **전제가 있다: 코어는 완전해야 한다** — 지금 코어 12개 중 `L-dc-hero`·`L-td-metric-row`·`L-fb-statement`·`L-ct-definition`·`L-vf-numbered-stack`·`D-cycle`·`D-tree`·`D-radial`이 쓰는 클래스 31종이 `kit/styles/`에 없고 카탈로그 인라인 `<style>`에만 있어 **복사하면 뼈대만 붙는다**(3단계에서 patterns.css로 승격 + 계약 게이트 신설 예정). 차트는 코어 8개 선정·구현이 남았다(5단계).
 - 차트 스펙 잔여 대비 팔로업 — 밝은 램프 위 텍스트(피라미드처럼).
 - (WSL/맥) description 자동최적화(`run_loop.py`).
 - **1주차 결정요청 7건 총괄 확인 대기** — `sessions/1주차/자료/1주차_결정요청사항.md`(소급 기록, D1~D7). 승인/수정 지시 후 해당 행에 결정일 추기.
 - 1-4 대비 패널 라벨("골라주기/새로 만들어주기" — 멘트 유래 텍스트의 시각화 사용) 경계 사례 — 시각화 재량 vs 라우팅 엄격 적용, 총괄 판단 필요.
-- 초안.md 서두 "약 60장" vs 실제 73행 불일치 + `(선택)` 태그 0건(검토보고 W3, 담당 콘텐츠).
+- ~~초안.md 서두 "약 60장" vs 실제 73행 불일치~~ — 해당 초안 폐기(2026-07-19)로 소멸.
 - **아틀라스 생성기 리빌드 불가(2026-07-17 발견)** — `outputs/build_layout_atlas.mjs`의 개수 어서션(50 layouts/21 elements)이 현재 카탈로그(물리 54/22)와 불일치해 `node` 실행이 즉시 실패. 생성기를 variant_of 접힘 반영으로 갱신하거나 어서션을 조정해야 함. 그 전까지 프로즌 CSS 재동기화는 splice 스크립트(deck.css 헤더~`/* layout atlas additions */` 구간 통짜 교체+어서션)로 수행.
 - ✅ **파이프라인 정보량 10x 재설계 완료**(2026-07-18, 전용 섹션 참조) — 전 회귀 PASS(`verify_skill_setup`·`verify_session_docs`·`verify_deck` FAIL 0·eval JSON·죽은 참조 0). **개념KB·리뷰 HTML 첫 산출·실검증 완료**(2026-07-18, 1주차 백필) — `1주차_개념KB.md` 26청크(`verify_research_chunks.py 1` PASS), `1주차_리서치_리뷰.html` 26 개념카드(자립성 grep 0), `verify_session_docs.py 1` FAIL=0 WARN=0 PASS=32.
 - ✅ **하네스 제도화 완료**(2026-07-18, 전용 섹션 참조) — `AGENTS.md` SOP + `skills/하네스/SKILL.md` + `.claude`·`.agents` 어댑터 + `skills/README.md` 등재 + `verify_skill_setup` `TEAM_SKILLS` 등록(2026-07-18 하네스 정합성 수정 세션에서 완료, checks 66→78, 커밋 3374201).
