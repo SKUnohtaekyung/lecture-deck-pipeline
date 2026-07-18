@@ -1,0 +1,455 @@
+<!--
+  템플릿 — sessions/_template/자료/리서치_리뷰.html
+  용도: 리서치 스킬 산출물(N주차_콘텐츠리서치_결과.md·N주차_개념KB.md·N주차_실습안_검증결과.md·N주차_결정요청사항.md)을
+        사람이 한눈에 훑도록 정리한 자립형 HTML 리뷰 문서.
+  사용법:
+    1) sessions/N주차/자료/N주차_리서치_리뷰.html 로 복사한다.
+    2) 제목·메타(작성일·기준 문서)를 채운다.
+    3) "예시" 표시가 붙은 블록(강의 한눈에·개념 카드·실습 요약·결정요청·출처)을
+       실제 내용으로 바꾸고, 필요한 만큼 블록 자체를 복제해 늘린다.
+    4) 다 채운 뒤에는 이 안내 주석과 화면 상단의 "템플릿" 배너를 지운다.
+  자립형 HTML — 외부 스타일시트·스크립트·이미지를 불러오지 않는다. 모든 CSS는 아래 <style> 안에,
+  모든 동작은 문서 끝 <script> 안에 있다.
+-->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>N주차 리서치 리뷰</title>
+<style>
+  /* ---------- tokens ---------- */
+  :root{
+    --bg:#eef1ee; --surface:#ffffff; --surface-2:#f5f8f5; --ink:#171b1a; --ink-soft:#4b5450;
+    --line:#d9dfda; --line-strong:#c3ccc4;
+    --accent:#2c4b6e; --accent-ink:#1c3350; --accent-soft:#e4eaf1;
+    --mint:#2f7d5d; --mint-ink:#1f5b42; --mint-soft:#e1f0e7;
+    --amber:#a66a1e; --amber-ink:#7a4d13; --amber-soft:#f5e9d8;
+    --brick:#a23e3e; --brick-ink:#7a2e2e; --brick-soft:#f5e1e1;
+    --radius:10px;
+    --font-kr:"Pretendard Variable","Pretendard",-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",sans-serif;
+    --font-mono:"JetBrains Mono","SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#14181a; --surface:#1b2022; --surface-2:#20262a; --ink:#e9ece9; --ink-soft:#a9b3ae;
+      --line:#2b3234; --line-strong:#3a4346;
+      --accent:#82aad6; --accent-ink:#c3d8f0; --accent-soft:#20303f;
+      --mint:#6fcba0; --mint-ink:#a7e6c8; --mint-soft:#163326;
+      --amber:#e3a94d; --amber-ink:#f2cf98; --amber-soft:#35281a;
+      --brick:#e08080; --brick-ink:#f2b8b8; --brick-soft:#3a2020;
+      color-scheme: dark;
+    }
+  }
+
+  /* ---------- base ---------- */
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{background:var(--bg); color:var(--ink); font-family:var(--font-kr); font-size:15.5px; line-height:1.7; -webkit-font-smoothing:antialiased;}
+  h1,h2,h3,h4{font-family:var(--font-kr); font-weight:800; letter-spacing:-.01em; margin:0;}
+  p{margin:0;}
+  ul{margin:0; padding:0; list-style:none;}
+  code,.mono{font-family:var(--font-mono); font-variant-numeric:tabular-nums;}
+  strong{font-weight:700; color:var(--ink);}
+  :focus-visible{outline:2px solid var(--accent); outline-offset:2px;}
+  @media (prefers-reduced-motion: reduce){ *{animation:none !important; transition:none !important;} }
+
+  main{max-width:1180px; margin:0 auto; padding:0 32px 80px;}
+  .section{padding-top:48px; scroll-margin-top:64px;}
+  .section-head{display:flex; align-items:baseline; gap:12px; margin-bottom:8px; flex-wrap:wrap;}
+  .section-eyebrow{font-family:var(--font-mono); font-size:11.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--accent); font-weight:700; background:var(--accent-soft); padding:3px 8px; border-radius:5px;}
+  .section-head h2{font-size:22px;}
+  .section-sub{color:var(--ink-soft); font-size:13.5px; margin:6px 0 20px; max-width:76ch;}
+  hr.div{border:0; border-top:1px solid var(--line); margin:44px 32px 0; max-width:1180px; margin-left:auto; margin-right:auto;}
+
+  /* ---------- hero ---------- */
+  .hero{max-width:1180px; margin:0 auto; padding:40px 32px 20px;}
+  .hero-kicker{font-family:var(--font-mono); font-size:12px; letter-spacing:.09em; text-transform:uppercase; color:var(--ink-soft); font-weight:700; margin-bottom:8px;}
+  .hero h1{font-size:clamp(24px,3.4vw,34px); line-height:1.2;}
+  .hero-meta{margin-top:14px; display:flex; flex-direction:column; gap:4px; font-size:13px; color:var(--ink-soft);}
+  .hero-meta b{color:var(--ink); font-weight:700;}
+  .hero-meta code{background:var(--surface-2); border:1px solid var(--line); padding:1px 6px; border-radius:5px;}
+
+  .tpl-notice{max-width:1180px; margin:18px auto 0; padding:14px 32px; }
+  .tpl-notice-box{border:1.5px dashed var(--line-strong); background:var(--surface-2); border-radius:var(--radius); padding:12px 16px; font-size:12.5px; color:var(--ink-soft); line-height:1.7;}
+  .tpl-notice-box b{color:var(--ink);}
+
+  /* ---------- sticky nav ---------- */
+  .topnav{position:sticky; top:0; z-index:10; background:var(--bg); border-bottom:1px solid var(--line); padding:10px 32px; display:flex; gap:4px; flex-wrap:wrap; overflow-x:auto;}
+  .topnav a{white-space:nowrap; text-decoration:none; color:var(--ink-soft); font-size:13px; font-weight:700; padding:6px 12px; border-radius:7px;}
+  .topnav a:hover{background:var(--accent-soft); color:var(--accent-ink);}
+
+  /* ---------- chips ---------- */
+  .chip{display:inline-flex; align-items:center; gap:5px; font-size:11.5px; font-weight:700; padding:3px 9px; border-radius:999px; line-height:1.5; white-space:nowrap;}
+  .chip-grade1{background:var(--accent-soft); color:var(--accent-ink);}
+  .chip-grade2{background:var(--surface-2); color:var(--ink-soft); border:1px solid var(--line);}
+  .chip-grade3{background:var(--amber-soft); color:var(--amber-ink);}
+  .chip-pass{background:var(--mint-soft); color:var(--mint-ink);}
+  .chip-pending{background:var(--amber-soft); color:var(--amber-ink);}
+  .chip-fail{background:var(--brick-soft); color:var(--brick-ink);}
+  .chip-id{background:var(--accent); color:var(--surface);}
+  .chip-period{background:var(--surface-2); color:var(--ink-soft); border:1px solid var(--line);}
+  .chip-type{background:var(--surface-2); color:var(--ink-soft); border:1px solid var(--line);}
+  .chip-priority{background:var(--mint-soft); color:var(--mint-ink);}
+  .chip-src{background:var(--surface-2); color:var(--ink-soft); border:1px solid var(--line); font-family:var(--font-mono);}
+
+  /* ---------- tldr ---------- */
+  .tldr-list{display:flex; flex-direction:column; gap:8px;}
+  .tldr-item{display:flex; gap:10px; align-items:baseline; background:var(--surface); border:1px solid var(--line); border-left:4px solid var(--accent); border-radius:8px; padding:11px 14px; font-size:13.5px; line-height:1.65;}
+  .tldr-item.is-warn{border-left-color:var(--amber);}
+  .tldr-item.is-decision{border-left-color:var(--brick);}
+  .tldr-item.is-note{border-left-color:var(--mint);}
+  .tldr-tag{flex-shrink:0; font-size:11px; font-weight:800; padding:2px 8px; border-radius:5px; background:var(--surface-2); color:var(--ink-soft); border:1px solid var(--line);}
+  .tldr-item.is-warn .tldr-tag{background:var(--amber-soft); color:var(--amber-ink); border-color:transparent;}
+  .tldr-item.is-decision .tldr-tag{background:var(--brick-soft); color:var(--brick-ink); border-color:transparent;}
+  .tldr-item.is-note .tldr-tag{background:var(--mint-soft); color:var(--mint-ink); border-color:transparent;}
+
+  /* ---------- overview (강의 한눈에) ---------- */
+  .overview-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px;}
+  .overview-item{background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:14px 16px;}
+  .ov-n{display:inline-block; font-family:var(--font-mono); font-size:11px; font-weight:700; color:var(--accent-ink); background:var(--accent-soft); padding:2px 8px; border-radius:5px; margin-bottom:8px;}
+  .overview-item h3{font-size:14.5px; margin-bottom:5px;}
+  .overview-item p{font-size:12.5px; color:var(--ink-soft); line-height:1.6;}
+
+  /* ---------- concept cards ---------- */
+  .filterbar{display:flex; gap:6px; flex-wrap:wrap; margin-bottom:16px;}
+  .filter-chip{border:1px solid var(--line); background:var(--surface); color:var(--ink-soft); font-size:12.5px; font-weight:700; padding:6px 13px; border-radius:8px; cursor:pointer;}
+  .filter-chip.is-active{background:var(--accent); border-color:var(--accent); color:var(--surface);}
+  .filter-chip:hover:not(.is-active){border-color:var(--accent);}
+
+  .concept-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(360px,1fr)); gap:16px;}
+  .concept-card{background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:18px 20px 16px; display:flex; flex-direction:column; gap:12px;}
+  .cc-id-row{display:flex; gap:6px; flex-wrap:wrap; margin-bottom:2px;}
+  .cc-title{font-size:17px;}
+  .cc-field{display:flex; flex-direction:column; gap:3px;}
+  .cc-label{font-size:10.5px; font-weight:800; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-soft);}
+  .cc-field p{font-size:13.5px; line-height:1.65;}
+  .cc-field--highlight{background:var(--accent-soft); border-radius:8px; padding:10px 12px;}
+  .cc-field--highlight .cc-label{color:var(--accent-ink);}
+  .cc-field--highlight p{color:var(--accent-ink); font-weight:600;}
+
+  .cc-analogy-pair{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+  .cc-analogy{background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:9px 11px; display:flex; flex-direction:column; gap:3px;}
+  .cc-analogy p{font-size:12.5px; line-height:1.6;}
+  .cc-mapping{display:block; font-size:11.5px; color:var(--accent-ink); margin-top:3px;}
+  .cc-risk{display:block; font-size:11.5px; color:var(--amber-ink); margin-top:2px;}
+
+  .cc-misconceptions{display:flex; flex-direction:column; gap:6px;}
+  .cc-misconceptions li{font-size:13px; line-height:1.6; background:var(--surface-2); border-radius:7px; padding:7px 10px;}
+  .cc-misconceptions .wrong{color:var(--brick-ink);}
+  .cc-misconceptions .right{color:var(--mint-ink); font-weight:700;}
+
+  .cc-verbatim{border-left:3px solid var(--line-strong); padding-left:12px;}
+  .cc-verbatim p{font-style:italic; color:var(--ink-soft);}
+  .cc-cite{display:block; font-size:11px; font-family:var(--font-mono); color:var(--ink-soft); margin-top:4px; font-style:normal;}
+
+  .cc-foot{display:flex; align-items:center; gap:6px; flex-wrap:wrap; padding-top:8px; border-top:1px dashed var(--line);}
+  .cc-foot .cc-label{margin-right:2px;}
+
+  /* ---------- practice summary ---------- */
+  .practice-head{display:grid; grid-template-columns:34px 1.4fr 2fr 1fr; gap:14px; padding:0 16px; font-size:11px; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-soft); font-weight:700; margin-bottom:6px;}
+  .practice-grid{display:flex; flex-direction:column; gap:10px;}
+  .practice-row{display:grid; grid-template-columns:34px 1.4fr 2fr 1fr; gap:14px; align-items:center; background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:12px 16px;}
+  .practice-row .pr-n{font-family:var(--font-mono); font-weight:800; color:var(--accent-ink); font-size:15px; text-align:center;}
+  .practice-row .pr-goal,.practice-row .pr-crit{font-size:13px; color:var(--ink); line-height:1.55;}
+
+  /* ---------- tables ---------- */
+  .table-wrap{overflow-x:auto;}
+  .rtable{width:100%; border-collapse:collapse; background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); overflow:hidden;}
+  .rtable th,.rtable td{padding:11px 14px; text-align:left; border-bottom:1px solid var(--line); font-size:13px; vertical-align:top;}
+  .rtable th{background:var(--surface-2); font-size:11px; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-soft); font-weight:700;}
+  .rtable tr:last-child td{border-bottom:none;}
+
+  .src-legend{display:flex; gap:16px; font-size:12px; color:var(--ink-soft); margin-bottom:14px; flex-wrap:wrap;}
+  .src-legend span{display:flex; align-items:center; gap:5px;}
+
+  /* ---------- footer ---------- */
+  footer.foot{max-width:1180px; margin:56px auto 0; padding:20px 32px 0; border-top:1px solid var(--line); font-size:12px; color:var(--ink-soft); display:flex; flex-wrap:wrap; gap:6px 14px;}
+  footer.foot code{background:var(--surface-2); padding:1px 6px; border-radius:4px; border:1px solid var(--line);}
+
+  /* ---------- responsive ---------- */
+  @media (max-width:760px){
+    main,.hero,.tpl-notice,footer.foot{padding-left:16px; padding-right:16px;}
+    .topnav{padding-left:16px; padding-right:16px;}
+    .cc-analogy-pair{grid-template-columns:1fr;}
+    .practice-row,.practice-head{grid-template-columns:26px 1fr;}
+    .practice-row .pr-crit{grid-column:2 / -1;}
+    .practice-head{display:none;}
+  }
+</style>
+
+<div class="hero">
+  <div class="hero-kicker">VIBECODING · 리서치 리뷰</div>
+  <h1>N주차 리서치 리뷰</h1>
+  <div class="hero-meta">
+    <div><b>작성:</b> 리서치 스킬 (또는 사람 작성자명)</div>
+    <div><b>작성일:</b> <code>YYYY-MM-DD</code></div>
+    <div><b>기준 문서:</b> <code>sessions/N주차/자료/N주차_콘텐츠리서치_결과.md</code> · <code>N주차_개념KB.md</code> · <code>N주차_실습안_검증결과.md</code> · <code>N주차_결정요청사항.md</code></div>
+    <div><b>대상 수강생:</b> 40~50대 중심, 코딩 경험이 거의 없는 초보자</div>
+  </div>
+</div>
+
+<div class="tpl-notice">
+  <div class="tpl-notice-box">
+    <b>이 문서는 템플릿입니다.</b> "예시" 표시가 붙은 블록을 실제 리서치 내용으로 바꾸고, 이 안내 박스는 지운 뒤 배포하세요.
+    정본은 항상 <code>자료/</code>의 스키마 파일(3파일+개념KB) — 이 문서는 그 내용을 사람이 훑기 좋게 재정리한 리뷰용입니다.
+  </div>
+</div>
+
+<nav class="topnav">
+  <a href="#tldr">먼저 볼 것</a>
+  <a href="#overview">강의 한눈에</a>
+  <a href="#concepts">개념 카드</a>
+  <a href="#practice">실습 요약</a>
+  <a href="#decisions">결정요청</a>
+  <a href="#sources">출처 한눈에</a>
+</nav>
+
+<main>
+
+  <!-- ============ TL;DR ============ -->
+  <section class="section" id="tldr">
+    <div class="section-head">
+      <span class="section-eyebrow">먼저 볼 것</span>
+      <h2>가장 중요한 주의·결정 3~5줄</h2>
+    </div>
+    <p class="section-sub">전체를 다 읽을 시간이 없다면 여기만 보세요. 가장 중요한 것부터 위에 둡니다.</p>
+
+    <ul class="tldr-list">
+      <li class="tldr-item is-warn"><span class="tldr-tag">주의</span>(예시) 실측 전이라 [미검증]으로 남긴 항목 — 무엇이 왜 아직 확정되지 않았는지 한 문장으로.</li>
+      <li class="tldr-item is-decision"><span class="tldr-tag">결정 필요</span>(예시) 총괄 확인이 필요한 항목 — 아래 <a href="#decisions">결정요청</a> 표의 어느 행인지 짚어 준다.</li>
+      <li class="tldr-item is-note"><span class="tldr-tag">참고</span>(예시) 예외승인(evergreen 등)으로 채택한 자료가 있다면 몇 건인지.</li>
+      <!-- 반복 안내: <li class="tldr-item is-warn|is-decision|is-note"> 블록을 3~5개 사이로 유지하세요. 가장 중요한 것부터 위로. -->
+    </ul>
+  </section>
+
+  <hr class="div">
+
+  <!-- ============ OVERVIEW ============ -->
+  <section class="section" id="overview">
+    <div class="section-head">
+      <span class="section-eyebrow">강의 한눈에</span>
+      <h2>구간별 한 줄 요약</h2>
+    </div>
+    <p class="section-sub">이번 주차가 몇 개 구간으로 흘러가는지, 구간마다 무엇을 다루는지 한눈에 봅니다.</p>
+
+    <div class="overview-grid">
+      <div class="overview-item" data-구간="1"><span class="ov-n">구간 1</span><h3>(구간 제목)</h3><p>(이 구간에서 다루는 내용을 한 줄로.)</p></div>
+      <div class="overview-item" data-구간="2"><span class="ov-n">구간 2</span><h3>(구간 제목)</h3><p>(이 구간에서 다루는 내용을 한 줄로.)</p></div>
+      <div class="overview-item" data-구간="3"><span class="ov-n">구간 3</span><h3>(구간 제목)</h3><p>(이 구간에서 다루는 내용을 한 줄로.)</p></div>
+      <!-- 반복 안내: 실제 구간 수만큼 .overview-item 블록을 더하거나 지우세요. data-구간 값은 개념 카드 필터와 같은 체계(숫자 문자열)를 씁니다. -->
+    </div>
+  </section>
+
+  <hr class="div">
+
+  <!-- ============ CONCEPTS ============ -->
+  <section class="section" id="concepts">
+    <div class="section-head">
+      <span class="section-eyebrow">핵심</span>
+      <h2>개념 카드</h2>
+    </div>
+    <p class="section-sub"><code>N주차_개념KB.md</code>의 청크 1개 = 카드 1개. 초보자 문장이 실제로 화면에 올라갈 문장이니 가장 눈에 띄게 표시했습니다. 칩을 눌러 구간별로 걸러볼 수 있습니다.</p>
+
+    <div class="filterbar" id="conceptFilter"><!-- JS가 카드의 data-구간 값을 읽어 "전체" + 구간별 칩을 자동 생성합니다 --></div>
+
+    <div class="concept-grid" id="conceptGrid">
+
+      <article class="concept-card" data-chunk-id="예시-개념" data-구간="1">
+        <div class="cc-id-row">
+          <span class="chip chip-id">[C-예시-개념]</span>
+          <span class="chip chip-period">구간 1</span>
+          <span class="chip chip-type">유형: 개념</span>
+          <span class="chip chip-priority">P1</span>
+        </div>
+        <h3 class="cc-title">예시 개념 표시명</h3>
+
+        <div class="cc-field">
+          <span class="cc-label">정의(정확)</span>
+          <p>(개념의 정확한 정의를 한 문장으로. 외부 1급/2급 출처가 있으면 출처ID를 붙입니다.) <span class="chip chip-src">[S-###]</span></p>
+        </div>
+
+        <div class="cc-field cc-field--highlight">
+          <span class="cc-label">초보자 문장 (화면 노출 문장)</span>
+          <p>(전문용어 없이 40~50대 초보자가 한 번에 읽고 이해하는 완결형 1~2문장. 화면에 그대로 올릴 수 있는 수준으로 다듬습니다.)</p>
+        </div>
+
+        <div class="cc-analogy-pair">
+          <div class="cc-analogy">
+            <span class="cc-label">비유①</span>
+            <p>(첫 번째 비유.)<span class="cc-mapping">매핑: A=… · B=…</span><span class="cc-risk">오해 위험: …</span></p>
+          </div>
+          <div class="cc-analogy">
+            <span class="cc-label">비유②</span>
+            <p>(비유①과 다른 각도의 두 번째 비유. 같은 이미지를 반복하지 않습니다.)<span class="cc-mapping">매핑: A=… · B=…</span></p>
+          </div>
+        </div>
+
+        <div class="cc-field">
+          <span class="cc-label">워크드 예시</span>
+          <p>(입력 → 처리 → 결과를 실제 값·실제 화면으로. 실측 출처가 있으면 출처ID, 설명을 위한 예시면 "(창작)"이라고 표시.)</p>
+        </div>
+
+        <!-- 선택 필드: 다른 개념·용어와 자주 헷갈리는 대조형 개념일 때만 아래 비교표 주석을 해제해 채우세요.
+             대조가 필요 없으면 이 주석째로(비교표 블록 전체를) 지웁니다.
+        <div class="cc-field">
+          <span class="cc-label">비교표</span>
+          <table class="rtable"><thead><tr><th>구분</th><th>X</th><th>Y</th></tr></thead><tbody><tr><td></td><td></td><td></td></tr></tbody></table>
+        </div>
+        -->
+
+        <div class="cc-field">
+          <span class="cc-label">흔한 오해 → 교정</span>
+          <ul class="cc-misconceptions">
+            <li><span class="wrong">"(수강생이 실제로 하기 쉬운 오해를 인용 형태로)"</span> → <span class="right">(정확한 교정 문장)</span> <span class="chip chip-src">[S-###]</span></li>
+            <li><span class="wrong">"(두 번째 흔한 오해)"</span> → <span class="right">(정확한 교정 문장)</span> <span class="chip chip-src">[S-###]</span></li>
+          </ul>
+        </div>
+
+        <div class="cc-field cc-verbatim">
+          <span class="cc-label">verbatim</span>
+          <p>"(원문에서 그대로 옮긴 핵심 한 문장 — 압축 왜곡을 대조할 근거)"<span class="cc-cite">(S-###, YYYY-MM-DD)</span></p>
+        </div>
+
+        <div class="cc-foot">
+          <span class="cc-label">출처</span>
+          <span class="chip chip-src">[S-###]</span>
+          <span class="chip chip-src">[S-###]</span>
+        </div>
+      </article>
+
+      <!-- 반복 안내: 개념KB.md의 청크 1개당 위 <article class="concept-card"> 구조를 통째로 복제해 추가하세요.
+           복제 시 바꿀 값: data-chunk-id(청크 슬러그, [C-슬러그]의 슬러그 부분과 동일하게) · data-구간(콤마 다중 가능, 예: "1,3") ·
+           칩 3종(구간·유형·우선) · 카드 안 8개 필드(정의·초보자 문장·비유①②·워크드 예시·흔한 오해→교정 2개·verbatim) · 출처 배지.
+           유형은 {개념,실습연계,비유,오해,사례} 중 하나, 우선은 {P0,P1,P2} 중 하나입니다(개념KB.md 청크 규약과 동일). -->
+
+    </div>
+  </section>
+
+  <hr class="div">
+
+  <!-- ============ PRACTICE ============ -->
+  <section class="section" id="practice">
+    <div class="section-head">
+      <span class="section-eyebrow">실습 설계</span>
+      <h2>실습 요약</h2>
+    </div>
+    <p class="section-sub"><code>N주차_실습안_검증결과.md</code>의 13항목 중 한눈에 볼 세 가지(목적·완료 기준·실측 상태)만 추렸습니다. 자세한 근거는 원본 파일에서 확인하세요.</p>
+
+    <div class="practice-head"><div>#</div><div>목적</div><div>완료 기준</div><div>실측 상태</div></div>
+    <div class="practice-grid">
+      <div class="practice-row">
+        <div class="pr-n">0</div>
+        <div class="pr-goal">(이 실습의 목적을 한 줄로)</div>
+        <div class="pr-crit">(무엇이 되면 완료로 인정하는지)</div>
+        <div><span class="chip chip-pending">🧪 미검증</span></div>
+      </div>
+      <div class="practice-row">
+        <div class="pr-n">1</div>
+        <div class="pr-goal">(이 실습의 목적을 한 줄로)</div>
+        <div class="pr-crit">(무엇이 되면 완료로 인정하는지)</div>
+        <div><span class="chip chip-pass">검증 완료</span></div>
+      </div>
+      <!-- 반복 안내: 실습안_검증결과.md의 실습 후보 하나당 .practice-row 하나. 실측 상태 칩은 검증 완료=chip-pass,
+           실측 대기=chip-pending, 채택 보류/제외=chip-fail 로 바꿔 쓰세요. -->
+    </div>
+  </section>
+
+  <hr class="div">
+
+  <!-- ============ DECISIONS ============ -->
+  <section class="section" id="decisions">
+    <div class="section-head">
+      <span class="section-eyebrow">판단 필요</span>
+      <h2>결정요청</h2>
+    </div>
+    <p class="section-sub"><code>N주차_결정요청사항.md</code>를 그대로 표로 옮깁니다. 이미 확정된 사항(G5)은 이 표에 올리지 않습니다 — 대안 제안도 이 표를 통해서만 전달합니다.</p>
+
+    <div class="table-wrap">
+      <table class="rtable">
+        <thead><tr><th>결정 항목</th><th>후보</th><th>장점</th><th>위험</th><th>담당 추천</th><th>추천 근거</th></tr></thead>
+        <tbody>
+          <tr><td>(예: 실습 난이도 기준)</td><td>(안 A / 안 B / 안 C)</td><td>(장점 요약)</td><td>(위험 요약)</td><td>(추천 안)</td><td>(추천 근거 요약)</td></tr>
+          <!-- 반복 안내: 결정요청사항.md의 행 하나당 <tr> 하나를 추가하세요. -->
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <hr class="div">
+
+  <!-- ============ SOURCES ============ -->
+  <section class="section" id="sources">
+    <div class="section-head">
+      <span class="section-eyebrow">근거</span>
+      <h2>출처 한눈에</h2>
+    </div>
+    <p class="section-sub">실제 링크는 이 리뷰 문서가 아니라 <code>N주차_콘텐츠리서치_결과.md</code>·출처레지스트리에서 확인하세요(자립형 리뷰 문서는 외부 링크를 담지 않습니다).</p>
+
+    <div class="src-legend">
+      <span><span class="chip chip-grade1">1급</span> 제품 공식문서·공식블로그</span>
+      <span><span class="chip chip-grade2">2급</span> 주요 언론·학술</span>
+      <span><span class="chip chip-grade3">3급</span> 실무 블로그·보조전용</span>
+    </div>
+
+    <div class="table-wrap">
+      <table class="rtable">
+        <thead><tr><th>ID</th><th>출처</th><th>확인일</th><th>등급</th><th>구간</th><th>비고</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">S-###</td><td>(출처명 — 링크는 원본 자료 파일 참조)</td><td class="mono">YYYY-MM-DD</td><td><span class="chip chip-grade1">1급</span></td><td>1</td><td></td></tr>
+          <!-- 반복 안내: 출처레지스트리·결과.md에 등장하는 S-### 하나당 <tr> 하나. -->
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+</main>
+
+<footer class="foot">
+  <span>산출 경로:</span>
+  <code>sessions/N주차/자료/N주차_리서치_리뷰.html</code>
+  <code>sessions/N주차/자료/N주차_리서치_종합정리.md</code>
+</footer>
+
+<script>
+(function(){
+  // 개념 카드 — data-구간 값을 읽어 필터 칩을 자동 생성
+  var grid = document.getElementById('conceptGrid');
+  var filterBar = document.getElementById('conceptFilter');
+  if(!grid || !filterBar) return;
+
+  var cards = Array.prototype.slice.call(grid.querySelectorAll('.concept-card'));
+  var periods = [];
+  cards.forEach(function(card){
+    var raw = card.getAttribute('data-구간') || '';
+    raw.split(',').map(function(s){ return s.trim(); }).filter(Boolean).forEach(function(p){
+      if(periods.indexOf(p) === -1) periods.push(p);
+    });
+  });
+  periods.sort(function(a,b){ return a.localeCompare(b, 'ko', {numeric:true}); });
+
+  function makeChip(label, value){
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'filter-chip';
+    b.textContent = label;
+    b.setAttribute('data-filter-value', value);
+    return b;
+  }
+
+  var allBtn = makeChip('전체', '__all__');
+  allBtn.classList.add('is-active');
+  filterBar.appendChild(allBtn);
+  periods.forEach(function(p){ filterBar.appendChild(makeChip('구간 ' + p, p)); });
+
+  filterBar.addEventListener('click', function(e){
+    var btn = e.target.closest('.filter-chip');
+    if(!btn) return;
+    filterBar.querySelectorAll('.filter-chip').forEach(function(b){ b.classList.toggle('is-active', b === btn); });
+    var value = btn.getAttribute('data-filter-value');
+    cards.forEach(function(card){
+      if(value === '__all__'){ card.style.display = ''; return; }
+      var raw = (card.getAttribute('data-구간') || '').split(',').map(function(s){ return s.trim(); });
+      card.style.display = raw.indexOf(value) !== -1 ? '' : 'none';
+    });
+  });
+})();
+</script>

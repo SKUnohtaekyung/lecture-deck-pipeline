@@ -1,0 +1,334 @@
+<!--
+  템플릿 — sessions/_template/콘텐츠_리뷰.html
+  용도: 콘텐츠 스킬 산출물(N주차/초안.md, 교시별 4열 표)을 슬라이드 미리보기 카드로
+        훑어 밀도(정보 단위 수)를 한눈에 점검하는 자립형 HTML 리뷰 문서.
+  사용법:
+    1) sessions/N주차/N주차_콘텐츠_리뷰.html 로 복사한다.
+    2) 제목·작성일을 채운다.
+    3) 초안.md의 슬라이드(표 1행) 하나당 .slide-card 하나를 만든다 — "예시" 카드 2개를 참고해 복제한다.
+    4) 각 카드의 data-info-units 값을 그 슬라이드의 정보 단위 수(개념 블록·비유/예시·비교표·오해→교정·체크/콜아웃 각 1단위)로 채운다.
+    5) 다 채운 뒤에는 이 안내 주석과 화면 상단의 "템플릿" 배너를 지운다.
+  자립형 HTML — 외부 스타일시트·스크립트·이미지를 불러오지 않는다. 모든 CSS는 아래 <style> 안에,
+  모든 동작(교시 필터·밀도 계산)은 문서 끝 <script> 안에 있다.
+-->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>N주차 콘텐츠 리뷰(슬라이드 미리보기)</title>
+<style>
+  /* ---------- tokens ---------- */
+  :root{
+    --bg:#eef1ee; --surface:#ffffff; --surface-2:#f5f8f5; --ink:#171b1a; --ink-soft:#4b5450;
+    --line:#d9dfda; --line-strong:#c3ccc4;
+    --accent:#2c4b6e; --accent-ink:#1c3350; --accent-soft:#e4eaf1;
+    --mint:#2f7d5d; --mint-ink:#1f5b42; --mint-soft:#e1f0e7;
+    --amber:#a66a1e; --amber-ink:#7a4d13; --amber-soft:#f5e9d8;
+    --brick:#a23e3e; --brick-ink:#7a2e2e; --brick-soft:#f5e1e1;
+    --radius:10px;
+    --font-kr:"Pretendard Variable","Pretendard",-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",sans-serif;
+    --font-mono:"JetBrains Mono","SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#14181a; --surface:#1b2022; --surface-2:#20262a; --ink:#e9ece9; --ink-soft:#a9b3ae;
+      --line:#2b3234; --line-strong:#3a4346;
+      --accent:#82aad6; --accent-ink:#c3d8f0; --accent-soft:#20303f;
+      --mint:#6fcba0; --mint-ink:#a7e6c8; --mint-soft:#163326;
+      --amber:#e3a94d; --amber-ink:#f2cf98; --amber-soft:#35281a;
+      --brick:#e08080; --brick-ink:#f2b8b8; --brick-soft:#3a2020;
+      color-scheme: dark;
+    }
+  }
+
+  /* ---------- base ---------- */
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{background:var(--bg); color:var(--ink); font-family:var(--font-kr); font-size:15.5px; line-height:1.7; -webkit-font-smoothing:antialiased;}
+  h1,h2,h3,h4{font-family:var(--font-kr); font-weight:800; letter-spacing:-.01em; margin:0;}
+  p{margin:0;}
+  code,.mono{font-family:var(--font-mono); font-variant-numeric:tabular-nums;}
+  strong{font-weight:700; color:var(--ink);}
+  :focus-visible{outline:2px solid var(--accent); outline-offset:2px;}
+  @media (prefers-reduced-motion: reduce){ *{animation:none !important; transition:none !important;} }
+
+  main{max-width:1180px; margin:0 auto; padding:0 32px 80px;}
+  .section{padding-top:44px; scroll-margin-top:64px;}
+  .section-head{display:flex; align-items:baseline; gap:12px; margin-bottom:8px; flex-wrap:wrap;}
+  .section-eyebrow{font-family:var(--font-mono); font-size:11.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--accent); font-weight:700; background:var(--accent-soft); padding:3px 8px; border-radius:5px;}
+  .section-head h2{font-size:22px;}
+  .section-sub{color:var(--ink-soft); font-size:13.5px; margin:6px 0 18px; max-width:78ch;}
+
+  /* ---------- hero ---------- */
+  .hero{max-width:1180px; margin:0 auto; padding:40px 32px 20px;}
+  .hero-kicker{font-family:var(--font-mono); font-size:12px; letter-spacing:.09em; text-transform:uppercase; color:var(--ink-soft); font-weight:700; margin-bottom:8px;}
+  .hero h1{font-size:clamp(22px,3.2vw,32px); line-height:1.25;}
+  .hero-meta{margin-top:14px; display:flex; flex-direction:column; gap:4px; font-size:13px; color:var(--ink-soft);}
+  .hero-meta b{color:var(--ink); font-weight:700;}
+  .hero-meta code{background:var(--surface-2); border:1px solid var(--line); padding:1px 6px; border-radius:5px;}
+
+  .tpl-notice{max-width:1180px; margin:18px auto 0; padding:0 32px;}
+  .tpl-notice-box{border:1.5px dashed var(--line-strong); background:var(--surface-2); border-radius:var(--radius); padding:12px 16px; font-size:12.5px; color:var(--ink-soft); line-height:1.7;}
+  .tpl-notice-box b{color:var(--ink);}
+
+  /* ---------- legend (정보 단위 정의) ---------- */
+  .legend-box{max-width:1180px; margin:20px auto 0; padding:0 32px;}
+  .legend-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:10px; background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:16px 18px;}
+  .legend-item{display:flex; gap:8px; align-items:flex-start; font-size:12.5px; line-height:1.55;}
+  .legend-n{flex-shrink:0; width:22px; height:22px; border-radius:50%; background:var(--accent-soft); color:var(--accent-ink); font-family:var(--font-mono); font-weight:800; font-size:11.5px; display:flex; align-items:center; justify-content:center;}
+  .legend-item b{display:block; color:var(--ink);}
+  .legend-item span{color:var(--ink-soft);}
+  .legend-note{margin-top:10px; font-size:12px; color:var(--ink-soft);}
+
+  /* ---------- sticky nav ---------- */
+  .topnav{position:sticky; top:0; z-index:10; background:var(--bg); border-bottom:1px solid var(--line); padding:10px 32px; display:flex; gap:4px; flex-wrap:wrap; overflow-x:auto;}
+  .topnav a{white-space:nowrap; text-decoration:none; color:var(--ink-soft); font-size:13px; font-weight:700; padding:6px 12px; border-radius:7px;}
+  .topnav a:hover{background:var(--accent-soft); color:var(--accent-ink);}
+
+  /* ---------- chips ---------- */
+  .chip{display:inline-flex; align-items:center; gap:5px; font-size:11.5px; font-weight:700; padding:3px 9px; border-radius:999px; line-height:1.5; white-space:nowrap;}
+  .chip-slide{background:var(--accent); color:var(--surface); font-family:var(--font-mono);}
+  .chip-units{border:1.5px solid var(--line-strong); color:var(--ink-soft); font-family:var(--font-mono);}
+  .chip-units--empty{background:var(--brick-soft); color:var(--brick-ink); border-color:transparent;}
+  .chip-units--low{background:var(--amber-soft); color:var(--amber-ink); border-color:transparent;}
+  .chip-units--good{background:var(--mint-soft); color:var(--mint-ink); border-color:transparent;}
+  .chip-units--over{background:var(--amber-soft); color:var(--amber-ink); border-color:transparent;}
+  .tag-fixed{font-size:10.5px; font-weight:700; background:var(--accent); color:var(--surface); padding:1px 7px; border-radius:5px;}
+  .tag-optional{font-size:10.5px; font-weight:700; background:var(--surface-2); color:var(--ink-soft); border:1px solid var(--line); padding:1px 7px; border-radius:5px;}
+
+  /* ---------- density summary bar ---------- */
+  .density-bar{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:1px; background:var(--line); border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; margin-bottom:10px;}
+  .density-stat{background:var(--surface); padding:14px 16px; text-align:center;}
+  .density-num{display:block; font-family:var(--font-mono); font-size:24px; font-weight:800; font-variant-numeric:tabular-nums; color:var(--ink);}
+  .density-lbl{display:block; font-size:11.5px; color:var(--ink-soft); margin-top:2px;}
+  .density-stat.is-empty .density-num{color:var(--brick-ink);}
+  .density-stat.is-low .density-num{color:var(--amber-ink);}
+  .density-stat.is-good .density-num{color:var(--mint-ink);}
+  .density-stat.is-over .density-num{color:var(--amber-ink);}
+  .density-empty-list{font-size:12.5px; color:var(--ink-soft); margin-bottom:20px;}
+  .density-empty-list span{font-weight:700; color:var(--brick-ink);}
+
+  /* ---------- filter ---------- */
+  .filterbar{display:flex; gap:6px; flex-wrap:wrap; margin-bottom:16px;}
+  .filter-chip{border:1px solid var(--line); background:var(--surface); color:var(--ink-soft); font-size:12.5px; font-weight:700; padding:6px 13px; border-radius:8px; cursor:pointer;}
+  .filter-chip.is-active{background:var(--accent); border-color:var(--accent); color:var(--surface);}
+  .filter-chip:hover:not(.is-active){border-color:var(--accent);}
+
+  /* ---------- slide card grid ---------- */
+  .slide-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:14px;}
+  .slide-card{background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:15px 17px; display:flex; flex-direction:column; gap:8px;}
+  .slide-card.is-fixed{background:var(--accent-soft); border-color:var(--accent-soft);}
+  .slide-card.band-empty{border-left:4px solid var(--brick);}
+  .slide-card.band-low{border-left:4px solid var(--amber);}
+  .slide-card.band-over{border-left:4px solid var(--amber);}
+  .sc-head{display:flex; align-items:center; gap:8px; flex-wrap:wrap;}
+  .sc-title{font-size:14.5px; font-weight:700; flex:1; min-width:100px;}
+  .sc-body{display:flex; flex-direction:column; gap:5px;}
+  .sc-body p{font-size:13.5px; line-height:1.65;}
+  .sc-note{font-size:11.5px; color:var(--ink-soft); font-family:var(--font-mono); background:var(--surface-2); border-radius:6px; padding:5px 9px; width:fit-content;}
+
+  .cue{font-size:12.5px; line-height:1.6; color:var(--ink-soft); display:flex; gap:7px; padding-top:6px; border-top:1px dashed var(--line);}
+  .cue-tag{flex-shrink:0; font-size:11px; font-weight:700; padding:1px 7px; border-radius:5px; white-space:nowrap; height:fit-content;}
+  .cue-joke .cue-tag{background:var(--surface-2); color:var(--ink-soft); border:1px solid var(--line);}
+  .cue-demo .cue-tag{background:var(--accent-soft); color:var(--accent-ink);}
+  details.hint{padding-top:6px; border-top:1px dashed var(--line);}
+  details.hint summary{font-size:11.5px; font-weight:700; color:var(--amber-ink); background:var(--amber-soft); padding:3px 9px; border-radius:5px; display:inline-block; cursor:pointer; list-style:none;}
+  details.hint summary::-webkit-details-marker{display:none;}
+  details.hint summary::before{content:"🗣 ";}
+  details.hint p{font-size:12.5px; color:var(--ink-soft); margin-top:8px; padding:9px 11px; background:var(--surface-2); border-radius:6px; line-height:1.65; border-left:2px solid var(--amber);}
+
+  /* ---------- footer ---------- */
+  footer.foot{max-width:1180px; margin:56px auto 0; padding:20px 32px 0; border-top:1px solid var(--line); font-size:12px; color:var(--ink-soft); display:flex; flex-wrap:wrap; gap:6px 14px;}
+  footer.foot code{background:var(--surface-2); padding:1px 6px; border-radius:4px; border:1px solid var(--line);}
+
+  /* ---------- responsive ---------- */
+  @media (max-width:760px){
+    main,.hero,.tpl-notice,.legend-box,footer.foot{padding-left:16px; padding-right:16px;}
+    .topnav{padding-left:16px; padding-right:16px;}
+  }
+</style>
+
+<div class="hero">
+  <div class="hero-kicker">VIBECODING · 콘텐츠 리뷰(슬라이드 미리보기)</div>
+  <h1>N주차 콘텐츠 리뷰(슬라이드 미리보기)</h1>
+  <div class="hero-meta">
+    <div><b>작성:</b> 콘텐츠 스킬 (또는 사람 작성자명)</div>
+    <div><b>작성일:</b> <code>YYYY-MM-DD</code></div>
+    <div><b>기준 문서:</b> <code>sessions/N주차/초안.md</code></div>
+    <div><b>대상 수강생:</b> 40~50대 중심, 코딩 경험이 거의 없는 초보자</div>
+  </div>
+</div>
+
+<div class="tpl-notice">
+  <div class="tpl-notice-box">
+    <b>이 문서는 템플릿입니다.</b> "예시" 표시가 붙은 카드 2개를 실제 슬라이드로 바꾸고(초안.md 표 1행 = 카드 1개),
+    이 안내 박스는 지운 뒤 배포하세요. 정본은 항상 <code>초안.md</code> — 이 문서는 밀도(정보 단위)를 한눈에 점검하는 리뷰용입니다.
+  </div>
+</div>
+
+<div class="legend-box" id="legendBox">
+  <div class="legend-grid">
+    <div class="legend-item"><span class="legend-n">1</span><div><b>개념 블록</b><span>정의·설명 문장 한 덩어리</span></div></div>
+    <div class="legend-item"><span class="legend-n">1</span><div><b>비유/예시</b><span>비유 하나 또는 워크드 예시 하나</span></div></div>
+    <div class="legend-item"><span class="legend-n">1</span><div><b>비교표</b><span>대조형 표 한 개</span></div></div>
+    <div class="legend-item"><span class="legend-n">1</span><div><b>오해→교정</b><span>흔한 오해 하나 + 교정 문장</span></div></div>
+    <div class="legend-item"><span class="legend-n">1</span><div><b>체크/콜아웃</b><span>체크리스트 또는 강조 콜아웃 한 개</span></div></div>
+  </div>
+  <p class="legend-note">정보 단위 = 위 다섯 종류 각 1단위(콘텐츠 SKILL §0-6). 목표는 슬라이드당 <b style="color:var(--ink)">3~6개</b> — <b style="color:var(--brick-ink)">1개 이하는 근-빈 슬라이드</b>로 지양합니다.</p>
+</div>
+
+<nav class="topnav">
+  <a href="#density">밀도 요약</a>
+  <a href="#slides">슬라이드 미리보기</a>
+</nav>
+
+<main>
+
+  <!-- ============ DENSITY SUMMARY ============ -->
+  <section class="section" id="density">
+    <div class="section-head">
+      <span class="section-eyebrow">밀도 점검</span>
+      <h2>밀도 요약 바</h2>
+    </div>
+    <p class="section-sub">아래 슬라이드 카드의 <code>data-info-units</code> 값을 스크립트가 스캔해 자동으로 채웁니다 — 카드를 추가·삭제하면 숫자가 그만큼 다시 계산됩니다.</p>
+
+    <div class="density-bar" id="densityBar">
+      <div class="density-stat"><span class="density-num" id="densityTotal">0</span><span class="density-lbl">전체 슬라이드</span></div>
+      <div class="density-stat is-empty"><span class="density-num" id="densityEmptyCount">0</span><span class="density-lbl">근-빈 (단위 ≤1)</span></div>
+      <div class="density-stat is-low"><span class="density-num" id="densityLowCount">0</span><span class="density-lbl">낮음 (단위 2)</span></div>
+      <div class="density-stat is-good"><span class="density-num" id="densityGoodCount">0</span><span class="density-lbl">적정 (단위 3~6)</span></div>
+      <div class="density-stat is-over"><span class="density-num" id="densityOverCount">0</span><span class="density-lbl">과다 (단위 ≥7)</span></div>
+    </div>
+    <p class="density-empty-list">근-빈 슬라이드(단위 ≤1) 목록 — 우선 보강 대상: <span id="densityEmptyList">없음</span></p>
+  </section>
+
+  <hr style="border:0; border-top:1px solid var(--line); margin:44px 0 0;">
+
+  <!-- ============ SLIDE GRID ============ -->
+  <section class="section" id="slides">
+    <div class="section-head">
+      <span class="section-eyebrow">슬라이드 미리보기</span>
+      <h2>슬라이드 카드 그리드</h2>
+    </div>
+    <p class="section-sub">여기 쓰인 문구가 화면 최종 문장입니다. <span class="cue-tag" style="background:var(--surface-2); color:var(--ink-soft); border:1px solid var(--line);">💬 농담</span>·<span class="cue-tag" style="background:var(--accent-soft); color:var(--accent-ink);">👀 시연</span>은 실제 덱에서는 발표자 노트로만 가고 화면엔 안 보입니다 — 검토 목적상 여기서는 펼쳐 보여줍니다. <span style="color:var(--amber-ink); font-weight:700;">🗣 완성 요청문</span>은 실제로도 화면엔 접힌 힌트로만 노출됩니다.</p>
+
+    <div class="filterbar" id="periodFilter"><!-- JS가 카드의 data-교시 값을 읽어 "전체" + 교시별 칩을 자동 생성합니다 --></div>
+
+    <div class="slide-grid" id="slideGrid">
+
+      <!-- 예시 카드 1 — 정보 단위 3개 -->
+      <article class="slide-card" data-slide="1-1" data-교시="예시" data-info-units="3">
+        <div class="sc-head">
+          <span class="chip chip-slide">1-1</span>
+          <span class="sc-title">(슬라이드 제목)</span>
+          <span class="chip chip-units" data-units-badge>단위 3</span>
+        </div>
+        <div class="sc-body">
+          <p>① 개념 블록 — (이 슬라이드가 전달할 핵심 개념을 1~2문장으로. 화면에 실제로 올라갈 문구를 그대로 옮겨 적습니다.)</p>
+          <p>② 비유/예시 — (친숙한 비유 하나 또는 구체적 워크드 예시 하나.)</p>
+          <p>③ 체크/콜아웃 — (기억할 점을 강조 문구나 체크리스트 한 줄로.)</p>
+        </div>
+        <div class="sc-note">단위 내역(예시): 개념 1 + 비유·예시 1 + 체크 1 = 3</div>
+        <div class="cue cue-joke"><span class="cue-tag">💬</span>(강사 농담·애드리브 — 발표자 노트로만 감. 없으면 이 줄 삭제.)</div>
+      </article>
+
+      <!-- 예시 카드 2 — 정보 단위 5개 -->
+      <article class="slide-card" data-slide="2-1" data-교시="예시" data-info-units="5">
+        <div class="sc-head">
+          <span class="chip chip-slide">2-1</span>
+          <span class="sc-title">(슬라이드 제목)</span>
+          <span class="chip chip-units" data-units-badge>단위 5</span>
+        </div>
+        <div class="sc-body">
+          <p>① 개념 블록 — (핵심 개념 1~2문장.)</p>
+          <p>② 비유/예시 A — (첫 번째 비유나 예시.)</p>
+          <p>③ 비유/예시 B — (두 번째 비유나 예시 — 같은 이미지를 반복하지 않습니다.)</p>
+          <p>④ 비교표 — (헷갈리는 두 개념·용어를 표로 대조.)</p>
+          <p>⑤ 오해 → 교정 — ("흔한 오해" ✗ → 정확한 교정 ✓)</p>
+        </div>
+        <div class="sc-note">단위 내역(예시): 개념 1 + 비유·예시 2 + 비교표 1 + 오해→교정 1 = 5</div>
+        <div class="cue cue-demo"><span class="cue-tag">👀</span>(강사 시연·관찰 유도 장면 — 발표자 노트로만 감. 없으면 이 줄 삭제.)</div>
+        <details class="hint"><summary>막힐 때 힌트 보기</summary><p>(완성 요청문 예시 — 본문 문구에는 절대 노출하지 않고 이 접힌 힌트에만 둡니다.)</p></details>
+      </article>
+
+      <!-- 반복 안내: 초안.md 표 1행 = 위 <article class="slide-card"> 하나. 복제 시 바꿀 값:
+           data-slide(#, 예 "3-7") · data-교시(예 "1교시"·"도입부"·"마무리" — 필터 칩이 이 값 기준으로 자동 생성됨) ·
+           data-info-units(그 슬라이드의 정보 단위 수) · 칩의 "단위 N" 표시 · sc-title · sc-body 문단들 · cue/hint(있는 것만).
+           고정 슬라이드((간지)·(표지)·(마무리))는 카드에 class="slide-card is-fixed"를 추가하고 tag-fixed 배지를 다세요.
+           (선택) 태그가 붙은 슬라이드는 sc-title 옆에 <span class="tag-optional">선택</span>을 추가하세요. -->
+
+    </div>
+  </section>
+
+</main>
+
+<footer class="foot">
+  <span>산출 경로:</span>
+  <code>sessions/N주차/N주차_콘텐츠_리뷰.html</code>
+  <code>sessions/N주차/초안.md</code>
+</footer>
+
+<script>
+(function(){
+  var grid = document.getElementById('slideGrid');
+  if(!grid) return;
+  var cards = Array.prototype.slice.call(grid.querySelectorAll('.slide-card'));
+
+  // ---- 교시 필터: data-교시 값을 읽어 필터 칩을 자동 생성 ----
+  var filterBar = document.getElementById('periodFilter');
+  if(filterBar){
+    var periods = [];
+    cards.forEach(function(card){
+      var p = (card.getAttribute('data-교시') || '').trim();
+      if(p && periods.indexOf(p) === -1) periods.push(p);
+    });
+
+    function makeChip(label, value){
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'filter-chip';
+      b.textContent = label;
+      b.setAttribute('data-filter-value', value);
+      return b;
+    }
+
+    var allBtn = makeChip('전체', '__all__');
+    allBtn.classList.add('is-active');
+    filterBar.appendChild(allBtn);
+    periods.forEach(function(p){ filterBar.appendChild(makeChip(p, p)); });
+
+    filterBar.addEventListener('click', function(e){
+      var btn = e.target.closest('.filter-chip');
+      if(!btn) return;
+      filterBar.querySelectorAll('.filter-chip').forEach(function(b){ b.classList.toggle('is-active', b === btn); });
+      var value = btn.getAttribute('data-filter-value');
+      cards.forEach(function(card){
+        if(value === '__all__'){ card.style.display = ''; return; }
+        card.style.display = (card.getAttribute('data-교시') || '') === value ? '' : 'none';
+      });
+    });
+  }
+
+  // ---- 밀도 요약: data-info-units 값을 스캔해 배지 색상 + 요약 바 채우기 ----
+  var bandCounts = { empty: 0, low: 0, good: 0, over: 0 };
+  var emptyIds = [];
+
+  cards.forEach(function(card){
+    var n = parseInt(card.getAttribute('data-info-units'), 10);
+    if(isNaN(n)) return;
+    var band = n <= 1 ? 'empty' : (n === 2 ? 'low' : (n <= 6 ? 'good' : 'over'));
+    bandCounts[band]++;
+    card.classList.add('band-' + band);
+    var badge = card.querySelector('[data-units-badge]');
+    if(badge) badge.classList.add('chip-units--' + band);
+    if(band === 'empty') emptyIds.push(card.getAttribute('data-slide') || '?');
+  });
+
+  var setText = function(id, value){ var el = document.getElementById(id); if(el) el.textContent = value; };
+  setText('densityTotal', cards.length);
+  setText('densityEmptyCount', bandCounts.empty);
+  setText('densityLowCount', bandCounts.low);
+  setText('densityGoodCount', bandCounts.good);
+  setText('densityOverCount', bandCounts.over);
+  setText('densityEmptyList', emptyIds.length ? emptyIds.join(', ') : '없음');
+})();
+</script>

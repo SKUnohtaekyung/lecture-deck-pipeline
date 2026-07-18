@@ -8,3 +8,14 @@
 - 공통 작업 매뉴얼과 PPT 제작 규칙은 각각 `AGENTS.md`와 루트 `SKILL.md`가 정본이다. `.claude/`에는 Claude Code의 탐색·호출 차이만 둔다.
 - Windows에서는 `python`을 사용한다. Claude 전용 `ui-ux-pro-max`를 직접 실행할 때는 저장소 루트에서 `python .claude/skills/ui-ux-pro-max/scripts/search.py ...`를 사용한다.
 - 팀 워크플로 스킬 3종(/리서치·/콘텐츠·/검토)은 .claude/skills/의 어댑터로 발견되며 명시 호출 전용이다. 정본과 계약은 루트 skills/README.md.
+
+# 세션 시작 필수 읽기 (프로젝트 지도)
+
+새 세션은 작업 전 아래를 순서대로 훑어 프로젝트 전체 맥락을 잡는다. 재탐색 비용을 줄이는 인덱스다(내용은 각 정본이 소유).
+
+1. `AGENTS.md` — 공통 작업 매뉴얼·폴더 구조(①~⑤층)·불변 규칙. (이미 위에서 import)
+2. `.agents/agent-memory/vibecoding-deck/MEMORY.md` — 누적 규칙·색 시스템 정본·**현재 상태와 다음 할 일(`## 미해결`)**.
+3. `skills/README.md` — 팀 워크플로 스킬 3종(/리서치·/콘텐츠·/검토) 계약표·파이프라인 지도·명시 호출 규약.
+4. 커리큘럼: `sessions/바이브코딩_커리큘럼_기준안.md`(전 주차 상위 기준) + `sessions/N주차/N주차_강의안설계.md`(주차 상세, 옛 인수인계서 역할).
+5. 루트 `SKILL.md` — 덱 조립 규칙(vibecoding-deck). 덱 작업 시.
+6. `sessions/README.md` — 세션 폴더 규약(주차별 산출물 위치).

@@ -16,7 +16,7 @@ ROOT = Path(__file__).resolve().parents[1]
 # body_markers는 "이 게이트가 정본 본문에 실제로 문서화됐다"는 증거로 쓰는 문자열이며,
 # 동시에 어댑터 본문에는 있으면 안 되는 규칙 복제 방지 마커이기도 하다.
 TEAM_SKILLS = {
-    "리서치": {"body_markers": ("3개월", "출처 URL", "확인 날짜", "deep-research", "조사 범위")},
+    "리서치": {"body_markers": ("5개월", "출처 URL", "확인 날짜", "deep-research", "조사 범위")},
     "콘텐츠": {"body_markers": ("자료 충분성", "콘텐츠초안템플릿", "출처 추적", "분할 제안")},
     "검토": {"body_markers": ("읽기 전용", "FAIL", "WARN", "검토보고")},
 }
