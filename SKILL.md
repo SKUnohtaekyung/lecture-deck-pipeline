@@ -95,6 +95,8 @@ scripts/     verify_deck.py(검증) · assemble_deck.py(조각→미리보기) �
 `kit/starter/deck-template.html`을 기반으로(검증된 CSS는 `kit/styles/patterns.css`를 deck.css·legibility **뒤에** 로드하면 재사용 — 매번 새로 짜지 않는다):
 - 고정 1·2·3·마무리 텍스트 교체, 파트 수만큼 `part-divider` 배치.
 - 본문 슬라이드: **먼저 [`kit/layouts/catalog.html`](kit/layouts/catalog.html)·[`kit/charts/catalog.html`](kit/charts/catalog.html)(코드 코어)에서 해당 ID `<section>`/fragment를 복사**(patterns.css가 CSS 자동 적용). 카탈로그에 없는 구도만 `데모_제작규칙.html`의 같은 구도 마크업 + `families/*.md`·`charts/*.md` 스펙으로 조립 — **빈 스펙만으로 처음부터 코딩하지 말 것**(오버플로·토큰 실수의 원인). 차트/다이어그램 element(`.viz-*`)는 레이아웃 시각 슬롯에 삽입.
+- **카탈로그는 "코어 + 변형" 설계다.** `by-shape.md`의 레이아웃 54·element 23은 **추천 어휘집**이고, 실제 마크업은 **코어 12(레이아웃)·8(차트)**만 둔다. 역인덱스가 고른 ID의 마크업이 없으면 그건 결함이 아니라 설계다 — **가장 가까운 코어를 복사해 변형**하고, 그 근거를 결정표에 한 줄 남긴다.
+- ⚠️ **환류 규칙(신규 구도를 만들었으면)**: 코어 변형으로 해결이 안 돼 새 구도를 직접 짰다면, 덱을 닫기 전에 그 `<section>`을 해당 `catalog.html`에, **CSS를 `kit/styles/patterns.css`에** 환류한다. **덱 로컬 `<style>`에 남겨두지 않는다** — 남기면 다음 주차가 같은 CSS를 또 짜게 되고, 주차마다 미묘하게 다른 노드 스타일이 누적된다. 환류 후 `python scripts/verify_kit.py`로 계약을 확인한다.
 - **토큰만 사용**([`kit/guide/토큰-치트시트.md`](kit/guide/토큰-치트시트.md)) · **가독성 하한**(본문 22px·표 17px) · **색은 문법**(구조·주 강조 블루, 행동·안전 민트, 주의 코랄, 오류 레드) · **오버플로 0**(세로예산 548px·행높이 계산식).
 - **아이콘 라우팅 반영**: `🗣` 슬라이드는 본문 슬롯에 `.hint-reveal`(`kit/styles/deck.css`) — 안전망 예시 원문 그대로, 레이아웃 무관 삽입. `💬`·`👀`는 `<!-- 발표노트: … -->` 주석으로. **이모지 문자 자체는 마크업에 남기지 않는다.**
 - 채울 수 있는 레이아웃은 본문 안전 영역을 적극 사용한다. 단, centered·일부 full-bleed처럼 여백 자체가 메시지인 구도는 의도적 여백을 유지한다.
@@ -144,6 +146,7 @@ scripts/     verify_deck.py(검증) · assemble_deck.py(조각→미리보기) �
 | `kit/starter/presenter-notes-template.html` | 7단계 — 발표자 노트 HTML 복제 원본 |
 | `데모_제작규칙.html` | 5단계 — 완성 덱의 실제 마크업을 본뜰 때 |
 | `scripts/verify_deck.py` | 8단계 — 정적 검증 자동 채점 |
+| `scripts/verify_kit.py` | 킷 계약 — 카탈로그 마크업 클래스가 전부 kit CSS에 정의됐는지·인라인 `<style>` 없는지. **카탈로그·`patterns.css`를 건드렸으면 실행** |
 | `scripts/assemble_deck.py` | 5·8단계 — 조각(`강의덱.초안/`) → 미리보기 통합본 조립(`--watch`) |
 | `scripts/build_release.py` | 9단계 — 최종본 빌드(조립→검증→인라인→자립성 강제) |
 | `scripts/inline_deck.py` · `verify_distributable.py` · `font_embed.py` | 9단계 — CSS·이미지 인라인 + 폰트 서브셋 임베드 · 자립성 강제 게이트 |

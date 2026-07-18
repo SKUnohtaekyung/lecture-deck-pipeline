@@ -11,38 +11,9 @@
   <link rel="stylesheet" href="../styles/deck.css">
   <link rel="stylesheet" href="../styles/legibility.css">
   <link rel="stylesheet" href="../styles/patterns.css"><!-- 코드 코어: 검증된 레이아웃/element CSS(재사용) -->
-  <style id="kit-additions">
-    /* L-fb-statement — 풀블리드 큰 선언(88~120px 디스플레이) */
-    .fb-statement .center-msg{ top:110px; bottom:54px; max-width:1040px;
-      display:flex; flex-direction:column; justify-content:center; }
-    .fb-statement .cm-title{ font-size:104px; line-height:1.12; margin:0; }
-
-    /* L-ct-definition — 정의 특성 태그 줄 */
-    .def-tags{ display:flex; flex-wrap:wrap; gap:10px; margin-top:16px; }
-
-    /* L-td-metric-row — KPI 스트립(밴드 + 큰 숫자 카드 한 줄) */
-    .metric-strip .s-full{ bottom:54px; display:flex; flex-direction:column; }
-    .metric-strip .grid-3{ flex:1 1 auto; align-content:center; margin-top:16px; }
-    .metric-strip .card{ display:flex; flex-direction:column; gap:8px; justify-content:center; }
-    .kpi-val{ font-size:56px; font-weight:800; line-height:1; color:var(--ink); }
-    .kpi-val.key{ color:var(--blue); }
-    .kpi-label{ font-size:22px; font-weight:800; color:var(--ink); }
-    .kpi-delta{ align-self:flex-start; font-size:15px; font-weight:800; border-radius:999px; padding:4px 12px; }
-    .kpi-delta.up{ color:var(--mint-deep); background:var(--mint-soft); }
-    .kpi-delta.down{ color:var(--coral-deep); background:var(--coral-soft); }
-
-    /* L-vf-numbered-stack — 스텝 사이 아래 커넥터(순서 명시) */
-    .eval-steps .vf-down{ text-align:center; color:var(--blue); font-weight:800; font-size:20px; line-height:1; }
-
-    /* L-dc-hero — 무대 안 간단 도해 placeholder(3-스텝 흐름) */
-    .viz-flow-ph{ display:flex; align-items:center; gap:20px; }
-    .fl-node{ background:var(--surface); border:1px solid var(--blue-line-strong); border-radius:16px;
-      padding:26px 34px; font-size:24px; font-weight:800; color:var(--ink);
-      box-shadow:0 8px 18px rgba(20,24,33,.06); }
-    .fl-node.key{ background:var(--blue); color:var(--white); border-color:var(--blue);
-      box-shadow:0 14px 32px rgba(29,78,216,.4); }
-    .fl-arrow{ font-size:34px; font-weight:800; color:var(--blue); }
-  </style>
+  <!-- 이 카탈로그가 쓰는 CSS는 전부 ../styles/patterns.css에 있다(2026-07-19 승격).
+       인라인 <style>을 두지 않는다 — 카탈로그를 <section>째 복사하면 그대로 렌더돼야 하고,
+       인라인에만 있으면 복사한 쪽에서 뼈대만 붙는다. scripts/verify_kit.py가 이를 강제한다. -->
   <!--
     ┌── 이 파일은 무엇인가 ───────────────────────────────────────────┐
     │ kit/layouts/catalog.html = 조립 시 붙여쓰는 "코드 코어" 덱.       │

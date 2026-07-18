@@ -54,6 +54,7 @@ python .agents/skills/ui-ux-pro-max/scripts/search.py ...
 # Claude Code
 python .claude/skills/ui-ux-pro-max/scripts/search.py ...
 python scripts/verify_skill_setup.py
+python scripts/verify_kit.py
 python -m unittest tests.test_deck_pipeline tests.test_image_pipeline
 ```
 

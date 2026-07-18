@@ -10,45 +10,9 @@
   <link rel="stylesheet" href="../styles/deck.css">
   <link rel="stylesheet" href="../styles/legibility.css">
   <link rel="stylesheet" href="../styles/patterns.css"><!-- 코드 코어: 검증된 레이아웃/element CSS(재사용) -->
-  <style id="kit-additions">
-    /* ── C-bar · D-mapping 은 patterns.css에 없는 데모 프리미티브 → 여기 인라인.
-         데모_제작규칙.html의 <style id="kit-additions">에서 수확, raw 흰색 리터럴 → var(--white) 치환. ── */
-    /* 좌 설명 + 우 시각화 2분할 (코드차트 슬라이드 공용) */
-    .viz-split{ display:grid; grid-template-columns:1fr 1fr; gap:44px; align-items:center; margin-top:20px; }
-    .viz-note p{ font-size:21px; line-height:1.72; color:var(--gray-700); margin:0 0 16px; }
-    .viz-note strong{ color:var(--blue); font-weight:800; }
-
-    /* [C-bar] 코드 막대 차트 */
-    .code-chart{ width:100%; }
-    .cc-plot{ display:flex; align-items:flex-end; justify-content:space-around;
-      height:300px; border-bottom:2px solid var(--line); padding:0 6px; }
-    .cc-bar{ display:flex; flex-direction:column; align-items:center; justify-content:flex-end; }
-    .cc-fill{ width:92px; background:var(--periwinkle); border-radius:10px 10px 0 0;
-      box-shadow:0 8px 18px rgba(29,78,216,.16); }
-    .cc-fill.is-key{ background:var(--blue); }
-    .cc-val{ font-weight:800; font-size:22px; color:var(--blue); margin-bottom:8px; }
-    .cc-axis{ display:flex; justify-content:space-around; margin-top:12px; padding:0 6px; }
-    .cc-axis span{ width:92px; text-align:center; font-size:19px; font-weight:800; color:var(--ink); }
-
-    /* [D-mapping] 코드 관계 다이어그램 (root → leaves 매핑) */
-    .code-diagram{ display:flex; flex-direction:column; align-items:center; margin-top:26px; }
-    .cd-root{ background:var(--blue); color:var(--white); font-weight:800; font-size:22px;
-      border-radius:14px; padding:18px 34px; box-shadow:0 12px 28px rgba(29,78,216,.28); }
-    .cd-arrow{ font-size:30px; color:var(--blue); font-weight:800; margin:8px 0 2px; }
-    .cd-leaves{ display:grid; grid-template-columns:repeat(4,1fr); gap:18px; width:100%; margin-top:8px; }
-    .cd-leaf{ border:1px solid var(--blue-line-strong); border-radius:16px; background:var(--white); padding:20px 14px;
-      text-align:center; box-shadow:0 10px 22px rgba(20,24,33,.05);
-      display:flex; flex-direction:column; align-items:center; gap:7px; }
-    .cd-in{ font-size:16px; color:var(--gray-700); font-weight:700; }
-    .cd-to{ color:var(--gray-400); font-size:22px; font-weight:800; line-height:.8; }
-    .cd-out{ font-size:19px; color:var(--blue); font-weight:800; line-height:1.2; }
-
-    /* SVG 커넥터 색(토큰만) — cycle 곡선 화살표 · radial 스포크 · tree 와이어 */
-    .viz-cycle .cyc-wire{ fill:none; stroke:var(--blue); stroke-width:3; }
-    .viz-radial .rad-spoke{ stroke:var(--line); stroke-width:2; }
-    .viz-radial .rad-spoke.on{ stroke:var(--blue); stroke-width:3; }
-    .vt-wire .vt-line{ fill:none; stroke:var(--blue); stroke-width:2.5; }
-  </style>
+  <!-- 이 카탈로그가 쓰는 CSS는 전부 ../styles/patterns.css에 있다(2026-07-19 승격).
+       인라인 <style>을 두지 않는다 — 카탈로그를 <section>째 복사하면 그대로 렌더돼야 하고,
+       인라인에만 있으면 복사한 쪽에서 뼈대만 붙는다. scripts/verify_kit.py가 이를 강제한다. -->
 </head>
 <body>
   <div class="deck">

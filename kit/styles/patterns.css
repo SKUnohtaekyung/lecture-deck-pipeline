@@ -229,3 +229,80 @@
 .s-full.solo{ bottom:54px; display:flex; flex-direction:column; justify-content:center; }
 .s-full.solo > .callout{ width:fit-content; max-width:860px; margin-left:auto; margin-right:auto;
   align-self:center; text-align:center; font-size:26px; line-height:1.5; }
+
+/* ══════════════════════════════════════════════════════════════════════
+   코어 카탈로그 프리미티브 (2026-07-19 승격)
+   카탈로그 인라인 <style id="kit-additions">에만 있어 "복사하면 뼈대만
+   붙던" 클래스들을 여기로 옮겼다. 카탈로그 항목을 <section>째 복사하면
+   patterns.css 로드만으로 그대로 렌더된다.
+   ⚠️ 카탈로그 마크업이 쓰는 클래스는 반드시 kit CSS에 정의가 있어야
+   한다 — scripts/verify_kit.py가 강제한다. 새 구도를 카탈로그에 추가할
+   때 CSS는 인라인이 아니라 여기에 쓴다.
+   ══════════════════════════════════════════════════════════════════════ */
+
+/* ── L-fb-statement · 풀블리드 큰 선언(디스플레이 타이포) ── */
+.fb-statement .center-msg{ top:110px; bottom:54px; max-width:1040px;
+  display:flex; flex-direction:column; justify-content:center; }
+.fb-statement .cm-title{ font-size:104px; line-height:1.12; margin:0; }
+
+/* ── L-ct-definition · 정의 특성 태그 줄 ── */
+.def-tags{ display:flex; flex-wrap:wrap; gap:10px; margin-top:16px; }
+
+/* ── L-td-metric-row · KPI 스트립(밴드 + 큰 숫자 카드 한 줄) ── */
+.metric-strip .s-full{ bottom:54px; display:flex; flex-direction:column; }
+.metric-strip .grid-3{ flex:1 1 auto; align-content:center; margin-top:16px; }
+.metric-strip .card{ display:flex; flex-direction:column; gap:8px; justify-content:center; }
+.kpi-val{ font-size:56px; font-weight:800; line-height:1; color:var(--ink); }
+.kpi-val.key{ color:var(--blue); }
+.kpi-label{ font-size:22px; font-weight:800; color:var(--ink); }
+.kpi-delta{ align-self:flex-start; font-size:15px; font-weight:800; border-radius:999px; padding:4px 12px; }
+.kpi-delta.up{ color:var(--mint-deep); background:var(--mint-soft); }
+.kpi-delta.down{ color:var(--coral-deep); background:var(--coral-soft); }
+
+/* ── L-vf-numbered-stack · 스텝 사이 아래 커넥터(순서 명시) ── */
+.eval-steps .vf-down{ text-align:center; color:var(--blue); font-weight:800; font-size:20px; line-height:1; }
+
+/* ── L-dc-hero · 무대 안 간단 도해(3-스텝 흐름) ── */
+.viz-flow-ph{ display:flex; align-items:center; gap:20px; }
+.fl-node{ background:var(--surface); border:1px solid var(--blue-line-strong); border-radius:16px;
+  padding:26px 34px; font-size:24px; font-weight:800; color:var(--ink);
+  box-shadow:0 8px 18px rgba(20,24,33,.06); }
+.fl-node.key{ background:var(--blue); color:var(--white); border-color:var(--blue);
+  box-shadow:0 14px 32px rgba(29,78,216,.4); }
+.fl-arrow{ font-size:34px; font-weight:800; color:var(--blue); }
+
+/* ── 좌 설명 + 우 시각화 2분할 (코드차트 슬라이드 공용) ── */
+.viz-split{ display:grid; grid-template-columns:1fr 1fr; gap:44px; align-items:center; margin-top:20px; }
+.viz-note p{ font-size:21px; line-height:1.72; color:var(--gray-700); margin:0 0 16px; }
+.viz-note strong{ color:var(--blue); font-weight:800; }
+
+/* ── C-bar · 코드 막대 차트 ── */
+.code-chart{ width:100%; }
+.cc-plot{ display:flex; align-items:flex-end; justify-content:space-around;
+  height:300px; border-bottom:2px solid var(--line); padding:0 6px; }
+.cc-bar{ display:flex; flex-direction:column; align-items:center; justify-content:flex-end; }
+.cc-fill{ width:92px; background:var(--periwinkle); border-radius:10px 10px 0 0;
+  box-shadow:0 8px 18px rgba(29,78,216,.16); }
+.cc-fill.is-key{ background:var(--blue); }
+.cc-val{ font-weight:800; font-size:22px; color:var(--blue); margin-bottom:8px; }
+.cc-axis{ display:flex; justify-content:space-around; margin-top:12px; padding:0 6px; }
+.cc-axis span{ width:92px; text-align:center; font-size:19px; font-weight:800; color:var(--ink); }
+
+/* ── D-mapping · 코드 관계 다이어그램 (root → leaves) ── */
+.code-diagram{ display:flex; flex-direction:column; align-items:center; margin-top:26px; }
+.cd-root{ background:var(--blue); color:var(--white); font-weight:800; font-size:22px;
+  border-radius:14px; padding:18px 34px; box-shadow:0 12px 28px rgba(29,78,216,.28); }
+.cd-arrow{ font-size:30px; color:var(--blue); font-weight:800; margin:8px 0 2px; }
+.cd-leaves{ display:grid; grid-template-columns:repeat(4,1fr); gap:18px; width:100%; margin-top:8px; }
+.cd-leaf{ border:1px solid var(--blue-line-strong); border-radius:16px; background:var(--white); padding:20px 14px;
+  text-align:center; box-shadow:0 10px 22px rgba(20,24,33,.05);
+  display:flex; flex-direction:column; align-items:center; gap:7px; }
+.cd-in{ font-size:16px; color:var(--gray-700); font-weight:700; }
+.cd-to{ color:var(--gray-400); font-size:22px; font-weight:800; line-height:.8; }
+.cd-out{ font-size:19px; color:var(--blue); font-weight:800; line-height:1.2; }
+
+/* ── SVG 커넥터 색(토큰만) · cycle 곡선 · radial 스포크 · tree 와이어 ── */
+.viz-cycle .cyc-wire{ fill:none; stroke:var(--blue); stroke-width:3; }
+.viz-radial .rad-spoke{ stroke:var(--line); stroke-width:2; }
+.viz-radial .rad-spoke.on{ stroke:var(--blue); stroke-width:3; }
+.vt-wire .vt-line{ fill:none; stroke:var(--blue); stroke-width:2.5; }
