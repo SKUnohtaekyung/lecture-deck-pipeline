@@ -4,17 +4,26 @@
 verify_session_docs.py — 세션 산출물 자동 검증 (1주차 파이프라인 계획 v2 §4.1)
 
 자기선언 PASS를 대체하는 기계 검증. 리서치/콘텐츠 단계 산출물의
-스키마·커버리지·D1~D6·출처ID 매핑·[미검증] 무결성·초안 형식·범위밖 diff를 점검한다.
+스키마·커버리지·D1~D6·출처ID 매핑·[C-슬러그] 포인터 해소·[미검증] 무결성·
+초안 형식·중간 산출물 잔존·범위밖 diff를 점검한다.
 
-검사 대상(파일명 규약: sessions/N주차/):
-  자료/N주차_콘텐츠리서치_결과.md      — 교시(구간)별 8항목 ①~⑧
+검사 대상 — 리서치 **기본 5파일** + 초안(파일명 규약: sessions/N주차/):
+  자료/N주차_콘텐츠리서치_결과.md      — 교시(구간)별 8항목 ①~⑧ (구간 인덱스층)
+  자료/N주차_개념KB.md                  — 사실 정본(청크+ID RAG). 여기서는 **존재 여부와
+                                          [C-슬러그] 참조 해소만** 본다. 청크 내부 최소깊이·
+                                          G8 관점 검사는 scripts/verify_research_chunks.py 몫.
+  자료/N주차_출처레지스트리.md          — 출처ID 표(고유ID·URL·확인일·공신력·구간·접근)
+                                          + 「출처ID별 verbatim」 절(원문 정본, 없으면 WARN)
+                                          + 도메인 편중·3급/[경험 진술] 0건 WARN(G8 관점 다양성)
   자료/N주차_실습안_검증결과.md         — 실습별 13항목 ①~⑬
   자료/N주차_결정요청사항.md            — 6열 표 + D1~D6
-  자료/N주차_출처레지스트리.md          — 출처ID 표(고유ID·URL·확인일·공신력·구간·접근)
   초안.md                               — 4열 표·아이콘 범례·0번 메타·관통 문장·(선택)
+  자료/ 잔존 중간 산출물(심층리서치·_vN 접미·커버리지) — WARN
 
 출처 모델: 모든 사실 문장은 [S-###] 출처ID로 레지스트리와 연결. 내부 설계 근거도
 등록(예: S-000=v4 강의안설계). 커버리지 빈칸은 [미검증]/[미확인]/[확인불가]/[예외승인] 태그로만 허용.
+사실 모델: 결과.md·초안.md는 사실을 재서술하지 않고 [C-슬러그]로 개념KB 청크를 가리키는
+포인터층이다 — 죽은 포인터는 곧 사실 소실이므로 FAIL로 막는다.
 
 사용:
   python scripts/verify_session_docs.py 1 --target 자료
@@ -27,13 +36,26 @@ import argparse
 import re
 import subprocess
 import sys
+from collections import Counter
 from fnmatch import fnmatch
 from pathlib import Path
+from urllib.parse import urlparse
 
 CIRC8 = "①②③④⑤⑥⑦⑧"
 CIRC13 = "①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬"
 ALLOW_TAGS = ("[미검증]", "[미확인]", "[확인불가]", "[예외승인")
 SRC_REF = re.compile(r"\[(S-\d{3,})\]")
+CHUNK_REF = re.compile(r"\[C-[^\]\s]+\]")                       # 인라인 포인터 [C-슬러그]
+CHUNK_REFS_COMMENT = re.compile(r"<!--\s*refs:\s*([^>]*?)-->")  # 초안 근거추적 주석
+CHUNK_HEADING = re.compile(r"^##\s+\[(C-[^\]\s]+)\]", re.MULTILINE)  # 개념KB 청크 헤딩
+URL_IN_CELL = re.compile(r"https?://[^\s)\]]+")
+DOMAIN_SHARE_MAX = 0.40  # 리서치 §0 G8: 최다 도메인 40% 초과면 관점이 좁다는 신호
+# 리서치 SKILL 7단계 수명 규칙 — 자료/에 남으면 안 되는 중간 산출물 파일명 패턴
+LEFTOVER_PATTERNS = (
+    ("심층리서치", re.compile(r"심층리서치")),
+    ("버전접미", re.compile(r"_v\d+\.md$")),
+    ("커버리지", re.compile(r"커버리지")),
+)
 
 ALLOWLIST = {
     "자료": ["sessions/*주차/자료/*", ".omc/*"],
@@ -107,6 +129,18 @@ def parse_tables(text):
     for t in tbls:
         clean.append([r for r in t if not all(re.fullmatch(r":?-{2,}:?", (c or "").strip()) for c in r)])
     return clean
+
+
+def collect_chunk_refs(text):
+    """개념KB 청크 포인터 수집: 인라인 `[C-슬러그]` + 초안 근거추적 주석 `<!-- refs: C-a,C-b -->`.
+    주석 안은 대괄호 없이 맨몸 슬러그로 적힐 수 있어 별도 파싱한다."""
+    refs = {m.group(0)[1:-1].strip() for m in CHUNK_REF.finditer(text)}
+    for m in CHUNK_REFS_COMMENT.finditer(text):
+        for tok in m.group(1).split(","):
+            tok = tok.strip().strip("[]").strip()
+            if tok.startswith("C-") and len(tok) > 2:
+                refs.add(tok)
+    return {r for r in refs if r}
 
 
 def check_research_result(text):
@@ -207,16 +241,55 @@ def check_registry(text):
         add(f"{tag}:표열수", "FAIL", f"{len(reg_tbl[0])}열(<6): ID|URL|확인일|공신력|구간|접근")
     else:
         add(f"{tag}:표열수", "PASS", f"{len(reg_tbl[0])}열")
+    hdr = [(c or "") for c in reg_tbl[0]]
+    url_i = next((i for i, c in enumerate(hdr) if "URL" in c.upper()), 1)
+    cred_i = next((i for i, c in enumerate(hdr) if "공신력" in c), 3)
     empty_rows = 0
+    domains, tier3 = Counter(), 0
     for r in reg_tbl[1:]:
         m = re.match(r"(S-\d{3,})", r[0])
         if m:
             ids.add(m.group(1))
+            cell = r[url_i] if url_i < len(r) else ""
+            u = URL_IN_CELL.search(cell)
+            if u:  # 외부 출처만 집계(내부 설계 문서 S-000·S-001 등은 경로라 제외)
+                netloc = urlparse(u.group(0)).netloc.lower()
+                if netloc:
+                    domains[netloc] += 1
+            cred = r[cred_i] if cred_i < len(r) else ""
+            if "3급" in cred or "[경험 진술]" in cred:
+                tier3 += 1
         if any((not (c or "").strip()) for c in r[:6]) and not any(any(tg in c for tg in ALLOW_TAGS) for c in r):
             empty_rows += 1
     add(f"{tag}:ID수집", "PASS" if ids else "WARN", f"{len(ids)}개 ID")
     if empty_rows:
         add(f"{tag}:빈칸", "FAIL", f"빈 셀 행 {empty_rows}개")
+
+    # 원문 정본 절: verbatim 전문은 레지스트리에만 둔다(개념KB는 핵심 한 문장 사본)
+    if re.search(r"^#{1,6}.*verbatim", text, re.MULTILINE | re.IGNORECASE):
+        add(f"{tag}:verbatim절", "PASS")
+    else:
+        add(f"{tag}:verbatim절", "WARN", "레지스트리가 원문 정본 — 「출처ID별 verbatim」 절 권장")
+
+    # G8 관점 다양성: 도메인 편중·3급/[경험 진술] 유무 (기존 주차 소급 FAIL 방지로 WARN)
+    total = sum(domains.values())
+    if not total:
+        add(f"{tag}:도메인편중", "SKIP", "외부 URL 출처 0건")
+    else:
+        top = domains.most_common(3)
+        summary = "상위3: " + ", ".join(f"{d} {c}/{total}({c / total * 100:.0f}%)" for d, c in top)
+        share = top[0][1] / total
+        if share > DOMAIN_SHARE_MAX:
+            add(f"{tag}:도메인편중", "WARN",
+                f"최다 도메인 {top[0][0]} {share * 100:.0f}% > {DOMAIN_SHARE_MAX * 100:.0f}%"
+                f" — 관점 편중 신호(G8) · {summary}")
+        else:
+            add(f"{tag}:도메인편중", "PASS", f"최다 {share * 100:.0f}% ≤ {DOMAIN_SHARE_MAX * 100:.0f}% · {summary}")
+    if tier3:
+        add(f"{tag}:3급·경험진술", "PASS", f"{tier3}건")
+    else:
+        add(f"{tag}:3급·경험진술", "WARN",
+            "공신력 열에 3급·[경험 진술] 0건 — 관점 B(실무 사례)·C·D 재료 부족 신호(G8)")
     return ids
 
 
@@ -240,6 +313,41 @@ def check_draft(text):
     add(f"{tag}:관통문장", "PASS" if n_pierce else "WARN", f"관통 문장 {n_pierce}회")
     add(f"{tag}:선택태그", "PASS" if "(선택)" in text else "WARN", "(선택) 태그 유무")
     return ok
+
+
+def check_leftovers(data_dir, wk, template_dir=None):
+    """리서치 SKILL 7단계 수명 규칙: 조사 과정의 중간 산출물(심층리서치 원본·버전 사본·
+    커버리지 대조표)은 자료/에 남기지 않는다. 사람이 직접 쓴 문서를 오탐할 수 있어 WARN."""
+    tag = "잔존물"
+    if not data_dir.is_dir():
+        add(f"{tag}:중간산출물", "SKIP", f"{data_dir.name}/ 없음")
+        return
+    keep = {
+        f"{wk}주차_콘텐츠리서치_결과.md",
+        f"{wk}주차_개념KB.md",
+        f"{wk}주차_출처레지스트리.md",
+        f"{wk}주차_실습안_검증결과.md",
+        f"{wk}주차_결정요청사항.md",
+        "이미지-에셋.json",
+        "이미지-프롬프트.md",
+    }
+    if template_dir and template_dir.is_dir():  # _template/자료/ 유래 파일(주차 접두 유무 무관)
+        for tp in template_dir.iterdir():
+            keep.add(tp.name)
+            keep.add(f"{wk}주차_{tp.name}")
+    hits = []
+    for p in sorted(data_dir.glob("*.md")):
+        if p.name in keep or p.name.replace(f"{wk}주차_", "", 1) in keep:
+            continue
+        why = [label for label, rx in LEFTOVER_PATTERNS if rx.search(p.name)]
+        if why:
+            hits.append(f"{p.name} ({'·'.join(why)})")
+    if hits:
+        add(f"{tag}:중간산출물", "WARN",
+            f"{len(hits)}건 잔존 — 리서치 SKILL 7단계 수명 규칙: "
+            f"_dev/설계기록/탐색-아카이브/{wk}주차/로 이동 또는 삭제: " + "; ".join(hits))
+    else:
+        add(f"{tag}:중간산출물", "PASS", "중간 산출물 잔존 없음")
 
 
 def check_capability_claims(root, wk):
@@ -317,6 +425,7 @@ def main():
     data = sess / "자료"
     files = {
         "result": data / f"{wk}주차_콘텐츠리서치_결과.md",
+        "kb": data / f"{wk}주차_개념KB.md",
         "practice": data / f"{wk}주차_실습안_검증결과.md",
         "decision": data / f"{wk}주차_결정요청사항.md",
         "registry": data / f"{wk}주차_출처레지스트리.md",
@@ -324,6 +433,8 @@ def main():
     }
 
     reg_ids, used_refs = set(), set()
+    used_chunks = set()
+    kb_text = read(files["kb"])
 
     if args.target in ("자료", "all"):
         for key, chk in (("result", check_research_result), ("practice", check_practice), ("decision", check_decision)):
@@ -334,17 +445,26 @@ def main():
                 chk(txt)
                 if key == "result":
                     used_refs |= {m.group(1) for m in SRC_REF.finditer(txt)}
+                    used_chunks |= collect_chunk_refs(txt)
+        # 개념KB는 기본 5파일 중 사실 정본 — 존재만 강제하고, 청크 내부 깊이·G8 관점은
+        # verify_research_chunks.py 담당(역할 중복 금지).
+        if kb_text is None:
+            add(f"파일:{files['kb'].name}", "FAIL", "파일 없음")
+        else:
+            add("개념KB:존재", "PASS",
+                f"청크 {len(CHUNK_HEADING.findall(kb_text))}개 (내부 깊이·G8은 verify_research_chunks.py)")
         rtxt = read(files["registry"])
         if rtxt is None:
             add(f"파일:{files['registry'].name}", "FAIL", "파일 없음")
         else:
             reg_ids = check_registry(rtxt)
+        check_leftovers(data, wk, root / "sessions" / "_template" / "자료")
         stext = read(data / f"{wk}주차_리서치_종합정리.md")
         if stext is None:
             add("종합정리:존재(선택)", "SKIP", "N주차_리서치_종합정리.md 없음 — 선택 산출물(사용자가 요청할 때만 산출)")
         else:
             add("종합정리:존재(선택)", "PASS")
-            add("종합정리:성격표기", "PASS" if ("정본" in stext and ("요약" in stext or "종합" in stext)) else "WARN", "서두에 '정본은 3파일' 명시 권장")
+            add("종합정리:성격표기", "PASS" if ("정본" in stext and ("요약" in stext or "종합" in stext)) else "WARN", "서두에 '정본은 기본 5파일' 명시 권장")
 
     if args.target in ("초안", "all"):
         dtxt = read(files["draft"])
@@ -353,6 +473,7 @@ def main():
         else:
             check_draft(dtxt)
             used_refs |= {m.group(1) for m in SRC_REF.finditer(dtxt)}
+            used_chunks |= collect_chunk_refs(dtxt)
 
     # 출처ID 상호 참조: 사용된 [S-###]가 레지스트리에 실재하는가
     if used_refs or reg_ids:
@@ -361,6 +482,19 @@ def main():
             add("출처매핑:참조해소", "FAIL", f"레지스트리에 없는 출처ID {', '.join(dangling)}")
         else:
             add("출처매핑:참조해소", "PASS", f"참조 {len(used_refs)}개 전부 해소")
+
+    # 청크 포인터 상호 참조: 결과.md·초안.md가 쓴 [C-슬러그]가 개념KB에 실재하는가.
+    # 결과.md가 포인터층이 된 이상 죽은 포인터는 곧 사실 소실이다.
+    if kb_text is None:
+        add("개념KB:참조해소", "SKIP", "개념KB 없음 — 존재 검사가 이미 FAIL")
+    elif used_chunks:
+        kb_slugs = {m.group(1) for m in CHUNK_HEADING.finditer(kb_text)}
+        dead = sorted(used_chunks - kb_slugs)
+        if dead:
+            add("개념KB:참조해소", "FAIL",
+                f"개념KB에 없는 청크 슬러그 {len(dead)}개: " + ", ".join(dead))
+        else:
+            add("개념KB:참조해소", "PASS", f"참조 {len(used_chunks)}개 전부 해소")
 
     check_capability_claims(root, args.week)
 

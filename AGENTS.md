@@ -56,6 +56,9 @@ python .claude/skills/ui-ux-pro-max/scripts/search.py ...
 python scripts/verify_skill_setup.py
 python scripts/verify_kit.py
 python -m unittest tests.test_deck_pipeline tests.test_image_pipeline
+# 파이프라인 문서 게이트(리서치·콘텐츠 산출물)
+python scripts/verify_session_docs.py <주차> --target 자료   # 기본 5파일 스키마·출처ID·[C-슬러그] 해소
+python scripts/verify_research_chunks.py <주차>              # 개념KB 청크 깊이·G8 관점·인덱스 일치
 ```
 
 - 브라우저는 `deck.css`를 캐시하므로 변경 확인 때 링크의 `href`에 `?v=`를 붙인다.
