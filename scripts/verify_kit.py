@@ -12,6 +12,7 @@
 무엇을 강제하는가:
   1. 카탈로그 마크업이 쓰는 모든 클래스는 kit CSS에 정의가 있어야 한다.
   2. 카탈로그에는 인라인 `<style>` 요소를 두지 않는다(정의는 patterns.css로).
+  3. 스타터의 파트 전환은 가변 파트 수용 지오메트리 자동 생성기를 유지한다.
 
 사용:
   python scripts/verify_kit.py
@@ -39,6 +40,7 @@ CATALOGS = [
     "kit/layouts/catalog.html",
     "kit/charts/catalog.html",
 ]
+STARTER = "kit/starter/deck-template.html"
 
 # 마크업에 나타나지만 CSS 정의를 요구하지 않는 클래스.
 # 여기에 추가할 땐 반드시 이유를 적는다 — 이 목록이 조용히 자라면 게이트가 무의미해진다.
@@ -152,6 +154,36 @@ def main() -> int:
             f"{rel} — 인라인 <style> 없음",
             f"{rel} — 인라인 <style>이 있다({len(styles.split(chr(10)))}줄). "
             f"카탈로그 CSS는 patterns.css에 둔다 — 인라인은 복사한 쪽에 따라가지 않는다.",
+        )
+
+    starter_path = ROOT / STARTER
+    if not starter_path.exists():
+        chk(False, "", f"{STARTER} 없음")
+    else:
+        starter = starter_path.read_text(encoding="utf-8")
+        dynamic_part_contract = all(
+            marker in starter
+            for marker in (
+                "function partGeometry(n)",
+                "function hydratePartDivider(s,index,total)",
+                "data-geometry-count",
+                "d<=total",
+                "points=partGeometry(index)",
+            )
+        )
+        chk(
+            dynamic_part_contract,
+            f"{STARTER} — 가변 파트 지오메트리 자동 생성 계약 유지",
+            f"{STARTER} — partGeometry/hydratePartDivider 자동 생성 계약 누락",
+        )
+
+        empty_hooks = bool(
+            re.search(r'<svg\s+class="dv-hero"[^>]*>\s*<!--.*?-->\s*</svg>', starter, flags=re.S)
+        ) and bool(re.search(r'<div\s+class="pd-dots"[^>]*>\s*<!--.*?-->\s*</div>', starter, flags=re.S))
+        chk(
+            empty_hooks,
+            f"{STARTER} — 파트 SVG·도트가 빈 자동생성 hook",
+            f"{STARTER} — 파트 SVG·도트를 하드코딩하지 말고 빈 hook으로 둘 것",
         )
 
     print(f"--- FAIL={_fail} PASS={_passed} ---")

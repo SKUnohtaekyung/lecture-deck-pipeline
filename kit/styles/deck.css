@@ -191,7 +191,7 @@ body{ font-family:"Pretendard","Pretendard Variable",-apple-system,"Apple SD Got
 .s-body-wrap{ position:absolute; left:64px; top:132px; width:560px; }
 .s-eyebrow{ display:inline-block; width:fit-content; font-weight:800; font-size:17px; color:var(--blue);
   background:var(--blue-soft); padding:5px 13px; border-radius:var(--r-pill); margin:0 0 14px; }
-.s-title{ font-weight:800; font-size:44px; line-height:1.18; color:var(--black);
+.s-title{ font-weight:800; font-size:40px; line-height:1.2; color:var(--black);
   letter-spacing:-.035em; margin:0 0 18px; }
 .s-title .hl{ color:var(--blue); }
 .hl-mint-text{ color:var(--mint-deep); font-weight:800; }
@@ -203,7 +203,7 @@ body{ font-family:"Pretendard","Pretendard Variable",-apple-system,"Apple SD Got
 .shape-mint{ background:var(--mint) !important; border-color:var(--mint) !important; color:var(--on-mint) !important; }
 .accent-bar{ width:64px; height:5px; border-radius:3px; background:var(--blue);
   margin:4px 0 20px; }
-.s-lead{ font-weight:700; font-size:26px; color:var(--ink); margin:0 0 16px; }
+.s-lead{ font-weight:700; font-size:24px; color:var(--ink); margin:0 0 14px; }
 .s-title, .cm-title, .s-lead, .s-body, .callout, .card, table.t th, table.t td,
 .plain-line, .pricing-method, .price-detail-card, .cmp, .lc, .metric, .mapc,
 .recap-card{ word-break:keep-all; overflow-wrap:normal; }
@@ -252,6 +252,18 @@ body{ font-family:"Pretendard","Pretendard Variable",-apple-system,"Apple SD Got
    — 그건 폭 전체를 쓰는 것 자체가 "단계 사이 거리감"이라는 의미라 예외. */
 .hug-center{ width:fit-content; max-width:860px; margin-left:auto; margin-right:auto;
   align-self:center; text-align:center; }
+
+/* 1주차: 독립된 짧은 안내 카드는 내용만큼만 폭을 잡는다.
+   진행 칩·짝을 이루는 grid/dl 카드·실제 화면 캡처는 이 규칙의 대상이 아니다. */
+.slide:is([data-slide="S34"],[data-slide="S46"],[data-slide="S48"],[data-slide="S50"],[data-slide="S53"],[data-slide="S54"],[data-slide="S56"],[data-slide="S58"],[data-slide="S59"]) .s-full > .card.surface,
+.slide[data-slide="S36"] .center-msg > .card.surface{
+  width:fit-content;
+  max-width:860px;
+  margin-left:auto;
+  margin-right:auto;
+  align-self:center;
+  text-align:center;
+}
 
 /* ── 힌트 리빌 (콘텐츠 초안 🗣 안전망 예시 전용) ──
    네이티브 <details>/<summary> — JS 없이 접힘/펼침. 기본 접힘, 인쇄해도 접힘(브라우저 기본).
@@ -401,13 +413,15 @@ table.t tr:nth-child(even) td{ background:var(--surface-row); }
 .cover-lead{ position:absolute; left:64px; top:196px; z-index:2;
   font:700 18px/1 "Pretendard",sans-serif; color:var(--gray-700); letter-spacing:.01em; }
 .cover-title{ position:absolute; left:62px; top:250px; z-index:2; }
-.cover-title .ko{ font:800 92px/1.07 "Pretendard",sans-serif; letter-spacing:-.03em; color:var(--ink); margin:0; }
+.cover-title{ right:410px; }
+.cover-title .ko{ font:800 74px/1.14 "Pretendard",sans-serif; letter-spacing:-.03em; color:var(--ink); margin:0; }
 .cover-title .ko .hl{ color:var(--mint-deep); }   /* 제목 강조어 = 초록(민트-딥 · 라이트 배경 AA) */
 /* 터미널 프롬프트 박스 (M2) — 주차 핵심을 AI에게 한 문장 요청 + 깜빡이는 캐럿(제목→박스로 이동) */
 .cover-terminal{ position:absolute; left:64px; bottom:72px; z-index:2; width:800px;
   display:flex; align-items:center; background:var(--surface); border:1px solid var(--line);
   border-radius:var(--r-md); padding:20px 24px; box-shadow:var(--shadow-sm);
   font:600 23px/1.3 "Pretendard",sans-serif; color:var(--gray-700); }
+.cover-terminal--mint{ border-color:var(--mint); }
 .cover-terminal .pfx{ color:var(--mint-deep); font-weight:800; margin-right:14px; }
 .cover-terminal .q{ color:var(--ink); }
 .cover-terminal .cur{ display:inline-block; width:12px; height:25px; background:var(--mint);
@@ -421,8 +435,8 @@ table.t tr:nth-child(even) td{ background:var(--surface-row); }
    =================================================================== */
 .s02-slide .s-body-wrap{ left:72px; top:150px; width:900px; }
 .s02-slide .s-eyebrow{ display:block; width:auto; background:none; padding:0; border-radius:0; font-size:32px; margin:0 0 18px; }
-.s02-slide .s-title{ font-size:58px; line-height:1.1; white-space:nowrap; margin:0 0 26px; }
-.s02-slide .s-lead{ font-size:30px; margin:0 0 26px; }
+.s02-slide .s-title{ font-size:50px; line-height:1.12; white-space:nowrap; margin:0 0 20px; }
+.s02-slide .s-lead{ font-size:26px; margin:0 0 20px; }
 .s02-slide .s-body{ font-size:22px; line-height:1.7; }
 .asset.s02{ right:10px; bottom:30px; width:580px; }
 /* S02에 이미지가 있을 때만 명시적으로 has-image를 붙인다. 570px 텍스트 + 500px 이미지 사이에 82px 거터 확보. */
@@ -452,10 +466,10 @@ table.t tr:nth-child(even) td{ background:var(--surface-row); }
 .s03-slide .an-spark{ position:absolute; left:-28px; top:-36px; width:9px; height:9px;
   border-radius:var(--r-pill); background:var(--coral); }
   /* v3: .an-left 내부 첫 자식(마크업 고정) — 고정 제목 "오" 좌상단 대각, 세로 중앙을 따라감 */
-.s03-slide .an-title{ margin:0 0 16px; font-size:48px; line-height:1.2; font-weight:800; color:var(--ink); }
+.s03-slide .an-title{ margin:0 0 14px; font-size:38px; line-height:1.2; font-weight:800; color:var(--ink); }
 .s03-slide .an-bar{ width:96px; height:10px; border-radius:var(--r-pill); background:var(--mint);
   margin:0 0 24px; }   /* 고정 제목 아래 민트 pill 바(v3) */
-.s03-slide .an-intro{ margin:0; font-size:24px; line-height:1.7; color:var(--gray-700); font-weight:500; }
+.s03-slide .an-intro{ margin:0; font-size:21px; line-height:1.65; color:var(--gray-700); font-weight:500; }
 .s03-slide .an-intro .hl{ color:var(--mint-deep); font-weight:800; }
 .s03-slide .an-right{ position:absolute; left:560px; right:64px; top:150px; bottom:56px;
   display:flex; flex-direction:column; justify-content:center; gap:16px; }
@@ -467,8 +481,8 @@ table.t tr:nth-child(even) td{ background:var(--surface-row); }
   background:var(--blue); color:var(--white); display:flex; align-items:center; justify-content:center;
   font-size:26px; font-weight:800; }   /* v3: 확대(48→64)·그림자 제거(플랫) */
 .s03-slide .an-body{ flex:1 1 auto; padding-top:4px; }
-.s03-slide .an-h{ font-size:30px; font-weight:700; color:var(--blue); margin:0 0 8px; line-height:1.3; }
-.s03-slide .an-d{ font-size:22px; line-height:1.5; color:var(--gray-700); margin:0; }
+.s03-slide .an-h{ font-size:23px; font-weight:700; color:var(--blue); margin:0 0 5px; line-height:1.28; }
+.s03-slide .an-d{ font-size:19px; line-height:1.45; color:var(--gray-700); margin:0; }
 /* an-2col: an-item 4개 초과 시 조립 시 수동 부여(verify 강제). display:block이 필수 —
    column-count는 flex 컨테이너에서 무효. 세로 중앙은 height:fit-content+margin:auto(v3, §13 주석 참조),
    커넥터 억제는 의도된 동작. */
@@ -485,17 +499,20 @@ table.t tr:nth-child(even) td{ background:var(--surface-row); }
    ── .pd-dot/.pd-dot.is-active는 verify_deck.py가 강제하는 민트배지 3종 중 하나 — 셀렉터명 변경 금지.
    =================================================================== */
 .part-divider .dv-hero{ position:absolute; inset:0; z-index:0; pointer-events:none; }
-.pd-dots{ position:absolute; top:410px; left:50%; transform:translateX(-50%); z-index:1;
+.part-divider .pd-cube{ filter:drop-shadow(0 10px 10px var(--gray-300)); }
+.part-divider .pd-cube-shadow{ fill:var(--gray-300); opacity:.3; }
+.part-divider .pd-spark{ fill:var(--coral); }
+.pd-dots{ position:absolute; top:390px; left:50%; transform:translateX(-50%); z-index:1;
   display:flex; align-items:center; gap:14px; margin:0; }
 .pd-dot{ width:10px; height:10px; border-radius:var(--r-pill); background:var(--white);
   border:2px solid var(--gray-400); box-sizing:border-box; font-size:0; color:transparent; }
 .pd-dot.is-active{ width:12px; height:12px; background:var(--mint); border-color:var(--mint); }
-.pd-eyebrow{ position:absolute; top:452px; left:50%; transform:translateX(-50%); z-index:1;
-  font-size:20px; font-weight:700; letter-spacing:.08em; color:var(--blue); margin:0; }
-.pd-title{ position:absolute; top:490px; left:50%; transform:translateX(-50%); z-index:1;
-  margin:0; font-size:96px; font-weight:800; line-height:1.08; color:var(--ink); white-space:nowrap; }
-.pd-sub{ position:absolute; top:628px; left:50%; transform:translateX(-50%); z-index:1;
-  margin:0; width:920px; text-align:center; font-size:24px; line-height:1.5; color:var(--gray-700); }
+.pd-eyebrow{ position:absolute; top:426px; left:50%; transform:translateX(-50%); z-index:1;
+  font-size:18px; font-weight:700; letter-spacing:.08em; color:var(--blue); margin:0; }
+.pd-title{ position:absolute; top:460px; left:50%; transform:translateX(-50%); z-index:1;
+  margin:0; max-width:1080px; text-align:center; font-size:56px; font-weight:800; line-height:1.18; color:var(--ink); white-space:normal; }
+.pd-sub{ position:absolute; top:612px; left:50%; transform:translateX(-50%); z-index:1;
+  margin:0; width:920px; text-align:center; font-size:21px; line-height:1.45; color:var(--gray-700); }
 .pd-sub .hl{ color:var(--mint-deep); font-weight:700; }
 
 /* ===================================================================

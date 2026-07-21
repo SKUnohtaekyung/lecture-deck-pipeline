@@ -1,22 +1,32 @@
 #!/usr/bin/env python3
 """verify_deck.py — vibecoding-deck 산출 덱 정적 검증 (측정 우선, 의존성 0).
 
-사용: python scripts/verify_deck.py <deck.html> [--parts N]
+사용: python scripts/verify_deck.py <deck.html> [--parts N] [--release] [--manifest P] [--registry P] [--atlas]
+
+3개 층으로 구성된다(2026-07-19 재설계, 의존성 0 유지 · html.parser는 stdlib):
+  L1 HTML 파싱 — html.parser.HTMLParser 기반. 속성 순서·인용부호·속성값 내 '>' 무관,
+      classes()는 공백 토큰 정확 분해(파생 클래스 오탐 방지), 엔티티 디코드 텍스트 뷰 제공.
+  L2 CSS 수집 — collect_css()가 덱 인라인 <style> + 덱이 실제로 링크한 로컬 CSS를 합산해
+      실제 적용되는 CSS를 검사한다. CSS 주석은 검사 전에 제거. 저장소 kit CSS 검사는
+      [kit] 접두로 명시 분리(덱이 아니라 저장소를 검사한다는 뜻).
+  L3 CSS 규칙 워커 — iter_rules()가 중괄호 균형으로 @media/@supports/@layer 안까지
+      재귀 진입, 모든 매칭 블록을 반환(첫 선언만이 아님), longhand를 shorthand로 정규화.
 
 정적으로 채점하는 것(브라우저 없이):
   - 슬라이드 수 · 고정 슬라이드(cover/s02/s03/concept-recap) 존재
   - part-divider 수 (= --parts N 이면 일치 검사)
   - 네비 엔진(.navbar) · 상세 메뉴 PDF 출력 버튼(#pdfBtn)
   - deck.css + legibility.css 로드(링크 또는 인라인)
-  - 코드 시각화(.viz-* 또는 data-viz) vs 실제 <img> 개수 (로고·표지 SVG는 집계 제외)
+  - 코드 시각화(.viz-* 또는 data-viz)와 실제 <img> 구성 현황 (로고·표지 SVG는 집계 제외)
   - 콘텐츠 슬라이드 구도 다양성: 서로 다른 구조 시그니처 수 · 같은 구도 최장 연속
-  - raw #hex 색이 :root/토큰 밖에서 쓰였는지(토큰-only 대략 검사)
-  - 덱 인라인 <style>/style= 그라디언트 금지(flat-fill) · 덱 인라인 var(--navy) 금지 · 진행/페이지 자동주입 스크립트(s-pageno+s-part)
-  - 표지 3큐브(9면)+코랄 스파크 · 공유 kit CSS의 메인 블루 헤더 선 ·
-    민트 강조 프리미티브 · 토큰/민트 배지 무결성
+  - raw #hex · rgba()/hsl() · CSS 명명색이 CSS·인라인 style=·SVG fill=/stroke=에 쓰였는지(FAIL)
+  - 덱 인라인 <style>/style= 그라디언트 금지(flat-fill) · 덱 인라인 var(--navy) 금지(fallback 형태 포함) ·
+    진행/페이지 자동주입 스크립트(s-pageno+s-part)
+  - 공유 kit CSS의 메인 블루 헤더 선 · 민트 강조 프리미티브 · 토큰/민트 배지 무결성
   - 박스 표면 규칙: 흰 fill(--white/--surface-alt) + 근백색 축약 보더(--line) 조합 금지
     (kit CSS + 덱 인라인 <style>/style= 모두 · 방향 지정 border-top/-bottom/-left는 내부 구분선으로 허용)
-  - .work-step 수직 중앙 정렬(align-items:center) 계약
+  - .work-step · .agenda-item 수직 중앙 정렬(align-items:center) 계약
+  - 참조 아틀라스(레이아웃/element 연속 열람용 덱)는 --atlas 플래그로 구도 다양성 검사만 제외
 
 브라우저로만 되는 것(오버플로·콘솔·가독성 computed)은 이 스크립트가 안 하고 리마인더만 출력.
 종료코드: FAIL 있으면 1, 아니면 0.
@@ -24,74 +34,523 @@
 import sys, re, os, argparse, json
 from pathlib import Path
 from urllib.parse import unquote, urlsplit
+from html.parser import HTMLParser
+import html as _html_stdlib
 try:
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")  # Windows cp949 콘솔 대응
 except Exception:
     pass
 
-FIXED = {"cover": r'class="[^"]*\bcover\b', "s02": r'class="[^"]*\bs02-slide\b',
-         "s03": r'class="[^"]*\bs03-slide\b', "recap": r'class="[^"]*\bconcept-recap\b'}
+FIXED = {"cover": "cover", "s02": "s02-slide", "s03": "s03-slide", "recap": "concept-recap"}
 
-def find_sections(html):
-    # <section ... class="slide ...">  → (full_class_attr, inner_html_until_next_section_or_end)
-    secs = []
-    for m in re.finditer(r'<section[^>]*class="([^"]*\bslide\b[^"]*)"[^>]*>', html):
-        start = m.end()
-        nxt = html.find("<section", start)
-        inner = html[start: nxt if nxt != -1 else len(html)]
-        secs.append((m.group(1), inner))
-    return secs
+# ============================================================================
+# L1 — HTML 파싱 층 (html.parser.HTMLParser 기반)
+#   속성 순서·인용부호 종류·속성값 내 '>' 무관. classes()는 정확한 공백 토큰 분해.
+# ============================================================================
 
-def family_signature(cls, inner):
-    """콘텐츠 슬라이드의 구조 시그니처(단조 감지용)."""
-    sig = []
-    # 본문 컨테이너 = 구도 축
-    if re.search(r'\bcenter-msg\b', cls) or 'class="center-msg' in inner: sig.append("centered")
-    elif 'class="s-body-wrap' in inner: sig.append("split/leftcol")
-    elif 'class="s-full' in inner or 'canvas-fill' in cls: sig.append("full")
-    else: sig.append("other")
-    # 콘텐츠 마커
-    if re.search(r'class="[^"]*\bgrid-[23]\b', inner) or 'revenue-grid' in inner: sig.append("grid")
-    if 'table' in inner and re.search(r'class="t\b', inner): sig.append("table")
-    if re.search(r'class="[^"]*\bviz-', inner) or re.search(r'\bdata-viz(?:\s*=|\s|>)', inner): sig.append("viz")
-    if 'compare2' in inner: sig.append("compare")
-    if 'work-step' in inner or 'flow-step' in inner: sig.append("flow")
-    if 'shot-annot' in inner or 'shot-win' in inner: sig.append("shot")
-    return "+".join(sig)
+_VOID_ELEMENTS = {
+    'area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link', 'meta',
+    'param', 'source', 'track', 'wbr',
+}
 
 
-# 박스 표면 규칙 예외: 상태 도트·코드/터미널 표면·주석 스크린샷 창·캔버스/문서 루트·@블록
-BOX_EXEMPT = re.compile(r'@|\.pd-dot|\.co-bar|\.cover-terminal|\.shot-|\.slide\b|\bbody\b|\bhtml\b|:root')
+class ParsedTag:
+    """하나의 시작 태그(자기닫힘 포함). attrs는 소문자 키의 dict(값은 원문 그대로)."""
+    __slots__ = ('name', 'attrs', 'start', 'end')
 
-def box_surface_violations(css_text):
-    """흰 fill(--white/--surface-alt) + 근백색(--line) '축약' 보더 조합 = 박스 표면 규칙 위반.
-    방향 지정 보더(border-top/-bottom/-left/-right)는 내부 구분선이라 합법."""
-    bad = []
-    for m in re.finditer(r'([^{}]+)\{([^}]*)\}', css_text):
-        sel, body = m.group(1).strip(), m.group(2)
-        if BOX_EXEMPT.search(sel):
-            continue
-        if not re.search(r'background\s*:\s*var\(--(?:white|surface-alt)\)', body):
-            continue
-        if re.search(r'(?:^|;)\s*border\s*:[^;]*var\(--line\)', body):
-            bad.append(sel.split(',')[0].strip()[:40])
-    return bad
+    def __init__(self, name, attrs, start, end):
+        self.name = name
+        self.attrs = attrs
+        self.start = start
+        self.end = end
 
-def local_linked_css(html, deck_path):
+
+class ParsedElement:
+    """매칭된 시작~끝 태그 쌍(또는 self-closed/void 요소).
+    start/end        = 요소 전체 범위(여는 태그 시작 ~ 닫는 태그 끝).
+    inner_start/end   = 여는 태그 끝 ~ 닫는 태그 시작(자식 콘텐츠 범위, void/self-closed는 길이 0)."""
+    __slots__ = ('name', 'attrs', 'start', 'end', 'inner_start', 'inner_end')
+
+    def __init__(self, name, attrs, start, end, inner_start, inner_end):
+        self.name = name
+        self.attrs = attrs
+        self.start = start
+        self.end = end
+        self.inner_start = inner_start
+        self.inner_end = inner_end
+
+
+class _DocCollector(HTMLParser):
+    def __init__(self, raw):
+        super().__init__(convert_charrefs=True)
+        self.raw = raw
+        self._line_starts = [0]
+        for i, ch in enumerate(raw):
+            if ch == '\n':
+                self._line_starts.append(i + 1)
+        self.tags = []
+        self.elements = []
+        self._stack = []
+
+    def _offset(self):
+        line, col = self.getpos()
+        return self._line_starts[line - 1] + col
+
+    @staticmethod
+    def _norm_attrs(attrs_list):
+        attrs = {}
+        for k, v in attrs_list:
+            if k is None:
+                continue
+            attrs[k.lower()] = v if v is not None else ""
+        return attrs
+
+    def handle_starttag(self, tag, attrs_list):
+        start = self._offset()
+        text = self.get_starttag_text() or ('<' + tag + '>')
+        end = start + len(text)
+        attrs = self._norm_attrs(attrs_list)
+        self.tags.append(ParsedTag(tag, attrs, start, end))
+        if tag in _VOID_ELEMENTS:
+            self.elements.append(ParsedElement(tag, attrs, start, end, end, end))
+        else:
+            self._stack.append([tag, attrs, start, end])
+
+    def handle_startendtag(self, tag, attrs_list):
+        start = self._offset()
+        text = self.get_starttag_text() or ('<' + tag + '/>')
+        end = start + len(text)
+        attrs = self._norm_attrs(attrs_list)
+        self.tags.append(ParsedTag(tag, attrs, start, end))
+        self.elements.append(ParsedElement(tag, attrs, start, end, end, end))
+
+    def handle_endtag(self, tag):
+        pos = self._offset()
+        close_end = self.raw.find('>', pos)
+        end = close_end + 1 if close_end != -1 else pos
+        idx = None
+        for i in range(len(self._stack) - 1, -1, -1):
+            if self._stack[i][0] == tag:
+                idx = i
+                break
+        if idx is None:
+            return  # 매칭되지 않는 닫는 태그 — 무시(관대한 오류 복구)
+        while len(self._stack) > idx + 1:
+            self._stack.pop()  # 잘못 중첩된 내부 열림은 폐기(오류 복구, 형식이 맞는 덱에는 영향 없음)
+        name, attrs, s, inner_start = self._stack.pop()
+        self.elements.append(ParsedElement(name, attrs, s, end, inner_start, pos))
+
+
+def parse_document(raw_html):
+    """전체 문서를 파싱해 (tags, elements)를 반환한다.
+    tags: 문서 순서의 모든 시작 태그(ParsedTag) 목록.
+    elements: 매칭된 시작~끝 요소(ParsedElement) 목록 — 중첩된 비-slide <section>이
+              바깥 슬라이드의 inner 범위를 자르지 않도록 스택 기반으로 매칭한다."""
+    parser = _DocCollector(raw_html)
+    parser.feed(raw_html)
+    parser.close()
+    return parser.tags, parser.elements
+
+
+def classes(tag_or_attrs):
+    """공백 토큰 정확 분해(부분 문자열 매칭 아님) — part-divider-inner가 part-divider로 안 잡힌다."""
+    attrs = tag_or_attrs.attrs if hasattr(tag_or_attrs, 'attrs') else (tag_or_attrs or {})
+    return set((attrs.get('class') or '').split())
+
+
+def decoded_text(raw_html):
+    """<script>/<style> 제외(대소문자 무시) + 엔티티 디코드된 텍스트 뷰(이모지 마커 누출 검사용)."""
+    stripped = re.sub(r'<(script|style)\b[^>]*>.*?</\1\s*>', '', raw_html, flags=re.S | re.I)
+    return _html_stdlib.unescape(stripped)
+
+
+# ============================================================================
+# L2 — CSS 수집 층: 덱에 실제로 적용되는 CSS(인라인 <style> + 링크된 로컬 CSS)
+# ============================================================================
+
+class CssBundle:
+    """collect_css()의 반환값. all = deck_inline + linked_local(둘 다 주석 제거 후)."""
+    __slots__ = ('deck_inline', 'linked_local', 'all', 'raw_byte_count')
+
+    def __init__(self, deck_inline, linked_local, raw_byte_count):
+        self.deck_inline = deck_inline
+        self.linked_local = linked_local
+        self.all = "\n".join(c for c in (deck_inline, linked_local) if c)
+        self.raw_byte_count = raw_byte_count
+
+
+def _strip_css_comments(css_text):
+    return re.sub(r'/\*.*?\*/', '', css_text, flags=re.S)
+
+
+def local_linked_css(html_text, deck_path, tags=None):
     """덱이 링크한 로컬 CSS를 읽는다. 외부 URL과 누락 파일은 건너뛴다."""
+    if tags is None:
+        tags, _ = parse_document(html_text)
     chunks = []
     base = Path(deck_path).resolve().parent
-    for href in re.findall(r'<link\b[^>]*\bhref=["\']([^"\']+)["\'][^>]*>', html, re.I):
+    for tag in tags:
+        if tag.name != 'link':
+            continue
+        href = tag.attrs.get('href')
+        if not href:
+            continue
         clean = href.split("?", 1)[0].split("#", 1)[0]
         if not clean or re.match(r'^(?:https?:|data:|//)', clean, re.I):
             continue
-        css_path = (base / clean).resolve()
+        try:
+            css_path = (base / unquote(clean)).resolve()
+        except (OSError, ValueError):
+            continue
         if css_path.is_file() and css_path.suffix.lower() == ".css":
             try:
                 chunks.append(css_path.read_text(encoding="utf-8"))
             except OSError:
                 pass
     return "\n".join(chunks)
+
+
+def collect_css(html_text, deck_path, tags=None, elements=None):
+    """덱에 실제로 적용되는 CSS(인라인 <style> + 로컬 링크 CSS)를 CssBundle로 반환.
+    CSS 주석은 반환 전에 제거한다(검사 오탐 원인 제거)."""
+    if tags is None or elements is None:
+        tags, elements = parse_document(html_text)
+    style_chunks = [html_text[el.inner_start:el.inner_end] for el in elements if el.name == 'style']
+    deck_inline_raw = "\n".join(style_chunks)
+    linked_raw = local_linked_css(html_text, deck_path, tags=tags)
+    raw_bytes = len((deck_inline_raw + linked_raw).encode('utf-8', errors='ignore'))
+    return CssBundle(_strip_css_comments(deck_inline_raw), _strip_css_comments(linked_raw), raw_bytes)
+
+
+# ============================================================================
+# L3 — CSS 규칙 워커: 중괄호 균형 스캔(@media/@supports/@layer 재귀 진입)
+# ============================================================================
+
+_VAR_SPACING_RE = re.compile(r'var\(\s*(--[A-Za-z0-9_-]+)\s*\)')
+_VAR_SPACING_FALLBACK_RE = re.compile(r'var\(\s*(--[A-Za-z0-9_-]+)\s*,\s*')
+
+
+def _normalize_var_spacing(value):
+    """var( --x ) → var(--x) 공백 제거(fallback 폼의 콤마 뒤 공백은 보존)."""
+    value = _VAR_SPACING_FALLBACK_RE.sub(r'var(\1, ', value)
+    value = _VAR_SPACING_RE.sub(r'var(\1)', value)
+    return value
+
+
+def _parse_declarations(body):
+    """선언 블록 문자열을 {속성명(소문자): 정규화된 값} dict로 변환.
+    뒤 선언이 앞 선언을 덮는다(일반 CSS 캐스케이드와 동일). longhand는 shorthand로 합성한다."""
+    decls = {}
+    for stmt in body.split(';'):
+        stmt = stmt.strip()
+        if not stmt or ':' not in stmt:
+            continue
+        prop, _, val = stmt.partition(':')
+        prop = prop.strip().lower()
+        val = _normalize_var_spacing(val.strip())
+        if prop:
+            decls[prop] = val
+    if 'background' not in decls and 'background-color' in decls:
+        decls['background'] = decls['background-color']
+    if 'border' not in decls and all(k in decls for k in ('border-width', 'border-style', 'border-color')):
+        decls['border'] = decls['border-width'] + ' ' + decls['border-style'] + ' ' + decls['border-color']
+    return decls
+
+
+def iter_rules(css_text, _at_context=()):
+    """(selector_group, decls, raw_body, at_context)를 모든 규칙 블록에 대해 yield.
+    @media/@supports/@layer 안까지 재귀 진입하고, 매칭되는 모든 블록을 반환한다(첫 선언만이 아님)."""
+    i, n = 0, len(css_text)
+    while i < n:
+        brace = css_text.find('{', i)
+        if brace == -1:
+            break
+        head = css_text[i:brace].strip()
+        depth, j = 1, brace + 1
+        while j < n and depth > 0:
+            if css_text[j] == '{':
+                depth += 1
+            elif css_text[j] == '}':
+                depth -= 1
+            j += 1
+        body = css_text[brace + 1:j - 1] if depth == 0 else css_text[brace + 1:]
+        if head.startswith('@'):
+            at_kind = head.split(None, 1)[0].lower()
+            if at_kind in ('@media', '@supports', '@layer'):
+                yield from iter_rules(body, _at_context + (head,))
+            # 그 외 @-규칙(@font-face/@keyframes/@page 등)은 selector 기반이 아니므로 건너뜀
+        elif head:
+            yield (head, _parse_declarations(body), body, _at_context)
+        i = j
+        if depth != 0:
+            break
+
+
+# ── 박스 표면 규칙: 흰 fill(--white/--surface-alt) + 근백색(--line) '축약' 보더 조합 금지 ──
+#   예외: 상태 도트·코드/터미널 표면·주석 스크린샷 창·문서 루트.
+#   `.slide`는 그 자체(또는 같은 요소의 다른 클래스/의사클래스와 결합)일 때만 예외 —
+#   `.slide .foo`처럼 자손 결합자가 붙으면 더 이상 예외가 아니다(2026-07-19 축소, 우회 차단).
+_BOX_EXEMPT = re.compile(r'\.pd-dot|\.co-bar|\.cover-terminal|\.shot-|\bbody\b|\bhtml\b|:root\b')
+_SLIDE_BARE_RE = re.compile(r'^\.slide(?:[.:#\[][^\s>+~]*)?$')
+
+
+def _is_box_exempt_selector(sel):
+    sel = sel.strip()
+    if not sel:
+        return True
+    if _SLIDE_BARE_RE.match(sel):
+        return True
+    return bool(_BOX_EXEMPT.search(sel))
+
+
+def _box_violation_decls(decls):
+    bg = (decls.get('background') or '').strip()
+    border = (decls.get('border') or '').strip()
+    if not re.match(r'^var\(--(?:white|surface-alt)\)', bg):
+        return False
+    return bool(re.search(r'(?:^|\s)var\(--line\)', border))
+
+
+def box_surface_violations(css_text):
+    """흰 fill(--white/--surface-alt) + 근백색(--line) '축약' 보더 조합 = 박스 표면 규칙 위반.
+    방향 지정 보더(border-top/-bottom/-left/-right)는 내부 구분선이라 합법(축약 border만 검사)."""
+    bad = []
+    for selector_group, decls, _body, _at in iter_rules(css_text):
+        if not _box_violation_decls(decls):
+            continue
+        for sel in selector_group.split(','):
+            sel = sel.strip()
+            if not sel or _is_box_exempt_selector(sel):
+                continue
+            bad.append(sel[:40])
+    return bad
+
+
+# ============================================================================
+# 색 리터럴 검사: raw #hex / rgba()·hsl() / CSS 명명색 — 토큰(var(--x)) 우회 검사
+# ============================================================================
+
+_NAMED_COLORS = frozenset("""
+aliceblue antiquewhite aqua aquamarine azure beige bisque black blanchedalmond
+blue blueviolet brown burlywood cadetblue chartreuse chocolate coral
+cornflowerblue cornsilk crimson cyan darkblue darkcyan darkgoldenrod darkgray
+darkgreen darkgrey darkkhaki darkmagenta darkolivegreen darkorange darkorchid
+darkred darksalmon darkseagreen darkslateblue darkslategray darkslategrey
+darkturquoise darkviolet deeppink deepskyblue dimgray dimgrey dodgerblue
+firebrick floralwhite forestgreen fuchsia gainsboro ghostwhite gold goldenrod
+gray green greenyellow grey honeydew hotpink indianred indigo ivory khaki
+lavender lavenderblush lawngreen lemonchiffon lightblue lightcoral lightcyan
+lightgoldenrodyellow lightgray lightgreen lightgrey lightpink lightsalmon
+lightseagreen lightskyblue lightslategray lightslategrey lightsteelblue
+lightyellow lime limegreen linen magenta maroon mediumaquamarine mediumblue
+mediumorchid mediumpurple mediumseagreen mediumslateblue mediumspringgreen
+mediumturquoise mediumvioletred midnightblue mintcream mistyrose moccasin
+navajowhite navy oldlace olive olivedrab orange orangered orchid
+palegoldenrod palegreen paleturquoise palevioletred papayawhip peachpuff peru
+pink plum powderblue purple rebeccapurple red rosybrown royalblue saddlebrown
+salmon sandybrown seagreen seashell sienna silver skyblue slateblue slategray
+slategrey snow springgreen steelblue tan teal thistle tomato turquoise violet
+wheat white whitesmoke yellow yellowgreen
+""".split())
+
+_HEX_COLOR_RE = re.compile(r'#(?:[0-9a-fA-F]{8}|[0-9a-fA-F]{6}|[0-9a-fA-F]{4}|[0-9a-fA-F]{3})\b')
+_FUNC_COLOR_RE = re.compile(r'\b(?:rgba?|hsla?)\s*\(')
+_WORD_RE = re.compile(r'[a-zA-Z][a-zA-Z-]*')
+_URL_FN_RE = re.compile(r'\burl\([^)]*\)', re.I)
+_VAR_FN_RE = re.compile(r'\bvar\([^)]*\)', re.I)
+
+
+def _strip_urls_and_vars(value):
+    """url(...)(data: URI 포함)와 var(...)(토큰 참조/폴백) 내부는 리터럴 색 검사 대상이 아니다."""
+    value = _URL_FN_RE.sub('', value)
+    value = _VAR_FN_RE.sub('', value)
+    return value
+
+
+def _color_literal_hits(value):
+    """value 안의 raw hex / rgba()·hsla() / CSS 명명색을 찾는다."""
+    if not value:
+        return []
+    v = _strip_urls_and_vars(value)
+    hits = list(_HEX_COLOR_RE.findall(v))
+    if _FUNC_COLOR_RE.search(v):
+        hits.append('rgba()/hsla()')
+    for word in _WORD_RE.findall(v):
+        if word.lower() in _NAMED_COLORS:
+            hits.append(word)
+    return hits
+
+
+def _hex_only_hits(value):
+    """[kit] 검사 전용 — raw hex만 잡는다(rgba/명명색은 결정 3의 측정 범위 밖).
+    스킵 규칙: url(...)/var(...) 내부."""
+    if not value:
+        return []
+    return list(_HEX_COLOR_RE.findall(_strip_urls_and_vars(value)))
+
+
+def find_color_violations(css_text, *, hex_only=False):
+    """CSS 텍스트(주석 제거·규칙 단위)에서 raw 색 리터럴 사용을 찾는다.
+    :root 블록과 커스텀 프로퍼티 정의 줄(--name: ...)은 토큰 정의이므로 검사 대상이 아니다."""
+    hits = []
+    scan = _hex_only_hits if hex_only else _color_literal_hits
+    for selector_group, decls, _body, _at in iter_rules(css_text):
+        selectors = [s.strip() for s in selector_group.split(',')]
+        if any(s == ':root' or s.startswith(':root') for s in selectors if s):
+            continue
+        for prop, val in decls.items():
+            if prop.startswith('--'):
+                continue  # 커스텀 프로퍼티 정의(토큰) 줄은 검사 대상이 아니다
+            hits.extend(scan(val))
+    return hits
+
+
+def _style_attr_declarations(tags):
+    """(tag, decls) — style="..." 속성이 있는 모든 요소(따옴표 종류 무관, L1이 이미 해석)."""
+    out = []
+    for tag in tags:
+        style_val = tag.attrs.get('style')
+        if style_val:
+            out.append((tag, _parse_declarations(style_val)))
+    return out
+
+
+# ============================================================================
+# 슬라이드 <section> 탐색 — find_sections()/_slide_section_ranges()는 같은
+# 슬라이드 집합을 반환하도록 통일한다(2026-07-19, 중첩 비-slide <section>이
+# 바깥 슬라이드 inner를 자르는 문제 · 이중 구현 불일치 문제 동시 해결).
+# ============================================================================
+
+def _slide_elements(elements):
+    return [el for el in elements if el.name == 'section' and 'slide' in classes(el.attrs)]
+
+
+def find_sections(html_text, elements=None):
+    """(class_attr_string, inner_html) — class 토큰에 'slide'가 있는 모든 <section>.
+    inner_html은 해당 section의 실제 매칭 닫는 태그까지만(중첩된 비-slide <section>이 있어도
+    안 잘린다)."""
+    if elements is None:
+        _, elements = parse_document(html_text)
+    return [(el.attrs.get('class') or '', html_text[el.inner_start:el.inner_end])
+            for el in _slide_elements(elements)]
+
+
+def _slide_section_ranges(html_text, elements=None):
+    """(start, end, class_attr_string, opening_tag_text) — 슬라이드 섹션의 전체 범위.
+    find_sections()와 동일한 슬라이드 집합에서 파생된다(defect ⑧: 단일 소스)."""
+    if elements is None:
+        _, elements = parse_document(html_text)
+    return [(el.start, el.end, el.attrs.get('class') or '', html_text[el.start:el.end])
+            for el in _slide_elements(elements)]
+
+
+def _strip_hidden_spans(html_text, start, end, elements):
+    """[start,end) 범위에서 hidden/aria-hidden="true" 요소의 텍스트를 제거한 문자열을 반환한다
+    (결정 1c: 시그니처 스푸핑 차단 — 숨김 요소로 구도 마커를 조작하지 못하게)."""
+    hidden_spans = []
+    for el in elements:
+        if el.start < start or el.end > end:
+            continue
+        attrs = el.attrs
+        if 'hidden' in attrs or (attrs.get('aria-hidden', '').strip().lower() == 'true'):
+            hidden_spans.append((el.start, el.end))
+    if not hidden_spans:
+        return html_text[start:end]
+    hidden_spans.sort()
+    merged = []
+    for s, e in hidden_spans:
+        if merged and s <= merged[-1][1]:
+            merged[-1] = (merged[-1][0], max(merged[-1][1], e))
+        else:
+            merged.append((s, e))
+    out, cur = [], start
+    for s, e in merged:
+        if s > cur:
+            out.append(html_text[cur:s])
+        cur = max(cur, e)
+    if cur < end:
+        out.append(html_text[cur:end])
+    return "".join(out)
+
+
+def family_signature(cls, inner):
+    """콘텐츠 슬라이드의 *실제 구도 family* 시그니처(단조 감지용).
+
+    예전 덱의 ``s-full``/``s-body-wrap``만 보던 구현은 커스텀 레이아웃을 전부
+    ``full`` 또는 ``other``로 뭉개 3연속을 오탐했다. 여기서는 장식 클래스나
+    슬라이드 ID가 아니라, 화면의 배치 방식을 결정하는 layout 컴포넌트를
+    안정된 family(terminal/browser/tree/gui/bands/flow 등)로 정규화한다.
+    같은 family를 CSS 클래스 이름만 바꿔 우회하지 못하도록 세부 클래스별로
+    고유 시그니처를 만들지 않는다.
+    """
+    haystack = cls + "\n" + inner
+
+    def has_class(*names):
+        return any(re.search(r'class=["\'][^"\']*(?<![\w-])' + re.escape(name) +
+                             r'(?![\w-])[^"\']*["\']', haystack, re.I)
+                   or re.search(r'(?:^|\s)' + re.escape(name) + r'(?:\s|$)', cls)
+                   for name in names)
+
+    # 강한 시각 family부터 판별한다. 아래 순서는 terminal 안의 bar/body 같은
+    # 내부 구조가 grid/flow로 잘못 분류되지 않게 하는 우선순위이기도 하다.
+    if has_class('intro-do', 'intro-do-more', 'center-msg', 'thank-you'):
+        return 'centered'
+    if has_class('terminal-dark', 'dark-terminal', 'terminal-explain-layout',
+                 'request-terminal-layout', 'detailed-prompt-layout'):
+        return 'terminal'
+    if has_class('portfolio-showcase', 'portfolio-browser', 'browser-result-frame',
+                 'completion-browser', 'browser-result-slide'):
+        return 'browser'
+    if has_class('folder-tree-gui', 'project-tree-layout', 'project-tree-visual'):
+        return 'tree'
+    if has_class('breadcrumb-track', 'breadcrumb-guide-layout',
+                 'workspace-breadcrumb-slide', 'workspace-compare'):
+        return 'breadcrumb'
+    if re.search(r'data-asset-kind=["\']screenshot["\']', inner, re.I) or has_class('shot-annot', 'shot-win'):
+        return 'shot'
+    if has_class('codex-gui', 'codex-app-gui', 'codex-open-layout', 'extension-gui',
+                 'drive-open-slide', 'folder-create-layout', 'app-guide-layout',
+                 'file-request-layout', 'verify-file-layout', 'path-inspection-layout',
+                 'final-location-layout'):
+        return 'gui'
+    if has_class('workspace-map-layout'):
+        return 'map'
+    if has_class('llm-agent-bands', 'context-memory-bands', 'request-four-bands',
+                 'dl-rows', 'pf-list'):
+        return 'bands'
+    if has_class('coding-terms'):
+        return 'timeline'
+    if has_class('compare2', 'cc-grid', 'request-compare-panels', 'change-scope-grid',
+                 'tool-roles', 'privacy-layout'):
+        return 'compare'
+    if (has_class('journey-week-grid', 'grid-2', 'grid-3', 'app-types-grid',
+                  'readiness-grid', 'scope-layout', 'required-conditions-layout')
+            or 'revenue-grid' in inner):
+        return 'grid'
+    if has_class('eval-steps'):
+        return 'steps'
+    if (has_class('role-flow-layout', 'lifecycle-flow', 'risk-flow', 'plan-mode-layout',
+                  'viz-flow-ph', 'change-refresh-flow')
+            or re.search(r'\bdata-viz(?:\s*=|\s|>)', inner)
+            or has_class('work-step', 'flow-step')):
+        return 'flow'
+    if has_class('intro-ai-era'):
+        return 'asym'
+    if 'table' in inner and re.search(r'class=["\']t\b', inner):
+        return 'table'
+    if has_class('s-body-wrap'):
+        return 'split/leftcol'
+    if has_class('s-full') or 'canvas-fill' in cls:
+        return 'full'
+    return 'other'
+
+
+def diversity_need(n):
+    """결정 1b — 절대·상한 램프. 비례 임계값은 어휘집 크기와 덱 길이를 혼동하는 범주 오류다."""
+    if n < 12: return 3
+    if n < 24: return 4
+    if n < 40: return 5
+    return 6
 
 
 def _attr(tag, name):
@@ -120,9 +579,9 @@ def _figure_slots(html):
     slots = []
     for match in re.finditer(r'<figure\b([^>]*)>(.*?)</figure>', html, re.I | re.S):
         attrs, body = match.group(1), match.group(2)
-        classes = _attr(attrs, 'class') or ''
-        if re.search(r'\basset-slot\b', classes):
-            slots.append((attrs, body, classes))
+        classes_str = _attr(attrs, 'class') or ''
+        if re.search(r'\basset-slot\b', classes_str):
+            slots.append((attrs, body, classes_str))
     return slots
 
 
@@ -130,26 +589,12 @@ def count_code_viz(html):
     """Count explicit visualization owner elements once, even with two markers."""
     count = 0
     for tag in re.findall(r'<[a-z][^>]*>', html, re.I):
-        classes = _attr(tag, 'class') or ''
-        if re.search(r'(?:^|\s)viz-[a-z0-9_-]+(?:\s|$)', classes, re.I) or re.search(
+        classes_str = _attr(tag, 'class') or ''
+        if re.search(r'(?:^|\s)viz-[a-z0-9_-]+(?:\s|$)', classes_str, re.I) or re.search(
             r'\bdata-viz(?:\s*=|\s|>)', tag, re.I
         ):
             count += 1
     return count
-
-
-def _slide_section_ranges(html):
-    """Return (start, end, classes, opening_tag) for quoted HTML slide sections."""
-    openings = []
-    for match in re.finditer(r'<section\b[^>]*>', html, re.I):
-        classes = _attr(match.group(0), 'class') or ''
-        if re.search(r'(?:^|\s)slide(?:\s|$)', classes):
-            openings.append((match.start(), classes, match.group(0)))
-    ranges = []
-    for index, (start, classes, tag) in enumerate(openings):
-        end = openings[index + 1][0] if index + 1 < len(openings) else len(html)
-        ranges.append((start, end, classes, tag))
-    return ranges
 
 
 def validate_manifest_document(data):
@@ -243,10 +688,10 @@ def image_contract_checks(html, deck_path, *, release=False, manifest_path=None,
     slots = _figure_slots(html)
     expected_required = 0
     expected_total = 0
-    for attrs, body, classes in slots:
+    for attrs, body, classes_str in slots:
         purpose = (_attr(attrs, 'data-image-purpose') or '').lower()
         state = (_attr(attrs, 'data-image-state') or 'ready').lower()
-        role_match = re.search(r'\basset-slot--([a-z0-9-]+)\b', classes)
+        role_match = re.search(r'\basset-slot--([a-z0-9-]+)\b', classes_str)
         role = role_match.group(1) if role_match else (_attr(attrs, 'data-image-role') or '')
         kind = (_attr(attrs, 'data-asset-kind') or 'paper-cut-v1').lower()
         img = re.search(r'<img\b[^>]*>', body, re.I | re.S)
@@ -290,9 +735,9 @@ def image_contract_checks(html, deck_path, *, release=False, manifest_path=None,
 
     # S02 uses a dedicated width contract when it contains a ready hero/support image.
     section_ranges = _slide_section_ranges(html)
-    for start, end, classes, _tag in section_ranges:
+    for start, end, classes_str, _tag in section_ranges:
         section = html[start:end]
-        if re.search(r'\bs02-slide\b', classes):
+        if re.search(r'\bs02-slide\b', classes_str):
             ready_wide_slot = False
             for figure_tag in re.findall(r'<figure\b[^>]*>', section, re.I):
                 figure_classes = _attr(figure_tag, 'class') or ''
@@ -301,7 +746,7 @@ def image_contract_checks(html, deck_path, *, release=False, manifest_path=None,
                 if role_match and state == 'ready':
                     ready_wide_slot = True
                     break
-            if ready_wide_slot and not re.search(r'\bhas-image\b', classes):
+            if ready_wide_slot and not re.search(r'\bhas-image\b', classes_str):
                 errors.append('S02 ready hero/support image requires section class has-image')
 
     # Content images are public components, never bare img tags. Fixed logos are exempt.
@@ -309,9 +754,9 @@ def image_contract_checks(html, deck_path, *, release=False, manifest_path=None,
     for image_match in re.finditer(r'<img\b[^>]*>', html, re.I):
         position = image_match.start()
         containing_section = None
-        for start, end, classes, tag in section_ranges:
+        for start, end, classes_str, tag in section_ranges:
             if start <= position < end:
-                containing_section = (start, end, classes, tag)
+                containing_section = (start, end, classes_str, tag)
                 break
         if containing_section is None or any(start <= position < end for start, end in slot_spans):
             continue
@@ -322,9 +767,9 @@ def image_contract_checks(html, deck_path, *, release=False, manifest_path=None,
 
     # Decorative images: one per part, never consecutive, never with a code viz.
     decorative_indexes, by_part, part = [], {}, 0
-    for index, (start, end, classes, _tag) in enumerate(section_ranges):
+    for index, (start, end, classes_str, _tag) in enumerate(section_ranges):
         section = html[start:end]
-        if re.search(r'\bpart-divider\b', classes):
+        if re.search(r'\bpart-divider\b', classes_str):
             part += 1
         if re.search(r'data-image-purpose\s*=\s*["\']decorative["\']', section, re.I):
             decorative_indexes.append(index)
@@ -393,6 +838,7 @@ def main():
     ap.add_argument("--release", action="store_true", help="배포 기준으로 expected 필수 슬롯을 실패 처리")
     ap.add_argument("--manifest", help="세션 자료/이미지-에셋.json 경로")
     ap.add_argument("--registry", help="중앙 이미지 registry.json 경로")
+    ap.add_argument("--atlas", action="store_true", help="참조 아틀라스 덱(레이아웃/element 연속 열람용): 구도 다양성·연속 검사 제외")
     a = ap.parse_args()
     try:
         html = open(a.deck, encoding="utf-8").read()
@@ -400,76 +846,154 @@ def main():
         print(f"[FAIL] 파일 열기: {e}"); sys.exit(1)
     html = re.sub(r"<!--.*?-->", "", html, flags=re.S)  # commented markup (examples, presenter notes) is not live
 
+    tags, elements = parse_document(html)
+    elements_by_start = {el.start: el for el in elements}
+
     results = []  # (level, msg)  level in PASS/WARN/FAIL
     def chk(cond, ok, bad, warn=False):
         results.append(("PASS" if cond else ("WARN" if warn else "FAIL"), ok if cond else bad))
 
-    secs = find_sections(html)
+    slide_els = _slide_elements(elements)
+    ordered_slides = sorted(slide_els, key=lambda el: el.start)
+    secs = find_sections(html, elements=elements)
     n = len(secs)
     chk(n >= 5, f"슬라이드 {n}장", f"슬라이드 {n}장 — 너무 적음(고정 4 + 본문 필요)")
 
-    for key, pat in FIXED.items():
-        chk(re.search(pat, html) is not None, f"고정 슬라이드 {key} 존재", f"고정 슬라이드 {key} 없음")
+    # ── 학생 덱 공통 계약: --parts N(N>0)일 때만 적용 ──
+    # 카탈로그/아틀라스는 --parts 0을 사용하므로 힌트·헤더 데모를 허용한다.
+    is_student_deck = a.parts is not None and a.parts > 0
+    if is_student_deck:
+        missing_header_logos = []
+        for slide in ordered_slides:
+            slide_id = slide.attrs.get('data-slide') or '(data-slide 없음)'
+            headers = [el for el in elements
+                       if el.name == 'header'
+                       and slide.inner_start <= el.start < slide.inner_end
+                       and 's-head' in classes(el.attrs)]
+            if any(not any(
+                header.inner_start <= tag.start < header.inner_end and 's-logo' in classes(tag.attrs)
+                for tag in tags
+            ) for header in headers):
+                missing_header_logos.append(slide_id)
+        chk(not missing_header_logos,
+            "학생 덱 모든 .s-head에 표준 .s-logo 존재",
+            f".s-head 안 .s-logo 누락 슬라이드: {missing_header_logos}")
 
-    # 표지 불변요소: 3개 큐브(data-cube) × 각 3면 = polygon 9개, 코랄 스파크 1개
-    cover_inner = next((inner for cls, inner in secs if re.search(r'\bcover\b', cls)), '')
-    cube_count = len(re.findall(r'<g\b[^>]*\bdata-cube=', cover_inner))
-    cover_faces = len(re.findall(r'<polygon\b', cover_inner))
-    spark_count = len(re.findall(r'<circle\b[^>]*fill="var\(--coral\)"', cover_inner))
-    chk(cube_count == 3 and cover_faces == 9 and spark_count >= 1,
-        "표지 3큐브·9면·코랄 스파크 유지",
-        f"표지 도형 불완전: cube={cube_count}, polygon={cover_faces}, coral spark={spark_count}")
+        student_text = decoded_text(html)
+        hint_classes = [tag.start for tag in tags if 'hint-reveal' in classes(tag.attrs)]
+        banned_hint_labels = [label for label in ('강사 힌트', '막힐 때만 보기', '완성 예시 보기')
+                              if label in student_text]
+        chk(not hint_classes and not banned_hint_labels,
+            "학생 덱 힌트 UI·강사용 문구 0",
+            f"학생 덱 금지 힌트 잔존: hint-reveal {len(hint_classes)}개, 문구 {banned_hint_labels}")
+
+    # ── 1주차 학생 덱 전용 계약(2026-07-21) ──
+    # 다른 주차·카탈로그·발표자 노트에 오작동하지 않도록 파일 위치와 정본 파일명을 함께 본다.
+    # 새 S01A/B/C의 존재 자체를 판별 조건으로 쓰면 누락된 덱이 검사를 우회하므로 경로를 기준으로 한다.
+    deck_file = Path(a.deck).resolve()
+    is_week1_student_deck = (
+        deck_file.parent.name == '1주차'
+        and deck_file.stem in {'강의덱', '강의덱_배포'}
+    )
+    if is_week1_student_deck:
+        slide_ids = [el.attrs.get('data-slide') or '' for el in ordered_slides]
+        chk(n == 71, "1주차 학생 덱 슬라이드 71장", f"1주차 학생 덱 슬라이드 {n}장 ≠ 71장")
+
+        intro_expected = ['S01', 'S01A', 'S01B', 'S01C']
+        chk(slide_ids[:4] == intro_expected,
+            "도입 S01 → S01A → S01B → S01C 순서 유지",
+            f"도입 슬라이드 순서 오류: {slide_ids[:4]} (필요 {intro_expected})")
+
+        week1_dividers = sum(1 for el in ordered_slides if 'part-divider' in classes(el.attrs))
+        chk(week1_dividers == 6, "1주차 PART divider 6장", f"1주차 PART divider {week1_dividers}장 ≠ 6장")
+
+        # 검정 터미널 두 장은 HTML 구조에서 dark + white-copy 계약을 명시해야 한다.
+        # 현재 컴포넌트 명명(`.terminal-dark > .terminal-copy`)과 새 전용 명명
+        # (`.dark-terminal.terminal-white-copy`)을 모두 허용하되, 둘 중 한 계약은 완결돼야 한다.
+        terminal_contract_errors = []
+        slide_by_id = {el.attrs.get('data-slide'): el for el in ordered_slides}
+        for target_id in ('S28A', '32'):
+            target = slide_by_id.get(target_id)
+            if target is None:
+                terminal_contract_errors.append(f'{target_id}: 슬라이드 없음')
+                continue
+            terminal_tags = [tag for tag in tags
+                             if target.inner_start <= tag.start < target.inner_end
+                             and classes(tag.attrs) & {'dark-terminal', 'terminal-dark'}]
+            if not terminal_tags:
+                terminal_contract_errors.append(f'{target_id}: dark terminal class 없음')
+                continue
+            white_copy_ok = any('terminal-white-copy' in classes(tag.attrs) for tag in terminal_tags)
+            if not white_copy_ok:
+                white_copy_ok = any(
+                    terminal_el is not None and any(
+                        terminal_el.inner_start <= tag.start < terminal_el.inner_end
+                        and 'terminal-copy' in classes(tag.attrs)
+                        for tag in tags
+                    )
+                    for terminal_el in (elements_by_start.get(terminal.start) for terminal in terminal_tags)
+                )
+            if not white_copy_ok:
+                terminal_contract_errors.append(f'{target_id}: white-copy contract class 없음')
+        chk(not terminal_contract_errors,
+            "S28A·32 검정 터미널 dark/white-copy 계약",
+            "검정 터미널 계약 위반: " + " | ".join(terminal_contract_errors))
+
+        last_slide = ordered_slides[-1] if ordered_slides else None
+        last_text = (html[last_slide.inner_start:last_slide.inner_end] if last_slide is not None else '')
+        chk(last_slide is not None and 'THANK YOU' in decoded_text(last_text),
+            "마지막 슬라이드 THANK YOU 유지",
+            f"마지막 슬라이드({slide_ids[-1] if slide_ids else '없음'})에 THANK YOU 없음")
+
+    for key, marker in FIXED.items():
+        found = any(marker in classes(el.attrs) for el in slide_els)
+        chk(found, f"고정 슬라이드 {key} 존재", f"고정 슬라이드 {key} 없음")
 
     # ── 브랜드 표기: 헤더/표지 .s-brand는 영문 VIBECODING (2026-07-17) ──
-    brand_texts = re.findall(r'<span class="[^"]*\bs-brand\b[^"]*"[^>]*>(.*?)</span>', html, re.S)
+    #   class 토큰 정확 매치(속성 순서 무관) + 실제 매칭된 닫는 태그까지의 내부 텍스트.
+    brand_texts = []
+    for tag in tags:
+        if tag.name != 'span' or 's-brand' not in classes(tag.attrs):
+            continue
+        el = elements_by_start.get(tag.start)
+        if el is not None:
+            brand_texts.append(html[el.inner_start:el.inner_end])
     bad_brand = [t for t in brand_texts if '바이브코딩' in t]
     chk(not bad_brand, "브랜드 텍스트 VIBECODING(영문)",
         f".s-brand에 한글 브랜드 잔존 {len(bad_brand)}건 — VIBECODING으로 교체")
 
-    dividers = len(re.findall(r'class="[^"]*\bpart-divider\b', html))
+    # ── part-divider 수: <section> 클래스 토큰 정확 매치(따옴표 종류 무관) ──
+    dividers = sum(1 for el in slide_els if 'part-divider' in classes(el.attrs))
     if a.parts is not None:
         chk(dividers == a.parts, f"part-divider {dividers} = 파트 {a.parts}",
             f"part-divider {dividers} ≠ 파트 {a.parts} (모든 파트 앞 divider 필수)")
     else:
         chk(dividers >= 1, f"part-divider {dividers}개", "part-divider 없음", warn=True)
 
-    # ── 아젠다 2열 규칙: an-item 4개 초과면 .an-right에 an-2col 필수(크기 축소 금지) (2026-07-17) ──
-    s03_inner = next((inner for cls, inner in secs if re.search(r'\bs03-slide\b', cls)), None)
-    if s03_inner is not None:
-        an_items = len(re.findall(r'class="[^"]*\ban-item\b[^"]*"', s03_inner))
-        m03 = re.search(r'<div class="([^"]*\ban-right\b[^"]*)"', s03_inner)
-        an_right_cls = m03.group(1) if m03 else ''
-        if an_items > 4:
-            chk('an-2col' in an_right_cls, f"아젠다 {an_items}항목 → an-2col 적용(2열 확장)",
-                f"아젠다 {an_items}항목(>4)인데 an-2col 없음 — 크기 축소 대신 .an-right에 an-2col 부여")
-        elif an_items > 0:
-            chk('an-2col' not in an_right_cls, f"아젠다 {an_items}항목 → 1열 유지",
-                f"아젠다 {an_items}항목(≤4)인데 an-2col 불필요 적용", warn=True)
+    if dividers:
+        dynamic_part_geometry = all(
+            marker in html
+            for marker in (
+                "function partGeometry(n)",
+                "function hydratePartDivider(s,index,total)",
+                "data-geometry-count",
+                "points=partGeometry(index)",
+            )
+        )
+        chk(
+            dynamic_part_geometry,
+            "파트 번호 기반 지오메트리·도트 자동 생성기 존재",
+            "파트 전환 자동 생성기 누락(partGeometry/hydratePartDivider)",
+        )
 
-        # ── 아젠다 v3: 제목 고정 멘트 + 민트 바 (2026-07-17) ──
-        #   .an-title이 있는 아젠다에만 적용. 카탈로그(--parts 0)는 검사 제외(MEMORY 규약).
-        m_title = re.search(r'<h2 class="[^"]*\ban-title\b[^"]*"[^>]*>(.*?)</h2>', s03_inner, re.S)
-        if m_title is not None and a.parts != 0:
-            title_txt = re.sub(r'<[^>]+>', '', m_title.group(1)).strip()
-            chk(title_txt == '오늘 배우게 될 것', '아젠다 제목 고정 멘트 "오늘 배우게 될 것"',
-                f'아젠다 제목 "{title_txt}" — 고정 멘트 "오늘 배우게 될 것"으로(자유 작성 금지)')
-            chk('an-bar' in s03_inner, "아젠다 민트 바(.an-bar) 존재",
-                "아젠다 .an-bar 없음 — 고정 제목 아래 민트 pill 바 필수")
-
-    chk('class="navbar"' in html or "id=\"controls\"" in html, "네비 엔진 존재", "네비바(.navbar) 없음")
+    # ── 네비 엔진: class 토큰 정확 매치(속성 순서 무관, <nav class="navbar glass"> 통과) ──
+    navbar_ok = any('navbar' in classes(t.attrs) for t in tags) or any(t.attrs.get('id') == 'controls' for t in tags)
+    chk(navbar_ok, "네비 엔진 존재", "네비바(.navbar) 없음")
     chk('id="pdfBtn"' in html or "id='pdfBtn'" in html or 'dl-btn' in html,
         "PDF 버튼 존재", "PDF 버튼(#pdfBtn 또는 .dl-btn) 없음")
     nav_detail_ids = ('menuBtn', 'homeBtn', 'pageInput', 'slideList', 'pdfBtn')
     nav_detail_ok = all((f'id="{item}"' in html or f"id='{item}'" in html) for item in nav_detail_ids)
     chk(nav_detail_ok, "상세 발표 메뉴(홈·이동·목록·PDF) 존재", "상세 메뉴 기능 요소 누락")
-    rendered_css = html + "\n" + local_linked_css(html, a.deck)
-    chk('--glass-white' in rendered_css and re.search(r'backdrop-filter\s*:\s*blur', rendered_css),
-        "흰색 글래스 내비게이션 토큰 존재", "글래스 내비게이션 토큰/효과 없음")
-
-    # ── 아젠다 배지 플랫: .an-num 선언에 box-shadow 금지 (2026-07-17, kit CSS+덱 인라인 모두) ──
-    an_num_shadow = re.findall(r'\.an-num\b[^{]*\{[^}]*box-shadow[^}]*\}', rendered_css)
-    chk(not an_num_shadow, ".an-num 플랫(box-shadow 없음)",
-        f".an-num 선언에 box-shadow {len(an_num_shadow)}건 — v3 플랫 배지(그림자 제거)")
 
     css_ok = 'deck.css' in html or ('<style' in html and '--blue' in html)
     leg_ok = 'legibility.css' in html or ('<style' in html and 'legibility' in html) or ('font-size:22px' in html)
@@ -483,12 +1007,12 @@ def main():
     chk(not part_dup, "본문 eyebrow에 PART n·파트명 중복 없음",
         f".s-eyebrow에 PART 형식 잔존 {part_dup[:5]} — 헤더 .s-part와 중복(삭제 대상)")
 
-    imgs = len(re.findall(r'<img\b', html))
-    # Header logos, cover cubes, and annotation SVGs are not code visualizations.
-    # Only explicit .viz-* or data-viz ownership is counted.
+    # ── 시각 자료 구성 현황: 코드 시각화와 이미지는 정보 모양에 따라 동급 선택 ──
+    # 로고/파비콘/표지 로고는 어느 쪽도 아니므로 img 집계에서 제외한다.
+    LOGO_CLASSES = {'s-logo', 'brand-logo', 'favicon', 'cover-logo'}
+    imgs = sum(1 for t in tags if t.name == 'img' and not (classes(t.attrs) & LOGO_CLASSES))
     viz = count_code_viz(html)
-    chk(viz >= imgs, f"코드 시각화 {viz} ≥ 이미지 {imgs} (code-viz 우선)",
-        f"이미지 {imgs} > 코드 시각화 {viz} — 코드 우선 원칙 위배 소지", warn=True)
+    results.append(("PASS", f"시각 자료 구성: 코드 시각화 {viz} · 이미지 {imgs} (정보 모양 기준)"))
 
     image_errors, image_notes = image_contract_checks(
         html,
@@ -503,65 +1027,96 @@ def main():
         results.append(("WARN", note))
 
     # 콘텐츠 슬라이드(고정/divider 제외) 다양성
-    content = [(c, inr) for (c, inr) in secs
-               if not re.search(r'\b(cover|s02-slide|s03-slide|part-divider|concept-recap|closing)\b', c)]
-    sigs = [family_signature(c, inr) for (c, inr) in content]
+    content_els = [el for el in slide_els if not (classes(el.attrs) &
+                   {'cover', 's02-slide', 's03-slide', 'part-divider', 'concept-recap', 'closing'})]
+    content = [(el.attrs.get('class') or '', html[el.inner_start:el.inner_end]) for el in content_els]
+    sigs = []
+    for el, (cls, _inr) in zip(content_els, content):
+        visible_inner = _strip_hidden_spans(html, el.inner_start, el.inner_end, elements)
+        sigs.append(family_signature(cls, visible_inner))
     distinct = len(set(sigs))
-    maxrun, run = 1, 1
-    for i in range(1, len(sigs)):
-        run = run + 1 if sigs[i] == sigs[i-1] else 1
+    # 실제 덱에서 divider·고정 슬라이드가 끼면 시각 흐름도 끊긴다. 콘텐츠만
+    # 압축한 목록에서 양쪽 파트의 마지막/첫 슬라이드를 붙여 세지 않는다.
+    sig_by_start = {el.start: sig for el, sig in zip(content_els, sigs)}
+    maxrun, run, previous_sig = 0, 0, None
+    for slide in sorted(slide_els, key=lambda el: el.start):
+        sig = sig_by_start.get(slide.start)
+        if sig is None:
+            run, previous_sig = 0, None
+            continue
+        run = run + 1 if sig == previous_sig else 1
+        previous_sig = sig
         maxrun = max(maxrun, run)
-    is_reference_atlas = 'atlas-slide' in html and 'LAYOUT ATLAS' in html
+    is_reference_atlas = a.atlas
     if content and not is_reference_atlas:
-        chk(distinct >= max(3, len(content)//2),
-            f"구도 다양성: {distinct}종 / 본문 {len(content)}장",
-            f"구도 다양성 낮음: {distinct}종 / 본문 {len(content)}장 (단조 위험)", warn=True)
+        need = diversity_need(len(content))
+        chk(distinct >= need,
+            f"구도 다양성: {distinct}종 / 본문 {len(content)}장(필요 {need})",
+            f"구도 다양성 낮음: {distinct}종 / 본문 {len(content)}장(필요 {need}, 단조 위험)", warn=True)
         chk(maxrun <= 2, f"같은 구도 최장 연속 {maxrun} (≤2)",
             f"같은 구도 {maxrun}연속 — 3연속 금지 위배 (시그니처 반복: {sigs})")
     elif content:
-        chk(True, "참조 아틀라스: 50 레이아웃·21 element 연속열람용 다양성 검사 제외", "")
+        chk(True, "참조 아틀라스(--atlas): 다양성·연속 검사 제외(50 레이아웃·21 element 연속열람용)", "")
 
-    # 토큰-only 대략 검사: <style>/인라인 style 안 raw #hex
-    #   스킵 규칙(둘 중 하나면 스킵): (1) :root{...} 블록 내부  (2) 토큰 정의 줄(첫 ':' 앞부분에 '--' 포함)
-    #   → inline_deck.py로 deck.css가 통째로 인라인돼도 토큰 정의(:root 내부·--name:#hex)는 오탐 안 나게.
-    style_blocks = re.findall(r'<style[^>]*>(.*?)</style>', html, re.S)
-    inline_styles = re.findall(r'style="([^"]*)"', html)
-    hexhits = []
-    for blk in style_blocks:
-        in_root = False
-        for ln in blk.splitlines():
-            if ':root' in ln and '{' in ln:
-                in_root = True
-            head = ln.split(':', 1)[0]          # 첫 콜론 앞 = 셀렉터/속성명 영역
-            if in_root or '--' in head:          # :root 블록 안이거나 토큰 정의 줄이면 스킵
-                if in_root and '}' in ln:        # :root 블록 종료 감지
-                    in_root = False
+    # ── L2 CSS 수집: 덱 인라인 <style> + 덱이 실제로 링크한 로컬 CSS(주석 제거) ──
+    bundle = collect_css(html, a.deck, tags=tags, elements=elements)
+    style_attr_decls = _style_attr_declarations(tags)
+
+    if bundle.raw_byte_count == 0:
+        results.append(("WARN", "덱 CSS를 0바이트 읽음 — CSS 검사 미수행"))
+    else:
+        # ── raw #hex · rgba()/hsl() · CSS 명명색: CSS 규칙 + style=(따옴표 무관) + SVG fill=/stroke= ──
+        color_hits = find_color_violations(bundle.deck_inline)
+        for _tag, decls in style_attr_decls:
+            for prop, val in decls.items():
+                if not prop.startswith('--'):
+                    color_hits.extend(_color_literal_hits(val))
+        for t in tags:
+            color_hits.extend(_color_literal_hits(t.attrs.get('fill')))
+            color_hits.extend(_color_literal_hits(t.attrs.get('stroke')))
+        chk(len(color_hits) == 0, "토큰만 사용(raw #hex 0)",
+            f"raw #hex/rgba·hsl()/명명색 {len(color_hits)}건({sorted(set(map(str, color_hits)))[:6]}) — var(--token)로 교체")
+
+        # ── 덱 자체 <style>/인라인 style 그라디언트 금지 (flat-fill 원칙) ──
+        dgrad = len(re.findall(r'\b(?:linear|radial|conic)-gradient', bundle.deck_inline))
+        for _tag, decls in style_attr_decls:
+            for val in decls.values():
+                dgrad += len(re.findall(r'\b(?:linear|radial|conic)-gradient', val))
+        chk(dgrad == 0, "덱 인라인 그라디언트 0 (flat-fill)",
+            f"덱 <style>/style=에 gradient {dgrad}건 — flat-fill 원칙 위배")
+
+        # ── 덱 자체 <style>/인라인 style var(--navy) 금지 (fallback 폼 var(--navy, ...) 포함) ──
+        navy_re = re.compile(r'var\(\s*--navy\s*(?:,[^)]*)?\)')
+        dnavy = len(navy_re.findall(bundle.deck_inline))
+        for _tag, decls in style_attr_decls:
+            for val in decls.values():
+                dnavy += len(navy_re.findall(val))
+        chk(dnavy == 0, "덱 인라인 var(--navy) 0",
+            f"덱 <style>/style=에 var(--navy) {dnavy}건 — navy 사용 금지(어두운 배경/텍스트는 --ink)")
+
+        # ── 덱 자체 박스 표면 규칙: 흰 fill + 근백색(--line) 축약 보더 조합 금지 ──
+        deck_box_bad = box_surface_violations(bundle.deck_inline)
+        for tag, decls in style_attr_decls:
+            if _box_violation_decls(decls):
+                deck_box_bad.append('style="' + (tag.attrs.get('style') or '')[:40] + '…"')
+        chk(not deck_box_bad, "덱 인라인 박스 표면 규칙 준수(흰 fill+--line 보더 0)",
+            f"덱 인라인 흰 fill+근백색 보더 박스 {deck_box_bad} — 틴트 fill 또는 유색 보더(--blue-line-strong 등)로 교체")
+
+        # ── 아젠다 배지 플랫: .an-num 선언에 box-shadow 금지 (kit CSS+덱 인라인 모두, @media 안까지) ──
+        an_num_bad = 0
+        for selector_group, decls, _body, _at in iter_rules(bundle.all):
+            if 'box-shadow' not in decls:
                 continue
-            hexhits += re.findall(r'#[0-9a-fA-F]{3,6}\b', ln)
-    for st in inline_styles:
-        hexhits += re.findall(r'#[0-9a-fA-F]{3,6}\b', st)
-    chk(len(hexhits) == 0, "토큰만 사용(raw #hex 0)",
-        f"raw #hex {len(hexhits)}건({sorted(set(hexhits))[:6]}) — var(--token)로 교체", warn=True)
+            for sel in selector_group.split(','):
+                if re.search(r'(?<![\w-])\.an-num(?![\w-])', sel):
+                    an_num_bad += 1
+                    break
+        chk(an_num_bad == 0, ".an-num 플랫(box-shadow 없음)",
+            f".an-num 선언에 box-shadow {an_num_bad}건 — v3 플랫 배지(그림자 제거)")
 
-    # ── 덱 자체 <style>/인라인 style 그라디언트 금지 (flat-fill 원칙) ──
-    deck_style_text = "\n".join(style_blocks) + "\n" + "\n".join(inline_styles)
-    dgrad = len(re.findall(r'\b(?:linear|radial|conic)-gradient', deck_style_text))
-    chk(dgrad == 0, "덱 인라인 그라디언트 0 (flat-fill)",
-        f"덱 <style>/style=에 gradient {dgrad}건 — flat-fill 원칙 위배")
-
-    # ── 덱 자체 <style>/인라인 style var(--navy) 금지 (navy는 v2 팔레트 제외) ──
-    dnavy = len(re.findall(r'var\(\s*--navy\s*\)', deck_style_text))
-    chk(dnavy == 0, "덱 인라인 var(--navy) 0",
-        f"덱 <style>/style=에 var(--navy) {dnavy}건 — navy 사용 금지(어두운 배경/텍스트는 --ink)")
-
-    # ── 덱 자체 박스 표면 규칙: 흰 fill + 근백색(--line) 축약 보더 조합 금지 ──
-    deck_box_bad = box_surface_violations("\n".join(style_blocks))
-    for st in inline_styles:
-        if re.search(r'background\s*:\s*var\(--(?:white|surface-alt)\)', st) and \
-           re.search(r'(?:^|;)\s*border\s*:[^;]*var\(--line\)', st):
-            deck_box_bad.append('style="' + st[:40] + '…"')
-    chk(not deck_box_bad, "덱 인라인 박스 표면 규칙 준수(흰 fill+--line 보더 0)",
-        f"덱 인라인 흰 fill+근백색 보더 박스 {deck_box_bad} — 틴트 fill 또는 유색 보더(--blue-line-strong 등)로 교체")
+        # ── 흰색 글래스 내비게이션 토큰 존재(kit CSS에 정의 → 링크된 로컬 CSS까지 합산해 검사) ──
+        chk('--glass-white' in bundle.all and re.search(r'backdrop-filter\s*:\s*blur', bundle.all),
+            "흰색 글래스 내비게이션 토큰 존재", "글래스 내비게이션 토큰/효과 없음")
 
     # ── 진행도트·페이지번호 자동 주입 스크립트 존재 (s-pageno + s-part) ──
     scripts = " ".join(re.findall(r'<script[^>]*>(.*?)</script>', html, re.S))
@@ -569,7 +1124,8 @@ def main():
     chk(inject_ok, "진행·페이지 자동주입(s-pageno+s-part) 존재",
         "s-pageno/s-part 자동주입 스크립트 없음 — 페이지번호·파트도트 누락 위험", warn=True)
 
-    # ── 공유 kit CSS(deck.css · patterns.css) 무결성: 스크립트 위치 기준 해석(cwd·덱경로 무관) ──
+    # ── [kit] 공유 kit CSS(deck.css · patterns.css · legibility.css) 무결성:
+    #     스크립트 위치 기준 해석(cwd·덱경로 무관) — 덱이 아니라 저장소 kit을 검사한다. ──
     _here = os.path.dirname(os.path.abspath(__file__))
     def _read_css(*parts):
         p = os.path.join(_here, *parts)
@@ -577,27 +1133,45 @@ def main():
             return open(p, encoding='utf-8').read()
         except OSError:
             return None
-    deckcss = _read_css('..', 'kit', 'styles', 'deck.css')
-    patterns = _read_css('..', 'kit', 'styles', 'patterns.css')
-    kit_css = "\n".join(c for c in (deckcss, patterns) if c is not None)
+    kit_files = {
+        'deck.css': ('..', 'kit', 'styles', 'deck.css'),
+        'patterns.css': ('..', 'kit', 'styles', 'patterns.css'),
+        'legibility.css': ('..', 'kit', 'styles', 'legibility.css'),
+    }
+    kit_sources = {}
+    for label, rel_parts in kit_files.items():
+        file_text = _read_css(*rel_parts)
+        kit_sources[label] = file_text
+        if file_text is None:
+            results.append(("WARN", f"[kit] {label} 읽기 실패 — 관련 검사 생략"))
+    deckcss = kit_sources['deck.css']
+    patterns = kit_sources['patterns.css']
+    legibility = kit_sources['legibility.css']
+    kit_css = _strip_css_comments("\n".join(c for c in (deckcss, patterns, legibility) if c is not None))
 
-    if deckcss is not None or patterns is not None:
-        # (1) 그라디언트 0 (deck.css + patterns.css)
+    if kit_css:
+        # (0) [kit] raw #hex 0 (결정 3 — 측정 범위와 일치: hex만, rgba/명명색은 대상 아님)
+        kit_hex_hits = find_color_violations(kit_css, hex_only=True)
+        chk(not kit_hex_hits, "[kit] 토큰만 사용(raw #hex 0)",
+            f"[kit] raw #hex {len(kit_hex_hits)}건({sorted(set(kit_hex_hits))[:6]}) — var(--token)로 교체")
+        # (1) 그라디언트 0 (deck.css + patterns.css + legibility.css)
         kgrad = len(re.findall(r'\b(?:linear|radial|conic)-gradient', kit_css))
-        chk(kgrad == 0, "kit CSS 그라디언트 0 (flat-fill)",
-            f"kit CSS에 gradient {kgrad}건 — flat-fill 원칙 위배")
-        # (2) var(--navy) 미사용 (정의 줄 --navy: 는 매칭 안 됨 → 허용)
-        knavy = len(re.findall(r'var\(\s*--navy\s*\)', kit_css))
-        chk(knavy == 0, "var(--navy) 미사용", f"var(--navy) {knavy}건 사용 — v2 팔레트 제외 대상")
-        # (2b) 새 구조 요소는 보조 블루(ice/electric)가 아니라 --blue를 사용한다.
+        chk(kgrad == 0, "[kit] CSS 그라디언트 0 (flat-fill)",
+            f"[kit] CSS에 gradient {kgrad}건 — flat-fill 원칙 위배")
+        # (2) var(--navy) 미사용(fallback 폼 포함, 정의 줄 --navy: 는 매칭 안 됨 → 허용)
+        navy_re = re.compile(r'var\(\s*--navy\s*(?:,[^)]*)?\)')
+        knavy = len(navy_re.findall(kit_css))
+        chk(knavy == 0, "[kit] var(--navy) 미사용", f"[kit] var(--navy) {knavy}건 사용 — v2 팔레트 제외 대상")
+        # (2b) 새 구조 요소는 보조 블루(ice/electric)가 아니라 --blue를 사용한다(fallback 폼 포함).
         css_without_root = re.sub(r':root\s*\{.*?\}', '', kit_css, flags=re.S)
-        legacy_blue = len(re.findall(r'var\(\s*--(?:ice|electric)\s*\)', css_without_root))
-        chk(legacy_blue == 0, "레거시 보조 블루(ice/electric) 렌더 사용 0",
-            f"var(--ice)/var(--electric) {legacy_blue}건 — 구조·주 강조는 --blue만 사용")
+        legacy_blue_re = re.compile(r'var\(\s*--(?:ice|electric)\s*(?:,[^)]*)?\)')
+        legacy_blue = len(legacy_blue_re.findall(css_without_root))
+        chk(legacy_blue == 0, "[kit] 레거시 보조 블루(ice/electric) 렌더 사용 0",
+            f"[kit] var(--ice)/var(--electric) {legacy_blue}건 — 구조·주 강조는 --blue만 사용")
         # (2c) 박스 표면 규칙: 흰 카드가 근백색 --line 보더만으로 구분되면 안 된다(2026-07-16).
         kit_box_bad = box_surface_violations(kit_css)
-        chk(not kit_box_bad, "kit CSS 박스 표면 규칙 준수(흰 fill+--line 축약보더 0)",
-            f"흰 fill+근백색 보더 박스 {kit_box_bad} — 틴트 fill 또는 유색 보더(--blue-line-strong/--mint-line/--coral-line)로 교체")
+        chk(not kit_box_bad, "[kit] 박스 표면 규칙 준수(흰 fill+--line 축약보더 0)",
+            f"[kit] 흰 fill+근백색 보더 박스 {kit_box_bad} — 틴트 fill 또는 유색 보더(--blue-line-strong/--mint-line/--coral-line)로 교체")
 
     if deckcss is not None:
         # (3) :root 토큰 값 정확성(부분문자열 매칭 · 공백정규화 · hex 대소문자 무시)
@@ -607,28 +1181,33 @@ def main():
                        '--mint-deep:#0F766E', '--coral-deep:#C2452F',
                        '--on-mint', '--on-coral', '--r-lg:20px', '--font-mono', '--mint-line']
         miss_tokens = [t for t in need_tokens if re.sub(r'\s+', '', t).lower() not in root_norm]
-        chk(not miss_tokens, f"토큰 값 정확(deck.css :root, {len(need_tokens)}개 확인)",
-            f"토큰 누락/값변경: {miss_tokens}")
+        chk(not miss_tokens, f"[kit] 토큰 값 정확(deck.css :root, {len(need_tokens)}개 확인)",
+            f"[kit] 토큰 누락/값변경: {miss_tokens}")
         # (3b) 헤더 선과 민트 강조 프리미티브는 공용 CSS 계약을 지킨다.
         def css_block(selector):
             m = re.search(r'(?:^|[}\n;,{])\s*' + selector + r'\s*\{([^}]*)\}', deckcss)
             return re.sub(r'\s+', '', m.group(1)) if m else ''
         sline = css_block(r'\.s-line')
-        chk('background:var(--blue)' in sline, "상단 헤더 선은 main blue(--blue)",
-            ".s-line이 --blue 배경이 아님")
+        chk('background:var(--blue)' in sline, "[kit] 상단 헤더 선은 main blue(--blue)",
+            "[kit] .s-line이 --blue 배경이 아님")
         mint_mark = css_block(r'\.hl-mint-mark')
         mark_need = ['display:inline-block', 'background:var(--mint)', 'color:var(--white)',
                      'padding:03px1px', 'border-radius:0']
         missing_mark = [x for x in mark_need if x not in mint_mark]
-        chk(not missing_mark, "민트 글자폭 강조(.hl-mint-mark) 계약 유지",
-            f".hl-mint-mark 계약 누락: {missing_mark}")
+        chk(not missing_mark, "[kit] 민트 글자폭 강조(.hl-mint-mark) 계약 유지",
+            f"[kit] .hl-mint-mark 계약 누락: {missing_mark}")
         shape_mint = css_block(r'\.shape-mint')
         chk('background:var(--mint)!important' in shape_mint and 'color:var(--on-mint)!important' in shape_mint,
-            "민트 도형 강조(.shape-mint) 계약 유지", ".shape-mint의 민트 fill/on-mint 글자 계약 누락")
+            "[kit] 민트 도형 강조(.shape-mint) 계약 유지", "[kit] .shape-mint의 민트 fill/on-mint 글자 계약 누락")
         # (3c) 넘버 행 정렬 계약: .work-step은 배지 기준 텍스트 수직 중앙(2026-07-16)
         ws = css_block(r'\.work-step')
-        chk('align-items:center' in ws, "넘버 행 수직 중앙(.work-step align-items:center) 유지",
-            ".work-step이 align-items:center가 아님 — 원형 배지 대비 텍스트 중앙 정렬 규칙 위반")
+        chk('align-items:center' in ws, "[kit] 넘버 행 수직 중앙(.work-step align-items:center) 유지",
+            "[kit] .work-step이 align-items:center가 아님 — 원형 배지 대비 텍스트 중앙 정렬 규칙 위반")
+        # (3d) 아젠다 행 정렬 계약: .agenda-item도 배지 기준 텍스트 수직 중앙(결정 2 — 이미 준수 중, 강제만 추가).
+        #      문서화된 예외 .s03-slide .an-item(커넥터 좌표 전제)은 별개 셀렉터라 이 검사에 끌려오지 않는다.
+        agenda_item = css_block(r'\.agenda-item')
+        chk('align-items:center' in agenda_item, "[kit] 아젠다 행 수직 중앙(.agenda-item align-items:center) 유지",
+            "[kit] .agenda-item이 align-items:center가 아님 — 원형 배지 대비 텍스트 중앙 정렬 규칙 위반")
         # (4) 민트 배지 셀렉터가 background:var(--mint) 유지 (다른 노드 셀렉터는 검사 안 함)
         badge_sels = [r'\.num-circle', r'\.work-step\s+\.n', r'\.pd-dot\.is-active']
         bad_badge = []
@@ -641,14 +1220,13 @@ def main():
                 block = re.sub(r'\s+', '', deckcss[s:e if e != -1 else len(deckcss)])
             if 'background:var(--mint)' not in block:
                 bad_badge.append(sel.replace('\\', ''))
-        chk(not bad_badge, "민트 배지 3종 background:var(--mint) 유지",
-            f"민트 배지 색 이탈(background:var(--mint) 아님): {bad_badge}")
+        chk(not bad_badge, "[kit] 민트 배지 3종 background:var(--mint) 유지",
+            f"[kit] 민트 배지 색 이탈(background:var(--mint) 아님): {bad_badge}")
 
-    # a11y: role="img"(코드 시각화)마다 비어있지 않은 aria-label
-    role_img = len(re.findall(r'role="img"', html))
-    labeled = len(re.findall(r'role="img"[^>]*aria-label="[^"]+"', html)) + \
-              len(re.findall(r'aria-label="[^"]+"[^>]*role="img"', html))
-    labeled = min(labeled, role_img)
+    # a11y: role="img"(코드 시각화)마다 비어있지 않은 aria-label (속성 기반, 값 안의 '>' 무관)
+    role_img_tags = [t for t in tags if (t.attrs.get('role') or '').strip() == 'img']
+    role_img = len(role_img_tags)
+    labeled = sum(1 for t in role_img_tags if (t.attrs.get('aria-label') or '').strip())
     if role_img:
         chk(labeled >= role_img, f"코드시각화 aria 라벨: {labeled}/{role_img}",
             f"role=img {role_img}개 중 aria-label 있는 건 {labeled}개 — 나머지 라벨 없음(접근성)")
@@ -670,12 +1248,13 @@ def main():
             f".hint-reveal {no_summary}개에 <summary> 없음 — 펼침 트리거 없는 빈 힌트(접근성)", warn=True)
 
     # ── 원고 아이콘 마커 누출 금지 (💬/🗣/👀는 조립 시 라우팅되고 최종 HTML엔 남으면 안 됨) ──
-    #   <script>/<style> 제외한 마크업에서 코드포인트 탐지 → 남아 있으면 조립 실수(FAIL).
-    body_wo_code = re.sub(r'<(script|style)[^>]*>.*?</\1>', '', html, flags=re.S)
+    #   <script>/<style> 제외(대소문자 무시) + 엔티티 디코드된 텍스트에서 코드포인트 탐지
+    #   → HTML 엔티티(&#128172; 등)로 우회해도 잡힌다.
+    body_wo_code = decoded_text(html)
     leaked = [m for m in ('\U0001F4AC', '\U0001F5E3', '\U0001F440') if m in body_wo_code]  # 💬 🗣 👀
     leak_names = {'\U0001F4AC': '💬', '\U0001F5E3': '🗣', '\U0001F440': '👀'}
     chk(not leaked, "원고 아이콘 마커(💬/🗣/👀) 누출 0",
-        f"아이콘 마커 {[leak_names[m] for m in leaked]} 최종 HTML에 잔존 — 조립 시 라우팅(주석/.hint-reveal) 후 제거해야 함")
+        f"아이콘 마커 {[leak_names[m] for m in leaked]} 최종 HTML에 잔존 — 학생 덱에서 제거하고 발표자 노트로 라우팅해야 함")
 
     # 출력
     order = {"FAIL": 0, "WARN": 1, "PASS": 2}

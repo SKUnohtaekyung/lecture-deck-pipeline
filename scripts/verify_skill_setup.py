@@ -411,12 +411,18 @@ def main() -> int:
 
     claude_md = text(ROOT / "CLAUDE.md") if (ROOT / "CLAUDE.md").is_file() else ""
     check("@AGENTS.md" in claude_md, "Claude가 AGENTS.md 공통 지침을 import", "CLAUDE.md의 @AGENTS.md import 누락")
+    codex_memory = ROOT / ".agents/agent-memory/vibecoding-deck/MEMORY.md"
     claude_memory = ROOT / ".claude/agent-memory/vibecoding-deck/MEMORY.md"
+    memories_exist = codex_memory.is_file() and claude_memory.is_file()
     check(
-        claude_memory.is_file()
-        and "../../../.agents/agent-memory/vibecoding-deck/MEMORY.md" in text(claude_memory),
-        "Claude 메모리가 공통 정본 포인터만 유지",
-        "Claude 메모리가 공통 .agents 메모리 정본을 참조하지 않음",
+        memories_exist and codex_memory.read_bytes() == claude_memory.read_bytes(),
+        "Codex·Claude 메모리가 바이트 단위로 동일",
+        "Codex·Claude MEMORY.md가 없거나 바이트 단위로 불일치",
+    )
+    check(
+        memories_exist and digest(codex_memory) == digest(claude_memory),
+        "Codex·Claude 메모리 SHA-256 일치",
+        "Codex·Claude MEMORY.md가 없거나 SHA-256 불일치",
     )
 
     for platform_dir, prefix in (

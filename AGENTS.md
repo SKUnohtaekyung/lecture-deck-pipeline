@@ -1,6 +1,6 @@
 # AGENTS.md — vibecoding-deck 공통 작업 매뉴얼
 
-이 폴더는 **`vibecoding-deck` 스킬을 개발·보관**하는 프로젝트다. 루트 `SKILL.md`와 `kit/`·`references/`·`scripts/`가 플랫폼 공통 정본이며, `.agents/skills/vibecoding-deck/`와 `.claude/skills/vibecoding-deck/`는 이 정본을 로드하는 얇은 탐색 어댑터다. Codex는 이 파일을 직접 읽고, Claude Code는 루트 `CLAUDE.md`의 `@AGENTS.md` import로 같은 규칙을 읽는다. 변하는 현재 상태와 다음 할 일은 여기 두지 말고 `.agents/agent-memory/vibecoding-deck/MEMORY.md`의 `## 미해결`에 둔다.
+이 폴더는 **`vibecoding-deck` 스킬을 개발·보관**하는 프로젝트다. 루트 `SKILL.md`와 `kit/`·`references/`·`scripts/`가 플랫폼 공통 정본이며, `.agents/skills/vibecoding-deck/`와 `.claude/skills/vibecoding-deck/`는 이 정본을 로드하는 얇은 탐색 어댑터다. Codex는 이 파일을 직접 읽고, Claude Code는 루트 `CLAUDE.md`의 `@AGENTS.md` import로 같은 규칙을 읽는다. 변하는 현재 상태와 다음 할 일은 여기 두지 말고 `.agents/agent-memory/vibecoding-deck/MEMORY.md`의 `## 미해결`에 둔다. 이 파일은 작업 기록이나 변경 로그가 아니다: 새 규칙·반복 버그·인수인계 상태 중 **계속 유효한 것만** 남기며, 관련 작업을 마칠 때 에이전트가 해결 여부를 판정해 해결된 항목은 반드시 삭제한다.
 
 ## 구조 (섞지 말 것 · ①②③=스킬 3층, ④=작업물, ⑤=팀 스킬)
 
@@ -14,7 +14,7 @@
 
 ## 작업 전 필수 읽기
 
-1. `.agents/agent-memory/vibecoding-deck/MEMORY.md`의 `## 미해결`(현재 상태·다음 할 일)은 무조건 읽는다. 나머지(누적 규칙·하드윈 버그·색 시스템 정본)는 덱 조립·규칙 변경 작업 시 읽는다.
+1. `.agents/agent-memory/vibecoding-deck/MEMORY.md`의 `## 미해결`(현재 상태·다음 할 일)은 무조건 읽는다. 나머지(누적 규칙·하드윈 버그·색 시스템 정본)는 덱 조립·규칙 변경 작업 시 읽는다. 관련 작업을 끝내기 전에는 같은 파일을 다시 확인해, 해결된 미해결 항목과 더는 유효하지 않은 규칙·버그·인수인계 내용을 **반드시 삭제**하고 계속 유효한 내용만 남긴다.
 2. 배경이 필요할 때 `_dev/설계기록/구조-및-빌드-기록.md`를 읽는다.
 3. `skills/README.md` — 팀 워크플로 스킬(`$리서치`·`$콘텐츠`·`$검토`·`$하네스`) 호출 시 계약표·파이프라인 지도·명시 호출 규약을 확인한다.
 4. 커리큘럼(`sessions/바이브코딩_커리큘럼_기준안.md` + `sessions/N주차/N주차_강의안설계.md`) — 해당 주차 파일을 열거나 쓰기 전에, 그 주차 것만 읽는다.

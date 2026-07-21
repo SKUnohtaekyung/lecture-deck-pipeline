@@ -20,7 +20,7 @@
   <!--
     ┌── 새 덱 만드는 법 ─────────────────────────────────────────────┐
     │ 1) 이 파일을 복사. 고정 1·2·3(표지·도입·아젠다) 텍스트를 교체.   │
-    │ 2) 파트 수만큼 part-divider 배치(진행 도트 is-active 이동).      │
+    │ 2) 파트 수만큼 part-divider 배치(도형·도트·n/N은 JS 자동 생성). │
     │ 3) 각 슬라이드: 정보 모양 판단 → kit/layouts/by-shape.md에서     │
     │    레이아웃 후보 → (필요시) kit/charts/by-shape.md에서 element.  │
     │    직전 슬라이드와 같은 구도 패밀리 회피, split은 희소하게.      │
@@ -124,26 +124,9 @@
 
     <!-- ============ PART 1 전환 (불변요소 — 모든 파트 앞 필수 · 헤더 없음 · 아이소 큐브 클러스터) ============ -->
     <section class="slide part-divider" data-slide="P1">
-      <svg class="dv-hero" viewBox="0 0 1280 720" fill="none" aria-hidden="true"><!-- 아이소메트릭 큐브 클러스터(표지 §11과 동일 토큰) + 코랄 스파크 -->
-        <polygon points="640,230 710,265 640,300 570,265" fill="var(--blue-soft)"/>
-        <polygon points="570,265 640,300 640,370 570,335" fill="var(--blue)"/>
-        <polygon points="640,300 710,265 710,335 640,370" fill="var(--mint)"/>
-
-        <polygon points="560,150 620,180 560,210 500,180" fill="var(--blue-soft)"/>
-        <polygon points="500,180 560,210 560,270 500,240" fill="var(--blue)"/>
-        <polygon points="560,210 620,180 620,240 560,270" fill="var(--mint)"/>
-
-        <polygon points="650,110 700,135 650,160 600,135" fill="var(--blue-soft)"/>
-        <polygon points="600,135 650,160 650,210 600,185" fill="var(--blue)"/>
-        <polygon points="650,160 700,135 700,185 650,210" fill="var(--mint)"/>
-
-        <circle cx="718" cy="122" r="7" fill="var(--coral)"/>
-      </svg>
-      <div class="pd-dots" aria-hidden="true"><!-- ✏️ 파트 수만큼 도트, 현재 파트에 is-active -->
-        <span class="pd-dot is-active"></span><span class="pd-dot"></span>
-        <span class="pd-dot"></span><span class="pd-dot"></span>
-      </div>
-      <p class="pd-eyebrow">PART 1 / 4</p><!-- ✏️ N=전체 파트 수 -->
+      <svg class="dv-hero" viewBox="0 0 1280 720" fill="none" aria-hidden="true"><!-- JS가 현재 파트 번호만큼 아이소 큐브를 자동 생성 --></svg>
+      <div class="pd-dots" aria-hidden="true"><!-- JS가 전체 파트 수만큼 자동 생성 --></div>
+      <p class="pd-eyebrow">PART</p><!-- JS가 PART n / N으로 자동 갱신 -->
       <h2 class="pd-title">파트 제목</h2><!-- ✏️ 12자 이내 권장(96px·한 줄 고정, nowrap) -->
       <p class="pd-sub">이 파트에서 다루는 것 한 줄</p>
     </section>
@@ -223,12 +206,49 @@
 
   <script>
   (function(){
+    function partGeometry(n){
+      var presets={
+        1:[[640,126,92,92]],
+        2:[[560,150,60,60],[640,230,70,70]],
+        3:[[670,136,58,58],[584,228,58,58],[756,228,58,58]],
+        4:[[620,94,58,58],[726,158,66,66],[522,188,50,50],[628,264,48,48]],
+        5:[[640,78,48,48],[532,146,62,62],[730,142,46,46],[574,258,48,48],[694,238,64,64]],
+        6:[[610,70,42,42],[510,138,56,56],[724,122,52,52],[466,246,40,40],[604,214,66,66],[764,246,44,44]]
+      }, points=presets[n]&&presets[n].slice();
+      if(!points){
+        points=[];
+        var size=Math.max(28,44-Math.floor((n-7)/2));
+        for(var i=0;i<n;i++){
+          var angle=-Math.PI/2+(Math.PI*2*i/n), ring=i%2?1:.72;
+          points.push([640+Math.cos(angle)*150*ring,178+Math.sin(angle)*82*ring+(i%3)*12,size,size]);
+        }
+      }
+      return points.sort(function(a,b){return a[1]-b[1];});
+    }
+    function cubeMarkup(p,i){
+      var x=Math.round(p[0]),y=Math.round(p[1]),w=Math.round(p[2]),d=Math.round(p[3]),h=Math.round(w/2);
+      return '<g class="pd-cube pd-cube-'+(i+1)+'" data-cube="'+(i+1)+'">'+
+        '<ellipse class="pd-cube-shadow" cx="'+x+'" cy="'+(y+w+d+9)+'" rx="'+Math.round(w*.72)+'" ry="'+Math.max(6,Math.round(w*.17))+'"/>'+
+        '<polygon points="'+x+','+y+' '+(x+w)+','+(y+h)+' '+x+','+(y+w)+' '+(x-w)+','+(y+h)+'" fill="var(--blue-soft)"/>'+
+        '<polygon points="'+(x-w)+','+(y+h)+' '+x+','+(y+w)+' '+x+','+(y+w+d)+' '+(x-w)+','+(y+h+d)+'" fill="var(--blue)"/>'+
+        '<polygon points="'+x+','+(y+w)+' '+(x+w)+','+(y+h)+' '+(x+w)+','+(y+h+d)+' '+x+','+(y+w+d)+'" fill="var(--mint)"/></g>';
+    }
+    function hydratePartDivider(s,index,total){
+      var hero=s.querySelector('.dv-hero'), points=partGeometry(index), html='';
+      for(var i=0;i<points.length;i++)html+=cubeMarkup(points[i],i);
+      if(hero){hero.innerHTML=html+'<circle class="pd-spark" cx="820" cy="112" r="7"/>';hero.setAttribute('data-geometry-count',index);}
+      var dots=s.querySelector('.pd-dots'), dotHtml='';
+      for(var d=1;d<=total;d++)dotHtml+='<span class="pd-dot'+(d===index?' is-active':'')+'"></span>';
+      if(dots)dots.innerHTML=dotHtml;
+      var eyebrow=s.querySelector('.pd-eyebrow');if(eyebrow)eyebrow.textContent='PART '+index+' / '+total;
+      s.setAttribute('data-part-index',index);s.setAttribute('data-part-total',total);
+    }
     var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
     var totalParts = 0;
     slides.forEach(function(s){ if (/\bpart-divider\b/.test(s.className)) totalParts++; });
     var curPart = 0;
     slides.forEach(function(s, i){
-      if (/\bpart-divider\b/.test(s.className)) curPart++;
+      if (/\bpart-divider\b/.test(s.className)) { curPart++; hydratePartDivider(s, curPart, totalParts); }
       var fixed = /\b(cover|s02-slide|s03-slide|part-divider|concept-recap|closing)\b/.test(s.className);
       if (!/\b(cover|concept-recap|closing)\b/.test(s.className)) {
         var pg = document.createElement('div');
