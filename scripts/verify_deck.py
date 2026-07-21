@@ -897,7 +897,8 @@ def main():
     )
     if is_week1_student_deck:
         slide_ids = [el.attrs.get('data-slide') or '' for el in ordered_slides]
-        chk(n == 71, "1주차 학생 덱 슬라이드 71장", f"1주차 학생 덱 슬라이드 {n}장 ≠ 71장")
+        # 2026-07-21: 48p(S39) 뒤에 완성 목표 쇼케이스 S39A를 추가해 71 → 72장.
+        chk(n == 72, "1주차 학생 덱 슬라이드 72장", f"1주차 학생 덱 슬라이드 {n}장 ≠ 72장")
 
         intro_expected = ['S01', 'S01A', 'S01B', 'S01C']
         chk(slide_ids[:4] == intro_expected,

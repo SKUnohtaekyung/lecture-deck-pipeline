@@ -161,7 +161,12 @@
 .portfolio-browser { border-color:var(--ink); background:var(--paper); }
 .portfolio-site { position:relative; isolation:isolate; overflow:hidden; padding:10px; gap:8px; grid-template-rows:38px 1.42fr .82fr .7fr 28px; background:var(--paper); }
 .portfolio-data-bg { position:absolute; inset:0; z-index:0; width:auto; height:auto; margin:0; min-width:0; min-height:0; max-width:none; max-height:none; }
-.portfolio-data-bg img { width:100%; height:100%; object-fit:cover; }
+/* .asset-slot이 display:grid라 height:100%가 퍼센트 순환 참조로 고유비율에 폴백한다(실측 figure 510 vs img 542).
+   absolute+inset:0으로 그리드 사이징에서 빼내야 figure와 높이가 일치하고 object-fit:cover도 의도대로 먹는다. */
+/* ⚠️ 특이도 주의: 위 12행 `.slide figure img{object-fit:contain}`이 (0,1,2)라 `.portfolio-data-bg img`(0,1,1)를
+   이긴다. data-slide 스코프를 붙여 (0,2,2)로 올려야 cover가 실제로 먹는다.
+   배경은 장식이므로 crop 허용 대상 — 박스(813×510)를 빈틈없이 채운다(이미지 1.50 : 박스 1.59 → 상하 16px씩 크롭). */
+.slide[data-slide="S05A"] .portfolio-data-bg img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center; }
 .portfolio-nav,
 .portfolio-hero,
 .portfolio-details,
@@ -1039,7 +1044,9 @@
 .intro-ai-art img { width:100%; height:100%; max-width:none; max-height:none; object-fit:contain; }
 
 .intro-do { position:relative; padding:0; }
-.intro-do p { position:absolute; inset:0; display:grid; place-items:center; color:var(--mint); font-size:220px; letter-spacing:-.04em; text-align:center; filter:saturate(1.45) brightness(1.2); text-shadow:0 0 18px color-mix(in srgb, var(--mint) 55%, transparent); }
+/* 자간 .06em(220px 기준 13.2px). 광학 중앙은 브라우저 실측으로 확인함 —
+   place-items:center가 후행 자간까지 포함해 배치하므로 별도 padding 보정을 넣으면 오히려 우측으로 밀린다(실측 +7px). */
+.intro-do p { position:absolute; inset:0; display:grid; place-items:center; color:var(--mint); font-size:220px; letter-spacing:.06em; text-align:center; filter:saturate(1.45) brightness(1.2); text-shadow:0 0 18px color-mix(in srgb, var(--mint) 55%, transparent); }
 .intro-do-more h2 .intro-do-accent,
 .intro-do-more strong { color:var(--mint); }
 
@@ -1253,3 +1260,144 @@
 .frontend-tech-analogy b { margin-right:5px; color:var(--blue); }
 .frontend-tech--css .frontend-tech-analogy b { color:var(--mint-deep); }
 .frontend-tech--js .frontend-tech-analogy b { color:var(--coral-deep); }
+
+/* ==================================================================
+   2026-07-21 슬라이드 수정 — 조각(part-NN.html) 인라인 <style>에서 이관.
+   전 규칙이 단일 [data-slide]로 스코프 고정(공유 :is() 규칙 무편집).
+   ================================================================== */
+
+/* ---------- part-01 ---------- */
+/* 05: journey-week-image가 figure 밖으로 넘쳐 하단이 잘리던 문제 — object-fit:contain으로 잘림 0 */
+.slide[data-slide="05"] .journey-week-image img { position:absolute; inset:0; display:block; width:100%; height:100%; object-fit:contain; }
+.slide[data-slide="05"] .journey-week-copy { padding-top:26px; }
+
+/* 10: 좌우 박스 내부가 상단에 몰리던 문제 — 제목 아래 여백 확대 + 항목 3개 균등 분산. scope-note 삭제로 생긴 여유를 scope-layout이 흡수하되 666px 하한은 유지 */
+.slide[data-slide="10"] .scope-layout { max-height:410px; }
+.slide[data-slide="10"] .scope-copy article { display:flex; flex-direction:column; justify-content:space-between; }
+.slide[data-slide="10"] .scope-copy h3 { margin:0 0 26px; }
+.slide[data-slide="10"] .scope-copy p { margin:0; }
+
+/* S10B: 실측 결과 .lifecycle-infographic-body가 오른쪽 figure의 퍼센트 높이(순환 참조로 원본 이미지 비율에 맞춰 auto 산정)를 따라가며 720px를 넘겨 리스트 하단이 잘리고 있었다(잘림은 3·4번 문구 추가 이전부터 존재). 행에 명시 높이를 줘 순환을 끊는다 */
+/* 3행(프론트엔드)만 본문이 3줄(58px)인데 413/7=59px 행에 갇혀 하단 9px이 잘렸다.
+   line-height는 이미 1.14까지 조여 더 줄일 여지가 없으므로(1282~1283행) 세로 예산을 늘린다:
+   margin-top 20→12로 8px 확보 + max-height 413→422 → 행 60.3px ≥ 필요 60px, 리스트 하단 666px 유지. */
+.slide[data-slide="S10B"] .lifecycle-infographic-body { grid-template-rows:minmax(0,1fr); max-height:422px; margin-top:12px; }
+.slide[data-slide="S10B"] .lifecycle-stage-list li { padding:1px 0 1px 14px; }
+.slide[data-slide="S10B"] .lifecycle-stage-list span { line-height:1.14; }
+/* 행 제목용 `b`(21px/23.94px) 규칙이 본문 안 인라인 강조 `<b>매장의 홀</b>`에도 걸려 그 줄만 높이가 부풀고
+   3행 본문이 67px가 되어 잘렸다. 본문 안 b는 굵기만 남기고 크기·줄높이를 상속시킨다(3줄 58px로 정상화). */
+.slide[data-slide="S10B"] .lifecycle-stage-list span b { font-size:inherit; line-height:inherit; white-space:nowrap; }
+
+/* S10D: 하단 note가 상단에 붙어 아래가 크게 비던 문제 — 세로 배치로 내리되 666px 하한 준수 */
+.slide[data-slide="S10D"] .index-entry-layout { display:flex; flex-direction:column; }
+.slide[data-slide="S10D"] .index-entry-note { margin-top:auto; margin-bottom:44px; }
+
+/* ---------- part-02 ---------- */
+/* slide 17 · workspace-slide — 레터박스된 사진을 행 하단에 붙여 figcaption과의 여백을 좁힌다. */
+[data-slide="17"] .workspace-image > img {
+  object-position: 50% 100%;
+}
+
+/* slide 20 · practice-create-slide — .asset-slot--hero가 그리드와 무관하게 절대배치되어
+   좌측 파란 박스를 가로로 침범한다. 프레임을 없애고 원본 크기(546x354, 확대 금지)로
+   안전영역 우측(1216px)에 고정한 뒤, 좌측 박스 폭을 좁혀 겹침을 0으로 만든다. */
+[data-slide="20"] .app-guide-shot.asset-slot--hero {
+  top: 64px;
+  right: 0;
+  bottom: auto;
+  left: auto;
+  width: 546px;
+  height: 354px;
+  max-width: 546px;
+  max-height: 354px;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+[data-slide="20"] .app-guide-copy {
+  max-width: 580px;
+}
+
+/* ---------- part-03 ---------- */
+[data-slide="29"] .request-compare-note { margin-top: 48px; }
+
+/* ---------- part-04 ---------- */
+[data-slide="S38"] .project-tree-layout{ bottom:60px; }
+[data-slide="S38"] .path-tail{ white-space:nowrap; }
+
+/* S39A — completion-goal showcase (new 49p). Namespaced pg-* so 9p's .portfolio-* rules are untouched.
+   Every grid row below is a fixed px track; each row's direct child gets min-height:0 so content can
+   never balloon the track (the same overflow class of bug fixed on S38's project-tree grid). */
+[data-slide="S39A"] .pg-body{ position:absolute; left:64px; right:64px; top:228px; bottom:58px; display:flex; flex-direction:column; gap:14px; }
+[data-slide="S39A"] .pg-frame{ position:relative; flex:1 1 auto; min-height:0; overflow:hidden; border:2px solid var(--ink); border-radius:var(--r-lg); background:var(--paper); box-shadow:var(--shadow-lg); }
+[data-slide="S39A"] .pg-bar{ height:36px; display:flex; align-items:center; gap:14px; padding:0 18px; background:var(--ink); color:var(--white); font-size:13px; }
+[data-slide="S39A"] .pg-dots{ display:flex; gap:7px; }
+[data-slide="S39A"] .pg-dots i{ width:9px; height:9px; border-radius:50%; background:var(--white); opacity:.7; }
+[data-slide="S39A"] .pg-url{ font-family:var(--font-mono); }
+/* 세로 합계 = 트랙 284 + gap 4×8 32 + padding 32 = 348 ≤ clientHeight 349 (gap 9px면 352로 3px 초과) */
+[data-slide="S39A"] .pg-site{ position:relative; isolation:isolate; height:calc(100% - 36px); overflow:hidden; padding:16px; gap:8px; display:grid; grid-template-rows:40px 96px 64px 58px 26px; background:var(--paper); }
+[data-slide="S39A"] .pg-bg{ position:absolute; inset:0; z-index:0; width:auto; height:auto; margin:0; min-width:0; min-height:0; max-width:none; max-height:none; }
+/* .asset-slot은 display:grid라 img의 height:100%가 퍼센트 순환 참조로 고유비율(765px)에 폴백한다
+   — figure(349px)를 벗어나 overflow:hidden에 가려질 뿐 실제로는 캔버스를 이탈한다.
+   absolute+inset:0으로 그리드 사이징에서 빼내 figure와 높이를 일치시킨다(8p journey-week-image와 동일 해법). */
+[data-slide="S39A"] .pg-bg img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+[data-slide="S39A"] .pg-nav,
+[data-slide="S39A"] .pg-hero,
+[data-slide="S39A"] .pg-details,
+[data-slide="S39A"] .pg-projects,
+[data-slide="S39A"] .pg-footer{ position:relative; z-index:1; min-height:0; overflow:hidden; }
+[data-slide="S39A"] .pg-nav{ display:flex; align-items:center; justify-content:space-between; padding:0 20px; border-radius:10px; color:var(--ink); border:1px solid var(--glass-line); background:var(--glass-control); box-shadow:inset 0 1px 0 var(--glass-highlight), inset 0 -1px 0 var(--glass-lowlight), 0 6px 16px var(--glass-lowlight); -webkit-backdrop-filter:blur(14px) saturate(1.15); backdrop-filter:blur(14px) saturate(1.15); }
+[data-slide="S39A"] .pg-nav b{ font-size:16px; letter-spacing:.08em; }
+[data-slide="S39A"] .pg-nav b span{ color:var(--coral); }
+[data-slide="S39A"] .pg-nav div{ display:flex; gap:16px; color:var(--gray-700); font-size:11px; font-weight:850; }
+[data-slide="S39A"] .pg-hero{ display:grid; grid-template-columns:minmax(0,1.4fr) minmax(150px,.6fr); gap:14px; overflow:visible; background:transparent; }
+[data-slide="S39A"] .pg-hero-copy{ min-height:0; overflow:hidden; align-self:center; padding:12px 18px; border-radius:12px; border:1px solid var(--glass-line); background:var(--glass-control); box-shadow:inset 0 1px 0 var(--glass-highlight), inset 0 -1px 0 var(--glass-lowlight), 0 6px 16px var(--glass-lowlight); -webkit-backdrop-filter:blur(14px) saturate(1.15); backdrop-filter:blur(14px) saturate(1.15); }
+[data-slide="S39A"] .pg-hero-copy > p{ margin:0; color:var(--blue); font-size:11px; font-weight:900; letter-spacing:.13em; }
+[data-slide="S39A"] .pg-hero-copy h3{ margin:6px 0 5px; color:var(--ink); font-size:21px; line-height:1.18; letter-spacing:-.03em; }
+[data-slide="S39A"] .pg-hero-copy h3 em{ color:var(--mint-deep); font-style:normal; }
+[data-slide="S39A"] .pg-hero-copy > span{ display:block; color:var(--gray-700); font-size:12px; }
+[data-slide="S39A"] .pg-portrait{ position:relative; overflow:hidden; background:transparent; }
+[data-slide="S39A"] .pg-sun{ position:absolute; right:16px; top:12px; width:36px; height:36px; border-radius:50%; background:var(--mint); box-shadow:0 0 0 5px var(--glass-control); }
+[data-slide="S39A"] .pg-face{ position:absolute; left:50%; top:26px; width:50px; height:50px; transform:translateX(-50%); border-radius:50%; background:var(--glass-thick); border:1px solid var(--glass-highlight); box-shadow:inset 0 0 0 7px var(--mint-soft); }
+[data-slide="S39A"] .pg-body-shape{ position:absolute; left:50%; bottom:10px; width:82px; height:22px; transform:translateX(-50%); background:var(--mint-deep); box-shadow:0 -5px 0 var(--glass-line), 0 -10px 0 var(--mint); }
+[data-slide="S39A"] .pg-portrait small{ position:absolute; left:10px; bottom:6px; z-index:2; color:var(--ink); font-size:8px; font-weight:900; letter-spacing:.06em; line-height:1.2; }
+[data-slide="S39A"] .pg-details{ display:grid; grid-template-columns:1.25fr .75fr; gap:8px; }
+[data-slide="S39A"] .pg-about,
+[data-slide="S39A"] .pg-interest{ min-height:0; overflow:hidden; padding:8px 14px; border-radius:10px; border:1px solid var(--glass-line); background:var(--glass-control); box-shadow:inset 0 1px 0 var(--glass-highlight), inset 0 -1px 0 var(--glass-lowlight), 0 6px 16px var(--glass-lowlight); -webkit-backdrop-filter:blur(14px) saturate(1.15); backdrop-filter:blur(14px) saturate(1.15); }
+[data-slide="S39A"] .pg-details small,
+[data-slide="S39A"] .pg-project small{ color:var(--blue); font-size:9px; font-weight:900; letter-spacing:.1em; line-height:1; }
+[data-slide="S39A"] .pg-about p{ margin:5px 0 0; color:var(--gray-700); font-size:12px; line-height:1.4; }
+[data-slide="S39A"] .pg-interest > div{ display:flex; flex-wrap:wrap; gap:5px; margin-top:5px; }
+[data-slide="S39A"] .pg-interest span{ padding:4px 8px; border-radius:var(--r-pill); background:var(--glass-thick); border:1px solid var(--glass-line); color:var(--mint-deep); font-size:10px; font-weight:800; }
+[data-slide="S39A"] .pg-projects{ display:grid; }
+[data-slide="S39A"] .pg-project{ min-height:0; overflow:hidden; display:grid; grid-template-columns:1fr 96px 66px; align-items:center; gap:12px; padding:9px 16px; border-radius:10px; border:1px solid var(--ink); background:var(--ink); box-shadow:0 6px 16px var(--glass-lowlight); }
+[data-slide="S39A"] .pg-project h4{ margin:3px 0 0; color:var(--white); font-size:13px; line-height:1.22; }
+[data-slide="S39A"] .pg-preview{ height:38px; display:flex; align-items:flex-end; gap:5px; padding:6px; border:1px solid var(--glass-line); border-radius:6px; background:var(--blue-panel); }
+[data-slide="S39A"] .pg-preview span{ flex:1; background:var(--mint); }
+[data-slide="S39A"] .pg-preview span:nth-child(2){ background:var(--mint-deep); height:90%; }
+[data-slide="S39A"] .pg-preview span:nth-child(1){ height:40%; }
+[data-slide="S39A"] .pg-preview span:nth-child(3){ height:65%; }
+[data-slide="S39A"] .pg-project > b{ color:var(--white); font-size:9px; }
+[data-slide="S39A"] .pg-footer{ display:flex; align-items:center; justify-content:space-between; padding:0 16px; color:var(--ink); font-weight:800; font-size:10px; letter-spacing:.08em; }
+[data-slide="S39A"] .pg-bottom-note{ flex:0 0 auto; margin:0; color:var(--gray-700); font-size:22px; line-height:1.4; text-align:center; }
+
+/* ---------- part-05 ---------- */
+/* S45(54p): 캐릭터아트 가로 확대, 좌측 스텝박스 폭 축소로 여유 확보. 공유 :is(S45,S56) 규칙은 건드리지 않고 단독 셀렉터로 동일 특이도(0,3,0) 뒤에서 덮어씀. */
+.slide[data-slide="S45"] .steps-full{ right:534px; }
+.slide[data-slide="S45"] .character-art{ right:64px; width:440px; height:340px; }
+
+/* S50(59p): 캐릭터아트 가로 확대, 좌측 dl-rows 폭 축소. 공유 :is(...) 규칙(.s-full, .asset-slot--support)은 건드리지 않고 단독 셀렉터로 동일 특이도(0,3,0) 뒤에서 덮어씀. */
+.slide[data-slide="S50"] .s-full{ right:534px; }
+.slide[data-slide="S50"] .asset-slot--support{ right:64px; width:440px; height:350px; }
+
+/* ---------- part-06 ---------- */
+/* S52 (61p) — dl-term 줄바꿈 해소 + 정렬 일관 + 리드 문장 */
+.slide[data-slide="S52"] .dl-term{ flex-basis:268px; }
+.slide[data-slide="S52"] .issue-lead{ max-width:760px; margin:8px 0 4px; }
+
+/* S56 (65p) — 스텝 박스 좌상단 정렬 + 이미지 확대·하단 배치 */
+.slide[data-slide="S56"] .s-full{ right:540px; }
+.slide[data-slide="S56"] .eval-steps{ justify-content:flex-start; }
+.slide[data-slide="S56"] .refresh-check-art{ width:450px; height:370px; top:290px; right:66px; }
