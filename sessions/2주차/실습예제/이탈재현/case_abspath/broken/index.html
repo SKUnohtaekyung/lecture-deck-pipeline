@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>활동 기록장</title>
+  <!-- 범위 이탈: CSS 를 프로젝트 밖, 특정 PC 의 C:\ 절대경로로 가리킨다. -->
+  <!-- 이 경로는 강사 PC 에만 있던 위치라 다른 PC(그리고 지금 이 PC)에서는 없어서 스타일이 안 붙는다. -->
+  <link rel="stylesheet" href="file:///C:/Users/lecture/Desktop/앵커공유/style.css">
+</head>
+<body>
+  <main class="app">
+    <header class="app-header">
+      <!-- 범위 이탈: 이미지도 프로젝트 밖 C:\ 절대경로로 가리킨다 → 깨진 이미지 아이콘 -->
+      <img class="logo" src="file:///C:/Users/lecture/Pictures/앵커로고.png" alt="앵커 로고" width="48" height="48">
+      <h1>활동 기록장</h1>
+    </header>
+    <p class="desc">오늘 한 활동을 적어 기록으로 남겨 보세요.</p>
+    <div class="input-row">
+      <input id="activityInput" type="text" placeholder="예: 30분 산책하기">
+      <button id="addButton">기록 추가</button>
+    </div>
+    <ul id="logList" class="log-list"></ul>
+    <p id="emptyMsg" class="empty">아직 기록이 없어요.</p>
+  </main>
+  <!-- 스크립트만 상대경로라 기능(추가)은 동작하지만, 스타일과 로고가 깨진다. -->
+  <script src="./script.js"></script>
+</body>
+</html>

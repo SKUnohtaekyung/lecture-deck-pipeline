@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>오늘의 활동 기록 도구</title>
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <main class="card">
+    <h1>오늘의 활동 기록 도구</h1>
+    <p class="desc">오늘 한 활동을 한 줄씩 적어 기록으로 남겨 보세요. (새로고침하면 기록은 사라집니다.)</p>
+
+    <div class="input-row">
+      <label for="activity-input" class="sr-only">활동 내용</label>
+      <input type="text" id="activity-input" placeholder="예: 아침 산책 30분" />
+      <button id="record-button" type="button">기록하기</button>
+    </div>
+
+    <p id="message" class="message"></p>
+
+    <section class="result">
+      <h2>오늘 기록</h2>
+      <ul id="record-list"></ul>
+    </section>
+  </main>
+
+  <script src="./script.js"></script>
+</body>
+</html>

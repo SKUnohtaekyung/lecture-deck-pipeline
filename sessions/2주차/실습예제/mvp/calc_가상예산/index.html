@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>가상 예산 연습 도구</title>
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <main class="card">
+    <h1>가상 예산 연습 도구</h1>
+    <p class="desc">연습용 예산을 정하고 지출을 더해 보며 합계와 남은 예산을 확인해 보세요.</p>
+
+    <div class="field">
+      <label for="budget">이번 달 예산 (원)</label>
+      <input type="number" id="budget" placeholder="예: 300000" min="0" />
+    </div>
+
+    <div class="field">
+      <label for="expense-name">지출 항목 (선택)</label>
+      <input type="text" id="expense-name" placeholder="예: 점심" />
+      <label for="expense-amount">지출 금액 (원)</label>
+      <input type="number" id="expense-amount" placeholder="예: 9000" min="0" />
+      <button id="add-button" type="button">지출 추가</button>
+    </div>
+
+    <p id="message" class="message"></p>
+
+    <section class="result">
+      <h2>지출 목록</h2>
+      <ul id="expense-list"></ul>
+      <div class="totals">
+        <p>합계: <span id="total">0</span> 원</p>
+        <p>잔액: <span id="balance">0</span> 원</p>
+      </div>
+    </section>
+  </main>
+
+  <script src="./script.js"></script>
+</body>
+</html>

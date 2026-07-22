@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>활동 기록장</title>
+  <!-- 범위 이탈: 링크는 ./style.css 인데 실제 파일 이름은 styles.css 다 (s 하나 차이). -->
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <main class="app">
+    <h1>활동 기록장</h1>
+    <p class="desc">오늘 한 활동을 적어 기록으로 남겨 보세요.</p>
+    <div class="input-row">
+      <input id="activityInput" type="text" placeholder="예: 30분 산책하기">
+      <button id="addButton">기록 추가</button>
+    </div>
+    <ul id="logList" class="log-list"></ul>
+    <p id="emptyMsg" class="empty">아직 기록이 없어요.</p>
+  </main>
+  <script src="./script.js"></script>
+</body>
+</html>

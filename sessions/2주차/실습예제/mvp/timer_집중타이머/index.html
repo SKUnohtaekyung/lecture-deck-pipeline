@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>집중 타이머</title>
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <main class="card">
+    <h1>집중 타이머</h1>
+    <p class="desc">집중할 시간을 분으로 입력하고 시작을 누르면 남은 시간이 표시됩니다.</p>
+
+    <div class="field">
+      <label for="minutes">집중 시간 (분)</label>
+      <input type="number" id="minutes" placeholder="예: 25" min="1" />
+      <button id="start-button" type="button">시작</button>
+    </div>
+
+    <section class="result">
+      <h2>남은 시간</h2>
+      <p id="time-display">00:00</p>
+      <p id="notice"></p>
+    </section>
+  </main>
+
+  <script src="./script.js"></script>
+</body>
+</html>
