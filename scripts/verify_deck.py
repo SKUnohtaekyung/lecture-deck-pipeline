@@ -890,6 +890,7 @@ def main():
     # ── 1주차 학생 덱 전용 계약(2026-07-21) ──
     # 다른 주차·카탈로그·발표자 노트에 오작동하지 않도록 파일 위치와 정본 파일명을 함께 본다.
     # 새 S01A/B/C의 존재 자체를 판별 조건으로 쓰면 누락된 덱이 검사를 우회하므로 경로를 기준으로 한다.
+    # 2026-07-22: 편집본 구성 개편(79장/PART 5, S00 표지 신설). 배포본은 재빌드 전까지 72장/PART 6 유지.
     deck_file = Path(a.deck).resolve()
     is_week1_student_deck = (
         deck_file.parent.name == '1주차'
@@ -897,16 +898,28 @@ def main():
     )
     if is_week1_student_deck:
         slide_ids = [el.attrs.get('data-slide') or '' for el in ordered_slides]
-        # 2026-07-21: 48p(S39) 뒤에 완성 목표 쇼케이스 S39A를 추가해 71 → 72장.
-        chk(n == 72, "1주차 학생 덱 슬라이드 72장", f"1주차 학생 덱 슬라이드 {n}장 ≠ 72장")
+        if deck_file.stem == '강의덱':
+            # 편집본: S00 표지 신설 + PART divider 1장 감소로 79장.
+            expected_n, expected_dividers = 79, 5
+            intro_expected = ['S00', 'S01', 'S01A', 'S01B', 'S01C']
+        else:
+            # 배포본(강의덱_배포): 2026-07-21) 48p(S39) 뒤에 완성 목표 쇼케이스 S39A를 추가해 71 → 72장.
+            expected_n, expected_dividers = 72, 6
+            intro_expected = ['S01', 'S01A', 'S01B', 'S01C']
 
-        intro_expected = ['S01', 'S01A', 'S01B', 'S01C']
-        chk(slide_ids[:4] == intro_expected,
-            "도입 S01 → S01A → S01B → S01C 순서 유지",
-            f"도입 슬라이드 순서 오류: {slide_ids[:4]} (필요 {intro_expected})")
+        chk(n == expected_n,
+            f"1주차 학생 덱({deck_file.stem}) 슬라이드 {expected_n}장",
+            f"1주차 학생 덱({deck_file.stem}) 슬라이드 {n}장 ≠ {expected_n}장")
+
+        intro_len = len(intro_expected)
+        chk(slide_ids[:intro_len] == intro_expected,
+            f"도입 {' → '.join(intro_expected)} 순서 유지",
+            f"도입 슬라이드 순서 오류: {slide_ids[:intro_len]} (필요 {intro_expected})")
 
         week1_dividers = sum(1 for el in ordered_slides if 'part-divider' in classes(el.attrs))
-        chk(week1_dividers == 6, "1주차 PART divider 6장", f"1주차 PART divider {week1_dividers}장 ≠ 6장")
+        chk(week1_dividers == expected_dividers,
+            f"1주차 PART divider {expected_dividers}장",
+            f"1주차 PART divider {week1_dividers}장 ≠ {expected_dividers}장")
 
         # 검정 터미널 두 장은 HTML 구조에서 dark + white-copy 계약을 명시해야 한다.
         # 현재 컴포넌트 명명(`.terminal-dark > .terminal-copy`)과 새 전용 명명
