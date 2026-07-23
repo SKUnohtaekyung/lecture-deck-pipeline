@@ -76,16 +76,8 @@
 
 /* ---------- fixed goal and agenda ---------- */
 .s02-slide .s-body-wrap { position:absolute; left:64px; top:132px; bottom:52px; width:720px; display:flex; flex-direction:column; justify-content:center; }
-.s02-slide .s-title { margin:8px 0 0; font-size:53px; line-height:1.16; }
-.s02-slide .s-lead { max-width:700px; margin:18px 0 0; font-size:23px; }
-.s02-slide .goal-sequence { margin:24px 0 0; padding:0; list-style:none; display:grid; grid-template-columns:1fr 1fr; gap:12px 16px; }
-.s02-slide .goal-sequence li { min-height:84px; padding:15px 18px; border:1px solid var(--blue-line-strong); border-radius:var(--r-md); background:var(--blue-panel); }
-.s02-slide .goal-sequence li:nth-child(3),
-.s02-slide .goal-sequence li:nth-child(4) { border-color:var(--mint-line); background:var(--mint-soft); }
-.s02-slide .goal-sequence b { display:block; color:var(--blue); font-size:20px; }
-.s02-slide .goal-sequence li:nth-child(3) b,
-.s02-slide .goal-sequence li:nth-child(4) b { color:var(--mint-deep); }
-.s02-slide .goal-sequence span { display:block; margin-top:5px; color:var(--gray-700); font-size:17px; line-height:1.35; }
+.s02-slide .s-title { margin:20px 0 0; font-size:66px; line-height:1.14; }
+.s02-slide .s-lead { max-width:660px; margin:26px 0 0; font-size:27px; line-height:1.5; }
 .s02-slide.has-image .asset-slot--hero { right:54px; top:50%; bottom:auto; transform:translateY(-50%); width:400px; height:362px; max-width:none; max-height:none; }
 
 /* ---------- part dividers ---------- */
@@ -106,7 +98,6 @@
 .journey-slide .journey-week--three .journey-week-label { color:var(--coral-deep); }
 .journey-slide .journey-week h3 { margin:5px 0 7px; color:var(--ink); font-size:23px; line-height:1.2; }
 .journey-slide .journey-week-copy > p:last-child { margin:0; color:var(--gray-700); font-size:17px; line-height:1.42; }
-.journey-slide .journey-overview-note { margin:22px 0 0; font-size:21px; }
 
 .portfolio-showcase { background:var(--paper); }
 .portfolio-showcase .portfolio-stage { position:absolute; left:48px; right:48px; top:100px; bottom:34px; display:grid; grid-template-columns:31% 69%; gap:34px; align-items:stretch; }
@@ -419,7 +410,10 @@
 .slide.workspace-slide[data-slide="17"] .workspace-image figcaption {
   min-height:0;
   display:flex;
-  align-items:center;
+  flex-direction:column;
+  align-items:flex-start;
+  justify-content:center;
+  gap:3px;
   padding:12px 18px;
   font-size:19px;
   line-height:1.35;
@@ -848,10 +842,8 @@
    Keep browser chrome, app chrome, badges, paths and compact metadata at their
    native UI scale. Explanations, captions, conclusions and card bodies below
    are presentation copy and therefore never render below 22px. */
-.s02-slide .goal-sequence span,
 .s03-slide .an-d,
 .journey-slide .journey-week-copy > p:last-child,
-.journey-slide .journey-overview-note,
 .portfolio-story > p:not(.s-eyebrow),
 .role-flow-intro p,
 .role-step p,
@@ -933,7 +925,6 @@
 }
 
 /* Room for the larger copy without narrowing columns or forcing extra wraps. */
-.s02-slide .goal-sequence > div { min-height:100px; }
 .role-flow-stage { grid-template-columns:290px minmax(0,1fr); }
 .llm-agent-band { grid-template-columns:230px minmax(0,1fr); padding-block:16px; }
 .llm-agent-band li { line-height:1.36; }
@@ -1276,9 +1267,9 @@
 .slide[data-slide="S10D"] .index-entry-note { margin-top:auto; margin-bottom:44px; }
 
 /* ---------- part-02 ---------- */
-/* slide 17 · workspace-slide — 레터박스된 사진을 행 하단에 붙여 figcaption과의 여백을 좁힌다. */
+/* slide 17 · workspace-slide — 설명문과는 여백을 두되, 그림 자체는 조금 위에서 읽히게 둔다. */
 [data-slide="17"] .workspace-image > img {
-  object-position: 50% 100%;
+  object-position: 50% 68%;
 }
 
 /* slide 20 · practice-create-slide — .asset-slot--hero가 그리드와 무관하게 절대배치되어
@@ -1324,10 +1315,10 @@
 .slide[data-slide="S52"] .dl-term{ flex-basis:268px; }
 .slide[data-slide="S52"] .issue-lead{ max-width:760px; margin:8px 0 4px; }
 
-/* S56 (65p) — 스텝 박스 좌상단 정렬 + 이미지 확대·하단 배치 */
-.slide[data-slide="S56"] .s-full{ right:540px; }
+/* S56 (65p) — 스텝 박스 좌상단 정렬 + 이미지 확대·하단 배치(좌측 스텝 박스와 겹치지 않게 열 폭도 함께 조정) */
+.slide[data-slide="S56"] .s-full{ right:660px; }
 .slide[data-slide="S56"] .eval-steps{ justify-content:flex-start; }
-.slide[data-slide="S56"] .refresh-check-art{ width:450px; height:370px; top:290px; right:66px; }
+.slide[data-slide="S56"] .refresh-check-art{ width:588px; height:324px; top:338px; right:40px; }
 
 /* ==================================================================
    2026-07-23 PART 3 확장 — 프롬프트·컨텍스트 엔지니어링, AI의 구조적 한계,

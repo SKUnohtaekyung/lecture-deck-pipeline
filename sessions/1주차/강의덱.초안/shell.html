@@ -9,23 +9,35 @@
   <link rel="stylesheet" href="../../kit/styles/deck.css?v=20260721-agenda1col">
   <link rel="stylesheet" href="../../kit/styles/legibility.css">
   <link rel="stylesheet" href="../../kit/styles/patterns.css">
-  <link rel="stylesheet" href="강의덱.초안/revision.css?v=20260721y">
+  <link rel="stylesheet" href="강의덱.초안/revision.css?v=20260723-caption-align">
   <style data-part="shell">
-  /* [3단계 표지 차별화] S00 코스 대주제 표지 — 다크 배경(--ink)으로 S01과 무드 분리, 우측 큐브 3개 유지 */
-  [data-slide="S00"].cover{ background:var(--ink); }
-  [data-slide="S00"] .cover-lead{ color:var(--white); }
-  [data-slide="S00"] .cover-title{ top:222px; }
-  [data-slide="S00"] .cover-title .ko{ font-size:82px; color:var(--white); }
-  [data-slide="S00"] .cover-title .ko .hl{ color:var(--mint); }
-  /* 다크 배경 위에서 큐브 무드(블루·민트) 대비를 유지하며 윗면 톤만 조정 — SVG polygon fill 참고 */
-  [data-slide="S00"] .cover-sub{ position:absolute; left:64px; right:410px; top:428px; z-index:2;
-    margin:0; font-size:22px; line-height:1.6; color:var(--on-dark-muted); font-weight:600; }
-  [data-slide="S00"] .cover-weeks{ position:absolute; left:64px; right:410px; bottom:60px; z-index:2;
-    display:flex; gap:14px; }
+  /* S00 코스 대주제 표지 — 2페이지와 다른 '낮은 무대' 구도. 옅은 배경 전환은 표지 전용 종이 질감 이미지로 구현한다. */
+  [data-slide="S00"].cover{ background:var(--white); }
+  [data-slide="S00"] .cover-geo{ display:none; }
+  [data-slide="S00"] .s00-bg{ position:absolute; inset:0; z-index:0; width:auto; height:auto; max-width:none; max-height:none; margin:0; pointer-events:none; }
+  [data-slide="S00"] .s00-bg img{ display:block; width:100%; height:100%; object-fit:cover; }
+  [data-slide="S00"] .cover-lead{ top:58px; color:var(--blue); font-size:18px; font-weight:900; letter-spacing:.08em; }
+  [data-slide="S00"] .cover-title{ top:166px; right:600px; z-index:4; }
+  [data-slide="S00"] .cover-title .ko{ font-size:72px; line-height:1.1; color:var(--ink); }
+  [data-slide="S00"] .cover-title .ko .hl{ color:var(--mint-deep); }
+  [data-slide="S00"] .cover-sub{ position:absolute; left:64px; right:620px; top:348px; z-index:4;
+    margin:0; font-size:22px; line-height:1.58; color:var(--gray-700); font-weight:650; }
+  [data-slide="S00"] .cover-weeks{ position:absolute; left:64px; right:620px; bottom:54px; z-index:5;
+    display:flex; gap:8px; }
   [data-slide="S00"] .cover-week{ flex:1 1 0; background:var(--white); border:1px solid var(--blue-line-strong);
-    border-radius:var(--r-md); padding:14px 16px; }
-  [data-slide="S00"] .cover-week b{ display:block; font-size:24px; font-weight:800; color:var(--blue); margin-bottom:4px; }
-  [data-slide="S00"] .cover-week span{ display:block; font-size:22px; font-weight:600; color:var(--gray-700); line-height:1.3; }
+    border-radius:var(--r-pill); padding:9px 12px; box-shadow:var(--shadow-sm); }
+  [data-slide="S00"] .cover-week:first-child{ background:var(--mint-soft); border-color:var(--mint-line); }
+  [data-slide="S00"] .cover-week b{ display:inline; font-size:18px; font-weight:900; color:var(--blue); margin:0 5px 0 0; }
+  [data-slide="S00"] .cover-week:first-child b{ color:var(--mint-deep); }
+  [data-slide="S00"] .cover-week span{ display:inline; font-size:16px; font-weight:750; color:var(--gray-700); line-height:1.25; }
+  [data-slide="S00"] .s00-hero{ position:absolute; right:0; top:78px; bottom:auto; z-index:2; width:1100px; height:570px;
+    max-width:none; max-height:none; margin:0; overflow:visible; pointer-events:none; }
+  [data-slide="S00"] .s00-hero img{ display:block; width:100%; height:100%; object-fit:contain; object-position:center; }
+  [data-slide="S00"] .s00-spot{ position:absolute; z-index:3; margin:0; pointer-events:none; }
+  [data-slide="S00"] .s00-spot img{ display:block; width:100%; height:100%; object-fit:contain; }
+  [data-slide="S00"] .s00-folder{ left:474px; top:42px; width:74px; height:74px; }
+  [data-slide="S00"] .s00-pencil{ left:560px; top:47px; width:108px; height:68px; transform:rotate(-8deg); }
+  [data-slide="S00"] .s00-check{ right:42px; top:62px; width:92px; height:92px; }
 
   /* [3단계 목차 6개 재배치] S03 아젠다 — 5→6항목, 설명 22px 하한 충족(1열 연속 유지) */
   [data-slide="S03"] .an-d{ font-size:22px; line-height:1.4; }
@@ -83,12 +95,15 @@
 <body>
   <div class="deck">
     <section class="slide cover" data-slide="S00">
+      <figure class="s00-bg asset-slot asset-slot--support" data-asset-kind="paper-cut-v1" data-image-purpose="decorative" data-image-state="ready" data-asset-id="ASSET-047" aria-hidden="true"><img src="자료/images/s00_light-paper-background.png" alt="" aria-hidden="true"></figure>
       <svg class="cover-geo" viewBox="0 0 1280 720" fill="none" aria-hidden="true">
         <g data-cube="top"><polygon points="1170,300 1226,328 1170,356 1114,328" fill="var(--periwinkle)"/><polygon points="1114,328 1170,356 1170,414 1114,386" fill="var(--blue)"/><polygon points="1170,356 1226,328 1226,386 1170,414" fill="var(--mint)"/></g>
         <g data-cube="middle"><polygon points="1084,352 1140,380 1084,408 1028,380" fill="var(--periwinkle)"/><polygon points="1028,380 1084,408 1084,466 1028,438" fill="var(--blue)"/><polygon points="1084,408 1140,380 1140,438 1084,466" fill="var(--mint)"/></g>
         <g data-cube="base"><polygon points="998,404 1054,432 998,460 942,432" fill="var(--periwinkle)"/><polygon points="942,432 998,460 998,518 942,490" fill="var(--blue)"/><polygon points="998,460 1054,432 1054,490 998,518" fill="var(--mint)"/></g>
         <circle cx="1170" cy="256" r="13" fill="var(--coral)"/>
       </svg>
+      <figure class="s00-hero asset-slot asset-slot--hero" data-asset-kind="paper-cut-v1" data-image-purpose="mnemonic" data-image-state="ready" data-asset-id="ASSET-043"><img src="자료/images/s00_workbench-hero-paper-cut-v1-transparent.png" alt="빈 웹페이지 틀과 프로젝트 폴더, 연필, 확인 표식이 함께 있어 첫 웹사이트를 만들고 확인하는 과정을 보여 준다."></figure>
+      <figure class="s00-spot s00-check asset-slot asset-slot--spot" data-asset-kind="paper-cut-v1" data-image-purpose="decorative" data-image-state="ready" data-asset-id="ASSET-046" aria-hidden="true"><img src="자료/images/s00_check-paper-cut-v1-transparent.png" alt="" aria-hidden="true"></figure>
       <div class="cover-lead">VIBECODING · 3 WEEKS</div>
       <div class="cover-title"><h1 class="ko">AI와 함께 만드는<br>나의 첫 <span class="hl">웹사이트</span></h1></div>
       <p class="cover-sub">비전공자가 AI 코딩 에이전트와 함께 아이디어를 화면으로 만들고, 직접 확인하고 고쳐서, 인터넷에 공개하기까지</p>
@@ -142,13 +157,12 @@
           <article class="journey-week journey-week--two" role="listitem"><figure class="journey-week-image asset-slot asset-slot--spot" data-asset-kind="paper-cut-v1" data-image-purpose="explanatory" data-image-state="ready" data-asset-id="ASSET-027"><img src="자료/images/s05_week2_journey-paper-cut-v1-transparent.png" alt="기획서와 기능 카드가 프로토타입으로 이어져 문제와 기능을 MVP로 만드는 2주차 흐름을 보여 준다."></figure><div class="journey-week-copy"><p class="journey-week-label">2주차</p><h3>문제와 기능을 MVP로 만들기</h3><p>누구의 문제를 풀지 정하고 꼭 필요한 기능만 첫 제품으로 만듭니다.</p></div></article>
           <article class="journey-week journey-week--three" role="listitem"><figure class="journey-week-image asset-slot asset-slot--spot" data-asset-kind="paper-cut-v1" data-image-purpose="explanatory" data-image-state="ready" data-asset-id="ASSET-028"><img src="자료/images/s05_week3_journey-paper-cut-v1-transparent.png" alt="공개된 웹 화면의 사용자 반응이 수정 도구로 돌아와 배포와 개선의 3주차 흐름을 보여 준다."></figure><div class="journey-week-copy"><p class="journey-week-label">3주차</p><h3>웹에 공개하고 더 나아지게 하기</h3><p>만든 결과를 웹에 공개하고 반응을 확인해 고친 뒤 다시 공개합니다.</p></div></article>
         </div>
-        <p class="s-body journey-overview-note">이번 주에는 여정의 첫 단추인 <span class="hl-mint-underline">요청 → 확인 → 수정</span>을 직접 경험합니다.</p>
       </div>
     </section>
 
     <section class="slide s02-slide has-image" data-slide="S02">
       <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">WEEK 1<br>첫 웹페이지</div></header>
-      <div class="s-body-wrap"><p class="s-eyebrow">오늘의 목표</p><h2 class="s-title">내 소개 페이지를<br><span class="hl">만들고 직접 고칩니다</span></h2><p class="s-lead">수업이 끝나면 내 컴퓨터의 <code>index.html</code>을 직접 열어 결과를 확인할 수 있습니다.</p><ol class="goal-sequence" aria-label="오늘의 실습 순서"><li><b>index.html 열기</b><span>브라우저에서 내 페이지를 엽니다.</span></li><li><b>내용 확인</b><span>이름·한 줄 소개·관심사가 보이는지 봅니다.</span></li><li><b>한 가지 수정</b><span>원하는 문장이나 색 하나만 바꿉니다.</span></li><li><b>새로고침 확인</b><span>바꾼 곳과 그대로 둔 곳을 함께 봅니다.</span></li></ol></div>
+      <div class="s-body-wrap"><p class="s-eyebrow">오늘의 목표</p><h2 class="s-title">내 소개 페이지를<br><span class="hl">만들고 직접 고칩니다</span></h2><p class="s-lead">수업이 끝나면 내 작업물을 열어 결과를 확인할 수 있습니다.</p></div>
       <figure class="asset-slot asset-slot--hero" data-asset-kind="paper-cut-v1" data-image-purpose="mnemonic" data-image-state="ready" data-asset-id="ASSET-001"><img src="자료/images/s02_arrival-three-actions-paper-cut-v1-transparent.png" alt="작업지시서가 제작 도구를 거쳐 확인 표식으로 이어져 요청·제작·검수의 흐름을 보여 준다."></figure>
     </section>
 

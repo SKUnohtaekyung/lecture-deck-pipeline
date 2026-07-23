@@ -9,23 +9,35 @@
   <link rel="stylesheet" href="../../kit/styles/deck.css?v=20260721-agenda1col">
   <link rel="stylesheet" href="../../kit/styles/legibility.css">
   <link rel="stylesheet" href="../../kit/styles/patterns.css">
-  <link rel="stylesheet" href="강의덱.초안/revision.css?v=20260721y">
+  <link rel="stylesheet" href="강의덱.초안/revision.css?v=20260723-caption-align">
   <style data-part="shell">
-  /* [3단계 표지 차별화] S00 코스 대주제 표지 — 다크 배경(--ink)으로 S01과 무드 분리, 우측 큐브 3개 유지 */
-  [data-slide="S00"].cover{ background:var(--ink); }
-  [data-slide="S00"] .cover-lead{ color:var(--white); }
-  [data-slide="S00"] .cover-title{ top:222px; }
-  [data-slide="S00"] .cover-title .ko{ font-size:82px; color:var(--white); }
-  [data-slide="S00"] .cover-title .ko .hl{ color:var(--mint); }
-  /* 다크 배경 위에서 큐브 무드(블루·민트) 대비를 유지하며 윗면 톤만 조정 — SVG polygon fill 참고 */
-  [data-slide="S00"] .cover-sub{ position:absolute; left:64px; right:410px; top:428px; z-index:2;
-    margin:0; font-size:22px; line-height:1.6; color:var(--on-dark-muted); font-weight:600; }
-  [data-slide="S00"] .cover-weeks{ position:absolute; left:64px; right:410px; bottom:60px; z-index:2;
-    display:flex; gap:14px; }
+  /* S00 코스 대주제 표지 — 2페이지와 다른 '낮은 무대' 구도. 옅은 배경 전환은 표지 전용 종이 질감 이미지로 구현한다. */
+  [data-slide="S00"].cover{ background:var(--white); }
+  [data-slide="S00"] .cover-geo{ display:none; }
+  [data-slide="S00"] .s00-bg{ position:absolute; inset:0; z-index:0; width:auto; height:auto; max-width:none; max-height:none; margin:0; pointer-events:none; }
+  [data-slide="S00"] .s00-bg img{ display:block; width:100%; height:100%; object-fit:cover; }
+  [data-slide="S00"] .cover-lead{ top:58px; color:var(--blue); font-size:18px; font-weight:900; letter-spacing:.08em; }
+  [data-slide="S00"] .cover-title{ top:166px; right:600px; z-index:4; }
+  [data-slide="S00"] .cover-title .ko{ font-size:72px; line-height:1.1; color:var(--ink); }
+  [data-slide="S00"] .cover-title .ko .hl{ color:var(--mint-deep); }
+  [data-slide="S00"] .cover-sub{ position:absolute; left:64px; right:620px; top:348px; z-index:4;
+    margin:0; font-size:22px; line-height:1.58; color:var(--gray-700); font-weight:650; }
+  [data-slide="S00"] .cover-weeks{ position:absolute; left:64px; right:620px; bottom:54px; z-index:5;
+    display:flex; gap:8px; }
   [data-slide="S00"] .cover-week{ flex:1 1 0; background:var(--white); border:1px solid var(--blue-line-strong);
-    border-radius:var(--r-md); padding:14px 16px; }
-  [data-slide="S00"] .cover-week b{ display:block; font-size:24px; font-weight:800; color:var(--blue); margin-bottom:4px; }
-  [data-slide="S00"] .cover-week span{ display:block; font-size:22px; font-weight:600; color:var(--gray-700); line-height:1.3; }
+    border-radius:var(--r-pill); padding:9px 12px; box-shadow:var(--shadow-sm); }
+  [data-slide="S00"] .cover-week:first-child{ background:var(--mint-soft); border-color:var(--mint-line); }
+  [data-slide="S00"] .cover-week b{ display:inline; font-size:18px; font-weight:900; color:var(--blue); margin:0 5px 0 0; }
+  [data-slide="S00"] .cover-week:first-child b{ color:var(--mint-deep); }
+  [data-slide="S00"] .cover-week span{ display:inline; font-size:16px; font-weight:750; color:var(--gray-700); line-height:1.25; }
+  [data-slide="S00"] .s00-hero{ position:absolute; right:0; top:78px; bottom:auto; z-index:2; width:1100px; height:570px;
+    max-width:none; max-height:none; margin:0; overflow:visible; pointer-events:none; }
+  [data-slide="S00"] .s00-hero img{ display:block; width:100%; height:100%; object-fit:contain; object-position:center; }
+  [data-slide="S00"] .s00-spot{ position:absolute; z-index:3; margin:0; pointer-events:none; }
+  [data-slide="S00"] .s00-spot img{ display:block; width:100%; height:100%; object-fit:contain; }
+  [data-slide="S00"] .s00-folder{ left:474px; top:42px; width:74px; height:74px; }
+  [data-slide="S00"] .s00-pencil{ left:560px; top:47px; width:108px; height:68px; transform:rotate(-8deg); }
+  [data-slide="S00"] .s00-check{ right:42px; top:62px; width:92px; height:92px; }
 
   /* [3단계 목차 6개 재배치] S03 아젠다 — 5→6항목, 설명 22px 하한 충족(1열 연속 유지) */
   [data-slide="S03"] .an-d{ font-size:22px; line-height:1.4; }
@@ -83,12 +95,15 @@
 <body>
   <div class="deck">
     <section class="slide cover" data-slide="S00">
+      <figure class="s00-bg asset-slot asset-slot--support" data-asset-kind="paper-cut-v1" data-image-purpose="decorative" data-image-state="ready" data-asset-id="ASSET-047" aria-hidden="true"><img src="자료/images/s00_light-paper-background.png" alt="" aria-hidden="true"></figure>
       <svg class="cover-geo" viewBox="0 0 1280 720" fill="none" aria-hidden="true">
         <g data-cube="top"><polygon points="1170,300 1226,328 1170,356 1114,328" fill="var(--periwinkle)"/><polygon points="1114,328 1170,356 1170,414 1114,386" fill="var(--blue)"/><polygon points="1170,356 1226,328 1226,386 1170,414" fill="var(--mint)"/></g>
         <g data-cube="middle"><polygon points="1084,352 1140,380 1084,408 1028,380" fill="var(--periwinkle)"/><polygon points="1028,380 1084,408 1084,466 1028,438" fill="var(--blue)"/><polygon points="1084,408 1140,380 1140,438 1084,466" fill="var(--mint)"/></g>
         <g data-cube="base"><polygon points="998,404 1054,432 998,460 942,432" fill="var(--periwinkle)"/><polygon points="942,432 998,460 998,518 942,490" fill="var(--blue)"/><polygon points="998,460 1054,432 1054,490 998,518" fill="var(--mint)"/></g>
         <circle cx="1170" cy="256" r="13" fill="var(--coral)"/>
       </svg>
+      <figure class="s00-hero asset-slot asset-slot--hero" data-asset-kind="paper-cut-v1" data-image-purpose="mnemonic" data-image-state="ready" data-asset-id="ASSET-043"><img src="자료/images/s00_workbench-hero-paper-cut-v1-transparent.png" alt="빈 웹페이지 틀과 프로젝트 폴더, 연필, 확인 표식이 함께 있어 첫 웹사이트를 만들고 확인하는 과정을 보여 준다."></figure>
+      <figure class="s00-spot s00-check asset-slot asset-slot--spot" data-asset-kind="paper-cut-v1" data-image-purpose="decorative" data-image-state="ready" data-asset-id="ASSET-046" aria-hidden="true"><img src="자료/images/s00_check-paper-cut-v1-transparent.png" alt="" aria-hidden="true"></figure>
       <div class="cover-lead">VIBECODING · 3 WEEKS</div>
       <div class="cover-title"><h1 class="ko">AI와 함께 만드는<br>나의 첫 <span class="hl">웹사이트</span></h1></div>
       <p class="cover-sub">비전공자가 AI 코딩 에이전트와 함께 아이디어를 화면으로 만들고, 직접 확인하고 고쳐서, 인터넷에 공개하기까지</p>
@@ -142,13 +157,12 @@
           <article class="journey-week journey-week--two" role="listitem"><figure class="journey-week-image asset-slot asset-slot--spot" data-asset-kind="paper-cut-v1" data-image-purpose="explanatory" data-image-state="ready" data-asset-id="ASSET-027"><img src="자료/images/s05_week2_journey-paper-cut-v1-transparent.png" alt="기획서와 기능 카드가 프로토타입으로 이어져 문제와 기능을 MVP로 만드는 2주차 흐름을 보여 준다."></figure><div class="journey-week-copy"><p class="journey-week-label">2주차</p><h3>문제와 기능을 MVP로 만들기</h3><p>누구의 문제를 풀지 정하고 꼭 필요한 기능만 첫 제품으로 만듭니다.</p></div></article>
           <article class="journey-week journey-week--three" role="listitem"><figure class="journey-week-image asset-slot asset-slot--spot" data-asset-kind="paper-cut-v1" data-image-purpose="explanatory" data-image-state="ready" data-asset-id="ASSET-028"><img src="자료/images/s05_week3_journey-paper-cut-v1-transparent.png" alt="공개된 웹 화면의 사용자 반응이 수정 도구로 돌아와 배포와 개선의 3주차 흐름을 보여 준다."></figure><div class="journey-week-copy"><p class="journey-week-label">3주차</p><h3>웹에 공개하고 더 나아지게 하기</h3><p>만든 결과를 웹에 공개하고 반응을 확인해 고친 뒤 다시 공개합니다.</p></div></article>
         </div>
-        <p class="s-body journey-overview-note">이번 주에는 여정의 첫 단추인 <span class="hl-mint-underline">요청 → 확인 → 수정</span>을 직접 경험합니다.</p>
       </div>
     </section>
 
     <section class="slide s02-slide has-image" data-slide="S02">
       <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">WEEK 1<br>첫 웹페이지</div></header>
-      <div class="s-body-wrap"><p class="s-eyebrow">오늘의 목표</p><h2 class="s-title">내 소개 페이지를<br><span class="hl">만들고 직접 고칩니다</span></h2><p class="s-lead">수업이 끝나면 내 컴퓨터의 <code>index.html</code>을 직접 열어 결과를 확인할 수 있습니다.</p><ol class="goal-sequence" aria-label="오늘의 실습 순서"><li><b>index.html 열기</b><span>브라우저에서 내 페이지를 엽니다.</span></li><li><b>내용 확인</b><span>이름·한 줄 소개·관심사가 보이는지 봅니다.</span></li><li><b>한 가지 수정</b><span>원하는 문장이나 색 하나만 바꿉니다.</span></li><li><b>새로고침 확인</b><span>바꾼 곳과 그대로 둔 곳을 함께 봅니다.</span></li></ol></div>
+      <div class="s-body-wrap"><p class="s-eyebrow">오늘의 목표</p><h2 class="s-title">내 소개 페이지를<br><span class="hl">만들고 직접 고칩니다</span></h2><p class="s-lead">수업이 끝나면 내 작업물을 열어 결과를 확인할 수 있습니다.</p></div>
       <figure class="asset-slot asset-slot--hero" data-asset-kind="paper-cut-v1" data-image-purpose="mnemonic" data-image-state="ready" data-asset-id="ASSET-001"><img src="자료/images/s02_arrival-three-actions-paper-cut-v1-transparent.png" alt="작업지시서가 제작 도구를 거쳐 확인 표식으로 이어져 요청·제작·검수의 흐름을 보여 준다."></figure>
     </section>
 
@@ -183,7 +197,6 @@
 [data-slide="A01"] .grid-3 .card{ display:flex; flex-direction:column; justify-content:center; padding:14px 20px; }
 [data-slide="A01"] .grid-3 h3{ margin:0 0 6px; font-size:23px; color:var(--ink); }
 [data-slide="A01"] .grid-3 p{ margin:0; color:var(--gray-700); font-size:22px; line-height:1.4; }
-[data-slide="A01"] .a01-close{ margin-top:16px; color:var(--gray-700); font-size:22px; }
 
 /* T01 — 토큰 분할 색 블록 도식 (22px 하한, 세로 여백 확장 + 마무리 문장을 오해박스에 병합) */
 [data-slide="T01"] .tok-lead{ margin:14px 0 0; color:var(--gray-700); font-size:22px; line-height:1.5; }
@@ -193,31 +206,50 @@
 [data-slide="T01"] .tok-chips{ display:flex; gap:10px; }
 [data-slide="T01"] .tok-chip{ padding:9px 16px; border-radius:var(--r-md); border:2px solid var(--blue-line-strong); background:var(--blue-soft); color:var(--ink); font-family:var(--font-mono); font-size:22px; font-weight:800; }
 [data-slide="T01"] .tok-chip:nth-child(even){ background:var(--blue-panel); border-color:var(--blue-line); }
-[data-slide="T01"] .tok-caption{ margin:2px 0 0; color:var(--gray-700); font-size:22px; text-align:center; }
+[data-slide="T01"] .tok-caption{ margin:26px 0 0; padding:12px 22px; border:1px solid var(--blue-line-strong); border-radius:var(--r-md); background:var(--blue-panel); color:var(--gray-700); font-size:22px; text-align:center; }
 [data-slide="T01"] .tok-myth{ margin-top:28px; padding:16px 20px; border:1px solid var(--coral-line); border-radius:var(--r-md); background:var(--coral-soft); }
 [data-slide="T01"] .tok-myth-h{ margin:0; color:var(--coral-deep); font-size:22px; font-weight:800; }
 [data-slide="T01"] .tok-myth-b{ margin:6px 0 0; color:var(--gray-700); font-size:22px; }
 [data-slide="T01"] .tok-myth-close{ margin:6px 0 0; color:var(--coral-deep); font-size:22px; font-weight:800; }
 
-/* T02 — 추론 강도 4단계 눈금 (22px 하한, 마무리 문장 삭제·전체 하향 배치·막대 차이 확대) */
-[data-slide="T02"] .reason-connect{ margin:24px 0 0; color:var(--gray-700); font-size:22px; line-height:1.5; }
-[data-slide="T02"] .reason-scale{ margin-top:26px; }
-[data-slide="T02"] .rs-track{ display:flex; align-items:flex-end; gap:24px; height:200px; padding:0 8px; border-bottom:2px solid var(--blue-line-strong); }
+/* T02 — 추론 강도: 좌측 GPT-5.6 Sol/Terra 등급 비교 선그래프 + 우측 4단계 막대 눈금 (22px 하한) */
+[data-slide="T02"] .reason-compare-grid{ display:flex; align-items:flex-start; gap:40px; margin-top:20px; }
+[data-slide="T02"] .reason-line-panel,
+[data-slide="T02"] .reason-scale{ flex:1 1 0; min-width:0; margin-top:0; }
+[data-slide="T02"] .rcp-label{ margin:0 0 8px; color:var(--blue); font-size:20px; font-weight:800; line-height:1.35; }
+[data-slide="T02"] .viz-line{ display:block; width:100%; height:auto; }
+[data-slide="T02"] .ln-axis{ stroke:var(--line); stroke-width:2; }
+[data-slide="T02"] .ln-series{ fill:none; stroke:var(--periwinkle); stroke-width:3; }
+[data-slide="T02"] .ln-series.is-key{ stroke:var(--blue); stroke-width:4; }
+[data-slide="T02"] .ln-dot{ fill:var(--blue); }
+[data-slide="T02"] .ln-dot.is-terra{ fill:var(--periwinkle); }
+[data-slide="T02"] .ln-tick{ font-size:16px; font-weight:700; fill:var(--gray-700); }
+[data-slide="T02"] .ln-axis-caption{ font-size:15px; font-weight:800; fill:var(--gray-700); }
+[data-slide="T02"] .rcp-legend{ display:flex; gap:20px; margin-top:6px; }
+[data-slide="T02"] .rcp-legend span{ display:inline-flex; align-items:center; gap:8px; color:var(--ink); font-size:19px; font-weight:700; }
+[data-slide="T02"] .rcp-legend i{ display:inline-block; width:13px; height:13px; border-radius:4px; }
+[data-slide="T02"] .rcp-legend .sol i{ background:var(--blue); }
+[data-slide="T02"] .rcp-legend .terra i{ background:var(--periwinkle); }
+[data-slide="T02"] .rs-track{ display:flex; align-items:flex-end; gap:10px; height:180px; padding:0; border-bottom:2px solid var(--blue-line-strong); }
 [data-slide="T02"] .rs-col{ flex:1; display:flex; flex-direction:column; align-items:center; justify-content:flex-end; height:100%; gap:6px; }
-[data-slide="T02"] .rs-bar{ display:block; width:64px; border-radius:8px 8px 0 0; background:var(--blue); }
-[data-slide="T02"] .rs-badge{ padding:6px 14px; border-radius:999px; background:var(--mint); color:var(--on-mint); font-size:22px; font-weight:900; white-space:nowrap; }
-[data-slide="T02"] .rs-labels{ display:flex; gap:24px; padding:0 8px; margin-top:6px; }
-[data-slide="T02"] .rs-labels span{ flex:1; text-align:center; color:var(--ink); font-size:22px; font-weight:800; }
-[data-slide="T02"] .rs-axis{ margin-top:10px; display:flex; align-items:center; justify-content:center; gap:16px; color:var(--gray-700); font-size:22px; }
-[data-slide="T02"] .rs-axis b{ color:var(--blue); font-weight:800; }
-[data-slide="T02"] .rs-axis-arrow{ color:var(--blue); font-size:22px; font-weight:900; }
-[data-slide="T02"] .reason-where{ margin-top:20px; padding:10px 16px; border-left:5px solid var(--blue); background:var(--blue-soft); color:var(--ink); font-size:22px; line-height:1.35; }
+[data-slide="T02"] .rs-bar{ display:block; width:40px; border-radius:8px 8px 0 0; background:var(--blue); }
+[data-slide="T02"] .rs-badge{ padding:4px 9px; border-radius:999px; background:var(--mint); color:var(--on-mint); font-size:16px; font-weight:900; white-space:nowrap; }
+[data-slide="T02"] .rs-labels{ display:flex; gap:10px; padding:0; margin-top:6px; }
+[data-slide="T02"] .rs-labels span{ flex:1; text-align:center; color:var(--ink); font-size:16px; font-weight:800; }
+[data-slide="T02"] .rs-results{ display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:15px; }
+[data-slide="T02"] .rs-result{ min-height:64px; padding:10px 12px; border:1px solid var(--coral-line); border-radius:var(--r-md); background:var(--coral-soft); color:var(--gray-700); line-height:1.25; }
+[data-slide="T02"] .rs-result.is-quality{ border-color:var(--mint-line); background:var(--mint-soft); }
+[data-slide="T02"] .rs-result b{ display:block; margin-bottom:4px; color:var(--ink); font-size:17px; }
+[data-slide="T02"] .rs-result span{ display:block; font-size:15px; }
+[data-slide="T02"] .reason-where{ margin-top:14px; padding:10px 16px; border-left:5px solid var(--blue); background:var(--blue-soft); color:var(--ink); font-size:22px; line-height:1.35; }
 
-/* S10A — 웹 기반 · 설치형 2분류, 이미지는 재생성 대기 슬롯(prompt_only) (22px 하한) */
+/* S10A — 웹 기반 · 설치형 2분류: 카드 하단 안전영역 안에 두 에셋의 전체 실루엣을 보인다. */
 [data-slide="S10A"] .app-types-grid.s10a-duo{ grid-template-columns:1fr 1fr; }
-[data-slide="S10A"] .app-type-card ul{ margin:10px 0 0; padding-left:20px; }
+[data-slide="S10A"] .app-type-card h3{ min-height:62px; }
+[data-slide="S10A"] .app-type-card ul{ flex:0 0 100px; height:100px; margin:10px 0 0; padding-left:20px; box-sizing:border-box; }
 [data-slide="S10A"] .app-type-card li{ margin:6px 0; color:var(--gray-700); font-size:22px; line-height:1.36; }
-[data-slide="S10A"] .app-type-image{ margin-top:auto; padding-top:16px; height:180px; }
+[data-slide="S10A"] .app-type-image{ margin-top:8px; padding-top:0; height:130px; }
+[data-slide="S10A"] .app-type-image > img{ position:absolute; inset:0; display:block; width:100% !important; height:100% !important; max-width:100%; max-height:100%; object-fit:contain; object-position:center; }
 
 /* W01·W02·W03·W05 — 제작 과정 4장 공통 레이아웃(연작): 좌측 설명(정의→비유→예시/관계) · 우측 이미지
    같은 클래스를 네 장에 동일 적용 + data-series="proc"로 verify 연작 예외 적용 (22px 하한)
@@ -226,7 +258,7 @@
 [data-slide="W01"] .proc-layout,
 [data-slide="W02"] .proc-layout,
 [data-slide="W03"] .proc-layout,
-[data-slide="W05"] .proc-layout{ display:flex; flex-direction:row; align-items:center; gap:40px; margin-top:16px; }
+[data-slide="W05"] .proc-layout{ display:flex; flex-direction:row; align-items:center; gap:40px; margin-top:4px; }
 [data-slide="W01"] .proc-left,
 [data-slide="W02"] .proc-left,
 [data-slide="W03"] .proc-left,
@@ -252,40 +284,40 @@
 [data-slide="W03"] .proc-def .hl-mint-text,
 [data-slide="W05"] .proc-def .hl-mint-text{ font-weight:800; }
 [data-slide="W01"] .proc-analogy,
+[data-slide="W02"] .proc-analogy,
 [data-slide="W03"] .proc-analogy,
 [data-slide="W05"] .proc-analogy{ margin:8px 0 0; padding-left:10px; border-left:3px solid var(--mint-line); color:var(--gray-700); font-size:20px; line-height:1.45; }
 [data-slide="W01"] .proc-analogy b,
+[data-slide="W02"] .proc-analogy b,
 [data-slide="W03"] .proc-analogy b,
 [data-slide="W05"] .proc-analogy b{ color:var(--ink); font-weight:800; margin-right:8px; }
 [data-slide="W01"] .proc-example{ margin:8px 0 0; padding-left:10px; color:var(--gray-400); font-size:20px; line-height:1.45; }
 [data-slide="W01"] .proc-example b{ color:var(--blue); font-weight:800; margin-right:8px; }
-[data-slide="W02"] .proc-row .timing{ display:inline-block; margin-top:8px; font-size:22px; padding:7px 16px; }
 [data-slide="W01"] .proc-close,
-[data-slide="W02"] .proc-close,
 [data-slide="W03"] .proc-close,
 [data-slide="W05"] .proc-close{ margin:6px 0 0; color:var(--gray-700); font-size:22px; }
-[data-slide="W03"] .w03-scope{ display:block; margin:6px 0 0; padding:8px 14px; border-radius:10px; border:1px solid var(--coral-line); background:var(--coral-soft); color:var(--coral-deep); font-size:22px; line-height:1.3; font-weight:800; }
 [data-slide="W01"] .proc-figure,
 [data-slide="W02"] .proc-figure,
 [data-slide="W03"] .proc-figure,
 [data-slide="W05"] .proc-figure{ position:relative; inset:auto; max-width:none; max-height:none; display:block; }
-/* 연작 통일 기준은 "낱장 크기"가 아니라 "우측 이미지 그룹의 총 높이"다(약 340~400px).
-   낱장을 같은 값으로 맞추면 장수 차이(1장 vs 3장)가 그대로 무게 차이가 되어 1장짜리 우측이 텅 빈다. */
-[data-slide="W01"] .proc-figure{ width:190px; height:190px; }   /* 2장 → 190×2+18 = 398 */
-[data-slide="W02"] .proc-figure{ width:300px; height:300px; }   /* 1장 */
-[data-slide="W03"] .proc-figure{ width:320px; height:320px; }   /* 1장 */
-[data-slide="W05"] .proc-figure{ width:125px; height:125px; }   /* 3장 → 125×3+24 = 399 */
+/* 연작 통일 기준은 "낱장 크기"가 아니라 "우측 이미지 그룹의 총 높이"다(약 424px로 확대).
+   낱장을 같은 값으로 맞추면 장수 차이(1장 vs 3장)가 그대로 무게 차이가 되어 1장짜리 우측이 텅 빈다.
+   424px는 이 4장이 공유하는 fill-stage 세로 예산(margin-top 축소 후 약 429px) 안에서 겹침·오버플로 0을 지키는 상한이다. */
+[data-slide="W01"] .proc-layout{ gap:32px; }
+[data-slide="W01"] .proc-left{ flex-basis:500px; }
+[data-slide="W01"] .proc-right{ flex-direction:row; align-items:center; justify-content:center; gap:16px; }
+[data-slide="W01"] .proc-figure{ width:280px; height:280px; }   /* 기존 203px 대비 약 1.4배 */
+[data-slide="W02"] .proc-figure{ width:424px; height:424px; }   /* 1장 */
+[data-slide="W03"] .proc-figure{ width:424px; height:424px; }   /* 1장 */
+[data-slide="W05"] .proc-figure{ width:424px; height:424px; }   /* 확인·공개·개선을 하나의 큰 순환 이미지로 */
 [data-slide="W01"] .proc-figure img,
 [data-slide="W02"] .proc-figure img,
 [data-slide="W03"] .proc-figure img,
 [data-slide="W05"] .proc-figure img{ width:100%; height:100%; object-fit:contain; }
-/* W02 — 좌측 1행뿐이라 하단이 비는 문제(F): 행 패딩·닫는 문장 여백을 다른 장보다 넉넉히 줘 시각적 균형(문장은 그대로) */
-[data-slide="W02"] .proc-row{ padding:24px 20px; }
-[data-slide="W02"] .proc-close{ margin-top:20px; }
 /* W05 — 3행+이미지 3장으로 세로 합이 가장 크다(연작 중 제약 슬라이드): 행 패딩·행간을 다른 장보다 조여 하단 666px 예산 안에 맞춘다 */
 [data-slide="W05"] .proc-row{ padding:8px 18px; }
 [data-slide="W05"] .proc-left{ gap:8px; }
-[data-slide="W05"] .proc-right{ gap:12px; }
+[data-slide="W05"] .proc-right{ gap:0; }
 </style>
 
 <section class="slide part-divider" data-slide="P1">
@@ -298,8 +330,7 @@
 
 <section class="slide grid-ph" data-slide="A01">
   <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 1<br>AI 친숙화</div></header>
-  <div class="s-full">
-    <p class="s-eyebrow">이미 쓰고 있는 AI</p>
+  <div class="s-full fill">
     <h2 class="s-title">AI는 오늘 <span class="hl-mint-text">처음 만나는 것이 아닙니다</span></h2>
     <div class="accent-bar"></div>
     <div class="grid-3">
@@ -310,7 +341,6 @@
       <div class="card surface"><h3>길 안내</h3><p>막히는 길을 피해 더 빠른 길을 알려 줍니다.</p></div>
       <div class="card surface"><h3>맞춤법 검사</h3><p>틀린 글자를 찾아 고쳐 줍니다.</p></div>
     </div>
-    <p class="a01-close">이미 익숙한 AI에게, 오늘은 <span class="hl-mint-text">일을 맡기는 방법</span>을 배웁니다.</p>
   </div>
 </section>
 
@@ -379,16 +409,44 @@
   <div class="s-full">
     <p class="s-eyebrow">얼마나 오래 생각할지</p>
     <h2 class="s-title">추론 강도는 <span class="hl-mint-text">생각의 깊이</span>를 정하는 다이얼입니다</h2>
-    <p class="reason-connect">토큰이 AI가 다루는 재료의 단위였다면, 추론 강도는 그 재료를 얼마나 오래 붙들고 생각할지 정하는 다이얼입니다.</p>
-    <div class="reason-scale" role="img" aria-label="Light에서 Extra High로 갈수록 막대가 커지는 4단계 추론 강도 눈금. Medium에 기본값 표시">
-      <div class="rs-track">
-        <div class="rs-col"><span class="rs-bar" style="height:32px"></span></div>
-        <div class="rs-col"><span class="rs-badge">기본값</span><span class="rs-bar" style="height:72px"></span></div>
-        <div class="rs-col"><span class="rs-bar" style="height:120px"></span></div>
-        <div class="rs-col"><span class="rs-bar" style="height:176px"></span></div>
+    <div class="reason-compare-grid">
+      <div class="reason-line-panel">
+        <p class="rcp-label">예시: 추론 강도가 높아질수록 결과 품질도 높아집니다</p>
+        <svg class="viz-line" viewBox="0 0 480 218" role="img" aria-label="가로축은 추론 강도, 세로축은 결과 품질을 뜻하는 예시 선그래프입니다. GPT-5.6 Sol과 GPT-5.6 Terra 모두 추론 강도가 높아질수록 결과 품질이 올라갑니다.">
+          <text class="ln-axis-caption" x="40" y="14">세로축 · 결과 품질</text>
+          <line class="ln-axis" x1="40" y1="174" x2="470" y2="174"></line>
+          <line class="ln-axis" x1="40" y1="24" x2="40" y2="174"></line>
+          <polyline class="ln-series terra" points="40,123 183,103 327,84 470,71"></polyline>
+          <polyline class="ln-series is-key" points="40,99 183,75 327,53 470,35"></polyline>
+          <circle class="ln-dot is-terra" cx="40" cy="123" r="4.5"></circle>
+          <circle class="ln-dot is-terra" cx="183" cy="103" r="4.5"></circle>
+          <circle class="ln-dot is-terra" cx="327" cy="84" r="4.5"></circle>
+          <circle class="ln-dot is-terra" cx="470" cy="71" r="4.5"></circle>
+          <circle class="ln-dot" cx="40" cy="99" r="4.5"></circle>
+          <circle class="ln-dot" cx="183" cy="75" r="4.5"></circle>
+          <circle class="ln-dot" cx="327" cy="53" r="4.5"></circle>
+          <circle class="ln-dot" cx="470" cy="35" r="4.5"></circle>
+          <text class="ln-tick" x="40" y="190" text-anchor="middle">Light</text>
+          <text class="ln-tick" x="183" y="190" text-anchor="middle">Medium</text>
+          <text class="ln-tick" x="327" y="190" text-anchor="middle">High</text>
+          <text class="ln-tick" x="470" y="190" text-anchor="end">Extra High</text>
+          <text class="ln-axis-caption" x="255" y="214" text-anchor="middle">가로축 · 추론 강도</text>
+        </svg>
+        <div class="rcp-legend"><span class="sol"><i></i>GPT-5.6 Sol</span><span class="terra"><i></i>GPT-5.6 Terra</span></div>
       </div>
-      <div class="rs-labels"><span>Light</span><span>Medium</span><span>High</span><span>Extra High</span></div>
-      <div class="rs-axis"><span class="rs-axis-arrow">→</span><b>결과 품질 ↑</b><b>걸리는 시간·토큰 ↑</b></div>
+      <div class="reason-scale" role="img" aria-label="Light에서 Extra High로 갈수록 막대가 커지는 4단계 추론 강도 눈금. Medium에 기본값 표시">
+        <div class="rs-track">
+          <div class="rs-col"><span class="rs-bar" style="height:32px"></span></div>
+          <div class="rs-col"><span class="rs-badge">기본값</span><span class="rs-bar" style="height:72px"></span></div>
+          <div class="rs-col"><span class="rs-bar" style="height:120px"></span></div>
+          <div class="rs-col"><span class="rs-bar" style="height:176px"></span></div>
+        </div>
+        <div class="rs-labels"><span>Light</span><span>Medium</span><span>High</span><span>Extra High</span></div>
+        <div class="rs-results" aria-label="추론 강도를 높였을 때의 변화">
+          <div class="rs-result is-quality"><b>더 꼼꼼하게 확인</b><span>결과 품질이 좋아질 수 있어요</span></div>
+          <div class="rs-result"><b>조금 더 기다리기</b><span>시간과 토큰을 더 사용해요</span></div>
+        </div>
+      </div>
     </div>
     <p class="reason-where">데스크톱 앱에서는 입력창 아래 모델·추론 조절 메뉴에서 모델과 함께 고릅니다.</p>
   </div>
@@ -396,7 +454,7 @@
 
 <section class="slide app-types-layout" data-slide="S10A">
   <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 1<br>화면의 종류</div></header>
-  <div class="app-types-slide"><p class="s-eyebrow">화면의 종류</p><h2 class="s-title">브라우저에서 여는 것과, <span class="hl-mint-text">설치해서 쓰는 것</span></h2><div class="app-types-grid s10a-duo" role="list"><article class="app-type-card" role="listitem"><h3>웹 기반 — 브라우저에서 바로 엽니다</h3><ul><li>주소만 알면 설치 없이 들어갑니다.</li><li>읽고 보는 화면부터 입력하고 저장하는 화면까지 여기에 들어갑니다.</li></ul><figure class="app-type-image asset-slot" data-image-purpose="explanatory" data-image-role="spot" data-image-state="expected" data-expected-src="자료/images/s10a_web-based-v2.png"></figure></article><article class="app-type-card app-type-card--installed" role="listitem"><h3>설치형 — 내려받아 설치해서 씁니다</h3><ul><li>컴퓨터나 휴대폰에 설치한 뒤 아이콘을 눌러 엽니다.</li></ul><figure class="app-type-image asset-slot" data-image-purpose="explanatory" data-image-role="spot" data-image-state="expected" data-expected-src="자료/images/s10a_installed-v2.png"></figure></article></div></div>
+  <div class="app-types-slide"><p class="s-eyebrow">화면의 종류</p><h2 class="s-title">브라우저에서 여는 것과, <span class="hl-mint-text">기기에 설치한 앱</span></h2><div class="app-types-grid s10a-duo" role="list"><article class="app-type-card" role="listitem"><h3>웹 기반 — 브라우저에서 바로 엽니다</h3><ul><li>주소만 알면 설치 없이 들어갑니다.</li><li>읽고 보는 화면부터 입력하고 저장하는 화면까지 여기에 들어갑니다.</li></ul><figure class="app-type-image asset-slot" data-image-purpose="explanatory" data-image-role="spot" data-image-state="ready" data-asset-id="ASSET-041"><img src="자료/images/s10a_web-based-v2.png" alt="주소창에 https://가 보이는 브라우저 안에서 웹페이지를 여는 모습입니다."></figure></article><article class="app-type-card app-type-card--installed" role="listitem"><h3>기기에 설치한 앱</h3><ul><li>바탕화면이나 휴대폰 화면의 앱 아이콘을 눌러 엽니다.</li></ul><figure class="app-type-image asset-slot" data-image-purpose="explanatory" data-image-role="spot" data-image-state="ready" data-asset-id="ASSET-042"><img src="자료/images/s10a_installed-v2.png" alt="컴퓨터 바탕화면의 앱 아이콘을 눌러, 브라우저 주소창 없이 독립 프로그램 창을 연 모습입니다."></figure></article></div></div>
 </section>
 
 <section class="slide lifecycle-flow lifecycle-infographic-slide" data-slide="S10B">
@@ -412,7 +470,7 @@
 <section class="slide proc-stage canvas-fill" data-slide="W01" data-series="proc">
   <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 1<br>제작 과정</div></header>
   <div class="s-full">
-    <p class="s-eyebrow">기획과 디자인</p>
+    <p class="s-eyebrow">기획 &amp; 디자인</p>
     <h2 class="s-title">무엇을 만들지 정하고, <span class="hl-mint-text">어떻게 보일지</span> 그립니다</h2>
     <div class="fill-stage proc-layout">
       <div class="proc-left">
@@ -428,7 +486,6 @@
           <p class="proc-analogy"><b>비유</b>요리를 어떤 그릇에 담을지 정하는 <span class="hl-mint-text">플레이팅</span>과 같습니다.</p>
           <p class="proc-example"><b>예</b>제목 → 일정 → 장소 → 연락처</p>
         </div>
-        <p class="proc-close">여기서 정한 것이 그대로 <span class="hl-mint-underline">AI에게 줄 요청문의 재료</span>가 됩니다.</p>
       </div>
       <div class="proc-right">
         <figure class="proc-figure asset-slot" data-asset-kind="paper-cut-v1" data-image-purpose="mnemonic" data-image-role="spot" data-image-state="ready"><img src="자료/images/s10_plan-paper-cut-v1-transparent.png" alt="목표와 문제를 적은 메모가 기획 단계를 상징한다."></figure>
@@ -448,9 +505,8 @@
         <div class="proc-row">
           <p class="proc-term">프론트엔드</p>
           <p class="proc-def">글자·색·배치처럼 <span class="hl-mint-text">눈에 보이는 것</span>과 반응을 만듭니다.</p>
-          <span class="timing">이번 주에 만드는 것이 바로 이 부분입니다</span>
+          <p class="proc-analogy"><b>비유</b>완성한 요리를 <span class="hl-mint-text">손님 앞에 그대로 내어놓는 것</span>과 같습니다.</p>
         </div>
-        <p class="proc-close">무엇으로 만드는지는 곧 이어서 봅니다.</p>
       </div>
       <div class="proc-right">
         <figure class="proc-figure asset-slot" data-asset-kind="paper-cut-v1" data-image-purpose="explanatory" data-image-role="hero" data-image-state="ready"><img src="자료/images/s10_frontend-paper-cut-v1-transparent.png" alt="브라우저 화면에 글자·색·버튼이 조립되어 눈에 보이고 반응하는 프론트엔드 영역을 보여 준다."></figure>
@@ -462,7 +518,7 @@
 <section class="slide proc-stage canvas-fill" data-slide="W03" data-series="proc">
   <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 1<br>제작 과정</div></header>
   <div class="s-full">
-    <p class="s-eyebrow">백엔드와 데이터</p>
+    <p class="s-eyebrow">백엔드 &amp; 데이터</p>
     <h2 class="s-title">보이지 않는 곳에서 <span class="hl-mint-text">저장하고 처리합니다</span></h2>
     <div class="fill-stage proc-layout">
       <div class="proc-left">
@@ -476,7 +532,6 @@
           <p class="proc-def">회원·글·주문처럼 남겨야 하는 것을 보관합니다.</p>
           <p class="proc-analogy"><b>비유</b>자리를 정해 쌓아 두는 <span class="hl-mint-text">창고</span>와 같습니다.</p>
         </div>
-        <span class="w03-scope">1주차에는 다루지 않습니다. 저장이 필요한 기능은 2주차에 만납니다.</span>
       </div>
       <div class="proc-right">
         <figure class="proc-figure asset-slot" data-asset-kind="paper-cut-v1" data-image-purpose="mnemonic" data-image-role="spot" data-image-state="ready"><img src="자료/images/s10_backend-paper-cut-v1-transparent.png" alt="주방과 창고처럼 보이지 않는 곳에서 데이터를 처리하고 저장하는 백엔드를 상징한다."></figure>
@@ -488,7 +543,7 @@
 <section class="slide proc-stage canvas-fill" data-slide="W05" data-series="proc">
   <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 1<br>제작 과정</div></header>
   <div class="s-full">
-    <p class="s-eyebrow">확인과 공개</p>
+    <p class="s-eyebrow">확인 &amp; 공개</p>
     <h2 class="s-title">제대로 되는지 보고, <span class="hl-mint-text">내보내고, 더 낫게</span> 만듭니다</h2>
     <div class="fill-stage proc-layout">
       <div class="proc-left">
@@ -506,12 +561,9 @@
           <p class="proc-term">개선</p>
           <p class="proc-def">써 본 사람의 반응을 보고 다시 고칩니다.</p>
         </div>
-        <p class="proc-close">공개와 개선은 <span class="hl-mint-text">3주차에 직접 해 봅니다</span>.</p>
       </div>
       <div class="proc-right">
-        <figure class="proc-figure asset-slot" data-asset-kind="paper-cut-v1" data-image-purpose="mnemonic" data-image-role="spot" data-image-state="ready"><img src="자료/images/s10_qa-paper-cut-v1-transparent.png" alt="화면을 직접 확인하는 모습이 QA 단계를 상징한다."></figure>
-        <figure class="proc-figure asset-slot" data-asset-kind="paper-cut-v1" data-image-purpose="mnemonic" data-image-role="spot" data-image-state="ready"><img src="자료/images/s10_publish-paper-cut-v1-transparent.png" alt="결과물을 인터넷에 올리는 모습이 배포 단계를 상징한다."></figure>
-        <figure class="proc-figure asset-slot" data-asset-kind="paper-cut-v1" data-image-purpose="mnemonic" data-image-role="spot" data-image-state="ready"><img src="자료/images/s10_improve-paper-cut-v1-transparent.png" alt="사용자 반응을 보고 다시 고치는 모습이 개선 단계를 상징한다."></figure>
+        <figure class="proc-figure asset-slot" data-asset-kind="paper-cut-v1" data-image-purpose="explanatory" data-image-role="hero" data-image-state="ready" data-asset-id="ASSET-049"><img src="자료/images/s10_qa-publish-improve-story-paper-cut-v2-transparent.png" alt="사람이 웹페이지를 확인하고 인터넷에 공개한 뒤, 다른 사람의 반응을 보고 페이지를 고쳐 다시 확인하는 과정을 보여 준다."></figure>
       </div>
     </div>
   </div>
@@ -599,7 +651,7 @@
         </div>
       </div>
     </div>
-    <figure class="workspace-image asset-slot asset-slot--support" data-asset-kind="paper-cut-v1" data-image-purpose="explanatory" data-image-state="ready" data-asset-id="ASSET-019"><img src="자료/images/s17_folder-file-workspace-paper-cut-v1-transparent.png" alt="파란 폴더의 파일이 작업 트레이를 거쳐 작업공간 보드로 이동해 폴더·파일·작업공간의 관계를 보여 준다."><figcaption><strong>폴더가 범위를 정하고</strong><br>그 안의 파일이 작업 대상이 됩니다.</figcaption></figure>
+    <figure class="workspace-image asset-slot asset-slot--support" data-asset-kind="paper-cut-v1" data-image-purpose="explanatory" data-image-state="ready" data-asset-id="ASSET-019"><img src="자료/images/s17_folder-file-workspace-paper-cut-v1-transparent.png" alt="파란 폴더의 파일이 작업 트레이를 거쳐 작업공간 보드로 이동해 폴더·파일·작업공간의 관계를 보여 준다."><figcaption><strong>폴더가 범위를 정하고</strong><span>그 안의 파일이 작업 대상이 됩니다.</span></figcaption></figure>
   </div>
 </section>
 
@@ -1010,15 +1062,28 @@
 
 <!-- PART 6 · 오류 대응과 최종 점검 -->
 <style data-part="part-05">
-[data-slide="S53"] .s53-steps{ display:flex; flex-direction:column; gap:6px; margin-top:10px; }
+.slide[data-slide="S53"] .s-full{ right:64px; }
+[data-slide="S53"] .s53-body{ display:flex; align-items:center; gap:32px; margin-top:14px; }
+[data-slide="S53"] .s53-steps{ flex:0 0 640px; display:flex; flex-direction:column; gap:6px; margin-top:0; }
 [data-slide="S53"] .s53-steps .work-step{ grid-template-columns:38px 1fr; gap:12px; padding:12px 16px; align-items:center; }
 [data-slide="S53"] .s53-steps .work-step .n{ width:38px; height:38px; font-size:16px; }
 [data-slide="S53"] .s53-steps .work-step > div{ display:flex; align-items:baseline; flex-wrap:wrap; column-gap:10px; row-gap:2px; }
 [data-slide="S53"] .s53-steps .work-step b{ font-size:22px; line-height:1.3; margin-bottom:0; white-space:nowrap; }
 [data-slide="S53"] .s53-steps .work-step span{ font-size:22px; line-height:1.3; }
 [data-slide="S53"] .s53-arrow{ text-align:center; color:var(--blue); font-weight:800; font-size:13px; line-height:1; }
-[data-slide="S53"] .s53-closing{ margin:12px auto 0; padding:10px 20px; width:fit-content; max-width:900px; text-align:center; }
-[data-slide="S53"] .s53-closing .lead{ font-size:22px; line-height:1.3; margin-bottom:0; }
+[data-slide="S53"] .s53-note{ flex:1 1 0; min-width:0; margin:0; color:var(--mint-deep); font-size:28px; font-weight:800; line-height:1.45; text-align:center; }
+
+/* S57 — 보고문을 56p(S48) REQUEST TERMINAL과 같은 검정 터미널 디자인으로 표현 */
+[data-slide="S57"] .issue-report-prompt{ margin-top:20px; overflow:hidden; border:2px solid var(--ink); border-radius:var(--r-md); background:var(--ink); }
+[data-slide="S57"] .issue-report-prompt .terminal-head{ height:34px; display:flex; align-items:center; gap:14px; padding:0 16px; border-bottom:1px solid var(--gray-700); color:var(--gray-400); font-family:var(--font-mono); font-size:12px; letter-spacing:.08em; }
+[data-slide="S57"] .issue-report-prompt .terminal-dots{ display:flex; gap:7px; }
+[data-slide="S57"] .issue-report-prompt .terminal-dots i{ width:9px; height:9px; border-radius:50%; background:var(--coral); }
+[data-slide="S57"] .issue-report-prompt .terminal-dots i:nth-child(2){ background:var(--mint); }
+[data-slide="S57"] .issue-report-prompt .terminal-dots i:nth-child(3){ background:var(--blue); }
+[data-slide="S57"] .issue-report-prompt .terminal-command{ display:flex; align-items:flex-start; gap:14px; padding:20px 24px 22px; }
+[data-slide="S57"] .issue-report-prompt .pfx{ flex:0 0 auto; margin-top:2px; color:var(--mint); font-weight:900; font-family:var(--font-mono); font-size:22px; }
+[data-slide="S57"] .issue-report-prompt p{ flex:1 1 auto; margin:0; color:var(--white); font-family:var(--font-mono); font-size:22px; line-height:1.55; }
+[data-slide="S57"] .issue-report-prompt .cur{ display:inline-block; width:10px; height:22px; margin-left:4px; vertical-align:text-bottom; background:var(--mint); }
 </style>
 <section class="slide part-divider" data-slide="P6">
   <svg class="dv-hero" viewBox="0 0 1280 720" fill="none" aria-hidden="true"></svg>
@@ -1028,7 +1093,7 @@
 
 <section class="slide dl-list with-support-art" data-slide="S52"><header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 6<br>문제 구분</div></header><div class="s-full"><p class="s-eyebrow">무엇이 다른지 먼저 가르기</p><h2 class="s-title">오류·요구 불일치·<span class="hl-mint-text">취향</span></h2><p class="s-lead issue-lead">같은 ‘안 됨’처럼 보여도 <span class="hl-mint-mark">원인이 다르면 다음 행동도 다릅니다</span>.</p><div class="dl-rows"><div class="card surface dl-row"><span class="dl-term">페이지가 열리지 않을 때</span><p class="s-body"><strong class="hl-coral-text">오류</strong>입니다. 파일 위치·이름·저장·새로고침을 차례로 확인합니다.</p></div><div class="card surface dl-row"><span class="dl-term">요청과 다를 때</span><p class="s-body"><strong class="hl-blue-text">요구 불일치</strong>입니다. 빠진 조건 하나만 다시 말합니다.</p></div><div class="card surface dl-row"><span class="dl-term">마음에 들지 않을 때</span><p class="s-body"><strong class="hl-mint-text">취향 차이</strong>입니다. 색·글자·여백 중 원하는 특징 하나를 고릅니다.</p></div></div></div><figure class="asset-slot asset-slot--support" data-viz="issue-type-check" data-image-purpose="mnemonic" data-image-role="support" data-asset-kind="paper-cut-v1" data-asset-id="ASSET-011"><img src="자료/images/s52_issue-type-check-paper-cut-v1-transparent.png" alt="오류, 요구 불일치, 취향 차이를 구분하는 이미지"></figure></section>
 
-<section class="slide" data-slide="S53"><header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 6<br>확인 순서</div></header><div class="s-full"><p class="s-eyebrow">막혔을 때</p><h2 class="s-title">이 순서대로 <span class="hl-mint-mark">하나씩</span> 확인합니다</h2><div class="s53-steps"><div class="work-step"><span class="n">1</span><div><b>파일 위치</b><span>지금 연 파일이 그 폴더 안의 index.html이 맞는지 봅니다.</span></div></div><div class="s53-arrow" aria-hidden="true">↓</div><div class="work-step"><span class="n">2</span><div><b>저장</b><span>고친 내용이 파일에 저장됐는지 봅니다.</span></div></div><div class="s53-arrow" aria-hidden="true">↓</div><div class="work-step"><span class="n">3</span><div><b>새로고침 (F5)</b><span>브라우저가 이전 화면을 그대로 보여 주고 있지 않은지 봅니다.</span></div></div><div class="s53-arrow" aria-hidden="true">↓</div><div class="work-step"><span class="n">4</span><div><b>그래도 안 되면</b><span>보인 것과 기대한 것을 두 줄로 적어 다시 요청합니다.</span></div></div></div><p class="callout green s53-closing"><span class="lead">한꺼번에 고치지 않고, 위에서부터 하나씩 봅니다.</span></p></div></section>
+<section class="slide" data-slide="S53"><header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 6<br>확인 순서</div></header><div class="s-full"><p class="s-eyebrow">막혔을 때</p><h2 class="s-title">이 순서대로 <span class="hl-mint-mark">하나씩</span> 확인합니다</h2><div class="s53-body"><div class="s53-steps"><div class="work-step"><span class="n">1</span><div><b>파일 위치</b><span>지금 연 파일이 그 폴더 안의 index.html이 맞는지 봅니다.</span></div></div><div class="s53-arrow" aria-hidden="true">↓</div><div class="work-step"><span class="n">2</span><div><b>저장</b><span>고친 내용이 파일에 저장됐는지 봅니다.</span></div></div><div class="s53-arrow" aria-hidden="true">↓</div><div class="work-step"><span class="n">3</span><div><b>새로고침 (F5)</b><span>브라우저가 이전 화면을 그대로 보여 주고 있지 않은지 봅니다.</span></div></div><div class="s53-arrow" aria-hidden="true">↓</div><div class="work-step"><span class="n">4</span><div><b>그래도 안 되면</b><span>보인 것과 기대한 것을 두 줄로 적어 다시 요청합니다.</span></div></div></div><p class="s53-note">한꺼번에 고치지 않고,<br>위에서부터 하나씩 봅니다.</p></div></div></section>
 
 <section class="slide path-inspection-slide" data-slide="S54"><header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 6<br>경로 확인</div></header><div class="dc-title"><p class="s-eyebrow">막혔을 때 첫 확인</p><h2 class="s-title">파일 위치부터 <span class="hl-mint-mark">바로잡습니다</span></h2></div><div class="path-inspection-layout"><div class="path-inspection-gui" role="img" aria-label="프로젝트 폴더 바로 안의 index.html을 확인하는 파일 탐색기 화면"><div class="tree-window-bar"><span></span><span></span><span></span><b>파일 탐색기</b></div><div class="tree-breadcrumb">C: <i>›</i> VibeCoding <i>›</i> about-me</div><div class="file-list-head"><span>이름</span><span>종류</span></div><div class="file-list-row active"><span><b class="html-badge">HTML</b> index.html</span><span>Chrome HTML 문서</span></div></div><div class="path-inspection-copy"><div><span class="path-check-label">현재 경로</span><code>C:\VibeCoding\about-me\</code></div><div><span class="path-check-label">실제 파일</span><strong>index.html</strong></div><p>최근 목록이나 기억이 아니라 <strong class="hl-blue-text">프로젝트 폴더 바로 안의 실제 파일</strong>을 엽니다.</p><p class="path-inspection-note">다른 폴더에 같은 이름의 파일이 있다면 먼저 위치부터 맞춘 뒤 다음 확인으로 갑니다.</p></div></div></section>
 
@@ -1036,7 +1101,7 @@
 
 <section class="slide has-character-art refresh-check-slide" data-slide="S56"><header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 6<br>새로고침</div></header><div class="s-full steps-full"><p class="s-eyebrow">저장 다음에 하는 일</p><h2 class="s-title">브라우저를 다시 <span class="hl-mint-mark">새로고침</span>합니다</h2><div class="eval-steps"><div class="work-step"><span class="n">1</span><div><b>저장된 <code>index.html</code>을 기준으로 새로고침합니다.</b><span>브라우저가 이전 화면을 그대로 보여 주고 있지 않은지 확인합니다.</span></div></div><div class="vf-down" aria-hidden="true">↓</div><div class="work-step"><span class="n">2</span><div><b>최신 내용이 보이는지 확인합니다.</b><span>파일 위치·저장·새로고침을 한꺼번에 고치지 않고 순서대로 봅니다.</span></div></div></div></div><figure class="asset-slot asset-slot--support character-art refresh-check-art" data-image-purpose="mnemonic" data-image-role="support" data-asset-kind="paper-cut-v1" data-asset-id="ASSET-018"><img src="자료/images/s56_human-ai-refresh-check-paper-cut-v2-transparent.png" alt="저장한 파일을 새로고침하고 최신 화면을 확인하는 이미지"></figure></section>
 
-<section class="slide issue-report-slide" data-slide="S57"><header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 6<br>문제 전달</div></header><div class="dc-title"><p class="s-eyebrow">문제를 정확하게 말하기</p><h2 class="s-title">세 줄로 상황을 <span class="hl-mint-underline">알려 줍니다</span></h2></div><div class="dc-stage"><div class="viz-flow-ph" data-viz="learning-flow" role="img" aria-label="위치, 실제 결과, 기대 결과를 순서대로 기록하는 문제 보고 구조"><div class="fl-node">어디에서<br><small>파일·화면 위치</small></div><div class="fl-arrow" aria-hidden="true">→</div><div class="fl-node key">무엇이 보이고<br><small>실제 결과</small></div><div class="fl-arrow" aria-hidden="true">→</div><div class="fl-node">무엇을 기대했는지<br><small>원래 보여야 할 것</small></div></div><p class="dc-cap"><strong>좋은 예</strong> — 브라우저에서 <code>index.html</code>을 열었더니 빈 화면입니다.<br>파일은 열리지만 한 줄 소개가 보이지 않습니다.<br><span class="hl-mint-underline">이 문제만 먼저 고쳐 주세요.</span></p></div></section>
+<section class="slide issue-report-slide" data-slide="S57"><header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 6<br>문제 전달</div></header><div class="dc-title"><p class="s-eyebrow">문제를 정확하게 말하기</p><h2 class="s-title">세 줄로 상황을 <span class="hl-mint-underline">알려 줍니다</span></h2></div><div class="dc-stage"><div class="viz-flow-ph" data-viz="learning-flow" role="img" aria-label="위치, 실제 결과, 기대 결과를 순서대로 기록하는 문제 보고 구조"><div class="fl-node">어디에서<br><small>파일·화면 위치</small></div><div class="fl-arrow" aria-hidden="true">→</div><div class="fl-node key">무엇이 보이고<br><small>실제 결과</small></div><div class="fl-arrow" aria-hidden="true">→</div><div class="fl-node">무엇을 기대했는지<br><small>원래 보여야 할 것</small></div></div><div class="issue-report-prompt" role="img" aria-label="브라우저에서 index.html을 열었더니 빈 화면입니다, 파일은 열리지만 한 줄 소개가 보이지 않습니다, 이 문제만 먼저 고쳐 주세요"><div class="terminal-head"><span class="terminal-dots" aria-hidden="true"><i></i><i></i><i></i></span><b>REQUEST TERMINAL</b></div><div class="terminal-command"><span class="pfx">&gt;_</span><p>브라우저에서 index.html을 열었더니 빈 화면입니다.<br>파일은 열리지만 한 줄 소개가 보이지 않습니다.<br>이 문제만 먼저 고쳐 주세요.<span class="cur" aria-hidden="true"></span></p></div></div></div></section>
 
 <section class="slide final-location-slide" data-slide="S58"><header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 6<br>실제 위치 확인</div></header><div class="dc-title"><p class="s-eyebrow">마무리 전에 실제 위치 확인</p><h2 class="s-title"><span class="hl-mint-text">index.html</span>을 다시 찾습니다</h2></div><div class="final-location-layout"><figure class="final-location-shot asset-slot asset-slot--support" data-image-purpose="explanatory" data-image-role="support" data-image-state="ready" data-asset-kind="screenshot"><div class="shot-frame"><img src="screenshot/win05_vibecoding-index-root.png" alt="Windows 파일 탐색기에서 VibeCoding 프로젝트의 index.html과 HTML 문서 종류가 보이는 화면"></div></figure><div class="final-location-copy"><div><span>파일 이름</span><strong>index.html</strong></div><div><span>파일 위치</span><code>C:\VibeCoding\about-me\</code></div><div><span>파일 종류</span><strong>HTML 문서</strong></div><p>파일 탐색기에서 프로젝트 폴더를 직접 열고, 이름·위치·종류를 <span class="hl-mint-underline">같은 화면에서 함께</span> 확인합니다.</p></div></div></section>
 
