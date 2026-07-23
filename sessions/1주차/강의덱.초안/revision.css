@@ -1331,6 +1331,8 @@
 .s3map-layout{ top:112px; bottom:54px; display:flex; flex-direction:column; }
 .s3map-layout .s-title{ margin:3px 0 0; }
 .s3map-lead{ margin:10px 0 0; color:var(--gray-700); font-size:23px; line-height:1.4; }
+.s3map-title-chip{ display:inline-block; padding:4px 14px 6px; border-radius:var(--r-pill); background:var(--mint); color:var(--white); font-size:.82em; line-height:1; vertical-align:.08em; }
+.s3map-lead-underline{ padding-bottom:2px; border-bottom:5px solid var(--mint); color:var(--ink); font-weight:800; }
 .s3map-flow{ flex:1 1 auto; min-height:0; margin-top:22px; display:grid; grid-template-columns:minmax(0,1fr) 32px minmax(0,1fr) 32px minmax(0,1fr) 32px minmax(0,1fr) 32px minmax(0,1fr); align-items:center; gap:0; padding:0; border:0; background:transparent; }
 .s3map-step{ min-width:0; min-height:220px; display:flex; flex-direction:column; justify-content:center; padding:18px 16px; border:1px solid var(--blue-line-strong); border-radius:var(--r-md); background:var(--blue-panel); }
 .s3map-step span{ color:var(--blue); font-size:22px; font-weight:850; }
@@ -1471,16 +1473,17 @@
 .human-handoff-arrow{ display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; color:var(--blue); font-size:40px; font-weight:850; line-height:1; text-align:center; }
 .human-handoff-arrow span{ color:var(--gray-700); font-size:22px; font-weight:750; line-height:1.25; }
 .human-conclusion{ flex:0 0 auto; margin:10px 0 0; padding:10px 18px; border-left:6px solid var(--mint); background:var(--mint-soft); color:var(--ink); font-size:23px; font-weight:800; line-height:1.32; text-align:center; }
-.human-quotes{ flex:1 1 auto; min-height:0; margin:10px 0 18px; display:grid; grid-template-columns:1fr 1fr; gap:26px; }
-.human-quote{ position:relative; margin:0; display:flex; flex-direction:column; justify-content:center; padding:24px 26px 20px; border:2px solid var(--blue-line-strong); border-radius:32px 32px 32px 10px; background:var(--blue-panel); }
-.human-quote::before{ content:"“"; position:absolute; top:4px; right:20px; color:var(--blue); font-family:Georgia, serif; font-size:66px; font-weight:900; line-height:1; opacity:.32; }
-.human-quote::after{ content:""; position:absolute; bottom:-18px; left:28px; width:0; height:0; border-top:22px solid var(--blue-panel); border-right:26px solid transparent; }
+.human-quote-stage{ flex:1 1 auto; min-height:0; margin-top:16px; padding:16px 20px 22px; border:1px solid var(--blue-line-strong); border-radius:28px; background:linear-gradient(135deg, var(--ice) 0%, var(--ink) 100%); }
+.human-quotes{ height:100%; min-height:0; margin:0; display:grid; grid-template-columns:1fr 1fr; gap:26px; }
+.human-quote{ position:relative; margin:0; display:flex; flex-direction:column; justify-content:center; padding:18px 24px 16px; border:0; border-radius:26px 26px 26px 8px; background:var(--white); }
+.human-quote::before{ content:"“"; position:absolute; top:2px; right:18px; color:var(--blue); font-family:Georgia, serif; font-size:62px; font-weight:900; line-height:1; opacity:.24; }
+.human-quote::after{ content:""; position:absolute; bottom:-15px; left:26px; width:0; height:0; border-top:19px solid var(--white); border-right:24px solid transparent; }
 .human-quote p{ position:relative; z-index:1; margin:0; color:var(--ink); font-size:23px; line-height:1.42; font-weight:600; }
 .human-quote p b{ color:var(--blue); font-weight:850; }
 .human-quote cite{ position:relative; z-index:1; margin-top:8px; color:var(--gray-700); font-size:22px; font-style:normal; font-weight:750; }
-.human-quote--mint{ border-color:var(--mint-line); border-radius:32px 32px 10px 32px; background:var(--mint-soft); }
+.human-quote--mint{ border-radius:26px 26px 8px 26px; background:var(--mint-soft); }
 .human-quote--mint::before{ color:var(--mint-deep); }
-.human-quote--mint::after{ right:28px; left:auto; border-right:0; border-left:26px solid transparent; border-top-color:var(--mint-soft); }
+.human-quote--mint::after{ right:26px; left:auto; border-right:0; border-left:24px solid transparent; border-top-color:var(--mint-soft); }
 .human-quote--mint p b{ color:var(--mint-deep); }
 
 /* ---------- 첫 요청은 구체적으로, 결과는 반복 수정 (S3ITR) ---------- */
