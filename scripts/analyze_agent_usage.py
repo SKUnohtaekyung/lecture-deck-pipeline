@@ -932,9 +932,9 @@ def section_tool_audit(pdir, session, allow, expect_model):
         return False
 
     allow_set = set(allow)
-    print("\n%-20s %-9s %-18s %5s  %s"
-          % ("에이전트", "경로", "모델", "턴", "도구 호출"))
-    print("-" * 100)
+    print("\n%-20s %-9s %-18s %5s %12s  %s"
+          % ("에이전트", "경로", "모델", "턴", "처리토큰", "도구 호출"))
+    print("-" * 110)
 
     tool_violations = []
     model_violations = []
@@ -950,8 +950,8 @@ def section_tool_audit(pdir, session, allow, expect_model):
             tool_violations.append((label, bad))
         if any(m != expect_model for m in st.models):
             model_violations.append((label, models))
-        print("%-20s %-9s %-18s %5d  %s"
-              % (label, origin, models, st.turns, shown))
+        print("%-20s %-9s %-18s %5d %12s  %s"
+              % (label, origin, models, st.turns, f"{st.total:,}", shown))
 
     print()
     if model_violations:
