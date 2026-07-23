@@ -35,7 +35,24 @@ C:\Users\miso\.claude\plans\spicy-baking-hammock.md
 | 0 작업 격리 | GREEN | — |
 | 1 계측 마감 | GREEN | `0f59fe9` |
 | 1.5-B 캘리브레이션 | **YELLOW** | `f9f2430` |
-| **2 워커 실행 통제** | **← 다음** | |
+| 2 워커 실행 통제 | GREEN | `3cb8027` |
+| 3 실행 예산 | GREEN | `6592bf5` |
+| 4 컨텍스트·반환 | GREEN | `58e9c5a` |
+| 5 SKILL 정본 분리 + 6 회귀 검증 | GREEN | `b1315cc` |
+| **7 smoke test (3청크)** | **← 다음 · 사용자 결정 선행 필요** | |
+| 8 확대 검증·판정 | 대기 | |
+
+## Phase 7 착수 전 사용자 결정 2건
+
+1. **워커 실행 수단 확정** — 현재 `Explore`(안 「가」). `Explore`는 `Bash`·`PowerShell`·브라우저·
+   알림/스케줄 도구를 실제로 보유해 **허용목록 5개를 구조적으로 강제하지 못한다**(사후 감사로만 검출).
+   반면 `claude-code-guide`는 도구가 **정확히 `Glob, Grep, Read, WebFetch, WebSearch` 5개**여서
+   구조적으로 일치하지만, 시스템 프롬프트가 Claude Code 질문 답변용이라 주제 편향 위험이 있다.
+   → **수단을 바꿀 거면 Phase 7 전에 바꿔야 한다.** 바꾼 뒤에 돌리면 smoke test를 다시 해야 한다.
+2. **워커 턴 상한(D2) 미해소 수용 여부** — `maxTurns`는 `.claude/agents/` frontmatter 전용이라
+   이 실행 경로에 없다. 현재는 §0.5 비상 중단선 + 사후 감사로만 관측한다.
+
+상세 근거: `_dev/설계기록/Phase2-워커실행통제-검증절차.md`
 
 ## 검증 명령
 
