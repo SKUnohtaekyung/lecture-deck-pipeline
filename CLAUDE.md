@@ -8,6 +8,7 @@
 - 공통 작업 매뉴얼과 PPT 제작 규칙은 각각 `AGENTS.md`와 루트 `SKILL.md`가 정본이다. `.claude/`에는 Claude Code의 탐색·호출 차이만 둔다.
 - Windows에서는 `python`을 사용한다. Claude 전용 `ui-ux-pro-max`를 직접 실행할 때는 저장소 루트에서 `python .claude/skills/ui-ux-pro-max/scripts/search.py ...`를 사용한다.
 - 팀 워크플로 스킬 3종(/리서치·/콘텐츠·/검토)은 .claude/skills/의 어댑터로 발견되며 명시 호출 전용이다. 정본과 계약은 루트 skills/README.md.
+- `/리서치` 워커는 `Agent(subagent_type: "Explore", model: "sonnet")`으로만 띄우고, 실행 후 `python scripts/analyze_agent_usage.py --tool-audit --session <세션ID>`로 도구·모델을 감사한다. 규정은 `.claude/skills/리서치/SKILL.md` 「워커 실행 통제」.
 
 # 세션 시작 필수 읽기 (프로젝트 지도)
 

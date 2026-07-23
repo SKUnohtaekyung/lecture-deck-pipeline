@@ -6,7 +6,7 @@
 
 - **① 포터블 스킬(루트, 배포 대상)**: `SKILL.md`(진입점) · `kit/` · `references/` · `scripts/` · `입력양식/` · `데모_제작규칙.html` · `outputs/`(레이아웃 아틀라스). 사람용 개요는 `README.md`.
 - **② 개발자료 `_dev/`(배포 제외)**: `설계기록/`(빌드·결정 기록 · `탐색-아카이브/` 미채택본). **커리큘럼·콘텐츠 원천은 `sessions/`로 이관**됨 — 상위 기준 `sessions/바이브코딩_커리큘럼_기준안.md` + 주차 상세 `sessions/N주차/N주차_강의안설계.md`(옛 인수인계서 역할). `_dev/강의자료/`는 더 이상 쓰지 않는다.
-- **③ 플랫폼 어댑터**: `.agents/skills/vibecoding-deck/`(Codex) · `.claude/skills/vibecoding-deck/`(Claude Code). 공통 규칙을 복제하지 않고 루트 `SKILL.md`만 로드한다. 누적 규칙·버그 정본은 `.agents/agent-memory/vibecoding-deck/MEMORY.md` 하나이며 Claude Code도 이 파일을 읽는다. `ui-ux-pro-max`만 각 플랫폼 탐색 위치에 실행 자원과 함께 둔다.
+- **③ 플랫폼 어댑터**: `.agents/skills/vibecoding-deck/`(Codex) · `.claude/skills/vibecoding-deck/`(Claude Code). 공통 규칙을 복제하지 않고 루트 `SKILL.md`만 로드한다. 누적 규칙·버그 정본은 `.agents/agent-memory/vibecoding-deck/MEMORY.md` 하나이며 Claude Code도 이 파일을 읽는다. `ui-ux-pro-max`만 각 플랫폼 탐색 위치에 실행 자원과 함께 둔다. `/리서치` 워커의 실행 통제(`Explore` + `sonnet` + 도구 허용목록 + 사후 감사)는 플랫폼마다 수단이 달라 `.claude/skills/리서치/SKILL.md`가 Claude 전용으로 규정하며, 조사 규칙 정본은 `skills/리서치/SKILL.md` 그대로다.
 - **④ 주차별 작업물 `sessions/`(배포 제외)**: `N주차/`에 그 주차의 `초안.md`·`강의덱.html`·`강의덱_발표자노트.html`·`자료/`. 새 주차는 `sessions/_template/` 복사, 규약은 `sessions/README.md`. 1주차 덱·초안은 사용자 판정으로 폐기됐고(`sessions/README.md` "1주차 (예외)" 참고), 1주차는 자료만 남아 있다.
 - **⑤ 팀 워크플로 스킬 `skills/`(배포 제외)**: 강의 제작 팀 역할 스킬 3종(리서치·콘텐츠·검토) + 횡단 오케스트레이션 프로토콜 하네스의 정본. scripts/·sessions/ 규약에 하드 결합된 이식 불가 자산이라 포터블 스킬 배포 복사에서 제외한다. 등재·계약·호출 규약 정본은 `skills/README.md`.
 
@@ -59,6 +59,7 @@ python -m unittest tests.test_deck_pipeline tests.test_image_pipeline
 # 파이프라인 문서 게이트(리서치·콘텐츠 산출물)
 python scripts/verify_session_docs.py <주차> --target 자료   # 기본 5파일 스키마·출처ID·[C-슬러그] 해소
 python scripts/verify_research_chunks.py <주차>              # 개념KB 청크 깊이·G8 관점·인덱스 일치
+python scripts/analyze_agent_usage.py --tool-audit --session <세션ID>  # 리서치 워커 도구·모델 감사(0 통과 / 3 위반)
 ```
 
 - 브라우저는 `deck.css`를 캐시하므로 변경 확인 때 링크의 `href`에 `?v=`를 붙인다.
