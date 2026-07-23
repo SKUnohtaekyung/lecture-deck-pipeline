@@ -61,11 +61,12 @@ C:\Users\miso\.claude\plans\spicy-baking-hammock.md
 ## 검증 명령
 
 ```bash
-python tests/test_analyze_agent_usage.py            # 계측기 자체 검증 16 PASS
+python tests/test_analyze_agent_usage.py            # 계측기 자체 검증 26 PASS
 python scripts/analyze_agent_usage.py               # exit 0 = 기준선 대조 통과
 python scripts/analyze_agent_usage.py --stoplines   # 비상 중단선 산정
 python scripts/verify_research_chunks.py 2          # 하류 회귀
 python scripts/verify_session_docs.py 2 --target 자료
+python scripts/analyze_agent_usage.py --tool-audit --session <세션ID>  # 워커 도구·모델·동일URL 감사
 ```
 
 ## 롤백
