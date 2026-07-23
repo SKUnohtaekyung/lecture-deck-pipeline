@@ -41,7 +41,7 @@
 [data-slide="T02"] .rs-track{ display:flex; align-items:flex-end; gap:10px; height:180px; padding:0; border-bottom:2px solid var(--blue-line-strong); }
 [data-slide="T02"] .rs-col{ flex:1; display:flex; flex-direction:column; align-items:center; justify-content:flex-end; height:100%; gap:6px; }
 [data-slide="T02"] .rs-bar{ display:block; width:40px; border-radius:8px 8px 0 0; background:var(--blue); }
-[data-slide="T02"] .rs-badge{ padding:4px 9px; border-radius:999px; background:var(--mint); color:var(--on-mint); font-size:16px; font-weight:900; white-space:nowrap; }
+[data-slide="T02"] .rs-badge{ padding:4px 9px; border-radius:999px; background:var(--blue); color:var(--white); font-size:16px; font-weight:900; white-space:nowrap; }
 [data-slide="T02"] .rs-labels{ display:flex; gap:10px; padding:0; margin-top:6px; }
 [data-slide="T02"] .rs-labels span{ flex:1; text-align:center; color:var(--ink); font-size:16px; font-weight:800; }
 [data-slide="T02"] .rs-results{ display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:15px; }
@@ -112,7 +112,8 @@
    낱장을 같은 값으로 맞추면 장수 차이(1장 vs 3장)가 그대로 무게 차이가 되어 1장짜리 우측이 텅 빈다.
    424px는 이 4장이 공유하는 fill-stage 세로 예산(margin-top 축소 후 약 429px) 안에서 겹침·오버플로 0을 지키는 상한이다. */
 [data-slide="W01"] .proc-layout{ gap:32px; }
-[data-slide="W01"] .proc-left{ flex-basis:500px; }
+[data-slide="W01"] .proc-left{ flex-basis:500px; gap:16px; }
+[data-slide="W01"] .proc-row{ box-sizing:border-box; min-height:132px; display:flex; flex-direction:column; justify-content:center; }
 [data-slide="W01"] .proc-right{ flex-direction:row; align-items:center; justify-content:center; gap:16px; }
 [data-slide="W01"] .proc-figure{ width:280px; height:280px; }   /* 기존 203px 대비 약 1.4배 */
 [data-slide="W02"] .proc-figure{ width:424px; height:424px; }   /* 1장 */
@@ -286,13 +287,11 @@
           <p class="proc-term">기획</p>
           <p class="proc-def">사용자 문제와 만들 목표를 가장 먼저 정합니다.</p>
           <p class="proc-analogy"><b>비유</b>여행 전 어디로 갈지 정하는 <span class="hl-mint-text">여행 계획</span>과 같습니다.</p>
-          <p class="proc-example"><b>예</b>모임 회원이 다음 일정을 못 찾는다 → 일정 안내 페이지</p>
         </div>
         <div class="proc-row">
           <p class="proc-term">디자인</p>
           <p class="proc-def">정한 내용을 어떤 순서·모습으로 보일지 정합니다.</p>
           <p class="proc-analogy"><b>비유</b>요리를 어떤 그릇에 담을지 정하는 <span class="hl-mint-text">플레이팅</span>과 같습니다.</p>
-          <p class="proc-example"><b>예</b>제목 → 일정 → 장소 → 연락처</p>
         </div>
       </div>
       <div class="proc-right">

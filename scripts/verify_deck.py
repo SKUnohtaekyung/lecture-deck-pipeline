@@ -909,7 +909,8 @@ def main():
             # 2026-07-23: 세션 요약(S61, concept-recap closing) 삭제로 78장.
             # 2026-07-23 2차: PART 3에 프롬프트·컨텍스트 엔지니어링, 구조적 한계(LM·SY),
             #   아첨 방지 요청문, 판단은 사람, "해.", 반복 수정 7장 신설로 85장.
-            expected_n, expected_dividers = 85, 6
+            # 2026-07-23 3차: PART 3 간지 뒤에 S3MAP 흐름 안내를 추가해 86장.
+            expected_n, expected_dividers = 86, 6
             intro_expected = ['S00', 'S01', 'S01A', 'S01B', 'S01C']
         else:
             # 배포본(강의덱_배포): 2026-07-21) 48p(S39) 뒤에 완성 목표 쇼케이스 S39A를 추가해 71 → 72장.
@@ -924,6 +925,21 @@ def main():
         chk(slide_ids[:intro_len] == intro_expected,
             f"도입 {' → '.join(intro_expected)} 순서 유지",
             f"도입 슬라이드 순서 오류: {slide_ids[:intro_len]} (필요 {intro_expected})")
+
+        if deck_file.stem == '강의덱':
+            # 페이지 번호가 아니라 안정적인 data-slide ID로 PART 3의 학습 흐름을 고정한다.
+            # S3MAP은 PART 3 간지 직후에 놓여야 하며, 이후의 핵심 전개도 같은 순서를 유지한다.
+            part3_expected = ['P3', 'S3MAP', 'S3PE', 'S3LM', 'S3CE', '18', 'S3SY',
+                              'S3SYP', 'S3HUM', 'S3DO', 'S3ITR']
+            try:
+                part3_start = slide_ids.index('P3')
+            except ValueError:
+                part3_actual = []
+            else:
+                part3_actual = slide_ids[part3_start:part3_start + len(part3_expected)]
+            chk(part3_actual == part3_expected,
+                f"PART 3 ID 순서 유지({' → '.join(part3_expected)})",
+                f"PART 3 ID 순서 오류: {part3_actual} (필요 {part3_expected})")
 
         week1_dividers = sum(1 for el in ordered_slides if 'part-divider' in classes(el.attrs))
         chk(week1_dividers == expected_dividers,

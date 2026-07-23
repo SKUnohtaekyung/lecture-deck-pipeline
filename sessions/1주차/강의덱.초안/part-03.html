@@ -5,11 +5,33 @@
   <p class="pd-eyebrow">PART</p><h2 class="pd-title">요청 잘하는 법과 첫 페이지 만들기</h2><p class="pd-sub">무엇을 지시하고 무엇을 제공할지 정한 다음,<br>폴더를 열어 실제로 첫 페이지를 만듭니다.</p>
 </section>
 
+<section class="slide s3map-slide" data-slide="S3MAP">
+  <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 3<br>흐름 안내</div></header>
+  <div class="s-full s3map-layout">
+    <p class="s-eyebrow">이 순서로 배웁니다</p>
+    <h2 class="s-title">“해줘.”에서 “해.”로 가는 다섯 단계</h2>
+    <p class="s3map-lead">막연하게 맡기던 요청을, 사람이 판단한 뒤 실행을 맡기는 요청으로 바꿉니다.</p>
+    <div class="viz-flow-ph s3map-flow" role="img" aria-label="해줘에서 해로 가는 다섯 단계: 지시 설계, 중요한 맥락 선택, AI 답 의심, 사람 기준 결정, AI 실행과 반복">
+      <p class="s3map-end s3map-end--start">해줘.</p>
+      <article class="s3map-step s3map-step--blue"><span>01</span><h3>지시를 설계한다</h3><p>작업·목표·조건·출력형식</p></article>
+      <span class="s3map-arrow" aria-hidden="true">→</span>
+      <article class="s3map-step s3map-step--blue"><span>02</span><h3>중요한 맥락을 고른다</h3><p>배경·자료·판단 기준,<br>중간 유실 주의</p></article>
+      <span class="s3map-arrow" aria-hidden="true">→</span>
+      <article class="s3map-step s3map-step--coral"><span>03</span><h3>AI의 답을 의심한다</h3><p>아첨 가능성과<br>근거 확인</p></article>
+      <span class="s3map-arrow" aria-hidden="true">→</span>
+      <article class="s3map-step s3map-step--mint"><span>04</span><h3>사람이 기준을 결정한다</h3><p>목적·조건·완료 기준</p></article>
+      <span class="s3map-arrow" aria-hidden="true">→</span>
+      <article class="s3map-step s3map-step--mint"><span>05</span><h3>AI가 실행하고 반복한다</h3><p>실행 → 확인 → 작은 수정</p></article>
+      <p class="s3map-end s3map-end--finish">해.</p>
+    </div>
+  </div>
+</section>
+
 <section class="slide eng-axis-slide eng-prompt" data-slide="S3PE">
   <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 3<br>요청 설계</div></header>
   <div class="s-full eng-layout">
     <div class="eng-head"><h2 class="eng-title"><span class="eng-en">Prompt Engineering</span><span class="eng-ko">프롬프트 엔지니어링</span></h2><p class="eng-q">무엇을 <strong>지시</strong>할 것인가?</p></div>
-    <article class="eng-concept"><h3>주요 개념</h3><p>AI에게 전달하는 <strong>작업 · 목표 · 조건 · 출력형식</strong>을 명확하게 설계합니다.</p><figure class="eng-spot asset-slot" data-asset-kind="paper-cut-v1" data-image-purpose="mnemonic" data-image-role="spot" data-image-state="expected" data-expected-src="자료/images/s3pe_prompt-four-elements-v1.png"></figure></article>
+    <article class="eng-concept"><h3>주요 개념</h3><p>AI에게 전달하는 <strong>작업 · 목표 · 조건 · 출력형식</strong>을 명확하게 설계합니다.</p><figure class="eng-spot asset-slot" data-asset-kind="paper-cut-v1" data-image-purpose="mnemonic" data-image-role="spot" data-image-state="ready" data-asset-id="ASSET-050"><img src="자료/images/s3pe_prompt-four-elements-v1.png" alt="과녁·역할 표찰·울타리·규격 틀 네 조각이 서로 맞물려 하나의 지시서를 이룬다."></figure></article>
     <div class="eng-right">
       <div class="eng-four">
         <article><b>명확성</b><span>Clarity</span><p>원하는 결과를 구체적으로 설명할 것</p></article>
@@ -57,7 +79,8 @@
           <circle class="lm-dot" cx="440" cy="233" r="6"/>
           <circle class="lm-dot" cx="570" cy="166" r="6"/>
           <text class="lm-val" x="78" y="42">75.8</text>
-          <text class="lm-val is-low" x="311" y="272">53.8</text>
+          <rect class="lm-low-label-bg" x="279" y="194" width="64" height="30" rx="8"/>
+          <text class="lm-val is-low lm-low-label" x="311" y="215">53.8</text>
           <text class="lm-val" x="558" y="150">63.2</text>
           <text class="lm-tick" x="78" y="284">1st</text>
           <text class="lm-tick" x="182" y="284">5th</text>
@@ -132,7 +155,7 @@
 <section class="slide syp-slide" data-slide="S3SYP">
   <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 3<br>아첨 막기</div></header>
   <div class="s-full syp-layout">
-    <p class="s-eyebrow">오늘만 쓰는 요청문이 아닙니다</p><h2 class="s-title">요청문으로 <span class="hl-mint-text">기울일 수 있습니다</span></h2>
+    <p class="s-eyebrow">예시 프롬프트</p><h2 class="s-title">사실과 근거를 먼저 답하게 합니다</h2>
     <div class="syp-body">
       <div class="terminal-dark syp-terminal" aria-label="아첨을 줄이는 다섯 줄 요청문">
         <div class="terminal-bar"><span></span><span></span><span></span><b>대화 맨 앞에 붙여넣기</b></div>
@@ -147,7 +170,7 @@
         </div>
       </div>
       <div class="syp-side">
-        <article class="syp-keep"><b>계속 씁니다</b><p>2주차 기획서 검토, 3주차 공개 전 점검, 그리고 수업이 끝난 뒤 <strong>여러분의 일에서도</strong> 그대로 씁니다.</p></article>
+        <article class="syp-keep"><b>계속 씁니다</b><p>2주차 기획서 검토와 3주차 공개 전 점검에 계속 씁니다.</p></article>
         <article class="syp-honest"><b>과장하지 않기</b><p>이 요청문이 아첨을 <strong>없애지는 못합니다.</strong> 아첨하는 쪽으로 기우는 정도를 줄여 줄 뿐입니다.</p></article>
       </div>
     </div>
@@ -157,19 +180,21 @@
 <section class="slide human-decides-slide" data-slide="S3HUM">
   <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 3<br>사람의 역할</div></header>
   <div class="s-full human-layout">
-    <p class="s-eyebrow">두 가지를 갖추면 말이 달라집니다</p><h2 class="s-title">판단은 <span class="hl-mint-text">사람</span>이, 실행은 <span class="hl-blue-text">AI</span>가</h2>
-    <div class="human-compare">
-      <article class="human-ask"><b>“해줘”</b><p>무엇을 만들지, 뭐가 좋은지, 다 됐는지를 <strong>AI가 정합니다.</strong></p><span>나는 결과를 받는 사람</span></article>
-      <article class="human-do"><b>“해”</b><p>목적 · 재료 · 조건 · 완료 기준을 <strong>내가 이미 정했습니다.</strong></p><span>AI에게 넘기는 것은 판단이 아니라 실행</span></article>
+    <p class="s-eyebrow">판단과 실행을 나눕니다</p><h2 class="s-title">판단은 사람이, 실행은 AI가</h2>
+    <div class="human-handoff" role="img" aria-label="사람이 목적과 조건을 정해 AI에 전달하고, AI가 정해진 범위에서 실행하고 반복한다">
+      <article class="human-role human-role--person"><b>사람</b><p>목적 · 재료 · 조건 · 완료 기준을 정합니다</p></article>
+      <div class="human-handoff-arrow" aria-hidden="true"><span>정해진 범위를 전달</span>→</div>
+      <article class="human-role human-role--ai"><b>AI</b><p>정해진 범위에서 작성 · 수정 · 정리 · 반복합니다</p></article>
     </div>
-    <div class="human-quotes">
-      <blockquote><p>가장 뛰어난 코더는 곧 <b>가장 뛰어난 커뮤니케이터</b>가 될 것이다.</p><cite>Sean Grove · OpenAI</cite></blockquote>
-      <blockquote><p>사람들은 프롬프트를 <b>평소 던지는 짧은 작업 설명</b>으로 여긴다. 하지만 제대로 된 곳에서는 <b>맥락을 채우는 일</b>이 핵심이다.</p><cite>Andrej Karpathy</cite></blockquote>
+    <p class="human-conclusion">AI에게 넘기는 것은 판단이 아니라, 정해진 범위의 실행입니다.</p>
+    <div class="human-quotes human-quotes--bubbles">
+      <blockquote class="human-quote human-quote--blue"><p>가장 뛰어난 코더는 곧 <b>가장 뛰어난 커뮤니케이터</b>가 될 것이다.</p><cite>Sean Grove · OpenAI</cite></blockquote>
+      <blockquote class="human-quote human-quote--mint"><p>사람들은 프롬프트를 <b>평소 던지는 짧은 작업 설명</b>으로 여긴다. 하지만 제대로 된 곳에서는 <b>맥락을 채우는 일</b>이 핵심이다.</p><cite>Andrej Karpathy</cite></blockquote>
     </div>
   </div>
 </section>
 
-<section class="slide intro-do intro-do-answer no-page-number" data-slide="S3DO" aria-label="해">
+<section class="slide intro-do no-page-number" data-slide="S3DO" aria-label="해.">
   <p>해.</p>
 </section>
 
@@ -211,7 +236,7 @@
       <article class="pv-check"><span class="pv-mark">검토 후 결정</span><b>개인 주소 · 개인 전화번호</b><p>공개할 <strong>필요가 있는지</strong>, 공개되면 <strong>어떤 위험이 있는지</strong> 먼저 따져 봅니다.</p></article>
       <article class="pv-ok"><span class="pv-mark">목적에 따라 사용</span><b>회사 주소 · 사업 연락처</b><p>이미 공개된 정보이고 공개할 목적이 분명하면 사용할 수 있습니다.</p></article>
     </div>
-    <div class="privacy-principle"><figure class="pv-spot asset-slot" data-asset-kind="paper-cut-v1" data-image-purpose="explanatory" data-image-role="spot" data-image-state="expected" data-expected-src="자료/images/s3prv_information-risk-sorting-v1.png"></figure><p><strong>무조건 금지가 아닙니다.</strong> 그 정보가 어떤 성격이고 밖에 드러났을 때 무엇이 위험한지를 기준으로, 넣을지 말지를 <strong>스스로 판단</strong>합니다.</p></div>
+    <div class="privacy-principle privacy-principle--wide"><p><strong>무조건 금지가 아닙니다.</strong> 그 정보가 어떤 성격이고 밖에 드러났을 때 무엇이 위험한지를 기준으로, 넣을지 말지를 <strong>스스로 판단</strong>합니다.</p></div>
   </div>
 </section>
 

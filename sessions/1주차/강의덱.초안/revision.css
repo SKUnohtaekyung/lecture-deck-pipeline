@@ -1327,6 +1327,23 @@
    콘텐츠 하단 상한 666px = bottom:54px 준수.
    ================================================================== */
 
+/* ---------- PART 3 흐름 지도 (S3MAP) ---------- */
+.s3map-layout{ top:112px; bottom:54px; display:flex; flex-direction:column; }
+.s3map-layout .s-title{ margin:3px 0 0; }
+.s3map-lead{ margin:10px 0 0; color:var(--gray-700); font-size:23px; line-height:1.4; }
+.s3map-flow{ flex:1 1 auto; min-height:0; margin-top:22px; display:grid; grid-template-columns:58px minmax(0,1fr) 28px minmax(0,1fr) 28px minmax(0,1fr) 28px minmax(0,1fr) 28px minmax(0,1fr) 58px; align-items:center; gap:0; padding:0; border:0; background:transparent; }
+.s3map-end{ margin:0; color:var(--blue); font-size:22px; font-weight:900; line-height:1.1; letter-spacing:-.03em; text-align:center; }
+.s3map-end--finish{ color:var(--mint-deep); }
+.s3map-step{ min-width:0; min-height:220px; display:flex; flex-direction:column; justify-content:center; padding:18px 16px; border:1px solid var(--blue-line-strong); border-radius:var(--r-md); background:var(--blue-panel); }
+.s3map-step span{ color:var(--blue); font-size:22px; font-weight:850; }
+.s3map-step h3{ margin:10px 0 0; color:var(--ink); font-size:25px; line-height:1.24; letter-spacing:-.025em; }
+.s3map-step p{ margin:12px 0 0; color:var(--gray-700); font-size:22px; line-height:1.35; }
+.s3map-step--coral{ border-color:var(--coral-line); background:var(--coral-soft); }
+.s3map-step--coral span{ color:var(--coral-deep); }
+.s3map-step--mint{ border-color:var(--mint-line); background:var(--mint-soft); }
+.s3map-step--mint span{ color:var(--mint-deep); }
+.s3map-arrow{ color:var(--gray-400); font-size:30px; font-weight:800; line-height:1; text-align:center; }
+
 /* ---------- 공통 · 엔지니어링 두 축 (S3PE · S3CE) ---------- */
 .eng-layout{ top:108px; bottom:54px; display:grid; grid-template-columns:300px 1fr; grid-template-rows:auto 1fr; gap:16px 20px; }
 .eng-head{ grid-column:1 / -1; }
@@ -1344,7 +1361,28 @@
 .eng-concept p{ margin:0; color:var(--gray-700); font-size:22px; line-height:1.5; }
 .eng-concept strong{ color:var(--ink); }
 .eng-note{ margin:16px 0 0; padding-top:14px; border-top:1px solid var(--mint-line); font-size:21px; }
-.eng-spot.asset-slot{ flex:1 1 auto; min-height:120px; margin:16px 0 0; width:auto; height:auto; max-width:none; max-height:none; }
+.slide[data-slide="S3PE"] .eng-spot.asset-slot{
+  position:relative;
+  inset:auto;
+  box-sizing:border-box;
+  flex:0 0 150px;
+  width:100%;
+  height:150px;
+  min-height:0;
+  max-width:none;
+  max-height:150px;
+  margin:16px 0 0;
+  padding:4px 6px 0;
+  overflow:hidden;
+}
+.slide[data-slide="S3PE"] .eng-spot.asset-slot > img{
+  position:static;
+  width:100%;
+  height:100%;
+  max-height:146px;
+  object-fit:contain;
+  object-position:center;
+}
 .eng-right{ min-height:0; display:flex; flex-direction:column; gap:16px; }
 .eng-four{ flex:0 0 auto; display:grid; grid-template-columns:repeat(4,1fr); gap:12px; }
 .eng-four article{ min-width:0; display:flex; flex-direction:column; padding:15px 15px 17px; border:1px solid var(--blue-line-strong); border-radius:var(--r-md); background:var(--surface-alt); }
@@ -1395,6 +1433,8 @@
 .lm-tick-y{ text-anchor:end; }
 .lm-val{ fill:var(--blue); font-size:22px; font-weight:800; text-anchor:middle; }
 .lm-val.is-low{ fill:var(--coral-deep); }
+.lm-low-label-bg{ fill:var(--coral-soft); stroke:var(--coral-line); stroke-width:1; }
+.lm-low-label{ dominant-baseline:middle; }
 .lm-axis-name{ fill:var(--gray-700); font-size:20px; font-weight:700; text-anchor:middle; }
 .lm-legend{ margin:6px 0 0; display:flex; align-items:center; gap:8px; color:var(--gray-700); font-size:19px; font-weight:700; }
 .lm-legend b{ color:var(--coral-deep); }
@@ -1443,22 +1483,26 @@
 
 /* ---------- 판단은 사람, 실행은 AI (S3HUM) ---------- */
 .human-layout{ top:112px; bottom:54px; display:flex; flex-direction:column; }
-.human-compare{ flex:0 0 auto; margin-top:24px; display:grid; grid-template-columns:1fr 1fr; gap:22px; }
-.human-compare article{ display:flex; flex-direction:column; justify-content:center; padding:20px 26px; border-radius:var(--r-lg); }
-.human-compare b{ font-size:42px; font-weight:900; line-height:1.1; letter-spacing:-.03em; }
-.human-compare p{ margin:10px 0 0; color:var(--gray-700); font-size:23px; line-height:1.42; }
-.human-compare span{ margin-top:10px; padding-top:10px; font-size:21px; font-weight:750; }
-.human-ask{ border:2px solid var(--coral-line); background:var(--coral-soft); }
-.human-ask b, .human-ask strong{ color:var(--coral-deep); }
-.human-ask span{ border-top:1px solid var(--coral-line); color:var(--coral-deep); }
-.human-do{ border:2px solid var(--mint); background:var(--mint-soft); }
-.human-do b, .human-do strong{ color:var(--mint-deep); }
-.human-do span{ border-top:1px solid var(--mint-line); color:var(--mint-deep); }
-.human-quotes{ flex:1 1 auto; min-height:0; margin-top:20px; display:grid; grid-template-columns:1fr 1fr; gap:22px; }
-.human-quotes blockquote{ margin:0; display:flex; flex-direction:column; justify-content:center; padding:18px 24px; border-left:6px solid var(--blue); background:var(--blue-panel); }
-.human-quotes p{ margin:0; color:var(--ink); font-size:23px; line-height:1.46; font-weight:600; }
-.human-quotes p b{ color:var(--blue); font-weight:850; }
-.human-quotes cite{ margin-top:12px; color:var(--gray-700); font-size:20px; font-style:normal; font-weight:750; }
+.human-handoff{ flex:0 0 auto; min-height:146px; margin-top:14px; display:grid; grid-template-columns:minmax(0,1fr) 164px minmax(0,1fr); align-items:stretch; gap:18px; }
+.human-role{ min-width:0; display:flex; flex-direction:column; justify-content:center; padding:16px 22px; border-radius:var(--r-lg); }
+.human-role b{ font-size:32px; font-weight:900; line-height:1.08; letter-spacing:-.03em; }
+.human-role p{ margin:8px 0 0; color:var(--gray-700); font-size:23px; line-height:1.4; font-weight:700; }
+.human-role--person{ border:2px solid var(--blue-line-strong); background:var(--blue-panel); }
+.human-role--person b{ color:var(--blue); }
+.human-role--ai{ border:2px solid var(--mint-line); background:var(--mint-soft); }
+.human-role--ai b{ color:var(--mint-deep); }
+.human-handoff-arrow{ display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; color:var(--blue); font-size:40px; font-weight:850; line-height:1; text-align:center; }
+.human-handoff-arrow span{ color:var(--gray-700); font-size:22px; font-weight:750; line-height:1.25; }
+.human-conclusion{ flex:0 0 auto; margin:10px 0 0; padding:10px 18px; border-left:6px solid var(--mint); background:var(--mint-soft); color:var(--ink); font-size:23px; font-weight:800; line-height:1.32; text-align:center; }
+.human-quotes{ flex:1 1 auto; min-height:0; margin:10px 0 12px; display:grid; grid-template-columns:1fr 1fr; gap:22px; }
+.human-quote{ position:relative; margin:0; display:flex; flex-direction:column; justify-content:center; padding:13px 22px; border:1px solid var(--blue-line-strong); border-radius:var(--r-md); background:var(--blue-panel); }
+.human-quote::after{ content:""; position:absolute; bottom:-11px; left:42px; width:20px; height:20px; transform:rotate(45deg); background:var(--blue-panel); border-right:1px solid var(--blue-line-strong); border-bottom:1px solid var(--blue-line-strong); }
+.human-quote p{ position:relative; z-index:1; margin:0; color:var(--ink); font-size:23px; line-height:1.42; font-weight:600; }
+.human-quote p b{ color:var(--blue); font-weight:850; }
+.human-quote cite{ position:relative; z-index:1; margin-top:8px; color:var(--gray-700); font-size:22px; font-style:normal; font-weight:750; }
+.human-quote--mint{ border-color:var(--mint-line); background:var(--mint-soft); }
+.human-quote--mint::after{ background:var(--mint-soft); border-color:var(--mint-line); }
+.human-quote--mint p b{ color:var(--mint-deep); }
 
 /* ---------- 첫 요청은 구체적으로, 결과는 반복 수정 (S3ITR) ---------- */
 .iterate-layout{ top:112px; bottom:54px; display:flex; flex-direction:column; }
@@ -1487,7 +1531,6 @@
 .pv-check strong{ color:var(--blue); }
 .pv-ok{ border:2px solid var(--mint); background:var(--mint-soft); }
 .pv-ok .pv-mark{ background:var(--mint); color:var(--on-mint); }
-.privacy-principle{ flex:0 0 auto; margin-top:20px; display:grid; grid-template-columns:190px 1fr; align-items:center; gap:22px; padding:16px 24px; border:1px solid var(--blue-line-strong); border-radius:var(--r-md); background:var(--blue-panel); }
+.privacy-principle{ flex:0 0 auto; margin-top:20px; display:grid; grid-template-columns:1fr; align-items:center; padding:18px 24px; border:1px solid var(--blue-line-strong); border-radius:var(--r-md); background:var(--blue-panel); }
 .privacy-principle p{ margin:0; color:var(--gray-700); font-size:23px; line-height:1.46; }
 .privacy-principle strong{ color:var(--ink); }
-.pv-spot.asset-slot{ width:190px; height:96px; max-width:none; max-height:none; margin:0; }
