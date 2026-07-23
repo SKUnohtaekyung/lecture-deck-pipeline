@@ -7,24 +7,24 @@
 [data-slide="A01"] .grid-3 p{ margin:0; color:var(--gray-700); font-size:22px; line-height:1.4; }
 [data-slide="A01"] .a01-close{ margin-top:16px; color:var(--gray-700); font-size:22px; }
 
-/* T01 — 토큰 분할 색 블록 도식 (22px 하한) */
-[data-slide="T01"] .tok-lead{ margin:8px 0 0; color:var(--gray-700); font-size:22px; line-height:1.5; }
-[data-slide="T01"] .tok-stage{ margin-top:14px; display:flex; flex-direction:column; align-items:center; gap:8px; }
+/* T01 — 토큰 분할 색 블록 도식 (22px 하한, 세로 여백 확장 + 마무리 문장을 오해박스에 병합) */
+[data-slide="T01"] .tok-lead{ margin:14px 0 0; color:var(--gray-700); font-size:22px; line-height:1.5; }
+[data-slide="T01"] .tok-stage{ margin-top:28px; display:flex; flex-direction:column; align-items:center; gap:8px; }
 [data-slide="T01"] .tok-orig{ margin:0; padding:8px 22px; border:1px solid var(--blue-line-strong); border-radius:var(--r-md); background:var(--white); color:var(--ink); font-family:var(--font-mono); font-size:23px; }
 [data-slide="T01"] .tok-arrow{ margin:0; color:var(--blue); font-size:22px; font-weight:800; }
 [data-slide="T01"] .tok-chips{ display:flex; gap:10px; }
 [data-slide="T01"] .tok-chip{ padding:9px 16px; border-radius:var(--r-md); border:2px solid var(--blue-line-strong); background:var(--blue-soft); color:var(--ink); font-family:var(--font-mono); font-size:22px; font-weight:800; }
 [data-slide="T01"] .tok-chip:nth-child(even){ background:var(--blue-panel); border-color:var(--blue-line); }
 [data-slide="T01"] .tok-caption{ margin:2px 0 0; color:var(--gray-700); font-size:22px; text-align:center; }
-[data-slide="T01"] .tok-myth{ margin-top:12px; padding:12px 18px; border:1px solid var(--coral-line); border-radius:var(--r-md); background:var(--coral-soft); }
+[data-slide="T01"] .tok-myth{ margin-top:28px; padding:16px 20px; border:1px solid var(--coral-line); border-radius:var(--r-md); background:var(--coral-soft); }
 [data-slide="T01"] .tok-myth-h{ margin:0; color:var(--coral-deep); font-size:22px; font-weight:800; }
-[data-slide="T01"] .tok-myth-b{ margin:4px 0 0; color:var(--gray-700); font-size:22px; }
-[data-slide="T01"] .tok-close{ margin-top:10px; color:var(--gray-700); font-size:22px; }
+[data-slide="T01"] .tok-myth-b{ margin:6px 0 0; color:var(--gray-700); font-size:22px; }
+[data-slide="T01"] .tok-myth-close{ margin:6px 0 0; color:var(--coral-deep); font-size:22px; font-weight:800; }
 
-/* T02 — 추론 강도 4단계 눈금 (22px 하한, 뱃지가 커져 트랙 높이 확대) */
-[data-slide="T02"] .reason-connect{ margin:8px 0 0; color:var(--gray-700); font-size:22px; line-height:1.5; }
-[data-slide="T02"] .reason-scale{ margin-top:14px; }
-[data-slide="T02"] .rs-track{ display:flex; align-items:flex-end; gap:24px; height:160px; padding:0 8px; border-bottom:2px solid var(--blue-line-strong); }
+/* T02 — 추론 강도 4단계 눈금 (22px 하한, 마무리 문장 삭제·전체 하향 배치·막대 차이 확대) */
+[data-slide="T02"] .reason-connect{ margin:24px 0 0; color:var(--gray-700); font-size:22px; line-height:1.5; }
+[data-slide="T02"] .reason-scale{ margin-top:26px; }
+[data-slide="T02"] .rs-track{ display:flex; align-items:flex-end; gap:24px; height:200px; padding:0 8px; border-bottom:2px solid var(--blue-line-strong); }
 [data-slide="T02"] .rs-col{ flex:1; display:flex; flex-direction:column; align-items:center; justify-content:flex-end; height:100%; gap:6px; }
 [data-slide="T02"] .rs-bar{ display:block; width:64px; border-radius:8px 8px 0 0; background:var(--blue); }
 [data-slide="T02"] .rs-badge{ padding:6px 14px; border-radius:999px; background:var(--mint); color:var(--on-mint); font-size:22px; font-weight:900; white-space:nowrap; }
@@ -33,60 +33,78 @@
 [data-slide="T02"] .rs-axis{ margin-top:10px; display:flex; align-items:center; justify-content:center; gap:16px; color:var(--gray-700); font-size:22px; }
 [data-slide="T02"] .rs-axis b{ color:var(--blue); font-weight:800; }
 [data-slide="T02"] .rs-axis-arrow{ color:var(--blue); font-size:22px; font-weight:900; }
-[data-slide="T02"] .reason-where{ margin-top:12px; padding:10px 16px; border-left:5px solid var(--blue); background:var(--blue-soft); color:var(--ink); font-size:22px; line-height:1.35; }
-[data-slide="T02"] .reason-close{ margin-top:10px; color:var(--gray-700); font-size:22px; }
+[data-slide="T02"] .reason-where{ margin-top:20px; padding:10px 16px; border-left:5px solid var(--blue); background:var(--blue-soft); color:var(--ink); font-size:22px; line-height:1.35; }
 
-/* S10A — 웹 기반 · 설치형 2분류 (22px 하한) */
+/* S10A — 웹 기반 · 설치형 2분류, 이미지는 재생성 대기 슬롯(prompt_only) (22px 하한) */
 [data-slide="S10A"] .app-types-grid.s10a-duo{ grid-template-columns:1fr 1fr; }
 [data-slide="S10A"] .app-type-card ul{ margin:10px 0 0; padding-left:20px; }
 [data-slide="S10A"] .app-type-card li{ margin:6px 0; color:var(--gray-700); font-size:22px; line-height:1.36; }
-[data-slide="S10A"] .s10a-thumbs{ margin-top:auto; padding-top:14px; display:flex; gap:12px; }
-[data-slide="S10A"] .s10a-thumbs .app-type-image{ width:130px; height:130px; flex:0 0 130px; }
-[data-slide="S10A"] .app-type-card--installed .app-type-image{ margin-top:auto; width:150px; height:150px; }
+[data-slide="S10A"] .app-type-image{ margin-top:auto; padding-top:16px; height:180px; }
 
-/* W01 — 기획·디자인 2패널 (22px 하한) */
-[data-slide="W01"] .proc-duo{ margin-top:18px; display:grid; grid-template-columns:1fr 1fr; gap:18px; }
-[data-slide="W01"] .proc-panel{ padding:18px 22px; border:1px solid var(--blue-line-strong); border-radius:var(--r-lg); background:var(--blue-panel); }
-[data-slide="W01"] .proc-panel-head{ display:flex; align-items:center; gap:14px; }
-[data-slide="W01"] .proc-icon{ position:relative; inset:auto; width:60px; height:60px; max-width:none; max-height:none; flex:0 0 60px; }
-[data-slide="W01"] .proc-tag{ display:inline-block; padding:5px 14px; border-radius:999px; background:var(--blue-soft); color:var(--blue); font-size:22px; font-weight:900; letter-spacing:.02em; }
-[data-slide="W01"] .proc-panel h3{ margin:12px 0 8px; font-size:25px; color:var(--ink); }
-[data-slide="W01"] .proc-body{ margin:0; color:var(--gray-700); font-size:22px; line-height:1.4; }
-[data-slide="W01"] .proc-example{ margin:10px 0 0; padding-top:8px; border-top:1px solid var(--blue-line-strong); font-size:22px; line-height:1.35; color:var(--ink); }
-[data-slide="W01"] .proc-example b{ color:var(--blue); margin-right:6px; }
-[data-slide="W01"] .proc-close{ margin-top:14px; color:var(--gray-700); font-size:22px; }
-
-/* W02 — 프론트엔드 스포트라이트 (22px 하한) */
-[data-slide="W02"] .w02-stage{ flex-direction:row; gap:48px; }
-[data-slide="W02"] .w02-figure{ position:relative; inset:auto; width:300px; height:300px; max-width:none; max-height:none; flex:0 0 300px; }
-[data-slide="W02"] .w02-copy{ max-width:540px; }
-[data-slide="W02"] .w02-lead{ margin:0; color:var(--gray-700); font-size:23px; line-height:1.45; }
-[data-slide="W02"] .w02-copy .timing{ margin:16px 0 0; font-size:22px; padding:8px 16px; }
-[data-slide="W02"] .w02-next{ margin:16px 0 0; color:var(--gray-700); font-size:22px; }
-
-/* W03 — 백엔드·데이터 (22px 하한, 스코프 배지는 배너형으로) */
-[data-slide="W03"] .dl-row.card{ padding:8px 20px; }
-[data-slide="W03"] .w03-foot{ margin-top:12px; display:flex; align-items:center; gap:18px; }
-[data-slide="W03"] .w03-icon{ position:relative; inset:auto; width:76px; height:76px; max-width:none; max-height:none; flex:0 0 76px; }
-[data-slide="W03"] .w03-foot-text{ flex:1; min-width:0; }
-[data-slide="W03"] .w03-analogy{ margin:0; color:var(--gray-700); font-size:22px; line-height:1.3; }
-[data-slide="W03"] .w03-analogy b{ color:var(--ink); }
-[data-slide="W03"] .w03-scope{ display:block; margin-top:6px; padding:8px 14px; border-radius:10px; border:1px solid var(--coral-line); background:var(--coral-soft); color:var(--coral-deep); font-size:22px; line-height:1.3; font-weight:800; }
-
-/* W05 — QA·배포·개선 세로 스텝 (22px 하한, 여백 축소로 상쇄) */
-[data-slide="W05"] .eval-steps{ gap:7px; }
-[data-slide="W05"] .eval-steps .work-step{ grid-template-columns:46px 54px 1fr; padding:9px 16px; }
-[data-slide="W05"] .w05-icon{ position:relative; inset:auto; width:54px; height:54px; max-width:none; max-height:none; }
-[data-slide="W05"] .eval-steps .work-step b{ font-size:22px; }
-[data-slide="W05"] .eval-steps .work-step span{ font-size:22px; line-height:1.32; }
-[data-slide="W05"] .w05-close{ margin-top:10px; color:var(--gray-700); font-size:22px; }
+/* W01·W02·W03·W05 — 제작 과정 4장 공통 레이아웃(연작): 좌측 설명(정의→비유→예시/관계) · 우측 이미지
+   같은 클래스를 네 장에 동일 적용 + data-series="proc"로 verify 연작 예외 적용 (22px 하한) */
+[data-slide="W01"] .proc-layout,
+[data-slide="W02"] .proc-layout,
+[data-slide="W03"] .proc-layout,
+[data-slide="W05"] .proc-layout{ display:flex; flex-direction:row; align-items:center; gap:40px; margin-top:16px; }
+[data-slide="W01"] .proc-left,
+[data-slide="W02"] .proc-left,
+[data-slide="W03"] .proc-left,
+[data-slide="W05"] .proc-left{ flex:0 0 688px; display:flex; flex-direction:column; gap:10px; }
+[data-slide="W01"] .proc-right,
+[data-slide="W02"] .proc-right,
+[data-slide="W03"] .proc-right,
+[data-slide="W05"] .proc-right{ flex:1 1 auto; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:18px; }
+[data-slide="W01"] .proc-row,
+[data-slide="W02"] .proc-row,
+[data-slide="W03"] .proc-row,
+[data-slide="W05"] .proc-row{ padding:10px 18px; border-radius:var(--r-md); background:var(--blue-soft); border:1px solid var(--blue-line); }
+[data-slide="W01"] .proc-term,
+[data-slide="W02"] .proc-term,
+[data-slide="W03"] .proc-term,
+[data-slide="W05"] .proc-term{ margin:0 0 3px; font-size:22px; font-weight:800; color:var(--blue); }
+[data-slide="W01"] .proc-def,
+[data-slide="W02"] .proc-def,
+[data-slide="W03"] .proc-def,
+[data-slide="W05"] .proc-def{ margin:0; color:var(--ink); font-size:22px; line-height:1.32; }
+[data-slide="W01"] .proc-def .hl-mint-text,
+[data-slide="W02"] .proc-def .hl-mint-text,
+[data-slide="W03"] .proc-def .hl-mint-text,
+[data-slide="W05"] .proc-def .hl-mint-text{ font-weight:800; }
+[data-slide="W01"] .proc-analogy,
+[data-slide="W03"] .proc-analogy,
+[data-slide="W05"] .proc-analogy{ margin:3px 0 0; color:var(--gray-700); font-size:22px; line-height:1.32; }
+[data-slide="W01"] .proc-analogy b,
+[data-slide="W03"] .proc-analogy b,
+[data-slide="W05"] .proc-analogy b{ color:var(--ink); font-weight:800; margin-right:4px; }
+[data-slide="W01"] .proc-example{ margin:3px 0 0; color:var(--gray-700); font-size:22px; line-height:1.32; }
+[data-slide="W01"] .proc-example b{ color:var(--blue); font-weight:800; margin-right:4px; }
+[data-slide="W02"] .proc-row .timing{ display:inline-block; margin-top:8px; font-size:22px; padding:7px 16px; }
+[data-slide="W01"] .proc-close,
+[data-slide="W02"] .proc-close,
+[data-slide="W03"] .proc-close,
+[data-slide="W05"] .proc-close{ margin:6px 0 0; color:var(--gray-700); font-size:22px; }
+[data-slide="W03"] .w03-scope{ display:block; margin:6px 0 0; padding:8px 14px; border-radius:10px; border:1px solid var(--coral-line); background:var(--coral-soft); color:var(--coral-deep); font-size:22px; line-height:1.3; font-weight:800; }
+[data-slide="W01"] .proc-figure,
+[data-slide="W02"] .proc-figure,
+[data-slide="W03"] .proc-figure,
+[data-slide="W05"] .proc-figure{ position:relative; inset:auto; max-width:none; max-height:none; display:block; }
+[data-slide="W01"] .proc-figure img,
+[data-slide="W02"] .proc-figure img,
+[data-slide="W03"] .proc-figure img,
+[data-slide="W05"] .proc-figure img{ width:100%; height:100%; object-fit:contain; }
+[data-slide="W01"] .proc-figure{ width:190px; height:190px; }
+[data-slide="W02"] .proc-figure{ width:300px; height:300px; }
+[data-slide="W03"] .proc-figure{ width:280px; height:280px; }
+[data-slide="W05"] .proc-right{ gap:12px; }
+[data-slide="W05"] .proc-figure{ width:120px; height:120px; }
 </style>
 
 <section class="slide part-divider" data-slide="P1">
   <svg class="dv-hero" viewBox="0 0 1280 720" fill="none" aria-hidden="true"></svg>
   <div class="pd-dots" aria-hidden="true"></div>
   <p class="pd-eyebrow">PART</p>
-  <h2 class="pd-title">AI → 코딩 에이전트</h2>
+  <h2 class="pd-title">바이브코딩이란?</h2>
   <p class="pd-sub">문장을 만드는 AI에서 파일을 다루는 작업 파트너까지,<br>오늘 사용할 도구의 역할을 구분합니다.</p>
 </section>
 
@@ -163,8 +181,8 @@
     <div class="tok-myth">
       <p class="tok-myth-h">&ldquo;토큰 1개 = 단어 1개&rdquo;가 아닙니다</p>
       <p class="tok-myth-b">긴 단어 하나가 여러 토큰으로 쪼개지기도 합니다.</p>
+      <p class="tok-myth-close">요청이 길어질수록 토큰도 늘어납니다.</p>
     </div>
-    <p class="tok-close">요청이 길어질수록 토큰도 늘어납니다.</p>
   </div>
 </section>
 
@@ -176,106 +194,138 @@
     <p class="reason-connect">토큰이 AI가 다루는 재료의 단위였다면, 추론 강도는 그 재료를 얼마나 오래 붙들고 생각할지 정하는 다이얼입니다.</p>
     <div class="reason-scale" role="img" aria-label="Light에서 Extra High로 갈수록 막대가 커지는 4단계 추론 강도 눈금. Medium에 기본값 표시">
       <div class="rs-track">
-        <div class="rs-col"><span class="rs-bar" style="height:40px"></span></div>
-        <div class="rs-col"><span class="rs-badge">기본값</span><span class="rs-bar" style="height:64px"></span></div>
-        <div class="rs-col"><span class="rs-bar" style="height:90px"></span></div>
-        <div class="rs-col"><span class="rs-bar" style="height:116px"></span></div>
+        <div class="rs-col"><span class="rs-bar" style="height:32px"></span></div>
+        <div class="rs-col"><span class="rs-badge">기본값</span><span class="rs-bar" style="height:72px"></span></div>
+        <div class="rs-col"><span class="rs-bar" style="height:120px"></span></div>
+        <div class="rs-col"><span class="rs-bar" style="height:176px"></span></div>
       </div>
       <div class="rs-labels"><span>Light</span><span>Medium</span><span>High</span><span>Extra High</span></div>
       <div class="rs-axis"><span class="rs-axis-arrow">→</span><b>결과 품질 ↑</b><b>걸리는 시간·토큰 ↑</b></div>
     </div>
     <p class="reason-where">데스크톱 앱에서는 입력창 아래 모델·추론 조절 메뉴에서 모델과 함께 고릅니다.</p>
-    <p class="reason-close">원하는 결과가 나오는 <span class="hl-mint-text">가장 낮은 강도</span>로 시작합니다.</p>
   </div>
 </section>
 
 <section class="slide app-types-layout" data-slide="S10A">
   <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 1<br>화면의 종류</div></header>
-  <div class="app-types-slide"><p class="s-eyebrow">화면의 종류</p><h2 class="s-title">브라우저에서 여는 것과, <span class="hl-mint-text">설치해서 쓰는 것</span></h2><div class="app-types-grid s10a-duo" role="list"><article class="app-type-card" role="listitem"><h3>웹 기반 — 브라우저에서 바로 엽니다</h3><ul><li>주소만 알면 설치 없이 들어갑니다.</li><li>읽고 보는 화면부터 입력하고 저장하는 화면까지 여기에 들어갑니다.</li></ul><div class="s10a-thumbs"><figure class="app-type-image asset-slot" data-asset-kind="paper-cut-v1" data-image-purpose="explanatory" data-image-role="spot" data-image-state="ready" data-asset-id="ASSET-029"><img src="자료/images/s10_webpage-paper-cut-v1-transparent.png" alt="정돈된 브라우저 문서가 글과 이미지를 읽고 보는 웹페이지의 목적을 보여 준다."></figure><figure class="app-type-image asset-slot" data-asset-kind="paper-cut-v1" data-image-purpose="explanatory" data-image-role="spot" data-image-state="ready" data-asset-id="ASSET-030"><img src="자료/images/s10_webapp-paper-cut-v1-transparent.png" alt="입력창과 상태 변화가 있는 브라우저 화면이 웹 앱의 입력·저장 동작을 보여 준다."></figure></div></article><article class="app-type-card app-type-card--installed" role="listitem"><h3>설치형 — 내려받아 설치해서 씁니다</h3><ul><li>컴퓨터나 휴대폰에 설치한 뒤 아이콘을 눌러 엽니다.</li></ul><figure class="app-type-image asset-slot" data-asset-kind="paper-cut-v1" data-image-purpose="explanatory" data-image-role="spot" data-image-state="ready" data-asset-id="ASSET-031"><img src="자료/images/s10_installed-app-paper-cut-v1-transparent.png" alt="노트북과 휴대폰의 전용 앱 화면이 기기에 설치해 사용하는 프로그램의 목적을 보여 준다."></figure></article></div><p class="app-types-note">이번 주에 만드는 것은 <span class="hl-mint-underline">브라우저에서 여는 쪽</span>입니다.</p></div>
+  <div class="app-types-slide"><p class="s-eyebrow">화면의 종류</p><h2 class="s-title">브라우저에서 여는 것과, <span class="hl-mint-text">설치해서 쓰는 것</span></h2><div class="app-types-grid s10a-duo" role="list"><article class="app-type-card" role="listitem"><h3>웹 기반 — 브라우저에서 바로 엽니다</h3><ul><li>주소만 알면 설치 없이 들어갑니다.</li><li>읽고 보는 화면부터 입력하고 저장하는 화면까지 여기에 들어갑니다.</li></ul><figure class="app-type-image asset-slot" data-image-purpose="explanatory" data-image-role="spot" data-image-state="expected" data-expected-src="자료/images/s10a_web-based-v2.png"></figure></article><article class="app-type-card app-type-card--installed" role="listitem"><h3>설치형 — 내려받아 설치해서 씁니다</h3><ul><li>컴퓨터나 휴대폰에 설치한 뒤 아이콘을 눌러 엽니다.</li></ul><figure class="app-type-image asset-slot" data-image-purpose="explanatory" data-image-role="spot" data-image-state="expected" data-expected-src="자료/images/s10a_installed-v2.png"></figure></article></div></div>
 </section>
 
 <section class="slide lifecycle-flow lifecycle-infographic-slide" data-slide="S10B">
   <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 1<br>전체 과정</div></header>
   <div class="s-full lifecycle-infographic-layout"><p class="s-eyebrow">웹서비스 제작 과정</p><h2 class="s-title">웹서비스는 <span class="hl-mint-text">일곱 단계</span>를 돌며 완성됩니다</h2>
     <div class="lifecycle-infographic-body">
-      <ol class="lifecycle-stage-list" aria-label="웹서비스 제작 7단계"><li><b>1 기획</b><span>사용자가 겪는 문제와 만들 결과의 목표를 정합니다.</span></li><li><b>2 디자인</b><span>필요한 정보의 순서와 화면 구조를 미리 그립니다.</span></li><li><b>3 프론트엔드</b><span>HTML·CSS·JavaScript로 보이는 화면과 반응을 만듭니다. 손님이 앉는 <b>매장의 홀</b>입니다.</span></li><li><b>4 백엔드</b><span>입력한 데이터를 저장하고 서비스 규칙대로 처리합니다. 주문이 처리되는 <b>주방</b>입니다.</span></li><li><b>5 QA</b><span>요청한 기능이 맞는지 확인하고 발견한 오류를 고칩니다.</span></li><li><b>6 배포</b><span>완성한 결과를 인터넷에서 누구나 열 수 있게 공개합니다.</span></li><li><b>7 운영·개선</b><span>사용자의 반응과 문제를 살펴 다음 개선으로 이어 갑니다.</span></li></ol>
+      <ol class="lifecycle-stage-list" aria-label="웹서비스 제작 7단계"><li><b>1 기획</b><span>사용자가 겪는 문제와 만들 결과의 목표를 정합니다.</span></li><li><b>2 디자인</b><span>필요한 정보의 순서와 화면 구조를 미리 그립니다.</span></li><li><b>3 프론트엔드</b><span>HTML·CSS·JavaScript로 보이는 화면과 반응을 만듭니다.</span></li><li><b>4 백엔드</b><span>입력한 데이터를 저장하고 서비스 규칙대로 처리합니다.</span></li><li><b>5 QA</b><span>요청한 기능이 맞는지 확인하고 발견한 오류를 고칩니다.</span></li><li><b>6 배포</b><span>완성한 결과를 인터넷에서 누구나 열 수 있게 공개합니다.</span></li><li><b>7 운영·개선</b><span>사용자의 반응과 문제를 살펴 다음 개선으로 이어 갑니다.</span></li></ol>
       <figure class="lifecycle-infographic asset-slot asset-slot--hero" data-asset-kind="paper-cut-v1" data-image-purpose="explanatory" data-image-state="ready" data-asset-id="ASSET-040"><img src="자료/images/s10b_webservice-seven-stage-infographic-paper-cut-v1-transparent.png" alt="기획, 디자인, 프론트엔드, 백엔드, QA, 배포, 운영·개선이 하나의 파란 순환 경로로 이어지는 웹서비스 제작 과정 인포그래픽"><figcaption class="lifecycle-image-labels" aria-hidden="true"><span class="stage-1">기획</span><span class="stage-2">디자인</span><span class="stage-3">프론트엔드</span><span class="stage-4">백엔드</span><span class="stage-5">QA</span><span class="stage-6">배포</span><span class="stage-7">운영·개선</span></figcaption></figure>
     </div>
   </div>
 </section>
 
-<section class="slide dl-list" data-slide="W01">
+<section class="slide proc-stage canvas-fill" data-slide="W01" data-series="proc">
   <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 1<br>제작 과정</div></header>
   <div class="s-full">
-    <p class="s-eyebrow">제작 과정 ①</p>
+    <p class="s-eyebrow">기획과 디자인</p>
     <h2 class="s-title">무엇을 만들지 정하고, <span class="hl-mint-text">어떻게 보일지</span> 그립니다</h2>
-    <div class="proc-duo">
-      <article class="proc-panel">
-        <div class="proc-panel-head"><figure class="proc-icon asset-slot" data-asset-kind="paper-cut-v1" data-image-purpose="mnemonic" data-image-role="spot" data-image-state="ready"><img src="자료/images/s10_plan-paper-cut-v1-transparent.png" alt="목표와 문제를 적은 메모가 기획 단계를 상징한다."></figure><span class="proc-tag">STEP 1</span></div>
-        <h3>기획</h3>
-        <p class="proc-body">누가 어떤 불편을 겪는지 정하고, 무엇을 만들지 한 문장으로 적습니다.</p>
-        <p class="proc-example"><b>예</b>모임 회원이 다음 일정을 못 찾는다 → 일정 안내 페이지</p>
-      </article>
-      <article class="proc-panel">
-        <div class="proc-panel-head"><figure class="proc-icon asset-slot" data-asset-kind="paper-cut-v1" data-image-purpose="mnemonic" data-image-role="spot" data-image-state="ready"><img src="자료/images/s10_design-paper-cut-v1-transparent.png" alt="화면 구조를 미리 그린 스케치가 디자인 단계를 상징한다."></figure><span class="proc-tag">STEP 2</span></div>
-        <h3>디자인</h3>
-        <p class="proc-body">필요한 정보의 순서와 화면 구조를 미리 그립니다.</p>
-        <p class="proc-example"><b>예</b>제목 → 일정 → 장소 → 연락처</p>
-      </article>
-    </div>
-    <p class="proc-close">여기서 정한 것이 그대로 AI에게 줄 요청문의 재료가 됩니다.</p>
-  </div>
-</section>
-
-<section class="slide compare-slide" data-slide="W02">
-  <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 1<br>제작 과정</div></header>
-  <div class="dc-title">
-    <p class="s-eyebrow">제작 과정 ②</p>
-    <h2 class="s-title">사람이 보고 누르는 <span class="hl-mint-text">화면</span>을 만듭니다</h2>
-  </div>
-  <div class="dc-stage w02-stage">
-    <figure class="w02-figure asset-slot" data-asset-kind="paper-cut-v1" data-image-purpose="explanatory" data-image-role="hero" data-image-state="ready"><img src="자료/images/s10_frontend-paper-cut-v1-transparent.png" alt="브라우저 화면에 글자·색·버튼이 조립되어 눈에 보이고 반응하는 프론트엔드 영역을 보여 준다."></figure>
-    <div class="w02-copy">
-      <p class="w02-lead">글자·색·배치처럼 눈에 보이는 것과, 눌렀을 때의 반응을 만드는 영역입니다.</p>
-      <span class="timing">이번 주에 만드는 것이 바로 이 부분입니다</span>
-      <p class="w02-next">무엇으로 만드는지는 곧 이어서 봅니다.</p>
-    </div>
-  </div>
-</section>
-
-<section class="slide dl-list" data-slide="W03">
-  <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 1<br>제작 과정</div></header>
-  <div class="s-full">
-    <p class="s-eyebrow">제작 과정 ③</p>
-    <h2 class="s-title">보이지 않는 곳에서 <span class="hl-mint-text">저장하고 처리합니다</span></h2>
-    <div class="accent-bar"></div>
-    <div class="dl-rows">
-      <div class="card surface dl-row"><span class="dl-term">백엔드</span><p class="s-body">입력한 내용을 규칙대로 처리하고, 필요한 것만 화면에 돌려줍니다.</p></div>
-      <div class="card surface dl-row"><span class="dl-term">데이터</span><p class="s-body">회원·글·주문처럼 계속 남겨야 하는 것을 보관합니다.</p></div>
-    </div>
-    <div class="w03-foot">
-      <figure class="w03-icon asset-slot" data-asset-kind="paper-cut-v1" data-image-purpose="mnemonic" data-image-role="spot" data-image-state="ready"><img src="자료/images/s10_backend-paper-cut-v1-transparent.png" alt="주방과 창고처럼 보이지 않는 곳에서 데이터를 처리하고 저장하는 백엔드를 상징한다."></figure>
-      <div class="w03-foot-text">
-        <p class="w03-analogy">손님이 앉는 홀이 프론트엔드라면, <b>주방과 창고</b>가 이쪽입니다.</p>
-        <span class="w03-scope">1주차에는 다루지 않습니다. 저장이 필요한 기능은 2주차에 만납니다.</span>
+    <div class="fill-stage proc-layout">
+      <div class="proc-left">
+        <div class="proc-row">
+          <p class="proc-term">기획</p>
+          <p class="proc-def">사용자 문제와 만들 목표를 가장 먼저 정합니다.</p>
+          <p class="proc-analogy"><b>비유</b>여행 전 어디로 갈지 정하는 <span class="hl-mint-text">여행 계획</span>과 같습니다.</p>
+          <p class="proc-example"><b>예</b>모임 회원이 다음 일정을 못 찾는다 → 일정 안내 페이지</p>
+        </div>
+        <div class="proc-row">
+          <p class="proc-term">디자인</p>
+          <p class="proc-def">정한 내용을 어떤 순서·모습으로 보일지 정합니다.</p>
+          <p class="proc-analogy"><b>비유</b>요리를 어떤 그릇에 담을지 정하는 <span class="hl-mint-text">플레이팅</span>과 같습니다.</p>
+          <p class="proc-example"><b>예</b>제목 → 일정 → 장소 → 연락처</p>
+        </div>
+        <p class="proc-close">여기서 정한 것이 그대로 <span class="hl-mint-underline">AI에게 줄 요청문의 재료</span>가 됩니다.</p>
+      </div>
+      <div class="proc-right">
+        <figure class="proc-figure asset-slot" data-asset-kind="paper-cut-v1" data-image-purpose="mnemonic" data-image-role="spot" data-image-state="ready"><img src="자료/images/s10_plan-paper-cut-v1-transparent.png" alt="목표와 문제를 적은 메모가 기획 단계를 상징한다."></figure>
+        <figure class="proc-figure asset-slot" data-asset-kind="paper-cut-v1" data-image-purpose="mnemonic" data-image-role="spot" data-image-state="ready"><img src="자료/images/s10_design-paper-cut-v1-transparent.png" alt="화면 구조를 미리 그린 스케치가 디자인 단계를 상징한다."></figure>
       </div>
     </div>
   </div>
 </section>
 
-<section class="slide" data-slide="W05">
+<section class="slide proc-stage canvas-fill" data-slide="W02" data-series="proc">
   <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 1<br>제작 과정</div></header>
-  <div class="s-full steps-full">
-    <p class="s-eyebrow">제작 과정 ④</p>
-    <h2 class="s-title">제대로 되는지 보고, <span class="hl-mint-text">내보내고, 더 낫게</span> 만듭니다</h2>
-    <div class="eval-steps">
-      <div class="work-step"><span class="n">1</span><figure class="w05-icon asset-slot" data-asset-kind="paper-cut-v1" data-image-purpose="mnemonic" data-image-role="spot" data-image-state="ready"><img src="자료/images/s10_qa-paper-cut-v1-transparent.png" alt="화면을 직접 확인하는 모습이 QA 단계를 상징한다."></figure><div><b>QA · 확인</b><span>의도한 대로 보이고 동작하는지 사람이 직접 확인합니다.</span></div></div>
-      <div class="vf-down" aria-hidden="true">↓</div>
-      <div class="work-step"><span class="n">2</span><figure class="w05-icon asset-slot" data-asset-kind="paper-cut-v1" data-image-purpose="mnemonic" data-image-role="spot" data-image-state="ready"><img src="자료/images/s10_publish-paper-cut-v1-transparent.png" alt="결과물을 인터넷에 올리는 모습이 배포 단계를 상징한다."></figure><div><b>배포 · 공개</b><span>내 컴퓨터 안에만 있던 결과를 인터넷에 올려 남들이 볼 수 있게 합니다.</span></div></div>
-      <div class="vf-down" aria-hidden="true">↓</div>
-      <div class="work-step"><span class="n">3</span><figure class="w05-icon asset-slot" data-asset-kind="paper-cut-v1" data-image-purpose="mnemonic" data-image-role="spot" data-image-state="ready"><img src="자료/images/s10_improve-paper-cut-v1-transparent.png" alt="사용자 반응을 보고 다시 고치는 모습이 개선 단계를 상징한다."></figure><div><b>개선</b><span>써 본 사람의 반응을 보고 다시 고칩니다.</span></div></div>
+  <div class="s-full">
+    <p class="s-eyebrow">프론트엔드</p>
+    <h2 class="s-title">사람이 보고 누르는 <span class="hl-mint-text">화면</span>을 만듭니다</h2>
+    <div class="fill-stage proc-layout">
+      <div class="proc-left">
+        <div class="proc-row">
+          <p class="proc-term">프론트엔드</p>
+          <p class="proc-def">글자·색·배치처럼 <span class="hl-mint-text">눈에 보이는 것</span>과 반응을 만듭니다.</p>
+          <span class="timing">이번 주에 만드는 것이 바로 이 부분입니다</span>
+        </div>
+        <p class="proc-close">무엇으로 만드는지는 곧 이어서 봅니다.</p>
+      </div>
+      <div class="proc-right">
+        <figure class="proc-figure asset-slot" data-asset-kind="paper-cut-v1" data-image-purpose="explanatory" data-image-role="hero" data-image-state="ready"><img src="자료/images/s10_frontend-paper-cut-v1-transparent.png" alt="브라우저 화면에 글자·색·버튼이 조립되어 눈에 보이고 반응하는 프론트엔드 영역을 보여 준다."></figure>
+      </div>
     </div>
-    <p class="w05-close">공개와 개선은 <span class="hl-mint-text">3주차에 직접 해 봅니다</span>.</p>
+  </div>
+</section>
+
+<section class="slide proc-stage canvas-fill" data-slide="W03" data-series="proc">
+  <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 1<br>제작 과정</div></header>
+  <div class="s-full">
+    <p class="s-eyebrow">백엔드와 데이터</p>
+    <h2 class="s-title">보이지 않는 곳에서 <span class="hl-mint-text">저장하고 처리합니다</span></h2>
+    <div class="fill-stage proc-layout">
+      <div class="proc-left">
+        <div class="proc-row">
+          <p class="proc-term">백엔드</p>
+          <p class="proc-def">입력한 내용을 규칙대로 처리해 돌려주는 부분입니다.</p>
+          <p class="proc-analogy"><b>비유</b>요리를 만드는 <span class="hl-mint-text">주방</span>과 같습니다.</p>
+        </div>
+        <div class="proc-row">
+          <p class="proc-term">데이터</p>
+          <p class="proc-def">회원·글·주문처럼 남겨야 하는 것을 보관합니다.</p>
+          <p class="proc-analogy"><b>비유</b>자리를 정해 쌓아 두는 <span class="hl-mint-text">창고</span>와 같습니다.</p>
+        </div>
+        <span class="w03-scope">1주차에는 다루지 않습니다. 저장이 필요한 기능은 2주차에 만납니다.</span>
+      </div>
+      <div class="proc-right">
+        <figure class="proc-figure asset-slot" data-asset-kind="paper-cut-v1" data-image-purpose="mnemonic" data-image-role="spot" data-image-state="ready"><img src="자료/images/s10_backend-paper-cut-v1-transparent.png" alt="주방과 창고처럼 보이지 않는 곳에서 데이터를 처리하고 저장하는 백엔드를 상징한다."></figure>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide proc-stage canvas-fill" data-slide="W05" data-series="proc">
+  <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 1<br>제작 과정</div></header>
+  <div class="s-full">
+    <p class="s-eyebrow">확인과 공개</p>
+    <h2 class="s-title">제대로 되는지 보고, <span class="hl-mint-text">내보내고, 더 낫게</span> 만듭니다</h2>
+    <div class="fill-stage proc-layout">
+      <div class="proc-left">
+        <div class="proc-row">
+          <p class="proc-term">QA · 확인</p>
+          <p class="proc-def">보이고 동작하는지 사람이 <span class="hl-mint-text">직접 확인</span>합니다.</p>
+          <p class="proc-analogy"><b>비유</b>거울 앞 매무새를 마지막 점검하는 것과 같습니다.</p>
+        </div>
+        <div class="proc-row">
+          <p class="proc-term">배포 · 공개</p>
+          <p class="proc-def">결과를 인터넷에 올려 <span class="hl-mint-text">남들이 볼 수 있게</span> 합니다.</p>
+          <p class="proc-analogy"><b>비유</b>요리를 매장에 내걸어 손님이 보게 하는 것과 같습니다.</p>
+        </div>
+        <div class="proc-row">
+          <p class="proc-term">개선</p>
+          <p class="proc-def">써 본 사람의 반응을 보고 다시 고칩니다.</p>
+        </div>
+        <p class="proc-close">공개와 개선은 <span class="hl-mint-text">3주차에 직접 해 봅니다</span>.</p>
+      </div>
+      <div class="proc-right">
+        <figure class="proc-figure asset-slot" data-asset-kind="paper-cut-v1" data-image-purpose="mnemonic" data-image-role="spot" data-image-state="ready"><img src="자료/images/s10_qa-paper-cut-v1-transparent.png" alt="화면을 직접 확인하는 모습이 QA 단계를 상징한다."></figure>
+        <figure class="proc-figure asset-slot" data-asset-kind="paper-cut-v1" data-image-purpose="mnemonic" data-image-role="spot" data-image-state="ready"><img src="자료/images/s10_publish-paper-cut-v1-transparent.png" alt="결과물을 인터넷에 올리는 모습이 배포 단계를 상징한다."></figure>
+        <figure class="proc-figure asset-slot" data-asset-kind="paper-cut-v1" data-image-purpose="mnemonic" data-image-role="spot" data-image-state="ready"><img src="자료/images/s10_improve-paper-cut-v1-transparent.png" alt="사용자 반응을 보고 다시 고치는 모습이 개선 단계를 상징한다."></figure>
+      </div>
+    </div>
   </div>
 </section>
 

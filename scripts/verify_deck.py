@@ -41,7 +41,8 @@ try:
 except Exception:
     pass
 
-FIXED = {"cover": "cover", "s02": "s02-slide", "s03": "s03-slide", "recap": "concept-recap"}
+# 2026-07-23: S61 삭제로 78장, 제작 과정 4장 연작(data-series) 예외 신설, recap 필수 계약 해제
+FIXED = {"cover": "cover", "s02": "s02-slide", "s03": "s03-slide"}
 
 # ============================================================================
 # L1 — HTML 파싱 층 (html.parser.HTMLParser 기반)
@@ -901,7 +902,8 @@ def main():
         if deck_file.stem == '강의덱':
             # 편집본: S00 표지 신설 + PART divider 1장 감소로 79장.
             # 2026-07-22 2차: S39A·W04 삭제, 실습 PART 6 표지 신설 → 79장/divider 6.
-            expected_n, expected_dividers = 79, 6
+            # 2026-07-23: 세션 요약(S61, concept-recap closing) 삭제로 78장.
+            expected_n, expected_dividers = 78, 6
             intro_expected = ['S00', 'S01', 'S01A', 'S01B', 'S01C']
         else:
             # 배포본(강의덱_배포): 2026-07-21) 48p(S39) 뒤에 완성 목표 쇼케이스 S39A를 추가해 71 → 72장.
@@ -1053,23 +1055,60 @@ def main():
     # 실제 덱에서 divider·고정 슬라이드가 끼면 시각 흐름도 끊긴다. 콘텐츠만
     # 압축한 목록에서 양쪽 파트의 마지막/첫 슬라이드를 붙여 세지 않는다.
     sig_by_start = {el.start: sig for el, sig in zip(content_els, sigs)}
-    maxrun, run, previous_sig = 0, 0, None
+    series_by_start = {el.start: (el.attrs.get('data-series') or '').strip() for el in content_els}
+
+    # 2026-07-23(재수정): 연속 검사용 시그니처는 패밀리보다 data-series를 우선한다.
+    # 런을 패밀리 시그니처로 먼저 묶으면, 연작 바로 옆에 우연히 같은 패밀리인 비연작
+    # 슬라이드가 붙었을 때 런이 연작보다 커져 "런 전체가 같은 series"가 아니게 되고
+    # 예외가 통째로 무력화된다(게이트 반려 사유). data-series가 있으면 그 값으로 런
+    # 시그니처를 대체해 연작과 우연한 동일 패밀리를 애초에 다른 런으로 분리한다.
+    # data-series가 없는 슬라이드는 기존 패밀리 시그니처를 그대로 쓴다.
+    run_sig_by_start = {
+        start: (f'series:{series}' if series else sig_by_start[start])
+        for start, series in series_by_start.items()
+    }
+
+    # 시그니처 연속 런을 실제 문서 순서로 구성한다(고정/디바이더 슬라이드가 끼면 런이 끊긴다).
+    runs = []  # [{'run_sig', 'length': N}]
+    cur_run_sig, cur_len = None, 0
     for slide in sorted(slide_els, key=lambda el: el.start):
-        sig = sig_by_start.get(slide.start)
-        if sig is None:
-            run, previous_sig = 0, None
+        run_sig = run_sig_by_start.get(slide.start)
+        if run_sig is None:
+            if cur_len:
+                runs.append({'run_sig': cur_run_sig, 'length': cur_len})
+            cur_run_sig, cur_len = None, 0
             continue
-        run = run + 1 if sig == previous_sig else 1
-        previous_sig = sig
-        maxrun = max(maxrun, run)
+        if run_sig == cur_run_sig:
+            cur_len += 1
+        else:
+            if cur_len:
+                runs.append({'run_sig': cur_run_sig, 'length': cur_len})
+            cur_run_sig, cur_len = run_sig, 1
+    if cur_len:
+        runs.append({'run_sig': cur_run_sig, 'length': cur_len})
+
+    # 의도된 연작(인접 슬라이드가 같은 data-series 값을 공유)은 같은 구도 연속 카운트를
+    # 올리지 않는다 — data-series 없는 슬라이드는 기존 규칙 그대로 적용된다.
+    # 조용한 우회가 되지 않도록 예외가 적용된 구간은 항상 로그로 남긴다.
+    maxrun = 0
+    series_exempt_notes = []
+    for run_info in runs:
+        length = run_info['length']
+        run_sig = run_info['run_sig']
+        if length > 1 and run_sig.startswith('series:'):
+            series_exempt_notes.append(f'data-series="{run_sig[len("series:"):]}" {length}장')
+            continue
+        maxrun = max(maxrun, length)
+
     is_reference_atlas = a.atlas
     if content and not is_reference_atlas:
         need = diversity_need(len(content))
         chk(distinct >= need,
             f"구도 다양성: {distinct}종 / 본문 {len(content)}장(필요 {need})",
             f"구도 다양성 낮음: {distinct}종 / 본문 {len(content)}장(필요 {need}, 단조 위험)", warn=True)
-        chk(maxrun <= 2, f"같은 구도 최장 연속 {maxrun} (≤2)",
-            f"같은 구도 {maxrun}연속 — 3연속 금지 위배 (시그니처 반복: {sigs})")
+        series_suffix = f" · 연작 예외: {' · '.join(series_exempt_notes)}" if series_exempt_notes else ""
+        chk(maxrun <= 2, f"같은 구도 최장 연속 {maxrun} (≤2){series_suffix}",
+            f"같은 구도 {maxrun}연속 — 3연속 금지 위배 (시그니처 반복: {sigs}){series_suffix}")
     elif content:
         chk(True, "참조 아틀라스(--atlas): 다양성·연속 검사 제외(50 레이아웃·21 element 연속열람용)", "")
 
