@@ -899,9 +899,13 @@ def section_baseline(m, w, a, url, ret, stats, cost_main, cost_worker,
 # ⚠️ 워커 자기보고는 정본이 아니다(1.5-B 실측: 자기보고 11 vs 트랜스크립트 12).
 # ─────────────────────────────────────────────────────────────────────────────
 
-WORKER_TOOL_ALLOWLIST = ("WebSearch", "WebFetch", "Read", "Grep", "Glob")
+# ⚠️ ToolSearch는 조사 도구가 아니라 **전제 조건**이다 — 이 환경에서 WebSearch·WebFetch는
+# deferred 상태라 ToolSearch로 스키마를 로드해야 호출된다(Phase 7 실측: 3/3 워커).
+# 허용은 "스키마 로드"까지이며, 로드한 도구를 실제로 쓰면 그 도구 이름으로 여기서 잡힌다.
+WORKER_TOOL_ALLOWLIST = ("WebSearch", "WebFetch", "Read", "Grep", "Glob", "ToolSearch")
 EXPECTED_WORKER_MODEL = "claude-sonnet-5"
 AUDIT_EXIT_VIOLATION = 3
+DUP_URL_STOPLINE = 1   # §0.5 — 동일 canonical URL 재호출 상한
 
 
 def discover_worker_logs(pdir, session):
@@ -938,6 +942,7 @@ def section_tool_audit(pdir, session, allow, expect_model):
 
     tool_violations = []
     model_violations = []
+    dup_violations = []
     for path, origin in files:
         label = os.path.basename(path)[6:-6]
         st = collect(path, label, "worker", origin)
@@ -948,6 +953,12 @@ def section_tool_audit(pdir, session, allow, expect_model):
         if bad:
             shown += "  ⛔ " + ", ".join(f"{t}×{n}" for t, n in sorted(bad.items()))
             tool_violations.append((label, bad))
+        # §0.5 중단선: 동일 canonical URL 재호출은 1회까지
+        canon = [canon_url(u) for u in st.fetch_urls]
+        dup = len(canon) - len(set(canon))
+        if dup > DUP_URL_STOPLINE:
+            shown += f"  ⛔ 동일URL재호출×{dup}"
+            dup_violations.append((label, dup))
         if any(m != expect_model for m in st.models):
             model_violations.append((label, models))
         print("%-20s %-9s %-18s %5d %12s  %s"
@@ -974,6 +985,13 @@ def section_tool_audit(pdir, session, allow, expect_model):
     else:
         print(f"  ✅ 모델: 전 워커가 {expect_model}")
 
+    if dup_violations:
+        for label, dup in dup_violations:
+            print(f"  ⛔ 동일 canonical URL 재호출 {dup}회: {label} "
+                  f"(§0.5 중단선 {DUP_URL_STOPLINE})")
+    else:
+        print(f"  ✅ 동일 URL 재호출: 중단선({DUP_URL_STOPLINE}) 이내")
+
     if tool_violations:
         for label, bad in tool_violations:
             print(f"  ⛔ 허용목록 외 도구: {label} → "
@@ -984,7 +1002,7 @@ def section_tool_audit(pdir, session, allow, expect_model):
     else:
         print("  ✅ 도구: 허용목록 외 호출 0건")
 
-    return bool(tool_violations or model_violations)
+    return bool(tool_violations or model_violations or dup_violations)
 
 
 def main():

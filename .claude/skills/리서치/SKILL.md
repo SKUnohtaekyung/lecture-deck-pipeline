@@ -38,19 +38,24 @@ Agent(subagent_type: "Explore", model: "sonnet", prompt: <청크 1개 분량 조
 |---|---|---|
 | 서브에이전트 타입 | `Explore` | **구조적** — `Write`·`Edit`·`NotebookEdit`·`Agent`를 애초에 보유하지 않는다(중첩 차단 포함) |
 | 모델 | `sonnet` | **구조적** — 호출 파라미터. 실측 해석값 `claude-sonnet-5`. `inherit` 금지 |
-| 허용 도구 | `WebSearch` `WebFetch` `Read` `Grep` `Glob` | ⚠️ **자연어 지시 + 사후 감사** |
-| 불허 도구 | 위 5개 외 **전부** — `Bash`·`PowerShell`·브라우저 자동화·`Skill`·`ToolSearch`·알림/스케줄/메시지 계열 포함 | ⚠️ **자연어 지시 + 사후 감사** |
+| 허용 도구 | `WebSearch` `WebFetch` `Read` `Grep` `Glob` + **`ToolSearch`(전제 조건)** | ⚠️ **자연어 지시 + 사후 감사** |
+| 불허 도구 | 위 목록 외 **전부** — `Bash`·`PowerShell`·브라우저 자동화·`Skill`·알림/스케줄/메시지 계열 포함 | ⚠️ **자연어 지시 + 사후 감사** |
 | 턴 상한 | **없음** | ❌ **강제 수단 없음.** `maxTurns`는 `.claude/agents/` frontmatter 전용이라 이 경로에서는 쓸 수 없다 |
 
 `Explore`는 부모 세션의 도구에서 `Agent`·`Artifact`·`ExitPlanMode`·`Edit`·`Write`·`NotebookEdit`만 뺀 집합을 갖는다.
 **`Bash`와 `PowerShell`이 남아 있으므로 `Write` 차단만으로는 파일 쓰기를 막지 못한다.**
 근거와 실측 기록은 `_dev/설계기록/Phase2-워커실행통제-검증절차.md`.
 
+⚠️ **`ToolSearch`는 조사 도구가 아니라 전제 조건이다.** 이 환경에서 `WebSearch`·`WebFetch`는
+deferred(이름만 노출·스키마 미로드) 상태라 `ToolSearch`로 스키마를 먼저 로드해야 호출된다 —
+Phase 7 실측에서 워커 **3/3**이 그랬다. 허용 범위는 **그 둘의 스키마 로드까지**이며,
+`ToolSearch`로 다른 도구를 불러 실제로 쓰면 **그 도구 이름으로 감사에 잡힌다.**
+
 ## 워커 프롬프트에 반드시 넣을 문구
 
 정본 4단계의 청크 템플릿·레지스트리 행 형식에 **더해** 아래를 그대로 넣는다.
 
-- `다음 5개 도구만 사용한다: WebSearch, WebFetch, Read, Grep, Glob. 그 외 어떤 도구도 호출하지 마라 — Bash·PowerShell 포함.`
+- `조사에는 WebSearch, WebFetch, Read, Grep, Glob만 사용한다. 그 외 어떤 도구도 호출하지 마라 — Bash·PowerShell 포함. (WebSearch·WebFetch가 deferred 상태면 ToolSearch로 그 둘의 스키마만 로드해도 된다 — 다른 도구는 로드하지 마라.)`
 - `파일을 생성·수정·삭제하지 마라. 기본 5파일은 리드만 쓴다.`
 - `S-### 출처 ID를 스스로 할당하지 마라. URL과 서지 정보만 반환한다.`
 - `접근 실패(403·429·JS 렌더링·PDF 초과·DNS 실패)는 숨기지 말고 URL과 사유를 그대로 보고하라.`

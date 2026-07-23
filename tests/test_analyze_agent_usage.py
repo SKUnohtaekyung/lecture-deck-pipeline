@@ -284,6 +284,29 @@ class TestToolAudit(unittest.TestCase):
             self.assertNotIn("[리드]", ln, f"리드가 위반으로 잡혔다: {ln}")
             self.assertNotIn("main", ln, f"리드가 위반으로 잡혔다: {ln}")
 
+    def test_duplicate_url_stopline(self):
+        """§0.5 — 동일 canonical URL 재호출은 1회까지. 정규화 후 판정해야 한다."""
+        rc, out = self.audit("--session", "sess-dup")
+        # 3회 호출이 전부 같은 canonical URL → 재호출 2회 (중단선 1 초과)
+        self.assertIn("동일URL재호출×2", out)
+        self.assertIn("§0.5 중단선 1", out)
+        self.assertEqual(rc, 3, "동일 URL 재호출 초과인데 종료코드가 3이 아니다")
+
+    def test_no_duplicate_url_passes(self):
+        _, out = self.audit("--session", "sess-audit")
+        self.assertIn("동일 URL 재호출: 중단선(1) 이내", out)
+
+    def test_toolsearch_is_allowed_as_prerequisite(self):
+        """WebSearch·WebFetch가 deferred라 ToolSearch 없이는 조사가 불가능하다."""
+        import importlib
+        sys.path.insert(0, os.path.join(ROOT, "scripts"))
+        mod = importlib.import_module("analyze_agent_usage")
+        importlib.reload(mod)
+        self.assertIn("ToolSearch", mod.WORKER_TOOL_ALLOWLIST)
+        for banned in ("Bash", "PowerShell", "Write", "Edit", "Agent"):
+            self.assertNotIn(banned, mod.WORKER_TOOL_ALLOWLIST,
+                             f"{banned}가 허용목록에 들어갔다")
+
     def test_turns_counted_per_usage_record(self):
         _, out = self.audit()
         self.assertRegex(out, r"aCLEAN0001\s+direct\s+claude-sonnet-5\s+3")
