@@ -516,16 +516,20 @@ def family_signature(cls, inner):
         return 'gui'
     if has_class('workspace-map-layout'):
         return 'map'
+    # 플롯 차트(축·계열·눈금)는 카드/밴드와 시선 흐름이 근본적으로 달라 별도 family다.
+    if has_class('lm-chart', 'viz-line', 'viz-column', 'viz-hbar', 'viz-area'):
+        return 'chart'
     if has_class('llm-agent-bands', 'context-memory-bands', 'request-four-bands',
-                 'dl-rows', 'pf-list'):
+                 'dl-rows', 'pf-list', 'sy-cases'):
         return 'bands'
     if has_class('coding-terms'):
         return 'timeline'
     if has_class('compare2', 'cc-grid', 'request-compare-panels', 'change-scope-grid',
-                 'tool-roles', 'privacy-layout'):
+                 'tool-roles', 'privacy-layout', 'human-compare'):
         return 'compare'
     if (has_class('journey-week-grid', 'grid-2', 'grid-3', 'app-types-grid',
-                  'readiness-grid', 'scope-layout', 'required-conditions-layout')
+                  'readiness-grid', 'scope-layout', 'required-conditions-layout',
+                  'eng-four', 'privacy-tiers')
             or 'revenue-grid' in inner):
         return 'grid'
     if has_class('eval-steps'):
@@ -903,7 +907,9 @@ def main():
             # 편집본: S00 표지 신설 + PART divider 1장 감소로 79장.
             # 2026-07-22 2차: S39A·W04 삭제, 실습 PART 6 표지 신설 → 79장/divider 6.
             # 2026-07-23: 세션 요약(S61, concept-recap closing) 삭제로 78장.
-            expected_n, expected_dividers = 78, 6
+            # 2026-07-23 2차: PART 3에 프롬프트·컨텍스트 엔지니어링, 구조적 한계(LM·SY),
+            #   아첨 방지 요청문, 판단은 사람, "해.", 반복 수정 7장 신설로 85장.
+            expected_n, expected_dividers = 85, 6
             intro_expected = ['S00', 'S01', 'S01A', 'S01B', 'S01C']
         else:
             # 배포본(강의덱_배포): 2026-07-21) 48p(S39) 뒤에 완성 목표 쇼케이스 S39A를 추가해 71 → 72장.
