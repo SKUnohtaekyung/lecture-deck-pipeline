@@ -910,7 +910,8 @@ def main():
             # 2026-07-23 2차: PART 3에 프롬프트·컨텍스트 엔지니어링, 구조적 한계(LM·SY),
             #   아첨 방지 요청문, 판단은 사람, "해.", 반복 수정 7장 신설로 85장.
             # 2026-07-23 3차: PART 3 간지 뒤에 S3MAP 흐름 안내를 추가해 86장.
-            expected_n, expected_dividers = 86, 6
+            # 2026-07-24 4차: S3HUM 뒤에 도입 화면을 되짚는 S3ASK를 추가해 87장.
+            expected_n, expected_dividers = 87, 6
             intro_expected = ['S00', 'S01', 'S01A', 'S01B', 'S01C']
         else:
             # 배포본(강의덱_배포): 2026-07-21) 48p(S39) 뒤에 완성 목표 쇼케이스 S39A를 추가해 71 → 72장.
@@ -930,7 +931,7 @@ def main():
             # 페이지 번호가 아니라 안정적인 data-slide ID로 PART 3의 학습 흐름을 고정한다.
             # S3MAP은 PART 3 간지 직후에 놓여야 하며, 이후의 핵심 전개도 같은 순서를 유지한다.
             part3_expected = ['P3', 'S3MAP', 'S3PE', 'S3LM', 'S3CE', '18', 'S3SY',
-                              'S3SYP', 'S3HUM', 'S3DO', 'S3ITR']
+                              'S3SYP', 'S3HUM', 'S3ASK', 'S3DO', 'S3ITR']
             try:
                 part3_start = slide_ids.index('P3')
             except ValueError:

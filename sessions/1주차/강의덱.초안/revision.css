@@ -1322,7 +1322,7 @@
 
 /* ==================================================================
    2026-07-23 PART 3 확장 — 프롬프트·컨텍스트 엔지니어링, AI의 구조적 한계,
-   해줘에서 해로의 전환, 반복 수정, 개인정보 3단계 판단.
+   요청 설계 흐름, 반복 수정, 개인정보 3단계 판단.
    전 규칙을 신규 클래스로 스코프 고정(기존 공유 규칙 무편집).
    콘텐츠 하단 상한 666px = bottom:54px 준수.
    ================================================================== */
@@ -1331,9 +1331,7 @@
 .s3map-layout{ top:112px; bottom:54px; display:flex; flex-direction:column; }
 .s3map-layout .s-title{ margin:3px 0 0; }
 .s3map-lead{ margin:10px 0 0; color:var(--gray-700); font-size:23px; line-height:1.4; }
-.s3map-flow{ flex:1 1 auto; min-height:0; margin-top:22px; display:grid; grid-template-columns:58px minmax(0,1fr) 28px minmax(0,1fr) 28px minmax(0,1fr) 28px minmax(0,1fr) 28px minmax(0,1fr) 58px; align-items:center; gap:0; padding:0; border:0; background:transparent; }
-.s3map-end{ margin:0; color:var(--blue); font-size:22px; font-weight:900; line-height:1.1; letter-spacing:-.03em; text-align:center; }
-.s3map-end--finish{ color:var(--mint-deep); }
+.s3map-flow{ flex:1 1 auto; min-height:0; margin-top:22px; display:grid; grid-template-columns:minmax(0,1fr) 32px minmax(0,1fr) 32px minmax(0,1fr) 32px minmax(0,1fr) 32px minmax(0,1fr); align-items:center; gap:0; padding:0; border:0; background:transparent; }
 .s3map-step{ min-width:0; min-height:220px; display:flex; flex-direction:column; justify-content:center; padding:18px 16px; border:1px solid var(--blue-line-strong); border-radius:var(--r-md); background:var(--blue-panel); }
 .s3map-step span{ color:var(--blue); font-size:22px; font-weight:850; }
 .s3map-step h3{ margin:10px 0 0; color:var(--ink); font-size:25px; line-height:1.24; letter-spacing:-.025em; }
@@ -1361,28 +1359,7 @@
 .eng-concept p{ margin:0; color:var(--gray-700); font-size:22px; line-height:1.5; }
 .eng-concept strong{ color:var(--ink); }
 .eng-note{ margin:16px 0 0; padding-top:14px; border-top:1px solid var(--mint-line); font-size:21px; }
-.slide[data-slide="S3PE"] .eng-spot.asset-slot{
-  position:relative;
-  inset:auto;
-  box-sizing:border-box;
-  flex:0 0 150px;
-  width:100%;
-  height:150px;
-  min-height:0;
-  max-width:none;
-  max-height:150px;
-  margin:16px 0 0;
-  padding:4px 6px 0;
-  overflow:hidden;
-}
-.slide[data-slide="S3PE"] .eng-spot.asset-slot > img{
-  position:static;
-  width:100%;
-  height:100%;
-  max-height:146px;
-  object-fit:contain;
-  object-position:center;
-}
+.eng-prompt .eng-concept{ justify-content:center; }
 .eng-right{ min-height:0; display:flex; flex-direction:column; gap:16px; }
 .eng-four{ flex:0 0 auto; display:grid; grid-template-columns:repeat(4,1fr); gap:12px; }
 .eng-four article{ min-width:0; display:flex; flex-direction:column; padding:15px 15px 17px; border:1px solid var(--blue-line-strong); border-radius:var(--r-md); background:var(--surface-alt); }
@@ -1494,14 +1471,16 @@
 .human-handoff-arrow{ display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; color:var(--blue); font-size:40px; font-weight:850; line-height:1; text-align:center; }
 .human-handoff-arrow span{ color:var(--gray-700); font-size:22px; font-weight:750; line-height:1.25; }
 .human-conclusion{ flex:0 0 auto; margin:10px 0 0; padding:10px 18px; border-left:6px solid var(--mint); background:var(--mint-soft); color:var(--ink); font-size:23px; font-weight:800; line-height:1.32; text-align:center; }
-.human-quotes{ flex:1 1 auto; min-height:0; margin:10px 0 12px; display:grid; grid-template-columns:1fr 1fr; gap:22px; }
-.human-quote{ position:relative; margin:0; display:flex; flex-direction:column; justify-content:center; padding:13px 22px; border:1px solid var(--blue-line-strong); border-radius:var(--r-md); background:var(--blue-panel); }
-.human-quote::after{ content:""; position:absolute; bottom:-11px; left:42px; width:20px; height:20px; transform:rotate(45deg); background:var(--blue-panel); border-right:1px solid var(--blue-line-strong); border-bottom:1px solid var(--blue-line-strong); }
+.human-quotes{ flex:1 1 auto; min-height:0; margin:10px 0 18px; display:grid; grid-template-columns:1fr 1fr; gap:26px; }
+.human-quote{ position:relative; margin:0; display:flex; flex-direction:column; justify-content:center; padding:24px 26px 20px; border:2px solid var(--blue-line-strong); border-radius:32px 32px 32px 10px; background:var(--blue-panel); }
+.human-quote::before{ content:"“"; position:absolute; top:4px; right:20px; color:var(--blue); font-family:Georgia, serif; font-size:66px; font-weight:900; line-height:1; opacity:.32; }
+.human-quote::after{ content:""; position:absolute; bottom:-18px; left:28px; width:0; height:0; border-top:22px solid var(--blue-panel); border-right:26px solid transparent; }
 .human-quote p{ position:relative; z-index:1; margin:0; color:var(--ink); font-size:23px; line-height:1.42; font-weight:600; }
 .human-quote p b{ color:var(--blue); font-weight:850; }
 .human-quote cite{ position:relative; z-index:1; margin-top:8px; color:var(--gray-700); font-size:22px; font-style:normal; font-weight:750; }
-.human-quote--mint{ border-color:var(--mint-line); background:var(--mint-soft); }
-.human-quote--mint::after{ background:var(--mint-soft); border-color:var(--mint-line); }
+.human-quote--mint{ border-color:var(--mint-line); border-radius:32px 32px 10px 32px; background:var(--mint-soft); }
+.human-quote--mint::before{ color:var(--mint-deep); }
+.human-quote--mint::after{ right:28px; left:auto; border-right:0; border-left:26px solid transparent; border-top-color:var(--mint-soft); }
 .human-quote--mint p b{ color:var(--mint-deep); }
 
 /* ---------- 첫 요청은 구체적으로, 결과는 반복 수정 (S3ITR) ---------- */
