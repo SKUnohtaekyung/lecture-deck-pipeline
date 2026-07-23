@@ -1,12 +1,5 @@
 @AGENTS.md
 
-> 🔴 **이 작업 트리는 `/리서치` 리팩터링 전용 worktree다(브랜치 `refactor/research-skill`).**
-> 작업 시작 전 **`REFACTOR-RESUME.md`를 읽고**, 거기가 가리키는
-> `C:\Users\miso\.claude\plans\spicy-baking-hammock.md`를 **끝까지** 읽어라.
-> 그 계획 파일에만 승인 범위·Phase 게이트·GREEN/YELLOW/RED 판정 기준·중단 조건이 있다.
-> 원본 `C:\Users\miso\Desktop\template`은 읽기 전용이며 `main` 병합·push는 승인되지 않았다.
-> (이 안내와 `REFACTOR-RESUME.md`는 리팩터링 완료 시 함께 삭제한다.)
-
 # Claude Code 차이
 
 - Claude Code 프로젝트 스킬 진입점은 `.claude/skills/vibecoding-deck/SKILL.md`다.
