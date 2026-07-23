@@ -10,6 +10,71 @@
   <link rel="stylesheet" href="../../kit/styles/legibility.css">
   <link rel="stylesheet" href="../../kit/styles/patterns.css">
   <link rel="stylesheet" href="강의덱.초안/revision.css?v=20260721y">
+  <style data-part="shell">
+  /* [2단계 집필 · 반려 수정] S00 코스 대주제 표지 — 부제 22px·주차밴드 굵은 라벨 24px/설명 20px */
+  [data-slide="S00"] .cover-sub{ position:absolute; left:64px; right:410px; top:428px; z-index:2;
+    margin:0; font-size:22px; line-height:1.6; color:var(--gray-700); font-weight:600; }
+  [data-slide="S00"] .cover-weeks{ position:absolute; left:64px; right:410px; bottom:60px; z-index:2;
+    display:flex; gap:14px; }
+  [data-slide="S00"] .cover-week{ flex:1 1 0; background:var(--white); border:1px solid var(--blue-line-strong);
+    border-radius:var(--r-md); padding:14px 16px; }
+  [data-slide="S00"] .cover-week b{ display:block; font-size:24px; font-weight:800; color:var(--blue); margin-bottom:4px; }
+  [data-slide="S00"] .cover-week span{ display:block; font-size:20px; font-weight:600; color:var(--gray-700); line-height:1.3; }
+
+  /* [2단계 집필 · 반려 수정] X00 실습 안내 — work-step 22px 본문 + 지킬 조건 3칸 가로배치(세로예산 확보) */
+  [data-slide="X00"] .s-full{ bottom:54px; display:flex; flex-direction:column; }
+  [data-slide="X00"] .accent-bar{ display:none; }
+  [data-slide="X00"] .work-steps{ flex:1 1 auto; justify-content:center; gap:7px; margin:12px 0 14px; }
+  [data-slide="X00"] .work-step{ padding:8px 16px; }
+  [data-slide="X00"] .work-step b{ font-size:22px; margin-bottom:2px; }
+  [data-slide="X00"] .work-step span{ font-size:22px; line-height:1.32; }
+  [data-slide="X00"] .x-cond-label{ margin:0 0 8px; font-size:19px; font-weight:800; color:var(--blue); }
+  [data-slide="X00"] .x-cond-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+  [data-slide="X00"] .x-cond{ background:var(--blue-soft); border:1px solid var(--blue-line); border-radius:var(--r-md);
+    padding:10px 14px; font-size:22px; line-height:1.32; color:var(--ink); font-weight:600; }
+
+  /* [2단계 집필 · 반려 수정] X01~X06 실습 주제 6장 — 본문·목록·캡션 전부 22px 이상, 3열→2열 재배치 */
+  :is([data-slide="X01"],[data-slide="X02"],[data-slide="X03"],[data-slide="X04"],[data-slide="X05"],[data-slide="X06"]) .s-title{
+    font-size:30px; line-height:1.24; margin:2px 0 0; }
+  [data-slide="X01"] .grid-2, [data-slide="X04"] .grid-2{ margin-top:14px; }
+  [data-slide="X01"] .card, [data-slide="X04"] .card{ padding:16px 20px; }
+  [data-slide="X01"] .card h3, [data-slide="X04"] .card h3{ margin:0 0 8px; font-size:22px; font-weight:800; color:var(--ink); }
+  [data-slide="X01"] .x-list, [data-slide="X04"] .x-list{ margin:0; padding:0; list-style:none;
+    display:flex; flex-direction:column; gap:6px; }
+  [data-slide="X01"] .x-list li, [data-slide="X04"] .x-list li{ position:relative; padding-left:18px;
+    font-size:22px; line-height:1.32; color:var(--gray-700); }
+  [data-slide="X01"] .x-list li::before, [data-slide="X04"] .x-list li::before{ content:"·"; position:absolute;
+    left:2px; top:0; color:var(--blue); font-weight:800; }
+  [data-slide="X01"] .x-verify-band, [data-slide="X04"] .x-verify-band{ margin:14px 0 0; font-size:22px; line-height:1.4; }
+  [data-slide="X01"] .x-verify-band .lead, [data-slide="X04"] .x-verify-band .lead{ font-size:22px; }
+  [data-slide="X02"] .dl-row, [data-slide="X05"] .dl-row{ padding:11px 20px; }
+  [data-slide="X03"] .compare2, [data-slide="X06"] .compare2{ grid-template-columns:repeat(3,1fr); gap:16px; margin:14px 0; }
+  [data-slide="X03"] .cmp, [data-slide="X06"] .cmp{ padding:18px 18px 16px; }
+  [data-slide="X03"] .cmp h3, [data-slide="X06"] .cmp h3{ font-size:22px; }
+  [data-slide="X03"] .cmp-lines, [data-slide="X06"] .cmp-lines{ gap:8px; }
+  [data-slide="X03"] .cmp-lines p, [data-slide="X06"] .cmp-lines p{ font-size:22px; line-height:1.3; }
+  [data-slide="X02"] .card.surface.x-verify, [data-slide="X05"] .card.surface.x-verify{
+    background:var(--mint-soft); border-color:var(--mint-line); }
+  [data-slide="X02"] .card.surface.x-verify .dl-term, [data-slide="X05"] .card.surface.x-verify .dl-term{ color:var(--mint-deep); }
+  [data-slide="X03"] .cmp.x-verify, [data-slide="X06"] .cmp.x-verify{ background:var(--mint-soft); border-color:var(--mint); }
+  [data-slide="X03"] .cmp.x-verify h3, [data-slide="X06"] .cmp.x-verify h3{ color:var(--mint-deep); }
+  :is([data-slide="X01"],[data-slide="X02"],[data-slide="X03"],[data-slide="X04"],[data-slide="X05"],[data-slide="X06"]) .x-flow-label{
+    margin:12px 0 7px; font-size:19px; font-weight:800; color:var(--blue); letter-spacing:.01em; }
+  :is([data-slide="X01"],[data-slide="X02"],[data-slide="X03"],[data-slide="X04"],[data-slide="X05"],[data-slide="X06"]) .x-flow{
+    display:flex; align-items:center; gap:8px; width:100%; margin:0; }
+  :is([data-slide="X01"],[data-slide="X02"],[data-slide="X03"],[data-slide="X04"],[data-slide="X05"],[data-slide="X06"]) .x-flow span{
+    flex:1 1 auto; text-align:center; border-radius:999px; padding:8px 8px; background:var(--blue-soft);
+    border:1px solid var(--blue-line); color:var(--blue); font-size:20px; font-weight:800; line-height:1.2; }
+  :is([data-slide="X01"],[data-slide="X02"],[data-slide="X03"],[data-slide="X04"],[data-slide="X05"],[data-slide="X06"]) .x-flow b{
+    flex:0 0 auto; color:var(--blue); font-size:18px; font-weight:800; }
+  [data-slide="X05"] .x-extra, [data-slide="X06"] .x-extra{ margin:8px 0 0; font-size:19px; font-weight:700; color:var(--coral-deep); }
+
+  /* [2단계 집필 · 반려 수정] S61 세션 요약 — concept-card/flow/bottom 22px로 상향(이 슬라이드 전용 사용) */
+  [data-slide="S61"] .concept-flow span{ font-size:22px; padding:11px 10px; }
+  [data-slide="S61"] .concept-card h3{ font-size:22px; }
+  [data-slide="S61"] .concept-card p{ font-size:22px; line-height:1.42; }
+  [data-slide="S61"] .concept-bottom{ font-size:22px; }
+  </style>
 </head>
 <body>
   <div class="deck">
@@ -20,11 +85,14 @@
         <g data-cube="base"><polygon points="998,404 1054,432 998,460 942,432" fill="var(--blue-soft)"/><polygon points="942,432 998,460 998,518 942,490" fill="var(--blue)"/><polygon points="998,460 1054,432 1054,490 998,518" fill="var(--mint)"/></g>
         <circle cx="1170" cy="256" r="13" fill="var(--coral)"/>
       </svg>
-      <header class="s-head cover-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><div class="brand-stack"><span class="s-brand">VIBECODING</span></div><div class="s-team">WEEK 1 / 3</div></header>
-      <div class="cover-lead">WEEK 1 · AI와 함께 첫 화면을 만들고 확인하기</div>
-      <div class="cover-title"><h1 class="ko">[2단계 집필] 코스 대주제 표지</h1></div>
-      <div class="cover-terminal cover-terminal--mint"><span class="pfx">&gt;_</span><span class="q">내가 정한 조건으로 자기소개 웹페이지 만들어줘.</span><span class="cur" aria-hidden="true"></span></div>
-      <div class="cover-presenter">VIBECODING WEEK 1</div>
+      <div class="cover-lead">VIBECODING · 3 WEEKS</div>
+      <div class="cover-title"><h1 class="ko">AI와 함께 만드는<br>나의 첫 <span class="hl">웹사이트</span></h1></div>
+      <p class="cover-sub">비전공자가 AI 코딩 에이전트와 함께 아이디어를 화면으로 만들고, 직접 확인하고 고쳐서, 인터넷에 공개하기까지</p>
+      <div class="cover-weeks">
+        <div class="cover-week"><b>1주차</b><span>첫 화면 만들기</span></div>
+        <div class="cover-week"><b>2주차</b><span>기능 있는 제품으로</span></div>
+        <div class="cover-week"><b>3주차</b><span>웹에 공개하기</span></div>
+      </div>
     </section>
 
     <section class="slide cover" data-slide="S01">
@@ -76,20 +144,20 @@
 
     <section class="slide s02-slide has-image" data-slide="S02">
       <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">WEEK 1<br>첫 웹페이지</div></header>
-      <div class="s-body-wrap"><p class="s-eyebrow">오늘의 목표</p><h2 class="s-title">내 소개 페이지를 열고<br><span class="hl">한 곳을 직접 고칩니다</span></h2><p class="s-lead">수업이 끝나면 내 컴퓨터의 <code>index.html</code>을 직접 열어 결과를 확인할 수 있습니다.</p><ol class="goal-sequence" aria-label="오늘의 실습 순서"><li><b>index.html 열기</b><span>브라우저에서 내 페이지를 엽니다.</span></li><li><b>내용 확인</b><span>이름·한 줄 소개·관심사가 보이는지 봅니다.</span></li><li><b>한 가지 수정</b><span>원하는 문장이나 색 하나만 바꿉니다.</span></li><li><b>새로고침 확인</b><span>바뀐 것과 그대로인 것을 함께 확인합니다.</span></li></ol></div>
+      <div class="s-body-wrap"><p class="s-eyebrow">오늘의 목표</p><h2 class="s-title">내 소개 페이지를<br><span class="hl">만들고 직접 고칩니다</span></h2><p class="s-lead">수업이 끝나면 내 컴퓨터의 <code>index.html</code>을 직접 열어 결과를 확인할 수 있습니다.</p><ol class="goal-sequence" aria-label="오늘의 실습 순서"><li><b>index.html 열기</b><span>브라우저에서 내 페이지를 엽니다.</span></li><li><b>내용 확인</b><span>이름·한 줄 소개·관심사가 보이는지 봅니다.</span></li><li><b>한 가지 수정</b><span>원하는 문장이나 색 하나만 바꿉니다.</span></li><li><b>새로고침 확인</b><span>바꾼 곳과 그대로 둔 곳을 함께 봅니다.</span></li></ol></div>
       <figure class="asset-slot asset-slot--hero" data-asset-kind="paper-cut-v1" data-image-purpose="mnemonic" data-image-state="ready" data-asset-id="ASSET-001"><img src="자료/images/s02_arrival-three-actions-paper-cut-v1-transparent.png" alt="작업지시서가 제작 도구를 거쳐 확인 표식으로 이어져 요청·제작·검수의 흐름을 보여 준다."></figure>
     </section>
 
     <section class="slide s03-slide" data-slide="S03">
       <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span></header>
-      <div class="an-left"><span class="an-spark" aria-hidden="true"></span><h2 class="an-title">오늘 배우게 될 것</h2><div class="an-bar"></div><p class="an-intro">AI와 Codex가 무엇을 하는지 알고,<br>내 소개 페이지를<br><span class="hl">요청하고, 열고 확인하고, 고치는 방법을</span><br>배웁니다.</p></div>
-      <div class="an-right" role="list" aria-label="오늘 배울 여섯 가지"><div class="an-item" role="listitem"><div class="an-num">1</div><div class="an-body"><div class="an-h">AI → 코딩 에이전트</div><div class="an-d">오늘 쓸 도구의 역할</div></div></div><div class="an-item" role="listitem"><div class="an-num">2</div><div class="an-body"><div class="an-h">Codex·폴더·파일 작업 범위·권한</div><div class="an-d">작업 환경과 범위</div></div></div><div class="an-item" role="listitem"><div class="an-num">3</div><div class="an-body"><div class="an-h">자기소개 재료·첫 요청</div><div class="an-d">작업지시서 준비</div></div></div><div class="an-item" role="listitem"><div class="an-num">4</div><div class="an-body"><div class="an-h">첫 페이지 생성 브라우저에서 열기</div><div class="an-d">한 페이지 직접 확인</div></div></div><div class="an-item" role="listitem"><div class="an-num">5</div><div class="an-body"><div class="an-h">유지 → 변경 → 확인</div><div class="an-d">한 번에 하나씩 수정</div></div></div><div class="an-item" role="listitem"><div class="an-num">6</div><div class="an-body"><div class="an-h">오류 대응·최종 점검</div><div class="an-d">문제를 구분하고 마무리</div></div></div></div>
+      <div class="an-left"><span class="an-spark" aria-hidden="true"></span><h2 class="an-title">오늘 배우게 될 것</h2><div class="an-bar"></div><p class="an-intro">AI에게 <span class="hl">일을 맡기는 방법</span>을 배우고,<br>내 소개 페이지를 직접 만들어<br>고쳐 봅니다.</p></div>
+      <div class="an-right" role="list" aria-label="오늘 배울 다섯 가지"><div class="an-item" role="listitem"><div class="an-num">1</div><div class="an-body"><div class="an-h">바이브코딩이란?</div><div class="an-d">오늘 쓸 도구와 말</div></div></div><div class="an-item" role="listitem"><div class="an-num">2</div><div class="an-body"><div class="an-h">안전한 연습 공간 만들기</div><div class="an-d">폴더·파일·권한</div></div></div><div class="an-item" role="listitem"><div class="an-num">3</div><div class="an-body"><div class="an-h">요청 잘하는 법</div><div class="an-d">무엇을 어떻게 적을까</div></div></div><div class="an-item" role="listitem"><div class="an-num">4</div><div class="an-body"><div class="an-h">첫 페이지 만들기</div><div class="an-d">요청하고 브라우저에서 열기</div></div></div><div class="an-item" role="listitem"><div class="an-num">5</div><div class="an-body"><div class="an-h">그대로 둘 것과 바꿀 것</div><div class="an-d">한 번에 하나씩 고치기</div></div></div></div>
     </section>
 
     <section class="slide portfolio-showcase" data-slide="S05A">
       <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">WEEK 1<br>오늘의 결과</div></header>
       <div class="portfolio-stage">
-        <div class="portfolio-story"><p class="s-eyebrow">오늘의 결과물</p><h2>내 이야기를 담은<br><span>첫 포트폴리오 페이지</span></h2><p>이름과 한 줄 소개, 관심사와 작은 활동을 한 화면에 담습니다. 오늘은 완성된 페이지를 직접 열고 한 곳을 바꿔 봅니다.</p><div class="portfolio-story-meta"><span>01 · 소개</span><span>02 · 관심사</span><span>03 · 활동</span></div></div>
+        <div class="portfolio-story"><p class="s-eyebrow">오늘의 결과물</p><h2>내 이야기를 담은<br><span>첫 포트폴리오 페이지</span></h2><p>이름과 한 줄 소개, 관심사와 작은 활동을 한 화면에 담습니다. 오늘 수업이 끝나면 이런 페이지가 내 컴퓨터에 남습니다.</p><div class="portfolio-story-meta"><span>01 · 소개</span><span>02 · 관심사</span><span>03 · 활동</span></div></div>
         <div class="portfolio-browser" aria-label="데이터 디자인 무드의 개인 포트폴리오 웹사이트 예시">
           <div class="portfolio-browser-bar"><span class="portfolio-window-dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="portfolio-url">minseo.page / portfolio</span></div>
           <div class="portfolio-site">
@@ -105,6 +173,89 @@
     </section>
 
 
+<style data-part="01">
+/* A01 — 이미 쓰는 AI 6항목 분류 그리드 (2×3, 22px 하한) */
+[data-slide="A01"] .grid-3{ grid-template-columns:repeat(2,1fr); grid-template-rows:repeat(3,1fr); gap:14px; margin-top:18px; }
+[data-slide="A01"] .grid-3 .card{ display:flex; flex-direction:column; justify-content:center; padding:14px 20px; }
+[data-slide="A01"] .grid-3 h3{ margin:0 0 6px; font-size:23px; color:var(--ink); }
+[data-slide="A01"] .grid-3 p{ margin:0; color:var(--gray-700); font-size:22px; line-height:1.4; }
+[data-slide="A01"] .a01-close{ margin-top:16px; color:var(--gray-700); font-size:22px; }
+
+/* T01 — 토큰 분할 색 블록 도식 (22px 하한) */
+[data-slide="T01"] .tok-lead{ margin:8px 0 0; color:var(--gray-700); font-size:22px; line-height:1.5; }
+[data-slide="T01"] .tok-stage{ margin-top:14px; display:flex; flex-direction:column; align-items:center; gap:8px; }
+[data-slide="T01"] .tok-orig{ margin:0; padding:8px 22px; border:1px solid var(--blue-line-strong); border-radius:var(--r-md); background:var(--white); color:var(--ink); font-family:var(--font-mono); font-size:23px; }
+[data-slide="T01"] .tok-arrow{ margin:0; color:var(--blue); font-size:22px; font-weight:800; }
+[data-slide="T01"] .tok-chips{ display:flex; gap:10px; }
+[data-slide="T01"] .tok-chip{ padding:9px 16px; border-radius:var(--r-md); border:2px solid var(--blue-line-strong); background:var(--blue-soft); color:var(--ink); font-family:var(--font-mono); font-size:22px; font-weight:800; }
+[data-slide="T01"] .tok-chip:nth-child(even){ background:var(--blue-panel); border-color:var(--blue-line); }
+[data-slide="T01"] .tok-caption{ margin:2px 0 0; color:var(--gray-700); font-size:22px; text-align:center; }
+[data-slide="T01"] .tok-myth{ margin-top:12px; padding:12px 18px; border:1px solid var(--coral-line); border-radius:var(--r-md); background:var(--coral-soft); }
+[data-slide="T01"] .tok-myth-h{ margin:0; color:var(--coral-deep); font-size:22px; font-weight:800; }
+[data-slide="T01"] .tok-myth-b{ margin:4px 0 0; color:var(--gray-700); font-size:22px; }
+[data-slide="T01"] .tok-close{ margin-top:10px; color:var(--gray-700); font-size:22px; }
+
+/* T02 — 추론 강도 4단계 눈금 (22px 하한, 뱃지가 커져 트랙 높이 확대) */
+[data-slide="T02"] .reason-connect{ margin:8px 0 0; color:var(--gray-700); font-size:22px; line-height:1.5; }
+[data-slide="T02"] .reason-scale{ margin-top:14px; }
+[data-slide="T02"] .rs-track{ display:flex; align-items:flex-end; gap:24px; height:160px; padding:0 8px; border-bottom:2px solid var(--blue-line-strong); }
+[data-slide="T02"] .rs-col{ flex:1; display:flex; flex-direction:column; align-items:center; justify-content:flex-end; height:100%; gap:6px; }
+[data-slide="T02"] .rs-bar{ display:block; width:64px; border-radius:8px 8px 0 0; background:var(--blue); }
+[data-slide="T02"] .rs-badge{ padding:6px 14px; border-radius:999px; background:var(--mint); color:var(--on-mint); font-size:22px; font-weight:900; white-space:nowrap; }
+[data-slide="T02"] .rs-labels{ display:flex; gap:24px; padding:0 8px; margin-top:6px; }
+[data-slide="T02"] .rs-labels span{ flex:1; text-align:center; color:var(--ink); font-size:22px; font-weight:800; }
+[data-slide="T02"] .rs-axis{ margin-top:10px; display:flex; align-items:center; justify-content:center; gap:16px; color:var(--gray-700); font-size:22px; }
+[data-slide="T02"] .rs-axis b{ color:var(--blue); font-weight:800; }
+[data-slide="T02"] .rs-axis-arrow{ color:var(--blue); font-size:22px; font-weight:900; }
+[data-slide="T02"] .reason-where{ margin-top:12px; padding:10px 16px; border-left:5px solid var(--blue); background:var(--blue-soft); color:var(--ink); font-size:22px; line-height:1.35; }
+[data-slide="T02"] .reason-close{ margin-top:10px; color:var(--gray-700); font-size:22px; }
+
+/* S10A — 웹 기반 · 설치형 2분류 (22px 하한) */
+[data-slide="S10A"] .app-types-grid.s10a-duo{ grid-template-columns:1fr 1fr; }
+[data-slide="S10A"] .app-type-card ul{ margin:10px 0 0; padding-left:20px; }
+[data-slide="S10A"] .app-type-card li{ margin:6px 0; color:var(--gray-700); font-size:22px; line-height:1.36; }
+[data-slide="S10A"] .s10a-thumbs{ margin-top:auto; padding-top:14px; display:flex; gap:12px; }
+[data-slide="S10A"] .s10a-thumbs .app-type-image{ width:130px; height:130px; flex:0 0 130px; }
+[data-slide="S10A"] .app-type-card--installed .app-type-image{ margin-top:auto; width:150px; height:150px; }
+
+/* W01 — 기획·디자인 2패널 (22px 하한) */
+[data-slide="W01"] .proc-duo{ margin-top:18px; display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+[data-slide="W01"] .proc-panel{ padding:18px 22px; border:1px solid var(--blue-line-strong); border-radius:var(--r-lg); background:var(--blue-panel); }
+[data-slide="W01"] .proc-panel-head{ display:flex; align-items:center; gap:14px; }
+[data-slide="W01"] .proc-icon{ position:relative; inset:auto; width:60px; height:60px; max-width:none; max-height:none; flex:0 0 60px; }
+[data-slide="W01"] .proc-tag{ display:inline-block; padding:5px 14px; border-radius:999px; background:var(--blue-soft); color:var(--blue); font-size:22px; font-weight:900; letter-spacing:.02em; }
+[data-slide="W01"] .proc-panel h3{ margin:12px 0 8px; font-size:25px; color:var(--ink); }
+[data-slide="W01"] .proc-body{ margin:0; color:var(--gray-700); font-size:22px; line-height:1.4; }
+[data-slide="W01"] .proc-example{ margin:10px 0 0; padding-top:8px; border-top:1px solid var(--blue-line-strong); font-size:22px; line-height:1.35; color:var(--ink); }
+[data-slide="W01"] .proc-example b{ color:var(--blue); margin-right:6px; }
+[data-slide="W01"] .proc-close{ margin-top:14px; color:var(--gray-700); font-size:22px; }
+
+/* W02 — 프론트엔드 스포트라이트 (22px 하한) */
+[data-slide="W02"] .w02-stage{ flex-direction:row; gap:48px; }
+[data-slide="W02"] .w02-figure{ position:relative; inset:auto; width:300px; height:300px; max-width:none; max-height:none; flex:0 0 300px; }
+[data-slide="W02"] .w02-copy{ max-width:540px; }
+[data-slide="W02"] .w02-lead{ margin:0; color:var(--gray-700); font-size:23px; line-height:1.45; }
+[data-slide="W02"] .w02-copy .timing{ margin:16px 0 0; font-size:22px; padding:8px 16px; }
+[data-slide="W02"] .w02-next{ margin:16px 0 0; color:var(--gray-700); font-size:22px; }
+
+/* W03 — 백엔드·데이터 (22px 하한, 스코프 배지는 배너형으로) */
+[data-slide="W03"] .dl-row.card{ padding:8px 20px; }
+[data-slide="W03"] .w03-foot{ margin-top:12px; display:flex; align-items:center; gap:18px; }
+[data-slide="W03"] .w03-icon{ position:relative; inset:auto; width:76px; height:76px; max-width:none; max-height:none; flex:0 0 76px; }
+[data-slide="W03"] .w03-foot-text{ flex:1; min-width:0; }
+[data-slide="W03"] .w03-analogy{ margin:0; color:var(--gray-700); font-size:22px; line-height:1.3; }
+[data-slide="W03"] .w03-analogy b{ color:var(--ink); }
+[data-slide="W03"] .w03-scope{ display:block; margin-top:6px; padding:8px 14px; border-radius:10px; border:1px solid var(--coral-line); background:var(--coral-soft); color:var(--coral-deep); font-size:22px; line-height:1.3; font-weight:800; }
+
+/* W05 — QA·배포·개선 세로 스텝 (22px 하한, 여백 축소로 상쇄) */
+[data-slide="W05"] .eval-steps{ gap:7px; }
+[data-slide="W05"] .eval-steps .work-step{ grid-template-columns:46px 54px 1fr; padding:9px 16px; }
+[data-slide="W05"] .w05-icon{ position:relative; inset:auto; width:54px; height:54px; max-width:none; max-height:none; }
+[data-slide="W05"] .eval-steps .work-step b{ font-size:22px; }
+[data-slide="W05"] .eval-steps .work-step span{ font-size:22px; line-height:1.32; }
+[data-slide="W05"] .w05-close{ margin-top:10px; color:var(--gray-700); font-size:22px; }
+</style>
+
 <section class="slide part-divider" data-slide="P1">
   <svg class="dv-hero" viewBox="0 0 1280 720" fill="none" aria-hidden="true"></svg>
   <div class="pd-dots" aria-hidden="true"></div>
@@ -113,17 +264,21 @@
   <p class="pd-sub">문장을 만드는 AI에서 파일을 다루는 작업 파트너까지,<br>오늘 사용할 도구의 역할을 구분합니다.</p>
 </section>
 
-<section class="slide grid-ph" data-slide="A01" data-placeholder="1">
+<section class="slide grid-ph" data-slide="A01">
   <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 1<br>AI 친숙화</div></header>
   <div class="s-full">
-    <p class="s-eyebrow">AI 친숙화</p>
-    <h2 class="s-title">[2단계 집필] 이미 쓰고 있는 AI</h2>
+    <p class="s-eyebrow">이미 쓰고 있는 AI</p>
+    <h2 class="s-title">AI는 오늘 <span class="hl-mint-text">처음 만나는 것이 아닙니다</span></h2>
     <div class="accent-bar"></div>
     <div class="grid-3">
-      <div class="card surface"><p class="s-body">[2단계 집필]</p></div>
-      <div class="card surface"><p class="s-body">[2단계 집필]</p></div>
-      <div class="card surface"><p class="s-body">[2단계 집필]</p></div>
+      <div class="card surface"><h3>번역기</h3><p>외국어 문장을 한국어로 바꿔 줍니다.</p></div>
+      <div class="card surface"><h3>사진 보정</h3><p>어두운 사진을 알아서 밝게 만듭니다.</p></div>
+      <div class="card surface"><h3>영상 추천</h3><p>내가 볼 만한 영상을 골라 보여 줍니다.</p></div>
+      <div class="card surface"><h3>스팸 차단</h3><p>광고 메일을 걸러 받은편지함을 지킵니다.</p></div>
+      <div class="card surface"><h3>길 안내</h3><p>막히는 길을 피해 더 빠른 길을 알려 줍니다.</p></div>
+      <div class="card surface"><h3>맞춤법 검사</h3><p>틀린 글자를 찾아 고쳐 줍니다.</p></div>
     </div>
+    <p class="a01-close">이미 익숙한 AI에게, 오늘은 <span class="hl-mint-text">일을 맡기는 방법</span>을 배웁니다.</p>
   </div>
 </section>
 
@@ -137,22 +292,21 @@
       <article class="role-step role-step--agent" role="listitem"><span>작업공간에서</span><h3>코딩 에이전트</h3><p>폴더와 파일을 읽고 직접 수정합니다.</p><strong>브라우저에서 결과를 확인하고 다시 고칩니다.</strong></article>
     </div>
   </div>
-  <p class="role-flow-warning">두 도구 모두 틀릴 수 있습니다. <span>결과는 사람이 확인하고 결정합니다.</span></p>
 </section>
 
 <section class="slide llm-agent-wide" data-slide="07">
   <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 1<br>역할 비교</div></header>
   <div class="s-full"><p class="s-eyebrow">서로 다른 역할</p><h2 class="s-title">LLM과 에이전트는 <span class="hl-mint-mark">맡는 일이 다릅니다</span></h2>
-    <div class="llm-agent-layout"><div class="llm-agent-bands"><article class="llm-agent-band llm-agent-band--llm"><div><span>LANGUAGE</span><h3>LLM <small>Large Language Model</small></h3></div><ul><li>아주 많은 글을 학습한 <strong>대규모 언어 모델</strong>입니다.</li><li>입력을 토큰 단위로 다루고 다음 표현을 예측해 문장과 답을 만듭니다.</li><li><em>문장 완성 게임을 매우 잘하는 도우미</em>처럼 생각할 수 있습니다.</li></ul></article><article class="llm-agent-band llm-agent-band--agent"><div><span>ACTION</span><h3>에이전트 <small>Agent</small></h3></div><ul><li>목표와 완료 기준을 보고 <strong>계획하고 도구를 고릅니다.</strong></li><li>파일을 읽고 고친 뒤 결과를 관찰해 다음 행동을 정합니다.</li><li><strong>허용된 권한과 폴더 범위</strong> 안에서만 움직이는 실행 도우미입니다.</li></ul></article></div><figure class="llm-agent-image asset-slot asset-slot--support" data-asset-kind="paper-cut-v1" data-image-purpose="explanatory" data-image-state="ready" data-asset-id="ASSET-002"><img src="자료/images/s07_llm-agent-workshop-paper-cut-v1-transparent.png" alt="언어 재료가 제작 도구와 확인 도구로 이어져 LLM과 에이전트가 맡는 역할의 차이를 보여 준다."></figure></div>
+    <div class="llm-agent-layout"><div class="llm-agent-bands"><article class="llm-agent-band llm-agent-band--llm"><div><span>LANGUAGE</span><h3>LLM <small>Large Language Model</small></h3></div><ul><li>아주 많은 글을 학습한 <strong>대규모 언어 모델</strong>입니다.</li><li>입력을 토큰 단위로 다루고 다음 표현을 예측해 문장과 답을 만듭니다.</li><li><em>글을 아주 잘 쓰는 도구</em>처럼 생각할 수 있습니다.</li></ul></article><article class="llm-agent-band llm-agent-band--agent"><div><span>ACTION</span><h3>에이전트 <small>Agent</small></h3></div><ul><li>목표와 완료 기준을 보고 <strong>계획하고 도구를 고릅니다.</strong></li><li>파일을 읽고 고친 뒤 결과를 관찰해 다음 행동을 정합니다.</li><li><strong>허용된 권한과 폴더 범위</strong> 안에서만 움직이는 실행 도우미입니다.</li></ul></article></div><figure class="llm-agent-image asset-slot asset-slot--support" data-asset-kind="paper-cut-v1" data-image-purpose="explanatory" data-image-state="ready" data-asset-id="ASSET-002"><img src="자료/images/s07_llm-agent-workshop-paper-cut-v1-transparent.png" alt="언어 재료가 제작 도구와 확인 도구로 이어져 LLM과 에이전트가 맡는 역할의 차이를 보여 준다."></figure></div>
     <p class="llm-agent-conclusion">대화가 길어지면 중요한 조건을 다시 적습니다. <span>AI가 작성해도 최종 결정은 사람에게 있습니다.</span></p>
   </div>
 </section>
 
 <section class="slide coding-terms" data-slide="08">
   <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 1<br>용어의 출발</div></header>
-  <div class="s-full"><p class="s-eyebrow">용어의 출발 → 이 수업에서의 사용</p><h2 class="s-title">표현은 달라도 <span class="hl-mint-text">흐름은 하나</span>입니다</h2>
+  <div class="s-full"><p class="s-eyebrow">용어의 출발 → 이 수업에서의 사용</p><h2 class="s-title">이름은 달라도, <span class="hl-mint-text">하는 일은 같습니다</span></h2>
     <div class="coding-terms-path"><article class="coding-term-origin"><span>2025.02</span><h3>바이브 코딩</h3><p>Andrej Karpathy가 자연어로 원하는 방향을 말하고 AI가 코드를 만드는 흐름을 설명하며 널리 알려진 표현입니다.</p><small>출발: 자연어로 의도를 전하기</small></article><div class="coding-term-bridge" aria-hidden="true"><span>요청</span><b>→</b><span>실행</span><b>→</b><span>확인</span><b>→</b><span>수정</span></div><article class="coding-term-origin coding-term-origin--agent"><span>현재의 도구</span><h3>에이전틱 코딩</h3><p>AI 에이전트가 계획하고 도구를 사용하며 파일을 고치고 검증하는 개발 방식을 가리킵니다.</p><small>확장: 파일과 도구로 실제 작업하기</small></article></div>
-    <div class="coding-terms-course"><strong>두 표현을 쓰는 방식</strong><p>두 표현을 서로 다른 이론으로 외우지 않습니다. <span>사람이 목적과 조건을 정하고 → 에이전트가 파일을 작업하고 → 사람이 결과를 확인하는 같은 흐름</span>으로 사용합니다.</p></div>
+    <div class="coding-terms-course"><strong>두 표현을 쓰는 방식</strong><p>두 표현을 서로 다른 이론으로 이름을 외울 필요는 없습니다. <span>사람이 목적과 조건을 정하고 → 에이전트가 파일을 작업하고 → 사람이 결과를 확인하는 같은 흐름</span>으로 사용합니다.</p></div>
   </div>
 </section>
 
@@ -162,35 +316,56 @@
   <figure class="tool-role-image asset-slot asset-slot--support" data-asset-kind="paper-cut-v1" data-image-purpose="mnemonic" data-image-state="ready" data-asset-id="ASSET-003"><img src="자료/images/s09_three-work-roles-paper-cut-v1-transparent.png" alt="말풍선, 작업 트레이, 코드 제작 도구가 나란히 있어 대화·작업 정리·파일 작업의 서로 다른 역할을 보여 준다."></figure>
 </section>
 
-<section class="slide dl-list" data-slide="T01" data-placeholder="1">
+<section class="slide dl-list" data-slide="T01">
   <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 1<br>토큰</div></header>
   <div class="s-full">
-    <p class="s-eyebrow">토큰</p>
-    <h2 class="s-title">[2단계 집필] 토큰이란 무엇인가</h2>
-    <div class="accent-bar"></div>
-    <div class="dl-rows">
-      <div class="card surface dl-row"><span class="dl-term">[2단계 집필]</span><p class="s-body">[2단계 집필]</p></div>
-      <div class="card surface dl-row"><span class="dl-term">[2단계 집필]</span><p class="s-body">[2단계 집필]</p></div>
-      <div class="card surface dl-row"><span class="dl-term">[2단계 집필]</span><p class="s-body">[2단계 집필]</p></div>
+    <p class="s-eyebrow">AI가 글을 다루는 단위</p>
+    <h2 class="s-title">AI는 글을 <span class="hl-mint-text">토큰</span>으로 쪼개서 읽습니다</h2>
+    <p class="tok-lead">토큰은 AI가 글을 처리할 때 쪼개는 가장 작은 조각입니다. 단어 하나일 수도, 단어의 일부일 수도, 글자 하나일 수도 있습니다.</p>
+    <div class="tok-stage" role="img" aria-label="문장 &quot;ChatGPT는 놀랍다&quot;가 Chat·GPT·는·놀랍·다 다섯 개의 색 블록 토큰으로 쪼개지는 도식">
+      <p class="tok-orig">&ldquo;ChatGPT는 놀랍다&rdquo;</p>
+      <p class="tok-arrow">↓ 토큰 분할</p>
+      <div class="tok-chips">
+        <span class="tok-chip">Chat</span>
+        <span class="tok-chip">GPT</span>
+        <span class="tok-chip">는</span>
+        <span class="tok-chip">놀랍</span>
+        <span class="tok-chip">다</span>
+      </div>
+      <p class="tok-caption">한국어 짧은 문장 하나가 5개 안팎의 토큰이 됩니다. (실제 분할은 도구마다 다릅니다)</p>
     </div>
+    <div class="tok-myth">
+      <p class="tok-myth-h">&ldquo;토큰 1개 = 단어 1개&rdquo;가 아닙니다</p>
+      <p class="tok-myth-b">긴 단어 하나가 여러 토큰으로 쪼개지기도 합니다.</p>
+    </div>
+    <p class="tok-close">요청이 길어질수록 토큰도 늘어납니다.</p>
   </div>
 </section>
 
-<section class="slide compare-slide" data-slide="T02" data-placeholder="1">
+<section class="slide compare-slide" data-slide="T02">
   <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 1<br>추론 강도</div></header>
   <div class="s-full">
-    <p class="s-eyebrow">추론 강도</p>
-    <h2 class="s-title">[2단계 집필] Codex 추론 강도</h2>
-    <div class="compare2">
-      <div class="cmp"><span class="tag">[2단계 집필]</span><h3>[2단계 집필]</h3><p class="sub">[2단계 집필]</p><div class="cmp-lines"><p>[2단계 집필]</p></div></div>
-      <div class="cmp lean-cmp"><span class="tag">[2단계 집필]</span><h3>[2단계 집필]</h3><p class="sub">[2단계 집필]</p><div class="cmp-lines"><p>[2단계 집필]</p></div></div>
+    <p class="s-eyebrow">얼마나 오래 생각할지</p>
+    <h2 class="s-title">추론 강도는 <span class="hl-mint-text">생각의 깊이</span>를 정하는 다이얼입니다</h2>
+    <p class="reason-connect">토큰이 AI가 다루는 재료의 단위였다면, 추론 강도는 그 재료를 얼마나 오래 붙들고 생각할지 정하는 다이얼입니다.</p>
+    <div class="reason-scale" role="img" aria-label="Light에서 Extra High로 갈수록 막대가 커지는 4단계 추론 강도 눈금. Medium에 기본값 표시">
+      <div class="rs-track">
+        <div class="rs-col"><span class="rs-bar" style="height:40px"></span></div>
+        <div class="rs-col"><span class="rs-badge">기본값</span><span class="rs-bar" style="height:64px"></span></div>
+        <div class="rs-col"><span class="rs-bar" style="height:90px"></span></div>
+        <div class="rs-col"><span class="rs-bar" style="height:116px"></span></div>
+      </div>
+      <div class="rs-labels"><span>Light</span><span>Medium</span><span>High</span><span>Extra High</span></div>
+      <div class="rs-axis"><span class="rs-axis-arrow">→</span><b>결과 품질 ↑</b><b>걸리는 시간·토큰 ↑</b></div>
     </div>
+    <p class="reason-where">데스크톱 앱에서는 입력창 아래 모델·추론 조절 메뉴에서 모델과 함께 고릅니다.</p>
+    <p class="reason-close">원하는 결과가 나오는 <span class="hl-mint-text">가장 낮은 강도</span>로 시작합니다.</p>
   </div>
 </section>
 
 <section class="slide app-types-layout" data-slide="S10A">
   <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 1<br>화면의 종류</div></header>
-  <div class="app-types-slide"><p class="s-eyebrow">화면을 쓰는 방식</p><h2 class="s-title">웹페이지와 앱은 <span class="hl-mint-text">쓰는 목적이 다릅니다</span></h2><div class="app-types-grid" role="list"><article class="app-type-card app-type-card--page" role="listitem"><figure class="app-type-image asset-slot asset-slot--spot" data-asset-kind="paper-cut-v1" data-image-purpose="explanatory" data-image-state="ready" data-asset-id="ASSET-029"><img src="자료/images/s10_webpage-paper-cut-v1-transparent.png" alt="정돈된 브라우저 문서가 글과 이미지를 읽고 보는 웹페이지의 목적을 보여 준다."></figure><h3>웹페이지</h3><p>브라우저에서 <strong>읽고 보는</strong> 문서와 화면입니다.</p></article><article class="app-type-card app-type-card--webapp" role="listitem"><figure class="app-type-image asset-slot asset-slot--spot" data-asset-kind="paper-cut-v1" data-image-purpose="explanatory" data-image-state="ready" data-asset-id="ASSET-030"><img src="자료/images/s10_webapp-paper-cut-v1-transparent.png" alt="입력창과 상태 변화가 있는 브라우저 화면이 웹 앱의 입력·저장 동작을 보여 준다."></figure><h3>웹 앱</h3><p>브라우저에서 입력·저장·통신처럼 <strong>앱 동작</strong>을 합니다.</p></article><article class="app-type-card app-type-card--installed" role="listitem"><figure class="app-type-image asset-slot asset-slot--spot" data-asset-kind="paper-cut-v1" data-image-purpose="explanatory" data-image-state="ready" data-asset-id="ASSET-031"><img src="자료/images/s10_installed-app-paper-cut-v1-transparent.png" alt="노트북과 휴대폰의 전용 앱 화면이 기기에 설치해 사용하는 프로그램의 목적을 보여 준다."></figure><h3>설치형 앱</h3><p>컴퓨터나 모바일 기기에 <strong>설치</strong>해 사용하는 프로그램입니다.</p></article></div><p class="s-body app-types-note">세 종류의 경계는 겹칠 수 있습니다. 이번 주 결과는 <span class="hl-mint-underline">브라우저에서 직접 여는 로컬 정적 웹페이지</span>입니다.</p></div>
+  <div class="app-types-slide"><p class="s-eyebrow">화면의 종류</p><h2 class="s-title">브라우저에서 여는 것과, <span class="hl-mint-text">설치해서 쓰는 것</span></h2><div class="app-types-grid s10a-duo" role="list"><article class="app-type-card" role="listitem"><h3>웹 기반 — 브라우저에서 바로 엽니다</h3><ul><li>주소만 알면 설치 없이 들어갑니다.</li><li>읽고 보는 화면부터 입력하고 저장하는 화면까지 여기에 들어갑니다.</li></ul><div class="s10a-thumbs"><figure class="app-type-image asset-slot" data-asset-kind="paper-cut-v1" data-image-purpose="explanatory" data-image-role="spot" data-image-state="ready" data-asset-id="ASSET-029"><img src="자료/images/s10_webpage-paper-cut-v1-transparent.png" alt="정돈된 브라우저 문서가 글과 이미지를 읽고 보는 웹페이지의 목적을 보여 준다."></figure><figure class="app-type-image asset-slot" data-asset-kind="paper-cut-v1" data-image-purpose="explanatory" data-image-role="spot" data-image-state="ready" data-asset-id="ASSET-030"><img src="자료/images/s10_webapp-paper-cut-v1-transparent.png" alt="입력창과 상태 변화가 있는 브라우저 화면이 웹 앱의 입력·저장 동작을 보여 준다."></figure></div></article><article class="app-type-card app-type-card--installed" role="listitem"><h3>설치형 — 내려받아 설치해서 씁니다</h3><ul><li>컴퓨터나 휴대폰에 설치한 뒤 아이콘을 눌러 엽니다.</li></ul><figure class="app-type-image asset-slot" data-asset-kind="paper-cut-v1" data-image-purpose="explanatory" data-image-role="spot" data-image-state="ready" data-asset-id="ASSET-031"><img src="자료/images/s10_installed-app-paper-cut-v1-transparent.png" alt="노트북과 휴대폰의 전용 앱 화면이 기기에 설치해 사용하는 프로그램의 목적을 보여 준다."></figure></article></div><p class="app-types-note">이번 주에 만드는 것은 <span class="hl-mint-underline">브라우저에서 여는 쪽</span>입니다.</p></div>
 </section>
 
 <section class="slide lifecycle-flow lifecycle-infographic-slide" data-slide="S10B">
@@ -203,55 +378,78 @@
   </div>
 </section>
 
-<section class="slide dl-list" data-slide="W01" data-placeholder="1">
+<section class="slide dl-list" data-slide="W01">
   <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 1<br>제작 과정</div></header>
   <div class="s-full">
-    <p class="s-eyebrow">제작 과정</p>
-    <h2 class="s-title">[2단계 집필] 기획과 디자인</h2>
+    <p class="s-eyebrow">제작 과정 ①</p>
+    <h2 class="s-title">무엇을 만들지 정하고, <span class="hl-mint-text">어떻게 보일지</span> 그립니다</h2>
+    <div class="proc-duo">
+      <article class="proc-panel">
+        <div class="proc-panel-head"><figure class="proc-icon asset-slot" data-asset-kind="paper-cut-v1" data-image-purpose="mnemonic" data-image-role="spot" data-image-state="ready"><img src="자료/images/s10_plan-paper-cut-v1-transparent.png" alt="목표와 문제를 적은 메모가 기획 단계를 상징한다."></figure><span class="proc-tag">STEP 1</span></div>
+        <h3>기획</h3>
+        <p class="proc-body">누가 어떤 불편을 겪는지 정하고, 무엇을 만들지 한 문장으로 적습니다.</p>
+        <p class="proc-example"><b>예</b>모임 회원이 다음 일정을 못 찾는다 → 일정 안내 페이지</p>
+      </article>
+      <article class="proc-panel">
+        <div class="proc-panel-head"><figure class="proc-icon asset-slot" data-asset-kind="paper-cut-v1" data-image-purpose="mnemonic" data-image-role="spot" data-image-state="ready"><img src="자료/images/s10_design-paper-cut-v1-transparent.png" alt="화면 구조를 미리 그린 스케치가 디자인 단계를 상징한다."></figure><span class="proc-tag">STEP 2</span></div>
+        <h3>디자인</h3>
+        <p class="proc-body">필요한 정보의 순서와 화면 구조를 미리 그립니다.</p>
+        <p class="proc-example"><b>예</b>제목 → 일정 → 장소 → 연락처</p>
+      </article>
+    </div>
+    <p class="proc-close">여기서 정한 것이 그대로 AI에게 줄 요청문의 재료가 됩니다.</p>
+  </div>
+</section>
+
+<section class="slide compare-slide" data-slide="W02">
+  <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 1<br>제작 과정</div></header>
+  <div class="dc-title">
+    <p class="s-eyebrow">제작 과정 ②</p>
+    <h2 class="s-title">사람이 보고 누르는 <span class="hl-mint-text">화면</span>을 만듭니다</h2>
+  </div>
+  <div class="dc-stage w02-stage">
+    <figure class="w02-figure asset-slot" data-asset-kind="paper-cut-v1" data-image-purpose="explanatory" data-image-role="hero" data-image-state="ready"><img src="자료/images/s10_frontend-paper-cut-v1-transparent.png" alt="브라우저 화면에 글자·색·버튼이 조립되어 눈에 보이고 반응하는 프론트엔드 영역을 보여 준다."></figure>
+    <div class="w02-copy">
+      <p class="w02-lead">글자·색·배치처럼 눈에 보이는 것과, 눌렀을 때의 반응을 만드는 영역입니다.</p>
+      <span class="timing">이번 주에 만드는 것이 바로 이 부분입니다</span>
+      <p class="w02-next">무엇으로 만드는지는 곧 이어서 봅니다.</p>
+    </div>
+  </div>
+</section>
+
+<section class="slide dl-list" data-slide="W03">
+  <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 1<br>제작 과정</div></header>
+  <div class="s-full">
+    <p class="s-eyebrow">제작 과정 ③</p>
+    <h2 class="s-title">보이지 않는 곳에서 <span class="hl-mint-text">저장하고 처리합니다</span></h2>
     <div class="accent-bar"></div>
     <div class="dl-rows">
-      <div class="card surface dl-row"><span class="dl-term">[2단계 집필]</span><p class="s-body">[2단계 집필]</p></div>
-      <div class="card surface dl-row"><span class="dl-term">[2단계 집필]</span><p class="s-body">[2단계 집필]</p></div>
-      <div class="card surface dl-row"><span class="dl-term">[2단계 집필]</span><p class="s-body">[2단계 집필]</p></div>
+      <div class="card surface dl-row"><span class="dl-term">백엔드</span><p class="s-body">입력한 내용을 규칙대로 처리하고, 필요한 것만 화면에 돌려줍니다.</p></div>
+      <div class="card surface dl-row"><span class="dl-term">데이터</span><p class="s-body">회원·글·주문처럼 계속 남겨야 하는 것을 보관합니다.</p></div>
+    </div>
+    <div class="w03-foot">
+      <figure class="w03-icon asset-slot" data-asset-kind="paper-cut-v1" data-image-purpose="mnemonic" data-image-role="spot" data-image-state="ready"><img src="자료/images/s10_backend-paper-cut-v1-transparent.png" alt="주방과 창고처럼 보이지 않는 곳에서 데이터를 처리하고 저장하는 백엔드를 상징한다."></figure>
+      <div class="w03-foot-text">
+        <p class="w03-analogy">손님이 앉는 홀이 프론트엔드라면, <b>주방과 창고</b>가 이쪽입니다.</p>
+        <span class="w03-scope">1주차에는 다루지 않습니다. 저장이 필요한 기능은 2주차에 만납니다.</span>
+      </div>
     </div>
   </div>
 </section>
 
-<section class="slide compare-slide" data-slide="W02" data-placeholder="1">
+<section class="slide" data-slide="W05">
   <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 1<br>제작 과정</div></header>
-  <div class="s-full">
-    <p class="s-eyebrow">제작 과정</p>
-    <h2 class="s-title">[2단계 집필] 프론트엔드</h2>
-    <div class="compare2">
-      <div class="cmp"><span class="tag">[2단계 집필]</span><h3>[2단계 집필]</h3><p class="sub">[2단계 집필]</p><div class="cmp-lines"><p>[2단계 집필]</p></div></div>
-      <div class="cmp lean-cmp"><span class="tag">[2단계 집필]</span><h3>[2단계 집필]</h3><p class="sub">[2단계 집필]</p><div class="cmp-lines"><p>[2단계 집필]</p></div></div>
+  <div class="s-full steps-full">
+    <p class="s-eyebrow">제작 과정 ④</p>
+    <h2 class="s-title">제대로 되는지 보고, <span class="hl-mint-text">내보내고, 더 낫게</span> 만듭니다</h2>
+    <div class="eval-steps">
+      <div class="work-step"><span class="n">1</span><figure class="w05-icon asset-slot" data-asset-kind="paper-cut-v1" data-image-purpose="mnemonic" data-image-role="spot" data-image-state="ready"><img src="자료/images/s10_qa-paper-cut-v1-transparent.png" alt="화면을 직접 확인하는 모습이 QA 단계를 상징한다."></figure><div><b>QA · 확인</b><span>의도한 대로 보이고 동작하는지 사람이 직접 확인합니다.</span></div></div>
+      <div class="vf-down" aria-hidden="true">↓</div>
+      <div class="work-step"><span class="n">2</span><figure class="w05-icon asset-slot" data-asset-kind="paper-cut-v1" data-image-purpose="mnemonic" data-image-role="spot" data-image-state="ready"><img src="자료/images/s10_publish-paper-cut-v1-transparent.png" alt="결과물을 인터넷에 올리는 모습이 배포 단계를 상징한다."></figure><div><b>배포 · 공개</b><span>내 컴퓨터 안에만 있던 결과를 인터넷에 올려 남들이 볼 수 있게 합니다.</span></div></div>
+      <div class="vf-down" aria-hidden="true">↓</div>
+      <div class="work-step"><span class="n">3</span><figure class="w05-icon asset-slot" data-asset-kind="paper-cut-v1" data-image-purpose="mnemonic" data-image-role="spot" data-image-state="ready"><img src="자료/images/s10_improve-paper-cut-v1-transparent.png" alt="사용자 반응을 보고 다시 고치는 모습이 개선 단계를 상징한다."></figure><div><b>개선</b><span>써 본 사람의 반응을 보고 다시 고칩니다.</span></div></div>
     </div>
-  </div>
-</section>
-
-<section class="slide grid-ph" data-slide="W03" data-placeholder="1">
-  <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 1<br>제작 과정</div></header>
-  <div class="s-full">
-    <p class="s-eyebrow">제작 과정</p>
-    <h2 class="s-title">[2단계 집필] 백엔드</h2>
-    <div class="accent-bar"></div>
-    <div class="grid-3">
-      <div class="card surface"><p class="s-body">[2단계 집필]</p></div>
-      <div class="card surface"><p class="s-body">[2단계 집필]</p></div>
-      <div class="card surface"><p class="s-body">[2단계 집필]</p></div>
-    </div>
-  </div>
-</section>
-
-<section class="slide compare-slide" data-slide="W05" data-placeholder="1">
-  <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 1<br>제작 과정</div></header>
-  <div class="s-full">
-    <p class="s-eyebrow">제작 과정</p>
-    <h2 class="s-title">[2단계 집필] QA와 배포</h2>
-    <div class="compare2">
-      <div class="cmp"><span class="tag">[2단계 집필]</span><h3>[2단계 집필]</h3><p class="sub">[2단계 집필]</p><div class="cmp-lines"><p>[2단계 집필]</p></div></div>
-      <div class="cmp lean-cmp"><span class="tag">[2단계 집필]</span><h3>[2단계 집필]</h3><p class="sub">[2단계 집필]</p><div class="cmp-lines"><p>[2단계 집필]</p></div></div>
-    </div>
+    <p class="w05-close">공개와 개선은 <span class="hl-mint-text">3주차에 직접 해 봅니다</span>.</p>
   </div>
 </section>
 
@@ -304,6 +502,18 @@
   <div class="s-full"><p class="s-eyebrow">시작 위치 확인</p><h2 class="s-title">데스크톱 앱에서 <span class="hl-mint-text">Codex</span> 열기</h2><div class="codex-entry-layout"><div class="codex-gui" aria-label="Codex 데스크톱 앱 시작 화면 예시"><div class="codex-gui-title"><span aria-hidden="true"></span><b>Codex</b><small>Desktop</small></div><aside><b>⌂</b><b>◫</b><b>⌕</b><span></span><b>⚙</b></aside><main><div class="codex-gui-status"><span></span> Signed in</div><h3>무엇을 만들까요?</h3><div class="codex-gui-workspace"><small>WORKSPACE</small><b>현재 폴더를 여세요</b><span>C:\VibeCoding</span></div><div class="codex-gui-input">Codex에게 작업을 요청하세요 <b>↗</b></div></main></div><div class="codex-entry-steps"><article><span>01</span><div><h3>로그인 상태 확인</h3><p>화면 위쪽에서 계정이 연결되어 있는지 봅니다.</p></div></article><article><span>02</span><div><h3>Codex 이름과 진입 위치 확인</h3><p>Codex 화면과 현재 작업공간 영역을 함께 찾습니다.</p></div></article><article><span>03</span><div><h3>작업 시작 준비</h3><p>요청하기 전에 오늘 사용할 폴더를 열 준비를 합니다.</p></div></article><p>화면이 예시와 달라도 <strong>Codex</strong>와 <strong>현재 폴더</strong>가 함께 보이면 됩니다.</p></div></div></div>
 </section>
 
+<style data-part="part-02">
+[data-slide="15"] .folder-path-stage{ position:absolute; left:64px; right:64px; top:216px; bottom:58px; display:flex; flex-direction:column; justify-content:center; gap:32px; }
+[data-slide="15"] .folder-path-breadcrumb{ justify-content:center; margin:0; }
+[data-slide="15"] .folder-path-breadcrumb span,
+[data-slide="15"] .folder-path-breadcrumb strong{ padding:12px 18px; font-size:22px; }
+[data-slide="15"] .folder-path-breadcrumb i{ font-size:24px; }
+[data-slide="15"] .folder-reason-grid{ gap:24px; }
+[data-slide="15"] .folder-reason-card{ padding:28px 30px; border:1px solid var(--blue-line-strong); border-radius:var(--r-lg); background:var(--blue-panel); box-shadow:var(--shadow-sm); }
+[data-slide="15"] .folder-reason-card h3{ margin:0 0 12px; color:var(--blue); font-size:27px; }
+[data-slide="15"] .folder-reason-card p{ margin:0; color:var(--gray-700); font-size:22px; line-height:1.5; }
+[data-slide="15"] .folder-path-check{ margin:0; align-self:center; }
+</style>
 
 <!-- PART 2 · 작업 환경과 범위 -->
 <section class="slide part-divider" data-slide="P2">
@@ -346,41 +556,40 @@
 <section class="slide folder-create-slide" data-slide="15">
   <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 2<br>환경 준비</div></header>
   <div class="dc-title"><p class="s-eyebrow">오늘의 기준 폴더</p><h2 class="s-title"><span class="hl-mint-text">C:\VibeCoding</span>을 만듭니다</h2></div>
-  <div class="task-split-photo task-split-photo--image-priority folder-create-layout">
-    <figure class="task-shot folder-create-shot asset-slot asset-slot--hero" data-asset-kind="screenshot" data-image-purpose="explanatory" data-image-state="ready"><img src="screenshot/win05_vibecoding-index-root.png" alt="파일 탐색기 주소 표시줄과 파일 목록에 C 드라이브 바로 아래 VibeCoding 폴더가 있어 목표 경로를 보여 준다."></figure>
-    <div class="task-explain folder-create-copy">
-      <p class="task-kicker">폴더 하나로 시작</p>
-      <h3>C: 바로 안에 <strong class="hl-blue-text">VibeCoding</strong> 폴더를 만듭니다.</h3>
-      <p>다른 수업 파일과 섞이지 않도록 오늘의 모든 연습 폴더를 이 안에 둡니다. 폴더를 만든 뒤 주소 표시줄을 한 번 더 읽습니다.</p>
-      <p class="task-check">확인 기준 · 현재 위치가 <code>C:\VibeCoding</code>입니다.</p>
+  <div class="folder-path-stage">
+    <div class="path-breadcrumb folder-path-breadcrumb" aria-label="새로 만든 기준 폴더의 위치"><span>내 PC</span><i>›</i><span>로컬 디스크 (C:)</span><i>›</i><strong>VibeCoding</strong></div>
+    <div class="grid-2 folder-reason-grid">
+      <article class="folder-reason-card"><h3>한곳에 모으기</h3><p>오늘 만드는 모든 폴더를 이 안에 둡니다.</p></article>
+      <article class="folder-reason-card"><h3>다시 찾기 쉽게</h3><p>주소가 짧아 경로를 외우기 쉽습니다.</p></article>
     </div>
+    <p class="task-check folder-path-check">확인 기준 · 현재 위치가 <code>C:\VibeCoding</code>입니다.</p>
   </div>
 </section>
 
 <section class="slide practice-create-slide" data-slide="20">
   <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 2<br>연습 공간</div></header>
-  <div class="dc-title"><p class="s-eyebrow">실제 프로젝트와 분리</p><h2 class="s-title"><span class="hl-mint-text">Codex_연습</span> 폴더를 만듭니다</h2></div>
+  <div class="dc-title"><p class="s-eyebrow">실제 프로젝트와 분리</p><h2 class="s-title"><span class="hl-mint-text">codex_practice</span> 폴더를 만듭니다</h2></div>
   <div class="app-guide-layout">
-    <figure class="app-guide-shot asset-slot asset-slot--hero" data-asset-kind="screenshot" data-image-purpose="explanatory" data-image-state="ready"><img src="screenshot/20-01.png" alt="Codex 화면에서 현재 폴더 이름과 요청 입력 영역이 함께 보여 연습 작업공간의 위치를 확인하게 한다."></figure>
-    <div class="app-guide-copy"><p class="guide-label">폴더를 만든 뒤</p><h3>이름과 현재 작업 위치를 다시 확인합니다.</h3><p><code>C:\VibeCoding\Codex_연습</code>이 보이면 실제 프로젝트와 섞이지 않는 안전한 실습 공간입니다.</p><ul><li>폴더 이름이 정확한가?</li><li>주소가 VibeCoding 안인가?</li><li>Codex 화면에 같은 폴더가 보이는가?</li></ul></div>
+    <figure class="app-guide-shot asset-slot asset-slot--hero" data-asset-kind="screenshot" data-image-purpose="explanatory" data-image-state="ready"><img src="screenshot/20-01.png" alt="Codex 화면에서 현재 폴더 이름과 요청 입력 영역이 함께 보여 codex_practice 작업공간의 위치를 확인하게 한다."></figure>
+    <div class="app-guide-copy"><p class="guide-label">폴더를 만든 뒤</p><h3>이름과 현재 작업 위치를 다시 확인합니다.</h3><p><code>C:\VibeCoding\codex_practice</code>이 보이면 실제 프로젝트와 섞이지 않는 안전한 실습 공간입니다.</p><ul><li>폴더 이름이 정확한가?</li><li>주소가 VibeCoding 안인가?</li><li>Codex 화면에 같은 폴더가 보이는가?</li></ul></div>
   </div>
 </section>
 
 <section class="slide workspace-open-slide" data-slide="21">
   <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 2<br>작업공간 열기</div></header>
-  <div class="dc-title"><p class="s-eyebrow">기존 폴더를 선택</p><h2 class="s-title">연습 폴더를 <span class="hl-mint-text">작업공간</span>으로 엽니다</h2></div>
+  <div class="dc-title"><p class="s-eyebrow">기존 폴더를 선택</p><h2 class="s-title">codex_practice 폴더를 <span class="hl-mint-text">작업공간</span>으로 엽니다</h2></div>
   <div class="breadcrumb-guide-layout breadcrumb-guide-layout--image-priority">
-    <figure class="breadcrumb-shot breadcrumb-shot--large asset-slot asset-slot--hero" data-asset-kind="screenshot" data-image-purpose="explanatory" data-image-state="ready"><img src="screenshot/codex_existing-folder-menu.png" alt="Codex의 기존 폴더 열기 메뉴가 보여 C:\VibeCoding\Codex_연습을 작업공간으로 선택하는 위치를 안내한다."></figure>
-    <div class="breadcrumb-copy breadcrumb-copy--clear"><div class="path-breadcrumb" aria-label="목표 작업공간 경로"><span>C:</span><i>›</i><span>VibeCoding</span><i>›</i><strong>Codex_연습</strong></div><h3>메뉴에서 <strong class="hl-blue-text">기존 폴더 열기</strong>를 선택합니다.</h3><p>최근 목록의 비슷한 이름을 고르지 말고, 경로를 따라 직접 엽니다. 연 뒤에는 화면 상단의 현재 폴더가 목표 경로와 같은지 확인합니다.</p><p class="task-check">목표 경로와 현재 작업공간이 같을 때만 다음 단계로 갑니다.</p></div>
+    <figure class="breadcrumb-shot breadcrumb-shot--large asset-slot asset-slot--hero" data-asset-kind="screenshot" data-image-purpose="explanatory" data-image-state="ready"><img src="screenshot/codex_existing-folder-menu.png" alt="Codex의 기존 폴더 열기 메뉴가 보여 C:\VibeCoding\codex_practice를 작업공간으로 선택하는 위치를 안내한다."></figure>
+    <div class="breadcrumb-copy breadcrumb-copy--clear"><div class="path-breadcrumb" aria-label="목표 작업공간 경로"><span>C:</span><i>›</i><span>VibeCoding</span><i>›</i><strong>codex_practice</strong></div><h3>메뉴에서 <strong class="hl-blue-text">기존 폴더 열기</strong>를 선택합니다.</h3><p>최근 목록의 비슷한 이름을 고르지 말고, 경로를 따라 직접 엽니다. 연 뒤에는 화면 상단의 현재 폴더가 목표 경로와 같은지 확인합니다.</p><p class="task-check">목표 경로와 현재 작업공간이 같을 때만 다음 단계로 갑니다.</p></div>
   </div>
 </section>
 
 <section class="slide material-file-slide" data-slide="23">
   <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 2<br>파일 연습</div></header>
-  <div class="dc-title"><p class="s-eyebrow">공개 가능한 재료로 연습</p><h2 class="s-title"><code>자기소개_재료.txt</code>를 <span class="hl-mint-text">요청</span>합니다</h2></div>
+  <div class="dc-title"><p class="s-eyebrow">공개 가능한 재료로 연습</p><h2 class="s-title"><code>자기소개.txt</code>를 <span class="hl-mint-text">요청</span>합니다</h2></div>
   <div class="file-request-layout file-request-layout--separated">
-    <figure class="file-request-shot file-request-shot--large asset-slot asset-slot--hero" data-asset-kind="screenshot" data-image-purpose="explanatory" data-image-state="ready"><img src="screenshot/codex_file-menu.png" alt="Codex의 파일 관련 메뉴가 열려 자기소개 재료 파일을 만들 요청 위치를 보여 준다."></figure>
-    <div class="file-request-copy file-request-copy--fixed"><div class="file-meta"><span>파일명</span><strong>자기소개_재료.txt</strong></div><div class="file-meta"><span>넣을 내용</span><strong>활동명·한 줄 소개·관심사</strong></div><div class="file-meta"><span>저장 위치</span><strong>C:\VibeCoding\Codex_연습</strong></div><p>공개 가능한 내용만 넣어 파일 하나를 만든 뒤, <strong class="hl-blue-text">이름·내용·위치</strong>가 요청대로인지 직접 확인합니다.</p></div>
+    <figure class="file-request-shot file-request-shot--large asset-slot asset-slot--hero" data-asset-kind="screenshot" data-image-purpose="explanatory" data-image-state="ready"><img src="screenshot/codex_file-menu.png" alt="Codex의 파일 관련 메뉴가 열려 자기소개 파일을 만들 요청 위치를 보여 준다."></figure>
+    <div class="file-request-copy file-request-copy--fixed"><div class="file-meta"><span>파일명</span><strong>자기소개.txt</strong></div><div class="file-meta"><span>넣을 내용</span><strong>활동명·한 줄 소개·관심사</strong></div><div class="file-meta"><span>저장 위치</span><strong>C:\VibeCoding\codex_practice</strong></div><p>공개 가능한 내용만 넣어 파일 하나를 만든 뒤, <strong class="hl-blue-text">이름·내용·위치</strong>가 요청대로인지 직접 확인합니다.</p></div>
   </div>
 </section>
 
@@ -389,7 +598,7 @@
   <div class="dc-title"><p class="s-eyebrow">완료 보고보다 실제 결과</p><h2 class="s-title">파일을 열어 <span class="hl-mint-text">직접 검증</span>합니다</h2></div>
   <div class="verify-file-layout verify-file-layout--separated">
     <figure class="verify-file-shot verify-file-shot--large asset-slot asset-slot--hero" data-asset-kind="screenshot" data-image-purpose="explanatory" data-image-state="ready"><img src="screenshot/21-01.png" alt="파일 탐색기 목록에 생성된 자기소개 재료 파일이 보여 위치·이름·존재를 실제 파일로 확인하게 한다."></figure>
-    <div class="verify-file-sequence verify-file-sequence--fixed"><article><span>위치</span><p><code>C:\VibeCoding\Codex_연습</code> 안인가?</p></article><article><span>존재</span><p><code>자기소개_재료.txt</code>가 실제로 보이는가?</p></article><article><span>내용</span><p>활동명·소개·관심사가 요청과 같은가?</p></article><article><span>유지</span><p>한 부분을 바꿨을 때 나머지는 그대로인가?</p></article><p class="verify-conclusion">Codex의 완료 보고가 아니라 <strong class="hl-blue-text">실제 파일</strong>을 기준으로 확인합니다.</p></div>
+    <div class="verify-file-sequence verify-file-sequence--fixed"><article><span>위치</span><p><code>C:\VibeCoding\codex_practice</code> 안인가?</p></article><article><span>존재</span><p><code>자기소개.txt</code>가 실제로 보이는가?</p></article><article><span>내용</span><p>활동명·소개·관심사가 요청과 같은가?</p></article><article><span>유지</span><p>한 부분을 바꿨을 때 나머지는 그대로인가?</p></article><p class="verify-conclusion">Codex의 완료 보고가 아니라 <strong class="hl-blue-text">실제 파일</strong>을 기준으로 확인합니다.</p></div>
   </div>
 </section>
 
@@ -424,7 +633,7 @@
 <section class="slide part-divider" data-slide="P3">
   <svg class="dv-hero" viewBox="0 0 1280 720" fill="none" aria-hidden="true"></svg>
   <div class="pd-dots" aria-hidden="true"></div>
-  <p class="pd-eyebrow">PART</p><h2 class="pd-title">자기소개 재료·첫 요청</h2><p class="pd-sub">공개할 재료를 고르고, 확인할 수 있는 제작 요청을 씁니다.</p>
+  <p class="pd-eyebrow">PART</p><h2 class="pd-title">요청 잘하는 법과 첫 페이지 만들기</h2><p class="pd-sub">공개할 재료를 고르고 확인할 수 있는 요청을 쓴 다음,<br>폴더를 열어 실제로 첫 페이지를 만듭니다.</p>
 </section>
 
 <section class="slide request-four-slide" data-slide="26">
@@ -459,13 +668,13 @@
 <section class="slide privacy-slide" data-slide="27">
   <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 3<br>개인정보</div></header>
   <div class="s-full privacy-layout"><p class="s-eyebrow">공개할 정보 고르기</p><h2 class="s-title">요청에는 <span class="hl-mint-text">공개해도 되는 정보</span>만 넣습니다</h2>
-    <div class="privacy-lanes"><article class="privacy-no"><h3>넣지 않기</h3><ul><li>전화번호·이메일·집 주소</li><li>비밀번호·금융·계정 정보</li><li>타인의 개인정보와 민감 자료</li></ul><p>입력하는 순간 이미 외부 서비스에 전달될 수 있습니다.</p></article><figure class="privacy-image privacy-image--double asset-slot asset-slot--support" data-asset-kind="paper-cut-v1" data-image-purpose="explanatory" data-image-state="ready" data-asset-id="ASSET-014"><img src="자료/images/s27_human-ai-safe-profile-paper-cut-v2-transparent.png" alt="사람은 자물쇠 방패로 개인정보를 막고 AI에는 공개 가능한 프로필 카드만 전달해 안전한 정보 선택을 보여 준다."></figure><article class="privacy-yes"><h3>넣어도 되는 예</h3><ul><li>이름 대신 활동명</li><li>공개 가능한 한 줄 소개</li><li>일반적인 관심사 2~3개</li></ul><p>애매하면 넣지 않고 강사에게 먼저 확인합니다.</p></article></div>
+    <div class="privacy-lanes"><article class="privacy-yes"><h3>넣어도 되는 예</h3><ul><li>이름 또는 활동명</li><li>공개 가능한 한 줄 소개</li><li>일반적인 관심사 2~3개</li></ul></article><figure class="privacy-image privacy-image--double asset-slot asset-slot--support" data-asset-kind="paper-cut-v1" data-image-purpose="explanatory" data-image-state="ready" data-asset-id="ASSET-014"><img src="자료/images/s27_human-ai-safe-profile-paper-cut-v2-transparent.png" alt="사람은 자물쇠 방패로 개인정보를 막고 AI에는 공개 가능한 프로필 카드만 전달해 안전한 정보 선택을 보여 준다."></figure><article class="privacy-no"><h3>넣지 않기</h3><ul><li>전화번호·이메일·집 주소</li><li>비밀번호·금융·계정 정보</li><li>타인의 개인정보와 민감 자료</li></ul><p>입력하는 순간 이미 외부 서비스에 전달될 수 있습니다.</p></article></div>
   </div>
 </section>
 
 <section class="slide request-compare-slide" data-slide="29">
   <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 3<br>요청 비교</div></header>
-  <div class="s-full request-compare-layout"><p class="s-eyebrow">확인할 수 있는 요청</p><h2 class="s-title">좋은 요청은 <span class="hl-mint-text">다시 확인할 수 있습니다</span></h2>
+  <div class="s-full request-compare-layout"><p class="s-eyebrow">확인할 수 있는 요청</p><h2 class="s-title">기준이 있으면 <span class="hl-mint-text">결과를 따져 볼 수 있습니다</span></h2>
     <div class="request-compare-panels"><article class="card surface request-compare-panel specific-request"><h3>구체적인 요청</h3><p><strong class="hl-blue-text">색·글자·여백·배치</strong>를 말합니다.</p><p><strong class="hl-blue-text">결과 범위·필요 내용·완료 기준</strong>이 보입니다.</p><p>제공하지 않은 경력·연락처는 만들지 말라고 적습니다.</p></article><article class="card surface request-compare-panel vague-request"><h3>모호한 요청</h3><p>“예쁘게·깔끔하게·알아서”처럼 기준이 없습니다.</p><p>결과물 범위와 검수 방법이 없습니다.</p><p>사람마다 다른 해석이 생깁니다.</p></article></div>
     <p class="request-compare-note">좋은 요청은 길어서가 아니라, <strong class="hl-mint-text">원하는 결과와 실제 결과를 비교할 수 있어서</strong> 좋습니다.</p>
   </div>
@@ -489,10 +698,10 @@
 
 <section class="slide project-folder-slide" data-slide="S34">
   <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 4<br>프로젝트 폴더</div></header>
-  <div class="dc-title"><p class="s-eyebrow">프로젝트 폴더 만들기</p><h2 class="s-title"><span class="hl-mint-text">내_자기소개</span> 폴더를 만듭니다</h2></div>
+  <div class="dc-title"><p class="s-eyebrow">프로젝트 폴더 만들기</p><h2 class="s-title"><span class="hl-mint-text">about-me</span> 폴더를 만듭니다</h2></div>
   <div class="project-folder-layout">
-    <div class="project-folder-copy"><p class="project-folder-lead"><code>C:\VibeCoding</code> 안에 새 폴더를 만듭니다.</p><p>폴더 이름은 <strong class="hl-blue-text">내_자기소개</strong>로 적고, 다른 연습 파일과 섞이지 않게 합니다.</p><div class="path-confirm">확인할 주소 <code>C:\VibeCoding\내_자기소개\</code></div></div>
-    <div class="folder-tree-gui" role="img" aria-label="VibeCoding 폴더 안에 내_자기소개 프로젝트 폴더가 있는 구조"><div class="tree-window-bar"><span></span><span></span><span></span><b>파일 탐색기</b></div><div class="tree-breadcrumb">C: <i>›</i> VibeCoding</div><div class="tree-row root"><span class="tree-folder-icon"></span><b>VibeCoding</b></div><div class="tree-row active"><span class="tree-branch">└─</span><span class="tree-folder-icon"></span><b>내_자기소개</b><em>오늘 만들 프로젝트</em></div></div>
+    <div class="project-folder-copy"><p class="project-folder-lead"><code>C:\VibeCoding</code> 안에 새 폴더를 만듭니다.</p><p>폴더 이름은 <strong class="hl-blue-text">about-me</strong>로 적고, 다른 연습 파일과 섞이지 않게 합니다.</p><div class="path-confirm">확인할 주소 <code>C:\VibeCoding\about-me\</code></div></div>
+    <div class="folder-tree-gui" role="img" aria-label="VibeCoding 폴더 안에 about-me 프로젝트 폴더가 있는 구조"><div class="tree-window-bar"><span></span><span></span><span></span><b>파일 탐색기</b></div><div class="tree-breadcrumb">C: <i>›</i> VibeCoding</div><div class="tree-row root"><span class="tree-folder-icon"></span><b>VibeCoding</b></div><div class="tree-row active"><span class="tree-branch">└─</span><span class="tree-folder-icon"></span><b>about-me</b><em>오늘 만들 프로젝트</em></div></div>
   </div>
 </section>
 
@@ -500,8 +709,8 @@
   <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 4<br>폴더 열기</div></header>
   <div class="dc-title"><p class="s-eyebrow">Codex에서 작업공간 선택</p><h2 class="s-title">만든 폴더를 <span class="hl-mint-mark">Codex로 엽니다</span></h2></div>
   <div class="codex-open-layout">
-    <div class="codex-app-gui" role="img" aria-label="Codex 데스크톱 앱에서 프로젝트 폴더를 여는 화면"><div class="codex-app-bar"><span class="codex-app-mark">V</span><b>Codex</b><span class="window-dots">— □ ×</span></div><div class="codex-app-body"><aside><b>작업공간</b><span>최근 작업</span><span>설정</span></aside><main><div class="open-folder-icon">▰</div><strong>프로젝트 폴더 열기</strong><p>C:\VibeCoding\내_자기소개</p><button type="button" tabindex="-1">폴더 선택</button></main></div></div>
-    <div class="codex-open-copy"><div><strong>어디를 여나요?</strong><p><code>내_자기소개</code> 폴더 자체를 선택합니다.</p></div><div><strong>왜 확인하나요?</strong><p>Codex는 지금 연 폴더 안의 파일만 작업 대상으로 봅니다.</p></div><div class="codex-open-check"><strong>화면에서 볼 것</strong><p>현재 작업공간 이름이 <span class="hl-mint-text">내_자기소개</span>인지 확인합니다.</p></div></div>
+    <div class="codex-app-gui" role="img" aria-label="Codex 데스크톱 앱에서 프로젝트 폴더를 여는 화면"><div class="codex-app-bar"><span class="codex-app-mark">V</span><b>Codex</b><span class="window-dots">— □ ×</span></div><div class="codex-app-body"><aside><b>작업공간</b><span>최근 작업</span><span>설정</span></aside><main><div class="open-folder-icon">▰</div><strong>프로젝트 폴더 열기</strong><p>C:\VibeCoding\about-me</p><button type="button" tabindex="-1">폴더 선택</button></main></div></div>
+    <div class="codex-open-copy"><div><strong>어디를 여나요?</strong><p><code>about-me</code> 폴더 자체를 선택합니다.</p></div><div><strong>왜 확인하나요?</strong><p>Codex는 지금 연 폴더 안의 파일만 작업 대상으로 봅니다.</p></div><div class="codex-open-check"><strong>화면에서 볼 것</strong><p>현재 작업공간 이름이 <span class="hl-mint-text">about-me</span>인지 확인합니다.</p></div></div>
   </div>
 </section>
 
@@ -509,8 +718,8 @@
   <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 4<br>작업 범위</div></header>
   <div class="dc-title"><p class="s-eyebrow">요청하기 전 마지막 확인</p><h2 class="s-title">목표 경로와 현재 작업공간을 <span class="hl-mint-text">맞춥니다</span></h2></div>
   <div class="workspace-compare">
-    <div class="workspace-path-label">목표 경로</div><div class="breadcrumb-track"><span>C:</span><i>›</i><span>VibeCoding</span><i>›</i><strong>내_자기소개</strong></div>
-    <div class="workspace-path-label">Codex 현재 폴더</div><div class="workspace-chip"><span class="tree-folder-icon"></span><strong>내_자기소개</strong><em>일치</em></div>
+    <div class="workspace-path-label">목표 경로</div><div class="breadcrumb-track"><span>C:</span><i>›</i><span>VibeCoding</span><i>›</i><strong>about-me</strong></div>
+    <div class="workspace-path-label">Codex 현재 폴더</div><div class="workspace-chip"><span class="tree-folder-icon"></span><strong>about-me</strong><em>일치</em></div>
     <div class="workspace-match-note"><span>✓</span><p><strong>두 이름이 같으면 시작합니다.</strong><br>다르면 실행 전에 올바른 폴더를 다시 엽니다.</p></div>
   </div>
 </section>
@@ -520,7 +729,7 @@
   <div class="dc-title"><p class="s-eyebrow">조건까지 한 번에 전달</p><h2 class="s-title">첫 제작 요청을 <span class="hl-mint-text">완성</span>합니다</h2></div>
   <div class="terminal-explain-layout detailed-prompt-layout">
     <div class="terminal-explain"><h3>프롬프트에 네 가지를 모두 넣습니다.</h3><ol><li><b>목적</b> · 자기소개 웹페이지 만들기</li><li><b>내용</b> · 활동명·한 줄 소개·관심사</li><li><b>조건</b> · index.html 한 파일, 추가 설치 없음</li><li><b>확인</b> · 브라우저에서 직접 열기</li></ol><p>제공하지 않은 경력·연락처·링크는 만들지 말라고 분명히 적습니다.</p></div>
-    <div class="terminal-dark" aria-label="Codex에 입력할 상세 자기소개 페이지 제작 요청"><div class="terminal-bar"><span></span><span></span><span></span><b>Codex · C:\VibeCoding\내_자기소개</b></div><div class="terminal-body"><span class="terminal-prompt">&gt;_</span><p class="terminal-copy">현재 프로젝트 폴더에 <strong>index.html 한 파일</strong>로<br>자기소개 페이지를 만들어 주세요.<br><br>[활동명]·[한 줄 소개]·[관심사 2~3개]만 넣고,<br>HTML·CSS는 같은 파일에 작성해 주세요.<br>설치·빌드·서버·프레임워크는 사용하지 말고,<br>브라우저에서 직접 열 수 있게 해 주세요.<br>제공하지 않은 경력·연락처·링크는 만들지 마세요.</p><span class="terminal-cursor" aria-hidden="true"></span></div></div>
+    <div class="terminal-dark" aria-label="Codex에 입력할 상세 자기소개 페이지 제작 요청"><div class="terminal-bar"><span></span><span></span><span></span><b>Codex · C:\VibeCoding\about-me</b></div><div class="terminal-body"><span class="terminal-prompt">&gt;_</span><p class="terminal-copy">현재 프로젝트 폴더에 <strong>index.html 한 파일</strong>로<br>자기소개 페이지를 만들어 주세요.<br><br>[활동명]·[한 줄 소개]·[관심사 2~3개]만 넣고,<br>HTML·CSS는 같은 파일에 작성해 주세요.<br>설치·빌드·서버·프레임워크는 사용하지 말고,<br>브라우저에서 직접 열 수 있게 해 주세요.<br>제공하지 않은 경력·연락처·링크는 만들지 마세요.</p><span class="terminal-cursor" aria-hidden="true"></span></div></div>
   </div>
 </section>
 
@@ -528,15 +737,15 @@
   <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 4<br>파일 확인</div></header>
   <div class="dc-title"><p class="s-eyebrow">Codex가 만든 실제 결과물</p><h2 class="s-title">프로젝트 바로 안의 <span class="hl-mint-text">index.html</span>을 찾습니다</h2></div>
   <div class="project-tree-layout">
-    <div class="project-tree-visual" role="img" aria-label="내_자기소개 프로젝트 루트에 index.html이 있는 파일 트리"><div class="tree-window-bar"><span></span><span></span><span></span><b>EXPLORER</b></div><div class="code-tree-root">▾ 내_자기소개</div><div class="code-tree-file active"><span class="html-badge">HTML</span><strong>index.html</strong><em>프로젝트 루트</em></div><div class="code-tree-empty">다른 파일 없이 한 파일로 시작</div></div>
-    <div class="project-tree-copy"><p><strong class="hl-blue-text">파일 이름</strong><br><code>index.html</code></p><p><strong class="hl-blue-text">파일 위치</strong><span class="path-line"><code>C:\VibeCoding\</code></span><span class="path-tail"><code>내_자기소개\</code> 바로 안</span></p><p><strong class="hl-blue-text">오늘의 기준</strong><br>이 파일 하나가 실제 결과물입니다.</p></div>
+    <div class="project-tree-visual" role="img" aria-label="about-me 프로젝트 루트에 index.html이 있는 파일 트리"><div class="tree-window-bar"><span></span><span></span><span></span><b>EXPLORER</b></div><div class="code-tree-root">▾ about-me</div><div class="code-tree-file active"><span class="html-badge">HTML</span><strong>index.html</strong><em>프로젝트 루트</em></div><div class="code-tree-empty">다른 파일 없이 한 파일로 시작</div></div>
+    <div class="project-tree-copy"><p><strong class="hl-blue-text">파일 이름</strong><br><code>index.html</code></p><p><strong class="hl-blue-text">파일 위치</strong><span class="path-line"><code>C:\VibeCoding\</code></span><span class="path-tail"><code>about-me\</code> 바로 안</span></p><p><strong class="hl-blue-text">오늘의 기준</strong><br>이 파일 하나가 실제 결과물입니다.</p></div>
   </div>
 </section>
 
 <section class="slide browser-result-slide" data-slide="S39">
   <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 4<br>브라우저 확인</div></header>
   <div class="dc-title"><p class="s-eyebrow">파일을 브라우저로 열기</p><h2 class="s-title">첫 페이지가 <span class="hl-mint-mark">실제로 보이는지</span> 확인합니다</h2></div>
-  <div class="browser-result-frame" role="img" aria-label="자기소개 페이지가 열린 브라우저 예시"><div class="browser-chrome"><span></span><span></span><span></span><div class="browser-address">C:\VibeCoding\내_자기소개\index.html</div></div><div class="browser-result-body"><aside><div class="profile-orb">ME</div><small>MY FIRST PAGE</small></aside><main><p class="browser-kicker">HELLO, I AM</p><h3>이름 또는 활동명</h3><p>나를 소개하는 한 문장</p><div class="browser-tags"><span>관심사 1</span><span>관심사 2</span><span>관심사 3</span></div></main></div></div>
+  <div class="browser-result-frame" role="img" aria-label="자기소개 페이지가 열린 브라우저 예시"><div class="browser-chrome"><span></span><span></span><span></span><div class="browser-address">C:\VibeCoding\about-me\index.html</div></div><div class="browser-result-body"><aside><div class="profile-orb">ME</div><small>MY FIRST PAGE</small></aside><main><p class="browser-kicker">HELLO, I AM</p><h3>이름 또는 활동명</h3><p>나를 소개하는 한 문장</p><div class="browser-tags"><span>관심사 1</span><span>관심사 2</span><span>관심사 3</span></div></main></div></div>
   <div class="browser-success-criteria"><span>✓ 파일이 열림</span><span>✓ 필수 내용이 보임</span><span>✓ 글자와 배치가 깨지지 않음</span></div>
 </section>
 
@@ -544,24 +753,35 @@
 <section class="slide part-divider" data-slide="P5">
   <svg class="dv-hero" viewBox="0 0 1280 720" fill="none" aria-hidden="true"></svg>
   <div class="pd-dots" aria-hidden="true"></div>
-  <p class="pd-eyebrow">PART</p><h2 class="pd-title">유지·변경·확인</h2><p class="pd-sub">한 줄 소개와 배경색을 각각 한 번씩 바꿉니다.</p>
+  <p class="pd-eyebrow">PART</p><h2 class="pd-title">그대로 둘 것과 바꿀 것</h2><p class="pd-sub">한 번에 하나씩 바꾸고, 나머지가 그대로인지 확인합니다.</p>
 </section>
 
 <section class="slide dl-list with-support-art" data-slide="S44"><header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 5<br>수정 범위</div></header><div class="s-full"><p class="s-eyebrow">수정 전에 정할 세 가지</p><h2 class="s-title">유지할 것과 <span class="hl-mint-text">바꿀 것</span></h2><div class="dl-rows"><div class="card surface dl-row"><span class="dl-term">그대로 둘 부분</span><p class="s-body">이름·관심사·현재 구조처럼 <span class="hl-blue-text">이번 요청에서 건드리지 않을 것</span>을 먼저 적습니다.</p></div><div class="card surface dl-row"><span class="dl-term">이번에 바꿀 부분</span><p class="s-body">한 줄 소개나 배경색처럼 지금 확인할 <strong>한 가지</strong>만 고릅니다.</p></div><div class="card surface dl-row"><span class="dl-term">화면에서 볼 점</span><p class="s-body">바뀐 부분 하나와 그대로 남은 부분 하나를 브라우저에서 나란히 봅니다.</p></div></div></div><figure class="asset-slot asset-slot--support" data-image-purpose="mnemonic" data-image-role="support" data-asset-kind="paper-cut-v1" data-asset-id="ASSET-010"><img src="자료/images/s44_keep-change-check-paper-cut-v1-transparent.png" alt="고정된 작업지시서에 한 가지를 수정하고 돋보기로 결과를 확인하는 흐름"></figure></section>
 
-<section class="slide has-character-art" data-slide="S45"><header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 5<br>한 번에 하나</div></header><div class="s-full steps-full"><p class="s-eyebrow">한 번 고칠 때의 흐름</p><h2 class="s-title">남길 것을 적고 <span class="hl-mint-mark">하나만</span> 바꿉니다</h2><div class="eval-steps"><div class="work-step"><span class="n">1</span><div><b>먼저 남길 것을 적습니다.</b><span>이름·관심사·나머지 구성처럼 바뀌면 안 되는 부분을 분명히 합니다.</span></div></div><div class="vf-down" aria-hidden="true">↓</div><div class="work-step"><span class="n">2</span><div><b>이번에는 한 가지만 요청합니다.</b><span>여러 변경을 섞지 않아 결과의 원인을 알 수 있습니다.</span></div></div><div class="vf-down" aria-hidden="true">↓</div><div class="work-step"><span class="n">3</span><div><b>브라우저에서 전후를 봅니다.</b><span>바뀐 점과 남은 점을 함께 말할 수 있을 때 다음 수정으로 갑니다.</span></div></div></div></div><figure class="asset-slot asset-slot--support character-art" data-image-purpose="mnemonic" data-image-role="support" data-asset-kind="paper-cut-v1" data-asset-id="ASSET-016"><img src="자료/images/s45_human-ai-one-change-paper-cut-v2-transparent.png" alt="사람과 AI가 작업판의 한 항목만 바꾸고 결과를 확인하는 이미지"></figure></section>
+<section class="slide has-character-art" data-slide="S45"><header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 5<br>한 번에 하나</div></header><div class="s-full steps-full"><p class="s-eyebrow">한 번 고칠 때의 흐름</p><h2 class="s-title">남길 것을 적고 <span class="hl-mint-mark">하나만</span> 바꿉니다</h2><div class="eval-steps"><div class="work-step"><span class="n">1</span><div><b>먼저 남길 것을 구분합니다.</b><span>이름·관심사·나머지 구성처럼 바뀌면 안 되는 부분을 분명히 합니다.</span></div></div><div class="vf-down" aria-hidden="true">↓</div><div class="work-step"><span class="n">2</span><div><b>이번에는 한 가지만 요청합니다.</b><span>여러 변경을 섞지 않아 결과의 원인을 알 수 있습니다.</span></div></div><div class="vf-down" aria-hidden="true">↓</div><div class="work-step"><span class="n">3</span><div><b>브라우저에서 전후를 봅니다.</b><span>바뀐 점과 남은 점을 함께 말할 수 있을 때 다음 수정으로 갑니다.</span></div></div></div></div><figure class="asset-slot asset-slot--support character-art" data-image-purpose="mnemonic" data-image-role="support" data-asset-kind="paper-cut-v1" data-asset-id="ASSET-016"><img src="자료/images/s45_human-ai-one-change-paper-cut-v2-transparent.png" alt="사람과 AI가 작업판의 한 항목만 바꾸고 결과를 확인하는 이미지"></figure></section>
 
 <section class="slide dl-list has-character-art" data-slide="S46"><header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 5<br>한 줄 소개 수정</div></header><div class="s-full"><p class="s-eyebrow">한 줄 소개만 고치기</p><h2 class="s-title"><span class="hl-blue-text">바꿀 문장</span>과 <span class="hl-mint-text">남길 내용</span>을 함께 말합니다</h2><div class="dl-rows"><div class="card surface dl-row"><span class="dl-term">이번 요청</span><p class="s-body"><strong class="hl-blue-text">한 줄 소개만</strong> [새 문장]으로 바꿔 달라고 말합니다.</p></div><div class="card surface dl-row"><span class="dl-term">그대로 둘 내용</span><p class="s-body"><strong class="hl-mint-text">이름·관심사·나머지 구성</strong>은 그대로 유지해 달라고 덧붙입니다.</p></div><div class="card surface dl-row"><span class="dl-term">다시 볼 장면</span><p class="s-body">브라우저에서 새 문장 하나와 <strong class="hl-blue-text">이전 구성의 유지 여부</strong>를 함께 봅니다.</p></div></div></div><figure class="asset-slot asset-slot--support character-art" data-image-purpose="explanatory" data-image-role="support" data-asset-kind="paper-cut-v1" data-asset-id="ASSET-022"><img src="자료/images/s46_one-change-protected-paper-cut-v1-transparent.png" alt="보호된 작업판에서 한 항목만 바꾸고 결과를 확인하는 이미지"></figure></section>
 
-<section class="slide change-refresh-slide" data-slide="S47"><header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 5<br>변경 확인</div></header><div class="dc-title"><p class="s-eyebrow">한 줄 소개를 바꾼 뒤</p><h2 class="s-title">바뀐 점과 <span class="hl-mint-underline">남은 점</span>을 함께 봅니다</h2></div><div class="dc-stage"><div class="viz-flow-ph change-refresh-flow" data-viz="learning-flow" role="img" aria-label="한 줄 소개 변경, 새로고침, 변경과 유지 확인의 순서"><div class="fl-node">한 줄 소개만 변경</div><div class="fl-arrow" aria-hidden="true">→</div><div class="fl-node key">새로고침</div><div class="fl-arrow" aria-hidden="true">→</div><div class="fl-node">변경·유지 함께 보기</div></div><p class="dc-cap change-refresh-cap">새 문장이 보이는지 먼저 확인합니다. 이어서 이름·관심사·나머지 배치가 이전과 같은지 비교합니다.<br><strong>바뀐 한 가지와 유지된 나머지를 모두 말할 수 있을 때</strong> 수정이 끝난 것입니다.</p></div></section>
+<section class="slide change-refresh-slide" data-slide="S47"><header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 5<br>변경 확인</div></header><div class="dc-title"><p class="s-eyebrow">한 줄 소개를 바꾼 뒤</p><h2 class="s-title">바뀐 점과 <span class="hl-mint-underline">남은 점</span>을 함께 봅니다</h2></div><div class="dc-stage"><div class="viz-flow-ph change-refresh-flow" data-viz="learning-flow" role="img" aria-label="한 줄 소개 변경, 새로고침, 변경과 유지 확인의 순서"><div class="fl-node">한 줄 소개만 변경</div><div class="fl-arrow" aria-hidden="true">→</div><div class="fl-node key">새로고침 (F5)</div><div class="fl-arrow" aria-hidden="true">→</div><div class="fl-node">변경·유지 함께 보기</div></div><p class="dc-cap change-refresh-cap">새 문장이 보이는지 먼저 확인합니다. 이어서 이름·관심사·나머지 배치가 이전과 같은지 비교합니다.<br><strong>바뀐 한 가지와 유지된 나머지를 모두 말할 수 있을 때</strong> 수정이 끝난 것입니다.</p></div></section>
 
 <section class="slide compare-slide change-scope-slide" data-slide="S48"><header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 5<br>배경색 수정</div></header><div class="s-full"><p class="s-eyebrow">배경색만 바꾸는 요청</p><h2 class="s-title"><span class="hl-blue-text">바꿀 것</span>·남길 것·<span class="hl-mint-mark">확인할 것</span></h2><div class="change-scope-grid"><div class="change-scope-item change"><span>CHANGE</span><h3>바꿀 것</h3><p>배경색만 <strong>[원하는 색]</strong>으로 바꿉니다.</p></div><div class="change-scope-item keep"><span>KEEP</span><h3>남길 것</h3><p>이름·한 줄 소개·관심사·나머지 배치를 유지합니다.</p></div><div class="change-scope-item check"><span>CHECK</span><h3>확인할 것</h3><p>새 배경에서 글자가 선명하고 이전 내용이 그대로인지 봅니다.</p></div></div><div class="change-scope-prompt" role="img" aria-label="배경색만 바꾸는 요청을 입력한 검정 터미널"><div class="terminal-head"><span class="terminal-dots" aria-hidden="true"><i></i><i></i><i></i></span><b>REQUEST TERMINAL</b></div><div class="terminal-command"><span class="pfx">&gt;_</span><p>배경색만 [원하는 색]으로 바꿔 주세요. 나머지 내용과 구성은 그대로 유지하고, 글자가 잘 읽히는지도 확인해 주세요.</p><span class="cur" aria-hidden="true"></span></div></div><p class="compare-foot"><span class="hl-mint-underline">바꿀 것·남길 것·확인할 것</span>을 한 요청에 함께 적으면 결과를 분명하게 검토할 수 있습니다.</p></div></section>
 
 <section class="slide dl-list has-character-art" data-slide="S49"><header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 5<br>배경 확인</div></header><div class="s-full"><p class="s-eyebrow">배경색을 바꾼 뒤</p><h2 class="s-title">새 배경과 <span class="hl-mint-text">같은 내용</span>을 비교합니다</h2><div class="dl-rows"><div class="card surface dl-row"><span class="dl-term">먼저 새로고침</span><p class="s-body">이전 화면이 아니라 최신 저장본을 기준으로 봅니다.</p></div><div class="card surface dl-row"><span class="dl-term">배경만 달라졌는지</span><p class="s-body">색은 바뀌고 이름·소개·관심사·배치는 남아 있는지 봅니다.</p></div><div class="card surface dl-row"><span class="dl-term">읽기 쉬운지</span><p class="s-body">새 배경 위에서 글자가 충분히 선명한지 직접 확인합니다.</p></div></div></div><figure class="asset-slot asset-slot--support character-art" data-image-purpose="explanatory" data-image-role="support" data-asset-kind="paper-cut-v1" data-asset-id="ASSET-023"><img src="자료/images/s49_background-before-after-paper-cut-v1-transparent.png" alt="배경만 바꾸고 내용은 유지하는 전후 관계 이미지"></figure></section>
 
-<section class="slide dl-list has-character-art" data-slide="S50"><header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 5<br>사람의 결정</div></header><div class="s-full"><p class="s-eyebrow">원하는 한 가지를 더 바꾼 뒤</p><h2 class="s-title">결과를 보고 <span class="hl-mint-underline">사람이 고릅니다</span></h2><div class="dl-rows"><div class="card surface dl-row"><span class="dl-term">참고 자료를 볼 때</span><p class="s-body">통째로 복제하지 않고 분위기·색·글자·여백·배치 중<br><strong>특징 하나</strong>만 고릅니다.</p></div><div class="card surface dl-row"><span class="dl-term">다시 요청할 때</span><p class="s-body">고른 특징 하나만 바꾸고, 내 내용과 구조는 그대로 둔다고 적습니다.</p></div><div class="card surface dl-row"><span class="dl-term">여기서 마칠 때</span><p class="s-body">필수 내용과 읽기 쉬움이 맞으면 현재 결과를 남기고 무엇을 확인했는지 기록합니다.</p></div></div></div><figure class="asset-slot asset-slot--support character-art" data-image-purpose="mnemonic" data-image-role="support" data-asset-kind="paper-cut-v1" data-asset-id="ASSET-017"><img src="자료/images/s50_human-ai-free-change-paper-cut-v2-transparent.png" alt="사람과 AI가 한 가지 선택지를 고르고 결과를 확인하는 이미지"></figure></section>
+<section class="slide dl-list has-character-art" data-slide="S50"><header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 5<br>사람의 결정</div></header><div class="s-full"><p class="s-eyebrow">원하는 한 가지를 더 바꾼 뒤</p><h2 class="s-title">마지막 결정은 <span class="hl-mint-underline">사람이 합니다</span></h2><div class="dl-rows"><div class="card surface dl-row"><span class="dl-term">참고 자료를 볼 때</span><p class="s-body">통째로 복제하지 않고 분위기·색·글자·여백·배치 중<br><strong>특징 하나</strong>만 고릅니다.</p></div><div class="card surface dl-row"><span class="dl-term">다시 요청할 때</span><p class="s-body">고른 특징 하나만 바꾸고, 내 내용과 구조는 그대로 둔다고 적습니다.</p></div><div class="card surface dl-row"><span class="dl-term">여기서 마칠 때</span><p class="s-body">필수 내용과 읽기 쉬움이 맞으면 현재 결과를 남기고 무엇을 확인했는지 기록합니다.</p></div></div></div><figure class="asset-slot asset-slot--support character-art" data-image-purpose="mnemonic" data-image-role="support" data-asset-kind="paper-cut-v1" data-asset-id="ASSET-017"><img src="자료/images/s50_human-ai-free-change-paper-cut-v2-transparent.png" alt="사람과 AI가 한 가지 선택지를 고르고 결과를 확인하는 이미지"></figure></section>
 
 <!-- PART 6 · 오류 대응과 최종 점검 -->
+<style data-part="part-05">
+[data-slide="S53"] .s53-steps{ display:flex; flex-direction:column; gap:6px; margin-top:10px; }
+[data-slide="S53"] .s53-steps .work-step{ grid-template-columns:38px 1fr; gap:12px; padding:12px 16px; align-items:center; }
+[data-slide="S53"] .s53-steps .work-step .n{ width:38px; height:38px; font-size:16px; }
+[data-slide="S53"] .s53-steps .work-step > div{ display:flex; align-items:baseline; flex-wrap:wrap; column-gap:10px; row-gap:2px; }
+[data-slide="S53"] .s53-steps .work-step b{ font-size:22px; line-height:1.3; margin-bottom:0; white-space:nowrap; }
+[data-slide="S53"] .s53-steps .work-step span{ font-size:22px; line-height:1.3; }
+[data-slide="S53"] .s53-arrow{ text-align:center; color:var(--blue); font-weight:800; font-size:13px; line-height:1; }
+[data-slide="S53"] .s53-closing{ margin:12px auto 0; padding:10px 20px; width:fit-content; max-width:900px; text-align:center; }
+[data-slide="S53"] .s53-closing .lead{ font-size:22px; line-height:1.3; margin-bottom:0; }
+</style>
 <section class="slide part-divider" data-slide="P6">
   <svg class="dv-hero" viewBox="0 0 1280 720" fill="none" aria-hidden="true"></svg>
   <div class="pd-dots" aria-hidden="true"></div>
@@ -570,9 +790,9 @@
 
 <section class="slide dl-list with-support-art" data-slide="S52"><header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 6<br>문제 구분</div></header><div class="s-full"><p class="s-eyebrow">무엇이 다른지 먼저 가르기</p><h2 class="s-title">오류·요구 불일치·<span class="hl-mint-text">취향</span></h2><p class="s-lead issue-lead">같은 ‘안 됨’처럼 보여도 <span class="hl-mint-mark">원인이 다르면 다음 행동도 다릅니다</span>.</p><div class="dl-rows"><div class="card surface dl-row"><span class="dl-term">페이지가 열리지 않을 때</span><p class="s-body"><strong class="hl-coral-text">오류</strong>입니다. 파일 위치·이름·저장·새로고침을 차례로 확인합니다.</p></div><div class="card surface dl-row"><span class="dl-term">요청과 다를 때</span><p class="s-body"><strong class="hl-blue-text">요구 불일치</strong>입니다. 빠진 조건 하나만 다시 말합니다.</p></div><div class="card surface dl-row"><span class="dl-term">마음에 들지 않을 때</span><p class="s-body"><strong class="hl-mint-text">취향 차이</strong>입니다. 색·글자·여백 중 원하는 특징 하나를 고릅니다.</p></div></div></div><figure class="asset-slot asset-slot--support" data-viz="issue-type-check" data-image-purpose="mnemonic" data-image-role="support" data-asset-kind="paper-cut-v1" data-asset-id="ASSET-011"><img src="자료/images/s52_issue-type-check-paper-cut-v1-transparent.png" alt="오류, 요구 불일치, 취향 차이를 구분하는 이미지"></figure></section>
 
-<section class="slide dl-list has-character-art" data-slide="S53"><header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 6<br>다음 행동</div></header><div class="s-full"><p class="s-eyebrow">지금 보이는 상태에서 다음으로</p><h2 class="s-title">문제에 맞는 <span class="hl-mint-underline">다음 한 걸음</span></h2><div class="dl-rows"><div class="card surface dl-row"><span class="dl-term">문제가 보일 때</span><p class="s-body">위치 → 저장 → 새로고침을 보고, 여전하면 보인 것과 기대한 것을 두 줄로 적습니다.</p></div><div class="card surface dl-row"><span class="dl-term">문제가 없을 때</span><p class="s-body">실제 <code>index.html</code>을 다시 찾아 마지막 점검으로 바로 갑니다.</p></div><div class="card surface dl-row"><span class="dl-term">두 길이 만나는 곳</span><p class="s-body">어느 쪽이든 같은 파일과 같은 화면을 기준으로 한 번에 하나만 다룹니다.</p></div></div></div><figure class="asset-slot asset-slot--support character-art" data-viz="diagnosis-branch" data-image-purpose="explanatory" data-image-role="support" data-asset-kind="paper-cut-v1" data-asset-id="ASSET-024"><img src="자료/images/s53_issue-branch-diagnosis-paper-cut-v1-transparent.png" alt="문제 유형에 따라 다음 행동이 갈라지는 진단 이미지"></figure></section>
+<section class="slide" data-slide="S53"><header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 6<br>확인 순서</div></header><div class="s-full"><p class="s-eyebrow">막혔을 때</p><h2 class="s-title">이 순서대로 <span class="hl-mint-mark">하나씩</span> 확인합니다</h2><div class="s53-steps"><div class="work-step"><span class="n">1</span><div><b>파일 위치</b><span>지금 연 파일이 그 폴더 안의 index.html이 맞는지 봅니다.</span></div></div><div class="s53-arrow" aria-hidden="true">↓</div><div class="work-step"><span class="n">2</span><div><b>저장</b><span>고친 내용이 파일에 저장됐는지 봅니다.</span></div></div><div class="s53-arrow" aria-hidden="true">↓</div><div class="work-step"><span class="n">3</span><div><b>새로고침 (F5)</b><span>브라우저가 이전 화면을 그대로 보여 주고 있지 않은지 봅니다.</span></div></div><div class="s53-arrow" aria-hidden="true">↓</div><div class="work-step"><span class="n">4</span><div><b>그래도 안 되면</b><span>보인 것과 기대한 것을 두 줄로 적어 다시 요청합니다.</span></div></div></div><p class="callout green s53-closing"><span class="lead">한꺼번에 고치지 않고, 위에서부터 하나씩 봅니다.</span></p></div></section>
 
-<section class="slide path-inspection-slide" data-slide="S54"><header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 6<br>경로 확인</div></header><div class="dc-title"><p class="s-eyebrow">막혔을 때 첫 확인</p><h2 class="s-title">파일 위치부터 <span class="hl-mint-mark">바로잡습니다</span></h2></div><div class="path-inspection-layout"><div class="path-inspection-gui" role="img" aria-label="프로젝트 폴더 바로 안의 index.html을 확인하는 파일 탐색기 화면"><div class="tree-window-bar"><span></span><span></span><span></span><b>파일 탐색기</b></div><div class="tree-breadcrumb">C: <i>›</i> VibeCoding <i>›</i> 내_자기소개</div><div class="file-list-head"><span>이름</span><span>종류</span></div><div class="file-list-row active"><span><b class="html-badge">HTML</b> index.html</span><span>Chrome HTML 문서</span></div></div><div class="path-inspection-copy"><div><span class="path-check-label">현재 경로</span><code>C:\VibeCoding\내_자기소개\</code></div><div><span class="path-check-label">실제 파일</span><strong>index.html</strong></div><p>최근 목록이나 기억이 아니라 <strong class="hl-blue-text">프로젝트 폴더 바로 안의 실제 파일</strong>을 엽니다.</p><p class="path-inspection-note">다른 폴더에 같은 이름의 파일이 있다면 먼저 위치부터 맞춘 뒤 다음 확인으로 갑니다.</p></div></div></section>
+<section class="slide path-inspection-slide" data-slide="S54"><header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 6<br>경로 확인</div></header><div class="dc-title"><p class="s-eyebrow">막혔을 때 첫 확인</p><h2 class="s-title">파일 위치부터 <span class="hl-mint-mark">바로잡습니다</span></h2></div><div class="path-inspection-layout"><div class="path-inspection-gui" role="img" aria-label="프로젝트 폴더 바로 안의 index.html을 확인하는 파일 탐색기 화면"><div class="tree-window-bar"><span></span><span></span><span></span><b>파일 탐색기</b></div><div class="tree-breadcrumb">C: <i>›</i> VibeCoding <i>›</i> about-me</div><div class="file-list-head"><span>이름</span><span>종류</span></div><div class="file-list-row active"><span><b class="html-badge">HTML</b> index.html</span><span>Chrome HTML 문서</span></div></div><div class="path-inspection-copy"><div><span class="path-check-label">현재 경로</span><code>C:\VibeCoding\about-me\</code></div><div><span class="path-check-label">실제 파일</span><strong>index.html</strong></div><p>최근 목록이나 기억이 아니라 <strong class="hl-blue-text">프로젝트 폴더 바로 안의 실제 파일</strong>을 엽니다.</p><p class="path-inspection-note">다른 폴더에 같은 이름의 파일이 있다면 먼저 위치부터 맞춘 뒤 다음 확인으로 갑니다.</p></div></div></section>
 
 <section class="slide save-state-slide" data-slide="S55"><header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 6<br>저장 확인</div></header><div class="dc-title"><p class="s-eyebrow">파일에 최신 내용이 있는지</p><h2 class="s-title">저장된 상태를 <span class="hl-mint-text">확인합니다</span></h2></div><div class="dc-stage"><div class="viz-flow-ph" data-viz="learning-flow" role="img" aria-label="화면에서 수정한 내용을 파일에 저장해 최신 index.html을 만드는 순서"><div class="fl-node">화면에서 고친 내용</div><div class="fl-arrow" aria-hidden="true">→</div><div class="fl-node key">파일에 저장</div><div class="fl-arrow" aria-hidden="true">→</div><div class="fl-node"><code>index.html</code> 최신본</div></div><p class="dc-cap">화면에서 바꾼 것처럼 보여도 파일에 저장되지 않으면 이전 결과가 보일 수 있습니다. <strong>저장과 새로고침은 서로 다른 두 단계</strong>입니다.</p></div></section>
 
@@ -580,7 +800,7 @@
 
 <section class="slide issue-report-slide" data-slide="S57"><header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 6<br>문제 전달</div></header><div class="dc-title"><p class="s-eyebrow">문제를 정확하게 말하기</p><h2 class="s-title">세 줄로 상황을 <span class="hl-mint-underline">알려 줍니다</span></h2></div><div class="dc-stage"><div class="viz-flow-ph" data-viz="learning-flow" role="img" aria-label="위치, 실제 결과, 기대 결과를 순서대로 기록하는 문제 보고 구조"><div class="fl-node">어디에서<br><small>파일·화면 위치</small></div><div class="fl-arrow" aria-hidden="true">→</div><div class="fl-node key">무엇이 보이고<br><small>실제 결과</small></div><div class="fl-arrow" aria-hidden="true">→</div><div class="fl-node">무엇을 기대했는지<br><small>원래 보여야 할 것</small></div></div><p class="dc-cap"><strong>좋은 예</strong> — 브라우저에서 <code>index.html</code>을 열었더니 빈 화면입니다.<br>파일은 열리지만 한 줄 소개가 보이지 않습니다.<br><span class="hl-mint-underline">이 문제만 먼저 고쳐 주세요.</span></p></div></section>
 
-<section class="slide final-location-slide" data-slide="S58"><header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 6<br>실제 위치 확인</div></header><div class="dc-title"><p class="s-eyebrow">마무리 전에 실제 위치 확인</p><h2 class="s-title"><span class="hl-mint-text">index.html</span>을 다시 찾습니다</h2></div><div class="final-location-layout"><figure class="final-location-shot asset-slot asset-slot--support" data-image-purpose="explanatory" data-image-role="support" data-image-state="ready" data-asset-kind="screenshot"><div class="shot-frame"><img src="screenshot/win05_vibecoding-index-root.png" alt="Windows 파일 탐색기에서 VibeCoding 프로젝트의 index.html과 HTML 문서 종류가 보이는 화면"></div></figure><div class="final-location-copy"><div><span>파일 이름</span><strong>index.html</strong></div><div><span>파일 위치</span><code>C:\VibeCoding\내_자기소개\</code></div><div><span>파일 종류</span><strong>HTML 문서</strong></div><p>파일 탐색기에서 프로젝트 폴더를 직접 열고, 이름·위치·종류를 <span class="hl-mint-underline">같은 화면에서 함께</span> 확인합니다.</p></div></div></section>
+<section class="slide final-location-slide" data-slide="S58"><header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 6<br>실제 위치 확인</div></header><div class="dc-title"><p class="s-eyebrow">마무리 전에 실제 위치 확인</p><h2 class="s-title"><span class="hl-mint-text">index.html</span>을 다시 찾습니다</h2></div><div class="final-location-layout"><figure class="final-location-shot asset-slot asset-slot--support" data-image-purpose="explanatory" data-image-role="support" data-image-state="ready" data-asset-kind="screenshot"><div class="shot-frame"><img src="screenshot/win05_vibecoding-index-root.png" alt="Windows 파일 탐색기에서 VibeCoding 프로젝트의 index.html과 HTML 문서 종류가 보이는 화면"></div></figure><div class="final-location-copy"><div><span>파일 이름</span><strong>index.html</strong></div><div><span>파일 위치</span><code>C:\VibeCoding\about-me\</code></div><div><span>파일 종류</span><strong>HTML 문서</strong></div><p>파일 탐색기에서 프로젝트 폴더를 직접 열고, 이름·위치·종류를 <span class="hl-mint-underline">같은 화면에서 함께</span> 확인합니다.</p></div></div></section>
 
 <section class="slide completion-check-slide" data-slide="S59"><header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 6<br>완료 체크</div></header><div class="s-full cc-full" data-viz="completion-checklist-map" aria-label="오늘의 경험을 마무리하는 완료 점검"><p class="s-eyebrow">오늘의 경험을 다음 작업에도 연결하기</p><h2 class="s-title">세 번의 행동을 <span class="hl-mint-text">다섯 가지 확인</span>으로 닫습니다</h2><div class="cc-grid"><div class="cc-side ai"><h3>오늘 해 본 행동</h3><ul><li>브라우저에서 페이지 열기</li><li>자기소개 내용 보기</li><li>한 가지를 바꾸고 다시 보기</li></ul></div><div class="cc-side human"><h3>마지막 다섯 가지 확인</h3><ul><li>페이지가 열리는가</li><li>이름·소개·관심사가 보이는가</li><li>요청한 한 가지가 바뀌었는가</li><li>나머지 내용이 유지됐는가</li><li><code>index.html</code>을 다시 찾을 수 있는가</li></ul></div></div><p class="s-body">체크리스트는 AI의 자가평가가 아니라 <span class="hl-mint-underline">사람이 실제 화면과 파일을 확인하는 순서</span>입니다.</p></div></section>
 
@@ -589,97 +809,130 @@
 
     <section class="slide concept-recap closing" data-slide="S61">
       <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">WEEK 1<br>마무리</div></header>
-      <div class="concept-panel"><div class="concept-top"><p class="s-eyebrow">세션 요약</p><h2 class="s-title">오늘 <span class="hl-mint-text">다섯 가지</span>를 확인합니다</h2><p class="concept-lead">AI가 작성하고, 사람이 검토하고, 사람이 결정합니다.</p></div><div class="concept-flow"><span>열기</span><b>→</b><span>콘텐츠</span><b>→</b><span>수정</span><b>→</b><span>수정 확인</span><b>→</b><span>파일 다시 찾기</span></div><div class="concept-cards"><div class="concept-card"><h3>작업 범위</h3><p>현재 폴더와 파일을 직접 확인합니다.</p></div><div class="concept-card"><h3>한 가지 변경</h3><p>유지 조건과 바꿀 것을 함께 요청합니다.</p></div><div class="concept-card"><h3>다음 시간</h3><p>새 아이디어를 새 프로젝트 폴더에서 <code>prd.md</code>로 정리합니다.</p></div></div><div class="concept-bottom">오늘 과제는 없습니다. 다음 주에는 새 아이디어로 새 프로젝트를 시작합니다.<small>끝내지 못한 항목은 현재 상태로 기록합니다. 2주차에는 자기소개 파일을 이어 고치는 대신 새 폴더에서 <code>prd.md</code>, HTML, CSS, JavaScript를 역할별로 준비합니다.</small></div></div>
+      <div class="concept-panel"><div class="concept-top"><p class="s-eyebrow">세션 요약</p><h2 class="s-title">오늘 <span class="hl-mint-text">이 흐름</span>을 한 바퀴 돌았습니다</h2></div><div class="concept-flow"><span>요청하기</span><b>→</b><span>AI가 만들기</span><b>→</b><span>직접 열어 보기</span><b>→</b><span>한 가지 고치기</span><b>→</b><span>다시 확인하기</span></div><div class="concept-cards"><div class="concept-card"><h3>작업 범위</h3><p>AI는 지금 열려 있는 폴더 안에서만 일합니다.</p></div><div class="concept-card"><h3>한 번에 하나</h3><p>바꿀 것과 그대로 둘 것을 함께 말합니다.</p></div><div class="concept-card"><h3>마지막 확인</h3><p>완료 보고가 아니라 브라우저 화면을 믿습니다.</p></div></div><div class="concept-bottom">AI가 만들고, 사람이 확인하고, 사람이 결정합니다.</div></div>
     </section>
     <section class="slide part-divider" data-slide="P7">
       <svg class="dv-hero" viewBox="0 0 1280 720" fill="none" aria-hidden="true"></svg>
       <div class="pd-dots" aria-hidden="true"></div>
-      <p class="pd-eyebrow">PART</p><h2 class="pd-title">[2단계 집필] 실습</h2><p class="pd-sub">[2단계 집필] 배운 순서대로 직접 해 봅니다.</p>
+      <p class="pd-eyebrow">PART</p><h2 class="pd-title">직접 만들어 보기</h2><p class="pd-sub">여섯 가지 주제 가운데 하나를 골라,<br>배운 요청 방법으로 처음부터 만들어 봅니다.</p>
     </section>
 
-    <section class="slide grid-ph" data-slide="X01" data-placeholder="1">
-      <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 6<br>실습</div></header>
+    <section class="slide practice-intro" data-slide="X00">
+      <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 6<br>실습 안내</div></header>
       <div class="s-full">
-        <p class="s-eyebrow">실습</p>
-        <h2 class="s-title">[2단계 집필] 실습 1</h2>
+        <p class="s-eyebrow">시작하기 전에</p>
+        <h2 class="s-title">주제 하나를 골라 <span class="hl-mint-text">끝까지 완성</span>합니다</h2>
         <div class="accent-bar"></div>
-        <div class="grid-3">
-          <div class="card surface"><p class="s-body">[2단계 집필]</p></div>
-          <div class="card surface"><p class="s-body">[2단계 집필]</p></div>
-          <div class="card surface"><p class="s-body">[2단계 집필]</p></div>
+        <div class="work-steps">
+          <div class="work-step"><span class="n">1</span><div><b>주제 고르기</b><span>여섯 가지 중 하나만 고릅니다. 다 하지 않아도 됩니다.</span></div></div>
+          <div class="work-step"><span class="n">2</span><div><b>새 폴더 만들기</b><span>C:\VibeCoding 안에 새 폴더를 만들고 Codex 작업공간을 그 폴더로 엽니다.</span></div></div>
+          <div class="work-step"><span class="n">3</span><div><b>나눠서 요청하기</b><span>한 번에 다 요청하지 않습니다. 한 단계씩 요청하고 화면에서 확인한 뒤 다음을 더합니다.</span></div></div>
+          <div class="work-step"><span class="n">4</span><div><b>확인하고 마치기</b><span>브라우저에서 직접 열어 기준대로 되는지 봅니다.</span></div></div>
+        </div>
+        <p class="x-cond-label">지킬 조건</p>
+        <div class="x-cond-grid">
+          <div class="x-cond">HTML 파일 하나로만 만듭니다. 추가 설치·다른 파일 없이 시작합니다.</div>
+          <div class="x-cond">사진이나 아이콘 파일은 쓰지 않습니다. 글자와 도형, 이모지로 표현합니다.</div>
+          <div class="x-cond">새로고침하면 입력한 내용은 사라집니다. 저장하는 방법은 2주차에 배웁니다.</div>
         </div>
       </div>
     </section>
 
-    <section class="slide dl-list" data-slide="X02" data-placeholder="1">
+    <section class="slide grid-ph" data-slide="X01">
+      <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 6<br>실습</div></header>
+      <div class="s-full fill">
+        <p class="s-eyebrow">실습 주제 ① · 난이도 보통</p>
+        <h2 class="s-title">할 일을 옮기며 관리하는 <span class="hl-mint-text">칸반 보드</span></h2>
+        <div class="grid-2">
+          <div class="card"><h3>화면에 들어갈 것</h3><ul class="x-list"><li>할 일 / 하는 중 / 끝남 세 열</li><li>할 일을 적어 넣는 입력칸</li><li>열마다 카드 개수 배지</li><li>전체 진행률 막대</li></ul></div>
+          <div class="card"><h3>꼭 되어야 하는 것</h3><ul class="x-list"><li>카드를 끌어서 다른 열로 옮기기</li><li>카드 지우기</li><li>중요도 색 라벨 달기</li></ul></div>
+        </div>
+        <div class="callout green x-verify-band"><span class="lead">다 됐는지 보는 법</span>카드를 끌어 옮기면 양쪽 열의 개수와 진행률이 함께 바뀝니다.</div>
+        <p class="x-flow-label">나눠 요청하기</p>
+        <div class="x-flow"><span>세 열과 카드 추가</span><b>→</b><span>끌어서 옮기기</span><b>→</b><span>개수와 진행률</span><b>→</b><span>색 라벨과 삭제</span></div>
+      </div>
+    </section>
+
+    <section class="slide dl-list" data-slide="X02">
       <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 6<br>실습</div></header>
       <div class="s-full">
-        <p class="s-eyebrow">실습</p>
-        <h2 class="s-title">[2단계 집필] 실습 2</h2>
-        <div class="accent-bar"></div>
+        <p class="s-eyebrow">실습 주제 ② · 난이도 어려움</p>
+        <h2 class="s-title">쓴 돈이 한눈에 보이는 <span class="hl-mint-text">가계부</span></h2>
         <div class="dl-rows">
-          <div class="card surface dl-row"><span class="dl-term">[2단계 집필]</span><p class="s-body">[2단계 집필]</p></div>
-          <div class="card surface dl-row"><span class="dl-term">[2단계 집필]</span><p class="s-body">[2단계 집필]</p></div>
-          <div class="card surface dl-row"><span class="dl-term">[2단계 집필]</span><p class="s-body">[2단계 집필]</p></div>
+          <div class="card surface dl-row"><span class="dl-term">화면에 들어갈 것</span><p class="s-body">날짜·항목·분류·금액 입력칸 · 입력한 내역 표 · 분류별 합계 · 이번 달 요약</p></div>
+          <div class="card surface dl-row"><span class="dl-term">꼭 되어야 하는 것</span><p class="s-body">분류별 비중을 도넛 그림으로 보여 주기 · 주차별 지출을 막대로 보여 주기 · 예산을 넘으면 색으로 알려 주기</p></div>
+          <div class="card surface dl-row x-verify"><span class="dl-term">다 됐는지 보는 법</span><p class="s-body">내역을 하나 추가하면 표·합계·그림이 한꺼번에 바뀝니다.</p></div>
         </div>
+        <p class="x-flow-label">나눠 요청하기</p>
+        <div class="x-flow"><span>입력과 내역표</span><b>→</b><span>분류별 합계</span><b>→</b><span>도넛 그림</span><b>→</b><span>예산 게이지와 경고색</span></div>
       </div>
     </section>
 
-    <section class="slide compare-slide" data-slide="X03" data-placeholder="1">
+    <section class="slide compare-slide" data-slide="X03">
       <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 6<br>실습</div></header>
       <div class="s-full">
-        <p class="s-eyebrow">실습</p>
-        <h2 class="s-title">[2단계 집필] 실습 3</h2>
+        <p class="s-eyebrow">실습 주제 ③ · 난이도 보통</p>
+        <h2 class="s-title">25분 집중하고 5분 쉬는 <span class="hl-mint-text">타이머</span></h2>
         <div class="compare2">
-          <div class="cmp"><span class="tag">[2단계 집필]</span><h3>[2단계 집필]</h3><p class="sub">[2단계 집필]</p><div class="cmp-lines"><p>[2단계 집필]</p></div></div>
-          <div class="cmp lean-cmp"><span class="tag">[2단계 집필]</span><h3>[2단계 집필]</h3><p class="sub">[2단계 집필]</p><div class="cmp-lines"><p>[2단계 집필]</p></div></div>
+          <div class="cmp"><span class="tag">화면</span><h3>화면에 들어갈 것</h3><div class="cmp-lines"><p>크게 보이는 남은 시간</p><p>둥근 진행 게이지</p><p>시작·일시정지·다시 시작 버튼</p><p>지금이 집중인지 휴식인지 표시</p></div></div>
+          <div class="cmp"><span class="tag">조건</span><h3>꼭 되어야 하는 것</h3><div class="cmp-lines"><p>25분이 지나면 저절로 5분 휴식으로 넘어가기</p><p>오늘 몇 번 집중했는지 세기</p><p>넘어갈 때 소리로 알려 주기</p></div></div>
+          <div class="cmp x-verify"><span class="tag">확인</span><h3>다 됐는지 보는 법</h3><div class="cmp-lines"><p>시간을 1분으로 줄여 돌리면 저절로 휴식으로 넘어가고 횟수가 하나 오릅니다.</p></div></div>
         </div>
+        <p class="x-flow-label">나눠 요청하기</p>
+        <div class="x-flow"><span>타이머와 시작·정지</span><b>→</b><span>자동 전환</span><b>→</b><span>둥근 게이지</span><b>→</b><span>횟수 세기와 알림음</span></div>
       </div>
     </section>
 
-    <section class="slide grid-ph" data-slide="X04" data-placeholder="1">
+    <section class="slide grid-ph" data-slide="X04">
       <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 6<br>실습</div></header>
-      <div class="s-full">
-        <p class="s-eyebrow">실습</p>
-        <h2 class="s-title">[2단계 집필] 실습 4</h2>
-        <div class="accent-bar"></div>
-        <div class="grid-3">
-          <div class="card surface"><p class="s-body">[2단계 집필]</p></div>
-          <div class="card surface"><p class="s-body">[2단계 집필]</p></div>
-          <div class="card surface"><p class="s-body">[2단계 집필]</p></div>
+      <div class="s-full fill">
+        <p class="s-eyebrow">실습 주제 ④ · 난이도 어려움</p>
+        <h2 class="s-title">문제를 내고 풀어 채점까지 하는 <span class="hl-mint-text">퀴즈</span></h2>
+        <div class="grid-2">
+          <div class="card"><h3>화면에 들어갈 것</h3><ul class="x-list"><li>문제와 보기 네 개, 정답을 넣는 등록칸</li><li>등록한 문제 목록</li><li>문제를 푸는 화면</li><li>점수가 나오는 결과 화면</li></ul></div>
+          <div class="card"><h3>꼭 되어야 하는 것</h3><ul class="x-list"><li>문제를 여러 개 등록하기</li><li>지금 몇 번째인지 보여 주기</li><li>맞은 개수 세어 점수 내기</li><li>틀린 문제 다시 보기</li></ul></div>
         </div>
+        <div class="callout green x-verify-band"><span class="lead">다 됐는지 보는 법</span>세 문제를 넣고 두 개만 맞히면 결과에 2/3이 뜹니다.</div>
+        <p class="x-flow-label">나눠 요청하기</p>
+        <div class="x-flow"><span>문제 등록</span><b>→</b><span>푸는 화면</span><b>→</b><span>채점과 결과</span><b>→</b><span>틀린 문제 복습과 다시 풀기</span></div>
       </div>
     </section>
 
-    <section class="slide dl-list" data-slide="X05" data-placeholder="1">
+    <section class="slide dl-list" data-slide="X05">
       <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 6<br>실습</div></header>
       <div class="s-full">
-        <p class="s-eyebrow">실습</p>
-        <h2 class="s-title">[2단계 집필] 실습 5</h2>
-        <div class="accent-bar"></div>
+        <p class="s-eyebrow">실습 주제 ⑤ · 난이도 보통</p>
+        <h2 class="s-title">매일 체크하며 쌓아 가는 <span class="hl-mint-text">습관표</span></h2>
         <div class="dl-rows">
-          <div class="card surface dl-row"><span class="dl-term">[2단계 집필]</span><p class="s-body">[2단계 집필]</p></div>
-          <div class="card surface dl-row"><span class="dl-term">[2단계 집필]</span><p class="s-body">[2단계 집필]</p></div>
-          <div class="card surface dl-row"><span class="dl-term">[2단계 집필]</span><p class="s-body">[2단계 집필]</p></div>
+          <div class="card surface dl-row"><span class="dl-term">화면에 들어갈 것</span><p class="s-body">습관 세 개에서 다섯 개 · 최근 일주일 날짜 격자 · 습관을 더하고 지우는 칸 · 요일 표시</p></div>
+          <div class="card surface dl-row"><span class="dl-term">꼭 되어야 하는 것</span><p class="s-body">칸을 눌러 체크하기 · 며칠 연속으로 했는지 세기 · 이번 주 달성률 보여 주기 · 많이 한 날은 색을 진하게</p></div>
+          <div class="card surface dl-row x-verify"><span class="dl-term">다 됐는지 보는 법</span><p class="s-body">사흘을 연달아 체크하면 연속 3일로 표시됩니다.</p></div>
         </div>
+        <p class="x-flow-label">나눠 요청하기</p>
+        <div class="x-flow"><span>격자와 체크</span><b>→</b><span>습관 추가·삭제</span><b>→</b><span>연속 일수</span><b>→</b><span>달성률과 색 농도</span></div>
+        <p class="x-extra">※ 연속 일수를 어떻게 셀지는 스스로 정해 요청문에 적어야 합니다.</p>
       </div>
     </section>
 
-    <section class="slide compare-slide" data-slide="X06" data-placeholder="1">
+    <section class="slide compare-slide" data-slide="X06">
       <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 6<br>실습</div></header>
       <div class="s-full">
-        <p class="s-eyebrow">실습</p>
-        <h2 class="s-title">[2단계 집필] 실습 6</h2>
+        <p class="s-eyebrow">실습 주제 ⑥ · 난이도 도전</p>
+        <h2 class="s-title">같은 그림을 찾는 <span class="hl-mint-text">카드 뒤집기 게임</span></h2>
         <div class="compare2">
-          <div class="cmp"><span class="tag">[2단계 집필]</span><h3>[2단계 집필]</h3><p class="sub">[2단계 집필]</p><div class="cmp-lines"><p>[2단계 집필]</p></div></div>
-          <div class="cmp lean-cmp"><span class="tag">[2단계 집필]</span><h3>[2단계 집필]</h3><p class="sub">[2단계 집필]</p><div class="cmp-lines"><p>[2단계 집필]</p></div></div>
+          <div class="cmp"><span class="tag">화면</span><h3>화면에 들어갈 것</h3><div class="cmp-lines"><p>뒤집을 카드 격자</p><p>난이도 고르기(작게·보통·크게)</p><p>걸린 시간</p><p>뒤집은 횟수</p></div></div>
+          <div class="cmp"><span class="tag">조건</span><h3>꼭 되어야 하는 것</h3><div class="cmp-lines"><p>카드를 눌러 뒤집기</p><p>같은 그림이면 열어 두고 다르면 다시 덮기</p><p>다 맞히면 완료 화면 보여 주기</p><p>가장 좋은 기록 남기기</p></div></div>
+          <div class="cmp x-verify"><span class="tag">확인</span><h3>다 됐는지 보는 법</h3><div class="cmp-lines"><p>같은 그림 두 장은 열린 채로 남고, 다른 두 장은 잠시 뒤 다시 덮입니다.</p></div></div>
         </div>
+        <p class="x-flow-label">나눠 요청하기</p>
+        <div class="x-flow"><span>카드 격자와 뒤집기</span><b>→</b><span>같은 그림 판단</span><b>→</b><span>시간과 횟수</span><b>→</b><span>난이도 고르기와 최고 기록</span></div>
+        <p class="x-extra">※ 두 장이 뒤집힌 상태에서 세 번째를 누르면 어떻게 할지도 함께 적습니다.</p>
       </div>
     </section>
 
     <section class="slide with-support-art" data-slide="S42">
       <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 4<br>이번 주와 다음 주</div></header>
-      <div class="s-full cc-full"><p class="s-eyebrow">한 파일에서 프로젝트로</p><h2 class="s-title">오늘의 경험을 <span class="hl-mint-underline">다음 프로젝트</span>로 이어갑니다</h2><div class="cc-grid"><div class="cc-side ai"><h3>1주차 · 한 파일</h3><ul><li><code>index.html</code> 하나를 요청합니다.</li><li>브라우저에서 결과를 확인합니다.</li><li>한 번에 한 부분만 바꿉니다.</li></ul></div><div class="cc-side human"><h3>2주차 · 프로젝트</h3><ul><li>문제와 사용자를 정합니다.</li><li>필요한 기능을 <code>prd.md</code>로 정리합니다.</li><li>파일을 역할별로 나누어 만듭니다.</li></ul></div></div><p class="s-body"><span class="hl-mint-text">요청 → 확인 → 수정</span>의 기본 흐름은 다음 주에도 그대로 이어집니다.</p></div>
+      <div class="s-full cc-full"><p class="s-eyebrow">다음 시간</p><h2 class="s-title">다음 주에는 파일 하나에서 <span class="hl-mint-text">프로젝트로</span> 갑니다</h2><div class="cc-grid"><div class="cc-side ai"><h3>오늘까지 한 것</h3><ul><li>요청하고, 열어 보고, 한 가지씩 고치는 흐름을 익혔습니다.</li></ul></div><div class="cc-side human"><h3>다음 주에 할 것</h3><ul><li>누구의 어떤 문제를 풀지 정하고, 꼭 필요한 기능만 골라 첫 제품을 만듭니다.</li><li>파일도 역할별로 나누어 만듭니다.</li></ul></div></div><p class="s-body"><span class="hl-mint-text">요청 → 확인 → 수정</span>의 흐름은 다음 주에도 그대로입니다.</p></div>
       <figure class="asset-slot asset-slot--support" data-viz="week-file-structure" data-image-purpose="mnemonic" data-image-role="support" data-image-state="ready" data-asset-kind="paper-cut-v1"><img src="자료/images/s42_one-file-three-files-paper-cut-v1-transparent.png" alt="이번 주 한 파일과 다음 주 여러 파일 프로젝트를 비교하는 이미지"></figure>
     </section>
 

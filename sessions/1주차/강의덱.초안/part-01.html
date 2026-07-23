@@ -1,4 +1,87 @@
 
+<style data-part="01">
+/* A01 — 이미 쓰는 AI 6항목 분류 그리드 (2×3, 22px 하한) */
+[data-slide="A01"] .grid-3{ grid-template-columns:repeat(2,1fr); grid-template-rows:repeat(3,1fr); gap:14px; margin-top:18px; }
+[data-slide="A01"] .grid-3 .card{ display:flex; flex-direction:column; justify-content:center; padding:14px 20px; }
+[data-slide="A01"] .grid-3 h3{ margin:0 0 6px; font-size:23px; color:var(--ink); }
+[data-slide="A01"] .grid-3 p{ margin:0; color:var(--gray-700); font-size:22px; line-height:1.4; }
+[data-slide="A01"] .a01-close{ margin-top:16px; color:var(--gray-700); font-size:22px; }
+
+/* T01 — 토큰 분할 색 블록 도식 (22px 하한) */
+[data-slide="T01"] .tok-lead{ margin:8px 0 0; color:var(--gray-700); font-size:22px; line-height:1.5; }
+[data-slide="T01"] .tok-stage{ margin-top:14px; display:flex; flex-direction:column; align-items:center; gap:8px; }
+[data-slide="T01"] .tok-orig{ margin:0; padding:8px 22px; border:1px solid var(--blue-line-strong); border-radius:var(--r-md); background:var(--white); color:var(--ink); font-family:var(--font-mono); font-size:23px; }
+[data-slide="T01"] .tok-arrow{ margin:0; color:var(--blue); font-size:22px; font-weight:800; }
+[data-slide="T01"] .tok-chips{ display:flex; gap:10px; }
+[data-slide="T01"] .tok-chip{ padding:9px 16px; border-radius:var(--r-md); border:2px solid var(--blue-line-strong); background:var(--blue-soft); color:var(--ink); font-family:var(--font-mono); font-size:22px; font-weight:800; }
+[data-slide="T01"] .tok-chip:nth-child(even){ background:var(--blue-panel); border-color:var(--blue-line); }
+[data-slide="T01"] .tok-caption{ margin:2px 0 0; color:var(--gray-700); font-size:22px; text-align:center; }
+[data-slide="T01"] .tok-myth{ margin-top:12px; padding:12px 18px; border:1px solid var(--coral-line); border-radius:var(--r-md); background:var(--coral-soft); }
+[data-slide="T01"] .tok-myth-h{ margin:0; color:var(--coral-deep); font-size:22px; font-weight:800; }
+[data-slide="T01"] .tok-myth-b{ margin:4px 0 0; color:var(--gray-700); font-size:22px; }
+[data-slide="T01"] .tok-close{ margin-top:10px; color:var(--gray-700); font-size:22px; }
+
+/* T02 — 추론 강도 4단계 눈금 (22px 하한, 뱃지가 커져 트랙 높이 확대) */
+[data-slide="T02"] .reason-connect{ margin:8px 0 0; color:var(--gray-700); font-size:22px; line-height:1.5; }
+[data-slide="T02"] .reason-scale{ margin-top:14px; }
+[data-slide="T02"] .rs-track{ display:flex; align-items:flex-end; gap:24px; height:160px; padding:0 8px; border-bottom:2px solid var(--blue-line-strong); }
+[data-slide="T02"] .rs-col{ flex:1; display:flex; flex-direction:column; align-items:center; justify-content:flex-end; height:100%; gap:6px; }
+[data-slide="T02"] .rs-bar{ display:block; width:64px; border-radius:8px 8px 0 0; background:var(--blue); }
+[data-slide="T02"] .rs-badge{ padding:6px 14px; border-radius:999px; background:var(--mint); color:var(--on-mint); font-size:22px; font-weight:900; white-space:nowrap; }
+[data-slide="T02"] .rs-labels{ display:flex; gap:24px; padding:0 8px; margin-top:6px; }
+[data-slide="T02"] .rs-labels span{ flex:1; text-align:center; color:var(--ink); font-size:22px; font-weight:800; }
+[data-slide="T02"] .rs-axis{ margin-top:10px; display:flex; align-items:center; justify-content:center; gap:16px; color:var(--gray-700); font-size:22px; }
+[data-slide="T02"] .rs-axis b{ color:var(--blue); font-weight:800; }
+[data-slide="T02"] .rs-axis-arrow{ color:var(--blue); font-size:22px; font-weight:900; }
+[data-slide="T02"] .reason-where{ margin-top:12px; padding:10px 16px; border-left:5px solid var(--blue); background:var(--blue-soft); color:var(--ink); font-size:22px; line-height:1.35; }
+[data-slide="T02"] .reason-close{ margin-top:10px; color:var(--gray-700); font-size:22px; }
+
+/* S10A — 웹 기반 · 설치형 2분류 (22px 하한) */
+[data-slide="S10A"] .app-types-grid.s10a-duo{ grid-template-columns:1fr 1fr; }
+[data-slide="S10A"] .app-type-card ul{ margin:10px 0 0; padding-left:20px; }
+[data-slide="S10A"] .app-type-card li{ margin:6px 0; color:var(--gray-700); font-size:22px; line-height:1.36; }
+[data-slide="S10A"] .s10a-thumbs{ margin-top:auto; padding-top:14px; display:flex; gap:12px; }
+[data-slide="S10A"] .s10a-thumbs .app-type-image{ width:130px; height:130px; flex:0 0 130px; }
+[data-slide="S10A"] .app-type-card--installed .app-type-image{ margin-top:auto; width:150px; height:150px; }
+
+/* W01 — 기획·디자인 2패널 (22px 하한) */
+[data-slide="W01"] .proc-duo{ margin-top:18px; display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+[data-slide="W01"] .proc-panel{ padding:18px 22px; border:1px solid var(--blue-line-strong); border-radius:var(--r-lg); background:var(--blue-panel); }
+[data-slide="W01"] .proc-panel-head{ display:flex; align-items:center; gap:14px; }
+[data-slide="W01"] .proc-icon{ position:relative; inset:auto; width:60px; height:60px; max-width:none; max-height:none; flex:0 0 60px; }
+[data-slide="W01"] .proc-tag{ display:inline-block; padding:5px 14px; border-radius:999px; background:var(--blue-soft); color:var(--blue); font-size:22px; font-weight:900; letter-spacing:.02em; }
+[data-slide="W01"] .proc-panel h3{ margin:12px 0 8px; font-size:25px; color:var(--ink); }
+[data-slide="W01"] .proc-body{ margin:0; color:var(--gray-700); font-size:22px; line-height:1.4; }
+[data-slide="W01"] .proc-example{ margin:10px 0 0; padding-top:8px; border-top:1px solid var(--blue-line-strong); font-size:22px; line-height:1.35; color:var(--ink); }
+[data-slide="W01"] .proc-example b{ color:var(--blue); margin-right:6px; }
+[data-slide="W01"] .proc-close{ margin-top:14px; color:var(--gray-700); font-size:22px; }
+
+/* W02 — 프론트엔드 스포트라이트 (22px 하한) */
+[data-slide="W02"] .w02-stage{ flex-direction:row; gap:48px; }
+[data-slide="W02"] .w02-figure{ position:relative; inset:auto; width:300px; height:300px; max-width:none; max-height:none; flex:0 0 300px; }
+[data-slide="W02"] .w02-copy{ max-width:540px; }
+[data-slide="W02"] .w02-lead{ margin:0; color:var(--gray-700); font-size:23px; line-height:1.45; }
+[data-slide="W02"] .w02-copy .timing{ margin:16px 0 0; font-size:22px; padding:8px 16px; }
+[data-slide="W02"] .w02-next{ margin:16px 0 0; color:var(--gray-700); font-size:22px; }
+
+/* W03 — 백엔드·데이터 (22px 하한, 스코프 배지는 배너형으로) */
+[data-slide="W03"] .dl-row.card{ padding:8px 20px; }
+[data-slide="W03"] .w03-foot{ margin-top:12px; display:flex; align-items:center; gap:18px; }
+[data-slide="W03"] .w03-icon{ position:relative; inset:auto; width:76px; height:76px; max-width:none; max-height:none; flex:0 0 76px; }
+[data-slide="W03"] .w03-foot-text{ flex:1; min-width:0; }
+[data-slide="W03"] .w03-analogy{ margin:0; color:var(--gray-700); font-size:22px; line-height:1.3; }
+[data-slide="W03"] .w03-analogy b{ color:var(--ink); }
+[data-slide="W03"] .w03-scope{ display:block; margin-top:6px; padding:8px 14px; border-radius:10px; border:1px solid var(--coral-line); background:var(--coral-soft); color:var(--coral-deep); font-size:22px; line-height:1.3; font-weight:800; }
+
+/* W05 — QA·배포·개선 세로 스텝 (22px 하한, 여백 축소로 상쇄) */
+[data-slide="W05"] .eval-steps{ gap:7px; }
+[data-slide="W05"] .eval-steps .work-step{ grid-template-columns:46px 54px 1fr; padding:9px 16px; }
+[data-slide="W05"] .w05-icon{ position:relative; inset:auto; width:54px; height:54px; max-width:none; max-height:none; }
+[data-slide="W05"] .eval-steps .work-step b{ font-size:22px; }
+[data-slide="W05"] .eval-steps .work-step span{ font-size:22px; line-height:1.32; }
+[data-slide="W05"] .w05-close{ margin-top:10px; color:var(--gray-700); font-size:22px; }
+</style>
+
 <section class="slide part-divider" data-slide="P1">
   <svg class="dv-hero" viewBox="0 0 1280 720" fill="none" aria-hidden="true"></svg>
   <div class="pd-dots" aria-hidden="true"></div>
@@ -7,17 +90,21 @@
   <p class="pd-sub">문장을 만드는 AI에서 파일을 다루는 작업 파트너까지,<br>오늘 사용할 도구의 역할을 구분합니다.</p>
 </section>
 
-<section class="slide grid-ph" data-slide="A01" data-placeholder="1">
+<section class="slide grid-ph" data-slide="A01">
   <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 1<br>AI 친숙화</div></header>
   <div class="s-full">
-    <p class="s-eyebrow">AI 친숙화</p>
-    <h2 class="s-title">[2단계 집필] 이미 쓰고 있는 AI</h2>
+    <p class="s-eyebrow">이미 쓰고 있는 AI</p>
+    <h2 class="s-title">AI는 오늘 <span class="hl-mint-text">처음 만나는 것이 아닙니다</span></h2>
     <div class="accent-bar"></div>
     <div class="grid-3">
-      <div class="card surface"><p class="s-body">[2단계 집필]</p></div>
-      <div class="card surface"><p class="s-body">[2단계 집필]</p></div>
-      <div class="card surface"><p class="s-body">[2단계 집필]</p></div>
+      <div class="card surface"><h3>번역기</h3><p>외국어 문장을 한국어로 바꿔 줍니다.</p></div>
+      <div class="card surface"><h3>사진 보정</h3><p>어두운 사진을 알아서 밝게 만듭니다.</p></div>
+      <div class="card surface"><h3>영상 추천</h3><p>내가 볼 만한 영상을 골라 보여 줍니다.</p></div>
+      <div class="card surface"><h3>스팸 차단</h3><p>광고 메일을 걸러 받은편지함을 지킵니다.</p></div>
+      <div class="card surface"><h3>길 안내</h3><p>막히는 길을 피해 더 빠른 길을 알려 줍니다.</p></div>
+      <div class="card surface"><h3>맞춤법 검사</h3><p>틀린 글자를 찾아 고쳐 줍니다.</p></div>
     </div>
+    <p class="a01-close">이미 익숙한 AI에게, 오늘은 <span class="hl-mint-text">일을 맡기는 방법</span>을 배웁니다.</p>
   </div>
 </section>
 
@@ -31,22 +118,21 @@
       <article class="role-step role-step--agent" role="listitem"><span>작업공간에서</span><h3>코딩 에이전트</h3><p>폴더와 파일을 읽고 직접 수정합니다.</p><strong>브라우저에서 결과를 확인하고 다시 고칩니다.</strong></article>
     </div>
   </div>
-  <p class="role-flow-warning">두 도구 모두 틀릴 수 있습니다. <span>결과는 사람이 확인하고 결정합니다.</span></p>
 </section>
 
 <section class="slide llm-agent-wide" data-slide="07">
   <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 1<br>역할 비교</div></header>
   <div class="s-full"><p class="s-eyebrow">서로 다른 역할</p><h2 class="s-title">LLM과 에이전트는 <span class="hl-mint-mark">맡는 일이 다릅니다</span></h2>
-    <div class="llm-agent-layout"><div class="llm-agent-bands"><article class="llm-agent-band llm-agent-band--llm"><div><span>LANGUAGE</span><h3>LLM <small>Large Language Model</small></h3></div><ul><li>아주 많은 글을 학습한 <strong>대규모 언어 모델</strong>입니다.</li><li>입력을 토큰 단위로 다루고 다음 표현을 예측해 문장과 답을 만듭니다.</li><li><em>문장 완성 게임을 매우 잘하는 도우미</em>처럼 생각할 수 있습니다.</li></ul></article><article class="llm-agent-band llm-agent-band--agent"><div><span>ACTION</span><h3>에이전트 <small>Agent</small></h3></div><ul><li>목표와 완료 기준을 보고 <strong>계획하고 도구를 고릅니다.</strong></li><li>파일을 읽고 고친 뒤 결과를 관찰해 다음 행동을 정합니다.</li><li><strong>허용된 권한과 폴더 범위</strong> 안에서만 움직이는 실행 도우미입니다.</li></ul></article></div><figure class="llm-agent-image asset-slot asset-slot--support" data-asset-kind="paper-cut-v1" data-image-purpose="explanatory" data-image-state="ready" data-asset-id="ASSET-002"><img src="자료/images/s07_llm-agent-workshop-paper-cut-v1-transparent.png" alt="언어 재료가 제작 도구와 확인 도구로 이어져 LLM과 에이전트가 맡는 역할의 차이를 보여 준다."></figure></div>
+    <div class="llm-agent-layout"><div class="llm-agent-bands"><article class="llm-agent-band llm-agent-band--llm"><div><span>LANGUAGE</span><h3>LLM <small>Large Language Model</small></h3></div><ul><li>아주 많은 글을 학습한 <strong>대규모 언어 모델</strong>입니다.</li><li>입력을 토큰 단위로 다루고 다음 표현을 예측해 문장과 답을 만듭니다.</li><li><em>글을 아주 잘 쓰는 도구</em>처럼 생각할 수 있습니다.</li></ul></article><article class="llm-agent-band llm-agent-band--agent"><div><span>ACTION</span><h3>에이전트 <small>Agent</small></h3></div><ul><li>목표와 완료 기준을 보고 <strong>계획하고 도구를 고릅니다.</strong></li><li>파일을 읽고 고친 뒤 결과를 관찰해 다음 행동을 정합니다.</li><li><strong>허용된 권한과 폴더 범위</strong> 안에서만 움직이는 실행 도우미입니다.</li></ul></article></div><figure class="llm-agent-image asset-slot asset-slot--support" data-asset-kind="paper-cut-v1" data-image-purpose="explanatory" data-image-state="ready" data-asset-id="ASSET-002"><img src="자료/images/s07_llm-agent-workshop-paper-cut-v1-transparent.png" alt="언어 재료가 제작 도구와 확인 도구로 이어져 LLM과 에이전트가 맡는 역할의 차이를 보여 준다."></figure></div>
     <p class="llm-agent-conclusion">대화가 길어지면 중요한 조건을 다시 적습니다. <span>AI가 작성해도 최종 결정은 사람에게 있습니다.</span></p>
   </div>
 </section>
 
 <section class="slide coding-terms" data-slide="08">
   <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 1<br>용어의 출발</div></header>
-  <div class="s-full"><p class="s-eyebrow">용어의 출발 → 이 수업에서의 사용</p><h2 class="s-title">표현은 달라도 <span class="hl-mint-text">흐름은 하나</span>입니다</h2>
+  <div class="s-full"><p class="s-eyebrow">용어의 출발 → 이 수업에서의 사용</p><h2 class="s-title">이름은 달라도, <span class="hl-mint-text">하는 일은 같습니다</span></h2>
     <div class="coding-terms-path"><article class="coding-term-origin"><span>2025.02</span><h3>바이브 코딩</h3><p>Andrej Karpathy가 자연어로 원하는 방향을 말하고 AI가 코드를 만드는 흐름을 설명하며 널리 알려진 표현입니다.</p><small>출발: 자연어로 의도를 전하기</small></article><div class="coding-term-bridge" aria-hidden="true"><span>요청</span><b>→</b><span>실행</span><b>→</b><span>확인</span><b>→</b><span>수정</span></div><article class="coding-term-origin coding-term-origin--agent"><span>현재의 도구</span><h3>에이전틱 코딩</h3><p>AI 에이전트가 계획하고 도구를 사용하며 파일을 고치고 검증하는 개발 방식을 가리킵니다.</p><small>확장: 파일과 도구로 실제 작업하기</small></article></div>
-    <div class="coding-terms-course"><strong>두 표현을 쓰는 방식</strong><p>두 표현을 서로 다른 이론으로 외우지 않습니다. <span>사람이 목적과 조건을 정하고 → 에이전트가 파일을 작업하고 → 사람이 결과를 확인하는 같은 흐름</span>으로 사용합니다.</p></div>
+    <div class="coding-terms-course"><strong>두 표현을 쓰는 방식</strong><p>두 표현을 서로 다른 이론으로 이름을 외울 필요는 없습니다. <span>사람이 목적과 조건을 정하고 → 에이전트가 파일을 작업하고 → 사람이 결과를 확인하는 같은 흐름</span>으로 사용합니다.</p></div>
   </div>
 </section>
 
@@ -56,35 +142,56 @@
   <figure class="tool-role-image asset-slot asset-slot--support" data-asset-kind="paper-cut-v1" data-image-purpose="mnemonic" data-image-state="ready" data-asset-id="ASSET-003"><img src="자료/images/s09_three-work-roles-paper-cut-v1-transparent.png" alt="말풍선, 작업 트레이, 코드 제작 도구가 나란히 있어 대화·작업 정리·파일 작업의 서로 다른 역할을 보여 준다."></figure>
 </section>
 
-<section class="slide dl-list" data-slide="T01" data-placeholder="1">
+<section class="slide dl-list" data-slide="T01">
   <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 1<br>토큰</div></header>
   <div class="s-full">
-    <p class="s-eyebrow">토큰</p>
-    <h2 class="s-title">[2단계 집필] 토큰이란 무엇인가</h2>
-    <div class="accent-bar"></div>
-    <div class="dl-rows">
-      <div class="card surface dl-row"><span class="dl-term">[2단계 집필]</span><p class="s-body">[2단계 집필]</p></div>
-      <div class="card surface dl-row"><span class="dl-term">[2단계 집필]</span><p class="s-body">[2단계 집필]</p></div>
-      <div class="card surface dl-row"><span class="dl-term">[2단계 집필]</span><p class="s-body">[2단계 집필]</p></div>
+    <p class="s-eyebrow">AI가 글을 다루는 단위</p>
+    <h2 class="s-title">AI는 글을 <span class="hl-mint-text">토큰</span>으로 쪼개서 읽습니다</h2>
+    <p class="tok-lead">토큰은 AI가 글을 처리할 때 쪼개는 가장 작은 조각입니다. 단어 하나일 수도, 단어의 일부일 수도, 글자 하나일 수도 있습니다.</p>
+    <div class="tok-stage" role="img" aria-label="문장 &quot;ChatGPT는 놀랍다&quot;가 Chat·GPT·는·놀랍·다 다섯 개의 색 블록 토큰으로 쪼개지는 도식">
+      <p class="tok-orig">&ldquo;ChatGPT는 놀랍다&rdquo;</p>
+      <p class="tok-arrow">↓ 토큰 분할</p>
+      <div class="tok-chips">
+        <span class="tok-chip">Chat</span>
+        <span class="tok-chip">GPT</span>
+        <span class="tok-chip">는</span>
+        <span class="tok-chip">놀랍</span>
+        <span class="tok-chip">다</span>
+      </div>
+      <p class="tok-caption">한국어 짧은 문장 하나가 5개 안팎의 토큰이 됩니다. (실제 분할은 도구마다 다릅니다)</p>
     </div>
+    <div class="tok-myth">
+      <p class="tok-myth-h">&ldquo;토큰 1개 = 단어 1개&rdquo;가 아닙니다</p>
+      <p class="tok-myth-b">긴 단어 하나가 여러 토큰으로 쪼개지기도 합니다.</p>
+    </div>
+    <p class="tok-close">요청이 길어질수록 토큰도 늘어납니다.</p>
   </div>
 </section>
 
-<section class="slide compare-slide" data-slide="T02" data-placeholder="1">
+<section class="slide compare-slide" data-slide="T02">
   <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 1<br>추론 강도</div></header>
   <div class="s-full">
-    <p class="s-eyebrow">추론 강도</p>
-    <h2 class="s-title">[2단계 집필] Codex 추론 강도</h2>
-    <div class="compare2">
-      <div class="cmp"><span class="tag">[2단계 집필]</span><h3>[2단계 집필]</h3><p class="sub">[2단계 집필]</p><div class="cmp-lines"><p>[2단계 집필]</p></div></div>
-      <div class="cmp lean-cmp"><span class="tag">[2단계 집필]</span><h3>[2단계 집필]</h3><p class="sub">[2단계 집필]</p><div class="cmp-lines"><p>[2단계 집필]</p></div></div>
+    <p class="s-eyebrow">얼마나 오래 생각할지</p>
+    <h2 class="s-title">추론 강도는 <span class="hl-mint-text">생각의 깊이</span>를 정하는 다이얼입니다</h2>
+    <p class="reason-connect">토큰이 AI가 다루는 재료의 단위였다면, 추론 강도는 그 재료를 얼마나 오래 붙들고 생각할지 정하는 다이얼입니다.</p>
+    <div class="reason-scale" role="img" aria-label="Light에서 Extra High로 갈수록 막대가 커지는 4단계 추론 강도 눈금. Medium에 기본값 표시">
+      <div class="rs-track">
+        <div class="rs-col"><span class="rs-bar" style="height:40px"></span></div>
+        <div class="rs-col"><span class="rs-badge">기본값</span><span class="rs-bar" style="height:64px"></span></div>
+        <div class="rs-col"><span class="rs-bar" style="height:90px"></span></div>
+        <div class="rs-col"><span class="rs-bar" style="height:116px"></span></div>
+      </div>
+      <div class="rs-labels"><span>Light</span><span>Medium</span><span>High</span><span>Extra High</span></div>
+      <div class="rs-axis"><span class="rs-axis-arrow">→</span><b>결과 품질 ↑</b><b>걸리는 시간·토큰 ↑</b></div>
     </div>
+    <p class="reason-where">데스크톱 앱에서는 입력창 아래 모델·추론 조절 메뉴에서 모델과 함께 고릅니다.</p>
+    <p class="reason-close">원하는 결과가 나오는 <span class="hl-mint-text">가장 낮은 강도</span>로 시작합니다.</p>
   </div>
 </section>
 
 <section class="slide app-types-layout" data-slide="S10A">
   <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 1<br>화면의 종류</div></header>
-  <div class="app-types-slide"><p class="s-eyebrow">화면을 쓰는 방식</p><h2 class="s-title">웹페이지와 앱은 <span class="hl-mint-text">쓰는 목적이 다릅니다</span></h2><div class="app-types-grid" role="list"><article class="app-type-card app-type-card--page" role="listitem"><figure class="app-type-image asset-slot asset-slot--spot" data-asset-kind="paper-cut-v1" data-image-purpose="explanatory" data-image-state="ready" data-asset-id="ASSET-029"><img src="자료/images/s10_webpage-paper-cut-v1-transparent.png" alt="정돈된 브라우저 문서가 글과 이미지를 읽고 보는 웹페이지의 목적을 보여 준다."></figure><h3>웹페이지</h3><p>브라우저에서 <strong>읽고 보는</strong> 문서와 화면입니다.</p></article><article class="app-type-card app-type-card--webapp" role="listitem"><figure class="app-type-image asset-slot asset-slot--spot" data-asset-kind="paper-cut-v1" data-image-purpose="explanatory" data-image-state="ready" data-asset-id="ASSET-030"><img src="자료/images/s10_webapp-paper-cut-v1-transparent.png" alt="입력창과 상태 변화가 있는 브라우저 화면이 웹 앱의 입력·저장 동작을 보여 준다."></figure><h3>웹 앱</h3><p>브라우저에서 입력·저장·통신처럼 <strong>앱 동작</strong>을 합니다.</p></article><article class="app-type-card app-type-card--installed" role="listitem"><figure class="app-type-image asset-slot asset-slot--spot" data-asset-kind="paper-cut-v1" data-image-purpose="explanatory" data-image-state="ready" data-asset-id="ASSET-031"><img src="자료/images/s10_installed-app-paper-cut-v1-transparent.png" alt="노트북과 휴대폰의 전용 앱 화면이 기기에 설치해 사용하는 프로그램의 목적을 보여 준다."></figure><h3>설치형 앱</h3><p>컴퓨터나 모바일 기기에 <strong>설치</strong>해 사용하는 프로그램입니다.</p></article></div><p class="s-body app-types-note">세 종류의 경계는 겹칠 수 있습니다. 이번 주 결과는 <span class="hl-mint-underline">브라우저에서 직접 여는 로컬 정적 웹페이지</span>입니다.</p></div>
+  <div class="app-types-slide"><p class="s-eyebrow">화면의 종류</p><h2 class="s-title">브라우저에서 여는 것과, <span class="hl-mint-text">설치해서 쓰는 것</span></h2><div class="app-types-grid s10a-duo" role="list"><article class="app-type-card" role="listitem"><h3>웹 기반 — 브라우저에서 바로 엽니다</h3><ul><li>주소만 알면 설치 없이 들어갑니다.</li><li>읽고 보는 화면부터 입력하고 저장하는 화면까지 여기에 들어갑니다.</li></ul><div class="s10a-thumbs"><figure class="app-type-image asset-slot" data-asset-kind="paper-cut-v1" data-image-purpose="explanatory" data-image-role="spot" data-image-state="ready" data-asset-id="ASSET-029"><img src="자료/images/s10_webpage-paper-cut-v1-transparent.png" alt="정돈된 브라우저 문서가 글과 이미지를 읽고 보는 웹페이지의 목적을 보여 준다."></figure><figure class="app-type-image asset-slot" data-asset-kind="paper-cut-v1" data-image-purpose="explanatory" data-image-role="spot" data-image-state="ready" data-asset-id="ASSET-030"><img src="자료/images/s10_webapp-paper-cut-v1-transparent.png" alt="입력창과 상태 변화가 있는 브라우저 화면이 웹 앱의 입력·저장 동작을 보여 준다."></figure></div></article><article class="app-type-card app-type-card--installed" role="listitem"><h3>설치형 — 내려받아 설치해서 씁니다</h3><ul><li>컴퓨터나 휴대폰에 설치한 뒤 아이콘을 눌러 엽니다.</li></ul><figure class="app-type-image asset-slot" data-asset-kind="paper-cut-v1" data-image-purpose="explanatory" data-image-role="spot" data-image-state="ready" data-asset-id="ASSET-031"><img src="자료/images/s10_installed-app-paper-cut-v1-transparent.png" alt="노트북과 휴대폰의 전용 앱 화면이 기기에 설치해 사용하는 프로그램의 목적을 보여 준다."></figure></article></div><p class="app-types-note">이번 주에 만드는 것은 <span class="hl-mint-underline">브라우저에서 여는 쪽</span>입니다.</p></div>
 </section>
 
 <section class="slide lifecycle-flow lifecycle-infographic-slide" data-slide="S10B">
@@ -97,55 +204,78 @@
   </div>
 </section>
 
-<section class="slide dl-list" data-slide="W01" data-placeholder="1">
+<section class="slide dl-list" data-slide="W01">
   <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 1<br>제작 과정</div></header>
   <div class="s-full">
-    <p class="s-eyebrow">제작 과정</p>
-    <h2 class="s-title">[2단계 집필] 기획과 디자인</h2>
+    <p class="s-eyebrow">제작 과정 ①</p>
+    <h2 class="s-title">무엇을 만들지 정하고, <span class="hl-mint-text">어떻게 보일지</span> 그립니다</h2>
+    <div class="proc-duo">
+      <article class="proc-panel">
+        <div class="proc-panel-head"><figure class="proc-icon asset-slot" data-asset-kind="paper-cut-v1" data-image-purpose="mnemonic" data-image-role="spot" data-image-state="ready"><img src="자료/images/s10_plan-paper-cut-v1-transparent.png" alt="목표와 문제를 적은 메모가 기획 단계를 상징한다."></figure><span class="proc-tag">STEP 1</span></div>
+        <h3>기획</h3>
+        <p class="proc-body">누가 어떤 불편을 겪는지 정하고, 무엇을 만들지 한 문장으로 적습니다.</p>
+        <p class="proc-example"><b>예</b>모임 회원이 다음 일정을 못 찾는다 → 일정 안내 페이지</p>
+      </article>
+      <article class="proc-panel">
+        <div class="proc-panel-head"><figure class="proc-icon asset-slot" data-asset-kind="paper-cut-v1" data-image-purpose="mnemonic" data-image-role="spot" data-image-state="ready"><img src="자료/images/s10_design-paper-cut-v1-transparent.png" alt="화면 구조를 미리 그린 스케치가 디자인 단계를 상징한다."></figure><span class="proc-tag">STEP 2</span></div>
+        <h3>디자인</h3>
+        <p class="proc-body">필요한 정보의 순서와 화면 구조를 미리 그립니다.</p>
+        <p class="proc-example"><b>예</b>제목 → 일정 → 장소 → 연락처</p>
+      </article>
+    </div>
+    <p class="proc-close">여기서 정한 것이 그대로 AI에게 줄 요청문의 재료가 됩니다.</p>
+  </div>
+</section>
+
+<section class="slide compare-slide" data-slide="W02">
+  <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 1<br>제작 과정</div></header>
+  <div class="dc-title">
+    <p class="s-eyebrow">제작 과정 ②</p>
+    <h2 class="s-title">사람이 보고 누르는 <span class="hl-mint-text">화면</span>을 만듭니다</h2>
+  </div>
+  <div class="dc-stage w02-stage">
+    <figure class="w02-figure asset-slot" data-asset-kind="paper-cut-v1" data-image-purpose="explanatory" data-image-role="hero" data-image-state="ready"><img src="자료/images/s10_frontend-paper-cut-v1-transparent.png" alt="브라우저 화면에 글자·색·버튼이 조립되어 눈에 보이고 반응하는 프론트엔드 영역을 보여 준다."></figure>
+    <div class="w02-copy">
+      <p class="w02-lead">글자·색·배치처럼 눈에 보이는 것과, 눌렀을 때의 반응을 만드는 영역입니다.</p>
+      <span class="timing">이번 주에 만드는 것이 바로 이 부분입니다</span>
+      <p class="w02-next">무엇으로 만드는지는 곧 이어서 봅니다.</p>
+    </div>
+  </div>
+</section>
+
+<section class="slide dl-list" data-slide="W03">
+  <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 1<br>제작 과정</div></header>
+  <div class="s-full">
+    <p class="s-eyebrow">제작 과정 ③</p>
+    <h2 class="s-title">보이지 않는 곳에서 <span class="hl-mint-text">저장하고 처리합니다</span></h2>
     <div class="accent-bar"></div>
     <div class="dl-rows">
-      <div class="card surface dl-row"><span class="dl-term">[2단계 집필]</span><p class="s-body">[2단계 집필]</p></div>
-      <div class="card surface dl-row"><span class="dl-term">[2단계 집필]</span><p class="s-body">[2단계 집필]</p></div>
-      <div class="card surface dl-row"><span class="dl-term">[2단계 집필]</span><p class="s-body">[2단계 집필]</p></div>
+      <div class="card surface dl-row"><span class="dl-term">백엔드</span><p class="s-body">입력한 내용을 규칙대로 처리하고, 필요한 것만 화면에 돌려줍니다.</p></div>
+      <div class="card surface dl-row"><span class="dl-term">데이터</span><p class="s-body">회원·글·주문처럼 계속 남겨야 하는 것을 보관합니다.</p></div>
+    </div>
+    <div class="w03-foot">
+      <figure class="w03-icon asset-slot" data-asset-kind="paper-cut-v1" data-image-purpose="mnemonic" data-image-role="spot" data-image-state="ready"><img src="자료/images/s10_backend-paper-cut-v1-transparent.png" alt="주방과 창고처럼 보이지 않는 곳에서 데이터를 처리하고 저장하는 백엔드를 상징한다."></figure>
+      <div class="w03-foot-text">
+        <p class="w03-analogy">손님이 앉는 홀이 프론트엔드라면, <b>주방과 창고</b>가 이쪽입니다.</p>
+        <span class="w03-scope">1주차에는 다루지 않습니다. 저장이 필요한 기능은 2주차에 만납니다.</span>
+      </div>
     </div>
   </div>
 </section>
 
-<section class="slide compare-slide" data-slide="W02" data-placeholder="1">
+<section class="slide" data-slide="W05">
   <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 1<br>제작 과정</div></header>
-  <div class="s-full">
-    <p class="s-eyebrow">제작 과정</p>
-    <h2 class="s-title">[2단계 집필] 프론트엔드</h2>
-    <div class="compare2">
-      <div class="cmp"><span class="tag">[2단계 집필]</span><h3>[2단계 집필]</h3><p class="sub">[2단계 집필]</p><div class="cmp-lines"><p>[2단계 집필]</p></div></div>
-      <div class="cmp lean-cmp"><span class="tag">[2단계 집필]</span><h3>[2단계 집필]</h3><p class="sub">[2단계 집필]</p><div class="cmp-lines"><p>[2단계 집필]</p></div></div>
+  <div class="s-full steps-full">
+    <p class="s-eyebrow">제작 과정 ④</p>
+    <h2 class="s-title">제대로 되는지 보고, <span class="hl-mint-text">내보내고, 더 낫게</span> 만듭니다</h2>
+    <div class="eval-steps">
+      <div class="work-step"><span class="n">1</span><figure class="w05-icon asset-slot" data-asset-kind="paper-cut-v1" data-image-purpose="mnemonic" data-image-role="spot" data-image-state="ready"><img src="자료/images/s10_qa-paper-cut-v1-transparent.png" alt="화면을 직접 확인하는 모습이 QA 단계를 상징한다."></figure><div><b>QA · 확인</b><span>의도한 대로 보이고 동작하는지 사람이 직접 확인합니다.</span></div></div>
+      <div class="vf-down" aria-hidden="true">↓</div>
+      <div class="work-step"><span class="n">2</span><figure class="w05-icon asset-slot" data-asset-kind="paper-cut-v1" data-image-purpose="mnemonic" data-image-role="spot" data-image-state="ready"><img src="자료/images/s10_publish-paper-cut-v1-transparent.png" alt="결과물을 인터넷에 올리는 모습이 배포 단계를 상징한다."></figure><div><b>배포 · 공개</b><span>내 컴퓨터 안에만 있던 결과를 인터넷에 올려 남들이 볼 수 있게 합니다.</span></div></div>
+      <div class="vf-down" aria-hidden="true">↓</div>
+      <div class="work-step"><span class="n">3</span><figure class="w05-icon asset-slot" data-asset-kind="paper-cut-v1" data-image-purpose="mnemonic" data-image-role="spot" data-image-state="ready"><img src="자료/images/s10_improve-paper-cut-v1-transparent.png" alt="사용자 반응을 보고 다시 고치는 모습이 개선 단계를 상징한다."></figure><div><b>개선</b><span>써 본 사람의 반응을 보고 다시 고칩니다.</span></div></div>
     </div>
-  </div>
-</section>
-
-<section class="slide grid-ph" data-slide="W03" data-placeholder="1">
-  <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 1<br>제작 과정</div></header>
-  <div class="s-full">
-    <p class="s-eyebrow">제작 과정</p>
-    <h2 class="s-title">[2단계 집필] 백엔드</h2>
-    <div class="accent-bar"></div>
-    <div class="grid-3">
-      <div class="card surface"><p class="s-body">[2단계 집필]</p></div>
-      <div class="card surface"><p class="s-body">[2단계 집필]</p></div>
-      <div class="card surface"><p class="s-body">[2단계 집필]</p></div>
-    </div>
-  </div>
-</section>
-
-<section class="slide compare-slide" data-slide="W05" data-placeholder="1">
-  <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 1<br>제작 과정</div></header>
-  <div class="s-full">
-    <p class="s-eyebrow">제작 과정</p>
-    <h2 class="s-title">[2단계 집필] QA와 배포</h2>
-    <div class="compare2">
-      <div class="cmp"><span class="tag">[2단계 집필]</span><h3>[2단계 집필]</h3><p class="sub">[2단계 집필]</p><div class="cmp-lines"><p>[2단계 집필]</p></div></div>
-      <div class="cmp lean-cmp"><span class="tag">[2단계 집필]</span><h3>[2단계 집필]</h3><p class="sub">[2단계 집필]</p><div class="cmp-lines"><p>[2단계 집필]</p></div></div>
-    </div>
+    <p class="w05-close">공개와 개선은 <span class="hl-mint-text">3주차에 직접 해 봅니다</span>.</p>
   </div>
 </section>
 

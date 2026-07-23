@@ -1,3 +1,15 @@
+<style data-part="part-02">
+[data-slide="15"] .folder-path-stage{ position:absolute; left:64px; right:64px; top:216px; bottom:58px; display:flex; flex-direction:column; justify-content:center; gap:32px; }
+[data-slide="15"] .folder-path-breadcrumb{ justify-content:center; margin:0; }
+[data-slide="15"] .folder-path-breadcrumb span,
+[data-slide="15"] .folder-path-breadcrumb strong{ padding:12px 18px; font-size:22px; }
+[data-slide="15"] .folder-path-breadcrumb i{ font-size:24px; }
+[data-slide="15"] .folder-reason-grid{ gap:24px; }
+[data-slide="15"] .folder-reason-card{ padding:28px 30px; border:1px solid var(--blue-line-strong); border-radius:var(--r-lg); background:var(--blue-panel); box-shadow:var(--shadow-sm); }
+[data-slide="15"] .folder-reason-card h3{ margin:0 0 12px; color:var(--blue); font-size:27px; }
+[data-slide="15"] .folder-reason-card p{ margin:0; color:var(--gray-700); font-size:22px; line-height:1.5; }
+[data-slide="15"] .folder-path-check{ margin:0; align-self:center; }
+</style>
 
 <!-- PART 2 · 작업 환경과 범위 -->
 <section class="slide part-divider" data-slide="P2">
@@ -40,41 +52,40 @@
 <section class="slide folder-create-slide" data-slide="15">
   <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 2<br>환경 준비</div></header>
   <div class="dc-title"><p class="s-eyebrow">오늘의 기준 폴더</p><h2 class="s-title"><span class="hl-mint-text">C:\VibeCoding</span>을 만듭니다</h2></div>
-  <div class="task-split-photo task-split-photo--image-priority folder-create-layout">
-    <figure class="task-shot folder-create-shot asset-slot asset-slot--hero" data-asset-kind="screenshot" data-image-purpose="explanatory" data-image-state="ready"><img src="screenshot/win05_vibecoding-index-root.png" alt="파일 탐색기 주소 표시줄과 파일 목록에 C 드라이브 바로 아래 VibeCoding 폴더가 있어 목표 경로를 보여 준다."></figure>
-    <div class="task-explain folder-create-copy">
-      <p class="task-kicker">폴더 하나로 시작</p>
-      <h3>C: 바로 안에 <strong class="hl-blue-text">VibeCoding</strong> 폴더를 만듭니다.</h3>
-      <p>다른 수업 파일과 섞이지 않도록 오늘의 모든 연습 폴더를 이 안에 둡니다. 폴더를 만든 뒤 주소 표시줄을 한 번 더 읽습니다.</p>
-      <p class="task-check">확인 기준 · 현재 위치가 <code>C:\VibeCoding</code>입니다.</p>
+  <div class="folder-path-stage">
+    <div class="path-breadcrumb folder-path-breadcrumb" aria-label="새로 만든 기준 폴더의 위치"><span>내 PC</span><i>›</i><span>로컬 디스크 (C:)</span><i>›</i><strong>VibeCoding</strong></div>
+    <div class="grid-2 folder-reason-grid">
+      <article class="folder-reason-card"><h3>한곳에 모으기</h3><p>오늘 만드는 모든 폴더를 이 안에 둡니다.</p></article>
+      <article class="folder-reason-card"><h3>다시 찾기 쉽게</h3><p>주소가 짧아 경로를 외우기 쉽습니다.</p></article>
     </div>
+    <p class="task-check folder-path-check">확인 기준 · 현재 위치가 <code>C:\VibeCoding</code>입니다.</p>
   </div>
 </section>
 
 <section class="slide practice-create-slide" data-slide="20">
   <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 2<br>연습 공간</div></header>
-  <div class="dc-title"><p class="s-eyebrow">실제 프로젝트와 분리</p><h2 class="s-title"><span class="hl-mint-text">Codex_연습</span> 폴더를 만듭니다</h2></div>
+  <div class="dc-title"><p class="s-eyebrow">실제 프로젝트와 분리</p><h2 class="s-title"><span class="hl-mint-text">codex_practice</span> 폴더를 만듭니다</h2></div>
   <div class="app-guide-layout">
-    <figure class="app-guide-shot asset-slot asset-slot--hero" data-asset-kind="screenshot" data-image-purpose="explanatory" data-image-state="ready"><img src="screenshot/20-01.png" alt="Codex 화면에서 현재 폴더 이름과 요청 입력 영역이 함께 보여 연습 작업공간의 위치를 확인하게 한다."></figure>
-    <div class="app-guide-copy"><p class="guide-label">폴더를 만든 뒤</p><h3>이름과 현재 작업 위치를 다시 확인합니다.</h3><p><code>C:\VibeCoding\Codex_연습</code>이 보이면 실제 프로젝트와 섞이지 않는 안전한 실습 공간입니다.</p><ul><li>폴더 이름이 정확한가?</li><li>주소가 VibeCoding 안인가?</li><li>Codex 화면에 같은 폴더가 보이는가?</li></ul></div>
+    <figure class="app-guide-shot asset-slot asset-slot--hero" data-asset-kind="screenshot" data-image-purpose="explanatory" data-image-state="ready"><img src="screenshot/20-01.png" alt="Codex 화면에서 현재 폴더 이름과 요청 입력 영역이 함께 보여 codex_practice 작업공간의 위치를 확인하게 한다."></figure>
+    <div class="app-guide-copy"><p class="guide-label">폴더를 만든 뒤</p><h3>이름과 현재 작업 위치를 다시 확인합니다.</h3><p><code>C:\VibeCoding\codex_practice</code>이 보이면 실제 프로젝트와 섞이지 않는 안전한 실습 공간입니다.</p><ul><li>폴더 이름이 정확한가?</li><li>주소가 VibeCoding 안인가?</li><li>Codex 화면에 같은 폴더가 보이는가?</li></ul></div>
   </div>
 </section>
 
 <section class="slide workspace-open-slide" data-slide="21">
   <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 2<br>작업공간 열기</div></header>
-  <div class="dc-title"><p class="s-eyebrow">기존 폴더를 선택</p><h2 class="s-title">연습 폴더를 <span class="hl-mint-text">작업공간</span>으로 엽니다</h2></div>
+  <div class="dc-title"><p class="s-eyebrow">기존 폴더를 선택</p><h2 class="s-title">codex_practice 폴더를 <span class="hl-mint-text">작업공간</span>으로 엽니다</h2></div>
   <div class="breadcrumb-guide-layout breadcrumb-guide-layout--image-priority">
-    <figure class="breadcrumb-shot breadcrumb-shot--large asset-slot asset-slot--hero" data-asset-kind="screenshot" data-image-purpose="explanatory" data-image-state="ready"><img src="screenshot/codex_existing-folder-menu.png" alt="Codex의 기존 폴더 열기 메뉴가 보여 C:\VibeCoding\Codex_연습을 작업공간으로 선택하는 위치를 안내한다."></figure>
-    <div class="breadcrumb-copy breadcrumb-copy--clear"><div class="path-breadcrumb" aria-label="목표 작업공간 경로"><span>C:</span><i>›</i><span>VibeCoding</span><i>›</i><strong>Codex_연습</strong></div><h3>메뉴에서 <strong class="hl-blue-text">기존 폴더 열기</strong>를 선택합니다.</h3><p>최근 목록의 비슷한 이름을 고르지 말고, 경로를 따라 직접 엽니다. 연 뒤에는 화면 상단의 현재 폴더가 목표 경로와 같은지 확인합니다.</p><p class="task-check">목표 경로와 현재 작업공간이 같을 때만 다음 단계로 갑니다.</p></div>
+    <figure class="breadcrumb-shot breadcrumb-shot--large asset-slot asset-slot--hero" data-asset-kind="screenshot" data-image-purpose="explanatory" data-image-state="ready"><img src="screenshot/codex_existing-folder-menu.png" alt="Codex의 기존 폴더 열기 메뉴가 보여 C:\VibeCoding\codex_practice를 작업공간으로 선택하는 위치를 안내한다."></figure>
+    <div class="breadcrumb-copy breadcrumb-copy--clear"><div class="path-breadcrumb" aria-label="목표 작업공간 경로"><span>C:</span><i>›</i><span>VibeCoding</span><i>›</i><strong>codex_practice</strong></div><h3>메뉴에서 <strong class="hl-blue-text">기존 폴더 열기</strong>를 선택합니다.</h3><p>최근 목록의 비슷한 이름을 고르지 말고, 경로를 따라 직접 엽니다. 연 뒤에는 화면 상단의 현재 폴더가 목표 경로와 같은지 확인합니다.</p><p class="task-check">목표 경로와 현재 작업공간이 같을 때만 다음 단계로 갑니다.</p></div>
   </div>
 </section>
 
 <section class="slide material-file-slide" data-slide="23">
   <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 2<br>파일 연습</div></header>
-  <div class="dc-title"><p class="s-eyebrow">공개 가능한 재료로 연습</p><h2 class="s-title"><code>자기소개_재료.txt</code>를 <span class="hl-mint-text">요청</span>합니다</h2></div>
+  <div class="dc-title"><p class="s-eyebrow">공개 가능한 재료로 연습</p><h2 class="s-title"><code>자기소개.txt</code>를 <span class="hl-mint-text">요청</span>합니다</h2></div>
   <div class="file-request-layout file-request-layout--separated">
-    <figure class="file-request-shot file-request-shot--large asset-slot asset-slot--hero" data-asset-kind="screenshot" data-image-purpose="explanatory" data-image-state="ready"><img src="screenshot/codex_file-menu.png" alt="Codex의 파일 관련 메뉴가 열려 자기소개 재료 파일을 만들 요청 위치를 보여 준다."></figure>
-    <div class="file-request-copy file-request-copy--fixed"><div class="file-meta"><span>파일명</span><strong>자기소개_재료.txt</strong></div><div class="file-meta"><span>넣을 내용</span><strong>활동명·한 줄 소개·관심사</strong></div><div class="file-meta"><span>저장 위치</span><strong>C:\VibeCoding\Codex_연습</strong></div><p>공개 가능한 내용만 넣어 파일 하나를 만든 뒤, <strong class="hl-blue-text">이름·내용·위치</strong>가 요청대로인지 직접 확인합니다.</p></div>
+    <figure class="file-request-shot file-request-shot--large asset-slot asset-slot--hero" data-asset-kind="screenshot" data-image-purpose="explanatory" data-image-state="ready"><img src="screenshot/codex_file-menu.png" alt="Codex의 파일 관련 메뉴가 열려 자기소개 파일을 만들 요청 위치를 보여 준다."></figure>
+    <div class="file-request-copy file-request-copy--fixed"><div class="file-meta"><span>파일명</span><strong>자기소개.txt</strong></div><div class="file-meta"><span>넣을 내용</span><strong>활동명·한 줄 소개·관심사</strong></div><div class="file-meta"><span>저장 위치</span><strong>C:\VibeCoding\codex_practice</strong></div><p>공개 가능한 내용만 넣어 파일 하나를 만든 뒤, <strong class="hl-blue-text">이름·내용·위치</strong>가 요청대로인지 직접 확인합니다.</p></div>
   </div>
 </section>
 
@@ -83,7 +94,7 @@
   <div class="dc-title"><p class="s-eyebrow">완료 보고보다 실제 결과</p><h2 class="s-title">파일을 열어 <span class="hl-mint-text">직접 검증</span>합니다</h2></div>
   <div class="verify-file-layout verify-file-layout--separated">
     <figure class="verify-file-shot verify-file-shot--large asset-slot asset-slot--hero" data-asset-kind="screenshot" data-image-purpose="explanatory" data-image-state="ready"><img src="screenshot/21-01.png" alt="파일 탐색기 목록에 생성된 자기소개 재료 파일이 보여 위치·이름·존재를 실제 파일로 확인하게 한다."></figure>
-    <div class="verify-file-sequence verify-file-sequence--fixed"><article><span>위치</span><p><code>C:\VibeCoding\Codex_연습</code> 안인가?</p></article><article><span>존재</span><p><code>자기소개_재료.txt</code>가 실제로 보이는가?</p></article><article><span>내용</span><p>활동명·소개·관심사가 요청과 같은가?</p></article><article><span>유지</span><p>한 부분을 바꿨을 때 나머지는 그대로인가?</p></article><p class="verify-conclusion">Codex의 완료 보고가 아니라 <strong class="hl-blue-text">실제 파일</strong>을 기준으로 확인합니다.</p></div>
+    <div class="verify-file-sequence verify-file-sequence--fixed"><article><span>위치</span><p><code>C:\VibeCoding\codex_practice</code> 안인가?</p></article><article><span>존재</span><p><code>자기소개.txt</code>가 실제로 보이는가?</p></article><article><span>내용</span><p>활동명·소개·관심사가 요청과 같은가?</p></article><article><span>유지</span><p>한 부분을 바꿨을 때 나머지는 그대로인가?</p></article><p class="verify-conclusion">Codex의 완료 보고가 아니라 <strong class="hl-blue-text">실제 파일</strong>을 기준으로 확인합니다.</p></div>
   </div>
 </section>
 

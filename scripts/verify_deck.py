@@ -900,8 +900,8 @@ def main():
         slide_ids = [el.attrs.get('data-slide') or '' for el in ordered_slides]
         if deck_file.stem == '강의덱':
             # 편집본: S00 표지 신설 + PART divider 1장 감소로 79장.
-            # 2026-07-22 2차: S39A·W04 삭제, 실습 PART 6 표지 신설 → 78장/divider 6.
-            expected_n, expected_dividers = 78, 6
+            # 2026-07-22 2차: S39A·W04 삭제, 실습 PART 6 표지 신설 → 79장/divider 6.
+            expected_n, expected_dividers = 79, 6
             intro_expected = ['S00', 'S01', 'S01A', 'S01B', 'S01C']
         else:
             # 배포본(강의덱_배포): 2026-07-21) 48p(S39) 뒤에 완성 목표 쇼케이스 S39A를 추가해 71 → 72장.
