@@ -889,6 +889,92 @@ def section_baseline(m, w, a, url, ret, stats, cost_main, cost_worker,
 
 # ─────────────────────────────────────────────────────────────────────────────
 
+# ─────────────────────────────────────────────────────────────────────────────
+# Phase 2 — 워커 실행 통제 감사 (읽기 전용)
+#
+# 안 「가」(Explore + sonnet)에서는 `Write`·`Edit`·`NotebookEdit`·`Agent`만
+# 구조적으로 차단된다. 나머지 불허 도구(`Bash` 등)는 **프롬프트 수준 지시**일 뿐이므로
+# 사후 트랜스크립트 감사로만 강제할 수 있다. 이 감사가 그 강제 수단이다.
+#
+# ⚠️ 워커 자기보고는 정본이 아니다(1.5-B 실측: 자기보고 11 vs 트랜스크립트 12).
+# ─────────────────────────────────────────────────────────────────────────────
+
+WORKER_TOOL_ALLOWLIST = ("WebSearch", "WebFetch", "Read", "Grep", "Glob")
+EXPECTED_WORKER_MODEL = "claude-sonnet-5"
+AUDIT_EXIT_VIOLATION = 3
+
+
+def discover_worker_logs(pdir, session):
+    """워커 트랜스크립트를 두 배치 방식 모두에서 찾는다.
+
+    · 직접 `Agent` 도구 호출 → `<session>/subagents/agent-*.jsonl`
+    · Workflow 팬아웃        → `<session>/subagents/workflows/wf_*/agent-*.jsonl`
+    """
+    sub = os.path.join(pdir, session, "subagents")
+    direct = sorted(glob.glob(os.path.join(sub, "agent-*.jsonl")))
+    wf = sorted(glob.glob(os.path.join(sub, "workflows", "*", "agent-*.jsonl")))
+    return direct, wf
+
+
+def section_tool_audit(pdir, session, allow, expect_model):
+    """워커별 모델·턴·도구 사용을 감사한다. 위반이 있으면 True를 돌려준다."""
+    hr("G. 워커 도구·모델 감사 (Phase 2 실행 통제)")
+    print(f"허용 도구 : {', '.join(allow)}")
+    print(f"기대 모델 : {expect_model}")
+    print("계측 정본 : 트랜스크립트 (워커 자기보고는 참고용)")
+    print("턴 정의   : 1턴 = usage 보유 assistant 레코드 1건 (TURN_RULE과 동일)")
+
+    direct, wf = discover_worker_logs(pdir, session)
+    print(f"\n대상 로그 : 직접 Agent {len(direct)}개 · 워크플로 {len(wf)}개")
+    files = [(f, "direct") for f in direct] + [(f, "workflow") for f in wf]
+    if not files:
+        print("\n대상 워커 로그 없음 — 감사할 것이 없다.")
+        return False
+
+    allow_set = set(allow)
+    print("\n%-20s %-9s %-18s %5s  %s"
+          % ("에이전트", "경로", "모델", "턴", "도구 호출"))
+    print("-" * 100)
+
+    tool_violations = []
+    model_violations = []
+    for path, origin in files:
+        label = os.path.basename(path)[6:-6]
+        st = collect(path, label, "worker", origin)
+        models = ",".join(sorted(st.models)) or "?"
+        bad = {t: n for t, n in st.tools.items() if t not in allow_set}
+        good = {t: n for t, n in st.tools.items() if t in allow_set}
+        shown = ", ".join(f"{t}×{n}" for t, n in sorted(good.items())) or "-"
+        if bad:
+            shown += "  ⛔ " + ", ".join(f"{t}×{n}" for t, n in sorted(bad.items()))
+            tool_violations.append((label, bad))
+        if any(m != expect_model for m in st.models):
+            model_violations.append((label, models))
+        print("%-20s %-9s %-18s %5d  %s"
+              % (label, origin, models, st.turns, shown))
+
+    print()
+    if model_violations:
+        for label, models in model_violations:
+            opus = "opus" in models.lower()
+            print(f"  ⛔ 모델 불일치: {label} → {models}"
+                  + ("   **Opus fallback — 계획상 RED**" if opus else ""))
+    else:
+        print(f"  ✅ 모델: 전 워커가 {expect_model}")
+
+    if tool_violations:
+        for label, bad in tool_violations:
+            print(f"  ⛔ 허용목록 외 도구: {label} → "
+                  + ", ".join(f"{t}×{n}" for t, n in sorted(bad.items())))
+        print("\n판정: ❌ 위반 있음 — 워커가 허용되지 않은 도구를 호출했다.")
+        print("      안 「가」는 이 도구들을 구조적으로 막지 못한다."
+              " 프롬프트 지시와 이 감사가 유일한 강제 수단이다.")
+    else:
+        print("  ✅ 도구: 허용목록 외 호출 0건")
+
+    return bool(tool_violations or model_violations)
+
+
 def main():
     sys.stdout.reconfigure(encoding="utf-8")
     ap = argparse.ArgumentParser(
@@ -905,9 +991,22 @@ def main():
     ap.add_argument("--scope", choices=["all", "main", "worker"], default="all",
                     help="집계 범위를 명시적으로 선택 (기본 all). "
                          "main/worker 선택 시 기준선 대조는 자동 생략된다")
+    ap.add_argument("--tool-audit", action="store_true",
+                    help="워커 도구·모델 감사만 수행한다(Phase 2 실행 통제). "
+                         f"위반 시 종료코드 {AUDIT_EXIT_VIOLATION}")
+    ap.add_argument("--allow", default=",".join(WORKER_TOOL_ALLOWLIST),
+                    help="--tool-audit 허용 도구 목록(쉼표 구분)")
+    ap.add_argument("--expect-model", default=EXPECTED_WORKER_MODEL,
+                    help="--tool-audit 기대 워커 모델 ID")
     args = ap.parse_args()
 
     pdir = os.path.expanduser(args.projects_dir)
+
+    if args.tool_audit:
+        allow = tuple(x.strip() for x in args.allow.split(",") if x.strip())
+        section_definitions()
+        bad = section_tool_audit(pdir, args.session, allow, args.expect_model)
+        return AUDIT_EXIT_VIOLATION if bad else 0
     main_path = os.path.join(pdir, f"{args.session}.jsonl")
     if not os.path.exists(main_path):
         main_path = None

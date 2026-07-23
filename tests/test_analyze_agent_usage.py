@@ -220,5 +220,61 @@ class TestCostSeparation(unittest.TestCase):
                                msg="가격표 변경이 비용에 반영되지 않았다")
 
 
+class TestToolAudit(unittest.TestCase):
+    """⑧ Phase 2 워커 도구·모델 감사 (--tool-audit)
+
+    안 「가」(Explore + sonnet)에서는 `Bash` 등이 구조적으로 차단되지 않는다.
+    이 감사가 유일한 강제 수단이므로, 감사 자체가 위반을 놓치지 않는지 검사한다.
+    """
+
+    AUDIT_SESSION = "sess-audit"
+
+    def audit(self, *extra):
+        cmd = [sys.executable, SCRIPT, "--tool-audit",
+               "--projects-dir", FIX,
+               "--session", self.AUDIT_SESSION, *extra]
+        p = subprocess.run(cmd, capture_output=True, text=True,
+                           encoding="utf-8", errors="replace", cwd=ROOT)
+        return p.returncode, p.stdout
+
+    def test_direct_agent_layout_is_discovered(self):
+        """직접 `Agent` 호출은 workflows/ 아래가 아니라 subagents/ 바로 밑에 쌓인다."""
+        _, out = self.audit()
+        self.assertIn("직접 Agent 2개", out)
+        self.assertIn("워크플로 0개", out)
+
+    def test_violation_detected_and_exit_code(self):
+        rc, out = self.audit()
+        self.assertEqual(rc, 3, "위반이 있는데 종료코드가 3이 아니다")
+        self.assertIn("Bash×1", out)
+        self.assertIn("PowerShell×1", out)
+        self.assertIn("판정: ❌ 위반 있음", out)
+
+    def test_opus_fallback_is_called_out(self):
+        _, out = self.audit()
+        self.assertIn("모델 불일치", out)
+        self.assertIn("Opus fallback", out,
+                      "Opus 전환이 계획상 RED임을 명시하지 않았다")
+
+    def test_clean_agent_passes_when_scoped_by_allowlist(self):
+        """허용목록을 넓히면 같은 로그가 통과해야 한다(감사 기준이 allowlist에서 온다)."""
+        rc, out = self.audit("--allow", "WebSearch,WebFetch,Read,Grep,Glob,Bash,PowerShell",
+                             "--expect-model", "claude-opus-4-8")
+        self.assertIn("허용목록 외 호출 0건", out)
+        # 모델 기대치를 opus로 바꾸면 이번엔 sonnet 워커가 불일치로 잡힌다.
+        self.assertEqual(rc, 3)
+        self.assertIn("claude-sonnet-5", out)
+
+    def test_allowed_tools_are_not_flagged(self):
+        _, out = self.audit()
+        self.assertRegex(out, r"aCLEAN0001.*Glob×1, Grep×1, Read×1, WebFetch×1, WebSearch×1")
+        self.assertNotRegex(out, r"aCLEAN0001.*⛔")
+
+    def test_turns_counted_per_usage_record(self):
+        _, out = self.audit()
+        self.assertRegex(out, r"aCLEAN0001\s+direct\s+claude-sonnet-5\s+3")
+        self.assertRegex(out, r"aBAD00002x\s+direct\s+claude-opus-4-8\s+2")
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
