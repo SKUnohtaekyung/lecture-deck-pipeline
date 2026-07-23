@@ -953,6 +953,18 @@ def section_tool_audit(pdir, session, allow, expect_model):
         print("%-20s %-9s %-18s %5d %12s  %s"
               % (label, origin, models, st.turns, f"{st.total:,}", shown))
 
+    # 리드(메인)는 allowlist 대상이 아니다 — Write·Bash를 정당하게 쓴다.
+    # 다만 D3(메인 컨텍스트 무제한 성장)이 실제 지배항이었으므로 재독 규율을 관측한다.
+    main_path = os.path.join(pdir, f"{session}.jsonl")
+    if os.path.exists(main_path):
+        ms = collect(main_path, "main", "main", "(session)")
+        reads = ms.tools.get("Read", 0)
+        print("%-20s %-9s %-18s %5d %12s  %s"
+              % ("[리드]", "session", ",".join(sorted(ms.models)) or "?",
+                 ms.turns, f"{ms.total:,}", f"Read×{reads}"))
+        print("     ↑ 리드는 허용목록 검사 대상이 아니다(관측용). "
+              "Read 횟수는 '개념KB 전문 재독 금지' 규율의 관측 지표다.")
+
     print()
     if model_violations:
         for label, models in model_violations:

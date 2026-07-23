@@ -270,6 +270,20 @@ class TestToolAudit(unittest.TestCase):
         self.assertRegex(out, r"aCLEAN0001.*Glob×1, Grep×1, Read×1, WebFetch×1, WebSearch×1")
         self.assertNotRegex(out, r"aCLEAN0001.*⛔")
 
+    def test_lead_row_is_observational_not_audited(self):
+        """리드(메인)는 Write·Bash를 정당하게 쓰므로 위반으로 잡으면 안 된다."""
+        _, out = self.audit("--session", "sess-test")
+        self.assertIn("[리드]", out)
+        self.assertIn("Read×", out)
+        self.assertIn("허용목록 검사 대상이 아니다", out)
+        # 리드가 어떤 위반 목록에도 등장하면 안 된다.
+        # (sess-test는 워커 모델이 미등재라 종료코드 자체는 3이 정상이다.)
+        offenders = [ln for ln in out.splitlines()
+                     if "허용목록 외 도구" in ln or "모델 불일치" in ln]
+        for ln in offenders:
+            self.assertNotIn("[리드]", ln, f"리드가 위반으로 잡혔다: {ln}")
+            self.assertNotIn("main", ln, f"리드가 위반으로 잡혔다: {ln}")
+
     def test_turns_counted_per_usage_record(self):
         _, out = self.audit()
         self.assertRegex(out, r"aCLEAN0001\s+direct\s+claude-sonnet-5\s+3")
