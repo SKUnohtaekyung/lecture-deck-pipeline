@@ -30,7 +30,7 @@
   /* [3단계 목차 6개 재배치] S03 아젠다 — 5→6항목, 설명 22px 하한 충족(1열 연속 유지) */
   [data-slide="S03"] .an-d{ font-size:22px; line-height:1.4; }
 
-  /* [2단계 집필 · 반려 수정] X00 실습 안내 — work-step 22px 본문 + 지킬 조건 3칸 가로배치(세로예산 확보) */
+  /* X00 실습 안내 — work-step 22px 본문 + 지킬 조건 3칸 가로배치(세로예산 확보) */
   [data-slide="X00"] .s-full{ bottom:54px; display:flex; flex-direction:column; }
   [data-slide="X00"] .accent-bar{ display:none; }
   [data-slide="X00"] .work-steps{ flex:1 1 auto; justify-content:center; gap:5px; margin:8px 0 10px; }
@@ -42,7 +42,7 @@
   [data-slide="X00"] .x-cond{ background:var(--blue-soft); border:1px solid var(--blue-line); border-radius:var(--r-md);
     padding:8px 14px; font-size:22px; line-height:1.28; color:var(--ink); font-weight:600; }
 
-  /* [2단계 집필 · 반려 수정] X01~X06 실습 주제 6장 — 본문·목록·캡션 전부 22px 이상, 3열→2열 재배치 */
+  /* X01~X06 실습 주제 6장 — 본문·목록·캡션 전부 22px 이상, 3열→2열 재배치 */
   :is([data-slide="X01"],[data-slide="X02"],[data-slide="X03"],[data-slide="X04"],[data-slide="X05"],[data-slide="X06"]) .s-title{
     font-size:30px; line-height:1.24; margin:2px 0 0; }
   [data-slide="X01"] .grid-2, [data-slide="X04"] .grid-2{ margin-top:14px; }
@@ -82,7 +82,7 @@
 </head>
 <body>
   <div class="deck">
-    <section class="slide cover" data-slide="S00" data-placeholder="1">
+    <section class="slide cover" data-slide="S00">
       <svg class="cover-geo" viewBox="0 0 1280 720" fill="none" aria-hidden="true">
         <g data-cube="top"><polygon points="1170,300 1226,328 1170,356 1114,328" fill="var(--periwinkle)"/><polygon points="1114,328 1170,356 1170,414 1114,386" fill="var(--blue)"/><polygon points="1170,356 1226,328 1226,386 1170,414" fill="var(--mint)"/></g>
         <g data-cube="middle"><polygon points="1084,352 1140,380 1084,408 1028,380" fill="var(--periwinkle)"/><polygon points="1028,380 1084,408 1084,466 1028,438" fill="var(--blue)"/><polygon points="1084,408 1140,380 1140,438 1084,466" fill="var(--mint)"/></g>
@@ -220,7 +220,9 @@
 [data-slide="S10A"] .app-type-image{ margin-top:auto; padding-top:16px; height:180px; }
 
 /* W01·W02·W03·W05 — 제작 과정 4장 공통 레이아웃(연작): 좌측 설명(정의→비유→예시/관계) · 우측 이미지
-   같은 클래스를 네 장에 동일 적용 + data-series="proc"로 verify 연작 예외 적용 (22px 하한) */
+   같은 클래스를 네 장에 동일 적용 + data-series="proc"로 verify 연작 예외 적용 (22px 하한)
+   가독성 개선(2026-07-23): 글자 위계(용어26/정의22/비유·예시20) · 문단 간격 확장(8px) · line-height 1.45
+   좌우폭 688→600 · 이미지 4장 125px 통일 · 비유(민트 세로선)·예시(옅은 톤) 시각 분리 */
 [data-slide="W01"] .proc-layout,
 [data-slide="W02"] .proc-layout,
 [data-slide="W03"] .proc-layout,
@@ -228,7 +230,7 @@
 [data-slide="W01"] .proc-left,
 [data-slide="W02"] .proc-left,
 [data-slide="W03"] .proc-left,
-[data-slide="W05"] .proc-left{ flex:0 0 688px; display:flex; flex-direction:column; gap:10px; }
+[data-slide="W05"] .proc-left{ flex:0 0 600px; display:flex; flex-direction:column; gap:12px; }
 [data-slide="W01"] .proc-right,
 [data-slide="W02"] .proc-right,
 [data-slide="W03"] .proc-right,
@@ -236,27 +238,27 @@
 [data-slide="W01"] .proc-row,
 [data-slide="W02"] .proc-row,
 [data-slide="W03"] .proc-row,
-[data-slide="W05"] .proc-row{ padding:10px 18px; border-radius:var(--r-md); background:var(--blue-soft); border:1px solid var(--blue-line); }
+[data-slide="W05"] .proc-row{ padding:12px 18px; border-radius:var(--r-md); background:var(--blue-soft); border:1px solid var(--blue-line); }
 [data-slide="W01"] .proc-term,
 [data-slide="W02"] .proc-term,
 [data-slide="W03"] .proc-term,
-[data-slide="W05"] .proc-term{ margin:0 0 3px; font-size:22px; font-weight:800; color:var(--blue); }
+[data-slide="W05"] .proc-term{ margin:0 0 8px; font-size:26px; line-height:1.2; font-weight:800; color:var(--blue); }
 [data-slide="W01"] .proc-def,
 [data-slide="W02"] .proc-def,
 [data-slide="W03"] .proc-def,
-[data-slide="W05"] .proc-def{ margin:0; color:var(--ink); font-size:22px; line-height:1.32; }
+[data-slide="W05"] .proc-def{ margin:0; color:var(--ink); font-size:22px; line-height:1.45; }
 [data-slide="W01"] .proc-def .hl-mint-text,
 [data-slide="W02"] .proc-def .hl-mint-text,
 [data-slide="W03"] .proc-def .hl-mint-text,
 [data-slide="W05"] .proc-def .hl-mint-text{ font-weight:800; }
 [data-slide="W01"] .proc-analogy,
 [data-slide="W03"] .proc-analogy,
-[data-slide="W05"] .proc-analogy{ margin:3px 0 0; color:var(--gray-700); font-size:22px; line-height:1.32; }
+[data-slide="W05"] .proc-analogy{ margin:8px 0 0; padding-left:10px; border-left:3px solid var(--mint-line); color:var(--gray-700); font-size:20px; line-height:1.45; }
 [data-slide="W01"] .proc-analogy b,
 [data-slide="W03"] .proc-analogy b,
-[data-slide="W05"] .proc-analogy b{ color:var(--ink); font-weight:800; margin-right:4px; }
-[data-slide="W01"] .proc-example{ margin:3px 0 0; color:var(--gray-700); font-size:22px; line-height:1.32; }
-[data-slide="W01"] .proc-example b{ color:var(--blue); font-weight:800; margin-right:4px; }
+[data-slide="W05"] .proc-analogy b{ color:var(--ink); font-weight:800; margin-right:8px; }
+[data-slide="W01"] .proc-example{ margin:8px 0 0; padding-left:10px; color:var(--gray-400); font-size:20px; line-height:1.45; }
+[data-slide="W01"] .proc-example b{ color:var(--blue); font-weight:800; margin-right:8px; }
 [data-slide="W02"] .proc-row .timing{ display:inline-block; margin-top:8px; font-size:22px; padding:7px 16px; }
 [data-slide="W01"] .proc-close,
 [data-slide="W02"] .proc-close,
@@ -267,15 +269,23 @@
 [data-slide="W02"] .proc-figure,
 [data-slide="W03"] .proc-figure,
 [data-slide="W05"] .proc-figure{ position:relative; inset:auto; max-width:none; max-height:none; display:block; }
+/* 연작 통일 기준은 "낱장 크기"가 아니라 "우측 이미지 그룹의 총 높이"다(약 340~400px).
+   낱장을 같은 값으로 맞추면 장수 차이(1장 vs 3장)가 그대로 무게 차이가 되어 1장짜리 우측이 텅 빈다. */
+[data-slide="W01"] .proc-figure{ width:190px; height:190px; }   /* 2장 → 190×2+18 = 398 */
+[data-slide="W02"] .proc-figure{ width:300px; height:300px; }   /* 1장 */
+[data-slide="W03"] .proc-figure{ width:320px; height:320px; }   /* 1장 */
+[data-slide="W05"] .proc-figure{ width:125px; height:125px; }   /* 3장 → 125×3+24 = 399 */
 [data-slide="W01"] .proc-figure img,
 [data-slide="W02"] .proc-figure img,
 [data-slide="W03"] .proc-figure img,
 [data-slide="W05"] .proc-figure img{ width:100%; height:100%; object-fit:contain; }
-[data-slide="W01"] .proc-figure{ width:190px; height:190px; }
-[data-slide="W02"] .proc-figure{ width:300px; height:300px; }
-[data-slide="W03"] .proc-figure{ width:280px; height:280px; }
+/* W02 — 좌측 1행뿐이라 하단이 비는 문제(F): 행 패딩·닫는 문장 여백을 다른 장보다 넉넉히 줘 시각적 균형(문장은 그대로) */
+[data-slide="W02"] .proc-row{ padding:24px 20px; }
+[data-slide="W02"] .proc-close{ margin-top:20px; }
+/* W05 — 3행+이미지 3장으로 세로 합이 가장 크다(연작 중 제약 슬라이드): 행 패딩·행간을 다른 장보다 조여 하단 666px 예산 안에 맞춘다 */
+[data-slide="W05"] .proc-row{ padding:8px 18px; }
+[data-slide="W05"] .proc-left{ gap:8px; }
 [data-slide="W05"] .proc-right{ gap:12px; }
-[data-slide="W05"] .proc-figure{ width:120px; height:120px; }
 </style>
 
 <section class="slide part-divider" data-slide="P1">

@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>vibecoding-deck 조건 전수목록 · 규칙 누락 감사</title>
+<style>
+:root{
+  --bg:#F7F9FC; --panel:#FFFFFF; --ink:#141821; --muted:#5A6072; --faint:#8A90A2;
+  --line:#E2E7F0; --line-soft:#EDF1F8;
+  --blue:#1D4ED8; --blue-soft:#EEF3FE; --blue-line:#CDDBFF;
+  --mint:#0F766E; --mint-soft:#E9F8F5; --mint-line:#C9EAE4;
+  --coral:#C2452F; --coral-soft:#FEF0ED; --coral-line:#FBD8CF;
+  --amber:#92610B; --amber-soft:#FDF4E3; --amber-line:#F2DDB0;
+  --shadow:0 1px 2px rgba(20,24,33,.04), 0 8px 24px rgba(20,24,33,.06);
+  --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#0E1117; --panel:#161A22; --ink:#E9ECF2; --muted:#A3AABB; --faint:#767E92;
+    --line:#252B36; --line-soft:#1E232C;
+    --blue:#7FA5FF; --blue-soft:#141C31; --blue-line:#2B3A5E;
+    --mint:#5FD4C4; --mint-soft:#0F2320; --mint-line:#23453F;
+    --coral:#FF9A85; --coral-soft:#2A1512; --coral-line:#5A2A1F;
+    --amber:#E3B65E; --amber-soft:#241C0C; --amber-line:#4A3A18;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35);
+  }
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:Pretendard,-apple-system,BlinkMacSystemFont,"Segoe UI","Malgun Gothic",sans-serif;
+  font-size:15px; line-height:1.65; -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1180px; margin:0 auto; padding:0 24px 96px}
+
+/* ── 헤더 ── */
+header.top{padding:56px 0 28px; border-bottom:1px solid var(--line)}
+.kicker{font-size:12px; font-weight:800; letter-spacing:.14em; color:var(--blue); text-transform:uppercase; margin:0 0 10px}
+h1{margin:0 0 12px; font-size:34px; line-height:1.25; letter-spacing:-.02em; font-weight:850}
+.sub{margin:0; color:var(--muted); font-size:15px; max-width:76ch}
+.meta{margin:20px 0 0; display:flex; flex-wrap:wrap; gap:8px 10px; font-size:12.5px; color:var(--faint)}
+.meta code{font-family:var(--mono); font-size:12px; background:var(--line-soft); padding:2px 6px; border-radius:5px; color:var(--muted)}
+
+/* ── 통계 ── */
+.stats{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:12px; margin:28px 0 0}
+.stat{background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:14px 16px; box-shadow:var(--shadow)}
+.stat b{display:block; font-size:26px; font-weight:850; line-height:1.15; letter-spacing:-.02em}
+.stat span{display:block; font-size:12px; color:var(--muted); margin-top:3px}
+.stat.is-gap b{color:var(--coral)}
+.stat.is-auto b{color:var(--blue)}
+.stat.is-eye b{color:var(--mint)}
+
+/* ── 컨트롤 ── */
+.controls{position:sticky; top:0; z-index:20; background:var(--bg); padding:16px 0 12px; border-bottom:1px solid var(--line); margin-bottom:8px}
+.searchrow{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+#q{flex:1; min-width:220px; padding:10px 14px; font-size:14px; font-family:inherit;
+   border:1px solid var(--line); border-radius:10px; background:var(--panel); color:var(--ink)}
+#q:focus{outline:2px solid var(--blue-line); outline-offset:1px; border-color:var(--blue)}
+.chips{display:flex; gap:6px; flex-wrap:wrap; margin-top:10px}
+.chip{font:inherit; font-size:12.5px; font-weight:700; cursor:pointer; user-select:none;
+  padding:6px 12px; border-radius:999px; border:1px solid var(--line);
+  background:var(--panel); color:var(--muted)}
+.chip:hover{border-color:var(--blue-line); color:var(--blue)}
+.chip[aria-pressed="true"]{background:var(--blue); border-color:var(--blue); color:#fff}
+.chip.gap[aria-pressed="true"]{background:var(--coral); border-color:var(--coral)}
+.hitcount{font-size:12.5px; color:var(--faint); margin-top:10px}
+
+/* ── 섹션 ── */
+section.grp{margin:40px 0 0; scroll-margin-top:130px}
+section.grp > h2{
+  margin:0 0 6px; font-size:20px; font-weight:850; letter-spacing:-.01em;
+  display:flex; align-items:baseline; gap:10px; flex-wrap:wrap;
+}
+section.grp > h2 .n{font-size:12px; font-family:var(--mono); color:var(--faint); font-weight:600}
+section.grp > .note{margin:0 0 16px; color:var(--muted); font-size:13.5px; max-width:88ch}
+section.grp.gapsec > h2{color:var(--coral)}
+
+/* ── 조건 카드 ── */
+.item{
+  background:var(--panel); border:1px solid var(--line); border-left:3px solid var(--line);
+  border-radius:10px; padding:12px 16px; margin:8px 0; box-shadow:var(--shadow);
+  display:grid; grid-template-columns:auto 1fr; gap:4px 12px; align-items:start;
+}
+.item.e-auto{border-left-color:var(--blue)}
+.item.e-browser{border-left-color:var(--mint)}
+.item.e-judge{border-left-color:var(--line)}
+.item .id{font-family:var(--mono); font-size:11.5px; color:var(--faint); font-weight:600; padding-top:2px; white-space:nowrap}
+.item .rule{margin:0; grid-column:2; overflow-wrap:anywhere; word-break:keep-all}
+.item .rule b{font-weight:800}
+.item .rule code{font-family:var(--mono); font-size:12.5px; background:var(--line-soft); padding:1px 5px; border-radius:4px}
+.item .foot{grid-column:2; display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-top:5px}
+.tag{font-size:11px; font-weight:700; padding:2px 8px; border-radius:999px; border:1px solid}
+.tag.auto{background:var(--blue-soft); border-color:var(--blue-line); color:var(--blue)}
+.tag.browser{background:var(--mint-soft); border-color:var(--mint-line); color:var(--mint)}
+.tag.judge{background:transparent; border-color:var(--line); color:var(--faint)}
+.src{font-family:var(--mono); font-size:11px; color:var(--faint)}
+
+/* ── 갭 카드 ── */
+.item.gap{border-left-color:var(--coral); background:var(--coral-soft)}
+.item.gap .id{color:var(--coral)}
+.gapmeta{grid-column:2; margin-top:8px; padding-top:8px; border-top:1px dashed var(--coral-line);
+  font-size:13px; color:var(--muted); display:grid; gap:4px; overflow-wrap:anywhere; word-break:keep-all}
+.gapmeta .k{font-weight:800; color:var(--ink); font-size:12px; letter-spacing:.02em}
+.sev{font-size:11px; font-weight:800; padding:2px 8px; border-radius:999px; border:1px solid}
+.sev.high{background:var(--coral-soft); border-color:var(--coral-line); color:var(--coral)}
+.sev.mid{background:var(--amber-soft); border-color:var(--amber-line); color:var(--amber)}
+.sev.low{background:var(--line-soft); border-color:var(--line); color:var(--muted)}
+
+/* ── 표 ── */
+.tablewrap{overflow-x:auto; margin:12px 0 0; border:1px solid var(--line); border-radius:10px; background:var(--panel)}
+table{border-collapse:collapse; width:100%; font-size:13.5px; min-width:520px}
+th,td{text-align:left; padding:9px 14px; border-bottom:1px solid var(--line-soft); vertical-align:top}
+th{background:var(--blue-soft); color:var(--blue); font-weight:800; font-size:12.5px; white-space:nowrap}
+tr:last-child td{border-bottom:0}
+td code{font-family:var(--mono); font-size:12px}
+
+.legend{background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:14px 18px; margin:24px 0 0; box-shadow:var(--shadow)}
+.legend dl{margin:0; display:grid; grid-template-columns:auto 1fr; gap:6px 14px; font-size:13.5px}
+.legend dt{margin:0}
+.legend dd{margin:0; color:var(--muted)}
+
+.empty{padding:40px 0; text-align:center; color:var(--faint); font-size:14px}
+footer{margin-top:64px; padding-top:20px; border-top:1px solid var(--line); font-size:12.5px; color:var(--faint)}
+mark{background:#FFE9A8; color:#3A2E00; border-radius:3px; padding:0 2px}
+@media (prefers-color-scheme: dark){ mark{background:#5C4A12; color:#FFE9A8} }
+@media print{ .controls{position:static} .item{break-inside:avoid} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="top">
+  <p class="kicker">vibecoding-deck</p>
+  <h1>슬라이드 덱 조건 전수목록 &amp; 규칙 누락 감사</h1>
+  <p class="sub">
+    루트 <code>SKILL.md</code>와 그것이 가리키는 모든 참조·가이드·검증 스크립트에 걸려 있는 조건을 한 곳에 모으고,
+    1주차 강의덱(72장)을 역방향으로 감사해 <b>실제로는 쓰였지만 규칙에 없는 관행</b>을 찾아 정리한 문서다.
+  </p>
+  <p class="meta">
+    <span>작성 2026-07-22</span>
+    <span>·</span>
+    <span>감사 대상 <code>sessions/1주차/강의덱_배포.html</code> (72장 · PART 6)</span>
+    <span>·</span>
+    <span><code>verify_deck.py --parts 6</code> → FAIL 0 · WARN 0 · PASS 47</span>
+  </p>
+  <div class="stats" id="stats"></div>
+</header>
+
+<div class="legend">
+  <dl>
+    <dt><span class="tag auto">자동</span></dt>
+    <dd><code>verify_deck.py</code>가 FAIL로 잡는다 — 어기면 스크립트가 막는다.</dd>
+    <dt><span class="tag browser">실측</span></dt>
+    <dd>스크립트가 못 재고 브라우저에서 직접 측정해야 확인된다.</dd>
+    <dt><span class="tag judge">판단</span></dt>
+    <dd>사람·에이전트의 판단 규칙 — 기계 강제가 없다.</dd>
+    <dt><span class="sev high">누락</span></dt>
+    <dd>덱에서 실제로 쓰였지만 어떤 규칙 문서에도 없는 항목.</dd>
+  </dl>
+</div>
+
+<div class="controls">
+  <div class="searchrow">
+    <input id="q" type="search" placeholder="조건 검색 — 예: 패딩, 민트, part-divider, 오버플로…" autocomplete="off">
+  </div>
+  <div class="chips" id="chips"></div>
+  <p class="hitcount" id="hits"></p>
+</div>
+
+<main id="out"></main>
+
+<footer>
+  이 문서는 <b>스냅샷</b>이다. 각 조건의 정본은 <code>src</code>에 적힌 파일이며, 정본이 바뀌면 이 문서가 아니라 정본을 고친다.
+</footer>
+
+</div>
+
+<script>
+/* ── 데이터 ────────────────────────────────────────────────────────────
+   e: 'auto' = verify_deck.py FAIL / 'browser' = 브라우저 실측 / 'judge' = 판단
+   gap 항목은 g:{sev, where, why} 를 가진다
+──────────────────────────────────────────────────────────────────────*/
+const GROUPS = [
+
+{id:'P', title:'절대 우선순위', note:'조건끼리 충돌할 때 이 순서가 이긴다.', items:[
+ {id:'P-1', e:'browser', src:'MEMORY.md', r:'<b>겹침·화면 이탈·잘림 0</b>이 이미지 확대·장식·밀도·레이아웃 취향보다 먼저다.'},
+ {id:'P-2', e:'browser', src:'MEMORY.md', r:'1280×720 안에서 제목·본문·캡션·이미지·페이지 번호가 <b>모두</b> 보여야 한다.'},
+ {id:'P-3', e:'browser', src:'MEMORY.md', r:'본문은 22–24px, 보조 설명도 <b>22px 하한</b>. 22px로 수용 못 하면 글자를 줄이지 말고 레이아웃을 다시 설계한다.'},
+ {id:'P-4', e:'judge', src:'MEMORY.md', r:'정확한 콘텐츠와 학생이 직접 확인할 수 있는 기준이 <b>시각적 화려함보다 먼저</b>다.'},
+ {id:'P-5', e:'browser', src:'MEMORY.md', r:'정적 검사 PASS만으로 완료하지 않는다. <b>1280×720과 실제 인앱 브라우저에서 전체 슬라이드를 전수 검사</b>한다.'},
+ {id:'P-6', e:'judge', src:'MEMORY.md · SKILL.md §1', r:'<b>현재 사용자 지시가 초안·템플릿·카탈로그보다 우선</b>한다. 단 접근성·오버플로·엔진·브랜드 계약은 예외 없이 유지한다.'},
+]},
+
+{id:'1', title:'절차 조건 — 순서를 어기는 것 자체가 위반', note:'조립 워크플로 9단계의 판단 게이트.', items:[
+ {id:'1-1', e:'judge', src:'SKILL.md read-path', r:'조립 전 <b>필수 읽기</b>: 교육원칙 → 콘텐츠초안-입력형식 → 정보모양-taxonomy → 디자인시스템+토큰치트시트 → 조립-리듬-불변요소 → 이미지-디렉션.'},
+ {id:'1-2', e:'judge', src:'정보모양-taxonomy.md', r:'<b>정보 모양 분류가 레이아웃 선택보다 먼저</b>다. 12 정준 모양(<code>declaration·concept·comparison·contrast·flow·containment·mapping·classification·numeric·structure·checklist·screen-operation</code>)으로 <b>모든 슬라이드</b>를 스킬이 직접 분류한다. 입력 폼에 지정 칸이 없다.'},
+ {id:'1-3', e:'judge', src:'SKILL.md §2', r:'즉흥 선택 금지. <b>“좌 글/우 시각”은 기본값이 아니다.</b>'},
+ {id:'1-4', e:'judge', src:'SKILL.md §3·§4', r:'역인덱스(<code>by-shape.md</code>)로 후보를 뽑고 → <b>레이아웃과 element를 따로</b> 선택한다(레이아웃 ≠ 다이어그램).'},
+ {id:'1-5', e:'judge', src:'SKILL.md §4', r:'조립 전 <b>슬라이드 결정표</b>를 쓴다: <code>#/정보모양/구도 패밀리/element/이미지 판정/직전과 다른가</code>.'},
+ {id:'1-6', e:'judge', src:'이미지-디렉션-프롬프트.md §2', r:'이미지는 <code>정보모양·element 결정 → 목적 판정 → 승인 에셋 재사용 검색 → 신규 generate/transform 수 산출 → 필요할 때만 IMAGE_MODE 확인</code> 순서 고정.'},
+ {id:'1-7', e:'judge', src:'콘텐츠초안-입력형식.md §4', r:'<b>PART 매핑</b>은 구조·연출 결정이라 임의로 정하지 않는다. 지시·계획에 이미 있으면 그대로, 모호할 때만 1회 확인.'},
+ {id:'1-8', e:'judge', src:'SKILL.md §1', r:'<code>sessions/N주차/초안.md</code>가 있으면 그것이 입력이고, 산출도 <b>같은 폴더</b>에 쓴다.'},
+ {id:'1-9', e:'judge', src:'SKILL.md §1', r:'한 장만 추가면 스캐폴딩을 생략하고 2~5단계만 수행한다.'},
+ {id:'1-10', e:'judge', src:'SKILL.md §1', r:'<b>조건부 KB 회수</b>: 초안 행에 <code>&lt;!-- refs: C-… --&gt;</code>가 있을 때만, 해당 청크만 <code>rg</code>로 회수한다. <b>개념KB를 통째로 Read 하지 않는다.</b> 본문 재작성에는 쓰지 않고, <code>범위:인접</code> 청크는 본문 슬라이드로 만들지 않는다(발표자 노트로만).'},
+]},
+
+{id:'2', title:'엔진·브랜드 불변 계약', note:'네비게이션·페이지 계산·발표 메뉴가 찾는 hook과 브랜드 계약.', items:[
+ {id:'2-1', e:'auto', src:'SKILL.md §0-1', r:'고정 슬라이드 4종 필수: 표지 <code>cover</code> · 도입 <code>s02-slide</code> · 아젠다 <code>s03-slide</code> · 마무리 <code>concept-recap</code> (+선택 <code>closing</code>).'},
+ {id:'2-2', e:'auto', src:'SKILL.md §0-3', r:'<b>모든 파트는 <code>part-divider</code>로 시작 — PART 1 포함. 파트 수 = divider 수.</b>'},
+ {id:'2-3', e:'auto', src:'SKILL.md §0-3', r:'divider의 <code>.dv-hero</code>·<code>.pd-dots</code>·<code>.pd-eyebrow</code>는 <b>빈 hook</b>으로 두고 JS가 큐브·도트·<code>PART n/N</code>을 자동 생성한다. 하드코딩 금지. (1=큰 큐브 / 2=대각선 / 3=삼각형 / 4↑=비일렬 원근 클러스터)'},
+ {id:'2-4', e:'auto', src:'디자인시스템.md §4', r:'헤더 우측 슬롯 4갈래: <b>본문</b>=<code>PART n/N</code>+민트 도트(JS 주입) · 표지·도입·마무리=팀명 유지 · <b>아젠다=팀명 제거</b> · <b>파트전환=헤더 전체 제거</b>.'},
+ {id:'2-5', e:'auto', src:'디자인시스템.md §4', r:'하단 페이지네이션 <code>n/전체</code>는 JS <code>.s-pageno</code> 자동 주입(표지·마무리 제외). 손으로 넣지 않는다.'},
+ {id:'2-6', e:'auto', src:'MEMORY.md', r:'헤더 있는 모든 본문 슬라이드 <code>.s-head</code>에 표준 V <code>.s-logo</code> + <code>VIBECODING</code>(영문).'},
+ {id:'2-7', e:'auto', src:'SKILL.md §0-2', r:'네비바 <code>.navbar</code> + PDF 버튼 + 상세 메뉴(홈·페이지 이동·목록·PDF)가 존재해야 한다.'},
+ {id:'2-8', e:'judge', src:'조립-리듬-불변요소.md', r:'단축키: <code>G</code> 메뉴 · <code>B</code> 화면 가리기 · <code>?</code> 단축키 안내 · <code>F</code> 전체화면 · <code>Esc</code> 닫기. 현재 위치는 URL <code>#slide=N</code>에 기록.'},
+ {id:'2-9', e:'judge', src:'SKILL.md §0-2', r:'<b>리모컨은 마우스 이동 시에만</b> 나타난다. 방향키 등 슬라이드 전환 분기에 <code>poke()</code>를 넣지 않는다.'},
+ {id:'2-10', e:'auto', src:'디자인시스템.md §5', r:'리모컨은 Liquid Glass 응용. 기본 바 <code>--glass-white</code>(고투명) / 상세 메뉴 <code>--glass-thick</code>(옅은 쿨그레이). 완전 투명·순백 불투명 패널 금지.'},
+ {id:'2-11', e:'auto', src:'토큰-치트시트.md · MEMORY.md', r:'아젠다: 고정 제목 <b>“오늘 배우게 될 것”</b> · <code>.an-num</code> 블루 fill 64px <b>플랫(그림자 금지)</b> · <b>N≤6은 1열 연속이 기본</b>(2열이면 <code>::after</code> 연결선이 꺼져 흐름이 끊긴다) · <code>an-2col</code>은 7개↑ 탈출구 · <code>.an-h</code>에 수동 <code>&lt;br&gt;</code> 금지.'},
+ {id:'2-12', e:'auto', src:'MEMORY.md', r:'마지막 <code>THANK YOU</code>가 덱에서 가장 큰 볼드 타이포여야 한다. 다른 제목이 크기를 추월하지 않는다.'},
+ {id:'2-13', e:'judge', src:'조립-리듬-불변요소.md', r:'마무리 <code>concept-recap</code>은 풀폭 상하 밴드(1152px). 좌측 컬럼에 콘텐츠를 몰아넣지 않는다.'},
+]},
+
+{id:'3', title:'색 조건', note:'색은 장식이 아니라 문법이다.', items:[
+ {id:'3-1', e:'auto', src:'토큰-치트시트.md', r:'<b>토큰만 사용. raw <code>#hex</code> 0</b> (덱 인라인·kit CSS 양쪽 검사).'},
+ {id:'3-2', e:'auto', src:'디자인시스템.md §2', r:'<b>navy 금지</b> — <code>var(--navy)</code> 사용 0. 어두운 배경·텍스트는 <code>--ink</code>.'},
+ {id:'3-3', e:'auto', src:'디자인시스템.md §2', r:'<b>그라데이션 금지</b> — 템플릿 전반, 표지(cover) 포함. 단색만.'},
+ {id:'3-4', e:'judge', src:'디자인시스템.md §2', r:'<b>색은 문법</b>: 구조·주강조=<code>--blue</code> / 행동·성공·안전=민트 / 주의·경고=코랄 / 오류=레드 / 비강조 데이터=<code>--periwinkle</code> / 배경 면=<code>--blue-soft</code>.'},
+ {id:'3-5', e:'judge', src:'조립-리듬-불변요소.md', r:'<b>강조어는 민트가 기본</b> — <code>.hl-mint-text</code>·<code>.hl-mint-underline</code>·<code>.hl-mint-mark</code> 중 문맥 선택. <b>블루 글자 강조(<code>.hl</code>)는 절제하고 한 화면을 파란색으로 도배하지 않는다.</b>'},
+ {id:'3-6', e:'auto', src:'디자인시스템.md §2', r:'<b>민트·코랄 fill 위 흰 글자 금지</b> → <code>--on-mint</code>/<code>--on-coral</code>. 예외는 글자폭만 감싸는 <code>.hl-mint-mark</code> 하나.'},
+ {id:'3-7', e:'auto', src:'토큰-치트시트.md', r:'<b>민트 fill 번호배지는 <code>.num-circle</code>·<code>.work-step .n</code>·<code>.pd-dot.is-active</code> 셋만.</b> 다이어그램·플로우 노드·<code>.timing</code>은 블루(=구조).'},
+ {id:'3-8', e:'auto', src:'디자인시스템.md §2-b', r:'<b>박스 표면 흰색-온-흰색 금지</b>: ①의미 틴트 fill+같은 계열 보더 또는 ②흰 fill+유색 보더(<code>--blue-line-strong</code>/<code>--mint-line</code>/<code>--coral-line</code>). <b>흰 fill + <code>--line</code> 근백색 보더 단독 = FAIL.</b> 예외: 코드/터미널 표면·주석 스크린샷 창·<code>.pd-dot</code>·표.'},
+ {id:'3-9', e:'auto', src:'토큰-치트시트.md', r:'<code>--line</code>은 <b>내부 구분선 전용</b>(표 셀선·<code>border-top</code>류). 박스 외곽을 이 색 하나로 구분하지 않는다.'},
+ {id:'3-10', e:'auto', src:'토큰-치트시트.md', r:'흰색은 <code>var(--white)</code>. raw <code>#fff</code> 금지.'},
+ {id:'3-11', e:'auto', src:'토큰-치트시트.md', r:'표지 배경=<code>--paper</code>(순백 아님) · <code>--cover-bg</code>는 다크 클로징 전용 · <code>--ice</code>/<code>--electric</code>은 레거시라 신규 사용 0.'},
+ {id:'3-12', e:'auto', src:'MEMORY.md', r:'표지 터미널=흰 배경·짙은 본문 / 검정 터미널=<code>--ink</code> 배경+<code>--white</code> 본문, <b>프롬프트·커서만 민트</b>.'},
+ {id:'3-13', e:'auto', src:'verify_deck.py', r:'슬라이드당 callout 색 <b>3종 미만</b>(색 남용 방지).'},
+ {id:'3-14', e:'auto', src:'verify_deck.py', r:'상단 헤더 선은 <code>--blue</code>.'},
+ {id:'3-15', e:'judge', src:'조립-리듬-불변요소.md §접근성', r:'<b>색만으로 의미 전달 금지</b> → 아이콘·라벨 병행. PDF에서 색 이모지가 깨지므로 모노크롬 심볼(◆ ★ ◎ ※ ▲ ▷ ↓ ✓) 권장.'},
+ {id:'3-16', e:'judge', src:'토큰-치트시트.md', r:'가운데 커넥터는 파란 기호: 흐름 <code>→</code> · 포함 <code>⊃</code> · 대비 <code>≠</code> · 검증 <code>↓</code>.'},
+]},
+
+{id:'4', title:'타이포·가독성 하한', note:'legibility.css 값 — 절대 하회 금지.', items:[
+ {id:'4-1', e:'browser', src:'legibility.css', r:'본문 <code>.s-body</code> <b>22px / 1.78</b>, <code>strong</code> 800.'},
+ {id:'4-2', e:'browser', src:'legibility.css', r:'center 본문 <b>23px</b> · 리드 <code>.s-lead</code> <b>27px</b> · eyebrow <b>19px</b>.'},
+ {id:'4-3', e:'browser', src:'legibility.css', r:'표 <b>17px</b> · 코드 <b>20px</b> · 주석 스크린샷 배지·캡션 <b>22px</b>.'},
+ {id:'4-4', e:'judge', src:'MEMORY.md', r:'넘치면 <b>폰트를 줄이지 말고</b> 행 수·열 수·이미지 크기·레이아웃을 다시 잡는다.'},
+ {id:'4-5', e:'judge', src:'토큰-치트시트.md', r:'한글은 전각(≈1.0em) → 큰 글자 가로폭 ≈ <code>글자수 × 폰트px</code>. 가용 폭 <b>1152px</b>(1280−64−64). 숫자·영문은 ≈0.55em.'},
+ {id:'4-6', e:'judge', src:'조립-리듬-불변요소.md', r:'수동 <code>&lt;br&gt;</code>은 <b>구·절 경계</b>에만. 조사·어미가 앞줄에 매달리지 않게. <code>word-break:keep-all</code>.'},
+ {id:'4-7', e:'auto', src:'조립-리듬-불변요소.md', r:'eyebrow는 <b>의미형만</b>. <code>PART n · 파트명</code> 형식 금지(헤더 <code>.s-part</code>와 중복).'},
+ {id:'4-8', e:'judge', src:'조립-리듬-불변요소.md', r:'제목은 주제명이 아니라 <b>결론</b>으로 1~2줄. 단 콘텐츠 초안의 제목은 원문 유지(소유권 우선).'},
+ {id:'4-9', e:'judge', src:'조립-리듬-불변요소.md', r:'<code>.timing</code> 배지는 eyebrow에 넣지 않고 <code>.s-title</code> 바로 위 독립 줄에 단독 배치.'},
+ {id:'4-10', e:'judge', src:'MEMORY.md', r:'<code>.s-body</code>·<code>.s-lead</code>·캡션을 <code>&lt;p&gt;</code>에 직접 붙이면 UA 기본 margin을 명시적으로 재설정한다.'},
+]},
+
+{id:'5', title:'공간·물리 조건 (오버플로 0)', note:'1280×720 캔버스의 실측 계약.', items:[
+ {id:'5-1', e:'judge', src:'토큰-치트시트.md', r:'캔버스 1280×720 고정. <code>.s-full</code> top 118 → <b>세로 예산 ≈ 548px</b>.'},
+ {id:'5-2', e:'browser', src:'MEMORY.md', r:'<b>콘텐츠 하단 상한 666px</b> — <code>.s-pageno</code>(right:56/bottom:22)·<code>.s-foot</code> 띠 침범 0. <code>getBoundingClientRect().bottom</code>으로 실측.'},
+ {id:'5-3', e:'judge', src:'토큰-치트시트.md', r:'줄 높이 계산: 22px×1.78 ≈ <b>줄당 39px</b>(2줄 78px). 카드 행 ≈ 헤드라인 28 + 39×줄수 + 패딩·gap 28 → 548px에 4행이 현실적. <b>2줄을 50px로 잡지 말 것.</b>'},
+ {id:'5-4', e:'browser', src:'MEMORY.md', r:'<b><code>overflow:hidden</code>으로 잘림을 가려 통과 금지</b> — DOM rect·<code>scrollWidth/Height</code>·텍스트 클리핑을 측정해 원인을 제거한다.'},
+ {id:'5-5', e:'judge', src:'조립-리듬-불변요소.md', r:'<b>하단 여백 금지</b> — 콘텐츠를 위로 몰아 아래를 크게 비우지 않는다. <code>.center-msg</code>(자동 중앙) · <code>.s-full.fill</code> · <code>.s-full.solo</code>로 캔버스 720 전체를 균형 있게.'},
+ {id:'5-6', e:'judge', src:'MEMORY.md', r:'<b>박스 안쪽에도 같은 규칙</b> — 항목을 상단에 몰지 말고 <code>flex-direction:column</code>+<code>space-between/evenly</code>로 <b>간격을 균등하게 유지한 채</b> 늘려 채운다. 나란한 박스는 전부 같은 방식.'},
+ {id:'5-7', e:'judge', src:'토큰-치트시트.md', r:'<b>박스 크기 = 정보량 비례.</b> 한 줄을 억지로 크게, 여러 줄을 억지로 작게 만들지 않는다(크기를 내용에 맞추는 것이지 내용을 줄이라는 뜻이 아니다). 편차가 크면 bento·가변 행높이.'},
+ {id:'5-8', e:'browser', src:'SKILL.md 핵심규칙', r:'<b>패딩 절대 기준</b>: 세로 패딩 합 &gt; 콘텐츠 높이의 <b>1/3</b>이면 과하다. 1~2줄 배너·콜아웃 <b>12~14px</b>, 3줄↑ <b>16~20px</b>. 완성 후 리뷰가 아니라 <b>만드는 순간에</b> 자문한다.'},
+ {id:'5-9', e:'judge', src:'SKILL.md 핵심규칙', r:'<b>폭 절대 기준(대칭 규칙)</b>: 짧은 문장 하나 담은 단독 박스는 <code>.hug-center</code>(fit-content+가운데). 예외는 시퀀스 칩·대비/체크리스트 격자 콜아웃. <code>flex-column</code> 부모에선 <code>align-self</code>도 같이 바꿔야 줄어든다.'},
+ {id:'5-10', e:'judge', src:'MEMORY.md', r:'긴 문장은 <b>폭을 먼저 준다</b> — 박스를 좁혀 강제 줄바꿈하지 않는다.'},
+ {id:'5-11', e:'browser', src:'SKILL.md §5', r:'<b>이미지 잘림 0</b>: figure와 img의 렌더 높이를 일치시킨다. figure에 고정 높이를 줬으면 <code>img{width:100%;height:100%;object-fit:contain}</code>을 함께 명시하고 두 <code>getBoundingClientRect().height</code>를 비교한다.'},
+ {id:'5-12', e:'browser', src:'SKILL.md §5', r:'<b>이미지 겹침 0</b>: 이미지 경계 상자가 형제 텍스트 박스와 <b>1px도 교차 금지</b>. 확대와 겹침이 충돌하면 <b>언제나 겹침 0</b>을 택한다(안전영역 좌우 64–1216 · 하단 ≤666).'},
+ {id:'5-13', e:'judge', src:'MEMORY.md', r:'<b><code>object-fit:contain</code> 레터박스 함정</b>: “이미지가 작다”에 <b>높이</b>를 키우면 빈 여백만 커진다 → <b>가로</b>를 늘리고 옆 텍스트 컬럼을 줄인다. 조정 전 <code>naturalWidth/naturalHeight</code> vs 박스 비율을 먼저 비교.'},
+ {id:'5-14', e:'auto', src:'디자인시스템.md §2-b', r:'<b>넘버 행 수직 중앙</b>: <code>.work-step</code>·<code>.agenda-item</code>은 <code>align-items:center</code>. 예외 <code>.s03-slide .an-item</code>.'},
+ {id:'5-15', e:'judge', src:'토큰-치트시트.md', r:'<code>.work-step</code> 간격 = padding 11px / gap 10px(조임). 손으로 쓴 스텝도 이 스펙에 맞춘다.'},
+ {id:'5-16', e:'judge', src:'MEMORY.md', r:'제목–본문, 이미지–캡션, 카드–카드 사이에 눈에 보이는 간격을 둔다. 빈 공간은 남은 자리가 아니라 <b>정보 그룹을 구분하는 역할</b>이어야 한다.'},
+]},
+
+{id:'6', title:'구도·리듬 (다양성)', note:'같은 그림이 반복되는 것을 막는 축.', items:[
+ {id:'6-1', e:'auto', src:'조립-리듬-불변요소.md', r:'<b>직전 콘텐츠 슬라이드와 같은 구도 패밀리 금지.</b> 같은 패밀리 3연속 절대 금지(검사: 최장 연속 ≤2).'},
+ {id:'6-2', e:'auto', src:'verify_deck.py', r:'덱 전체 <b>구도 다양성 최소치</b> 충족(램프: &lt;12장→3종 · &lt;24→4 · &lt;40→5 · 그 이상→6).'},
+ {id:'6-3', e:'judge', src:'조립-리듬-불변요소.md', r:'<b>split(좌우 비대칭)은 희소하게·연속 금지</b> — 정보가 진짜 “글 주 + 시각 보조”일 때만.'},
+ {id:'6-4', e:'judge', src:'카탈로그-규격.md §2b', r:'구도 원형 8종으로 반복을 판정한다: <code>solo-center · stage-figure · band-grid · band-figure · flow-vertical · panels-mirror · split-asym · image-bleed</code>.'},
+ {id:'6-5', e:'judge', src:'조립-리듬-불변요소.md', r:'설명형(centered·top-down·grid)과 참여형(full-bleed·vertical-flow·diagram-centric)을 교차한다.'},
+ {id:'6-6', e:'judge', src:'토큰-치트시트.md', r:'본문 컨테이너 3종이 구도를 가른다: <code>.s-body-wrap</code>(좌 560=split) · <code>.s-full</code>(풀폭) · <code>.center-msg</code>(중앙).'},
+ {id:'6-7', e:'judge', src:'SKILL.md §5', r:'<b>카탈로그는 후보군</b>(어휘집 레이아웃 54·element 23, 코드 코어 12+8). 코어가 정보량·이미지 크기·품질을 제한하면 토큰·가독성·안전영역만 지키는 <b>독립 구도를 설계</b>하고 근거 1줄을 결정표에 남긴다.'},
+ {id:'6-8', e:'judge', src:'SKILL.md §5', r:'<b>환류 규칙</b>: 재사용 가능한 신규 구도는 <code>catalog.html</code>+<code>patterns.css</code>에 환류하고 <code>verify_kit.py</code>로 확인. 맥락 의존적 구도는 <code>data-slide</code>·전용 클래스로 좁게 스코프해 카탈로그를 오염시키지 않는다.'},
+ {id:'6-9', e:'judge', src:'MEMORY.md', r:'<b>광역 CSS override 금지</b> — 공통 타이포그래피 외에는 <code>data-slide</code> 또는 페이지 전용 클래스로 범위를 잠근다.'},
+ {id:'6-10', e:'judge', src:'MEMORY.md', r:'보이는 페이지 번호로 CSS를 지정하지 않는다. 안정적인 <code>data-slide</code> ID와 전용 클래스로 지정한다.'},
+ {id:'6-11', e:'judge', src:'조립-리듬-불변요소.md', r:'활동 슬라이드엔 <code>.timing</code> 배지(예: <code>팀 실습 · 22분</code>).'},
+]},
+
+{id:'7', title:'콘텐츠·밀도·소유권', note:'무엇을 몇 개 담고, 누가 문장을 소유하는가.', items:[
+ {id:'7-1', e:'judge', src:'SKILL.md 핵심규칙', r:'<b>밀도: 정보 단위 3~6개</b>(물리 한도 내). 저밀도 최소주의는 폐기됐다.'},
+ {id:'7-2', e:'judge', src:'교육원칙-요약.md 원칙9', r:'⚠️ <b><code>screen-operation</code> 예외</b>: <b>한 슬라이드 = 조작 단계 1개</b>, 밀도 하한 미적용. 단계가 3개면 슬라이드 3장.'},
+ {id:'7-3', e:'judge', src:'주석스크린샷.md', r:'<b>단계(step) ≠ 지점(point)</b> — 한 단계 안에서 짚을 지점은 1~3개. 4개↑면 단계가 섞인 것이니 슬라이드를 나눈다.'},
+ {id:'7-4', e:'judge', src:'콘텐츠초안-입력형식.md §2', r:'<b>콘텐츠 소유권</b>: 새 덱 조립에서 <code>슬라이드 제목</code>·<code>본문 문구</code>는 임의 재작성 금지(오타·마크다운 깨짐만). 질문형 제목도 결론형으로 고치지 않는다.'},
+ {id:'7-5', e:'judge', src:'SKILL.md §1', r:'예외 — 사용자가 특정 슬라이드의 문구·구조·레이아웃 수정을 <b>명시</b>하면 그 범위는 재작성할 수 있다.'},
+ {id:'7-6', e:'judge', src:'조립-리듬-불변요소.md', r:'슬라이드 묶음·장수는 사용자 계획을 따른다. 본문 줄 수와 capacity는 <b>자동 분할 명령이 아니라 오버플로 경고 기준</b>이다.'},
+ {id:'7-7', e:'auto', src:'콘텐츠초안-입력형식.md §3', r:'<b>아이콘 라우팅 고정</b>: <code>💬</code>(농담)·<code>👀</code>(시연) → HTML 주석+발표자 노트 / <code>🗣</code>(안전망 예시) → 발표자 노트 / 아이콘 없는 텍스트 → 발표자 노트. <b>이모지 문자 자체가 최종 HTML에 남으면 FAIL</b>(PDF 색-이모지 깨짐).'},
+ {id:'7-8', e:'auto', src:'MEMORY.md · verify_deck.py', r:'<b>학생 덱에 <code>.hint-reveal</code>·<code>강사 힌트</code>·<code>막힐 때만 보기</code>·<code>완성 예시 보기</code> 0.</b> 필요한 내용은 처음부터 보이게 한다.'},
+ {id:'7-9', e:'judge', src:'콘텐츠초안-입력형식.md §2', r:'<code>&lt;!-- refs: C-… --&gt;</code>는 근거 추적 메타데이터 — 화면 미표시, 아이콘 라우팅 대상 아님, 있어도 없어도 정상.'},
+ {id:'7-10', e:'judge', src:'MEMORY.md', r:'내부 분류명·제작 메타·검수 용어를 학생 화면에 노출하지 않는다. 학생이 실제로 말하고 확인할 자연어로 바꾼다.'},
+ {id:'7-11', e:'judge', src:'MEMORY.md', r:'가짜 버튼, 실제로 동작하지 않는 테마 변경·접기·토글·애니메이션을 결과물 예시에 넣지 않는다.'},
+ {id:'7-12', e:'judge', src:'MEMORY.md', r:'완료 기준은 <b>“무엇이 열리고, 어떤 내용이 보이며, 무엇을 확인하면 끝인지”</b>로 작성한다.'},
+ {id:'7-13', e:'judge', src:'MEMORY.md', r:'제공하지 않은 경력·연락처·링크·민감 정보를 만들지 않는다. 개인정보·API 키·비밀번호는 요청문에 넣지 않는다.'},
+ {id:'7-14', e:'judge', src:'SKILL.md §7', r:'멘트가 하나라도 있으면 <b><code>&lt;덱이름&gt;_발표자노트.html</code></b>을 별도 산출한다. <code>🗣</code>는 <b>펼친 상태</b>로(강사는 안전망 예시를 미리 다 봐야 하므로).'},
+]},
+
+{id:'8', title:'이미지·스크린샷', note:'기본값은 코드 시각화이고 이미지는 판정을 통과해야 한다.', items:[
+ {id:'8-1', e:'judge', src:'이미지-디렉션-프롬프트.md §2', r:'판정 4가지: <code>NO_IMAGE</code> / <code>IMAGE_EXPLANATORY</code> / <code>IMAGE_MNEMONIC</code> / <code>IMAGE_DECORATIVE_OPTIONAL</code>.'},
+ {id:'8-2', e:'auto', src:'이미지-디렉션-프롬프트.md §3', r:'장식 이미지는 <b>사용자가 시각적 풍부함을 명시한 경우에만</b> — 파트당 <b>최대 1장</b>, 연속 슬라이드 금지, 차트·다이어그램과 동시 사용 금지.'},
+ {id:'8-3', e:'judge', src:'SKILL.md §0-4', r:'<code>IMAGE_MODE</code> 질문은 <b>재사용으로 안 되는 신규 generate/transform이 1장 이상 + 사용자가 방식 미지정</b>일 때만 1회. 자율 실행 권한이 명확하면 재질문하지 않는다.'},
+ {id:'8-4', e:'judge', src:'이미지-디렉션-프롬프트.md §7', r:'직접 생성 기능이 없으면 <b><code>prompt_only</code>로 조용히 전환 금지</b> — 사용자에게 보고한 뒤 이미지 단계에서 중단한다.'},
+ {id:'8-5', e:'auto', src:'이미지-디렉션-프롬프트.md §6', r:'활성 역할은 <b><code>hero | support | spot</code></b>뿐. <code>cover-object</code>·<code>section-overlay</code>는 사용 시 검증 실패.'},
+ {id:'8-6', e:'auto', src:'이미지-디렉션-프롬프트.md §6', r:'<code>explanatory</code>·<code>mnemonic</code> → 관계를 설명하는 <b>한국어 <code>alt</code> 필수</b> / <code>decorative</code> → <code>alt="" aria-hidden="true"</code>.'},
+ {id:'8-7', e:'auto', src:'이미지-디렉션-프롬프트.md §7', r:'<code>prompt_only</code>는 <code>&lt;img&gt;</code>를 만들지 않고 <code>data-image-state="expected"</code>+<code>data-expected-src</code>만 둔다. 개발 덱에 깨진 이미지 0.'},
+ {id:'8-8', e:'judge', src:'이미지-디렉션-프롬프트.md §1', r:'<code>paper-cut-v1</code>은 <b>투명 오브젝트 전용</b>. 최종본은 실제 RGBA 유효 알파 PNG. 흰·단색·체크무늬 배경은 투명으로 인정하지 않는다.'},
+ {id:'8-9', e:'judge', src:'이미지-디렉션-프롬프트.md §5', r:'크로마(마젠타) 문구와 native-alpha 문구를 <b>한 프롬프트에 섞으면 즉시 실패</b>. 서로 다른 에셋을 한 생성 호출에 묶지 않는다.'},
+ {id:'8-10', e:'judge', src:'이미지-디렉션-프롬프트.md §7', r:'재시도 한도: 의미·스타일 교정 1회 + 알파 후처리 1회. 이후 설명·기억 이미지는 <b>중단·보고</b>, 장식은 반려 기록 후 생략.'},
+ {id:'8-11', e:'judge', src:'이미지-디렉션-프롬프트.md §1', r:'제목·본문·캡션을 이미지에 굽지 않는다. 프롬프트의 hex는 생성 모델용이고 HTML/CSS는 토큰만 쓴다.'},
+ {id:'8-12', e:'judge', src:'이미지-디렉션-프롬프트.md §3·§9', r:'구성요소 <b>3~5개</b>, 핵심 관계 <b>정확히 1개</b>. <code>MUST_NOT_IMPLY</code>로 오해 가능성을 막는다.'},
+ {id:'8-13', e:'judge', src:'MEMORY.md', r:'<b>실제 UI 조작은 실제 캡처</b>를 쓴다. 생성 이미지나 CSS 모형으로 실제 버튼 위치를 가르치지 않는다.'},
+ {id:'8-14', e:'judge', src:'MEMORY.md', r:'실제 캡처는 전체를 <code>object-fit:contain</code>으로 보여 주고 crop하지 않는다. 계정·개인정보를 가리고 캡션까지 안전영역 안에 둔다.'},
+ {id:'8-15', e:'judge', src:'주석스크린샷.md', r:'주석 스크린샷: <b>캡처는 사용자가, 번호·테두리 overlay는 킷이 코드로</b>. host는 <code>L-dc-annotated</code>·<code>L-dc-hero</code> 둘뿐이며 여러 단계를 세로로 나열하지 않는다.'},
+ {id:'8-16', e:'judge', src:'주석스크린샷.md', r:'캡션에 실제 버튼명·메뉴명을 쓴다. “여기 클릭” 금지, “1.→2.→3.” 문장은 단계가 섞였다는 신호.'},
+ {id:'8-17', e:'judge', src:'주석스크린샷.md', r:'번호 배지·강조 박스는 캡션과 중복이므로 <code>aria-hidden="true"</code>로 숨긴다.'},
+ {id:'8-18', e:'judge', src:'SKILL.md §6', r:'기본 표지는 스타터 큐브 구도를 유지하고 생성 이미지는 <b>S02부터</b> 검토한다.'},
+ {id:'8-19', e:'judge', src:'이미지-스크린샷-배포.md §1', r:'최종 파일은 <code>sessions/N주차/자료/images/</code>. 덮어쓰기 지시가 없으면 <code>-v2</code>·<code>-v3</code> 버전 파일명을 쓴다.'},
+ {id:'8-20', e:'judge', src:'MEMORY.md', r:'CSS GUI는 개념·상태·경로 구조를 직관적으로 보여 줄 때만 쓰고, <b>실제 제품 화면이라고 오해시키지 않는다</b>.'},
+]},
+
+{id:'9', title:'교육 범위 — 이 밖의 것을 슬라이드에 가르치지 않는다', note:'커리큘럼 기준안이 정본이고, 킷 요약본과 충돌하면 정본이 이긴다.', items:[
+ {id:'9-1', e:'judge', src:'교육원칙-요약.md §1', r:'대상 표현은 <code>코딩 경험이 없는 입문자 중심의 혼합군(연령·경험 수준 다양)</code>. 축약형 세 형태 모두 <b>“혼합군”을 반드시 포함</b>한다.'},
+ {id:'9-2', e:'judge', src:'교육원칙-요약.md §1', r:'⚠️ <b>금지 표현</b>: 연령 특정(<code>40~50대</code>·<code>중장년</code>·<code>2030</code>) · <code>코딩 경험이 없는 입문자</code> 단독(= 경험 축 하드코딩, 같은 오류).'},
+ {id:'9-3', e:'judge', src:'교육원칙-요약.md §2', r:'<b>포함 범위</b>: ChatGPT 데스크톱 앱+Codex · 자연어 제작 요청 · 로컬 폴더/파일 확인 · HTML·CSS·JavaScript · 브라우저 한 페이지~소규모 서비스 · <code>prd.md</code> · MVP · 브라우저 로컬 저장 · 사용성 점검 · Netlify 정적 공개 · 재배포 · URL·QR 공유와 발표.'},
+ {id:'9-4', e:'judge', src:'교육원칙-요약.md §2', r:'<b>제외 범위</b>: 서버 구축 · DB · 로그인/회원가입 · 결제 · 서버 API · <b>AI API 연결</b> · 복잡한 프레임워크 선택 · <b>터미널 명령어 실습</b> · 편집기 설치 교육 · 상용 보안/인프라 · 배포 도구 비교. 질문 대응 한두 문장 언급만 가능하고 <b>실습·예시·코드 견본으로 등장 금지</b>.'},
+ {id:'9-5', e:'judge', src:'교육원칙-요약.md §2', r:'코드 예시 언어는 <b>HTML·CSS·JS뿐</b>, 배포는 <b>Netlify 하나</b>, AI 도구는 <b>Codex 하나</b>.'},
+ {id:'9-6', e:'judge', src:'교육원칙-요약.md 원칙5', r:'<b>수정 요청은 3단 구조</b>: 무엇을 유지할지 → 무엇을 바꿀지 → 바뀐 뒤 무엇을 확인할지.'},
+ {id:'9-7', e:'judge', src:'교육원칙-요약.md 원칙7', r:'<b>오류는 4단 구조</b>: 어디에서 → 무엇을 했는데 → 실제로 어떻게 됐고 → 원래 무엇을 기대했는지. 버그 사냥이 아니라 협업 과정으로 다룬다.'},
+ {id:'9-8', e:'judge', src:'교육원칙-요약.md 원칙9', r:'조작 안내는 <b>사전에 검증한 정적 캡처</b>만. GIF·녹화 금지, 즉흥 라이브 코딩 전제 슬라이드 금지.'},
+ {id:'9-9', e:'judge', src:'교육원칙-요약.md 원칙4', r:'개념마다 <b>설명 깊이 3층</b>(충분한 설명 / 짧은 설명 / 범위 안내). “범위 안내” 개념(터미널·편집기·프레임워크·서버·DB·API·MCP·환경변수)에 슬라이드를 여러 장 쓰지 않는다.'},
+ {id:'9-10', e:'judge', src:'교육원칙-요약.md 원칙2', r:'전체 지도를 먼저, 현재 위치를 항상 — 아젠다가 그날 전체를, 헤더 <code>PART n/N</code>+진행 도트가 현재 위치를 유지한다.'},
+ {id:'9-11', e:'judge', src:'교육원칙-요약.md 원칙6', r:'관통 문장: <b>“AI가 작성하고, 사람이 검토하고, 사람이 결정한다.”</b> (3주차엔 “사람이 공개를 결정하며 공개의 책임도 사람이 진다”로 확장)'},
+ {id:'9-12', e:'judge', src:'교육원칙-요약.md 원칙1·3', r:'코드 문법을 가르치지 않는다. 코드 설명은 결과물 이해에 필요한 수준으로 제한하고, 개념은 필요해지는 지점에서 꺼낸다.'},
+]},
+
+{id:'10', title:'검증·배포 게이트', note:'“완성”의 정의.', items:[
+ {id:'10-1', e:'auto', src:'scripts/verify_deck.py', r:'<b>정적 검증</b> <code>python scripts/verify_deck.py &lt;덱&gt;.html --parts N</code> — 슬라이드 수·고정 슬라이드 4종·part-divider=파트수·헤더 로고·브랜드·네비/PDF/상세메뉴·CSS 로드·학생덱 힌트 0·이모지 누출 0·eyebrow PART 중복·이미지 계약·구도 다양성·연속 ≤2·raw #hex 0·그라디언트 0·navy 0·박스 표면·an-num 플랫·glass 토큰·자동주입·aria 라벨·callout 색&lt;3·kit 토큰값을 한 번에 채점한다.'},
+ {id:'10-2', e:'browser', src:'SKILL.md §8', r:'<b>브라우저 전수</b>: <code>file://</code> 금지, 로컬 HTTP 서버 사용. CSS 캐시 회피용 <code>?v=</code> 갱신. <b>모든 슬라이드</b>를 1280×720 <b>그리고 실제 인앱 브라우저 크기</b>에서 각각 순회한다.'},
+ {id:'10-3', e:'browser', src:'MEMORY.md', r:'각 장에서 측정: 자식 요소 캔버스 이탈 · 형제 정보 요소 교차 · <code>scrollWidth/Height ≤ client</code> · 텍스트 잘림 · 이미지 crop · 숨은 캡션 · 콘솔 에러 0 · Pretendard 로드 · 본문 22px · 박스 패딩 비중.'},
+ {id:'10-4', e:'judge', src:'MEMORY.md', r:'자동 overlap 탐지는 장식·중첩 컴포넌트 오탐이 있으므로 경고 좌표를 실제 정보 요소 기준으로 판정한다. <b>오탐을 이유로 전체 감사를 생략하지 않는다.</b>'},
+ {id:'10-5', e:'judge', src:'SKILL.md §8', r:'스크린샷은 정적이라 불안정·느리다 → <b>JS 측정 우선, 스크린샷은 증빙 최소</b>.'},
+ {id:'10-6', e:'auto', src:'scripts/build_release.py', r:'<b>배포 fail-closed 게이트</b> <code>python scripts/build_release.py sessions/N주차/강의덱.초안</code> — 외부 <code>&lt;link/script href=http&gt;</code> 0 · 모든 <code>src</code>/<code>url()</code>이 <code>data:</code> · 임베드 <code>@font-face</code> 존재+Pretendard CDN 부재 · unresolved 설명·기억 슬롯 0. 하나라도 위반하면 파일을 쓰지 않는다.'},
+ {id:'10-7', e:'judge', src:'SKILL.md §5·§9', r:'<b>산출 구조</b>: 편집본은 <code>sessions/N주차/강의덱.초안/</code>의 <code>shell.html</code>+<code>part-NN.html</code> 조각. 조립본·배포본을 직접 고쳐 정본으로 삼지 않고 <b>조각을 고쳐 재빌드</b>한다(폰트 서브셋이 매 빌드 재계산됨).'},
+ {id:'10-8', e:'judge', src:'MEMORY.md', r:'전체 장 검사와 대표 스크린샷 확인이 끝나기 전에는 <b>“완료”라고 보고하지 않는다</b>.'},
+ {id:'10-9', e:'auto', src:'scripts/verify_kit.py', r:'카탈로그·<code>patterns.css</code>를 건드렸으면 <code>python scripts/verify_kit.py</code>로 킷 계약(마크업 클래스가 전부 kit CSS에 정의됐는지·인라인 <code>&lt;style&gt;</code> 없는지)을 확인한다.'},
+]},
+
+];
+
+/* ── 규칙 누락 감사 결과 ────────────────────────────────────────────
+   출처: 1주차 덱 72장 · revision.css(933 셀렉터) · 판단근거 문서(563줄) 역방향 감사
+   + 메인 게이트 직접 측정. e = 권고 강제 수단(auto=검증 스크립트로 막을 수 있음).
+──────────────────────────────────────────────────────────────────*/
+const GAPGROUPS = [
+
+{id:'gA', title:'⚠ A. 가독성 하한 계약의 구멍', note:'“본문 22px·1.78 절대 하회 금지”가 문서·킷·세션 세 층에서 서로 다르게 구현돼 있고, 기계 검증은 이 어긋남을 잡지 못한다. 네 항목 모두 심각도 높음.', items:[
+
+ {id:'A1', e:'auto', src:'→ 추가 제안: 토큰-치트시트.md §가독성 하한',
+  r:'<b>22px 하한이 어떤 요소에 적용되고 무엇이 예외인지 목록이 없다.</b>',
+  g:{sev:'high',
+     where:'<code>legibility.css</code> 자체가 <code>.callout</code> 19px · <code>.agenda-item p</code> 20px · <code>.callout .note</code> 15px · <code>.pill</code>/<code>.s-foot</code> 14px로 정의한다. 1주차 덱은 이 격차를 메우려고 <code>revision.css</code> 850–945행에서 <b>80개 셀렉터에 <code>font-size:22px</code>를 손으로 다시 강제</b>했다.',
+     why:'규칙은 “본문 22px·보조 설명 22px 하한”이라고만 적혀 있어, 킷 기본값이 하한 아래인 컴포넌트를 만날 때마다 매 덱이 수십 개 셀렉터를 재작성하고 있다. 예외 목록을 명문화하면 이 반복이 사라진다.'}},
+
+ {id:'A2', e:'auto', src:'→ 정정 필요: 토큰-치트시트.md L64',
+  r:'<b>문서에 적힌 타이포 수치가 킷 구현과 다르다.</b> <code>.s-title</code> 문서 44px / deck.css 40px / legibility 38px · <code>.s-lead</code> 문서 27px / deck.css 24px / legibility 23px.',
+  g:{sev:'high',
+     where:'치트시트는 “657줄 deck.css를 안 읽어도 되게 한 요약”이라고 선언하지만, <code>.s-title</code>·<code>.s-lead</code> 값이 실제 CSS와 어긋난다. 디자인시스템.md §3 표도 “리드 26→27px”라 적었는데 실제 legibility.css는 <b>24px→23px로 오히려 낮춘다</b>.',
+     why:'조립하는 쪽은 치트시트를 믿고 값을 잡는데 렌더 결과가 다르다. “안 읽어도 된다”고 선언한 요약이 틀리면 그 선언 자체가 위험하다.'}},
+
+ {id:'A3', e:'auto', src:'→ 추가 제안: verify_deck.py',
+  r:'<b>세션 CSS가 가독성 레이어를 덮어도 검증이 통과한다.</b>',
+  g:{sev:'high',
+     where:'<code>revision.css:5-8</code>의 <code>.slide .s-body{font-size:22px; line-height:1.5}</code>가 특이도(0,2,0)와 로드 순서 양쪽에서 legibility의 <code>.s-body{line-height:1.78}</code>을 이긴다. <b>1주차 덱의 실제 렌더 행간은 1.5</b>이고, <code>.s-title</code>도 42px로 덮였다. 그런데 <code>verify_deck</code>은 “legibility.css가 <b>로드됐는지</b>”만 확인하므로 PASS 47로 통과했다.',
+     why:'“절대 하회 금지”가 기계적으로 강제되지 않는다. 로드 여부가 아니라 <b>최종 계산값</b>을 봐야 하는데, 그 검사가 없다는 사실이 어디에도 적혀 있지 않다.'}},
+
+ {id:'A4', e:'judge', src:'→ 추가 제안: 토큰-치트시트.md · MEMORY.md',
+  r:'<b>GUI 목업 내부 텍스트는 22px 하한과 “텍스트 잘림 금지”의 예외인데, 그 예외가 규칙에 없다.</b>',
+  g:{sev:'high',
+     where:'S39A 포트폴리오 목업은 9px~26px 텍스트로 구성되고 <code>-webkit-line-clamp:2</code>로 <b>의도적으로 텍스트를 자른다</b>. 웹사이트 목업이므로 당연히 그래야 하지만, 현행 규칙 문언으로는 정면 위반이다.',
+     why:'“실제 화면을 흉내 내는 목업 안쪽은 실물 비례를 따르고 하한을 적용하지 않는다”는 예외가 없으면, 다음 주차 담당자는 목업을 만들 때마다 규칙을 어기는 것인지 판단할 근거가 없다.'}},
+]},
+
+{id:'gB', title:'⚠ B. 킷에 없는 컴포넌트 계약', note:'같은 시각 관용구를 매번 다른 이름으로 재구현하고 있다. 환류 규칙(§6-8)은 있지만 “무엇이 환류 대상인가”의 판정 기준이 없어 실제로 환류되지 않았다.', items:[
+
+ {id:'B1', e:'judge', src:'→ 추가 제안: kit/styles/patterns.css + 카탈로그',
+  r:'<b>코드로 그리는 GUI 창 목업 컴포넌트가 킷에 없다.</b> 킷엔 실제 캡처용 <code>.shot-frame</code>만 있다.',
+  g:{sev:'high',
+     where:'창 크롬 <b>11회</b>(<code>border:2px solid var(--ink)</code>+라운드+섀도우) · 다크 타이틀바 <b>7회</b> · 창 조작 더미 닷 <b>7회</b> · 목업 내부 사이드바 <b>3회</b>를 전부 이름만 바꿔 재작성했다.',
+     why:'MEMORY는 “CSS GUI는 개념·상태·경로 구조를 보여 줄 때만”이라고 <b>용도</b>만 규정하고 <b>구현 자산</b>을 주지 않는다. 매 주차가 같은 창을 처음부터 다시 그린다.'}},
+
+ {id:'B2', e:'judge', src:'→ 추가 제안: kit/styles/patterns.css',
+  r:'<b>다크 터미널 컴포넌트가 킷에 없다.</b> <code>.cover-terminal</code>은 라이트 톤 1종뿐이다.',
+  g:{sev:'high',
+     where:'CSS는 <b>3벌</b>(revision.css 24-37 / 778-787 / 1119-1126), 클래스명은 <b>4종</b>(<code>.terminal-dark</code>·<code>.dark-terminal</code>·<code>.plan-prompt-terminal</code>·<code>.change-scope-prompt</code>)이 5개 슬라이드에 난립한다. <i>(CSS 감사와 마크업 감사가 독립적으로 같은 결론에 도달)</i>',
+     why:'MEMORY에 “검정 터미널은 <code>--ink</code> 배경 + <code>--white</code> 본문, 프롬프트·커서만 민트”라는 <b>색 계약</b>은 있는데 구현체가 없다. 계약만 있고 자산이 없으면 매번 재구현된다.'}},
+
+ {id:'B3', e:'judge', src:'→ 추가 제안: kit/charts/ element',
+  r:'<b>경로 브레드크럼(<code>C: › 폴더 › 하위폴더</code>) element가 없다.</b>',
+  g:{sev:'mid',
+     where:'같은 관용구가 <code>.path-breadcrumb</code>(S21) / <code>.tree-breadcrumb</code>(S34·S54) / <code>.breadcrumb-track</code>(S36) 세 이름으로 4개 슬라이드에 구현됐다.',
+     why:'판단근거 문서도 “경로·계층 정보는 문장으로 풀지 말고 breadcrumb로 표시”를 규칙으로 적었는데(H7), 그 규칙을 실행할 자산이 없다.'}},
+
+ {id:'B4', e:'judge', src:'→ 추가 제안: kit/styles/patterns.css',
+  r:'<b>“번호배지 + 제목 + 설명” 레일 컴포넌트가 6종으로 재구현됐고, 번호 표기(zero-pad)가 혼재한다.</b>',
+  g:{sev:'mid',
+     where:'<code>.readiness-grid</code>(“01”~“04”) · <code>.codex-entry-steps</code> · <code>.extension-steps</code> · <code>.plan-sequence</code>(“1”~“3”) · <code>.must-condition-rail</code> 등. 문서화된 <code>.work-step .n</code>은 무패딩 “1”~“3”이다.',
+     why:'번호배지의 <b>색</b> 규칙(민트 3종만)은 엄격히 규정돼 있지만 <b>형태·표기</b>는 규정이 없어, 같은 덱 안에서 “01”과 “1”이 섞였다.'}},
+
+ {id:'B5', e:'judge', src:'→ 추가 제안: 디자인시스템.md §2-b',
+  r:'<b>“틴트 정보밴드 카드 + 의미별 색 스왑”이 사실상 표준인데 컴포넌트로 통합돼 있지 않다.</b>',
+  g:{sev:'mid',
+     where:'기본형 <code>--blue-panel</code>+<code>--blue-line-strong</code> <b>17회</b>, 강조는 민트 스왑 <b>24회</b>, 위험은 코랄 스왑 <b>6회</b> — 총 47회를 개별 셀렉터로 반복 작성했다.',
+     why:'색 문법(§3-4)과 박스 표면 규칙(§3-8)이 결합되면 필연적으로 나오는 패턴인데, 이 결합형을 하나의 클래스로 주지 않아 47번 손으로 조합했다.'}},
+
+ {id:'B6', e:'judge', src:'→ 추가 제안: kit/styles/patterns.css',
+  r:'<b>기타 고빈도 무명 패턴</b> — <code>border-left:5~8px</code> 강조 배너 <b>14회</b> · 절대배치 “설명+GUI” 2열 셸 <b>13회</b> · <code>.dl-list</code> 정의행 카드 <b>7회</b>.',
+  g:{sev:'mid',
+     where:'절대배치 2열 셸은 <code>left/right:64px; top:20X~21Xpx; bottom:4X~6Xpx; display:grid</code> 형태로 13회 반복되며, 사실상 이 덱의 표준 본문 구도다.',
+     why:'13회 반복되는 구도가 카탈로그에 없다는 것은 카탈로그(레이아웃 54종)가 실무 수요를 못 따라가고 있다는 신호다. 환류 규칙이 작동하지 않았다.'}},
+]},
+
+{id:'gC', title:'⚠ C. 규정되지 않은 슬라이드 유형', note:'스타터의 고정 슬라이드 5종 외에, 실제로는 “헤더가 아예 없는” 슬라이드가 여러 유형 등장했다. 규칙의 예외 목록이 이를 포함하지 않는다.', items:[
+
+ {id:'C1', e:'judge', src:'→ 추가 제안: SKILL.md §0-1 · MEMORY.md',
+  r:'<b>“덱 크롬 없는 전면 목업” 슬라이드 유형이 규정에 없다.</b>',
+  g:{sev:'mid',
+     where:'S39A는 헤더·eyebrow·제목·페이지번호를 <b>전부 버리고</b> 브라우저 목업 하나로 캔버스를 채운다. MEMORY의 로고 예외 조항은 “파트 전환·완전 중앙형 도입”만 열거한다.',
+     why:'결과물의 기대 수준을 보여 주는 쇼케이스는 크롬이 없어야 설득력이 있다. 실제로 필요한 유형인데 규정에 없어, 규칙을 어긴 것인지 정당한 예외인지 구분되지 않는다.'}},
+
+ {id:'C2', e:'judge', src:'→ 추가 제안: SKILL.md §0-1',
+  r:'<b>“콜드오픈” 시퀀스(표준 도입 앞의 극적 오프닝 3장)가 규정에 없다.</b>',
+  g:{sev:'mid',
+     where:'S01A(화두+히어로 이미지) → S01B(헤더·페이지번호·제목 전부 없이 <b>“해줘.” 한 단어</b>) → S01C(반전 카피). 세 장 모두 표준 <code>.s-head</code>가 없다.',
+     why:'고정 슬라이드 계약은 “표지→도입→아젠다”를 전제하는데, 실제 덱은 표지와 도입 사이에 3장을 끼워 넣었다. 이 자리가 허용되는지 규칙이 답하지 않는다.'}},
+
+ {id:'C3', e:'auto', src:'→ 추가 제안: 디자인시스템.md §4',
+  r:'<b><code>no-page-number</code> 옵트아웃 클래스가 문서에 없다.</b>',
+  g:{sev:'mid',
+     where:'3개 슬라이드(S01B·S39A 등)가 이 클래스로 페이지번호 주입을 끈다. 규칙 문언은 “표지·마무리 제외”만 명시한다.',
+     why:'페이지네이션 자동 주입은 엔진 계약(§2-5)인데, 그 계약을 빠져나가는 공식 수단이 문서화돼 있지 않아 임의 확장처럼 보인다.'}},
+]},
+
+{id:'gD', title:'⚠ D. 색·토큰', note:'색 규칙은 이 스킬에서 가장 촘촘한 영역이지만, 토큰 목록 자체에 구멍이 있다.', items:[
+
+ {id:'D1', e:'auto', src:'→ 정정 필요: 토큰-치트시트.md',
+  r:'<b>deck.css <code>:root</code> 토큰 41개 중 10개(24%)가 치트시트에 없다.</b>',
+  g:{sev:'mid',
+     where:'미문서화: <code>--glass-control</code> · <code>--glass-control-hover</code> · <code>--glass-line</code> · <code>--glass-highlight</code> · <code>--glass-lowlight</code> · <code>--glass-shadow</code> · <code>--blue-overlay</code> · <code>--on-dark-muted</code> · <code>--surface-alt</code> · <code>--sw</code>. 1주차 덱은 이 중 glass 5종을 실제로 <b>다수 사용</b>한다. <code>verify_deck</code>의 토큰 값 검증도 41개 중 <b>11개만</b> 확인한다.',
+     why:'치트시트는 “카탈로그 항목·코드는 <b>이 토큰만</b> 쓴다”고 규정한다. 그 목록이 실제 토큰의 76%만 담고 있으면, 규칙을 지키려는 사람이 정상 토큰을 못 쓰거나 규칙을 어기게 된다.'}},
+
+ {id:'D2', e:'judge', src:'→ 추가 제안: 디자인시스템.md §2',
+  r:'<b>글자 강조의 블루·코랄 변형(<code>.hl-blue-text</code>·<code>.hl-coral-text</code>)의 지위가 규정돼 있지 않다.</b>',
+  g:{sev:'mid',
+     where:'킷에는 <code>.hl-mint-text</code>만 있고, 덱이 <code>revision.css:13-14</code>에서 파랑·코랄 자매 클래스를 새로 정의해 썼다.',
+     why:'규칙은 “강조어는 민트가 기본, 블루는 절제”라고만 말하고 <b>코랄 글자 강조</b>는 아예 언급이 없다. 주의·경고를 글자로 강조해야 할 때 무엇을 쓸지 답이 없다.'}},
+]},
+
+{id:'gE', title:'⚠ E. 마크업·접근성 관행', note:'적용이 일관되지 않은 항목들. 규칙이 없어서 “했다 안 했다” 하는 경우다.', items:[
+
+ {id:'E1', e:'auto', src:'→ 추가 제안: verify_deck.py',
+  r:'<b><code>&lt;!-- 발표노트: … --&gt;</code> 주석 계약이 통째로 이행되지 않았는데 아무 게이트도 잡지 않는다.</b>',
+  g:{sev:'high',
+     where:'콘텐츠초안-입력형식.md §3은 <code>💬</code>·<code>👀</code>를 “HTML 주석 <b>+</b> 발표자 노트 HTML” <b>양쪽</b>에 넣으라고 규정한다. 72장 전체에서 해당 주석 <b>0건</b>. 발표자 노트 HTML에는 42장 분량 멘트가 정상 존재한다.',
+     why:'계약의 절반이 조용히 빠졌고 verify는 <b>누출(이모지가 남는 것)</b>만 검사한다. “있어야 할 것이 없는” 방향은 검사하지 않는다.'}},
+
+ {id:'E2', e:'auto', src:'→ 추가 제안: verify_deck.py',
+  r:'<b><code>data-asset-id</code> 부여가 불균일하다.</b> figure 41개 중 26개만 보유, part-04는 <b>0/3</b>.',
+  g:{sev:'mid',
+     where:'shell 1/2 · part-01 11/15 · part-02 3/9 · part-03 2/2 · <b>part-04 0/3</b> · part-05 5/5 · part-06 4/5.',
+     why:'이미지 계약(§8)은 manifest에 Asset ID를 필수로 요구하고 HTML 예시에도 <code>data-asset-id</code>가 있지만, <b>HTML 쪽 필수 여부</b>가 규정되지 않아 검증도 하지 않는다.'}},
+
+ {id:'E3', e:'auto', src:'→ 추가 제안: verify_deck.py',
+  r:'<b><code>role="img"</code> 누락을 검증이 구조적으로 못 잡는다.</b>',
+  g:{sev:'mid',
+     where:'검사식이 <code>labeled &gt;= role_img</code>다. 실측 <code>role="img"</code> 16개 · <code>aria-label</code> 50개 → 조건이 항상 참이다. 실제로 S12 <code>.codex-gui</code>는 <code>aria-label</code>만 있고 <code>role="img"</code>가 없다.',
+     why:'“코드 시각화는 <code>role="img"</code>+서술형 <code>aria-label</code>”이 규칙인데, 검사는 라벨 수가 role 수 이상이기만 하면 통과한다. 역방향(“role이 있는데 라벨이 없다”)만 잡고 정방향은 못 잡는다.'}},
+
+ {id:'E4', e:'judge', src:'→ 추가 제안: 조립-리듬-불변요소.md §접근성',
+  r:'<b>목록 시맨틱(<code>role="list"</code>/<code>listitem</code>) 적용이 앞 5장에만 국한된다.</b>',
+  g:{sev:'mid',
+     where:'S03·S05·S06·S10A·S10C에만 적용됐고, Part2~6의 동일 구조 그리드(<code>.dl-list</code>·<code>.cc-grid</code> 등)에는 전혀 없다.',
+     why:'접근성 규칙은 “색만으로 의미 전달 금지”와 “코드 시각화 aria 라벨”만 규정한다. div 그리드에 목록 시맨틱을 줄지 말지가 규정되지 않아 앞부분만 하고 흐지부지됐다.'}},
+
+ {id:'E5', e:'judge', src:'→ 추가 제안: 조립-리듬-불변요소.md §접근성',
+  r:'<b>유니코드 글리프를 아이콘 대용으로 쓰는 관행이 규정 밖이다.</b> (⌂ ◫ ⌕ ⚙ ▰ ✓ ↓ → › °)',
+  g:{sev:'mid',
+     where:'SVG 아이콘 대신 문자를 <code>&lt;b&gt;</code>/<code>&lt;span&gt;</code>에 직접 넣어 6개 이상 슬라이드에서 아이콘처럼 쓴다.',
+     why:'규칙은 “PDF에서 색 이모지가 깨지므로 모노크롬 심볼(◆ ★ ◎ ※ ▲ ▷ ↓ ✓) 권장”이라고만 적혀 있다. 실제로 쓰인 글리프의 절반은 그 목록에 없고, 폰트 서브셋 임베드 대상인지도 규정되지 않았다.'}},
+
+ {id:'E6', e:'judge', src:'→ 추가 제안: 조립-리듬-불변요소.md §접근성',
+  r:'<b>제목(헤딩) 없는 슬라이드의 대체 라벨 규칙이 없다.</b>',
+  g:{sev:'mid',
+     where:'헤딩 없는 슬라이드 3장 중 S01B·S62는 <code>&lt;section aria-label&gt;</code>을 달았지만 S39A는 아무 대체 라벨이 없다.',
+     why:'C1·C2에서 “크롬 없는 슬라이드” 유형을 허용한다면, 그 유형은 필연적으로 헤딩이 없다. 대체 라벨을 필수로 못 박지 않으면 스크린리더에 무명 슬라이드가 남는다.'}},
+
+ {id:'E7', e:'judge', src:'→ 추가 제안: kit/guide/카탈로그-규격.md',
+  r:'<b><code>data-viz</code> 속성 관행이 문서화돼 있지 않다.</b>',
+  g:{sev:'mid',
+     where:'6개 요소(learning-flow ×3 · issue-type-check · diagnosis-branch · completion-checklist-map)에 붙어 있다. <code>verify_deck</code>의 <code>count_code_viz()</code>가 <b>바로 이 속성과 <code>viz-*</code> 클래스로 코드 시각화를 센다</b>.',
+     why:'검증 결과(“코드 시각화 N개”)를 좌우하는 속성인데 어느 규칙 문서에도 설명이 없다. 조립하는 쪽은 이 속성을 붙여야 하는지 모른다.'}},
+]},
+
+{id:'gF', title:'⚠ F. 식별자·파일 위생', note:'덱이 커질수록 비용이 커지는 항목들.', items:[
+
+ {id:'F1', e:'judge', src:'→ 추가 제안: 조립-리듬-불변요소.md',
+  r:'<b><code>data-slide</code> 명명 규칙이 없어 3계열이 혼재하고 결번이 생겼다.</b>',
+  g:{sev:'mid',
+     where:'고정 슬라이드·Part4~6은 <code>S</code>+2자리(+문자, 예 <code>S34</code>·<code>S28A</code>) / Part1~3 본문은 <b>무접두 순수 숫자</b>(<code>05</code>…<code>32</code>) / 파트전환은 <code>P</code>+숫자. 파트 경계마다 13·25·33·43·51이 <b>통째로 결번</b>이다.',
+     why:'MEMORY는 “보이는 페이지 번호로 CSS를 지정하지 말고 <code>data-slide</code> ID로 지정하라”고 하는데, 그 ID의 <b>형식</b>이 규정되지 않았다. CSS·검증이 붙는 안정 식별자인 만큼 형식이 필요하다.'}},
+
+ {id:'F2', e:'judge', src:'→ 추가 제안: SKILL.md §5 환류 규칙',
+  r:'<b>슬라이드 전용 1회성 클래스가 폭증했는데 상한·정리 기준이 없다.</b>',
+  g:{sev:'mid',
+     where:'72장에 클래스 90개가 할당됐고, 재사용 패밀리는 <b>7종뿐</b>, 나머지 <b>59개가 1회용</b>이다. <code>revision.css</code>는 셀렉터 933개(<code>data-slide</code> 스코프 17.6%)로 킷 <code>deck.css</code>(657줄)보다 크다.',
+     why:'환류 규칙은 “재사용 가능하면 킷으로, 맥락 의존적이면 세션에”라고만 말한다. 1회용이 59개까지 쌓여도 경고가 없어, 세션 CSS가 킷보다 커진 뒤에야 문제가 보인다.'}},
+
+ {id:'F3', e:'judge', src:'→ 추가 제안: MEMORY.md',
+  r:'<b>세션 CSS 위생 규칙이 없다</b> — 죽은 규칙과 <code>!important</code>가 정리되지 않은 채 배포됐다.',
+  g:{sev:'mid',
+     where:'<code>.lifecycle-*</code> 구·신 2벌 동시 존재 · <code>.thank-you</code> 장식이 <b>추가→취소→재취소</b> 3회 왕복해 죽은 규칙으로 잔존 · <code>.portfolio-*</code> 유리효과가 파일 안에서 2번 정의(175-202행 vs 1161-1169행) · <code>!important</code> 3건.',
+     why:'배포본은 이 CSS를 전부 인라인으로 싣는다. 정리 기준이 없으면 죽은 규칙이 계속 누적되고, 다음 담당자는 어느 쪽이 살아 있는지 특이도를 계산해야 알 수 있다.'}},
+
+ {id:'F4', e:'judge', src:'→ 추가 제안: SKILL.md §5',
+  r:'<b>파트 조각 파일 안에 <code>&lt;style&gt;</code> 블록을 넣어 캐스케이드로 세션 CSS를 이기는 기법이 규정 밖이다.</b>',
+  g:{sev:'mid',
+     where:'<code>part-04.html:1-74</code>에 73줄짜리 <code>&lt;style data-part="04"&gt;</code>가 들어 있고, 주석에 “<i>동일 특이도이나 문서 순서상 더 뒤라 캐스케이드에서 이긴다</i>”는 계산까지 적혀 있다.',
+     why:'“광역 CSS override 금지”(§6-9)와 <code>verify_kit.py</code>의 “인라인 <code>&lt;style&gt;</code> 없음” 계약에 정면으로 걸리는 기법인데, 콘텐츠 조각 파일이라 그 검사 대상이 아니다. 허용인지 금지인지 답이 없다.'}},
+
+ {id:'F5', e:'judge', src:'→ 정리 대상: revision.css',
+  r:'<b>카탈로그 컴포넌트의 좌표 기본값을 세션에서 덮는 관행</b> — <code>.dc-title</code> top 118→108 · <code>.dc-stage</code> top 224→220, bottom 40→54.',
+  g:{sev:'low',
+     where:'<code>data-slide</code> 스코프 없이 전역으로 덮었다. <code>word-break:keep-all</code>도 킷은 컴포넌트 화이트리스트인데 덱은 <code>.slide</code> 전역으로 확대했다.',
+     why:'킷 기본 좌표가 실무에서 계속 안 맞는다면 킷을 고쳐야 하고, 이 덱만의 사정이면 스코프를 걸어야 한다. 어느 쪽인지 판단할 기준이 없다.'}},
+]},
+
+{id:'gG', title:'⚠ G. 설계 판단 규칙 (판단근거 문서에만 있음)', note:'1주차 덱을 고치며 내린 판단 중 다른 주차에도 그대로 적용될 일반 규칙인데, 어느 규칙 문서에도 올라가지 않았다. 정보 모양별 “어떻게 그릴 것인가”의 공백이다.', items:[
+
+ {id:'G1', e:'judge', src:'→ 추가 제안: SKILL.md 핵심규칙 (판단근거 L558)',
+  r:'<b>카드를 만들기 전에 카드가 정말 필요한지부터 판단한다.</b> “정보를 나누고 싶다”는 이유만으로 카드를 만들지 않는다.',
+  g:{sev:'high', where:'v1의 단조로움이 카드 격자 반복에서 나왔다는 진단.', why:'현행 규칙은 카드를 <b>어떻게</b> 만들지(크기·패딩·표면·폭)만 규정하고 <b>만들지 말지</b>는 규정하지 않는다. 단조의 근본 원인이 여기였다.'}},
+
+ {id:'G2', e:'judge', src:'→ 추가 제안: SKILL.md 핵심규칙 (판단근거 L142)',
+  r:'<b>동급(같은 위계) 항목은 정보량이 조금 달라도 같은 크기 카드로 통일한다.</b>',
+  g:{sev:'high', where:'크기 차이가 위계 착시를 만든다는 판단.', why:'기존 규칙 “박스 크기 = 정보량 비례”(§5-7)와 <b>정면으로 충돌하는 예외</b>다. 어느 쪽이 언제 이기는지 적혀 있지 않으면 매번 다르게 판단된다.'}},
+
+ {id:'G3', e:'judge', src:'→ 추가 제안: SKILL.md 핵심규칙 (판단근거 L306)',
+  r:'<b>비교 두 쪽의 정보량이 원래 다르면 1:1 대칭을 강제하지 말고 정보량에 비례해 폭을 배분한다.</b>',
+  g:{sev:'mid', where:'완전 대칭이 오히려 부자연스럽다는 판단.', why:'<code>comparison</code>·<code>contrast</code> 정보 모양의 기본 표현이 “대칭 2패널”인데, 대칭을 언제 깨야 하는지가 없다.'}},
+
+ {id:'G4', e:'judge', src:'→ 추가 제안: 정보모양-taxonomy.md (판단근거 L69·537)',
+  r:'<b><code>declaration</code> 슬라이드는 카드·테두리·장식 도형을 모두 제거하고 중앙 정렬 대형 타이포그래피만 쓴다.</b>',
+  g:{sev:'mid', where:'메시지 자체가 화면이며 외곽 형태가 집중을 약화시킨다는 판단.', why:'taxonomy는 <code>declaration</code>의 표현 힌트를 “텍스트 중심, 차트 없음”이라고만 적는다. “장식을 <b>빼라</b>”는 적극적 지시가 없다.'}},
+
+ {id:'G5', e:'judge', src:'→ 추가 제안: SKILL.md §5 (판단근거 L557)',
+  r:'<b>이미지가 핵심 정보인 슬라이드는 이미지가 읽힐 크기부터 확보하고, 남는 영역에 설명을 배치한다.</b>',
+  g:{sev:'mid', where:'이미지가 작고 카드가 화면을 지배하는 문제가 반복됐다.', why:'현행 이미지 규칙은 전부 <b>금지</b>(잘림 0·겹침 0·레터박스 함정)다. “먼저 크기를 확보하라”는 순서 지시가 없어 항상 텍스트가 먼저 자리를 잡았다.'}},
+
+ {id:'G6', e:'judge', src:'→ 추가 제안: 디자인시스템.md §2-b (판단근거 L25·547)',
+  r:'<b>경계가 명확해야 하는 화면(비교·단계·터미널)은 전면 라운드 대신 각진 면이나 상단·좌측 컬러 바를 쓴다.</b>',
+  g:{sev:'mid', where:'박스가 많다고 전부 둥글게 만들 필요는 없다는 판단.', why:'라운드 토큰(20/14/10/pill)은 <b>크기별</b>로만 규정돼 있고, 라운드를 <b>쓰지 않을</b> 조건이 없다.'}},
+
+ {id:'G7', e:'judge', src:'→ 추가 제안: kit/charts/ (판단근거 L242)',
+  r:'<b>경로·계층 위치 정보는 문장으로 풀지 말고 breadcrumb 칩이나 폴더 트리로 표시한다.</b>',
+  g:{sev:'mid', where:'계층 정보는 문장보다 breadcrumb가 빠르게 읽힌다.', why:'B3(구현 자산 없음)과 짝이다. 규칙도 없고 자산도 없어 3가지 이름으로 4번 재구현됐다.'}},
+
+ {id:'G8', e:'judge', src:'→ 추가 제안: MEMORY.md (판단근거 L249)',
+  r:'<b>AI에게 보내는 예시 프롬프트는 일반 밝은 카드가 아니라 검정 터미널 재질로 표현한다.</b>',
+  g:{sev:'mid', where:'재질이 달라야 “실제로 입력할 문장”임을 즉시 구분한다.', why:'B2(터미널 컴포넌트 부재)와 짝이다. 이 규칙이 있으면 터미널이 반드시 자산이어야 한다는 결론이 따라온다.'}},
+
+ {id:'G9', e:'judge', src:'→ 추가 제안: SKILL.md 핵심규칙 (판단근거 L193)',
+  r:'<b>단일 단계·단일 행동만 있는 슬라이드에는 순번 배지를 붙이지 않는다.</b> 번호는 둘 이상을 전제하는 표기다.',
+  g:{sev:'mid', where:'<code>screen-operation</code>이 1슬라이드=1단계이므로 필연적으로 따라오는 귀결.', why:'“1슬라이드=1단계” 규칙의 시각적 결론인데 명시되지 않아, 단계가 하나인 화면에도 “1”이 붙었다.'}},
+
+ {id:'G10', e:'judge', src:'→ 추가 제안: SKILL.md 핵심규칙 (판단근거 L439·228)',
+  r:'<b>추상 수준이 다른 요소는 같은 카드 레이어에 섞지 않는다</b>(구조 설명 ↔ 실제 예시는 위/아래 별도 층). <b>연관된 주의사항 여러 개는 한 카드에 묶고</b> 번호는 그 안의 읽기 순서로만 쓴다.',
+  g:{sev:'mid', where:'다른 추상 수준을 한 레이어에 두면 겹침·혼동이 생기고, 흩어 놓으면 시각적으로 파편화된다.', why:'“한 슬라이드에 정보 단위 3~6개”라는 <b>양</b>의 규칙은 있지만, 그 단위를 <b>어떻게 묶고 층을 나눌지</b>의 규칙이 없다.'}},
+
+ {id:'G11', e:'judge', src:'→ 추가 제안: kit/charts/ (판단근거 L214·163)',
+  r:'<b><code>containment</code>는 텍스트를 도형 밖 라벨이 아니라 도형 안에 직접 넣는다.</b> <b>단계가 많은 <code>flow</code>는 단계마다 작은 이미지를 넣지 말고 전체를 설명하는 큰 인포그래픽 하나로 표현한다.</b>',
+  g:{sev:'mid', where:'시선이 관계선과 설명 사이를 왕복하지 않게 해야 한다 / 작은 이미지 다수보다 관계 이해에 유리하다.', why:'정보 모양별 <b>표현 힌트</b>는 taxonomy에 있지만, 그 표현을 그릴 때의 배치 원칙이 없다.'}},
+
+ {id:'G12', e:'judge', src:'→ 추가 제안: SKILL.md 핵심규칙 (판단근거 L170·256)',
+  r:'<b>세로로 긴 카드에서 문장이 과도하게 줄바꿈되면 가로 band·낮은 행·넓은 패널로 바꾼다.</b> <b>key-value 성격의 속성 정보는 문단 대신 명시적 키-값 행으로 나열한다.</b>',
+  g:{sev:'mid', where:'체크리스트는 세로 카드보다 한눈에 훑는 낮은 행이 적합하고, 속성은 문단보다 행이 검수하기 쉽다.', why:'“박스를 좁혀 강제 줄바꿈하지 마라”(§5-10)의 <b>해결책</b>이 구도 변경이라는 점이 규칙에 없다. <code>.dl-list</code>가 7회 등장한 것이 이 수요의 증거다.'}},
+
+ {id:'G13', e:'judge', src:'→ 추가 제안: 조립-리듬-불변요소.md (판단근거 L45·77)',
+  r:'<b>같은 구도를 연속으로 써야 할 때는 변주 축 5가지 중 일부를 바꾼다</b> — 이미지 비율 · 설명 방향 · 프레임 종류 · 배경 면 · 내용 밀도.',
+  g:{sev:'mid', where:'골격 반복은 필요해도 복사한 카드처럼 보이면 안 된다.', why:'현행 규칙은 “같은 패밀리 3연속 금지”라는 <b>금지선</b>만 준다. 골격을 유지해야 하는 연속 슬라이드에서 무엇을 바꿔야 하는지는 답하지 않는다.'}},
+
+ {id:'G14', e:'judge', src:'→ 추가 제안: SKILL.md §5 (판단근거 L114·551)',
+  r:'<b>결과물 쇼케이스 슬라이드는 와이어프레임이 아니라 실제 완성물처럼 보이는 전용 레이아웃으로 만든다.</b>',
+  g:{sev:'mid', where:'목적이 설명이 아니라 기대 수준을 끌어올리는 시연이다.', why:'C1(크롬 없는 목업 유형)·A4(목업 내부 하한 예외)와 한 묶음이다. 세 조각이 다 없어서 S39A는 규칙 밖에서 만들어졌다.'}},
+
+ {id:'G15', e:'browser', src:'→ 추가 제안: MEMORY.md (판단근거 L19·543)',
+  r:'<b>이미지와 텍스트가 겹칠 가능성이 있으면 같은 grid track을 공유시키지 말고 별도 열·행에 둔다.</b>',
+  g:{sev:'mid', where:'<code>overflow:hidden</code>으로 숨기지 말고 교차 원인 자체를 제거하라는 판단.', why:'“겹침 0”은 <b>결과</b> 규칙이고, 이건 그 결과를 보장하는 <b>구현법</b>이다. 구현법이 없으면 매번 사후에 실측으로 잡아야 한다.'}},
+
+ {id:'G16', e:'judge', src:'→ 추가 제안: 이미지-디렉션-프롬프트.md · MEMORY.md',
+  r:'<b><code>.asset-slot</code>이 <code>display:grid</code>라 내부 <code>img{height:100%}</code>가 퍼센트 순환 참조로 고유비율에 폴백한다.</b> <code>position:absolute; inset:0</code>으로 그리드 사이징에서 빼내야 figure와 높이가 일치한다.',
+  g:{sev:'mid', where:'이 함정과 회피법이 <code>part-04.html</code> 스타일 블록 <b>주석에만</b> 적혀 있다.', why:'MEMORY에 비슷한 항목(“figure에 고정 높이만 주고 img를 방치”)이 있지만 <code>.asset-slot</code>이 grid라서 생기는 이 구체적 원인은 없다. 이미지 잘림 0(§5-11)을 지키려면 반드시 알아야 하는 사실이다.'}},
+
+ {id:'G17', e:'judge', src:'→ 추가 제안: SKILL.md 핵심규칙',
+  r:'<b>고정 px 그리드 트랙을 쓸 때는 세로 합계 검산을 마크업 주석으로 남긴다.</b>',
+  g:{sev:'low', where:'S39A 스타일 블록에 <code>rows(46+180+58+96+126+34=540) + gap(8×5=40) = 580 ≤ 584</code> 형태의 검산이 실제로 적혀 있다.', why:'세로 예산 계산식(§5-3)은 규칙에 있지만 <b>계산 결과를 남기라</b>는 관행이 없다. 이 주석 덕분에 나중에 값을 바꿀 때 어디가 깨지는지 즉시 알 수 있다 — 좋은 관행인데 1주차에서만 쓰였다.'}},
+]},
+
+{id:'gH', title:'⚠ H. 문서 간 모순 (누락이 아니라 충돌)', note:'서로 다른 규칙 문서가 같은 항목을 다르게 규정한다. 어느 쪽을 따라도 다른 쪽을 어기게 된다.', items:[
+
+ {id:'H1', e:'auto', src:'충돌: 콘텐츠초안-입력형식.md L45 · 토큰-치트시트.md L69 ↔ SKILL.md L63 · MEMORY.md L66 · verify_deck.py L886',
+  r:'<b><code>🗣</code>(안전망 예시)의 목적지가 두 갈래다.</b>',
+  g:{sev:'high',
+     where:'앞의 두 문서는 “<code>🗣</code> → <code>.hint-reveal</code>, 화면 표시 <b>예</b>(기본 접힘)”라고 규정하고, 뒤의 셋은 “학생 덱에 <code>.hint-reveal</code> <b>0</b>”을 요구하며 verify는 발견 시 <b>FAIL</b>시킨다.',
+     why:'현행 집행 기준(verify)대로면 <code>🗣</code>는 발표자 노트로만 가야 하고 <code>.hint-reveal</code>은 학생 덱에서 쓸 수 없다. 앞의 두 문서가 옛 규칙에 남아 있다.'}},
+
+ {id:'H2', e:'judge', src:'충돌: 조립-리듬-불변요소.md L12 ↔ 토큰-치트시트.md L96 · MEMORY.md L46',
+  r:'<b>아젠다가 2열로 넘어가는 기준이 문서마다 다르다.</b>',
+  g:{sev:'high',
+     where:'조립-리듬-불변요소.md는 “<b>4개 초과면</b> <code>an-2col</code> 부여, ≤4는 1열”이라 적고, 치트시트·MEMORY는 “<b>N≤6까지 1열이 기본</b>, <code>an-2col</code>은 <b>7개 이상</b> 오버플로 시 탈출구”라고 적는다. 1주차 덱의 아젠다는 6항목 1열로 <b>새 규칙</b>을 따랐다.',
+     why:'조립-리듬-불변요소.md가 옛 규칙에 남아 있다. 이 파일은 read-path의 <b>필수 읽기</b> 항목이라, 그대로 따르면 6항목 아젠다를 2열로 쪼개 연결선이 끊긴다 — MEMORY가 “반복 오답”으로 기록한 바로 그 실수다.'}},
+
+ {id:'H3', e:'judge', src:'충돌: AGENTS.md · 이미지-스크린샷-배포.md §4 ↔ SKILL.md L99',
+  r:'<b>“코드 시각화 우선”이 원칙인지 아닌지가 문서마다 다르고, 어느 쪽도 강제되지 않는다.</b>',
+  g:{sev:'mid',
+     where:'AGENTS.md는 “이미지보다 코드 시각화를 우선한다”, 배포 문서는 “기본값은 여전히 <code>NO_IMAGE</code>·코드 시각화”라고 하는데, SKILL.md는 “코드 시각화는 유력한 선택지이지 <b>절대 우선 규칙이 아니다</b>”라고 한다. 1주차 실측은 <b>코드 시각화 7 · 이미지 41</b>.',
+     why:'<code>verify_deck</code>의 해당 줄은 값을 재기만 하고 <b>무조건 PASS를 기록</b>하는 정보성 출력이다. 원칙이라 적힌 것이 실제로는 아무것도 강제하지 않으며, 실측 비율은 원칙의 반대 방향이다.'}},
+
+ {id:'H4', e:'auto', src:'정리 대상: verify_deck.py L894-940',
+  r:'<b>폐기된 1주차 덱을 겨냥한 하드코딩 어서션이 검증 스크립트에 남아 있다.</b>',
+  g:{sev:'low',
+     where:'“1주차 학생 덱 72장” · “PART divider 6장” · “도입 S01→S01A→S01B→S01C 순서” 등이 경로(<code>sessions/1주차/강의덱*.html</code>)를 조건으로 걸려 있다.',
+     why:'AGENTS.md 기준 1주차 덱·초안은 사용자 판정으로 폐기됐고 1주차는 자료만 남는다. 대상이 사라진 검사가 남아 있으면 다음 담당자가 이를 현행 계약으로 오해한다.'}},
+]},
+
+];
+
+const GAPS = GAPGROUPS.reduce((a,g)=>a.concat(g.items), []);
+
+/* ── 렌더 ────────────────────────────────────────────────────────── */
+const E_LABEL = {auto:['자동','auto'], browser:['실측','browser'], judge:['판단','judge']};
+const out = document.getElementById('out');
+const q = document.getElementById('q');
+const chipbox = document.getElementById('chips');
+const hits = document.getElementById('hits');
+
+let filter = null;
+
+function allItems(){
+  let n = 0;
+  GROUPS.forEach(g => n += g.items.length);
+  return n;
+}
+
+function renderStats(){
+  let auto=0, br=0, ju=0;
+  GROUPS.forEach(g=>g.items.forEach(i=>{ if(i.e==='auto')auto++; else if(i.e==='browser')br++; else ju++; }));
+  document.getElementById('stats').innerHTML = `
+    <div class="stat"><b>${allItems()}</b><span>명문화된 조건</span></div>
+    <div class="stat is-auto"><b>${auto}</b><span>스크립트가 막는 것</span></div>
+    <div class="stat is-eye"><b>${br}</b><span>브라우저 실측</span></div>
+    <div class="stat"><b>${ju}</b><span>판단 규칙</span></div>
+    <div class="stat is-gap"><b>${GAPS.length}</b><span>규칙에 없는 것 (감사 발견)</span></div>`;
+}
+
+function renderChips(){
+  const short = t => t.replace(/^⚠\s*/,'').split(' —')[0].replace(/^[A-Z]\.\s*/,'');
+  const list = [{k:'all',t:'전체 보기'}]
+    .concat(GROUPS.map(g=>({k:g.id, t:short(g.title)})))
+    .concat([{k:'gap', t:'⚠ 규칙에 없는 것 전체', gap:true}])
+    .concat(GAPGROUPS.map(g=>({k:g.id, t:'⚠ '+short(g.title), gap:true})));
+  chipbox.innerHTML = list.map(c=>
+    `<button class="chip${c.gap?' gap':''}" data-k="${c.k}" aria-pressed="${c.k==='all'}">${c.t}</button>`).join('');
+  chipbox.querySelectorAll('.chip').forEach(b=>b.addEventListener('click',()=>{
+    filter = b.dataset.k === 'all' ? null : b.dataset.k;
+    chipbox.querySelectorAll('.chip').forEach(x=>x.setAttribute('aria-pressed', String(x===b)));
+    render();
+  }));
+}
+
+function hl(text, term){
+  if(!term) return text;
+  const parts = text.split(/(<[^>]*>)/g);
+  const rx = new RegExp('('+term.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi');
+  return parts.map(p => p.startsWith('<') ? p : p.replace(rx,'<mark>$1</mark>')).join('');
+}
+
+function itemHTML(it, term, isGap){
+  const [lab, cls] = E_LABEL[it.e] || E_LABEL.judge;
+  const gapBlock = isGap ? `
+    <div class="gapmeta">
+      <div><span class="k">덱에서 실제로:</span> ${hl(it.g.where, term)}</div>
+      <div><span class="k">왜 규칙이어야 하나:</span> ${hl(it.g.why, term)}</div>
+    </div>` : '';
+  const sev = isGap ? `<span class="sev ${it.g.sev}">${{high:'높음',mid:'보통',low:'낮음'}[it.g.sev]}</span>` : '';
+  return `<article class="item e-${it.e}${isGap?' gap':''}">
+    <span class="id">${it.id}</span>
+    <p class="rule">${hl(it.r, term)}</p>
+    <div class="foot">${sev}<span class="tag ${cls}">${lab}</span><span class="src">${it.src}</span></div>
+    ${gapBlock}
+  </article>`;
+}
+
+function render(){
+  const term = q.value.trim();
+  const rx = term ? new RegExp(term.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'i') : null;
+  const groups = GROUPS.concat(GAPGROUPS.map(g => Object.assign({gap:true}, g)));
+
+  let html = '', shown = 0;
+  groups.forEach(g=>{
+    if(filter && filter !== g.id && !(filter === 'gap' && g.gap)) return;
+    const items = g.items.filter(i => !rx || rx.test(i.r) || rx.test(i.id) || rx.test(i.src)
+      || (i.g && (rx.test(i.g.where) || rx.test(i.g.why))));
+    if(!items.length) return;
+    shown += items.length;
+    html += `<section class="grp${g.gap?' gapsec':''}" id="g-${g.id}">
+      <h2>${g.title}<span class="n">${items.length}항목</span></h2>
+      <p class="note">${g.note}</p>
+      ${items.map(i=>itemHTML(i, term, !!g.gap)).join('')}
+    </section>`;
+  });
+  out.innerHTML = html || `<p class="empty">일치하는 조건이 없습니다.</p>`;
+  hits.textContent = term || filter ? `${shown}개 표시 중 (전체 ${allItems()+GAPS.length})` : `전체 ${allItems()+GAPS.length}개 조건`;
+}
+
+q.addEventListener('input', render);
+renderStats(); renderChips(); render();
+</script>
+</body>
+</html>

@@ -715,14 +715,7 @@
 .result-check-grid p { margin:0; color:var(--gray-700); font-size:20px; line-height:1.45; }
 .result-check-slide .s-full > .s-body { margin:22px 0 0; text-align:center; }
 
-.slide[data-slide="S41"] .s-full,
 .slide[data-slide="S42"] .s-full { right:404px; bottom:50px; display:flex; flex-direction:column; }
-.slide[data-slide="S41"] .dl-rows { flex:1; min-height:0; margin-top:20px; gap:12px; }
-.slide[data-slide="S41"] .dl-row { align-items:center; padding:17px 20px; }
-.slide[data-slide="S41"] .dl-term { flex-basis:150px; color:var(--blue); font-size:23px; }
-.slide[data-slide="S41"] .dl-row .s-body { font-size:20px; }
-.slide[data-slide="S41"] .s-full > .s-body { margin:18px 0 0; font-size:21px; }
-.slide[data-slide="S41"] .asset-slot--support,
 .slide[data-slide="S42"] .asset-slot--support { right:42px; top:205px; width:330px; height:340px; max-width:none; max-height:none; }
 .slide[data-slide="S42"] .cc-grid { flex:1; min-height:0; grid-template-columns:1fr 1fr; gap:16px; margin:22px 0 0; }
 .slide[data-slide="S42"] .cc-side { min-height:0; padding:22px; }
@@ -908,8 +901,6 @@
 .project-tree-copy p,
 .browser-result-body main > p:not(.browser-kicker),
 .result-check-grid p,
-.slide[data-slide="S41"] .dl-row .s-body,
-.slide[data-slide="S41"] .s-full > .s-body,
 .slide[data-slide="S42"] .cc-side li,
 .slide[data-slide="S42"] .cc-full > .s-body,
 .slide:is([data-slide="S44"],[data-slide="S46"],[data-slide="S49"],[data-slide="S50"],[data-slide="S52"],[data-slide="S53"]) .dl-row .s-body,
@@ -984,7 +975,6 @@
 .dark-terminal > p { padding-top:14px; line-height:1.4; }
 .project-tree-copy p { padding-block:14px; }
 .result-check-grid .card { padding-block:22px; }
-.slide[data-slide="S41"] .dl-row { padding-block:13px; }
 .slide[data-slide="S42"] .cc-side { padding-block:20px; }
 .slide:is([data-slide="S44"],[data-slide="S46"],[data-slide="S49"],[data-slide="S50"],[data-slide="S52"],[data-slide="S53"]) .dl-row { padding-block:13px; }
 .change-scope-item { padding-block:16px; }
@@ -1020,7 +1010,6 @@
 .slide[data-slide="24"] .verify-file-layout {
   top:224px;
 }
-.slide[data-slide="22"] .plan-mode-layout { top:222px; }
 .slide[data-slide="S38"] .project-tree-layout { top:224px; }
 .slide[data-slide="S39"] .browser-result-frame { top:224px; }
 
@@ -1271,12 +1260,6 @@
 .slide[data-slide="05"] .journey-week-image img { position:absolute; inset:0; display:block; width:100%; height:100%; object-fit:contain; }
 .slide[data-slide="05"] .journey-week-copy { padding-top:26px; }
 
-/* 10: 좌우 박스 내부가 상단에 몰리던 문제 — 제목 아래 여백 확대 + 항목 3개 균등 분산. scope-note 삭제로 생긴 여유를 scope-layout이 흡수하되 666px 하한은 유지 */
-.slide[data-slide="10"] .scope-layout { max-height:410px; }
-.slide[data-slide="10"] .scope-copy article { display:flex; flex-direction:column; justify-content:space-between; }
-.slide[data-slide="10"] .scope-copy h3 { margin:0 0 26px; }
-.slide[data-slide="10"] .scope-copy p { margin:0; }
-
 /* S10B: 실측 결과 .lifecycle-infographic-body가 오른쪽 figure의 퍼센트 높이(순환 참조로 원본 이미지 비율에 맞춰 auto 산정)를 따라가며 720px를 넘겨 리스트 하단이 잘리고 있었다(잘림은 3·4번 문구 추가 이전부터 존재). 행에 명시 높이를 줘 순환을 끊는다 */
 /* 3행(프론트엔드)만 본문이 3줄(58px)인데 413/7=59px 행에 갇혀 하단 9px이 잘렸다.
    line-height는 이미 1.14까지 조여 더 줄일 여지가 없으므로(1282~1283행) 세로 예산을 늘린다:
@@ -1326,62 +1309,6 @@
 /* ---------- part-04 ---------- */
 [data-slide="S38"] .project-tree-layout{ bottom:60px; }
 [data-slide="S38"] .path-tail{ white-space:nowrap; }
-
-/* S39A — completion-goal showcase (new 49p). Namespaced pg-* so 9p's .portfolio-* rules are untouched.
-   Every grid row below is a fixed px track; each row's direct child gets min-height:0 so content can
-   never balloon the track (the same overflow class of bug fixed on S38's project-tree grid). */
-[data-slide="S39A"] .pg-body{ position:absolute; left:64px; right:64px; top:228px; bottom:58px; display:flex; flex-direction:column; gap:14px; }
-[data-slide="S39A"] .pg-frame{ position:relative; flex:1 1 auto; min-height:0; overflow:hidden; border:2px solid var(--ink); border-radius:var(--r-lg); background:var(--paper); box-shadow:var(--shadow-lg); }
-[data-slide="S39A"] .pg-bar{ height:36px; display:flex; align-items:center; gap:14px; padding:0 18px; background:var(--ink); color:var(--white); font-size:13px; }
-[data-slide="S39A"] .pg-dots{ display:flex; gap:7px; }
-[data-slide="S39A"] .pg-dots i{ width:9px; height:9px; border-radius:50%; background:var(--white); opacity:.7; }
-[data-slide="S39A"] .pg-url{ font-family:var(--font-mono); }
-/* 세로 합계 = 트랙 284 + gap 4×8 32 + padding 32 = 348 ≤ clientHeight 349 (gap 9px면 352로 3px 초과) */
-[data-slide="S39A"] .pg-site{ position:relative; isolation:isolate; height:calc(100% - 36px); overflow:hidden; padding:16px; gap:8px; display:grid; grid-template-rows:40px 96px 64px 58px 26px; background:var(--paper); }
-[data-slide="S39A"] .pg-bg{ position:absolute; inset:0; z-index:0; width:auto; height:auto; margin:0; min-width:0; min-height:0; max-width:none; max-height:none; }
-/* .asset-slot은 display:grid라 img의 height:100%가 퍼센트 순환 참조로 고유비율(765px)에 폴백한다
-   — figure(349px)를 벗어나 overflow:hidden에 가려질 뿐 실제로는 캔버스를 이탈한다.
-   absolute+inset:0으로 그리드 사이징에서 빼내 figure와 높이를 일치시킨다(8p journey-week-image와 동일 해법). */
-[data-slide="S39A"] .pg-bg img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
-[data-slide="S39A"] .pg-nav,
-[data-slide="S39A"] .pg-hero,
-[data-slide="S39A"] .pg-details,
-[data-slide="S39A"] .pg-projects,
-[data-slide="S39A"] .pg-footer{ position:relative; z-index:1; min-height:0; overflow:hidden; }
-[data-slide="S39A"] .pg-nav{ display:flex; align-items:center; justify-content:space-between; padding:0 20px; border-radius:10px; color:var(--ink); border:1px solid var(--glass-line); background:var(--glass-control); box-shadow:inset 0 1px 0 var(--glass-highlight), inset 0 -1px 0 var(--glass-lowlight), 0 6px 16px var(--glass-lowlight); -webkit-backdrop-filter:blur(14px) saturate(1.15); backdrop-filter:blur(14px) saturate(1.15); }
-[data-slide="S39A"] .pg-nav b{ font-size:16px; letter-spacing:.08em; }
-[data-slide="S39A"] .pg-nav b span{ color:var(--coral); }
-[data-slide="S39A"] .pg-nav div{ display:flex; gap:16px; color:var(--gray-700); font-size:11px; font-weight:850; }
-[data-slide="S39A"] .pg-hero{ display:grid; grid-template-columns:minmax(0,1.4fr) minmax(150px,.6fr); gap:14px; overflow:visible; background:transparent; }
-[data-slide="S39A"] .pg-hero-copy{ min-height:0; overflow:hidden; align-self:center; padding:12px 18px; border-radius:12px; border:1px solid var(--glass-line); background:var(--glass-control); box-shadow:inset 0 1px 0 var(--glass-highlight), inset 0 -1px 0 var(--glass-lowlight), 0 6px 16px var(--glass-lowlight); -webkit-backdrop-filter:blur(14px) saturate(1.15); backdrop-filter:blur(14px) saturate(1.15); }
-[data-slide="S39A"] .pg-hero-copy > p{ margin:0; color:var(--blue); font-size:11px; font-weight:900; letter-spacing:.13em; }
-[data-slide="S39A"] .pg-hero-copy h3{ margin:6px 0 5px; color:var(--ink); font-size:21px; line-height:1.18; letter-spacing:-.03em; }
-[data-slide="S39A"] .pg-hero-copy h3 em{ color:var(--mint-deep); font-style:normal; }
-[data-slide="S39A"] .pg-hero-copy > span{ display:block; color:var(--gray-700); font-size:12px; }
-[data-slide="S39A"] .pg-portrait{ position:relative; overflow:hidden; background:transparent; }
-[data-slide="S39A"] .pg-sun{ position:absolute; right:16px; top:12px; width:36px; height:36px; border-radius:50%; background:var(--mint); box-shadow:0 0 0 5px var(--glass-control); }
-[data-slide="S39A"] .pg-face{ position:absolute; left:50%; top:26px; width:50px; height:50px; transform:translateX(-50%); border-radius:50%; background:var(--glass-thick); border:1px solid var(--glass-highlight); box-shadow:inset 0 0 0 7px var(--mint-soft); }
-[data-slide="S39A"] .pg-body-shape{ position:absolute; left:50%; bottom:10px; width:82px; height:22px; transform:translateX(-50%); background:var(--mint-deep); box-shadow:0 -5px 0 var(--glass-line), 0 -10px 0 var(--mint); }
-[data-slide="S39A"] .pg-portrait small{ position:absolute; left:10px; bottom:6px; z-index:2; color:var(--ink); font-size:8px; font-weight:900; letter-spacing:.06em; line-height:1.2; }
-[data-slide="S39A"] .pg-details{ display:grid; grid-template-columns:1.25fr .75fr; gap:8px; }
-[data-slide="S39A"] .pg-about,
-[data-slide="S39A"] .pg-interest{ min-height:0; overflow:hidden; padding:8px 14px; border-radius:10px; border:1px solid var(--glass-line); background:var(--glass-control); box-shadow:inset 0 1px 0 var(--glass-highlight), inset 0 -1px 0 var(--glass-lowlight), 0 6px 16px var(--glass-lowlight); -webkit-backdrop-filter:blur(14px) saturate(1.15); backdrop-filter:blur(14px) saturate(1.15); }
-[data-slide="S39A"] .pg-details small,
-[data-slide="S39A"] .pg-project small{ color:var(--blue); font-size:9px; font-weight:900; letter-spacing:.1em; line-height:1; }
-[data-slide="S39A"] .pg-about p{ margin:5px 0 0; color:var(--gray-700); font-size:12px; line-height:1.4; }
-[data-slide="S39A"] .pg-interest > div{ display:flex; flex-wrap:wrap; gap:5px; margin-top:5px; }
-[data-slide="S39A"] .pg-interest span{ padding:4px 8px; border-radius:var(--r-pill); background:var(--glass-thick); border:1px solid var(--glass-line); color:var(--mint-deep); font-size:10px; font-weight:800; }
-[data-slide="S39A"] .pg-projects{ display:grid; }
-[data-slide="S39A"] .pg-project{ min-height:0; overflow:hidden; display:grid; grid-template-columns:1fr 96px 66px; align-items:center; gap:12px; padding:9px 16px; border-radius:10px; border:1px solid var(--ink); background:var(--ink); box-shadow:0 6px 16px var(--glass-lowlight); }
-[data-slide="S39A"] .pg-project h4{ margin:3px 0 0; color:var(--white); font-size:13px; line-height:1.22; }
-[data-slide="S39A"] .pg-preview{ height:38px; display:flex; align-items:flex-end; gap:5px; padding:6px; border:1px solid var(--glass-line); border-radius:6px; background:var(--blue-panel); }
-[data-slide="S39A"] .pg-preview span{ flex:1; background:var(--mint); }
-[data-slide="S39A"] .pg-preview span:nth-child(2){ background:var(--mint-deep); height:90%; }
-[data-slide="S39A"] .pg-preview span:nth-child(1){ height:40%; }
-[data-slide="S39A"] .pg-preview span:nth-child(3){ height:65%; }
-[data-slide="S39A"] .pg-project > b{ color:var(--white); font-size:9px; }
-[data-slide="S39A"] .pg-footer{ display:flex; align-items:center; justify-content:space-between; padding:0 16px; color:var(--ink); font-weight:800; font-size:10px; letter-spacing:.08em; }
-[data-slide="S39A"] .pg-bottom-note{ flex:0 0 auto; margin:0; color:var(--gray-700); font-size:22px; line-height:1.4; text-align:center; }
 
 /* ---------- part-05 ---------- */
 /* S45(54p): 캐릭터아트 가로 확대, 좌측 스텝박스 폭 축소로 여유 확보. 공유 :is(S45,S56) 규칙은 건드리지 않고 단독 셀렉터로 동일 특이도(0,3,0) 뒤에서 덮어씀. */
