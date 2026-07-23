@@ -647,6 +647,74 @@ def section_correlation(stats):
         print("     사용 금지 표현: '워커 고유 시작 비용', '전체 비용의 NN%'")
 
 
+def percentile(sorted_vals, q):
+    """선형보간 백분위수. numpy 없이 계산한다."""
+    if not sorted_vals:
+        return 0.0
+    if len(sorted_vals) == 1:
+        return float(sorted_vals[0])
+    pos = (len(sorted_vals) - 1) * q
+    lo = int(math.floor(pos))
+    hi = min(lo + 1, len(sorted_vals) - 1)
+    frac = pos - lo
+    return sorted_vals[lo] * (1 - frac) + sorted_vals[hi] * frac
+
+
+def section_stoplines(stats):
+    """§7.4 비상 중단선 — 과거 워커 분포에서 P95와 max를 모두 계산한다.
+
+    ⚠️ 비상 중단선은 **최종 정책 예산이 아니다.** 폭주 방지용 브레이크다.
+    ⚠️ 과거 분포는 **워커 1명이 청크 여러 개를 담당한** 실행에서 나왔다.
+       청크 1개 단위 실행에 그대로 적용하면 느슨하다 — 그래서 브레이크로만 쓴다.
+    """
+    hr("K. 비상 중단선 산정 (§7.4) — 정책 예산 아님")
+    ws = [s for s in stats if s.kind == "worker"]
+    if not ws:
+        print("워커 없음 — 생략")
+        return {}
+    print(f"표본: 과거 워커 {len(ws)}개 (각 워커가 청크 여러 개를 담당한 실행)")
+    print("규칙: P95와 max를 모두 계산 → 더 보수적(낮은) 값 사용.")
+    print("      단 n이 작아 P95가 불안정하면 max를 사용한다(임의 여유 배수 금지).")
+    print()
+
+    metrics = {
+        "agentic turns": [s.turns for s in ws],
+        "WebSearch": [s.tools.get("WebSearch", 0) for s in ws],
+        "WebFetch": [s.tools.get("WebFetch", 0) for s in ws],
+        "처리 토큰": [s.total for s in ws],
+        "동일 URL 재호출": [
+            len(s.fetch_urls) - len({canon_url(u) for u in s.fetch_urls})
+            for s in ws],
+    }
+    n = len(ws)
+    unstable = n < 30      # P95 안정성 기준
+    print(f"{'지표':18}{'min':>10}{'median':>11}{'P95':>13}{'max':>13}{'채택':>13}")
+    print("-" * 78)
+    out = {}
+    for name, vals in metrics.items():
+        sv = sorted(vals)
+        p95 = percentile(sv, 0.95)
+        mx = sv[-1]
+        chosen = mx if unstable else min(p95, mx)
+        out[name] = dict(min=sv[0], median=statistics.median(sv),
+                         p95=p95, max=mx, chosen=chosen)
+        print(f"{name:18}{sv[0]:>10,}{statistics.median(sv):>11,.0f}"
+              f"{p95:>13,.1f}{mx:>13,}{chosen:>13,.0f}")
+    print()
+    print(f"n={n} < 30 → **P95 불안정으로 판단, historical max를 채택**"
+          if unstable else f"n={n} → P95 채택")
+    print()
+    print("⚠️ G8 최소 관점 확보 하한과의 관계")
+    print("   P0는 A + (B/C/D 중 2) = 최소 3개 관점이 필요하고, 관점마다 최소 1개")
+    print("   출처를 확인해야 하므로 **fetch 하한은 청크당 최소 3회**다.")
+    print(f"   채택된 fetch 중단선 {out['WebFetch']['chosen']:.0f}회는 이 하한보다 크므로 "
+          f"G8 달성을 막지 않는다.")
+    print()
+    print("⚠️ 중단선 도달 시 그 표본은 `right-censored`로 기록한다.")
+    print("   완료값·실패값의 평균에 정상 표본처럼 넣지 않는다.")
+    return out
+
+
 def section_calibration(archive_path):
     """캘리브레이션 입력: P0/P1/P2별 조사량, 채택률, 접근 실패율, 내용 불일치율."""
     hr("I. 캘리브레이션 입력 (Phase 3 예산 산정 근거)")
@@ -832,6 +900,8 @@ def main():
     ap.add_argument("--archive", default=DEFAULT_ARCHIVE)
     ap.add_argument("--no-baseline", action="store_true",
                     help="잠정 기준선 대조 생략")
+    ap.add_argument("--stoplines", action="store_true",
+                    help="§7.4 비상 중단선 산정 절을 출력한다")
     ap.add_argument("--scope", choices=["all", "main", "worker"], default="all",
                     help="집계 범위를 명시적으로 선택 (기본 all). "
                          "main/worker 선택 시 기준선 대조는 자동 생략된다")
@@ -901,6 +971,8 @@ def main():
     url = section_urls(stats)
     ret = section_returns(stats)
     section_correlation(stats)
+    if args.stoplines:
+        section_stoplines(stats)
     section_calibration(args.archive)
 
     if not args.no_baseline:
