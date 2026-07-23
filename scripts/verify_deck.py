@@ -911,7 +911,8 @@ def main():
             #   아첨 방지 요청문, 판단은 사람, "해.", 반복 수정 7장 신설로 85장.
             # 2026-07-23 3차: PART 3 간지 뒤에 S3MAP 흐름 안내를 추가해 86장.
             # 2026-07-24 4차: S3HUM 뒤에 도입 화면을 되짚는 S3ASK를 추가해 87장.
-            expected_n, expected_dividers = 87, 6
+            # 2026-07-24 5차: S28A 성공 기준 슬라이드를 사용자 요청으로 삭제해 86장.
+            expected_n, expected_dividers = 86, 6
             intro_expected = ['S00', 'S01', 'S01A', 'S01B', 'S01C']
         else:
             # 배포본(강의덱_배포): 2026-07-21) 48p(S39) 뒤에 완성 목표 쇼케이스 S39A를 추가해 71 → 72장.
@@ -952,7 +953,7 @@ def main():
         # (`.dark-terminal.terminal-white-copy`)을 모두 허용하되, 둘 중 한 계약은 완결돼야 한다.
         terminal_contract_errors = []
         slide_by_id = {el.attrs.get('data-slide'): el for el in ordered_slides}
-        for target_id in ('S28A', '32'):
+        for target_id in ('32',):
             target = slide_by_id.get(target_id)
             if target is None:
                 terminal_contract_errors.append(f'{target_id}: 슬라이드 없음')
@@ -976,7 +977,7 @@ def main():
             if not white_copy_ok:
                 terminal_contract_errors.append(f'{target_id}: white-copy contract class 없음')
         chk(not terminal_contract_errors,
-            "S28A·32 검정 터미널 dark/white-copy 계약",
+            "32 검정 터미널 dark/white-copy 계약",
             "검정 터미널 계약 위반: " + " | ".join(terminal_contract_errors))
 
         last_slide = ordered_slides[-1] if ordered_slides else None
