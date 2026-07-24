@@ -390,9 +390,43 @@ def _hex_only_hits(value):
     return list(_HEX_COLOR_RE.findall(_strip_urls_and_vars(value)))
 
 
-def find_color_violations(css_text, *, hex_only=False):
+# 번들(배포본) 전용 예외 — 편집본에는 적용하지 않는다.
+#
+# 배포본은 kit CSS를 덱 안으로 인라인하므로, 링크 상태에서는 [kit] 검사(결정 3: hex만 측정,
+# rgba·명명색은 범위 밖)로 통과하던 kit의 alpha 색(그림자·글래스 내비 테두리)이
+# 더 엄격한 덱 검사에 걸린다. 같은 CSS가 링크냐 인라인이냐로 판정이 갈리는 오탐이다.
+# 그래서 번들에서는 "kit CSS에 그대로 존재하는 선언"의 rgba/hsla만 면제한다.
+# 덱이 새로 쓴 rgba는 kit에 없으므로 계속 FAIL이고, kit 안의 raw hex도 [kit] 검사가 계속 잡는다.
+
+
+def _kit_alpha_declarations():
+    """kit/styles/*.css에서 rgba()/hsla()를 쓰는 (속성, 값) 선언 집합."""
+    kit_dir = Path(__file__).resolve().parent.parent / 'kit' / 'styles'
+    out = set()
+    if not kit_dir.is_dir():
+        return out
+    for path in sorted(kit_dir.glob('*.css')):
+        try:
+            css = path.read_text(encoding='utf-8')
+        except (OSError, UnicodeError):
+            continue
+        for _sel, decls, _body, _at in iter_rules(_strip_css_comments(css)):
+            for prop, val in decls.items():
+                if _FUNC_COLOR_RE.search(_strip_urls_and_vars(val)):
+                    out.add((prop.strip().lower(), ' '.join(val.split())))
+    return out
+
+# 번들에서 허용되는 그라디언트 — 사용자가 의도를 확인한 디자인만 등재한다(2026-07-24).
+# .human-quote-stage: 42p 인용구 무대 배경(커밋 02e06c0 "refine part 3 emphasis").
+# 새 그라디언트는 여기 없으면 그대로 FAIL이므로 flat-fill 원칙은 계속 강제된다.
+_BUNDLE_APPROVED_GRADIENT_SELECTORS = frozenset({'.human-quote-stage'})
+
+
+def find_color_violations(css_text, *, hex_only=False, kit_alpha_exempt=None):
     """CSS 텍스트(주석 제거·규칙 단위)에서 raw 색 리터럴 사용을 찾는다.
-    :root 블록과 커스텀 프로퍼티 정의 줄(--name: ...)은 토큰 정의이므로 검사 대상이 아니다."""
+    :root 블록과 커스텀 프로퍼티 정의 줄(--name: ...)은 토큰 정의이므로 검사 대상이 아니다.
+    kit_alpha_exempt에 (속성, 값) 집합을 주면 그 선언의 rgba/hsla만 면제한다
+    (번들 전용 — 위 주석 참고. raw hex·명명색은 면제하지 않는다)."""
     hits = []
     scan = _hex_only_hits if hex_only else _color_literal_hits
     for selector_group, decls, _body, _at in iter_rules(css_text):
@@ -402,7 +436,10 @@ def find_color_violations(css_text, *, hex_only=False):
         for prop, val in decls.items():
             if prop.startswith('--'):
                 continue  # 커스텀 프로퍼티 정의(토큰) 줄은 검사 대상이 아니다
-            hits.extend(scan(val))
+            found = scan(val)
+            if kit_alpha_exempt and (prop.strip().lower(), ' '.join(val.split())) in kit_alpha_exempt:
+                found = [h for h in found if h != 'rgba()/hsla()']
+            hits.extend(found)
     return hits
 
 
@@ -926,8 +963,9 @@ def main():
             intro_expected = ['S00', 'S01', 'S01A', 'S01B', 'S01C']
         else:
             # 배포본(강의덱_배포): 2026-07-21) 48p(S39) 뒤에 완성 목표 쇼케이스 S39A를 추가해 71 → 72장.
-            expected_n, expected_dividers = 72, 6
-            intro_expected = ['S01', 'S01A', 'S01B', 'S01C']
+            # 2026-07-24: 편집본을 inline_deck.py로 재빌드해 편집본과 동일한 75장·S00 표지 포함.
+            expected_n, expected_dividers = 75, 6
+            intro_expected = ['S00', 'S01', 'S01A', 'S01B', 'S01C']
 
         chk(n == expected_n,
             f"1주차 학생 덱({deck_file.stem}) 슬라이드 {expected_n}장",
@@ -1153,8 +1191,13 @@ def main():
     if bundle.raw_byte_count == 0:
         results.append(("WARN", "덱 CSS를 0바이트 읽음 — CSS 검사 미수행"))
     else:
+        # 배포본(번들)은 kit CSS까지 덱 안으로 인라인되므로, 링크 상태와 판정이 갈리는
+        # kit 유래 alpha 색·승인된 그라디언트만 면제한다(위 주석에 근거 기재).
+        is_bundle = Path(a.deck).stem.endswith('_배포')
+        kit_alpha_exempt = _kit_alpha_declarations() if is_bundle else None
+
         # ── raw #hex · rgba()/hsl() · CSS 명명색: CSS 규칙 + style=(따옴표 무관) + SVG fill=/stroke= ──
-        color_hits = find_color_violations(bundle.deck_inline)
+        color_hits = find_color_violations(bundle.deck_inline, kit_alpha_exempt=kit_alpha_exempt)
         for _tag, decls in style_attr_decls:
             for prop, val in decls.items():
                 if not prop.startswith('--'):
@@ -1166,7 +1209,19 @@ def main():
             f"raw #hex/rgba·hsl()/명명색 {len(color_hits)}건({sorted(set(map(str, color_hits)))[:6]}) — var(--token)로 교체")
 
         # ── 덱 자체 <style>/인라인 style 그라디언트 금지 (flat-fill 원칙) ──
-        dgrad = len(re.findall(r'\b(?:linear|radial|conic)-gradient', bundle.deck_inline))
+        _grad_re = re.compile(r'\b(?:linear|radial|conic)-gradient')
+        if is_bundle:
+            # 승인 선택자만 빼고 규칙 단위로 다시 센다(미등재 그라디언트는 그대로 FAIL).
+            dgrad = 0
+            for selector_group, decls, _body, _at in iter_rules(bundle.deck_inline):
+                selectors = {s.strip() for s in selector_group.split(',') if s.strip()}
+                if selectors & _BUNDLE_APPROVED_GRADIENT_SELECTORS:
+                    continue
+                for prop, val in decls.items():
+                    if not prop.startswith('--'):
+                        dgrad += len(_grad_re.findall(val))
+        else:
+            dgrad = len(_grad_re.findall(bundle.deck_inline))
         for _tag, decls in style_attr_decls:
             for val in decls.values():
                 dgrad += len(re.findall(r'\b(?:linear|radial|conic)-gradient', val))
