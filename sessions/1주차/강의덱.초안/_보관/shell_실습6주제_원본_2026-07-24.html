@@ -26,7 +26,9 @@
     display:flex; gap:8px; }
   [data-slide="S00"] .cover-week{ flex:1 1 0; background:var(--white); border:1px solid var(--blue-line-strong);
     border-radius:var(--r-pill); padding:9px 12px; box-shadow:var(--shadow-sm); }
+  [data-slide="S00"] .cover-week:first-child{ background:var(--mint-soft); border-color:var(--mint-line); }
   [data-slide="S00"] .cover-week b{ display:inline; font-size:18px; font-weight:900; color:var(--blue); margin:0 5px 0 0; }
+  [data-slide="S00"] .cover-week:first-child b{ color:var(--mint-deep); }
   [data-slide="S00"] .cover-week span{ display:inline; font-size:16px; font-weight:750; color:var(--gray-700); line-height:1.25; }
   [data-slide="S00"] .s00-hero{ position:absolute; right:0; top:78px; bottom:auto; z-index:2; width:1100px; height:570px;
     max-width:none; max-height:none; margin:0; overflow:visible; pointer-events:none; }
@@ -52,42 +54,41 @@
   [data-slide="X00"] .x-cond{ background:var(--blue-soft); border:1px solid var(--blue-line); border-radius:var(--r-md);
     padding:8px 14px; font-size:22px; line-height:1.28; color:var(--ink); font-weight:600; }
 
-  /* X01 메인 실습 — 할 일 목록 핵심 4(2×2 카드) + 확인 + 나눠요청 */
-  [data-slide="X01"] .s-full{ bottom:54px; display:flex; flex-direction:column; }
-  [data-slide="X01"] .s-title{ font-size:30px; line-height:1.24; margin:2px 0 0; }
-  [data-slide="X01"] .todo-lead{ margin:9px 0 0; font-size:22px; line-height:1.32; color:var(--ink); font-weight:650; }
-  [data-slide="X01"] .todo-core{ display:grid; grid-template-columns:repeat(2,1fr); gap:12px 16px; margin:12px 0 0; }
-  [data-slide="X01"] .tc-card{ display:flex; align-items:center; gap:14px; padding:12px 18px;
-    background:var(--blue-soft); border:1px solid var(--blue-line); border-radius:var(--r-md); box-shadow:none; }
-  [data-slide="X01"] .tc-n{ flex:0 0 auto; width:34px; height:34px; border-radius:50%;
-    background:var(--blue); color:var(--white); font-size:19px; font-weight:800;
-    display:flex; align-items:center; justify-content:center; }
-  [data-slide="X01"] .tc-body b{ display:block; font-size:22px; font-weight:800; color:var(--ink); margin:0 0 2px; }
-  [data-slide="X01"] .tc-body p{ margin:0; font-size:22px; line-height:1.28; color:var(--gray-700); }
-  [data-slide="X01"] .x-verify-band{ margin:12px 0 0; font-size:22px; line-height:1.4; }
-  [data-slide="X01"] .x-verify-band .lead{ font-size:22px; }
-  [data-slide="X01"] .x-flow-label{ margin:10px 0 5px; font-size:19px; font-weight:800; color:var(--blue); letter-spacing:.01em; }
-  [data-slide="X01"] .x-flow{ display:flex; align-items:center; gap:6px; width:100%; margin:0; }
-  [data-slide="X01"] .x-flow span{ flex:1 1 auto; text-align:center; border-radius:999px; padding:6px 8px;
-    background:var(--blue-soft); border:1px solid var(--blue-line); color:var(--blue); font-size:22px; font-weight:800; line-height:1.2; }
-  [data-slide="X01"] .x-flow b{ flex:0 0 auto; color:var(--blue); font-size:22px; font-weight:800; }
-
-  /* X02 추가 도전 — ★ 기본 / ★★ 도전 두 단 + 안내 노트 */
-  [data-slide="X02"] .s-full{ bottom:54px; display:flex; flex-direction:column; }
-  [data-slide="X02"] .s-title{ font-size:30px; line-height:1.24; margin:2px 0 0; }
-  [data-slide="X02"] .te-tiers{ display:grid; grid-template-columns:repeat(2,1fr); gap:16px; margin:16px 0 0; }
-  [data-slide="X02"] .te-tier{ background:var(--white); border:1px solid var(--blue-line-strong);
-    border-radius:var(--r-md); padding:14px 18px 16px; }
-  [data-slide="X02"] .te-tier.is-hard{ background:var(--mint-soft); border-color:var(--mint-line); }
-  [data-slide="X02"] .te-head{ margin:0 0 10px; font-size:20px; font-weight:800; color:var(--blue); }
-  [data-slide="X02"] .te-tier.is-hard .te-head{ color:var(--mint-deep); }
-  [data-slide="X02"] .te-list{ display:flex; flex-direction:column; gap:9px; }
-  [data-slide="X02"] .te-list p{ margin:0; position:relative; padding-left:20px; font-size:22px; line-height:1.3; color:var(--gray-700); }
-  [data-slide="X02"] .te-list p::before{ content:"+"; position:absolute; left:2px; top:0; color:var(--blue); font-weight:800; }
-  [data-slide="X02"] .te-tier.is-hard .te-list p::before{ color:var(--mint-deep); }
-  [data-slide="X02"] .te-note{ margin:16px 0 0; padding:12px 18px; font-size:22px; line-height:1.35;
-    background:var(--blue-soft); border:1px solid var(--blue-line); border-radius:var(--r-md); color:var(--ink); font-weight:600; }
-  [data-slide="X02"] .te-note b{ color:var(--blue); font-weight:800; }
+  /* X01~X06 실습 주제 6장 — 본문·목록·캡션 전부 22px 이상, 3열→2열 재배치 */
+  :is([data-slide="X01"],[data-slide="X02"],[data-slide="X03"],[data-slide="X04"],[data-slide="X05"],[data-slide="X06"]) .s-title{
+    font-size:30px; line-height:1.24; margin:2px 0 0; }
+  [data-slide="X01"] .grid-2, [data-slide="X04"] .grid-2{ margin-top:14px; }
+  [data-slide="X01"] .card, [data-slide="X04"] .card{ padding:16px 20px; }
+  [data-slide="X01"] .card h3, [data-slide="X04"] .card h3{ margin:0 0 8px; font-size:22px; font-weight:800; color:var(--ink); }
+  [data-slide="X01"] .x-list, [data-slide="X04"] .x-list{ margin:0; padding:0; list-style:none;
+    display:flex; flex-direction:column; gap:6px; }
+  [data-slide="X01"] .x-list li, [data-slide="X04"] .x-list li{ position:relative; padding-left:18px;
+    font-size:22px; line-height:1.32; color:var(--gray-700); }
+  [data-slide="X01"] .x-list li::before, [data-slide="X04"] .x-list li::before{ content:"·"; position:absolute;
+    left:2px; top:0; color:var(--blue); font-weight:800; }
+  [data-slide="X01"] .x-verify-band, [data-slide="X04"] .x-verify-band{ margin:14px 0 0; font-size:22px; line-height:1.4; }
+  [data-slide="X01"] .x-verify-band .lead, [data-slide="X04"] .x-verify-band .lead{ font-size:22px; }
+  [data-slide="X02"] .dl-row, [data-slide="X05"] .dl-row{ padding:11px 20px; }
+  [data-slide="X03"] .compare2, [data-slide="X06"] .compare2{ grid-template-columns:repeat(3,1fr); gap:16px; margin:14px 0; }
+  [data-slide="X03"] .cmp, [data-slide="X06"] .cmp{ padding:18px 18px 16px; }
+  [data-slide="X03"] .cmp h3, [data-slide="X06"] .cmp h3{ font-size:22px; }
+  [data-slide="X03"] .cmp-lines, [data-slide="X06"] .cmp-lines{ gap:8px; }
+  [data-slide="X03"] .cmp-lines p, [data-slide="X06"] .cmp-lines p{ font-size:22px; line-height:1.3; }
+  [data-slide="X02"] .card.surface.x-verify, [data-slide="X05"] .card.surface.x-verify{
+    background:var(--mint-soft); border-color:var(--mint-line); }
+  [data-slide="X02"] .card.surface.x-verify .dl-term, [data-slide="X05"] .card.surface.x-verify .dl-term{ color:var(--mint-deep); }
+  [data-slide="X03"] .cmp.x-verify, [data-slide="X06"] .cmp.x-verify{ background:var(--mint-soft); border-color:var(--mint); }
+  [data-slide="X03"] .cmp.x-verify h3, [data-slide="X06"] .cmp.x-verify h3{ color:var(--mint-deep); }
+  :is([data-slide="X01"],[data-slide="X02"],[data-slide="X03"],[data-slide="X04"],[data-slide="X05"],[data-slide="X06"]) .x-flow-label{
+    margin:9px 0 5px; font-size:19px; font-weight:800; color:var(--blue); letter-spacing:.01em; }
+  :is([data-slide="X01"],[data-slide="X02"],[data-slide="X03"],[data-slide="X04"],[data-slide="X05"],[data-slide="X06"]) .x-flow{
+    display:flex; align-items:center; gap:6px; width:100%; margin:0; }
+  :is([data-slide="X01"],[data-slide="X02"],[data-slide="X03"],[data-slide="X04"],[data-slide="X05"],[data-slide="X06"]) .x-flow span{
+    flex:1 1 auto; text-align:center; border-radius:999px; padding:6px 8px; background:var(--blue-soft);
+    border:1px solid var(--blue-line); color:var(--blue); font-size:22px; font-weight:800; line-height:1.2; }
+  :is([data-slide="X01"],[data-slide="X02"],[data-slide="X03"],[data-slide="X04"],[data-slide="X05"],[data-slide="X06"]) .x-flow b{
+    flex:0 0 auto; color:var(--blue); font-size:22px; font-weight:800; }
+  [data-slide="X05"] .x-extra, [data-slide="X06"] .x-extra{ margin:6px 0 0; font-size:22px; font-weight:700; color:var(--coral-deep); }
 
   </style>
 </head>
@@ -180,7 +181,7 @@
           <div class="portfolio-site">
             <figure class="portfolio-data-bg asset-slot asset-slot--hero" data-asset-kind="photo" data-image-purpose="mnemonic" data-image-state="ready"><img src="자료/images/s05a-data-design-background-v1.png" alt="민트 점과 격자로 만든 데이터 장면이 기록과 관찰을 데이터 디자인으로 정리하는 포트폴리오 분위기를 보여 준다."></figure>
             <nav class="portfolio-nav"><b>MINSEO<span>°</span></b><div><span>ABOUT</span><span>SIGNALS</span><span>WORK</span></div></nav>
-            <section class="portfolio-hero"><div class="portfolio-hero-copy"><p>HELLO, I’M MINSEO</p><h3>안녕하세요.<br><em>AI로 작업하는 것을 좋아하는 민서입니다.</em></h3><span>관찰한 일상을 작은 데이터와 기록으로 남깁니다.</span></div><div class="portfolio-portrait" role="img" aria-label="민트 점과 격자로 만든 데이터 디자인 그래픽"><div class="portrait-sun"></div><div class="portrait-face"></div><div class="portrait-body"></div><small>DATA<br>MAKER</small></div></section>
+            <section class="portfolio-hero"><div class="portfolio-hero-copy"><p>HELLO, I’M MINSEO</p><h3>흩어진 신호를 모아,<br><em>읽을 수 있는 화면으로 만듭니다.</em></h3><span>관찰한 일상을 작은 데이터와 기록으로 남깁니다.</span></div><div class="portfolio-portrait" role="img" aria-label="민트 점과 격자로 만든 데이터 디자인 그래픽"><div class="portrait-sun"></div><div class="portrait-face"></div><div class="portrait-body"></div><small>DATA<br>MAKER</small></div></section>
             <section class="portfolio-details"><div class="portfolio-about"><small>ABOUT ME</small><p>관찰한 정보를 모아 누구나 읽을 수 있는 화면으로 정리하는 일을 좋아합니다.</p></div><div class="portfolio-interest"><small>WHAT I LIKE</small><div><span>기록하기</span><span>데이터</span><span>웹 만들기</span></div></div></section>
             <section class="portfolio-project"><div><small>SELECTED PROJECT</small><h4>동네의 작은 가게를 읽는 데이터 지도</h4></div><div class="project-preview" aria-hidden="true"><span></span><span></span><span></span></div><b>2026 / WEB</b></section>
             <footer class="portfolio-footer"><span>LET’S MAKE SOMETHING MEANINGFUL.</span><span>SEOUL · KOREA</span></footer>
@@ -190,23 +191,24 @@
     </section>
 
 <!-- ::PARTS:: -->
+
     <section class="slide part-divider" data-slide="P7">
       <svg class="dv-hero" viewBox="0 0 1280 720" fill="none" aria-hidden="true"></svg>
       <div class="pd-dots" aria-hidden="true"></div>
-      <p class="pd-eyebrow">PART</p><h2 class="pd-title">직접 만들어 보기</h2><p class="pd-sub">오늘 배운 요청 방법으로,<br>할 일 목록을 처음부터 만들어 봅니다.</p>
+      <p class="pd-eyebrow">PART</p><h2 class="pd-title">직접 만들어 보기</h2><p class="pd-sub">여섯 가지 주제 가운데 하나를 골라,<br>배운 요청 방법으로 처음부터 만들어 봅니다.</p>
     </section>
 
     <section class="slide practice-intro" data-slide="X00">
       <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 6<br>실습 안내</div></header>
       <div class="s-full">
         <p class="s-eyebrow">시작하기 전에</p>
-        <h2 class="s-title">할 일 목록을 <span class="hl-mint-text">끝까지 완성</span>합니다</h2>
+        <h2 class="s-title">주제 하나를 골라 <span class="hl-mint-text">끝까지 완성</span>합니다</h2>
         <div class="accent-bar"></div>
         <div class="work-steps">
-          <div class="work-step"><span class="n">1</span><div><b>핵심부터 만들기</b><span>오늘 주제는 ‘할 일 목록’ 하나입니다. 먼저 핵심 기능 4가지를 완성합니다.</span></div></div>
+          <div class="work-step"><span class="n">1</span><div><b>주제 고르기</b><span>여섯 가지 중 하나만 고릅니다. 다 하지 않아도 됩니다.</span></div></div>
           <div class="work-step"><span class="n">2</span><div><b>새 폴더 만들기</b><span>C:\VibeCoding 안에 새 폴더를 만들고 Codex 작업공간을 그 폴더로 엽니다.</span></div></div>
           <div class="work-step"><span class="n">3</span><div><b>나눠서 요청하기</b><span>한 번에 다 요청하지 않습니다. 한 단계씩 요청하고 화면에서 확인한 뒤 다음을 더합니다.</span></div></div>
-          <div class="work-step"><span class="n">4</span><div><b>다 되면 더 붙이기</b><span>핵심이 다 되면 원하는 추가 기능을 골라 하나씩 더합니다.</span></div></div>
+          <div class="work-step"><span class="n">4</span><div><b>확인하고 마치기</b><span>브라우저에서 직접 열어 기준대로 되는지 봅니다.</span></div></div>
         </div>
         <p class="x-cond-label">지킬 조건</p>
         <div class="x-cond-grid">
@@ -216,34 +218,95 @@
       </div>
     </section>
 
-    <section class="slide grid-ph todo-main" data-slide="X01">
+    <section class="slide grid-ph" data-slide="X01">
       <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 6<br>실습</div></header>
-      <div class="s-full">
-        <p class="s-eyebrow">오늘의 실습 · 모두 같은 주제</p>
-        <h2 class="s-title">무엇이든 적어 관리하는 <span class="hl-mint-text">할 일 목록</span></h2>
-        <p class="todo-lead"><b>핵심 기능 4가지</b>는 <span class="hl-mint-mark">모두</span> 만듭니다.</p>
-        <div class="grid-2 todo-core">
-          <div class="card tc-card"><span class="tc-n">1</span><div class="tc-body"><b>할 일 추가</b><p>입력칸에 쓰고 추가하면 목록에 올라갑니다.</p></div></div>
-          <div class="card tc-card"><span class="tc-n">2</span><div class="tc-body"><b>목록으로 보기</b><p>추가한 할 일이 아래로 쌓여 보입니다.</p></div></div>
-          <div class="card tc-card"><span class="tc-n">3</span><div class="tc-body"><b>완료 체크</b><p>체크하면 완료 표시(취소선)로 바뀝니다.</p></div></div>
-          <div class="card tc-card"><span class="tc-n">4</span><div class="tc-body"><b>삭제</b><p>할 일 하나를 목록에서 지웁니다.</p></div></div>
+      <div class="s-full fill">
+        <p class="s-eyebrow">실습 주제 ① · 난이도 보통</p>
+        <h2 class="s-title">할 일을 세 칸에 나눠 관리하는 <span class="hl-mint-text">보드</span></h2>
+        <div class="grid-2">
+          <div class="card"><h3>화면에 들어갈 것</h3><ul class="x-list"><li>할 일 / 하는 중 / 끝남 세 열</li><li>할 일을 적어 넣는 입력칸</li><li>열마다 카드 개수 배지</li><li>전체 진행률 막대</li></ul></div>
+          <div class="card"><h3>꼭 되어야 하는 것</h3><ul class="x-list"><li>카드를 끌어서 다른 열로 옮기기</li><li>카드 지우기</li><li>중요도 색 라벨 달기</li></ul></div>
         </div>
-        <div class="callout green x-verify-band"><span class="lead">다 됐는지 보는 법</span>할 일을 하나 적어 추가하고, 체크하면 취소선이 생기고, 삭제하면 목록에서 사라집니다.</div>
+        <div class="callout green x-verify-band"><span class="lead">다 됐는지 보는 법</span>카드를 끌어 옮기면 양쪽 열의 개수와 진행률이 함께 바뀝니다.</div>
         <p class="x-flow-label">나눠 요청하기</p>
-        <div class="x-flow"><span>입력칸과 추가</span><b>→</b><span>목록으로 보이기</span><b>→</b><span>완료 체크</span><b>→</b><span>삭제</span></div>
+        <div class="x-flow"><span>세 열과 카드 추가</span><b>→</b><span>끌어서 옮기기</span><b>→</b><span>개수와 진행률</span><b>→</b><span>색 라벨과 삭제</span></div>
       </div>
     </section>
 
-    <section class="slide todo-extra" data-slide="X02">
+    <section class="slide dl-list" data-slide="X02">
       <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 6<br>실습</div></header>
       <div class="s-full">
-        <p class="s-eyebrow">핵심 4가지를 끝냈다면</p>
-        <h2 class="s-title">원하는 기능을 <span class="hl-mint-text">골라서</span> 더 붙입니다</h2>
-        <div class="te-tiers">
-          <div class="te-tier"><p class="te-head"><span class="te-star">★</span> 기본 확장</p><div class="te-list"><p>남은 할 일 개수 보여 주기</p><p>완료한 것 한 번에 비우기</p><p>할 일 글자 고치기</p><p>전체 · 안 한 것 · 완료 골라 보기</p></div></div>
-          <div class="te-tier is-hard"><p class="te-head"><span class="te-star">★★</span> 도전</p><div class="te-list"><p>새로고침해도 남아 있기 (브라우저에 저장)</p><p>별표로 중요 표시하고 위로 올리기</p><p>마감 날짜 넣고 지난 것 눈에 띄게</p><p>순서 바꾸기 (위·아래로 옮기기)</p></div></div>
+        <p class="s-eyebrow">실습 주제 ② · 난이도 어려움</p>
+        <h2 class="s-title">쓴 돈이 한눈에 보이는 <span class="hl-mint-text">가계부</span></h2>
+        <div class="dl-rows">
+          <div class="card surface dl-row"><span class="dl-term">화면에 들어갈 것</span><p class="s-body">날짜·항목·분류·금액 입력칸 · 입력한 내역 표 · 분류별 합계 · 이번 달 요약</p></div>
+          <div class="card surface dl-row"><span class="dl-term">꼭 되어야 하는 것</span><p class="s-body">분류별 비중을 도넛 그림으로 보여 주기 · 주차별 지출을 막대로 보여 주기 · 예산을 넘으면 색으로 알려 주기</p></div>
+          <div class="card surface dl-row x-verify"><span class="dl-term">다 됐는지 보는 법</span><p class="s-body">내역을 하나 추가하면 표·합계·그림이 한꺼번에 바뀝니다.</p></div>
         </div>
-        <div class="te-note"><b>핵심 4가지를 먼저</b> 끝낸 뒤, 원하는 것만 골라 하나씩 더합니다. 다 하지 않아도 됩니다.</div>
+        <p class="x-flow-label">나눠 요청하기</p>
+        <div class="x-flow"><span>입력과 내역표</span><b>→</b><span>분류별 합계</span><b>→</b><span>도넛 그림</span><b>→</b><span>예산 게이지와 경고색</span></div>
+      </div>
+    </section>
+
+    <section class="slide compare-slide" data-slide="X03">
+      <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 6<br>실습</div></header>
+      <div class="s-full">
+        <p class="s-eyebrow">실습 주제 ③ · 난이도 보통</p>
+        <h2 class="s-title">25분 집중하고 5분 쉬는 <span class="hl-mint-text">타이머</span></h2>
+        <div class="compare2">
+          <div class="cmp"><span class="tag">화면</span><h3>화면에 들어갈 것</h3><div class="cmp-lines"><p>크게 보이는 남은 시간</p><p>둥근 진행 게이지</p><p>시작·일시정지·다시 시작 버튼</p><p>지금이 집중인지 휴식인지 표시</p></div></div>
+          <div class="cmp"><span class="tag">조건</span><h3>꼭 되어야 하는 것</h3><div class="cmp-lines"><p>25분이 지나면 저절로 5분 휴식으로 넘어가기</p><p>오늘 몇 번 집중했는지 세기</p><p>넘어갈 때 소리로 알려 주기</p></div></div>
+          <div class="cmp x-verify"><span class="tag">확인</span><h3>다 됐는지 보는 법</h3><div class="cmp-lines"><p>시간을 1분으로 줄여 돌리면 저절로 휴식으로 넘어가고 횟수가 하나 오릅니다.</p></div></div>
+        </div>
+        <p class="x-flow-label">나눠 요청하기</p>
+        <div class="x-flow"><span>타이머와 시작·정지</span><b>→</b><span>자동 전환</span><b>→</b><span>둥근 게이지</span><b>→</b><span>횟수 세기와 알림음</span></div>
+      </div>
+    </section>
+
+    <section class="slide grid-ph" data-slide="X04">
+      <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 6<br>실습</div></header>
+      <div class="s-full fill">
+        <p class="s-eyebrow">실습 주제 ④ · 난이도 어려움</p>
+        <h2 class="s-title">문제를 내고 풀어 채점까지 하는 <span class="hl-mint-text">퀴즈</span></h2>
+        <div class="grid-2">
+          <div class="card"><h3>화면에 들어갈 것</h3><ul class="x-list"><li>문제와 보기 네 개, 정답을 넣는 등록칸</li><li>등록한 문제 목록</li><li>문제를 푸는 화면</li><li>점수가 나오는 결과 화면</li></ul></div>
+          <div class="card"><h3>꼭 되어야 하는 것</h3><ul class="x-list"><li>문제를 여러 개 등록하기</li><li>지금 몇 번째인지 보여 주기</li><li>맞은 개수 세어 점수 내기</li><li>틀린 문제 다시 보기</li></ul></div>
+        </div>
+        <div class="callout green x-verify-band"><span class="lead">다 됐는지 보는 법</span>세 문제를 넣고 두 개만 맞히면 결과에 2/3이 뜹니다.</div>
+        <p class="x-flow-label">나눠 요청하기</p>
+        <div class="x-flow"><span>문제 등록</span><b>→</b><span>푸는 화면</span><b>→</b><span>채점과 결과</span><b>→</b><span>틀린 문제 복습과 다시 풀기</span></div>
+      </div>
+    </section>
+
+    <section class="slide dl-list" data-slide="X05">
+      <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 6<br>실습</div></header>
+      <div class="s-full">
+        <p class="s-eyebrow">실습 주제 ⑤ · 난이도 보통</p>
+        <h2 class="s-title">매일 체크하며 쌓아 가는 <span class="hl-mint-text">습관표</span></h2>
+        <div class="dl-rows">
+          <div class="card surface dl-row"><span class="dl-term">화면에 들어갈 것</span><p class="s-body">습관 세 개에서 다섯 개 · 최근 일주일 날짜 격자 · 습관을 더하고 지우는 칸 · 요일 표시</p></div>
+          <div class="card surface dl-row"><span class="dl-term">꼭 되어야 하는 것</span><p class="s-body">칸을 눌러 체크하기 · 며칠 연속으로 했는지 세기 · 이번 주 달성률 보여 주기 · 많이 한 날은 색을 진하게</p></div>
+          <div class="card surface dl-row x-verify"><span class="dl-term">다 됐는지 보는 법</span><p class="s-body">사흘을 연달아 체크하면 연속 3일로 표시됩니다.</p></div>
+        </div>
+        <p class="x-flow-label">나눠 요청하기</p>
+        <div class="x-flow"><span>격자와 체크</span><b>→</b><span>습관 추가·삭제</span><b>→</b><span>연속 일수</span><b>→</b><span>달성률과 색 농도</span></div>
+        <p class="x-extra">※ 연속 일수를 어떻게 셀지는 스스로 정해 요청문에 적어야 합니다.</p>
+      </div>
+    </section>
+
+    <section class="slide compare-slide" data-slide="X06">
+      <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 6<br>실습</div></header>
+      <div class="s-full">
+        <p class="s-eyebrow">실습 주제 ⑥ · 난이도 도전</p>
+        <h2 class="s-title">같은 그림을 찾는 <span class="hl-mint-text">카드 뒤집기 게임</span></h2>
+        <div class="compare2">
+          <div class="cmp"><span class="tag">화면</span><h3>화면에 들어갈 것</h3><div class="cmp-lines"><p>뒤집을 카드 격자</p><p>난이도 고르기(작게·보통·크게)</p><p>걸린 시간</p><p>뒤집은 횟수</p></div></div>
+          <div class="cmp"><span class="tag">조건</span><h3>꼭 되어야 하는 것</h3><div class="cmp-lines"><p>카드를 눌러 뒤집기</p><p>같은 그림이면 열어 두고 다르면 다시 덮기</p><p>다 맞히면 완료 화면 보여 주기</p><p>가장 좋은 기록 남기기</p></div></div>
+          <div class="cmp x-verify"><span class="tag">확인</span><h3>다 됐는지 보는 법</h3><div class="cmp-lines"><p>같은 그림 두 장은 열린 채로 남고, 다른 두 장은 잠시 뒤 다시 덮입니다.</p></div></div>
+        </div>
+        <p class="x-flow-label">나눠 요청하기</p>
+        <div class="x-flow"><span>카드 격자와 뒤집기</span><b>→</b><span>같은 그림 판단</span><b>→</b><span>시간과 횟수</span><b>→</b><span>난이도 고르기와 최고 기록</span></div>
+        <p class="x-extra">※ 두 장이 뒤집힌 상태에서 세 번째를 누르면 어떻게 할지도 함께 적습니다.</p>
       </div>
     </section>
 

@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /* Week 1 final integration. Page-local layouts take precedence over legacy catalog rules. */
 
 /* ---------- shared contracts ---------- */
@@ -1184,8 +1185,8 @@
 .frontend-tech-image > img { width:100%; height:100%; object-fit:contain; }
 .frontend-tech > div { padding:8px 22px 20px; }
 .frontend-tech > div > span { color:var(--blue); font-size:12px; font-weight:900; letter-spacing:.14em; }
-.frontend-tech--css > div > span { color:var(--mint-deep); }
-.frontend-tech--js > div > span { color:var(--coral-deep); }
+.frontend-tech--css > div > span { color:var(--blue); }
+.frontend-tech--js > div > span { color:var(--blue); }
 .frontend-tech h3 { margin:4px 0 6px; color:var(--ink); font-size:30px; line-height:1.1; }
 .frontend-tech p { margin:0; color:var(--gray-700); font-size:20px; line-height:1.38; }
 .frontend-tech p strong { color:var(--ink); }
@@ -1238,8 +1239,6 @@
 .frontend-tech p { font-size:20px; line-height:1.32; }
 .frontend-tech-analogy { margin-top:9px!important; padding-top:8px; border-top:1px solid var(--line); color:var(--gray-700); }
 .frontend-tech-analogy b { margin-right:5px; color:var(--blue); }
-.frontend-tech--css .frontend-tech-analogy b { color:var(--mint-deep); }
-.frontend-tech--js .frontend-tech-analogy b { color:var(--coral-deep); }
 
 /* ==================================================================
    2026-07-21 슬라이드 수정 — 조각(part-NN.html) 인라인 <style>에서 이관.
@@ -1331,7 +1330,9 @@
 .s3map-layout{ top:112px; bottom:54px; display:flex; flex-direction:column; }
 .s3map-layout .s-title{ margin:3px 0 0; }
 .s3map-lead{ margin:10px 0 0; color:var(--gray-700); font-size:23px; line-height:1.4; }
-.s3map-title-chip{ display:inline-block; padding:4px 14px 6px; border-radius:var(--r-pill); background:var(--mint); color:var(--white); font-size:.82em; line-height:1; vertical-align:.08em; }
+.s3map-title-chip{ display:inline-block; width:auto; background:var(--mint); color:var(--white);
+  padding:0 3px 1px; font-weight:800; line-height:1.1; font-size:.82em; vertical-align:.08em;
+  box-decoration-break:clone; -webkit-box-decoration-break:clone; }
 .s3map-lead-underline{ padding-bottom:2px; border-bottom:5px solid var(--mint); color:var(--ink); font-weight:800; }
 .s3map-flow{ flex:1 1 auto; min-height:0; margin-top:22px; display:grid; grid-template-columns:minmax(0,1fr) 32px minmax(0,1fr) 32px minmax(0,1fr) 32px minmax(0,1fr) 32px minmax(0,1fr); align-items:center; gap:0; padding:0; border:0; background:transparent; }
 .s3map-step{ min-width:0; min-height:220px; display:flex; flex-direction:column; justify-content:center; padding:18px 16px; border:1px solid var(--blue-line-strong); border-radius:var(--r-md); background:var(--blue-panel); }

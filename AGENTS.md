@@ -46,6 +46,7 @@
 ## 실행과 검증
 
 ```powershell
+python scripts/assemble_deck.py sessions/N주차/강의덱.초안   # shard → 강의덱.html 재생성(덮어씀)
 python scripts/verify_deck.py <덱>.html --parts N
 python -m http.server
 python scripts/inline_deck.py <덱>.html --offline
@@ -62,6 +63,8 @@ python scripts/verify_research_chunks.py <주차>              # 개념KB 청크
 python scripts/analyze_agent_usage.py --tool-audit --session <세션ID>  # 리서치 워커 도구·모델 감사(0 통과 / 3 위반)
 ```
 
+- ⚠️ **`sessions/N주차/강의덱.html`은 생성물이다.** 정본은 `강의덱.초안/`의 `shell.html`(head·고정 슬라이드·`<!-- ::PARTS:: -->` 마커·JS) + `part-NN.html`이고, `assemble_deck.py`가 이를 합쳐 덱을 **덮어쓴다**. 덱을 직접 고치면 다음 조립 때 유실되고, 생성물에만 있는 슬라이드는 조립 즉시 사라진다. 수정은 shard에 하고 조립한다(급히 덱을 고쳤다면 같은 내용을 shard에도 반영). 규약 상세는 `sessions/README.md`.
+- 생성물과 shard가 어긋났다면 shard를 하나씩 맞추지 말고, 완성된 `강의덱.html`을 파트 경계로 잘라 shard를 재생성한 뒤 조립 결과를 조립 전 사본과 diff해 검증한다. 조립 전에는 반드시 현재 덱 사본을 떠둔다.
 - 브라우저는 `deck.css`를 캐시하므로 변경 확인 때 링크의 `href`에 `?v=`를 붙인다.
 - `file://`로 검증하지 말고 로컬 HTTP 서버를 사용한다.
 - 스크린샷보다 JS 측정(`scrollHeight`, computed style)을 우선한다.
