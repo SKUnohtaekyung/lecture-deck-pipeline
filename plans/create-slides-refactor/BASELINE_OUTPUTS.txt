@@ -1,0 +1,167 @@
+# BASELINE COMMAND OUTPUTS — CSR-2026-07 (TASK-P0-002)
+# 기준 커밋 eb49d2f · 브랜치 refactor/create-slides · $PY = 전역 python 3.12.10
+
+===== [1] python scripts/verify_skill_setup.py =====
+PASS | 공통 SKILL.md 존재
+PASS | 공통 frontmatter name/description 유효
+PASS | Codex 어댑터 존재
+PASS | Codex metadata가 공통 정본과 일치
+PASS | Codex 어댑터가 공통 정본을 참조
+PASS | Codex 어댑터가 공통 이미지 프롬프트를 복제하지 않음
+PASS | Claude Code 어댑터 존재
+PASS | Claude Code metadata가 공통 정본과 일치
+PASS | Claude Code 어댑터가 공통 정본을 참조
+PASS | Claude Code 어댑터가 공통 이미지 프롬프트를 복제하지 않음
+PASS | Codex agents/openai.yaml 유효 필드 존재
+PASS | 공통 read-path 파일 모두 존재
+PASS | 이미지 디렉션·프롬프트 정본 존재
+PASS | paper-cut-v1 디자인보드 존재
+PASS | 루트 SKILL이 이미지 정본과 IMAGE_MODE 두 분기를 참조
+PASS | 이미지 정본에 공통 프롬프트·색·역할·알파 QA·모드 질문 계약 존재
+PASS | 이미지 정본에 generate_now·prompt_only 산출 및 중단 계약 존재
+PASS | 흡수 완료된 slide-image-director 개발 아카이브 제거됨
+PASS | 독립 slide-image-director 활성 폴더 제거됨
+PASS | 활성 이미지 디렉터 문서에 likelion 배제 규칙 없음
+PASS | 이미지 관련 정본에 오래된 비생성·3D 정책 없음
+PASS | Claude가 AGENTS.md 공통 지침을 import
+FAIL | Codex·Claude MEMORY.md가 없거나 바이트 단위로 불일치
+FAIL | Codex·Claude MEMORY.md가 없거나 SHA-256 불일치
+PASS | .agents ui-ux-pro-max Windows 명령 경로 일치
+PASS | .agents ui-ux-pro-max persist 문서가 구현 경로와 일치
+PASS | .claude ui-ux-pro-max Windows 명령 경로 일치
+PASS | .claude ui-ux-pro-max persist 문서가 구현 경로와 일치
+PASS | ui-ux-pro-max 실행 스크립트·데이터 양 플랫폼 동기화
+PASS | [리서치] 정본 skills/리서치/SKILL.md 존재 + frontmatter name/description 유효
+PASS | [리서치] description에 '명시 호출' 마커 존재
+PASS | [리서치] 정본 본문에 필수 게이트 마커 모두 존재
+PASS | [리서치] Claude Code 어댑터 존재
+PASS | [리서치] Claude Code metadata(name/description)가 정본과 문자열 동일
+PASS | [리서치] Claude Code 어댑터가 정본을 참조
+PASS | [리서치] Claude Code 어댑터 본문에 규칙 복제 없음
+PASS | [리서치] Codex 어댑터 존재
+PASS | [리서치] Codex metadata(name/description)가 정본과 문자열 동일
+PASS | [리서치] Codex 어댑터가 정본을 참조
+PASS | [리서치] Codex 어댑터 본문에 규칙 복제 없음
+PASS | [리서치] Codex agents/openai.yaml 유효 필드 존재
+PASS | [콘텐츠] 정본 skills/콘텐츠/SKILL.md 존재 + frontmatter name/description 유효
+PASS | [콘텐츠] description에 '명시 호출' 마커 존재
+PASS | [콘텐츠] 정본 본문에 필수 게이트 마커 모두 존재
+PASS | [콘텐츠] Claude Code 어댑터 존재
+PASS | [콘텐츠] Claude Code metadata(name/description)가 정본과 문자열 동일
+PASS | [콘텐츠] Claude Code 어댑터가 정본을 참조
+PASS | [콘텐츠] Claude Code 어댑터 본문에 규칙 복제 없음
+PASS | [콘텐츠] Codex 어댑터 존재
+PASS | [콘텐츠] Codex metadata(name/description)가 정본과 문자열 동일
+PASS | [콘텐츠] Codex 어댑터가 정본을 참조
+PASS | [콘텐츠] Codex 어댑터 본문에 규칙 복제 없음
+PASS | [콘텐츠] Codex agents/openai.yaml 유효 필드 존재
+PASS | [검토] 정본 skills/검토/SKILL.md 존재 + frontmatter name/description 유효
+PASS | [검토] description에 '명시 호출' 마커 존재
+PASS | [검토] 정본 본문에 필수 게이트 마커 모두 존재
+PASS | [검토] Claude Code 어댑터 존재
+PASS | [검토] Claude Code metadata(name/description)가 정본과 문자열 동일
+PASS | [검토] Claude Code 어댑터가 정본을 참조
+PASS | [검토] Claude Code 어댑터 본문에 규칙 복제 없음
+PASS | [검토] Codex 어댑터 존재
+PASS | [검토] Codex metadata(name/description)가 정본과 문자열 동일
+PASS | [검토] Codex 어댑터가 정본을 참조
+PASS | [검토] Codex 어댑터 본문에 규칙 복제 없음
+PASS | [검토] Codex agents/openai.yaml 유효 필드 존재
+PASS | [하네스] 정본 skills/하네스/SKILL.md 존재 + frontmatter name/description 유효
+PASS | [하네스] description에 '명시 호출' 마커 존재
+PASS | [하네스] 정본 본문에 필수 게이트 마커 모두 존재
+PASS | [하네스] Claude Code 어댑터 존재
+PASS | [하네스] Claude Code metadata(name/description)가 정본과 문자열 동일
+PASS | [하네스] Claude Code 어댑터가 정본을 참조
+PASS | [하네스] Claude Code 어댑터 본문에 규칙 복제 없음
+PASS | [하네스] Codex 어댑터 존재
+PASS | [하네스] Codex metadata(name/description)가 정본과 문자열 동일
+PASS | [하네스] Codex 어댑터가 정본을 참조
+PASS | [하네스] Codex 어댑터 본문에 규칙 복제 없음
+PASS | [하네스] Codex agents/openai.yaml 유효 필드 존재
+PASS | evals/team-skills-eval.json 존재 + JSON 파싱 성공 + routing expected_skill 값 모두 유효
+PASS | skills/README.md가 팀 스킬 4종 이름을 모두 등재
+RESULT | FAIL | 2개 실패
+EXITCODE=1
+
+===== [2] python scripts/verify_kit.py =====
+INFO | kit CSS 정의 클래스 444종 (deck.css, legibility.css, patterns.css)
+PASS | kit/layouts/catalog.html — 마크업 클래스 89종 전부 kit CSS에 정의됨
+PASS | kit/layouts/catalog.html — 인라인 <style> 없음
+PASS | kit/charts/catalog.html — 마크업 클래스 99종 전부 kit CSS에 정의됨
+PASS | kit/charts/catalog.html — 인라인 <style> 없음
+PASS | kit/starter/deck-template.html — 가변 파트 지오메트리 자동 생성 계약 유지
+PASS | kit/starter/deck-template.html — 파트 SVG·도트가 빈 자동생성 hook
+--- FAIL=0 PASS=6 ---
+RESULT | PASS | 킷 계약 검증(카탈로그 ↔ kit CSS)
+EXITCODE=0
+
+===== [3] python scripts/verify_deck.py sessions/1주차/강의덱.html --parts 6 =====
+[PASS] ✓ 슬라이드 75장
+[PASS] ✓ 학생 덱 모든 .s-head에 표준 .s-logo 존재
+[PASS] ✓ 학생 덱 힌트 UI·강사용 문구 0
+[PASS] ✓ 1주차 학생 덱(강의덱) 슬라이드 75장
+[PASS] ✓ 도입 S00 → S01 → S01A → S01B → S01C 순서 유지
+[PASS] ✓ PART 3 ID 순서 유지(P3 → S3MAP → S3PE → S3LM → S3CE → 18 → S3SY → S3SYP → S3HUM → S3ASK → S3DO → S3ITR)
+[PASS] ✓ 1주차 PART divider 6장
+[PASS] ✓ 32 검정 터미널 dark/white-copy 계약
+[PASS] ✓ 마지막 슬라이드 THANK YOU 유지
+[PASS] ✓ 고정 슬라이드 cover 존재
+[PASS] ✓ 고정 슬라이드 s02 존재
+[PASS] ✓ 고정 슬라이드 s03 존재
+[PASS] ✓ 브랜드 텍스트 VIBECODING(영문)
+[PASS] ✓ part-divider 6 = 파트 6
+[PASS] ✓ 파트 번호 기반 지오메트리·도트 자동 생성기 존재
+[PASS] ✓ 네비 엔진 존재
+[PASS] ✓ PDF 버튼 존재
+[PASS] ✓ 상세 발표 메뉴(홈·이동·목록·PDF) 존재
+[PASS] ✓ deck.css 상속(링크/인라인)
+[PASS] ✓ 강의장 가독성 레이어 로드
+[PASS] ✓ 본문 eyebrow에 PART n·파트명 중복 없음
+[PASS] ✓ 시각 자료 구성: 코드 시각화 7 · 이미지 39 (정보 모양 기준)
+[PASS] ✓ 이미지 경로·목적·역할·배치 계약 준수
+[PASS] ✓ 구도 다양성: 15종 / 본문 65장(필요 6)
+[PASS] ✓ 같은 구도 최장 연속 2 (≤2) · 연작 예외: data-series="proc" 4장 · data-series="folder-setup" 4장 · data-series="palette" 3장
+[PASS] ✓ 토큰만 사용(raw #hex 0)
+[PASS] ✓ 덱 인라인 그라디언트 0 (flat-fill)
+[PASS] ✓ 덱 인라인 var(--navy) 0
+[PASS] ✓ 덱 인라인 박스 표면 규칙 준수(흰 fill+--line 보더 0)
+[PASS] ✓ .an-num 플랫(box-shadow 없음)
+[PASS] ✓ 흰색 글래스 내비게이션 토큰 존재
+[PASS] ✓ 진행·페이지 자동주입(s-pageno+s-part) 존재
+[PASS] ✓ [kit] 토큰만 사용(raw #hex 0)
+[PASS] ✓ [kit] CSS 그라디언트 0 (flat-fill)
+[PASS] ✓ [kit] var(--navy) 미사용
+[PASS] ✓ [kit] 레거시 보조 블루(ice/electric) 렌더 사용 0
+[PASS] ✓ [kit] 박스 표면 규칙 준수(흰 fill+--line 축약보더 0)
+[PASS] ✓ [kit] 토큰 값 정확(deck.css :root, 11개 확인)
+[PASS] ✓ [kit] 상단 헤더 선은 main blue(--blue)
+[PASS] ✓ [kit] 민트 글자폭 강조(.hl-mint-mark) 계약 유지
+[PASS] ✓ [kit] 민트 도형 강조(.shape-mint) 계약 유지
+[PASS] ✓ [kit] 넘버 행 수직 중앙(.work-step align-items:center) 유지
+[PASS] ✓ [kit] 아젠다 행 수직 중앙(.agenda-item align-items:center) 유지
+[PASS] ✓ [kit] 민트 배지 3종 background:var(--mint) 유지
+[PASS] ✓ 코드시각화 aria 라벨: 17/17
+[PASS] ✓ 색 남용 없음(슬라이드당 callout 색 <3)
+[PASS] ✓ 원고 아이콘 마커(💬/🗣/👀) 누출 0
+
+요약: FAIL 0 · WARN 0 · PASS 47
+※ 오버플로·콘솔에러·가독성(computed)은 브라우저 측정 필요: python -m http.server 후 슬라이드별 scrollWidth/Height ≤ client, 콘솔 에러 0 확인.
+EXITCODE=0
+
+===== [4] python -m unittest tests.test_deck_pipeline tests.test_image_pipeline =====
+(unittest는 stderr로 출력한다 — stderr 포함 캡처)
+.........................
+----------------------------------------------------------------------
+Ran 25 tests in 26.230s
+
+OK
+EXITCODE=0
+
+===== [5] python scripts/verify_session_docs.py 2 --target 초안 =====
+=== verify_session_docs 2주차 (target=초안) ===
+FAIL | 파일:초안.md — 파일 없음
+PASS | 자기투사:능력클레임 — 관찰·캡처 능력 단정 라인 없음
+--- FAIL=1 WARN=0 PASS=1 SKIP=0 ---
+RESULT | FAIL
+EXITCODE=1
