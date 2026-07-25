@@ -3,10 +3,10 @@
 - Plan ID: CSR-2026-07
 - Plan Version: 1.0.0
 - Current Branch: `refactor/create-slides`
-- Current Commit: `93aa644` (P2) → P3 커밋 후 갱신
-- Current Phase: **P3 (정본화·충돌 해소·접두어) — 완료, 커밋 대기**
-- Last Completed Task: TASK-P3-009
-- Active Task: TASK-P3-010 (게이트·커밋)
+- Current Commit: `84fe173` (P5) → P4 커밋 후 갱신
+- Current Phase: **P4 (Core Contract·로드 재편) — 완료, 커밋 대기** (P5는 `84fe173`으로 선행 완료)
+- Last Completed Task: TASK-P4-005
+- Active Task: TASK-P4-006 (게이트·커밋)
 - Completed Validation:
   - 기준선 5종 기록 완료(BASELINE_REPORT §3 / 원문 BASELINE_OUTPUTS.txt)
   - V-26(동결): `git status --short`에 `sessions/1주차/` 0건 — 통과 (P0·P1)
@@ -18,7 +18,12 @@
   - **V-09 통과**: `sessions/README.md`에 `_contracts` 규약 3건·`동결` 3건·`deck.contract.json` 5건
   - **V-10 통과**: `verify_session_docs.py 2 --target 초안` = **7 PASS / 0 FAIL**(기준선 FAIL=1/PASS=1에서 개선). 1주차 실행 시 `INFO: 레거시 무접두어 초안 사용` 폴백 출력 확인
   - **V-11 부분 통과(문서측)**: 토큰-치트시트 R-TYPE-01·02·03 표 신설, 디자인시스템 가독성 표 정정. 코드측 `--fs-*` 정의는 P5-001
-  - **회귀 무변화**: `verify_deck.py` 1주차 = 47 PASS / 0 FAIL / 0 WARN (P0 기준선과 동일)
+  - **회귀 무변화**: `verify_deck.py` 1주차 = 47 PASS / 0 FAIL / 0 WARN (P0 기준선과 동일). unittest 25 tests OK
+  - **V-06 통과(P4-006)**: RULE_MIGRATION_MAP 기계 대조 40항 + 중복 방지 2항 전부 OK. 죽은 링크 0(phases 18·SKILL 9). 상세는 `RULE_MIGRATION_MAP.md` 「대조 결과」
+  - **V-08 통과**: `.agents` MEMORY에서 `80장|72장|재캡처|666px 초과|family_signature` **전부 0**(KF-2R 잔여 해소). 159 → 138줄
+  - **V-12 통과**: `verify_kit.py` PASS · `patterns.css`에 `.terminal-dark` 존재 · `revision.css` diff 0
+  - **V-23 통과**: `references/phases/05-시각화.md`에 R-D3-01 존재 · `kit/vendor` 디렉터리 부재(DEC-08 준수)
+  - **V-24 통과**: `tests.test_deck_pipeline` + `tests.test_image_pipeline` = 25 tests OK(기준선 동등)
 - Failed Validation:
   - 없음. 단 **기준선 자체의 FAIL 2종은 아래 Known Failures로 이월**
 - Existing Known Failures:
@@ -27,7 +32,8 @@
   - **KF-2R 잔여(P4-005 예정)** — `80장`·`72장` 문자열이 `.agents` 메모리 130·135행(**1주차 상태 블록**)에 남아 있다. P1-003의 "정확한 변경: 위 2건만·다른 항목 무변경" 지시 때문에 P1에서 손대지 않았고, 해당 블록은 **TASK-P4-005 ③이 통째로 삭제**한다. 따라서 V-08(`80장|72장|재캡처|666px 초과` = 0)은 설계대로 **P4 완료 시점에 충족**된다(V-08 범위 = P1·P4)
   - **KF-3 `verify_session_docs.py 2 --target 초안` FAIL** — `파일:초안.md — 파일 없음`. 실물은 `sessions/2주차/2주차_초안.md`(접두어). → P3-007(DEC-05)에서 해소
   - **KF-4 1주차 실덱 기존 결함(동결·검출 대상)** — PART 라벨 밀림 / 이미지 미배선 3·고아 4 / revision.css 19~21px 8장 / 노트 pn-no 불일치 의심 / 666px 초과 20장. 현행 verify_deck 47검사로는 **검출 0**(해당 검사 부재). → P6에서 검증 신설 + `sessions/_contracts/1주차.deck.contract.json`의 `known_violations` 등재
-  - **KF-5 `evals/team-skills-eval.json` 픽스처 설명 스테일** → P3-009에서 해소
+  - ~~**KF-5 `evals/team-skills-eval.json` 픽스처 설명 스테일**~~ — **P3-009에서 해소됨**
+  - **KF-6 `evals/evals.json` 케이스 4 성립 불가(신규 발견 · 기존 결함)** — `icon-routing-hint-reveal-and-presenter-notes`가 학생 덱의 접힘 `.hint-reveal`에 `🗣` 원문을 두고 `💬`·`👀`를 HTML 주석으로 넣으라고 어서션하는데, 규칙은 **학생 덱 `.hint-reveal`·이모지 0**(verify FAIL)을 요구한다. `git show refactor-p4-start:SKILL.md` 대조 결과 **개편 전 SKILL.md도 4곳에서 동일한 규칙**이었으므로 **P4 회귀가 아니라 이전 세대 규약이 남은 기존 결함**이다. `evals/evals.json`은 이번 계획의 P4 수정 대상이 아니라 고치지 않고 보고한다 → **후속 작업 후보**
   - **P6-005 노트 검사 결과**: 미실행(P6에서 기록)
 - Baseline Worktree (P0 시점 `git status --short`):
   ```
@@ -76,7 +82,7 @@
 | W-DOCS 폴백 병기 위치 | "파일당 첫 등장 위치" | `skills/콘텐츠/SKILL.md`의 첫 등장은 frontmatter `description` | **본문 첫 등장으로 이동 승인** — `verify_skill_setup`이 정본↔어댑터 description 문자열 동일성을 강제하므로 description 변경은 라우팅 위험 |
 - Files Currently Owned: `.claude/agent-memory/vibecoding-deck/MEMORY.md` · `.agents/agent-memory/vibecoding-deck/MEMORY.md` · `scripts/verify_skill_setup.py` · `plans/create-slides-refactor/**` (전부 Opus)
 - Workers Active: 없음
-- Next Task: **TASK-P4-001** (RULE_MIGRATION_MAP 작성 — 규칙 전수 이동 대조표). P4와 P5는 파일 겹침 0이라 병렬 가능
+- Next Task: **TASK-P6-001** (`sessions/_contracts/1주차.deck.contract.json` 작성 — 현행 `verify_deck.py` 하드코딩 값 기계 이전)
 - Resume Instructions:
   1. `MASTER_EXECUTION_PLAN.md` → 이 파일 순으로 읽고 Next Task부터 재개한다(이전 대화 재독 금지).
   2. 검증 명령 실행 전 `$env:PYTHONIOENCODING='utf-8'`을 설정한다.
@@ -99,8 +105,8 @@
 | P0 기준선 | **완료** | `refactor-p0-start` | `b551fad` |
 | P1 기준선 수리 | **완료** | `refactor-p1-start` | `1165a9a` |
 | P2 개명 | **완료** | `refactor-p2-start` | `93aa644` |
-| P3 정본화·충돌·접두어 | **완료** | `refactor-p3-start` | (아래 커밋) |
-| P4 Core·로드 재편 | 대기 | — | — |
-| P5 컴포넌트 | 대기 | — | — |
+| P3 정본화·충돌·접두어 | **완료** | `refactor-p3-start` | `82ac406` |
+| P4 Core·로드 재편 | **완료** | `refactor-p4-start` | (아래 커밋) |
+| P5 컴포넌트 | **완료** | `refactor-p5-start` | `84fe173` |
 | P6 검증 신설 | 대기 | — | — |
 | P7 회귀·채택 | 대기 | — | — |
