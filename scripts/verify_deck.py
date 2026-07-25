@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""verify_deck.py — vibecoding-deck 산출 덱 정적 검증 (측정 우선, 의존성 0).
+"""verify_deck.py — create-slides 산출 덱 정적 검증 (측정 우선, 의존성 0).
 
 사용: python scripts/verify_deck.py <deck.html> [--parts N] [--release] [--manifest P] [--registry P] [--atlas]
 

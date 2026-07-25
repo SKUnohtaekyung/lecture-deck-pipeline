@@ -1,4 +1,4 @@
-# vibecoding-deck
+# create-slides
 
 ![version](https://img.shields.io/badge/version-0.3.0--wip-blue)
 ![Claude Code](https://img.shields.io/badge/Claude%20Code-supported-5A45FF)
@@ -25,7 +25,7 @@
 
 ## 저장소 구조
 
-이 저장소는 하나의 배포 대상 스킬(vibecoding-deck)과, 그 스킬을 만들고 운영하는 데 쓰는 개발 자산을 함께 담고 있습니다. 배포 대상과 개발 전용 자산은 명확히 분리되어 있습니다.
+이 저장소는 하나의 배포 대상 스킬(create-slides)과, 그 스킬을 만들고 운영하는 데 쓰는 개발 자산을 함께 담고 있습니다. 배포 대상과 개발 전용 자산은 명확히 분리되어 있습니다.
 
 | 층 | 위치 | 배포 | 설명 |
 |---|---|:---:|---|
@@ -62,8 +62,8 @@ lecture-deck-pipeline/
 ├── sessions/                    주차별 산출물(N주차/초안.md · 강의덱.html · 자료/)
 ├── _dev/설계기록/                빌드 · 설계 결정 기록(배포 제외)
 │
-├── .claude/skills/              Claude Code 어댑터(`/vibecoding-deck` 등 5종 + ui-ux-pro-max)
-├── .agents/skills/              Codex 어댑터(`$vibecoding-deck` 등 5종 + ui-ux-pro-max)
+├── .claude/skills/              Claude Code 어댑터(`/create-slides` 등 5종 + ui-ux-pro-max)
+├── .agents/skills/              Codex 어댑터(`$create-slides` 등 5종 + ui-ux-pro-max)
 │
 ├── 1주차_강의덱.html             1주차 실전 산출 예시(루트 CSS 상대경로 특례로 예외 유지)
 └── 데모_제작규칙.html            마크업 예시 데모
@@ -79,7 +79,7 @@ lecture-deck-pipeline/
 flowchart LR
     A["📋 커리큘럼 문서\nsessions/N주차_강의안설계.md"] --> B["🔍 /리서치\n콘텐츠 리서치 · 실습 검증"]
     B -->|"자료/*.md"| C["✍️ /콘텐츠\n슬라이드 문장 집필"]
-    C -->|"초안.md"| D["🎨 /vibecoding-deck\nHTML 웹덱 조립"]
+    C -->|"초안.md"| D["🎨 /create-slides\nHTML 웹덱 조립"]
     D -->|"강의덱.html"| E["✅ /검토\n읽기 전용 감사"]
 ```
 
@@ -87,10 +87,10 @@ flowchart LR
 |---|---|---|---|
 | `/리서치` | 콘텐츠 리서치 · 실습 검증 | `sessions/N주차/자료/` 3~5파일 | 명시 호출 전용 |
 | `/콘텐츠` | 슬라이드 문장 · 비유 · 멘트 집필 | `sessions/N주차/초안.md` | 명시 호출 전용 |
-| `/vibecoding-deck` | HTML 웹덱 · 발표자노트 조립 | `강의덱.html` + `_발표자노트.html` | **자동 발동** |
+| `/create-slides` | HTML 웹덱 · 발표자노트 조립 | `강의덱.html` + `_발표자노트.html` | **자동 발동** |
 | `/검토` | 전 단계 횡단 읽기 전용 감사 | `검토보고_YYYY-MM-DD.md` | 명시 호출 전용 |
 
-`/vibecoding-deck`만 자연어 요청으로 자동 호출되고, 나머지 3개 팀 스킬은 이름을 직접 지목했을 때만 발동합니다. 계약·스키마 정본은 [`skills/README.md`](skills/README.md)를 참고하세요.
+`/create-slides`만 자연어 요청으로 자동 호출되고, 나머지 3개 팀 스킬은 이름을 직접 지목했을 때만 발동합니다. 계약·스키마 정본은 [`skills/README.md`](skills/README.md)를 참고하세요.
 
 **`/하네스`**는 위 파이프라인의 한 단계가 아니라, 다파일·대규모 작업일 때 어떤 단계에서든 적용하는 **작업 수행 방식**(메인 게이트 + 워커 편집 분담)입니다. 정본은 [`skills/하네스/SKILL.md`](skills/하네스/SKILL.md).
 
@@ -112,23 +112,23 @@ flowchart LR
 
 ### Claude Code
 
-이 개발 저장소에서는 `.claude/skills/vibecoding-deck/SKILL.md` 어댑터가 루트 공통 정본을 로드하므로 바로 사용할 수 있습니다. 다른 프로젝트에 배포할 때는 루트 포터블 Skill 파일을 아래 위치에 복사합니다.
+이 개발 저장소에서는 `.claude/skills/create-slides/SKILL.md` 어댑터가 루트 공통 정본을 로드하므로 바로 사용할 수 있습니다. 다른 프로젝트에 배포할 때는 루트 포터블 Skill 파일을 아래 위치에 복사합니다.
 
 ```text
-<프로젝트>/.claude/skills/vibecoding-deck/
+<프로젝트>/.claude/skills/create-slides/
 ```
 
-새 Claude Code 세션에서 `/vibecoding-deck`으로 호출하거나, "이 초안으로 강의덱 만들어줘", "PPT를 HTML 웹덱으로 만들어줘"처럼 요청하면 스킬이 적용됩니다.
+새 Claude Code 세션에서 `/create-slides`로 호출하거나, "이 초안으로 강의덱 만들어줘", "PPT를 HTML 웹덱으로 만들어줘"처럼 요청하면 스킬이 적용됩니다.
 
 ### Codex
 
-이 개발 저장소에서는 `.agents/skills/vibecoding-deck/SKILL.md` 어댑터가 루트 공통 정본을 로드하므로 바로 사용할 수 있습니다. 다른 프로젝트에 포터블 스킬로 설치할 때는 배포 대상 파일을 아래 위치에 둡니다.
+이 개발 저장소에서는 `.agents/skills/create-slides/SKILL.md` 어댑터가 루트 공통 정본을 로드하므로 바로 사용할 수 있습니다. 다른 프로젝트에 포터블 스킬로 설치할 때는 배포 대상 파일을 아래 위치에 둡니다.
 
 ```text
-<프로젝트>/.agents/skills/vibecoding-deck/
+<프로젝트>/.agents/skills/create-slides/
 ```
 
-새 Codex 작업에서 `$vibecoding-deck`을 명시하거나 "이 초안으로 강의덱 만들어줘"처럼 요청합니다. 이 개발 저장소의 `.agents/`는 프로젝트 설정 레이어이므로 포터블 스킬 안에 중첩해 복사하지 않습니다.
+새 Codex 작업에서 `$create-slides`를 명시하거나 "이 초안으로 강의덱 만들어줘"처럼 요청합니다. 이 개발 저장소의 `.agents/`는 프로젝트 설정 레이어이므로 포터블 스킬 안에 중첩해 복사하지 않습니다.
 
 자세한 워크플로와 불변 요소는 [`SKILL.md`](SKILL.md)를, 작성 형식은 [콘텐츠 초안 템플릿](입력양식/콘텐츠초안템플릿.md)을 참고하세요.
 
@@ -189,7 +189,7 @@ python -m unittest tests.test_deck_pipeline tests.test_image_pipeline
 
 ## 레이아웃 아틀라스
 
-[`outputs/vibecoding-deck-layout-atlas.html`](outputs/vibecoding-deck-layout-atlas.html)에서 레이아웃 50종과 현재 아틀라스에 수록된 시각 요소를 실제 발표 화면처럼 넘겨볼 수 있습니다. 전체 23종 element의 정본은 `kit/charts/`입니다.
+[`outputs/create-slides-layout-atlas.html`](outputs/create-slides-layout-atlas.html)에서 레이아웃 50종과 현재 아틀라스에 수록된 시각 요소를 실제 발표 화면처럼 넘겨볼 수 있습니다. 전체 23종 element의 정본은 `kit/charts/`입니다.
 
 ---
 
@@ -202,4 +202,4 @@ python -m unittest tests.test_deck_pipeline tests.test_image_pipeline
 | [`skills/README.md`](skills/README.md) | 팀 워크플로 스킬 계약표 · 파이프라인 지도 · 명시 호출 규약 |
 | [`skills/하네스/SKILL.md`](skills/하네스/SKILL.md) | 다파일·대규모 작업 오케스트레이션 프로토콜 |
 | [`sessions/README.md`](sessions/README.md) | 주차별 산출물 폴더 규약 |
-| [`.agents/agent-memory/vibecoding-deck/MEMORY.md`](.agents/agent-memory/vibecoding-deck/MEMORY.md) | 누적 규칙 · 색 시스템 정본 · 현재 상태(`## 미해결`) |
+| [`.agents/agent-memory/create-slides/MEMORY.md`](.agents/agent-memory/create-slides/MEMORY.md) | 누적 규칙 · 색 시스템 정본 · 현재 상태(`## 미해결`) |
