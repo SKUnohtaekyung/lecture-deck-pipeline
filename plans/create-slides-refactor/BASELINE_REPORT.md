@@ -27,7 +27,7 @@
 
 | # | 명령 | 결과 | exit | 요지 |
 |---|---|---|---:|---|
-| ① | `python scripts/verify_skill_setup.py` | **FAIL** | 1 | FAIL 2 / PASS 80. FAIL 2건 전부 메모리 사본 항목 (§7.8 예상과 일치) |
+| ① | `python scripts/verify_skill_setup.py` | **FAIL** | 1 | FAIL 2 / PASS 77 (총 79검사). FAIL 2건 전부 메모리 사본 항목 (§7.8 예상과 일치) |
 | ② | `python scripts/verify_kit.py` | **PASS** | 0 | FAIL 0 / PASS 6 · kit CSS 정의 클래스 444종 |
 | ③ | `python scripts/verify_deck.py sessions/1주차/강의덱.html --parts 6` | **PASS** | 0 | FAIL 0 · WARN 0 · PASS 47 |
 | ④ | `python -m unittest tests.test_deck_pipeline tests.test_image_pipeline` | **PASS** | 0 | Ran 25 tests — OK |
@@ -57,7 +57,7 @@ FAIL | 파일:초안.md — 파일 없음
 | §7.8 항목 | 실측 확인 | 상태 |
 |---|---|---|
 | `verify_skill_setup.py` 메모리 바이트 동일성 검사 FAIL | **확인됨** — FAIL 2건 | 일치 |
-| `.claude` 메모리와 `.agents` 메모리 분기 | **확인됨** — `.claude` 119줄/16,140B · `.agents` 159줄/29,447B · diff 37삽입/1수정 | 일치(줄수만 차이, §5 참조) |
+| `.claude` 메모리와 `.agents` 메모리 분기 | **확인됨** — `.claude` 123줄/16,140B · `.agents` 159줄/29,288B · diff 37삽입/1수정 | 일치 |
 | `.claude` 사본의 고유 정보 유무 | **고유 정보 0건** — 유일한 `<=` 차이 1줄(미해결 항목 4 "G8 관점 최소치")도 `.agents` 최신본의 구버전 | 일치 (P1-001 진행 조건 충족) |
 | `.agents` 메모리 스테일: rgba 오탐 항목 | **확인됨** — `확진된 오탐 1건(2026-07-21)` 문자열 존재 | 일치 (P1-003 대상) |
 | `.agents` 메모리 스테일: "편집본 80장·배포본 72장" | **확인됨** — `verify_deck.py 1주차 계약은 **편집본(`강의덱`)=80장 … 배포본=72장` 서술 존재. 실측·현행 코드는 75장·divider 6 | 일치 (P1-003 대상) |
@@ -68,7 +68,7 @@ FAIL | 파일:초안.md — 파일 없음
 
 | 항목 | 계획(§7.8) | 실측 | 판정 |
 |---|---|---|---|
-| `.claude` 메모리 줄 수 | 123줄 | **119줄** | 경미 — 결론(분기·구버전·고유 정보 0) 불변. 계획 수정 불요 |
+| `.claude` 메모리 줄 수 | 123줄 | 123줄 | 일치 (줄 수는 Python `count('\n')` 기준. PowerShell `Get-Content .Count`는 119를 반환 — 계수 아티팩트이므로 이후 줄 수 측정은 Python 기준을 쓴다) |
 | `.agents` 메모리 줄 수 | 159줄 | 159줄 | 일치 |
 | ⑤ verify_session_docs 결과 | FAIL 기대 | FAIL(파일 없음) | 일치 |
 | ③ verify_deck 1주차 | 기존 결함 존재하나 현행 검사로 미검출 | FAIL 0·WARN 0·PASS 47 | 일치 — 예상 밖 FAIL 없음(§P0 중단 조건 미해당) |

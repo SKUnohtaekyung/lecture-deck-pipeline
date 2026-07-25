@@ -411,18 +411,20 @@ def main() -> int:
 
     claude_md = text(ROOT / "CLAUDE.md") if (ROOT / "CLAUDE.md").is_file() else ""
     check("@AGENTS.md" in claude_md, "Claude가 AGENTS.md 공통 지침을 import", "CLAUDE.md의 @AGENTS.md import 누락")
+    # 메모리 정본은 .agents 하나이며, .claude 쪽은 그것을 가리키는 포인터 파일이다.
+    # 사본을 두면 반드시 분기하므로 바이트 동일성 대신 포인터 규약을 검사한다.
     codex_memory = ROOT / ".agents/agent-memory/vibecoding-deck/MEMORY.md"
     claude_memory = ROOT / ".claude/agent-memory/vibecoding-deck/MEMORY.md"
-    memories_exist = codex_memory.is_file() and claude_memory.is_file()
+    pointer_text = text(claude_memory) if claude_memory.is_file() else ""
     check(
-        memories_exist and codex_memory.read_bytes() == claude_memory.read_bytes(),
-        "Codex·Claude 메모리가 바이트 단위로 동일",
-        "Codex·Claude MEMORY.md가 없거나 바이트 단위로 불일치",
-    )
-    check(
-        memories_exist and digest(codex_memory) == digest(claude_memory),
-        "Codex·Claude 메모리 SHA-256 일치",
-        "Codex·Claude MEMORY.md가 없거나 SHA-256 불일치",
+        codex_memory.is_file()
+        and claude_memory.is_file()
+        and ".agents/agent-memory/" in pointer_text
+        and len(claude_memory.read_bytes()) < 400
+        and not re.search(r"(?m)^## ", pointer_text),
+        "메모리 포인터 규약(정본 .agents · .claude는 포인터)",
+        "메모리 포인터 규약 위반: 정본·포인터 파일 존재, 포인터가 .agents/agent-memory/ 지목,"
+        " 400바이트 미만, '## ' 헤더 0건을 모두 만족해야 한다",
     )
 
     for platform_dir, prefix in (
