@@ -3,17 +3,22 @@
 - Plan ID: CSR-2026-07
 - Plan Version: 1.0.0
 - Current Branch: `refactor/create-slides`
-- Current Commit: `1165a9a` (P1) → P2 커밋 후 갱신
-- Current Phase: **P2 (개명) — 완료, 커밋 대기**
-- Last Completed Task: TASK-P2-013
-- Active Task: TASK-P2-014 (동결 검사·커밋)
+- Current Commit: `93aa644` (P2) → P3 커밋 후 갱신
+- Current Phase: **P3 (정본화·충돌 해소·접두어) — 완료, 커밋 대기**
+- Last Completed Task: TASK-P3-009
+- Active Task: TASK-P3-010 (게이트·커밋)
 - Completed Validation:
   - 기준선 5종 기록 완료(BASELINE_REPORT §3 / 원문 BASELINE_OUTPUTS.txt)
   - V-26(동결): `git status --short`에 `sessions/1주차/` 0건 — 통과 (P0·P1)
   - **V-01 통과**: `verify_skill_setup.py` PASS=78 / FAIL=0 (기준선 PASS=77·FAIL=2 → FAIL 2건이 신규 PASS 1건으로 대체. Compare-Object로 다른 검사 집합 변화 0 확인). P2 개명 후 재실행도 PASS=78 / FAIL=0
   - **V-02 통과(P2-012)**: 저장소 전수 `vibecoding-deck` 잔존 81건 / 17파일 — 전량 허용 목록 소속. ⑧군(누락군) 0건, 조사 오류 0건. W-CHECK 독립 수집 + Opus 판정
   - **V-05 통과**: 팀 스킬 10파일 구명 0건, 체이닝 지목이 `/create-slides`로 교체됨
-  - **V-20 부분 통과**: evals 3파일 JSON 파싱 무예외, 케이스 수 불변(`폐기됨` 문안 정정은 P3-009)
+  - **V-20 통과**: evals 3파일 JSON 파싱 무예외, 케이스 수 불변(routing 8 + contract 6 = 14, 전후 동일), `폐기됨` 0건
+  - **V-07 통과(충돌 6건 중 5건)**: CONFLICT-001 색 정본 단일화(AGENTS.md → `kit/guide/디자인시스템.md`) · 002 GIF·녹화 DEC-07 문안 · 003 세로예산 단일 표 · 004 charts 6→8(실측 확인) · 005 폰트 하한 단일 표. **CONFLICT-006은 계획대로 P4-002**(단 `kit/guide/토큰-치트시트.md`의 같은 오참조 `§밀도`→`§0-6`은 P3에서 함께 정정)
+  - **V-09 통과**: `sessions/README.md`에 `_contracts` 규약 3건·`동결` 3건·`deck.contract.json` 5건
+  - **V-10 통과**: `verify_session_docs.py 2 --target 초안` = **7 PASS / 0 FAIL**(기준선 FAIL=1/PASS=1에서 개선). 1주차 실행 시 `INFO: 레거시 무접두어 초안 사용` 폴백 출력 확인
+  - **V-11 부분 통과(문서측)**: 토큰-치트시트 R-TYPE-01·02·03 표 신설, 디자인시스템 가독성 표 정정. 코드측 `--fs-*` 정의는 P5-001
+  - **회귀 무변화**: `verify_deck.py` 1주차 = 47 PASS / 0 FAIL / 0 WARN (P0 기준선과 동일)
 - Failed Validation:
   - 없음. 단 **기준선 자체의 FAIL 2종은 아래 Known Failures로 이월**
 - Existing Known Failures:
@@ -58,9 +63,20 @@
 | P2-009 앵커 수 | AGENTS.md 8곳 | **16건/8줄**(2개 줄에 다중 매치) | 지시가 "전 참조 교체"이므로 전량 처리 |
 | 조사(助詞) 결합 | 계획에 없음 | `create-slides`는 모음 종성이라 `은/이/으로` → `는/가/로` 정정 필요 5건 | 개명의 기계적 귀결로 판정해 정정(신규 문안 판단 아님) |
 | ⑧군 4파일 수정 Phase | §12 표상 P3·P6 소유 | P2에서 수정 | P2-012 본문이 "발견 시 즉시 교체 지시"를 규정하므로 계획 내 |
+
+## 계획과의 차이 (P3 기록)
+
+| 항목 | 계획 | 실제 | 처리 |
+|---|---|---|---|
+| **R-COLOR-03 앵커 부재** | P3-003이 "기존 규칙 항목에 ID만 병기"를 지시(배지 3종 규칙이 디자인시스템.md에 있다고 전제) | 디자인시스템.md에 **배지 3종 규칙이 아예 없었다**(당시 `kit/guide/토큰-치트시트.md`·AGENTS.md에만 존재) | §9가 R-COLOR-03의 정본을 디자인시스템.md로 지정하고 P3-001이 AGENTS.md를 그 정본 참조로 바꿨으므로, **문구 창작 없이 기존 문장을 전사**해 배치했다. ⚠️ **사용자 검토 요청 항목** |
+| P3-005 앵커 문자열 | `catalog.html 6개` | 실제는 `` `catalog.html` **6개** `` (마크다운 강조 포함) | 동일 대상이라 그대로 진행 |
+| charts README `aria 6/6` | 계획 범위 밖 | 6→8 정정 후 같은 줄에 `aria 6/6`이 남아 모순 | 실측(코어 8종 전부 `aria-label` 보유) 확인 후 `aria 8/8`로 정정 |
+| P3-004 대조표 추가 모순 | "DEC-07 문안 1건" 전제 | 대조표에서 **반대·오인용 5건 추가 발견**(연령대 서술·오인용·제외 목록 5항 누락·소제목) | 계획의 "Opus가 개별 Correction 여부 판단"에 따라 **전량 정정**(§9 CONFLICT-002 완료 조건 = "대조표 모순 0"). 정본은 읽기만 함 |
+| `kit/guide/토큰-치트시트.md`의 `§밀도` | CONFLICT-006은 SKILL.md만 지목 | 치트시트에도 동일 오참조 존재 | 같은 파일을 재작성 중이었고 `§0-6`이 실재 절임을 확인해 함께 정정 |
+| W-DOCS 폴백 병기 위치 | "파일당 첫 등장 위치" | `skills/콘텐츠/SKILL.md`의 첫 등장은 frontmatter `description` | **본문 첫 등장으로 이동 승인** — `verify_skill_setup`이 정본↔어댑터 description 문자열 동일성을 강제하므로 description 변경은 라우팅 위험 |
 - Files Currently Owned: `.claude/agent-memory/vibecoding-deck/MEMORY.md` · `.agents/agent-memory/vibecoding-deck/MEMORY.md` · `scripts/verify_skill_setup.py` · `plans/create-slides-refactor/**` (전부 Opus)
 - Workers Active: 없음
-- Next Task: **TASK-P3-001** (AGENTS.md 색 정본 지목 통일 + 불변 규칙 ID 참조화 + 초안 접두어 문구)
+- Next Task: **TASK-P4-001** (RULE_MIGRATION_MAP 작성 — 규칙 전수 이동 대조표). P4와 P5는 파일 겹침 0이라 병렬 가능
 - Resume Instructions:
   1. `MASTER_EXECUTION_PLAN.md` → 이 파일 순으로 읽고 Next Task부터 재개한다(이전 대화 재독 금지).
   2. 검증 명령 실행 전 `$env:PYTHONIOENCODING='utf-8'`을 설정한다.
@@ -82,8 +98,8 @@
 |---|---|---|---|
 | P0 기준선 | **완료** | `refactor-p0-start` | `b551fad` |
 | P1 기준선 수리 | **완료** | `refactor-p1-start` | `1165a9a` |
-| P2 개명 | **완료** | `refactor-p2-start` | (아래 커밋) |
-| P3 정본화·충돌·접두어 | 대기 | — | — |
+| P2 개명 | **완료** | `refactor-p2-start` | `93aa644` |
+| P3 정본화·충돌·접두어 | **완료** | `refactor-p3-start` | (아래 커밋) |
 | P4 Core·로드 재편 | 대기 | — | — |
 | P5 컴포넌트 | 대기 | — | — |
 | P6 검증 신설 | 대기 | — | — |

@@ -59,7 +59,7 @@ lecture-deck-pipeline/
 ├── tests/                       파이프라인 단위 테스트(unittest, 24개)
 │
 ├── skills/                      팀 워크플로 스킬 정본: 리서치 · 콘텐츠 · 검토 · 하네스
-├── sessions/                    주차별 산출물(N주차/초안.md · 강의덱.html · 자료/)
+├── sessions/                    주차별 산출물(N주차/N주차_초안.md(레거시 초안.md 폴백 인식) · 강의덱.html · 자료/)
 ├── _dev/설계기록/                빌드 · 설계 결정 기록(배포 제외)
 │
 ├── .claude/skills/              Claude Code 어댑터(`/create-slides` 등 5종 + ui-ux-pro-max)
@@ -79,14 +79,14 @@ lecture-deck-pipeline/
 flowchart LR
     A["📋 커리큘럼 문서\nsessions/N주차_강의안설계.md"] --> B["🔍 /리서치\n콘텐츠 리서치 · 실습 검증"]
     B -->|"자료/*.md"| C["✍️ /콘텐츠\n슬라이드 문장 집필"]
-    C -->|"초안.md"| D["🎨 /create-slides\nHTML 웹덱 조립"]
+    C -->|"N주차_초안.md"| D["🎨 /create-slides\nHTML 웹덱 조립"]
     D -->|"강의덱.html"| E["✅ /검토\n읽기 전용 감사"]
 ```
 
 | 스킬 | 담당 | 산출물 | 호출 |
 |---|---|---|---|
 | `/리서치` | 콘텐츠 리서치 · 실습 검증 | `sessions/N주차/자료/` 3~5파일 | 명시 호출 전용 |
-| `/콘텐츠` | 슬라이드 문장 · 비유 · 멘트 집필 | `sessions/N주차/초안.md` | 명시 호출 전용 |
+| `/콘텐츠` | 슬라이드 문장 · 비유 · 멘트 집필 | `sessions/N주차/N주차_초안.md` | 명시 호출 전용 |
 | `/create-slides` | HTML 웹덱 · 발표자노트 조립 | `강의덱.html` + `_발표자노트.html` | **자동 발동** |
 | `/검토` | 전 단계 횡단 읽기 전용 감사 | `검토보고_YYYY-MM-DD.md` | 명시 호출 전용 |
 

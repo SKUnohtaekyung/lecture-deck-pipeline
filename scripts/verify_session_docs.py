@@ -59,7 +59,7 @@ LEFTOVER_PATTERNS = (
 
 ALLOWLIST = {
     "자료": ["sessions/*주차/자료/*", ".omc/*"],
-    "초안": ["sessions/*주차/초안.md", "sessions/*주차/자료/*집필노트*", ".omc/*"],
+    "초안": ["sessions/*주차/초안.md", "sessions/*주차/*초안.md", "sessions/*주차/자료/*집필노트*", ".omc/*"],
     "검토": ["sessions/*주차/검토보고_*.md", ".omc/*"],
 }
 
@@ -75,6 +75,23 @@ def read(p):
         return p.read_text(encoding="utf-8")
     except (FileNotFoundError, OSError):
         return None
+
+
+_DRAFT_FALLBACK_LOGGED = set()  # 폴백 INFO 중복 출력 방지(경로별 1회)
+
+
+def resolve_draft(sess_dir, wk):
+    """초안 파일 경로 해석: `N주차_초안.md`(접두어) 우선, 없으면 `초안.md`(레거시)로 폴백.
+    레거시 파일이 실제로 존재할 때만 폴백 사실을 INFO로 1회 알린다(그 경로 기준 중복 없음).
+    둘 다 없으면 조용히 무접두어 경로를 반환해 기존과 동일하게 '파일 없음' FAIL로 이어지게 둔다."""
+    prefixed = sess_dir / f"{wk}주차_초안.md"
+    if prefixed.exists():
+        return prefixed
+    legacy = sess_dir / "초안.md"
+    if legacy.exists() and legacy not in _DRAFT_FALLBACK_LOGGED:
+        _DRAFT_FALLBACK_LOGGED.add(legacy)
+        print(f"INFO: 레거시 무접두어 초안 사용: {legacy}")
+    return legacy
 
 
 def split_sections(text, hashes=2):
@@ -361,7 +378,7 @@ def check_capability_claims(root, wk):
         ("콘텐츠리서치", root / "sessions" / f"{wk}주차" / "자료" / f"{wk}주차_콘텐츠리서치_결과.md"),
         ("실습안", root / "sessions" / f"{wk}주차" / "자료" / f"{wk}주차_실습안_검증결과.md"),
         ("종합정리", root / "sessions" / f"{wk}주차" / "자료" / f"{wk}주차_리서치_종합정리.md"),
-        ("초안", root / "sessions" / f"{wk}주차" / "초안.md"),
+        ("초안", resolve_draft(root / "sessions" / f"{wk}주차", wk)),
     ]
     hits = []
     for label, p in targets:
@@ -429,7 +446,7 @@ def main():
         "practice": data / f"{wk}주차_실습안_검증결과.md",
         "decision": data / f"{wk}주차_결정요청사항.md",
         "registry": data / f"{wk}주차_출처레지스트리.md",
-        "draft": sess / "초안.md",
+        "draft": resolve_draft(sess, wk),
     }
 
     reg_ids, used_refs = set(), set()
