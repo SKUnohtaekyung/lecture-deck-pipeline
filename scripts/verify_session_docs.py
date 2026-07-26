@@ -332,6 +332,32 @@ def check_draft(text):
     return ok
 
 
+def check_draft_slide_numbers(text):
+    """초안 4열 표(#·슬라이드 제목·본문 문구·비유·멘트)의 # 열(슬라이드 번호)이
+    주차 전체에서 유일한지 검사한다. 번호가 중복되면 report_draft_sync.py의
+    초안 대 덱 대조나 create-slides 조립에서 어느 행을 가리키는지 모호해진다."""
+    tag = "초안"
+    seen = Counter()
+    for t in parse_tables(text):
+        if not t:
+            continue
+        hdr = [(c or "") for c in t[0]]
+        if not (any("슬라이드 제목" in c for c in hdr) and any("본문" in c for c in hdr)):
+            continue
+        for r in t[1:]:
+            if not r or not (r[0] or "").strip():
+                continue
+            m = re.match(r"^(\S+)", r[0].strip())
+            if m:
+                seen[m.group(1)] += 1
+    dups = sorted(k for k, v in seen.items() if v > 1)
+    if dups:
+        add(f"{tag}:번호유일성", "FAIL",
+            "중복 슬라이드 번호: " + ", ".join(f"{k}×{seen[k]}" for k in dups))
+    else:
+        add(f"{tag}:번호유일성", "PASS", f"{len(seen)}개 번호 전부 유일")
+
+
 def check_leftovers(data_dir, wk, template_dir=None):
     """리서치 SKILL 7단계 수명 규칙: 조사 과정의 중간 산출물(심층리서치 원본·버전 사본·
     커버리지 대조표)은 자료/에 남기지 않는다. 사람이 직접 쓴 문서를 오탐할 수 있어 WARN."""
@@ -489,6 +515,7 @@ def main():
             add(f"파일:{files['draft'].name}", "SKIP" if args.target == "all" else "FAIL", "파일 없음")
         else:
             check_draft(dtxt)
+            check_draft_slide_numbers(dtxt)
             used_refs |= {m.group(1) for m in SRC_REF.finditer(dtxt)}
             used_chunks |= collect_chunk_refs(dtxt)
 

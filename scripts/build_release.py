@@ -12,6 +12,7 @@
 from __future__ import annotations
 
 import argparse
+import json
 import re
 import subprocess
 import sys
@@ -29,6 +30,34 @@ def _run(script: str, *rest: object) -> int:
     cmd = [sys.executable, str(ROOT / "scripts" / script), *[str(item) for item in rest]]
     print("  $ " + " ".join(str(part) for part in cmd[1:]))
     return subprocess.run(cmd, cwd=str(ROOT)).returncode
+
+
+def _find_deck_contract(deck_path: Path) -> Path | None:
+    """verify_deck.py의 find_deck_contract()와 동일한 3단 탐색(중복 정의 — 서브프로세스 경계라 임포트 대신 복제):
+    ① 덱과 같은 폴더의 deck.contract.json ② sessions/_contracts/<덱 부모폴더명>.deck.contract.json ③ 없으면 None."""
+    deck_file = deck_path.resolve()
+    sibling = deck_file.parent / "deck.contract.json"
+    if sibling.is_file():
+        return sibling
+    named = ROOT / "sessions" / "_contracts" / f"{deck_file.parent.name}.deck.contract.json"
+    if named.is_file():
+        return named
+    return None
+
+
+def _contract_dividers(preview_path: Path) -> int | None:
+    """계약에 dividers 값이 있으면 그 값을 반환하고, 없거나 읽기 실패하면 None(폴백 신호)."""
+    contract_path = _find_deck_contract(preview_path)
+    if contract_path is None:
+        return None
+    try:
+        contract_data = json.loads(contract_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return None
+    deck_contract = (contract_data.get("decks") or {}).get(preview_path.stem)
+    if not isinstance(deck_contract, dict) or "dividers" not in deck_contract:
+        return None
+    return deck_contract["dividers"]
 
 
 def build_release(
@@ -53,7 +82,10 @@ def build_release(
 
     if not skip_verify_deck:
         print("2) 구조 검증 (verify_deck)")
-        parts = len(re.findall(r"<section[^>]*\bpart-divider\b", preview_path.read_text(encoding="utf-8")))
+        parts = _contract_dividers(preview_path)
+        if parts is None:
+            print("WARN: 계약 없음 — parts 자기계산")
+            parts = len(re.findall(r"<section[^>]*\bpart-divider\b", preview_path.read_text(encoding="utf-8")))
         if _run("verify_deck.py", preview_path, "--parts", parts):
             print("[FAIL] 구조 검증 실패 — 조각을 고친 뒤 다시 실행하세요")
             return 1

@@ -3,10 +3,10 @@
 - Plan ID: CSR-2026-07
 - Plan Version: 1.0.0
 - Current Branch: `refactor/create-slides`
-- Current Commit: `84fe173` (P5) → P4 커밋 후 갱신
-- Current Phase: **P4 (Core Contract·로드 재편) — 완료, 커밋 대기** (P5는 `84fe173`으로 선행 완료)
-- Last Completed Task: TASK-P4-005
-- Active Task: TASK-P4-006 (게이트·커밋)
+- Current Commit: `b04dde2` (P4) → P6 커밋 후 갱신
+- Current Phase: **P6 (검증 신설) — 완료, 커밋 대기**
+- Last Completed Task: TASK-P6-008
+- Active Task: TASK-P6-009 (게이트·커밋)
 - Completed Validation:
   - 기준선 5종 기록 완료(BASELINE_REPORT §3 / 원문 BASELINE_OUTPUTS.txt)
   - V-26(동결): `git status --short`에 `sessions/1주차/` 0건 — 통과 (P0·P1)
@@ -24,6 +24,15 @@
   - **V-12 통과**: `verify_kit.py` PASS · `patterns.css`에 `.terminal-dark` 존재 · `revision.css` diff 0
   - **V-23 통과**: `references/phases/05-시각화.md`에 R-D3-01 존재 · `kit/vendor` 디렉터리 부재(DEC-08 준수)
   - **V-24 통과**: `tests.test_deck_pipeline` + `tests.test_image_pipeline` = 25 tests OK(기준선 동등)
+  - **V-13 통과(P6)**: 계약 외부화 후 1주차 = **FAIL 0 · WARN 5 · PASS 51**. 기준선(FAIL 0 · WARN 0 · PASS 47) 대비 FAIL 동등, 검사 +4종. `verify_deck.py`의 1주차 하드코딩 리터럴은 전부 `sessions/_contracts/1주차.deck.contract.json`으로 이전됐고, 계약 없는 주차는 WARN 1건만 남기고 통과(픽스처 테스트로 확인)
+  - **V-14 통과**: PART 정합 검사가 1주차 known 15장을 WARN으로 검출(FAIL 0), 고장 픽스처 `broken/part-01.html`에서는 FAIL 산출
+  - **V-15 통과**: 이미지 배선 검사가 1주차 known 2건 WARN·고아 14건 WARN, 고장 픽스처 `broken/unwired.json`에서 FAIL(W1)·고아 WARN(W9) 산출
+  - **V-17 통과**: 세션 CSS 하한 린트가 1주차 known 셀렉터 3건을 WARN으로 검출(FAIL 0)
+  - **V-16 통과**: `scripts/measure_render.js` `node --check` 통과, `references/phases/08-검증.md`에 실행 절차 절 연결(scale=1 선확인·전 장 순회·known_violations 대조). 헤드리스 미도입(DEC-03 준수)
+  - **V-18 통과(검출=성공)**: `verify_notes.py` 1주차 = **불일치 36건 / exit 1**. §7.8의 "pn-no 구버전 의심"이 실측으로 **확정**됐다 — 27번 이후 전 구간에서 노트 `pn-no` N의 제목이 덱 N−1의 제목과 일치하는 **일관된 한 칸 밀림**. 1주차 동결이므로 수정하지 않고 기존 결함으로 기록
+  - **V-19 통과**: `verify_session_docs.py 2 --target 초안` = **8 PASS**(기존 7 + 신규 번호유일성 106개 전부 유일). `report_draft_sync.py 2`는 덱 부재를 알리고 exit 0(판정 없음 — 규약대로)
+  - **V-25 통과**: `tests.test_deck_contract` = **11 tests OK**. 3단 탐색(동폴더·`_contracts` 폴백·부재 WARN)·PART FAIL 재현·배선 FAIL 재현·고아 WARN·접두어 우선/폴백 전부 검증. 픽스처는 1주차 파일을 복사·참조하지 않음(과적합·동결 준수)
+  - **V-24 재확인(P6)**: `test_deck_pipeline` + `test_image_pipeline` + `test_deck_contract` = **36 tests OK**
 - Failed Validation:
   - 없음. 단 **기준선 자체의 FAIL 2종은 아래 Known Failures로 이월**
 - Existing Known Failures:
@@ -69,6 +78,41 @@
 | P2-009 앵커 수 | AGENTS.md 8곳 | **16건/8줄**(2개 줄에 다중 매치) | 지시가 "전 참조 교체"이므로 전량 처리 |
 | 조사(助詞) 결합 | 계획에 없음 | `create-slides`는 모음 종성이라 `은/이/으로` → `는/가/로` 정정 필요 5건 | 개명의 기계적 귀결로 판정해 정정(신규 문안 판단 아님) |
 | ⑧군 4파일 수정 Phase | §12 표상 P3·P6 소유 | P2에서 수정 | P2-012 본문이 "발견 시 즉시 교체 지시"를 규정하므로 계획 내 |
+
+## 계획과의 차이 (P6 기록) — 사용자 결정 1건 포함
+
+### PART 정합 검사(TASK-P6-003 ①)의 전제 오류
+
+계획 §7.8·§9 RESULT-001은 1주차 결함을 "PART **라벨 밀림**"으로 보고, P6-003 ①은 본문 `.s-team`의 "PART n"이 직전 divider 위치 인덱스와 일치하는지 검사하라고 규정했다.
+
+**실측 결과 그 전제가 틀렸다.** `sessions/1주차/강의덱.html:1323-1324`의 스타터 JS가 본문 `.s-team`을 런타임에 **통째로 덮어쓴다**:
+
+```js
+if(!fixed && curPart>=1 && totalParts>=1){
+  var team = s.querySelector('.s-head .s-team');
+  ... team.innerHTML = '<span class="lbl">PART '+curPart+' / '+totalParts+'</span>' ...
+```
+
+`curPart`는 divider 누적 개수(= 위치 인덱스)다. 따라서 **정적 라벨은 화면에 표시되지 않으며**, 라벨 불일치는 시각적 결함이 아니라 **소스 불일치**다(작성자가 의도한 파트와 실제 배치가 어긋났다는 신호로는 유효).
+
+| 기준 | 1주차 불일치 |
+|---|---:|
+| 위치 인덱스(계획 정의) | **15장** |
+| divider `P` 번호 | 5장 |
+| 최초 분석이 등재한 값 | 4장 |
+
+1주차는 divider ID가 `P1·P2·P3·P5·P6·P7`로 **P4가 결번**이라 `P5` 이후 구간의 정적 라벨이 위치 인덱스보다 1 크다.
+
+**→ 사용자 결정(2026-07-26): 「계획대로 유지 + 14건 등재」.** 기대값은 계획 원문대로 위치 인덱스를 쓰고, 1주차 15장을 실측값으로 `known_violations.part_label_sequence`에 등재해 **1주차는 검출만·신규 주차는 FAIL**로 작동하게 했다. 계약 파일에 판정 근거를 `note`로 남겼다.
+
+### 그 밖의 P6 차이
+
+| 항목 | 계획 | 실제 | 처리 |
+|---|---|---|---|
+| 계약 JSON의 `강의덱_배포` 항목 | `slides`·`dividers`·`intro`만 | 현행 코드는 터미널·THANK YOU 검사도 **두 stem 모두**에 적용 | "현행 코드 값 그대로" 원칙을 우선해 `dark_terminal_slides`·`closing_text`를 배포본에도 기재 |
+| `chk(True, ..., warn=True)` 스케치 | 계약 부재 시 WARN | `chk`는 `cond=True`면 항상 PASS라 WARN이 안 나옴 | 워커 지적 채택 — `chk(False, ..., warn=True)`로 실제 WARN 산출 |
+| `orphan_manifest_slides` | 4건 | 실측 14건 | 실측값으로 갱신(고아는 등재 여부와 무관하게 항상 WARN이라 게이트 영향 없음) |
+| 워커 초기 구현의 기대값 | 위치 인덱스 | divider `P` 번호로 구현 | Opus가 원본 HTML 독립 측정으로 발견해 교정 지시(C1) |
 
 ## 계획과의 차이 (P3 기록)
 

@@ -874,6 +874,65 @@ def image_contract_checks(html, deck_path, *, release=False, manifest_path=None,
                 errors.append(f'HTML asset {asset_id} is missing from session manifest')
     return errors, notes
 
+# ============================================================================
+# 주차 구조 계약 로더 — 하드코딩된 리터럴 대신 외부 JSON 계약을 읽는다.
+#   ① 덱과 같은 폴더의 deck.contract.json
+#   ② <repo>/sessions/_contracts/<덱 부모폴더명>.deck.contract.json
+#   ③ 없으면 None(호출부가 WARN 1건만 남기고 구조 검사를 건너뛴다 — FAIL 금지).
+# ============================================================================
+
+def find_deck_contract(deck_path):
+    deck_file = Path(deck_path).resolve()
+    sibling = deck_file.parent / 'deck.contract.json'
+    if sibling.is_file():
+        return sibling
+    repo_root = Path(__file__).resolve().parent.parent
+    named = repo_root / 'sessions' / '_contracts' / f'{deck_file.parent.name}.deck.contract.json'
+    if named.is_file():
+        return named
+    return None
+
+
+# kit 3종(deck.css/legibility.css/patterns.css)을 제외한, 덱이 링크한 로컬 CSS만 남긴다.
+KIT_CSS_BASENAMES = {'deck.css', 'legibility.css', 'patterns.css'}
+
+
+def session_linked_css(html_text, deck_path, tags):
+    """덱이 링크한 로컬 CSS 중 kit 3종을 제외한 세션 전용 CSS(예: revision.css)."""
+    chunks = []
+    base = Path(deck_path).resolve().parent
+    for tag in tags:
+        if tag.name != 'link':
+            continue
+        href = tag.attrs.get('href')
+        if not href:
+            continue
+        clean = href.split("?", 1)[0].split("#", 1)[0]
+        if not clean or re.match(r'^(?:https?:|data:|//)', clean, re.I):
+            continue
+        try:
+            css_path = (base / unquote(clean)).resolve()
+        except (OSError, ValueError):
+            continue
+        if css_path.is_file() and css_path.suffix.lower() == '.css' and css_path.name not in KIT_CSS_BASENAMES:
+            try:
+                chunks.append(css_path.read_text(encoding='utf-8'))
+            except OSError:
+                pass
+    return "\n".join(chunks)
+
+
+def _selector_matches_known(selector, known_selectors):
+    """known_violations의 셀렉터 라벨이 실제 셀렉터 문자열 안에 토큰 단위로 모두 포함되면 매치로 본다
+    (실제 CSS 셀렉터는 :is()/자손 결합자 등으로 더 길고 복잡해 완전 일치를 기대할 수 없다)."""
+    norm = re.sub(r'\s+', ' ', selector).strip()
+    for known in known_selectors:
+        tokens = known.split()
+        if tokens and all(tok in norm for tok in tokens):
+            return True
+    return False
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("deck"); ap.add_argument("--parts", type=int, default=None)
@@ -929,110 +988,109 @@ def main():
             "학생 덱 힌트 UI·강사용 문구 0",
             f"학생 덱 금지 힌트 잔존: hint-reveal {len(hint_classes)}개, 문구 {banned_hint_labels}")
 
-    # ── 1주차 학생 덱 전용 계약(2026-07-21) ──
-    # 다른 주차·카탈로그·발표자 노트에 오작동하지 않도록 파일 위치와 정본 파일명을 함께 본다.
-    # 새 S01A/B/C의 존재 자체를 판별 조건으로 쓰면 누락된 덱이 검사를 우회하므로 경로를 기준으로 한다.
-    # 2026-07-22: 편집본 구성 개편(79장/PART 5, S00 표지 신설). 배포본은 재빌드 전까지 72장/PART 6 유지.
+    # ── 주차 구조 계약(외부 파일) 검증 ──
+    # 하드코딩된 리터럴 대신 slides/dividers/intro/sequences/dark_terminal_slides/closing_text를
+    # 담은 외부 계약 JSON을 읽어 적용한다. 탐색 순서:
+    #   ① 덱과 같은 폴더의 deck.contract.json
+    #   ② <repo>/sessions/_contracts/<덱 부모폴더명>.deck.contract.json
+    #   ③ 둘 다 없으면 구조 검사를 건너뛰고 WARN 1건만 남긴다(FAIL 금지 — 계약 없는 주차/카탈로그도 통과).
+    # 계약에 있는 키만 검사하고 없는 키는 건너뛴다(계약이 부분적이어도 FAIL로 만들지 않는다).
     deck_file = Path(a.deck).resolve()
-    is_week1_student_deck = (
-        deck_file.parent.name == '1주차'
-        and deck_file.stem in {'강의덱', '강의덱_배포'}
-    )
-    if is_week1_student_deck:
-        slide_ids = [el.attrs.get('data-slide') or '' for el in ordered_slides]
-        if deck_file.stem == '강의덱':
-            # 편집본: S00 표지 신설 + PART divider 1장 감소로 79장.
-            # 2026-07-22 2차: S39A·W04 삭제, 실습 PART 6 표지 신설 → 79장/divider 6.
-            # 2026-07-23: 세션 요약(S61, concept-recap closing) 삭제로 78장.
-            # 2026-07-23 2차: PART 3에 프롬프트·컨텍스트 엔지니어링, 구조적 한계(LM·SY),
-            #   아첨 방지 요청문, 판단은 사람, "해.", 반복 수정 7장 신설로 85장.
-            # 2026-07-23 3차: PART 3 간지 뒤에 S3MAP 흐름 안내를 추가해 86장.
-            # 2026-07-24 4차: S3HUM 뒤에 도입 화면을 되짚는 S3ASK를 추가해 87장.
-            # 2026-07-24 5차: S28A 성공 기준 슬라이드를 사용자 요청으로 삭제해 86장.
-            # 2026-07-24 6차: 파일 재료·검증과 프로젝트 폴더 안내 5장을 삭제해 81장.
-            # 2026-07-24 7차: S58 실제 위치 확인 슬라이드를 삭제해 80장.
-            # 2026-07-24 8차: 데스크톱 앱 진입(12) 슬라이드를 삭제해 79장.
-            # 2026-07-24 9차: 완료 기준(31)·첫 제작 요청(32) 순서 교체, 프로젝트 파일 확인(S38) 삭제해 78장.
-            # 2026-07-24 10차: 브라우저 확인(S39) 뒤에 추가 아이디어 7가지(S39A)를 신설해 79장.
-            # 2026-07-24 11차: 완료 체크(S59) 삭제, 변경 확인(S47)·배경 확인(S49)이 분위기·생기 커스터마이징(PAL1/PAL2)으로 교체돼 78장.
-            # 2026-07-24 12차: 실습 PART 6을 6주제→'할 일 목록' 단일주제로 재설계(X03~X06 4장 삭제).
-            #   조립 실측 76장(동시 편집 세션이 다른 파트에 늘린 분 포함 — 착수 시 계약 78은 stale이었음).
-            # 2026-07-24 13차: 다른 세션 조립으로 유실됐던 PART 1·2·3 편집을 복구하며
-            #   데스크톱 앱 진입(12) 삭제가 다시 반영돼 75장.
-            expected_n, expected_dividers = 75, 6
-            intro_expected = ['S00', 'S01', 'S01A', 'S01B', 'S01C']
-        else:
-            # 배포본(강의덱_배포): 2026-07-21) 48p(S39) 뒤에 완성 목표 쇼케이스 S39A를 추가해 71 → 72장.
-            # 2026-07-24: 편집본을 inline_deck.py로 재빌드해 편집본과 동일한 75장·S00 표지 포함.
-            expected_n, expected_dividers = 75, 6
-            intro_expected = ['S00', 'S01', 'S01A', 'S01B', 'S01C']
-
-        chk(n == expected_n,
-            f"1주차 학생 덱({deck_file.stem}) 슬라이드 {expected_n}장",
-            f"1주차 학생 덱({deck_file.stem}) 슬라이드 {n}장 ≠ {expected_n}장")
-
-        intro_len = len(intro_expected)
-        chk(slide_ids[:intro_len] == intro_expected,
-            f"도입 {' → '.join(intro_expected)} 순서 유지",
-            f"도입 슬라이드 순서 오류: {slide_ids[:intro_len]} (필요 {intro_expected})")
-
-        if deck_file.stem == '강의덱':
-            # 페이지 번호가 아니라 안정적인 data-slide ID로 PART 3의 학습 흐름을 고정한다.
-            # S3MAP은 PART 3 간지 직후에 놓여야 하며, 이후의 핵심 전개도 같은 순서를 유지한다.
-            part3_expected = ['P3', 'S3MAP', 'S3PE', 'S3LM', 'S3CE', '18', 'S3SY',
-                              'S3SYP', 'S3HUM', 'S3ASK', 'S3DO', 'S3ITR']
-            try:
-                part3_start = slide_ids.index('P3')
-            except ValueError:
-                part3_actual = []
+    contract_path = find_deck_contract(deck_file)
+    known_violations = {}
+    if contract_path is None:
+        chk(False, "", "주차 구조 계약 없음(deck.contract.json) — 구조 미검증", warn=True)
+    else:
+        try:
+            contract_data = json.loads(contract_path.read_text(encoding='utf-8'))
+        except (OSError, json.JSONDecodeError) as exc:
+            contract_data = None
+            chk(False, "", f"주차 구조 계약 읽기 실패({contract_path.name}): {exc} — 구조 미검증", warn=True)
+        if contract_data is not None:
+            known_violations = contract_data.get('known_violations') or {}
+            deck_contract = (contract_data.get('decks') or {}).get(deck_file.stem)
+            if deck_contract is None:
+                chk(False, "",
+                    f"계약에 '{deck_file.stem}' 덱 항목 없음({contract_path.name}) — 구조 미검증",
+                    warn=True)
             else:
-                part3_actual = slide_ids[part3_start:part3_start + len(part3_expected)]
-            chk(part3_actual == part3_expected,
-                f"PART 3 ID 순서 유지({' → '.join(part3_expected)})",
-                f"PART 3 ID 순서 오류: {part3_actual} (필요 {part3_expected})")
+                slide_ids = [el.attrs.get('data-slide') or '' for el in ordered_slides]
 
-        week1_dividers = sum(1 for el in ordered_slides if 'part-divider' in classes(el.attrs))
-        chk(week1_dividers == expected_dividers,
-            f"1주차 PART divider {expected_dividers}장",
-            f"1주차 PART divider {week1_dividers}장 ≠ {expected_dividers}장")
+                if 'slides' in deck_contract:
+                    expected_n = deck_contract['slides']
+                    chk(n == expected_n,
+                        f"덱({deck_file.stem}) 슬라이드 {expected_n}장 계약 일치",
+                        f"덱({deck_file.stem}) 슬라이드 {n}장 ≠ 계약 {expected_n}장")
 
-        # 검정 터미널 두 장은 HTML 구조에서 dark + white-copy 계약을 명시해야 한다.
-        # 현재 컴포넌트 명명(`.terminal-dark > .terminal-copy`)과 새 전용 명명
-        # (`.dark-terminal.terminal-white-copy`)을 모두 허용하되, 둘 중 한 계약은 완결돼야 한다.
-        terminal_contract_errors = []
-        slide_by_id = {el.attrs.get('data-slide'): el for el in ordered_slides}
-        for target_id in ('32',):
-            target = slide_by_id.get(target_id)
-            if target is None:
-                terminal_contract_errors.append(f'{target_id}: 슬라이드 없음')
-                continue
-            terminal_tags = [tag for tag in tags
-                             if target.inner_start <= tag.start < target.inner_end
-                             and classes(tag.attrs) & {'dark-terminal', 'terminal-dark'}]
-            if not terminal_tags:
-                terminal_contract_errors.append(f'{target_id}: dark terminal class 없음')
-                continue
-            white_copy_ok = any('terminal-white-copy' in classes(tag.attrs) for tag in terminal_tags)
-            if not white_copy_ok:
-                white_copy_ok = any(
-                    terminal_el is not None and any(
-                        terminal_el.inner_start <= tag.start < terminal_el.inner_end
-                        and 'terminal-copy' in classes(tag.attrs)
-                        for tag in tags
-                    )
-                    for terminal_el in (elements_by_start.get(terminal.start) for terminal in terminal_tags)
-                )
-            if not white_copy_ok:
-                terminal_contract_errors.append(f'{target_id}: white-copy contract class 없음')
-        chk(not terminal_contract_errors,
-            "32 검정 터미널 dark/white-copy 계약",
-            "검정 터미널 계약 위반: " + " | ".join(terminal_contract_errors))
+                if 'dividers' in deck_contract:
+                    expected_dividers = deck_contract['dividers']
+                    contract_dividers = sum(1 for el in ordered_slides if 'part-divider' in classes(el.attrs))
+                    chk(contract_dividers == expected_dividers,
+                        f"덱({deck_file.stem}) PART divider {expected_dividers}장 계약 일치",
+                        f"덱({deck_file.stem}) PART divider {contract_dividers}장 ≠ 계약 {expected_dividers}장")
 
-        last_slide = ordered_slides[-1] if ordered_slides else None
-        last_text = (html[last_slide.inner_start:last_slide.inner_end] if last_slide is not None else '')
-        chk(last_slide is not None and 'THANK YOU' in decoded_text(last_text),
-            "마지막 슬라이드 THANK YOU 유지",
-            f"마지막 슬라이드({slide_ids[-1] if slide_ids else '없음'})에 THANK YOU 없음")
+                if 'intro' in deck_contract:
+                    intro_expected = deck_contract['intro']
+                    intro_len = len(intro_expected)
+                    chk(slide_ids[:intro_len] == intro_expected,
+                        f"도입 {' → '.join(intro_expected)} 순서 유지",
+                        f"도입 슬라이드 순서 오류: {slide_ids[:intro_len]} (필요 {intro_expected})")
+
+                if 'sequences' in deck_contract:
+                    # 페이지 번호가 아니라 안정적인 data-slide ID로 학습 흐름을 고정한다.
+                    for seq_key, seq_expected in (deck_contract['sequences'] or {}).items():
+                        if not seq_expected:
+                            continue
+                        try:
+                            seq_start = slide_ids.index(seq_expected[0])
+                        except ValueError:
+                            seq_actual = []
+                        else:
+                            seq_actual = slide_ids[seq_start:seq_start + len(seq_expected)]
+                        chk(seq_actual == seq_expected,
+                            f"{seq_key} ID 순서 유지({' → '.join(seq_expected)})",
+                            f"{seq_key} ID 순서 오류: {seq_actual} (필요 {seq_expected})")
+
+                if 'dark_terminal_slides' in deck_contract:
+                    # 검정 터미널 슬라이드는 HTML 구조에서 dark + white-copy 계약을 명시해야 한다.
+                    # 현재 컴포넌트 명명(`.terminal-dark > .terminal-copy`)과 새 전용 명명
+                    # (`.dark-terminal.terminal-white-copy`)을 모두 허용하되, 둘 중 한 계약은 완결돼야 한다.
+                    terminal_contract_errors = []
+                    slide_by_id = {el.attrs.get('data-slide'): el for el in ordered_slides}
+                    for target_id in deck_contract['dark_terminal_slides']:
+                        target = slide_by_id.get(target_id)
+                        if target is None:
+                            terminal_contract_errors.append(f'{target_id}: 슬라이드 없음')
+                            continue
+                        terminal_tags = [tag for tag in tags
+                                         if target.inner_start <= tag.start < target.inner_end
+                                         and classes(tag.attrs) & {'dark-terminal', 'terminal-dark'}]
+                        if not terminal_tags:
+                            terminal_contract_errors.append(f'{target_id}: dark terminal class 없음')
+                            continue
+                        white_copy_ok = any('terminal-white-copy' in classes(tag.attrs) for tag in terminal_tags)
+                        if not white_copy_ok:
+                            white_copy_ok = any(
+                                terminal_el is not None and any(
+                                    terminal_el.inner_start <= tag.start < terminal_el.inner_end
+                                    and 'terminal-copy' in classes(tag.attrs)
+                                    for tag in tags
+                                )
+                                for terminal_el in (elements_by_start.get(terminal.start) for terminal in terminal_tags)
+                            )
+                        if not white_copy_ok:
+                            terminal_contract_errors.append(f'{target_id}: white-copy contract class 없음')
+                    chk(not terminal_contract_errors,
+                        "검정 터미널 dark/white-copy 계약 유지",
+                        "검정 터미널 계약 위반: " + " | ".join(terminal_contract_errors))
+
+                if 'closing_text' in deck_contract:
+                    closing_expected = deck_contract['closing_text']
+                    last_slide = ordered_slides[-1] if ordered_slides else None
+                    last_text = (html[last_slide.inner_start:last_slide.inner_end] if last_slide is not None else '')
+                    chk(last_slide is not None and closing_expected in decoded_text(last_text),
+                        f"마지막 슬라이드 '{closing_expected}' 유지",
+                        f"마지막 슬라이드({slide_ids[-1] if slide_ids else '없음'})에 '{closing_expected}' 없음")
 
     for key, marker in FIXED.items():
         found = any(marker in classes(el.attrs) for el in slide_els)
@@ -1075,6 +1133,54 @@ def main():
             "파트 전환 자동 생성기 누락(partGeometry/hydratePartDivider)",
         )
 
+    # ── PART 정합: divider의 data-slide(P<n>) 위치-n 단조성 + 본문 슬라이드 라벨(.s-team의
+    #    'PART n')이 직전 divider의 "위치 인덱스"(그 앞에 나온 part-divider 누적 개수, 1부터)와
+    #    일치하는지 검사한다 — divider 자신의 data-slide P<n> 번호가 아니다(1주차는 P4가 결번이라
+    #    두 정의가 갈린다: P<n> 단조성은 "증가만 하면 됨"이고, 라벨 기대값은 "위치 순번"이다).
+    #    첫 divider 이전 슬라이드(표지·도입 등)는 직전 divider가 없어 검사 대상에서 제외한다.
+    #    known_violations.part_label_sequence에 등재된 슬라이드는 라벨 불일치가 있어도 WARN으로
+    #    강등한다(divider 자체의 P<n> 단조성 위반은 강등 대상이 아님).
+    _team_label_re = re.compile(r'<div\b[^>]*class=["\'][^"\']*\bs-team\b[^"\']*["\'][^>]*>\s*PART\s*(\d+)', re.I)
+    divider_ns = []
+    part_label_mismatches = []
+    divider_position = 0
+    for _el in ordered_slides:
+        _el_classes = classes(_el.attrs)
+        _slide_id = _el.attrs.get('data-slide') or ''
+        if 'part-divider' in _el_classes:
+            divider_position += 1
+            _m = re.match(r'^P(\d+)$', _slide_id)
+            if _m:
+                divider_ns.append(int(_m.group(1)))
+            continue
+        if divider_position == 0:
+            continue
+        _headers = [h for h in elements
+                    if h.name == 'header'
+                    and _el.inner_start <= h.start < _el.inner_end
+                    and 's-head' in classes(h.attrs)]
+        for _header in _headers:
+            _tm = _team_label_re.search(html[_header.inner_start:_header.inner_end])
+            if _tm:
+                _label_n = int(_tm.group(1))
+                if _label_n != divider_position:
+                    part_label_mismatches.append((_slide_id, _label_n, divider_position))
+                break
+
+    _divider_monotonic_ok = all(a < b for a, b in zip(divider_ns, divider_ns[1:]))
+    chk(_divider_monotonic_ok,
+        f"PART divider 번호 단조 증가 유지({divider_ns})",
+        f"PART divider 번호 단조성 위반: {divider_ns}")
+
+    _known_part_label_slides = set((known_violations.get('part_label_sequence') or {}).get('slides') or [])
+    _fail_part_labels = [t for t in part_label_mismatches if t[0] not in _known_part_label_slides]
+    _warn_part_labels = [t for t in part_label_mismatches if t[0] in _known_part_label_slides]
+    chk(not _fail_part_labels,
+        "본문 슬라이드 PART 라벨이 직전 divider와 일치",
+        f"본문 PART 라벨 불일치(슬라이드ID, 라벨n, 기대n): {_fail_part_labels}")
+    if _warn_part_labels:
+        chk(False, "", f"본문 PART 라벨 불일치(known, 슬라이드ID/라벨n/기대n): {_warn_part_labels}", warn=True)
+
     # ── 네비 엔진: class 토큰 정확 매치(속성 순서 무관, <nav class="navbar glass"> 통과) ──
     navbar_ok = any('navbar' in classes(t.attrs) for t in tags) or any(t.attrs.get('id') == 'controls' for t in tags)
     chk(navbar_ok, "네비 엔진 존재", "네비바(.navbar) 없음")
@@ -1114,6 +1220,46 @@ def main():
         "이미지 계약 위반: " + " | ".join(image_errors))
     for note in image_notes:
         results.append(("WARN", note))
+
+    # ── 이미지 배선: 덱과 같은 폴더의 자료/이미지-에셋.json이 있을 때만 동작한다 ──
+    #   status=="ready"이고 decision이 IMAGE_EXPLANATORY/IMAGE_MNEMONIC인 slide_id는 반드시
+    #   <img>로 배선돼야 한다(없으면 FAIL, known_violations.unwired_ready_assets면 WARN).
+    #   manifest의 slide_id가 덱에 아예 없으면 항상 WARN(고아 — known 여부와 무관).
+    _asset_manifest_path = deck_file.parent / '자료' / '이미지-에셋.json'
+    if _asset_manifest_path.is_file():
+        try:
+            _asset_manifest = json.loads(_asset_manifest_path.read_text(encoding='utf-8'))
+        except (OSError, json.JSONDecodeError) as exc:
+            _asset_manifest = None
+            results.append(("WARN", f"이미지-에셋.json 읽기 실패: {exc} — 이미지 배선 검사 생략"))
+        if _asset_manifest is not None:
+            _wired_decisions = {'IMAGE_EXPLANATORY', 'IMAGE_MNEMONIC'}
+            _deck_slide_ids = {el.attrs.get('data-slide') for el in ordered_slides if el.attrs.get('data-slide')}
+            _slide_html_by_id = {el.attrs.get('data-slide'): html[el.inner_start:el.inner_end] for el in ordered_slides}
+            _orphan_ids, _unwired_ids = set(), set()
+            for _entry in (_asset_manifest.get('slides') or []):
+                if not isinstance(_entry, dict):
+                    continue
+                _sid = _entry.get('slide_id')
+                if not _sid or _entry.get('status') != 'ready' or _entry.get('decision') not in _wired_decisions:
+                    continue
+                if _sid not in _deck_slide_ids:
+                    _orphan_ids.add(_sid)
+                elif '<img' not in _slide_html_by_id.get(_sid, '').lower():
+                    _unwired_ids.add(_sid)
+
+            _known_unwired = set((known_violations.get('unwired_ready_assets') or {}).get('slides') or [])
+            _fail_unwired = sorted(_unwired_ids - _known_unwired)
+            _warn_unwired = sorted(_unwired_ids & _known_unwired)
+            chk(not _fail_unwired,
+                "이미지 배선: ready·explanatory/mnemonic 슬라이드 모두 <img> 배선됨",
+                f"이미지 배선 누락: {_fail_unwired} — status=ready·EXPLANATORY/MNEMONIC인데 <img> 없음")
+            if _warn_unwired:
+                chk(False, "", f"이미지 배선 누락(known, WARN): {_warn_unwired}", warn=True)
+            if _orphan_ids:
+                chk(False, "",
+                    f"이미지 매니페스트 고아 항목(WARN): {sorted(_orphan_ids)} — slide_id가 덱에 없음",
+                    warn=True)
 
     # 콘텐츠 슬라이드(고정/divider 제외) 다양성
     content_els = [el for el in slide_els if not (classes(el.attrs) &
@@ -1261,6 +1407,31 @@ def main():
         chk('--glass-white' in bundle.all and re.search(r'backdrop-filter\s*:\s*blur', bundle.all),
             "흰색 글래스 내비게이션 토큰 존재", "글래스 내비게이션 토큰/효과 없음")
 
+        # ── 세션 CSS 폰트 하한 린트: .s-body/.s-lead를 포함하는 셀렉터의 font-size < 22px 금지 ──
+        #   대상은 세션 전용 CSS(외부 <link> 중 kit 3종 제외) + 덱 인라인 <style>. kit CSS 자체는
+        #   [kit] 검사가 별도로 다루므로 여기서는 제외한다. known_violations.body_font_below_22에
+        #   등재된 셀렉터(토큰 부분일치)는 FAIL이 아니라 WARN으로 강등한다.
+        _session_css = _strip_css_comments(session_linked_css(html, a.deck, tags)) + "\n" + bundle.deck_inline
+        _font_below_22 = []
+        for _sel_group, _decls, _body, _at in iter_rules(_session_css):
+            _fs = (_decls.get('font-size') or '').strip()
+            _fs_m = re.match(r'(\d+(?:\.\d+)?)px', _fs)
+            if not _fs_m or float(_fs_m.group(1)) >= 22:
+                continue
+            for _sel in _sel_group.split(','):
+                _sel = _sel.strip()
+                if '.s-body' in _sel or '.s-lead' in _sel:
+                    _font_below_22.append(_sel)
+        _font_below_22 = list(dict.fromkeys(_font_below_22))
+        _known_font_selectors = (known_violations.get('body_font_below_22') or {}).get('selectors') or []
+        _fail_font_sels = [s for s in _font_below_22 if not _selector_matches_known(s, _known_font_selectors)]
+        _warn_font_sels = [s for s in _font_below_22 if _selector_matches_known(s, _known_font_selectors)]
+        chk(not _fail_font_sels,
+            "세션 CSS .s-body/.s-lead 폰트 22px 이상 유지",
+            f"세션 CSS .s-body/.s-lead 폰트 22px 미만: {_fail_font_sels}")
+        if _warn_font_sels:
+            chk(False, "", f"세션 CSS .s-body/.s-lead 폰트 22px 미만(known): {_warn_font_sels}", warn=True)
+
     # ── 진행도트·페이지번호 자동 주입 스크립트 존재 (s-pageno + s-part) ──
     scripts = " ".join(re.findall(r'<script[^>]*>(.*?)</script>', html, re.S))
     inject_ok = ('s-pageno' in scripts) and ('s-part' in scripts)
@@ -1398,6 +1569,24 @@ def main():
     leak_names = {'\U0001F4AC': '💬', '\U0001F5E3': '🗣', '\U0001F440': '👀'}
     chk(not leaked, "원고 아이콘 마커(💬/🗣/👀) 누출 0",
         f"아이콘 마커 {[leak_names[m] for m in leaked]} 최종 HTML에 잔존 — 학생 덱에서 제거하고 발표자 노트로 라우팅해야 함")
+
+    # ── <br> 직전 어절 조사 종결 린트(WARN 전용·판정 없음): 목록만 출력하고 FAIL은 절대 만들지 않는다 ──
+    _br_re = re.compile(r'<br\s*/?>', re.I)
+    _particle_end_re = re.compile(r'(을|를|이|가|은|는|와|과|의|에|로|으로|에서|하고|이며|거나)$')
+    _br_hits = []
+    for _brm in _br_re.finditer(html):
+        _window = re.sub(r'<[^>]+>', '', html[max(0, _brm.start() - 60):_brm.start()])
+        _window = _html_stdlib.unescape(_window)
+        _tokens = _window.split()
+        if not _tokens:
+            continue
+        _last_word = re.sub(r'[^\w가-힣]+$', '', _tokens[-1])
+        if _last_word and _particle_end_re.search(_last_word):
+            _slide_id = next((el.attrs.get('data-slide') or '?' for el in ordered_slides
+                              if el.inner_start <= _brm.start() < el.inner_end), '?')
+            _br_hits.append(f'{_slide_id}: …{_last_word}<br>')
+    if _br_hits:
+        results.append(("WARN", f"<br> 직전 어절 조사 종결 후보 {len(_br_hits)}건: {_br_hits}"))
 
     # 출력
     order = {"FAIL": 0, "WARN": 1, "PASS": 2}
