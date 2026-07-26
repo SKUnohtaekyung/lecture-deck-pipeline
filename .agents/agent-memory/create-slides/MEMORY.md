@@ -130,6 +130,7 @@
 - **예비·확장 33장(FLEX 26 + REC 7)은 THANK YOU 뒤 별도 구획**이다(`w2-annex`, divider 없음, 헤더에 `.s-team` 없음 → 파트 라벨 미주입). 상시 흐름에 끼우지 않는다. CORE/FLEX/REC는 화면 라벨이 아니라 수록 메타데이터라 노출 0.
 - **조립기 마커는 1개뿐이라 마무리 2장(END·THX)은 shell이 아니라 `part-06.html` 끝에 있다.** 예비 구획은 `part-07`·`part-08`. 구성 정본은 `sessions/2주차/강의덱.초안/README.md`.
 - 2주차 신규 구도 5종(`w2-roadmap`·`w2-practice`·`w2-scope`·`w2-screen`·`w2-slot`)은 shell `<style id="kit-additions">`에 있다. **`kit/styles/patterns.css` 환류는 미완** — 다음 주차 전에 옮긴다.
+- **신규 구도는 `verify_deck.py`의 family 레지스트리에도 등재해야 한다(2주차 17종 등재 완료).** 미등재 클래스는 전부 `full`로 뭉개져 "같은 구도 3연속" FAIL 오탐이 뜬다(실측: 등재 전 FAIL 1 → 등재 후 FAIL 0). generic 폴백(`s-full`·`grid-N`·`work-step`·`data-viz`)보다 **먼저** 판정해야 한다 — 신규 구도가 내부에 그 클래스를 품고 있어 뒤에 두면 폴백에 먼저 잡힌다.
 - 콘텐츠 제약 준수 확인: 채널명 0, D8 조건절 유지(2-8·2-9·4-11·5-7·6-2), D10 방식 비단정(5-9·A6R1), 5-REC4 예비 표기, 3주차 침범 0, 관통 문장 6교시 전부, 아이콘 전량 노트.
 - 미산출: 배포본(`build_release.py`)·발표본(10단계)·집필노트·리뷰HTML.
 
@@ -137,7 +138,7 @@
 - **덱 산출물의 회귀 게이트는 발표본 사이드카(`sessions/_verify/1주차/강의덱_발표.meta.json`)의 `slideHashes` 대조다.** 수정 전 사이드카를 복사해 두고, 재빌드 후 "의도한 슬라이드만 해시가 바뀌었는지"를 확인한다. 2026-07-26 실측: 슬라이드 2장 수정 + 스크린샷 폴더 이동을 함께 했는데 변경 해시는 정확히 2건이었다 — **인라인 base64는 원본 경로가 바뀌어도 동일**하므로 에셋 이동은 해시에 잡히지 않는다.
 - **`verify_deck.py --parts N`의 N은 shard 파일 수가 아니라 divider 수다.** 1주차는 part-01~05(5개)지만 divider가 6개라 `--parts 6`이 정답이고, `--parts 5`를 주면 "part-divider 6 ≠ 파트 5" FAIL이 뜬다(`build_release.py`는 자동 산출하므로 이 실수가 안 난다).
 
-**★ 발표 시스템(Presenter Runtime) — 0~9단계 전부 완료(2026-07-26).** 계획 정본 `plans/presenter-system-final-plan.md`. 신설: `kit/runtime/presenter-runtime.js`·`presenter-ui.css` · `scripts/inject_presenter.py`·`verify_presenter_deck.py` · `references/phases/10-발표자모드.md` · 전달물 `sessions/1주차/강의덱_발표.html` + 사이드카 `sessions/_verify/1주차/강의덱_발표.meta.json`. 미커밋 상태. 남은 것은 **수동 실기기표(Windows Edge·macOS Chrome 열)와 §29 성능 측정**뿐.
+**★ 발표 시스템(Presenter Runtime) — 0~9단계 전부 완료(2026-07-26).** 계획 정본 `plans/presenter-system-final-plan.md`. 신설: `kit/runtime/presenter-runtime.js`·`presenter-ui.css` · `scripts/inject_presenter.py`·`verify_presenter_deck.py` · `references/phases/10-발표자모드.md` · 전달물 `sessions/1주차/강의덱_발표.html` + 사이드카 `sessions/_verify/1주차/강의덱_발표.meta.json`. 남은 것은 **수동 실기기표(Windows Edge·macOS Chrome 열)와 §29 성능 측정**뿐.
 - **1주차 노트 정합은 2026-07-26 사용자 승인으로 복구했다.** pn-no 31건 재번호 · 제목 5건을 덱 기준으로 정정 · 덱에서 삭제된 슬라이드의 멘트 3건은 버리지 않고 인접 슬라이드로 항목 이동(블록 54→51, **멘트 본문 67개 전량 보존·무변경**). MISMATCH 36→4이고 남은 4건은 전부 `[부분집합]`(표지·도입·S3ASK·S3DO가 page-number 제외 클래스일 뿐 매핑은 정상). 판정 근거는 순서 보존 LCS 정렬 + 덱 실물 대조.
 - **⚠️ 노트 항목 파서는 상태 기반 HTMLParser 서브클래스로 만들지 마라.** `<br>` 같은 void 요소에서 깊이 계산이 어긋나 항목이 닫히지 않는다 — 실측으로 67개 중 33개만 잡히고 뒤쪽 26블록이 통째로 0개가 됐다. **범위 스캔**(`iter_class_blocks`)을 쓰고, 반드시 원본 실측치(joke/demo/hint 개수)와 대조해 검증하라. 검증을 건너뛰면 멘트 절반이 소리 없이 누락된 채 주입된다.
 - 노트 블록 요소는 `<div>`가 아니라 **`<section class="pn-slide">`** 다. 블록 끝을 `rindex("</div>")`로 찾으면 직전 항목의 닫는 태그를 잡아 항목 안에 중첩된다.
