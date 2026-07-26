@@ -1,0 +1,1199 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>발표자 노트 — 바이브코딩 2주차</title>
+<style>
+  :root{
+    --blue:#1D4ED8; --mint-deep:#0F766E; --coral-deep:#C2452F; --ink:#141821;
+    --gray-700:#4F4F4F; --gray-400:#9A9A9A; --white:#fff;
+    --surface:#F3F5F8; --line:#E5E8F0; --paper:#F4F8FB;
+    --blue-soft:#EEF3FE; --mint-soft:#E9F8F5; --coral-soft:#FEF0ED;
+    --r-lg:20px; --r-md:14px; --r-pill:999px;
+    --font-mono:"JetBrains Mono","D2Coding",ui-monospace,SFMono-Regular,Menlo,monospace;
+    --font:"Pretendard",system-ui,-apple-system,"Malgun Gothic",sans-serif;
+  }
+  *{ box-sizing:border-box; }
+  body{ margin:0; padding:32px 20px 64px; background:var(--paper); color:var(--ink);
+    font-family:var(--font); line-height:1.6; -webkit-font-smoothing:antialiased; }
+  .pn-wrap{ max-width:840px; margin:0 auto; }
+  .pn-head{ border-bottom:2px solid var(--blue); padding-bottom:16px; margin-bottom:28px; }
+  .pn-kicker{ font-size:14px; font-weight:800; color:var(--blue); letter-spacing:.02em; }
+  .pn-title{ font-size:30px; font-weight:800; margin:6px 0 4px; }
+  .pn-note{ font-size:15px; color:var(--gray-700); margin:0; }
+  .pn-legend{ display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }
+  .pn-legend span{ font-size:13px; font-weight:700; border-radius:var(--r-pill); padding:4px 11px; border:1px solid var(--line); }
+  .lg-joke{ background:var(--blue-soft); color:var(--blue); }
+  .lg-demo{ background:var(--coral-soft); color:var(--coral-deep); }
+  .lg-hint{ background:var(--mint-soft); color:var(--mint-deep); }
+  .pn-slide{ border:1px solid var(--line); border-radius:var(--r-lg); background:var(--white);
+    padding:18px 20px; margin:0 0 16px; break-inside:avoid; }
+  .pn-slide-head{ display:flex; align-items:baseline; gap:12px; margin-bottom:10px; }
+  .pn-no{ flex:0 0 auto; font-size:14px; font-weight:800; color:var(--white); background:var(--blue);
+    border-radius:var(--r-pill); padding:3px 11px; }
+  .pn-slide-title{ font-size:19px; font-weight:800; margin:0; }
+  .pn-item{ border-left:4px solid var(--line); padding:8px 0 8px 14px; margin:8px 0; }
+  .pn-item .lbl{ display:inline-block; font-size:12px; font-weight:800; margin-bottom:3px; }
+  .pn-item p{ margin:0; font-size:16px; color:var(--gray-700); }
+  .pn-item code{ font-family:var(--font-mono); font-size:14.5px; background:var(--surface);
+    border-radius:4px; padding:1px 5px; }
+  .pn-joke{ border-left-color:var(--blue); } .pn-joke .lbl{ color:var(--blue); }
+  .pn-demo{ border-left-color:var(--coral-deep); } .pn-demo .lbl{ color:var(--coral-deep); }
+  .pn-hint{ border-left-color:var(--mint-deep); background:var(--mint-soft);
+    border-radius:0 var(--r-md) var(--r-md) 0; }
+  .pn-hint .lbl{ color:var(--mint-deep); }
+  @media print{ body{ background:var(--white); padding:0 8mm; } .pn-slide{ box-shadow:none; } }
+</style>
+</head>
+<body>
+<div class="pn-wrap">
+
+  <header class="pn-head">
+    <div class="pn-kicker">발표자 노트 · 2주차</div>
+    <h1 class="pn-title">바이브코딩 — 작게 기획하고 작동하는 웹 만들기</h1>
+    <p class="pn-note">강사용 참고 문서입니다. 수강생 화면(덱)에는 <strong>💬 농담·👀 시연 큐·🗣 강사 멘트가 전혀 보이지 않습니다</strong>. 여기서는 모두 펼쳐 둡니다. 번호는 덱의 표시 페이지 번호와 같습니다.</p>
+    <div class="pn-legend">
+      <span class="lg-joke">💬 농담·애드리브</span>
+      <span class="lg-demo">👀 시연·관찰 큐</span>
+      <span class="lg-hint">🗣 강사 멘트·힌트(수강생 화면엔 없음)</span>
+    </div>
+  </header>
+
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">1</span>
+      <h2 class="pn-slide-title">내 아이디어를작동하는 작은 웹으로</h2>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>지난주에는 주제가 주어졌다면, 이번 주에는 만들 것을 고르는 일부터 시작합니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">4</span>
+      <h2 class="pn-slide-title">무엇을 만들지 정하는 순간</h2>
+    </div>
+    <div class="pn-item pn-hint">
+      <span class="lbl">🗣 강사 멘트·힌트</span>
+      <p>오늘은 아이디어를 크게 말하는 대신, 작게 만들어 확인할 수 있는 한 문장으로 줄입니다. 이번 주 관통 문장 "AI가 작성하고, 사람이 검토하고, 사람이 결정한다"에 앞부분 결정 한 칸이 더 붙는 주라고 예고합니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">5</span>
+      <h2 class="pn-slide-title">오늘 이렇게 배웁니다</h2>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰</span>
+      <p>다섯 단계가 뒤 슬라이드 어디에서 다뤄지는지 미리 짚어 줍니다. 색은 크게 세 묶음(발견 → 좁히기 → 정하기)으로 나뉜다고 안내합니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">6</span>
+      <h2 class="pn-slide-title">지난주에서 이번 주로</h2>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>지난주 사이클은 그대로 재사용합니다. 오늘은 그 앞에 "무엇을 만들지" 한 칸을 붙일 뿐이라고 안심시킵니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">7</span>
+      <h2 class="pn-slide-title">누구의 어떤 불편인가 — 타깃·페인포인트</h2>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>신발 속 돌멩이처럼 작고 반복되는 불편이 오히려 좋은 출발점입니다.</p>
+    </div>
+    <div class="pn-item pn-hint">
+      <span class="lbl">🗣 강사 멘트·힌트</span>
+      <p>페인포인트는 NN/g 기준 상호작용·여정·관계 세 층위 어디서든 생깁니다. 타깃을 "모두"로 잡으면 아무에게도 안 맞는 가게가 되니 한 부류로 좁힙니다(타깃만을 정의한 최상위 표준은 확인 못 함 — 초보자 정의로 사용).</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">8</span>
+      <h2 class="pn-slide-title">페르소나와 사용자 가설은 다릅니다</h2>
+    </div>
+    <div class="pn-item pn-hint">
+      <span class="lbl">🗣 강사 멘트·힌트</span>
+      <p>린 UX(Gothelf)는 '페르소나·타깃 정의'와 '가설 문장 쓰기'를 별개 단계로 봅니다. 조사 없이 상상으로 만든 페르소나는 '프로토 페르소나'라 부르고, NN/g는 이를 검증하지 않으면 "팀의 잘못된 가정을 되울리는 반향실"이 된다고 경고합니다 — 최종 결론이 아니라 검증할 가설로 다룹니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">9</span>
+      <h2 class="pn-slide-title">&quot;이 사람이 이 상황에서 이걸 필요로 할 것이다.&quot;</h2>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>AI는 공감하는 듯한 문장은 잘 만들지만, 그건 실제 조사가 아니라 언어 패턴에 기반한 생성물입니다. "AI는 공감 못 한다"고 단정하지는 말고 "경험한 것이 아니라 확인이 필요한 가정"이라고만 말합니다.</p>
+    </div>
+    <div class="pn-item pn-hint">
+      <span class="lbl">🗣 강사 멘트·힌트</span>
+      <p>일기예보 강수확률 60%처럼, 그럴듯해도 창밖을 보기 전엔 예측입니다. 검증 없이 크게 만들면 '시장이 원하지 않는 것'을 만드는 대표 실패로 이어집니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">10</span>
+      <h2 class="pn-slide-title">실습 ① 내 불편을 한 문장으로</h2>
+    </div>
+    <div class="pn-item pn-hint">
+      <span class="lbl">🗣 강사 멘트·힌트</span>
+      <p>막히면: "제가 돕고 싶은 사람·상황·도움을 한 문장으로 정리해 주세요."</p>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>"이거 필요하시죠?" 같은 유도 질문 대신 "지금은 그 일을 어떻게 하세요?"처럼 실제 행동을 물으면 아이디어가 더 솔직해집니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">11</span>
+      <h2 class="pn-slide-title">한 줄 정의는 제작 나침반</h2>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>빈칸을 홍보 카피로 채우지 마세요. 한 줄 정의는 슬로건이 아니라 '무엇을 만들지' 좁히는 제작 기준입니다 — 택배 송장이지 광고 문구가 아닙니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">12</span>
+      <h2 class="pn-slide-title">주제는 이렇게 고릅니다</h2>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰</span>
+      <p>자유 주제든 템플릿 주제든 같은 8기준으로 거릅니다. 하나라도 크게 어긋나면 주제를 더 좁히자고 안내합니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">13</span>
+      <h2 class="pn-slide-title">유형으로 고르면 쉽습니다</h2>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>직업이나 관심사는 달라도 이번 주 기능의 크기는 비슷하게 맞출 수 있습니다. 템플릿 주제는 '오늘의 활동 기록'(기록형)입니다.</p>
+    </div>
+    <div class="pn-item pn-hint">
+      <span class="lbl">🗣 강사 멘트·힌트</span>
+      <p>쉬운 유형이 수준 낮은 게 아닙니다 — 난이도는 조리 단계 수일 뿐, 완주해 작동하는 게 목표입니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">14</span>
+      <h2 class="pn-slide-title">이번 주의 기술 경계</h2>
+    </div>
+    <div class="pn-item pn-hint">
+      <span class="lbl">🗣 강사 멘트·힌트</span>
+      <p>정적이라는 말은 "아무 반응 없음"이 아니라 "서버가 새 내용을 만들어 주지 않음"이라는 뜻입니다. 홀(브라우저)만 만들고 주방(서버)·창고(DB)는 쓰지 않는다고 비유합니다. 새로고침하면 기록이 사라지는 것도 고장이 아니라 이 범위의 자연스러운 경계입니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">15</span>
+      <h2 class="pn-slide-title">안전하게 작게 시작하기</h2>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>연습 데이터는 진짜 개인정보의 "대역 배우"입니다 — 모양만 연습하고 실명·연락처·내부 자료는 넣지 않습니다.</p>
+    </div>
+    <div class="pn-item pn-hint">
+      <span class="lbl">🗣 강사 멘트·힌트</span>
+      <p>빼는 이유는 "AI가 못 해서"가 아니라 "틀리면 사람에게 피해가 크고 책임이 무거워서"입니다. 분야가 아니라 '판단·추천·평가'가 문제라, 진단을 빼고 기록·학습으로 바꾸면 같은 분야도 안전합니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">16</span>
+      <h2 class="pn-slide-title">실습 ② 한 줄 정의 확정 + 새 폴더</h2>
+    </div>
+    <div class="pn-item pn-hint">
+      <span class="lbl">🗣 강사 멘트·힌트</span>
+      <p>막히면: "새 폴더를 만들고 열어 주세요."</p>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰</span>
+      <p>폴더가 생성되고 열리는 화면을 함께 확인합니다. 템플릿 주제 학생은 주어진 한 줄 정의를 그대로 채택하고 폴더만 만듭니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">17</span>
+      <h2 class="pn-slide-title">작동하는 한 조각으로</h2>
+    </div>
+    <div class="pn-item pn-hint">
+      <span class="lbl">🗣 강사 멘트·힌트</span>
+      <p>많이 넣는 것이 많이 배우는 길은 아닙니다. 오늘은 하나를 끝까지 확인합니다. AI가 작성하고, 사람이 검토하고, 사람이 결정한다 — 무엇을 뺄지도 사람이 결정합니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">18</span>
+      <h2 class="pn-slide-title">오늘 이렇게 배웁니다</h2>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰</span>
+      <p>네 단계가 뒤 슬라이드 어디에 나오는지 예고합니다. 오늘 끝에는 '만들 것 하나'가 손에 남는다고 안내합니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">19</span>
+      <h2 class="pn-slide-title">결과와 기능은 다릅니다</h2>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>"기능 다섯 개 넣으면 결과도 다섯 배"는 아닙니다 — 오히려 무엇이 통했는지 알기 어려워집니다. 택시는 바퀴가 굴러도(기능) 엉뚱한 데 내려 주면 결과는 0입니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">20</span>
+      <h2 class="pn-slide-title">MVP는 대충 만든 게 아닙니다</h2>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>이사 첫날 꼭 필요한 짐만 먼저 푸는 것과 같습니다. 집 전체를 한 번에 완성하는 일이 아닙니다.</p>
+    </div>
+    <div class="pn-item pn-hint">
+      <span class="lbl">🗣 강사 멘트·힌트</span>
+      <p>에릭 리스: MVP는 "가장 적은 노력으로 검증된 배움을 최대한 얻는 버전"입니다 — 기능 수를 줄인 것이지 품질을 낮춘 게 아닙니다(minimum ≠ 저품질).</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">21</span>
+      <h2 class="pn-slide-title">먼저 보여줄 결과 하나</h2>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰</span>
+      <p>앵커 화면에서 "사용자가 마지막에 보는 것"을 손가락으로 짚어 봅니다. 그 장면이 결과, 거기까지 가는 동작이 기능입니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">22</span>
+      <h2 class="pn-slide-title">핵심 기능과 부가 기능</h2>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>부가 기능은 버리는 게 아니라 보관하는 겁니다. 장바구니·로그인·공유가 떠올라도 일단 주차장에 세워 둡니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">23</span>
+      <h2 class="pn-slide-title">범위는 세 칸</h2>
+    </div>
+    <div class="pn-item pn-hint">
+      <span class="lbl">🗣 강사 멘트·힌트</span>
+      <p>여행 가방의 무게 제한처럼, '안 만들 것'을 정해야 가방이 닫힙니다. 범위를 안 정하면 요구가 계속 불어나(스코프 크리프) 핵심조차 못 끝냅니다. 제외는 실패가 아니라 'Won't have this time'입니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">24</span>
+      <h2 class="pn-slide-title">실습 ③ AI가 제안한 기능 하나 삭제</h2>
+    </div>
+    <div class="pn-item pn-hint">
+      <span class="lbl">🗣 강사 멘트·힌트</span>
+      <p>"이 중 이번 주 핵심이 아닌 것과 그 이유를 물어봐 주세요."</p>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>추가만 해 본 사람에게 '제거'는 낯설지만, 무엇을 뺄지 정하는 게 진짜 기획입니다. 제거가 0건이면 다시 골라 봅니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">25</span>
+      <h2 class="pn-slide-title">User Flow란?</h2>
+    </div>
+    <div class="pn-item pn-hint">
+      <span class="lbl">🗣 강사 멘트·힌트</span>
+      <p>NN/g 정의: user flow는 "제품에서 흔한 과업을 끝내는 데 필요한 전형적·이상적 상호작용의 집합"입니다. 지하철 노선도 전체가 아니라 내가 매일 타는 한 경로만 그립니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">26</span>
+      <h2 class="pn-slide-title">입력 → 실행 → 결과 → 변화</h2>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰</span>
+      <p>앵커 화면에서 네 요소를 손가락으로 짚어 봅니다. 하나라도 말 못 하면 기능이 아직 흐린 겁니다. 계산·변환형은 '변화'가 없을 수 있어 비워도 됩니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">27</span>
+      <h2 class="pn-slide-title">잘못된 입력도 흐름의 일부</h2>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>첫 입력에만 감동해서 작동하는 기능도 있습니다 — 두 번째 입력이 진짜 면접입니다.</p>
+    </div>
+    <div class="pn-item pn-hint">
+      <span class="lbl">🗣 강사 멘트·힌트</span>
+      <p>NN/g Wireflows는 오류 메시지 같은 피드백을 흐름 문서화 대상으로 인정합니다. 다만 해피패스(입력→실행→결과)가 정의의 핵심이고 분기는 확장이라고 선을 긋습니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">28</span>
+      <h2 class="pn-slide-title">완료 기준은 눈으로, 테스트는 방법</h2>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>채점표가 시험 뒤에 생기면 모두가 억울합니다 — 만들기 전에 채점표를 만듭니다.</p>
+    </div>
+    <div class="pn-item pn-hint">
+      <span class="lbl">🗣 강사 멘트·힌트</span>
+      <p>"확인할 수 없는 요구사항은 쓸모가 없다" — '잘'은 사람마다 기준이 달라 O/X가 안 납니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">29</span>
+      <h2 class="pn-slide-title">실습 ④ 내 흐름 3~5단계 + 완료 기준</h2>
+    </div>
+    <div class="pn-item pn-hint">
+      <span class="lbl">🗣 강사 멘트·힌트</span>
+      <p>막히면: "제 핵심 기능의 입력 → 실행 → 결과를 3~5단계로 정리해 주세요."</p>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰</span>
+      <p>이 흐름이 4·5·6교시에서 계속 재사용된다고 예고합니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">30</span>
+      <h2 class="pn-slide-title">대화는 흘러가고</h2>
+    </div>
+    <div class="pn-item pn-hint">
+      <span class="lbl">🗣 강사 멘트·힌트</span>
+      <p>정한 것을 프로젝트 안에 남겨야 AI와 사람이 같은 기준으로 다시 시작합니다. 오늘은 문서를 고정하고, 그 문서로 첫 화면까지 작동시킵니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">31</span>
+      <h2 class="pn-slide-title">오늘 이렇게 배웁니다</h2>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰</span>
+      <p>오늘 끝에는 버튼을 누르면 화면이 바뀌는 '첫 작동'까지 간다고 예고합니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">32</span>
+      <h2 class="pn-slide-title">Markdown은 메모에 구조를 붙입니다</h2>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>Markdown은 시험 과목이 아니라 메모장에 붙이는 교통 표지판입니다. 문법을 외우는 게 아니라 AI가 만든 prd.md를 읽고 고치기만 하면 됩니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">33</span>
+      <h2 class="pn-slide-title">PRD와 prd.md 핵심 구분</h2>
+    </div>
+    <div class="pn-item pn-hint">
+      <span class="lbl">🗣 강사 멘트·힌트</span>
+      <p>회사 PRD는 여러 팀 합의를 위한 큰 문서, 우리 prd.md는 혼자 만들 최소 기준만 담는 다섯 줄입니다. (질문받으면) GitHub처럼 코드 전에 '스펙'을 먼저 쓰는 도구도 공개돼 있습니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">34</span>
+      <h2 class="pn-slide-title">각 항목이 왜 AI 결과를 바꾸나</h2>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>막연한 프롬프트는 AI가 적히지 않은 요구 수천 개를 추측하게 만듭니다. 30쪽이라고 결과가 좋아지는 게 아니라, 핵심 다섯 줄이 방향을 잡습니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">35</span>
+      <h2 class="pn-slide-title">AGENTS.md는 무엇·왜 (최소 소개)</h2>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>벽에 붙은 '공용 작업 수칙' 같은 겁니다 — 누가 와도 일 전에 먼저 읽습니다.</p>
+    </div>
+    <div class="pn-item pn-hint">
+      <span class="lbl">🗣 강사 멘트·힌트</span>
+      <p>Skill과의 상세 차이(항상 자동 vs 호출식)는 질문받을 때만 설명합니다. 이번 주 필수 산출물은 prd·세 파일이고, AGENTS는 채택 시 보조 장치입니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">36</span>
+      <h2 class="pn-slide-title">실습 ⑤ prd.md 만들기 (ChatGPT 초안 → 사람 수정 → Codex 저장)</h2>
+    </div>
+    <div class="pn-item pn-hint">
+      <span class="lbl">🗣 강사 멘트·힌트</span>
+      <p>막히면: "대상·핵심·흐름·제외·완료를 하나씩 물어보고 초안을 보여 주세요."</p>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>도구를 나눠 씁니다 — ChatGPT는 기획·질문, Codex는 저장·구현. AI가 작성하고, 사람이 검토하고, 사람이 결정합니다(CP1: 대상·범위 가정 하나를 실제로 바꿉니다).</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">37</span>
+      <h2 class="pn-slide-title">실습 ⑥ 세 파일 만들고 첫 화면 변화</h2>
+    </div>
+    <div class="pn-item pn-hint">
+      <span class="lbl">🗣 강사 멘트·힌트</span>
+      <p>막히면: "prd.md 기준으로 만들 파일과 순서를 먼저 계획하고, 승인하면 작성해 주세요."</p>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰</span>
+      <p>index.html을 브라우저로 열어 첫 반응을 함께 확인합니다. 파일을 만든 것과 작동하는 것은 다릅니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">38</span>
+      <h2 class="pn-slide-title">읽는 순서대로</h2>
+    </div>
+    <div class="pn-item pn-hint">
+      <span class="lbl">🗣 강사 멘트·힌트</span>
+      <p>예쁘게 꾸미기 전에, 무엇을 먼저 보고 무엇을 누르는지 정합니다. AI가 만들고, 사람이 화면 기준을 결정합니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">39</span>
+      <h2 class="pn-slide-title">오늘 이렇게 배웁니다</h2>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰</span>
+      <p>오늘 끝에는 design.md와 화면에 최소 2가지가 반영된다고 예고합니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">40</span>
+      <h2 class="pn-slide-title">무엇을 어디에 놓을까 — IA</h2>
+    </div>
+    <div class="pn-item pn-hint">
+      <span class="lbl">🗣 강사 멘트·힌트</span>
+      <p>NN/g: 단일 페이지 형식을 유지하겠다는 결정 자체가 IA 문제입니다(미니-IA). 마트 매대 배치처럼 '무엇을 어디에'가 IA고, 색·조명은 별개의 꾸밈입니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">41</span>
+      <h2 class="pn-slide-title">IA와 User Flow는 다릅니다</h2>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>IA는 빙산의 물밑, 네비게이션은 물 위로 드러난 일부입니다 — "IA는 화면 UI의 일부가 아니라 UI를 결정하는 바탕"(NN/g).</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">42</span>
+      <h2 class="pn-slide-title">화면 정보도 순서가 있습니다</h2>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰</span>
+      <p>앵커 화면의 시선을 손가락으로 따라가며 순서가 끊기는 지점을 찾습니다.</p>
+    </div>
+    <div class="pn-item pn-hint">
+      <span class="lbl">🗣 강사 멘트·힌트</span>
+      <p>전부 크게 하면 아무것도 강조되지 않습니다 — 크기는 3단계 정도, 핵심 하나만 가장 크게(NN/g).</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">43</span>
+      <h2 class="pn-slide-title">버튼은 행동을 말해야 합니다</h2>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>"확인" 버튼은 확인할 게 너무 많습니다. 엘리베이터 버튼에 '3층 사무실'이라 적힌 것처럼, 버튼도 자기소개를 해야 합니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">44</span>
+      <h2 class="pn-slide-title">색만으로 상태를 설명하지 않습니다</h2>
+    </div>
+    <div class="pn-item pn-hint">
+      <span class="lbl">🗣 강사 멘트·힌트</span>
+      <p>색을 쓰지 말라는 게 아니라 '색만으로는 안 된다'입니다 — 신호등도 위치·글자가 함께 있습니다. WCAG를 다 외울 필요 없이 대비·색단독금지·라벨 세 가지면 흔한 실패 대부분을 피합니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">45</span>
+      <h2 class="pn-slide-title">레퍼런스는 복사가 아니라 관찰</h2>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>레퍼런스는 정답지보다 견본 옷입니다 — 사이즈가 내 프로젝트에 맞는지 봅니다.</p>
+    </div>
+    <div class="pn-item pn-hint">
+      <span class="lbl">🗣 강사 멘트·힌트</span>
+      <p>저작권은 아이디어·방식이 아니라 표현을 보호합니다. '넓은 여백' 같은 방향은 참고해도 되지만 문구·이미지·화면을 그대로 옮기면 침해가 될 수 있습니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">46</span>
+      <h2 class="pn-slide-title">실습 ⑦ 레퍼런스 1개 관찰</h2>
+    </div>
+    <div class="pn-item pn-hint">
+      <span class="lbl">🗣 강사 멘트·힌트</span>
+      <p>막히면: "이 서비스의 어떤 요소를 제 목적에 맞게 참고하면 좋을지 물어봐 주세요."</p>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰</span>
+      <p>실제 참고 화면을 함께 봅니다. (질문받으면) 무료 에셋도 라이선스를 확인합니다 — 검색된다고 무료가 아닙니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">47</span>
+      <h2 class="pn-slide-title">디자인 시스템 = 반복 규칙</h2>
+    </div>
+    <div class="pn-item pn-hint">
+      <span class="lbl">🗣 강사 멘트·힌트</span>
+      <p>옷장의 '기본 3색'처럼 한 번 정해 반복하는 겁니다. 대기업만 쓰는 게 아니라 작은 프로젝트에도 도움이 됩니다. (질문받으면) 공개 예시로 Material·Polaris — 문법·도구는 이번 범위 밖.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">48</span>
+      <h2 class="pn-slide-title">design.md는 화면 결정을 담는 문서</h2>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>카페 알바생에게 남기는 '가게 규칙 메모' 같은 겁니다 — 나도 Codex도 같은 기준을 봅니다. 문서만 만들고 끝이 아니라, 결과가 기준대로 나왔는지는 사람이 확인합니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">49</span>
+      <h2 class="pn-slide-title">실습 ⑧ design.md + 화면에 ≥2 적용</h2>
+    </div>
+    <div class="pn-item pn-hint">
+      <span class="lbl">🗣 강사 멘트·힌트</span>
+      <p>막히면: "design.md 기준으로 색과 버튼 문구를 화면에 적용해 주세요."</p>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰</span>
+      <p>적용 전후 화면을 비교합니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">50</span>
+      <h2 class="pn-slide-title">실습 ⑨ 빈 입력·오류 상태 (기능 유형상 필요 시)</h2>
+    </div>
+    <div class="pn-item pn-hint">
+      <span class="lbl">🗣 강사 멘트·힌트</span>
+      <p>막히면: "빈 입력일 때 안내 문구를 보여 주세요."</p>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>D8(빈값 안내)은 기능 유형상 필요할 때만 — 무조건 넣지 않습니다. 오류 문구는 사용자를 탓하지 말고 다음 행동을 알려 줍니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">51</span>
+      <h2 class="pn-slide-title">브라우저에서 확인</h2>
+    </div>
+    <div class="pn-item pn-hint">
+      <span class="lbl">🗣 강사 멘트·힌트</span>
+      <p>새 기능을 늘리는 시간이 아니라, 정한 한 기능을 끝까지 작동시키는 시간입니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">52</span>
+      <h2 class="pn-slide-title">오늘 이렇게 배웁니다</h2>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰</span>
+      <p>오늘 끝에는 정상·다른·빈값으로 확인된 작동 기능이 남습니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">53</span>
+      <h2 class="pn-slide-title">코드 전에 계획을 다시 확인</h2>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰</span>
+      <p>코드로 반복하지 말고 계획으로 반복합니다 — 잘못 만든 코드를 되돌리는 게 더 비쌉니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">54</span>
+      <h2 class="pn-slide-title">한 파일에서 여러 파일로 (왜·심화)</h2>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>한 파일에 다 넣으면 처음엔 편하지만 나중에 어디를 고칠지 숨바꼭질이 시작됩니다. index.html 하나만 열면 나머지가 함께 불려와 한 페이지가 됩니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">55</span>
+      <h2 class="pn-slide-title">상대경로와 파일명</h2>
+    </div>
+    <div class="pn-item pn-hint">
+      <span class="lbl">🗣 강사 멘트·힌트</span>
+      <p>탐색기에서 이름·위치가 맞는지 직접 확인합니다. 폴더를 통째로 옮겨도 상대경로면 '옆집' 관계가 유지됩니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">56</span>
+      <h2 class="pn-slide-title">브라우저 직접 실행 vs 서버 방식</h2>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>왜 file://에서 막히나: 브라우저가 파일끼리 '남'으로 봐서(CORS) 모듈·fetch를 차단합니다 — 일반 script.js로 열면 됩니다. (질문받으면) file://은 인터넷 주소가 아니라 내 컴퓨터 경로입니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">57</span>
+      <h2 class="pn-slide-title">이번 MVP의 기술 제한 (이유)</h2>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>제한은 실력을 줄이는 벽이 아니라 모두가 같은 출발선에 서게 하는 난간입니다. 모듈·React가 틀린 게 아니라 이번 범위에 안 맞을 뿐입니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">58</span>
+      <h2 class="pn-slide-title">핵심 기능은 한 단계씩</h2>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰</span>
+      <p>처음부터 전체를 멋지게 만들지 말고, 결과가 한 번 나타나는 순간을 먼저 찾습니다. 이삿짐도 상자 하나씩 옮깁니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">59</span>
+      <h2 class="pn-slide-title">실습 ⑩ 기능 구현 + 세 값 확인</h2>
+    </div>
+    <div class="pn-item pn-hint">
+      <span class="lbl">🗣 강사 멘트·힌트</span>
+      <p>막히면: "빈 입력일 때 어떻게 되는지 확인해 주세요."</p>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>첫 번째 입력에만 감동하는 기능이 많습니다 — 두 번째 입력이 진짜 면접입니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">60</span>
+      <h2 class="pn-slide-title">실습 ⑪ 불필요한 기능 제거</h2>
+    </div>
+    <div class="pn-item pn-hint">
+      <span class="lbl">🗣 강사 멘트·힌트</span>
+      <p>"prd 범위 밖 기능을 확인하고 빼 주세요." AI에게 그냥 "고쳐줘"라고 하면 범위를 넘겨 만들 수 있어, 유지할 것을 명시합니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">61</span>
+      <h2 class="pn-slide-title">수정 전, 마지막 작동 상태를 지킵니다</h2>
+    </div>
+    <div class="pn-item pn-hint">
+      <span class="lbl">🗣 강사 멘트·힌트</span>
+      <p>방식(폴더 복제 등)은 강사 안내로 통일합니다 — D10 미확정이라 되돌리기 기능만 믿지 않습니다. 문서를 크게 고치기 전 '다른 이름으로 저장'과 같습니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">62</span>
+      <h2 class="pn-slide-title">리팩터링 = 동작 유지 구조 정리</h2>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>서랍 정리처럼, 물건(기능)은 그대로 두고 칸만 나눠 찾기 쉽게 하는 겁니다(Fowler: 겉보기 동작 불변). 2주차는 신호를 알아채고 "동작은 유지하고 정리해 줘"라고 요청·확인하는 데까지만.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">63</span>
+      <h2 class="pn-slide-title">작동한다고 완료는 아닙니다</h2>
+    </div>
+    <div class="pn-item pn-hint">
+      <span class="lbl">🗣 강사 멘트·힌트</span>
+      <p>AI가 만들었다는 사실보다, 내가 정한 기준을 충족했는지가 중요합니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">64</span>
+      <h2 class="pn-slide-title">오늘 이렇게 배웁니다</h2>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰</span>
+      <p>오늘 끝에는 한 문제를 고쳐 다시 실행한 MVP와 인수 폴더가 남습니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">65</span>
+      <h2 class="pn-slide-title">대표 시나리오로 처음부터 끝까지</h2>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>요리사가 손님에게 내기 전 자기 접시로 한 입 맛보는 것 — 내 입맛이 손님을 대신하진 못합니다. 타인 반응은 3주차 공개 후에 봅니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">66</span>
+      <h2 class="pn-slide-title">정상값과 다른 값으로 다시</h2>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>첫 입력에만 감동하는 기능이 있습니다 — 두 번째 입력이 진짜 면접입니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">67</span>
+      <h2 class="pn-slide-title">대표 점검 다섯 질문</h2>
+    </div>
+    <div class="pn-item pn-hint">
+      <span class="lbl">🗣 강사 멘트·힌트</span>
+      <p>다섯 중 "모르겠다"가 나오면 그 지점이 수정 후보입니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">68</span>
+      <h2 class="pn-slide-title">prd·User Flow와 실제를 대조</h2>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰</span>
+      <p>문서는 제작 전 계획이자 제작 후 채점표입니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">69</span>
+      <h2 class="pn-slide-title">AI Self Review는 보조 점검</h2>
+    </div>
+    <div class="pn-item pn-hint">
+      <span class="lbl">🗣 강사 멘트·힌트</span>
+      <p>연구상 LLM은 외부 확인 없이 자기교정하면 오히려 나빠지기도 합니다. 만든 AI는 같은 사각지대를 그대로 안고 봅니다 — 예: pick 예제의 undefined 노출 결함.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">70</span>
+      <h2 class="pn-slide-title">실습 ⑫ 가장 중요한 한 문제 수정</h2>
+    </div>
+    <div class="pn-item pn-hint">
+      <span class="lbl">🗣 강사 멘트·힌트</span>
+      <p>"이건 유지, 이것만 바꾸고, 바뀐 뒤 이걸 확인해 주세요."</p>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>한 번에 하나만 바꿔야 무엇이 고쳤는지 압니다(CP3: 표현만 바꾸는 건 반려). AI가 작성하고, 사람이 검토하고, 사람이 결정합니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">71</span>
+      <h2 class="pn-slide-title">문서와 구현을 맞춥니다</h2>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>문서와 코드가 어긋나면 다음 작업 때 AI가 옛 기준을 보고 엉뚱하게 만듭니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">72</span>
+      <h2 class="pn-slide-title">Memory와 저장은 다음 이야기</h2>
+    </div>
+    <div class="pn-item pn-hint">
+      <span class="lbl">🗣 강사 멘트·힌트</span>
+      <p>(질문받으면) 심화 메모리 문서는 노트로만 다룹니다. 새로고침하면 기록이 사라지는 건 고장이 아니라 이 범위의 경계입니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">73</span>
+      <h2 class="pn-slide-title">3주차에 넘길 폴더를 확인합니다</h2>
+    </div>
+    <div class="pn-item pn-hint">
+      <span class="lbl">🗣 강사 멘트·힌트</span>
+      <p>저장 기능은 3주차, 여기선 정할 것만 정합니다. 도시락처럼 폴더 하나만 있으면 화면이 뜨는 상태로 정리합니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">74</span>
+      <h2 class="pn-slide-title">AI가 작성하고,사람이 검토하고,사람이 결정합니다.</h2>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>다음 주에는 이 폴더를 이어서 저장·개선·공유의 단계로 연결합니다(공개 채널은 다음 주에 안내).</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">76</span>
+      <h2 class="pn-slide-title">타깃을 좁히는 질문들</h2>
+    </div>
+    <div class="pn-item pn-hint">
+      <span class="lbl">🗣 강사 멘트·힌트</span>
+      <p>넓은 아이디어를 세 질문(누구·어떤 한 순간·한 결과)으로 좁히는 대화를 시연합니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">77</span>
+      <h2 class="pn-slide-title">자유 주제 vs 템플릿 주제</h2>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰</span>
+      <p>템플릿 주제(오늘의 활동 기록) 안내 문구를 보여 주고, 실습 ③부터는 자유 주제와 완전히 동일하게 진행한다고 강조합니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">78</span>
+      <h2 class="pn-slide-title">앵커 예시: 오늘의 활동 기록 도구</h2>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰</span>
+      <p>이 한 줄이 1교시부터 6교시까지 강사 시연의 기준선이 됩니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">79</span>
+      <h2 class="pn-slide-title">서비스 이름 후보</h2>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>이름은 지금 완벽하지 않아도 됩니다 — 한 줄 정의가 먼저입니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">80</span>
+      <h2 class="pn-slide-title">실행 전/후 두 줄 비교</h2>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰</span>
+      <p>전/후를 나란히 보여 주면 '결과'가 무엇인지 한눈에 잡힙니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">81</span>
+      <h2 class="pn-slide-title">기능 유형별 흐름 예시</h2>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰</span>
+      <p>mvp 예제 화면으로 유형별 흐름을 한 줄씩 보여 줍니다. 타이머형은 멈춤 상태 관리가 더해져 손이 더 간다고 덧붙입니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">82</span>
+      <h2 class="pn-slide-title">3주차에 저장할 정보</h2>
+    </div>
+    <div class="pn-item pn-hint">
+      <span class="lbl">🗣 강사 멘트·힌트</span>
+      <p>새로고침하면 사라지는 기록을 3주차에 남기게 된다고 예고만 합니다. 저장 '구현'은 3주차입니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">83</span>
+      <h2 class="pn-slide-title">나중 아이디어 보관함</h2>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>제외는 삭제가 아니라 보관입니다 — 3주차나 이후에 되살릴 수 있습니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">84</span>
+      <h2 class="pn-slide-title">첫 작동이 안 될 때</h2>
+    </div>
+    <div class="pn-item pn-hint">
+      <span class="lbl">🗣 강사 멘트·힌트</span>
+      <p>"어느 단계에서 멈췄는지 확인해 주세요 — 입력은 받는지, 버튼은 눌리는지, 결과가 안 붙는지." "안 돼요" 대신 어디에서·무엇을·실제·기대 네 조각으로 전달합니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">85</span>
+      <h2 class="pn-slide-title">대화와 문서는 역할이 다릅니다 (1주차 콜백)</h2>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>회의 잡담은 기억나도 회의록이 없으면 다음 날 다시 회의합니다. 채팅은 위로 밀려 사라지니 지킬 기준은 문서에 남깁니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">86</span>
+      <h2 class="pn-slide-title">ChatGPT와 Codex 역할표</h2>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>기본 구분만 기억하면 됩니다 — 정하는 대화는 ChatGPT, 만드는 일은 Codex.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">87</span>
+      <h2 class="pn-slide-title">기획이 바뀌면 문서를 먼저 고칩니다</h2>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>문서 수정도 사람이 승인하는 결정입니다. 집을 고치기 전 도면부터 고칩니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">88</span>
+      <h2 class="pn-slide-title">문서가 맥락이 된다 · Plan First</h2>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰</span>
+      <p>계획을 길게 만들라는 게 아니라 엉뚱한 파일을 줄이는 짧은 점검입니다. Codex는 <code>/plan</code>, 없어도 "계획부터 보여 줘"로 됩니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">89</span>
+      <h2 class="pn-slide-title">레퍼런스를 그대로 복사했을 때</h2>
+    </div>
+    <div class="pn-item pn-hint">
+      <span class="lbl">🗣 강사 멘트·힌트</span>
+      <p>"따라 하지 말고 특성만 뽑아 제 prd에 맞춰 주세요." 표현을 그대로 옮기면 저작권 문제가 될 수 있습니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">90</span>
+      <h2 class="pn-slide-title">강사 제공 디자인 방향 3종</h2>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰</span>
+      <p>방향별 화면 예를 보여 주고 하나를 고르게 합니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">91</span>
+      <h2 class="pn-slide-title">공개 디자인 시스템 구경</h2>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰</span>
+      <p>공식 사이트를 수업 후 참고용으로 안내합니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">92</span>
+      <h2 class="pn-slide-title">문구 good/bad 더 보기</h2>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>"오류 발생" vs "활동 내용을 한 줄 적어 주세요" — 문제만 말하지 말고 다음 행동을 줍니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">93</span>
+      <h2 class="pn-slide-title">assets 이미지·아이콘</h2>
+    </div>
+    <div class="pn-item pn-hint">
+      <span class="lbl">🗣 강사 멘트·힌트</span>
+      <p>경로가 틀리면 안 뜹니다 — assets/ 안에 두고 <code>./assets/…</code>로 연결합니다. 무료 아이콘은 라이선스를 확인합니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">94</span>
+      <h2 class="pn-slide-title">화면 정보 순서 한 장에 고정</h2>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰</span>
+      <p>화면을 만들기 전 손가락으로 이동 경로를 그려 봅니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">95</span>
+      <h2 class="pn-slide-title">스타일이 안 먹어요 — 파일명 불일치</h2>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰</span>
+      <p>case_filename 캡처로 한 글자 차이가 연결을 끊는 걸 보여 줍니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">96</span>
+      <h2 class="pn-slide-title">스타일이 안 먹어요 — 하위 폴더 index</h2>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰</span>
+      <p>case_subfolder 캡처. index가 하위 폴더에 생기면 <code>./</code> 기준이 어긋납니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">97</span>
+      <h2 class="pn-slide-title">다른 PC서 깨져요 — 절대경로</h2>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰</span>
+      <p>case_abspath 캡처. 절대경로는 내 PC 그 폴더에만 맞아 옮기면 깨집니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">98</span>
+      <h2 class="pn-slide-title">화면이 죽었어요 — 모듈/fetch (예비)</h2>
+    </div>
+    <div class="pn-item pn-hint">
+      <span class="lbl">🗣 강사 멘트·힌트</span>
+      <p><strong>예비 카드</strong> — file:// 모듈 차단이 인앱 브라우저에서 재현이 안 돼, 실제 Windows Chrome/Edge 재확인을 먼저 합니다. 그전엔 강사 시연으로만 씁니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">99</span>
+      <h2 class="pn-slide-title">반복 절차는 다시 쓸 수 있습니다</h2>
+    </div>
+    <div class="pn-item pn-hint">
+      <span class="lbl">🗣 강사 멘트·힌트</span>
+      <p>막히면 폴백 프롬프트로 전환합니다. 절차 재사용은 도구보다 목적이 중요합니다 — AI가 작성하고 사람이 검토하는 흐름은 그대로입니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">100</span>
+      <h2 class="pn-slide-title">실습 AGENTS.md 6~10줄 쓰기</h2>
+    </div>
+    <div class="pn-item pn-hint">
+      <span class="lbl">🗣 강사 멘트·힌트</span>
+      <p>"이 규칙들을 AGENTS.md로 정리해 주세요." AGENTS는 매 작업 시작 시 자동으로 읽히지만, 스스로 학습·기억하지는 않습니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">101</span>
+      <h2 class="pn-slide-title">assets 추가·초기화</h2>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰</span>
+      <p>앵커 화면으로 초기화 동작을 시연합니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">102</span>
+      <h2 class="pn-slide-title">중복·깨짐을 막는 요청·확인법</h2>
+    </div>
+    <div class="pn-item pn-hint">
+      <span class="lbl">🗣 강사 멘트·힌트</span>
+      <p>"기존 파일을 먼저 확인하고 중복 없이 고쳐 주세요."</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">103</span>
+      <h2 class="pn-slide-title">작동의 기준은 입력 → 실행 → 결과</h2>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>"더 예쁘게"가 아니라 "어느 단계에서 멈췄는지"를 알려 줍니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">104</span>
+      <h2 class="pn-slide-title">리팩터링 전/후 한 장</h2>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>결과(동작)는 같고 안쪽만 읽기 쉬워졌는지 확인합니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">105</span>
+      <h2 class="pn-slide-title">수정했더니 다른 게 깨졌어요</h2>
+    </div>
+    <div class="pn-item pn-hint">
+      <span class="lbl">🗣 강사 멘트·힌트</span>
+      <p>채택한 방식(폴더 복제 등)으로 복원합니다. 전체 재작성은 되던 기능까지 깨뜨립니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">106</span>
+      <h2 class="pn-slide-title">모바일 폭 확인</h2>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰</span>
+      <p>창 폭을 줄여 흐름이 끊기는 지점을 함께 봅니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">107</span>
+      <h2 class="pn-slide-title">공개 후 물어볼 질문</h2>
+    </div>
+    <div class="pn-item pn-hint">
+      <span class="lbl">🗣 강사 멘트·힌트</span>
+      <p>실제 사용자 반응은 공개 후에 확인합니다(3주차 예고).</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">108</span>
+      <h2 class="pn-slide-title">3주 성장 지도 회고</h2>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>한 주씩 쌓인 것을 되짚어 줍니다.</p>
+    </div>
+  </section>
+</div>
+</body>
+</html>
