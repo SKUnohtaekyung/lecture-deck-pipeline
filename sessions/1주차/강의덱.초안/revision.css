@@ -556,7 +556,8 @@
 .request-checklist p { margin:7px 0 0; color:var(--gray-700); font-size:18px; line-height:1.36; }
 .check-conclusion { margin:18px 0 0; color:var(--mint-deep); font-size:21px; font-weight:850; text-align:center; }
 
-.terminal-explain-layout { position:absolute; left:64px; right:64px; top:218px; bottom:48px; display:grid; grid-template-columns:40% 60%; gap:30px; }
+/* bottom:54px = 콘텐츠 하단 상한 666px(.s-pageno 침범 금지 띠). 이전 48px는 672px로 6px 초과였다. */
+.terminal-explain-layout { position:absolute; left:64px; right:64px; top:218px; bottom:54px; display:grid; grid-template-columns:40% 60%; gap:30px; }
 .terminal-explain { min-width:0; display:flex; flex-direction:column; justify-content:center; padding:28px; border-left:7px solid var(--blue); background:var(--blue-panel); }
 .terminal-explain h3 { margin:0 0 18px; font-size:28px; line-height:1.28; }
 .terminal-explain > p { margin:0; color:var(--gray-700); font-size:19px; line-height:1.48; }
