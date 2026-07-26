@@ -3,10 +3,11 @@
 - Plan ID: CSR-2026-07
 - Plan Version: 1.0.0
 - Current Branch: `refactor/create-slides`
-- Current Commit: `b04dde2` (P4) → P6 커밋 후 갱신
-- Current Phase: **P6 (검증 신설) — 완료, 커밋 대기**
-- Last Completed Task: TASK-P6-008
-- Active Task: TASK-P6-009 (게이트·커밋)
+- Current Commit: `907a634` (P6) → P7 커밋 후 갱신
+- Current Phase: **P7 (회귀·최종 채택) — 완료. 사용자 승인 대기(main 병합·push)**
+- Last Completed Task: TASK-P7-006
+- Active Task: 없음 — 실행 종료. 최종 보고는 `FINAL_REPORT.md`
+- Resume Instructions: 실행은 끝났다. 사용자가 병합을 승인하면 `git checkout main && git merge refactor/create-slides`. 승인 없이 push·merge 금지.
 - Completed Validation:
   - 기준선 5종 기록 완료(BASELINE_REPORT §3 / 원문 BASELINE_OUTPUTS.txt)
   - V-26(동결): `git status --short`에 `sessions/1주차/` 0건 — 통과 (P0·P1)
