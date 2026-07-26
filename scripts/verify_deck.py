@@ -586,6 +586,22 @@ def family_signature(cls, inner):
         return 'breadcrumb'
     if re.search(r'data-asset-kind=["\']screenshot["\']', inner, re.I) or has_class('shot-annot', 'shot-win'):
         return 'shot'
+    # ── 2주차 신규 구도 등재(2026-07-26) ──
+    #   새 구도 클래스는 실제 family로 등록한다(미등록이면 전부 'full'로 뭉개져 3연속 FAIL).
+    #   generic 폴백(s-full·grid-N·work-step·data-viz)보다 **먼저** 판정해야 한다 —
+    #   이 구도들은 내부에 그 클래스를 품고 있어서 뒤에 두면 폴백에 먼저 잡힌다.
+    _W2_FAMILIES = (
+        ('w2-roadmap', 'roadmap'), ('w2-practice', 'practice'), ('w2-scope', 'scope'),
+        ('w2-screen', 'screenmock'), ('w2-slot', 'slot'),
+        ('viz-code', 'code'), ('code-diagram', 'codemap'),
+        ('viz-concentric', 'containment'), ('viz-tree', 'tree'),
+        ('viz-cycle', 'cycle'), ('viz-radial', 'radial'), ('viz-gantt', 'gantt'),
+        ('claim-rationale', 'claim'), ('case-acts', 'acts'),
+        ('quad-grid', 'quad'), ('metric-strip', 'metric'), ('def-msg', 'definition'),
+    )
+    for _cls, _fam in _W2_FAMILIES:
+        if has_class(_cls):
+            return _fam
     if has_class('codex-gui', 'codex-app-gui', 'codex-open-layout', 'extension-gui',
                  'drive-open-slide', 'folder-create-layout', 'app-guide-layout',
                  'file-request-layout', 'verify-file-layout', 'path-inspection-layout',
