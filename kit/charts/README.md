@@ -33,5 +33,5 @@ pie/donut = 부분-전체 ≤6조각·합≈100 · line/area = 시계열(area는
 
 ## 상태
 - [x] 21개 element MD · 역인덱스 `by-shape.md`
-- [x] 코드 코어 `patterns.css` + `catalog.html` **6개**(D-concentric·D-cycle·D-radial·D-tree·C-bar·D-mapping) — 브라우저 검증: 오버플로0·콘솔0·aria 6/6
+- [x] 코드 코어 `patterns.css` + `catalog.html` **8개**(D-concentric·D-cycle·D-radial·D-tree·E-code·D-gantt·C-bar·D-mapping) — 브라우저 검증: 오버플로0·콘솔0·aria 8/8
 - [ ] 나머지 fragment(pie·line·hbar·gauge 등) catalog.html로 확장

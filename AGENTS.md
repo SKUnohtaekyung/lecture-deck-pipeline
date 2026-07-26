@@ -1,20 +1,22 @@
-# AGENTS.md — vibecoding-deck 공통 작업 매뉴얼
+# AGENTS.md — create-slides 공통 작업 매뉴얼
 
-이 폴더는 **`vibecoding-deck` 스킬을 개발·보관**하는 프로젝트다. 루트 `SKILL.md`와 `kit/`·`references/`·`scripts/`가 플랫폼 공통 정본이며, `.agents/skills/vibecoding-deck/`와 `.claude/skills/vibecoding-deck/`는 이 정본을 로드하는 얇은 탐색 어댑터다. Codex는 이 파일을 직접 읽고, Claude Code는 루트 `CLAUDE.md`의 `@AGENTS.md` import로 같은 규칙을 읽는다. 변하는 현재 상태와 다음 할 일은 여기 두지 말고 `.agents/agent-memory/vibecoding-deck/MEMORY.md`의 `## 미해결`에 둔다. 이 파일은 작업 기록이나 변경 로그가 아니다: 새 규칙·반복 버그·인수인계 상태 중 **계속 유효한 것만** 남기며, 관련 작업을 마칠 때 에이전트가 해결 여부를 판정해 해결된 항목은 반드시 삭제한다.
+> 구 명칭 `/vibecoding-deck`은 2026-07에 `/create-slides`로 개명됐다(DEC-01: 호환 alias 없음).
+
+이 폴더는 **`create-slides` 스킬을 개발·보관**하는 프로젝트다. 루트 `SKILL.md`와 `kit/`·`references/`·`scripts/`가 플랫폼 공통 정본이며, `.agents/skills/create-slides/`와 `.claude/skills/create-slides/`는 이 정본을 로드하는 얇은 탐색 어댑터다. Codex는 이 파일을 직접 읽고, Claude Code는 루트 `CLAUDE.md`의 `@AGENTS.md` import로 같은 규칙을 읽는다. 변하는 현재 상태와 다음 할 일은 여기 두지 말고 `.agents/agent-memory/create-slides/MEMORY.md`의 `## 미해결`에 둔다. 이 파일은 작업 기록이나 변경 로그가 아니다: 새 규칙·반복 버그·인수인계 상태 중 **계속 유효한 것만** 남기며, 관련 작업을 마칠 때 에이전트가 해결 여부를 판정해 해결된 항목은 반드시 삭제한다.
 
 ## 구조 (섞지 말 것 · ①②③=스킬 3층, ④=작업물, ⑤=팀 스킬)
 
 - **① 포터블 스킬(루트, 배포 대상)**: `SKILL.md`(진입점) · `kit/` · `references/` · `scripts/` · `입력양식/` · `데모_제작규칙.html` · `outputs/`(레이아웃 아틀라스). 사람용 개요는 `README.md`.
 - **② 개발자료 `_dev/`(배포 제외)**: `설계기록/`(빌드·결정 기록 · `탐색-아카이브/` 미채택본). **커리큘럼·콘텐츠 원천은 `sessions/`로 이관**됨 — 상위 기준 `sessions/바이브코딩_커리큘럼_기준안.md` + 주차 상세 `sessions/N주차/N주차_강의안설계.md`(옛 인수인계서 역할). `_dev/강의자료/`는 더 이상 쓰지 않는다.
-- **③ 플랫폼 어댑터**: `.agents/skills/vibecoding-deck/`(Codex) · `.claude/skills/vibecoding-deck/`(Claude Code). 공통 규칙을 복제하지 않고 루트 `SKILL.md`만 로드한다. 누적 규칙·버그 정본은 `.agents/agent-memory/vibecoding-deck/MEMORY.md` 하나이며 Claude Code도 이 파일을 읽는다. `ui-ux-pro-max`만 각 플랫폼 탐색 위치에 실행 자원과 함께 둔다. `/리서치` 워커의 실행 통제(`Explore` + `sonnet` + 도구 허용목록 + 사후 감사)는 플랫폼마다 수단이 달라 `.claude/skills/리서치/SKILL.md`가 Claude 전용으로 규정하며, 조사 규칙 정본은 `skills/리서치/SKILL.md` 그대로다.
-- **④ 주차별 작업물 `sessions/`(배포 제외)**: `N주차/`에 그 주차의 `초안.md`·`강의덱.html`·`강의덱_발표자노트.html`·`자료/`. 새 주차는 `sessions/_template/` 복사, 규약은 `sessions/README.md`. 1주차 덱·초안은 사용자 판정으로 폐기됐고(`sessions/README.md` "1주차 (예외)" 참고), 1주차는 자료만 남아 있다.
+- **③ 플랫폼 어댑터**: `.agents/skills/create-slides/`(Codex) · `.claude/skills/create-slides/`(Claude Code). 공통 규칙을 복제하지 않고 루트 `SKILL.md`만 로드한다. 누적 규칙·버그 정본은 `.agents/agent-memory/create-slides/MEMORY.md` 하나이며 Claude Code도 이 파일을 읽는다. `ui-ux-pro-max`만 각 플랫폼 탐색 위치에 실행 자원과 함께 둔다. `/리서치` 워커의 실행 통제(`Explore` + `sonnet` + 도구 허용목록 + 사후 감사)는 플랫폼마다 수단이 달라 `.claude/skills/리서치/SKILL.md`가 Claude 전용으로 규정하며, 조사 규칙 정본은 `skills/리서치/SKILL.md` 그대로다.
+- **④ 주차별 작업물 `sessions/`(배포 제외)**: `N주차/`에 그 주차의 `N주차_초안.md`(레거시 무접두어 `초안.md`는 폴백 인식)·`강의덱.html`·`강의덱_발표자노트.html`·`자료/`. 새 주차는 `sessions/_template/` 복사, 규약은 `sessions/README.md`. 1주차는 구세대 산출물만 폐기됐고 현행 산출물(초안·덱·노트)은 정본이며 **2026-07-26 사용자 결정으로 동결**됐다 — 수정·재조립하지 않는다.
 - **⑤ 팀 워크플로 스킬 `skills/`(배포 제외)**: 강의 제작 팀 역할 스킬 3종(리서치·콘텐츠·검토) + 횡단 오케스트레이션 프로토콜 하네스의 정본. scripts/·sessions/ 규약에 하드 결합된 이식 불가 자산이라 포터블 스킬 배포 복사에서 제외한다. 등재·계약·호출 규약 정본은 `skills/README.md`.
 
 > git으로 관리한다(2026-07-16 초기 커밋, 브랜치 `main`). 의미 있는 변경은 verify 통과 후 커밋해 복구 지점을 만든다. 설계 탐색 산출물 폐기는 관례대로 `_dev/설계기록/`(탐색-아카이브) 이동을 유지한다. 대규모 정리와 대량 갱신은 먼저 영향 범위를 확인한다.
 
 ## 작업 전 필수 읽기
 
-1. `.agents/agent-memory/vibecoding-deck/MEMORY.md`의 `## 미해결`(현재 상태·다음 할 일)은 무조건 읽는다. 나머지(누적 규칙·하드윈 버그·색 시스템 정본)는 덱 조립·규칙 변경 작업 시 읽는다. 관련 작업을 끝내기 전에는 같은 파일을 다시 확인해, 해결된 미해결 항목과 더는 유효하지 않은 규칙·버그·인수인계 내용을 **반드시 삭제**하고 계속 유효한 내용만 남긴다.
+1. `.agents/agent-memory/create-slides/MEMORY.md`의 `## 미해결`(현재 상태·다음 할 일)은 무조건 읽는다. 나머지(누적 규칙·하드윈 버그·색 시스템 정본)는 덱 조립·규칙 변경 작업 시 읽는다. 관련 작업을 끝내기 전에는 같은 파일을 다시 확인해, 해결된 미해결 항목과 더는 유효하지 않은 규칙·버그·인수인계 내용을 **반드시 삭제**하고 계속 유효한 내용만 남긴다.
 2. 배경이 필요할 때 `_dev/설계기록/구조-및-빌드-기록.md`를 읽는다.
 3. `skills/README.md` — 팀 워크플로 스킬(`$리서치`·`$콘텐츠`·`$검토`·`$하네스`) 호출 시 계약표·파이프라인 지도·명시 호출 규약을 확인한다.
 4. 커리큘럼(`sessions/바이브코딩_커리큘럼_기준안.md` + `sessions/N주차/N주차_강의안설계.md`) — 해당 주차 파일을 열거나 쓰기 전에, 그 주차 것만 읽는다.
@@ -23,10 +25,10 @@
 
 ## 플랫폼별 Skill 호출
 
-- **Codex**: `.agents/skills/vibecoding-deck/SKILL.md`가 발견된다. `$vibecoding-deck`으로 명시 호출하거나 PPT·강의덱·HTML 웹덱 제작 요청으로 자동 호출한다.
-- **Claude Code**: `.claude/skills/vibecoding-deck/SKILL.md`가 발견된다. `/vibecoding-deck`으로 명시 호출하거나 같은 자연어 요청으로 자동 호출한다.
+- **Codex**: `.agents/skills/create-slides/SKILL.md`가 발견된다. `$create-slides`로 명시 호출하거나 PPT·강의덱·HTML 웹덱 제작 요청으로 자동 호출한다.
+- **Claude Code**: `.claude/skills/create-slides/SKILL.md`가 발견된다. `/create-slides`로 명시 호출하거나 같은 자연어 요청으로 자동 호출한다.
 - 두 어댑터는 반드시 루트 `SKILL.md`를 완전히 읽고, 그 안의 상대 경로를 저장소 루트 기준으로 해석한다. 어댑터에 디자인 규칙이나 워크플로를 복제하지 않는다.
-- 팀 워크플로 스킬 3종(`/리서치`·`/콘텐츠`·`/검토`)은 **명시 호출 전용**이다(자동 발동 없음 — "명시 호출"의 정의는 `skills/README.md`가 정본). vibecoding-deck만 기존대로 자동 발동을 유지한다. 파이프라인 순서: `/리서치` → `/콘텐츠` → `/vibecoding-deck` → `/검토`(횡단).
+- 팀 워크플로 스킬 3종(`/리서치`·`/콘텐츠`·`/검토`)은 **명시 호출 전용**이다(자동 발동 없음 — "명시 호출"의 정의는 `skills/README.md`가 정본). create-slides만 기존대로 자동 발동을 유지한다. 파이프라인 순서: `/리서치` → `/콘텐츠` → `/create-slides` → `/검토`(횡단).
 
 ## 스킬의 역할
 
@@ -34,14 +36,15 @@
 
 ## 불변 규칙
 
-- 색은 토큰만 사용한다. raw `#hex`, navy, 그라데이션을 쓰지 않는다. 흰색은 `var(--white)`를 쓴다.
-- 민트·코랄 fill 위에 흰 글자를 쓰지 않는다. 각각 `--on-mint`, `--on-coral`을 쓴다.
-- 민트 fill 번호 배지는 `.num-circle`, `.work-step .n`, `.pd-dot.is-active` 세 종류만 허용한다. 다른 다이어그램·플로우 노드는 블루다.
-- 카드/박스 표면은 흰색-온-흰색 금지: 의미 틴트 fill(블루 기본·민트=행동·코랄=주의) + 같은 계열 보더, 또는 흰 fill + 유색 보더(`--blue-line-strong`/`--mint-line`/`--coral-line`). 흰 fill + `--line` 근백색 보더 단독 조합은 verify FAIL. `--line`은 내부 구분선 전용.
-- 원형 배지+텍스트 행(`.work-step`·`.agenda-item`)은 텍스트를 배지 기준 수직 중앙(`align-items:center`)에 둔다.
-- 조립 전에 `정보 모양 분류 → 역인덱스 → 레이아웃과 element를 별도 선택` 순서를 따른다.
-- 직전 슬라이드와 같은 구도를 피하고 split 계열을 희소하게 쓴다.
-- 상세·최신 규칙은 `.agents/agent-memory/vibecoding-deck/MEMORY.md`를 정본으로 삼는다.
+디자인 불변 규칙 정본은 `kit/guide/디자인시스템.md`(R-COLOR-01~05·R-EMPH-01·R-TERM-01)와 `kit/guide/토큰-치트시트.md`(R-TYPE-01~03)다. 아래는 요지 색인이며, 어긋나면 정본을 따른다.
+
+- 색은 토큰만 사용한다(raw `#hex`·navy·그라데이션 금지, 흰색은 `var(--white)`) — R-COLOR-01
+- 민트·코랄 fill 위에 흰 글자를 쓰지 않는다(`--on-mint`·`--on-coral`) — R-COLOR-02
+- 민트 fill 번호 배지는 `.num-circle`·`.work-step .n`·`.pd-dot.is-active` 셋뿐, 다른 노드는 블루 — R-COLOR-03
+- 카드/박스 표면은 흰색-온-흰색 금지(흰 fill + `--line` 단독 보더는 verify FAIL, `--line`은 내부 구분선 전용) — R-COLOR-04
+- 원형 배지+텍스트 행(`.work-step`·`.agenda-item`)은 텍스트를 배지 기준 수직 중앙에 둔다 — `references/조립-리듬-불변요소.md`
+- 조립 전에 `정보 모양 분류 → 역인덱스 → 레이아웃과 element를 별도 선택` 순서를 따르고, 직전 슬라이드와 같은 구도를 피하며 split 계열을 희소하게 쓴다 — R-LAYOUT-01·02(루트 `SKILL.md`)
+- 상세·최신 규칙은 `.agents/agent-memory/create-slides/MEMORY.md`를 정본으로 삼는다.
 
 ## 실행과 검증
 
@@ -87,7 +90,7 @@ python scripts/analyze_agent_usage.py --tool-audit --session <세션ID>  # 리�
 - 판단축: `kit/guide/정보모양-taxonomy.md`
 - 카탈로그 규칙: `kit/guide/카탈로그-규격.md`
 - 토큰·계산식: `kit/guide/토큰-치트시트.md`
-- 색·폼 정본: `_dev/설계기록/색시스템-v2-명세.md`
+- 색·폼 정본: `kit/guide/디자인시스템.md` (설계 배경: `_dev/설계기록/색시스템-v2-명세.md` — 역사 기록)
 - 레이아웃: `kit/layouts/`(50) + `by-shape.md` + `catalog.html`
 - 차트·다이어그램 element: `kit/charts/`(23) + `by-shape.md` + `catalog.html`
 - 코드 코어: `kit/styles/patterns.css`, `kit/styles/deck.css`

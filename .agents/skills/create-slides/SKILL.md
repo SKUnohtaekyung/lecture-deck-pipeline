@@ -1,5 +1,5 @@
 ---
-name: vibecoding-deck
+name: create-slides
 description: >-
   바이브코딩(AI와 함께 코딩) 강의덱·발표자료를 1280×720 HTML 웹덱으로 조립하는 자립형 스킬.
   채워진 콘텐츠 초안(교시별 표·본문·강사 멘트)을 읽어(없으면 자료·브리프로 계획을 먼저 초안·확인)

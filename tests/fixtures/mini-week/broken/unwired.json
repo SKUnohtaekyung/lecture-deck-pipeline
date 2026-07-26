@@ -1,0 +1,21 @@
+{
+  "_note": "고장 변형 — R-IMG-02(이미지 배선) FAIL 재현용. W1은 덱에 실재하는 슬라이드지만 <img>가 없다. status=ready·IMAGE_EXPLANATORY이므로 배선 누락 FAIL이 나야 한다. (계획 §18.2 스케치의 '덱에 없는 slide_id'는 고아 WARN 경로라 FAIL을 재현하지 못한다 — 재현 대상이 FAIL이므로 '덱에 있으나 배선 없음'으로 둔다.) W9는 덱에 없는 slide_id라 고아 WARN 경로도 함께 덮는다.",
+  "slides": [
+    {
+      "slide_id": "W1",
+      "decision": "IMAGE_EXPLANATORY",
+      "status": "ready",
+      "role": "hero",
+      "method": "generate",
+      "expected_file": "자료/images/asset-902.png"
+    },
+    {
+      "slide_id": "W9",
+      "decision": "IMAGE_MNEMONIC",
+      "status": "ready",
+      "role": "support",
+      "method": "generate",
+      "expected_file": "자료/images/asset-903.png"
+    }
+  ]
+}

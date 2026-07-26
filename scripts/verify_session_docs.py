@@ -59,7 +59,7 @@ LEFTOVER_PATTERNS = (
 
 ALLOWLIST = {
     "자료": ["sessions/*주차/자료/*", ".omc/*"],
-    "초안": ["sessions/*주차/초안.md", "sessions/*주차/자료/*집필노트*", ".omc/*"],
+    "초안": ["sessions/*주차/초안.md", "sessions/*주차/*초안.md", "sessions/*주차/자료/*집필노트*", ".omc/*"],
     "검토": ["sessions/*주차/검토보고_*.md", ".omc/*"],
 }
 
@@ -75,6 +75,23 @@ def read(p):
         return p.read_text(encoding="utf-8")
     except (FileNotFoundError, OSError):
         return None
+
+
+_DRAFT_FALLBACK_LOGGED = set()  # 폴백 INFO 중복 출력 방지(경로별 1회)
+
+
+def resolve_draft(sess_dir, wk):
+    """초안 파일 경로 해석: `N주차_초안.md`(접두어) 우선, 없으면 `초안.md`(레거시)로 폴백.
+    레거시 파일이 실제로 존재할 때만 폴백 사실을 INFO로 1회 알린다(그 경로 기준 중복 없음).
+    둘 다 없으면 조용히 무접두어 경로를 반환해 기존과 동일하게 '파일 없음' FAIL로 이어지게 둔다."""
+    prefixed = sess_dir / f"{wk}주차_초안.md"
+    if prefixed.exists():
+        return prefixed
+    legacy = sess_dir / "초안.md"
+    if legacy.exists() and legacy not in _DRAFT_FALLBACK_LOGGED:
+        _DRAFT_FALLBACK_LOGGED.add(legacy)
+        print(f"INFO: 레거시 무접두어 초안 사용: {legacy}")
+    return legacy
 
 
 def split_sections(text, hashes=2):
@@ -315,6 +332,32 @@ def check_draft(text):
     return ok
 
 
+def check_draft_slide_numbers(text):
+    """초안 4열 표(#·슬라이드 제목·본문 문구·비유·멘트)의 # 열(슬라이드 번호)이
+    주차 전체에서 유일한지 검사한다. 번호가 중복되면 report_draft_sync.py의
+    초안 대 덱 대조나 create-slides 조립에서 어느 행을 가리키는지 모호해진다."""
+    tag = "초안"
+    seen = Counter()
+    for t in parse_tables(text):
+        if not t:
+            continue
+        hdr = [(c or "") for c in t[0]]
+        if not (any("슬라이드 제목" in c for c in hdr) and any("본문" in c for c in hdr)):
+            continue
+        for r in t[1:]:
+            if not r or not (r[0] or "").strip():
+                continue
+            m = re.match(r"^(\S+)", r[0].strip())
+            if m:
+                seen[m.group(1)] += 1
+    dups = sorted(k for k, v in seen.items() if v > 1)
+    if dups:
+        add(f"{tag}:번호유일성", "FAIL",
+            "중복 슬라이드 번호: " + ", ".join(f"{k}×{seen[k]}" for k in dups))
+    else:
+        add(f"{tag}:번호유일성", "PASS", f"{len(seen)}개 번호 전부 유일")
+
+
 def check_leftovers(data_dir, wk, template_dir=None):
     """리서치 SKILL 7단계 수명 규칙: 조사 과정의 중간 산출물(심층리서치 원본·버전 사본·
     커버리지 대조표)은 자료/에 남기지 않는다. 사람이 직접 쓴 문서를 오탐할 수 있어 WARN."""
@@ -361,7 +404,7 @@ def check_capability_claims(root, wk):
         ("콘텐츠리서치", root / "sessions" / f"{wk}주차" / "자료" / f"{wk}주차_콘텐츠리서치_결과.md"),
         ("실습안", root / "sessions" / f"{wk}주차" / "자료" / f"{wk}주차_실습안_검증결과.md"),
         ("종합정리", root / "sessions" / f"{wk}주차" / "자료" / f"{wk}주차_리서치_종합정리.md"),
-        ("초안", root / "sessions" / f"{wk}주차" / "초안.md"),
+        ("초안", resolve_draft(root / "sessions" / f"{wk}주차", wk)),
     ]
     hits = []
     for label, p in targets:
@@ -429,7 +472,7 @@ def main():
         "practice": data / f"{wk}주차_실습안_검증결과.md",
         "decision": data / f"{wk}주차_결정요청사항.md",
         "registry": data / f"{wk}주차_출처레지스트리.md",
-        "draft": sess / "초안.md",
+        "draft": resolve_draft(sess, wk),
     }
 
     reg_ids, used_refs = set(), set()
@@ -472,6 +515,7 @@ def main():
             add(f"파일:{files['draft'].name}", "SKIP" if args.target == "all" else "FAIL", "파일 없음")
         else:
             check_draft(dtxt)
+            check_draft_slide_numbers(dtxt)
             used_refs |= {m.group(1) for m in SRC_REF.finditer(dtxt)}
             used_chunks |= collect_chunk_refs(dtxt)
 

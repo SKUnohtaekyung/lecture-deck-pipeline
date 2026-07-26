@@ -1,11 +1,11 @@
 <!--
   템플릿 — sessions/_template/콘텐츠_리뷰.html
-  용도: 콘텐츠 스킬 산출물(N주차/초안.md, 교시별 4열 표)을 슬라이드 미리보기 카드로
+  용도: 콘텐츠 스킬 산출물(N주차/N주차_초안.md(레거시 초안.md 폴백 인식), 교시별 4열 표)을 슬라이드 미리보기 카드로
         훑어 밀도(정보 단위 수)를 한눈에 점검하는 자립형 HTML 리뷰 문서.
   사용법:
     1) sessions/N주차/N주차_콘텐츠_리뷰.html 로 복사한다.
     2) 제목·작성일을 채운다.
-    3) 초안.md의 슬라이드(표 1행) 하나당 .slide-card 하나를 만든다 — "예시" 카드 2개를 참고해 복제한다.
+    3) N주차_초안.md의 슬라이드(표 1행) 하나당 .slide-card 하나를 만든다 — "예시" 카드 2개를 참고해 복제한다.
     4) 각 카드의 data-info-units 값을 그 슬라이드의 정보 단위 수(개념 블록·비유/예시·비교표·오해→교정·체크/콜아웃 각 1단위)로 채운다.
     5) 다 채운 뒤에는 이 안내 주석과 화면 상단의 "템플릿" 배너를 지운다.
   자립형 HTML — 외부 스타일시트·스크립트·이미지를 불러오지 않는다. 모든 CSS는 아래 <style> 안에,
@@ -153,15 +153,15 @@
   <div class="hero-meta">
     <div><b>작성:</b> 콘텐츠 스킬 (또는 사람 작성자명)</div>
     <div><b>작성일:</b> <code>YYYY-MM-DD</code></div>
-    <div><b>기준 문서:</b> <code>sessions/N주차/초안.md</code></div>
+    <div><b>기준 문서:</b> <code>sessions/N주차/N주차_초안.md</code></div>
     <div><b>대상 수강생:</b> 코딩 경험이 없는 입문자 중심의 혼합군(연령·경험 수준 다양)</div>
   </div>
 </div>
 
 <div class="tpl-notice">
   <div class="tpl-notice-box">
-    <b>이 문서는 템플릿입니다.</b> "예시" 표시가 붙은 카드 2개를 실제 슬라이드로 바꾸고(초안.md 표 1행 = 카드 1개),
-    이 안내 박스는 지운 뒤 배포하세요. 정본은 항상 <code>초안.md</code> — 이 문서는 밀도(정보 단위)를 한눈에 점검하는 리뷰용입니다.
+    <b>이 문서는 템플릿입니다.</b> "예시" 표시가 붙은 카드 2개를 실제 슬라이드로 바꾸고(N주차_초안.md 표 1행 = 카드 1개),
+    이 안내 박스는 지운 뒤 배포하세요. 정본은 항상 <code>N주차_초안.md</code> — 이 문서는 밀도(정보 단위)를 한눈에 점검하는 리뷰용입니다.
   </div>
 </div>
 
@@ -250,7 +250,7 @@
         <details class="hint"><summary>막힐 때 힌트 보기</summary><p>(완성 요청문 예시 — 본문 문구에는 절대 노출하지 않고 이 접힌 힌트에만 둡니다.)</p></details>
       </article>
 
-      <!-- 반복 안내: 초안.md 표 1행 = 위 <article class="slide-card"> 하나. 복제 시 바꿀 값:
+      <!-- 반복 안내: N주차_초안.md 표 1행 = 위 <article class="slide-card"> 하나. 복제 시 바꿀 값:
            data-slide(#, 예 "3-7") · data-교시(예 "1교시"·"도입부"·"마무리" — 필터 칩이 이 값 기준으로 자동 생성됨) ·
            data-info-units(그 슬라이드의 정보 단위 수) · 칩의 "단위 N" 표시 · sc-title · sc-body 문단들 · cue/hint(있는 것만).
            고정 슬라이드((간지)·(표지)·(마무리))는 카드에 class="slide-card is-fixed"를 추가하고 tag-fixed 배지를 다세요.
@@ -264,7 +264,7 @@
 <footer class="foot">
   <span>산출 경로:</span>
   <code>sessions/N주차/N주차_콘텐츠_리뷰.html</code>
-  <code>sessions/N주차/초안.md</code>
+  <code>sessions/N주차/N주차_초안.md</code>
 </footer>
 
 <script>

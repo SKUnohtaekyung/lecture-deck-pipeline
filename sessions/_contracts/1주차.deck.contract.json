@@ -1,0 +1,60 @@
+{
+  "week": "1주차",
+  "frozen": true,
+  "frozen_reason": "2026-07-26 사용자 결정 — 수정·추가·삭제·재조립 금지(읽기와 저장소 밖 복사만 허용)",
+  "decks": {
+    "강의덱": {
+      "slides": 75,
+      "dividers": 6,
+      "intro": ["S00", "S01", "S01A", "S01B", "S01C"],
+      "sequences": {
+        "PART3": ["P3", "S3MAP", "S3PE", "S3LM", "S3CE", "18", "S3SY", "S3SYP", "S3HUM", "S3ASK", "S3DO", "S3ITR"]
+      },
+      "dark_terminal_slides": ["32"],
+      "closing_text": "THANK YOU"
+    },
+    "강의덱_배포": {
+      "slides": 75,
+      "dividers": 6,
+      "intro": ["S00", "S01", "S01A", "S01B", "S01C"],
+      "dark_terminal_slides": ["32"],
+      "closing_text": "THANK YOU"
+    }
+  },
+  "known_violations": {
+    "part_label_sequence": {
+      "slides": [
+        "18", "S39", "S44", "S45", "S46", "S48", "S50",
+        "S52", "S53", "S54", "S55", "S56", "S57", "S60", "S42"
+      ],
+      "reason": "1주차 동결(2026-07-26) — 검출만",
+      "note": "기대값은 '직전 divider의 위치 인덱스'다(덱 JS가 본문 .s-team을 PART {divider 누적 개수} / {총 파트}로 런타임에 덮어쓰므로, 정적 라벨 불일치는 화면에 보이지 않는 소스 불일치다). 1주차는 divider ID가 P1·P2·P3·P5·P6·P7로 P4가 결번이라 P5 이후 구간의 정적 라벨이 위치 인덱스보다 1 크다. 위 15장은 2026-07-26 실측값이다. 최초 분석이 등재했던 PAL1·PAL2·PAL3은 이 기준에서는 일치하므로 목록에서 제외했다."
+    },
+    "unwired_ready_assets": {
+      "slides": ["29", "30", "S53"],
+      "reason": "동결 — 검출만"
+    },
+    "orphan_manifest_slides": {
+      "slides": [
+        "02", "10", "40", "41", "42", "44", "45", "46",
+        "49", "50", "52", "53", "56", "60"
+      ],
+      "reason": "동결 — 검출만 (고아 항목은 계약 등재 여부와 무관하게 항상 WARN이다)",
+      "note": "2026-07-26 실측값. 최초 분석은 4건(10·40·41·49)만 등재했으나 실제 manifest 대비 덱에 없는 slide_id는 14건이다."
+    },
+    "body_font_below_22": {
+      "selectors": [
+        ".dl-row .s-body",
+        "[data-slide=\"S42\"] .s-body",
+        "[data-slide=\"S59\"] .s-body",
+        ".proc-analogy",
+        ".proc-example"
+      ],
+      "reason": "동결 + 의도된 20px 위계(용어 26 / 정의 22 / 비유·예시 20) — 검출만"
+    },
+    "notes_pn_mismatch": {
+      "value": true,
+      "reason": "동결 — 검출만"
+    }
+  }
+}

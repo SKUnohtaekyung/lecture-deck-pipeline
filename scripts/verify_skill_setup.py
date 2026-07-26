@@ -170,7 +170,7 @@ def verify_team_skills(check: Check) -> None:
         )
 
     evals_path = ROOT / "evals" / "team-skills-eval.json"
-    allowed_targets = {"리서치", "콘텐츠", "검토", "vibecoding-deck", None}
+    allowed_targets = {"리서치", "콘텐츠", "검토", "create-slides", None}
     evals_ok = False
     if evals_path.is_file():
         try:
@@ -205,14 +205,14 @@ def main() -> int:
     check(canonical.is_file(), "공통 SKILL.md 존재", "루트 SKILL.md 없음")
     canonical_name, canonical_desc = frontmatter(canonical)
     check(
-        canonical_name == "vibecoding-deck" and bool(canonical_desc),
+        canonical_name == "create-slides" and bool(canonical_desc),
         "공통 frontmatter name/description 유효",
         "공통 frontmatter name/description 오류",
     )
 
     adapters = {
-        "Codex": ROOT / ".agents/skills/vibecoding-deck/SKILL.md",
-        "Claude Code": ROOT / ".claude/skills/vibecoding-deck/SKILL.md",
+        "Codex": ROOT / ".agents/skills/create-slides/SKILL.md",
+        "Claude Code": ROOT / ".claude/skills/create-slides/SKILL.md",
     }
     for platform, adapter in adapters.items():
         check(adapter.is_file(), f"{platform} 어댑터 존재", f"{platform} 어댑터 없음: {adapter}")
@@ -239,13 +239,13 @@ def main() -> int:
             f"{platform} 어댑터에 공통 이미지 프롬프트가 중복됨",
         )
 
-    openai_yaml = ROOT / ".agents/skills/vibecoding-deck/agents/openai.yaml"
+    openai_yaml = ROOT / ".agents/skills/create-slides/agents/openai.yaml"
     yaml_text = text(openai_yaml) if openai_yaml.is_file() else ""
     check(
         openai_yaml.is_file()
         and 'display_name: "' in yaml_text
         and 'short_description: "' in yaml_text
-        and "$vibecoding-deck" in yaml_text,
+        and "$create-slides" in yaml_text,
         "Codex agents/openai.yaml 유효 필드 존재",
         "Codex agents/openai.yaml 또는 필수 UI metadata 누락",
     )
@@ -411,18 +411,20 @@ def main() -> int:
 
     claude_md = text(ROOT / "CLAUDE.md") if (ROOT / "CLAUDE.md").is_file() else ""
     check("@AGENTS.md" in claude_md, "Claude가 AGENTS.md 공통 지침을 import", "CLAUDE.md의 @AGENTS.md import 누락")
-    codex_memory = ROOT / ".agents/agent-memory/vibecoding-deck/MEMORY.md"
-    claude_memory = ROOT / ".claude/agent-memory/vibecoding-deck/MEMORY.md"
-    memories_exist = codex_memory.is_file() and claude_memory.is_file()
+    # 메모리 정본은 .agents 하나이며, .claude 쪽은 그것을 가리키는 포인터 파일이다.
+    # 사본을 두면 반드시 분기하므로 바이트 동일성 대신 포인터 규약을 검사한다.
+    codex_memory = ROOT / ".agents/agent-memory/create-slides/MEMORY.md"
+    claude_memory = ROOT / ".claude/agent-memory/create-slides/MEMORY.md"
+    pointer_text = text(claude_memory) if claude_memory.is_file() else ""
     check(
-        memories_exist and codex_memory.read_bytes() == claude_memory.read_bytes(),
-        "Codex·Claude 메모리가 바이트 단위로 동일",
-        "Codex·Claude MEMORY.md가 없거나 바이트 단위로 불일치",
-    )
-    check(
-        memories_exist and digest(codex_memory) == digest(claude_memory),
-        "Codex·Claude 메모리 SHA-256 일치",
-        "Codex·Claude MEMORY.md가 없거나 SHA-256 불일치",
+        codex_memory.is_file()
+        and claude_memory.is_file()
+        and ".agents/agent-memory/" in pointer_text
+        and len(claude_memory.read_bytes()) < 400
+        and not re.search(r"(?m)^## ", pointer_text),
+        "메모리 포인터 규약(정본 .agents · .claude는 포인터)",
+        "메모리 포인터 규약 위반: 정본·포인터 파일 존재, 포인터가 .agents/agent-memory/ 지목,"
+        " 400바이트 미만, '## ' 헤더 0건을 모두 만족해야 한다",
     )
 
     for platform_dir, prefix in (
