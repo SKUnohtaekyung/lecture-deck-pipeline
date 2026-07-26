@@ -19,6 +19,14 @@
       "intro": ["S00", "S01", "S01A", "S01B", "S01C"],
       "dark_terminal_slides": ["32"],
       "closing_text": "THANK YOU"
+    },
+    "강의덱_발표": {
+      "slides": 75,
+      "dividers": 6,
+      "intro": ["S00", "S01", "S01A", "S01B", "S01C"],
+      "dark_terminal_slides": ["32"],
+      "closing_text": "THANK YOU",
+      "note": "발표 런타임 주입본(scripts/inject_presenter.py 산출). 슬라이드 본문은 배포본과 바이트 단위로 동일해야 하므로 구조 값·known_violations를 그대로 상속한다. 아직 산출 전이면 이 항목은 계약만 존재한다."
     }
   },
   "known_violations": {
@@ -54,7 +62,8 @@
     },
     "notes_pn_mismatch": {
       "value": true,
-      "reason": "동결 — 검출만"
+      "reason": "2026-07-26 사용자 승인으로 정합 복구함 — 잔여 4건은 결함이 아니다",
+      "note": "복구 전 MISMATCH 36건(제목전방일치 32 + 부분집합 4)에서 4건으로 줄었고, 남은 4건은 전부 [부분집합]이다: 표지(1)·도입(2)·S3ASK(43)·S3DO(44)는 page-number 제외 클래스라 화면에 번호가 안 보일 뿐, 슬라이드는 그 위치에 실재하고 제목도 일치한다. 복구 내역: pn-no 31건 재번호 · 제목 5건을 덱 기준으로 정정 · 덱에서 삭제된 슬라이드의 멘트 3건은 버리지 않고 인접 슬라이드 블록으로 항목 이동(블록 54→51, 멘트 본문 67개 전량 보존·무변경). 원본 백업은 스크래치패드."
     }
   }
 }

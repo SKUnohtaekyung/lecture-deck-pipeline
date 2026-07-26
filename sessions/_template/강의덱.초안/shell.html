@@ -34,6 +34,9 @@
   <div class="deck">
 
     <!-- ============ 1 · 표지 (불변요소 · 라이트 지오메트리 최종) ============ -->
+    <!-- ⚠️ 모든 .slide는 data-slide를 반드시 갖고, 값은 덱 안에서 유일해야 한다(R-SLIDE-ID-01).
+         이 값이 슬라이드의 영구 ID다 — 발표본의 강사 메모가 순번이 아니라 이 값에 붙으므로,
+         한 번 정한 값은 바꾸지 않는다. 누락·중복이면 verify_deck FAIL, 주입기는 중단한다. -->
     <section class="slide cover" data-slide="S01">
       <svg class="cover-geo" viewBox="0 0 1280 720" fill="none" aria-hidden="true"><!-- 아이소메트릭 3단 스택: data-cube 3개 × 면 3개 + 코랄 스파크. fill=토큰 -->
         <g data-cube="top">

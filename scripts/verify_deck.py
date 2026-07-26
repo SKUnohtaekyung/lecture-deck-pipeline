@@ -160,7 +160,13 @@ def classes(tag_or_attrs):
 
 
 def decoded_text(raw_html):
-    """<script>/<style> 제외(대소문자 무시) + 엔티티 디코드된 텍스트 뷰(이모지 마커 누출 검사용)."""
+    """<script>/<style> 제외(대소문자 무시) + 엔티티 디코드된 텍스트 뷰(이모지 마커 누출 검사용).
+
+    발표 런타임이 주입하는 `<script type="application/json" data-presenter-notes>` 블록도
+    이 제거로 **학생 화면 검사 대상에서 빠진다**(별도 예외 코드를 두지 않는 이유). 노트 본문의
+    `<`는 주입기가 \\u003c로 이스케이프하므로 리터럴 `</script>`가 값 안에 생길 수 없고,
+    따라서 아래 non-greedy 정규식이 블록 중간에서 조기 종료되지 않는다.
+    """
     stripped = re.sub(r'<(script|style)\b[^>]*>.*?</\1\s*>', '', raw_html, flags=re.S | re.I)
     return _html_stdlib.unescape(stripped)
 
@@ -420,6 +426,40 @@ def _kit_alpha_declarations():
 # .human-quote-stage: 42p 인용구 무대 배경(커밋 02e06c0 "refine part 3 emphasis").
 # 새 그라디언트는 여기 없으면 그대로 FAIL이므로 flat-fill 원칙은 계속 강제된다.
 _BUNDLE_APPROVED_GRADIENT_SELECTORS = frozenset({'.human-quote-stage'})
+
+
+# ── 번들(자립 단일본) 판정: 파일명이 아니라 **내용**으로 정한다 ──────────────
+# 과거 규약은 `Path(deck).stem.endswith('_배포')`였다. 같은 파일이 이름만 달라 판정이
+# 갈렸다(실측 2026-07-26: raw색 74↔33건 · gradient FAIL↔PASS). 면제는 "kit CSS가 덱
+# 안으로 인라인됐는가"라는 사실에 달린 것이지 파일명에 달린 것이 아니므로, 그 사실을
+# 직접 본다: ① <link rel="stylesheet">가 하나도 없고(= 외부 CSS에 의존하지 않음)
+# ② 인라인 <style>의 :root에 kit deck.css의 서명 토큰이 전부 정의돼 있으면 번들이다.
+# 배포본·발표본 → True, kit CSS를 링크하는 미리보기 강의덱.html → False.
+_BUNDLE_SIGNATURE_TOKENS = ('--sw', '--blue', '--mint', '--coral', '--ink', '--surface')
+
+
+def _has_stylesheet_link(tags):
+    for tag in tags:
+        if tag.name != 'link':
+            continue
+        if 'stylesheet' in (tag.attrs.get('rel') or '').lower().split():
+            return True
+    return False
+
+
+def _defines_kit_root_tokens(deck_inline_css):
+    for selector_group, decls, _body, _at in iter_rules(deck_inline_css):
+        selectors = [s.strip() for s in selector_group.split(',')]
+        if not any(s == ':root' or s.startswith(':root') for s in selectors if s):
+            continue
+        if all(token in decls for token in _BUNDLE_SIGNATURE_TOKENS):
+            return True
+    return False
+
+
+def is_bundle_deck(tags, deck_inline_css):
+    """자립 단일본(kit CSS가 인라인된 배포본·발표본)인가 — 내용 기반 단일 판정."""
+    return not _has_stylesheet_link(tags) and _defines_kit_root_tokens(deck_inline_css)
 
 
 def find_color_violations(css_text, *, hex_only=False, kit_alpha_exempt=None):
@@ -960,6 +1000,17 @@ def main():
     n = len(secs)
     chk(n >= 5, f"슬라이드 {n}장", f"슬라이드 {n}장 — 너무 적음(고정 4 + 본문 필요)")
 
+    # ── slideId 계약: 모든 .slide가 data-slide를 갖고, 값이 유일해야 한다 ──
+    # 발표 런타임은 강사 메모를 순번이 아니라 이 값에 고정한다(계획서 §10.2). 누락·중복이
+    # 있으면 덱을 재조립할 때 메모가 엉뚱한 장에 붙으므로 주입기가 아예 중단한다.
+    slide_ids = [(el.attrs.get('data-slide') or '').strip() for el in ordered_slides]
+    missing_sid = [i + 1 for i, sid in enumerate(slide_ids) if not sid]
+    dup_sid = sorted({sid for sid in slide_ids if sid and slide_ids.count(sid) > 1})
+    chk(not missing_sid and not dup_sid,
+        f"data-slide 전원 보유·중복 0 ({len(slide_ids)}장)",
+        f"data-slide 누락 {len(missing_sid)}장(위치 {missing_sid[:8]}) · 중복 {dup_sid[:8]} — "
+        "발표 메모가 slideId에 고정되므로 전원 보유·유일해야 함")
+
     # ── 학생 덱 공통 계약: --parts N(N>0)일 때만 적용 ──
     # 카탈로그/아틀라스는 --parts 0을 사용하므로 힌트·헤더 데모를 허용한다.
     is_student_deck = a.parts is not None and a.parts > 0
@@ -1339,7 +1390,7 @@ def main():
     else:
         # 배포본(번들)은 kit CSS까지 덱 안으로 인라인되므로, 링크 상태와 판정이 갈리는
         # kit 유래 alpha 색·승인된 그라디언트만 면제한다(위 주석에 근거 기재).
-        is_bundle = Path(a.deck).stem.endswith('_배포')
+        is_bundle = is_bundle_deck(tags, bundle.deck_inline)
         kit_alpha_exempt = _kit_alpha_declarations() if is_bundle else None
 
         # ── raw #hex · rgba()/hsl() · CSS 명명색: CSS 규칙 + style=(따옴표 무관) + SVG fill=/stroke= ──

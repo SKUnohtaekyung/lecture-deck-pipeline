@@ -264,6 +264,8 @@ def main() -> int:
         "kit/charts/catalog.html",
         "kit/starter/deck-template.html",
         "kit/starter/presenter-notes-template.html",
+        "kit/runtime/presenter-runtime.js",
+        "kit/runtime/presenter-ui.css",
         "입력양식/콘텐츠초안템플릿.md",
         "데모_제작규칙.html",
         "scripts/verify_deck.py",

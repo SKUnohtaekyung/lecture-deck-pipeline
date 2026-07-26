@@ -71,6 +71,9 @@ description: >-
 | 7 발표자 노트 | 멘트 라우팅·번호 정합 | [phases/07-발표자노트.md](references/phases/07-발표자노트.md) | `pn-no`가 덱 페이지 번호와 일치 |
 | 8 검증 | 정적 스크립트 → **브라우저 전수 측정** | [phases/08-검증.md](references/phases/08-검증.md) | ⑥의 게이트 전부 통과 |
 | 9 배포 | 단일 자립 파일 빌드 | [phases/09-배포.md](references/phases/09-배포.md) | fail-closed 게이트 통과 |
+| 10 발표본 **(선택 · 명시 요청 전용)** | 완성된 배포본에 발표 런타임 주입 → `강의덱_발표.html` | [phases/10-발표자모드.md](references/phases/10-발표자모드.md) | 주입·전용 검증기 종료코드 0 · 슬라이드 불변 |
+
+> **10단계는 자동으로 실행하지 않는다.** 사용자가 발표자 모드·발표본을 **명시적으로 요청했을 때만** 수행한다. 일반 조립 경로(`assemble_deck` · `build_release` · `inline_deck`)에는 발표자 코드 경로가 아예 없어, "자동 삽입 없음"이 플래그 기본값이 아니라 **구조로** 보장된다.
 
 **이미지 판정 게이트(순서 고정)**: `정보 모양·시각 element 결정 → 이미지 목적 판정 → 중앙 레지스트리 재사용 검색 → generate/transform 수 산출 → 필요할 때만 IMAGE_MODE 확인`.
 판정은 `NO_IMAGE | IMAGE_EXPLANATORY | IMAGE_MNEMONIC | IMAGE_DECORATIVE_OPTIONAL` 네 가지다.

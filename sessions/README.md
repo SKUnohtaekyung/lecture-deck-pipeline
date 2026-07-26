@@ -15,6 +15,8 @@ sessions/
     강의덱.html            조립 미리보기(자동 재조립·외부링크 CSS) — 편집 중 통합본 확인용
     강의덱_배포.html        배포 단일본(CSS·이미지·폰트 전부 인라인 — 오프라인 자립)
     강의덱_발표자노트.html   산출 발표자 노트 (멘트 💬/👀/🗣가 있을 때만)
+    강의덱_발표.html         발표본 — 하단 네비 + 발표자 창 런타임이 주입된 단일 HTML
+                            (선택 · 사용자가 명시 요청할 때만. `scripts/inject_presenter.py` 산출)
     실습예제/             (선택) 리서치가 실습 검증에 쓴 프로젝트 원본 — 아래 설명 참고
     자료/                 원본 리서치·인수인계·참고 자료
       이미지-에셋.json     슬라이드 이미지 판정·상태 정본
@@ -33,6 +35,7 @@ cp "입력양식/콘텐츠초안템플릿.md" "sessions/3주차/3주차_초안.m
 - **입력**: `sessions/N주차/N주차_초안.md`를 콘텐츠 초안으로 읽는다(레거시 `초안.md` 폴백 인식). 원본 근거가 필요하면 `sessions/N주차/자료/` 참고.
 - **산출(2단계)**: 편집본(조각) → 배포본(단일 자립). 발표자 노트는 같은 폴더에 별도 산출.
   - **편집본** `강의덱.초안/`: 파트별 `shell.html`(head·고정 슬라이드·`<!-- ::PARTS:: -->` 마커·JS) + PART마다 `part-NN.html`. 대화하며 파트 단위로 고친다(조각이 대화형 수정에 빠르고 정확). 미리보기 통합본은 `python scripts/assemble_deck.py sessions/N주차/강의덱.초안`(`--watch`면 저장 시 자동 재조립) → `강의덱.html`(항상 최신). ⚠️ CSS는 `../../kit/styles/…` 상대경로(세션 폴더 2단계 깊이).
+  - **발표본** `강의덱_발표.html`(선택 · 명시 요청 전용): `python scripts/inject_presenter.py sessions/N주차/강의덱_배포.html --notes … --deck-id … --output sessions/N주차/강의덱_발표.html --meta sessions/_verify/N주차/강의덱_발표.meta.json`. 입력은 **완성된 배포본**이며 조각에서 재생성하지 않는다(동결 주차와 충돌하지 않는 이유). 사이드카는 전달물이 아니라 검증용이라 `sessions/_verify/N주차/`에 두고, 동결 폴더에는 전달물 1개만 추가한다. 절차·게이트 정본은 `references/phases/10-발표자모드.md`.
   - **배포본** `강의덱_배포.html`: `python scripts/build_release.py sessions/N주차/강의덱.초안` 한 커맨드 = 조립 → `verify_deck` → `inline_deck --offline`(CSS·이미지 인라인 + Pretendard 사용 글자 서브셋 `@font-face` 임베드) → `verify_distributable`(자립성 강제). 외부 의존이 하나라도 남으면 FAIL — 학생에게 이 파일 하나만 줘도 오프라인에서 다 보인다.
   - 조각 없이 단일 `강의덱.html`을 바로 편집하는 옛 방식도 유효하다(→ `inline_deck.py`로 배포). 단, 폰트 자립·자립성 강제는 `build_release.py` 경로에서 보장된다.
 - **이미지 계약**: `자료/이미지-에셋.json`은 [`../references/이미지-에셋-manifest.schema.json`](../references/이미지-에셋-manifest.schema.json)을 따르는 상태 정본이다. `NO_IMAGE | IMAGE_EXPLANATORY | IMAGE_MNEMONIC | IMAGE_DECORATIVE_OPTIONAL` 판정, 재사용 Asset ID, 예상 파일, 생성 방식, QA 결과를 기록한다. `prompt_only`의 expected 슬롯에는 실제 `<img>`를 만들지 않는다.

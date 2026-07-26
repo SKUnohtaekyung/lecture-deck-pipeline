@@ -137,6 +137,21 @@
         "사용자에게 생성 기능 연결 또는 prompt_only 전환 승인을 요청하고 그 전에는 이미지 단계를 중단함",
         "생성되지 않은 이미지나 빈 슬롯을 검수 완료 에셋으로 보고하지 않음"
       ]
+    },
+    {
+      "id": 10,
+      "name": "normal-assembly-has-no-presenter-runtime",
+      "prompt": "이 초안으로 2주차 강의덱 만들어줘. 조립하고 배포본까지 뽑아줘.\n\n# 1교시\n| # | 슬라이드 제목 | 본문 문구 | 비유·멘트 |\n|---|---|---|---|\n| 1-1 | (표지) | **두 번째 시간** | |\n| 1-2 | 오늘 할 일 | 파일 하나에서 프로젝트로 | |",
+      "expected_output": "일반 조립·배포 요청이므로 조각 → 강의덱.html → 강의덱_배포.html까지만 산출한다. 발표자 모드·발표본은 사용자가 명시적으로 요청하지 않았으므로 만들지 않고, 만들지 여부를 되묻지도 않는다(10단계는 선택 단계).",
+      "files": [],
+      "assertions": [
+        "산출 HTML에 `data-presenter-runtime` 속성·블록이 하나도 없음",
+        "산출 HTML에 `data-presenter-notes` 스크립트 블록이 없음",
+        "`강의덱_발표.html`·`sessions/_verify/**` 파일을 만들지 않음",
+        "`scripts/inject_presenter.py`를 실행하지 않음",
+        "`kit/runtime/presenter-runtime.js`·`presenter-ui.css`를 덱에 인라인하지 않음",
+        "모든 `.deck > .slide`에 유일한 `data-slide`가 있음(R-SLIDE-ID-01)"
+      ]
     }
   ]
 }

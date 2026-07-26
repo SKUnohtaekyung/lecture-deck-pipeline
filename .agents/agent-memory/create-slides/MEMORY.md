@@ -32,6 +32,8 @@
   - 정답: `object-fit:contain`은 박스보다 비율이 넓은 그림을 폭에 맞춰 그리고 위아래를 레터박스로 비운다. **높이를 키우면 빈 여백만 커진다** — 조정 전에 `naturalWidth/naturalHeight`와 박스 비율을 비교하고, 시각적으로 키우려면 **가로**를 늘린다(옆 텍스트 컬럼을 그만큼 줄여서). 실측 사례: figure 330×340에 1692×930(1.82:1) 이미지 → 실제 그림은 330×181, 나머지 159px가 빈 공간이었다.
 - 오답: `figure`에 고정 높이만 주고 안의 `img` 높이를 방치한다.
   - 정답: figure가 `overflow:hidden`이면 더 큰 `img`의 하단이 조용히 잘린다. `img{width:100%;height:100%;object-fit:contain}`을 함께 명시하고, figure와 img의 `getBoundingClientRect().height`가 같은지 실측한다. 실측 사례: figure 128 vs img 144 → 하단 16px 상시 클리핑.
+- 오답: `kit/layouts/families/*.md`의 `capacity`·`density_note`를 **토큰 기본값**(`.s-title` 40/38px, `.s-body` 22px 등)으로 산정한다.
+  - 정답: `coded: yes` 레이아웃은 `kit/styles/patterns.css`가 셀렉터별로 값을 **덮어쓴다**. 산정 전에 그 오버라이드를 확인하고, 확신이 없으면 `scripts/measure_render.js`로 실측한다(`references/phases/08-검증.md`). 2026-07-26 감사 실측: `.ca-act .s-lead`는 22px(전역 23px 아님)·`.ca-act .s-body`는 19px이라 `L-vf-case-acts`의 density_note가 **"본문 2줄 3막이 여유 19px로 들어간다"고 승인했지만 실제로는 한 막만 2줄이어도 19.6px, 세 막 모두면 87.2px 오버플로**였다. `L-gm-pitfalls`는 반대로 타이틀 블록을 80px로 과소계상(실측 139.9)해 밴드 상한을 실제보다 좁게 잡고 있었다.
 - 오답: `overflow:hidden`으로 잘린 요소를 숨기고 통과한다.
   - 정답: DOM rect, scrollWidth/scrollHeight, 텍스트 클리핑을 측정해 원인을 제거한다.
 - 오답: 카드·박스 안 항목을 위에서부터 쌓고 남는 하단 공백을 그대로 둔다.
@@ -121,6 +123,14 @@
 - 미산출(요청 시): `/콘텐츠` 규약의 집필노트(`자료/2주차_콘텐츠_집필노트.md` 출처추적표)·리뷰HTML은 task 범위(초안까지)라 미산출 — 필요 시 별도 생성.
 
 **1주차는 2026-07-26 사용자 결정으로 동결됐다.** 수정·추가·삭제·재조립하지 않는다(읽기와 저장소 밖 복사만 허용). 구조 계약과 기존 결함 목록은 `sessions/_contracts/1주차.deck.contract.json`이 정본이다.
+
+**★ 발표 시스템(Presenter Runtime) — 0~9단계 전부 완료(2026-07-26).** 계획 정본 `plans/presenter-system-final-plan.md`. 신설: `kit/runtime/presenter-runtime.js`·`presenter-ui.css` · `scripts/inject_presenter.py`·`verify_presenter_deck.py` · `references/phases/10-발표자모드.md` · 전달물 `sessions/1주차/강의덱_발표.html` + 사이드카 `sessions/_verify/1주차/강의덱_발표.meta.json`. 미커밋 상태. 남은 것은 **수동 실기기표(Windows Edge·macOS Chrome 열)와 §29 성능 측정**뿐.
+- **1주차 노트 정합은 2026-07-26 사용자 승인으로 복구했다**(동결 예외). pn-no 31건 재번호 · 제목 5건을 덱 기준으로 정정 · 덱에서 삭제된 슬라이드의 멘트 3건은 버리지 않고 인접 슬라이드로 항목 이동(블록 54→51, **멘트 본문 67개 전량 보존·무변경**). MISMATCH 36→4이고 남은 4건은 전부 `[부분집합]`(표지·도입·S3ASK·S3DO가 page-number 제외 클래스일 뿐 매핑은 정상). 판정 근거는 순서 보존 LCS 정렬 + 덱 실물 대조.
+- **⚠️ 노트 항목 파서는 상태 기반 HTMLParser 서브클래스로 만들지 마라.** `<br>` 같은 void 요소에서 깊이 계산이 어긋나 항목이 닫히지 않는다 — 실측으로 67개 중 33개만 잡히고 뒤쪽 26블록이 통째로 0개가 됐다. **범위 스캔**(`iter_class_blocks`)을 쓰고, 반드시 원본 실측치(joke/demo/hint 개수)와 대조해 검증하라. 검증을 건너뛰면 멘트 절반이 소리 없이 누락된 채 주입된다.
+- 노트 블록 요소는 `<div>`가 아니라 **`<section class="pn-slide">`** 다. 블록 끝을 `rindex("</div>")`로 찾으면 직전 항목의 닫는 태그를 잡아 항목 안에 중첩된다.
+- **`file://` 플랫폼 제약(0단계 스파이크 실측, Chrome·Edge 동일)**: 청중 창을 새로고침하면 그 문서가 새 opaque origin을 받아, 새 부모는 살아 있는 팝업 DOM에 **영구히 접근 불가**(`SecurityError`). `window.open('about:blank', 저장된창이름)`으로도 회복 안 된다(핸들만 오고 대상 창이 이동하지 않음). 살아남는 것은 양방향 `postMessage`뿐. → 자동 재연결 대신 **좀비 팝업 자폐 + 1클릭 재열기**로 확정(§30의 "자동 재연결" 한 줄만 완화, §2 고정 목표 19개는 전부 유지).
+- **실측으로 잡은 결함 4종(재발 주의)**: ① 미리보기 배율을 폭으로만 계산하면 중앙 정렬된 슬라이드의 **위아래가 대칭으로 잘린다** → `min(w/1280, h/720)` ② 타이머 interval을 **부모 창**이 돌리면 팝업 포커스 시 Chrome이 스로틀링해 멈춰 보인다 → 상태는 부모가 소유하고 **초 단위 렌더는 팝업이** ③ `rebind()`로 교체하는 노드를 미리 캡처하면 화면에서 떨어져 나간 옛 노드를 갱신한다(하단 네비 번호 고정) → **매번 재조회** ④ 팝업에 덱 CSS를 통째로 복사하면 `html/body`의 `transform`이 딸려와 `position:fixed`가 뷰포트 기준을 잃는다 → 팝업 전용 `data-pv-window` 리셋.
+- 16:9 박스와 임의 비율 컨테이너는 **남는 공간이 반드시 생긴다.** 없애려 하지 말고 어디로 보낼지 정하는 문제다 — 왼쪽 칸 폭을 `프레임 높이 × 16/9`로 런타임이 정하고 남는 폭은 오른쪽(노트)이 흡수한다.
 
 > 승격된 규칙: family 레지스트리·`data-series` 연작 예외 → `kit/guide/카탈로그-규격.md`(R-LAYOUT-03) · 노트 `pn-no` 정합·재번호 요령 → `references/phases/07-발표자노트.md` · 신규 세로 예산·폰트 예외 위계 → `kit/guide/토큰-치트시트.md`(R-TYPE-01·R-TYPE-03).
 

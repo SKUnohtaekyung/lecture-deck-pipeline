@@ -1,0 +1,484 @@
+/*! presenter-ui.css — 발표 UI 스타일 (kit 공통 정본) v1.0.0
+ *
+ * 계획서 §12 스코프 규칙 (검증기가 강제한다):
+ *   --pv-* 토큰의 **정의와 사용은 아래 4개 루트 셀렉터와 그 후손 안에만** 존재한다.
+ *     .controls · .presentation-menu · .keyboard-help · .presenter-console
+ *   슬라이드 토큰(--ink·--blue·--mint 등)을 참조하지 않는다. 이름이 겹치지 않아야
+ *   스코프 이탈을 정적으로 검사할 수 있다.
+ *
+ *   커스텀 프로퍼티는 후손으로 상속되므로, 팝업의 .presenter-* 노드는 전부
+ *   .presenter-console 하위에 두어 토큰을 물려받는다(루트 셀렉터를 늘리지 않는다).
+ *
+ * 테마 속성은 <html data-pv-theme="light|dark">. 슬라이드 본문에는 어떤 테마 속성도
+ * 적용되지 않으며, #blackout은 테마와 무관하게 항상 검정이라 여기서 다루지 않는다.
+ */
+
+/* ══════════════════════════════════════════════════════════════════════
+   --pv-* 토큰 — 라이트
+   ══════════════════════════════════════════════════════════════════════ */
+[data-pv-theme="light"] .controls,
+[data-pv-theme="light"] .presentation-menu,
+[data-pv-theme="light"] .keyboard-help,
+[data-pv-theme="light"] .presenter-console{
+  --pv-bg:              #FFFFFF;
+  --pv-bg-elev:         #F3F5F8;
+  --pv-bg-sunken:       #E8ECF3;
+  --pv-fg:              #141821;
+  --pv-fg-muted:        #4A5261;
+  --pv-fg-faint:        #6B7280;
+  --pv-line:            #D8DEE9;
+  --pv-line-strong:     #B6C0D2;
+  --pv-accent:          #1D4ED8;
+  --pv-accent-fg:       #FFFFFF;
+  --pv-accent-soft:     #EAF0FF;
+  --pv-ok:              #0F766E;
+  --pv-ok-soft:         #E4F5F1;
+  --pv-warn:            #B4402B;
+  --pv-warn-soft:       #FDECE7;
+  --pv-danger:          #C0201F;
+  --pv-badge-bg:        #EEF3FE;
+  --pv-badge-fg:        #1B3FA8;
+  --pv-overlay:         rgba(20, 24, 33, .46);
+  --pv-shadow:          0 10px 30px rgba(20, 24, 33, .18);
+  --pv-focus:           #1D4ED8;
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   --pv-* 토큰 — 다크 (라이트와 1:1 대응. 항목 수·이름이 어긋나면 검증기 FAIL)
+   ══════════════════════════════════════════════════════════════════════ */
+[data-pv-theme="dark"] .controls,
+[data-pv-theme="dark"] .presentation-menu,
+[data-pv-theme="dark"] .keyboard-help,
+[data-pv-theme="dark"] .presenter-console{
+  --pv-bg:              #14181F;
+  --pv-bg-elev:         #1E242E;
+  --pv-bg-sunken:       #0E1116;
+  --pv-fg:              #EEF1F6;
+  --pv-fg-muted:        #B4BCCA;
+  --pv-fg-faint:        #8A93A3;
+  --pv-line:            #333B48;
+  --pv-line-strong:     #4A5361;
+  --pv-accent:          #7FA6FF;
+  --pv-accent-fg:       #0E1116;
+  --pv-accent-soft:     #24304A;
+  --pv-ok:              #5FD3C0;
+  --pv-ok-soft:         #17322E;
+  --pv-warn:            #FF9B7A;
+  --pv-warn-soft:       #3A241D;
+  --pv-danger:          #FF8A85;
+  --pv-badge-bg:        #24304A;
+  --pv-badge-fg:        #AFC6FF;
+  --pv-overlay:         rgba(0, 0, 0, .62);
+  --pv-shadow:          0 10px 30px rgba(0, 0, 0, .55);
+  --pv-focus:           #7FA6FF;
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   청중 창 — 발표자 창 상태·실패 안내 (메뉴 안에만 나타난다)
+   여기에는 메모·다음 슬라이드·타이머를 **절대** 만들지 않는다(계획서 §9.5 · 목표 #17).
+   ══════════════════════════════════════════════════════════════════════ */
+.presentation-menu .presenter-status{
+  margin: 10px 12px 0;
+  padding: 10px 12px;
+  border: 1px solid var(--pv-line);
+  border-radius: 10px;
+  background: var(--pv-bg-elev);
+  color: var(--pv-fg);
+  font-size: 14px;
+  line-height: 1.55;
+}
+.presentation-menu .presenter-status[data-pv-tone="warn"]{
+  border-color: var(--pv-warn);
+  background: var(--pv-warn-soft);
+  color: var(--pv-warn);
+}
+.presentation-menu .presenter-status button{
+  margin-top: 8px;
+  padding: 7px 12px;
+  border: 1px solid var(--pv-accent);
+  border-radius: 8px;
+  background: var(--pv-accent);
+  color: var(--pv-accent-fg);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   청중 창 — 하단 네비의 발표자 모드 버튼 (런타임이 .nav-btn 클래스로 만든다)
+   ══════════════════════════════════════════════════════════════════════ */
+.controls #pvOpenBtn{ display: inline-flex; align-items: center; justify-content: center; }
+.controls #pvOpenBtn svg{ width: 20px; height: 20px; }
+
+/* ══════════════════════════════════════════════════════════════════════
+   발표자 팝업 콘솔 — 팝업 문서 안에서만 렌더된다
+   .presenter-console이 뷰포트를 덮으므로 복사된 덱 CSS의 body 스타일이 보이지 않는다.
+   레이아웃: 좌(타이머·대형 현재 슬라이드·카운터) / 우(다음 슬라이드·노트)
+   ══════════════════════════════════════════════════════════════════════ */
+/* 팝업 문서에만 적용되는 리셋 — 복사된 덱 CSS의 html/body 규칙(높이·여백·transform)을
+   되돌린다. 조상에 transform이 남아 있으면 position:fixed가 뷰포트 기준이 아니게 되어
+   콘솔이 화면 아래를 못 채운다. 청중 덱에는 이 표식이 없으므로 영향이 없다. */
+[data-pv-window="presenter"],
+[data-pv-window="presenter"] body{
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  transform: none;
+  filter: none;
+  perspective: none;
+}
+
+.presenter-console{
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  display: grid;
+  grid-template-rows: auto auto minmax(0, 1fr);   /* 본문 행이 줄어들 수 있어야 하단이 밖으로 안 밀린다 */
+  gap: 12px;
+  padding: 10px 16px 16px;
+  box-sizing: border-box;
+  overflow: hidden;
+  background: var(--pv-bg);
+  color: var(--pv-fg);
+  font-family: Pretendard, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+  z-index: 2147483000;
+}
+.presenter-console *,
+.presenter-console *::before,
+.presenter-console *::after{ box-sizing: border-box; }
+.presenter-console .pv-i{ display: block; flex: 0 0 auto; }
+
+/* ── 상단 상태 바 ─────────────────────────────────────────────── */
+.presenter-console .pv-topbar{
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 9px;
+  border-bottom: 1px solid var(--pv-line);
+}
+.presenter-console .pv-deck{ font-size: 13px; font-weight: 600; color: var(--pv-fg-faint); }
+.presenter-console .pv-topbar-actions{ display: flex; align-items: center; gap: 8px; margin-left: auto; }
+
+.presenter-console .pv-chip{
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 11px;
+  border-radius: 999px;
+  background: var(--pv-badge-bg);
+  color: var(--pv-badge-fg);
+  font-size: 12.5px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.presenter-console .pv-chip--soft{ background: var(--pv-bg-sunken); color: var(--pv-fg-muted); }
+.presenter-console[data-pv-link="lost"] .pv-chip{ background: var(--pv-warn-soft); color: var(--pv-warn); }
+
+/* 터치·클릭 표적은 44px 이상을 유지한다 */
+.presenter-console .pv-tbtn{
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 44px;
+  padding: 9px 14px;
+  border: 1px solid var(--pv-line-strong);
+  border-radius: 10px;
+  background: var(--pv-bg-elev);
+  color: var(--pv-fg);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 180ms ease-out, border-color 180ms ease-out, color 180ms ease-out;
+}
+.presenter-console .pv-tbtn:hover:not(:disabled){ background: var(--pv-accent-soft); border-color: var(--pv-accent); }
+.presenter-console .pv-tbtn:active:not(:disabled){ background: var(--pv-bg-sunken); }
+.presenter-console .pv-tbtn--quit:hover:not(:disabled){ border-color: var(--pv-danger); color: var(--pv-danger); background: var(--pv-warn-soft); }
+.presenter-console .pv-iconbtn{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--pv-line-strong);
+  border-radius: 10px;
+  background: var(--pv-bg-elev);
+  color: var(--pv-fg);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 180ms ease-out, border-color 180ms ease-out;
+}
+.presenter-console .pv-iconbtn:hover:not(:disabled){ background: var(--pv-accent-soft); border-color: var(--pv-accent); }
+.presenter-console .pv-iconbtn[aria-pressed="true"]{ background: var(--pv-accent); border-color: var(--pv-accent); color: var(--pv-accent-fg); }
+.presenter-console .pv-iconbtn--sm{ width: 40px; height: 40px; font-size: 15px; }
+.presenter-console .pv-sup{ font-size: 11px; line-height: 1; }
+.presenter-console button:focus-visible,
+.presenter-console input:focus-visible,
+.presenter-console textarea:focus-visible{ outline: 3px solid var(--pv-focus); outline-offset: 2px; }
+.presenter-console button:disabled{ opacity: .38; cursor: not-allowed; }
+
+.presenter-console .pv-notice{
+  margin: 0;
+  padding: 10px 13px;
+  border: 1px solid var(--pv-warn);
+  border-radius: 10px;
+  background: var(--pv-warn-soft);
+  color: var(--pv-warn);
+  font-weight: 700;
+}
+
+/* ── 본문 2단: 좌 무대 / 우 사이드 ──────────────────────────────
+   왼쪽 칸 폭은 런타임이 "프레임 높이 × 16/9"로 정한다(CSS만으로는 계산 불가 — 주석은
+   presenter-runtime.js의 fitStage 참고). 남는 가로 공간은 전부 오른쪽이 가져가므로
+   슬라이드 주변에 죽은 여백이 남지 않는다. */
+.presenter-console .pv-body{
+  display: flex;
+  gap: 18px;              /* CFG.gap과 같은 값 */
+  min-height: 0;
+}
+.presenter-console .pv-stage{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 0 0 auto;
+  min-height: 0;
+  min-width: 0;
+}
+
+.presenter-console .pv-stage-head{ display: flex; align-items: center; gap: 10px; }
+.presenter-console .pv-timer-wrap{ display: flex; align-items: center; gap: 8px; }
+.presenter-console .pv-timer{
+  font-size: 30px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: .01em;
+  color: var(--pv-fg);
+}
+.presenter-console .pv-clock{
+  margin-left: auto;
+  font-size: 19px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--pv-fg-muted);
+}
+
+.presenter-console .pv-slide-title{
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--pv-fg-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.presenter-console .pv-stagebar{
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: auto;
+  padding-top: 10px;
+  border-top: 1px solid var(--pv-line);
+}
+.presenter-console .pv-tools{ display: flex; align-items: center; gap: 8px; }
+.presenter-console .pv-jump{ display: flex; align-items: center; gap: 6px; }
+.presenter-console .pv-input{
+  width: 92px;
+  height: 44px;
+  padding: 8px 11px;
+  border: 1px solid var(--pv-line-strong);
+  border-radius: 10px;
+  background: var(--pv-bg-elev);
+  color: var(--pv-fg);
+  font: inherit;
+  font-variant-numeric: tabular-nums;
+}
+.presenter-console .pv-pager{ display: flex; align-items: center; gap: 14px; margin-left: auto; }
+.presenter-console .pv-navbtn{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border: 1px solid var(--pv-line-strong);
+  border-radius: 999px;
+  background: var(--pv-bg-elev);
+  color: var(--pv-fg);
+  cursor: pointer;
+  transition: background 180ms ease-out, border-color 180ms ease-out;
+}
+.presenter-console .pv-navbtn:hover:not(:disabled){ background: var(--pv-accent); border-color: var(--pv-accent); color: var(--pv-accent-fg); }
+.presenter-console .pv-count{
+  min-width: 132px;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--pv-fg);
+}
+
+/* ── 우측 사이드 ──────────────────────────────────────────────── */
+.presenter-console .pv-side{
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  flex: 1 1 auto;         /* 왼쪽이 쓰고 남긴 가로 공간을 전부 받는다 */
+  min-width: 340px;       /* CFG.sideMin과 같은 값 */
+  min-height: 0;
+}
+.presenter-console .pv-side-block{ display: flex; flex-direction: column; gap: 8px; min-height: 0; }
+.presenter-console .pv-side-block--notes{ flex: 1 1 auto; }
+.presenter-console .pv-h{
+  margin: 0;
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: .05em;
+  color: var(--pv-fg-faint);
+}
+.presenter-console .pv-next-title{
+  margin: 0;
+  font-size: 14px;
+  color: var(--pv-fg-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 미리보기 — 덱 CSS의 .slide.is-active 배치(중앙 정렬 + scale(var(--scale)))를 그대로 쓴다.
+   박스는 "임의 모양의 뷰포트"이고, 런타임이 min(w/1280, h/720) 배율을 넣어 슬라이드가
+   항상 16:9를 유지한 채 레터박스된다 — 어떤 창 크기에서도 잘리지 않는다. */
+.presenter-console .pv-preview{
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border: 1px solid var(--pv-line);
+  border-radius: 12px;
+  background: var(--pv-bg-sunken);
+  box-shadow: var(--pv-shadow);
+}
+/* 현재 슬라이드 —
+   프레임이 남는 공간을 전부 차지하고, 그 안에서 박스가 **항상 정확히 16:9**로 맞춰진다.
+   높이가 제한이면 폭이 줄고, 폭이 제한이면 높이가 준다. 박스와 슬라이드의 비율이 같으므로
+   레터박스(회색 여백)가 생기지 않는다. 모니터 비율이 달라져도 규칙은 그대로다. */
+.presenter-console .pv-stage-frame{
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.presenter-console .pv-preview--main{
+  height: 100%;
+  width: auto;
+  max-width: 100%;
+  max-height: 100%;
+  aspect-ratio: 16 / 9;
+  border-width: 2px;
+}
+/* 다음 슬라이드: 고정 16:9 썸네일. */
+.presenter-console .pv-preview--next{
+  flex: 0 0 auto;
+  aspect-ratio: 16 / 9;
+  border-radius: 10px;
+  box-shadow: none;
+}
+.presenter-console .pv-preview [data-presenter-preview]{ pointer-events: none; }
+.presenter-console .pv-empty{
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  color: var(--pv-fg-faint);
+  font-weight: 700;
+}
+
+.presenter-console .pv-notes-head{ display: flex; align-items: center; gap: 9px; flex-wrap: wrap; }
+.presenter-console .pv-notes-head .pv-h{ margin-right: auto; }
+/* 노트 상자는 남는 세로 공간을 받아 커지되 상한을 둔다.
+   min: 낮은 창에서도 A−/A+ 행이 밖으로 밀리지 않을 만큼만.
+   max: 화면 절반을 넘지 않게 — 무한정 늘어나면 다음 슬라이드 미리보기가 눌린다. */
+.presenter-console .pv-note{
+  flex: 1 1 auto;
+  min-height: min(190px, 26vh);
+  max-height: 44vh;
+  padding: 13px 15px;
+  border: 1px solid var(--pv-line-strong);
+  border-radius: 12px;
+  background: var(--pv-bg-elev);
+  color: var(--pv-fg);
+  font-family: inherit;
+  font-size: 17px;
+  line-height: 1.66;
+  resize: none;
+}
+.presenter-console .pv-notes-foot{ display: flex; align-items: center; gap: 10px; }
+.presenter-console .pv-save{ margin: 0; font-size: 12.5px; font-weight: 600; color: var(--pv-fg-faint); }
+.presenter-console .pv-save[data-pv-tone="ok"]{ color: var(--pv-ok); }
+.presenter-console .pv-save[data-pv-tone="warn"]{ color: var(--pv-warn); }
+.presenter-console .pv-fontsize{ display: flex; align-items: center; gap: 6px; margin-left: auto; }
+
+/* 좁은 팝업(노트북 단일 화면 등)에서는 1단으로 접는다.
+   폭 판정은 런타임이 하고(CFG.stackAt=1080) data-pv-stacked로 표시한다 —
+   미디어쿼리와 JS가 서로 다른 기준을 쓰면 두 레이아웃이 어긋나기 때문이다. */
+.presenter-console .pv-body[data-pv-stacked="1"]{
+  flex-direction: column;
+  overflow: auto;
+}
+.presenter-console .pv-body[data-pv-stacked="1"] .pv-stage{ width: auto !important; flex: 0 0 auto; }
+.presenter-console .pv-body[data-pv-stacked="1"] .pv-stage-frame{ min-height: 46vh; }
+.presenter-console .pv-body[data-pv-stacked="1"] .pv-side{ flex-direction: row; flex-wrap: wrap; min-width: 0; }
+.presenter-console .pv-body[data-pv-stacked="1"] .pv-side-block{ flex: 1 1 320px; }
+/* 낮은 창: 세로 여백을 줄여 슬라이드에 최대한 할당한다 */
+@media (max-height: 720px){
+  .presenter-console{ padding: 8px 12px 12px; gap: 8px; }
+  .presenter-console .pv-timer{ font-size: 24px; }
+  .presenter-console .pv-navbtn{ width: 46px; height: 46px; }
+  .presenter-console .pv-note{ min-height: min(110px, 20vh); max-height: 40vh; }
+}
+
+@media (prefers-reduced-motion: reduce){
+  .presenter-console .pv-tbtn,
+  .presenter-console .pv-iconbtn,
+  .presenter-console .pv-navbtn{ transition: none; }
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   인쇄 (계획서 §13)
+   - 발표 UI는 전부 제외한다. --pv-* 를 쓰는 노드가 모두 여기서 빠지므로
+     "발표 UI 테마가 인쇄 결과에 영향을 주지 않는다"가 구조적으로 보장된다.
+   - 슬라이드 본문의 색·디자인은 건드리지 않는다. 덱의 print-color-adjust:exact
+     선언과 @page{size:1280px 720px;margin:0}은 그대로 둔다("항상 라이트" 강제 없음).
+   - 1장 = 1페이지를 보장하고, 마지막 장 뒤 빈 페이지를 막는다.
+   ══════════════════════════════════════════════════════════════════════ */
+@media print{
+  .controls,
+  .presentation-menu,
+  .keyboard-help,
+  .presenter-console,
+  .presenter-status,
+  #blackout,
+  .presentation-blackout,
+  [data-presenter-preview]{
+    display: none !important;
+  }
+
+  .deck > .slide{
+    break-after: page;
+    page-break-after: always;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  .deck > .slide:last-child{
+    break-after: auto;
+    page-break-after: auto;
+  }
+}
