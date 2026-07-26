@@ -134,6 +134,6 @@
    ← 좌: 시각 패널    │룰│   우: 글(主) →
 ```
 - **coded**: no
-- **density_note**: 세로 룰은 `--line`(#E5E8F0) 1px—시선 경계만, 색 강조 아님. 우 글 컬럼 ≈480px에 본문 22px 5줄 상한, 제목은 `.s-title` 44px 2줄까지. 좌 패널 시각은 하나만—여러 요소면 element 카탈로그로 분리하고 이 슬라이드엔 대표 하나.
+- **density_note**: 세로 룰은 `--line`(#E5E8F0) 1px—시선 경계만, 색 강조 아님. 우 글 컬럼 ≈480px에 본문 22px 5줄 상한, 제목은 `.s-title` 38px(가독성 레이어) 2줄까지. 좌 패널 시각은 하나만—여러 요소면 element 카탈로그로 분리하고 이 슬라이드엔 대표 하나.
 - **source**: https://www.printmag.com/featured/swiss-style-principles-typefaces-designers/ (WebFetch 확인 2026-07-12 · 열림 · verified) — 스위스 스타일: 수학적 격자, 비대칭 배치, 사진>일러스트, 명료·객관. 세로 격자 분할과 고립된 강한 시각이 원리적 뿌리.
 - **adaptation_note**: 원본은 스위스 격자 이론(룰·flush-left·고립 이미지). 복제 없이 원리만 차용 — 가운데 `--line` 세로 룰로 좌 시각/우 글을 끊고, 우 텍스트는 flush-left ragged-right(오른정렬 금지). 구조·주 강조는 deck.css의 `--blue`로 통일한다. 우글 방향이라 텍스트 컬럼을 우측 앵커로 미러 배치, 가독성 하한(22px)에서 우 컬럼 줄수 5줄을 수용량 경고로 사용한다.
