@@ -1,0 +1,426 @@
+/* ─────────────────────────────────────────────────────────────
+   표본 V3 — 4구간(AI 작업 시스템) 신규 구도 3종
+   w2-enforce(enforce) · w2-verdict(verdict) · w2-axis(axis)
+   전부 scripts/verify_deck.py의 family_signature()에 등재 완료.
+   규율: 색은 토큰만 · 본문 22px 하한 · 바닥선 666px(bottom:54px) ·
+        민트/코랄 fill 위 흰 글자 금지(--on-mint/--on-coral) ·
+        흰 fill + --line 단독 보더 금지 · 2주차 신규 화면은 장식 그림자 금지.
+   ───────────────────────────────────────────────────────────── */
+
+/* 표본 하네스 전용: 발표 모드(한 장씩 숨김)를 풀어 정적 렌더한다.
+   kit을 바꾸지 않고 이 파일에서만 무력화한다. */
+@media screen{
+  html,body{ height:auto; }
+  body{ background:var(--white); overflow:visible; padding:0; }
+  .deck{ display:block; height:auto; }
+  .slide{ position:relative!important; top:auto!important; left:auto!important;
+    transform:none!important; display:block!important;
+    box-shadow:none!important; border-radius:0!important; margin:0; }
+}
+
+/* 공통: 3단 스캐폴드 세로 배분 */
+.w2-enforce .s-full,
+.w2-verdict .s-full,
+.w2-axis .s-full,
+.w2-timeline .s-full,
+.w2-warnsteps .s-full{ bottom:54px; display:flex; flex-direction:column; gap:14px; }
+
+/* ══ w2-timeline ══ 시점 흐름 + 각 시점의 의미 (S3ITR: "왜"를 먼저) ══ */
+.tl-why{ display:flex; align-items:center; gap:12px; padding:12px 16px; border-radius:var(--r-lg);
+  background:var(--coral-line); border:1px solid var(--coral-deep); }
+.tl-why > b{ flex:0 0 auto; padding:3px 12px; border-radius:999px;
+  background:var(--coral); color:var(--on-coral); font-size:19px; font-weight:800; }
+.tl-why p{ margin:0; font-size:22px; font-weight:800; line-height:1.4; color:var(--on-coral); }
+.tl-track{ flex:0 0 auto; height:184px; display:grid; grid-auto-flow:column; grid-auto-columns:1fr;
+  gap:10px; align-items:stretch; min-height:0; }
+.tl-item{ display:flex; flex-direction:column; gap:6px; padding:12px 13px;
+  border-radius:var(--r-lg); background:var(--blue-panel); border:1px solid var(--blue-line-strong); }
+.tl-item.is-now{ background:var(--blue); border-color:var(--blue); }
+.tl-when{ font-size:20px; font-weight:800; color:var(--blue); }
+.tl-item.is-now .tl-when{ color:var(--white); }
+.tl-what{ font-size:21px; font-weight:800; line-height:1.34; color:var(--ink); }
+.tl-item.is-now .tl-what{ color:var(--white); }
+.tl-mean{ font-size:19px; font-weight:650; line-height:1.36; color:var(--gray-700); }
+.tl-item.is-now .tl-mean{ color:var(--on-blue-muted); }
+.tl-sum{ margin:auto 0 0; padding:12px 16px; border-radius:var(--r-md); text-align:center;
+  background:var(--ink); color:var(--white); font-size:23px; font-weight:800; }
+
+/* ══ w2-warnsteps ══ 경고 먼저 → 단계 (S3ITR + S3MAP 3요소) ══ */
+.ws-warn{ display:flex; align-items:center; gap:12px; padding:12px 16px; border-radius:var(--r-lg);
+  background:var(--coral-line); border:1px solid var(--coral-deep); }
+.ws-warn > b{ flex:0 0 auto; padding:3px 12px; border-radius:999px;
+  background:var(--coral); color:var(--on-coral); font-size:19px; font-weight:800; }
+.ws-warn p{ margin:0; font-size:22px; font-weight:800; line-height:1.4; color:var(--on-coral); }
+.ws-steps{ flex:1 1 auto; display:flex; flex-direction:column; gap:8px; min-height:0;
+  justify-content:space-between; }
+.ws-step{ display:flex; align-items:flex-start; gap:12px; padding:10px 14px;
+  border-radius:var(--r-lg); background:var(--surface); border:1px solid var(--blue-line); }
+.ws-step.is-key{ background:var(--blue-panel); border-color:var(--blue); }
+.ws-step .n{ flex:0 0 auto; width:30px; height:30px; border-radius:50%; display:grid;
+  place-items:center; background:var(--blue); color:var(--white); font-size:17px; font-weight:800; }
+.ws-step .txt{ min-width:0; }
+.ws-step > .txt > b{ display:block; font-size:22px; font-weight:800; color:var(--ink); }
+.ws-step .desc{ display:block; margin-top:1px; font-size:20px; font-weight:650;
+  line-height:1.35; color:var(--gray-700); }
+.ws-sum{ margin:0; padding:12px 16px; border-radius:var(--r-md); text-align:center;
+  background:var(--ink); color:var(--white); font-size:23px; font-weight:800; }
+
+/* ══ w2-enforce ══ 오해교정형: 정의 → 판단기준 → 나쁜예/좋은예 (S3CE·S3PE) ══ */
+.ef-def{ display:flex; align-items:flex-start; gap:14px; padding:14px 18px;
+  border-radius:var(--r-lg); background:var(--blue-panel); border:1px solid var(--blue-line-strong); }
+.ef-def .ef-mark{ flex:0 0 auto; font-size:30px; line-height:1; color:var(--blue); font-weight:800; }
+.ef-def p{ margin:0; font-size:23px; font-weight:700; line-height:1.42; color:var(--ink); }
+/* ⚠️ 출처 표기는 화면에 두지 않는다(2026-07-28 사용자 결정).
+   근거를 확인하는 이유는 **정확한 내용만 넣기 위해서**이지 출처를 보여주기 위해서가 아니다.
+   "공식 문서가 밝혔다"류 귀속 문구는 학습자에게 정보가 아니라 메타 주석이다.
+   출처는 개념KB `verbatim:`과 출처레지스트리에만 남기고, 필요하면 발표자 노트로 보낸다.
+   그래서 .ef-def cite 규칙은 두지 않는다 — 자리가 있으면 다시 채워 넣게 된다. */
+
+.ef-asks{ display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+.ef-ask{ padding:9px 13px; border-radius:var(--r-md); background:var(--surface);
+  border:1px solid var(--blue-line); }
+.ef-ask > b{ display:block; font-size:22px; font-weight:800; color:var(--blue); margin-bottom:1px; }
+.ef-ask > span{ display:block; font-size:20px; font-weight:600; color:var(--gray-700); line-height:1.35; }
+
+/* 색 박스는 결론 바와 확실히 떨어뜨린다(붙어 보이면 한 덩어리로 읽힌다).
+   ⚠️ max-height로 자르지 말 것 — 1차 수정에서 그렇게 했다가 박스 아래가 잘리고
+   검은 바가 오히려 더 붙어 보였다. 높이는 내용을 줄여서 확보한다. */
+.ef-pair{ flex:1 1 auto; display:grid; grid-template-columns:1fr 1fr; gap:12px; min-height:0; }
+.ef-side{ display:flex; flex-direction:column; gap:6px; padding:11px 14px; border-radius:var(--r-lg); }
+.ef-bad{ background:var(--coral-line); border:1px solid var(--coral-deep); }
+.ef-good{ background:var(--mint-line); border:1px solid var(--mint-deep); }
+.ef-tag{ align-self:flex-start; padding:3px 12px; border-radius:999px; font-size:19px; font-weight:800; }
+.ef-bad .ef-tag{ background:var(--coral); color:var(--on-coral); }
+.ef-good .ef-tag{ background:var(--mint); color:var(--on-mint); }
+.ef-body{ display:flex; align-items:center; gap:14px; flex:1 1 auto; min-height:0; }
+.ef-body svg{ flex:0 0 auto; }
+.ef-body p{ margin:0; font-size:22px; font-weight:700; line-height:1.42; }
+.ef-bad .ef-body p{ color:var(--on-coral); }
+.ef-good .ef-body p{ color:var(--on-mint); }
+.ef-rule{ margin:22px 0 0; padding:13px 16px; border-radius:var(--r-md); text-align:center;
+  background:var(--ink); color:var(--white); font-size:23px; font-weight:800; }
+
+/* ══ w2-verdict ══ 대립 주장 3+3 병렬 + 종합 한 줄 (원리 29) ══ */
+.vd-lead{ margin:0; font-size:23px; font-weight:700; color:var(--gray-700); }
+.vd-lead b{ color:var(--blue); font-weight:800; }
+.vd-cols{ flex:1 1 auto; display:grid; grid-template-columns:1fr 1fr; gap:12px; min-height:0; }
+.vd-col{ display:flex; flex-direction:column; gap:8px; padding:13px 15px; border-radius:var(--r-lg); }
+.vd-multi{ background:var(--blue-panel); border:1px solid var(--blue-line-strong); }
+.vd-single{ background:var(--mint-line); border:1px solid var(--mint-deep); }
+.vd-col h3{ margin:0 0 2px; font-size:24px; font-weight:800; }
+.vd-multi h3{ color:var(--blue); }
+.vd-single h3{ color:var(--mint-deep); }
+.vd-claim{ display:flex; gap:9px; align-items:flex-start; }
+.vd-claim i{ flex:0 0 auto; width:24px; height:24px; margin-top:2px; border-radius:50%;
+  display:grid; place-items:center; font-style:normal; font-size:15px; font-weight:800; }
+.vd-multi .vd-claim i{ background:var(--blue); color:var(--white); }
+.vd-single .vd-claim i{ background:var(--mint); color:var(--on-mint); }
+.vd-claim div{ min-width:0; }
+.vd-claim p{ margin:0; font-size:21px; font-weight:650; line-height:1.4; color:var(--ink); }
+.vd-claim p em{ font-style:normal; font-weight:800; }
+.vd-eg{ display:block; margin-top:3px; font-size:19px; font-weight:700; line-height:1.35; }
+.vd-multi .vd-eg{ color:var(--blue); }
+.vd-single .vd-eg{ color:var(--mint-deep); }
+.vd-col{ justify-content:space-between; }
+.vd-cost{ display:flex; align-items:center; gap:12px; padding:10px 15px;
+  border-radius:var(--r-md); background:var(--surface); border:1px solid var(--line); }
+.vd-cost b{ font-size:21px; font-weight:800; color:var(--ink); white-space:nowrap; }
+.vd-bar{ flex:1 1 auto; display:flex; align-items:center; gap:7px; }
+.vd-seg{ height:19px; border-radius:4px; }
+.vd-seg.one{ width:24px; background:var(--mint); }
+.vd-seg.many{ flex:1 1 auto; background:var(--blue); }
+.vd-cost span{ font-size:19px; font-weight:700; color:var(--gray-700); white-space:nowrap; }
+.vd-sum{ margin:0; padding:11px 16px; border-radius:var(--r-md); text-align:center;
+  background:var(--ink); color:var(--white); font-size:23px; font-weight:800; }
+/* 실제 사례 띠 — 비용 막대 자리를 대신 쓴다(같은 verdict 구도의 변주) */
+.vd-case{ display:flex; align-items:flex-start; gap:12px; padding:11px 15px;
+  border-radius:var(--r-md); background:var(--coral-line); border:1px solid var(--coral-deep); }
+.vd-case > b{ flex:0 0 auto; padding:2px 10px; border-radius:999px;
+  background:var(--coral); color:var(--on-coral); font-size:19px; font-weight:800; }
+.vd-case p{ margin:0; font-size:21px; font-weight:700; line-height:1.4; color:var(--on-coral); }
+
+/* ══ w2-axis ══ 두 대상 비교를 가운데 관계축으로 강제 (S3HUM) ══ */
+.ax-grid{ flex:1 1 auto; display:grid; grid-template-columns:1fr 212px 1fr;
+  align-items:stretch; gap:0; min-height:0; }
+.ax-side{ display:flex; flex-direction:column; gap:9px; padding:15px 17px; }
+.ax-wf{ background:var(--surface); border:1px solid var(--line);
+  border-radius:var(--r-lg) 0 0 var(--r-lg); }
+.ax-ag{ background:var(--blue-panel); border:1px solid var(--blue-line-strong);
+  border-radius:0 var(--r-lg) var(--r-lg) 0; }
+.ax-side h3{ margin:0; font-size:26px; font-weight:800; color:var(--ink); }
+.ax-side h3 small{ display:block; font-size:18px; font-weight:700; color:var(--gray-700); margin-top:2px; }
+.ax-pic{ display:grid; place-items:center; padding:2px 0 4px; }
+.ax-row{ display:flex; gap:9px; align-items:flex-start; }
+.ax-row b{ flex:0 0 96px; font-size:19px; font-weight:800; color:var(--gray-700); }
+.ax-row span{ flex:1 1 auto; font-size:21px; font-weight:650; line-height:1.38; color:var(--ink); }
+.ax-axis{ position:relative; display:flex; flex-direction:column; align-items:center;
+  justify-content:center; gap:8px; }
+.ax-axis::before{ content:""; position:absolute; left:50%; top:8px; bottom:8px; width:3px;
+  transform:translateX(-50%); background:var(--blue); border-radius:2px; }
+.ax-axis .ax-label{ position:relative; z-index:1; width:132px; padding:9px 8px; text-align:center;
+  border-radius:var(--r-md); background:var(--blue); color:var(--white);
+  font-size:20px; font-weight:800; line-height:1.3; }
+/* 좌우 방향을 읽히게 — 라벨 양옆에 가로로 둔다(세로 배치는 위아래로 오독된다).
+   ⚠️ 이전 판정 결함: 의사요소를 라벨 밖(-24px)에 두자 화살표가 축 컬럼을 벗어나
+   파랑 패널 위에 겹쳐 보이지 않았다(측정 x=730 > 축 우단 714). 컬럼 안으로 넣는다. */
+.ax-axis .ax-labelrow{ position:relative; z-index:1; display:flex; align-items:center;
+  gap:6px; background:var(--white); padding:6px 2px; border-radius:var(--r-md); }
+.ax-axis .ax-arrow{ font-size:24px; line-height:1; color:var(--blue); font-weight:800; }
+.ax-side{ justify-content:flex-start; }
+.ax-eg{ margin-top:auto; padding:9px 12px; border-radius:var(--r-md); font-size:20px;
+  font-weight:700; line-height:1.4; }
+.ax-wf .ax-eg{ background:var(--white); border:1px solid var(--gray-400); color:var(--ink); }
+.ax-ag .ax-eg{ background:var(--blue); color:var(--white); }
+.ax-eg b{ font-weight:800; }
+.ax-warn{ margin:0; padding:11px 16px; border-radius:var(--r-md);
+  background:var(--coral-line); border:1px solid var(--coral-deep);
+  color:var(--on-coral); font-size:22px; font-weight:800; text-align:center; }
+
+/* 타임라인 아래 — "그래서 우리는 이렇게 다룬다" 처리 원칙 3장.
+   빈 공간을 카드로 메우는 게 아니라, 타임라인이 낳는 실제 질문에 답하는 블록이다. */
+.tl-rules{ flex:0 0 auto; display:grid; grid-template-columns:repeat(3,1fr); gap:10px; min-height:0; }
+.tl-rule{ display:flex; flex-direction:column; gap:4px; padding:12px 14px;
+  border-radius:var(--r-lg); background:var(--surface); border:1px solid var(--blue-line); }
+.tl-rule b{ font-size:22px; font-weight:800; color:var(--blue); }
+.tl-rule span{ font-size:20px; font-weight:650; line-height:1.38; color:var(--ink); }
+
+/* ── 마무리 요소 변주 (2026-07-28) ────────────────────────────────
+   ⚠️ 검은 하단 배너를 모든 장에 쓰지 않는다. §0.3C가 「카드+하단 배너」
+   반복률을 1주차 2.7% vs 2주차 24.0%로 지목했는데, 확산 1차에서 8장 중
+   7장(87.5%)이 검은 배너로 끝나 그 실패를 그대로 재현했다.
+   장마다 닫는 방식을 다르게 두고, 배너가 필요 없는 장은 아예 두지 않는다. */
+.ws-sum.tone-blue{ background:var(--blue); color:var(--white); }
+.ws-sum.tone-mint{ background:var(--mint); color:var(--on-mint); }
+.vd-sum.tone-outline{ background:var(--white); color:var(--blue);
+  border:2px solid var(--blue); }
+/* 배너를 뺀 장은 마지막 블록이 바닥까지 자연스럽게 내려오게 한다 */
+.w2-timeline .tl-rules.is-last{ flex:1 1 auto; }
+.w2-timeline .tl-rules.is-last .tl-rule{ justify-content:center; }
+.w2-verdict .vd-case.is-last{ margin-top:auto; }
+
+/* ══════════════════════════════════════════════════════════════════
+   동점 규칙(by-shape.md) 적용 구도 2종 — 2026-07-28
+   박스로 채우는 대신, 정보 모양이 numeric이면 차트를 주인공으로,
+   concept이면 글+여백으로 간다. 기준: 1주차 17번(T02)·37번(S3LM).
+   ══════════════════════════════════════════════════════════════════ */
+
+/* ── w2-metric ── numeric: C-column이 주인공 (L-td-compare-bars) ──
+   차트 프리미티브(.code-chart/.cc-plot/.cc-fill/.cc-val/.cc-axis)는
+   kit/styles/patterns.css의 것을 그대로 쓴다 — 신규 차트 CSS 없음. */
+.w2-metric .s-full{ bottom:54px; display:flex; flex-direction:column; }
+.mt-lead{ margin:0 0 22px; font-size:24px; font-weight:700; line-height:1.45; color:var(--ink); }
+.mt-lead b{ color:var(--blue); font-weight:800; }
+.mt-body{ flex:1 1 auto; display:grid; grid-template-columns:1fr 392px; gap:30px;
+  align-items:center; min-height:0; }
+.mt-chart .cc-plot{ height:208px; }
+/* ⚠️ 최대 막대를 플롯 높이에 꽉 채우면 값 라벨(.cc-val)이 위 문장에 붙는다.
+   막대 상한을 플롯보다 낮게 두고 .mt-lead 아래 여백을 확보한다. */
+.mt-cap{ margin:14px 0 0; font-size:19px; font-weight:700; color:var(--gray-700); text-align:center; }
+.mt-notes{ display:flex; flex-direction:column; gap:13px; }
+/* 블록 제목은 "구조 라벨"이지 강조 스팬이 아니다 — R-EMPH-01의 슬라이드당 강조
+   합계(≤3)는 문장 안 강조에만 적용된다. 라벨 색은 컴포넌트 스타일로 준다. */
+.mt-note > b{ display:block; font-size:22px; font-weight:800; color:var(--mint-deep); margin-bottom:3px; }
+.mt-note > span{ display:block; font-size:20px; font-weight:650; line-height:1.44; color:var(--gray-700); }
+.mt-rule{ margin:14px 0 0; padding:11px 0 11px 16px; border-left:5px solid var(--mint);
+  font-size:22px; font-weight:700; line-height:1.45; color:var(--ink); }
+.mt-rule b{ color:var(--mint-deep); font-weight:800; }
+
+/* ── w2-figure ── concept: 박스 없는 본문 글 + 단일 도해 (L-ct-figure) ── */
+.w2-figure .s-full{ bottom:54px; display:grid; grid-template-columns:1fr 442px;
+  gap:36px; align-items:center; }
+/* ⚠️ align-items:start로 두면 여백이 하단에 몰려 '미완성'으로 읽힌다.
+   1주차 37번은 여백이 위아래로 고르게 퍼져 있어 의도로 읽힌다 — center가 맞다. */
+.fg-text{ padding-top:2px; }
+.fg-p{ margin:0 0 16px; font-size:24px; font-weight:650; line-height:1.58; color:var(--ink); }
+.fg-p b{ font-weight:800; }
+.fg-p .term{ color:var(--blue); font-weight:800; }
+.fg-strip{ margin:4px 0 0; padding:13px 0 13px 18px; border-left:5px solid var(--mint);
+  font-size:23px; font-weight:700; line-height:1.5; color:var(--ink); }
+.fg-strip b{ color:var(--mint-deep); font-weight:800; }
+.fg-fig{ display:flex; flex-direction:column; gap:10px; }
+.fg-lane{ padding:15px 18px; border-radius:var(--r-lg); }
+.fg-soft{ background:var(--surface); border:1px dashed var(--gray-400); }
+.fg-hard{ background:var(--blue-panel); border:2px solid var(--blue); }
+.fg-lane h4{ margin:0 0 4px; font-size:21px; font-weight:800; }
+.fg-soft h4{ color:var(--gray-700); }
+.fg-hard h4{ color:var(--blue); }
+.fg-lane p{ margin:0; font-size:20px; font-weight:650; line-height:1.4; color:var(--ink); }
+.fg-gate{ display:flex; align-items:center; gap:10px; padding:2px 0; }
+.fg-gate span{ flex:1 1 auto; height:3px; background:var(--coral); border-radius:2px; }
+.fg-gate b{ flex:0 0 auto; font-size:19px; font-weight:800; color:var(--coral-deep); }
+
+/* ⚠️ 반복 버그 — 4회 발생, 전수 감사로 종결(2026-07-28)
+   라벨·본문용 b/span에 display:block을 걸 때는 **반드시 직계 자식 선택자**
+   (`> b` / `> span`)로 좁힌다. 후손 선택자로 두면 문장 안의 강조 스팬
+   (.hl-mint-text 등)까지 블록이 되어 줄이 끊긴다.
+   발생 이력: .ws-warn b → .vd-case b → .mt-note b → .fg-card span.
+   점검 명령: grep -nE '^\.[a-z0-9-]+ (b|span)\{[^}]*display:block' samples.css
+   결과가 0줄이어야 한다. */
+
+/* ── R-FORM-01 적용: 병렬 항목은 카드로 (w2-figure 왼쪽 변주) ────── */
+.fg-cards{ display:flex; flex-direction:column; gap:11px; margin:0 0 16px; }
+.fg-card{ padding:12px 15px; border-radius:var(--r-lg);
+  background:var(--surface); border:1px solid var(--blue-line); }
+.fg-card > b{ display:block; font-size:21px; font-weight:800; color:var(--blue); margin-bottom:2px; }
+.fg-card > span{ display:block; font-size:20px; font-weight:650; line-height:1.42; color:var(--ink); }
+
+/* ── 결론을 화면의 주역으로 (H 슬라이드 요청 반영) ──────────────── */
+.fg-verdict{ margin:18px 0 0; font-size:34px; font-weight:800; line-height:1.34;
+  letter-spacing:-.03em; color:var(--ink); }
+
+/* ── 로딩 시점 타이밍 바 (D-gantt 계열 element) ─────────────────── */
+.tm{ display:flex; flex-direction:column; gap:14px; }
+.tm-axis{ display:flex; justify-content:space-between; font-size:18px; font-weight:800;
+  color:var(--gray-700); padding:0 2px; }
+.tm-row{ display:flex; flex-direction:column; gap:6px; }
+.tm-row > b{ font-size:20px; font-weight:800; }
+.tm-track{ position:relative; height:44px; border-radius:8px;
+  background:var(--surface); border:1px solid var(--line); overflow:hidden; }
+.tm-fill{ position:absolute; top:0; bottom:0; display:grid; place-items:center;
+  font-size:17px; font-weight:800; }
+.tm-rule > b{ color:var(--blue); }
+.tm-rule .tm-fill{ left:0; right:0; background:var(--blue); color:var(--white); }
+.tm-skill > b{ color:var(--mint-deep); }
+.tm-skill .tm-fill{ left:56%; right:6%; background:var(--mint); color:var(--on-mint); }
+.tm-note{ margin:0; font-size:19px; font-weight:700; line-height:1.4; color:var(--gray-700); }
+
+/* ===================================================================
+   2026-07-28 재설계 — 5종 신규 family
+   D→w2-gantt · E→w2-pipe · A2→w2-quad · F→w2-branch · G→w2-dialog
+   각 family는 역인덱스에서 뽑은 element를 화면의 주인공으로 세운다.
+   ⚠️ R-QC-14: 후손 b/span에 display:block 금지. 반드시 `> b` / `> span`.
+      회귀 검사:  grep -nE "^\.[A-Za-z0-9_-]+ +(b|span) *\{[^}]*display: *block" samples.css
+   =================================================================== */
+.w2-gantt .s-full,
+.w2-pipe .s-full,
+.w2-branch .s-full,
+.w2-dialog .s-full{ bottom:54px; display:flex; flex-direction:column; gap:14px; }
+.w2-quad .s-full{ bottom:54px; display:flex; flex-direction:column; gap:12px; }
+
+/* --- D · w2-gantt : 비례 시간축(D-gantt) ------------------------- */
+.gt-lead{ margin:0; font-size:23px; font-weight:650; line-height:1.45; color:var(--ink); }
+.gt-lead > b{ font-weight:800; color:var(--blue); }
+.gt-wrap{ flex:0 0 auto; position:relative; height:216px; margin-top:4px; }
+.gt-span{ position:absolute; left:1%; right:0; top:0; height:32px;
+  display:flex; align-items:center; justify-content:center;
+  border-left:3px solid var(--mint-deep); border-right:3px solid var(--mint-deep); }
+.gt-span::before{ content:""; position:absolute; left:0; right:0; top:50%;
+  height:2px; background:var(--mint); }
+.gt-span > b{ position:relative; z-index:1; background:var(--white); padding:0 14px;
+  font-size:22px; font-weight:800; color:var(--mint-deep); }
+.gt-axis{ position:absolute; left:0; right:0; top:52px; height:4px;
+  background:var(--gray-400); border-radius:2px; }
+.gt-dot{ position:absolute; top:-7px; width:18px; height:18px; margin-left:-9px;
+  border-radius:50%; background:var(--white); border:4px solid var(--blue); }
+.gt-dot.is-now{ background:var(--blue); border-color:var(--blue); }
+/* 양끝 라벨은 축 '아래'에 둔다 — 축 위는 5개월 브래킷이 쓰므로 겹친다(2026-07-28 수정) */
+.gt-mon{ position:absolute; top:64px; font-size:16px; font-weight:700;
+  color:var(--gray-700); white-space:nowrap; }
+.gt-mark{ position:absolute; top:98px; width:206px; }
+.gt-mark > .k{ display:block; font-size:20px; font-weight:800; color:var(--blue); }
+.gt-mark > .t{ display:block; margin-top:2px; font-size:21px; font-weight:800;
+  color:var(--ink); line-height:1.28; }
+.gt-mark > .d{ display:block; margin-top:5px; font-size:18px; font-weight:650;
+  color:var(--gray-700); line-height:1.38; }
+.gt-rules{ flex:1 1 auto; display:grid; grid-template-columns:repeat(3,1fr);
+  gap:28px; align-content:center; }
+.gt-rule{ border-top:3px solid var(--blue); padding-top:9px; }
+.gt-rule > b{ display:block; font-size:22px; font-weight:800; color:var(--ink); }
+.gt-rule > span{ display:block; margin-top:3px; font-size:19px; font-weight:650;
+  line-height:1.4; color:var(--gray-700); }
+
+/* --- E · w2-pipe : 가로 파이프라인(D-flow-h) ---------------------- */
+.pp-lead{ margin:0; font-size:23px; font-weight:650; line-height:1.45; color:var(--ink); }
+.pp-lead > b{ font-weight:800; color:var(--blue); }
+.pp-body{ flex:1 1 auto; display:grid;
+  grid-template-columns:1fr 62px 226px 62px 1fr; align-items:center; }
+.pp-col{ display:flex; flex-direction:column; gap:13px; }
+.pp-cap{ margin:0 0 2px; font-size:20px; font-weight:800; letter-spacing:.01em; }
+.pp-in .pp-cap{ color:var(--mint-deep); }
+.pp-out .pp-cap{ color:var(--blue); }
+.pp-item{ padding-left:14px; border-left:5px solid var(--gray-400); }
+.pp-in .pp-item{ border-left-color:var(--mint); }
+.pp-out .pp-item{ border-left-color:var(--blue); }
+.pp-item > b{ display:block; font-size:22px; font-weight:800; color:var(--ink); line-height:1.28; }
+.pp-item > span{ display:block; margin-top:2px; font-size:19px; font-weight:650;
+  color:var(--gray-700); line-height:1.36; }
+.pp-arrow{ display:grid; place-items:center; }
+.pp-core{ padding:24px 14px; border-radius:var(--r-lg); background:var(--blue); text-align:center; }
+.pp-core > b{ display:block; font-size:26px; font-weight:800; color:var(--white); }
+.pp-core > span{ display:block; margin-top:7px; font-size:19px; font-weight:650;
+  color:var(--on-blue-muted); line-height:1.4; }
+.pp-note{ margin:0; padding:11px 0 11px 18px; border-left:5px solid var(--coral);
+  font-size:21px; font-weight:700; line-height:1.44; color:var(--ink); }
+
+/* --- A2 · w2-quad : 2축 사분면(D-matrix) -------------------------- */
+.qd-lead{ margin:0; font-size:23px; font-weight:650; line-height:1.45; color:var(--ink); }
+.qd-lead > b{ font-weight:800; color:var(--blue); }
+.qd-body{ flex:1 1 auto; display:grid; grid-template-columns:1fr 344px;
+  gap:30px; min-height:0; padding:16px 0 30px; }
+.qd-plot{ position:relative; border-left:3px solid var(--gray-700);
+  border-bottom:3px solid var(--gray-700);
+  background:linear-gradient(to top right,
+    var(--mint-line) 0 49.78%, var(--coral) 49.78% 50.22%, var(--blue-panel) 50.22% 100%); }
+.qd-ax{ position:absolute; font-size:17px; font-weight:800; color:var(--gray-700);
+  white-space:nowrap; }
+.qd-ax.x1{ right:0; bottom:-25px; }
+.qd-ax.x0{ left:0; bottom:-25px; }
+.qd-ax.y1{ left:-3px; top:-25px; }
+.qd-zone{ position:absolute; font-size:20px; font-weight:800; }
+.qd-zone.lo{ left:16px; bottom:14px; color:var(--mint-deep); }
+.qd-zone.hi{ right:16px; top:14px; color:var(--blue); }
+.qd-chip{ position:absolute; transform:translate(-50%,50%); padding:6px 12px;
+  border-radius:999px; font-size:18px; font-weight:700; white-space:nowrap;
+  background:var(--white); color:var(--ink); }
+.qd-chip.soft{ border:2px solid var(--mint-deep); }
+.qd-chip.hard{ border:2px solid var(--blue); }
+.qd-chip.edge{ border:2px dashed var(--coral-deep); }
+.qd-side{ display:flex; flex-direction:column; gap:15px; justify-content:center; }
+.qd-q{ padding-left:16px; border-left:5px solid var(--blue); }
+.qd-q > b{ display:block; font-size:21px; font-weight:800; color:var(--blue); }
+.qd-q > span{ display:block; margin-top:3px; font-size:20px; font-weight:650;
+  line-height:1.4; color:var(--ink); }
+.qd-out{ margin:0; padding:14px 16px; border-radius:var(--r-md);
+  background:var(--surface); border:1px solid var(--gray-400);
+  font-size:21px; font-weight:700; line-height:1.46; color:var(--ink); }
+
+/* --- F · w2-branch : 분기 도해 + 가로 셰브런 ---------------------- */
+.br-fig{ flex:0 0 auto; display:grid; grid-template-columns:1fr 394px;
+  gap:30px; align-items:center; }
+.br-side{ display:flex; flex-direction:column; gap:10px; }
+.br-side > b{ display:block; font-size:21px; font-weight:800; color:var(--coral-deep); }
+.br-side > p{ margin:0; font-size:21px; font-weight:650; line-height:1.44; color:var(--ink); }
+.br-steps{ flex:1 1 auto; display:grid; grid-template-columns:repeat(4,1fr);
+  gap:22px; align-content:center; }
+.br-step{ position:relative; padding:12px 14px; border-radius:var(--r-md);
+  background:var(--surface); border:1px solid var(--gray-400); }
+.br-step.is-key{ background:var(--blue-panel); border:2px solid var(--blue); }
+.br-step::after{ content:"\203A"; position:absolute; right:-17px; top:50%;
+  transform:translateY(-50%); font-size:28px; font-weight:800; color:var(--gray-400); }
+.br-step:last-child::after{ content:none; }
+.br-step > i{ display:block; font-style:normal; font-size:17px; font-weight:800; color:var(--blue); }
+.br-step > b{ display:block; margin-top:2px; font-size:21px; font-weight:800;
+  color:var(--ink); line-height:1.28; }
+.br-step > span{ display:block; margin-top:5px; font-size:18px; font-weight:650;
+  line-height:1.38; color:var(--gray-700); }
+
+/* --- G · w2-dialog : 실습 절차 + 실제 발화 ------------------------ */
+.dg-note{ margin:0; padding:10px 0 10px 18px; border-left:5px solid var(--coral);
+  font-size:21px; font-weight:700; line-height:1.44; color:var(--ink); }
+.dg-list{ flex:1 1 auto; display:flex; flex-direction:column; gap:18px; justify-content:center; }
+.dg-row{ display:grid; grid-template-columns:30px 302px 1fr; gap:15px; align-items:center; }
+.dg-n{ width:30px; height:30px; border-radius:50%; display:grid; place-items:center;
+  background:var(--blue); color:var(--white); font-size:17px; font-weight:800; }
+.dg-lab > b{ display:block; font-size:22px; font-weight:800; color:var(--ink); line-height:1.26; }
+.dg-lab > span{ display:block; margin-top:2px; font-size:18px; font-weight:650;
+  color:var(--gray-700); line-height:1.34; }
+.dg-say{ margin:0; position:relative; padding:11px 16px; border-radius:14px;
+  background:var(--surface); border:1px solid var(--gray-400);
+  font-size:20px; font-weight:700; line-height:1.4; color:var(--ink); }
+.dg-say::before{ content:""; position:absolute; left:-9px; top:50%; margin-top:-8px;
+  width:0; height:0; border:8px solid transparent; border-left:0;
+  border-right-color:var(--gray-400); }
+.dg-row.is-me .dg-say{ background:var(--mint-line); border-color:var(--mint-deep); }
+.dg-row.is-me .dg-say::before{ border-right-color:var(--mint-deep); }
+.dg-sum{ margin:0; padding:12px 16px; border-radius:var(--r-md); text-align:center;
+  background:var(--mint); color:var(--on-mint); font-size:22px; font-weight:800; }
