@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><title>5구간 A 측정</title>
+<style>body{margin:0}iframe{width:1280px;height:720px;border:0;display:block}</style></head>
+<body><div id="f"></div>
+<script>
+window.FILES=['s1-ia.html','s2-order.html','s3-copy.html','s4-a11y.html','s5-design.html','s6-token.html'];
+const host=document.getElementById('f');
+window.READY=Promise.all(FILES.map(f=>new Promise(res=>{
+  const fr=document.createElement('iframe'); fr.src=f; fr.dataset.name=f;
+  fr.onload=()=>res(fr); host.appendChild(fr);})));
+window.measure=async function(){
+  const frames=await window.READY;
+  return frames.map(fr=>{
+    const d=fr.contentDocument, w=fr.contentWindow;
+    const slide=d.querySelector('.slide'), full=d.querySelector('.s-full');
+    const sr=slide.getBoundingClientRect(); const over=[];
+    d.querySelectorAll('.s-full *').forEach(el=>{
+      if(!el.getClientRects().length) return;
+      const r=el.getBoundingClientRect();
+      if(r.width===0||r.height===0) return;
+      const o=[];
+      if(r.left<sr.left-0.6) o.push('L'+Math.round(sr.left-r.left));
+      if(r.right>sr.right+0.6) o.push('R'+Math.round(r.right-sr.right));
+      if(r.top<sr.top-0.6) o.push('T'+Math.round(sr.top-r.top));
+      if(r.bottom>sr.bottom+0.6) o.push('B'+Math.round(r.bottom-sr.bottom));
+      if(o.length) over.push((el.className||el.tagName)+' '+o.join(','));
+    });
+    const mark=d.querySelectorAll('.hl-mint-mark').length;
+    const und=d.querySelectorAll('.hl-mint-underline').length;
+    const txt=d.querySelectorAll('.hl-mint-text').length;
+    const broken=[...d.querySelectorAll('.hl-mint-mark,.hl-mint-underline,.hl-mint-text')]
+      .filter(e=>w.getComputedStyle(e).display==='block').map(e=>e.className);
+    // 골격 지문: s-full 직계 자식의 태그·클래스 시퀀스 (이름이 아니라 DOM 구조로 중복 판정)
+    const skel=[...full.children].map(e=>e.tagName+'.'+(e.className||'').split(' ')[0]).join('>');
+    return {file:fr.dataset.name,
+      family:[...slide.classList].find(c=>c.startsWith('w5-'))||'?',
+      spill:Math.round(full.scrollHeight-full.clientHeight), overflow:over.slice(0,6),
+      emph:{mark,und,txt,total:mark+und+txt}, broken, skeleton:skel,
+      viz:d.querySelectorAll('svg:not(.s-logo)').length
+          + d.querySelectorAll('.br-track,.rk-screen,.dc-file').length,
+      chars:(full.textContent||'').replace(/\s+/g,'').length};
+  });
+};
+</script></body></html>

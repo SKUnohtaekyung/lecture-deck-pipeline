@@ -1,0 +1,130 @@
+/* 5구간 조건 A — 6 family
+   결정표 정본: DECISION.md · 기준: reports/create-slides-quality/P7_ab_criteria.md
+   ⚠️ R-QC-14: 후손 b/span에 display:block 금지. 반드시 `> b` / `> span`.
+      회귀 검사: grep -nE "^\.[A-Za-z0-9_-]+ +(b|span) *\{[^}]*display: *block" samples.css   */
+
+/* 표본 하네스 전용: 발표 모드(한 장씩 숨김)를 풀어 정적 렌더한다.
+   deck.css는 화면 모드에서 `.slide{display:none}` + `.is-active`만 보이게 하므로,
+   이 블록이 없으면 슬라이드가 통째로 안 보인다(2026-07-29에 실제로 겪었다 —
+   전 장이 어두운 사각형으로만 캡처됐다). kit을 바꾸지 않고 여기서만 무력화한다. */
+@media screen{
+  html,body{ height:auto; }
+  body{ background:var(--white); overflow:visible; padding:0; }
+  .deck{ display:block; height:auto; }
+  .slide{ position:relative!important; top:auto!important; left:auto!important;
+    transform:none!important; display:block!important;
+    box-shadow:none!important; border-radius:0!important; margin:0; }
+}
+
+.w5-layer .s-full, .w5-rank .s-full, .w5-map .s-full,
+.w5-bars .s-full, .w5-doc .s-full, .w5-hub .s-full{
+  bottom:54px; display:flex; flex-direction:column; gap:14px; }
+
+.lead{ margin:0; font-size:23px; font-weight:650; line-height:1.46; color:var(--ink); }
+.lead > b{ font-weight:800; color:var(--blue); }
+
+/* --- 1 · w5-layer : 층위(containment) --------------------------------- */
+.ly-stack{ flex:1 1 auto; display:flex; flex-direction:column; justify-content:center; gap:0; }
+.ly-top{ padding:18px 22px; border-radius:var(--r-lg) var(--r-lg) 0 0;
+  background:var(--blue-panel); border:2px solid var(--blue); border-bottom:0; }
+.ly-bot{ padding:18px 22px; border-radius:0 0 var(--r-lg) var(--r-lg);
+  background:var(--surface); border:2px dashed var(--gray-400); border-top:0; }
+.ly-tag{ display:inline-block; padding:3px 12px; border-radius:999px;
+  font-size:17px; font-weight:800; margin-bottom:8px; }
+.ly-top .ly-tag{ background:var(--blue); color:var(--white); }
+.ly-bot .ly-tag{ background:var(--gray-400); color:var(--ink); }
+.ly-line{ position:relative; height:26px; display:grid; place-items:center; }
+.ly-line::before{ content:""; position:absolute; left:0; right:0; top:50%;
+  height:3px; background:var(--coral); }
+.ly-line > b{ position:relative; background:var(--white); padding:0 14px;
+  font-size:19px; font-weight:800; color:var(--coral-deep); }
+.ly-items{ display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+.ly-items > div > b{ display:block; font-size:22px; font-weight:800; color:var(--ink); }
+.ly-items > div > span{ display:block; margin-top:3px; font-size:19px; font-weight:650;
+  line-height:1.4; color:var(--gray-700); }
+.ly-note{ margin:0; padding:11px 0 11px 18px; border-left:5px solid var(--coral);
+  font-size:21px; font-weight:700; line-height:1.44; color:var(--ink); }
+
+/* --- 2 · w5-rank : 세로 위계 밴드(flow) ------------------------------- */
+.rk-wrap{ flex:1 1 auto; display:grid; grid-template-columns:1fr 404px; gap:30px; align-items:center; }
+.rk-screen{ display:flex; flex-direction:column; gap:11px; padding:20px;
+  border-radius:var(--r-lg); background:var(--surface); border:1px solid var(--gray-400); }
+.rk-1{ font-size:30px; font-weight:800; color:var(--ink); line-height:1.2; }
+.rk-2{ display:flex; gap:10px; align-items:center; }
+.rk-input{ flex:1 1 auto; padding:12px 14px; border-radius:var(--r-md);
+  background:var(--white); border:2px solid var(--blue);
+  font-size:21px; font-weight:650; color:var(--gray-700); }
+.rk-btn{ flex:0 0 auto; padding:12px 20px; border-radius:var(--r-md);
+  background:var(--blue); color:var(--white); font-size:21px; font-weight:800; }
+.rk-3{ font-size:18px; font-weight:650; color:var(--gray-700); line-height:1.5; }
+.rk-steps{ display:flex; flex-direction:column; gap:15px; }
+.rk-step{ padding-left:16px; border-left:5px solid var(--mint); }
+.rk-step > b{ display:block; font-size:21px; font-weight:800; color:var(--ink); }
+.rk-step > span{ display:block; margin-top:2px; font-size:19px; font-weight:650;
+  line-height:1.38; color:var(--gray-700); }
+.rk-size .hl-mint-mark{ white-space:nowrap; }
+.rk-size{ margin-top:4px; padding:10px 14px; border-radius:var(--r-md);
+  background:var(--mint-line); border:1px solid var(--mint-deep);
+  font-size:20px; font-weight:700; line-height:1.42; color:var(--ink); }
+
+/* --- 3 · w5-map : 1:1 대응(comparison) -------------------------------- */
+.mp-head{ display:grid; grid-template-columns:1fr 54px 1fr; gap:0;
+  font-size:19px; font-weight:800; }
+.mp-head > .a{ color:var(--coral-deep); }
+.mp-head > .m{ }
+.mp-head > .b{ color:var(--mint-deep); }
+.mp-rows{ flex:1 1 auto; display:flex; flex-direction:column; gap:12px; justify-content:center; }
+.mp-row{ display:grid; grid-template-columns:1fr 54px 1fr; align-items:center; }
+.mp-bad, .mp-good{ padding:11px 15px; border-radius:var(--r-md);
+  font-size:21px; font-weight:700; line-height:1.34; }
+.mp-bad{ background:var(--surface); border:1px solid var(--coral); color:var(--ink); }
+.mp-good{ background:var(--mint-line); border:1px solid var(--mint-deep); color:var(--ink); }
+.mp-bad > span, .mp-good > span{ display:block; margin-top:2px; font-size:17px;
+  font-weight:650; color:var(--gray-700); }
+.mp-ar{ display:grid; place-items:center; font-size:22px; font-weight:800; color:var(--gray-700); }
+.mp-rule{ margin:0; padding:11px 0 11px 18px; border-left:5px solid var(--mint);
+  font-size:21px; font-weight:700; line-height:1.44; color:var(--ink); }
+
+/* --- 4 · w5-bars : 차트 주도(numeric) --------------------------------- */
+.br-body{ flex:1 1 auto; display:grid; grid-template-columns:1fr 356px; gap:34px; align-items:center; }
+.br-chart{ display:flex; flex-direction:column; gap:16px; }
+.br-item > .lb{ display:block; font-size:20px; font-weight:700; color:var(--ink); margin-bottom:5px; }
+.br-item{ display:grid; grid-template-columns:1fr 74px; gap:12px; align-items:center; }
+.br-item > .lb{ grid-column:1 / -1; }
+.br-track{ position:relative; height:38px; border-radius:6px; background:var(--surface);
+  border:1px solid var(--gray-400); overflow:hidden; }
+.br-fill{ position:absolute; left:0; top:0; bottom:0; background:var(--periwinkle); }
+.br-fill.is-key{ background:var(--blue); }
+/* 값은 트랙 **밖**에 둔다 — 안에 두면 fill이 길 때(95.9%) 잘리고 대비도 나빠진다
+   (2026-07-29 렌더 실측에서 «5.9%»로 잘려 나왔다). */
+.br-val{ font-size:21px; font-weight:800; color:var(--ink); text-align:right; }
+.br-axis{ font-size:17px; font-weight:700; color:var(--gray-700); }
+.br-do{ min-width:0; display:flex; flex-direction:column; gap:13px; }
+.br-do > .cap{ font-size:20px; font-weight:800; color:var(--mint-deep); }
+.br-do > .cap .hl-mint-mark{ white-space:nowrap; }
+.br-do > div{ padding-left:14px; border-left:5px solid var(--mint); }
+.br-do > div > b{ display:block; font-size:21px; font-weight:800; color:var(--ink); }
+.br-do > div > span{ display:block; margin-top:2px; font-size:19px; font-weight:650;
+  line-height:1.36; color:var(--gray-700); }
+.br-band{ margin:0; padding:12px 16px; border-radius:var(--r-md); text-align:center;
+  background:var(--blue); color:var(--white); font-size:22px; font-weight:800; }
+
+/* --- 5 · w5-doc : 코드 게시(concept) ---------------------------------- */
+.dc-body{ flex:1 1 auto; display:grid; grid-template-columns:1fr 470px; gap:32px; align-items:start; padding-top:6px; }
+.dc-text > p{ margin:0 0 15px; font-size:23px; font-weight:650; line-height:1.55; color:var(--ink); }
+.dc-text > p > b{ font-weight:800; }
+.dc-file{ border-radius:var(--r-lg); overflow:hidden; border:2px solid var(--gray-700); }
+.dc-name{ padding:9px 15px; background:var(--gray-700); color:var(--white);
+  font-size:18px; font-weight:800; }
+.dc-lines{ padding:14px 15px; background:var(--surface); }
+.dc-ln{ display:flex; gap:11px; align-items:flex-start; padding:5px 0; }
+.dc-ln > i{ flex:0 0 auto; font-style:normal; font-size:17px; font-weight:800;
+  color:var(--blue); min-width:18px; }
+.dc-ln > span{ font-size:20px; font-weight:650; line-height:1.42; color:var(--ink); }
+.dc-warn{ margin:0; padding:11px 0 11px 18px; border-left:5px solid var(--coral);
+  font-size:21px; font-weight:700; line-height:1.44; color:var(--ink); }
+
+/* --- 6 · w5-hub : 중심-방사(mapping) ---------------------------------- */
+.hb-wrap{ flex:1 1 auto; display:grid; place-items:center; }
+.hb-note{ margin:0; padding:12px 16px; border-radius:var(--r-md); text-align:center;
+  background:var(--mint); color:var(--on-mint); font-size:22px; font-weight:800; }
