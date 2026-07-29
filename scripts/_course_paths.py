@@ -15,7 +15,9 @@
 ⚠️ **구경로 폴백을 없애지 마라.** 1주차 자료 4파일이 메타 헤더에서 구경로를 참조하는데
 1주차는 수정 금지(동결)다. 폴백을 지우면 그 참조가 영구히 깨진다.
 """
+import io
 import os
+import re
 
 COURSES_DIR = "courses"
 LEGACY_SESSIONS = "sessions"
@@ -67,6 +69,59 @@ def guide_path(root=None):
     news = [os.path.join(d, "슬라이드지침.md") for d in course_dirs(root)]
     news = [p for p in news if os.path.exists(p)]
     return news[0] if len(news) == 1 else None
+
+
+def profile_gates(root=None):
+    """프로필 §3-G 「게이트 임계값」을 {키: 문자열값}으로 읽는다.
+
+    표를 스크래핑하지 않고 코드블록의 `키: 값` 줄만 읽는다 — 표 서식이 바뀌어도
+    깨지지 않고, 무엇이 기계 판독 대상인지 사람이 눈으로 구분할 수 있다.
+    프로필이 없거나 절이 없으면 **빈 dict**다. 호출부는 그때 FAIL을 WARN으로 낮춘다
+    (다른 과목 값을 빌려 쓰지 않기 위함)."""
+    p = profile_path(root)
+    if not p:
+        return {}
+    try:
+        with io.open(p, encoding="utf-8") as fh:
+            text = fh.read()
+    except (OSError, UnicodeDecodeError):
+        return {}
+    m = re.search(r"^###\s*3-G\..*?$(.*?)(?=^#{2,3}\s|\Z)", text, re.M | re.S)
+    if not m:
+        return {}
+    out = {}
+    for line in m.group(1).splitlines():
+        line = line.strip()
+        if line.startswith(("|", ">", "#")) or "`" in line:
+            continue                                  # 표·인용·본문 줄은 건너뛴다
+        mm = re.match(r"^([A-Za-z가-힣_]+)\s*:\s*(\S+)\s*$", line)
+        if mm:
+            out[mm.group(1)] = mm.group(2)
+    return out
+
+
+def gate_num(key, default, root=None, cast=float):
+    """임계값 하나를 읽는다. → (값, 프로필에서_왔는가)
+
+    프로필에 없으면 (default, False)를 준다 — 호출부는 False일 때 판정을 WARN으로
+    낮추고 그 사실을 보고해야 한다. **조용히 기본값을 쓰지 않는다.**"""
+    raw = profile_gates(root).get(key)
+    if raw is None:
+        return default, False
+    try:
+        return cast(raw), True
+    except (TypeError, ValueError):
+        return default, False
+
+
+def gate_range(key, default, root=None):
+    """`8~11` 형태를 (lo, hi)로. → ((lo, hi), 프로필에서_왔는가)"""
+    raw = profile_gates(root).get(key)
+    if raw:
+        m = re.match(r"^(\d+)\s*[~\-–]\s*(\d+)$", raw)
+        if m:
+            return (int(m.group(1)), int(m.group(2))), True
+    return default, False
 
 
 def session_dir(week, root=None):

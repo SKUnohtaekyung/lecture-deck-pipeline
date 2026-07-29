@@ -127,6 +127,8 @@ description: >-
 | **브라우저 실측** | 로컬 http 서버 + `scripts/measure_render.js` — 전 슬라이드 순회 | **정적 PASS의 대체가 아니다** |
 | 킷 계약 | `python scripts/verify_kit.py` — 카탈로그·`patterns.css`를 건드렸으면 | FAIL 0 |
 | 배포 자립성 | `build_release.py`의 `verify_distributable` | **fail-closed** — 외부 `href=http` 0 · 모든 `src`/`url()` `data:` · 임베드 `@font-face` 존재 · unresolved 설명·기억 슬롯 0 |
+| **필수 진술 잔존** | `python scripts/verify_required_statements.py <주차>` | 개념KB `필수 진술:`이 덱 **화면**에 남았는가. 기본 WARN(핵심어 매칭은 근사) · `--strict`로 FAIL. 인접 청크는 검사 제외 |
+| **판단 기록 정합** | `python scripts/verify_judgement_log.py <주차>` | D2 근거 없음·처분값 없음·«필수» 보류를 FAIL. 집필노트 부재는 SKIP(R-QD-05 소관) |
 | 내용 밀도(WARN) | 초안: `verify_draft_quality.py <주차>` · 덱: `verify_deck_quality.py <덱>.html` | 저밀도 설명 슬라이드·근-빈 컨테이너·부록 강등 탐지(기본 WARN·exit 0, `--strict`로 FAIL) |
 
 **밀도 하한은 슬라이드당 정보 단위 3~6개다(R-DENS-01, 정본 `skills/콘텐츠/SKILL.md` §0-6·상세 `references/phases/04-조립.md`)** — 장수를 시간예산으로 역산하지 않는다(2주차 저밀도 사고 원인, `.agents/agent-memory/create-slides/MEMORY.md` 참고).

@@ -85,6 +85,40 @@ THRESH_QD01_CHARS = 52           # W1 non-fixed/non-practice 행 분포. flag: W
 THRESH_QD02_UNITS = 1            # skills/콘텐츠/SKILL.md:32 "정보 단위 1개 이하 지양" 정책값 그대로 — [사람검토] 강등됨(아래 참고), 자동 판정에는 쓰지 않는다
 THRESH_QD03_RATIO = 0.85         # 노트:본문 글자수 비율. flag: W1 3.6%(2/55) · W2 70.2%(59/84) — 목표 충족
 THRESH_QD07_ADJACENT_JACCARD = 0.25   # 인접 행 3-gram 자카드 유사도. W1 실측 최댓값 0.190·W2 실측 최댓값 0.124 위 안전마진
+
+# ── 프로필 기반 임계값 (2026-07-29 A-3) ──────────────────────────────────────
+# 위 상수는 **한 과목(1주차)의 실측**에서 나왔다. 다른 주제 강의에 그대로 물리면
+# 남의 과목 분포가 규칙이 된다. 그래서 과목 프로필 §3-G가 있으면 그 값을 쓰고,
+# 없으면 위 기본값을 쓰되 **판정을 FAIL에서 WARN으로 낮춘다**(조용히 쓰지 않는다).
+#
+# ⚠️ R-QD-05(필수 산출물 부재)는 프로필과 무관한 이분법적 사실이므로 **FAIL 유지**다.
+#    프로필이 없다고 "집필노트가 없어도 된다"가 되지는 않는다.
+_GATE_FROM_PROFILE = {}
+
+
+def _load_profile_gates():
+    global THRESH_QD01_CHARS, THRESH_QD03_RATIO, THRESH_QD07_ADJACENT_JACCARD
+    try:
+        import os as _os, sys as _sys
+        _d = _os.path.dirname(_os.path.abspath(__file__))
+        if _d not in _sys.path:
+            _sys.path.insert(0, _d)
+        import _course_paths as _cp
+    except Exception:
+        return
+    v, ok = _cp.gate_num('초안_본문_글자수_하한', THRESH_QD01_CHARS, cast=int)
+    THRESH_QD01_CHARS = v; _GATE_FROM_PROFILE['R-QD-01'] = ok
+    v, ok = _cp.gate_num('초안_노트본문_비율_상한', THRESH_QD03_RATIO, cast=float)
+    THRESH_QD03_RATIO = v; _GATE_FROM_PROFILE['R-QD-03'] = ok
+    v, ok = _cp.gate_num('초안_인접행_유사도_상한', THRESH_QD07_ADJACENT_JACCARD, cast=float)
+    THRESH_QD07_ADJACENT_JACCARD = v; _GATE_FROM_PROFILE['R-QD-07'] = ok
+    rng, ok = _cp.gate_range('회차당_장수_범위', (8, 11))
+    _GATE_FROM_PROFILE['range'] = rng
+    _GATE_FROM_PROFILE['R-QD-04'] = ok
+
+
+_load_profile_gates()
+# ─────────────────────────────────────────────────────────────────────────────
 THRESH_DERIVATION = """\
 [임계값 도출 근거 — sessions/1주차/1주차_초안.md(W1_FINAL) vs sessions/2주차/2주차_초안.md(W2_CURRENT), "0.덱 기본 정보"/(표지)/(간지)/(마무리)/실습 행 제외]
   R-QD-01 본문 글자수 < 52자                 flag률: W1  3.6%(2/55) · W2 56.0%(47/84)  [목표 충족: W1<=15%, W2>=55%]
@@ -374,19 +408,26 @@ def run_checks(root, wk):
     # ── R-QD-04: 교시당 장수 규약(8~11) 이탈 시 사유가 집필노트에 기록됐는가 (FAIL) ──
     note_path = sess / "자료" / f"{wk}주차_콘텐츠_집필노트.md"
     note_exists = note_path.exists()
-    deviations = {h: n for h, n in section_row_counts.items() if not (8 <= n <= 11)}
+    _lo, _hi = _GATE_FROM_PROFILE.get("range", (8, 11))
+    _from_profile = _GATE_FROM_PROFILE.get("R-QD-04", False)
+    deviations = {h: n for h, n in section_row_counts.items() if not (_lo <= n <= _hi)}
     if deviations:
         detail = ", ".join(f'{h}({n}장)' for h, n in deviations.items())
         if note_exists:
             results.append(("R-QD-04", "WARN",
-                             f"교시당 장수 규약(8~11) 이탈 {len(deviations)}건 — {detail} "
+                             f"회차당 장수 규약({_lo}~{_hi}) 이탈 {len(deviations)}건 — {detail} "
                              f"(집필노트 존재: {note_path.name} — 사유 기록 여부는 사람이 확인)"))
+        elif not _from_profile:
+            results.append(("R-QD-04", "WARN",
+                             f"회차당 장수 규약({_lo}~{_hi}) 이탈 {len(deviations)}건({detail})이고 "
+                             f"집필노트도 없으나, **과목 프로필 §3-G에 회차당_장수_범위가 없어** "
+                             f"기본값으로 판정했다 — 다른 과목 실측치일 수 있어 FAIL로 올리지 않는다"))
         else:
             results.append(("R-QD-04", "FAIL",
-                             f"교시당 장수 규약(8~11) 이탈 {len(deviations)}건({detail})인데 "
+                             f"회차당 장수 규약({_lo}~{_hi}) 이탈 {len(deviations)}건({detail})인데 "
                              f"집필노트({note_path})가 없어 사유 기록 자체를 확인할 수 없음"))
     else:
-        results.append(("R-QD-04", "PASS", f"모든 교시/PART가 규약(8~11장) 범위 안 ({len(section_row_counts)}개 구간)"))
+        results.append(("R-QD-04", "PASS", f"모든 회차가 규약({_lo}~{_hi}장) 범위 안 ({len(section_row_counts)}개 구간)"))
 
     # ── R-QD-05: 필수 산출물 존재 검사 ──
     materials = sess / "자료"

@@ -60,6 +60,8 @@ python .claude/skills/ui-ux-pro-max/scripts/search.py ...
 python scripts/verify_skill_setup.py
 python scripts/verify_kit.py
 python scripts/verify_subject_isolation.py   # 스킬 본문에 과목 고유 값이 남아 있으면 FAIL
+python scripts/verify_required_statements.py <주차>   # 개념KB 필수 진술이 덱 화면에 남았는가(기본 WARN·--strict FAIL)
+python scripts/verify_judgement_log.py <주차>         # 집필노트 판단 기록 정합(D2 근거·처분값·필수 보류 금지)
 python -m unittest tests.test_deck_pipeline tests.test_image_pipeline tests.test_quality_gates
 # 파이프라인 문서 게이트(리서치·콘텐츠 산출물)
 python scripts/verify_session_docs.py <주차> --target 자료   # 기본 5파일 스키마·출처ID·[C-슬러그] 해소
