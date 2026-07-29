@@ -50,7 +50,7 @@
 
 ```powershell
 python scripts/assemble_deck.py sessions/N주차/강의덱.초안   # shard → 강의덱.html 재생성(덮어씀)
-python scripts/verify_deck.py <덱>.html --parts N
+python scripts/verify_deck.py <덱>.html --parts N   # N = 그 덱의 part-divider 수(슬라이드 총수 아님 — 1·2주차 모두 6)
 python -m http.server
 python scripts/inline_deck.py <덱>.html --offline
 # Codex
@@ -59,11 +59,15 @@ python .agents/skills/ui-ux-pro-max/scripts/search.py ...
 python .claude/skills/ui-ux-pro-max/scripts/search.py ...
 python scripts/verify_skill_setup.py
 python scripts/verify_kit.py
-python -m unittest tests.test_deck_pipeline tests.test_image_pipeline
+python scripts/verify_subject_isolation.py   # 스킬 본문에 과목 고유 값이 남아 있으면 FAIL
+python -m unittest tests.test_deck_pipeline tests.test_image_pipeline tests.test_quality_gates
 # 파이프라인 문서 게이트(리서치·콘텐츠 산출물)
 python scripts/verify_session_docs.py <주차> --target 자료   # 기본 5파일 스키마·출처ID·[C-슬러그] 해소
 python scripts/verify_research_chunks.py <주차>              # 개념KB 청크 깊이·G8 관점·인덱스 일치
 python scripts/analyze_agent_usage.py --tool-audit --session <세션ID>  # 리서치 워커 도구·모델 감사(0 통과 / 3 위반)
+# 내용 품질 게이트(WARN 기본·--strict로 FAIL 승격 — 2주차 저밀도 사고 이후 신설, 회귀 아님)
+python scripts/verify_draft_quality.py <주차>                # .md 초안 단계: 저밀도·노트과다·교시당 장수·필수 산출물
+python scripts/verify_deck_quality.py <덱>.html              # 조립된 덱 단계: 저밀도·근-빈 컨테이너·시각자료 비율·부록 강등
 ```
 
 - ⚠️ **`sessions/N주차/강의덱.html`은 생성물이다.** 정본은 `강의덱.초안/`의 `shell.html`(head·고정 슬라이드·`<!-- ::PARTS:: -->` 마커·JS) + `part-NN.html`이고, `assemble_deck.py`가 이를 합쳐 덱을 **덮어쓴다**. 덱을 직접 고치면 다음 조립 때 유실되고, 생성물에만 있는 슬라이드는 조립 즉시 사라진다. 수정은 shard에 하고 조립한다(급히 덱을 고쳤다면 같은 내용을 shard에도 반영). 규약 상세는 `sessions/README.md`.
@@ -84,6 +88,13 @@ python scripts/analyze_agent_usage.py --tool-audit --session <세션ID>  # 리�
   - ⚠️ **비용 절감 도구가 아니다** — 품질·컨텍스트 보존 도구다. 워커는 메인과 컨텍스트를 공유하지 않아 같은 파일을 각자 다시 읽고 총 토큰이 늘 수 있다(실측 근거는 정본 §0).
   - 명분·스케일 사다리·역할 계약·게이트 기준·워커 규율·안티패턴 상세 정본: `skills/하네스/SKILL.md`(명시 호출 `/하네스`·`$하네스`).
 - 웹 리서치가 필요한 사실은 검색 후 원문 출처를 확인한다. 외부 쓰기나 게시·전송은 사용자 요청 범위를 넘겨 실행하지 않는다.
+
+## 과목 프로필 (2026-07-29 신설)
+
+- **스킬 본문에는 과목 고유 값을 두지 않는다.** 강의명·대상·관통 문장·회차 구조·장수/밀도 기준선·표현 취향·브랜드·커리큘럼 정본 경로는 전부 `sessions/과목프로필.md`에 있다(스키마 `입력양식/과목프로필템플릿.md`).
+- **한 과목의 실측치를 다른 과목의 규칙으로 물려주지 않는다.** 기준선이 없는 새 과목은 FAIL이 아니라 **WARN으로 시작**한다.
+- 사고 이력·실측치는 규칙의 **근거**이므로 스킬에 남긴다 — 격리 대상은 운영 파라미터뿐이다.
+- 검사: `python scripts/verify_subject_isolation.py` (프로필 §8이 등재한 리터럴이 스킬 본문에 있으면 FAIL).
 
 ## 판단 기준과 파일 지도
 
