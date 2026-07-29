@@ -1141,6 +1141,22 @@ def main():
     #   ② <repo>/sessions/_contracts/<덱 부모폴더명>.deck.contract.json
     #   ③ 둘 다 없으면 구조 검사를 건너뛰고 WARN 1건만 남긴다(FAIL 금지 — 계약 없는 주차/카탈로그도 통과).
     # 계약에 있는 키만 검사하고 없는 키는 건너뛴다(계약이 부분적이어도 FAIL로 만들지 않는다).
+    # ── R-COLOR-06 강조색 예산 (2026-07-29 사용자 확정) ─────────────
+    #   팔레트 밖 색은 덱 전체 슬라이드의 2% 이하에서만 허용된다. 표식(`palette-x` 클래스)이
+    #   없으면 셀 수 없고, 셀 수 없으면 예산이 없는 것과 같다.
+    #   ⚠️ 표식을 `accent-`로 잡으면 kit의 기존 `.accent-bar`와 충돌해 1주차가 오탐된다
+    #      (2026-07-29 실측). 충돌 없는 전용 이름을 쓴다.
+    #   규칙 정본: kit/guide/디자인시스템.md R-COLOR-06.
+    _acc_re = re.compile(r'\bpalette-x\b')
+    _acc = [i + 1 for i, (_cls, _inner) in enumerate(secs)
+            if _acc_re.search(_inner) or _acc_re.search(_cls)]
+    _acc_budget = max(1, int(len(secs) * 0.02))
+    if _acc:
+        chk(len(_acc) <= _acc_budget,
+            f"R-COLOR-06 강조색 {len(_acc)}장 / 예산 {_acc_budget}장",
+            f"R-COLOR-06 강조색 예산 초과 — {len(_acc)}장 사용(허용 {_acc_budget}장 = "
+            f"전체 {len(secs)}장의 2%): 슬라이드 {_acc[:8]} · 색 문법(R-COLOR-05)이 무너진다")
+
     deck_file = Path(a.deck).resolve()
     contract_path = find_deck_contract(deck_file)
     known_violations = {}

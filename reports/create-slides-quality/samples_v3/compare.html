@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>표본 V3 ↔ 1주차 기준 슬라이드 나란히 비교</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+<style>
+  :root{ --s:0.455; --w:1280px; --h:720px; }
+  *{ box-sizing:border-box; }
+  body{ margin:0; padding:18px 20px 24px; background:#F3F5F8;
+        font-family:"Pretendard",-apple-system,"Malgun Gothic",sans-serif; color:#141821; }
+  h1{ margin:0 0 4px; font-size:22px; font-weight:800; letter-spacing:-.02em; }
+  .note{ margin:0 0 16px; font-size:14px; font-weight:600; color:#4F4F4F; }
+  .row{ margin-bottom:16px; }
+  .rowhead{ display:flex; align-items:baseline; gap:10px; margin-bottom:6px; }
+  .rowhead b{ font-size:17px; font-weight:800; }
+  .rowhead span{ font-size:13px; font-weight:600; color:#4F4F4F; }
+  .pair{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .cell{ background:#fff; border:1px solid #E5E8F0; border-radius:8px; overflow:hidden; }
+  .cap{ display:flex; justify-content:space-between; align-items:center;
+        padding:5px 10px; font-size:12px; font-weight:800; border-bottom:1px solid #E5E8F0; }
+  .cap.w1{ background:#EEF3FE; color:#1D4ED8; }
+  .cap.w2{ background:#E9F7F4; color:#0F766E; }
+  .cap em{ font-style:normal; font-weight:700; color:#4F4F4F; }
+  .frame{ width:100%; height:calc(var(--h) * var(--s)); overflow:hidden; position:relative; }
+  .frame iframe{ position:absolute; top:0; left:0; width:var(--w); height:var(--h);
+                 border:0; transform:scale(var(--s)); transform-origin:0 0; }
+</style>
+</head>
+<body>
+  <h1>표본 V3 ↔ 1주차 기준 슬라이드 나란히 비교</h1>
+  <p class="note">왼쪽 = 1주차 최종본(화면 품질 합격선) · 오른쪽 = 2주차 4구간 표본 V3. 1280×720을 45.5%로 축소해 같은 배율로 나란히 둔 것이다.</p>
+
+  <div class="row">
+    <div class="rowhead"><b>표본 A — 적어두면 지킬까? (w2-enforce)</b><span>원리 S3CE/S3PE · 정의 → 판단기준 → 나쁜예/좋은예 3단 스캐폴드</span></div>
+    <div class="pair">
+      <div class="cell"><div class="cap w1">1주차 기준 · S3CE(p38)<em>오해교정형 3단 스캐폴드</em></div>
+        <div class="frame"><iframe src="/sessions/1주차/%EA%B0%95%EC%9D%98%EB%8D%B1.html#slide=38" loading="eager"></iframe></div></div>
+      <div class="cell"><div class="cap w2">2주차 표본 A<em>이미지 2점이 주요 요소</em></div>
+        <div class="frame"><iframe src="sample-A-enforce.html" loading="eager"></iframe></div></div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="rowhead"><b>표본 B — 나눌수록 좋을까? (w2-verdict)</b><span>원리 29 · 각 측 3개 병렬 주장 + 하단 종합 한 줄</span></div>
+    <div class="pair">
+      <div class="cell"><div class="cap w1">1주차 기준 · 29(p47)<em>비교형 병렬 주장</em></div>
+        <div class="frame"><iframe src="/sessions/1주차/%EA%B0%95%EC%9D%98%EB%8D%B1.html#slide=47" loading="eager"></iframe></div></div>
+      <div class="cell"><div class="cap w2">2주차 표본 B<em>의도적으로 이미지 없음</em></div>
+        <div class="frame"><iframe src="sample-B-verdict.html" loading="eager"></iframe></div></div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="rowhead"><b>표본 C — 누가 정하는가 (w2-axis)</b><span>원리 S3HUM · 두 대상 비교를 가운데 관계축으로 강제</span></div>
+    <div class="pair">
+      <div class="cell"><div class="cap w1">1주차 기준 · S3HUM(p42)<em>가운데 라벨 연결자</em></div>
+        <div class="frame"><iframe src="/sessions/1주차/%EA%B0%95%EC%9D%98%EB%8D%B1.html#slide=42" loading="eager"></iframe></div></div>
+      <div class="cell"><div class="cap w2">2주차 표본 C<em>관계축 + 도식 2점</em></div>
+        <div class="frame"><iframe src="sample-C-axis.html" loading="eager"></iframe></div></div>
+    </div>
+  </div>
+</body>
+</html>

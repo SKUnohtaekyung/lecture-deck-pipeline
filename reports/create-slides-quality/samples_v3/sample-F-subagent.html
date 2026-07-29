@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1280">
+<title>표본 F — 서브에이전트와 검증 책임 (w2-branch)</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+<link rel="stylesheet" href="../../../kit/styles/deck.css">
+<link rel="stylesheet" href="../../../kit/styles/legibility.css">
+<link rel="stylesheet" href="../../../kit/styles/patterns.css">
+<link rel="stylesheet" href="samples.css">
+</head>
+<body>
+<div class="deck">
+  <section class="slide w2-branch" data-slide="C4-SUB">
+    <header class="s-head">
+      <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+      <span class="s-line"></span><div class="s-team">2주차<br>4교시</div>
+    </header>
+    <div class="s-full">
+      <h2 class="s-title">서브에이전트와 검증 책임</h2>
+
+      <div class="br-fig">
+        <svg width="700" height="196" viewBox="0 0 700 196" role="img" aria-label="맡긴 일에서 돌아온 보고와 실제 결과가 갈라지고, 둘은 같지 않다">
+          <defs>
+            <marker id="bh" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0 0 L9 4.5 L0 9 z" style="fill:var(--blue)"/></marker>
+            <marker id="gh" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0 0 L9 4.5 L0 9 z" style="fill:var(--gray-700)"/></marker>
+          </defs>
+
+          <rect x="2" y="72" width="140" height="52" rx="9" style="fill:var(--white); stroke:var(--gray-700)" stroke-width="3"/>
+          <text x="72" y="105" text-anchor="middle" font-size="21" font-weight="800" style="fill:var(--ink)">맡긴 일</text>
+
+          <path d="M144 86 L262 44" fill="none" style="stroke:var(--blue)" stroke-width="4" marker-end="url(#bh)"/>
+          <rect x="274" y="14" width="230" height="48" rx="8" style="fill:var(--blue)"/>
+          <text x="389" y="45" text-anchor="middle" font-size="21" font-weight="800" style="fill:var(--white)">돌아온 보고</text>
+          <text x="518" y="45" font-size="18" font-weight="700" style="fill:var(--gray-700)">즉시 온다</text>
+
+          <path d="M144 110 L262 152" fill="none" style="stroke:var(--gray-700)" stroke-width="4" stroke-dasharray="9 7" marker-end="url(#gh)"/>
+          <rect x="274" y="134" width="230" height="48" rx="8" style="fill:var(--white); stroke:var(--gray-700)" stroke-width="3" stroke-dasharray="9 7"/>
+          <text x="389" y="165" text-anchor="middle" font-size="21" font-weight="800" style="fill:var(--ink)">실제 결과</text>
+          <text x="518" y="165" font-size="18" font-weight="700" style="fill:var(--gray-700)">열어 봐야 보인다</text>
+
+          <text x="389" y="112" text-anchor="middle" font-size="42" font-weight="800" style="fill:var(--coral-deep)">&#8800;</text>
+        </svg>
+
+        <div class="br-side">
+          <b>실제로 있었던 일</b>
+          <p>이 강의를 만들면서 &ldquo;파일을 만들었다&rdquo;는 보고를 받고 넘어갔는데, 실제로는 파일이 없던 일이 <span class="hl-mint-underline">세 번</span> 있었습니다.</p>
+          <p>보고는 결과가 아니라 주장입니다.</p>
+        </div>
+      </div>
+
+      <div class="br-steps">
+        <div class="br-step">
+          <i>1단계</i><b>나눌 수 있는 일인지 본다</b>
+          <span>앞 결과를 봐야 뒤를 할 수 있으면 나누지 않습니다</span>
+        </div>
+        <div class="br-step">
+          <i>2단계</i><b>맡길 범위를 좁혀 준다</b>
+          <span>&ldquo;이것만 조사해서 결과만 알려 줘&rdquo;처럼 끝을 정합니다</span>
+        </div>
+        <div class="br-step is-key">
+          <i>3단계</i><b>내 눈으로 연다</b>
+          <span>파일이 있는지, 내용이 맞는지 <span class="hl-mint-mark">직접 확인합니다</span></span>
+        </div>
+        <div class="br-step">
+          <i>4단계</i><b>합치는 건 내가 한다</b>
+          <span>합칠 사람이 없으면 애초에 나누지 않습니다</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</div>
+</body>
+</html>

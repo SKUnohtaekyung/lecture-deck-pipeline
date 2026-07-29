@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>4구간 「AI에게 큰 작업을 맡기는 시스템」 — 9장 흐름</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+<style>
+  :root{ --s:0.415; }
+  *{ box-sizing:border-box; }
+  body{ margin:0; padding:16px 18px 22px; background:#F3F5F8;
+        font-family:"Pretendard",-apple-system,"Malgun Gothic",sans-serif; color:#141821; }
+  h1{ margin:0 0 3px; font-size:21px; font-weight:800; letter-spacing:-.02em; }
+  .note{ margin:0 0 14px; font-size:13px; font-weight:600; color:#4F4F4F; }
+  .grid{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .cell{ background:#fff; border:1px solid #E5E8F0; border-radius:8px; overflow:hidden; }
+  .cap{ display:flex; justify-content:space-between; align-items:center; gap:8px;
+        padding:5px 10px; font-size:12px; font-weight:800; background:#EEF3FE; color:#1D4ED8;
+        border-bottom:1px solid #E5E8F0; }
+  .cap em{ font-style:normal; font-weight:700; color:#4F4F4F; }
+  .frame{ width:100%; height:calc(720px * var(--s)); overflow:hidden; position:relative; }
+  .frame iframe{ position:absolute; top:0; left:0; width:1280px; height:720px;
+                 border:0; transform:scale(var(--s)); transform-origin:0 0; }
+</style>
+</head>
+<body>
+  <h1>4구간 「AI에게 큰 작업을 맡기는 시스템」 — 9장 흐름</h1>
+  <p class="note">읽는 순서대로 배열했습니다. 오른쪽은 구도(family). 제목=정식 용어 · 요점=첫 요소나 하단 띠 · 구도 9종이 전부 다름 · 닫는 방식도 장마다 다름 · 민트 강조 3종(결론/근거/핵심어)을 의미로 배정.</p>
+  <div class="grid">
+    <div class="cell"><div class="cap">1 · 에이전트 vs 워크플로<em>axis</em></div>
+      <div class="frame"><iframe src="sample-C-axis.html"></iframe></div></div>
+    <div class="cell"><div class="cap">2 · 하네스 엔지니어링<em>gantt</em></div>
+      <div class="frame"><iframe src="sample-D-harness.html"></iframe></div></div>
+    <div class="cell"><div class="cap">3 · 하네스의 구성요소<em>pipe</em></div>
+      <div class="frame"><iframe src="sample-E-guides.html"></iframe></div></div>
+    <div class="cell"><div class="cap">4 · 규칙 파일 vs 기술적 강제<em>figure</em></div>
+      <div class="frame"><iframe src="sample-A3-figure.html"></iframe></div></div>
+    <div class="cell"><div class="cap">5 · 규칙과 강제의 분류 기준<em>quad</em></div>
+      <div class="frame"><iframe src="sample-A2-sort.html"></iframe></div></div>
+    <div class="cell"><div class="cap">6 · Skill과 프로젝트 규칙<em>figure</em></div>
+      <div class="frame"><iframe src="sample-H-skill.html"></iframe></div></div>
+    <div class="cell"><div class="cap">7 · 서브에이전트와 검증 책임<em>branch</em></div>
+      <div class="frame"><iframe src="sample-F-subagent.html"></iframe></div></div>
+    <div class="cell"><div class="cap">8 · 멀티에이전트의 한계<em>metric</em></div>
+      <div class="frame"><iframe src="sample-B2-metric.html"></iframe></div></div>
+    <div class="cell"><div class="cap">9 · 하네스 설계 실습<em>dialog</em> → 5구간</div>
+      <div class="frame"><iframe src="sample-G-build.html"></iframe></div></div>
+  </div>
+</body>
+</html>

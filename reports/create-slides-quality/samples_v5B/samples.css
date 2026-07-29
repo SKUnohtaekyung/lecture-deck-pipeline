@@ -103,11 +103,16 @@
 .mm-row.after > .tag{ color:var(--mint-deep); }
 .mm-row > .txt{ font-size:20px; font-weight:700; line-height:1.4; color:var(--ink); }
 .mm-row > .txt > span{ display:block; margin-top:2px; font-size:18px; font-weight:650; color:var(--gray-700); }
-/* KB는 «노란 메모지»를 지정했으나 디자인 토큰에 노랑이 없다(R-COLOR-01: raw #hex 금지).
-   kit 자체 관례가 이미 답을 정해 뒀다 — `.callout.yellow{ background:var(--coral-soft) }`.
-   그 관례를 따른다. 처분표에 «대체»로 기록했다. */
-.mm-memo{ padding:16px 17px; border-radius:4px; background:var(--coral-soft);
-  border:1px solid var(--coral-deep); box-shadow:2px 3px 0 var(--shadow-sm, rgba(0,0,0,.06)); }
+/* R-COLOR-06 강조색 예외 — 6장 중 이 한 장에서만 쓴다(예산 2% 이내).
+   «메모지»는 노랑일 때 한눈에 «붙여 둔 기준»으로 읽힌다 — 코랄 틴트로는 주의·경고로
+   오독된다(R-COLOR-05: 코랄=주의). 그 의미 차이가 이 예외를 정당화한다.
+   raw #hex를 흩뿌리지 않고 **토큰으로 선언**하며, 요소에 `palette-x` 표식을 달아
+   verify_deck.py가 예산을 셀 수 있게 한다. 표식이 없으면 셀 수 없고, 셀 수 없으면
+   예산이 없는 것과 같다. 정본: kit/guide/디자인시스템.md R-COLOR-06. */
+:root{ --accent-note:#FDF3C7; --accent-note-line:#D9C36B; }
+.mm-memo{ padding:16px 17px; border-radius:4px; background:var(--accent-note);
+  border:1px solid var(--accent-note-line); box-shadow:2px 3px 0 var(--shadow-sm, rgba(0,0,0,.06)); }
+.mm-memo, .mm-memo *{ color:var(--ink); }
 .mm-memo > b{ display:block; font-size:19px; font-weight:800; color:var(--ink); margin-bottom:9px; }
 .mm-memo > div{ font-size:19px; font-weight:650; line-height:1.5; color:var(--ink); padding:3px 0; }
 .mm-warn{ margin:0; padding:11px 0 11px 18px; border-left:5px solid var(--coral);
