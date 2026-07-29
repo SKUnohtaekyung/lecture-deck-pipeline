@@ -1,0 +1,35 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><title>5구간 A/B 나란히 비교</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+<style>:root{--s:0.40}*{box-sizing:border-box}body{margin:0;padding:16px 18px 22px;background:#F3F5F8;font-family:Pretendard,sans-serif;color:#141821}
+h1{margin:0 0 3px;font-size:22px;font-weight:800}.note{margin:0 0 14px;font-size:13px;font-weight:600;color:#4F4F4F}
+.hdr{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:8px;position:sticky;top:0;background:#F3F5F8;padding:6px 0;z-index:5}
+.hdr>div{padding:8px 12px;border-radius:8px;font-size:15px;font-weight:800}
+.hdr>.a{background:#FFF;border:2px solid #9CA3AF;color:#374151}
+.hdr>.b{background:#EEF3FE;border:2px solid #1D4ED8;color:#1D4ED8}
+.row{margin-bottom:14px}.rt{font-size:14px;font-weight:800;color:#1D4ED8;margin:0 0 6px}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.cell{background:#fff;border:1px solid #E5E8F0;border-radius:8px;overflow:hidden}
+.frame{width:100%;height:calc(720px*var(--s));overflow:hidden;position:relative}
+.frame iframe{position:absolute;top:0;left:0;width:1280px;height:720px;border:0;transform:scale(var(--s));transform-origin:0 0}</style></head><body>
+<h1>5구간 A/B — 같은 6장, 같은 청크. 차이는 «PPT 소재를 봤는가»뿐입니다</h1>
+<p class="note">두 판 모두 경계 이탈 0 · mark ≤1 · display:block 회귀 0 · 깊이2 골격 지문 동일 쌍 0. 구조 일치도 53.3%(감점 시 41.7%).</p>
+<div class="hdr"><div class="a">A — PPT 소재를 가린 채</div><div class="b">B — PPT 소재를 회수해</div></div>
+<div class="row"><p class="rt">1 · 정보 구조</p><div class="pair">
+<div class="cell"><div class="frame"><iframe src="samples_v5A/s1-ia.html"></iframe></div></div>
+<div class="cell"><div class="frame"><iframe src="samples_v5B/s1-ia.html"></iframe></div></div></div></div>
+<div class="row"><p class="rt">2 · 화면 순서·정보 우선순위</p><div class="pair">
+<div class="cell"><div class="frame"><iframe src="samples_v5A/s2-order.html"></iframe></div></div>
+<div class="cell"><div class="frame"><iframe src="samples_v5B/s2-order.html"></iframe></div></div></div></div>
+<div class="row"><p class="rt">3 · 화면 문구</p><div class="pair">
+<div class="cell"><div class="frame"><iframe src="samples_v5A/s3-copy.html"></iframe></div></div>
+<div class="cell"><div class="frame"><iframe src="samples_v5B/s3-copy.html"></iframe></div></div></div></div>
+<div class="row"><p class="rt">4 · 기본 가독성·접근성</p><div class="pair">
+<div class="cell"><div class="frame"><iframe src="samples_v5A/s4-a11y.html"></iframe></div></div>
+<div class="cell"><div class="frame"><iframe src="samples_v5B/s4-a11y.html"></iframe></div></div></div></div>
+<div class="row"><p class="rt">5 · 화면 기준을 담은 DESIGN.md</p><div class="pair">
+<div class="cell"><div class="frame"><iframe src="samples_v5A/s5-design.html"></iframe></div></div>
+<div class="cell"><div class="frame"><iframe src="samples_v5B/s5-design.html"></iframe></div></div></div></div>
+<div class="row"><p class="rt">6 · 디자인 시스템·토큰</p><div class="pair">
+<div class="cell"><div class="frame"><iframe src="samples_v5A/s6-token.html"></iframe></div></div>
+<div class="cell"><div class="frame"><iframe src="samples_v5B/s6-token.html"></iframe></div></div></div></div>
+</body></html>

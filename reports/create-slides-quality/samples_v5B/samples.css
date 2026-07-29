@@ -1,0 +1,119 @@
+/* 5구간 조건 B — PPT 소재를 회수해 만든 판. 결정표 정본: DECISION.md
+   ⚠️ R-QC-14: 후손 b/span에 display:block 금지. 반드시 `> b` / `> span`. */
+
+/* 표본 하네스 전용: 발표 모드 해제(없으면 슬라이드가 통째로 안 보인다). */
+@media screen{
+  html,body{ height:auto; }
+  body{ background:var(--white); overflow:visible; padding:0; }
+  .deck{ display:block; height:auto; }
+  .slide{ position:relative!important; top:auto!important; left:auto!important;
+    transform:none!important; display:block!important;
+    box-shadow:none!important; border-radius:0!important; margin:0; }
+}
+
+.w5b-berg .s-full, .w5b-cmp .s-full, .w5b-cards .s-full,
+.w5b-a11y .s-full, .w5b-memo .s-full, .w5b-chain .s-full{
+  bottom:54px; display:flex; flex-direction:column; gap:14px; }
+
+.lead{ margin:0; font-size:23px; font-weight:650; line-height:1.46; color:var(--ink); }
+.lead > b{ font-weight:800; color:var(--blue); }
+
+/* --- 1 · 빙산 --------------------------------------------------------- */
+.bg-body{ flex:1 1 auto; display:grid; grid-template-columns:1fr 388px; gap:30px; align-items:center; }
+.bg-side{ display:flex; flex-direction:column; gap:14px; }
+.bg-vs{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.bg-vs > div{ padding:13px 15px; border-radius:var(--r-md); }
+.bg-vs > .a{ background:var(--blue-panel); border:1px solid var(--blue-line-strong); }
+.bg-vs > .b{ background:var(--surface); border:1px solid var(--gray-400); }
+.bg-vs > div > b{ display:block; font-size:21px; font-weight:800; margin-bottom:3px; }
+.bg-vs > .a > b{ color:var(--blue); }
+.bg-vs > .b > b{ color:var(--gray-700); }
+.bg-vs > div > span{ display:block; font-size:19px; font-weight:650; line-height:1.4; color:var(--ink); }
+.bg-note{ margin:0; padding:11px 0 11px 18px; border-left:5px solid var(--coral);
+  font-size:21px; font-weight:700; line-height:1.44; color:var(--ink); }
+
+/* --- 2 · 두 장 비교 + F자 -------------------------------------------- */
+/* 2px 넘침 실측 후 이 family만 gap을 좁힌다(전역 14px → 12px). 기준 §3은 이탈이
+   0이 아니면 A/B 비교 자체를 무효로 하므로 2px도 남기지 않는다. */
+.w5b-cmp .s-full{ gap:12px; }
+.cm-body{ flex:1 1 auto; display:grid; grid-template-columns:1fr 1fr; gap:30px; align-items:start; }
+.cm-col > .cap{ display:block; font-size:20px; font-weight:800; margin-bottom:8px; }
+.cm-col.bad > .cap{ color:var(--coral-deep); }
+.cm-col.good > .cap{ color:var(--mint-deep); }
+.cm-shot{ position:relative; padding:16px; border-radius:var(--r-lg);
+  background:var(--surface); border:1px solid var(--gray-400); min-height:210px; }
+.cm-col.good .cm-shot{ border-color:var(--mint-deep); }
+.cm-el{ display:block; padding:8px 12px; border-radius:var(--r-md); margin-bottom:8px;
+  background:var(--white); border:1px solid var(--gray-400);
+  font-size:19px; font-weight:700; color:var(--ink); }
+.cm-el.t{ font-size:26px; font-weight:800; border:0; background:transparent; padding:0 0 6px; }
+.cm-el.btn{ background:var(--blue); color:var(--white); border-color:var(--blue);
+  display:inline-block; margin-bottom:0; }
+.cm-el.sm{ font-size:17px; font-weight:650; color:var(--gray-700); }
+.cm-f{ position:absolute; inset:0; pointer-events:none; }
+.cm-why{ margin-top:9px; font-size:18px; font-weight:650; line-height:1.4; color:var(--gray-700); }
+.cm-why > b{ font-weight:800; color:var(--ink); }
+
+/* --- 3 · 문구 카드 3쌍 ------------------------------------------------ */
+.cd-grid{ flex:1 1 auto; display:grid; grid-template-columns:repeat(3,1fr); gap:18px; align-content:center; }
+.cd-card{ display:flex; flex-direction:column; gap:10px; }
+.cd-k{ font-size:19px; font-weight:800; color:var(--gray-700); }
+.cd-x, .cd-o{ padding:12px 14px; border-radius:var(--r-md); }
+.cd-x{ background:var(--surface); border:1px solid var(--coral); }
+.cd-o{ background:var(--mint-line); border:1px solid var(--mint-deep); }
+.cd-x > b, .cd-o > b{ display:block; font-size:22px; font-weight:800; color:var(--ink); }
+.cd-x > span, .cd-o > span{ display:block; margin-top:3px; font-size:18px; font-weight:650;
+  line-height:1.36; color:var(--gray-700); }
+.cd-rule{ margin:0; padding:11px 0 11px 18px; border-left:5px solid var(--mint);
+  font-size:21px; font-weight:700; line-height:1.44; color:var(--ink); }
+
+/* --- 4 · 접근성(시뮬레이션+막대+대비 샘플) ---------------------------- */
+.ay-body{ flex:1 1 auto; display:grid; grid-template-columns:1fr 1fr 300px; gap:24px; align-items:center; }
+.ay-cap{ display:block; font-size:19px; font-weight:800; color:var(--gray-700); margin-bottom:8px; }
+.ay-box{ padding:11px 13px; border-radius:var(--r-md); background:var(--surface);
+  border:1px solid var(--gray-400); }
+.ay-row{ display:flex; align-items:center; gap:9px; padding:3px 0; font-size:19px; font-weight:700; }
+.ay-dot{ width:16px; height:16px; border-radius:50%; flex:0 0 auto; }
+.ay-dot.ok{ background:var(--mint); }
+.ay-dot.no{ background:var(--coral); }
+.ay-gray{ filter:grayscale(1); }
+.ay-txt{ padding:9px 13px; border-radius:var(--r-md); margin-top:8px; }
+.ay-txt.weak{ background:var(--white); border:1px solid var(--gray-400);
+  color:var(--gray-400); font-size:20px; font-weight:650; }
+.ay-txt.strong{ background:var(--white); border:1px solid var(--ink);
+  color:var(--ink); font-size:20px; font-weight:700; }
+.ay-stat > .n{ display:block; font-size:46px; font-weight:800; color:var(--blue); line-height:1.05; }
+.ay-stat > .d{ display:block; margin-top:5px; font-size:20px; font-weight:700;
+  line-height:1.4; color:var(--ink); }
+.ay-track{ margin-top:11px; height:16px; border-radius:8px; background:var(--surface);
+  border:1px solid var(--gray-400); overflow:hidden; }
+.ay-fill{ display:block; height:100%; background:var(--blue); }
+.ay-band{ margin:0; padding:12px 16px; border-radius:var(--r-md); text-align:center;
+  background:var(--blue); color:var(--white); font-size:22px; font-weight:800; }
+
+/* --- 5 · 상하 전/후 + 노란 메모지 ------------------------------------- */
+.mm-body{ flex:1 1 auto; display:grid; grid-template-columns:1fr 296px; gap:26px; align-items:center; }
+.mm-stack{ display:flex; flex-direction:column; gap:11px; }
+.mm-row{ display:grid; grid-template-columns:112px 1fr; gap:14px; align-items:center;
+  padding:13px 16px; border-radius:var(--r-md); }
+.mm-row.before{ background:var(--surface); border:1px solid var(--gray-400); }
+.mm-row.after{ background:var(--mint-line); border:1px solid var(--mint-deep); }
+.mm-row > .tag{ font-size:19px; font-weight:800; }
+.mm-row.before > .tag{ color:var(--gray-700); }
+.mm-row.after > .tag{ color:var(--mint-deep); }
+.mm-row > .txt{ font-size:20px; font-weight:700; line-height:1.4; color:var(--ink); }
+.mm-row > .txt > span{ display:block; margin-top:2px; font-size:18px; font-weight:650; color:var(--gray-700); }
+/* KB는 «노란 메모지»를 지정했으나 디자인 토큰에 노랑이 없다(R-COLOR-01: raw #hex 금지).
+   kit 자체 관례가 이미 답을 정해 뒀다 — `.callout.yellow{ background:var(--coral-soft) }`.
+   그 관례를 따른다. 처분표에 «대체»로 기록했다. */
+.mm-memo{ padding:16px 17px; border-radius:4px; background:var(--coral-soft);
+  border:1px solid var(--coral-deep); box-shadow:2px 3px 0 var(--shadow-sm, rgba(0,0,0,.06)); }
+.mm-memo > b{ display:block; font-size:19px; font-weight:800; color:var(--ink); margin-bottom:9px; }
+.mm-memo > div{ font-size:19px; font-weight:650; line-height:1.5; color:var(--ink); padding:3px 0; }
+.mm-warn{ margin:0; padding:11px 0 11px 18px; border-left:5px solid var(--coral);
+  font-size:21px; font-weight:700; line-height:1.44; color:var(--ink); }
+
+/* --- 6 · 값→이름→재사용 3단 ------------------------------------------ */
+.ch-wrap{ flex:1 1 auto; display:grid; place-items:center; }
+.ch-note{ margin:0; padding:12px 16px; border-radius:var(--r-md); text-align:center;
+  background:var(--mint); color:var(--on-mint); font-size:22px; font-weight:800; }
