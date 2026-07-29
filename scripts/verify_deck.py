@@ -38,6 +38,35 @@ from html.parser import HTMLParser
 import html as _html_stdlib
 import os
 
+# ── 주차 계약이 등재한 구도 family (2026-07-29 P5) ───────────────────────────
+# 주차 종속 family(`w2-*` 등)는 범용 스크립트가 아니라 그 주차의 deck.contract.json에
+# 산다. main()이 계약을 읽어 _CONTRACT_FAMILIES를 채우고, family 판정이 이를 먼저 본다.
+# 계약이 없거나 항목이 없으면 빈 목록이며 — 그 경우 신규 구도는 'full'로 뭉개져
+# "동일 구도 3연속"이 오탐될 수 있으므로 main()이 WARN으로 알린다.
+_CONTRACT_FAMILIES = []
+
+
+def _contract_families():
+    return _CONTRACT_FAMILIES
+
+
+def _load_contract_families(contract_data):
+    """계약의 layout_families를 (클래스, family) 튜플 목록으로 정규화한다."""
+    _CONTRACT_FAMILIES[:] = []
+    if not contract_data:
+        return 0
+    raw = contract_data.get("layout_families") or {}
+    if isinstance(raw, dict):
+        items = list(raw.items())
+    else:                                   # [["cls","fam"], ...] 형태도 받는다
+        items = [tuple(x) for x in raw if len(x) == 2]
+    for cls, fam in items:
+        if isinstance(cls, str) and isinstance(fam, str) and cls and fam:
+            _CONTRACT_FAMILIES.append((cls, fam))
+    return len(_CONTRACT_FAMILIES)
+# ─────────────────────────────────────────────────────────────────────────────
+
+
 # ── 과목 아키텍처 경로 폴백 (2026-07-29 P4.5) ────────────────────────────
 # `courses/<과목>/sessions/N주차` 우선, 없으면 구경로 `sessions/N주차`.
 # 정본은 scripts/_course_paths.py. 구경로 폴백을 없애지 마라 — 1주차(동결) 자료가
@@ -618,37 +647,38 @@ def family_signature(cls, inner):
         return 'breadcrumb'
     if re.search(r'data-asset-kind=["\']screenshot["\']', inner, re.I) or has_class('shot-annot', 'shot-win'):
         return 'shot'
-    # ── 2주차 신규 구도 등재(2026-07-26) ──
-    #   새 구도 클래스는 실제 family로 등록한다(미등록이면 전부 'full'로 뭉개져 3연속 FAIL).
-    #   generic 폴백(s-full·grid-N·work-step·data-viz)보다 **먼저** 판정해야 한다 —
-    #   이 구도들은 내부에 그 클래스를 품고 있어서 뒤에 두면 폴백에 먼저 잡힌다.
-    _W2_FAMILIES = (
-        ('w2-roadmap', 'roadmap'), ('w2-practice', 'practice'), ('w2-scope', 'scope'),
-        ('w2-screen', 'screenmock'), ('w2-slot', 'slot'),
-        ('viz-code', 'code'), ('code-diagram', 'codemap'),
-        ('viz-concentric', 'containment'), ('viz-tree', 'tree'),
-        ('viz-cycle', 'cycle'), ('viz-radial', 'radial'), ('viz-gantt', 'gantt'),
-        ('claim-rationale', 'claim'), ('case-acts', 'acts'),
-        ('quad-grid', 'quad'), ('metric-strip', 'metric'), ('def-msg', 'definition'),
-        # 2026-07-27 샘플 재설계 신규 구도 6종(p7/p13/p14/p19/p35/p58) — generic
-        # 폴백(s-full·table·compare·flow)보다 먼저 판정해야 내부 클래스에 잡히지 않는다.
-        ('w2-target', 'target'), ('w2-typecard', 'typecard'), ('w2-analogy', 'analogy'),
-        ('w2-itr', 'itr'), ('w2-handoff', 'handoff'), ('w2-stepwarn', 'stepwarn'),
-        # 2026-07-28 4구간(AI 작업 시스템) 표본 V3 신규 구도 3종.
-        #   w2-enforce : 오해교정형 3단 스캐폴드(정의→판단기준→나쁜예/좋은예) — S3CE/S3PE
-        #   w2-verdict : 대립 주장 3+3 병렬 + 하단 종합 한 줄 — 원리 29
-        #   w2-axis    : 두 대상 비교를 가운데 관계축으로 강제 — S3HUM
-        ('w2-enforce', 'enforce'), ('w2-verdict', 'verdict'), ('w2-axis', 'axis'),
-        # 2026-07-28 4구간 확산분 2종.
-        #   w2-timeline  : 시점 흐름 + 각 시점의 의미(용어 형성사·절차 순환) — S3ITR
-        #   w2-warnsteps : "왜 이 순서인가"(경고)를 먼저 두고 단계를 잇는다 — S3ITR+S3MAP
-        ('w2-timeline', 'timeline'), ('w2-warnsteps', 'warnsteps'),
-        # 2026-07-28 동점 규칙(by-shape.md) 적용분.
-        #   w2-metric : numeric — C-column 차트가 주인공, 설명은 옆에 글로 (L-td-compare-bars)
-        #   w2-figure : concept — 박스 없는 본문 글 + 단일 도해 + 스트립 1개 (L-ct-figure)
-        ('w2-metric', 'metric2'), ('w2-figure', 'figure'),
+    # ── 구도 family 등재 ──────────────────────────────────────────────────
+    #   새 구도 클래스는 실제 family로 등록해야 한다. 미등록이면 전부 'full'로 뭉개져
+    #   "동일 구도 3연속" 오탐이 난다. generic 폴백(s-full·grid-N·work-step·data-viz)보다
+    #   **먼저** 판정한다 — 이 구도들은 내부에 그 클래스를 품고 있어 뒤에 두면 폴백에 먼저 잡힌다.
+    #
+    #   ⚠️ 주차 종속 family는 여기 두지 않는다(2026-07-29 P5). 특정 주차에서만 쓰는
+    #   `w2-*` 같은 클래스를 범용 스크립트에 박으면, 다른 주제 강의를 검증할 때
+    #   남의 주차 구도가 규칙으로 따라온다. 그 목록은 주차 계약
+    #   `deck.contract.json`의 `layout_families`에 있고 _contract_families()가 읽는다.
+    #
+    #   아래는 **주차와 무관한 kit element/레이아웃 family**만 남긴 것이다.
+    _KIT_FAMILIES = (
+        # ⚠️ 이름은 주차 접두이나 **옮길 수 없다**: verify_deck_quality.py의
+        #    _SCREEN_OP_FAMILIES={shot, screenmock, gui}가 이 family의 *의미*에
+        #    의존해 화면조작 계약예외(R-DENS-01a)를 판정한다. 계약으로 옮기면
+        #    계약을 안 읽는 범용 게이트에서 예외가 0장이 된다(2026-07-29 실측 회귀).
+        #    판단 기준: **범용 게이트가 그 family의 뜻을 읽으면 스크립트에 남긴다.**
+        ('w2-screen', 'screenmock'),
+        ('viz-code', 'code'),
+        ('code-diagram', 'codemap'),
+        ('viz-concentric', 'containment'),
+        ('viz-tree', 'tree'),
+        ('viz-cycle', 'cycle'),
+        ('viz-radial', 'radial'),
+        ('viz-gantt', 'gantt'),
+        ('claim-rationale', 'claim'),
+        ('case-acts', 'acts'),
+        ('quad-grid', 'quad'),
+        ('metric-strip', 'metric'),
+        ('def-msg', 'definition'),
     )
-    for _cls, _fam in _W2_FAMILIES:
+    for _cls, _fam in tuple(_contract_families()) + _KIT_FAMILIES:
         if has_class(_cls):
             return _fam
     if has_class('codex-gui', 'codex-app-gui', 'codex-open-layout', 'extension-gui',
@@ -1116,6 +1146,10 @@ def main():
     known_violations = {}
     if contract_path is None:
         chk(False, "", "주차 구조 계약 없음(deck.contract.json) — 구조 미검증", warn=True)
+        # 2026-07-29 P5: 주차 종속 구도 family도 계약에 산다. 계약이 없으면 그 구도가
+        # 전부 'full'로 뭉개져 「동일 구도 3연속」이 오탐된다 — 조용히 넘어가지 않는다.
+        chk(False, "", "주차 계약이 없어 구도 family 등재분 0종 — 신규 구도가 'full'로 "
+                       "판정돼 「동일 구도 연속」 오탐이 날 수 있다(layout_families)", warn=True)
     else:
         try:
             contract_data = json.loads(contract_path.read_text(encoding='utf-8'))
@@ -1124,6 +1158,12 @@ def main():
             chk(False, "", f"주차 구조 계약 읽기 실패({contract_path.name}): {exc} — 구조 미검증", warn=True)
         if contract_data is not None:
             known_violations = contract_data.get('known_violations') or {}
+            _nfam = _load_contract_families(contract_data)
+            if _nfam == 0:
+                chk(False, "", "주차 계약에 layout_families 없음 — 그 주차 전용 구도가 "
+                               "'full'로 판정돼 「동일 구도 연속」 오탐이 날 수 있다", warn=True)
+            else:
+                chk(True, "", f"주차 계약이 구도 family {_nfam}종 등재")
             deck_contract = (contract_data.get('decks') or {}).get(deck_file.stem)
             if deck_contract is None:
                 chk(False, "",
