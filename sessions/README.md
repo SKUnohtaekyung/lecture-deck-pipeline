@@ -1,5 +1,14 @@
 # sessions/ — 주차별 입력·산출
 
+
+> ## ⚠️ 2026-07-29 — 주차 산출물은 `courses/<과목>/sessions/`로 이동했다
+>
+> 과목 아키텍처(P4.5) 도입으로 **한 강의에 대한 정보를 한 곳에 모았다.** 바이브코딩 산출물은 이제 `courses/바이브코딩/sessions/1주차·2주차/`에 있고, 커리큘럼 기준안은 `courses/바이브코딩/커리큘럼_기준안.md`다.
+>
+> **이 폴더에 남은 것**은 과목과 무관한 스캐폴딩뿐이다 — `_template/`(새 주차 골격) · `_verify/` · `references/` · 이 README.
+>
+> 경로 해석은 `scripts/_course_paths.py`가 담당하며 **구경로 `sessions/N주차`도 계속 인식한다.** 폴백을 없애지 마라 — 1주차(동결) 자료가 메타 헤더에서 구경로를 참조한다.
+
 한 주차(세션)의 **입력 초안·원본 자료·산출 덱·발표자 노트**를 한 폴더에 모은다.
 스킬 자산(`kit`·`scripts`·`references`)도 개발자료(`_dev`)도 아닌 **"작업물" 범주** — **배포 대상이 아니다**(스킬을 대상 프로젝트로 복사할 때 제외).
 
@@ -26,17 +35,17 @@ sessions/
 
 ## 새 주차 시작 (루트에서)
 ```bash
-cp -r sessions/_template "sessions/3주차"
-cp "입력양식/콘텐츠초안템플릿.md" "sessions/3주차/3주차_초안.md"   # 빈 공식 템플릿을 초안으로
-# → sessions/3주차/3주차_초안.md 를 채운 뒤 스킬에 "3주차 덱 만들어줘" 라고 요청
+cp -r sessions/_template "courses/바이브코딩/sessions/3주차"
+cp "입력양식/콘텐츠초안템플릿.md" "courses/바이브코딩/sessions/3주차/3주차_초안.md"   # 빈 공식 템플릿을 초안으로
+# → courses/바이브코딩/sessions/3주차/3주차_초안.md 를 채운 뒤 스킬에 "3주차 덱 만들어줘" 라고 요청
 ```
 
 ## 스킬 입출력 규약 (SKILL.md 1·5·7단계와 연결)
-- **입력**: `sessions/N주차/N주차_초안.md`를 콘텐츠 초안으로 읽는다(레거시 `초안.md` 폴백 인식). 원본 근거가 필요하면 `sessions/N주차/자료/` 참고.
+- **입력**: `courses/<과목>/sessions/N주차/N주차_초안.md`를 콘텐츠 초안으로 읽는다(레거시 `초안.md` 폴백 인식). 원본 근거가 필요하면 `courses/<과목>/sessions/N주차/자료/` 참고.
 - **산출(2단계)**: 편집본(조각) → 배포본(단일 자립). 발표자 노트는 같은 폴더에 별도 산출.
-  - **편집본** `강의덱.초안/`: 파트별 `shell.html`(head·고정 슬라이드·`<!-- ::PARTS:: -->` 마커·JS) + PART마다 `part-NN.html`. 대화하며 파트 단위로 고친다(조각이 대화형 수정에 빠르고 정확). 미리보기 통합본은 `python scripts/assemble_deck.py sessions/N주차/강의덱.초안`(`--watch`면 저장 시 자동 재조립) → `강의덱.html`(항상 최신). ⚠️ CSS는 `../../kit/styles/…` 상대경로(세션 폴더 2단계 깊이).
-  - **발표본** `강의덱_발표.html`(선택 · 명시 요청 전용): `python scripts/inject_presenter.py sessions/N주차/강의덱_배포.html --notes … --deck-id … --output sessions/N주차/강의덱_발표.html --meta sessions/_verify/N주차/강의덱_발표.meta.json`. 입력은 **완성된 배포본**이며 조각에서 재생성하지 않는다(동결 주차와 충돌하지 않는 이유). 사이드카는 전달물이 아니라 검증용이라 `sessions/_verify/N주차/`에 두고, 동결 폴더에는 전달물 1개만 추가한다. 절차·게이트 정본은 `references/phases/10-발표자모드.md`.
-  - **배포본** `강의덱_배포.html`: `python scripts/build_release.py sessions/N주차/강의덱.초안` 한 커맨드 = 조립 → `verify_deck` → `inline_deck --offline`(CSS·이미지 인라인 + Pretendard 사용 글자 서브셋 `@font-face` 임베드) → `verify_distributable`(자립성 강제). 외부 의존이 하나라도 남으면 FAIL — 학생에게 이 파일 하나만 줘도 오프라인에서 다 보인다.
+  - **편집본** `강의덱.초안/`: 파트별 `shell.html`(head·고정 슬라이드·`<!-- ::PARTS:: -->` 마커·JS) + PART마다 `part-NN.html`. 대화하며 파트 단위로 고친다(조각이 대화형 수정에 빠르고 정확). 미리보기 통합본은 `python scripts/assemble_deck.py courses/<과목>/sessions/N주차/강의덱.초안`(`--watch`면 저장 시 자동 재조립) → `강의덱.html`(항상 최신). ⚠️ CSS는 `../../kit/styles/…` 상대경로(세션 폴더 2단계 깊이).
+  - **발표본** `강의덱_발표.html`(선택 · 명시 요청 전용): `python scripts/inject_presenter.py courses/<과목>/sessions/N주차/강의덱_배포.html --notes … --deck-id … --output courses/<과목>/sessions/N주차/강의덱_발표.html --meta sessions/_verify/N주차/강의덱_발표.meta.json`. 입력은 **완성된 배포본**이며 조각에서 재생성하지 않는다(동결 주차와 충돌하지 않는 이유). 사이드카는 전달물이 아니라 검증용이라 `sessions/_verify/N주차/`에 두고, 동결 폴더에는 전달물 1개만 추가한다. 절차·게이트 정본은 `references/phases/10-발표자모드.md`.
+  - **배포본** `강의덱_배포.html`: `python scripts/build_release.py courses/<과목>/sessions/N주차/강의덱.초안` 한 커맨드 = 조립 → `verify_deck` → `inline_deck --offline`(CSS·이미지 인라인 + Pretendard 사용 글자 서브셋 `@font-face` 임베드) → `verify_distributable`(자립성 강제). 외부 의존이 하나라도 남으면 FAIL — 학생에게 이 파일 하나만 줘도 오프라인에서 다 보인다.
   - 조각 없이 단일 `강의덱.html`을 바로 편집하는 옛 방식도 유효하다(→ `inline_deck.py`로 배포). 단, 폰트 자립·자립성 강제는 `build_release.py` 경로에서 보장된다.
 - **이미지 계약**: `자료/이미지-에셋.json`은 [`../references/이미지-에셋-manifest.schema.json`](../references/이미지-에셋-manifest.schema.json)을 따르는 상태 정본이다. `NO_IMAGE | IMAGE_EXPLANATORY | IMAGE_MNEMONIC | IMAGE_DECORATIVE_OPTIONAL` 판정, 재사용 Asset ID, 예상 파일, 생성 방식, QA 결과를 기록한다. `prompt_only`의 expected 슬롯에는 실제 `<img>`를 만들지 않는다.
 
@@ -47,11 +56,11 @@ cp "입력양식/콘텐츠초안템플릿.md" "sessions/3주차/3주차_초안.m
 - **리서치 기본 5파일** → `자료/`: `N주차_콘텐츠리서치_결과.md`(구간 인덱스층) · `N주차_개념KB.md`(사실 정본 · 청크+ID RAG) · `N주차_출처레지스트리.md`(출처·verbatim 원문 정본) · `N주차_실습안_검증결과.md` · `N주차_결정요청사항.md`
   - **선택 산출물**(기본 아님 · 사용자가 요청할 때만): `N주차_리서치_종합정리.md`(사람 읽기용 요약본) · `N주차_리서치_리뷰.html`(사람 확인용 자립형 HTML)
 - **집필노트** → `자료/N주차_콘텐츠_집필노트.md` (`/콘텐츠`가 `N주차_초안.md`와 함께 산출)
-- **검토보고** → `sessions/N주차/검토보고_YYYY-MM-DD.md` (주차 폴더 직하)
+- **검토보고** → `courses/<과목>/sessions/N주차/검토보고_YYYY-MM-DD.md` (주차 폴더 직하)
 
 ### `실습예제/` (선택 · 주차 폴더 직하)
 
-`/리서치`가 실습안을 실제로 검증하려면 돌려 볼 프로젝트가 필요하다. 그렇게 만든 **실행 가능한 실습 프로젝트 원본**은 `sessions/N주차/실습예제/`에 둔다 — `자료/`는 리서치 5파일의 종착지라 실행 파일을 섞지 않고, 임시 폴더는 세션이 끝나면 사라져 `N주차_실습안_검증결과.md`의 ⑩정상 완성본 위치·⑪최소 복구본 위치가 죽은 경로가 되기 때문이다.
+`/리서치`가 실습안을 실제로 검증하려면 돌려 볼 프로젝트가 필요하다. 그렇게 만든 **실행 가능한 실습 프로젝트 원본**은 `courses/<과목>/sessions/N주차/실습예제/`에 둔다 — `자료/`는 리서치 5파일의 종착지라 실행 파일을 섞지 않고, 임시 폴더는 세션이 끝나면 사라져 `N주차_실습안_검증결과.md`의 ⑩정상 완성본 위치·⑪최소 복구본 위치가 죽은 경로가 되기 때문이다.
 
 - 하위 구조는 주차가 정한다. 예(2주차): `mvp/<기능유형>_<이름>/` · `이탈재현/case_<증상>/{broken,fixed}/`.
 - 이 폴더는 **강사·리서치용 참고 자산**이며 수강생 배포물이 아니다. 총괄이 채택하면 그때 정식 강의자료로 승격한다.
@@ -67,7 +76,7 @@ cp "입력양식/콘텐츠초안템플릿.md" "sessions/3주차/3주차_초안.m
 
 덱의 슬라이드 수·divider 수·도입 순서·시퀀스 같은 **주차별 구조 값은 검증 스크립트에 하드코딩하지 않고 계약 파일로 외부화한다.**
 
-- 원칙적 위치: `sessions/N주차/deck.contract.json` (덱과 같은 폴더)
+- 원칙적 위치: `courses/<과목>/sessions/N주차/deck.contract.json` (덱과 같은 폴더)
 - **동결된 주차**는 그 폴더를 건드리지 않기 위해 `sessions/_contracts/<폴더명>.deck.contract.json`에 둔다.
 - `verify_deck.py` 탐색 순서: **① 덱과 같은 폴더 → ② `sessions/_contracts/` → ③ 없으면 WARN**("주차 구조 계약 없음 — 구조 미검증"). 계약이 없다고 FAIL시키지 않는다.
 - 기존에 알려진 위반은 계약의 `known_violations`에 사유와 함께 등재한다. 등재된 항목은 그 주차에서 WARN으로 강등되지만, **다른 주차에서는 그대로 FAIL로 작동한다.**
@@ -80,6 +89,6 @@ cp "입력양식/콘텐츠초안템플릿.md" "sessions/3주차/3주차_초안.m
 
 > **2026-07-26 사용자 결정으로 동결이 해제됐다.** 같은 날 오전의 동결 결정(수정·추가·삭제·재조립 금지)은 더 이상 유효하지 않다. 다른 주차와 동일하게 다루되, **덱 수정은 반드시 `강의덱.초안/` 조각에 하고 `build_release.py`로 재조립**한다.
 >
-> 같은 날 수행한 정리·수정: ① `초안.md` → `1주차_초안.md`(접두어 정본화) ② `screenshot/` → `자료/screenshot/`(사용 5건만, shard `src` 5곳 동반 수정) ③ 중간 산출물 9건·미사용 스크린샷 10건·`초안_미리보기.md`를 `_dev/설계기록/탐색-아카이브/1주차/`로 이관 ④ 사람 문서 2건(상세강의설계 인수인계·콘텐츠 리뷰 HTML)을 `자료/`로 이동 ⑤ 슬라이드 49·52의 제작 요청 프롬프트 개정과 52의 카드 7→9 ⑥ 구조 계약을 `sessions/1주차/deck.contract.json`(원칙 위치)으로 복귀.
+> 같은 날 수행한 정리·수정: ① `초안.md` → `1주차_초안.md`(접두어 정본화) ② `screenshot/` → `자료/screenshot/`(사용 5건만, shard `src` 5곳 동반 수정) ③ 중간 산출물 9건·미사용 스크린샷 10건·`초안_미리보기.md`를 `_dev/설계기록/탐색-아카이브/1주차/`로 이관 ④ 사람 문서 2건(상세강의설계 인수인계·콘텐츠 리뷰 HTML)을 `자료/`로 이동 ⑤ 슬라이드 49·52의 제작 요청 프롬프트 개정과 52의 카드 7→9 ⑥ 구조 계약을 `courses/바이브코딩/sessions/1주차/deck.contract.json`(원칙 위치)으로 복귀.
 
 2주차부터는 위 규약대로 덱까지 전부 세션 폴더 안에 산출한다.

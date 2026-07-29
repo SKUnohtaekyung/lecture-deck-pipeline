@@ -7,7 +7,7 @@
 ## 구조 (섞지 말 것 · ①②③=스킬 3층, ④=작업물, ⑤=팀 스킬)
 
 - **① 포터블 스킬(루트, 배포 대상)**: `SKILL.md`(진입점) · `kit/` · `references/` · `scripts/` · `입력양식/` · `데모_제작규칙.html` · `outputs/`(레이아웃 아틀라스). 사람용 개요는 `README.md`.
-- **② 개발자료 `_dev/`(배포 제외)**: `설계기록/`(빌드·결정 기록 · `탐색-아카이브/` 미채택본). **커리큘럼·콘텐츠 원천은 `sessions/`로 이관**됨 — 상위 기준 `sessions/바이브코딩_커리큘럼_기준안.md` + 주차 상세 `sessions/N주차/N주차_강의안설계.md`(옛 인수인계서 역할). `_dev/강의자료/`는 더 이상 쓰지 않는다.
+- **② 개발자료 `_dev/`(배포 제외)**: `설계기록/`(빌드·결정 기록 · `탐색-아카이브/` 미채택본). **커리큘럼·콘텐츠 원천은 `sessions/`로 이관**됨 — 상위 기준 `courses/바이브코딩/커리큘럼_기준안.md` + 주차 상세 `courses/<과목>/sessions/N주차/N주차_강의안설계.md`(옛 인수인계서 역할). `_dev/강의자료/`는 더 이상 쓰지 않는다.
 - **③ 플랫폼 어댑터**: `.agents/skills/create-slides/`(Codex) · `.claude/skills/create-slides/`(Claude Code). 공통 규칙을 복제하지 않고 루트 `SKILL.md`만 로드한다. 누적 규칙·버그 정본은 `.agents/agent-memory/create-slides/MEMORY.md` 하나이며 Claude Code도 이 파일을 읽는다. `ui-ux-pro-max`만 각 플랫폼 탐색 위치에 실행 자원과 함께 둔다. `/리서치` 워커의 실행 통제(`Explore` + `sonnet` + 도구 허용목록 + 사후 감사)는 플랫폼마다 수단이 달라 `.claude/skills/리서치/SKILL.md`가 Claude 전용으로 규정하며, 조사 규칙 정본은 `skills/리서치/SKILL.md` 그대로다.
 - **④ 주차별 작업물 `sessions/`(배포 제외)**: `N주차/`에 그 주차의 `N주차_초안.md`(레거시 무접두어 `초안.md`는 폴백 인식)·`강의덱.html`·`강의덱_발표자노트.html`·`자료/`. 새 주차는 `sessions/_template/` 복사, 규약은 `sessions/README.md`. 1주차는 구세대 산출물만 폐기됐고 현행 산출물(초안·덱·노트)은 정본이며 **2026-07-26 사용자 결정으로 동결**됐다 — 수정·재조립하지 않는다.
 - **⑤ 팀 워크플로 스킬 `skills/`(배포 제외)**: 강의 제작 팀 역할 스킬 3종(리서치·콘텐츠·검토) + 횡단 오케스트레이션 프로토콜 하네스의 정본. scripts/·sessions/ 규약에 하드 결합된 이식 불가 자산이라 포터블 스킬 배포 복사에서 제외한다. 등재·계약·호출 규약 정본은 `skills/README.md`.
@@ -19,7 +19,7 @@
 1. `.agents/agent-memory/create-slides/MEMORY.md`의 `## 미해결`(현재 상태·다음 할 일)은 무조건 읽는다. 나머지(누적 규칙·하드윈 버그·색 시스템 정본)는 덱 조립·규칙 변경 작업 시 읽는다. 관련 작업을 끝내기 전에는 같은 파일을 다시 확인해, 해결된 미해결 항목과 더는 유효하지 않은 규칙·버그·인수인계 내용을 **반드시 삭제**하고 계속 유효한 내용만 남긴다.
 2. 배경이 필요할 때 `_dev/설계기록/구조-및-빌드-기록.md`를 읽는다.
 3. `skills/README.md` — 팀 워크플로 스킬(`$리서치`·`$콘텐츠`·`$검토`·`$하네스`) 호출 시 계약표·파이프라인 지도·명시 호출 규약을 확인한다.
-4. 커리큘럼(`sessions/바이브코딩_커리큘럼_기준안.md` + `sessions/N주차/N주차_강의안설계.md`) — 해당 주차 파일을 열거나 쓰기 전에, 그 주차 것만 읽는다.
+4. 커리큘럼(`courses/바이브코딩/커리큘럼_기준안.md` + `courses/<과목>/sessions/N주차/N주차_강의안설계.md`) — 해당 주차 파일을 열거나 쓰기 전에, 그 주차 것만 읽는다.
 5. 덱 조립·리뷰 요청이면 루트 `SKILL.md`를 적용하고 그 안의 read-path를 순서대로 따른다.
 6. `sessions/README.md` — 새 주차 폴더를 만들 때 읽는다.
 
@@ -49,7 +49,7 @@
 ## 실행과 검증
 
 ```powershell
-python scripts/assemble_deck.py sessions/N주차/강의덱.초안   # shard → 강의덱.html 재생성(덮어씀)
+python scripts/assemble_deck.py courses/<과목>/sessions/N주차/강의덱.초안   # shard → 강의덱.html 재생성(덮어씀)
 python scripts/verify_deck.py <덱>.html --parts N   # N = 그 덱의 part-divider 수(슬라이드 총수 아님 — 1·2주차 모두 6)
 python -m http.server
 python scripts/inline_deck.py <덱>.html --offline
@@ -70,7 +70,7 @@ python scripts/verify_draft_quality.py <주차>                # .md 초안 단�
 python scripts/verify_deck_quality.py <덱>.html              # 조립된 덱 단계: 저밀도·근-빈 컨테이너·시각자료 비율·부록 강등
 ```
 
-- ⚠️ **`sessions/N주차/강의덱.html`은 생성물이다.** 정본은 `강의덱.초안/`의 `shell.html`(head·고정 슬라이드·`<!-- ::PARTS:: -->` 마커·JS) + `part-NN.html`이고, `assemble_deck.py`가 이를 합쳐 덱을 **덮어쓴다**. 덱을 직접 고치면 다음 조립 때 유실되고, 생성물에만 있는 슬라이드는 조립 즉시 사라진다. 수정은 shard에 하고 조립한다(급히 덱을 고쳤다면 같은 내용을 shard에도 반영). 규약 상세는 `sessions/README.md`.
+- ⚠️ **`courses/<과목>/sessions/N주차/강의덱.html`은 생성물이다.** 정본은 `강의덱.초안/`의 `shell.html`(head·고정 슬라이드·`<!-- ::PARTS:: -->` 마커·JS) + `part-NN.html`이고, `assemble_deck.py`가 이를 합쳐 덱을 **덮어쓴다**. 덱을 직접 고치면 다음 조립 때 유실되고, 생성물에만 있는 슬라이드는 조립 즉시 사라진다. 수정은 shard에 하고 조립한다(급히 덱을 고쳤다면 같은 내용을 shard에도 반영). 규약 상세는 `sessions/README.md`.
 - 생성물과 shard가 어긋났다면 shard를 하나씩 맞추지 말고, 완성된 `강의덱.html`을 파트 경계로 잘라 shard를 재생성한 뒤 조립 결과를 조립 전 사본과 diff해 검증한다. 조립 전에는 반드시 현재 덱 사본을 떠둔다.
 - 브라우저는 `deck.css`를 캐시하므로 변경 확인 때 링크의 `href`에 `?v=`를 붙인다.
 - `file://`로 검증하지 말고 로컬 HTTP 서버를 사용한다.
