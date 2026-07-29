@@ -26,6 +26,38 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import verify_session_docs as vsd  # resolve_draft, parse_tables, read 재사용
 from verify_notes import SlideParser  # 덱 슬라이드 제목 추출 재사용
+import os
+
+# ── 과목 아키텍처 경로 폴백 (2026-07-29 P4.5) ────────────────────────────
+# `courses/<과목>/sessions/N주차` 우선, 없으면 구경로 `sessions/N주차`.
+# 정본은 scripts/_course_paths.py. 구경로 폴백을 없애지 마라 — 1주차(동결) 자료가
+# 메타 헤더에서 구경로를 참조한다.
+def _cp():
+    try:
+        _d = os.path.dirname(os.path.abspath(__file__))
+        if _d not in sys.path:
+            sys.path.insert(0, _d)
+        import _course_paths
+        return _course_paths
+    except Exception:
+        return None
+
+
+def _session_dir(root, wk):
+    m = _cp()
+    if m is None:
+        return Path(root) / "sessions" / f"{wk}주차"
+    return Path(m.session_dir(wk, str(root)))
+
+
+def _contracts_dir(root):
+    m = _cp()
+    if m is None:
+        return Path(root) / "sessions" / "_contracts"
+    d = m.contracts_dir(str(root))
+    return Path(d) if d else Path(root) / "sessions" / "_contracts"
+# ─────────────────────────────────────────────────────────────────────────
+
 
 
 def extract_draft_rows(text):
@@ -108,7 +140,7 @@ def main():
 
     root = Path(args.root) if args.root else Path(__file__).resolve().parent.parent
     wk = args.week
-    sess = root / "sessions" / f"{wk}주차"
+    sess = _session_dir(root, wk)
     deck_path = sess / "강의덱.html"
 
     print(f"=== report_draft_sync {wk}주차 ===")

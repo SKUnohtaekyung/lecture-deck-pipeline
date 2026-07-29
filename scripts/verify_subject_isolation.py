@@ -6,7 +6,7 @@
 -----------
 2026-07-28 실측: `skills/콘텐츠/SKILL.md` 본문에 과목 고유 값 13곳, `kit/*/by-shape.md`에 3곳.
 그 상태로 다른 주제 강의에 이 스킬을 쓰면 **남의 과목 실측치가 규칙으로 강요된다.**
-과목 고유 값의 정본은 `sessions/과목프로필.md`이고, 스킬 본문에는 어느 과목에나 적용되는
+과목 고유 값의 정본은 `courses/<과목>/profile.md`이고, 스킬 본문에는 어느 과목에나 적용되는
 규칙만 남아야 한다.
 
 이 검사기가 P1(주제 격리)의 **합격 조건**이다 — 검사기 없이 "다 옮겼다"고 하면 자기보고이고,
@@ -24,7 +24,7 @@
 사용
 ----
     python scripts/verify_subject_isolation.py
-    python scripts/verify_subject_isolation.py --profile sessions/과목프로필.md
+    python scripts/verify_subject_isolation.py --profile courses/<과목>/profile.md
 
 종료코드: 0 통과(WARN 있어도 0) · 1 FAIL · 2 프로필 없음/스키마 불량
 """
@@ -38,7 +38,13 @@ import argparse
 if hasattr(sys.stdout, "reconfigure"):          # Windows cp949에서 한글이 죽지 않게
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
-DEFAULT_PROFILE = "sessions/과목프로필.md"
+try:                                             # 신경로 courses/<과목>/profile.md 우선, 구경로 폴백
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    import _course_paths
+    _p = _course_paths.profile_path()
+    DEFAULT_PROFILE = os.path.relpath(_p, _course_paths._repo_root()) if _p else "courses/<과목>/profile.md"
+except Exception:
+    DEFAULT_PROFILE = "sessions/과목프로필.md"
 
 # 스킬 본문 — 여기서 발견되면 FAIL
 SCAN_FAIL = [
@@ -56,7 +62,7 @@ SCAN_WARN = [
 ]
 EXCLUDE_DIRS = ("sessions/", "reports/", "_dev/", ".agents/", ".claude/", "evals/")
 # 문서 전체가 과목 종속 산출물이라 격리 대상이 아니라 재분류 대상인 파일.
-# 사유는 `sessions/과목프로필.md` §8 「검사에서 제외한 것과 사유」가 정본이다.
+# 사유는 `courses/<과목>/profile.md` §8 「검사에서 제외한 것과 사유」가 정본이다.
 EXCLUDE_FILES = ("kit/guide/교육원칙-요약.md",)
 
 ROUND_RE = re.compile(r"\d+\s*주차")

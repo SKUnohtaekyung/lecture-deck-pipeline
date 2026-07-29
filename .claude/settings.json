@@ -15,5 +15,39 @@
       "Bash(taskkill:*)",
       "Bash(curl:*)"
     ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \"$CLAUDE_PROJECT_DIR/scripts/hook_slide_guard.py\" --mode checklist",
+            "timeout": 15,
+            "statusMessage": "슬라이드 사전 점검 7항 확인"
+          },
+          {
+            "type": "command",
+            "command": "python \"$CLAUDE_PROJECT_DIR/scripts/hook_slide_guard.py\" --mode course",
+            "timeout": 15,
+            "statusMessage": "과목 슬라이드 지침 주입"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \"$CLAUDE_PROJECT_DIR/scripts/hook_slide_guard.py\" --mode css-lint",
+            "timeout": 15,
+            "statusMessage": "R-QC-14 CSS 회귀 검사"
+          }
+        ]
+      }
+    ]
   }
 }

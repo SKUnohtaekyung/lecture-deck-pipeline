@@ -40,6 +40,38 @@ from collections import Counter
 from fnmatch import fnmatch
 from pathlib import Path
 from urllib.parse import urlparse
+import os
+
+# ── 과목 아키텍처 경로 폴백 (2026-07-29 P4.5) ────────────────────────────
+# `courses/<과목>/sessions/N주차` 우선, 없으면 구경로 `sessions/N주차`.
+# 정본은 scripts/_course_paths.py. 구경로 폴백을 없애지 마라 — 1주차(동결) 자료가
+# 메타 헤더에서 구경로를 참조한다.
+def _cp():
+    try:
+        _d = os.path.dirname(os.path.abspath(__file__))
+        if _d not in sys.path:
+            sys.path.insert(0, _d)
+        import _course_paths
+        return _course_paths
+    except Exception:
+        return None
+
+
+def _session_dir(root, wk):
+    m = _cp()
+    if m is None:
+        return Path(root) / "sessions" / f"{wk}주차"
+    return Path(m.session_dir(wk, str(root)))
+
+
+def _contracts_dir(root):
+    m = _cp()
+    if m is None:
+        return Path(root) / "sessions" / "_contracts"
+    d = m.contracts_dir(str(root))
+    return Path(d) if d else Path(root) / "sessions" / "_contracts"
+# ─────────────────────────────────────────────────────────────────────────
+
 
 CIRC8 = "①②③④⑤⑥⑦⑧"
 CIRC13 = "①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬"
@@ -58,9 +90,9 @@ LEFTOVER_PATTERNS = (
 )
 
 ALLOWLIST = {
-    "자료": ["sessions/*주차/자료/*", ".omc/*"],
-    "초안": ["sessions/*주차/초안.md", "sessions/*주차/*초안.md", "sessions/*주차/자료/*집필노트*", ".omc/*"],
-    "검토": ["sessions/*주차/검토보고_*.md", ".omc/*"],
+    "자료": ["sessions/*주차/자료/*", "courses/*/sessions/*주차/자료/*", ".omc/*"],
+    "초안": ["sessions/*주차/초안.md", "sessions/*주차/*초안.md", "sessions/*주차/자료/*집필노트*", "courses/*/sessions/*주차/*초안.md", "courses/*/sessions/*주차/자료/*집필노트*", ".omc/*"],
+    "검토": ["sessions/*주차/검토보고_*.md", "courses/*/sessions/*주차/검토보고_*.md", ".omc/*"],
 }
 
 results = []  # (check, status, detail)
@@ -401,10 +433,10 @@ def check_capability_claims(root, wk):
     neg = ("못", "할 수 없", "없", "불가", "안 돼", "안 됨", "안됨")
     obs_re = re.compile(r"캡처|스크린샷|화면|관찰|실측")
     targets = [
-        ("콘텐츠리서치", root / "sessions" / f"{wk}주차" / "자료" / f"{wk}주차_콘텐츠리서치_결과.md"),
-        ("실습안", root / "sessions" / f"{wk}주차" / "자료" / f"{wk}주차_실습안_검증결과.md"),
-        ("종합정리", root / "sessions" / f"{wk}주차" / "자료" / f"{wk}주차_리서치_종합정리.md"),
-        ("초안", resolve_draft(root / "sessions" / f"{wk}주차", wk)),
+        ("콘텐츠리서치", _session_dir(root, wk) / "자료" / f"{wk}주차_콘텐츠리서치_결과.md"),
+        ("실습안", _session_dir(root, wk) / "자료" / f"{wk}주차_실습안_검증결과.md"),
+        ("종합정리", _session_dir(root, wk) / "자료" / f"{wk}주차_리서치_종합정리.md"),
+        ("초안", resolve_draft(_session_dir(root, wk), wk)),
     ]
     hits = []
     for label, p in targets:
@@ -464,7 +496,7 @@ def main():
 
     root = Path(args.root) if args.root else Path(__file__).resolve().parent.parent
     wk = args.week
-    sess = root / "sessions" / f"{wk}주차"
+    sess = _session_dir(root, wk)
     data = sess / "자료"
     files = {
         "result": data / f"{wk}주차_콘텐츠리서치_결과.md",

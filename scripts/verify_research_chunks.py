@@ -64,6 +64,38 @@ import argparse
 import re
 import sys
 from pathlib import Path
+import os
+
+# ── 과목 아키텍처 경로 폴백 (2026-07-29 P4.5) ────────────────────────────
+# `courses/<과목>/sessions/N주차` 우선, 없으면 구경로 `sessions/N주차`.
+# 정본은 scripts/_course_paths.py. 구경로 폴백을 없애지 마라 — 1주차(동결) 자료가
+# 메타 헤더에서 구경로를 참조한다.
+def _cp():
+    try:
+        _d = os.path.dirname(os.path.abspath(__file__))
+        if _d not in sys.path:
+            sys.path.insert(0, _d)
+        import _course_paths
+        return _course_paths
+    except Exception:
+        return None
+
+
+def _session_dir(root, wk):
+    m = _cp()
+    if m is None:
+        return Path(root) / "sessions" / f"{wk}주차"
+    return Path(m.session_dir(wk, str(root)))
+
+
+def _contracts_dir(root):
+    m = _cp()
+    if m is None:
+        return Path(root) / "sessions" / "_contracts"
+    d = m.contracts_dir(str(root))
+    return Path(d) if d else Path(root) / "sessions" / "_contracts"
+# ─────────────────────────────────────────────────────────────────────────
+
 
 USAGE = "사용: python scripts/verify_research_chunks.py <주차>  (예: 1, 2)"
 
@@ -502,7 +534,7 @@ def main():
 
     week = args.week
     root = Path(args.root) if args.root else Path(__file__).resolve().parent.parent
-    data_dir = root / "sessions" / f"{week}주차" / "자료"
+    data_dir = _session_dir(root, week) / "자료"
     target = data_dir / f"{week}주차_개념KB.md"
     research_result = data_dir / f"{week}주차_콘텐츠리서치_결과.md"
 
@@ -533,6 +565,14 @@ def main():
             add("청크수", "FAIL", "'## [C-...]' 청크 헤딩 0개")
         else:
             add("청크수", "PASS", f"{len(chunks)}개")
+            # 정보용 카운트(2026-07-27 B2 신설) — PASS/FAIL 판정 아님. `PPT 소재:` 필드는
+            # /콘텐츠가 시각자료로 실현해야 할 하류 회수 대상이라, 몇 개나 있는지를 미리
+            # 보여줘야 하류가 그 존재 자체를 놓치지 않는다(실현 여부는 이 스크립트의 책임
+            # 밖 — verify_draft_quality.py의 R-QD-05 「PPT 소재 처분표」가 그 대조를 맡는다).
+            ppt_source_chunks = sum(1 for _title, body in chunks if "PPT 소재" in body)
+            add("PPT소재:보유청크(정보용)", "PASS",
+                f"{ppt_source_chunks}/{len(chunks)}개 청크에 'PPT 소재' 필드 존재 — "
+                "/콘텐츠 집필노트의 「PPT 소재 처분표」에서 전량 사용/대체/보류 처리해야 함")
             for title, body in chunks:
                 check_chunk_depth(title, body, is_v2)
 

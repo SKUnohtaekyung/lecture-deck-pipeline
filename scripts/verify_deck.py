@@ -36,6 +36,38 @@ from pathlib import Path
 from urllib.parse import unquote, urlsplit
 from html.parser import HTMLParser
 import html as _html_stdlib
+import os
+
+# ── 과목 아키텍처 경로 폴백 (2026-07-29 P4.5) ────────────────────────────
+# `courses/<과목>/sessions/N주차` 우선, 없으면 구경로 `sessions/N주차`.
+# 정본은 scripts/_course_paths.py. 구경로 폴백을 없애지 마라 — 1주차(동결) 자료가
+# 메타 헤더에서 구경로를 참조한다.
+def _cp():
+    try:
+        _d = os.path.dirname(os.path.abspath(__file__))
+        if _d not in sys.path:
+            sys.path.insert(0, _d)
+        import _course_paths
+        return _course_paths
+    except Exception:
+        return None
+
+
+def _session_dir(root, wk):
+    m = _cp()
+    if m is None:
+        return Path(root) / "sessions" / f"{wk}주차"
+    return Path(m.session_dir(wk, str(root)))
+
+
+def _contracts_dir(root):
+    m = _cp()
+    if m is None:
+        return Path(root) / "sessions" / "_contracts"
+    d = m.contracts_dir(str(root))
+    return Path(d) if d else Path(root) / "sessions" / "_contracts"
+# ─────────────────────────────────────────────────────────────────────────
+
 try:
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")  # Windows cp949 콘솔 대응
 except Exception:
@@ -598,6 +630,23 @@ def family_signature(cls, inner):
         ('viz-cycle', 'cycle'), ('viz-radial', 'radial'), ('viz-gantt', 'gantt'),
         ('claim-rationale', 'claim'), ('case-acts', 'acts'),
         ('quad-grid', 'quad'), ('metric-strip', 'metric'), ('def-msg', 'definition'),
+        # 2026-07-27 샘플 재설계 신규 구도 6종(p7/p13/p14/p19/p35/p58) — generic
+        # 폴백(s-full·table·compare·flow)보다 먼저 판정해야 내부 클래스에 잡히지 않는다.
+        ('w2-target', 'target'), ('w2-typecard', 'typecard'), ('w2-analogy', 'analogy'),
+        ('w2-itr', 'itr'), ('w2-handoff', 'handoff'), ('w2-stepwarn', 'stepwarn'),
+        # 2026-07-28 4구간(AI 작업 시스템) 표본 V3 신규 구도 3종.
+        #   w2-enforce : 오해교정형 3단 스캐폴드(정의→판단기준→나쁜예/좋은예) — S3CE/S3PE
+        #   w2-verdict : 대립 주장 3+3 병렬 + 하단 종합 한 줄 — 원리 29
+        #   w2-axis    : 두 대상 비교를 가운데 관계축으로 강제 — S3HUM
+        ('w2-enforce', 'enforce'), ('w2-verdict', 'verdict'), ('w2-axis', 'axis'),
+        # 2026-07-28 4구간 확산분 2종.
+        #   w2-timeline  : 시점 흐름 + 각 시점의 의미(용어 형성사·절차 순환) — S3ITR
+        #   w2-warnsteps : "왜 이 순서인가"(경고)를 먼저 두고 단계를 잇는다 — S3ITR+S3MAP
+        ('w2-timeline', 'timeline'), ('w2-warnsteps', 'warnsteps'),
+        # 2026-07-28 동점 규칙(by-shape.md) 적용분.
+        #   w2-metric : numeric — C-column 차트가 주인공, 설명은 옆에 글로 (L-td-compare-bars)
+        #   w2-figure : concept — 박스 없는 본문 글 + 단일 도해 + 스트립 1개 (L-ct-figure)
+        ('w2-metric', 'metric2'), ('w2-figure', 'figure'),
     )
     for _cls, _fam in _W2_FAMILIES:
         if has_class(_cls):
@@ -943,7 +992,7 @@ def find_deck_contract(deck_path):
     if sibling.is_file():
         return sibling
     repo_root = Path(__file__).resolve().parent.parent
-    named = repo_root / 'sessions' / '_contracts' / f'{deck_file.parent.name}.deck.contract.json'
+    named = _contracts_dir(repo_root) / f'{deck_file.parent.name}.deck.contract.json'
     if named.is_file():
         return named
     return None

@@ -39,6 +39,37 @@ import re
 import sys
 from pathlib import Path
 
+# ── 과목 아키텍처 경로 폴백 (2026-07-29 P4.5) ────────────────────────────
+# `courses/<과목>/sessions/N주차` 우선, 없으면 구경로 `sessions/N주차`.
+# 정본은 scripts/_course_paths.py. 구경로 폴백을 없애지 마라 — 1주차(동결) 자료가
+# 메타 헤더에서 구경로를 참조한다.
+def _cp():
+    try:
+        _d = os.path.dirname(os.path.abspath(__file__))
+        if _d not in sys.path:
+            sys.path.insert(0, _d)
+        import _course_paths
+        return _course_paths
+    except Exception:
+        return None
+
+
+def _session_dir(root, wk):
+    m = _cp()
+    if m is None:
+        return Path(root) / "sessions" / f"{wk}주차"
+    return Path(m.session_dir(wk, str(root)))
+
+
+def _contracts_dir(root):
+    m = _cp()
+    if m is None:
+        return Path(root) / "sessions" / "_contracts"
+    d = m.contracts_dir(str(root))
+    return Path(d) if d else Path(root) / "sessions" / "_contracts"
+# ─────────────────────────────────────────────────────────────────────────
+
+
 try:
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 except Exception:
@@ -215,7 +246,7 @@ def resolve_draft(sess_dir, wk):
 def run_checks(root, wk):
     results = []  # (rule_id, level, message)
     advisories = []  # (rule_id, message) — 사람검토 전용, PASS/WARN/FAIL 판정 없음
-    sess = root / "sessions" / f"{wk}주차"
+    sess = _session_dir(root, wk)
     draft_path = resolve_draft(sess, wk)
     if not draft_path.exists():
         results.append(("R-QD-00", "FAIL", f"초안 파일 없음: {draft_path}"))
