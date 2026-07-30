@@ -1420,6 +1420,135 @@
   background:var(--surface); border:1px solid var(--gray-400);
   font-size:22px; font-weight:650; line-height:1.4; color:var(--ink); }
 .slide[data-slide="C4-10"] .mt-lead{ margin-bottom:14px; }
+
+/* ══════════════════════════════════════════════════════════════════
+   2026-07-30 (2차) · Part 4 확장 4장 + 간지 목차 반영
+   근거 자료: 자료/하네스_엔지니어링_교육자료.md (§4·§5.2·§12·§19·§21·§22)
+   ⚠️ 신설 구도 4종(w2-nest·w2-route·w2-ladder·w2-stair)은 반드시
+      deck.contract.json의 layout_families에 등재한다. 미등재 구도는 'full'로
+      판정돼 「동일 구도 3연속」이 오탐된다(계약 파일 _notes 참고).
+   ══════════════════════════════════════════════════════════════════ */
+
+/* ── w2-nest · C4-12 「프롬프트 · 컨텍스트 · 하네스」 (정보 모양: 포함관계)
+      세 말이 세대교체가 아니라 서로를 감싸는 관계임을 동심 사각으로 보인다.
+      좌 = 포함 구조, 우 = 바깥 층이 필요한 이유 3가지. ── */
+.w2-nest .s-full{ bottom:54px; display:flex; flex-direction:column; gap:12px; }
+.ns-lead{ margin:0; font-size:23px; font-weight:650; line-height:1.42; color:var(--ink); }
+.ns-body{ flex:1 1 auto; display:grid; grid-template-columns:1fr 452px; gap:26px;
+  align-items:center; min-height:0; }
+.ns-ring{ display:flex; flex-direction:column; gap:10px; padding:14px 16px;
+  border-radius:var(--r-lg); }
+.ns-r3{ background:var(--blue-panel); border:2px solid var(--blue-line-strong); }
+.ns-r2{ background:var(--surface); border:2px solid var(--periwinkle); }
+.ns-r1{ background:var(--mint-soft); border:2px solid var(--mint-line); }
+.ns-head{ display:flex; align-items:baseline; gap:12px; flex-wrap:wrap; }
+.ns-head > b{ font-size:23px; font-weight:800; line-height:1.2; }
+.ns-r3 > .ns-head > b{ color:var(--blue); }
+.ns-r2 > .ns-head > b{ color:var(--gray-700); }
+.ns-r1 > .ns-head > b{ color:var(--mint-deep); }
+.ns-head > span{ font-size:22px; font-weight:600; line-height:1.35; color:var(--gray-700); }
+.ns-why{ display:flex; flex-direction:column; gap:10px; }
+.ns-wh{ margin:0; font-size:22px; font-weight:800; color:var(--blue); }
+.ns-item{ display:flex; align-items:flex-start; gap:12px; padding:12px 16px;
+  background:var(--white); border:1px solid var(--blue-line); border-radius:var(--r-md);
+  box-shadow:var(--shadow-sm); }
+.ns-item > b{ flex:0 0 auto; min-width:52px; font-size:22px; font-weight:800; color:var(--ink); }
+.ns-item > span{ font-size:22px; font-weight:600; line-height:1.4; color:var(--gray-700); }
+.ns-foot{ margin:0; padding:11px 0 11px 18px; border-left:5px solid var(--mint);
+  font-size:22px; font-weight:700; line-height:1.42; color:var(--ink); }
+
+/* ── w2-route · C4-13 「같은 실수가 두 번 나오면」 (정보 모양: 증상→처방 매핑)
+      반복되는 증상마다 «어디에 넣을지»가 다르다. 규칙·Skill·장치·기록이
+      앞 세 장(C4-6~C4-8)에서 각각 나왔으므로 여기서 한 판에 모아 잇는다. ── */
+.w2-route .s-full{ bottom:54px; display:flex; flex-direction:column; gap:12px; }
+.rt-lead{ margin:0; font-size:23px; font-weight:650; line-height:1.42; color:var(--ink); }
+.rt-grid{ flex:1 1 auto; display:grid; grid-template-columns:1fr 48px 380px;
+  gap:10px 0; align-content:center; min-height:0; }
+.rt-sym{ display:flex; align-items:center; padding:13px 18px; background:var(--surface);
+  border:1px solid var(--gray-400); border-radius:var(--r-md);
+  font-size:22px; font-weight:650; line-height:1.35; color:var(--ink); }
+.rt-ar{ display:grid; place-items:center; font-size:22px; font-weight:800; color:var(--gray-700); }
+/* display:block — flex baseline으로 두면 둘째 줄이 라벨 폭만큼 들여써져
+   "…적어 / 둔다"처럼 꼬리만 오른쪽으로 밀린다(실측). */
+.rt-fix{ display:block; padding:13px 18px;
+  background:var(--blue-panel); border:1px solid var(--blue-line-strong);
+  border-radius:var(--r-md); font-size:22px; line-height:1.35; }
+.rt-fix > b{ margin-right:10px; font-size:22px; font-weight:800; color:var(--blue); }
+.rt-fix > span{ font-size:22px; font-weight:600; color:var(--gray-700); }
+.rt-brake{ margin:0; padding:11px 0 11px 18px; border-left:5px solid var(--coral);
+  font-size:22px; font-weight:700; line-height:1.42; color:var(--ink); }
+
+/* ── w2-ladder · C4-14 「"다 됐습니다"를 무엇으로 확인하나」 (정보 모양: 강도 순위)
+      C4-9가 「보고 ≠ 결과」까지 갔으므로 여기서 «그럼 무엇을 보면 증거인가»를
+      강한 것부터 약한 것까지 세로로 세운다. 6교시(앱 자체 점검)와의 경계를 명시. ── */
+.w2-ladder .s-full{ bottom:54px; display:flex; flex-direction:column; gap:12px; }
+.ld-lead{ margin:0; font-size:23px; font-weight:650; line-height:1.42; color:var(--ink); }
+.ld-body{ flex:1 1 auto; display:grid; grid-template-columns:34px 1fr 400px; gap:0 18px;
+  align-items:center; min-height:0; }
+/* 세로 축을 그림으로 한 번 더 말한다 — 라벨 두 개(가장 강함/약함)만으로는
+   «위아래가 순위»라는 것이 한눈에 오지 않는다. */
+.ld-axis{ justify-self:center; }
+.ld-stack{ display:flex; flex-direction:column; gap:10px; }
+.ld-step{ display:flex; align-items:baseline; gap:12px; padding:15px 18px;
+  border-radius:var(--r-md); background:var(--white);
+  border:1px solid var(--blue-line); border-left:6px solid var(--periwinkle); }
+.ld-step > i{ flex:0 0 auto; font-style:normal; font-size:22px; font-weight:800; }
+.ld-step > b{ flex:0 0 auto; font-size:22px; font-weight:800; color:var(--ink); }
+.ld-step > span{ font-size:22px; font-weight:600; line-height:1.35; color:var(--gray-700); }
+.ld-step.is-top{ background:var(--mint-soft); border-color:var(--mint-line);
+  border-left-color:var(--mint); }
+.ld-step.is-top > i{ color:var(--mint-deep); }
+.ld-step.is-weak{ background:var(--coral-soft); border-color:var(--coral-line);
+  border-left-color:var(--coral); }
+.ld-step.is-weak > i{ color:var(--coral-deep); }
+.ld-side{ display:flex; flex-direction:column; gap:9px; }
+.ld-sh{ margin:0; font-size:22px; font-weight:800; color:var(--blue); }
+.ld-q{ padding:12px 16px; background:var(--blue-panel); border:1px solid var(--blue-line-strong);
+  border-radius:var(--r-md); font-size:22px; font-weight:650; line-height:1.35; color:var(--ink); }
+.ld-note{ margin:2px 0 0; font-size:22px; font-weight:600; line-height:1.4; color:var(--gray-700); }
+.ld-foot{ margin:0; padding:11px 0 11px 18px; border-left:5px solid var(--mint);
+  font-size:22px; font-weight:700; line-height:1.42; color:var(--ink); }
+
+/* ── w2-stair · C4-15 「어디까지 갖출까」 (정보 모양: 단계 사다리)
+      §19 성숙도 0~4를 입문자용 4단으로 압축하고 «오늘 여기까지»를 못 박는다.
+      §22.8(처음부터 거대한 하네스) 안티패턴이 파트의 브레이크 역할. ── */
+.w2-stair .s-full{ bottom:54px; display:flex; flex-direction:column; gap:12px; }
+.st-lead{ margin:0; font-size:23px; font-weight:650; line-height:1.42; color:var(--ink); }
+.st-track{ flex:1 1 auto; display:grid; grid-template-columns:repeat(4,1fr); gap:16px;
+  align-items:end; min-height:0; }
+.st-col{ display:flex; flex-direction:column; justify-content:flex-end; gap:8px; }
+.st-mark{ align-self:flex-start; padding:5px 14px; border-radius:var(--r-pill);
+  background:var(--mint); color:var(--on-mint); font-size:22px; font-weight:800; }
+.st-box{ display:flex; flex-direction:column; justify-content:center; gap:7px; padding:14px 16px;
+  border-radius:var(--r-lg) var(--r-lg) 0 0; background:var(--surface);
+  border:1px solid var(--gray-400); border-bottom:0; }
+/* 계단으로 읽히게 단마다 높이를 올린다. 같은 높이 4칸이면 «단계»가 아니라
+   «카드 4장»으로 읽힌다(실측 캡처로 확인). align-items:end라 바닥은 한 줄로 맞는다. */
+.st-track > .st-col:nth-child(1) .st-box{ min-height:158px; }
+.st-track > .st-col:nth-child(2) .st-box{ min-height:198px; }
+.st-track > .st-col:nth-child(3) .st-box{ min-height:238px; }
+.st-track > .st-col:nth-child(4) .st-box{ min-height:278px; }
+.st-box > i{ font-style:normal; font-size:22px; font-weight:800; color:var(--gray-700); }
+.st-box > b{ font-size:23px; font-weight:800; line-height:1.25; color:var(--ink); }
+.st-box > span{ font-size:22px; font-weight:600; line-height:1.35; color:var(--gray-700); }
+.st-col.is-now .st-box{ background:var(--blue-panel); border-color:var(--blue-line-strong);
+  box-shadow:var(--shadow-sm); }
+.st-col.is-now .st-box > i{ color:var(--blue); }
+.st-col.is-goal .st-box{ background:var(--mint-soft); border-color:var(--mint-line); }
+.st-col.is-goal .st-box > i{ color:var(--mint-deep); }
+.st-base{ height:8px; border-radius:var(--r-pill); background:var(--blue-line-strong); }
+.st-brake{ margin:0; padding:11px 0 11px 18px; border-left:5px solid var(--coral);
+  font-size:22px; font-weight:700; line-height:1.42; color:var(--ink); }
+
+/* ══ 간지에 목차(S03) 내용 반영 — 2026-07-30 (2차) ══
+   S03 아젠다의 «제목 + 한 줄 설명»을 6개 간지에 그대로 옮긴다. 목차에서 본
+   이름이 간지에 다시 나와야 수강생이 지금 몇 번째인지 짚을 수 있다.
+   기존 한마디(.pd-sub)는 지우지 않고 아래로 내린다.
+   세로 예산: 제목 460~526 · 설명 548~582 · 한마디 598~659 (바닥선 666 준수). */
+.part-divider .pd-desc{ position:absolute; top:548px; left:50%; transform:translateX(-50%);
+  z-index:1; margin:0; width:1000px; text-align:center;
+  font-size:23px; font-weight:700; line-height:1.45; color:var(--blue); }
+.part-divider .pd-sub{ top:598px; }
 </style>
 </head>
 <body>

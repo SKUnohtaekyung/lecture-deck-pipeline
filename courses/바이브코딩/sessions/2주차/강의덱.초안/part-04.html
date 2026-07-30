@@ -2,7 +2,8 @@
   <svg class="dv-hero" viewBox="0 0 1280 720" fill="none" aria-hidden="true"></svg>
   <div class="pd-dots" aria-hidden="true"></div>
   <p class="pd-eyebrow">PART</p>
-  <h2 class="pd-title">AI에게 큰 작업을 맡기는 시스템</h2>
+  <h2 class="pd-title">AI 작업 시스템</h2>
+  <p class="pd-desc">규칙 파일·Skill·서브에이전트로 큰 작업을 맡기는 방식을 정한다</p>
   <p class="pd-sub"><strong>한 번 잘 시키는 것과<br>매번 같은 품질로 시키는 것은 다릅니다.</strong></p>
 </section>
 
@@ -21,7 +22,7 @@
       <span class="rm-arrow" aria-hidden="true">→</span>
       <div class="rm-step"><span class="rm-n">3</span><b>규칙과 강제</b></div>
       <span class="rm-arrow" aria-hidden="true">→</span>
-      <div class="rm-step"><span class="rm-n">4</span><b>나눠 맡기기의 한계</b></div>
+      <div class="rm-step"><span class="rm-n">4</span><b>맡기기와 완료 확인</b></div>
       <span class="rm-arrow" aria-hidden="true">→</span>
       <div class="rm-step is-goal"><span class="rm-n">5</span><b>내 하네스 설계</b></div>
     </div>
@@ -157,6 +158,39 @@
 
     </div>
   </section>
+
+<section class="slide w2-nest" data-slide="C4-12">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span><div class="s-team">2주차<br>4교시</div>
+  </header>
+  <div class="s-full">
+    <h2 class="s-title">프롬프트 · 컨텍스트 · 하네스</h2>
+
+    <p class="ns-lead">새 말이 나올 때마다 앞의 것이 없어지는 게 아닙니다. 셋은 <span class="hl-mint-text">서로를 감싸는 관계</span>입니다.</p>
+
+    <div class="ns-body">
+      <div class="ns-ring ns-r3">
+        <div class="ns-head"><b>하네스</b><span>맡기기 전과 끝난 뒤까지 — 규칙 · 권한 · 확인</span></div>
+        <div class="ns-ring ns-r2">
+          <div class="ns-head"><b>컨텍스트</b><span>그때 AI가 무엇을 보고 있나 — 읽는 파일 · 앞 대화</span></div>
+          <div class="ns-ring ns-r1">
+            <div class="ns-head"><b>프롬프트</b><span>이번 한 번을 어떻게 시킬까</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ns-why">
+        <p class="ns-wh">왜 바깥 층이 필요한가</p>
+        <div class="ns-item"><b>저장</b><span>AI는 스스로 파일을 저장하지 않습니다 — 바깥의 도구가 대신 씁니다</span></div>
+        <div class="ns-item"><b>기억</b><span>한 번에 볼 수 있는 양이 정해져 있어, 앞 대화를 계속 기억하지 못합니다</span></div>
+        <div class="ns-item"><b>확인</b><span>자기 결과가 맞는지 스스로 확정하지 못합니다 — 확인은 바깥에서 합니다</span></div>
+      </div>
+    </div>
+
+    <p class="ns-foot">&ldquo;이제 프롬프트는 필요 없다&rdquo;는 말은 정확하지 않습니다 &mdash; <span class="hl-mint-mark">없어진 게 아니라 안쪽 한 층이 됐습니다</span></p>
+  </div>
+</section>
 
 <section class="slide w2-place" data-slide="C4-3">
   <header class="s-head">
@@ -404,6 +438,38 @@
     </div>
   </section>
 
+<section class="slide w2-route" data-slide="C4-13">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span><div class="s-team">2주차<br>4교시</div>
+  </header>
+  <div class="s-full">
+    <h2 class="s-title">반복되는 실수를 어디에 넣나</h2>
+
+    <p class="rt-lead">이 시스템은 한 번에 완성하는 설계가 아닙니다. <span class="hl-mint-text">같은 문제가 두 번 나올 때마다</span> 그 자리를 한 칸씩 메우는 일입니다.</p>
+
+    <div class="rt-grid">
+      <div class="rt-sym">매번 같은 것을 처음부터 다시 설명한다</div>
+      <div class="rt-ar" aria-hidden="true">&#8594;</div>
+      <div class="rt-fix"><b>규칙 파일</b><span>AGENTS.md에 한 줄로 적어 둔다</span></div>
+
+      <div class="rt-sym">같은 절차를 세 번 넘게 대화에 붙여넣는다</div>
+      <div class="rt-ar" aria-hidden="true">&#8594;</div>
+      <div class="rt-fix"><b>Skill</b><span>그 작업 때만 열리는 절차서로 옮긴다</span></div>
+
+      <div class="rt-sym">하지 말라고 적어 뒀는데 그냥 해 버린다</div>
+      <div class="rt-ar" aria-hidden="true">&#8594;</div>
+      <div class="rt-fix"><b>승인 · 권한</b><span>적는 것으로 부족한 자리는 장치로 막는다</span></div>
+
+      <div class="rt-sym">어제 왜 그렇게 정했는지 아무도 모른다</div>
+      <div class="rt-ar" aria-hidden="true">&#8594;</div>
+      <div class="rt-fix"><b>기록</b><span>결정과 이유를 파일에 남긴다</span></div>
+    </div>
+
+    <p class="rt-brake">한 번뿐인 실수까지 규칙으로 만들면 규칙이 길어져 아무도 읽지 않습니다 &mdash; <span class="hl-mint-mark">두 번 이상 반복될 때만</span> 넣습니다</p>
+  </div>
+</section>
+
 <section class="slide w2-branch" data-slide="C4-9">
     <header class="s-head">
       <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
@@ -464,6 +530,46 @@
     </div>
   </section>
 
+<section class="slide w2-ladder" data-slide="C4-14">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span><div class="s-team">2주차<br>4교시</div>
+  </header>
+  <div class="s-full">
+    <h2 class="s-title">완료를 확인하는 증거</h2>
+
+    <p class="ld-lead">같은 &ldquo;다 됐습니다&rdquo;라도 무엇을 근거로 하느냐에 따라 <span class="hl-mint-text">믿을 수 있는 정도가 다릅니다.</span></p>
+
+    <div class="ld-body">
+      <svg class="viz-diagram ld-axis" width="30" height="252" viewBox="0 0 30 252" role="img"
+           aria-label="세로축: 위로 갈수록 강한 증거, 아래로 갈수록 약한 증거">
+        <line x1="15" y1="10" x2="15" y2="228" style="stroke:var(--gray-400)" stroke-width="4" stroke-linecap="round"/>
+        <path d="M6 18 L15 6 L24 18" fill="none" style="stroke:var(--mint)" stroke-width="4"
+              stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M6 234 L15 246 L24 234" fill="none" style="stroke:var(--coral)" stroke-width="4"
+              stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+
+      <div class="ld-stack">
+        <div class="ld-step is-top"><i>가장 강함</i><b>내가 직접 열어 본 것</b><span>파일을 열어 보고, 화면을 눌러 봤다</span></div>
+        <div class="ld-step"><b>기계가 판정한 것</b><span>실행했더니 오류 없이 끝났다</span></div>
+        <div class="ld-step"><b>AI가 보여 준 코드 · 기록</b><span>보여 주긴 했지만 돌려 본 것은 아니다</span></div>
+        <div class="ld-step is-weak"><i>가장 약함</i><b>&ldquo;완료했습니다&rdquo;라는 말</b><span>증거가 아니라 <span class="hl-mint-underline">주장</span>이다</span></div>
+      </div>
+
+      <div class="ld-side">
+        <p class="ld-sh">그래서 이렇게 되묻습니다</p>
+        <div class="ld-q">어떤 파일을 바꿨어? 그 파일을 보여 줘</div>
+        <div class="ld-q">바뀐 결과를 어디서 볼 수 있어?</div>
+        <div class="ld-q">원래 되던 것은 아직 되나?</div>
+        <p class="ld-note">내 앱을 직접 점검하는 절차는 6교시에서 다룹니다 &mdash; 여기서는 <b>AI의 보고</b>를 확인하는 법입니다.</p>
+      </div>
+    </div>
+
+    <p class="ld-foot">보고를 의심하는 습관이 아니라, <span class="hl-mint-mark">증거를 한 가지 더 요청하는 습관</span>입니다</p>
+  </div>
+</section>
+
 <section class="slide w2-metric" data-slide="C4-10">
     <header class="s-head">
       <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
@@ -499,6 +605,53 @@
       <p class="mt-std">여럿에게 나눠 맡기는 구조는 출처마다 분류가 다릅니다 &mdash; 하나의 표준 구조가 있는 것이 아닙니다</p>
     </div>
   </section>
+
+<section class="slide w2-stair" data-slide="C4-15">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span><div class="s-team">2주차<br>4교시</div>
+  </header>
+  <div class="s-full">
+    <h2 class="s-title">하네스를 갖추는 단계</h2>
+
+    <p class="st-lead">오늘 본 것을 <b>전부</b> 갖출 필요는 없습니다. 막히는 자리가 생겼을 때 <span class="hl-mint-text">한 칸씩</span> 올립니다.</p>
+
+    <div class="st-track">
+      <div class="st-col">
+        <div class="st-box">
+          <i>0단계</i><b>대화만</b>
+          <span>대화창에서 시키고 결과를 눈으로 본다</span>
+        </div>
+        <div class="st-base"></div>
+      </div>
+      <div class="st-col is-now">
+        <span class="st-mark">지금 여기</span>
+        <div class="st-box">
+          <i>1단계</i><b>규칙 파일</b>
+          <span>지켜야 할 것과 만들 것을 파일로 적어 둔다</span>
+        </div>
+        <div class="st-base"></div>
+      </div>
+      <div class="st-col is-goal">
+        <span class="st-mark">오늘까지</span>
+        <div class="st-box">
+          <i>2단계</i><b>확인 절차</b>
+          <span>끝난 뒤 무엇을 보면 되는지 미리 정해 둔다</span>
+        </div>
+        <div class="st-base"></div>
+      </div>
+      <div class="st-col">
+        <div class="st-box">
+          <i>3단계</i><b>운영</b>
+          <span>권한 · 격리 실행 · 기록까지 — 여럿이 오래 쓸 때</span>
+        </div>
+        <div class="st-base"></div>
+      </div>
+    </div>
+
+    <p class="st-brake">처음부터 3단계를 만들면 <span class="hl-mint-mark">규칙만 남고 아무도 지키지 않습니다</span> &mdash; 우리 목표는 2단계 입구입니다</p>
+  </div>
+</section>
 
 <section class="slide w2-dialog" data-slide="C4-11">
     <header class="s-head">
