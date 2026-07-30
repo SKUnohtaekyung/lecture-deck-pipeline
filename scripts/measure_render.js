@@ -100,6 +100,61 @@
              a.bottom <= b.top || b.bottom <= a.top);
   }
 
+  /* --- 어절 잘림 판정 ---------------------------------------------------
+   * Range API로 텍스트 말단 노드의 줄바꿈 지점을 찾아, 그 지점이 공백이 아니고
+   * 어절(공백으로 나뉜 토큰) 내부이면 '어절 잘림'으로 센다. */
+  function findWordBreaks(root) {
+    var hits = [];
+    var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null);
+    var node;
+    while ((node = walker.nextNode())) {
+      var text = node.nodeValue;
+      if (!text || !text.trim()) continue;
+      var parentEl = node.parentElement;
+      if (parentEl && isHidden(parentEl)) continue;
+
+      var range = document.createRange();
+      var lineStarts = [0];
+      // 각 문자 오프셋에서 그 문자가 새 줄의 시작인지 판정: 문자의 top이 이전 문자의
+      // top과 다르면 줄이 바뀐 것으로 본다.
+      var prevTop = null;
+      for (var i = 0; i < text.length; i++) {
+        try {
+          range.setStart(node, i);
+          range.setEnd(node, i + 1);
+        } catch (e) {
+          continue;
+        }
+        var rects = range.getClientRects();
+        if (!rects.length) continue;
+        var top = rects[0].top;
+        if (prevTop !== null && Math.abs(top - prevTop) > 1 && i > 0) {
+          lineStarts.push(i);
+        }
+        prevTop = top;
+      }
+
+      for (var li = 1; li < lineStarts.length; li++) {
+        var breakIdx = lineStarts[li]; // 이 오프셋의 문자가 새 줄 첫 글자
+        var before = text.charAt(breakIdx - 1);
+        var after = text.charAt(breakIdx);
+        if (!before || !after) continue;
+        if (/\s/.test(before) || /\s/.test(after)) continue; // 줄바꿈 지점이 공백이면 어절 잘림 아님
+        // 어절(공백으로 나뉜 토큰) 내부인지 확인: breakIdx가 토큰의 시작/끝이 아니어야 함
+        // (앞뒤가 이미 공백이 아님을 확인했으므로 토큰 내부임이 보장된다)
+        hits.push({
+          node: label(parentEl || node),
+          index: breakIdx,
+          before: before,
+          after: after,
+          context: text.slice(Math.max(0, breakIdx - 8), breakIdx) + '/' +
+                   text.slice(breakIdx, breakIdx + 8)
+        });
+      }
+    }
+    return hits;
+  }
+
   function measureSlide(slide) {
     var scale = readScale(slide);
     var origin = slide.getBoundingClientRect();
@@ -174,6 +229,8 @@
       }
     }
 
+    var wordBreaks = findWordBreaks(slide);
+
     return {
       slide: slide.getAttribute('data-slide') || '(no data-slide)',
       scale: Math.round(scale * 1000) / 1000,
@@ -182,8 +239,10 @@
       overlaps: overlaps,
       figureMismatch: figureMismatch,
       overflow: overflow,
+      wordBreaks: wordBreaks,
       clean: belowFloor.length === 0 && overlaps.length === 0 &&
-             figureMismatch.length === 0 && overflow.length === 0
+             figureMismatch.length === 0 && overflow.length === 0 &&
+             wordBreaks.length === 0
     };
   }
 
@@ -232,7 +291,8 @@
         belowFloor: results.reduce(function (n, r) { return n + r.belowFloor.length; }, 0),
         overlaps: results.reduce(function (n, r) { return n + r.overlaps.length; }, 0),
         figureMismatch: results.reduce(function (n, r) { return n + r.figureMismatch.length; }, 0),
-        overflow: results.reduce(function (n, r) { return n + r.overflow.length; }, 0)
+        overflow: results.reduce(function (n, r) { return n + r.overflow.length; }, 0),
+        wordBreaks: results.reduce(function (n, r) { return n + r.wordBreaks.length; }, 0)
       },
       results: opts.all ? dirty : results
     };

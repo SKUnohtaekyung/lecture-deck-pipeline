@@ -1742,6 +1742,21 @@ def main():
     chk(not leaked, "원고 아이콘 마커(💬/🗣/👀) 누출 0",
         f"아이콘 마커 {[leak_names[m] for m in leaked]} 최종 HTML에 잔존 — 학생 덱에서 제거하고 발표자 노트로 라우팅해야 함")
 
+    # ── R-META-01: 내부 작업 라벨 누출 린트(WARN 전용·판정 없음) ──
+    #   제목·본문 텍스트에 내부 작업 라벨('(왜'·'(최소'·'(예비'·'(초안'·'(심화'·'TODO'·'TBD'·'※내부')이
+    #   남으면 학생 화면에 그대로 노출된다. FAIL이 아니라 WARN — 오탐 가능성(정상 텍스트의 일부)이
+    #   있어 사람이 판단한다.
+    _meta_markers = ('(왜', '(최소', '(예비', '(초안', '(심화', 'TODO', 'TBD', '※내부')
+    _meta_hits = []
+    for el in ordered_slides:
+        _slide_id = el.attrs.get('data-slide') or '?'
+        _slide_text = decoded_text(html[el.inner_start:el.inner_end])
+        for _marker in _meta_markers:
+            if _marker in _slide_text:
+                _meta_hits.append(f'{_slide_id}:{_marker}')
+    if _meta_hits:
+        results.append(("WARN", f"R-META-01 내부 작업 라벨 후보 {len(_meta_hits)}건: {_meta_hits}"))
+
     # ── <br> 직전 어절 조사 종결 린트(WARN 전용·판정 없음): 목록만 출력하고 FAIL은 절대 만들지 않는다 ──
     _br_re = re.compile(r'<br\s*/?>', re.I)
     _particle_end_re = re.compile(r'(을|를|이|가|은|는|와|과|의|에|로|으로|에서|하고|이며|거나)$')

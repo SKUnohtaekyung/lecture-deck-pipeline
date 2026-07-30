@@ -79,14 +79,33 @@ THRESH_QC02_BLOCKS = 5          # W1_FINAL p15(text_leaf_count=5.0). flag: W1 11
 #   임계값을 아무리 재도출해도 W1_live(0.181) > W2_live(0.047)인 이상 "W1 통과·W2 미달"을
 #   만드는 임계값 자체가 존재하지 않는다(대소 관계가 이미 반대). **자동 판정을 접고
 #   `[사람검토]` 안내로 강등한다** — 판정 없이 실측값만 보고한다.
-THRESH_QC08_VISUAL_RATIO = 0.35      # W1_FINAL 비율 0.465와 W2_CURRENT 0.216 사이, W1_FINAL 아래 안전마진
+# R-QC-01: 2026-07-31 실측에서 방향이 역전돼 있음(W1이 오히려 더 많이 flag되는 사례 관측)이
+# 확인됐으나, 판정 로직·임계는 변경하지 않고 하한 안전망으로 그대로 둔다 — 손대지 말라는 지시.
+THRESH_QC08_VISUAL_RATIO = 0.55      # 2026-07-31 실측 재도출. 1주차 실측 0.500(18/36)·2주차 0.208(11/53).
+                                       # 이전 임계 0.35는 1주차 실측보다 낮아 1주차만 못한 덱도 통과시켰다.
+                                       # 기록돼 있던 W1 0.465는 낡은 값이다.
+THRESH_QC15_FOOT_CALLOUT_RATIO = 0.12  # 1주차 0.083 · 2주차 0.340(2026-07-31 실측). 임계는 1주차 실측에 최소 여유.
+THRESH_QC16_BOX_BASED_RATIO = 0.10     # 1주차 0.056 · 2주차 0.226.
+# THRESH_QC12_UNDEFINED_TERM_RATIO — 미사용(강등). R-QC-12는 2026-07-31 [사람검토]로
+# 강등되어 임계값을 쓰지 않는다(아래 THRESH_DERIVATION 참고).
+THRESH_QC17_INCOMPLETE_PRACTICE_RATIO = 0  # 완결성 결함형이라 임계 0. 2주차 0.167(단계 1개짜리 실습 존재).
+THRESH_META01_COUNT = 0  # 명백한 결함형 — 내부 작업 라벨이 학생 화면에 남는 것은 절제의 문제가 아니다.
+                          # 1주차 0건 · 2주차 3건(2026-07-31 실측).
 THRESH_DERIVATION = """\
 [임계값 도출 근거 — reports/create-slides-quality/deck_quality_metrics.json 기준, 개념설명 슬라이드만]
   R-QC-01 본문 글자수 < 76자(W1_FINAL p10)          flag률: W1 11.6%(5/43) · W2 62.2%(23/37)      [목표 충족: W1<=15%, W2>=55%]
   R-QC-02 의미 블록 수 < 5개(W1_FINAL p15)           flag률: W1 11.6%(5/43) · W2 67.6%(25/37)      [목표 충족]
   R-QC-03 근-빈 컨테이너 존재(전수, 임계값 없음)      flag률: W1  2.7%(2/75) · W2 24.1%(26/108)     [W1<=15% 충족 · W2>=55%는 지표 성격상 미충족 — 희소 결함이라 그대로 보고]
   R-QC-05 인접 동일family 비율 — [사람검토]로 강등됨(자동 판정 없음, 아래 본문 참고 — 방향 역전 확인됨)
-  R-QC-08 설명기능 시각자료 보유 비율 < 0.35(임계)    지표값(높을수록 좋음): W1 46.5%(0.465) · W2 21.6%(0.216) [W1 통과·W2 미달 확인 — 방향 정상]
+  R-QC-08 설명기능 시각자료 보유 비율 < 0.55(임계, 2026-07-31 재도출) 지표값(높을수록 좋음): 1주차 실측 0.500(18/36) · 2주차 실측 0.208(11/53)
+  R-QC-12 — [사람검토]로 강등(2026-07-31). 정의 신호 3종 시도가 7.1%/92.9%/90.5%로
+    전부 극단이었고, 첫 등장 탐색의 HTML 주석 오염 버그를 고쳐 71.4%까지 정확해졌으나
+    여전히 자동 판정 밴드 밖이라 참고치로만 둔다. 한국어 정의는 표지 없이 성립해 문자열
+    판정이 원리적으로 부정확하다. R-QC-05·R-QC-09와 같은 처리.
+  R-QC-15 하단 결론 콜아웃 보유율 > 0.12(임계 초과 시 플래그) 1주차 0.083 · 2주차 0.340(2026-07-31 실측)
+  R-QC-16 박스 기반 슬라이드 비율 > 0.10(임계)        1주차 0.056 · 2주차 0.226
+  R-QC-17 실습 완결성 미달률 > 0(임계)                2주차 0.167(단계 1개짜리 실습 존재)
+  R-META-01 메타 표기 잔존 건수 > 0(임계)             1주차 0건 · 2주차 3건(2026-07-31 실측)
 """
 
 CIRCLED = "①②③④⑤⑥⑦⑧⑨⑩"
@@ -262,6 +281,53 @@ def count_explanatory_visuals(html_text, start, end, tags):
     return total
 
 
+_BOX_CLASS_RE = re.compile(r"(?:^|[\s_])(?:[\w-]*card[\w-]*|[\w-]*callout[\w-]*|[\w-]*-band|[\w-]*-box|[\w-]*-node|[\w-]*-col)(?:$|[\s])")
+_FOOT_CALLOUT_RE = re.compile(r"(?:^|\s)(?:[\w-]*callout[\w-]*)(?:\s|$)")
+_FOOT_RE = re.compile(r"(?:^|\s)(?:[\w-]*-foot)(?:\s|$)")
+_NOTE_RE = re.compile(r"(?:^|\s)(?:[\w-]*-note)(?:\s|$)")
+
+
+def count_box_containers(html_text, start, end, elements):
+    """슬라이드 안에서 박스 컨테이너(class에 card|callout|-band|-box|-node|-col 포함) 개수."""
+    scoped = [e for e in elements if start <= e.start and e.end <= end]
+    count = 0
+    for el in scoped:
+        cls_str = el.attrs.get("class") or ""
+        if _BOX_CLASS_RE.search(cls_str):
+            count += 1
+    return count
+
+
+def find_last_content_child(el, parent_map, children_map):
+    """슬라이드 본문 컨테이너(.s-full 우선, 없으면 슬라이드 자신)의 마지막 요소 자식을 찾는다."""
+    container = None
+    for child in children_map.get(id(el), []):
+        cls_str = child.attrs.get("class") or ""
+        if re.search(r"(?:^|\s)s-full(?:\s|$)", cls_str):
+            container = child
+            break
+    if container is None:
+        container = el
+    kids = children_map.get(id(container), [])
+    if not kids:
+        return None
+    return sorted(kids, key=lambda e: e.start)[-1]
+
+
+def has_conclusion_callout(last_child):
+    if last_child is None:
+        return False
+    cls_str = last_child.attrs.get("class") or ""
+    name = last_child.name
+    if name == "p" and _FOOT_CALLOUT_RE.search(cls_str):
+        return True
+    if _FOOT_RE.search(cls_str):
+        return True
+    if name == "p" and _NOTE_RE.search(cls_str):
+        return True
+    return False
+
+
 # ============================================================================
 # 실습 슬라이드 완결성(R-QC-09) — 행동·입력·완료기준 키워드 존재 여부(구조 기반, 완전 자동화 불가 명시)
 # ============================================================================
@@ -307,6 +373,13 @@ def run_checks(deck_path):
 
     results = []  # (rule_id, level, message)
     advisories = []  # (rule_id, message) — 사람검토 전용, PASS/WARN/FAIL 판정 없음
+    audit_lines = []  # 검사 미적용 감사추적 안내(신규 5종용)
+
+    parent_map = _build_parent_map(elements)
+    children_map = {}
+    for el, par in parent_map.items():
+        if par is not None:
+            children_map.setdefault(id(par), []).append(el)
 
     records = []
     for idx, el in enumerate(slide_els):
@@ -327,10 +400,14 @@ def run_checks(deck_path):
         # 밀도 하한에서 뺀다 — 정확한 슬라이드를 계속 WARN하면 게이트 전체가 무시된다.
         # A2(2026-07-27): 값을 본다 — `data-intentional-minimal="false"`는 예외가 아니다.
         intentional_minimal = _is_truthy_marker(el, "data-intentional-minimal")
+        box_count = count_box_containers(html_text, el.inner_start, el.inner_end, elements)
+        last_child = find_last_content_child(el, parent_map, children_map)
+        has_conclusion = has_conclusion_callout(last_child)
         records.append({
             "idx": idx, "sid": sid, "cls": cls_str, "title": title_text, "type": stype,
             "family": family, "chars": chars, "near_empty": near_empty, "visuals": visuals,
-            "intentional_minimal": intentional_minimal,
+            "intentional_minimal": intentional_minimal, "box_count": box_count,
+            "has_conclusion": has_conclusion,
         })
 
     n_slides = len(records)
@@ -476,6 +553,145 @@ def run_checks(deck_path):
     else:
         results.append(("R-QC-11", "PASS", "종결(요약) 슬라이드를 찾지 못함 — 부록 위치 판정 생략"))
 
+    # ── R-QC-15: 하단 결론 콜아웃 보유율 ──
+    if explanation:
+        with_conclusion = [r for r in explanation if r["has_conclusion"]]
+        ratio15 = len(with_conclusion) / len(explanation)
+        level15 = "WARN" if ratio15 > THRESH_QC15_FOOT_CALLOUT_RATIO else "PASS"
+        results.append(("R-QC-15", level15,
+                         f"설명 슬라이드 중 하단 결론 콜아웃 보유 비율 {ratio15:.1%}"
+                         f"({len(with_conclusion)}/{len(explanation)}, 임계 {THRESH_QC15_FOOT_CALLOUT_RATIO:.0%})"))
+    else:
+        results.append(("R-QC-15", "PASS", "설명 슬라이드 없음(검사 대상 0)"))
+
+    # ── R-QC-16: 박스 기반 슬라이드 비율(박스 컨테이너 4개 이상) ──
+    if explanation:
+        box_based = [r for r in explanation if r["box_count"] >= 4]
+        ratio16 = len(box_based) / len(explanation)
+        level16 = "WARN" if ratio16 > THRESH_QC16_BOX_BASED_RATIO else "PASS"
+        detail16 = ", ".join(f'{r["sid"]}({r["box_count"]}개)' for r in box_based[:10])
+        more16 = f" 외 {len(box_based) - 10}건" if len(box_based) > 10 else ""
+        results.append(("R-QC-16", level16,
+                         f"박스 기반 설명 슬라이드(박스 컨테이너 4개 이상) 비율 {ratio16:.1%}"
+                         f"({len(box_based)}/{len(explanation)}, 임계 {THRESH_QC16_BOX_BASED_RATIO:.0%})"
+                         f"{' — ' + detail16 + more16 if box_based else ''}"))
+    else:
+        results.append(("R-QC-16", "PASS", "설명 슬라이드 없음(검사 대상 0)"))
+
+    # ── R-QC-17: 실습 완결성 미달률(단계 요소 2개 미만) ──
+    practice_slides17 = [
+        r for r in records
+        if "practice" in _morphemes(r["cls"]) or "실습" in (r["title"] or "")
+    ]
+    if not practice_slides17:
+        advisories.append(("R-QC-17", "실습 슬라이드 0장 — 검사 미적용"))
+        audit_lines.append("[감사추적] 실습 슬라이드 0장 — R-QC-17 미적용")
+        n_practice17 = 0
+        n_incomplete17 = 0
+    else:
+        incomplete17 = []
+        for r in practice_slides17:
+            el = slide_els[r["idx"]]
+            frag = html_text[el.inner_start:el.inner_end]
+            step_count = len(re.findall(r'class="[^"]*\bwork-step\b[^"]*"', frag))
+            pr_steps_m = re.search(r'class="[^"]*\bpr-steps\b[^"]*"[^>]*>(.*?)</(?:ol|ul|div)>', frag, re.S)
+            if pr_steps_m:
+                step_count += len(re.findall(r"<li\b", pr_steps_m.group(1)))
+            if step_count < 2:
+                incomplete17.append(r["sid"])
+        n_practice17 = len(practice_slides17)
+        n_incomplete17 = len(incomplete17)
+        ratio17 = n_incomplete17 / n_practice17
+        level17 = "WARN" if ratio17 > THRESH_QC17_INCOMPLETE_PRACTICE_RATIO else "PASS"
+        detail17 = ", ".join(incomplete17[:10])
+        results.append(("R-QC-17", level17,
+                         f"실습 완결성 미달(단계 요소 <2개) {n_incomplete17}/{n_practice17}장"
+                         f"({ratio17:.1%}, 임계 {THRESH_QC17_INCOMPLETE_PRACTICE_RATIO:.0%})"
+                         f"{' — ' + detail17 if incomplete17 else ''}"))
+
+    # ── R-META-01: 메타 표기 잔존(내부 작업 라벨이 학생 화면에 남음) ──
+    _META_PATTERNS = ["(왜", "(최소", "(예비", "(초안", "(심화", "TODO", "TBD", "※내부"]
+    meta_hits = []
+    for r in records:
+        el = slide_els[r["idx"]]
+        text = decoded_text(html_text[el.inner_start:el.inner_end])
+        found = [p for p in _META_PATTERNS if p in text or p in (r["title"] or "")]
+        if found:
+            meta_hits.append((r["sid"], found))
+    level_meta = "WARN" if len(meta_hits) > THRESH_META01_COUNT else "PASS"
+    detail_meta = ", ".join(f'{sid}({"/".join(fs)})' for sid, fs in meta_hits[:10])
+    results.append(("R-META-01", level_meta,
+                     f"메타 표기 잔존 슬라이드 {len(meta_hits)}장(임계 {THRESH_META01_COUNT}건 초과 시 플래그)"
+                     f"{' — ' + detail_meta if meta_hits else ''}"))
+
+    # ── R-QC-12: 용어 최초 등장 정의 누락률 ──
+    concept_kb_path = None
+    m_path = re.search(r"(courses/[^/]+/sessions/[^/]+)/", str(deck_path).replace("\\", "/"))
+    if m_path:
+        subject_week = m_path.group(1)
+        week = subject_week.split("/")[-1]
+        concept_kb_path = Path(subject_week) / "자료" / f"{week}_개념KB.md"
+    if concept_kb_path is None or not concept_kb_path.exists():
+        advisories.append(("R-QC-12", "개념KB 없음 — 검사 미적용"))
+        audit_lines.append("[감사추적] 개념KB 없음 — R-QC-12 미적용")
+    else:
+        kb_text = concept_kb_path.read_text(encoding="utf-8")
+        display_names = _extract_display_names(kb_text)
+        # 2026-07-31 버그 수정: 첫 등장 탐색이 HTML 주석 텍스트를 포함해 오판정했다(덱에 주석 71개).
+        # 주석 제거 + 슬라이드 단위 첫 등장으로 교정.
+        # (주석은 이미 위 line ~369에서 html_text 생성 시 전체 제거돼 있다 — 이 블록은 그 위에
+        # 추가로 "첫 등장을 문서 전체 오프셋이 아니라 슬라이드 단위"로 바꾼다: 문서 전체 오프셋
+        # 기준 90자 윈도우는 정의가 같은 슬라이드의 더 뒤쪽 문단에 있으면 놓친다 — 실측: '페르소나'
+        # 정의는 첫 등장 지점에서 90자를 훌쩍 넘는 같은 슬라이드 뒷부분에 있었다. 슬라이드 텍스트
+        # 전체를 검색 범위로 삼아 이 오탐을 없앤다.
+        slide_texts = [decoded_text(html_text[el.inner_start:el.inner_end]) for el in slide_els]
+        undefined = []
+        seen_terms = []
+        for name in display_names:
+            found_slide_text = None
+            pos = -1
+            for stext in slide_texts:
+                p = stext.find(name)
+                if p >= 0:
+                    found_slide_text = stext
+                    pos = p
+                    break
+            if found_slide_text is None:
+                continue
+            seen_terms.append(name)
+            # 정의 신호 탐색은 그 슬라이드의 텍스트 안에서만 한다(슬라이드 경계를 넘지 않는다).
+            rest = found_slide_text[pos + len(name):]
+            window = found_slide_text[pos:pos + len(name) + 60]
+            # 2026-07-31 교정: 정의 신호에서 '입니다'·'—' 제거. 한국어 종결어미·구두점이라 60자
+            # 범위에 거의 항상 존재해 정의가 없어도 통과하는 거짓 통과가 났다(교정 전 2주차 7.1%).
+            has_marker = any(marker in window for marker in ("란 ", "이란", "라는", "말한다", "뜻", "의미", "= ")) or \
+                any(marker in rest for marker in ("란 ", "이란", "라는", "말한다", "뜻", "의미", "= "))
+            paren_match = re.match(r"\s*\(([^()]*)\)", rest[:64])
+            has_paren_def = bool(paren_match and len(paren_match.group(1).strip()) >= 3)
+            # 2026-07-31 3차 교정. 1차(표지+'입니다') 7.1% 과소, 2차(표지만) 92.9% 과대.
+            # 한국어 정의는 표지 없이 병치로도 성립하므로 '용어 뒤 문장 경계 + 20자 이상 설명'을
+            # 정의로 함께 인정한다. 표시명 일반어 필터도 보강했다.
+            after = rest[:90]
+            boundary_m = re.match(r"\s*(?:[.—:]|<[^>]*>)\s*([^<]*)", after, re.S)
+            tail = re.sub(r"\s+", "", boundary_m.group(1)) if boundary_m else ""
+            has_boundary_def = len(tail) >= 20
+            if not (has_marker or has_paren_def or has_boundary_def):
+                undefined.append(name)
+        if seen_terms:
+            ratio12 = len(undefined) / len(seen_terms)
+            detail12 = ", ".join(undefined[:10])
+            more12 = f" 외 {len(undefined) - 10}건" if len(undefined) > 10 else ""
+            advisories.append(("R-QC-12",
+                             f"용어 최초 등장 정의 누락 후보(참고치, 판정 없음) "
+                             f"{len(undefined)}/{len(seen_terms)}"
+                             f"{' — ' + detail12 + more12 if undefined else ''} "
+                             f"(한국어 정의는 표지 없이 병치로도 성립해 문자열 판정이 부정확하다 — "
+                             f"정의 3종 시도가 7.1%/92.9%/90.5%로 극단이었고, 첫 등장 탐색의 HTML 주석 "
+                             f"오염 버그를 고쳐 71.4%까지 정확해졌으나 여전히 자동 판정 밴드 밖이라 "
+                             f"참고치로만 둔다. 사람이 직접 확인)"))
+        else:
+            advisories.append(("R-QC-12", "개념KB 표시명이 덱에서 발견되지 않음(검사 대상 0, 참고치)"))
+
     # ── 사람검토 전용(자동화하지 않음) ──
     advisories.append(("R-QC-04", "카드 면적 대비 텍스트 비율 — 렌더 치수(getBoundingClientRect) 없이는 신뢰 불가. 브라우저 실측 필요."))
     advisories.append(("R-QC-07", "설명 단위 과잉 분할 — 의미 경계 판단이 필요해 정적 분석으로 셀 수 없음. 사람이 직접 확인."))
@@ -498,8 +714,61 @@ def run_checks(deck_path):
         "intentional_minimal_ids": [r["sid"] for r in intentional_minimal_slides],
         "n_screen_operation_exempt": len(screen_op_exempt),
         "screen_operation_exempt_ids": [r["sid"] for r in screen_op_exempt],
+        "audit_lines": audit_lines,  # 검사 미적용 감사추적 안내(신규 5종용) — 기존 4-tuple 반환 형태 보존
     }
     return results, advisories, meta, records
+
+
+_GENERIC_WORDS = {
+    "구분", "유형", "가능", "없음", "항목", "내용", "설명", "예시", "참고", "비고", "기타",
+    "작동", "축", "즉시", "높음", "낮음", "고정", "시점", "매번", "상태", "결과", "방법",
+    "기준", "조건", "범위", "순서", "단계", "확인", "정리",
+}
+
+
+def _extract_display_names(kb_text):
+    """개념KB 「청크 인덱스」 표에서 '표시명' 열만 추출해 개념 용어 필터를 적용한다."""
+    names = []
+    lines = kb_text.splitlines()
+    header_idx = None
+    col_idx = None
+    for i, line in enumerate(lines):
+        if "|" not in line:
+            continue
+        cells = [c.strip() for c in line.strip().strip("|").split("|")]
+        if header_idx is None and "표시명" in cells:
+            header_idx = i
+            col_idx = cells.index("표시명")
+            continue
+        if header_idx is None:
+            continue
+        if i == header_idx + 1 and re.match(r"^:?-{2,}", cells[0] if cells else ""):
+            continue
+        if col_idx is None or col_idx >= len(cells):
+            # 표가 끝났으면(다음 헤더 등장 전까지) 계속 스캔; 셀 부족 행은 건너뛴다
+            if not line.strip().startswith("|"):
+                header_idx = None
+            continue
+        name = cells[col_idx].strip()
+        if not name or name.startswith(":") or set(name) <= {"-", ":"}:
+            continue
+        if " vs " in name:
+            continue
+        if "·" in name:
+            continue
+        if len(name) > 12:
+            continue
+        if name in _GENERIC_WORDS:
+            continue
+        names.append(name)
+    # 중복 제거(순서 보존)
+    seen = set()
+    out = []
+    for n in names:
+        if n not in seen:
+            seen.add(n)
+            out.append(n)
+    return out
 
 
 def _count_text_leaf(html_text, start, end):
@@ -529,6 +798,7 @@ def main():
 
     try:
         results, advisories, meta, records = run_checks(a.deck)
+        audit_lines = meta.get("audit_lines", [])
     except OSError as e:
         print(f"[FAIL] 파일 열기: {e}")
         sys.exit(1)
@@ -550,6 +820,9 @@ def main():
         print(f"[감사추적] R-QC-01/02 밀도 하한에서 제외된 설명 슬라이드 {exempt_total}장 — " + " · ".join(parts))
     else:
         print("[감사추적] R-QC-01/02 밀도 하한 제외 대상 0장")
+
+    for line in audit_lines:
+        print(line)
 
     effective = []
     for rule_id, level, msg in results:
@@ -590,7 +863,11 @@ def main():
                 "R-QC-01_chars": THRESH_QC01_CHARS,
                 "R-QC-02_blocks": THRESH_QC02_BLOCKS,
                 "R-QC-08_visual_ratio": THRESH_QC08_VISUAL_RATIO,
-                # R-QC-05는 임계값이 없다(사람검토로 강등 — 위 THRESH_QC05 주석 참고).
+                "R-QC-15_foot_callout_ratio": THRESH_QC15_FOOT_CALLOUT_RATIO,
+                "R-QC-16_box_based_ratio": THRESH_QC16_BOX_BASED_RATIO,
+                "R-QC-17_incomplete_practice_ratio": THRESH_QC17_INCOMPLETE_PRACTICE_RATIO,
+                "R-META-01_count": THRESH_META01_COUNT,
+                # R-QC-05·R-QC-12는 임계값이 없다(사람검토로 강등 — 위 THRESH_QC05/QC12 주석 참고).
             },
         }
         Path(a.json).write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
