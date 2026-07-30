@@ -5,7 +5,6 @@
       <p class="pd-eyebrow">PART</p>
       <h2 class="pd-title">MVP와 사용 흐름</h2>
       <p class="pd-desc">핵심 기능 하나만 작동하는 첫 버전(MVP)과 대표 흐름·완료 기준을 정한다</p>
-      <p class="pd-sub">좋은 아이디어를<br>작동하는 한 조각으로 줄입니다.</p>
     </section>
 
     <section class="slide w2-roadmap" data-slide="M2">
@@ -15,15 +14,14 @@
       </header>
       <div class="s-full">
         <h2 class="s-title">2교시 이렇게 배웁니다</h2>
-        <p class="rm-lead">오늘의 흐름</p>
         <div class="rm-track">
-          <div class="rm-step"><span class="rm-n">1</span><b>결과 정하기</b></div>
+          <div class="rm-step"><span class="rm-n">1</span><b>결과 정하기</b><p>사용자가 얻는 변화 하나를 먼저 정합니다</p></div>
           <span class="rm-arrow" aria-hidden="true">→</span>
-          <div class="rm-step"><span class="rm-n">2</span><b>기능 줄이기</b></div>
+          <div class="rm-step"><span class="rm-n">2</span><b>기능 줄이기</b><p>그 결과를 만드는 기능 1개만 남깁니다</p></div>
           <span class="rm-arrow" aria-hidden="true">→</span>
-          <div class="rm-step"><span class="rm-n">3</span><b>흐름 그리기</b></div>
+          <div class="rm-step"><span class="rm-n">3</span><b>흐름 그리기</b><p>입력부터 결과까지 대표 순서를 그립니다</p></div>
           <span class="rm-arrow" aria-hidden="true">→</span>
-          <div class="rm-step is-goal"><span class="rm-n">4</span><b>완료 기준</b></div>
+          <div class="rm-step is-goal"><span class="rm-n">4</span><b>완료 기준</b><p>무엇이 보이면 끝인지 한 줄로 적습니다</p></div>
         </div>
       </div>
     </section>
@@ -36,37 +34,24 @@
         <span class="s-line"></span><div class="s-team">2주차<br>2교시</div>
       </header>
       <div class="s-full">
-        <h2 class="s-title">결과와 기능은 다릅니다</h2>
+        <h2 class="s-title">기능을 만들어도 결과는 안 생길 수 있습니다</h2>
         <p class="itr-lead">결과 = 사용자가 얻는 변화 · 기능 = 웹이 하는 동작</p>
         <div class="itr-warn">
           <div class="itr-warncard"><span class="tag">흔한 실패 ①</span><p>새 기능을 5개 내놓아도 아무도 안 쓰면 결과는 0입니다.</p></div>
           <div class="itr-warncard"><span class="tag">흔한 실패 ②</span><p>기능은 '만든 것', 결과는 '그것이 일으킨 변화' — 기능이 있어도 결과가 없을 수 있습니다.</p></div>
         </div>
-        <div class="itr-flow">
-          <div class="itr-flow-row">
-            <span class="fr-tag">택시 비유</span>
-            <div class="viz-flow-ph" role="img" aria-label="택시가 바퀴는 굴러도 엉뚱한 곳에 내려주면 결과는 0이 된다는 비유 흐름">
-              <div class="fl-node">
-                <svg viewBox="0 0 32 32" aria-hidden="true" style="width:24px; height:24px;"><circle cx="16" cy="16" r="11" fill="none" stroke="var(--blue)" stroke-width="2.4"/><circle cx="16" cy="16" r="4" fill="var(--blue)"/></svg>
-                <b>바퀴가 굴러도</b><br><span>기능은 있음</span>
-              </div>
-              <div class="fl-arrow" aria-hidden="true">→</div>
-              <div class="fl-node key">
-                <svg viewBox="0 0 32 32" aria-hidden="true" style="width:24px; height:24px;"><path d="M16 4c-5 0-9 4-9 9 0 7 9 15 9 15s9-8 9-15c0-5-4-9-9-9z" fill="var(--white)"/><circle cx="16" cy="13" r="3" fill="var(--blue)"/></svg>
-                <b>엉뚱한 데 내려주면</b><br><span>결과는 0</span>
-              </div>
-            </div>
+        <div class="grid-2">
+          <div class="card surface">
+            <b style="display:block; font-size:26px; color:var(--blue);">기능</b>
+            <p class="s-body" style="margin:6px 0 0;">웹이 하는 동작 하나</p>
+            <p class="s-body c24-note">예: 한 줄 입력 → 버튼 → 저장</p>
           </div>
-          <div class="itr-flow-row">
-            <span class="fr-tag">앵커 예시</span>
-            <div class="viz-flow-ph" role="img" aria-label="한 줄 입력과 버튼이라는 기능이 하루 확인과 뿌듯함이라는 결과로 이어지는 앵커 예시 흐름">
-              <div class="fl-node"><b>한 줄 입력·버튼</b><br><span>(기능)</span></div>
-              <div class="fl-arrow" aria-hidden="true">→</div>
-              <div class="fl-node key"><b>하루 확인·뿌듯함</b><br><span>(결과)</span></div>
-            </div>
+          <div class="card surface" style="background:var(--mint-soft); border-color:var(--mint-line);">
+            <b style="display:block; font-size:26px; color:var(--mint-deep);">결과</b>
+            <p class="s-body" style="margin:6px 0 0;">그 기능이 사용자에게 일으킨 변화</p>
+            <p class="s-body c24-note"><span class="hl-mint-underline">예: 하루를 확인하고 뿌듯함을 느낌</span></p>
           </div>
         </div>
-        <p class="callout"><span class="hl-mint-mark">결과 하나를 정하면 기능도 작아집니다.</span></p>
       </div>
     </section>
 
@@ -79,7 +64,7 @@
         <span class="def-term">MVP</span>
         <h2 class="cm-title">MVP는 대충 만든 게 아닙니다</h2>
         <div class="callout blue def-body"><strong>가설을 확인하려고<br>범위를 의도적으로 줄인 첫 작동 버전</strong></div>
-        <p class="cm-sub cm-statement">기능을 다 넣으면 <span class="hl-mint-underline">무엇이 진짜 통했는지 알 수 없습니다</span> — 그래서 <span class="hl-mint-mark">핵심 하나만 제대로 작동시켜 반응부터 확인합니다</span>.</p>
+        <p class="cm-sub cm-statement">기능을 다 넣으면 <span class="hl-mint-underline">무엇이 진짜 통했는지 알 수 없습니다</span> — 그래서 <span class="hl-mint-mark">핵심 하나만 제대로 작동시켜 반응부터 확인합니다</span>. 실험용 모형이 아니라, 작아도 <strong>실제로 쓸 수 있는 첫 버전</strong>입니다.</p>
         <div class="def-tags">
           <span class="pill">작게 만들고</span>
           <span class="fl-arrow" aria-hidden="true">→</span>
@@ -137,10 +122,9 @@
           <div class="card">
             <b style="display:block; font-size:26px; color:var(--blue);">부가 기능</b>
             <p class="s-body" style="margin:6px 0 0;">없어도 가치가 유지되는 것</p>
-            <p class="s-body c24-note">예: 꾸미기·검색·정렬. 있으면 편하지만 <span class="hl-mint-text">지금 버전</span>엔 넣지 않습니다.</p>
+            <p class="s-body c24-note">예: 꾸미기·검색·정렬·태그·알림. 있으면 편하지만 <span class="hl-mint-text">지금 버전</span>엔 넣지 않습니다.</p>
           </div>
         </div>
-        <p class="callout"><span class="hl-mint-mark">이번엔 핵심 하나만 만듭니다.</span></p>
       </div>
     </section>
 
@@ -153,10 +137,9 @@
         <h2 class="s-title">범위는 세 칸</h2>
         <div class="sc-grid">
           <div class="sc-col is-in"><h3>이번에 만들 것</h3><p>핵심 기능 하나 — <span class="hl-mint-underline">이것 하나가 작동해야</span> 진짜 써 보고 배울 수 있습니다.</p></div>
-          <div class="sc-col is-out"><h3>이번엔 안 만들 것</h3><p>로그인·공유·서버 저장 — 지금 넣으면 완성도가 늦어지고 핵심이 묻힙니다.</p></div>
+          <div class="sc-col is-out"><h3>이번엔 안 만들 것</h3><p>이번 주 기술 경계 밖(로그인·서버 저장) — 지금 넣으면 완성도가 늦어지고 핵심이 묻힙니다.</p></div>
           <div class="sc-col is-later"><h3>나중 아이디어</h3><p>다음에 더할 것 — <span class="hl-mint-mark">버리지 않고 적어만 둡니다</span>.</p></div>
         </div>
-        <p class="callout orange sc-foot"><strong>반례</strong> 다 넣으면 무엇이 끝났는지 모릅니다.</p>
       </div>
     </section>
 
@@ -169,8 +152,8 @@
         <h2 class="s-title">실습 ③ AI가 제안한 기능 하나 삭제</h2>
         <div class="accent-bar"></div>
         <div class="pr-steps">
-          <div class="work-step"><span class="n">1</span><b>ChatGPT에 기능 후보를 나열하게 합니다.</b></div>
-          <div class="work-step"><span class="n">2</span><b>그중 <strong>이번 주 핵심이 아닌 것 1개를 골라 제거</strong>합니다.</b></div>
+          <div class="work-step"><span class="n">1</span><b>ChatGPT에 기능 후보를 나열하게 합니다.</b><p>"이 서비스에 넣을 수 있는 기능을 10개 나열해줘"처럼 물어봅니다.</p></div>
+          <div class="work-step"><span class="n">2</span><b>그중 <strong>이번 주 핵심이 아닌 것 1개를 골라 제거</strong>합니다.</b><p>예: 태그 기능·정렬 기능·알림 기능처럼 없어도 결과가 유지되는 것을 고릅니다.</p></div>
         </div>
         <div class="pr-done"><span class="pr-tag">완성</span><p>제외 목록에 뺀 기능과 이유가 남음</p></div>
       </div>
@@ -184,7 +167,6 @@
       <div class="s-full">
         <h2 class="s-title">User Flow란?</h2>
         <p class="s-lead">사용자가 한 가지 목표를 이루려<br><strong>무엇을 입력·선택하고 → 어떤 버튼을 누르고 → 무엇을 보는지의 순서</strong></p>
-        <p class="cr-spine">↓</p>
         <div class="grid-3">
           <div class="card surface cr-card"><span class="timing">1</span><h3>무엇을 입력·선택하고</h3></div>
           <div class="card surface cr-card"><span class="timing">2</span><h3>어떤 버튼을 누르고</h3></div>
@@ -212,6 +194,7 @@
           <div class="fl-arrow" aria-hidden="true">→</div>
           <div class="fl-node"><b>변화</b><span>화면에 새 기록이 보임</span></div>
         </div>
+        <p class="s-body" style="margin-top:20px;">입력이 있어야 실행할 수 있고, 실행해야 결과가 생기고, 결과가 눈에 보여야 변화입니다 — 이 순서를 건너뛰면 사용자는 무엇이 됐는지 알 수 없습니다.</p>
       </div>
     </section>
 
@@ -222,7 +205,7 @@
       </header>
       <div class="s-full">
         <h2 class="s-title">잘못된 입력도 흐름의 일부</h2>
-        <p class="pf-lead">경계: 이건 정의의 필수가 아니라 <strong>실무 확장</strong>입니다.<br>기능 유형상 필요할 때만 다룹니다.</p>
+        <p class="pf-lead">User Flow를 정의하는 필수 요소는 아니지만, 실제로 만들 때 자주 부딪히는 경우입니다(예외 처리, exception handling) — 해당하는 기능일 때만 다룹니다.</p>
         <div class="pf-list">
           <div class="card surface pf-band">
             <p class="pf-risk">빈 입력</p>
@@ -239,6 +222,11 @@
             <p class="pf-reason">한 번 실패했다고 처음부터 다시 하면 사용자가 떠납니다.</p>
             <p class="pf-alt"><span class="hl-mint-mark">다시 시도할 길을 남겨둡니다</span>.</p>
           </div>
+          <div class="card surface pf-band">
+            <p class="pf-risk">중복 실행</p>
+            <p class="pf-reason">버튼을 두 번 누르면 같은 결과가 두 번 생길 수 있습니다.</p>
+            <p class="pf-alt">한 번 처리 중엔 버튼을 잠가 둡니다.</p>
+          </div>
         </div>
       </div>
     </section>
@@ -249,7 +237,7 @@
         <span class="s-line"></span><div class="s-team">2주차<br>2교시</div>
       </header>
       <div class="s-full cc-full">
-        <h2 class="s-title">완료 기준은 눈으로, 테스트는 방법</h2>
+        <h2 class="s-title">완료 기준과 테스트는 다릅니다</h2>
         <div class="cc-grid">
           <div class="cc-side ai">
             <h3>완료 기준</h3>
@@ -269,7 +257,6 @@
             </ul>
           </div>
         </div>
-        <p class="compare-foot">나쁜 예 "잘 작동한다" · 좋은 예 "누르면 목록에 그 줄이 보인다"</p>
       </div>
       <figure class="c2-10-figure asset-slot asset-slot--support" data-asset-kind="paper-cut-v1"
         data-image-purpose="explanatory" data-image-state="expected"
@@ -287,8 +274,8 @@
         <h2 class="s-title">실습 ④ 내 흐름 3~5단계 + 완료 기준</h2>
         <div class="accent-bar"></div>
         <div class="pr-steps">
-          <div class="work-step"><span class="n">1</span><b>핵심 기능의 대표 흐름을 3~5단계로 적습니다(이후 화면·구현·테스트에 재사용).</b></div>
-          <div class="work-step"><span class="n">2</span><b>완료 기준 한 줄을 함께 적습니다.</b></div>
+          <div class="work-step"><span class="n">1</span><b>핵심 기능의 대표 흐름을 3~5단계로 적습니다(이후 화면·구현·테스트에 재사용).</b><p>예: 입력 → 저장 버튼 클릭 → 목록에 추가 확인처럼 순서대로 씁니다.</p></div>
+          <div class="work-step"><span class="n">2</span><b>완료 기준 한 줄을 함께 적습니다.</b><p>"무엇을 누르면 무엇이 보인다"는 형태로, 만들기 전에 미리 적어 둡니다.</p></div>
         </div>
         <div class="pr-done"><span class="pr-tag">완성</span><p>화면을 안 봐도 흐름을 말할 수 있음</p></div>
       </div>

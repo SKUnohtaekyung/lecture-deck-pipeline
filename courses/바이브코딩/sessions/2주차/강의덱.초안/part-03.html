@@ -5,7 +5,6 @@
       <p class="pd-eyebrow">PART</p>
       <h2 class="pd-title">기획 문서와 첫 작동</h2>
       <p class="pd-desc">prd.md와 세 파일로 버튼이 반응하는 첫 화면을 만든다</p>
-      <p class="pd-sub"><strong>대화는 흘러가고,<br>문서는 남습니다.</strong></p>
     </section>
 
     <!-- ============ 3-MAP (M3) ============ -->
@@ -16,17 +15,15 @@
       </header>
       <div class="s-full">
         <h2 class="s-title">3교시 이렇게 배웁니다</h2>
-        <p class="rm-lead">오늘의 흐름</p>
         <div class="rm-track">
-          <div class="rm-step"><span class="rm-n">1</span><b>문서·prd.md</b></div>
+          <div class="rm-step"><span class="rm-n">1</span><b>문서·prd.md</b><p style="font-size:22px;margin:8px 0 0;line-height:1.4;">대상·핵심·흐름·제외·완료 5줄을 적습니다</p></div>
           <span class="rm-arrow" aria-hidden="true">→</span>
-          <div class="rm-step"><span class="rm-n">2</span><b>AGENTS 최소</b></div>
+          <div class="rm-step"><span class="rm-n">2</span><b>AGENTS 최소</b><p style="font-size:22px;margin:8px 0 0;line-height:1.4;">에이전트가 읽는 규칙 파일을 최소로 둡니다</p></div>
           <span class="rm-arrow" aria-hidden="true">→</span>
-          <div class="rm-step"><span class="rm-n">3</span><b>세 파일</b></div>
+          <div class="rm-step"><span class="rm-n">3</span><b>세 파일</b><p style="font-size:22px;margin:8px 0 0;line-height:1.4;">index·style·script로 프로젝트를 시작합니다</p></div>
           <span class="rm-arrow" aria-hidden="true">→</span>
-          <div class="rm-step is-goal"><span class="rm-n">4</span><b>첫 화면 변화</b></div>
+          <div class="rm-step is-goal"><span class="rm-n">4</span><b>첫 화면 변화</b><p style="font-size:22px;margin:8px 0 0;line-height:1.4;">버튼을 누르면 화면이 바뀌는 첫 작동을 확인합니다</p></div>
         </div>
-        <p class="callout rm-foot"><strong>(지난주의 '중간에 흐지부지'를 문서로 막습니다)</strong></p>
       </div>
     </section>
 
@@ -40,24 +37,26 @@
         <h2 class="s-title">Markdown은 메모에 구조를 붙입니다</h2>
       </div>
       <div class="dc-stage">
-        <div class="viz-code" role="img" aria-label="메모.md 세 줄: 제목 기호, 목록 기호, 체크박스 기호가 각각 큰 제목·목록·체크박스로 대응">
+        <div class="viz-code" role="img" aria-label="메모.md 열두 줄: 제목·소제목·굵게·목록·체크박스·코드 기호가 각각 대응하는 문서 요소로 바뀜">
           <div class="co-bar">메모.md</div>
           <div class="co-rows">
             <div class="co-row is-hl"><span class="co-num">1</span><span class="co-src"># 제목</span><span class="co-note"><span class="cn">1</span><p>큰 제목</p></span></div>
-            <div class="co-row is-hl"><span class="co-num">2</span><span class="co-src">- 항목</span><span class="co-note"><span class="cn">2</span><p>목록</p></span></div>
-            <div class="co-row is-hl"><span class="co-num">3</span><span class="co-src">- [ ] 할 일</span><span class="co-note"><span class="cn">3</span><p>체크박스</p></span></div>
+            <div class="co-row"><span class="co-num">2</span><span class="co-src">## 소제목</span><span class="co-note"><span class="cn">2</span><p>작은 제목</p></span></div>
+            <div class="co-row"><span class="co-num">3</span><span class="co-src"></span><span class="co-note"></span></div>
+            <div class="co-row is-hl"><span class="co-num">4</span><span class="co-src">**중요**</span><span class="co-note"><span class="cn">3</span><p>굵게 강조</p></span></div>
+            <div class="co-row is-hl"><span class="co-num">5</span><span class="co-src">- 항목</span><span class="co-note"><span class="cn">4</span><p>목록</p></span></div>
+            <div class="co-row"><span class="co-num">6</span><span class="co-src">- 항목</span><span class="co-note"></span></div>
+            <div class="co-row is-hl"><span class="co-num">7</span><span class="co-src">- [ ] 할 일</span><span class="co-note"><span class="cn">5</span><p>체크박스</p></span></div>
+            <div class="co-row"><span class="co-num">8</span><span class="co-src">- [x] 완료</span><span class="co-note"></span></div>
+            <div class="co-row"><span class="co-num">9</span><span class="co-src"></span><span class="co-note"></span></div>
+            <div class="co-row is-hl"><span class="co-num">10</span><span class="co-src">```</span><span class="co-note"><span class="cn">6</span><p>코드 블록</p></span></div>
+            <div class="co-row"><span class="co-num">11</span><span class="co-src">코드 내용</span><span class="co-note"></span></div>
+            <div class="co-row"><span class="co-num">12</span><span class="co-src">```</span><span class="co-note"></span></div>
           </div>
         </div>
         <p class="dc-cap">일반 텍스트에 약속한 기호가 구조를 보여 줍니다.</p>
         <p class="s-body">메모장으로도 열리는 순수 텍스트라 사람이 그대로 읽습니다. <span class="hl-mint-underline">기호를 약속해 둔 덕분에</span> AI가 만든 문서도 <span class="hl-mint-mark">사람이 곧장 알아봅니다</span>.</p>
       </div>
-  <figure class="c3-1-figure asset-slot asset-slot--support"
-        data-asset-kind="paper-cut-v1"
-        data-image-purpose="explanatory"
-        data-image-state="expected"
-        data-expected-src="자료/images/s36_note-to-structured-doc-paper-cut-v1-transparent.png"
-        role="img"
-        aria-label="어수선한 메모 한 장이 화살표를 지나 제목 표시줄·목록 표시·체크박스가 갖춰진 정돈된 문서로 바뀌는 모습을 보여준다"></figure>
 </section>
 
     <!-- ============ 3-2 (C3-2) ============ -->
@@ -136,8 +135,8 @@
         <h2 class="s-title">각 항목이 왜 AI 결과를 바꾸나</h2>
       </div>
       <div class="dc-stage">
-        <div class="code-diagram" role="img" aria-label="prd.md 다섯 줄에서 대상·핵심·제외·완료가 빠졌을 때 각각 생기는 문제 네 가지">
-          <div class="cd-root">prd.md 다섯 줄</div>
+        <div class="code-diagram" role="img" aria-label="prd.md 항목에서 대상·핵심·제외·완료가 빠졌을 때 각각 생기는 문제 네 가지">
+          <div class="cd-root">prd.md 항목</div>
           <div class="cd-arrow">↓</div>
           <div class="cd-leaves">
             <div class="cd-leaf"><span class="cd-in">대상 없음</span><span class="cd-to">→</span><b class="cd-out">결과가 흔들림</b></div>
@@ -147,9 +146,16 @@
           </div>
         </div>
         <p class="s-body">빠진 항목은 AI가 알아서 <span class="hl-mint-underline">추측해 채우고</span>, 그 추측은 <span class="hl-mint-mark">매번 달라집니다</span>.</p>
-        <p class="callout">문서는 최소로 시작해 갱신합니다(길게 X).</p>
+        <p class="dc-cap">문서는 최소로 시작해 갱신합니다.</p>
       </div>
-    </section>
+  <figure class="c3-3-figure asset-slot asset-slot--support"
+        data-asset-kind="paper-cut-v1"
+        data-image-purpose="explanatory"
+        data-image-state="expected"
+        data-expected-src="자료/images/s38_prdmd-missing-item-consequence-paper-cut-v1-transparent.png"
+        role="img"
+        aria-label="prd.md 빈 항목 하나가 AI가 만드는 결과를 흔드는 모습을 보여준다"></figure>
+</section>
 
     <!-- ============ 3-4 (C3-4) ============ -->
     <!-- ============ C3-4 · AGENTS.md는 무엇·왜 (2026-07-27: 독립카드2개 → S3HUM 라벨연결자) ============ -->
@@ -164,14 +170,19 @@
       </header>
       <div class="s-full">
         <h2 class="s-title">ChatGPT와 Codex 역할표</h2>
+        <p class="ow-lead">두 도구는 <strong>묻는 질문이 다릅니다</strong> — ChatGPT에는 "무엇을·왜"를 묻고, Codex에는 "어떻게 저장할지"를 맡깁니다.</p>
         <div class="accent-bar"></div>
-        <table class="t" style="font-size:17px;">
+        <table class="t" style="font-size:19px;">
           <tbody>
-            <tr><th><strong>ChatGPT</strong></th><td>기획·질문·비판(무엇을·왜)</td></tr>
-            <tr><th><strong>Codex</strong></th><td>구현·저장(어떻게)</td></tr>
+            <tr><th><strong>ChatGPT</strong></th><td>기획·질문·비판(무엇을·왜) — 자유롭게 대화하며 생각을 정리합니다</td></tr>
+            <tr><th><strong>Codex</strong></th><td>구현·저장(어떻게) — 정리된 결정을 파일로 만듭니다</td></tr>
           </tbody>
         </table>
-        <p class="callout">한 앱 안의 모드 구분이지, 새 도구를 늘리는 게 아닙니다.</p>
+        <div class="pr-steps" style="margin-top:14px;">
+          <div class="work-step"><span class="n">1</span><b>ChatGPT에서 자유롭게 대화하며 5항목 초안을 떠올립니다.</b></div>
+          <div class="work-step"><span class="n">2</span><b>사람이 읽고 정리해 최종 문장을 정합니다.</b></div>
+          <div class="work-step"><span class="n">3</span><b>Codex로 넘겨 prd.md 파일로 저장합니다.</b></div>
+        </div>
       </div>
     </section>
 
@@ -183,16 +194,12 @@
       <div class="s-full">
         <h2 class="s-title">실습 ⑤ prd.md 만들기 (ChatGPT 초안 → 사람 수정 → Codex 저장)</h2>
         <div class="accent-bar"></div>
-        <div class="pr-steps">
-          <div class="work-step"><span class="n">1</span><b>ChatGPT로 5항목(대상·핵심·흐름·제외·완료) 초안을 만듭니다.</b></div>
-          <div class="work-step"><span class="n">2</span><b><strong>사람이 읽고 최소 1개를 수정합니다</strong>(단어만 바꾸는 건 수정 아님).</b></div>
-          <div class="work-step"><span class="n">3</span><b>Codex로 프로젝트에 prd.md로 저장합니다.</b></div>
+        <div class="pr-steps" style="max-width:760px;">
+          <div class="work-step"><span class="n">1</span><b>ChatGPT로 5항목(대상·핵심·흐름·제외·완료) 초안을 만듭니다.</b> — 자유롭게 대화하며 생각을 끌어냅니다.</div>
+          <div class="work-step"><span class="n">2</span><b>사람이 읽고 최소 1개를 수정합니다</b>(단어만 바꾸는 건 수정 아님 — 판단이 담긴 문장으로 바꿉니다).</div>
+          <div class="work-step"><span class="n">3</span><b>Codex로 프로젝트에 prd.md로 저장합니다.</b> — 이후 모든 작업이 이 파일을 기준으로 진행됩니다.</div>
         </div>
-        <div class="pr-done"><span class="pr-tag">완성</span><p>다시 읽을 기준 문서 + 내가 바꾼 결정 1개</p></div>
-        <div class="pr-extra">
-          <p class="pr-check"><b>완료 확인</b> 5항목이 모두 채워진 prd.md 파일이 프로젝트 폴더 안에 있습니다.</p>
-          <p class="pr-block"><b>자주 막히는 지점</b> 빈 칸을 하나 <span class="hl-mint-underline">남긴 채</span> 저장합니다 — 다섯 칸을 다 채워야 완성입니다.</p>
-        </div>
+        <div class="pr-done"><span class="pr-tag">완성</span><p>5항목이 모두 채워진 prd.md 파일이 프로젝트 폴더 안에 저장되어 있습니다.</p></div>
       </div>
     </section>
 
@@ -203,7 +210,7 @@
         <span class="s-line"></span><div class="s-team">2주차<br>3교시</div>
       </header>
       <div class="ct-figure">
-        <h2 class="s-title">한 파일에서 여러 파일로 (왜·심화)</h2>
+        <h2 class="s-title">한 파일에서 여러 파일로</h2>
         <p class="fig-lead">코드가 커지면 역할별로 나눠야 고칠 때 <span class="hl-mint-underline">그 파일만 엽니다</span>.</p>
         <div class="fig-stage">
           <div class="viz-tree" role="img" aria-label="위계 트리: 프로젝트 폴더 아래 index.html, style.css, script.js, assets, 문서 다섯 파일로 분기">
@@ -227,7 +234,7 @@
           </div>
           <div class="fig-note">
             <div class="card surface">
-              <p class="s-body">코드가 커지면 역할별로 나눠야 고칠 때 그 파일만 엽니다.</p>
+              <p class="s-body">파일 이름과 개수는 프로젝트마다 다릅니다 — <span class="hl-mint-underline">역할별로 나눈다는 원칙만</span> 기억합니다.</p>
             </div>
           </div>
         </div>
@@ -240,10 +247,10 @@
         <span class="s-line"></span><div class="s-team">2주차<br>3교시</div>
       </header>
       <div class="ct-figure">
-        <h2 class="s-title">실습 ⑥ 세 파일 만들고 첫 화면 변화</h2>
-        <p class="fig-lead">prd.md를 기준으로 Codex가 index·style·script <strong>세 파일을 최소로</strong> 만듭니다.</p>
+        <h2 class="s-title">실습 ⑥ 화면 만들기 — 프레임워크 없이</h2>
+        <p class="fig-lead">prd.md를 기준으로 Codex가 역할별로 <strong>파일을 나눠</strong> 만듭니다 — React 같은 프레임워크는 <span class="hl-mint-underline">쓰지 않습니다</span>.</p>
         <div class="fig-stage">
-          <div class="viz-tree" role="img" aria-label="프로젝트 폴더 아래 index.html, style.css, script.js 세 파일이 나란히 있는 구조">
+          <div class="viz-tree" role="img" aria-label="프로젝트 폴더 아래 index.html, style.css, script.js 파일이 나란히 있는 구조(예시, 이름·개수는 프로젝트마다 다를 수 있음)">
             <div class="vt-root">프로젝트 폴더</div>
             <svg class="vt-wire" viewBox="0 0 500 48" width="500" height="48" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
               <path class="vt-line" d="M250,0 V16"/>
@@ -259,9 +266,9 @@
             </div>
           </div>
           <div class="fig-note">
+            <p class="s-body">핵심 제약은 파일 개수가 아니라 <strong>프레임워크를 쓰지 않는다는 것</strong>입니다 — 브라우저가 그대로 읽는 순수 HTML·CSS·JS로 만듭니다.</p>
             <p class="s-body">대표 입력 하나로 <strong>버튼을 누르면 화면이 바뀌는 첫 작동</strong>을 확인합니다.</p>
             <p class="s-body">완성: 브라우저에서 버튼 클릭 시 첫 화면 변화가 보임</p>
-            <p class="s-body"><b>자주 막히는 지점</b> 화면만 보고 버튼은 <span class="hl-mint-underline">안 눌러 봅니다</span>.</p>
           </div>
         </div>
       </div>
