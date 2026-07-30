@@ -65,7 +65,7 @@
             </div>
           </div>
         </div>
-        <p class="callout">결과 하나를 정하면 기능도 작아집니다.</p>
+        <p class="callout"><span class="hl-mint-mark">결과 하나를 정하면 기능도 작아집니다.</span></p>
       </div>
     </section>
 
@@ -78,6 +78,7 @@
         <span class="def-term">MVP</span>
         <h2 class="cm-title">MVP는 대충 만든 게 아닙니다</h2>
         <div class="callout blue def-body"><strong>가설을 확인하려고<br>범위를 의도적으로 줄인 첫 작동 버전</strong></div>
+        <p class="cm-sub cm-statement">기능을 다 넣으면 <span class="hl-mint-underline">무엇이 진짜 통했는지 알 수 없습니다</span> — 그래서 <span class="hl-mint-mark">핵심 하나만 제대로 작동시켜 반응부터 확인합니다</span>.</p>
         <div class="def-tags">
           <span class="pill">작게 만들고</span>
           <span class="fl-arrow" aria-hidden="true">→</span>
@@ -112,7 +113,7 @@
             </div>
           </div>
           <div class="sm-notes">
-            <div class="sm-note"><span class="n">1</span><p>"무엇을 만들까?"보다 <strong>"사용자가 끝나고 무엇을 보게 할까?"</strong>를 먼저 정합니다.</p></div>
+            <div class="sm-note"><span class="n">1</span><p>"무엇을 만들까?"보다 <strong class="hl-mint-underline">"사용자가 끝나고 무엇을 보게 할까?"</strong>를 먼저 정합니다.</p></div>
             <div class="sm-note"><span class="n">2</span><p>그 결과를 만드는 기능 하나만 이번 버전에 넣습니다.</p></div>
           </div>
         </div>
@@ -130,13 +131,15 @@
           <div class="card" style="background:var(--mint-soft); border-color:var(--mint-line);">
             <b style="display:block; font-size:26px; color:var(--mint-deep);">핵심 기능</b>
             <p class="s-body" style="margin:6px 0 0;">없으면 가치가 사라지는 것(1개)</p>
+            <p class="s-body c24-note">예: 한 줄 입력 → 기록하기. <span class="hl-mint-underline">이것부터 확실히 작동해야</span> 결과가 생깁니다.</p>
           </div>
           <div class="card">
             <b style="display:block; font-size:26px; color:var(--blue);">부가 기능</b>
             <p class="s-body" style="margin:6px 0 0;">없어도 가치가 유지되는 것</p>
+            <p class="s-body c24-note">예: 꾸미기·검색·정렬. 있으면 편하지만 <span class="hl-mint-text">지금 버전</span>엔 넣지 않습니다.</p>
           </div>
         </div>
-        <p class="callout">이번엔 핵심 하나만 만듭니다.</p>
+        <p class="callout"><span class="hl-mint-mark">이번엔 핵심 하나만 만듭니다.</span></p>
       </div>
     </section>
 
@@ -148,9 +151,9 @@
       <div class="s-full">
         <h2 class="s-title">범위는 세 칸</h2>
         <div class="sc-grid">
-          <div class="sc-col is-in"><h3>이번에 만들 것</h3><p>핵심 기능 하나</p></div>
-          <div class="sc-col is-out"><h3>이번엔 안 만들 것</h3><p>로그인·공유·서버 저장</p></div>
-          <div class="sc-col is-later"><h3>나중 아이디어</h3><p>다음에 더할 것</p></div>
+          <div class="sc-col is-in"><h3>이번에 만들 것</h3><p>핵심 기능 하나 — <span class="hl-mint-underline">이것 하나가 작동해야</span> 진짜 써 보고 배울 수 있습니다.</p></div>
+          <div class="sc-col is-out"><h3>이번엔 안 만들 것</h3><p>로그인·공유·서버 저장 — 지금 넣으면 완성도가 늦어지고 핵심이 묻힙니다.</p></div>
+          <div class="sc-col is-later"><h3>나중 아이디어</h3><p>다음에 더할 것 — <span class="hl-mint-mark">버리지 않고 적어만 둡니다</span>.</p></div>
         </div>
         <p class="callout orange sc-foot"><strong>반례</strong> 다 넣으면 무엇이 끝났는지 모릅니다.</p>
       </div>
@@ -186,7 +189,7 @@
           <div class="card surface cr-card"><span class="timing">2</span><h3>어떤 버튼을 누르고</h3></div>
           <div class="card surface cr-card"><span class="timing">3</span><h3>무엇을 보는지</h3></div>
         </div>
-        <p class="callout">화면의 모든 기능이 아니라 대표 한 길을 먼저 그립니다.</p>
+        <p class="callout"><span class="hl-mint-mark">화면의 모든 기능이 아니라 대표 한 길을 먼저 그립니다.</span></p>
       </div>
     </section>
 
@@ -220,9 +223,21 @@
         <h2 class="s-title">잘못된 입력도 흐름의 일부</h2>
         <p class="pf-lead">경계: 이건 정의의 필수가 아니라 <strong>실무 확장</strong>입니다.<br>기능 유형상 필요할 때만 다룹니다.</p>
         <div class="pf-list">
-          <div class="card surface pf-band"><p class="pf-risk">빈 입력</p></div>
-          <div class="card surface pf-band"><p class="pf-risk">오류</p></div>
-          <div class="card surface pf-band"><p class="pf-risk">재시도 분기</p></div>
+          <div class="card surface pf-band">
+            <p class="pf-risk">빈 입력</p>
+            <p class="pf-reason">안 넣고 누르면 무엇이 문제인지 알 수 없습니다.</p>
+            <p class="pf-alt">안내 문구로 무엇을 넣을지 보여줍니다.</p>
+          </div>
+          <div class="card surface pf-band">
+            <p class="pf-risk">오류</p>
+            <p class="pf-reason"><span class="hl-mint-underline">예상과 다른 값이 들어오면</span> 결과가 깨집니다.</p>
+            <p class="pf-alt">오류 문구로 잘못된 점을 알려줍니다.</p>
+          </div>
+          <div class="card surface pf-band">
+            <p class="pf-risk">재시도 분기</p>
+            <p class="pf-reason">한 번 실패했다고 처음부터 다시 하면 사용자가 떠납니다.</p>
+            <p class="pf-alt"><span class="hl-mint-mark">다시 시도할 길을 남겨둡니다</span>.</p>
+          </div>
         </div>
       </div>
     </section>
@@ -237,16 +252,29 @@
         <div class="cc-grid">
           <div class="cc-side ai">
             <h3>완료 기준</h3>
-            <ul><li>확인 가능한 장면(무엇을 누르면 무엇이 보인다)</li></ul>
+            <ul>
+              <li>확인 가능한 장면(무엇을 누르면 무엇이 보인다)</li>
+              <li>예: 버튼을 누르면 목록에 그 줄이 보인다</li>
+              <li><span class="hl-mint-underline">만들기 전에 미리</span> 한 문장으로 적어 둡니다</li>
+            </ul>
           </div>
           <div class="cc-neq" aria-hidden="true">≠</div>
           <div class="cc-side human">
             <h3>테스트</h3>
-            <ul><li>정상·다른·빈값으로 확인하는 방법</li></ul>
+            <ul>
+              <li>정상·다른·빈값으로 확인하는 방법</li>
+              <li>완료 기준이 실제 화면에서 그대로 나오는지 봅니다</li>
+              <li><span class="hl-mint-mark">안 되면 미완료</span>, 원인을 다시 찾습니다</li>
+            </ul>
           </div>
         </div>
         <p class="compare-foot">나쁜 예 "잘 작동한다" · 좋은 예 "누르면 목록에 그 줄이 보인다"</p>
       </div>
+      <figure class="c2-10-figure asset-slot asset-slot--support" data-asset-kind="paper-cut-v1"
+        data-image-purpose="explanatory" data-image-state="expected"
+        data-expected-src="자료/images/s31_criteria-scene-vs-test-checklist-paper-cut-v1-transparent.png"
+        role="img"
+        aria-label="완료 기준을 보여주는 하나의 목표 장면과, 정상·다른·빈 값 세 갈래를 확인하는 체크리스트가 대비되어, 완료 기준은 눈으로 보는 목표 장면이고 테스트는 그 장면이 실제로 나오는지 확인하는 방법임을 보여준다"></figure>
     </section>
 
     <section class="slide w2-practice" data-slide="C2-11">
