@@ -3,14 +3,15 @@
   "frozen": false,
   "decks": {
     "강의덱": {
-      "slides": 107,
+      "slides": 120,
       "dividers": 6,
       "intro": [
         "S01",
         "S02",
+        "S02B",
         "S03"
       ],
-      "note": "CORE 73(표지 1 + 교시 72) + 구조 필수 2(S02 도입·S03 아젠다) + 예비·확장 32(FLEX 25 · REC 7) = 107. 2026-07-27 표본 개선: A2F2(기능 유형별 흐름 예시)를 C1-8 비교표로 흡수·삭제(108→107). 예비 구획은 THANK YOU 뒤 별도 구획이라 closing_text 계약을 걸지 않는다."
+      "note": "2026-07-30 전체 재구성 = 120. 도입 4(S01 표지·S02 철학·S02B 주차 개요 신설·S03 아젠다) + 본편 84(1교시 16·2교시 13·3교시 8·4교시 13·5교시 21·6교시 13) + 예비·확장 32(FLEX 25 · REC 7). 변경: ① 4교시를 「AI에게 큰 작업을 맡기는 시스템」으로 전면 교체(재설계 9장 + 신설 C4-3·C4-5) ② 기존 4교시 화면구조 축은 5교시 앞단으로 이동(재설계 6장), 실습·레퍼런스 4장은 보존 이동 ③ 1교시에 작업 준비 기초 3장(C1-12~14) 추가 ④ S02B 주차 개요 신설. 예비 구획은 THANK YOU 뒤 별도 구획이라 closing_text 계약을 걸지 않는다."
     }
   },
   "known_violations": {},
@@ -31,9 +32,27 @@
     "w2-timeline": "timeline",
     "w2-warnsteps": "warnsteps",
     "w2-metric": "metric2",
-    "w2-figure": "figure"
+    "w2-figure": "figure",
+    "w2-gantt": "gantt2",
+    "w2-pipe": "pipe",
+    "w2-quad": "quad2",
+    "w2-branch": "branch",
+    "w2-dialog": "dialog",
+    "w2-ia": "ia",
+    "w2-cmp": "cmp",
+    "w2-map": "map2",
+    "w2-a11y": "a11y",
+    "w2-memo": "memo",
+    "w2-chain": "chain",
+    "w2-place": "place",
+    "w2-axes": "axes4",
+    "w2-persist": "persist",
+    "w2-owner": "owner",
+    "w2-ready": "ready",
+    "w2-week": "week"
   },
   "_notes": {
-    "layout_families": "2026-07-29 P5 — verify_deck.py에 하드코딩돼 있던 주차 종속 구도 family를 이리로 옮겼다. 범용 스크립트에 특정 주차 클래스를 두면 다른 주제 강의 검증에 남의 주차 구도가 따라온다. 여기 없는 구도 클래스는 'full'로 판정돼 「동일 구도 3연속」이 오탐될 수 있다. 단 w2-screen은 범용 게이트가 의미에 의존해 스크립트에 남긴다."
+    "layout_families": "2026-07-29 P5 — verify_deck.py에 하드코딩돼 있던 주차 종속 구도 family를 이리로 옮겼다. 범용 스크립트에 특정 주차 클래스를 두면 다른 주제 강의 검증에 남의 주차 구도가 따라온다. 여기 없는 구도 클래스는 'full'로 판정돼 「동일 구도 3연속」이 오탐될 수 있다. 단 w2-screen은 범용 게이트가 의미에 의존해 스크립트에 남긴다.",
+    "layout_families_2026_07_30": "재설계 4·5구간 편입분 11종 추가. family 값에 접미 숫자를 붙인 셋(gantt2·quad2·map2)은 kit의 동명 family(viz-gantt→gantt, quad-grid→quad, workspace-map-layout→map)와 구현이 달라 별도로 센다 — 합치면 서로 다른 구도가 「동일 구도 연속」으로 오판된다. 5구간 클래스는 w5b-*/w5-map에서 w2-*로 개명했다(2주차인데 5주차로 읽혔다)."
   }
 }

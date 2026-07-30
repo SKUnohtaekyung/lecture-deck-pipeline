@@ -8,9 +8,9 @@
   <!-- 폰트: Pretendard (문서가 인정하는 유일한 외부 의존성) -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
   <!-- ▼ 킷 상속: deck.css(베이스) → legibility.css(강의장 가독성) → patterns.css(코드 코어) 순서 고정 -->
-  <link rel="stylesheet" href="../../kit/styles/deck.css">
-  <link rel="stylesheet" href="../../kit/styles/legibility.css">
-  <link rel="stylesheet" href="../../kit/styles/patterns.css">
+  <link rel="stylesheet" href="../../../../kit/styles/deck.css">
+  <link rel="stylesheet" href="../../../../kit/styles/legibility.css">
+  <link rel="stylesheet" href="../../../../kit/styles/patterns.css">
   <style id="kit-additions">
     /* ─────────────────────────────────────────────────────────────
        2주차 신규 구도 5종 — w2-roadmap · w2-practice · w2-scope ·
@@ -331,7 +331,773 @@
     .thank-you h2{ margin:0; font-size:150px; font-weight:900; letter-spacing:-.03em;
       line-height:1; color:var(--ink); }
     .thank-you .s-brand{ color:var(--ink); }
-  </style>
+  
+/* ═══════════════════════════════════════════════════════════════════
+   2026-07-30 재설계 4·5구간 통합 — 본 덱 편입분
+   출처: 재설계/4구간/samples.css · 재설계/5구간/samples.css
+   ⚠️ 표본 전용 발표모드 해제 블록(.deck/.slide 전역)은 의도적으로 제외했다.
+      그 블록이 들어오면 전 슬라이드가 동시에 표시된다.
+   ⚠️ 5구간 w5b-*/w5-map → w2-* 개명 완료(2주차인데 5주차로 읽혀서).
+      .lead → .sg-lead (일반명 전역 정의 회피).
+   kit 승격 대상 아님 — 1회 사용분은 주차 계약에만 등재한다(R-PROMO-01).
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* ── 4구간(AI 작업 시스템) 구도 ──────────────────────────────────── */
+/* 공통: 3단 스캐폴드 세로 배분 */
+.w2-enforce .s-full,
+.w2-verdict .s-full,
+.w2-axis .s-full,
+.w2-timeline .s-full,
+.w2-warnsteps .s-full{ bottom:54px; display:flex; flex-direction:column; gap:14px; }
+
+/* ══ w2-timeline ══ 시점 흐름 + 각 시점의 의미 (S3ITR: "왜"를 먼저) ══ */
+.tl-why{ display:flex; align-items:center; gap:12px; padding:12px 16px; border-radius:var(--r-lg);
+  background:var(--coral-line); border:1px solid var(--coral-deep); }
+.tl-why > b{ flex:0 0 auto; padding:3px 12px; border-radius:999px;
+  background:var(--coral); color:var(--on-coral); font-size:19px; font-weight:800; }
+.tl-why p{ margin:0; font-size:22px; font-weight:800; line-height:1.4; color:var(--on-coral); }
+.tl-track{ flex:0 0 auto; height:184px; display:grid; grid-auto-flow:column; grid-auto-columns:1fr;
+  gap:10px; align-items:stretch; min-height:0; }
+.tl-item{ display:flex; flex-direction:column; gap:6px; padding:12px 13px;
+  border-radius:var(--r-lg); background:var(--blue-panel); border:1px solid var(--blue-line-strong); }
+.tl-item.is-now{ background:var(--blue); border-color:var(--blue); }
+.tl-when{ font-size:20px; font-weight:800; color:var(--blue); }
+.tl-item.is-now .tl-when{ color:var(--white); }
+.tl-what{ font-size:21px; font-weight:800; line-height:1.34; color:var(--ink); }
+.tl-item.is-now .tl-what{ color:var(--white); }
+.tl-mean{ font-size:19px; font-weight:650; line-height:1.36; color:var(--gray-700); }
+.tl-item.is-now .tl-mean{ color:var(--on-blue-muted); }
+.tl-sum{ margin:auto 0 0; padding:12px 16px; border-radius:var(--r-md); text-align:center;
+  background:var(--ink); color:var(--white); font-size:23px; font-weight:800; }
+
+/* ══ w2-warnsteps ══ 경고 먼저 → 단계 (S3ITR + S3MAP 3요소) ══ */
+.ws-warn{ display:flex; align-items:center; gap:12px; padding:12px 16px; border-radius:var(--r-lg);
+  background:var(--coral-line); border:1px solid var(--coral-deep); }
+.ws-warn > b{ flex:0 0 auto; padding:3px 12px; border-radius:999px;
+  background:var(--coral); color:var(--on-coral); font-size:19px; font-weight:800; }
+.ws-warn p{ margin:0; font-size:22px; font-weight:800; line-height:1.4; color:var(--on-coral); }
+.ws-steps{ flex:1 1 auto; display:flex; flex-direction:column; gap:8px; min-height:0;
+  justify-content:space-between; }
+.ws-step{ display:flex; align-items:flex-start; gap:12px; padding:10px 14px;
+  border-radius:var(--r-lg); background:var(--surface); border:1px solid var(--blue-line); }
+.ws-step.is-key{ background:var(--blue-panel); border-color:var(--blue); }
+.ws-step .n{ flex:0 0 auto; width:30px; height:30px; border-radius:50%; display:grid;
+  place-items:center; background:var(--blue); color:var(--white); font-size:17px; font-weight:800; }
+.ws-step .txt{ min-width:0; }
+.ws-step > .txt > b{ display:block; font-size:22px; font-weight:800; color:var(--ink); }
+.ws-step .desc{ display:block; margin-top:1px; font-size:20px; font-weight:650;
+  line-height:1.35; color:var(--gray-700); }
+.ws-sum{ margin:0; padding:12px 16px; border-radius:var(--r-md); text-align:center;
+  background:var(--ink); color:var(--white); font-size:23px; font-weight:800; }
+
+/* ══ w2-enforce ══ 오해교정형: 정의 → 판단기준 → 나쁜예/좋은예 (S3CE·S3PE) ══ */
+.ef-def{ display:flex; align-items:flex-start; gap:14px; padding:14px 18px;
+  border-radius:var(--r-lg); background:var(--blue-panel); border:1px solid var(--blue-line-strong); }
+.ef-def .ef-mark{ flex:0 0 auto; font-size:30px; line-height:1; color:var(--blue); font-weight:800; }
+.ef-def p{ margin:0; font-size:23px; font-weight:700; line-height:1.42; color:var(--ink); }
+/* ⚠️ 출처 표기는 화면에 두지 않는다(2026-07-28 사용자 결정).
+   근거를 확인하는 이유는 **정확한 내용만 넣기 위해서**이지 출처를 보여주기 위해서가 아니다.
+   "공식 문서가 밝혔다"류 귀속 문구는 학습자에게 정보가 아니라 메타 주석이다.
+   출처는 개념KB `verbatim:`과 출처레지스트리에만 남기고, 필요하면 발표자 노트로 보낸다.
+   그래서 .ef-def cite 규칙은 두지 않는다 — 자리가 있으면 다시 채워 넣게 된다. */
+
+.ef-asks{ display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+.ef-ask{ padding:9px 13px; border-radius:var(--r-md); background:var(--surface);
+  border:1px solid var(--blue-line); }
+.ef-ask > b{ display:block; font-size:22px; font-weight:800; color:var(--blue); margin-bottom:1px; }
+.ef-ask > span{ display:block; font-size:20px; font-weight:600; color:var(--gray-700); line-height:1.35; }
+
+/* 색 박스는 결론 바와 확실히 떨어뜨린다(붙어 보이면 한 덩어리로 읽힌다).
+   ⚠️ max-height로 자르지 말 것 — 1차 수정에서 그렇게 했다가 박스 아래가 잘리고
+   검은 바가 오히려 더 붙어 보였다. 높이는 내용을 줄여서 확보한다. */
+.ef-pair{ flex:1 1 auto; display:grid; grid-template-columns:1fr 1fr; gap:12px; min-height:0; }
+.ef-side{ display:flex; flex-direction:column; gap:6px; padding:11px 14px; border-radius:var(--r-lg); }
+.ef-bad{ background:var(--coral-line); border:1px solid var(--coral-deep); }
+.ef-good{ background:var(--mint-line); border:1px solid var(--mint-deep); }
+.ef-tag{ align-self:flex-start; padding:3px 12px; border-radius:999px; font-size:19px; font-weight:800; }
+.ef-bad .ef-tag{ background:var(--coral); color:var(--on-coral); }
+.ef-good .ef-tag{ background:var(--mint); color:var(--on-mint); }
+.ef-body{ display:flex; align-items:center; gap:14px; flex:1 1 auto; min-height:0; }
+.ef-body svg{ flex:0 0 auto; }
+.ef-body p{ margin:0; font-size:22px; font-weight:700; line-height:1.42; }
+.ef-bad .ef-body p{ color:var(--on-coral); }
+.ef-good .ef-body p{ color:var(--on-mint); }
+.ef-rule{ margin:22px 0 0; padding:13px 16px; border-radius:var(--r-md); text-align:center;
+  background:var(--ink); color:var(--white); font-size:23px; font-weight:800; }
+
+/* ══ w2-verdict ══ 대립 주장 3+3 병렬 + 종합 한 줄 (원리 29) ══ */
+.vd-lead{ margin:0; font-size:23px; font-weight:700; color:var(--gray-700); }
+.vd-lead b{ color:var(--blue); font-weight:800; }
+.vd-cols{ flex:1 1 auto; display:grid; grid-template-columns:1fr 1fr; gap:12px; min-height:0; }
+.vd-col{ display:flex; flex-direction:column; gap:8px; padding:13px 15px; border-radius:var(--r-lg); }
+.vd-multi{ background:var(--blue-panel); border:1px solid var(--blue-line-strong); }
+.vd-single{ background:var(--mint-line); border:1px solid var(--mint-deep); }
+.vd-col h3{ margin:0 0 2px; font-size:24px; font-weight:800; }
+.vd-multi h3{ color:var(--blue); }
+.vd-single h3{ color:var(--mint-deep); }
+.vd-claim{ display:flex; gap:9px; align-items:flex-start; }
+.vd-claim i{ flex:0 0 auto; width:24px; height:24px; margin-top:2px; border-radius:50%;
+  display:grid; place-items:center; font-style:normal; font-size:15px; font-weight:800; }
+.vd-multi .vd-claim i{ background:var(--blue); color:var(--white); }
+.vd-single .vd-claim i{ background:var(--mint); color:var(--on-mint); }
+.vd-claim div{ min-width:0; }
+.vd-claim p{ margin:0; font-size:21px; font-weight:650; line-height:1.4; color:var(--ink); }
+.vd-claim p em{ font-style:normal; font-weight:800; }
+.vd-eg{ display:block; margin-top:3px; font-size:19px; font-weight:700; line-height:1.35; }
+.vd-multi .vd-eg{ color:var(--blue); }
+.vd-single .vd-eg{ color:var(--mint-deep); }
+.vd-col{ justify-content:space-between; }
+.vd-cost{ display:flex; align-items:center; gap:12px; padding:10px 15px;
+  border-radius:var(--r-md); background:var(--surface); border:1px solid var(--line); }
+.vd-cost b{ font-size:21px; font-weight:800; color:var(--ink); white-space:nowrap; }
+.vd-bar{ flex:1 1 auto; display:flex; align-items:center; gap:7px; }
+.vd-seg{ height:19px; border-radius:4px; }
+.vd-seg.one{ width:24px; background:var(--mint); }
+.vd-seg.many{ flex:1 1 auto; background:var(--blue); }
+.vd-cost span{ font-size:19px; font-weight:700; color:var(--gray-700); white-space:nowrap; }
+.vd-sum{ margin:0; padding:11px 16px; border-radius:var(--r-md); text-align:center;
+  background:var(--ink); color:var(--white); font-size:23px; font-weight:800; }
+/* 실제 사례 띠 — 비용 막대 자리를 대신 쓴다(같은 verdict 구도의 변주) */
+.vd-case{ display:flex; align-items:flex-start; gap:12px; padding:11px 15px;
+  border-radius:var(--r-md); background:var(--coral-line); border:1px solid var(--coral-deep); }
+.vd-case > b{ flex:0 0 auto; padding:2px 10px; border-radius:999px;
+  background:var(--coral); color:var(--on-coral); font-size:19px; font-weight:800; }
+.vd-case p{ margin:0; font-size:21px; font-weight:700; line-height:1.4; color:var(--on-coral); }
+
+/* ══ w2-axis ══ 두 대상 비교를 가운데 관계축으로 강제 (S3HUM) ══ */
+.ax-grid{ flex:1 1 auto; display:grid; grid-template-columns:1fr 212px 1fr;
+  align-items:stretch; gap:0; min-height:0; }
+.ax-side{ display:flex; flex-direction:column; gap:9px; padding:15px 17px; }
+.ax-wf{ background:var(--surface); border:1px solid var(--line);
+  border-radius:var(--r-lg) 0 0 var(--r-lg); }
+.ax-ag{ background:var(--blue-panel); border:1px solid var(--blue-line-strong);
+  border-radius:0 var(--r-lg) var(--r-lg) 0; }
+.ax-side h3{ margin:0; font-size:26px; font-weight:800; color:var(--ink); }
+.ax-side h3 small{ display:block; font-size:18px; font-weight:700; color:var(--gray-700); margin-top:2px; }
+.ax-pic{ display:grid; place-items:center; padding:2px 0 4px; }
+.ax-row{ display:flex; gap:9px; align-items:flex-start; }
+.ax-row b{ flex:0 0 96px; font-size:19px; font-weight:800; color:var(--gray-700); }
+.ax-row span{ flex:1 1 auto; font-size:21px; font-weight:650; line-height:1.38; color:var(--ink); }
+.ax-axis{ position:relative; display:flex; flex-direction:column; align-items:center;
+  justify-content:center; gap:8px; }
+.ax-axis::before{ content:""; position:absolute; left:50%; top:8px; bottom:8px; width:3px;
+  transform:translateX(-50%); background:var(--blue); border-radius:2px; }
+.ax-axis .ax-label{ position:relative; z-index:1; width:132px; padding:9px 8px; text-align:center;
+  border-radius:var(--r-md); background:var(--blue); color:var(--white);
+  font-size:20px; font-weight:800; line-height:1.3; }
+/* 좌우 방향을 읽히게 — 라벨 양옆에 가로로 둔다(세로 배치는 위아래로 오독된다).
+   ⚠️ 이전 판정 결함: 의사요소를 라벨 밖(-24px)에 두자 화살표가 축 컬럼을 벗어나
+   파랑 패널 위에 겹쳐 보이지 않았다(측정 x=730 > 축 우단 714). 컬럼 안으로 넣는다. */
+.ax-axis .ax-labelrow{ position:relative; z-index:1; display:flex; align-items:center;
+  gap:6px; background:var(--white); padding:6px 2px; border-radius:var(--r-md); }
+.ax-axis .ax-arrow{ font-size:24px; line-height:1; color:var(--blue); font-weight:800; }
+.ax-side{ justify-content:flex-start; }
+.ax-eg{ margin-top:auto; padding:9px 12px; border-radius:var(--r-md); font-size:20px;
+  font-weight:700; line-height:1.4; }
+.ax-wf .ax-eg{ background:var(--white); border:1px solid var(--gray-400); color:var(--ink); }
+.ax-ag .ax-eg{ background:var(--blue); color:var(--white); }
+.ax-eg b{ font-weight:800; }
+.ax-warn{ margin:0; padding:11px 16px; border-radius:var(--r-md);
+  background:var(--coral-line); border:1px solid var(--coral-deep);
+  color:var(--on-coral); font-size:22px; font-weight:800; text-align:center; }
+
+/* 타임라인 아래 — "그래서 우리는 이렇게 다룬다" 처리 원칙 3장.
+   빈 공간을 카드로 메우는 게 아니라, 타임라인이 낳는 실제 질문에 답하는 블록이다. */
+.tl-rules{ flex:0 0 auto; display:grid; grid-template-columns:repeat(3,1fr); gap:10px; min-height:0; }
+.tl-rule{ display:flex; flex-direction:column; gap:4px; padding:12px 14px;
+  border-radius:var(--r-lg); background:var(--surface); border:1px solid var(--blue-line); }
+.tl-rule b{ font-size:22px; font-weight:800; color:var(--blue); }
+.tl-rule span{ font-size:20px; font-weight:650; line-height:1.38; color:var(--ink); }
+
+/* ── 마무리 요소 변주 (2026-07-28) ────────────────────────────────
+   ⚠️ 검은 하단 배너를 모든 장에 쓰지 않는다. §0.3C가 「카드+하단 배너」
+   반복률을 1주차 2.7% vs 2주차 24.0%로 지목했는데, 확산 1차에서 8장 중
+   7장(87.5%)이 검은 배너로 끝나 그 실패를 그대로 재현했다.
+   장마다 닫는 방식을 다르게 두고, 배너가 필요 없는 장은 아예 두지 않는다. */
+.ws-sum.tone-blue{ background:var(--blue); color:var(--white); }
+.ws-sum.tone-mint{ background:var(--mint); color:var(--on-mint); }
+.vd-sum.tone-outline{ background:var(--white); color:var(--blue);
+  border:2px solid var(--blue); }
+/* 배너를 뺀 장은 마지막 블록이 바닥까지 자연스럽게 내려오게 한다 */
+.w2-timeline .tl-rules.is-last{ flex:1 1 auto; }
+.w2-timeline .tl-rules.is-last .tl-rule{ justify-content:center; }
+.w2-verdict .vd-case.is-last{ margin-top:auto; }
+
+/* ══════════════════════════════════════════════════════════════════
+   동점 규칙(by-shape.md) 적용 구도 2종 — 2026-07-28
+   박스로 채우는 대신, 정보 모양이 numeric이면 차트를 주인공으로,
+   concept이면 글+여백으로 간다. 기준: 1주차 17번(T02)·37번(S3LM).
+   ══════════════════════════════════════════════════════════════════ */
+
+/* ── w2-metric ── numeric: C-column이 주인공 (L-td-compare-bars) ──
+   차트 프리미티브(.code-chart/.cc-plot/.cc-fill/.cc-val/.cc-axis)는
+   kit/styles/patterns.css의 것을 그대로 쓴다 — 신규 차트 CSS 없음. */
+.w2-metric .s-full{ bottom:54px; display:flex; flex-direction:column; }
+.mt-lead{ margin:0 0 22px; font-size:24px; font-weight:700; line-height:1.45; color:var(--ink); }
+.mt-lead b{ color:var(--blue); font-weight:800; }
+.mt-body{ flex:1 1 auto; display:grid; grid-template-columns:1fr 392px; gap:30px;
+  align-items:center; min-height:0; }
+.mt-chart .cc-plot{ height:208px; }
+/* ⚠️ 최대 막대를 플롯 높이에 꽉 채우면 값 라벨(.cc-val)이 위 문장에 붙는다.
+   막대 상한을 플롯보다 낮게 두고 .mt-lead 아래 여백을 확보한다. */
+.mt-cap{ margin:14px 0 0; font-size:19px; font-weight:700; color:var(--gray-700); text-align:center; }
+.mt-notes{ display:flex; flex-direction:column; gap:13px; }
+/* 블록 제목은 "구조 라벨"이지 강조 스팬이 아니다 — R-EMPH-01의 슬라이드당 강조
+   합계(≤3)는 문장 안 강조에만 적용된다. 라벨 색은 컴포넌트 스타일로 준다. */
+.mt-note > b{ display:block; font-size:22px; font-weight:800; color:var(--mint-deep); margin-bottom:3px; }
+.mt-note > span{ display:block; font-size:20px; font-weight:650; line-height:1.44; color:var(--gray-700); }
+.mt-rule{ margin:14px 0 0; padding:11px 0 11px 16px; border-left:5px solid var(--mint);
+  font-size:22px; font-weight:700; line-height:1.45; color:var(--ink); }
+.mt-rule b{ color:var(--mint-deep); font-weight:800; }
+/* 필수 진술(C-멀티에이전트) — 하단 회색 한 줄 */
+.mt-std{ margin:8px 0 0; font-size:22px; font-weight:650; line-height:1.4;
+  color:var(--gray-700); }
+
+/* ── w2-figure ── concept: 박스 없는 본문 글 + 단일 도해 (L-ct-figure) ── */
+.w2-figure .s-full{ bottom:54px; display:grid; grid-template-columns:1fr 442px;
+  gap:36px; align-items:center; }
+/* ⚠️ align-items:start로 두면 여백이 하단에 몰려 '미완성'으로 읽힌다.
+   1주차 37번은 여백이 위아래로 고르게 퍼져 있어 의도로 읽힌다 — center가 맞다. */
+.fg-text{ padding-top:2px; }
+.fg-p{ margin:0 0 16px; font-size:24px; font-weight:650; line-height:1.58; color:var(--ink); }
+.fg-p b{ font-weight:800; }
+.fg-p .term{ color:var(--blue); font-weight:800; }
+.fg-strip{ margin:4px 0 0; padding:13px 0 13px 18px; border-left:5px solid var(--mint);
+  font-size:23px; font-weight:700; line-height:1.5; color:var(--ink); }
+.fg-strip b{ color:var(--mint-deep); font-weight:800; }
+.fg-fig{ display:flex; flex-direction:column; gap:10px; }
+.fg-lane{ padding:15px 18px; border-radius:var(--r-lg); }
+.fg-soft{ background:var(--surface); border:1px dashed var(--gray-400); }
+.fg-hard{ background:var(--blue-panel); border:2px solid var(--blue); }
+.fg-lane h4{ margin:0 0 4px; font-size:21px; font-weight:800; }
+.fg-soft h4{ color:var(--gray-700); }
+.fg-hard h4{ color:var(--blue); }
+.fg-lane p{ margin:0; font-size:20px; font-weight:650; line-height:1.4; color:var(--ink); }
+.fg-gate{ display:flex; align-items:center; gap:10px; padding:2px 0; }
+.fg-gate span{ flex:1 1 auto; height:3px; background:var(--coral); border-radius:2px; }
+.fg-gate b{ flex:0 0 auto; font-size:19px; font-weight:800; color:var(--coral-deep); }
+
+/* ⚠️ 반복 버그 — 4회 발생, 전수 감사로 종결(2026-07-28)
+   라벨·본문용 b/span에 display:block을 걸 때는 **반드시 직계 자식 선택자**
+   (`> b` / `> span`)로 좁힌다. 후손 선택자로 두면 문장 안의 강조 스팬
+   (.hl-mint-text 등)까지 블록이 되어 줄이 끊긴다.
+   발생 이력: .ws-warn b → .vd-case b → .mt-note b → .fg-card span.
+   점검 명령: grep -nE '^\.[a-z0-9-]+ (b|span)\{[^}]*display:block' samples.css
+   결과가 0줄이어야 한다. */
+
+/* ── R-FORM-01 적용: 병렬 항목은 카드로 (w2-figure 왼쪽 변주) ────── */
+.fg-cards{ display:flex; flex-direction:column; gap:11px; margin:0 0 16px; }
+.fg-card{ padding:12px 15px; border-radius:var(--r-lg);
+  background:var(--surface); border:1px solid var(--blue-line); }
+.fg-card > b{ display:block; font-size:21px; font-weight:800; color:var(--blue); margin-bottom:2px; }
+.fg-card > span{ display:block; font-size:20px; font-weight:650; line-height:1.42; color:var(--ink); }
+
+/* ── 결론을 화면의 주역으로 (H 슬라이드 요청 반영) ──────────────── */
+.fg-verdict{ margin:18px 0 0; font-size:34px; font-weight:800; line-height:1.34;
+  letter-spacing:-.03em; color:var(--ink); }
+
+/* ── 로딩 시점 타이밍 바 (D-gantt 계열 element) ─────────────────── */
+.tm{ display:flex; flex-direction:column; gap:14px; }
+.tm-axis{ display:flex; justify-content:space-between; font-size:18px; font-weight:800;
+  color:var(--gray-700); padding:0 2px; }
+.tm-row{ display:flex; flex-direction:column; gap:6px; }
+.tm-row > b{ font-size:20px; font-weight:800; }
+.tm-track{ position:relative; height:44px; border-radius:8px;
+  background:var(--surface); border:1px solid var(--line); overflow:hidden; }
+.tm-fill{ position:absolute; top:0; bottom:0; display:grid; place-items:center;
+  font-size:17px; font-weight:800; }
+.tm-rule > b{ color:var(--blue); }
+.tm-rule .tm-fill{ left:0; right:0; background:var(--blue); color:var(--white); }
+.tm-skill > b{ color:var(--mint-deep); }
+.tm-skill .tm-fill{ left:56%; right:6%; background:var(--mint); color:var(--on-mint); }
+.tm-note{ margin:0; font-size:19px; font-weight:700; line-height:1.4; color:var(--gray-700); }
+
+/* ===================================================================
+   2026-07-28 재설계 — 5종 신규 family
+   D→w2-gantt · E→w2-pipe · A2→w2-quad · F→w2-branch · G→w2-dialog
+   각 family는 역인덱스에서 뽑은 element를 화면의 주인공으로 세운다.
+   ⚠️ R-QC-14: 후손 b/span에 display:block 금지. 반드시 `> b` / `> span`.
+      회귀 검사:  grep -nE "^\.[A-Za-z0-9_-]+ +(b|span) *\{[^}]*display: *block" samples.css
+   =================================================================== */
+.w2-gantt .s-full,
+.w2-pipe .s-full,
+.w2-branch .s-full,
+.w2-dialog .s-full{ bottom:54px; display:flex; flex-direction:column; gap:14px; }
+.w2-quad .s-full{ bottom:54px; display:flex; flex-direction:column; gap:12px; }
+
+/* --- D · w2-gantt : 비례 시간축(D-gantt) ------------------------- */
+.gt-lead{ margin:0; font-size:23px; font-weight:650; line-height:1.45; color:var(--ink); }
+.gt-lead > b{ font-weight:800; color:var(--blue); }
+.gt-wrap{ flex:0 0 auto; position:relative; height:216px; margin-top:4px; }
+.gt-span{ position:absolute; left:1%; right:0; top:0; height:32px;
+  display:flex; align-items:center; justify-content:center;
+  border-left:3px solid var(--mint-deep); border-right:3px solid var(--mint-deep); }
+.gt-span::before{ content:""; position:absolute; left:0; right:0; top:50%;
+  height:2px; background:var(--mint); }
+.gt-span > b{ position:relative; z-index:1; background:var(--white); padding:0 14px;
+  font-size:22px; font-weight:800; color:var(--mint-deep); }
+.gt-axis{ position:absolute; left:0; right:0; top:52px; height:4px;
+  background:var(--gray-400); border-radius:2px; }
+.gt-dot{ position:absolute; top:-7px; width:18px; height:18px; margin-left:-9px;
+  border-radius:50%; background:var(--white); border:4px solid var(--blue); }
+.gt-dot.is-now{ background:var(--blue); border-color:var(--blue); }
+/* 양끝 라벨은 축 '아래'에 둔다 — 축 위는 5개월 브래킷이 쓰므로 겹친다(2026-07-28 수정) */
+.gt-mon{ position:absolute; top:64px; font-size:16px; font-weight:700;
+  color:var(--gray-700); white-space:nowrap; }
+.gt-mark{ position:absolute; top:98px; width:206px; }
+.gt-mark > .k{ display:block; font-size:20px; font-weight:800; color:var(--blue); }
+.gt-mark > .t{ display:block; margin-top:2px; font-size:21px; font-weight:800;
+  color:var(--ink); line-height:1.28; }
+.gt-mark > .d{ display:block; margin-top:5px; font-size:18px; font-weight:650;
+  color:var(--gray-700); line-height:1.38; }
+.gt-rules{ flex:1 1 auto; display:grid; grid-template-columns:repeat(3,1fr);
+  gap:28px; align-content:center; }
+.gt-rule{ border-top:3px solid var(--blue); padding-top:9px; }
+.gt-rule > b{ display:block; font-size:22px; font-weight:800; color:var(--ink); }
+.gt-rule > span{ display:block; margin-top:3px; font-size:19px; font-weight:650;
+  line-height:1.4; color:var(--gray-700); }
+
+/* --- E · w2-pipe : 가로 파이프라인(D-flow-h) ---------------------- */
+.pp-lead{ margin:0; font-size:23px; font-weight:650; line-height:1.45; color:var(--ink); }
+.pp-lead > b{ font-weight:800; color:var(--blue); }
+.pp-body{ flex:1 1 auto; display:grid;
+  grid-template-columns:1fr 62px 226px 62px 1fr; align-items:center; }
+.pp-col{ display:flex; flex-direction:column; gap:13px; }
+.pp-cap{ margin:0 0 2px; font-size:20px; font-weight:800; letter-spacing:.01em; }
+.pp-in .pp-cap{ color:var(--mint-deep); }
+.pp-out .pp-cap{ color:var(--blue); }
+.pp-item{ padding-left:14px; border-left:5px solid var(--gray-400); }
+.pp-in .pp-item{ border-left-color:var(--mint); }
+.pp-out .pp-item{ border-left-color:var(--blue); }
+.pp-item > b{ display:block; font-size:22px; font-weight:800; color:var(--ink); line-height:1.28; }
+.pp-item > span{ display:block; margin-top:2px; font-size:19px; font-weight:650;
+  color:var(--gray-700); line-height:1.36; }
+.pp-arrow{ display:grid; place-items:center; }
+.pp-core{ padding:24px 14px; border-radius:var(--r-lg); background:var(--blue); text-align:center; }
+.pp-core > b{ display:block; font-size:26px; font-weight:800; color:var(--white); }
+.pp-core > span{ display:block; margin-top:7px; font-size:19px; font-weight:650;
+  color:var(--on-blue-muted); line-height:1.4; }
+.pp-note{ margin:0; padding:11px 0 11px 18px; border-left:5px solid var(--coral);
+  font-size:21px; font-weight:700; line-height:1.44; color:var(--ink); }
+/* 필수 진술(C-하네스구성요소) — KB 지정대로 하단 회색 한 줄 */
+.pp-std{ margin:-4px 0 0; font-size:22px; font-weight:650; line-height:1.4;
+  color:var(--gray-700); }
+
+/* --- A2 · w2-quad : 2축 사분면(D-matrix) -------------------------- */
+.qd-lead{ margin:0; font-size:23px; font-weight:650; line-height:1.45; color:var(--ink); }
+.qd-lead > b{ font-weight:800; color:var(--blue); }
+.qd-body{ flex:1 1 auto; display:grid; grid-template-columns:1fr 344px;
+  gap:30px; min-height:0; padding:16px 0 30px; }
+/* 사분면 바탕: 원본은 하드스톱 linear-gradient로 «좌하 민트 / 대각 코랄선 / 우상 블루»를
+   그렸다. 시각 결과는 단색 3면이지만 flat-fill 검사기가 gradient 문자열을 잡으므로
+   clip-path 의사요소로 같은 그림을 다시 그린다(규칙을 약화하지 않는다).
+   ⚠️ overflow:hidden 금지 — .qd-chip이 translate(-50%,50%)로 플롯 밖까지 나간다. */
+.qd-plot{ position:relative; border-left:3px solid var(--gray-700);
+  border-bottom:3px solid var(--gray-700); background:var(--blue-panel); }
+.qd-plot::before{ content:""; position:absolute; inset:0; z-index:0;
+  background:var(--mint-line); clip-path:polygon(0 0, 100% 100%, 0 100%); }
+.qd-plot::after{ content:""; position:absolute; inset:0; z-index:0;
+  background:var(--coral);
+  clip-path:polygon(0 0, 5px 0, 100% calc(100% - 5px), 100% 100%, calc(100% - 5px) 100%, 0 5px); }
+.qd-plot > *{ z-index:1; }
+.qd-ax{ position:absolute; font-size:17px; font-weight:800; color:var(--gray-700);
+  white-space:nowrap; }
+.qd-ax.x1{ right:0; bottom:-25px; }
+.qd-ax.x0{ left:0; bottom:-25px; }
+.qd-ax.y1{ left:-3px; top:-25px; }
+.qd-zone{ position:absolute; font-size:20px; font-weight:800; }
+.qd-zone.lo{ left:16px; bottom:14px; color:var(--mint-deep); }
+.qd-zone.hi{ right:16px; top:14px; color:var(--blue); }
+.qd-chip{ position:absolute; transform:translate(-50%,50%); padding:6px 12px;
+  border-radius:999px; font-size:18px; font-weight:700; white-space:nowrap;
+  background:var(--white); color:var(--ink); }
+.qd-chip.soft{ border:2px solid var(--mint-deep); }
+.qd-chip.hard{ border:2px solid var(--blue); }
+.qd-chip.edge{ border:2px dashed var(--coral-deep); }
+.qd-side{ display:flex; flex-direction:column; gap:15px; justify-content:center; }
+.qd-q{ padding-left:16px; border-left:5px solid var(--blue); }
+.qd-q > b{ display:block; font-size:21px; font-weight:800; color:var(--blue); }
+.qd-q > span{ display:block; margin-top:3px; font-size:20px; font-weight:650;
+  line-height:1.4; color:var(--ink); }
+.qd-out{ margin:0; padding:14px 16px; border-radius:var(--r-md);
+  background:var(--surface); border:1px solid var(--gray-400);
+  font-size:21px; font-weight:700; line-height:1.46; color:var(--ink); }
+
+/* --- F · w2-branch : 분기 도해 + 가로 셰브런 ---------------------- */
+.br-fig{ flex:0 0 auto; display:grid; grid-template-columns:1fr 394px;
+  gap:30px; align-items:center; }
+.br-side{ display:flex; flex-direction:column; gap:10px; }
+.br-side > b{ display:block; font-size:21px; font-weight:800; color:var(--coral-deep); }
+.br-side > p{ margin:0; font-size:21px; font-weight:650; line-height:1.44; color:var(--ink); }
+.br-steps{ flex:1 1 auto; display:grid; grid-template-columns:repeat(4,1fr);
+  gap:22px; align-content:center; }
+.br-step{ position:relative; padding:12px 14px; border-radius:var(--r-md);
+  background:var(--surface); border:1px solid var(--gray-400); }
+.br-step.is-key{ background:var(--blue-panel); border:2px solid var(--blue); }
+.br-step::after{ content:"\203A"; position:absolute; right:-17px; top:50%;
+  transform:translateY(-50%); font-size:28px; font-weight:800; color:var(--gray-400); }
+.br-step:last-child::after{ content:none; }
+.br-step > i{ display:block; font-style:normal; font-size:17px; font-weight:800; color:var(--blue); }
+.br-step > b{ display:block; margin-top:2px; font-size:21px; font-weight:800;
+  color:var(--ink); line-height:1.28; }
+.br-step > span{ display:block; margin-top:5px; font-size:18px; font-weight:650;
+  line-height:1.38; color:var(--gray-700); }
+
+/* --- G · w2-dialog : 실습 절차 + 실제 발화 ------------------------ */
+.dg-note{ margin:0; padding:10px 0 10px 18px; border-left:5px solid var(--coral);
+  font-size:21px; font-weight:700; line-height:1.44; color:var(--ink); }
+.dg-list{ flex:1 1 auto; display:flex; flex-direction:column; gap:18px; justify-content:center; }
+.dg-row{ display:grid; grid-template-columns:30px 302px 1fr; gap:15px; align-items:center; }
+.dg-n{ width:30px; height:30px; border-radius:50%; display:grid; place-items:center;
+  background:var(--blue); color:var(--white); font-size:17px; font-weight:800; }
+.dg-lab > b{ display:block; font-size:22px; font-weight:800; color:var(--ink); line-height:1.26; }
+.dg-lab > span{ display:block; margin-top:2px; font-size:18px; font-weight:650;
+  color:var(--gray-700); line-height:1.34; }
+.dg-say{ margin:0; position:relative; padding:11px 16px; border-radius:14px;
+  background:var(--surface); border:1px solid var(--gray-400);
+  font-size:20px; font-weight:700; line-height:1.4; color:var(--ink); }
+.dg-say::before{ content:""; position:absolute; left:-9px; top:50%; margin-top:-8px;
+  width:0; height:0; border:8px solid transparent; border-left:0;
+  border-right-color:var(--gray-400); }
+.dg-row.is-me .dg-say{ background:var(--mint-line); border-color:var(--mint-deep); }
+.dg-row.is-me .dg-say::before{ border-right-color:var(--mint-deep); }
+.dg-sum{ margin:0; padding:12px 16px; border-radius:var(--r-md); text-align:center;
+  background:var(--mint); color:var(--on-mint); font-size:22px; font-weight:800; }
+
+/* ── 5구간(설계한 기준으로 화면 만들기) 구도 ────────────────────── */
+/* 5구간 조건 B — PPT 소재를 회수해 만든 판. 결정표 정본: DECISION.md
+   ⚠️ R-QC-14: 후손 b/span에 display:block 금지. 반드시 `> b` / `> span`. */
+
+
+.w2-map .s-full,
+.w2-ia .s-full, .w2-cmp .s-full, .w5b-cards .s-full,
+.w2-a11y .s-full, .w2-memo .s-full, .w2-chain .s-full{
+  bottom:54px; display:flex; flex-direction:column; gap:14px; }
+
+.sg-lead{ margin:0; font-size:23px; font-weight:650; line-height:1.46; color:var(--ink); }
+.sg-lead > b{ font-weight:800; color:var(--blue); }
+
+/* --- 1 · 빙산 --------------------------------------------------------- */
+.bg-body{ flex:1 1 auto; display:grid; grid-template-columns:1fr 388px; gap:30px; align-items:center; }
+.bg-side{ display:flex; flex-direction:column; gap:14px; }
+.bg-vs{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.bg-vs > div{ padding:13px 15px; border-radius:var(--r-md); }
+.bg-vs > .a{ background:var(--blue-panel); border:1px solid var(--blue-line-strong); }
+.bg-vs > .b{ background:var(--surface); border:1px solid var(--gray-400); }
+.bg-vs > div > b{ display:block; font-size:21px; font-weight:800; margin-bottom:3px; }
+.bg-vs > .a > b{ color:var(--blue); }
+.bg-vs > .b > b{ color:var(--gray-700); }
+.bg-vs > div > span{ display:block; font-size:19px; font-weight:650; line-height:1.4; color:var(--ink); }
+.bg-note{ margin:0; padding:11px 0 11px 18px; border-left:5px solid var(--coral);
+  font-size:21px; font-weight:700; line-height:1.44; color:var(--ink); }
+
+/* --- 2 · 두 장 비교 + F자 -------------------------------------------- */
+/* 2px 넘침 실측 후 이 family만 gap을 좁힌다(전역 14px → 12px). 기준 §3은 이탈이
+   0이 아니면 A/B 비교 자체를 무효로 하므로 2px도 남기지 않는다. */
+.w2-cmp .s-full{ gap:12px; }
+.cm-body{ flex:1 1 auto; display:grid; grid-template-columns:1fr 1fr; gap:30px; align-items:start; }
+.cm-col > .cap{ display:block; font-size:20px; font-weight:800; margin-bottom:8px; }
+.cm-col.bad > .cap{ color:var(--coral-deep); }
+.cm-col.good > .cap{ color:var(--mint-deep); }
+.cm-shot{ position:relative; padding:16px; border-radius:var(--r-lg);
+  background:var(--surface); border:1px solid var(--gray-400); min-height:210px; }
+.cm-col.good .cm-shot{ border-color:var(--mint-deep); }
+.cm-el{ display:block; padding:8px 12px; border-radius:var(--r-md); margin-bottom:8px;
+  background:var(--white); border:1px solid var(--gray-400);
+  font-size:19px; font-weight:700; color:var(--ink); }
+.cm-el.t{ font-size:26px; font-weight:800; border:0; background:transparent; padding:0 0 6px; }
+.cm-el.btn{ background:var(--blue); color:var(--white); border-color:var(--blue);
+  display:inline-block; margin-bottom:0; }
+.cm-el.sm{ font-size:17px; font-weight:650; color:var(--gray-700); }
+.cm-f{ position:absolute; inset:0; pointer-events:none; }
+.cm-why{ margin-top:9px; font-size:18px; font-weight:650; line-height:1.4; color:var(--gray-700); }
+.cm-why > b{ font-weight:800; color:var(--ink); }
+
+/* --- 3 · 문구 카드 3쌍 ------------------------------------------------ */
+.cd-grid{ flex:1 1 auto; display:grid; grid-template-columns:repeat(3,1fr); gap:18px; align-content:center; }
+.cd-card{ display:flex; flex-direction:column; gap:10px; }
+.cd-k{ font-size:19px; font-weight:800; color:var(--gray-700); }
+.cd-x, .cd-o{ padding:12px 14px; border-radius:var(--r-md); }
+.cd-x{ background:var(--surface); border:1px solid var(--coral); }
+.cd-o{ background:var(--mint-line); border:1px solid var(--mint-deep); }
+.cd-x > b, .cd-o > b{ display:block; font-size:22px; font-weight:800; color:var(--ink); }
+.cd-x > span, .cd-o > span{ display:block; margin-top:3px; font-size:18px; font-weight:650;
+  line-height:1.36; color:var(--gray-700); }
+.cd-rule{ margin:0; padding:11px 0 11px 18px; border-left:5px solid var(--mint);
+  font-size:21px; font-weight:700; line-height:1.44; color:var(--ink); }
+
+/* --- 4 · 접근성(시뮬레이션+막대+대비 샘플) ---------------------------- */
+.ay-body{ flex:1 1 auto; display:grid; grid-template-columns:1fr 1fr 300px; gap:24px; align-items:center; }
+.ay-cap{ display:block; font-size:19px; font-weight:800; color:var(--gray-700); margin-bottom:8px; }
+.ay-box{ padding:11px 13px; border-radius:var(--r-md); background:var(--surface);
+  border:1px solid var(--gray-400); }
+.ay-row{ display:flex; align-items:center; gap:9px; padding:3px 0; font-size:19px; font-weight:700; }
+.ay-dot{ width:16px; height:16px; border-radius:50%; flex:0 0 auto; }
+.ay-dot.ok{ background:var(--mint); }
+.ay-dot.no{ background:var(--coral); }
+.ay-gray{ filter:grayscale(1); }
+.ay-txt{ padding:9px 13px; border-radius:var(--r-md); margin-top:8px; }
+.ay-txt.weak{ background:var(--white); border:1px solid var(--gray-400);
+  color:var(--gray-400); font-size:20px; font-weight:650; }
+.ay-txt.strong{ background:var(--white); border:1px solid var(--ink);
+  color:var(--ink); font-size:20px; font-weight:700; }
+.ay-stat > .n{ display:block; font-size:46px; font-weight:800; color:var(--blue); line-height:1.05; }
+.ay-stat > .d{ display:block; margin-top:5px; font-size:20px; font-weight:700;
+  line-height:1.4; color:var(--ink); }
+.ay-track{ margin-top:11px; height:16px; border-radius:8px; background:var(--surface);
+  border:1px solid var(--gray-400); overflow:hidden; }
+.ay-fill{ display:block; height:100%; background:var(--blue); }
+.ay-band{ margin:0; padding:12px 16px; border-radius:var(--r-md); text-align:center;
+  background:var(--blue); color:var(--white); font-size:22px; font-weight:800; }
+
+/* --- 5 · 상하 전/후 + 노란 메모지 ------------------------------------- */
+.mm-body{ flex:1 1 auto; display:grid; grid-template-columns:1fr 296px; gap:26px; align-items:center; }
+.mm-stack{ display:flex; flex-direction:column; gap:11px; }
+.mm-row{ display:grid; grid-template-columns:112px 1fr; gap:14px; align-items:center;
+  padding:13px 16px; border-radius:var(--r-md); }
+.mm-row.before{ background:var(--surface); border:1px solid var(--gray-400); }
+.mm-row.after{ background:var(--mint-line); border:1px solid var(--mint-deep); }
+.mm-row > .tag{ font-size:19px; font-weight:800; }
+.mm-row.before > .tag{ color:var(--gray-700); }
+.mm-row.after > .tag{ color:var(--mint-deep); }
+.mm-row > .txt{ font-size:20px; font-weight:700; line-height:1.4; color:var(--ink); }
+.mm-row > .txt > span{ display:block; margin-top:2px; font-size:18px; font-weight:650; color:var(--gray-700); }
+/* R-COLOR-06 강조색 예외 — 6장 중 이 한 장에서만 쓴다(예산 2% 이내).
+   «메모지»는 노랑일 때 한눈에 «붙여 둔 기준»으로 읽힌다 — 코랄 틴트로는 주의·경고로
+   오독된다(R-COLOR-05: 코랄=주의). 그 의미 차이가 이 예외를 정당화한다.
+   raw #hex를 흩뿌리지 않고 **토큰으로 선언**하며, 요소에 `palette-x` 표식을 달아
+   verify_deck.py가 예산을 셀 수 있게 한다. 표식이 없으면 셀 수 없고, 셀 수 없으면
+   예산이 없는 것과 같다. 정본: kit/guide/디자인시스템.md R-COLOR-06. */
+:root{ --accent-note:#FDF3C7; --accent-note-line:#D9C36B; }
+.mm-memo{ padding:16px 17px; border-radius:4px; background:var(--accent-note);
+  border:1px solid var(--accent-note-line); box-shadow:2px 3px 0 var(--shadow-sm, rgba(0,0,0,.06)); }
+.mm-memo, .mm-memo *{ color:var(--ink); }
+.mm-memo > b{ display:block; font-size:19px; font-weight:800; color:var(--ink); margin-bottom:9px; }
+.mm-memo > div{ font-size:19px; font-weight:650; line-height:1.5; color:var(--ink); padding:3px 0; }
+.mm-warn{ margin:0; padding:11px 0 11px 18px; border-left:5px solid var(--coral);
+  font-size:21px; font-weight:700; line-height:1.44; color:var(--ink); }
+
+/* --- 6 · 값→이름→재사용 3단 ------------------------------------------ */
+.ch-wrap{ flex:1 1 auto; display:grid; place-items:center; }
+.ch-note{ margin:0; padding:12px 16px; border-radius:var(--r-md); text-align:center;
+  background:var(--mint); color:var(--on-mint); font-size:22px; font-weight:800; }
+
+/* --- 3 · w2-map : 1:1 대응(comparison) -------------------------------- */
+.mp-head{ display:grid; grid-template-columns:1fr 54px 1fr; gap:0;
+  font-size:19px; font-weight:800; }
+.mp-head > .a{ color:var(--coral-deep); }
+.mp-head > .m{ }
+.mp-head > .b{ color:var(--mint-deep); }
+.mp-rows{ flex:1 1 auto; display:flex; flex-direction:column; gap:12px; justify-content:center; }
+.mp-row{ display:grid; grid-template-columns:1fr 54px 1fr; align-items:center; }
+.mp-bad, .mp-good{ padding:11px 15px; border-radius:var(--r-md);
+  font-size:21px; font-weight:700; line-height:1.34; }
+.mp-bad{ background:var(--surface); border:1px solid var(--coral); color:var(--ink); }
+.mp-good{ background:var(--mint-line); border:1px solid var(--mint-deep); color:var(--ink); }
+.mp-bad > span, .mp-good > span{ display:block; margin-top:2px; font-size:17px;
+  font-weight:650; color:var(--gray-700); }
+.mp-ar{ display:grid; place-items:center; font-size:22px; font-weight:800; color:var(--gray-700); }
+.mp-rule{ margin:0; padding:11px 0 11px 18px; border-left:5px solid var(--mint);
+  font-size:21px; font-weight:700; line-height:1.44; color:var(--ink); }
+
+
+/* 필수 진술(C-디자인참고자료) — 레퍼런스 슬라이드 하단 한 줄 */
+.ref-right{ margin:14px 0 0; padding:11px 0 11px 16px; border-left:5px solid var(--coral);
+  font-size:22px; font-weight:700; line-height:1.45; color:var(--ink); }
+.ref-right strong{ color:var(--coral-deep); font-weight:800; }
+
+/* ── 2026-07-30 신설 구도: Part 1 작업준비 · Part 4 하네스 접합 · 주차 개요 ── */
+/* w2-place — C4-3 「만든 파일의 하네스 위치」: mapping(파일 → 하네스 칸).
+   맡기기 전 칸 하나만 채우고 나머지 네 칸을 비워 둔 채 그리드로 나란히 둔다.
+   본문 22px 하한 준수 · 바닥선 666px(bottom:54px) 준수. */
+.w2-place .s-full{ bottom:54px; display:flex; flex-direction:column; gap:14px; }
+.pl-lead{ margin:0; font-size:23px; font-weight:650; line-height:1.42; color:var(--ink); }
+.pl-map{ flex:1 1 auto; display:grid; grid-template-columns:360px repeat(4,1fr);
+  gap:16px; align-content:center; min-height:0; }
+.pl-slot{ display:flex; flex-direction:column; gap:10px; padding:18px; border-radius:var(--r-lg); }
+.pl-slot > b{ font-size:22px; font-weight:800; line-height:1.25; }
+.pl-slot.is-filled{ background:var(--mint-soft); border:1px solid var(--mint-line); box-shadow:var(--shadow-sm); }
+.pl-slot.is-filled > b{ color:var(--mint-deep); }
+.pl-slot.is-empty{ background:var(--surface); border:1px dashed var(--gray-400);
+  align-items:center; text-align:center; }
+.pl-slot.is-empty > b{ color:var(--gray-700); }
+.pl-chip{ display:flex; align-items:baseline; gap:10px; padding:9px 12px;
+  border-radius:var(--r-md); background:var(--white); border:1px solid var(--mint-line); }
+.pl-chip > i{ font-style:normal; font-family:var(--font-mono); font-size:22px;
+  font-weight:800; color:var(--ink); white-space:nowrap; }
+.pl-chip > span{ font-size:22px; font-weight:600; color:var(--gray-700); }
+.pl-blank{ margin-top:10px; font-size:22px; font-weight:700; color:var(--gray-400); }
+.pl-verdict{ margin:0; padding:11px 0 11px 18px; border-left:5px solid var(--mint);
+  font-size:22px; font-weight:700; line-height:1.42; color:var(--ink); }
+
+/* w2-axes — C4-5 「파일만으로는 부족한 것」: classification(동급 4항목).
+   C4-4(맡기기 전/끝난 뒤 3+3)와 C4-6(규칙 vs 강제)에 없는 네 축만 다룬다:
+   권한·실행 환경·인수인계·실패 기록. 본문 22px 하한 · 바닥선 666px 준수. */
+.w2-axes .s-full{ bottom:54px; display:flex; flex-direction:column; gap:14px; }
+.ax4-lead{ margin:0; font-size:23px; font-weight:650; line-height:1.42; color:var(--ink); }
+.ax4-grid{ flex:1 1 auto; display:grid; grid-template-columns:repeat(4,1fr);
+  gap:16px; align-content:center; min-height:0; }
+.ax4-card{ display:flex; flex-direction:column; gap:10px; padding:20px 18px;
+  border-radius:var(--r-lg); background:var(--blue-soft); border:1px solid var(--blue-line);
+  box-shadow:var(--shadow-sm); }
+.ax4-card > .ax4-k{ font-size:22px; font-weight:800; color:var(--blue); }
+.ax4-card > .ax4-q{ font-size:22px; font-weight:700; color:var(--gray-700); }
+.ax4-card > p{ margin:0; font-size:22px; font-weight:600; line-height:1.42; color:var(--ink); }
+.ax4-foot{ margin:0; padding:11px 0 11px 18px; border-left:5px solid var(--mint);
+  font-size:22px; font-weight:700; line-height:1.42; color:var(--ink); }
+
+/* ─────────────────────────────────────────────────────────────
+   2026-07-30 Part 1 신설 3종 — w2-persist · w2-owner · w2-ready.
+   「AI가 읽을 작업 기준을 폴더에 남기기」기초 — Part 4(하네스 엔지니어링)의
+   전제. scripts/verify_deck.py의 family_signature()에 실제 family로
+   등재해야 한다(persist/owner/ready) — 미등재 시 조립·검증 단계에서 처리 필요.
+   색은 토큰만 · 본문 22px 하한 · 바닥선 666px(bottom:54px) 준수.
+   ───────────────────────────────────────────────────────────── */
+
+/* ── w2-persist · 대화 vs 파일 대비 (contrast, C1-12) ────────────── */
+.w2-persist .s-full{ bottom:54px; display:flex; flex-direction:column; }
+.ps-lead{ margin:8px 0 0; font-size:22px; line-height:1.5; font-weight:650; color:var(--ink); }
+.ps-lead strong{ color:var(--blue); font-weight:800; }
+.ps-grid{ flex:1 1 auto; display:grid; grid-template-columns:1fr 88px 1fr;
+  align-items:stretch; gap:0; margin:20px 0 0; min-height:0; }
+.ps-col{ display:flex; flex-direction:column; justify-content:center; gap:12px;
+  padding:26px 28px; border-radius:var(--r-lg); box-shadow:var(--shadow-md); }
+.ps-col h3{ margin:0; font-size:24px; font-weight:800; }
+.ps-col .ps-line{ margin:0; font-size:22px; line-height:1.45; color:var(--ink); }
+.ps-col .ps-line b{ font-weight:800; }
+.ps-col.is-bad{ background:var(--coral-soft); border:1px solid var(--coral-line); }
+.ps-col.is-bad h3{ color:var(--coral-deep); }
+.ps-col.is-good{ background:var(--mint-soft); border:1px solid var(--mint-line); }
+.ps-col.is-good h3{ color:var(--mint-deep); }
+.ps-mid{ display:flex; align-items:center; justify-content:center; }
+.ps-arrow{ font-size:34px; font-weight:800; color:var(--blue); }
+
+/* ── w2-owner · 문서 → 책임 매핑 (mapping, C1-13) ─────────────────── */
+.w2-owner .s-full{ bottom:54px; display:flex; flex-direction:column; }
+.ow-lead{ margin:8px 0 0; font-size:22px; line-height:1.5; font-weight:650; color:var(--ink); }
+.ow-lead strong{ color:var(--blue); font-weight:800; }
+.ow-grid{ flex:1 1 auto; display:grid; grid-template-columns:repeat(3,1fr); gap:20px;
+  margin:20px 0 0; align-content:center; min-height:0; }
+.ow-col{ display:flex; flex-direction:column; align-items:center; gap:10px;
+  padding:24px 20px; text-align:center; border-radius:var(--r-lg);
+  background:var(--blue-soft); border:1px solid var(--blue-line); box-shadow:var(--shadow-md); }
+.ow-file{ font-size:22px; font-weight:800; color:var(--ink); background:var(--white);
+  border:1px solid var(--blue-line-strong); border-radius:var(--r-sm); padding:6px 16px; }
+.ow-arrow{ font-size:22px; font-weight:800; color:var(--blue); }
+.ow-q{ margin:0; font-size:25px; font-weight:800; color:var(--blue); }
+.ow-d{ margin:0; font-size:22px; line-height:1.4; color:var(--gray-700); }
+
+/* ── w2-ready · 준비 → 계획 확인 → 시작 (flow, C1-14) ─────────────── */
+.w2-ready .s-full{ bottom:54px; display:flex; flex-direction:column; }
+.rd-lead{ margin:8px 0 0; font-size:22px; line-height:1.5; font-weight:650; color:var(--ink); }
+.rd-lead strong{ color:var(--blue); font-weight:800; }
+.rd-flow{ flex:0 0 auto; display:flex; align-items:stretch; gap:10px; margin:20px 0 0; }
+.rd-step{ flex:1 1 0; min-width:0; display:flex; flex-direction:column; align-items:center;
+  justify-content:center; gap:6px; padding:16px 14px; text-align:center;
+  border-radius:var(--r-lg); background:var(--blue-soft); border:1px solid var(--blue-line);
+  box-shadow:var(--shadow-md); }
+.rd-step .rd-n{ width:40px; height:40px; border-radius:50%; background:var(--blue);
+  color:var(--white); display:grid; place-items:center; font-size:20px; font-weight:800;
+  margin-bottom:2px; }
+.rd-step b{ font-size:23px; font-weight:800; color:var(--ink); }
+.rd-step .rd-desc{ font-size:22px; font-weight:600; line-height:1.3; color:var(--gray-700); }
+.rd-step.is-goal{ background:var(--mint-soft); border-color:var(--mint-line); }
+.rd-step.is-goal b{ color:var(--on-mint); }
+.rd-step.is-goal .rd-desc{ color:var(--on-mint); }
+.rd-arrow{ flex:0 0 auto; align-self:center; font-size:24px; font-weight:800; color:var(--blue); }
+.rd-ready{ flex:0 0 auto; display:grid; grid-template-columns:repeat(4,1fr); gap:12px;
+  margin:16px 0 0; }
+.rd-item{ padding:14px 12px; border-radius:var(--r-lg); background:var(--white);
+  border:1px solid var(--blue-line-strong); box-shadow:var(--shadow-sm); text-align:center; }
+.rd-item p{ margin:0; font-size:22px; font-weight:700; line-height:1.3; color:var(--ink); }
+
+/* ── w2-week · 2주차 주차 개요 (flow) ─────────────────────────────
+   세로 예산(548px = 720 - top118 - bottom54)을 5개 블록으로 나눈다:
+   eyebrow(~37) + title(~48, 1줄) + wk-prev(~29, 1줄) + wk-track(~262) +
+   wk-goal(~60) + 블록 사이 gap 12px×4(48) = 실측 예상 약 484px,
+   여유 64px. justify-content:center로 세로 중앙 배치해 오차를 흡수한다.
+   색은 토큰만 · 본문 22px 하한 · 민트 fill 번호배지 금지(R-COLOR-03)라
+   wk-n은 항상 블루. */
+.w2-week .s-full{ bottom:54px; display:flex; flex-direction:column;
+  justify-content:center; gap:12px; }
+.w2-week .s-eyebrow{ margin:0; }
+.w2-week .s-title{ margin:0; }
+
+.wk-prev{ margin:0; font-size:22px; font-weight:650; line-height:1.35; color:var(--ink); }
+
+.wk-track{ display:flex; flex-direction:column; gap:8px; }
+.wk-row{ display:flex; align-items:stretch; gap:10px; }
+.wk-node{ flex:1 1 0; min-width:0; display:flex; flex-direction:column; gap:6px;
+  padding:12px 16px; border-radius:var(--r-lg); background:var(--blue-soft);
+  border:1px solid var(--blue-line); box-shadow:var(--shadow-sm); }
+.wk-node.is-final{ background:var(--blue-panel); border-color:var(--blue-line-strong); }
+.wk-head{ display:flex; align-items:flex-start; gap:8px; }
+.wk-n{ flex:0 0 auto; width:32px; height:32px; border-radius:50%; margin-top:1px;
+  background:var(--blue); color:var(--white); display:grid; place-items:center;
+  font-size:20px; font-weight:800; }
+.wk-title{ margin:0; font-size:22px; font-weight:800; line-height:1.15; color:var(--ink); }
+.wk-desc{ margin:0; font-size:22px; font-weight:650; line-height:1.3; color:var(--gray-700); }
+.wk-arrow{ flex:0 0 26px; display:flex; align-items:center; justify-content:center;
+  font-size:22px; font-weight:800; color:var(--blue); }
+.wk-mid{ display:flex; align-items:center; justify-content:center; padding:1px 0; }
+.wk-mid-arrow{ font-size:22px; font-weight:800; line-height:1; color:var(--blue); }
+
+.wk-goal{ display:flex; align-items:center; gap:16px; padding:12px 20px;
+  border-radius:var(--r-lg); background:var(--mint-soft); border:1px solid var(--mint-line); }
+.wk-goal-label{ flex:0 0 auto; margin:0; font-size:22px; font-weight:800; color:var(--mint-deep); }
+.wk-goal-chips{ flex:1 1 auto; display:flex; align-items:center; gap:10px; min-width:0; }
+.wk-chip{ flex:0 0 auto; padding:6px 14px; border-radius:var(--r-pill); background:var(--white);
+  border:1px solid var(--mint-line); color:var(--ink); font-size:22px; font-weight:700;
+  white-space:nowrap; }
+.wk-chip--code{ font-family:var(--font-mono); font-size:20px; }
+.wk-goal-next{ flex:0 0 auto; margin:0; font-size:22px; font-weight:800; color:var(--mint-deep);
+  white-space:nowrap; }
+
+/* ══ 이미지 슬롯 — 2026-07-30 (실제 이미지 미생성 · expected 상태로 공간만 선점) ══ */
+/* R-18: 이미지가 들어와도 텍스트와 겹치지 않게 «박스» 자체를 슬롯 왼쪽에서 끊는다.
+   글자가 지금 짧아서 안 겹치는 것으로는 부족하다 — 문구가 길어지면 그때 겹친다.
+   슬롯 좌변 884px, 안전 간격 16px → 텍스트 박스 우변 상한 868px(= left 64 + 804). */
+.slide[data-slide="C2-2"] .center-msg,
+.slide[data-slide="C6-1"] .center-msg{ max-width:804px; }
+/* ── C1-12: 대화 vs 파일 — ps-grid 가운데 칸을 화살표 전용 88px → 이미지+화살표 300px로 확장.
+   좌우 ps-col은 532px → 426px로 줄어들지만, 실측(getBoundingClientRect) 결과 두 카드의
+   기존 2줄 텍스트는 줄바꿈 변화 없이 그대로 들어간다(카드별 scrollWidth 368px < 새 안쪽 폭 370px). */
+.slide[data-slide="C1-12"] .ps-grid{ grid-template-columns: 1fr 300px 1fr; }
+.slide[data-slide="C1-12"] .ps-mid{ flex-direction: column; gap: 10px; }
+.slide[data-slide="C1-12"] .ps-mid .asset-slot--support.ps-mid-img{
+  position: static; width: 260px; height: 260px; max-width: 260px; max-height: 260px;
+}
+
+/* ── C2-2: MVP 정의 — center-msg.def-msg는 max-width:840이라 오른쪽에 자유영역이 이미 있다.
+   실측 결과 실제 텍스트는 x=642(제목)·x=636(태그 줄)까지만 차서, 기본 asset-slot--support
+   위치(x=884~1224)와 겹치지 않는다. 폭 확보를 위한 별도 grid/flex 수정 없이 기본값을 그대로 쓴다. */
+.slide[data-slide="C2-2"] .asset-slot--support.c2-2-figure{
+  right: 56px; top: 144px; width: 340px; height: 390px; max-width: 340px; max-height: 390px;
+}
+
+/* ── C3-1: Markdown 구조 — dc-stage는 코드 블록을 가운데로 모으는 flex 무대라
+   실측 결과 오른쪽에 x=879~1216(337px) 자유영역이 이미 있다. dc-stage 자식으로 넣지 않고
+   .slide 직계 자식으로 넣어 절대좌표를 dc-stage 내부 flex 흐름과 분리한다. */
+.slide[data-slide="C3-1"] .asset-slot--support.c3-1-figure{
+  position: absolute; right: 22px; top: 275px; width: 300px; height: 340px; max-width: 300px; max-height: 340px;
+}
+
+/* ── C4-3: 하네스 위치 — pl-map에 6번째 칸(이미지 전용, 200px)을 추가하고
+   기존 4개 "비어 있음" 칸을 182px → 128px로 줄인다. 실측 결과 4개 칸의 라벨(b)·placeholder(비어 있음)
+   모두 128px에서 줄바꿈·overflow 없이 그대로 들어간다(가장 긴 라벨 "끝난 뒤 확인" scrollWidth 90px <
+   안쪽 폭 92px). 채워진 첫 칸(360px, 파일 3칩)은 이미 여유가 없어 건드리지 않았다. */
+.slide[data-slide="C4-3"] .pl-map{ grid-template-columns: 360px repeat(4, 128px) 200px; }
+.slide[data-slide="C4-3"] .pl-map .asset-slot--spot.pl-imgcol{
+  position: static; width: 200px; height: 234px; max-width: 200px; max-height: 234px;
+  align-self: center; justify-self: center;
+}
+
+/* ── C6-1: 대표 시나리오 — 평범한 center-msg(max-width:900). 실측 결과 실제 텍스트는
+   x=701(부제 둘째 줄)까지만 차서 기본 asset-slot--support 위치(x=884~1224)와 겹치지 않는다. */
+.slide[data-slide="C6-1"] .asset-slot--support.c6-1-figure{
+  right: 56px; top: 144px; width: 340px; height: 390px; max-width: 340px; max-height: 390px;
+}
+</style>
 </head>
 <body>
   <div class="deck">
@@ -403,6 +1169,66 @@
     </section>
 
     <!-- ============ 3 · 아젠다 (고정 제목 "오늘 배우게 될 것" · PART 구조표 원문) ============ -->
+
+<section class="slide w2-week" data-slide="S02B">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span><div class="s-team">2주차<br>개요</div>
+  </header>
+  <div class="s-full">
+    <p class="s-eyebrow">2주차 전체 흐름</p>
+    <h2 class="s-title">여섯 교시가 <span class="hl-mint-text">첫 MVP</span>로 이어집니다</h2>
+    <p class="wk-prev">지난주 요청하고 확인하고 고쳤다면, 이번 주는 문제를 정해 첫 MVP를 만듭니다.</p>
+
+    <div class="wk-track">
+      <div class="wk-row" role="list" aria-label="1~3교시 흐름">
+        <article class="wk-node" role="listitem">
+          <div class="wk-head"><span class="wk-n">1</span><h3 class="wk-title">무엇을 만들지<br>정하는 순간</h3></div>
+          <p class="wk-desc">불편과 대상 좁히기</p>
+        </article>
+        <span class="wk-arrow" aria-hidden="true">→</span>
+        <article class="wk-node" role="listitem">
+          <div class="wk-head"><span class="wk-n">2</span><h3 class="wk-title">작동하는<br>한 조각으로</h3></div>
+          <p class="wk-desc">그 정의로 첫 작동</p>
+        </article>
+        <span class="wk-arrow" aria-hidden="true">→</span>
+        <article class="wk-node" role="listitem">
+          <div class="wk-head"><span class="wk-n">3</span><h3 class="wk-title">대화는<br>흘러가고</h3></div>
+          <p class="wk-desc">그 결정을 문서로</p>
+        </article>
+      </div>
+
+      <div class="wk-mid" aria-hidden="true"><span class="wk-mid-arrow">↓</span></div>
+
+      <div class="wk-row" role="list" aria-label="4~6교시 흐름">
+        <article class="wk-node" role="listitem">
+          <div class="wk-head"><span class="wk-n">4</span><h3 class="wk-title">큰 작업을 맡기는<br>시스템</h3></div>
+          <p class="wk-desc">그 문서를 기준 삼기</p>
+        </article>
+        <span class="wk-arrow" aria-hidden="true">→</span>
+        <article class="wk-node" role="listitem">
+          <div class="wk-head"><span class="wk-n">5</span><h3 class="wk-title">설계한 기준으로<br>화면 만들기</h3></div>
+          <p class="wk-desc">그 기준대로 화면 제작</p>
+        </article>
+        <span class="wk-arrow" aria-hidden="true">→</span>
+        <article class="wk-node is-final" role="listitem">
+          <div class="wk-head"><span class="wk-n">6</span><h3 class="wk-title">작동한다고<br>완료는 아닙니다</h3></div>
+          <p class="wk-desc">점검 후 3주차 인수</p>
+        </article>
+      </div>
+    </div>
+
+    <div class="wk-goal">
+      <p class="wk-goal-label">이번 주가 끝나면</p>
+      <div class="wk-goal-chips">
+        <span class="wk-chip wk-chip--code">index.html · style.css · script.js</span>
+        <span class="wk-chip">prd.md</span>
+        <span class="wk-chip">작업 기준 파일</span>
+      </div>
+      <p class="wk-goal-next">3주차 → 인터넷에 공개</p>
+    </div>
+  </div>
+</section>
     <section class="slide s03-slide" data-slide="S03">
       <header class="s-head">
         <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
@@ -451,7 +1277,9 @@
           <span class="rm-arrow" aria-hidden="true">→</span>
           <div class="rm-step"><span class="rm-n">4</span><b>이번 주 범위</b></div>
           <span class="rm-arrow" aria-hidden="true">→</span>
-          <div class="rm-step is-goal"><span class="rm-n">5</span><b>한 줄 정의와 새 폴더</b></div>
+          <div class="rm-step"><span class="rm-n">5</span><b>한 줄 정의와 새 폴더</b></div>
+          <span class="rm-arrow" aria-hidden="true">&rarr;</span>
+          <div class="rm-step is-goal"><span class="rm-n">6</span><b>작업 기준 남기기</b></div>
         </div>
       </div>
     </section>
@@ -745,6 +1573,107 @@
       </div>
     </section>
 
+<section class="slide w2-persist" data-slide="C1-12">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span><div class="s-team">2주차<br>1교시</div>
+  </header>
+  <div class="s-full">
+    <h2 class="s-title">대화는 흘러가고, 파일은 남습니다</h2>
+    <p class="ps-lead">새 대화를 열면 AI는 <strong>어제 정한 것을 모릅니다</strong> — 결정은 그 대화 안에서만 오갔기 때문입니다.</p>
+    <div class="ps-grid">
+      <div class="ps-col is-bad">
+        <h3>대화로만 남기면</h3>
+        <p class="ps-line">새 대화를 열 때마다<br>이름과 방향을 <b>처음부터 다시 설명</b>합니다</p>
+      </div>
+      <div class="ps-mid">
+          <figure class="ps-mid-img asset-slot asset-slot--support"
+        data-asset-kind="paper-cut-v1"
+        data-image-purpose="explanatory"
+        data-image-state="expected"
+        data-expected-src="자료/images/s18_conversation-vs-file-paper-cut-v1-transparent.png"
+        role="img"
+        aria-label="흐려지며 흩어지는 말풍선과 선명하게 남아있는 파일이 대비되어, 대화로만 남긴 결정은 사라지고 폴더 안 파일로 남긴 결정은 다음 대화까지 이어짐을 보여준다"></figure>
+          <span class="ps-arrow" aria-hidden="true">&#8594;</span>
+        </div>
+      <div class="ps-col is-good">
+        <h3>폴더 안 파일로 남기면</h3>
+        <p class="ps-line">다음 대화가 그 파일을 <b>읽고 이어갑니다</b><br>설명을 반복하지 않아도 됩니다</p>
+      </div>
+    </div>
+    <p class="callout">그래서 결정은 대화가 아니라 <span class="hl-mint-mark">폴더 안 파일</span>로 남깁니다.</p>
+  </div>
+</section>
+
+<section class="slide w2-owner" data-slide="C1-13">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span><div class="s-team">2주차<br>1교시</div>
+  </header>
+  <div class="s-full">
+    <h2 class="s-title">어떤 문서가 무엇을 책임지나</h2>
+    <p class="ow-lead">prd.md · design.md · AGENTS.md는 각각 <strong>다른 질문에 답합니다</strong> — 책임이 겹치면 나중에 어디를 고칠지 헷갈립니다.</p>
+    <div class="ow-grid">
+      <div class="ow-col">
+        <span class="ow-file">prd.md</span>
+        <span class="ow-arrow" aria-hidden="true">&#8595;</span>
+        <p class="ow-q">무엇을 만드나</p>
+        <p class="ow-d">만들 것의 범위</p>
+      </div>
+      <div class="ow-col">
+        <span class="ow-file">design.md</span>
+        <span class="ow-arrow" aria-hidden="true">&#8595;</span>
+        <p class="ow-q">어떻게 보이나</p>
+        <p class="ow-d">화면의 생김새 기준</p>
+      </div>
+      <div class="ow-col">
+        <span class="ow-file">AGENTS.md</span>
+        <span class="ow-arrow" aria-hidden="true">&#8595;</span>
+        <p class="ow-q">어떻게 일하나</p>
+        <p class="ow-d">일하는 방식의 약속</p>
+      </div>
+    </div>
+    <p class="callout">한 파일에 다 담으면 <span class="hl-mint-mark">나중에 찾지 못합니다</span> — 책임을 나눠 담습니다.</p>
+  </div>
+</section>
+
+<section class="slide w2-ready" data-slide="C1-14">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span><div class="s-team">2주차<br>1교시</div>
+  </header>
+  <div class="s-full">
+    <h2 class="s-title">일을 시키기 전에 준비하는 것</h2>
+    <p class="rd-lead">코드부터 쓰게 하지 말고, <strong>계획을 먼저 보여 달라고</strong> 합니다.</p>
+    <div class="rd-flow">
+      <div class="rd-step">
+        <span class="rd-n">1</span>
+        <b>준비</b>
+        <span class="rd-desc">네 가지를 갖춥니다</span>
+      </div>
+      <span class="rd-arrow" aria-hidden="true">&#8594;</span>
+      <div class="rd-step">
+        <span class="rd-n">2</span>
+        <b>계획 확인</b>
+        <span class="rd-desc">AI 계획을 사람이 봅니다</span>
+      </div>
+      <span class="rd-arrow" aria-hidden="true">&#8594;</span>
+      <div class="rd-step is-goal">
+        <span class="rd-n">3</span>
+        <b>시작</b>
+        <span class="rd-desc">확인한 뒤에 진행합니다</span>
+      </div>
+    </div>
+    <div class="rd-ready">
+      <div class="rd-item"><p>무엇을 만들지</p></div>
+      <div class="rd-item"><p>어디에 만들지</p></div>
+      <div class="rd-item"><p>무엇을 지켜야 하는지</p></div>
+      <div class="rd-item"><p>다 되면 무엇을 확인할지</p></div>
+    </div>
+    <p class="callout">그래서 계획을 먼저 보여 달라 하고, <span class="hl-mint-mark">사람이 확인한 뒤에</span> 시작합니다.</p>
+  </div>
+</section>
+
     <!-- ============ PART 02 · 2교시 (13장) ============ -->
     <section class="slide part-divider" data-slide="P2">
       <svg class="dv-hero" viewBox="0 0 1280 720" fill="none" aria-hidden="true"></svg>
@@ -833,7 +1762,14 @@
           <span class="pill">다음을 결정합니다</span>
         </div>
       </div>
-    </section>
+  <figure class="c2-2-figure asset-slot asset-slot--support"
+        data-asset-kind="paper-cut-v1"
+        data-image-purpose="explanatory"
+        data-image-state="expected"
+        data-expected-src="자료/images/s24_mvp-complete-vs-unfinished-paper-cut-v1-transparent.png"
+        role="img"
+        aria-label="작지만 지붕과 문까지 완성되어 확인 표식이 붙은 작은 집과, 크지만 벽과 지붕이 없는 미완성 뼈대집이 대비되어, MVP는 작아도 실제로 작동하는 완성본임을 보여준다"></figure>
+</section>
 
     <section class="slide w2-screen" data-slide="C2-3">
       <header class="s-head">
@@ -1056,7 +1992,14 @@
         </div>
         <p class="dc-cap">일반 텍스트에 약속한 기호가 구조를 보여 줍니다.</p>
       </div>
-    </section>
+  <figure class="c3-1-figure asset-slot asset-slot--support"
+        data-asset-kind="paper-cut-v1"
+        data-image-purpose="explanatory"
+        data-image-state="expected"
+        data-expected-src="자료/images/s36_note-to-structured-doc-paper-cut-v1-transparent.png"
+        role="img"
+        aria-label="어수선한 메모 한 장이 화살표를 지나 제목 표시줄·목록 표시·체크박스가 갖춰진 정돈된 문서로 바뀌는 모습을 보여준다"></figure>
+</section>
 
     <!-- ============ 3-2 (C3-2) ============ -->
     <section class="slide compare-slide" data-slide="C3-2">
@@ -1143,7 +2086,7 @@
             </ul>
           </div>
         </div>
-        <p class="callout">AI의 기억이 아니라, 사람이 적어 둔 만큼만 지키는 고정된 규칙입니다.</p>
+        <p class="callout">AI의 기억이 아니라, 사람이 적어 둔 만큼만 지키는 고정된 규칙입니다. 하위 폴더에 규칙 파일을 또 두면 위쪽 규칙을 덮어쓰는 것이 아니라 <strong>누적</strong>됩니다 &mdash; 덮어쓰기로 이해하면 오개념입니다.</p>
       </div>
     </section>
 
@@ -1202,8 +2145,8 @@
   <svg class="dv-hero" viewBox="0 0 1280 720" fill="none" aria-hidden="true"></svg>
   <div class="pd-dots" aria-hidden="true"></div>
   <p class="pd-eyebrow">PART</p>
-  <h2 class="pd-title">읽는 순서대로</h2>
-  <p class="pd-sub"><strong>사용자는 화면을 읽는 순서대로<br>다음 행동을 찾습니다.</strong></p>
+  <h2 class="pd-title">AI에게 큰 작업을 맡기는 시스템</h2>
+  <p class="pd-sub"><strong>한 번 잘 시키는 것과<br>매번 같은 품질로 시키는 것은 다릅니다.</strong></p>
 </section>
 
 <section class="slide w2-roadmap" data-slide="M4">
@@ -1215,123 +2158,826 @@
     <h2 class="s-title">오늘 이렇게 배웁니다</h2>
     <p class="rm-lead">오늘의 흐름</p>
     <div class="rm-track">
-      <div class="rm-step"><span class="rm-n">1</span><b>무엇을 어디에(IA)</b></div>
+      <div class="rm-step"><span class="rm-n">1</span><b>워크플로와 에이전트</b></div>
       <span class="rm-arrow" aria-hidden="true">→</span>
-      <div class="rm-step"><span class="rm-n">2</span><b>화면 순서</b></div>
+      <div class="rm-step"><span class="rm-n">2</span><b>하네스란 무엇인가</b></div>
       <span class="rm-arrow" aria-hidden="true">→</span>
-      <div class="rm-step"><span class="rm-n">3</span><b>문구</b></div>
+      <div class="rm-step"><span class="rm-n">3</span><b>규칙과 강제</b></div>
       <span class="rm-arrow" aria-hidden="true">→</span>
-      <div class="rm-step"><span class="rm-n">4</span><b>레퍼런스</b></div>
+      <div class="rm-step"><span class="rm-n">4</span><b>나눠 맡기기의 한계</b></div>
       <span class="rm-arrow" aria-hidden="true">→</span>
-      <div class="rm-step is-goal"><span class="rm-n">5</span><b>디자인 기준·design.md</b></div>
+      <div class="rm-step is-goal"><span class="rm-n">5</span><b>내 하네스 설계</b></div>
     </div>
   </div>
 </section>
 
-<section class="slide" data-slide="C4-1">
-  <header class="s-head">
-    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span><div class="s-team">2주차<br>4교시</div>
-  </header>
-  <div class="center-msg def-msg">
-    <span class="def-term">IA(정보 구조)</span>
-    <h2 class="cm-title">무엇을 어디에 놓을까 — IA</h2>
-    <div class="callout blue">화면의 정보·기능을<br><strong>무엇끼리 묶고 · 어디에 · 어떤 순서로</strong> 놓을지<br>한 페이지짜리라도 놓는 순서를 정하는 게 IA입니다.</div>
-  </div>
-</section>
+<section class="slide w2-axis" data-slide="C4-1">
+    <header class="s-head">
+      <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+      <span class="s-line"></span><div class="s-team">2주차<br>4교시</div>
+    </header>
+    <div class="s-full">
+      <h2 class="s-title">에이전트 vs 워크플로</h2>
 
-<section class="slide compare-slide" data-slide="C4-2">
-  <header class="s-head">
-    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span><div class="s-team">2주차<br>4교시</div>
-  </header>
-  <div class="s-full cc-full">
-    <h2 class="s-title">IA와 User Flow는 다릅니다</h2>
-    <div class="cc-grid">
-      <div class="cc-side ai">
-        <h3>IA</h3>
-        <ul><li>무엇이 어디에 있나(구조)</li></ul>
-      </div>
-      <div class="cc-neq" aria-hidden="true">≠</div>
-      <div class="cc-side human">
-        <h3>User Flow</h3>
-        <ul><li>어떤 순서로 움직이나(흐름)</li></ul>
-      </div>
-    </div>
-    <p class="compare-foot">IA는 화면 UI 자체가 아니라 그 바탕입니다.</p>
-  </div>
-</section>
+      <div class="ax-grid">
+        <div class="ax-side ax-wf">
+          <h3>워크플로<small>순서를 <span class="hl-mint-text">사람</span>이 미리 정해 둔다</small></h3>
+          <div class="ax-pic">
+            <svg class="viz-diagram" width="228" height="92" viewBox="0 0 228 92" role="img" aria-label="정해진 순서대로 이어지는 레시피">
+              <rect x="6" y="26" width="56" height="40" rx="7" fill="var(--white)" stroke="var(--gray-700)" stroke-width="3"/>
+              <rect x="86" y="26" width="56" height="40" rx="7" fill="var(--white)" stroke="var(--gray-700)" stroke-width="3"/>
+              <rect x="166" y="26" width="56" height="40" rx="7" fill="var(--white)" stroke="var(--gray-700)" stroke-width="3"/>
+              <path d="M64 46 H84" stroke="var(--gray-700)" stroke-width="4" marker-end="url(#gy)"/>
+              <path d="M144 46 H164" stroke="var(--gray-700)" stroke-width="4" marker-end="url(#gy)"/>
+              <defs><marker id="gy" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0 0 L9 4.5 L0 9 z" fill="var(--gray-700)"/></marker></defs>
+              <text x="34" y="52" text-anchor="middle" font-size="20" font-weight="800" fill="var(--gray-700)">1</text>
+              <text x="114" y="52" text-anchor="middle" font-size="20" font-weight="800" fill="var(--gray-700)">2</text>
+              <text x="194" y="52" text-anchor="middle" font-size="20" font-weight="800" fill="var(--gray-700)">3</text>
+            </svg>
+          </div>
+          <div class="ax-row"><b>제어권</b><span>사람이 코드로 미리 고정</span></div>
+          <div class="ax-row"><b>예측</b><span><span class="hl-mint-underline">매번 같은 순서</span> — 결과를 짐작할 수 있음</span></div>
+          <div class="ax-row"><b>비용</b><span>낮음</span></div>
+          <p class="ax-eg"><b>이럴 때</b> — 매번 같은 순서로 끝나는 일. &ldquo;표를 읽고, 합계를 내고, 화면에 띄워&rdquo;</p>
+        </div>
 
-<section class="slide w2-screen" data-slide="C4-3">
-  <header class="s-head">
-    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span><div class="s-team">2주차<br>4교시</div>
-  </header>
-  <div class="s-full">
-    <h2 class="s-title">화면 정보도 순서가 있습니다</h2>
-    <div class="sm-stage">
-      <div class="sm-frame">
-        <div class="sm-bar"><span></span><span></span><span></span><b>화면 구성</b></div>
-        <div class="sm-body">
-          <div class="sm-part"><span class="sm-k">1</span><p>서비스 설명</p></div>
-          <div class="sm-part"><span class="sm-k">2</span><p>입력·선택</p></div>
-          <div class="sm-part is-action"><span class="sm-k">3</span><p>실행</p></div>
-          <div class="sm-part is-result"><span class="sm-k">4</span><p>결과</p></div>
-          <div class="sm-part"><span class="sm-k">5</span><p>안내</p></div>
+        <div class="ax-axis">
+          <span class="ax-labelrow">
+            <span class="ax-arrow" aria-hidden="true">◀</span>
+            <span class="ax-label">다음 할 일을<br>누가 정하나</span>
+            <span class="ax-arrow" aria-hidden="true">▶</span>
+          </span>
+        </div>
+
+        <div class="ax-side ax-ag">
+          <h3>에이전트<small>상황을 보고 <span class="hl-mint-text">스스로</span> 정한다</small></h3>
+          <div class="ax-pic">
+            <svg class="viz-diagram" width="228" height="92" viewBox="0 0 228 92" role="img" aria-label="상황을 보고 세 갈래 중 하나를 골라 진행한다">
+              <defs><marker id="bl" markerWidth="8" markerHeight="8" refX="6.5" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="var(--blue)"/></marker></defs>
+              <circle cx="30" cy="46" r="19" fill="var(--white)" stroke="var(--blue)" stroke-width="3"/>
+              <text x="30" y="53" text-anchor="middle" font-size="19" font-weight="800" fill="var(--blue)">?</text>
+              <path d="M52 38 L92 20" stroke="var(--periwinkle)" stroke-width="3" marker-end="url(#bl)"/>
+              <path d="M52 54 L92 72" stroke="var(--periwinkle)" stroke-width="3" marker-end="url(#bl)"/>
+              <path d="M52 46 H92" stroke="var(--blue)" stroke-width="4" marker-end="url(#bl)"/>
+              <rect x="104" y="8" width="56" height="24" rx="6" fill="var(--white)" stroke="var(--periwinkle)" stroke-width="2"/>
+              <rect x="104" y="34" width="56" height="24" rx="6" fill="var(--blue)" stroke="var(--blue)" stroke-width="2"/>
+              <rect x="104" y="60" width="56" height="24" rx="6" fill="var(--white)" stroke="var(--periwinkle)" stroke-width="2"/>
+              <text x="132" y="51" text-anchor="middle" font-size="15" font-weight="800" fill="var(--white)">선택</text>
+              <path d="M166 46 H206" stroke="var(--blue)" stroke-width="4" marker-end="url(#bl)"/>
+            </svg>
+          </div>
+          <div class="ax-row"><b>제어권</b><span>실행 중에 스스로 판단</span></div>
+          <div class="ax-row"><b>예측</b><span>거쳐 가는 단계가 매번 달라짐</span></div>
+          <div class="ax-row"><b>비용</b><span>높음 — 반복해서 물어보기 때문</span></div>
+          <p class="ax-eg"><b>이럴 때</b> — 상황에 따라 할 일이 달라지는 일. &ldquo;이 폴더를 보고 뭘 고쳐야 할지 정해서 고쳐&rdquo;</p>
         </div>
       </div>
-      <div class="sm-notes">
-        <div class="sm-note"><span class="n">1</span><p>가장 중요한 하나가 가장 먼저·크게</p></div>
-        <div class="sm-note"><span class="n">2</span><p>첫 화면에서 다음 행동을 짐작할 수 있어야 합니다.</p></div>
-      </div>
-    </div>
-  </div>
-</section>
 
-<section class="slide pitfalls" data-slide="C4-4">
+      <p class="ax-warn">두 회사 모두 &ldquo;단순한 쪽을 먼저 써라&rdquo;고 권고합니다 &mdash; 에이전트가 상위 호환이 아닙니다</p>
+    </div>
+  </section>
+
+<section class="slide w2-gantt" data-slide="C4-2">
+    <header class="s-head">
+      <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+      <span class="s-line"></span><div class="s-team">2주차<br>4교시</div>
+    </header>
+    <div class="s-full">
+      <h2 class="s-title">하네스 엔지니어링</h2>
+
+      <p class="gt-lead">요즘 자주 들리는 말이지만 <b>정설이 아닙니다.</b> 언제 생긴 말인지 시간 위에 놓고 보면 왜 사람마다 뜻이 다른지 바로 보입니다.</p>
+
+      <div class="gt-wrap">
+        <div class="gt-span"><b>5개월</b></div>
+
+        <span class="gt-mon" style="left:0">2026년 2월</span>
+        <span class="gt-mon" style="right:0">지금 · 7월</span>
+
+        <div class="gt-axis">
+          <span class="gt-dot" style="left:1%"></span>
+          <span class="gt-dot" style="left:41%"></span>
+          <span class="gt-dot" style="left:61%"></span>
+          <span class="gt-dot" style="left:81%"></span>
+          <span class="gt-dot is-now" style="left:calc(100% - 9px)"></span>
+        </div>
+
+        <div class="gt-mark" style="left:0">
+          <span class="k">2월 초</span>
+          <span class="t">말이 처음 등장</span>
+          <span class="d">쓴 사람이 <span class="hl-mint-underline">&ldquo;겨우 2주 된 말&rdquo;</span>이라고 직접 적음</span>
+        </div>
+        <div class="gt-mark" style="left:466px">
+          <span class="k">4월</span>
+          <span class="t">실무자들이 정리 시도</span>
+          <span class="d">모델 바깥을 설계하는 일로 묶어 부르기 시작</span>
+        </div>
+        <div class="gt-mark" style="left:697px">
+          <span class="k">5월</span>
+          <span class="t">&ldquo;합의된 정의 없음&rdquo;</span>
+          <span class="d">용어집이 같은 단어를 서로 다르게 쓴다고 밝힘</span>
+        </div>
+        <div class="gt-mark" style="left:927px">
+          <span class="k">6월</span>
+          <span class="t">첫 기준 정의 제안</span>
+          <span class="d">뜻이 느슨하다는 지적과 함께 제안됨</span>
+        </div>
+      </div>
+
+      <div class="gt-rules">
+        <div class="gt-rule">
+          <b>정의를 외우지 않습니다</b>
+          <span>사람마다 뜻이 다른 말은 외워도 소용없습니다</span>
+        </div>
+        <div class="gt-rule">
+          <b>누가 한 말인지 봅니다</b>
+          <span>&ldquo;업계 표준&rdquo;이라고 하면 한 번 의심합니다</span>
+        </div>
+        <div class="gt-rule">
+          <b>하는 일로 판단합니다</b>
+          <span>이름이 아니라 <span class="hl-mint-mark">무엇을 준비하는지</span>를 봅니다</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+<section class="slide w2-place" data-slide="C4-3">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
     <span class="s-line"></span><div class="s-team">2주차<br>4교시</div>
   </header>
   <div class="s-full">
-    <h2 class="s-title">버튼은 행동을 말해야 합니다</h2>
-    <div class="accent-bar"></div>
-    <p class="pf-lead">버튼은 누른 뒤 무슨 일이 일어나는지 말해야 합니다.</p>
-    <div class="pf-list">
-      <div class="card surface pf-band">
-        <p class="pf-risk">나쁜 문구 · 확인</p>
-        <p class="pf-reason">→</p>
-        <p class="pf-alt">기록하기 · 계산하기 · 추천 보기</p>
+    <h2 class="s-title">만든 파일의 하네스 위치</h2>
+
+    <p class="pl-lead">prd.md·design.md·AGENTS.md는 하네스의 <span class="hl-mint-underline">일부가 될 수 있지만</span>, <span class="hl-mint-mark">하네스 엔지니어링의 전부는 아닙니다</span>.</p>
+
+    <div class="pl-map">
+      <div class="pl-slot is-filled">
+        <b>맡기기 전에 주는 것</b>
+        <div class="pl-chip"><i>prd.md</i><span>무엇을 만드나</span></div>
+        <div class="pl-chip"><i>design.md</i><span>어떻게 보이나</span></div>
+        <div class="pl-chip"><i>AGENTS.md</i><span>어떻게 일하나</span></div>
       </div>
-      <div class="card surface pf-band">
-        <p class="pf-risk">나쁜 문구 · 처리</p>
-        <p class="pf-reason">→</p>
-        <p class="pf-alt">기록하기 · 계산하기 · 추천 보기</p>
+      <div class="pl-slot is-empty"><b>끝난 뒤 확인</b><span class="pl-blank">비어 있음</span></div>
+      <div class="pl-slot is-empty"><b>권한</b><span class="pl-blank">비어 있음</span></div>
+      <div class="pl-slot is-empty"><b>실행 환경</b><span class="pl-blank">비어 있음</span></div>
+      <div class="pl-slot is-empty"><b>기록</b><span class="pl-blank">비어 있음</span></div>
+    
+        <figure class="pl-imgcol asset-slot asset-slot--spot"
+        data-asset-kind="paper-cut-v1"
+        data-image-purpose="explanatory"
+        data-image-state="expected"
+        data-expected-src="자료/images/s46_harness-slot-filled-vs-empty-paper-cut-v1-transparent.png"
+        role="img"
+        aria-label="파일 카드가 채워진 칸 하나와 점선 테두리의 빈 칸들이 나란히 있어, 파일을 만든 것은 하네스의 여러 칸 중 한 칸만 채운 상태임을 보여준다"></figure>
       </div>
-    </div>
+
+    <p class="pl-verdict">파일을 만든 것은 시작이고, 나머지 칸은 아직 <span class="hl-mint-text">비어 있습니다</span>.</p>
   </div>
 </section>
 
-<section class="slide" data-slide="C4-5">
+<section class="slide w2-pipe" data-slide="C4-4">
+    <header class="s-head">
+      <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+      <span class="s-line"></span><div class="s-team">2주차<br>4교시</div>
+    </header>
+    <div class="s-full">
+      <h2 class="s-title">하네스의 구성요소</h2>
+
+      <p class="pp-lead">준비물은 AI가 일하는 <b>동안</b> 넣는 것이 아닙니다. 맡기기 <b>전</b>과 끝난 <b>뒤</b>, 작업을 앞뒤로 감쌉니다.</p>
+
+      <div class="pp-body">
+        <div class="pp-col pp-in">
+          <p class="pp-cap">맡기기 전에 준다</p>
+          <div class="pp-item"><b>지켜야 할 규칙</b><span>외부 라이브러리를 쓰지 않는다</span></div>
+          <div class="pp-item"><b>쓸 수 있는 도구와 자료</b><span>이 폴더의 prd.md를 먼저 읽어라</span></div>
+          <div class="pp-item"><b>반복 작업의 절차</b><span>수정할 때는 항상 이 순서로</span></div>
+        </div>
+
+        <div class="pp-arrow">
+          <svg width="46" height="34" viewBox="0 0 46 34" aria-hidden="true">
+            <path d="M2 17 H30" style="stroke:var(--gray-700)" stroke-width="4" stroke-linecap="round"/>
+            <path d="M25 6 L40 17 L25 28" fill="none" style="stroke:var(--gray-700)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+
+        <div class="pp-core">
+          <b>AI가 일한다</b>
+          <span>안에서 벌어지는 일은<br>우리가 정하지 못합니다</span>
+        </div>
+
+        <div class="pp-arrow">
+          <svg width="46" height="34" viewBox="0 0 46 34" aria-hidden="true">
+            <path d="M2 17 H30" style="stroke:var(--gray-700)" stroke-width="4" stroke-linecap="round"/>
+            <path d="M25 6 L40 17 L25 28" fill="none" style="stroke:var(--gray-700)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+
+        <div class="pp-col pp-out">
+          <p class="pp-cap">끝난 뒤에 확인한다</p>
+          <div class="pp-item"><b>돌려 볼 수 있는 기준</b><span>빈 값을 넣으면 안내가 뜨는가</span></div>
+          <div class="pp-item"><b>눈으로 보는 결과 화면</b><span>수정 전후 화면을 비교한다</span></div>
+          <div class="pp-item"><b>무슨 일이 있었는지 기록</b><span>무엇을 바꿨는지 남겨 둔다</span></div>
+        </div>
+      </div>
+
+      <p class="pp-note">오른쪽이 비면 <span class="hl-mint-underline">사람이 매번 눈으로 보는 수밖에</span> 없습니다 &mdash; <span class="hl-mint-mark">앞뒤가 다 있어야 하네스입니다</span></p>
+
+      <p class="pp-std">이 구성 목록은 확정된 표준이 아닙니다 &mdash; 사람마다 묶는 방식이 다릅니다</p>
+
+    </div>
+  </section>
+
+<section class="slide w2-axes" data-slide="C4-5">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
     <span class="s-line"></span><div class="s-team">2주차<br>4교시</div>
   </header>
-  <div class="s-full fill">
-    <h2 class="s-title">색만으로 상태를 설명하지 않습니다</h2>
-    <div class="accent-bar"></div>
-    <div class="grid-3">
-      <div class="card surface"><h3>라벨</h3><p class="s-body">입력창마다 라벨을 붙입니다.</p></div>
-      <div class="card surface"><h3>색 + 글자</h3><p class="s-body">성공·오류는 색 + 글자를 함께 씁니다.</p></div>
-      <div class="card surface"><h3>대비</h3><p class="s-body">글자와 배경은 충분한 대비로 둡니다.</p></div>
+  <div class="s-full">
+    <h2 class="s-title">파일만으로는 부족한 것</h2>
+
+    <p class="ax4-lead">맡기기 전·끝난 뒤만으로는 부족합니다. 이 <span class="hl-mint-text">네 가지</span>가 <span class="hl-mint-underline">함께 작동</span>해야 시스템이 됩니다.</p>
+
+    <div class="ax4-grid">
+      <div class="ax4-card">
+        <b class="ax4-k">권한</b>
+        <span class="ax4-q">어디까지 손대게 할까</span>
+        <p>안전 규칙이 항상 최우선이고, 되돌리기 어려운 행동은 승인 전에 멈춥니다.</p>
+      </div>
+      <div class="ax4-card">
+        <b class="ax4-k">실행 환경</b>
+        <span class="ax4-q">어디서 돌리나</span>
+        <p>실제 폴더 대신 격리된 공간에서 돌리면, 잘못돼도 그 공간만 버리면 됩니다.</p>
+      </div>
+      <div class="ax4-card">
+        <b class="ax4-k">인수인계</b>
+        <span class="ax4-q">다음 대화가 이어받게</span>
+        <p>한 일과 남은 일을 적어 두지 않으면 처음부터 다시 설명해야 합니다.</p>
+      </div>
+      <div class="ax4-card">
+        <b class="ax4-k">실패 기록</b>
+        <span class="ax4-q">같은 실수 반복 막기</span>
+        <p>실패한 이유를 남겨 두면, 다음번엔 같은 자리에서 다시 걸리지 않습니다.</p>
+      </div>
+    </div>
+
+    <p class="ax4-foot">네 가지를 갖춰도 <span class="hl-mint-mark">지키는 것은 다른 문제</span>입니다 &mdash; 다음 장에서 그 차이를 봅니다.</p>
+  </div>
+</section>
+
+<section class="slide w2-figure" data-slide="C4-6">
+    <header class="s-head">
+      <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+      <span class="s-line"></span><div class="s-team">2주차<br>4교시</div>
+    </header>
+    <div class="s-full">
+      <div class="fg-text">
+        <h2 class="s-title">규칙 파일 vs 기술적 강제</h2>
+
+        <div class="fg-cards">
+          <div class="fg-card"><b>규칙 파일은 맥락입니다</b><span>적어 두면 <span class="hl-mint-text">참고는 하지만</span>, 그것만으로 실행이 멈추지는 않습니다</span></div>
+          <div class="fg-card"><b>안심하는 순간이 위험합니다</b><span>지시가 모호하거나 다른 지시와 부딪히면 <span class="hl-mint-underline">그냥 지나갈 수 있습니다</span></span></div>
+          <div class="fg-card"><b>도구가 부실해서가 아닙니다</b><span>만든 쪽도 막으려면 다른 층을 쓰라고 안내합니다 — 애초에 용도가 다릅니다</span></div>
+        </div>
+
+        <p class="fg-strip"><span class="hl-mint-mark">되돌릴 수 있으면 규칙, 없으면 장치</span></p>
+      </div>
+
+      <div class="fg-fig">
+        <div class="fg-lane fg-soft">
+          <h4>규칙 파일에 적은 것</h4>
+          <p>&ldquo;작업 폴더 밖은 건드리지 말아 줘&rdquo;</p>
+        </div>
+        <div class="fg-gate" aria-label="여기서는 막히지 않는다">
+          <span></span><b>안 막힘</b><span></span>
+        </div>
+        <div class="fg-lane fg-hard">
+          <h4>승인·권한 설정</h4>
+          <p>폴더 밖 수정은 실행 전에 <b>멈추고 물어봅니다</b></p>
+        </div>
+        <div class="fg-gate" aria-label="여기서 실제로 막힌다" style="--x:1">
+          <span style="background:var(--mint)"></span><b style="color:var(--mint-deep)">여기서 막힘</b><span style="background:var(--mint)"></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<section class="slide w2-quad" data-slide="C4-7">
+    <header class="s-head">
+      <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+      <span class="s-line"></span><div class="s-team">2주차<br>4교시</div>
+    </header>
+    <div class="s-full">
+      <h2 class="s-title">규칙과 강제의 분류 기준</h2>
+
+      <p class="qd-lead">둘 중 하나를 고르는 게 아닙니다. <b>항목마다</b> 두 질문에 답하면 자리가 정해지고, 자리가 방법을 정합니다.</p>
+
+      <div class="qd-body">
+        <div class="qd-plot">
+          <span class="qd-ax y1">&#9650; 위로 갈수록 &mdash; 내가 모르는 사이에 일어난다</span>
+          <span class="qd-ax x1">오른쪽으로 갈수록 &mdash; 되돌리기 어렵다 &#9654;</span>
+
+          <span class="qd-zone lo">규칙 파일로 충분</span>
+          <span class="qd-zone hi">장치로 막을 것</span>
+
+          <span class="qd-chip soft" style="left:16%; bottom:16%">파일 이름은 소문자로</span>
+          <span class="qd-chip soft" style="left:24%; bottom:34%">외부 라이브러리를 쓰지 않는다</span>
+          <span class="qd-chip soft" style="left:18%; bottom:52%">수정 후 브라우저에서 확인</span>
+
+          <span class="qd-chip edge" style="left:52%; bottom:52%">패키지 설치</span>
+
+          <span class="qd-chip hard" style="left:70%; bottom:64%">작업 폴더 밖 파일 수정</span>
+          <span class="qd-chip hard" style="left:84%; bottom:80%">인터넷으로 내보내기</span>
+          <span class="qd-chip hard" style="left:58%; bottom:92%">파일 여러 개 한꺼번에 삭제</span>
+        </div>
+
+        <div class="qd-side">
+          <div class="qd-q">
+            <b>질문 1 &mdash; 되돌릴 수 있나?</b>
+            <span>잘못됐을 때 원래대로 돌리는 데 드는 비용을 봅니다.</span>
+          </div>
+          <div class="qd-q">
+            <b>질문 2 &mdash; 바로 알아채나?</b>
+            <span><span class="hl-mint-underline">모르는 사이에 끝나면</span> 막을 기회 자체가 없습니다.</span>
+          </div>
+          <p class="qd-out">두 질문 모두 &ldquo;아니오&rdquo;에 가까울수록 오른쪽 위입니다. 여기는 적어 두는 것으로 부족해서 <span class="hl-mint-mark">장치로 막습니다</span>.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+<section class="slide w2-figure" data-slide="C4-8">
+    <header class="s-head">
+      <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+      <span class="s-line"></span><div class="s-team">2주차<br>4교시</div>
+    </header>
+    <div class="s-full">
+      <div class="fg-text">
+        <h2 class="s-title">Skill과 프로젝트 규칙</h2>
+
+        <p class="fg-p">둘 다 파일에 적어 두는 것이지만,<br>
+        <span class="term">프로젝트 규칙</span>은 <b>항상 필요한 사실</b>을 담고<br>
+        <span class="term">Skill</span>은 <b>가끔 필요한 절차</b>를 담습니다.</p>
+
+        <p class="fg-p">같은 지시를 채팅에 <span class="hl-mint-text">세 번 넘게</span> 붙여넣고<br>
+        있다면, Skill로 옮길 때가 됐다는 신호입니다.</p>
+
+        <p class="fg-p">나누는 이유는 정리정돈이 아닙니다. 규칙 파일은 매번<br>
+        전부 읽히지만 <span class="hl-mint-underline">Skill은 쓸 때만 열립니다.</span></p>
+
+        <p class="fg-verdict"><span class="hl-mint-mark">사실이면 규칙 파일, 절차면 Skill</span></p>
+      </div>
+
+      <div class="fg-fig">
+        <div class="tm" role="img" aria-label="타이밍 비교: 프로젝트 규칙은 세션 내내 열려 있고, Skill은 해당 작업 시점에만 열린다">
+          <div class="tm-axis"><span>세션 시작</span><span>작업 중</span><span>세션 끝</span></div>
+          <div class="tm-row tm-rule">
+            <b>프로젝트 규칙</b>
+            <div class="tm-track"><div class="tm-fill">처음부터 끝까지 열려 있음</div></div>
+          </div>
+          <div class="tm-row tm-skill">
+            <b>Skill</b>
+            <div class="tm-track"><div class="tm-fill">그 작업 때만</div></div>
+          </div>
+          <p class="tm-note">그래서 긴 절차를 규칙 파일에 넣으면 <b>매 작업마다</b> 그 길이를 다시 읽습니다.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<section class="slide w2-branch" data-slide="C4-9">
+    <header class="s-head">
+      <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+      <span class="s-line"></span><div class="s-team">2주차<br>4교시</div>
+    </header>
+    <div class="s-full">
+      <h2 class="s-title">서브에이전트와 검증 책임</h2>
+
+      <div class="br-fig">
+        <svg width="700" height="196" viewBox="0 0 700 196" role="img" aria-label="맡긴 일에서 돌아온 보고와 실제 결과가 갈라지고, 둘은 같지 않다">
+          <defs>
+            <marker id="bh" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0 0 L9 4.5 L0 9 z" style="fill:var(--blue)"/></marker>
+            <marker id="gh" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0 0 L9 4.5 L0 9 z" style="fill:var(--gray-700)"/></marker>
+          </defs>
+
+          <rect x="2" y="72" width="140" height="52" rx="9" style="fill:var(--white); stroke:var(--gray-700)" stroke-width="3"/>
+          <text x="72" y="105" text-anchor="middle" font-size="21" font-weight="800" style="fill:var(--ink)">맡긴 일</text>
+
+          <path d="M144 86 L262 44" fill="none" style="stroke:var(--blue)" stroke-width="4" marker-end="url(#bh)"/>
+          <rect x="274" y="14" width="230" height="48" rx="8" style="fill:var(--blue)"/>
+          <text x="389" y="45" text-anchor="middle" font-size="21" font-weight="800" style="fill:var(--white)">돌아온 보고</text>
+          <text x="518" y="45" font-size="18" font-weight="700" style="fill:var(--gray-700)">즉시 온다</text>
+
+          <path d="M144 110 L262 152" fill="none" style="stroke:var(--gray-700)" stroke-width="4" stroke-dasharray="9 7" marker-end="url(#gh)"/>
+          <rect x="274" y="134" width="230" height="48" rx="8" style="fill:var(--white); stroke:var(--gray-700)" stroke-width="3" stroke-dasharray="9 7"/>
+          <text x="389" y="165" text-anchor="middle" font-size="21" font-weight="800" style="fill:var(--ink)">실제 결과</text>
+          <text x="518" y="165" font-size="18" font-weight="700" style="fill:var(--gray-700)">열어 봐야 보인다</text>
+
+          <text x="389" y="112" text-anchor="middle" font-size="42" font-weight="800" style="fill:var(--coral-deep)">&#8800;</text>
+        </svg>
+
+        <div class="br-side">
+          <b>실제로 있었던 일</b>
+          <p>이 강의를 만들면서 &ldquo;파일을 만들었다&rdquo;는 보고를 받고 넘어갔는데, 실제로는 파일이 없던 일이 <span class="hl-mint-underline">세 번</span> 있었습니다.</p>
+          <p>보고는 결과가 아니라 주장입니다.</p>
+        </div>
+      </div>
+
+      <div class="br-steps">
+        <div class="br-step">
+          <i>1단계</i><b>나눌 수 있는 일인지 본다</b>
+          <span>앞 결과를 봐야 뒤를 할 수 있으면 나누지 않습니다</span>
+        </div>
+        <div class="br-step">
+          <i>2단계</i><b>맡길 범위를 좁혀 준다</b>
+          <span>&ldquo;이것만 조사해서 결과만 알려 줘&rdquo;처럼 끝을 정합니다</span>
+        </div>
+        <div class="br-step is-key">
+          <i>3단계</i><b>내 눈으로 연다</b>
+          <span>파일이 있는지, 내용이 맞는지 <span class="hl-mint-mark">직접 확인합니다</span></span>
+        </div>
+        <div class="br-step">
+          <i>4단계</i><b>합치는 건 내가 한다</b>
+          <span>합칠 사람이 없으면 애초에 나누지 않습니다</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+<section class="slide w2-metric" data-slide="C4-10">
+    <header class="s-head">
+      <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+      <span class="s-line"></span><div class="s-team">2주차<br>4교시</div>
+    </header>
+    <div class="s-full">
+      <h2 class="s-title">멀티에이전트의 한계</h2>
+
+      <p class="mt-lead">나눠 맡기면 <b>쓰는 양이 같이 늘어납니다.</b> 그런데 쓰는 양을 똑같이 맞추고 비교하면, 하나로 시킨 쪽이 <span class="hl-mint-underline">같거나 더 나았습니다.</span></p>
+
+      <div class="mt-body">
+        <div class="mt-chart">
+          <div class="code-chart" role="img" aria-label="세로막대: 그냥 대화 1배, 에이전트 하나 4배, 여럿에게 나눠 맡기기 15배">
+            <div class="cc-plot">
+              <div class="cc-bar"><span class="cc-val">1배</span><div class="cc-fill" style="height:16px"></div></div>
+              <div class="cc-bar"><span class="cc-val">4배</span><div class="cc-fill" style="height:55px"></div></div>
+              <div class="cc-bar"><span class="cc-val">15배</span><div class="cc-fill is-key" style="height:196px"></div></div>
+            </div>
+            <div class="cc-axis"><span>그냥 대화</span><span>에이전트<br>하나</span><span>여럿에게<br>나눠 맡기기</span></div>
+          </div>
+          <p class="mt-cap">같은 일을 시켰을 때 쓰는 양</p>
+        </div>
+
+        <div class="mt-notes">
+          <div class="mt-note"><b>그래도 나누는 게 나을 때</b><span>서로 안 봐도 되는 조사처럼 조각이 진짜로 따로 굴러가고, 결과의 값이 늘어난 비용을 감당할 만큼 클 때</span></div>
+          <div class="mt-note"><b>하나가 나을 때</b><span>앞의 결과가 뒤의 입력이 되는 일 — <b>대부분의 만들기</b>가 여기 속합니다. 모두가 같은 맥락을 봐야 하는 일도 마찬가지입니다</span></div>
+          <div class="mt-note"><b>왜 이런 일이 생기나</b><span>나눌수록 서로에게 상황을 다시 설명해야 하고, 각자 받은 전제가 조금씩 달라집니다. 그 조율 비용이 나눠서 얻은 이득을 먹습니다</span></div>
+        </div>
+      </div>
+
+      <p class="mt-rule">먼저 물어야 할 것은 &ldquo;몇 개로 나눌까&rdquo;가 아니라 <span class="hl-mint-mark">&ldquo;이 일이 나뉘는 일인가&rdquo;</span>입니다</p>
+      <p class="mt-std">여럿에게 나눠 맡기는 구조는 출처마다 분류가 다릅니다 &mdash; 하나의 표준 구조가 있는 것이 아닙니다</p>
+    </div>
+  </section>
+
+<section class="slide w2-dialog" data-slide="C4-11">
+    <header class="s-head">
+      <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+      <span class="s-line"></span><div class="s-team">2주차<br>4교시</div>
+    </header>
+    <div class="s-full">
+      <h2 class="s-title">하네스 설계 실습</h2>
+
+      <p class="dg-note">대화로만 끝내면 창을 닫는 순간 사라집니다. 다음 시간에 <span class="hl-mint-underline">같은 설명을 처음부터 다시</span> 하게 됩니다.</p>
+
+      <div class="dg-list">
+        <div class="dg-row">
+          <span class="dg-n">1</span>
+          <div class="dg-lab"><b>먼저 보게 합니다</b><span>고치기 전에 현황부터</span></div>
+          <p class="dg-say">&ldquo;내 폴더를 읽고 뭐가 있고 뭐가 부족한지 알려 줘. 아직 고치지는 마.&rdquo;</p>
+        </div>
+        <div class="dg-row">
+          <span class="dg-n">2</span>
+          <div class="dg-lab"><b>초안을 쓰게 합니다</b><span>빈 문서에서 시작하지 않는다</span></div>
+          <p class="dg-say">&ldquo;앞으로 지킬 규칙 다섯 개와, 다 됐는지 판단할 기준 세 개를 적어 줘.&rdquo;</p>
+        </div>
+        <div class="dg-row is-me">
+          <span class="dg-n">3</span>
+          <div class="dg-lab"><b>내가 <span class="hl-mint-mark">한 군데</span>는 고칩니다</b><span>여기서 내 프로젝트가 된다</span></div>
+          <p class="dg-say">&ldquo;세 번째 규칙은 우리한테 안 맞아. 이렇게 바꿔 줘.&rdquo;</p>
+        </div>
+        <div class="dg-row">
+          <span class="dg-n">4</span>
+          <div class="dg-lab"><b>파일로 저장하고 엽니다</b><span>&ldquo;만들었다&rdquo;는 말은 증거가 아니다</span></div>
+          <p class="dg-say">&ldquo;AGENTS.md로 저장해 줘.&rdquo; &mdash; 그리고 그 파일을 직접 열어 봅니다.</p>
+        </div>
+      </div>
+
+      <p class="dg-sum">AI가 쓰고, 내가 고치고, 파일로 남깁니다 &mdash; 다음 시간에 그대로 씁니다</p>
+
+    </div>
+  </section>
+
+<section class="slide part-divider" data-slide="P5">
+  <svg class="dv-hero" viewBox="0 0 1280 720" fill="none" aria-hidden="true"></svg>
+  <div class="pd-dots" aria-hidden="true"></div>
+  <p class="pd-eyebrow">PART</p>
+  <h2 class="pd-title">설계한 기준으로 화면 만들기</h2>
+  <p class="pd-sub"><strong>먼저 기준을 정하고,<br>그 기준대로 화면을 만듭니다.</strong></p>
+</section>
+
+<section class="slide w2-roadmap" data-slide="M5">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span><div class="s-team">2주차<br>5교시</div>
+  </header>
+  <div class="s-full">
+    <h2 class="s-title">오늘 이렇게 배웁니다</h2>
+    <p class="rm-lead">오늘의 흐름</p>
+    <div class="rm-track">
+      <div class="rm-step"><span class="rm-n">1</span><b>정보 구조</b></div>
+      <span class="rm-arrow" aria-hidden="true">→</span>
+      <div class="rm-step"><span class="rm-n">2</span><b>화면 순서·문구</b></div>
+      <span class="rm-arrow" aria-hidden="true">→</span>
+      <div class="rm-step"><span class="rm-n">3</span><b>읽기 쉬움</b></div>
+      <span class="rm-arrow" aria-hidden="true">→</span>
+      <div class="rm-step"><span class="rm-n">4</span><b>기준 문서로 고정</b></div>
+      <span class="rm-arrow" aria-hidden="true">→</span>
+      <div class="rm-step is-goal"><span class="rm-n">5</span><b>그 기준으로 구현</b></div>
     </div>
   </div>
 </section>
 
-<section class="slide case-acts" data-slide="C4-6">
+<section class="slide w2-ia" data-slide="C5-1">
+    <header class="s-head">
+      <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+      <span class="s-line"></span><div class="s-team">2주차<br>5교시</div>
+    </header>
+    <div class="s-full">
+      <h2 class="s-title">정보 구조</h2>
+
+      <p class="sg-lead">화면에 보이는 메뉴는 <b>빙산의 일각</b>입니다. 그 아래에 «무엇을 어디에 둘지» 정한 결정이 있습니다.</p>
+
+      <div class="bg-body">
+        <svg width="700" height="300" viewBox="0 0 700 300" role="img"
+             aria-label="빙산 도해. 수면 위 작은 봉우리는 네비게이션·메뉴, 수면 아래 큰 덩어리는 무엇끼리 묶을지·어디에 둘지·어떤 순서로 둘지의 결정이다">
+          <polygon points="350,16 402,84 298,84" style="fill:var(--periwinkle)"/>
+          <polygon points="266,90 434,90 498,288 202,288" style="fill:var(--blue-panel); stroke:var(--blue)" stroke-width="2"/>
+          <line x1="10" y1="87" x2="690" y2="87" style="stroke:var(--blue)" stroke-width="3" stroke-dasharray="12 8"/>
+          <text x="16" y="76" font-size="18" font-weight="800" style="fill:var(--blue)">수면 &mdash; 여기까지가 눈에 보입니다</text>
+
+          <text x="418" y="52" font-size="20" font-weight="800" style="fill:var(--ink)">네비게이션 · 메뉴 · 버튼</text>
+
+          <text x="350" y="140" text-anchor="middle" font-size="21" font-weight="800" style="fill:var(--ink)">무엇끼리 묶을까</text>
+          <text x="350" y="140" text-anchor="middle" font-size="21" font-weight="800" style="fill:var(--ink)" dy="34">어디에 둘까</text>
+          <text x="350" y="140" text-anchor="middle" font-size="21" font-weight="800" style="fill:var(--ink)" dy="68">어떤 순서로</text>
+          <text x="350" y="264" text-anchor="middle" font-size="19" font-weight="700" style="fill:var(--blue)">설명 · 입력 · 결과를 어떻게 나눌지</text>
+        </svg>
+
+        <div class="bg-side">
+          <div class="bg-vs">
+            <div class="a"><b>정보 구조</b><span>무엇이 어디에 — 구조</span></div>
+            <div class="b"><b>사용자 흐름</b><span>어떤 순서로 움직이나 — 흐름</span></div>
+          </div>
+          <p class="sg-lead">한 페이지짜리라도 «설명 먼저, 그다음 입력, 그다음 결과»처럼 <b>놓는 순서를 정하는 것</b>이 정보 구조입니다.</p>
+        </div>
+      </div>
+
+      <p class="bg-note">메뉴를 어떻게 그릴까가 아니라 <span class="hl-mint-mark">보이지 않는 결정</span>이 먼저입니다 &mdash; <span class="hl-mint-underline">전문 사이트맵은 필요 없습니다.</span></p>
+
+    </div>
+  </section>
+
+<section class="slide w2-cmp" data-slide="C5-2">
+    <header class="s-head">
+      <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+      <span class="s-line"></span><div class="s-team">2주차<br>5교시</div>
+    </header>
+    <div class="s-full">
+      <h2 class="s-title">화면 순서·정보 우선순위</h2>
+
+      <p class="sg-lead">같은 내용, 같은 기능입니다. 순서와 크기만 바꿨습니다.</p>
+
+      <div class="cm-body">
+        <div class="cm-col bad">
+          <span class="cap">기준 없이 놓았을 때</span>
+          <div class="cm-shot">
+            <span class="cm-el sm">· 09:20 아침 산책 30분</span>
+            <span class="cm-el btn">기록하기</span>
+            <span class="cm-el" style="margin-top:9px">무엇을 했나요?</span>
+            <span class="cm-el t" style="font-size:21px">오늘의 활동 기록</span>
+            <span class="cm-el sm">· 13:05 점심 후 정리</span>
+          </div>
+          <p class="cm-why">무엇부터 봐야 할지 알 수 없습니다. <b>제목·입력·버튼·결과가 같은 크기로 뒤섞여</b> 눈이 갈 곳을 못 찾습니다.</p>
+        </div>
+
+        <div class="cm-col good">
+          <span class="cap">순서를 정했을 때</span>
+          <div class="cm-shot">
+            <span class="cm-el t">오늘의 활동 기록</span>
+            <span class="cm-el">무엇을 했나요?</span>
+            <span class="cm-el btn">기록하기</span>
+            <span class="cm-el sm" style="margin-top:12px">오늘 기록<br>· 09:20 아침 산책 30분 &nbsp; · 13:05 점심 후 정리</span>
+            <svg class="cm-f" viewBox="0 0 340 238" preserveAspectRatio="none" aria-hidden="true">
+              <defs><marker id="fz" markerWidth="8" markerHeight="8" refX="6.5" refY="4" orient="auto">
+                <path d="M0 0 L8 4 L0 8 z" style="fill:var(--coral-deep)"/></marker></defs>
+              <path d="M20 34 H300" fill="none" style="stroke:var(--coral-deep)" stroke-width="3" opacity=".85"/>
+              <path d="M20 34 V96" fill="none" style="stroke:var(--coral-deep)" stroke-width="3" opacity=".85"/>
+              <path d="M20 96 H236" fill="none" style="stroke:var(--coral-deep)" stroke-width="3" opacity=".85"/>
+              <path d="M20 96 V158" fill="none" style="stroke:var(--coral-deep)" stroke-width="3" opacity=".85" marker-end="url(#fz)"/>
+            </svg>
+          </div>
+          <p class="cm-why"><span class="hl-mint-mark">한 눈에 순서가 보입니다</span> — 눈은 위에서 아래로, 왼쪽에서 오른쪽으로 훑습니다(코랄 선).</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+<section class="slide w2-map" data-slide="C5-3">
+    <header class="s-head">
+      <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+      <span class="s-line"></span><div class="s-team">2주차<br>5교시</div>
+    </header>
+    <div class="s-full">
+      <h2 class="s-title">화면 문구</h2>
+
+      <div class="mp-head">
+        <span class="a">뜻이 흐린 문구</span><span class="m"></span><span class="b">행동이 드러나는 문구</span>
+      </div>
+
+      <div class="mp-rows">
+        <div class="mp-row">
+          <span class="mp-bad">확인<span>누르면 무슨 일이 일어나는지 알 수 없다</span></span>
+          <span class="mp-ar">&#8594;</span>
+          <span class="mp-good">기록하기<span>버튼이 하는 일을 그대로 적는다</span></span>
+        </div>
+        <div class="mp-row">
+          <span class="mp-bad">입력<span>무엇을 넣으라는지 모른다</span></span>
+          <span class="mp-ar">&#8594;</span>
+          <span class="mp-good">무엇을 했나요?<span>넣을 것을 묻는다</span></span>
+        </div>
+        <div class="mp-row">
+          <span class="mp-bad">오류: 입력값이 invalid<span>사용자를 탓하고 영어로 말한다</span></span>
+          <span class="mp-ar">&#8594;</span>
+          <span class="mp-good">활동 내용을 한 줄 적어 주세요<span>무엇을·어떻게 고칠지 함께</span></span>
+        </div>
+        <div class="mp-row">
+          <span class="mp-bad">처리되었습니다<span>무엇이 어떻게 됐는지 없다</span></span>
+          <span class="mp-ar">&#8594;</span>
+          <span class="mp-good">오늘 기록에 추가됐어요<span>결과를 눈에 보이게</span></span>
+        </div>
+      </div>
+
+      <p class="mp-rule"><span class="hl-mint-mark">버튼은 하는 일을 말한다</span> — 오류는 문제만 말하지 말고 <span class="hl-mint-underline">고치는 법까지</span> 한 줄로 알려 줍니다.</p>
+
+    </div>
+  </section>
+
+<section class="slide w2-a11y" data-slide="C5-4">
+    <header class="s-head">
+      <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+      <span class="s-line"></span><div class="s-team">2주차<br>5교시</div>
+    </header>
+    <div class="s-full">
+      <h2 class="s-title">기본 가독성·접근성</h2>
+
+      <p class="sg-lead">색이 안 보이는 눈에는 이렇게 보입니다 — 오른쪽만 뜻이 남습니다.</p>
+
+      <div class="ay-body">
+        <div>
+          <span class="ay-cap">색만으로 구분했을 때</span>
+          <div class="ay-box">
+            <div class="ay-row"><span class="ay-dot ok"></span>저장</div>
+            <div class="ay-row"><span class="ay-dot no"></span>저장</div>
+          </div>
+          <div class="ay-box ay-gray" style="margin-top:7px">
+            <div class="ay-row"><span class="ay-dot ok"></span>저장</div>
+            <div class="ay-row"><span class="ay-dot no"></span>저장</div>
+          </div>
+          <p class="cm-why" style="margin-top:7px;font-size:17px">아래가 색각 이상 시야 &mdash; <b>둘이 같아 보입니다.</b></p>
+        </div>
+
+        <div>
+          <span class="ay-cap"><span class="hl-mint-mark">색 옆에 글자</span>를 함께 두면</span>
+          <div class="ay-box">
+            <div class="ay-row"><span class="ay-dot ok"></span>저장됨</div>
+            <div class="ay-row"><span class="ay-dot no"></span>다시 입력</div>
+          </div>
+          <div class="ay-box ay-gray" style="margin-top:7px">
+            <div class="ay-row"><span class="ay-dot ok"></span>저장됨</div>
+            <div class="ay-row"><span class="ay-dot no"></span>다시 입력</div>
+          </div>
+          <p class="ay-txt weak">대비가 낮은 글자 &mdash; 읽기 어렵습니다</p>
+          <p class="ay-txt strong">대비가 뚜렷한 글자 &mdash; 잘 읽힙니다</p>
+        </div>
+
+        <div class="ay-stat">
+          <span class="n">83.9%</span>
+          <span class="d">상위 100만 홈페이지에서 <b>가장 흔한 실패</b>는 낮은 대비였습니다</span>
+          <span class="ay-track"><span class="ay-fill" style="width:83.9%"></span></span>
+          <span class="d" style="margin-top:10px">입력창 라벨 누락이 51%로 그다음입니다</span>
+        </div>
+      </div>
+
+      <p class="ay-band">색은 쓰되, 색만으로는 말하지 않습니다</p>
+
+    </div>
+  </section>
+
+<section class="slide w2-memo" data-slide="C5-5">
+    <header class="s-head">
+      <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+      <span class="s-line"></span><div class="s-team">2주차<br>5교시</div>
+    </header>
+    <div class="s-full">
+      <h2 class="s-title">화면 기준을 담은 DESIGN.md</h2>
+
+      <p class="sg-lead">같은 요청, 다른 결과입니다. 차이는 <b>기준을 넘겼는가</b>뿐입니다.</p>
+
+      <div class="mm-body">
+        <div class="mm-stack">
+          <div class="mm-row before">
+            <span class="tag">기준 없이</span>
+            <span class="txt">&ldquo;활동 기록 페이지 만들어 줘&rdquo;<span>요청할 때마다 색도 문구도 달라집니다 — 매번 다시 설명하게 됩니다</span></span>
+          </div>
+          <div class="mm-row after">
+            <span class="tag">기준을 주고</span>
+            <span class="txt">&ldquo;DESIGN.md 먼저 읽고 화면 만들어 줘&rdquo;<span>나도 Codex도 <span class="hl-mint-mark">같은 기준을 봅니다</span></span></span>
+          </div>
+        </div>
+
+        <div class="mm-memo palette-x">
+          <b>DESIGN.md</b>
+          <div><b>먼저 볼 것</b> — 제목 → 입력창 → 버튼 → 기록 목록</div>
+          <div><b>분위기</b> — 밝은 배경, 큰 글씨, 차분한 초록</div>
+          <div><b>문구</b> — 버튼은 &lsquo;기록하기&rsquo;</div>
+        </div>
+      </div>
+
+      <p class="mm-warn">문서는 코드가 바뀌면 <span class="hl-mint-underline">낡습니다</span> — 기준을 전달할 뿐이고, 그대로 나왔는지는 브라우저에서 사람이 확인합니다. 이번 수업에서는 필수가 아닙니다.</p>
+
+    </div>
+  </section>
+
+<section class="slide w2-chain" data-slide="C5-6">
+    <header class="s-head">
+      <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+      <span class="s-line"></span><div class="s-team">2주차<br>5교시</div>
+    </header>
+    <div class="s-full">
+      <h2 class="s-title">디자인 시스템·토큰</h2>
+
+      <p class="sg-lead">값을 그때그때 새로 고르면 화면이 들쭉날쭉해집니다 — <span class="hl-mint-mark">값 → 이름 → 재사용</span> 세 걸음으로 묶습니다.</p>
+
+      <div class="ch-wrap">
+        <svg width="1080" height="286" viewBox="0 0 1080 286" role="img"
+             aria-label="값 하나에 이름을 붙이고, 버튼 배경·강조 글자·선택 항목·입력창 테두리 네 곳이 그 이름을 재사용한다">
+          <defs>
+            <marker id="ar" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+              <path d="M0 0 L10 5 L0 10 z" style="fill:var(--mint-deep)"/></marker>
+          </defs>
+
+          <text x="98"  y="30" text-anchor="middle" font-size="19" font-weight="800" style="fill:var(--gray-700)">① 값</text>
+          <text x="360" y="30" text-anchor="middle" font-size="19" font-weight="800" style="fill:var(--gray-700)">② 이름 붙이기</text>
+          <text x="800" y="30" text-anchor="middle" font-size="19" font-weight="800" style="fill:var(--gray-700)">③ 여러 곳이 재사용</text>
+
+          <rect x="18" y="112" width="160" height="66" rx="12" style="fill:var(--mint)"/>
+          <text x="98" y="153" text-anchor="middle" font-size="23" font-weight="800" style="fill:var(--on-mint)">초록</text>
+
+          <path d="M186 145 H258" fill="none" style="stroke:var(--mint-deep)" stroke-width="4" marker-end="url(#ar)"/>
+
+          <rect x="268" y="106" width="188" height="78" rx="12"
+                style="fill:var(--mint-line); stroke:var(--mint-deep)" stroke-width="3"/>
+          <text x="362" y="140" text-anchor="middle" font-size="20" font-weight="800" style="fill:var(--mint-deep)">이름</text>
+          <text x="362" y="168" text-anchor="middle" font-size="22" font-weight="800" style="fill:var(--ink)">강조색</text>
+
+          <path d="M464 145 L556 62"  fill="none" style="stroke:var(--mint)" stroke-width="4" marker-end="url(#ar)"/>
+          <path d="M464 145 L556 120" fill="none" style="stroke:var(--mint)" stroke-width="4" marker-end="url(#ar)"/>
+          <path d="M464 145 L556 176" fill="none" style="stroke:var(--mint)" stroke-width="4" marker-end="url(#ar)"/>
+          <path d="M464 145 L556 234" fill="none" style="stroke:var(--mint)" stroke-width="4" marker-end="url(#ar)"/>
+
+          <rect x="568" y="38"  width="470" height="48" rx="9" style="fill:var(--white); stroke:var(--gray-400)" stroke-width="2"/>
+          <text x="590" y="68"  font-size="21" font-weight="700" style="fill:var(--ink)">버튼 배경</text>
+          <rect x="568" y="96"  width="470" height="48" rx="9" style="fill:var(--white); stroke:var(--gray-400)" stroke-width="2"/>
+          <text x="590" y="126" font-size="21" font-weight="700" style="fill:var(--ink)">강조한 글자</text>
+          <rect x="568" y="154" width="470" height="48" rx="9" style="fill:var(--white); stroke:var(--gray-400)" stroke-width="2"/>
+          <text x="590" y="184" font-size="21" font-weight="700" style="fill:var(--ink)">선택된 항목 표시</text>
+          <rect x="568" y="212" width="470" height="48" rx="9" style="fill:var(--white); stroke:var(--gray-400)" stroke-width="2"/>
+          <text x="590" y="242" font-size="21" font-weight="700" style="fill:var(--ink)">입력창 테두리</text>
+        </svg>
+      </div>
+
+      <p class="ch-note">초록을 파랑으로 바꾸고 싶으면 — 이름 하나만 고칩니다</p>
+
+    </div>
+  </section>
+
+<section class="slide case-acts" data-slide="C5-7">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span><div class="s-team">2주차<br>4교시</div>
+    <span class="s-line"></span><div class="s-team">2주차<br>5교시</div>
   </header>
   <div class="s-full">
     <h2 class="s-title">레퍼런스는 복사가 아니라 관찰</h2>
@@ -1343,13 +2989,14 @@
       <p class="ca-down" aria-hidden="true">↓</p>
       <div class="card surface ca-act"><span class="pill">결정</span><p class="s-lead">무엇을 참고할지 · <strong>무엇은 안 따라 할지</strong>도 정하기</p></div>
     </div>
+      <p class="ref-right">검색해서 나온다고 <strong>무료가 아닙니다</strong> &mdash; 이미지·글꼴은 출처와 사용 조건을 먼저 확인합니다.</p>
   </div>
 </section>
 
-<section class="slide w2-practice" data-slide="C4-7">
+<section class="slide w2-practice" data-slide="C5-8">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span><div class="s-team">2주차<br>4교시</div>
+    <span class="s-line"></span><div class="s-team">2주차<br>5교시</div>
   </header>
   <div class="s-full">
     <h2 class="s-title">실습 ⑦ 레퍼런스 1개 관찰</h2>
@@ -1362,55 +3009,10 @@
   </div>
 </section>
 
-<section class="slide" data-slide="C4-8">
+<section class="slide w2-practice" data-slide="C5-9">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span><div class="s-team">2주차<br>4교시</div>
-  </header>
-  <div class="dc-title">
-    <h2 class="s-title">디자인 시스템 = 반복 규칙</h2>
-  </div>
-  <div class="dc-stage">
-    <div class="code-diagram">
-      <div class="cd-root">한 번 정해 반복하는 규칙</div>
-      <div class="cd-arrow" aria-hidden="true">↓</div>
-      <div class="cd-leaves is-five">
-        <div class="cd-leaf"><b class="cd-out">색</b></div>
-        <div class="cd-leaf"><b class="cd-out">글자</b></div>
-        <div class="cd-leaf"><b class="cd-out">여백</b></div>
-        <div class="cd-leaf"><b class="cd-out">버튼</b></div>
-        <div class="cd-leaf"><b class="cd-out">상태</b></div>
-      </div>
-    </div>
-    <p class="callout">그래서 화면이 들쭉날쭉하지 않습니다.</p>
-  </div>
-</section>
-
-<section class="slide dl-list" data-slide="C4-9">
-  <header class="s-head">
-    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span><div class="s-team">2주차<br>4교시</div>
-  </header>
-  <div class="s-full">
-    <h2 class="s-title">design.md는 화면 결정을 담는 문서</h2>
-    <div class="accent-bar"></div>
-    <p class="s-lead">담는 것</p>
-    <div class="dl-rows">
-      <div class="card surface dl-row"><span class="dl-term">먼저 볼 것</span></div>
-      <div class="card surface dl-row"><span class="dl-term">분위기</span></div>
-      <div class="card surface dl-row"><span class="dl-term">색</span></div>
-      <div class="card surface dl-row"><span class="dl-term">문구(버튼/입력/결과/오류)</span></div>
-      <div class="card surface dl-row"><span class="dl-term">참고</span></div>
-      <div class="card surface dl-row"><span class="dl-term">안 따라 할 것</span></div>
-    </div>
-    <p class="callout">전문 규격이 아니라 세 줄이면 충분합니다.</p>
-  </div>
-</section>
-
-<section class="slide w2-practice" data-slide="C4-10">
-  <header class="s-head">
-    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span><div class="s-team">2주차<br>4교시</div>
+    <span class="s-line"></span><div class="s-team">2주차<br>5교시</div>
   </header>
   <div class="s-full">
     <h2 class="s-title">실습 ⑧ design.md + 화면에 ≥2 적용</h2>
@@ -1423,10 +3025,10 @@
   </div>
 </section>
 
-<section class="slide w2-screen" data-slide="C4-11">
+<section class="slide w2-screen" data-slide="C5-10">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span><div class="s-team">2주차<br>4교시</div>
+    <span class="s-line"></span><div class="s-team">2주차<br>5교시</div>
   </header>
   <div class="s-full">
     <h2 class="s-title">실습 ⑨ 빈 입력·오류 상태 (기능 유형상 필요 시)</h2>
@@ -1447,58 +3049,7 @@
   </div>
 </section>
 
-    <!-- ============ 5-간지 (P5) ============ -->
-    <section class="slide part-divider" data-slide="P5">
-      <svg class="dv-hero" viewBox="0 0 1280 720" fill="none" aria-hidden="true"></svg>
-      <div class="pd-dots" aria-hidden="true"></div>
-      <p class="pd-eyebrow">PART</p>
-      <h2 class="pd-title">브라우저에서 확인</h2>
-      <p class="pd-sub"><strong>정한 한 기능을<br>브라우저에서 확인합니다.</strong></p>
-    </section>
-
-    <!-- ============ 5-MAP (M5) ============ -->
-    <section class="slide w2-roadmap" data-slide="M5">
-      <header class="s-head">
-        <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-        <span class="s-line"></span><div class="s-team">2주차<br>5교시</div>
-      </header>
-      <div class="s-full">
-        <h2 class="s-title">오늘 이렇게 배웁니다</h2>
-        <p class="rm-lead">오늘의 흐름</p>
-        <div class="rm-track">
-          <div class="rm-step"><span class="rm-n">1</span><b>계획 재확인</b></div>
-          <span class="rm-arrow" aria-hidden="true">→</span>
-          <div class="rm-step"><span class="rm-n">2</span><b>파일 구조</b></div>
-          <span class="rm-arrow" aria-hidden="true">→</span>
-          <div class="rm-step"><span class="rm-n">3</span><b>한 단계씩</b></div>
-          <span class="rm-arrow" aria-hidden="true">→</span>
-          <div class="rm-step"><span class="rm-n">4</span><b>세 값</b></div>
-          <span class="rm-arrow" aria-hidden="true">→</span>
-          <div class="rm-step is-goal"><span class="rm-n">5</span><b>정리</b></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============ 5-1 (C5-1) ============ -->
-    <section class="slide" data-slide="C5-1">
-      <header class="s-head">
-        <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-        <span class="s-line"></span><div class="s-team">2주차<br>5교시</div>
-      </header>
-      <div class="s-full steps-full">
-        <h2 class="s-title">코드 전에 계획을 다시 확인</h2>
-        <div class="eval-steps">
-          <div class="work-step"><span class="n">1</span><b>만들 파일</b></div>
-          <div class="work-step"><span class="n">2</span><b>핵심 기능</b></div>
-          <div class="work-step"><span class="n">3</span><b>확인 항목</b></div>
-        </div>
-        <p class="callout orange">prd.md와 User Flow를 다시 봅니다.</p>
-        <p class="callout orange">범위가 커졌으면 코드 전에 멈춥니다.</p>
-      </div>
-    </section>
-
-    <!-- ============ 5-2 (C5-2) ============ -->
-    <section class="slide" data-slide="C5-2">
+<section class="slide" data-slide="C5-11">
       <header class="s-head">
         <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
         <span class="s-line"></span><div class="s-team">2주차<br>5교시</div>
@@ -1535,8 +3086,7 @@
       </div>
     </section>
 
-    <!-- ============ 5-3 (C5-3) ============ -->
-    <section class="slide" data-slide="C5-3">
+<section class="slide" data-slide="C5-12">
       <header class="s-head">
         <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
         <span class="s-line"></span><div class="s-team">2주차<br>5교시</div>
@@ -1556,8 +3106,7 @@
       </div>
     </section>
 
-    <!-- ============ 5-4 (C5-4) ============ -->
-    <section class="slide compare-slide" data-slide="C5-4">
+<section class="slide compare-slide" data-slide="C5-13">
       <header class="s-head">
         <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
         <span class="s-line"></span><div class="s-team">2주차<br>5교시</div>
@@ -1579,8 +3128,7 @@
       </div>
     </section>
 
-    <!-- ============ 5-5 (C5-5) ============ -->
-    <section class="slide pitfalls" data-slide="C5-5">
+<section class="slide pitfalls" data-slide="C5-14">
       <header class="s-head">
         <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
         <span class="s-line"></span><div class="s-team">2주차<br>5교시</div>
@@ -1596,10 +3144,7 @@
       </div>
     </section>
 
-    <!-- ============ 5-6 (C5-6) ============ -->
-    <!-- ============ C5-6 · 핵심 기능은 한 단계씩 (2026-07-27: 제목만 있던 3단계 → 경고선행+3요소단계) ============ -->
-    <!-- 소스: 초안 :152 · 개념KB C-Task분할:820,822,825,826 · C-수동제작절차:762,764. -->
-    <section class="slide w2-stepwarn" data-slide="C5-6">
+<section class="slide w2-stepwarn" data-slide="C5-15">
       <header class="s-head">
         <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
         <span class="s-line"></span><div class="s-team">2주차<br>5교시</div>
@@ -1621,8 +3166,7 @@
       </div>
     </section>
 
-    <!-- ============ 5-7 (C5-7) ============ -->
-    <section class="slide w2-practice" data-slide="C5-7">
+<section class="slide w2-practice" data-slide="C5-16">
       <header class="s-head">
         <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
         <span class="s-line"></span><div class="s-team">2주차<br>5교시</div>
@@ -1637,8 +3181,7 @@
       </div>
     </section>
 
-    <!-- ============ 5-8 (C5-8) ============ -->
-    <section class="slide w2-practice" data-slide="C5-8">
+<section class="slide w2-practice" data-slide="C5-17">
       <header class="s-head">
         <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
         <span class="s-line"></span><div class="s-team">2주차<br>5교시</div>
@@ -1653,8 +3196,7 @@
       </div>
     </section>
 
-    <!-- ============ 5-9 (C5-9) ============ -->
-    <section class="slide" data-slide="C5-9">
+<section class="slide" data-slide="C5-18">
       <header class="s-head">
         <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
         <span class="s-line"></span><div class="s-team">2주차<br>5교시</div>
@@ -1666,8 +3208,7 @@
       </div>
     </section>
 
-    <!-- ============ 5-10 (C5-10) ============ -->
-    <section class="slide" data-slide="C5-10">
+<section class="slide" data-slide="C5-19">
       <header class="s-head">
         <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
         <span class="s-line"></span><div class="s-team">2주차<br>5교시</div>
@@ -1725,6 +3266,13 @@
     <p class="cm-sub cm-statement">정한 대표 흐름을 실제 브라우저에서 그대로 따라갑니다.</p>
     <p class="cm-sub">이것은 <span class="hl-mint-mark">자체 점검</span>이지 실제 사용자 테스트가 아닙니다.</p>
   </div>
+  <figure class="c6-1-figure asset-slot asset-slot--support"
+        data-asset-kind="paper-cut-v1"
+        data-image-purpose="explanatory"
+        data-image-state="expected"
+        data-expected-src="자료/images/s78_scenario-start-to-end-path-paper-cut-v1-transparent.png"
+        role="img"
+        aria-label="시작 표식에서 몇 개의 경유 지점을 지나 끝 표식까지 이어지는 하나의 길 위에 돋보기가 놓여, 처음부터 끝까지 이어 따라가며 스스로 확인하는 자체 점검임을 보여준다"></figure>
 </section>
 
 <section class="slide" data-slide="C6-2">

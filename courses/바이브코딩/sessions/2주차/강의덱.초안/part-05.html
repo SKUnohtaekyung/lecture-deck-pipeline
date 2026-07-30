@@ -1,55 +1,374 @@
-    <!-- ============ 5-간지 (P5) ============ -->
-    <section class="slide part-divider" data-slide="P5">
-      <svg class="dv-hero" viewBox="0 0 1280 720" fill="none" aria-hidden="true"></svg>
-      <div class="pd-dots" aria-hidden="true"></div>
-      <p class="pd-eyebrow">PART</p>
-      <h2 class="pd-title">브라우저에서 확인</h2>
-      <p class="pd-sub"><strong>정한 한 기능을<br>브라우저에서 확인합니다.</strong></p>
-    </section>
+<section class="slide part-divider" data-slide="P5">
+  <svg class="dv-hero" viewBox="0 0 1280 720" fill="none" aria-hidden="true"></svg>
+  <div class="pd-dots" aria-hidden="true"></div>
+  <p class="pd-eyebrow">PART</p>
+  <h2 class="pd-title">설계한 기준으로 화면 만들기</h2>
+  <p class="pd-sub"><strong>먼저 기준을 정하고,<br>그 기준대로 화면을 만듭니다.</strong></p>
+</section>
 
-    <!-- ============ 5-MAP (M5) ============ -->
-    <section class="slide w2-roadmap" data-slide="M5">
-      <header class="s-head">
-        <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-        <span class="s-line"></span><div class="s-team">2주차<br>5교시</div>
-      </header>
-      <div class="s-full">
-        <h2 class="s-title">오늘 이렇게 배웁니다</h2>
-        <p class="rm-lead">오늘의 흐름</p>
-        <div class="rm-track">
-          <div class="rm-step"><span class="rm-n">1</span><b>계획 재확인</b></div>
-          <span class="rm-arrow" aria-hidden="true">→</span>
-          <div class="rm-step"><span class="rm-n">2</span><b>파일 구조</b></div>
-          <span class="rm-arrow" aria-hidden="true">→</span>
-          <div class="rm-step"><span class="rm-n">3</span><b>한 단계씩</b></div>
-          <span class="rm-arrow" aria-hidden="true">→</span>
-          <div class="rm-step"><span class="rm-n">4</span><b>세 값</b></div>
-          <span class="rm-arrow" aria-hidden="true">→</span>
-          <div class="rm-step is-goal"><span class="rm-n">5</span><b>정리</b></div>
+<section class="slide w2-roadmap" data-slide="M5">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span><div class="s-team">2주차<br>5교시</div>
+  </header>
+  <div class="s-full">
+    <h2 class="s-title">오늘 이렇게 배웁니다</h2>
+    <p class="rm-lead">오늘의 흐름</p>
+    <div class="rm-track">
+      <div class="rm-step"><span class="rm-n">1</span><b>정보 구조</b></div>
+      <span class="rm-arrow" aria-hidden="true">→</span>
+      <div class="rm-step"><span class="rm-n">2</span><b>화면 순서·문구</b></div>
+      <span class="rm-arrow" aria-hidden="true">→</span>
+      <div class="rm-step"><span class="rm-n">3</span><b>읽기 쉬움</b></div>
+      <span class="rm-arrow" aria-hidden="true">→</span>
+      <div class="rm-step"><span class="rm-n">4</span><b>기준 문서로 고정</b></div>
+      <span class="rm-arrow" aria-hidden="true">→</span>
+      <div class="rm-step is-goal"><span class="rm-n">5</span><b>그 기준으로 구현</b></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide w2-ia" data-slide="C5-1">
+    <header class="s-head">
+      <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+      <span class="s-line"></span><div class="s-team">2주차<br>5교시</div>
+    </header>
+    <div class="s-full">
+      <h2 class="s-title">정보 구조</h2>
+
+      <p class="sg-lead">화면에 보이는 메뉴는 <b>빙산의 일각</b>입니다. 그 아래에 «무엇을 어디에 둘지» 정한 결정이 있습니다.</p>
+
+      <div class="bg-body">
+        <svg width="700" height="300" viewBox="0 0 700 300" role="img"
+             aria-label="빙산 도해. 수면 위 작은 봉우리는 네비게이션·메뉴, 수면 아래 큰 덩어리는 무엇끼리 묶을지·어디에 둘지·어떤 순서로 둘지의 결정이다">
+          <polygon points="350,16 402,84 298,84" style="fill:var(--periwinkle)"/>
+          <polygon points="266,90 434,90 498,288 202,288" style="fill:var(--blue-panel); stroke:var(--blue)" stroke-width="2"/>
+          <line x1="10" y1="87" x2="690" y2="87" style="stroke:var(--blue)" stroke-width="3" stroke-dasharray="12 8"/>
+          <text x="16" y="76" font-size="18" font-weight="800" style="fill:var(--blue)">수면 &mdash; 여기까지가 눈에 보입니다</text>
+
+          <text x="418" y="52" font-size="20" font-weight="800" style="fill:var(--ink)">네비게이션 · 메뉴 · 버튼</text>
+
+          <text x="350" y="140" text-anchor="middle" font-size="21" font-weight="800" style="fill:var(--ink)">무엇끼리 묶을까</text>
+          <text x="350" y="140" text-anchor="middle" font-size="21" font-weight="800" style="fill:var(--ink)" dy="34">어디에 둘까</text>
+          <text x="350" y="140" text-anchor="middle" font-size="21" font-weight="800" style="fill:var(--ink)" dy="68">어떤 순서로</text>
+          <text x="350" y="264" text-anchor="middle" font-size="19" font-weight="700" style="fill:var(--blue)">설명 · 입력 · 결과를 어떻게 나눌지</text>
+        </svg>
+
+        <div class="bg-side">
+          <div class="bg-vs">
+            <div class="a"><b>정보 구조</b><span>무엇이 어디에 — 구조</span></div>
+            <div class="b"><b>사용자 흐름</b><span>어떤 순서로 움직이나 — 흐름</span></div>
+          </div>
+          <p class="sg-lead">한 페이지짜리라도 «설명 먼저, 그다음 입력, 그다음 결과»처럼 <b>놓는 순서를 정하는 것</b>이 정보 구조입니다.</p>
         </div>
       </div>
-    </section>
 
-    <!-- ============ 5-1 (C5-1) ============ -->
-    <section class="slide" data-slide="C5-1">
-      <header class="s-head">
-        <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-        <span class="s-line"></span><div class="s-team">2주차<br>5교시</div>
-      </header>
-      <div class="s-full steps-full">
-        <h2 class="s-title">코드 전에 계획을 다시 확인</h2>
-        <div class="eval-steps">
-          <div class="work-step"><span class="n">1</span><b>만들 파일</b></div>
-          <div class="work-step"><span class="n">2</span><b>핵심 기능</b></div>
-          <div class="work-step"><span class="n">3</span><b>확인 항목</b></div>
+      <p class="bg-note">메뉴를 어떻게 그릴까가 아니라 <span class="hl-mint-mark">보이지 않는 결정</span>이 먼저입니다 &mdash; <span class="hl-mint-underline">전문 사이트맵은 필요 없습니다.</span></p>
+
+    </div>
+  </section>
+
+<section class="slide w2-cmp" data-slide="C5-2">
+    <header class="s-head">
+      <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+      <span class="s-line"></span><div class="s-team">2주차<br>5교시</div>
+    </header>
+    <div class="s-full">
+      <h2 class="s-title">화면 순서·정보 우선순위</h2>
+
+      <p class="sg-lead">같은 내용, 같은 기능입니다. 순서와 크기만 바꿨습니다.</p>
+
+      <div class="cm-body">
+        <div class="cm-col bad">
+          <span class="cap">기준 없이 놓았을 때</span>
+          <div class="cm-shot">
+            <span class="cm-el sm">· 09:20 아침 산책 30분</span>
+            <span class="cm-el btn">기록하기</span>
+            <span class="cm-el" style="margin-top:9px">무엇을 했나요?</span>
+            <span class="cm-el t" style="font-size:21px">오늘의 활동 기록</span>
+            <span class="cm-el sm">· 13:05 점심 후 정리</span>
+          </div>
+          <p class="cm-why">무엇부터 봐야 할지 알 수 없습니다. <b>제목·입력·버튼·결과가 같은 크기로 뒤섞여</b> 눈이 갈 곳을 못 찾습니다.</p>
         </div>
-        <p class="callout orange">prd.md와 User Flow를 다시 봅니다.</p>
-        <p class="callout orange">범위가 커졌으면 코드 전에 멈춥니다.</p>
-      </div>
-    </section>
 
-    <!-- ============ 5-2 (C5-2) ============ -->
-    <section class="slide" data-slide="C5-2">
+        <div class="cm-col good">
+          <span class="cap">순서를 정했을 때</span>
+          <div class="cm-shot">
+            <span class="cm-el t">오늘의 활동 기록</span>
+            <span class="cm-el">무엇을 했나요?</span>
+            <span class="cm-el btn">기록하기</span>
+            <span class="cm-el sm" style="margin-top:12px">오늘 기록<br>· 09:20 아침 산책 30분 &nbsp; · 13:05 점심 후 정리</span>
+            <svg class="cm-f" viewBox="0 0 340 238" preserveAspectRatio="none" aria-hidden="true">
+              <defs><marker id="fz" markerWidth="8" markerHeight="8" refX="6.5" refY="4" orient="auto">
+                <path d="M0 0 L8 4 L0 8 z" style="fill:var(--coral-deep)"/></marker></defs>
+              <path d="M20 34 H300" fill="none" style="stroke:var(--coral-deep)" stroke-width="3" opacity=".85"/>
+              <path d="M20 34 V96" fill="none" style="stroke:var(--coral-deep)" stroke-width="3" opacity=".85"/>
+              <path d="M20 96 H236" fill="none" style="stroke:var(--coral-deep)" stroke-width="3" opacity=".85"/>
+              <path d="M20 96 V158" fill="none" style="stroke:var(--coral-deep)" stroke-width="3" opacity=".85" marker-end="url(#fz)"/>
+            </svg>
+          </div>
+          <p class="cm-why"><span class="hl-mint-mark">한 눈에 순서가 보입니다</span> — 눈은 위에서 아래로, 왼쪽에서 오른쪽으로 훑습니다(코랄 선).</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+<section class="slide w2-map" data-slide="C5-3">
+    <header class="s-head">
+      <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+      <span class="s-line"></span><div class="s-team">2주차<br>5교시</div>
+    </header>
+    <div class="s-full">
+      <h2 class="s-title">화면 문구</h2>
+
+      <div class="mp-head">
+        <span class="a">뜻이 흐린 문구</span><span class="m"></span><span class="b">행동이 드러나는 문구</span>
+      </div>
+
+      <div class="mp-rows">
+        <div class="mp-row">
+          <span class="mp-bad">확인<span>누르면 무슨 일이 일어나는지 알 수 없다</span></span>
+          <span class="mp-ar">&#8594;</span>
+          <span class="mp-good">기록하기<span>버튼이 하는 일을 그대로 적는다</span></span>
+        </div>
+        <div class="mp-row">
+          <span class="mp-bad">입력<span>무엇을 넣으라는지 모른다</span></span>
+          <span class="mp-ar">&#8594;</span>
+          <span class="mp-good">무엇을 했나요?<span>넣을 것을 묻는다</span></span>
+        </div>
+        <div class="mp-row">
+          <span class="mp-bad">오류: 입력값이 invalid<span>사용자를 탓하고 영어로 말한다</span></span>
+          <span class="mp-ar">&#8594;</span>
+          <span class="mp-good">활동 내용을 한 줄 적어 주세요<span>무엇을·어떻게 고칠지 함께</span></span>
+        </div>
+        <div class="mp-row">
+          <span class="mp-bad">처리되었습니다<span>무엇이 어떻게 됐는지 없다</span></span>
+          <span class="mp-ar">&#8594;</span>
+          <span class="mp-good">오늘 기록에 추가됐어요<span>결과를 눈에 보이게</span></span>
+        </div>
+      </div>
+
+      <p class="mp-rule"><span class="hl-mint-mark">버튼은 하는 일을 말한다</span> — 오류는 문제만 말하지 말고 <span class="hl-mint-underline">고치는 법까지</span> 한 줄로 알려 줍니다.</p>
+
+    </div>
+  </section>
+
+<section class="slide w2-a11y" data-slide="C5-4">
+    <header class="s-head">
+      <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+      <span class="s-line"></span><div class="s-team">2주차<br>5교시</div>
+    </header>
+    <div class="s-full">
+      <h2 class="s-title">기본 가독성·접근성</h2>
+
+      <p class="sg-lead">색이 안 보이는 눈에는 이렇게 보입니다 — 오른쪽만 뜻이 남습니다.</p>
+
+      <div class="ay-body">
+        <div>
+          <span class="ay-cap">색만으로 구분했을 때</span>
+          <div class="ay-box">
+            <div class="ay-row"><span class="ay-dot ok"></span>저장</div>
+            <div class="ay-row"><span class="ay-dot no"></span>저장</div>
+          </div>
+          <div class="ay-box ay-gray" style="margin-top:7px">
+            <div class="ay-row"><span class="ay-dot ok"></span>저장</div>
+            <div class="ay-row"><span class="ay-dot no"></span>저장</div>
+          </div>
+          <p class="cm-why" style="margin-top:7px;font-size:17px">아래가 색각 이상 시야 &mdash; <b>둘이 같아 보입니다.</b></p>
+        </div>
+
+        <div>
+          <span class="ay-cap"><span class="hl-mint-mark">색 옆에 글자</span>를 함께 두면</span>
+          <div class="ay-box">
+            <div class="ay-row"><span class="ay-dot ok"></span>저장됨</div>
+            <div class="ay-row"><span class="ay-dot no"></span>다시 입력</div>
+          </div>
+          <div class="ay-box ay-gray" style="margin-top:7px">
+            <div class="ay-row"><span class="ay-dot ok"></span>저장됨</div>
+            <div class="ay-row"><span class="ay-dot no"></span>다시 입력</div>
+          </div>
+          <p class="ay-txt weak">대비가 낮은 글자 &mdash; 읽기 어렵습니다</p>
+          <p class="ay-txt strong">대비가 뚜렷한 글자 &mdash; 잘 읽힙니다</p>
+        </div>
+
+        <div class="ay-stat">
+          <span class="n">83.9%</span>
+          <span class="d">상위 100만 홈페이지에서 <b>가장 흔한 실패</b>는 낮은 대비였습니다</span>
+          <span class="ay-track"><span class="ay-fill" style="width:83.9%"></span></span>
+          <span class="d" style="margin-top:10px">입력창 라벨 누락이 51%로 그다음입니다</span>
+        </div>
+      </div>
+
+      <p class="ay-band">색은 쓰되, 색만으로는 말하지 않습니다</p>
+
+    </div>
+  </section>
+
+<section class="slide w2-memo" data-slide="C5-5">
+    <header class="s-head">
+      <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+      <span class="s-line"></span><div class="s-team">2주차<br>5교시</div>
+    </header>
+    <div class="s-full">
+      <h2 class="s-title">화면 기준을 담은 DESIGN.md</h2>
+
+      <p class="sg-lead">같은 요청, 다른 결과입니다. 차이는 <b>기준을 넘겼는가</b>뿐입니다.</p>
+
+      <div class="mm-body">
+        <div class="mm-stack">
+          <div class="mm-row before">
+            <span class="tag">기준 없이</span>
+            <span class="txt">&ldquo;활동 기록 페이지 만들어 줘&rdquo;<span>요청할 때마다 색도 문구도 달라집니다 — 매번 다시 설명하게 됩니다</span></span>
+          </div>
+          <div class="mm-row after">
+            <span class="tag">기준을 주고</span>
+            <span class="txt">&ldquo;DESIGN.md 먼저 읽고 화면 만들어 줘&rdquo;<span>나도 Codex도 <span class="hl-mint-mark">같은 기준을 봅니다</span></span></span>
+          </div>
+        </div>
+
+        <div class="mm-memo palette-x">
+          <b>DESIGN.md</b>
+          <div><b>먼저 볼 것</b> — 제목 → 입력창 → 버튼 → 기록 목록</div>
+          <div><b>분위기</b> — 밝은 배경, 큰 글씨, 차분한 초록</div>
+          <div><b>문구</b> — 버튼은 &lsquo;기록하기&rsquo;</div>
+        </div>
+      </div>
+
+      <p class="mm-warn">문서는 코드가 바뀌면 <span class="hl-mint-underline">낡습니다</span> — 기준을 전달할 뿐이고, 그대로 나왔는지는 브라우저에서 사람이 확인합니다. 이번 수업에서는 필수가 아닙니다.</p>
+
+    </div>
+  </section>
+
+<section class="slide w2-chain" data-slide="C5-6">
+    <header class="s-head">
+      <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+      <span class="s-line"></span><div class="s-team">2주차<br>5교시</div>
+    </header>
+    <div class="s-full">
+      <h2 class="s-title">디자인 시스템·토큰</h2>
+
+      <p class="sg-lead">값을 그때그때 새로 고르면 화면이 들쭉날쭉해집니다 — <span class="hl-mint-mark">값 → 이름 → 재사용</span> 세 걸음으로 묶습니다.</p>
+
+      <div class="ch-wrap">
+        <svg width="1080" height="286" viewBox="0 0 1080 286" role="img"
+             aria-label="값 하나에 이름을 붙이고, 버튼 배경·강조 글자·선택 항목·입력창 테두리 네 곳이 그 이름을 재사용한다">
+          <defs>
+            <marker id="ar" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+              <path d="M0 0 L10 5 L0 10 z" style="fill:var(--mint-deep)"/></marker>
+          </defs>
+
+          <text x="98"  y="30" text-anchor="middle" font-size="19" font-weight="800" style="fill:var(--gray-700)">① 값</text>
+          <text x="360" y="30" text-anchor="middle" font-size="19" font-weight="800" style="fill:var(--gray-700)">② 이름 붙이기</text>
+          <text x="800" y="30" text-anchor="middle" font-size="19" font-weight="800" style="fill:var(--gray-700)">③ 여러 곳이 재사용</text>
+
+          <rect x="18" y="112" width="160" height="66" rx="12" style="fill:var(--mint)"/>
+          <text x="98" y="153" text-anchor="middle" font-size="23" font-weight="800" style="fill:var(--on-mint)">초록</text>
+
+          <path d="M186 145 H258" fill="none" style="stroke:var(--mint-deep)" stroke-width="4" marker-end="url(#ar)"/>
+
+          <rect x="268" y="106" width="188" height="78" rx="12"
+                style="fill:var(--mint-line); stroke:var(--mint-deep)" stroke-width="3"/>
+          <text x="362" y="140" text-anchor="middle" font-size="20" font-weight="800" style="fill:var(--mint-deep)">이름</text>
+          <text x="362" y="168" text-anchor="middle" font-size="22" font-weight="800" style="fill:var(--ink)">강조색</text>
+
+          <path d="M464 145 L556 62"  fill="none" style="stroke:var(--mint)" stroke-width="4" marker-end="url(#ar)"/>
+          <path d="M464 145 L556 120" fill="none" style="stroke:var(--mint)" stroke-width="4" marker-end="url(#ar)"/>
+          <path d="M464 145 L556 176" fill="none" style="stroke:var(--mint)" stroke-width="4" marker-end="url(#ar)"/>
+          <path d="M464 145 L556 234" fill="none" style="stroke:var(--mint)" stroke-width="4" marker-end="url(#ar)"/>
+
+          <rect x="568" y="38"  width="470" height="48" rx="9" style="fill:var(--white); stroke:var(--gray-400)" stroke-width="2"/>
+          <text x="590" y="68"  font-size="21" font-weight="700" style="fill:var(--ink)">버튼 배경</text>
+          <rect x="568" y="96"  width="470" height="48" rx="9" style="fill:var(--white); stroke:var(--gray-400)" stroke-width="2"/>
+          <text x="590" y="126" font-size="21" font-weight="700" style="fill:var(--ink)">강조한 글자</text>
+          <rect x="568" y="154" width="470" height="48" rx="9" style="fill:var(--white); stroke:var(--gray-400)" stroke-width="2"/>
+          <text x="590" y="184" font-size="21" font-weight="700" style="fill:var(--ink)">선택된 항목 표시</text>
+          <rect x="568" y="212" width="470" height="48" rx="9" style="fill:var(--white); stroke:var(--gray-400)" stroke-width="2"/>
+          <text x="590" y="242" font-size="21" font-weight="700" style="fill:var(--ink)">입력창 테두리</text>
+        </svg>
+      </div>
+
+      <p class="ch-note">초록을 파랑으로 바꾸고 싶으면 — 이름 하나만 고칩니다</p>
+
+    </div>
+  </section>
+
+<section class="slide case-acts" data-slide="C5-7">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span><div class="s-team">2주차<br>5교시</div>
+  </header>
+  <div class="s-full">
+    <h2 class="s-title">레퍼런스는 복사가 아니라 관찰</h2>
+    <div class="accent-bar"></div>
+    <div class="ca-stack">
+      <div class="card surface ca-act"><span class="pill">금지</span><p class="s-lead">통째로 복제하지 않기</p></div>
+      <p class="ca-down" aria-hidden="true">↓</p>
+      <div class="card surface ca-act"><span class="pill">관찰</span><p class="s-lead">색 · 여백 · 글자 · 정보 순서를 <strong>관찰</strong>하기</p></div>
+      <p class="ca-down" aria-hidden="true">↓</p>
+      <div class="card surface ca-act"><span class="pill">결정</span><p class="s-lead">무엇을 참고할지 · <strong>무엇은 안 따라 할지</strong>도 정하기</p></div>
+    </div>
+      <p class="ref-right">검색해서 나온다고 <strong>무료가 아닙니다</strong> &mdash; 이미지·글꼴은 출처와 사용 조건을 먼저 확인합니다.</p>
+  </div>
+</section>
+
+<section class="slide w2-practice" data-slide="C5-8">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span><div class="s-team">2주차<br>5교시</div>
+  </header>
+  <div class="s-full">
+    <h2 class="s-title">실습 ⑦ 레퍼런스 1개 관찰</h2>
+    <div class="accent-bar"></div>
+    <div class="pr-steps">
+      <div class="work-step"><span class="n">1</span><b>참고 서비스 1개를 고릅니다.</b></div>
+      <div class="work-step"><span class="n">2</span><b>색·여백·순서·구조 중 <strong>무엇을 참고하고 무엇은 안 할지</strong> 메모합니다.</b></div>
+    </div>
+    <div class="pr-done"><span class="pr-tag">완성</span><p>복사/분위기/구조/사용성 구분으로 설명할 수 있음</p></div>
+  </div>
+</section>
+
+<section class="slide w2-practice" data-slide="C5-9">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span><div class="s-team">2주차<br>5교시</div>
+  </header>
+  <div class="s-full">
+    <h2 class="s-title">실습 ⑧ design.md + 화면에 ≥2 적용</h2>
+    <div class="accent-bar"></div>
+    <div class="pr-steps">
+      <div class="work-step"><span class="n">1</span><b>design.md에 화면 기준을 짧게 적습니다.</b></div>
+      <div class="work-step"><span class="n">2</span><b><strong>실제 화면에 최소 2가지를 적용</strong>합니다(문서만 만들고 끝 금지).</b></div>
+    </div>
+    <div class="pr-done"><span class="pr-tag">완성</span><p>색·버튼 문구 등 2가지가 화면에 반영됨</p></div>
+  </div>
+</section>
+
+<section class="slide w2-screen" data-slide="C5-10">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span><div class="s-team">2주차<br>5교시</div>
+  </header>
+  <div class="s-full">
+    <h2 class="s-title">실습 ⑨ 빈 입력·오류 상태 (기능 유형상 필요 시)</h2>
+    <div class="sm-stage">
+      <div class="sm-frame">
+        <div class="sm-bar"><span></span><span></span><span></span><b>상태 미리보기</b></div>
+        <div class="sm-body">
+          <div class="sm-part"><span class="sm-k">1</span><p>초기</p></div>
+          <div class="sm-part"><span class="sm-k">2</span><p>정상</p></div>
+          <div class="sm-part"><span class="sm-k">3</span><p>빈/오류</p></div>
+        </div>
+      </div>
+      <div class="sm-notes">
+        <div class="sm-note"><span class="n">1</span><p>빈 입력이 무의미한 기능(예: 단순 변환)은 생략합니다.</p></div>
+        <div class="sm-note"><span class="n">2</span><p>완성: 필요한 경우 빈/오류 상태가 화면에 보임</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-slide="C5-11">
       <header class="s-head">
         <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
         <span class="s-line"></span><div class="s-team">2주차<br>5교시</div>
@@ -86,8 +405,7 @@
       </div>
     </section>
 
-    <!-- ============ 5-3 (C5-3) ============ -->
-    <section class="slide" data-slide="C5-3">
+<section class="slide" data-slide="C5-12">
       <header class="s-head">
         <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
         <span class="s-line"></span><div class="s-team">2주차<br>5교시</div>
@@ -107,8 +425,7 @@
       </div>
     </section>
 
-    <!-- ============ 5-4 (C5-4) ============ -->
-    <section class="slide compare-slide" data-slide="C5-4">
+<section class="slide compare-slide" data-slide="C5-13">
       <header class="s-head">
         <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
         <span class="s-line"></span><div class="s-team">2주차<br>5교시</div>
@@ -130,8 +447,7 @@
       </div>
     </section>
 
-    <!-- ============ 5-5 (C5-5) ============ -->
-    <section class="slide pitfalls" data-slide="C5-5">
+<section class="slide pitfalls" data-slide="C5-14">
       <header class="s-head">
         <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
         <span class="s-line"></span><div class="s-team">2주차<br>5교시</div>
@@ -147,10 +463,7 @@
       </div>
     </section>
 
-    <!-- ============ 5-6 (C5-6) ============ -->
-    <!-- ============ C5-6 · 핵심 기능은 한 단계씩 (2026-07-27: 제목만 있던 3단계 → 경고선행+3요소단계) ============ -->
-    <!-- 소스: 초안 :152 · 개념KB C-Task분할:820,822,825,826 · C-수동제작절차:762,764. -->
-    <section class="slide w2-stepwarn" data-slide="C5-6">
+<section class="slide w2-stepwarn" data-slide="C5-15">
       <header class="s-head">
         <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
         <span class="s-line"></span><div class="s-team">2주차<br>5교시</div>
@@ -172,8 +485,7 @@
       </div>
     </section>
 
-    <!-- ============ 5-7 (C5-7) ============ -->
-    <section class="slide w2-practice" data-slide="C5-7">
+<section class="slide w2-practice" data-slide="C5-16">
       <header class="s-head">
         <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
         <span class="s-line"></span><div class="s-team">2주차<br>5교시</div>
@@ -188,8 +500,7 @@
       </div>
     </section>
 
-    <!-- ============ 5-8 (C5-8) ============ -->
-    <section class="slide w2-practice" data-slide="C5-8">
+<section class="slide w2-practice" data-slide="C5-17">
       <header class="s-head">
         <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
         <span class="s-line"></span><div class="s-team">2주차<br>5교시</div>
@@ -204,8 +515,7 @@
       </div>
     </section>
 
-    <!-- ============ 5-9 (C5-9) ============ -->
-    <section class="slide" data-slide="C5-9">
+<section class="slide" data-slide="C5-18">
       <header class="s-head">
         <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
         <span class="s-line"></span><div class="s-team">2주차<br>5교시</div>
@@ -217,8 +527,7 @@
       </div>
     </section>
 
-    <!-- ============ 5-10 (C5-10) ============ -->
-    <section class="slide" data-slide="C5-10">
+<section class="slide" data-slide="C5-19">
       <header class="s-head">
         <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
         <span class="s-line"></span><div class="s-team">2주차<br>5교시</div>
