@@ -154,6 +154,32 @@
       max-width:none; max-height:none; margin:0; min-height:0; }
     .tg-foot{ flex:0 0 auto; margin:16px 0 0; }
 
+    /* ── 표준 이미지 슬롯 5종 (좌표 고정, 2026-07-31 신설) ──
+       캔버스 1280×720. 안전영역 x∈[64,1216]·y∈[118,666]을 벗어나지 않는다.
+       각 슬롯은 position:absolute로 고정 좌표를 쓰며, 짝이 되는
+       .has-img-* 클래스를 슬라이드에 함께 걸어 본문(.s-full) 인셋을 맞춘다. */
+    .img-slot-r, .img-slot-l, .img-slot-b, .img-slot-c,
+    .img-slot-b2-left, .img-slot-b2-right{
+      position:absolute; margin:0; border:1px dashed var(--line);
+      display:flex; align-items:center; justify-content:center;
+      border-radius:var(--r-lg); background:var(--surface);
+      overflow:hidden;
+    }
+    .img-slot-r{ right:64px; top:150px; width:404px; height:460px; }
+    .img-slot-l{ left:64px; top:150px; width:404px; height:460px; }
+    .img-slot-b{ left:64px; right:64px; top:392px; height:268px; }
+    .img-slot-c{ left:190px; right:190px; top:196px; height:424px; }
+    .img-slot-b2-left{ left:64px; top:392px; width:560px; height:268px; }
+    .img-slot-b2-right{ right:64px; top:392px; width:560px; height:268px; }
+    .img-slot-r img, .img-slot-l img, .img-slot-b img, .img-slot-c img,
+    .img-slot-b2-left img, .img-slot-b2-right img{
+      width:100%; height:100%; object-fit:contain; object-position:center;
+    }
+    .has-img-r .s-full{ right:500px; }
+    .has-img-l .s-full{ left:500px; }
+    .has-img-b .s-full{ bottom:360px; }
+    .has-img-b2 .s-full{ bottom:360px; }
+
     /* ── w2-typecard · 유형 색분류 카드 + 원칙 배너 (S3PRV 계열, C1-8) ──
        2026-07-27 2차 수정(코디네이터 D1): 108px 고정폭 썸네일이 카드 내용과
        충돌해 스크린샷이 슬라이스처럼 잘렸다. 근본 수정:
@@ -1590,7 +1616,7 @@
     </section>
 
     <!-- ============ 2 · 도입 (구조 필수 · 초안 관통 문장 + 6-10 부제 재배치) ============ -->
-    <section class="slide s02-slide" data-slide="S02">
+    <section class="slide s02-slide has-img-r" data-slide="S02">
       <div class="s-full" style="top:64px; bottom:64px; display:flex; align-items:center; gap:48px;">
         <div style="flex:1.15; display:flex; flex-direction:column; justify-content:center;">
           <h2 class="s-title" style="font-size:58px; line-height:1.35; margin:0;">AI가 작성하고<br>사람이 검토하고<br><span class="hl-mint-text">사람이 결정합니다</span></h2>
@@ -1601,13 +1627,15 @@
             <p class="s-body" style="margin:0;">무엇을 넣고 무엇을 뺄지는 사람이 정합니다.</p>
           </div>
         </div>
-        <div style="flex:0.85; align-self:stretch; border:1px dashed var(--line); border-radius:16px; display:flex; align-items:center; justify-content:center; color:var(--ink-3, var(--sub)); font-size:22px;">[[IMG-01]]</div>
       </div>
+      <figure class="asset-slot asset-slot--support img-slot-r" data-image-purpose="explanatory"
+        data-image-state="expected" data-expected-src="자료/images/s02_ai-writes-human-decides-paper-cut-v1-transparent.png"
+        role="img" aria-label="AI가 초안을 빠르게 오려내듯 만들고, 사람이 그중 필요한 부분만 골라 최종 결정하는 관계"></figure>
     </section>
 
     <!-- ============ 3 · 아젠다 (고정 제목 "오늘 배우게 될 것" · PART 구조표 원문) ============ -->
 
-<section class="slide w2-week" data-slide="S02B">
+<section class="slide w2-week has-img-r" data-slide="S02B">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
     <span class="s-line"></span><div class="s-team">2주차<br>개요</div>
@@ -1663,9 +1691,11 @@
         <span class="wk-chip">작업 기준 파일</span>
       </div>
     </div>
-    <div style="flex:1; align-self:stretch; min-height:260px; border:1px dashed var(--line); border-radius:16px; display:flex; align-items:center; justify-content:center; color:var(--ink-3, var(--sub)); font-size:22px;">[[IMG-02]]</div>
     </div>
   </div>
+  <figure class="asset-slot asset-slot--support img-slot-r" data-image-purpose="explanatory"
+    data-image-state="expected" data-expected-src="자료/images/s02b_week-flow-1to3-to-4to6-transparent.png"
+    role="img" aria-label="1~3교시의 결정이 문서로 쌓여 4~6교시가 그 문서를 기준 삼아 진행되는 관계"></figure>
 </section>
     <section class="slide s03-slide" data-slide="S03">
       <header class="s-head">
@@ -1723,7 +1753,7 @@
     </section>
 
     <!-- ============ C1-1 · 지난주에서 이번 주로 ============ -->
-    <section class="slide compare-slide" data-slide="C1-1">
+    <section class="slide compare-slide has-img-b" data-slide="C1-1">
       <header class="s-head">
         <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
         <span class="s-line"></span><div class="s-team">2주차<br>1교시</div>
@@ -1742,6 +1772,12 @@
           </div>
         </div>
       </div>
+      <figure class="asset-slot asset-slot--support img-slot-b2-left" data-image-purpose="explanatory"
+        data-image-state="expected" data-expected-src="자료/images/s07_last-week-loop-paper-cut-v1-transparent.png"
+        role="img" aria-label="지난주의 요청→확인→수정 반복 루프를 보여주는 그림"></figure>
+      <figure class="asset-slot asset-slot--support img-slot-b2-right" data-image-purpose="explanatory"
+        data-image-state="expected" data-expected-src="자료/images/s07_this-week-decide-paper-cut-v1-transparent.png"
+        role="img" aria-label="이번 주에는 기획·디자인 결정이 맨 앞에 추가되는 흐름을 보여주는 그림"></figure>
     </section>
 
     <!-- ============ N1 · 기획 전체 흐름 ============ -->
@@ -1778,16 +1814,10 @@
       </header>
       <div class="s-full">
         <h2 class="s-title">누구의 어떤 불편인가 — 타깃·페인포인트</h2>
-        <div class="tg-defs">
-          <div class="tg-def"><span class="tg-k">타깃</span><p>내가 도우려는 사람이 대략 어떤 부류인지</p></div>
-          <div class="tg-def"><span class="tg-k">페인포인트</span><p>그 사람이 겪는 불편 하나 — 신발 속 돌멩이처럼 작고 반복되는 불편이 좋은 출발점</p></div>
-        </div>
-        <div class="tg-main">
-          <figure class="tg-figure asset-slot asset-slot--support" data-asset-kind="paper-cut-v1"
-            data-image-purpose="explanatory" data-image-state="expected"
-            data-expected-src="자료/images/s07_target-painpoint-narrowing-paper-cut-v1-transparent.png"
-            role="img" aria-label="흐릿하게 흩어진 여러 사람 실루엣이 또렷하게 강조된 한 사람과 작은 불편 표식으로 좁혀지는 모습"></figure>
-        </div>
+        <p class="s-lead">타깃 — 내가 도우려는 사람이 대략 어떤 부류인지 · 페인포인트 — 그 사람이 겪는 불편 하나(신발 속 돌멩이처럼 작고 반복되는 불편이 좋은 출발점)</p>
+        <figure class="asset-slot asset-slot--hero img-slot-c" data-image-purpose="explanatory" data-image-state="expected"
+          data-expected-src="자료/images/s08_who-what-pain-paper-cut-v1-transparent.png"
+          role="img" aria-label="흐릿하게 흩어진 여러 사람 실루엣이 또렷하게 강조된 한 사람과 작은 불편 표식으로 좁혀지는 모습"></figure>
       </div>
     </section>
 
@@ -1815,11 +1845,14 @@
     </section>
 
     <!-- ============ C1-3 · 페르소나와 사용자 가설은 다릅니다 ============ -->
-    <section class="slide" data-slide="C1-3">
+    <section class="slide has-img-r" data-slide="C1-3">
       <header class="s-head">
         <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
         <span class="s-line"></span><div class="s-team">2주차<br>1교시</div>
       </header>
+      <figure class="asset-slot asset-slot--support img-slot-r" data-image-purpose="explanatory" data-image-state="expected"
+        data-expected-src="자료/images/s09_persona-vs-hypothesis-paper-cut-v1-transparent.png"
+        role="img" aria-label="타깃 안에 페르소나가, 페르소나 안에 사용자 가설이 좁혀 들어가는 관계를 보여주는 그림"></figure>
       <div class="ct-figure">
         <h2 class="s-title">페르소나와 사용자 가설은 다릅니다</h2>
         <p class="fig-lead">타깃 → 페르소나 → 가설 순으로 좁혀집니다 — <span class="hl-mint-underline">좁힐수록 만들 기능과 화면이 또렷해집니다</span>.</p>
@@ -1838,7 +1871,7 @@
     </section>
 
     <!-- ============ C1-4 · 아이디어는 아직 가설입니다 — AI 공감의 경계 ============ -->
-    <section class="slide" data-slide="C1-4">
+    <section class="slide has-img-r" data-slide="C1-4">
       <header class="s-head">
         <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
         <span class="s-line"></span><div class="s-team">2주차<br>1교시</div>
@@ -1851,9 +1884,8 @@
         <p class="cm-sub">1주차에서 본 것처럼 AI는 내가 옳다는 쪽으로 맞장구치기 쉽습니다 — 전문 분야 경험은 사람이 훨씬 더 잘 압니다.</p>
         <p class="cm-sub">본인이나 주변 사람이 실제로 써 보는지 지켜보면 확인됩니다.</p>
       </div>
-      <figure class="c1-4-figure asset-slot asset-slot--support" data-asset-kind="paper-cut-v1"
-        data-image-purpose="explanatory" data-image-state="expected"
-        data-expected-src="자료/images/s09_idea-as-hypothesis-paper-cut-v1-transparent.png"
+      <figure class="asset-slot asset-slot--support img-slot-r" data-image-purpose="explanatory" data-image-state="expected"
+        data-expected-src="자료/images/s10_ai-empathy-boundary-paper-cut-v1-transparent.png"
         role="img" aria-label="점선 윤곽의 흐릿한 생각 풍선 안에 물음표가 떠 있고, 옆의 작은 확인 체크 표시가 앞으로 확인이 필요함을 보여준다"></figure>
     </section>
 
@@ -1895,7 +1927,7 @@
       </div>
     </section>
 
-    <section class="slide w2-practice" data-slide="C1-5">
+    <section class="slide w2-practice has-img-r" data-slide="C1-5">
       <header class="s-head">
         <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
         <span class="s-line"></span><div class="s-team">2주차<br>1교시</div>
@@ -1910,6 +1942,9 @@
         <div class="pr-done"><span class="pr-tag">완성</span><p>다른 사람이 읽고 대상과 도움을 짐작할 수 있음 — "그냥 편한 도구"가 아니라 <strong>누가·무엇을</strong>이 보여야 합니다.</p></div>
         <div class="pr-done"><p>한 문장으로 하기 어려우시죠? GPT한테 물어보세요. 그냥 대화를 많이 해보세요.</p></div>
       </div>
+      <figure class="asset-slot asset-slot--support img-slot-r" data-image-purpose="explanatory" data-image-state="expected"
+        data-expected-src="자료/images/s11_one-sentence-practice-paper-cut-v1-transparent.png"
+        role="img" aria-label="누가·언제·무엇을 돕는지 세 조각이 한 문장으로 이어지는 모습을 보여주는 그림"></figure>
     </section>
 
     <!-- ============ C1-6 · 한 줄 정의는 제작 나침반 ============ -->
@@ -1960,28 +1995,14 @@
         <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
         <span class="s-line"></span><div class="s-team">2주차<br>1교시</div>
       </header>
-      <div class="s-full fill">
+      <div class="s-full steps-full fill">
         <h2 class="s-title">우리 수업의 주제 선정 조건</h2>
-        <div class="grid-2 c17-grid">
-          <div class="card c17-card">
-            <div class="c17-row"><span class="pill c17-badge">①</span><p class="c17-label">반복되는 불편</p></div>
-            <p class="c17-desc">신발 속 돌멩이처럼 작아도 자주 걸리는 불편이면 좋습니다.</p>
-          </div>
-          <div class="card c17-card">
-            <div class="c17-row"><span class="pill c17-badge">②</span><p class="c17-label">구체적 대상</p></div>
-            <p class="c17-desc">모두가 아니라 한 사람을 구체적으로 그릴 수 있어야 합니다.</p>
-          </div>
-          <div class="card c17-card">
-            <div class="c17-row"><span class="pill c17-badge">③</span><p class="c17-label">한 문장 요약</p></div>
-            <p class="c17-desc">누가·어떤 상황·무엇을 돕는지 한 문장으로 말할 수 있어야 합니다.</p>
-          </div>
-          <div class="card c17-card">
-            <div class="c17-row"><span class="pill c17-badge">④</span><p class="c17-label">기능 1~3개</p></div>
-            <p class="c17-desc">버튼·입력칸이 하나에서 세 개를 넘지 않아야 완주하기 쉽습니다.</p>
-          </div>
-          <div class="card c17-card">
-            <div class="c17-row"><span class="pill c17-badge">⑥</span><p class="c17-label">입력→결과 구조</p></div>
-            <p class="c17-desc">입력하면 결과가 보여야 하고, 없으면 예시 데이터로 채웁니다.</p>
+        <div class="eval-steps">
+          <div class="work-step"><span class="n">1</span><div><b>반복되는 불편</b><span>신발 속 돌멩이처럼 작아도 자주 걸리는 불편이면 좋습니다.</span></div></div>
+          <div class="work-step"><span class="n">2</span><div><b>구체적 대상</b><span>모두가 아니라 한 사람을 구체적으로 그릴 수 있어야 합니다.</span></div></div>
+          <div class="work-step"><span class="n">3</span><div><b>한 문장 요약</b><span>누가·어떤 상황·무엇을 돕는지 한 문장으로 말할 수 있어야 합니다.</span></div></div>
+          <div class="work-step"><span class="n">4</span><div><b>기능 1~3개</b><span>버튼·입력칸이 하나에서 세 개를 넘지 않아야 완주하기 쉽습니다.</span></div></div>
+          <div class="work-step"><span class="n">5</span><div><b>입력→결과 구조</b><span>입력하면 결과가 보여야 하고, 없으면 예시 데이터로 채웁니다.</span></div>
           </div>
         </div>
         <p class="callout c17-foot">다섯 가지를 함께 만족하면 <span class="hl-mint-mark">그날 바로 시작해도 됩니다</span>.</p>
@@ -2144,7 +2165,7 @@
 
     <!-- ============ C2-1 · 결과와 기능은 다릅니다 (2026-07-27: cc-grid+택시 → S3ITR 경고선행+확장flow) ============ -->
     <!-- 소스: 초안 :77 · 개념KB C-핵심결과vs핵심기능:236,238,242,244,245,247. -->
-    <section class="slide w2-itr" data-slide="C2-1">
+    <section class="slide w2-itr has-img-r" data-slide="C2-1">
       <header class="s-head">
         <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
         <span class="s-line"></span><div class="s-team">2주차<br>2교시</div>
@@ -2152,23 +2173,22 @@
       <div class="s-full">
         <h2 class="s-title">기능을 만들어도 결과는 안 생길 수 있습니다</h2>
         <p class="itr-lead">결과 = 사용자가 얻는 변화 · 기능 = 웹이 하는 동작</p>
-        <div class="itr-warn">
-          <div class="itr-warncard"><span class="tag">흔한 실패 ①</span><p>새 기능을 5개 내놓아도 아무도 안 쓰면 결과는 0입니다.</p></div>
-          <div class="itr-warncard"><span class="tag">흔한 실패 ②</span><p>기능은 '만든 것', 결과는 '그것이 일으킨 변화' — 기능이 있어도 결과가 없을 수 있습니다.</p></div>
-        </div>
-        <div class="grid-2">
-          <div class="card surface">
-            <b style="display:block; font-size:26px; color:var(--blue);">기능</b>
-            <p class="s-body" style="margin:6px 0 0;">웹이 하는 동작 하나</p>
-            <p class="s-body c24-note">예: 한 줄 입력 → 버튼 → 저장</p>
+        <p class="s-body">새 기능을 5개 내놓아도 아무도 안 쓰면 결과는 0입니다 — 기능은 '만든 것', 결과는 '그것이 일으킨 변화'이므로 기능이 있어도 결과가 없을 수 있습니다.</p>
+        <div class="cc-grid">
+          <div class="cc-side">
+            <h3>기능</h3>
+            <ul><li>웹이 하는 동작 하나 — 예: 한 줄 입력 → 버튼 → 저장</li></ul>
           </div>
-          <div class="card surface" style="background:var(--mint-soft); border-color:var(--mint-line);">
-            <b style="display:block; font-size:26px; color:var(--mint-deep);">결과</b>
-            <p class="s-body" style="margin:6px 0 0;">그 기능이 사용자에게 일으킨 변화</p>
-            <p class="s-body c24-note"><span class="hl-mint-underline">예: 하루를 확인하고 뿌듯함을 느낌</span></p>
+          <div class="cc-neq" aria-hidden="true">→</div>
+          <div class="cc-side">
+            <h3>결과</h3>
+            <ul><li>그 기능이 사용자에게 일으킨 변화 — <span class="hl-mint-underline">예: 하루를 확인하고 뿌듯함을 느낌</span></li></ul>
           </div>
         </div>
       </div>
+      <figure class="asset-slot asset-slot--support img-slot-r" data-image-purpose="explanatory" data-image-state="expected"
+        data-expected-src="자료/images/s23_result-vs-function-paper-cut-v1-transparent.png"
+        role="img" aria-label="같은 자리에서 만들어진 기능 하나와 그것이 사용자에게 일으킨 변화인 결과가 서로 다른 것임을 대비해 보여주는 그림"></figure>
     </section>
 
     <section class="slide" data-slide="C2-2">
@@ -2198,16 +2218,17 @@
         aria-label="작지만 지붕과 문까지 완성되어 확인 표식이 붙은 작은 집과, 크지만 벽과 지붕이 없는 미완성 뼈대집이 대비되어, MVP는 작아도 실제로 작동하는 완성본임을 보여준다"></figure>
 </section>
 
-    <section class="slide" data-slide="C2-N1">
+    <section class="slide has-img-l" data-slide="C2-N1">
       <header class="s-head">
         <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
         <span class="s-line"></span><div class="s-team">2주차<br>2교시</div>
       </header>
+      <figure class="asset-slot asset-slot--support img-slot-l" data-image-purpose="explanatory" data-image-state="expected"
+        data-expected-src="자료/images/s24_mvp-skateboard-to-car-paper-cut-v1-transparent.png"
+        role="img" aria-label="스케이트보드에서 킥보드·자전거·오토바이를 거쳐 자동차로 이어지는 다섯 단계가 매 단계마다 실제로 탈 수 있는 형태임을 보여주는 그림"></figure>
       <div class="s-full">
         <h2 class="s-title">MVP (Minimum Viable Product)</h2>
         <div style="display:flex; gap:36px; align-items:flex-start; margin-top:18px;">
-          <div class="asset-slot asset-slot--support" data-image-purpose="explanatory" data-image-state="expected"
-               style="flex:0 0 56%; min-height:440px; display:flex; align-items:center; justify-content:center; background:var(--surface); border-radius:12px; color:var(--gray-400); font-size:15px;">[[IMG-10]]</div>
           <div style="flex:1; display:flex; flex-direction:column; gap:20px;">
             <div>
               <b style="display:block; font-size:24px; color:var(--ink);">위</b>
@@ -2295,7 +2316,7 @@
       </div>
     </section>
 
-    <section class="slide w2-scope" data-slide="C2-5">
+    <section class="slide w2-scope has-img-r" data-slide="C2-5">
       <header class="s-head">
         <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
         <span class="s-line"></span><div class="s-team">2주차<br>2교시</div>
@@ -2308,9 +2329,12 @@
           <div class="sc-col is-later"><h3>나중 아이디어</h3><p>다음에 더할 것 — <span class="hl-mint-mark">버리지 않고 적어만 둡니다</span>.</p></div>
         </div>
       </div>
+      <figure class="asset-slot asset-slot--support img-slot-r" data-image-purpose="explanatory" data-image-state="expected"
+        data-expected-src="자료/images/s27_scope-three-slots-paper-cut-v1-transparent.png"
+        role="img" aria-label="이번에 만들 것·안 만들 것·나중 아이디어 세 칸으로 범위가 나뉘는 모습을 보여주는 그림"></figure>
     </section>
 
-    <section class="slide w2-practice" data-slide="C2-6">
+    <section class="slide w2-practice has-img-r" data-slide="C2-6">
       <header class="s-head">
         <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
         <span class="s-line"></span><div class="s-team">2주차<br>2교시</div>
@@ -2324,6 +2348,9 @@
         </div>
         <div class="pr-done"><span class="pr-tag">완성</span><p>제외 목록에 뺀 기능과 이유가 남음</p></div>
       </div>
+      <figure class="asset-slot asset-slot--support img-slot-r" data-image-purpose="explanatory" data-image-state="expected"
+        data-expected-src="자료/images/s28_remove-one-feature-paper-cut-v1-transparent.png"
+        role="img" aria-label="여러 기능 후보 중 하나를 골라 목록에서 지우는 모습을 보여주는 그림"></figure>
     </section>
 
     <section class="slide claim-rationale" data-slide="C2-7">
@@ -2349,7 +2376,7 @@
         <span class="s-line"></span><div class="s-team">2주차<br>2교시</div>
       </header>
       <div class="dc-title">
-        <h2 class="s-title">입력 → 실행 → 결과 → 변화</h2>
+        <h2 class="s-title">입력 → 실행 → 결과(변화까지)</h2>
       </div>
       <div class="dc-stage">
         <div class="viz-flow-ph">
@@ -2357,9 +2384,7 @@
           <div class="fl-arrow" aria-hidden="true">→</div>
           <div class="fl-node"><b>실행</b><span>기록하기 클릭</span></div>
           <div class="fl-arrow" aria-hidden="true">→</div>
-          <div class="fl-node key"><b>결과</b><span>오늘 기록에 한 줄 추가</span></div>
-          <div class="fl-arrow" aria-hidden="true">→</div>
-          <div class="fl-node"><b>변화</b><span>화면에 새 기록이 보임</span></div>
+          <div class="fl-node key"><b>결과</b><span>오늘 기록에 한 줄 추가 → 화면에 새 기록이 보임</span></div>
         </div>
         <p class="s-body" style="margin-top:20px;">입력이 있어야 실행할 수 있고, 실행해야 결과가 생기고, 결과가 눈에 보여야 변화입니다 — 이 순서를 건너뛰면 사용자는 무엇이 됐는지 알 수 없습니다.</p>
       </div>
@@ -2610,7 +2635,7 @@
     </section>
 
     <!-- ============ 3-3 (C3-3) ============ -->
-    <section class="slide" data-slide="C3-3">
+    <section class="slide has-img-r" data-slide="C3-3">
       <header class="s-head">
         <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
         <span class="s-line"></span><div class="s-team">2주차<br>3교시</div>
@@ -2618,7 +2643,7 @@
       <div class="dc-title">
         <h2 class="s-title">각 항목이 왜 AI 결과를 바꾸나</h2>
       </div>
-      <div class="dc-stage">
+      <div class="dc-stage" style="right:500px;">
         <div class="code-diagram" role="img" aria-label="prd.md 항목에서 대상·핵심·제외·완료가 빠졌을 때 각각 생기는 문제 네 가지">
           <div class="cd-root">prd.md 항목</div>
           <div class="cd-arrow">↓</div>
@@ -2632,11 +2657,11 @@
         <p class="s-body">빠진 항목은 AI가 알아서 <span class="hl-mint-underline">추측해 채우고</span>, 그 추측은 <span class="hl-mint-mark">매번 달라집니다</span>.</p>
         <p class="dc-cap">문서는 최소로 시작해 갱신합니다.</p>
       </div>
-  <figure class="c3-3-figure asset-slot asset-slot--support"
+  <figure class="c3-3-figure asset-slot asset-slot--support img-slot-r"
         data-asset-kind="paper-cut-v1"
         data-image-purpose="explanatory"
         data-image-state="expected"
-        data-expected-src="자료/images/s38_prdmd-missing-item-consequence-paper-cut-v1-transparent.png"
+        data-expected-src="자료/images/s38_prd-missing-items-paper-cut-v1-transparent.png"
         role="img"
         aria-label="prd.md 빈 항목 하나가 AI가 만드는 결과를 흔드는 모습을 보여준다"></figure>
 </section>
@@ -2670,7 +2695,7 @@
       </div>
     </section>
 
-    <section class="slide w2-practice" data-slide="C3-5">
+    <section class="slide w2-practice has-img-r" data-slide="C3-5">
       <header class="s-head">
         <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
         <span class="s-line"></span><div class="s-team">2주차<br>3교시</div>
@@ -2685,6 +2710,12 @@
         </div>
         <div class="pr-done"><span class="pr-tag">완성</span><p>5항목이 모두 채워진 prd.md 파일이 프로젝트 폴더 안에 저장되어 있습니다.</p></div>
       </div>
+      <figure class="c3-5-figure asset-slot asset-slot--support img-slot-r"
+        data-image-purpose="explanatory"
+        data-image-state="expected"
+        data-expected-src="자료/images/s40_prd-practice-paper-cut-v1-transparent.png"
+        role="img"
+        aria-label="ChatGPT에서 만든 prd.md 초안을 사람이 읽고 고쳐 Codex로 저장하는 실습 흐름"></figure>
     </section>
 
     <!-- ============ 3-6 (C3-6) ============ -->
@@ -2851,6 +2882,11 @@
     </div>
   </section>
 
+  <!-- 참고: C4-1은 ax-grid 두 칼럼이 이미 본문 전체 폭을 채우고 있어
+       SLOT-C(중앙 476×424) 배치가 기존 다이어그램과 겹친다. 메인 검수 요청. -->
+  <!-- SLOT-C skipped for C4-1: existing dual-diagram layout occupies the full body; adding a center image would overlap. See report. -->
+
+
 <section class="slide w2-gantt" data-slide="C4-2">
     <header class="s-head">
       <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
@@ -3007,28 +3043,14 @@
 
     <p class="ax4-lead">맡기기 전·끝난 뒤만으로는 부족합니다. 이 <span class="hl-mint-text">네 가지</span>가 <span class="hl-mint-underline">함께 작동</span>해야 시스템이 됩니다.</p>
 
-    <div class="ax4-grid">
-      <div class="ax4-card">
-        <b class="ax4-k">권한</b>
-        <span class="ax4-q">어디까지 손대게 할까</span>
-        <p>안전 규칙이 항상 최우선이고, 되돌리기 어려운 행동은 승인 전에 멈춥니다.</p>
-      </div>
-      <div class="ax4-card">
-        <b class="ax4-k">실행 환경</b>
-        <span class="ax4-q">어디서 돌리나</span>
-        <p>실제 폴더 대신 격리된 공간에서 돌리면, 잘못돼도 그 공간만 버리면 됩니다.</p>
-      </div>
-      <div class="ax4-card">
-        <b class="ax4-k">인수인계</b>
-        <span class="ax4-q">다음 대화가 이어받게</span>
-        <p>한 일과 남은 일을 적어 두지 않으면 처음부터 다시 설명해야 합니다.</p>
-      </div>
-      <div class="ax4-card">
-        <b class="ax4-k">실패 기록</b>
-        <span class="ax4-q">같은 실수 반복 막기</span>
-        <p>실패한 이유를 남겨 두면, 다음번엔 같은 자리에서 다시 걸리지 않습니다.</p>
-      </div>
-    </div>
+    <table class="t ax4-table">
+      <tbody>
+        <tr><th><b class="ax4-k">권한</b><span class="ax4-q">어디까지 손대게 할까</span></th><td>안전 규칙이 항상 최우선이고, 되돌리기 어려운 행동은 승인 전에 멈춥니다.</td></tr>
+        <tr><th><b class="ax4-k">실행 환경</b><span class="ax4-q">어디서 돌리나</span></th><td>실제 폴더 대신 격리된 공간에서 돌리면, 잘못돼도 그 공간만 버리면 됩니다.</td></tr>
+        <tr><th><b class="ax4-k">인수인계</b><span class="ax4-q">다음 대화가 이어받게</span></th><td>한 일과 남은 일을 적어 두지 않으면 처음부터 다시 설명해야 합니다.</td></tr>
+        <tr><th><b class="ax4-k">실패 기록</b><span class="ax4-q">같은 실수 반복 막기</span></th><td>실패한 이유를 남겨 두면, 다음번엔 같은 자리에서 다시 걸리지 않습니다.</td></tr>
+      </tbody>
+    </table>
 
     <p class="ax4-foot">네 가지를 갖춰도 <span class="hl-mint-mark">지키는 것은 다른 문제</span>입니다 &mdash; 다음 장에서 그 차이를 봅니다.</p>
         <p class="ax4-note">이 넷도 정해진 목록은 아닙니다 &mdash; 무엇을 묶어 부르는지는 사람마다 다릅니다.</p>
@@ -3044,11 +3066,11 @@
       <div class="fg-text">
         <h2 class="s-title">규칙 파일 vs 기술적 강제</h2>
 
-        <div class="fg-cards">
-          <div class="fg-card"><b>규칙 파일은 &ldquo;부탁&rdquo;입니다</b><span>&ldquo;밖은 건드리지 마&rdquo;라고 적어 둬도, AI가 그 문장을 <span class="hl-mint-text">참고할 뿐</span> 손이 강제로 멈추지는 않습니다</span></div>
-          <div class="fg-card"><b>적어 뒀다고 안심하면 안 됩니다</b><span>다른 지시와 부딪히거나 지시가 애매하면 <span class="hl-mint-underline">그 문장을 건너뛸 수 있습니다</span></span></div>
-          <div class="fg-card"><b>도구가 허술해서가 아닙니다</b><span>정말로 막고 싶으면 규칙 파일이 아니라 승인·권한 같은 <b>다른 층</b>을 쓰라고, 만든 쪽도 그렇게 안내합니다</span></div>
-        </div>
+        <ul class="fg-list">
+          <li><b>규칙 파일은 &ldquo;부탁&rdquo;입니다</b><span>&ldquo;밖은 건드리지 마&rdquo;라고 적어 둬도, AI가 그 문장을 <span class="hl-mint-text">참고할 뿐</span> 손이 강제로 멈추지는 않습니다</span></li>
+          <li><b>적어 뒀다고 안심하면 안 됩니다</b><span>다른 지시와 부딪히거나 지시가 애매하면 <span class="hl-mint-underline">그 문장을 건너뛸 수 있습니다</span></span></li>
+          <li><b>도구가 허술해서가 아닙니다</b><span>정말로 막고 싶으면 규칙 파일이 아니라 승인·권한 같은 <b>다른 층</b>을 쓰라고, 만든 쪽도 그렇게 안내합니다</span></li>
+        </ul>
 
         <p class="fg-strip"><span class="hl-mint-mark">되돌릴 수 있으면 규칙, 없으면 장치</span></p>
       </div>
@@ -3335,35 +3357,11 @@
 
     <p class="st-lead">오늘 본 것을 <b>전부</b> 갖출 필요는 없습니다. 막히는 자리가 생겼을 때 <span class="hl-mint-text">한 칸씩</span> 올립니다.</p>
 
-    <div class="st-track">
-      <div class="st-col">
-        <div class="st-box">
-          <i>0단계</i><b>대화만</b>
-          <span>대화창에서 시키고 결과를 눈으로 본다</span>
-        </div>
-        <div class="st-base"></div>
-      </div>
-      <div class="st-col is-now">
-        <div class="st-box">
-          <i>1단계</i><b>규칙 파일</b>
-          <span>지켜야 할 것과 만들 것을 파일로 적어 둔다</span>
-        </div>
-        <div class="st-base"></div>
-      </div>
-      <div class="st-col is-goal">
-        <div class="st-box">
-          <i>2단계</i><b>확인 절차</b>
-          <span>끝난 뒤 무엇을 보면 되는지 미리 정해 둔다</span>
-        </div>
-        <div class="st-base"></div>
-      </div>
-      <div class="st-col">
-        <div class="st-box">
-          <i>3단계</i><b>운영</b>
-          <span>권한 · 격리 실행 · 기록까지 — 여럿이 오래 쓸 때</span>
-        </div>
-        <div class="st-base"></div>
-      </div>
+    <div class="pr-steps st-flow">
+      <div class="work-step"><span class="n">0</span><b>대화만</b> — 대화창에서 시키고 결과를 눈으로 본다</div>
+      <div class="work-step is-now"><span class="n">1</span><b>규칙 파일</b> — 지켜야 할 것과 만들 것을 파일로 적어 둔다</div>
+      <div class="work-step is-goal"><span class="n">2</span><b>확인 절차</b> — 끝난 뒤 무엇을 보면 되는지 미리 정해 둔다</div>
+      <div class="work-step"><span class="n">3</span><b>운영</b> — 권한 · 격리 실행 · 기록까지 — 여럿이 오래 쓸 때</div>
     </div>
   </div>
 </section>
@@ -3788,8 +3786,8 @@
         <svg width="1080" height="286" viewBox="0 0 1080 286" role="img"
              aria-label="값 하나에 이름을 붙이고, 버튼 배경·강조 글자·선택 항목·입력창 테두리 네 곳이 그 이름을 재사용한다">
           <defs>
-            <marker id="ar" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
-              <path d="M0 0 L10 5 L0 10 z" style="fill:var(--mint-deep)"/></marker>
+            <marker id="ar" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto">
+              <path d="M0 0 L7 3.5 L0 7 z" style="fill:var(--mint-deep)"/></marker>
           </defs>
 
           <text x="98"  y="30" text-anchor="middle" font-size="19" font-weight="800" style="fill:var(--ink)">① 값</text>
@@ -3807,25 +3805,25 @@
           <text x="362" y="168" text-anchor="middle" font-size="22" font-weight="800" style="fill:var(--ink)">강조색</text>
 
           <path d="M464 145 L556 62"  fill="none" style="stroke:var(--mint)" stroke-width="4" marker-end="url(#ar)"/>
-          <path d="M464 145 L556 120" fill="none" style="stroke:var(--mint)" stroke-width="4" marker-end="url(#ar)"/>
-          <path d="M464 145 L556 176" fill="none" style="stroke:var(--mint)" stroke-width="4" marker-end="url(#ar)"/>
-          <path d="M464 145 L556 234" fill="none" style="stroke:var(--mint)" stroke-width="4" marker-end="url(#ar)"/>
+          <path d="M464 145 L556 126" fill="none" style="stroke:var(--mint)" stroke-width="4" marker-end="url(#ar)"/>
+          <path d="M464 145 L556 190" fill="none" style="stroke:var(--mint)" stroke-width="4" marker-end="url(#ar)"/>
+          <path d="M464 145 L556 254" fill="none" style="stroke:var(--mint)" stroke-width="4" marker-end="url(#ar)"/>
 
           <rect x="568" y="38"  width="470" height="48" rx="9" style="fill:var(--white); stroke:var(--gray-400)" stroke-width="2"/>
           <text x="590" y="68"  font-size="21" font-weight="700" style="fill:var(--ink)">버튼 배경</text>
-          <rect x="568" y="96"  width="470" height="48" rx="9" style="fill:var(--white); stroke:var(--gray-400)" stroke-width="2"/>
-          <text x="590" y="126" font-size="21" font-weight="700" style="fill:var(--ink)">강조한 글자</text>
-          <rect x="568" y="154" width="470" height="48" rx="9" style="fill:var(--white); stroke:var(--gray-400)" stroke-width="2"/>
-          <text x="590" y="184" font-size="21" font-weight="700" style="fill:var(--ink)">선택된 항목 표시</text>
-          <rect x="568" y="212" width="470" height="48" rx="9" style="fill:var(--white); stroke:var(--gray-400)" stroke-width="2"/>
-          <text x="590" y="242" font-size="21" font-weight="700" style="fill:var(--ink)">입력창 테두리</text>
+          <rect x="568" y="102" width="470" height="48" rx="9" style="fill:var(--white); stroke:var(--gray-400)" stroke-width="2"/>
+          <text x="590" y="132" font-size="21" font-weight="700" style="fill:var(--ink)">강조한 글자</text>
+          <rect x="568" y="166" width="470" height="48" rx="9" style="fill:var(--white); stroke:var(--gray-400)" stroke-width="2"/>
+          <text x="590" y="196" font-size="21" font-weight="700" style="fill:var(--ink)">선택된 항목 표시</text>
+          <rect x="568" y="230" width="470" height="48" rx="9" style="fill:var(--white); stroke:var(--gray-400)" stroke-width="2"/>
+          <text x="590" y="260" font-size="21" font-weight="700" style="fill:var(--ink)">입력창 테두리</text>
         </svg>
       </div>
 
     </div>
   </section>
 
-<section class="slide case-acts" data-slide="C5-7">
+<section class="slide case-acts has-img-r" data-slide="C5-7">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
     <span class="s-line"></span><div class="s-team">2주차<br>5교시</div>
@@ -3843,6 +3841,10 @@
     </div>
       <p class="ref-right">검색해서 나온다고 <span class="hl-mint-mark">무료가 아닙니다</span> &mdash; 이미지·글꼴은 출처와 사용 조건을 먼저 확인합니다.</p>
   </div>
+  <figure class="c5-7-figure asset-slot asset-slot--support img-slot-r"
+    data-image-purpose="explanatory" data-image-state="expected"
+    data-expected-src="자료/images/s67_reference-observe-paper-cut-v1-transparent.png"
+    role="img" aria-label="다른 서비스 화면을 그대로 베끼지 않고 색·여백·글자·순서를 관찰해 무엇을 참고할지 결정하는 과정"></figure>
 </section>
 
 <section class="slide w2-practice" data-slide="C5-8">
@@ -3862,7 +3864,7 @@
   </div>
 </section>
 
-    <section class="slide w2-annex is-recovery" data-slide="A4R1">
+    <section class="slide w2-annex is-recovery has-img-r" data-slide="A4R1">
       <header class="s-head">
         <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
         <span class="s-line"></span><div class="s-team">2주차<br>5교시</div>
@@ -3875,6 +3877,10 @@
           <div class="work-step"><span class="n">2</span><b>색·간격·구성 <strong>특성만 뽑아</strong> 내 구조에 다시 적용합니다.</b></div>
         </div>
       </div>
+      <figure class="a4r1-figure asset-slot asset-slot--support img-slot-r"
+        data-image-purpose="explanatory" data-image-state="expected"
+        data-expected-src="자료/images/s104_reference-copied-paper-cut-v1-transparent.png"
+        role="img" aria-label="서비스를 통째로 복제한 화면에서 색·간격·구성 특성만 뽑아 내 구조에 다시 적용하는 과정"></figure>
     </section>
 
 
@@ -3952,9 +3958,9 @@
             </ul>
           </div>
         </div>
-        <figure class="c5-13-figure asset-slot asset-slot--support" data-asset-kind="paper-cut-v1"
+        <figure class="c5-13-figure asset-slot asset-slot--hero img-slot-c" data-asset-kind="paper-cut-v1"
           data-image-purpose="explanatory" data-image-state="expected"
-          data-expected-src="자료/images/s69_file-direct-vs-server-address-paper-cut-v1-transparent.png"
+          data-expected-src="자료/images/s73_file-vs-localhost-paper-cut-v1-transparent.png"
           role="img" aria-label="주소창이 file:///로 시작하는 화면과 http://localhost로 시작하는 화면을 나란히 비교해 두 실행 방식의 차이를 보여주는 설명 그림"></figure>
         <p class="compare-foot">파일을 만든 것과 작동하는 것은 다릅니다.</p>
       </div>
@@ -3962,7 +3968,7 @@
 
 
 
-<section class="slide w2-stepwarn" data-slide="C5-15">
+<section class="slide w2-stepwarn has-img-r" data-slide="C5-15">
       <header class="s-head">
         <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
         <span class="s-line"></span><div class="s-team">2주차<br>5교시</div>
@@ -3982,6 +3988,10 @@
           <div class="sw-warncard"><span class="tag">그 결과</span><p>어디서 틀렸는지 알기 어려워 고치는 데 더 오래 걸립니다.</p></div>
         </div>
       </div>
+      <figure class="c5-15-figure asset-slot asset-slot--support img-slot-r"
+        data-image-purpose="explanatory" data-image-state="expected"
+        data-expected-src="자료/images/s75_one-step-at-a-time-paper-cut-v1-transparent.png"
+        role="img" aria-label="이삿짐을 상자 하나씩 옮기듯 화면·핵심 동작·다른 값 확인을 한 단계씩 진행하는 모습"></figure>
     </section>
 
 <section class="slide w2-practice" data-slide="C5-16">
@@ -4062,7 +4072,7 @@
       </div>
     </section>
 
-    <section class="slide w2-practice" data-slide="C6-N2">
+    <section class="slide w2-stepwarn" data-slide="C6-N2">
       <header class="s-head">
         <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
         <span class="s-line"></span><div class="s-team">2주차<br>6교시</div>
@@ -4071,9 +4081,11 @@
         <h2 class="s-title">제작 순서 재현 ② 3~4교시 — 문서로 시작해 첫 작동까지</h2>
         <div class="accent-bar"></div>
         <p class="sg-lead">문서가 먼저, 코드는 그다음입니다 — <span class="hl-mint-mark">순서를 건너뛰지 않았는지</span> 확인합니다.</p>
-        <div class="pr-steps">
+        <div class="sw-steps">
           <div class="work-step"><span class="n">1</span><b>prd.md</b><span class="desc">1~2교시에 정한 것을 문서 한 장으로 옮겼는지 확인합니다.</span></div>
+          <div class="vf-down" aria-hidden="true">↓</div>
           <div class="work-step"><span class="n">2</span><b>세 파일과 첫 작동</b><span class="desc">화면·입력·결과가 뜨는 최소 상태가 지금도 켜지는지 실제로 열어 확인합니다.</span></div>
+          <div class="vf-down" aria-hidden="true">↓</div>
           <div class="work-step"><span class="n">3</span><b>AGENTS.md·Skill</b><span class="desc">AI에게 반복해서 알려줄 규칙을 문서로 남겼는지 확인합니다.</span></div>
         </div>
       </div>

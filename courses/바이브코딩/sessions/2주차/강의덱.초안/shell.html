@@ -154,6 +154,32 @@
       max-width:none; max-height:none; margin:0; min-height:0; }
     .tg-foot{ flex:0 0 auto; margin:16px 0 0; }
 
+    /* ── 표준 이미지 슬롯 5종 (좌표 고정, 2026-07-31 신설) ──
+       캔버스 1280×720. 안전영역 x∈[64,1216]·y∈[118,666]을 벗어나지 않는다.
+       각 슬롯은 position:absolute로 고정 좌표를 쓰며, 짝이 되는
+       .has-img-* 클래스를 슬라이드에 함께 걸어 본문(.s-full) 인셋을 맞춘다. */
+    .img-slot-r, .img-slot-l, .img-slot-b, .img-slot-c,
+    .img-slot-b2-left, .img-slot-b2-right{
+      position:absolute; margin:0; border:1px dashed var(--line);
+      display:flex; align-items:center; justify-content:center;
+      border-radius:var(--r-lg); background:var(--surface);
+      overflow:hidden;
+    }
+    .img-slot-r{ right:64px; top:150px; width:404px; height:460px; }
+    .img-slot-l{ left:64px; top:150px; width:404px; height:460px; }
+    .img-slot-b{ left:64px; right:64px; top:392px; height:268px; }
+    .img-slot-c{ left:190px; right:190px; top:196px; height:424px; }
+    .img-slot-b2-left{ left:64px; top:392px; width:560px; height:268px; }
+    .img-slot-b2-right{ right:64px; top:392px; width:560px; height:268px; }
+    .img-slot-r img, .img-slot-l img, .img-slot-b img, .img-slot-c img,
+    .img-slot-b2-left img, .img-slot-b2-right img{
+      width:100%; height:100%; object-fit:contain; object-position:center;
+    }
+    .has-img-r .s-full{ right:500px; }
+    .has-img-l .s-full{ left:500px; }
+    .has-img-b .s-full{ bottom:360px; }
+    .has-img-b2 .s-full{ bottom:360px; }
+
     /* ── w2-typecard · 유형 색분류 카드 + 원칙 배너 (S3PRV 계열, C1-8) ──
        2026-07-27 2차 수정(코디네이터 D1): 108px 고정폭 썸네일이 카드 내용과
        충돌해 스크린샷이 슬라이스처럼 잘렸다. 근본 수정:
@@ -1590,7 +1616,7 @@
     </section>
 
     <!-- ============ 2 · 도입 (구조 필수 · 초안 관통 문장 + 6-10 부제 재배치) ============ -->
-    <section class="slide s02-slide" data-slide="S02">
+    <section class="slide s02-slide has-img-r" data-slide="S02">
       <div class="s-full" style="top:64px; bottom:64px; display:flex; align-items:center; gap:48px;">
         <div style="flex:1.15; display:flex; flex-direction:column; justify-content:center;">
           <h2 class="s-title" style="font-size:58px; line-height:1.35; margin:0;">AI가 작성하고<br>사람이 검토하고<br><span class="hl-mint-text">사람이 결정합니다</span></h2>
@@ -1601,13 +1627,15 @@
             <p class="s-body" style="margin:0;">무엇을 넣고 무엇을 뺄지는 사람이 정합니다.</p>
           </div>
         </div>
-        <div style="flex:0.85; align-self:stretch; border:1px dashed var(--line); border-radius:16px; display:flex; align-items:center; justify-content:center; color:var(--ink-3, var(--sub)); font-size:22px;">[[IMG-01]]</div>
       </div>
+      <figure class="asset-slot asset-slot--support img-slot-r" data-image-purpose="explanatory"
+        data-image-state="expected" data-expected-src="자료/images/s02_ai-writes-human-decides-paper-cut-v1-transparent.png"
+        role="img" aria-label="AI가 초안을 빠르게 오려내듯 만들고, 사람이 그중 필요한 부분만 골라 최종 결정하는 관계"></figure>
     </section>
 
     <!-- ============ 3 · 아젠다 (고정 제목 "오늘 배우게 될 것" · PART 구조표 원문) ============ -->
 
-<section class="slide w2-week" data-slide="S02B">
+<section class="slide w2-week has-img-r" data-slide="S02B">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
     <span class="s-line"></span><div class="s-team">2주차<br>개요</div>
@@ -1663,9 +1691,11 @@
         <span class="wk-chip">작업 기준 파일</span>
       </div>
     </div>
-    <div style="flex:1; align-self:stretch; min-height:260px; border:1px dashed var(--line); border-radius:16px; display:flex; align-items:center; justify-content:center; color:var(--ink-3, var(--sub)); font-size:22px;">[[IMG-02]]</div>
     </div>
   </div>
+  <figure class="asset-slot asset-slot--support img-slot-r" data-image-purpose="explanatory"
+    data-image-state="expected" data-expected-src="자료/images/s02b_week-flow-1to3-to-4to6-transparent.png"
+    role="img" aria-label="1~3교시의 결정이 문서로 쌓여 4~6교시가 그 문서를 기준 삼아 진행되는 관계"></figure>
 </section>
     <section class="slide s03-slide" data-slide="S03">
       <header class="s-head">

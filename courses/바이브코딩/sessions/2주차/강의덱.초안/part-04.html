@@ -91,6 +91,11 @@
     </div>
   </section>
 
+  <!-- 참고: C4-1은 ax-grid 두 칼럼이 이미 본문 전체 폭을 채우고 있어
+       SLOT-C(중앙 476×424) 배치가 기존 다이어그램과 겹친다. 메인 검수 요청. -->
+  <!-- SLOT-C skipped for C4-1: existing dual-diagram layout occupies the full body; adding a center image would overlap. See report. -->
+
+
 <section class="slide w2-gantt" data-slide="C4-2">
     <header class="s-head">
       <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
@@ -247,28 +252,14 @@
 
     <p class="ax4-lead">맡기기 전·끝난 뒤만으로는 부족합니다. 이 <span class="hl-mint-text">네 가지</span>가 <span class="hl-mint-underline">함께 작동</span>해야 시스템이 됩니다.</p>
 
-    <div class="ax4-grid">
-      <div class="ax4-card">
-        <b class="ax4-k">권한</b>
-        <span class="ax4-q">어디까지 손대게 할까</span>
-        <p>안전 규칙이 항상 최우선이고, 되돌리기 어려운 행동은 승인 전에 멈춥니다.</p>
-      </div>
-      <div class="ax4-card">
-        <b class="ax4-k">실행 환경</b>
-        <span class="ax4-q">어디서 돌리나</span>
-        <p>실제 폴더 대신 격리된 공간에서 돌리면, 잘못돼도 그 공간만 버리면 됩니다.</p>
-      </div>
-      <div class="ax4-card">
-        <b class="ax4-k">인수인계</b>
-        <span class="ax4-q">다음 대화가 이어받게</span>
-        <p>한 일과 남은 일을 적어 두지 않으면 처음부터 다시 설명해야 합니다.</p>
-      </div>
-      <div class="ax4-card">
-        <b class="ax4-k">실패 기록</b>
-        <span class="ax4-q">같은 실수 반복 막기</span>
-        <p>실패한 이유를 남겨 두면, 다음번엔 같은 자리에서 다시 걸리지 않습니다.</p>
-      </div>
-    </div>
+    <table class="t ax4-table">
+      <tbody>
+        <tr><th><b class="ax4-k">권한</b><span class="ax4-q">어디까지 손대게 할까</span></th><td>안전 규칙이 항상 최우선이고, 되돌리기 어려운 행동은 승인 전에 멈춥니다.</td></tr>
+        <tr><th><b class="ax4-k">실행 환경</b><span class="ax4-q">어디서 돌리나</span></th><td>실제 폴더 대신 격리된 공간에서 돌리면, 잘못돼도 그 공간만 버리면 됩니다.</td></tr>
+        <tr><th><b class="ax4-k">인수인계</b><span class="ax4-q">다음 대화가 이어받게</span></th><td>한 일과 남은 일을 적어 두지 않으면 처음부터 다시 설명해야 합니다.</td></tr>
+        <tr><th><b class="ax4-k">실패 기록</b><span class="ax4-q">같은 실수 반복 막기</span></th><td>실패한 이유를 남겨 두면, 다음번엔 같은 자리에서 다시 걸리지 않습니다.</td></tr>
+      </tbody>
+    </table>
 
     <p class="ax4-foot">네 가지를 갖춰도 <span class="hl-mint-mark">지키는 것은 다른 문제</span>입니다 &mdash; 다음 장에서 그 차이를 봅니다.</p>
         <p class="ax4-note">이 넷도 정해진 목록은 아닙니다 &mdash; 무엇을 묶어 부르는지는 사람마다 다릅니다.</p>
@@ -284,11 +275,11 @@
       <div class="fg-text">
         <h2 class="s-title">규칙 파일 vs 기술적 강제</h2>
 
-        <div class="fg-cards">
-          <div class="fg-card"><b>규칙 파일은 &ldquo;부탁&rdquo;입니다</b><span>&ldquo;밖은 건드리지 마&rdquo;라고 적어 둬도, AI가 그 문장을 <span class="hl-mint-text">참고할 뿐</span> 손이 강제로 멈추지는 않습니다</span></div>
-          <div class="fg-card"><b>적어 뒀다고 안심하면 안 됩니다</b><span>다른 지시와 부딪히거나 지시가 애매하면 <span class="hl-mint-underline">그 문장을 건너뛸 수 있습니다</span></span></div>
-          <div class="fg-card"><b>도구가 허술해서가 아닙니다</b><span>정말로 막고 싶으면 규칙 파일이 아니라 승인·권한 같은 <b>다른 층</b>을 쓰라고, 만든 쪽도 그렇게 안내합니다</span></div>
-        </div>
+        <ul class="fg-list">
+          <li><b>규칙 파일은 &ldquo;부탁&rdquo;입니다</b><span>&ldquo;밖은 건드리지 마&rdquo;라고 적어 둬도, AI가 그 문장을 <span class="hl-mint-text">참고할 뿐</span> 손이 강제로 멈추지는 않습니다</span></li>
+          <li><b>적어 뒀다고 안심하면 안 됩니다</b><span>다른 지시와 부딪히거나 지시가 애매하면 <span class="hl-mint-underline">그 문장을 건너뛸 수 있습니다</span></span></li>
+          <li><b>도구가 허술해서가 아닙니다</b><span>정말로 막고 싶으면 규칙 파일이 아니라 승인·권한 같은 <b>다른 층</b>을 쓰라고, 만든 쪽도 그렇게 안내합니다</span></li>
+        </ul>
 
         <p class="fg-strip"><span class="hl-mint-mark">되돌릴 수 있으면 규칙, 없으면 장치</span></p>
       </div>
@@ -575,35 +566,11 @@
 
     <p class="st-lead">오늘 본 것을 <b>전부</b> 갖출 필요는 없습니다. 막히는 자리가 생겼을 때 <span class="hl-mint-text">한 칸씩</span> 올립니다.</p>
 
-    <div class="st-track">
-      <div class="st-col">
-        <div class="st-box">
-          <i>0단계</i><b>대화만</b>
-          <span>대화창에서 시키고 결과를 눈으로 본다</span>
-        </div>
-        <div class="st-base"></div>
-      </div>
-      <div class="st-col is-now">
-        <div class="st-box">
-          <i>1단계</i><b>규칙 파일</b>
-          <span>지켜야 할 것과 만들 것을 파일로 적어 둔다</span>
-        </div>
-        <div class="st-base"></div>
-      </div>
-      <div class="st-col is-goal">
-        <div class="st-box">
-          <i>2단계</i><b>확인 절차</b>
-          <span>끝난 뒤 무엇을 보면 되는지 미리 정해 둔다</span>
-        </div>
-        <div class="st-base"></div>
-      </div>
-      <div class="st-col">
-        <div class="st-box">
-          <i>3단계</i><b>운영</b>
-          <span>권한 · 격리 실행 · 기록까지 — 여럿이 오래 쓸 때</span>
-        </div>
-        <div class="st-base"></div>
-      </div>
+    <div class="pr-steps st-flow">
+      <div class="work-step"><span class="n">0</span><b>대화만</b> — 대화창에서 시키고 결과를 눈으로 본다</div>
+      <div class="work-step is-now"><span class="n">1</span><b>규칙 파일</b> — 지켜야 할 것과 만들 것을 파일로 적어 둔다</div>
+      <div class="work-step is-goal"><span class="n">2</span><b>확인 절차</b> — 끝난 뒤 무엇을 보면 되는지 미리 정해 둔다</div>
+      <div class="work-step"><span class="n">3</span><b>운영</b> — 권한 · 격리 실행 · 기록까지 — 여럿이 오래 쓸 때</div>
     </div>
   </div>
 </section>
