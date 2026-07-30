@@ -292,5 +292,192 @@ class DraftQualityGateW1BaselineTests(unittest.TestCase):
         self.assertIn("PASS", _levels(self.results, "R-QD-07"))
 
 
+def _write_tmp_html(html):
+    import tempfile
+    with tempfile.NamedTemporaryFile("w", suffix=".html", encoding="utf-8", delete=False) as f:
+        f.write(html)
+        return f.name
+
+
+def _wrap_slides(*slides_html):
+    """idx=0은 항상 표지로 분류되므로, 표지 슬라이드 하나를 앞에 두고 그 뒤에 대상 슬라이드를 잇는다."""
+    cover = '<section class="slide cover" data-slide="COVER"><div class="s-full"><p>표지</p></div></section>'
+    body = "\n".join(slides_html)
+    return f"<html><body>{cover}\n{body}</body></html>"
+
+
+class NewMetricRQC15Tests(unittest.TestCase):
+    """R-QC-15 하단 결론 콜아웃 보유율(임계 0.12)."""
+
+    def test_positive_last_child_is_conclusion_callout(self):
+        html = _wrap_slides(
+            '<section class="slide" data-slide="X1"><div class="s-full">'
+            '<p>본문 설명 문장입니다.</p>'
+            '<p class="callout">그래서 결론은 이렇습니다.</p>'
+            '</div></section>'
+        )
+        path = _write_tmp_html(html)
+        try:
+            results, _adv, _meta, _records = vdq.run_checks(path)
+            self.assertIn("WARN", _levels(results, "R-QC-15"))
+        finally:
+            Path(path).unlink(missing_ok=True)
+
+    def test_negative_last_child_is_plain_content(self):
+        html = _wrap_slides(
+            '<section class="slide" data-slide="X1"><div class="s-full">'
+            '<p>본문 설명 문장입니다.</p>'
+            '<p>추가 설명 문장입니다.</p>'
+            '</div></section>'
+        )
+        path = _write_tmp_html(html)
+        try:
+            results, _adv, _meta, _records = vdq.run_checks(path)
+            self.assertIn("PASS", _levels(results, "R-QC-15"))
+        finally:
+            Path(path).unlink(missing_ok=True)
+
+
+class NewMetricRQC16Tests(unittest.TestCase):
+    """R-QC-16 박스 기반 슬라이드 비율(임계 0.10, 박스 컨테이너 4개 이상)."""
+
+    def test_positive_four_or_more_box_containers(self):
+        html = _wrap_slides(
+            '<section class="slide" data-slide="X1"><div class="s-full">'
+            '<div class="a-card">1</div><div class="b-box">2</div>'
+            '<div class="c-node">3</div><div class="d-col">4</div>'
+            '<p>본문 설명 문장입니다.</p>'
+            '</div></section>'
+        )
+        path = _write_tmp_html(html)
+        try:
+            results, _adv, _meta, _records = vdq.run_checks(path)
+            self.assertIn("WARN", _levels(results, "R-QC-16"))
+        finally:
+            Path(path).unlink(missing_ok=True)
+
+    def test_negative_two_or_fewer_box_containers(self):
+        html = _wrap_slides(
+            '<section class="slide" data-slide="X1"><div class="s-full">'
+            '<div class="a-card">1</div><div class="b-box">2</div>'
+            '<p>본문 설명 문장입니다.</p>'
+            '</div></section>'
+        )
+        path = _write_tmp_html(html)
+        try:
+            results, _adv, _meta, _records = vdq.run_checks(path)
+            self.assertIn("PASS", _levels(results, "R-QC-16"))
+        finally:
+            Path(path).unlink(missing_ok=True)
+
+
+class NewMetricRQC17Tests(unittest.TestCase):
+    """R-QC-17 실습 완결성 미달률(임계 0, 단계 요소 2개 미만)."""
+
+    def test_positive_practice_slide_with_one_work_step(self):
+        html = _wrap_slides(
+            '<section class="slide practice" data-slide="X1"><div class="s-full">'
+            '<div class="work-step">1단계</div>'
+            '<p>본문 설명 문장입니다.</p>'
+            '</div></section>'
+        )
+        path = _write_tmp_html(html)
+        try:
+            results, _adv, _meta, _records = vdq.run_checks(path)
+            self.assertIn("WARN", _levels(results, "R-QC-17"))
+        finally:
+            Path(path).unlink(missing_ok=True)
+
+    def test_negative_practice_slide_with_two_work_steps(self):
+        html = _wrap_slides(
+            '<section class="slide practice" data-slide="X1"><div class="s-full">'
+            '<div class="work-step">1단계</div>'
+            '<div class="work-step">2단계</div>'
+            '<p>본문 설명 문장입니다.</p>'
+            '</div></section>'
+        )
+        path = _write_tmp_html(html)
+        try:
+            results, _adv, _meta, _records = vdq.run_checks(path)
+            self.assertIn("PASS", _levels(results, "R-QC-17"))
+        finally:
+            Path(path).unlink(missing_ok=True)
+
+    def test_skip_case_zero_practice_slides_has_audit_trail(self):
+        html = _wrap_slides(
+            '<section class="slide" data-slide="X1"><div class="s-full">'
+            '<p>본문 설명 문장입니다.</p>'
+            '</div></section>'
+        )
+        path = _write_tmp_html(html)
+        try:
+            results, advisories, meta, _records = vdq.run_checks(path)
+            self.assertEqual(_levels(results, "R-QC-17"), [], "실습 슬라이드 0장이면 results에 판정이 없어야 한다")
+            self.assertIn("R-QC-17", [rid for rid, _msg in advisories])
+            self.assertTrue(
+                any("R-QC-17" in line for line in meta.get("audit_lines", [])),
+                "실습 슬라이드 0장 감사추적이 meta['audit_lines']에 없음",
+            )
+        finally:
+            Path(path).unlink(missing_ok=True)
+
+
+class NewMetricRMETA01Tests(unittest.TestCase):
+    """R-META-01 메타 표기 잔존(임계 0건)."""
+
+    def test_positive_title_has_meta_marker(self):
+        html = _wrap_slides(
+            '<section class="slide" data-slide="X1"><div class="s-full">'
+            '<p class="s-title">개념 설명(최소 소개)</p>'
+            '<p>본문 설명 문장입니다.</p>'
+            '</div></section>'
+        )
+        path = _write_tmp_html(html)
+        try:
+            results, _adv, _meta, _records = vdq.run_checks(path)
+            self.assertIn("WARN", _levels(results, "R-META-01"))
+        finally:
+            Path(path).unlink(missing_ok=True)
+
+    def test_negative_title_has_no_meta_marker(self):
+        html = _wrap_slides(
+            '<section class="slide" data-slide="X1"><div class="s-full">'
+            '<p class="s-title">개념 설명</p>'
+            '<p>본문 설명 문장입니다.</p>'
+            '</div></section>'
+        )
+        path = _write_tmp_html(html)
+        try:
+            results, _adv, _meta, _records = vdq.run_checks(path)
+            self.assertIn("PASS", _levels(results, "R-META-01"))
+        finally:
+            Path(path).unlink(missing_ok=True)
+
+
+class NewMetricRQC08ThresholdTests(unittest.TestCase):
+    """R-QC-08 임계가 0.55인지 상수를 직접 확인."""
+
+    def test_threshold_is_0_55(self):
+        self.assertEqual(vdq.THRESH_QC08_VISUAL_RATIO, 0.55)
+
+
+class RQC12AdvisoryOnlyTests(unittest.TestCase):
+    """R-QC-12는 자동 판정 목록(results)에 없고 사람검토(advisories)로만 나와야 한다."""
+
+    def test_r_qc_12_absent_from_results_present_in_advisories(self):
+        html = _wrap_slides(
+            '<section class="slide" data-slide="X1"><div class="s-full">'
+            '<p>본문 설명 문장입니다.</p>'
+            '</div></section>'
+        )
+        path = _write_tmp_html(html)
+        try:
+            results, advisories, _meta, _records = vdq.run_checks(path)
+            self.assertEqual(_levels(results, "R-QC-12"), [])
+            self.assertIn("R-QC-12", [rid for rid, _msg in advisories])
+        finally:
+            Path(path).unlink(missing_ok=True)
+
+
 if __name__ == "__main__":
     unittest.main()

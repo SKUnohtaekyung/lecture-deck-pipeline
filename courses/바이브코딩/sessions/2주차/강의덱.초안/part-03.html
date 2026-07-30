@@ -61,6 +61,38 @@
 </section>
 
     <!-- ============ 3-2 (C3-2) ============ -->
+    <section class="slide w2-owner" data-slide="C1-13">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span><div class="s-team">2주차<br>3교시</div>
+  </header>
+  <div class="s-full">
+    <h2 class="s-title">어떤 문서가 무엇을 책임지나</h2>
+    <p class="ow-lead">prd.md · design.md · AGENTS.md는 각각 <strong>다른 질문에 답합니다</strong> — 책임이 겹치면 나중에 어디를 고칠지 헷갈립니다.</p>
+    <div class="ow-grid">
+      <div class="ow-col">
+        <span class="ow-file">prd.md</span>
+        <span class="ow-arrow" aria-hidden="true">&#8595;</span>
+        <p class="ow-q">무엇을 만드나</p>
+        <p class="ow-d">만들 것의 범위</p>
+      </div>
+      <div class="ow-col">
+        <span class="ow-file">design.md</span>
+        <span class="ow-arrow" aria-hidden="true">&#8595;</span>
+        <p class="ow-q">어떻게 보이나</p>
+        <p class="ow-d">화면의 생김새 기준</p>
+      </div>
+      <div class="ow-col">
+        <span class="ow-file">AGENTS.md</span>
+        <span class="ow-arrow" aria-hidden="true">&#8595;</span>
+        <p class="ow-q">어떻게 일하나</p>
+        <p class="ow-d">일하는 방식의 약속</p>
+      </div>
+    </div>
+    <p class="callout">한 파일에 다 담으면 <span class="hl-mint-mark">나중에 찾지 못합니다</span> — 책임을 나눠 담습니다.</p>
+  </div>
+</section>
+
     <section class="slide compare-slide" data-slide="C3-2">
       <header class="s-head">
         <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
@@ -122,42 +154,27 @@
     <!-- ============ 3-4 (C3-4) ============ -->
     <!-- ============ C3-4 · AGENTS.md는 무엇·왜 (2026-07-27: 독립카드2개 → S3HUM 라벨연결자) ============ -->
     <!-- 소스: 초안 :104 · 개념KB C-AGENTS문서:801,802,805,806,810 · C-Skill:783,786,788. 벽 아이콘 제거. -->
-    <section class="slide w2-handoff" data-slide="C3-4">
+    
+
+    <!-- ============ 3-5 (C3-5) ============ -->
+    <section class="slide w2-annex" data-slide="A3F2">
       <header class="s-head">
         <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
         <span class="s-line"></span><div class="s-team">2주차<br>3교시</div>
       </header>
       <div class="s-full">
-        <h2 class="s-title">AGENTS.md는 무엇·왜 (최소 소개)</h2>
-        <p class="hf-lead">Codex가 작업 시작 전 자동으로 읽는 규칙 파일입니다.</p>
-        <div class="hf-body">
-          <div class="hf-panel is-left">
-            <h3>AGENTS.md</h3>
-            <ul>
-              <li><b>언제 읽히나</b> 작업 시작마다 항상 자동으로</li>
-              <li><b>무엇을 담나</b> 프로젝트에서 계속 지킬 공통 규칙</li>
-              <li><b>없으면</b> <span class="hl-mint-underline">매번 같은 이탈을 반복합니다</span></li>
-            </ul>
-          </div>
-          <div class="hf-connector" aria-hidden="true">
-            <span class="hf-lab">호출 조건</span>
-            <span class="hf-arrow">⇄</span>
-            <span class="hf-sub">항상 자동<br>↔ 필요할 때만</span>
-          </div>
-          <div class="hf-panel is-right">
-            <h3>Skill</h3>
-            <ul>
-              <li><b>언제 호출되나</b> 요청이 맞을 때만 골라서</li>
-              <li><b>무엇을 담나</b> 특정 절차 하나를 담은 지침·자료 묶음</li>
-              <li><b>없으면</b> 매번 같은 절차를 처음부터 다시 설명해야 합니다</li>
-            </ul>
-          </div>
-        </div>
-        <p class="callout">AI의 기억이 아니라, 사람이 적어 둔 만큼만 지키는 고정된 규칙입니다. 하위 폴더에 규칙 파일을 또 두면 위쪽 규칙을 덮어쓰는 것이 아니라 <strong class="hl-mint-mark">누적</strong>됩니다 &mdash; 덮어쓰기로 이해하면 오개념입니다.</p>
+        <h2 class="s-title">ChatGPT와 Codex 역할표</h2>
+        <div class="accent-bar"></div>
+        <table class="t" style="font-size:17px;">
+          <tbody>
+            <tr><th><strong>ChatGPT</strong></th><td>기획·질문·비판(무엇을·왜)</td></tr>
+            <tr><th><strong>Codex</strong></th><td>구현·저장(어떻게)</td></tr>
+          </tbody>
+        </table>
+        <p class="callout">한 앱 안의 모드 구분이지, 새 도구를 늘리는 게 아닙니다.</p>
       </div>
     </section>
 
-    <!-- ============ 3-5 (C3-5) ============ -->
     <section class="slide w2-practice" data-slide="C3-5">
       <header class="s-head">
         <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
@@ -180,6 +197,43 @@
     </section>
 
     <!-- ============ 3-6 (C3-6) ============ -->
+    <section class="slide" data-slide="C5-11">
+      <header class="s-head">
+        <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+        <span class="s-line"></span><div class="s-team">2주차<br>3교시</div>
+      </header>
+      <div class="ct-figure">
+        <h2 class="s-title">한 파일에서 여러 파일로 (왜·심화)</h2>
+        <p class="fig-lead">코드가 커지면 역할별로 나눠야 고칠 때 <span class="hl-mint-underline">그 파일만 엽니다</span>.</p>
+        <div class="fig-stage">
+          <div class="viz-tree" role="img" aria-label="위계 트리: 프로젝트 폴더 아래 index.html, style.css, script.js, assets, 문서 다섯 파일로 분기">
+            <div class="vt-root">프로젝트 폴더</div>
+            <svg class="vt-wire" viewBox="0 0 748 48" width="748" height="48" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path class="vt-line" d="M374,0 V16"/>
+              <path class="vt-line" d="M70,16 H678"/>
+              <path class="vt-line" d="M70,16 V48"/>
+              <path class="vt-line" d="M222,16 V48"/>
+              <path class="vt-line" d="M374,16 V48"/>
+              <path class="vt-line" d="M526,16 V48"/>
+              <path class="vt-line" d="M678,16 V48"/>
+            </svg>
+            <div class="vt-leaves" style="gap:12px;">
+              <div class="vt-leaf" style="min-width:140px;padding:12px 10px;"><b>index.html</b><span>뼈대</span></div>
+              <div class="vt-leaf" style="min-width:140px;padding:12px 10px;"><b>style.css</b><span>모양</span></div>
+              <div class="vt-leaf" style="min-width:140px;padding:12px 10px;"><b>script.js</b><span>동작</span></div>
+              <div class="vt-leaf" style="min-width:140px;padding:12px 10px;"><b>assets</b><span>자료</span></div>
+              <div class="vt-leaf" style="min-width:140px;padding:12px 10px;"><b>문서</b></div>
+            </div>
+          </div>
+          <div class="fig-note">
+            <div class="card surface">
+              <p class="s-body">코드가 커지면 역할별로 나눠야 고칠 때 그 파일만 엽니다.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section class="slide" data-slide="C3-6">
       <header class="s-head">
         <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>

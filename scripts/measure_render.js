@@ -266,16 +266,26 @@
     var results = [];
     for (var i = 0; i < targets.length; i++) {
       var s = targets[i];
-      var restore = null;
+      var restoreClass = false;
+      var restoreInline = null;
       if (opts.all && getComputedStyle(s).display === 'none') {
         // 순회 모드: 숨은 장을 잠시 보이게 해서 실측한다(원상복구 보장).
-        restore = s.style.display;
-        s.style.display = 'block';
+        // .slide{display:none!important}는 인라인 style.display로 못 이긴다(우선순위 패배 —
+        // 값을 바꿔 넣어도 그대로 none이라 조용히 빈 판정이 된다). is-active 클래스로
+        // 켠다(.slide.is-active{display:block!important}). 클래스가 이미 없을 때만 붙였다 뗀다.
+        if (!s.classList.contains('is-active')) {
+          s.classList.add('is-active');
+          restoreClass = true;
+        } else {
+          restoreInline = s.style.getPropertyValue('display');
+          s.style.setProperty('display', 'block', 'important');
+        }
       }
       try {
         results.push(measureSlide(s));
       } finally {
-        if (restore !== null) s.style.display = restore;
+        if (restoreClass) s.classList.remove('is-active');
+        if (restoreInline !== null) s.style.setProperty('display', restoreInline);
       }
     }
 
