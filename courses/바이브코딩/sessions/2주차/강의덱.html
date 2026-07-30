@@ -1268,6 +1268,158 @@
 .slide[data-slide="C6-5"] > .c65-figure{ position:absolute; inset:auto; right:56px; top:210px;
   width:320px; height:300px; max-width:320px; max-height:300px; margin:0; }
 .slide[data-slide="C6-5"] > .c65-figure > img{ width:100%; height:100%; object-fit:contain; }
+
+/* ══════ 2026-07-30 Phase3 파트별 보강 CSS (part-01·03) ══════ */
+/* ── css_p1b.css ── */
+/* ══════════════════════════════════════════════════════════════════
+   2주차 Part 1(1교시) 보강 — css_p1b.css
+   대상: C1-1·C1-3·C1-4·C1-5·C1-6·C1-7·C1-10·C1-11 (내용 보강)
+        C1-2·C1-8·C1-9 (민트 강조만 — 기존 텍스트를 span으로 감싸 추가)
+   전부 .slide[data-slide="C1-N"] 로 범위를 잠갔다. 범용 클래스(.card·
+   .callout·.center-msg·.work-step·.ca-act 등)의 전역 정의는 건드리지
+   않는다. 색은 토큰만 사용. 본문 22px 하한 준수.
+   병합 대상: shell.html <style id="kit-additions"> (파일 소유자가 병합)
+   ══════════════════════════════════════════════════════════════════ */
+
+/* ── C1-1: 지난주에서 이번 주로 — 보강 한 줄 ─────────────────────── */
+.slide[data-slide="C1-1"] .c1-1-note{
+  margin:8px 0 0; font-size:22px; line-height:1.5; color:var(--gray-700);
+}
+
+/* ── C1-4: 아이디어는 아직 가설입니다 — 이미지 슬롯 ──────────────────
+   center-msg 기본 max-width:900이면 우측 300px 슬롯(right:56)과 겹친다
+   (900+64=964 vs 슬롯 좌변 1280-56-300=924). 760으로 좁혀 안전 여백을
+   둔다(824 vs 924 = 100px 여유). 슬롯은 .slide 직계 자식(섹션 내
+   center-msg 밖)에 둬 .s-full 계열 컨테이닝 블록 문제를 피한다. */
+.slide[data-slide="C1-4"] .center-msg{ max-width:760px; }
+.slide[data-slide="C1-4"] .c1-4-figure{
+  position:absolute; inset:auto; right:56px; top:170px;
+  width:300px; height:340px; max-width:300px; max-height:340px;
+}
+
+/* ── C1-5·C1-11 실습: 완료 기준 아래 "막히면" 힌트 박스 ───────────────
+   pr-done(파랑)과 구분되는 코랄 톤으로 "여기서 자주 막힌다"는 경고
+   성격을 나타낸다. R-COLOR-04: 코랄 소프트 배경 + 코랄 라인 보더로
+   흰-on-흰을 피한다. */
+.slide[data-slide="C1-5"] .pr-hint,
+.slide[data-slide="C1-11"] .pr-hint{
+  flex:0 0 auto; display:flex; align-items:flex-start; gap:14px; margin:10px 0 0;
+  padding:12px 20px; border-radius:var(--r-md);
+  background:var(--coral-soft); border:1px solid var(--coral-line);
+}
+.slide[data-slide="C1-5"] .pr-hint .pr-tag--hint,
+.slide[data-slide="C1-11"] .pr-hint .pr-tag--hint{
+  flex:0 0 auto; font-size:22px; font-weight:800; color:var(--coral-deep);
+}
+.slide[data-slide="C1-5"] .pr-hint p,
+.slide[data-slide="C1-11"] .pr-hint p{
+  margin:0; font-size:22px; line-height:1.4; color:var(--ink);
+}
+
+/* ── C1-6: 한 줄 정의는 제작 나침반 — 좋은예/나쁜예에 실제 문장 추가 ── */
+.slide[data-slide="C1-6"] .sl-case .sl-ex{ margin-top:8px; font-weight:800; color:var(--ink); }
+.slide[data-slide="C1-6"] .sl-case .sl-why{ margin-top:4px; }
+
+/* ── C1-7: 주제는 이렇게 고릅니다 — 8칸(라벨만) → 6칸(라벨+설명) ──────
+   grid-2(2열×3행)를 유지해 카드 폭을 넉넉히(약 569px) 확보한다 —
+   grid-3로 바꾸면 카드 폭이 좁아져(약 373px) 설명 문장이 3~4줄로
+   길게 줄바꿈된다(실측 이전 사전 계산). 기존 인라인 배지 스타일을
+   클래스로 정리하고, 라벨 아래 설명 한 줄을 새로 붙인다. */
+.slide[data-slide="C1-7"] .c17-grid{ gap:12px; }
+.slide[data-slide="C1-7"] .c17-card{
+  display:flex; flex-direction:column; gap:6px; padding:12px 18px;
+}
+.slide[data-slide="C1-7"] .c17-row{ display:flex; align-items:center; gap:12px; }
+.slide[data-slide="C1-7"] .c17-badge{
+  width:34px; height:34px; border-radius:999px; background:var(--blue);
+  border-color:var(--blue); color:var(--white); display:inline-flex;
+  align-items:center; justify-content:center; font-size:17px; padding:0; flex:0 0 auto;
+}
+.slide[data-slide="C1-7"] .c17-label{
+  margin:0; font-size:22px; font-weight:800; color:var(--ink); line-height:1.25;
+}
+.slide[data-slide="C1-7"] .c17-desc{
+  margin:0; font-size:22px; line-height:1.32; color:var(--gray-700);
+}
+.slide[data-slide="C1-7"] .c17-foot{ margin-top:10px; }
+
+/* ── C1-10: 안전하게 작게 시작하기 — 각 단(허용/축소/제외) 근거+예시 ──
+   이미지 슬롯(300×340, right:56)을 위해 본문 우측 경계를 380으로
+   좁힌다(2026-07-30 C2-10 420px 선례와 같은 계산: 텍스트 우변
+   1280-380=900, 슬롯 좌변 1280-56-300=924, 여백 24px). */
+.slide[data-slide="C1-10"] .s-full{ right:380px; }
+.slide[data-slide="C1-10"] .ca-act .ca-why{
+  margin:4px 0 0; font-size:22px; line-height:1.32; color:var(--gray-700);
+}
+.slide[data-slide="C1-10"] .c1-10-figure{
+  position:absolute; inset:auto; right:56px; top:170px;
+  width:300px; height:340px; max-width:300px; max-height:340px;
+}
+
+/* ── css_p3b.css ── */
+/* ═══════════════════════════════════════════════════════════════════
+   2026-07-30 Part 3(3교시) 보강 CSS — C3-1~C3-6
+   병합 대상: shell.html <style id="kit-additions"> (본 파일 소유자가 병합)
+   전부 .slide[data-slide="C3-N"] 로 범위를 잠갔다. 색은 토큰만 사용.
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* ── C3-1: Markdown은 메모에 구조를 붙입니다 — "왜 구조가 필요한지" 보강 문장.
+   .dc-stage > .dc-cap + .s-body는 patterns.css가 이미 margin-top:16px·
+   text-align:center를 준다(공용 규칙, 재선언 불필요). 여기서는 22px 하한과,
+   기존 이미지 슬롯(c3-1-figure, x=958~1258·y=275~615)과 겹치지 않도록
+   폭만 좁힌다 — dc-stage는 align-items:center라 각 자식을 독립적으로
+   가운데 정렬하므로, 폭을 460px로 좁히면(viz-code 실측 폭 ~410px보다 살짝
+   넓은 정도) 우측 끝이 x≈870으로 슬롯 좌변(958)보다 88px 왼쪽에서 끝난다
+   — 안전 여백을 넉넉히 둔 보수적 값이다(손계산 · 브라우저 도구 장애로
+   로컬 렌더 재확인은 못 했다). */
+.slide[data-slide="C3-1"] .s-body{ font-size:22px; line-height:1.5; max-width:460px; }
+
+/* ── C3-2: PRD와 prd.md 핵심 구분 — 오른쪽 박스 보강 + 이미지 슬롯(우측 도킹).
+   C2-10(css_part02.css)과 같은 레시피: cc-full 우측을 420으로 좁히고
+   cc-grid 가운데 "≠" 칸을 84→56으로 줄여 좌우 카드 폭을 확보한다.
+   cc-side li는 shell 전역 규칙(22px, kit-additions "강의장 가독성" 블록)을
+   그대로 쓴다 — 이 슬라이드용 별도 폰트 규칙은 불필요. */
+.slide[data-slide="C3-2"] .s-full.cc-full{ right: 420px; }
+.slide[data-slide="C3-2"] .cc-grid{ grid-template-columns: 1fr 56px 1fr; gap:16px; }
+.slide[data-slide="C3-2"] .asset-slot--support.c3-2-figure{
+  position: absolute; inset: auto; right: 56px; top: 160px;
+  width: 300px; height: 340px; max-width: 300px; max-height: 340px;
+}
+
+/* ── C3-3: 각 항목이 왜 AI 결과를 바꾸나 — 네 항목을 묶는 공통 원인 한 줄.
+   code-diagram 뒤에 새 문단을 넣는다(이 슬라이드엔 dc-cap이 없어 공용
+   `.dc-cap + .s-body` 규칙이 걸리지 않는다 — 그래서 margin-top·text-align을
+   직접 지정). 이 슬라이드는 이미지 슬롯이 없어 dc-stage 전체 폭(1152px)에서
+   폭 제한 없이 중앙정렬한다. */
+.slide[data-slide="C3-3"] .code-diagram + .s-body{
+  margin-top: 16px; text-align: center; font-size: 22px; line-height: 1.5;
+}
+
+/* ── C3-5: 실습 ⑤ prd.md 만들기 — 완료 확인 + 자주 막히는 지점 한 줄씩 추가.
+   pr-done(완성 배지) 아래 새 블록 하나로 묶어 flex:0 0 auto 고정폭만
+   차지하게 해서 pr-steps(flex:1 1 auto)가 남는 공간을 그대로 쓰게 둔다. */
+.slide[data-slide="C3-5"] .pr-extra{
+  flex: 0 0 auto; display: flex; flex-direction: column; gap: 6px; margin: 12px 0 0;
+}
+.slide[data-slide="C3-5"] .pr-extra p{ margin: 0; font-size: 22px; line-height: 1.4; color: var(--ink); }
+.slide[data-slide="C3-5"] .pr-extra b{ color: var(--blue); font-weight: 800; margin-right: 6px; }
+.slide[data-slide="C3-5"] .pr-block b{ color: var(--coral-deep); }
+
+/* ── C3-6: 실습 ⑥ 세 파일 만들고 첫 화면 변화 — fig-note 세 번째 줄(자주 막히는
+   지점) 추가. 기존 두 문단이 킷 기본 .s-body(19px)라 22px 하한 미달이었으므로
+   보강하는 김에 이 슬라이드에서만 22px로 함께 끌어올린다(Part 6 css_part06.css의
+   "보강하는 김에 같이 고친다" 관례와 동일). */
+.slide[data-slide="C3-6"] .fig-note .s-body{ font-size: 22px; line-height: 1.4; }
+
+/* ══ 2026-07-30 Phase4 Part4 보완 ══ */
+/* C4-5: 4요소가 확정 목록처럼 읽히지 않게 하는 완화 문장 (C4-4의 회색 한 줄과 같은 급) */
+.slide[data-slide="C4-5"] .ax4-note{ margin:6px 0 0; font-size:22px; font-weight:650;
+  line-height:1.4; color:var(--gray-700); }
+/* C4-10: 앞 장(서브에이전트)과 이 장(멀티에이전트)의 구분 문장 */
+.slide[data-slide="C4-10"] .mt-sep{ margin:0 0 10px; padding:9px 16px; border-radius:var(--r-md);
+  background:var(--surface); border:1px solid var(--gray-400);
+  font-size:22px; font-weight:650; line-height:1.4; color:var(--ink); }
+.slide[data-slide="C4-10"] .mt-lead{ margin-bottom:14px; }
 </style>
 </head>
 <body>
@@ -1437,7 +1589,7 @@
         <span class="s-line"></span><div class="s-team">2주차<br>1교시</div>
       </header>
       <div class="s-full">
-        <h2 class="s-title">오늘 이렇게 배웁니다</h2>
+        <h2 class="s-title">1교시 이렇게 배웁니다</h2>
         <p class="rm-lead">오늘의 흐름</p>
         <div class="rm-track">
           <div class="rm-step"><span class="rm-n">1</span><b>불편 발견</b></div>
@@ -1475,6 +1627,7 @@
           </div>
         </div>
         <p class="compare-foot">새로 배우는 게 아니라, 맨 앞에 결정 한 칸이 늘어납니다.</p>
+        <p class="c1-1-note">그 결정이 오늘 배울 타깃·페인포인트·한 줄 정의입니다.</p>
       </div>
     </section>
 
@@ -1512,7 +1665,7 @@
             data-expected-src="자료/images/s07_target-painpoint-narrowing-paper-cut-v1-transparent.png"
             role="img" aria-label="흐릿하게 흩어진 여러 사람 실루엣이 또렷하게 강조된 한 사람과 작은 불편 표식으로 좁혀지는 모습"></figure>
         </div>
-        <p class="callout tg-foot">타깃을 좁힐수록 페인포인트도, 만들 것도 또렷해집니다.</p>
+        <p class="callout tg-foot">타깃을 좁힐수록 페인포인트도, <span class="hl-mint-mark">만들 것도 또렷해집니다</span>.</p>
       </div>
     </section>
 
@@ -1524,7 +1677,7 @@
       </header>
       <div class="ct-figure">
         <h2 class="s-title">페르소나와 사용자 가설은 다릅니다</h2>
-        <p class="fig-lead">타깃 → 페르소나 → 가설 순으로 좁혀집니다.</p>
+        <p class="fig-lead">타깃 → 페르소나 → 가설 순으로 좁혀집니다 — <span class="hl-mint-underline">좁힐수록 만들 기능과 화면이 또렷해집니다</span>.</p>
         <div class="fig-stage">
           <div class="viz-concentric" role="img" aria-label="타깃을 페르소나가, 페르소나를 사용자 가설이 안에서 좁혀 감싸는 동심 포함도">
             <div class="vc-ring vc-o"><span class="vc-lab">타깃</span></div>
@@ -1532,8 +1685,8 @@
             <div class="vc-ring vc-i"><span class="vc-lab">사용자 가설</span></div>
           </div>
           <div class="fig-note">
-            <div class="card" style="margin-bottom:14px;"><h3 style="margin:0 0 6px; font-size:22px; font-weight:800; color:var(--ink);">페르소나</h3><p class="s-body" style="margin:0;">그 집단을 대표하는 구체적 인물 한 명</p></div>
-            <div class="card"><h3 style="margin:0 0 6px; font-size:22px; font-weight:800; color:var(--ink);">사용자 가설</h3><p class="s-body" style="margin:0;">그 대상이 무엇을 필요로 할 것이라는 <strong>아직 확인 안 된 주장</strong></p></div>
+            <div class="card" style="margin-bottom:14px;"><h3 style="margin:0 0 6px; font-size:22px; font-weight:800; color:var(--ink);">페르소나</h3><p class="s-body" style="margin:0;">그 집단을 대표하는 구체적 인물 한 명 — 조사 없이 만들었다면 이것도 가설입니다.</p></div>
+            <div class="card"><h3 style="margin:0 0 6px; font-size:22px; font-weight:800; color:var(--ink);">사용자 가설</h3><p class="s-body" style="margin:0;">그 대상이 무엇을 필요로 할 것이라는 <strong>아직 확인 안 된 주장</strong> — 만들어 보며 맞는지 확인합니다.</p></div>
           </div>
         </div>
       </div>
@@ -1550,7 +1703,12 @@
         <h2 class="cm-title">"이 사람이 이 상황에서 이걸 필요로 할 것이다."</h2>
         <p class="cm-sub">만들기 전에는 사실이 아니라 확인할 가정입니다.</p>
         <p class="cm-sub">AI가 만든 페르소나·페인포인트도 <span class="hl-mint-mark">가설</span> — 검증은 사람이 합니다.</p>
+        <p class="cm-sub">본인이나 주변 사람이 실제로 써 보는지 지켜보면 확인됩니다.</p>
       </div>
+      <figure class="c1-4-figure asset-slot asset-slot--support" data-asset-kind="paper-cut-v1"
+        data-image-purpose="explanatory" data-image-state="expected"
+        data-expected-src="자료/images/s09_idea-as-hypothesis-paper-cut-v1-transparent.png"
+        role="img" aria-label="점선 윤곽의 흐릿한 생각 풍선 안에 물음표가 떠 있고, 옆의 작은 확인 체크 표시가 앞으로 확인이 필요함을 보여준다"></figure>
     </section>
 
     <!-- ============ C1-5 · 실습 ① 내 불편을 한 문장으로 ============ -->
@@ -1566,7 +1724,8 @@
           <div class="work-step"><span class="n">1</span><b>내가 반복하거나 자주 잊거나 기록하는 일을 하나 고릅니다.</b></div>
           <div class="work-step"><span class="n">2</span><b><strong>누가 · 언제 · 무엇을 하도록 돕는지</strong> 한 문장으로 적습니다.</b></div>
         </div>
-        <div class="pr-done"><span class="pr-tag">완성</span><p>다른 사람이 읽고 대상과 도움을 짐작할 수 있음</p></div>
+        <div class="pr-done"><span class="pr-tag">완성</span><p>다른 사람이 읽고 대상과 도움을 짐작할 수 있음 — "그냥 편한 도구"가 아니라 <strong>누가·무엇을</strong>이 보여야 합니다.</p></div>
+        <div class="pr-hint"><span class="pr-tag pr-tag--hint">막히면</span><p>불편이 두 개 이상 떠오르면 <span class="hl-mint-underline">가장 자주 겪는 것 하나만</span> 고릅니다.</p></div>
       </div>
     </section>
 
@@ -1581,8 +1740,8 @@
         <div class="sl-line"><span class="sl-slot">[누가]</span>가 <span class="sl-slot">[어떤 상황에서]</span>
           <span class="sl-slot">[무엇을 하도록]</span> 돕는 도구</div>
         <div class="sl-pair">
-          <div class="sl-case is-good"><h3>좋은 예</h3><p>범위를 좁힘</p></div>
-          <div class="sl-case is-bad"><h3>나쁜 예</h3><p>멋진 홍보 문구</p></div>
+          <div class="sl-case is-good"><h3>좋은 예</h3><p>범위를 좁힘</p><p class="sl-ex">"퇴근길 직장인이 오늘 한 일을 한 줄로 남기게 돕는 도구"</p><p class="sl-why"><span class="hl-mint-underline">누가·어떤 상황·무엇을이 다 보입니다</span></p></div>
+          <div class="sl-case is-bad"><h3>나쁜 예</h3><p>멋진 홍보 문구</p><p class="sl-ex">"세상을 기록으로 바꾼다"</p><p class="sl-why">누가·어떤 상황인지 알 수 없습니다</p></div>
         </div>
       </div>
     </section>
@@ -1595,40 +1754,33 @@
       </header>
       <div class="s-full fill">
         <h2 class="s-title">주제는 이렇게 고릅니다</h2>
-        <div class="grid-2">
-          <div class="card" style="display:flex; align-items:center; gap:14px;">
-            <span class="pill" style="width:36px; height:36px; border-radius:999px; background:var(--blue); border-color:var(--blue); color:var(--white); display:inline-flex; align-items:center; justify-content:center; font-size:18px; padding:0; flex:0 0 auto;">①</span>
-            <p style="margin:0; font-size:22px; font-weight:700; color:var(--ink); line-height:1.3;">반복되는 불편</p>
+        <div class="grid-2 c17-grid">
+          <div class="card c17-card">
+            <div class="c17-row"><span class="pill c17-badge">①</span><p class="c17-label">반복되는 불편</p></div>
+            <p class="c17-desc">신발 속 돌멩이처럼 작아도 자주 걸리는 불편이면 좋습니다.</p>
           </div>
-          <div class="card" style="display:flex; align-items:center; gap:14px;">
-            <span class="pill" style="width:36px; height:36px; border-radius:999px; background:var(--blue); border-color:var(--blue); color:var(--white); display:inline-flex; align-items:center; justify-content:center; font-size:18px; padding:0; flex:0 0 auto;">②</span>
-            <p style="margin:0; font-size:22px; font-weight:700; color:var(--ink); line-height:1.3;">구체적 대상</p>
+          <div class="card c17-card">
+            <div class="c17-row"><span class="pill c17-badge">②</span><p class="c17-label">구체적 대상</p></div>
+            <p class="c17-desc">모두가 아니라 한 사람을 구체적으로 그릴 수 있어야 합니다.</p>
           </div>
-          <div class="card" style="display:flex; align-items:center; gap:14px;">
-            <span class="pill" style="width:36px; height:36px; border-radius:999px; background:var(--blue); border-color:var(--blue); color:var(--white); display:inline-flex; align-items:center; justify-content:center; font-size:18px; padding:0; flex:0 0 auto;">③</span>
-            <p style="margin:0; font-size:22px; font-weight:700; color:var(--ink); line-height:1.3;">한 문장 요약</p>
+          <div class="card c17-card">
+            <div class="c17-row"><span class="pill c17-badge">③</span><p class="c17-label">한 문장 요약</p></div>
+            <p class="c17-desc">누가·어떤 상황·무엇을 돕는지 한 문장으로 말할 수 있어야 합니다.</p>
           </div>
-          <div class="card" style="display:flex; align-items:center; gap:14px;">
-            <span class="pill" style="width:36px; height:36px; border-radius:999px; background:var(--blue); border-color:var(--blue); color:var(--white); display:inline-flex; align-items:center; justify-content:center; font-size:18px; padding:0; flex:0 0 auto;">④</span>
-            <p style="margin:0; font-size:22px; font-weight:700; color:var(--ink); line-height:1.3;">기능 1~3개</p>
+          <div class="card c17-card">
+            <div class="c17-row"><span class="pill c17-badge">④</span><p class="c17-label">기능 1~3개</p></div>
+            <p class="c17-desc">버튼·입력칸이 하나에서 세 개를 넘지 않아야 완주하기 쉽습니다.</p>
           </div>
-          <div class="card" style="display:flex; align-items:center; gap:14px;">
-            <span class="pill" style="width:36px; height:36px; border-radius:999px; background:var(--blue); border-color:var(--blue); color:var(--white); display:inline-flex; align-items:center; justify-content:center; font-size:18px; padding:0; flex:0 0 auto;">⑤</span>
-            <p style="margin:0; font-size:22px; font-weight:700; color:var(--ink); line-height:1.3;">수업 안 구현</p>
+          <div class="card c17-card">
+            <div class="c17-row"><span class="pill c17-badge">⑤</span><p class="c17-label">수업 범위 안</p></div>
+            <p class="c17-desc">로그인·외부 API 연결 없이 이번 시간 안에 만들 수 있어야 합니다.</p>
           </div>
-          <div class="card" style="display:flex; align-items:center; gap:14px;">
-            <span class="pill" style="width:36px; height:36px; border-radius:999px; background:var(--blue); border-color:var(--blue); color:var(--white); display:inline-flex; align-items:center; justify-content:center; font-size:18px; padding:0; flex:0 0 auto;">⑥</span>
-            <p style="margin:0; font-size:22px; font-weight:700; color:var(--ink); line-height:1.3;">API·가입 없이</p>
-          </div>
-          <div class="card" style="display:flex; align-items:center; gap:14px;">
-            <span class="pill" style="width:36px; height:36px; border-radius:999px; background:var(--blue); border-color:var(--blue); color:var(--white); display:inline-flex; align-items:center; justify-content:center; font-size:18px; padding:0; flex:0 0 auto;">⑦</span>
-            <p style="margin:0; font-size:22px; font-weight:700; color:var(--ink); line-height:1.3;">예시 데이터로</p>
-          </div>
-          <div class="card" style="display:flex; align-items:center; gap:14px;">
-            <span class="pill" style="width:36px; height:36px; border-radius:999px; background:var(--blue); border-color:var(--blue); color:var(--white); display:inline-flex; align-items:center; justify-content:center; font-size:18px; padding:0; flex:0 0 auto;">⑧</span>
-            <p style="margin:0; font-size:22px; font-weight:700; color:var(--ink); line-height:1.3;">입력과 결과가 있음</p>
+          <div class="card c17-card">
+            <div class="c17-row"><span class="pill c17-badge">⑥</span><p class="c17-label">입력→결과 구조</p></div>
+            <p class="c17-desc">입력하면 결과가 보여야 하고, 없으면 예시 데이터로 채웁니다.</p>
           </div>
         </div>
+        <p class="callout c17-foot">여섯 가지를 함께 만족하면 <span class="hl-mint-mark">그날 바로 시작해도 됩니다</span>.</p>
       </div>
     </section>
 
@@ -1673,7 +1825,7 @@
             </div>
           </div>
         </div>
-        <p class="callout">공통 골격: 입력 1~3개 → 결과 영역 1개 → 외부 의존성 없음</p>
+        <p class="callout">공통 골격: 입력 1~3개 → 결과 영역 1개 → <span class="hl-mint-mark">외부 의존성 없음</span></p>
       </div>
     </section>
 
@@ -1687,7 +1839,7 @@
       </header>
       <div class="s-full">
         <h2 class="s-title">이번 주의 기술 경계</h2>
-        <p class="s-lead"><strong>한 화면 정적 웹</strong> — 자판기(정적) vs 주방(동적)</p>
+        <p class="s-lead"><strong class="hl-mint-text">한 화면 정적 웹</strong> — 자판기(정적) vs 주방(동적)</p>
         <div class="an2-body">
           <div class="an2-col is-can">
             <h3>할 수 있는 것</h3>
@@ -1716,11 +1868,15 @@
         <h2 class="s-title">안전하게 작게 시작하기</h2>
         <div class="accent-bar"></div>
         <div class="ca-stack">
-          <div class="card surface ca-act" style="border-color:var(--mint-line); background:var(--mint-soft);"><span class="pill" style="background:var(--white); border-color:var(--mint-line); color:var(--mint-deep);">허용</span><p class="s-lead">기록·학습·가상 연습</p></div>
-          <div class="card surface ca-act"><span class="pill">축소</span><p class="s-lead">민감한 주제를 정보·습관 도구로</p></div>
-          <div class="card surface ca-act" style="border-color:var(--coral-line); background:var(--coral-soft);"><span class="pill" style="background:var(--white); border-color:var(--coral-line); color:var(--coral-deep);">제외</span><p class="s-lead">의료·법률·금융·채용 <strong>판단</strong></p></div>
+          <div class="card surface ca-act" style="border-color:var(--mint-line); background:var(--mint-soft);"><span class="pill" style="background:var(--white); border-color:var(--mint-line); color:var(--mint-deep);">허용</span><p class="s-lead">기록·학습·가상 연습</p><p class="ca-why">예: 습관 기록 · 용어 학습 · 가상 예산 연습 — <span class="hl-mint-underline">사람에게 판단을 내리지 않아 안전합니다</span></p></div>
+          <div class="card surface ca-act"><span class="pill">축소</span><p class="s-lead">민감한 주제를 정보·습관 도구로</p><p class="ca-why">예: 진단 앱 → 증상 기록장, 투자 추천 → 모의 예산 — 판단만 빼면 같은 분야도 다룰 수 있습니다</p></div>
+          <div class="card surface ca-act" style="border-color:var(--coral-line); background:var(--coral-soft);"><span class="pill" style="background:var(--white); border-color:var(--coral-line); color:var(--coral-deep);">제외</span><p class="s-lead">의료·법률·금융·채용 <strong>판단</strong></p><p class="ca-why">예: 진단·판결 예측·투자 추천·채용 점수 — 틀리면 몸·돈·권리에 실제 피해가 갑니다</p></div>
         </div>
       </div>
+      <figure class="c1-10-figure asset-slot asset-slot--support" data-asset-kind="paper-cut-v1"
+        data-image-purpose="explanatory" data-image-state="expected"
+        data-expected-src="자료/images/s16_scope-gate-allow-reduce-exclude-paper-cut-v1-transparent.png"
+        role="img" aria-label="세 갈래 문이 나란히 있어 낮은 위험은 그대로 통과하고, 중간 위험은 모양을 바꿔 통과하고, 높은 위험은 막히는 모습을 보여준다"></figure>
     </section>
 
     <!-- ============ C1-11 · 실습 ② 한 줄 정의 확정 + 새 폴더 ============ -->
@@ -1736,7 +1892,8 @@
           <div class="work-step"><span class="n">1</span><b>실습 ①의 문장을 다듬어 한 줄 정의를 확정합니다.</b></div>
           <div class="work-step"><span class="n">2</span><b>Codex로 <strong>새 프로젝트 폴더</strong>를 만들고 엽니다(1주차 폴더에 이어 쓰지 않음).</b></div>
         </div>
-        <div class="pr-done"><span class="pr-tag">완성</span><p>정적 웹 범위인 한 줄 정의 + 열린 새 폴더</p></div>
+        <div class="pr-done"><span class="pr-tag">완성</span><p>정적 웹 범위인 한 줄 정의 + 열린 새 폴더 — 로그인·서버 없이 <span class="hl-mint-mark">브라우저에서 바로 여는 화면</span>이어야 합니다.</p></div>
+        <div class="pr-hint"><span class="pr-tag pr-tag--hint">막히면</span><p>한 줄에 <span class="hl-mint-underline">"누구나·모두"</span>가 남아 있다면 아직 좁혀지지 않은 것입니다.</p></div>
       </div>
     </section>
 
@@ -1846,7 +2003,7 @@
       <svg class="dv-hero" viewBox="0 0 1280 720" fill="none" aria-hidden="true"></svg>
       <div class="pd-dots" aria-hidden="true"></div>
       <p class="pd-eyebrow">PART</p>
-      <h2 class="pd-title">작동하는 한 조각으로</h2>
+      <h2 class="pd-title">작동하는 한 조각 만들기</h2>
       <p class="pd-sub">좋은 아이디어를<br>작동하는 한 조각으로 줄입니다.</p>
     </section>
 
@@ -1856,7 +2013,7 @@
         <span class="s-line"></span><div class="s-team">2주차<br>2교시</div>
       </header>
       <div class="s-full">
-        <h2 class="s-title">오늘 이렇게 배웁니다</h2>
+        <h2 class="s-title">2교시 이렇게 배웁니다</h2>
         <p class="rm-lead">오늘의 흐름</p>
         <div class="rm-track">
           <div class="rm-step"><span class="rm-n">1</span><b>결과 정하기</b></div>
@@ -2141,7 +2298,7 @@
       <svg class="dv-hero" viewBox="0 0 1280 720" fill="none" aria-hidden="true"></svg>
       <div class="pd-dots" aria-hidden="true"></div>
       <p class="pd-eyebrow">PART</p>
-      <h2 class="pd-title">대화는 흘러가고</h2>
+      <h2 class="pd-title">결정을 문서로 고정하기</h2>
       <p class="pd-sub"><strong>대화는 흘러가고,<br>문서는 남습니다.</strong></p>
     </section>
 
@@ -2152,7 +2309,7 @@
         <span class="s-line"></span><div class="s-team">2주차<br>3교시</div>
       </header>
       <div class="s-full">
-        <h2 class="s-title">오늘 이렇게 배웁니다</h2>
+        <h2 class="s-title">3교시 이렇게 배웁니다</h2>
         <p class="rm-lead">오늘의 흐름</p>
         <div class="rm-track">
           <div class="rm-step"><span class="rm-n">1</span><b>문서·prd.md</b></div>
@@ -2186,6 +2343,7 @@
           </div>
         </div>
         <p class="dc-cap">일반 텍스트에 약속한 기호가 구조를 보여 줍니다.</p>
+        <p class="s-body">메모장으로도 열리는 순수 텍스트라 사람이 그대로 읽습니다. <span class="hl-mint-underline">기호를 약속해 둔 덕분에</span> AI가 만든 문서도 <span class="hl-mint-mark">사람이 곧장 알아봅니다</span>.</p>
       </div>
   <figure class="c3-1-figure asset-slot asset-slot--support"
         data-asset-kind="paper-cut-v1"
@@ -2209,6 +2367,7 @@
             <h3>PRD</h3>
             <ul>
               <li>무엇을 왜 만들지 적는 기획 문서(조직마다 다름·회사는 30쪽도)</li>
+              <li>제품 매니저가 팀에 방향을 알리는 문서입니다</li>
             </ul>
           </div>
           <div class="cc-neq" aria-hidden="true">≠</div>
@@ -2216,11 +2375,17 @@
             <h3>prd.md</h3>
             <ul>
               <li>우리 최소 5줄 — 대상·핵심·흐름·제외·완료</li>
+              <li>AI는 코드를 만들기 전에 이 문서를 <span class="hl-mint-underline">먼저 읽습니다</span></li>
+              <li>다 만든 뒤에는 <span class="hl-mint-mark">결과를 이 기준과 맞춰 봅니다</span></li>
             </ul>
           </div>
         </div>
         <p class="compare-foot">PRD(개념) ≠ prd.md(구현)</p>
       </div>
+      <figure class="c3-2-figure asset-slot asset-slot--support" data-asset-kind="paper-cut-v1"
+        data-image-purpose="explanatory" data-image-state="expected"
+        data-expected-src="자료/images/s37_prd-concept-vs-prdmd-file-paper-cut-v1-transparent.png"
+        role="img" aria-label="여러 팀이 함께 보는 두꺼운 PRD 문서와 다섯 칸만 채우면 되는 얇은 prd.md 파일이 나란히 대비되어, 개념으로서의 PRD와 이 수업에서 쓰는 prd.md 파일이 다른 것임을 보여준다"></figure>
     </section>
 
     <!-- ============ 3-3 (C3-3) ============ -->
@@ -2243,6 +2408,7 @@
             <div class="cd-leaf"><span class="cd-in">완료 없음</span><span class="cd-to">→</span><b class="cd-out">끝을 모름</b></div>
           </div>
         </div>
+        <p class="s-body">빠진 항목은 AI가 알아서 <span class="hl-mint-underline">추측해 채우고</span>, 그 추측은 <span class="hl-mint-mark">매번 달라집니다</span>.</p>
         <p class="callout">문서는 최소로 시작해 갱신합니다(길게 X).</p>
       </div>
     </section>
@@ -2264,7 +2430,7 @@
             <ul>
               <li><b>언제 읽히나</b> 작업 시작마다 항상 자동으로</li>
               <li><b>무엇을 담나</b> 프로젝트에서 계속 지킬 공통 규칙</li>
-              <li><b>없으면</b> 매번 같은 이탈을 반복합니다</li>
+              <li><b>없으면</b> <span class="hl-mint-underline">매번 같은 이탈을 반복합니다</span></li>
             </ul>
           </div>
           <div class="hf-connector" aria-hidden="true">
@@ -2281,7 +2447,7 @@
             </ul>
           </div>
         </div>
-        <p class="callout">AI의 기억이 아니라, 사람이 적어 둔 만큼만 지키는 고정된 규칙입니다. 하위 폴더에 규칙 파일을 또 두면 위쪽 규칙을 덮어쓰는 것이 아니라 <strong>누적</strong>됩니다 &mdash; 덮어쓰기로 이해하면 오개념입니다.</p>
+        <p class="callout">AI의 기억이 아니라, 사람이 적어 둔 만큼만 지키는 고정된 규칙입니다. 하위 폴더에 규칙 파일을 또 두면 위쪽 규칙을 덮어쓰는 것이 아니라 <strong class="hl-mint-mark">누적</strong>됩니다 &mdash; 덮어쓰기로 이해하면 오개념입니다.</p>
       </div>
     </section>
 
@@ -2300,6 +2466,10 @@
           <div class="work-step"><span class="n">3</span><b>Codex로 프로젝트에 prd.md로 저장합니다.</b></div>
         </div>
         <div class="pr-done"><span class="pr-tag">완성</span><p>다시 읽을 기준 문서 + 내가 바꾼 결정 1개</p></div>
+        <div class="pr-extra">
+          <p class="pr-check"><b>완료 확인</b> 5항목이 모두 채워진 prd.md 파일이 프로젝트 폴더 안에 있습니다.</p>
+          <p class="pr-block"><b>자주 막히는 지점</b> 빈 칸을 하나 <span class="hl-mint-underline">남긴 채</span> 저장합니다 — 다섯 칸을 다 채워야 완성입니다.</p>
+        </div>
       </div>
     </section>
 
@@ -2331,6 +2501,7 @@
           <div class="fig-note">
             <p class="s-body">대표 입력 하나로 <strong>버튼을 누르면 화면이 바뀌는 첫 작동</strong>을 확인합니다.</p>
             <p class="s-body">완성: 브라우저에서 버튼 클릭 시 첫 화면 변화가 보임</p>
+            <p class="s-body"><b>자주 막히는 지점</b> 화면만 보고 버튼은 <span class="hl-mint-underline">안 눌러 봅니다</span>.</p>
           </div>
         </div>
       </div>
@@ -2350,7 +2521,7 @@
     <span class="s-line"></span><div class="s-team">2주차<br>4교시</div>
   </header>
   <div class="s-full">
-    <h2 class="s-title">오늘 이렇게 배웁니다</h2>
+    <h2 class="s-title">4교시 이렇게 배웁니다</h2>
     <p class="rm-lead">오늘의 흐름</p>
     <div class="rm-track">
       <div class="rm-step"><span class="rm-n">1</span><b>워크플로와 에이전트</b></div>
@@ -2617,6 +2788,7 @@
     </div>
 
     <p class="ax4-foot">네 가지를 갖춰도 <span class="hl-mint-mark">지키는 것은 다른 문제</span>입니다 &mdash; 다음 장에서 그 차이를 봅니다.</p>
+        <p class="ax4-note">이 넷도 정해진 목록은 아닙니다 &mdash; 무엇을 묶어 부르는지는 사람마다 다릅니다.</p>
   </div>
 </section>
 
@@ -2809,7 +2981,8 @@
     <div class="s-full">
       <h2 class="s-title">멀티에이전트의 한계</h2>
 
-      <p class="mt-lead">나눠 맡기면 <b>쓰는 양이 같이 늘어납니다.</b> 그런데 쓰는 양을 똑같이 맞추고 비교하면, 하나로 시킨 쪽이 <span class="hl-mint-underline">같거나 더 나았습니다.</span></p>
+      <p class="mt-sep">앞 장은 <span class="hl-mint-text">한 대화 안에서 일부를 떼어 맡기는 것</span>이었고, 이 장은 <span class="hl-mint-text">여러 개를 나란히 돌리는 것</span>입니다 &mdash; 다른 이야기입니다.</p>
+        <p class="mt-lead">나눠 맡기면 <b>쓰는 양이 같이 늘어납니다.</b> 그런데 쓰는 양을 똑같이 맞추고 비교하면, 하나로 시킨 쪽이 <span class="hl-mint-underline">같거나 더 나았습니다.</span></p>
 
       <div class="mt-body">
         <div class="mt-chart">
@@ -2821,7 +2994,7 @@
             </div>
             <div class="cc-axis"><span>그냥 대화</span><span>에이전트<br>하나</span><span>여럿에게<br>나눠 맡기기</span></div>
           </div>
-          <p class="mt-cap">같은 일을 시켰을 때 쓰는 양</p>
+          <p class="mt-cap">같은 일을 시켰을 때 쓰는 양 &mdash; 한 곳에서 잰 값이라 크기보다 방향만 봅니다</p>
         </div>
 
         <div class="mt-notes">
@@ -2888,7 +3061,7 @@
     <span class="s-line"></span><div class="s-team">2주차<br>5교시</div>
   </header>
   <div class="s-full">
-    <h2 class="s-title">오늘 이렇게 배웁니다</h2>
+    <h2 class="s-title">5교시 이렇게 배웁니다</h2>
     <p class="rm-lead">오늘의 흐름</p>
     <div class="rm-track">
       <div class="rm-step"><span class="rm-n">1</span><b>정보 구조</b></div>
@@ -3470,7 +3643,7 @@
   <svg class="dv-hero" viewBox="0 0 1280 720" fill="none" aria-hidden="true"></svg>
   <div class="pd-dots" aria-hidden="true"></div>
   <p class="pd-eyebrow">PART</p>
-  <h2 class="pd-title">작동한다고 완료는 아닙니다</h2>
+  <h2 class="pd-title">직접 점검하고 넘기기</h2>
   <p class="pd-sub"><strong>작동한다고 바로 완료는 아닙니다.<br>직접 확인하고 한 가지를 고칩니다.</strong></p>
 </section>
 
@@ -3480,7 +3653,7 @@
     <span class="s-line"></span><div class="s-team">2주차<br>6교시</div>
   </header>
   <div class="s-full">
-    <h2 class="s-title">오늘 이렇게 배웁니다</h2>
+    <h2 class="s-title">6교시 이렇게 배웁니다</h2>
     <p class="rm-lead">오늘의 흐름</p>
     <div class="rm-track">
       <div class="rm-step"><span class="rm-n">1</span><b>자체 점검</b></div>
@@ -3899,29 +4072,7 @@
       </div>
     </section>
 
-    <!-- ============ A3F1 · 3-F1 (대화와 문서는 역할이 다릅니다 (1주차 콜백)) ============ -->
-    <section class="slide w2-annex compare-slide" data-slide="A3F1">
-      <header class="s-head">
-        <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-        <span class="s-line"></span>
-      </header>
-      <div class="s-full cc-full">
-        <p class="s-eyebrow">예비 · 확장</p>
-        <h2 class="s-title">대화와 문서는 역할이 다릅니다 (1주차 콜백)</h2>
-        <div class="cc-grid">
-          <div class="cc-side ai">
-            <h3>대화</h3>
-            <ul><li>탐색하고 질문하기</li></ul>
-          </div>
-          <div class="cc-neq" aria-hidden="true">↔</div>
-          <div class="cc-side human">
-            <h3>문서</h3>
-            <ul><li>결정을 보존하기</li></ul>
-          </div>
-        </div>
-        <p class="compare-foot">대화는 흘러가고, 결정은 문서로 남깁니다.</p>
-      </div>
-    </section>
+    <!-- A3F1 삭제(2026-07-30): C1-12로 승격됨 — 「대화는 흘러가고 파일은 남는다」 결론 문장이 동일 -->
 
     <!-- ============ A3F2 · 3-F2 (ChatGPT와 Codex 역할표) ============ -->
     <section class="slide w2-annex" data-slide="A3F2">
@@ -3969,22 +4120,7 @@
       </div>
     </section>
 
-    <!-- ============ A3F4 · 3-F4 (문서가 맥락이 된다 · Plan First) ============ -->
-    <section class="slide w2-annex dl-list" data-slide="A3F4">
-      <header class="s-head">
-        <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-        <span class="s-line"></span>
-      </header>
-      <div class="s-full">
-        <p class="s-eyebrow">예비 · 확장</p>
-        <h2 class="s-title">문서가 맥락이 된다 · Plan First</h2>
-        <div class="accent-bar"></div>
-        <div class="dl-rows">
-          <div class="card surface dl-row"><span class="dl-term">폴더 안 문서</span><p class="s-body">AI가 참고하는 맥락(목적·범위·완료)</p></div>
-          <div class="card surface dl-row"><span class="dl-term">Plan First</span><p class="s-body">코드 전에 "무슨 파일을 어떤 순서로" 계획부터 보여 달라 하고 승인합니다.</p></div>
-        </div>
-      </div>
-    </section>
+    <!-- A3F4 삭제(2026-07-30): C1-14로 승격됨 — Plan First 내용을 본편이 흡수 -->
 
     <!-- ============ A4R1 · 4-REC1 (레퍼런스를 그대로 복사했을 때) ============ -->
     <section class="slide w2-annex is-recovery" data-slide="A4R1">
@@ -4286,45 +4422,9 @@
       </div>
     </section>
 
-    <!-- ============ A5F5 · 5-F5 (작동의 기준은 입력 → 실행 → 결과) ============ -->
-    <section class="slide w2-annex" data-slide="A5F5">
-      <header class="s-head">
-        <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-        <span class="s-line"></span>
-      </header>
-      <div class="dc-title">
-        <p class="s-eyebrow">예비 · 확장</p>
-        <h2 class="s-title">작동의 기준은 입력 → 실행 → 결과</h2>
-      </div>
-      <div class="dc-stage">
-        <div class="viz-flow-ph" role="img" aria-label="입력·선택에서 실행을 거쳐 결과가 나타나는 세 단계 흐름">
-          <div class="fl-node">입력·선택</div>
-          <div class="fl-arrow" aria-hidden="true">→</div>
-          <div class="fl-node">실행</div>
-          <div class="fl-arrow" aria-hidden="true">→</div>
-          <div class="fl-node">결과가 나타남</div>
-        </div>
-        <p class="dc-cap">눌렀는데 안 바뀌면 어느 단계에서 멈췄는지 봅니다.</p>
-      </div>
-    </section>
+    <!-- A5F5 삭제(2026-07-30): C2-8과 중복 — 「입력→실행→결과」에 새 정보 없음 -->
 
-    <!-- ============ A5F6 · 5-F6 (리팩터링 전/후 한 장) ============ -->
-    <section class="slide w2-annex compare-slide" data-slide="A5F6">
-      <header class="s-head">
-        <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-        <span class="s-line"></span>
-      </header>
-      <div class="s-full cc-full">
-        <p class="s-eyebrow">예비 · 확장</p>
-        <h2 class="s-title">리팩터링 전/후 한 장</h2>
-        <p class="s-lead">같은 기능, 정리 전 / 정리 후를 나란히 봅니다.</p>
-        <div class="cc-grid">
-          <div class="cc-side ai"><h3>정리 전</h3></div>
-          <div class="cc-neq" aria-hidden="true">→</div>
-          <div class="cc-side human"><h3>정리 후</h3></div>
-        </div>
-      </div>
-    </section>
+    <!-- A5F6 삭제(2026-07-30): C5-19와 중복 — 라벨만 있고 전/후 예시가 비어 있음 -->
 
     <!-- ============ A6R1 · 6-REC1 (수정했더니 다른 게 깨졌어요) ============ -->
     <section class="slide w2-annex is-recovery" data-slide="A6R1">
