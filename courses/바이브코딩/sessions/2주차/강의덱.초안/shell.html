@@ -67,6 +67,25 @@
     .slide .s-full > .viz-code, .slide .s-full > .code-chart,
     .slide .s-full > .code-diagram{ flex-grow:1; }
 
+    /* ── shell 고정 4장(S01·S02·S02B·S03) 개별 보정 ───────────────
+       kit/styles/deck.css는 1주차 덱과 공유하고 1주차는 동결이므로,
+       거기 손대지 않고 슬라이드 스코프로만 덮는다. */
+
+    /* S02 — 빈 이미지 슬롯을 실제 SVG 도식으로 교체(잉크 0.204였다) */
+    .slide[data-slide="S02"] .s02-figure{
+      position:absolute; right:64px; top:150px; width:340px; height:400px;
+      margin:0; display:block; }
+
+    /* S03 — 항목 설명이 19px여서 하한 미달(7건). 6개 항목이 666px 안에
+       들어가도록 줄간·간격을 함께 조인다. */
+    .slide[data-slide="S03"] .an-h{ font-size:24px; line-height:1.25; }
+    .slide[data-slide="S03"] .an-d{ font-size:22px; line-height:1.35; }
+    .slide[data-slide="S03"] .an-item{ gap:14px; }
+    .slide[data-slide="S03"] .an-right{ gap:10px; }
+
+    /* S01 — 표지 리드가 18px. 표지는 배율이 다르지만 본문 하한은 지킨다. */
+    .slide[data-slide="S01"] .cover-lead{ font-size:22px; line-height:1.4; }
+
     /* ── w2-roadmap · 교시 로드맵 가로 트랙 (flow) ───────────────── */
     .w2-roadmap .s-full{ bottom:54px; display:flex; flex-direction:column; }
     .rm-lead{ margin:6px 0 0; font-size:22px; font-weight:800; color:var(--blue); }
@@ -1675,9 +1694,33 @@
           </div>
         </div>
       </div>
-      <figure class="asset-slot asset-slot--support img-slot-r" data-image-purpose="explanatory"
-        data-image-state="expected" data-expected-src="자료/images/s02_ai-writes-human-decides-paper-cut-v1-transparent.png"
-        role="img" aria-label="AI가 초안을 빠르게 오려내듯 만들고, 사람이 그중 필요한 부분만 골라 최종 결정하는 관계"></figure>
+      <figure class="s02-figure" role="img"
+        aria-label="AI가 초안을 여러 개 만들고, 사람이 그중에서 골라내어, 최종 결정 하나로 좁혀지는 흐름">
+        <svg viewBox="0 0 340 400" width="100%" height="100%" aria-hidden="true">
+          <!-- ① AI가 만든 초안 여러 개 -->
+          <g style="fill:var(--blue-soft); stroke:var(--blue-line)" stroke-width="2">
+            <rect x="6"   y="10" width="98" height="52" rx="8"/>
+            <rect x="121" y="10" width="98" height="52" rx="8"/>
+            <rect x="236" y="10" width="98" height="52" rx="8"/>
+            <rect x="63"  y="72" width="98" height="52" rx="8"/>
+            <rect x="178" y="72" width="98" height="52" rx="8"/>
+          </g>
+          <text x="170" y="152" text-anchor="middle" font-size="22" font-weight="800"
+            style="fill:var(--blue)">AI가 만든 초안</text>
+
+          <!-- ② 사람이 고르는 깔때기 -->
+          <path d="M18 176 H322 L214 268 V300 H126 V268 Z"
+            style="fill:var(--mint-soft); stroke:var(--mint-line)" stroke-width="2"/>
+          <text x="170" y="232" text-anchor="middle" font-size="22" font-weight="800"
+            style="fill:var(--on-mint)">사람이 고른다</text>
+
+          <!-- ③ 남는 것은 결정 하나 -->
+          <rect x="93" y="326" width="154" height="60" rx="10"
+            style="fill:var(--mint); stroke:var(--mint-line)" stroke-width="2"/>
+          <text x="170" y="364" text-anchor="middle" font-size="24" font-weight="800"
+            style="fill:var(--on-mint)">결정 하나</text>
+        </svg>
+      </figure>
     </section>
 
     <!-- ============ 3 · 아젠다 (고정 제목 "오늘 배우게 될 것" · PART 구조표 원문) ============ -->
@@ -1692,8 +1735,7 @@
     <h2 class="s-title">여섯 교시가 <span class="hl-mint-text">첫 MVP</span>로 이어집니다</h2>
     <p class="wk-prev">지난주 요청하고 확인하고 고쳤다면, 이번 주는 문제를 정해 첫 MVP를 만듭니다.</p>
 
-    <div style="display:flex; gap:32px; align-items:flex-start;">
-    <div class="wk-track" style="flex:0 0 68%; max-width:68%;">
+    <div class="wk-track">
       <div class="wk-row" role="list" aria-label="1~3교시 흐름">
         <article class="wk-node" role="listitem">
           <div class="wk-head"><span class="wk-n">1</span><h3 class="wk-title">무엇을 만들지<br>정하는 순간</h3></div>
@@ -1738,11 +1780,7 @@
         <span class="wk-chip">작업 기준 파일</span>
       </div>
     </div>
-    </div>
   </div>
-  <figure class="asset-slot asset-slot--support img-slot-r" data-image-purpose="explanatory"
-    data-image-state="expected" data-expected-src="자료/images/s02b_week-flow-1to3-to-4to6-transparent.png"
-    role="img" aria-label="1~3교시의 결정이 문서로 쌓여 4~6교시가 그 문서를 기준 삼아 진행되는 관계"></figure>
 </section>
     <section class="slide s03-slide" data-slide="S03">
       <header class="s-head">
