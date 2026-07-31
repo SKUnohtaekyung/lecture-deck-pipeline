@@ -71,20 +71,50 @@
        kit/styles/deck.css는 1주차 덱과 공유하고 1주차는 동결이므로,
        거기 손대지 않고 슬라이드 스코프로만 덮는다. */
 
-    /* S02 — 빈 이미지 슬롯을 실제 SVG 도식으로 교체(잉크 0.204였다) */
-    .slide[data-slide="S02"] .s02-figure{
-      position:absolute; right:64px; top:150px; width:340px; height:400px;
-      margin:0; display:block; }
+    /* S02 — 본문을 좌측으로 좁혀 우측 이미지 슬롯(340×390@876,150)과 겹치지 않게 한다.
+       이미지를 넣으면서 본문 인셋을 같이 주지 않으면 100% 겹친다(C5-13 사고). */
+    .slide[data-slide="S02"] .s-full{ right:440px; }
+
+    /* S02B — 3p 사용자 지적 반영(2026-07-31)
+       ① "글씨가 너무 꽉꽉 차 있다 · 크기 조금 줄여라"
+       ② "박스 안 제목은 최대 두 줄로 고정"
+       ③ "그 밑에 초록색 아예 없었으면" → .wk-goal 민트 띠 삭제(마크업에서 제거)
+       ④ 6개 박스를 좌측 68%로 몰고 우측에 이미지 공간(수정요청서 3p절) */
+    .slide[data-slide="S02B"] .s-full{ right:440px; }
+    .slide[data-slide="S02B"] .wk-title{
+      font-size:21px; line-height:1.2;
+      display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical;
+      overflow:hidden; }
+    .slide[data-slide="S02B"] .wk-desc{ font-size:18px; font-weight:500; line-height:1.35; }
+    .slide[data-slide="S02B"] .wk-node{ padding:10px 12px; }
+    .slide[data-slide="S02B"] .wk-track{ gap:6px; }
+    .slide[data-slide="S02B"] .wk-row{ gap:8px; }
+    .slide[data-slide="S02B"] .wk-prev{ font-size:20px; }
 
     /* S03 — 항목 설명이 19px여서 하한 미달(7건). 6개 항목이 666px 안에
        들어가도록 줄간·간격을 함께 조인다. */
     .slide[data-slide="S03"] .an-h{ font-size:24px; line-height:1.25; }
     .slide[data-slide="S03"] .an-d{ font-size:22px; line-height:1.35; }
     .slide[data-slide="S03"] .an-item{ gap:14px; }
-    .slide[data-slide="S03"] .an-right{ gap:10px; }
+    .slide[data-slide="S03"] .an-right{ gap:7px; }   /* 6항목 × 22px 설명이 666 안에 들어가는 실측 최댓값 */
 
     /* S01 — 표지 리드가 18px. 표지는 배율이 다르지만 본문 하한은 지킨다. */
     .slide[data-slide="S01"] .cover-lead{ font-size:22px; line-height:1.4; }
+
+    /* ── 폰트 위계 (2026-07-31 사용자 결정) ───────────────────────
+       지적: "제목과 설명 폰트 사이즈가 똑같다. 설명이 더 작아야지."
+             "전체적으로 다 볼드에 글씨 크기 똑같다. 폰트 시스템 쓰자."
+             "bold를 미디움 정도로 낮춰 써도 된다 — 본문이나 설명 글씨는."
+       결정: 박스 제목 26px/800 · 박스 안 설명문 20px/500.
+       .s-body 등 슬라이드 본문 문장은 22px 하한을 그대로 지킨다 —
+       내려간 것은 '박스 안 보조 설명문'뿐이다(R-TYPE-01 개정분). */
+    .slide .work-step > b, .slide .rm-step b, .slide .wk-title,
+    .slide .pr-steps > * > b, .slide .w2r-step > b,
+    .slide .card > h3, .slide .cc-side > h3, .slide .ps-col > h3,
+    .slide .sc-col > h3, .slide .cd-leaf > b{
+      font-size:26px; font-weight:800; line-height:1.25; }
+    .slide .desc, .slide .wk-desc, .slide .rm-desc, .slide .cd-out{
+      font-size:20px; font-weight:500; line-height:1.5; }
 
     /* ── w2-roadmap · 교시 로드맵 가로 트랙 (flow) ───────────────── */
     .w2-roadmap .s-full{ bottom:54px; display:flex; flex-direction:column; }
@@ -1694,33 +1724,11 @@
           </div>
         </div>
       </div>
-      <figure class="s02-figure" role="img"
-        aria-label="AI가 초안을 여러 개 만들고, 사람이 그중에서 골라내어, 최종 결정 하나로 좁혀지는 흐름">
-        <svg viewBox="0 0 340 400" width="100%" height="100%" aria-hidden="true">
-          <!-- ① AI가 만든 초안 여러 개 -->
-          <g style="fill:var(--blue-soft); stroke:var(--blue-line)" stroke-width="2">
-            <rect x="6"   y="10" width="98" height="52" rx="8"/>
-            <rect x="121" y="10" width="98" height="52" rx="8"/>
-            <rect x="236" y="10" width="98" height="52" rx="8"/>
-            <rect x="63"  y="72" width="98" height="52" rx="8"/>
-            <rect x="178" y="72" width="98" height="52" rx="8"/>
-          </g>
-          <text x="170" y="152" text-anchor="middle" font-size="22" font-weight="800"
-            style="fill:var(--blue)">AI가 만든 초안</text>
-
-          <!-- ② 사람이 고르는 깔때기 -->
-          <path d="M18 176 H322 L214 268 V300 H126 V268 Z"
-            style="fill:var(--mint-soft); stroke:var(--mint-line)" stroke-width="2"/>
-          <text x="170" y="232" text-anchor="middle" font-size="22" font-weight="800"
-            style="fill:var(--on-mint)">사람이 고른다</text>
-
-          <!-- ③ 남는 것은 결정 하나 -->
-          <rect x="93" y="326" width="154" height="60" rx="10"
-            style="fill:var(--mint); stroke:var(--mint-line)" stroke-width="2"/>
-          <text x="170" y="364" text-anchor="middle" font-size="24" font-weight="800"
-            style="fill:var(--on-mint)">결정 하나</text>
-        </svg>
-      </figure>
+      <!-- 이미지 슬롯 복원(2026-07-31 사용자 결정: 이미지 제작지시서 19장을 그대로 살린다).
+           직전에 임시로 넣었던 SVG 도식은 제거했다 — IMG 프롬프트 §4-1이 이 자리의 정본이다. -->
+      <figure class="asset-slot asset-slot--support img-slot-r" data-image-purpose="explanatory"
+        data-image-state="expected" data-expected-src="자료/images/s02_ai-writes-human-decides-paper-cut-v1-transparent.png"
+        role="img" aria-label="빠르게 움직이는 펜이 초안을 쓰고, 그 위에 도장이 찍혀 사람이 검토하고 최종 결정을 내리는 관계"></figure>
     </section>
 
     <!-- ============ 3 · 아젠다 (고정 제목 "오늘 배우게 될 것" · PART 구조표 원문) ============ -->
@@ -1738,18 +1746,18 @@
     <div class="wk-track">
       <div class="wk-row" role="list" aria-label="1~3교시 흐름">
         <article class="wk-node" role="listitem">
-          <div class="wk-head"><span class="wk-n">1</span><h3 class="wk-title">무엇을 만들지<br>정하는 순간</h3></div>
-          <p class="wk-desc">불편과 대상 좁히기</p>
+          <div class="wk-head"><span class="wk-n">1</span><h3 class="wk-title">사용자와<br>문제 정의</h3></div>
+          <p class="wk-desc">누구의 어떤 불편인지 좁힌다</p>
         </article>
         <span class="wk-arrow" aria-hidden="true">→</span>
         <article class="wk-node" role="listitem">
-          <div class="wk-head"><span class="wk-n">2</span><h3 class="wk-title">작동하는<br>한 조각으로</h3></div>
-          <p class="wk-desc">그 정의로 첫 작동</p>
+          <div class="wk-head"><span class="wk-n">2</span><h3 class="wk-title">MVP와<br>사용 흐름</h3></div>
+          <p class="wk-desc">핵심 기능 하나와 완료 기준</p>
         </article>
         <span class="wk-arrow" aria-hidden="true">→</span>
         <article class="wk-node" role="listitem">
-          <div class="wk-head"><span class="wk-n">3</span><h3 class="wk-title">대화는<br>흘러가고</h3></div>
-          <p class="wk-desc">그 결정을 문서로</p>
+          <div class="wk-head"><span class="wk-n">3</span><h3 class="wk-title">기획 문서와<br>첫 작동</h3></div>
+          <p class="wk-desc">prd.md와 세 파일로 첫 화면</p>
         </article>
       </div>
 
@@ -1757,30 +1765,27 @@
 
       <div class="wk-row" role="list" aria-label="4~6교시 흐름">
         <article class="wk-node" role="listitem">
-          <div class="wk-head"><span class="wk-n">4</span><h3 class="wk-title">큰 작업을 맡기는<br>시스템</h3></div>
-          <p class="wk-desc">그 문서를 기준 삼기</p>
+          <div class="wk-head"><span class="wk-n">4</span><h3 class="wk-title">AI<br>작업 시스템</h3></div>
+          <p class="wk-desc">규칙 파일·Skill·서브에이전트</p>
         </article>
         <span class="wk-arrow" aria-hidden="true">→</span>
         <article class="wk-node" role="listitem">
-          <div class="wk-head"><span class="wk-n">5</span><h3 class="wk-title">설계한 기준으로<br>화면 만들기</h3></div>
-          <p class="wk-desc">그 기준대로 화면 제작</p>
+          <div class="wk-head"><span class="wk-n">5</span><h3 class="wk-title">화면과<br>핵심 기능</h3></div>
+          <p class="wk-desc">DESIGN.md 기준으로 화면 적용</p>
         </article>
         <span class="wk-arrow" aria-hidden="true">→</span>
         <article class="wk-node is-final" role="listitem">
-          <div class="wk-head"><span class="wk-n">6</span><h3 class="wk-title">작동한다고<br>완료는 아닙니다</h3></div>
-          <p class="wk-desc">점검 후 3주차 인수</p>
+          <div class="wk-head"><span class="wk-n">6</span><h3 class="wk-title">정리하고<br>최종 완성</h3></div>
+          <p class="wk-desc">정한 것을 다시 훑고 끝까지</p>
         </article>
       </div>
     </div>
-
-    <div class="wk-goal">
-      <div class="wk-goal-chips">
-        <span class="wk-chip wk-chip--code">index.html · style.css · script.js</span>
-        <span class="wk-chip">prd.md</span>
-        <span class="wk-chip">작업 기준 파일</span>
-      </div>
-    </div>
   </div>
+  <!-- 우측 이미지 영역 — 수정요청서 3p절: "6개 박스 폭을 줄여 좌측에 몰아넣는다.
+       우측에 이미지 공간을 만든다." 좌측 트랙은 아래 스코프 CSS로 68%로 좁힌다. -->
+  <figure class="asset-slot asset-slot--support img-slot-r" data-image-purpose="explanatory"
+    data-image-state="expected" data-expected-src="자료/images/s03_six-sessions-to-mvp-paper-cut-v1-transparent.png"
+    role="img" aria-label="여섯 교시가 차례로 이어져 하나의 첫 MVP로 수렴하는 흐름"></figure>
 </section>
     <section class="slide s03-slide" data-slide="S03">
       <header class="s-head">
@@ -1799,7 +1804,7 @@
         <div class="an-item"><div class="an-num">3</div><div class="an-body"><div class="an-h">기획 문서와 첫 작동</div><div class="an-d">prd.md와 세 파일로 버튼이 반응하는 첫 화면을 만든다</div></div></div>
         <div class="an-item"><div class="an-num">4</div><div class="an-body"><div class="an-h">AI 작업 시스템</div><div class="an-d">규칙 파일·Skill·서브에이전트로 큰 작업을 맡기는 방식을 정한다</div></div></div>
         <div class="an-item"><div class="an-num">5</div><div class="an-body"><div class="an-h">화면과 핵심 기능</div><div class="an-d">정보 구조·문구·가독성 기준을 DESIGN.md에 담아 화면에 적용한다</div></div></div>
-        <div class="an-item"><div class="an-num">6</div><div class="an-body"><div class="an-h">관찰과 개선</div><div class="an-d">짝 점검으로 가장 중요한 문제 하나를 고치고 3주차로 인수한다</div></div></div>
+        <div class="an-item"><div class="an-num">6</div><div class="an-body"><div class="an-h">정리와 최종 완성</div><div class="an-d">1~4교시에 정한 것을 파트별 한 장으로 정리해 실습 중 참고하고 끝까지 완성한다</div></div></div>
       </div>
     </section>
 
