@@ -70,7 +70,18 @@ python scripts/analyze_agent_usage.py --tool-audit --session <세션ID>  # 리�
 # 내용 품질 게이트(WARN 기본·--strict로 FAIL 승격 — 2주차 저밀도 사고 이후 신설, 회귀 아님)
 python scripts/verify_draft_quality.py <주차>                # .md 초안 단계: 저밀도·노트과다·교시당 장수·필수 산출물
 python scripts/verify_deck_quality.py <덱>.html              # 조립된 덱 단계: 저밀도·근-빈 컨테이너·시각자료 비율·부록 강등
+# 브라우저 렌더 감사(필수 — 종료코드가 못 보는 것을 잡는다)
+#   python -m http.server 후 브라우저에서 scripts/audit_render.js를 fetch+eval 한다.
+#   측정: 잉크 점유율 · 바닥선(666px) 초과 · 슬라이드(720px) 이탈 · 요소 겹침 ·
+#         박스면적÷글자수 · computed font-size · 빈 asset-slot
 ```
+
+- ⚠️ **종료코드가 통과했다고 화면이 멀쩡한 것이 아니다.** 2026-07-31 사고: `verify_deck`·
+  `verify_deck_quality`가 FAIL 0으로 통과한 덱에서 실제로는 단어 중간 줄바꿈 250건,
+  한 문장이 48px 칸에 갇힌 사례 13건, 22px 하한 미만 242건, 슬라이드 밖으로 480px
+  밀려난 요소, 빈 이미지 슬롯 24개가 화면에 있었다. **조립 후에는 반드시 브라우저에서
+  `scripts/audit_render.js`를 돌려 전수 측정한다.** 정적 검사로 승격할 수 있는 것은
+  `R-QC-18`(빈 슬롯)·`R-QC-19`(격자 안 맨 텍스트)로 `verify_deck_quality.py`에 넣었다.
 
 - ⚠️ **`courses/<과목>/sessions/N주차/강의덱.html`은 생성물이다.** 정본은 `강의덱.초안/`의 `shell.html`(head·고정 슬라이드·`<!-- ::PARTS:: -->` 마커·JS) + `part-NN.html`이고, `assemble_deck.py`가 이를 합쳐 덱을 **덮어쓴다**. 덱을 직접 고치면 다음 조립 때 유실되고, 생성물에만 있는 슬라이드는 조립 즉시 사라진다. 수정은 shard에 하고 조립한다(급히 덱을 고쳤다면 같은 내용을 shard에도 반영). 규약 상세는 `sessions/README.md`.
 - 생성물과 shard가 어긋났다면 shard를 하나씩 맞추지 말고, 완성된 `강의덱.html`을 파트 경계로 잘라 shard를 재생성한 뒤 조립 결과를 조립 전 사본과 diff해 검증한다. 조립 전에는 반드시 현재 덱 사본을 떠둔다.

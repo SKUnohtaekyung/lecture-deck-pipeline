@@ -371,6 +371,81 @@ class NewMetricRQC16Tests(unittest.TestCase):
             Path(path).unlink(missing_ok=True)
 
 
+class NewMetricRQC18EmptySlotTests(unittest.TestCase):
+    """R-QC-18 빈 이미지 슬롯(임계 0).
+
+    2026-07-31 사고 회귀 방지: 덱에 <img> 0개인데 .asset-slot 24개가 남아
+    연파랑 점선 빈 상자로 23장에 렌더됐다. 기존 게이트 9종이 전부 통과시켰다.
+    """
+
+    def test_positive_asset_slot_without_media(self):
+        html = _wrap_slides(
+            '<section class="slide" data-slide="X1"><div class="s-full">'
+            '<p>본문 설명 문장입니다.</p></div>'
+            '<figure class="asset-slot asset-slot--support img-slot-r"'
+            ' data-image-state="expected"></figure></section>'
+        )
+        path = _write_tmp_html(html)
+        try:
+            results, _adv, _meta, _records = vdq.run_checks(path)
+            self.assertIn("WARN", _levels(results, "R-QC-18"))
+        finally:
+            Path(path).unlink(missing_ok=True)
+
+    def test_negative_asset_slot_filled_with_svg(self):
+        html = _wrap_slides(
+            '<section class="slide" data-slide="X1"><div class="s-full">'
+            '<p>본문 설명 문장입니다.</p></div>'
+            '<figure class="asset-slot asset-slot--support img-slot-r">'
+            '<svg viewBox="0 0 10 10"><rect width="10" height="10"/></svg>'
+            '</figure></section>'
+        )
+        path = _write_tmp_html(html)
+        try:
+            results, _adv, _meta, _records = vdq.run_checks(path)
+            self.assertIn("PASS", _levels(results, "R-QC-18"))
+        finally:
+            Path(path).unlink(missing_ok=True)
+
+
+class NewMetricRQC19BareTextTests(unittest.TestCase):
+    """R-QC-19 격자 컨테이너 안 맨 텍스트(임계 0).
+
+    2026-07-31 사고 회귀 방지: .work-step은 48px 번호 칸 + 내용 칸의 2열
+    격자다. 클래스 없는 자식은 익명 격자 아이템이 되어 48px 칸에 떨어지고
+    한 문장이 세로로 무너진다(실측 C4-15 bottom y=1200, 슬라이드 밖).
+    CSS로는 익명 아이템을 선택할 수 없어 마크업에서만 막을 수 있다.
+    """
+
+    def test_positive_bare_text_after_bold(self):
+        html = _wrap_slides(
+            '<section class="slide" data-slide="X1"><div class="s-full">'
+            '<div class="work-step"><span class="n">1</span>'
+            '<b>제목입니다</b> — 이 설명이 클래스 없이 맨 텍스트로 남아 있다.</div>'
+            '</div></section>'
+        )
+        path = _write_tmp_html(html)
+        try:
+            results, _adv, _meta, _records = vdq.run_checks(path)
+            self.assertIn("WARN", _levels(results, "R-QC-19"))
+        finally:
+            Path(path).unlink(missing_ok=True)
+
+    def test_negative_description_wrapped_in_span(self):
+        html = _wrap_slides(
+            '<section class="slide" data-slide="X1"><div class="s-full">'
+            '<div class="work-step"><span class="n">1</span>'
+            '<b>제목입니다</b> <span class="desc">이 설명은 제대로 감싸져 있다.</span></div>'
+            '</div></section>'
+        )
+        path = _write_tmp_html(html)
+        try:
+            results, _adv, _meta, _records = vdq.run_checks(path)
+            self.assertIn("PASS", _levels(results, "R-QC-19"))
+        finally:
+            Path(path).unlink(missing_ok=True)
+
+
 class NewMetricRQC17Tests(unittest.TestCase):
     """R-QC-17 실습 완결성 미달률(임계 0, 단계 요소 2개 미만)."""
 

@@ -90,6 +90,12 @@ THRESH_QC16_BOX_BASED_RATIO = 0.10     # 1주차 0.056 · 2주차 0.226.
 # 강등되어 임계값을 쓰지 않는다(아래 THRESH_DERIVATION 참고).
 THRESH_QC17_INCOMPLETE_PRACTICE_RATIO = 0  # 완결성 결함형이라 임계 0. 2주차 0.167(단계 1개짜리 실습 존재).
 THRESH_META01_COUNT = 0  # 명백한 결함형 — 내부 작업 라벨이 학생 화면에 남는 것은 절제의 문제가 아니다.
+# 2026-07-31 사고 대응으로 신설. 둘 다 "비율"이 아니라 "결함형"이라 임계 0이다.
+# 배경: 이 두 결함이 덱에 24건·39건 있었는데 기존 게이트 9종이 전부 PASS/WARN(exit 0)이었다.
+# 화면을 보지 않고 종료코드만 본 것이 사고의 직접 원인이었으므로, 화면을 안 봐도 잡히는
+# 정적 신호로 승격한다.
+THRESH_QC18_EMPTY_SLOT_COUNT = 0   # 빈 이미지 슬롯은 연파랑 점선 상자로 학생 화면에 노출된다.
+THRESH_QC19_BARE_TEXT_COUNT = 0    # 격자 컨테이너의 맨 텍스트는 익명 아이템이 돼 좁은 칸에 갇힌다.
                           # 1주차 0건 · 2주차 3건(2026-07-31 실측).
 THRESH_DERIVATION = """\
 [임계값 도출 근거 — reports/create-slides-quality/deck_quality_metrics.json 기준, 개념설명 슬라이드만]
@@ -623,6 +629,53 @@ def run_checks(deck_path):
     results.append(("R-META-01", level_meta,
                      f"메타 표기 잔존 슬라이드 {len(meta_hits)}장(임계 {THRESH_META01_COUNT}건 초과 시 플래그)"
                      f"{' — ' + detail_meta if meta_hits else ''}"))
+
+    # ── R-QC-18: 빈 이미지 슬롯(생성 안 된 자리가 학생 화면에 노출) ──
+    # 2026-07-31 사고: 덱에 <img> 0개인데 .asset-slot 24개가 남아 있었고, 이것이
+    # 배경 rgb(238,243,254) + 2px dashed 테두리의 빈 상자로 23장에 렌더됐다.
+    # "이미지는 나중에 Codex가 만든다"는 이유로 넘겼지만, 그 사이 상태가 완성본으로
+    # 커밋돼 사용자에게 전달됐다. 미래에 채울 예정이라는 사실은 지금 화면을 구제하지 못한다.
+    empty_slots = []
+    for r in records:
+        el = slide_els[r["idx"]]
+        frag = html_text[el.inner_start:el.inner_end]
+        for m_slot in re.finditer(
+                r'<figure[^>]*class="[^"]*\basset-slot\b[^"]*"[^>]*>(.*?)</figure>', frag, re.S):
+            if not re.search(r"<(?:img|svg|canvas)\b", m_slot.group(1)):
+                empty_slots.append(r["sid"])
+    level18 = "WARN" if len(empty_slots) > THRESH_QC18_EMPTY_SLOT_COUNT else "PASS"
+    uniq18 = sorted(set(empty_slots))
+    results.append(("R-QC-18", level18,
+                     f"빈 이미지 슬롯 {len(empty_slots)}개/{len(uniq18)}장"
+                     f"(임계 {THRESH_QC18_EMPTY_SLOT_COUNT}개 — img/svg/canvas 없는 .asset-slot)"
+                     f"{' — ' + ', '.join(uniq18[:10]) if uniq18 else ''}"))
+
+    # ── R-QC-19: 격자 컨테이너 안의 클래스 없는 맨 텍스트 ──
+    # 2026-07-31 사고: .work-step은 `grid-template-columns: 48px 1fr` 2열 격자인데
+    # 클래스 없는 자식은 익명 격자 아이템이 되어 자동배치로 48px 번호 칸에 떨어진다.
+    # 한 문장이 세로로 무너져 행 높이가 350px까지 늘고 슬라이드 밖으로 밀려났다
+    # (실측 C4-15: bottom y=1200 — 슬라이드 아래끝 720보다 480px 아래).
+    # CSS는 익명 아이템을 선택할 수 없으므로 마크업에서만 막을 수 있다 → 정적 검사로 승격.
+    _GRID_HOSTS = r"work-step|pr-done|rm-step|wk-node"
+    _HOST_RE = re.compile(
+        r'<div class="(?:' + _GRID_HOSTS + r')[^"]*"[^>]*>((?:(?!</div>).)*)</div>', re.S)
+    bare_hits = []
+    for r in records:
+        el = slide_els[r["idx"]]
+        frag = html_text[el.inner_start:el.inner_end]
+        for m_host in _HOST_RE.finditer(frag):
+            inner = m_host.group(1)
+            # 태그 바깥에 남은 텍스트만 본다
+            outside = re.sub(r"<[^>]+>[^<]*</[^>]+>", "", inner)
+            outside = re.sub(r"<[^>]+>", "", outside)
+            if len(outside.strip()) > 3:
+                bare_hits.append(r["sid"])
+    level19 = "WARN" if len(bare_hits) > THRESH_QC19_BARE_TEXT_COUNT else "PASS"
+    uniq19 = sorted(set(bare_hits))
+    results.append(("R-QC-19", level19,
+                     f"격자 컨테이너 안 맨 텍스트 {len(bare_hits)}건/{len(uniq19)}장"
+                     f"(임계 {THRESH_QC19_BARE_TEXT_COUNT}건 — work-step·rm-step·wk-node·pr-done)"
+                     f"{' — ' + ', '.join(uniq19[:10]) if uniq19 else ''}"))
 
     # ── R-QC-12: 용어 최초 등장 정의 누락률 ──
     concept_kb_path = None
