@@ -20,6 +20,37 @@
        색은 토큰만 · 본문 22px 하한 · 바닥선 666px(bottom:54px) 준수.
        ───────────────────────────────────────────────────────────── */
 
+    /* ── 한국어 줄바꿈: 단어 중간에서 끊지 않는다 ──────────────────
+       실측(2026-07-31 전수 감사): keep-all 미적용으로 단어 중간
+       줄바꿈이 C6-N1 37건 · C6-N3 26건 · C6-N4 18건 · C4-N1 16건 ·
+       C5-9 12건 등 대량 발생했다. word-break/overflow-wrap은 상속
+       속성이므로 .slide에 한 번만 걸고, 임의 위치 줄바꿈이 정상인
+       코드·경로·터미널 출력만 되돌린다. 수정요청서 §0-12 대응. */
+    .slide{ word-break:keep-all; overflow-wrap:break-word; }
+    .slide pre, .slide code, .slide .viz-code, .slide .code-chart,
+    .slide .code-diagram, .slide .term, .slide .ow-file,
+    .slide .wk-chip--code{ word-break:normal; overflow-wrap:anywhere; }
+
+    /* ── .work-step 자동배치 사고 방지 ────────────────────────────
+       .work-step은 2열 격자(48px 번호 | 내용)다. 번호 배지를 뺀 자식이
+       클래스를 못 받으면 자동배치로 48px 번호 칸에 떨어져 한 문장이
+       세로로 무너진다. 기존에는 슬라이드별로만 막아 놓아 누락된 장에서
+       그대로 재현됐다 — 실측(2026-07-31 전수): C6-N1 4건 · C6-N3 3건 ·
+       C6-N4 2건 · C2-6 2건 · C2-11 2건 = 13건. 전역으로 못박는다. */
+    .work-step > *{ grid-column:2; }
+    .work-step > .n{ grid-column:1; grid-row:1; align-self:start; }
+
+    /* ── 본문 22px 하한(R-TYPE-01) 회복 ───────────────────────────
+       .work-step은 b·span·.desc에만 22px를 걸어 두어, 클래스 없는
+       맨 텍스트와 <p>가 컨테이너 기본값 16px를 그대로 물려받았다.
+       실측(2026-07-31 전수): 46장 242건 4,537자가 하한 미만이었고
+       그중 본문 문장 대부분이 이 경로였다. 컨테이너에 직접 건다. */
+    .work-step{ font-size:22px; line-height:1.45; }
+    .work-step p{ margin:0; font-size:22px; line-height:1.45; }
+    /* 맨 텍스트를 감싸며 새로 생긴 .desc — 어느 호스트에 있든 본문 취급한다.
+       (rm-step·wk-node·pr-done에는 .desc 크기 규칙이 없어 16px로 남았다) */
+    .slide .desc{ font-size:22px; line-height:1.45; }
+
     /* ── w2-roadmap · 교시 로드맵 가로 트랙 (flow) ───────────────── */
     .w2-roadmap .s-full{ bottom:54px; display:flex; flex-direction:column; }
     .rm-lead{ margin:6px 0 0; font-size:22px; font-weight:800; color:var(--blue); }
