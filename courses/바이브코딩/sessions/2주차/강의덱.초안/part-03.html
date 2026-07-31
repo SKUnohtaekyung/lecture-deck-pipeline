@@ -6,27 +6,71 @@
          대응. shell.html은 건드리지 않는다.
          ============================================================ */
 
-      /* ── M3 · 교시 로드맵 템플릿(최고 품질 기준장) — 단계 아이콘 추가 ── */
-      .slide[data-slide="M3"] .rm-step{ gap:4px; }
+      /* ── M3 · 교시 로드맵 템플릿(최고 품질 기준장, 2차 웨이브 재설계) ──
+         지적: "설명은 좋은데 아래가 너무 줄글이다 · 박스 형식 강박을 버려라."
+         카드(배경·보더·그림자)를 걷어내고 4단계를 연결된 경로(타임라인)로
+         바꾼다 — 아이콘·번호원이 선 위에 앉고, 설명은 한 문장으로 압축한다. */
+      .slide[data-slide="M3"] .rm-lead{ margin:8px 0 0; }
+      .slide[data-slide="M3"] .rm-track{ position:relative; margin-top:36px; gap:0; }
+      .slide[data-slide="M3"] .rm-track::before{ content:""; position:absolute;
+        left:70px; right:70px; top:58px; height:3px; background:var(--blue-line); z-index:0; }
+      .slide[data-slide="M3"] .rm-step{ background:transparent; border:none; box-shadow:none;
+        padding:0 12px; gap:8px; position:relative; z-index:1; }
       .slide[data-slide="M3"] .rm-ico{ display:flex; align-items:center; justify-content:center;
-        width:34px; height:34px; color:var(--blue); margin-bottom:2px; }
-      .slide[data-slide="M3"] .rm-step.is-goal .rm-ico{ color:var(--on-mint); }
-      .slide[data-slide="M3"] .rm-step .desc p{ margin:6px 0 0 !important; }
+        width:30px; height:30px; color:var(--blue); margin-bottom:0; }
+      .slide[data-slide="M3"] .rm-step.is-goal .rm-ico{ color:var(--mint-deep); }
+      .slide[data-slide="M3"] .rm-step .rm-n{ box-shadow:0 0 0 6px var(--white); }
+      .slide[data-slide="M3"] .rm-step b{ font-size:22px; }
+      .slide[data-slide="M3"] .rm-step .desc p{ margin:4px 0 0 !important; font-size:19px;
+        line-height:1.4; color:var(--gray-700); }
 
-      /* ── C3-1 · Markdown 문서 시각화 — 2단 노트 + 폰트 22px 회복 ───── */
-      .slide[data-slide="C3-1"] .dc-stage{ top:210px; }
-      .slide[data-slide="C3-1"] .md-doc{ display:flex; flex-direction:column; flex-shrink:0; }
-      .slide[data-slide="C3-1"] .md-cols{ display:flex; gap:0; }
-      .slide[data-slide="C3-1"] .md-cols .co-rows{ flex:1 1 0; min-width:0;
-        grid-template-columns:2em 1fr minmax(112px,150px); }
-      .slide[data-slide="C3-1"] .md-cols .co-rows:first-child{ border-right:1px solid var(--line); }
-      .slide[data-slide="C3-1"] .co-num{ font-size:22px; padding:3px 8px; }
-      .slide[data-slide="C3-1"] .co-src{ font-size:22px; padding:3px 4px; }
-      .slide[data-slide="C3-1"] .co-row.is-hl .co-src{ justify-self:start; padding-right:14px; }
-      .slide[data-slide="C3-1"] .co-note{ padding:2px 14px 2px 12px; }
-      .slide[data-slide="C3-1"] .co-note p{ font-size:17px; }
-      .slide[data-slide="C3-1"] .dc-cap{ margin-top:8px; }
-      .slide[data-slide="C3-1"] .dc-stage > .s-body{ margin-top:6px; }
+      /* ── C3-1 · Markdown 원문↔렌더링 좌우 비교 + 정의(2차 웨이브 재설계) ──
+         지적: "좌 원문/우 렌더링 비교 + 그 옆에 마크다운 정의(기호 10개)를
+         반드시 넣어라." 3열(원문·렌더링·정의)로 배치해 "그 옆에" 요구를
+         세로 예산 없이 만족한다. 이미지는 넣지 않는다(수정요청서 36p절). */
+      .slide[data-slide="C3-1"] .dc-stage{ top:196px; bottom:56px; justify-content:flex-start; }
+      .slide[data-slide="C3-1"] .md-triptych{ display:flex; align-items:flex-start; gap:16px; width:100%; }
+      .slide[data-slide="C3-1"] .md-col.is-src,
+      .slide[data-slide="C3-1"] .md-col.is-out{ flex:0 0 334px; }
+      .slide[data-slide="C3-1"] .md-arrow-mid{ flex:0 0 auto; align-self:center; font-size:22px;
+        font-weight:800; color:var(--blue); }
+      .slide[data-slide="C3-1"] .md-col-def{ flex:1 1 auto; min-width:0; padding:14px 20px;
+        border-radius:var(--r-lg); background:var(--blue-soft); border:1px solid var(--blue-line); }
+      .slide[data-slide="C3-1"] .md-col-def .def-term{ margin-bottom:8px; }
+      .slide[data-slide="C3-1"] .md-col-def .s-body{ margin:0; font-size:22px; line-height:1.38; }
+      .slide[data-slide="C3-1"] .md-leg-h{ margin:10px 0 5px; font-size:16px; font-weight:800; color:var(--gray-700); }
+      .slide[data-slide="C3-1"] .md-legend{ display:flex; flex-direction:column; gap:2px; }
+      .slide[data-slide="C3-1"] .md-leg-row{ display:flex; align-items:baseline; gap:8px; }
+      .slide[data-slide="C3-1"] .md-leg-sym{ flex:0 0 84px; font-family:var(--font-mono); font-size:14px;
+        font-weight:800; color:var(--blue); white-space:pre; }
+      .slide[data-slide="C3-1"] .md-leg-mean{ font-size:14px; color:var(--gray-700); }
+      .slide[data-slide="C3-1"] .md-col .viz-code{ box-shadow:var(--shadow-sm); }
+      .slide[data-slide="C3-1"] .md-col .co-bar{ font-size:20px; padding:6px 12px; }
+      .slide[data-slide="C3-1"] .md-col .co-rows{ grid-template-columns:1.9em 1fr; }
+      .slide[data-slide="C3-1"] .md-col .co-num{ font-size:14px; padding:2px 6px; }
+      /* 마크다운 원문은 학생이 실제로 읽어야 하는 내용이다. 14px는 강의실
+   뒷자리에서 판독 불가 — 킷 R-TYPE-01의 코드 하한 20px로 올린다. */
+    .slide[data-slide="C3-1"] .md-col .co-src{ font-size:20px; padding:1px 4px; line-height:1.28; }
+      .slide[data-slide="C3-1"] .md-rendered{ display:flex; flex-direction:column; gap:5px; padding:12px 16px; }
+      .slide[data-slide="C3-1"] .mdr-h1{ margin:0; font-size:18px; font-weight:800; color:var(--ink); }
+      .slide[data-slide="C3-1"] .mdr-h2{ margin:0; font-size:15px; font-weight:800; color:var(--blue); }
+      .slide[data-slide="C3-1"] .mdr-p{ margin:0; font-size:14px; line-height:1.35; color:var(--ink); }
+      .slide[data-slide="C3-1"] .mdr-list{ margin:0; padding-left:15px; font-size:14px; color:var(--ink); }
+      .slide[data-slide="C3-1"] .mdr-check{ margin:0; padding:0; list-style:none;
+        display:flex; flex-direction:column; gap:3px; }
+      .slide[data-slide="C3-1"] .mdr-check li{ display:flex; align-items:center; gap:6px; font-size:14px; color:var(--ink); }
+      .slide[data-slide="C3-1"] .mdr-check .box{ flex:0 0 auto; width:12px; height:12px;
+        border:1.5px solid var(--blue-line-strong); border-radius:3px; display:inline-flex;
+        align-items:center; justify-content:center; font-size:9px; color:var(--white); }
+      .slide[data-slide="C3-1"] .mdr-check .is-done .box{ background:var(--mint); border-color:var(--mint); }
+      .slide[data-slide="C3-1"] .mdr-check .is-done{ color:var(--gray-400); text-decoration:line-through; }
+      .slide[data-slide="C3-1"] .mdr-quote{ margin:2px 0; padding:3px 10px;
+        border-left:3px solid var(--blue-line-strong); font-size:13px; font-style:italic; color:var(--gray-700); }
+      .slide[data-slide="C3-1"] .mdr-hr{ margin:4px 0; border:none; border-top:1px solid var(--line); }
+      .slide[data-slide="C3-1"] .mdr-link{ font-size:14px; color:var(--blue); text-decoration:underline; }
+      .slide[data-slide="C3-1"] .mdr-code{ margin:0; padding:5px 10px; background:var(--surface);
+        border-radius:6px; font-family:var(--font-mono); font-size:13px; color:var(--ink); }
+      .slide[data-slide="C3-1"] .dc-cap{ margin-top:10px; }
 
       /* ── C1-13 · 문서 책임 3열 — 화살표 줄 제거, 컴팩트화 + 예시 추가 ── */
       .slide[data-slide="C1-13"] .ow-grid{ margin-top:10px; max-width:920px; margin-left:auto; margin-right:auto; }
@@ -41,8 +85,9 @@
       .slide[data-slide="C3-2"] .cc-side ul{ gap:5px; }
       .slide[data-slide="C3-2"] .cc-side li{ font-size:22px; line-height:1.22; }
       .slide[data-slide="C3-2"] .cc-grid{ align-items:start; margin-top:14px; }
-      .slide[data-slide="C3-2"] .c3-2-figure{ position:absolute; right:56px; top:160px;
-        width:300px; height:340px; margin:0; display:flex; align-items:center; justify-content:center; }
+      /* 사용자 결정: "PRD 옆 SVG는 크기를 키워도 될 것 같다" — 300×340 → 340×390(SLOT-R 계약 크기)로 확대. */
+      .slide[data-slide="C3-2"] .c3-2-figure{ position:absolute; right:64px; top:150px;
+        width:340px; height:390px; margin:0; display:flex; align-items:center; justify-content:center; }
 
       /* ── C3-N1 · PRD 설명 — 3열 가로 배치(세로 예산 절약 + 밀도 회복) ── */
       .slide[data-slide="C3-N1"] .pr-steps{ display:grid; grid-template-columns:repeat(3,1fr); gap:16px; max-width:none; }
@@ -53,17 +98,36 @@
       .slide[data-slide="C3-N1"] .s-body{ margin-top:14px; }
       .slide[data-slide="C3-N1"] .ow-lead{ margin-top:4px; }
 
-      /* ── C3-N2 · prd.md 설명 — 좁은 2열로 잎 카드 밀도 회복 ────────── */
-      .slide[data-slide="C3-N2"] .cd-leaves{ grid-template-columns:repeat(2,1fr); gap:18px; max-width:520px; margin-left:auto; margin-right:auto; }
-      .slide[data-slide="C3-N2"] .cd-leaf{ padding:18px 16px; }
-      .slide[data-slide="C3-N2"] .cd-leaf .cd-out{ font-size:19px; line-height:1.35; }
+      /* ── C3-N2 · prd.md 설명 — 레이아웃 전면 수정(2차 웨이브) ──
+         2잎 카드(ink 0.222, 저밀도)를 "작업 전 → prd.md 문서 → 작업 후"
+         3단 흐름 다이어그램으로 바꿔 화면을 채운다. */
       .slide[data-slide="C3-N2"] .ow-lead{ margin-top:4px; }
+      .slide[data-slide="C3-N2"] .pmd-flow{ display:flex; align-items:stretch; gap:16px; margin-top:30px; }
+      .slide[data-slide="C3-N2"] .pmd-node{ flex:1 1 0; min-width:0; padding:22px 24px;
+        border-radius:var(--r-lg); background:var(--blue-soft); border:1px solid var(--blue-line);
+        box-shadow:var(--shadow-md); display:flex; flex-direction:column; justify-content:center; }
+      .slide[data-slide="C3-N2"] .pmd-tag{ display:inline-block; align-self:flex-start; font-size:16px;
+        font-weight:800; color:var(--blue); background:var(--white); border-radius:999px;
+        padding:5px 14px; margin-bottom:10px; }
+      .slide[data-slide="C3-N2"] .pmd-txt{ margin:0; font-size:20px; line-height:1.5; color:var(--ink); font-weight:500; }
+      .slide[data-slide="C3-N2"] .pmd-doc{ flex:0 0 168px; display:flex; flex-direction:column;
+        align-items:center; justify-content:center; gap:10px; padding:20px 10px; border-radius:var(--r-lg);
+        background:var(--mint-soft); border:1px solid var(--mint-line); }
+      .slide[data-slide="C3-N2"] .pmd-doc svg{ color:var(--mint-deep); }
+      .slide[data-slide="C3-N2"] .pmd-doc b{ font-size:22px; font-weight:800; color:var(--mint-deep); }
+      .slide[data-slide="C3-N2"] .pmd-arrow{ flex:0 0 auto; align-self:center; font-size:28px;
+        font-weight:800; color:var(--blue); }
+      .slide[data-slide="C3-N2"] .s-body{ margin-top:20px; }
 
-      /* ── C3-3 · 항목 누락 4분기 — 이미지 슬롯을 실제 SVG로, 2×2 잎 카드 ── */
+      /* ── C3-3 · 항목 누락 4분기 — 이미지 슬롯 복원(제작지시서 §4-12 s38), 2×2 잎 카드 ──
+         1차에서 "커미션된 이미지 없음"으로 판단해 슬롯을 SVG로 대체했으나,
+         2주차_이미지-제작지시.md §4-12가 s38_prd-missing-items를 지정하고
+         있어 되살린다. 기하 계약(SLOT-R 340×390 @ right64/top150)에 맞춘다. */
       .slide[data-slide="C3-3"] .cd-leaves{ grid-template-columns:repeat(2,1fr); max-width:420px; gap:12px; margin-top:4px; }
       .slide[data-slide="C3-3"] .cd-leaf{ padding:13px 14px; }
       .slide[data-slide="C3-3"] .cd-leaf .cd-out{ font-size:17px; line-height:1.28; }
-      .slide[data-slide="C3-3"] .c3-3-figure{ border:none; background:transparent; }
+      .slide[data-slide="C3-3"] .c3-3-figure{ right:64px; top:150px; width:340px; height:390px;
+        max-width:340px; max-height:390px; }
       .slide[data-slide="C3-3"] .code-diagram + .s-body{ margin-top:8px !important; }
       .slide[data-slide="C3-3"] .cd-arrow{ margin:2px 0; }
 
@@ -76,27 +140,39 @@
       .slide[data-slide="A3F2"] .pr-steps .work-step b{ grid-column:2; display:block; }
       .slide[data-slide="A3F2"] .pr-steps .work-step .desc{ grid-column:2; display:block; margin-top:4px; }
 
-      /* ── C3-5 · 실습⑤ prd.md 만들기 — 이미지 슬롯 제거(미지정), 3열 가로 배치 ── */
-      .slide[data-slide="C3-5"] .s-full{ right:64px; }
-      .slide[data-slide="C3-5"] .pr-steps{ display:grid; grid-template-columns:repeat(3,1fr); gap:16px; max-width:none; }
-      .slide[data-slide="C3-5"] .pr-steps .work-step{ grid-template-columns:38px 1fr; grid-template-rows:auto auto; align-items:start; padding:14px 16px; }
-      .slide[data-slide="C3-5"] .pr-steps .work-step .n{ width:38px; height:38px; font-size:18px; grid-row:1/span 2; }
-      .slide[data-slide="C3-5"] .pr-steps .work-step b{ grid-column:2; display:block; }
-      .slide[data-slide="C3-5"] .pr-steps .work-step .desc{ grid-column:2; display:block; margin-top:4px; }
-      .slide[data-slide="C3-5"] .pr-done{ max-width:none; margin-top:14px; }
+      /* ── C3-5 · 실습⑤ prd.md 만들기 — 이미지 슬롯 복원(제작지시서 §4-14 s40) ──
+         1차의 "이미지 없음" 판단이 틀렸다(§4-14가 s40_prd-practice로 이 장을
+         지정). has-img-r로 본문을 좁히고(계약: right≥440px) 세로 스텝으로
+         되돌려 좁아진 폭에서도 겹치지 않게 한다. */
+      .slide[data-slide="C3-5"] .c3-5-figure{ right:64px; top:150px; width:340px; height:390px;
+        max-width:340px; max-height:390px; }
+      .slide[data-slide="C3-5"] .pr-steps{ gap:8px; margin-top:14px; }
+      /* ⚠️ 실측으로 찾은 버그: grid-row를 명시하지 않으면 3번째 자식(.desc)이
+         auto-placement으로 아이콘 열(48px)에 배치되어 문장이 낱말마다
+         줄바꿈되며 높이가 152px까지 폭증한다(육안 y=744~782 이탈).
+         icon을 2행에 걸치고 b·desc를 2열로 명시 고정한다. */
+      .slide[data-slide="C3-5"] .pr-steps .work-step{ grid-template-rows:auto auto; align-items:start; padding:11px 16px; }
+      .slide[data-slide="C3-5"] .pr-steps .work-step .n{ grid-row:1/span 2; }
+      .slide[data-slide="C3-5"] .pr-steps .work-step b{ grid-column:2; font-size:22px; }
+      .slide[data-slide="C3-5"] .pr-steps .work-step .desc{ grid-column:2; margin-top:2px; }
+      .slide[data-slide="C3-5"] .pr-done{ margin-top:10px; }
 
       /* ── C5-11 · 한 파일→여러 파일 — 카드 좁혀 밀도 회복 + 바닥 여백 ── */
       .slide[data-slide="C5-11"] .ct-figure{ bottom:56px; }
       .slide[data-slide="C5-11"] .fig-note{ max-width:260px; }
       .slide[data-slide="C5-11"] .fig-note .card{ padding:16px 18px; }
 
-      /* ── C3-6 · 실습⑥ 화면 만들기 — 단계 구조 추가로 실습 완결성 확보 ── */
-      .slide[data-slide="C3-6"] .ct-figure{ bottom:56px; }
-      .slide[data-slide="C3-6"] .fig-stage{ grid-template-columns:1fr 460px; align-items:start; }
-      .slide[data-slide="C3-6"] .fig-note{ align-self:start; margin-top:4px; }
-      .slide[data-slide="C3-6"] .fig-note .pr-steps{ display:flex; flex-direction:column; gap:8px; }
-      .slide[data-slide="C3-6"] .fig-note .work-step{ padding:11px 14px; }
-      .slide[data-slide="C3-6"] .fig-note .pr-done{ margin-top:8px; }
+      /* ── C3-6 · 실습⑥ 화면 만들기 — 단계 구조 + 바닥선 초과(y=675) 수정 ──
+         fig-note(스텝2+완성)가 viz-tree보다 길어 컨테이너 아래로 흘렀다.
+         패딩·간격을 더 조여 666 안에 들어가게 한다. */
+      .slide[data-slide="C3-6"] .ct-figure{ bottom:60px; }
+      .slide[data-slide="C3-6"] .fig-lead{ margin:4px 0 0; }
+      .slide[data-slide="C3-6"] .fig-stage{ grid-template-columns:1fr 460px; align-items:start; gap:22px; }
+      .slide[data-slide="C3-6"] .viz-tree{ margin-top:6px; }
+      .slide[data-slide="C3-6"] .fig-note{ align-self:start; margin-top:0; }
+      .slide[data-slide="C3-6"] .fig-note .pr-steps{ display:flex; flex-direction:column; gap:6px; }
+      .slide[data-slide="C3-6"] .fig-note .work-step{ padding:9px 14px; }
+      .slide[data-slide="C3-6"] .fig-note .pr-done{ margin-top:6px; padding:10px 16px; }
     </style>
 
     <!-- ============ 3-간지 (P3) ============ -->
@@ -116,29 +192,30 @@
       </header>
       <div class="s-full">
         <h2 class="s-title">3교시 이렇게 배웁니다</h2>
+        <p class="rm-lead">문서로 정하고 → 규칙을 두고 → 파일로 만들어 → 첫 작동을 확인합니다.</p>
         <div class="rm-track">
           <div class="rm-step">
             <span class="rm-ico" aria-hidden="true"><svg viewBox="0 0 32 32" width="32" height="32"><path d="M9 4h10l6 6v18H9V4z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M19 4v6h6" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M13 16h10M13 21h10M13 26h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
             <span class="rm-n">1</span><b>문서 · prd.md</b>
-            <span class="desc"><p>이 프로젝트가 누구를 위해 무엇을 만드는지 다섯 줄로 정리합니다 — 대상·핵심·흐름·제외·완료 순서로 적습니다.</p></span>
+            <span class="desc"><p>누구를 위해 무엇을 만드는지 다섯 줄로 정리합니다.</p></span>
           </div>
           <span class="rm-arrow" aria-hidden="true">→</span>
           <div class="rm-step">
             <span class="rm-ico" aria-hidden="true"><svg viewBox="0 0 32 32" width="32" height="32"><rect x="6" y="5" width="20" height="22" rx="3" fill="none" stroke="currentColor" stroke-width="2"/><path d="M11 12h10M11 16h10M11 20h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M9 5V3M23 5V3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
             <span class="rm-n">2</span><b>AGENTS 최소</b>
-            <span class="desc"><p>에이전트가 작업을 시작하기 전에 자동으로 읽는 규칙 파일을 최소로 둡니다 — 꼭 지켜야 할 약속만 짧게 적습니다.</p></span>
+            <span class="desc"><p>에이전트가 작업 전 자동으로 읽는 규칙을 최소로 둡니다.</p></span>
           </div>
           <span class="rm-arrow" aria-hidden="true">→</span>
           <div class="rm-step">
             <span class="rm-ico" aria-hidden="true"><svg viewBox="0 0 32 32" width="32" height="32"><rect x="4" y="9" width="8" height="18" rx="1.5" fill="none" stroke="currentColor" stroke-width="2"/><rect x="12.5" y="6" width="8" height="21" rx="1.5" fill="none" stroke="currentColor" stroke-width="2"/><rect x="21" y="9" width="8" height="18" rx="1.5" fill="none" stroke="currentColor" stroke-width="2"/></svg></span>
             <span class="rm-n">3</span><b>세 파일</b>
-            <span class="desc"><p>index.html · style.css · script.js로 프로젝트를 시작합니다 — 뼈대·모양·동작을 각각 다른 파일에 나눠 담습니다.</p></span>
+            <span class="desc"><p>index.html·style.css·script.js로 뼈대·모양·동작을 나눕니다.</p></span>
           </div>
           <span class="rm-arrow" aria-hidden="true">→</span>
           <div class="rm-step is-goal">
             <span class="rm-ico" aria-hidden="true"><svg viewBox="0 0 32 32" width="32" height="32"><rect x="4" y="6" width="24" height="16" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M4 26h24" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M11 14l4 4 7-8" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
             <span class="rm-n">4</span><b>첫 화면 변화</b>
-            <span class="desc"><p>버튼을 누르면 화면 속 값이 실제로 바뀌는 첫 작동을 직접 확인합니다 — 3교시가 끝났을 때 눈으로 보이는 결과입니다.</p></span>
+            <span class="desc"><p>버튼을 누르면 값이 바뀌는 첫 작동을 직접 확인합니다.</p></span>
           </div>
         </div>
       </div>
@@ -154,29 +231,64 @@
         <h2 class="s-title">Markdown은 메모에 구조를 붙입니다</h2>
       </div>
       <div class="dc-stage">
-        <div class="viz-code md-doc" role="img" aria-label="메모.md 열두 줄: 제목·소제목·굵게·목록·체크박스·인용·구분선·링크·코드 기호가 각각 대응하는 문서 요소로 바뀜">
-          <div class="co-bar">메모.md</div>
-          <div class="md-cols">
-            <div class="co-rows">
-              <div class="co-row is-hl"><span class="co-num">1</span><span class="co-src"># 오늘의 기획 메모</span><span class="co-note"><span class="cn">1</span><p>큰 제목(h1)</p></span></div>
-              <div class="co-row is-hl"><span class="co-num">2</span><span class="co-src">## 핵심 아이디어</span><span class="co-note"><span class="cn">2</span><p>작은 제목(h2)</p></span></div>
-              <div class="co-row is-hl"><span class="co-num">3</span><span class="co-src">**퇴근길 직장인**을 위한 하루 기록</span><span class="co-note"><span class="cn">3</span><p>굵게 강조(bold)</p></span></div>
-              <div class="co-row is-hl"><span class="co-num">4</span><span class="co-src">- 오늘 한 일을 한 줄로 남긴다</span><span class="co-note"><span class="cn">4</span><p>목록(list)</p></span></div>
-              <div class="co-row is-hl"><span class="co-num">5</span><span class="co-src">- [ ] 첫 화면 스케치 그리기</span><span class="co-note"><span class="cn">5</span><p>할 일(미완료)</p></span></div>
-              <div class="co-row is-hl"><span class="co-num">6</span><span class="co-src">- [x] 페인포인트 정의하기</span><span class="co-note"><span class="cn">6</span><p>할 일(완료)</p></span></div>
+        <div class="md-triptych">
+          <div class="md-col is-src">
+            <div class="viz-code" role="img" aria-label="메모.md 원문 열두 줄: 제목·소제목·굵게·목록·체크박스·인용·구분선·링크·코드 기호가 그대로 텍스트로 적혀 있음">
+              <div class="co-bar">메모.md — 원문</div>
+              <div class="co-rows">
+                <div class="co-row"><span class="co-num">1</span><span class="co-src"># 오늘의 기획 메모</span></div>
+                <div class="co-row"><span class="co-num">2</span><span class="co-src">## 핵심 아이디어</span></div>
+                <div class="co-row"><span class="co-num">3</span><span class="co-src">**퇴근길 직장인**을 위한 하루 기록</span></div>
+                <div class="co-row"><span class="co-num">4</span><span class="co-src">- 오늘 한 일을 한 줄로 남긴다</span></div>
+                <div class="co-row"><span class="co-num">5</span><span class="co-src">- [ ] 첫 화면 스케치 그리기</span></div>
+                <div class="co-row"><span class="co-num">6</span><span class="co-src">- [x] 페인포인트 정의하기</span></div>
+                <div class="co-row"><span class="co-num">7</span><span class="co-src">&gt; AI 초안은 사람이 다시 확인</span></div>
+                <div class="co-row"><span class="co-num">8</span><span class="co-src">---</span></div>
+                <div class="co-row"><span class="co-num">9</span><span class="co-src">[Codex 사용법](notes/codex.md)</span></div>
+                <div class="co-row"><span class="co-num">10</span><span class="co-src">```</span></div>
+                <div class="co-row"><span class="co-num">11</span><span class="co-src">console.log("완료했습니다")</span></div>
+                <div class="co-row"><span class="co-num">12</span><span class="co-src">```</span></div>
+              </div>
             </div>
-            <div class="co-rows">
-              <div class="co-row is-hl"><span class="co-num">7</span><span class="co-src">&gt; AI 초안은 사람이 다시 확인</span><span class="co-note"><span class="cn">7</span><p>인용(quote)</p></span></div>
-              <div class="co-row is-hl"><span class="co-num">8</span><span class="co-src">---</span><span class="co-note"><span class="cn">8</span><p>구분선(hr)</p></span></div>
-              <div class="co-row is-hl"><span class="co-num">9</span><span class="co-src">[Codex 사용법](notes/codex.md)</span><span class="co-note"><span class="cn">9</span><p>링크(link)</p></span></div>
-              <div class="co-row is-hl"><span class="co-num">10</span><span class="co-src">```</span><span class="co-note"><span class="cn">10</span><p>코드 블록 시작</p></span></div>
-              <div class="co-row"><span class="co-num">11</span><span class="co-src">console.log("완료했습니다")</span><span class="co-note"></span></div>
-              <div class="co-row is-hl"><span class="co-num">12</span><span class="co-src">```</span><span class="co-note"><span class="cn">11</span><p>코드 블록 끝</p></span></div>
+          </div>
+          <span class="md-arrow-mid" aria-hidden="true">→</span>
+          <div class="md-col is-out">
+            <div class="viz-code" role="img" aria-label="위 원문이 브라우저에 렌더링된 모습: 큰 제목·작은 제목·굵은 글씨·목록·체크박스·인용문·구분선·링크·코드 블록으로 각각 바뀜">
+              <div class="co-bar">브라우저에 렌더링된 모습</div>
+              <div class="md-rendered">
+                <p class="mdr-h1">오늘의 기획 메모</p>
+                <p class="mdr-h2">핵심 아이디어</p>
+                <p class="mdr-p"><b>퇴근길 직장인</b>을 위한 하루 기록</p>
+                <ul class="mdr-list"><li>오늘 한 일을 한 줄로 남긴다</li></ul>
+                <ul class="mdr-check">
+                  <li class="is-todo"><span class="box" aria-hidden="true"></span>첫 화면 스케치 그리기</li>
+                  <li class="is-done"><span class="box" aria-hidden="true">✓</span>페인포인트 정의하기</li>
+                </ul>
+                <blockquote class="mdr-quote">AI 초안은 사람이 다시 확인</blockquote>
+                <hr class="mdr-hr">
+                <p class="mdr-p"><a class="mdr-link" href="#" onclick="return false;">Codex 사용법</a></p>
+                <pre class="mdr-code">console.log("완료했습니다")</pre>
+              </div>
+            </div>
+          </div>
+          <div class="md-col-def">
+            <span class="def-term">Markdown이란</span>
+            <p class="s-body">텍스트에 <span class="hl-mint-underline">약속된 기호</span>로 문서 구조를 표시하는 가벼운 문서 형식입니다. 일반 텍스트와 달리 특정 기호가 정해진 서식(제목·굵게·목록 등)으로 바뀝니다.</p>
+            <p class="md-leg-h">문서에 쓰인 기호 10개</p>
+            <div class="md-legend">
+              <div class="md-leg-row"><span class="md-leg-sym">#</span><span class="md-leg-mean">제목(h1)</span></div>
+              <div class="md-leg-row"><span class="md-leg-sym">##</span><span class="md-leg-mean">소제목(h2)</span></div>
+              <div class="md-leg-row"><span class="md-leg-sym">**굵게**</span><span class="md-leg-mean">강조(bold)</span></div>
+              <div class="md-leg-row"><span class="md-leg-sym">-</span><span class="md-leg-mean">목록(list)</span></div>
+              <div class="md-leg-row"><span class="md-leg-sym">- [ ]</span><span class="md-leg-mean">할 일(미완료)</span></div>
+              <div class="md-leg-row"><span class="md-leg-sym">- [x]</span><span class="md-leg-mean">할 일(완료)</span></div>
+              <div class="md-leg-row"><span class="md-leg-sym">&gt;</span><span class="md-leg-mean">인용(quote)</span></div>
+              <div class="md-leg-row"><span class="md-leg-sym">---</span><span class="md-leg-mean">구분선(hr)</span></div>
+              <div class="md-leg-row"><span class="md-leg-sym">[글](주소)</span><span class="md-leg-mean">링크(link)</span></div>
+              <div class="md-leg-row"><span class="md-leg-sym">```</span><span class="md-leg-mean">코드 블록</span></div>
             </div>
           </div>
         </div>
-        <p class="dc-cap">일반 텍스트에 약속한 기호 열 개가 각각 다른 구조로 바뀝니다.</p>
-        <p class="s-body">메모장으로도 열리는 순수 텍스트라 사람이 그대로 읽습니다. <span class="hl-mint-underline">기호를 약속해 둔 덕분에</span> AI가 만든 문서도 <span class="hl-mint-mark">사람이 곧장 알아봅니다</span>.</p>
       </div>
 </section>
 
@@ -193,7 +305,7 @@
       <div class="ow-col">
         <span class="ow-file">prd.md</span>
         <p class="ow-q">무엇을 만드나</p>
-        <p class="ow-d">만들 것의 범위와 완료 기준 — 대상·핵심·흐름·제외·완료 다섯 줄로 정리합니다</p>
+        <p class="ow-d">만들 것의 범위와 완료 기준 — 대상·핵심·흐름·제외·완료 같은 핵심 항목을 짧게 정리합니다</p>
         <p class="ow-ex">예: "이 앱은 무엇을 하나요?"에 답하는 문서입니다</p>
       </div>
       <div class="ow-col">
@@ -226,7 +338,7 @@
             <ul>
               <li>무엇을 왜 만들지 적는 기획 문서입니다(조직마다 형식이 다름·회사는 30쪽도)</li>
               <li>제품 매니저가 팀 전체에 방향을 알리는 문서입니다</li>
-              <li>개발자·디자이너가 <span class="hl-mint-underline">같은 목표</span>를 보도록 미리 맞춥니다</li>
+              <li>개발자·디자이너가 같은 목표를 보도록 미리 맞춥니다</li>
               <li>정해진 표준 양식이 없어 회사마다 담는 항목이 다릅니다</li>
               <li>보통 여러 사람이 함께 읽고 검토합니다</li>
             </ul>
@@ -235,17 +347,17 @@
           <div class="cc-side human">
             <h3>prd.md</h3>
             <ul>
-              <li>우리가 쓰는 최소 5줄 — 대상·핵심·흐름·제외·완료</li>
+              <li>우리가 쓰는 핵심 항목만 담은 문서 — 대상·핵심·흐름·제외·완료</li>
               <li>AI는 코드를 만들기 전에 이 문서를 <span class="hl-mint-underline">먼저 읽습니다</span></li>
-              <li>다 만든 뒤에는 <span class="hl-mint-mark">결과를 이 기준과 맞춰 봅니다</span></li>
+              <li>다 만든 뒤에는 결과를 이 기준과 맞춰 봅니다</li>
               <li>새 프로젝트 폴더 안에 저장해 두고 계속 참고합니다</li>
               <li>혼자 작업해도 이 파일 하나면 충분합니다</li>
             </ul>
           </div>
         </div>
       </div>
-      <figure class="c3-2-figure" role="img" aria-label="여러 팀이 함께 보는 두꺼운 PRD 문서 더미와 다섯 줄만 채우면 되는 얇은 prd.md 파일 한 장이 나란히 대비되어, 개념으로서의 PRD와 이 수업에서 쓰는 prd.md 파일이 다른 것임을 보여준다">
-        <svg viewBox="0 0 300 340" width="220" height="250" aria-hidden="true">
+      <figure class="c3-2-figure" role="img" aria-label="여러 팀이 함께 보는 두꺼운 PRD 문서 더미와 핵심 항목만 짧게 담은 얇은 prd.md 파일 한 장이 나란히 대비되어, 개념으로서의 PRD와 이 수업에서 쓰는 prd.md 파일이 다른 것임을 보여준다">
+        <svg viewBox="0 0 300 340" width="300" height="340" aria-hidden="true">
           <g transform="translate(28,26)">
             <rect x="10" y="18" width="86" height="118" rx="6" fill="var(--white)" stroke="var(--blue-line-strong)" stroke-width="2"/>
             <rect x="5" y="10" width="86" height="118" rx="6" fill="var(--white)" stroke="var(--blue-line-strong)" stroke-width="2"/>
@@ -260,7 +372,7 @@
             <rect x="0" y="0" width="92" height="46" rx="6" fill="var(--mint-soft)" stroke="var(--mint-deep)" stroke-width="2.5"/>
             <text x="46" y="20" text-anchor="middle" font-size="14" font-weight="800" fill="var(--mint-deep)">prd.md</text>
             <line x1="12" y1="32" x2="80" y2="32" stroke="var(--mint-line)" stroke-width="2"/>
-            <text x="46" y="70" text-anchor="middle" font-size="13" fill="var(--gray-700)">우리 최소 5줄</text>
+            <text x="46" y="70" text-anchor="middle" font-size="13" fill="var(--gray-700)">핵심 항목만 짧게</text>
           </g>
           <path d="M132,90 L168,90" stroke="var(--blue)" stroke-width="2.5" fill="none" marker-end="url(#c32arrow)"/>
           <defs><marker id="c32arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--blue)"/></marker></defs>
@@ -283,7 +395,7 @@
           <div class="work-step"><span class="n">2</span><b>조직마다 형식이 다릅니다.</b> <span class="desc">— 정해진 표준 양식이 없어 회사마다, 팀마다 담는 항목과 순서가 제각각입니다. 그래서 "이게 PRD의 정답"이라는 틀은 없습니다. 우리 수업도 우리만의 형식을 씁니다.</span></div>
           <div class="work-step"><span class="n">3</span><b>실제 회사에서는 수십 쪽이 되기도 합니다.</b> <span class="desc">— 배경 조사·성공 지표·예외 상황까지 담다 보면 문서가 길어지기 때문입니다. 팀이 클수록 문서도 두꺼워집니다. 다음 장에서 우리가 쓰는 작은 버전을 봅니다.</span></div>
         </div>
-        <p class="s-body">이 수업에서 쓰는 <b>prd.md</b>는 이 개념을 우리 규모에 맞게 줄인 것입니다 — 다음 장에서 봅니다.</p>
+        <p class="s-body">이 수업에서 쓰는 <b>prd.md</b>는 이 개념을 우리 규모에 맞게 줄인 것입니다.</p>
       </div>
     </section>
 
@@ -295,10 +407,22 @@
       </header>
       <div class="s-full">
         <h2 class="s-title">prd.md</h2>
-        <p class="ow-lead">prd.md는 우리가 실제로 쓰는 최소 5줄짜리 파일입니다 — <strong>에이전트가 작업을 시작하기 전에 먼저 읽습니다</strong>.</p>
-        <div class="cd-leaves" style="margin-top:14px;">
-          <div class="cd-leaf"><span class="cd-in">작업 전</span><span class="cd-to">→</span><b class="cd-out">에이전트가 prd.md를 읽고 무엇을 만들지 파악합니다 — 대상·핵심·흐름을 먼저 확인합니다</b></div>
-          <div class="cd-leaf"><span class="cd-in">작업 후</span><span class="cd-to">→</span><b class="cd-out">만든 결과를 prd.md 기준과 맞춰 봅니다 — 제외·완료 항목까지 지켰는지 확인합니다</b></div>
+        <p class="ow-lead">prd.md는 우리가 실제로 쓰는, <strong>핵심 항목만 짧게 담은 파일</strong>입니다 — 에이전트가 작업을 시작하기 전에 먼저 읽습니다.</p>
+        <div class="pmd-flow">
+          <div class="pmd-node">
+            <span class="pmd-tag">작업 전</span>
+            <p class="pmd-txt">에이전트가 prd.md를 읽고 무엇을 만들지 파악합니다 — 대상·핵심·흐름을 먼저 확인합니다.</p>
+          </div>
+          <span class="pmd-arrow" aria-hidden="true">→</span>
+          <div class="pmd-doc" role="img" aria-label="prd.md 문서 아이콘">
+            <svg viewBox="0 0 32 32" width="34" height="34" aria-hidden="true"><path d="M9 4h10l6 6v18H9V4z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M19 4v6h6" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M13 16h10M13 21h10M13 26h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            <b>prd.md</b>
+          </div>
+          <span class="pmd-arrow" aria-hidden="true">→</span>
+          <div class="pmd-node">
+            <span class="pmd-tag">작업 후</span>
+            <p class="pmd-txt">만든 결과를 prd.md 기준과 맞춰 봅니다 — 제외·완료 항목까지 지켰는지 확인합니다.</p>
+          </div>
         </div>
         <p class="s-body">즉 prd.md는 <span class="hl-mint-underline">에이전트가 시작하기 전과 끝난 뒤 두 번 참고하는</span> 기준 문서입니다.</p>
       </div>
@@ -324,23 +448,14 @@
             <div class="cd-leaf"><span class="cd-in">완료 없음</span><span class="cd-to">→</span><b class="cd-out">끝을 아무도 모름</b></div>
           </div>
         </div>
-        <p class="s-body">빠진 항목은 AI가 알아서 <span class="hl-mint-underline">추측해 채우고</span>, 그 추측은 <span class="hl-mint-mark">매번 달라집니다</span>.</p>
+        <p class="s-body">빠진 항목은 AI가 알아서 추측해 채우고, 그 추측은 <span class="hl-mint-mark">매번 달라집니다</span>.</p>
         <p class="dc-cap">문서는 최소로 시작해 갱신합니다.</p>
       </div>
-  <figure class="c3-3-figure img-slot-r"
+  <figure class="c3-3-figure asset-slot asset-slot--support img-slot-r"
+        data-image-purpose="explanatory" data-image-state="expected"
+        data-expected-src="자료/images/s38_prd-missing-items-paper-cut-v1-transparent.png"
         role="img"
-        aria-label="prd.md 문서에서 빈 항목 하나가 흔들리는 물음표로 이어져, AI가 만드는 결과가 그때그때 달라지는 모습을 보여준다">
-        <svg viewBox="0 0 340 300" width="260" height="230" aria-hidden="true">
-          <rect x="70" y="10" width="120" height="150" rx="10" fill="var(--white)" stroke="var(--blue-line-strong)" stroke-width="2.5"/>
-          <line x1="88" y1="42" x2="172" y2="42" stroke="var(--blue-line-strong)" stroke-width="2"/>
-          <line x1="88" y1="60" x2="172" y2="60" stroke="var(--blue-line-strong)" stroke-width="2"/>
-          <rect x="88" y="76" width="84" height="14" rx="3" fill="none" stroke="var(--coral-deep)" stroke-width="2.5" stroke-dasharray="4 3"/>
-          <line x1="88" y1="108" x2="172" y2="108" stroke="var(--blue-line-strong)" stroke-width="2"/>
-          <line x1="88" y1="126" x2="150" y2="126" stroke="var(--blue-line-strong)" stroke-width="2"/>
-          <path d="M130,160 C130,190 170,190 170,215" stroke="var(--coral-deep)" stroke-width="2.5" fill="none" stroke-dasharray="3 4"/>
-          <text x="220" y="235" text-anchor="middle" font-size="46" font-weight="800" fill="var(--coral-deep)">?</text>
-          <text x="130" y="285" text-anchor="middle" font-size="14" fill="var(--gray-700)">빈 항목 하나가 결과를 흔듭니다</text>
-        </svg>
+        aria-label="prd.md 문서에서 항목이 하나씩 빠졌을 때 결과가 흔들리고 범위가 커지고 완료 기준이 불명확해지는 모습을 종이 오림 스타일로 보여주는 설명 이미지">
       </figure>
 </section>
 
@@ -361,33 +476,39 @@
         <div class="accent-bar"></div>
         <table class="t">
           <tbody>
-            <tr><th><strong>ChatGPT</strong></th><td>기획·질문·비판(무엇을·왜) — 자유롭게 대화하며 아이디어를 정리하고, 부족한 부분을 서로 물어가며 다듬습니다. 정답을 주기보다 생각을 넓혀 주는 대화 상대입니다</td></tr>
-            <tr><th><strong>Codex</strong></th><td>구현·저장(어떻게) — 정리된 결정을 그대로 코드와 문서 파일로 만들고 프로젝트 폴더에 저장합니다. 대화가 아니라 실제로 남는 파일을 만듭니다</td></tr>
+            <tr><th><strong>ChatGPT</strong></th><td>기획·질문·비판(무엇을·왜) — 자유롭게 대화하며 아이디어를 정리하고 다듬는 대화 상대입니다</td></tr>
+            <tr><th><strong>Codex</strong></th><td>구현·저장(어떻게) — 정리된 결정을 코드와 문서 파일로 만들어 프로젝트 폴더에 저장합니다</td></tr>
           </tbody>
         </table>
-        <div class="pr-steps" style="margin-top:14px;">
-          <div class="work-step"><span class="n">1</span><b>ChatGPT에서 자유롭게 대화하며 5항목 초안을 떠올립니다.</b> <span class="desc">— 대상·핵심·흐름·제외·완료를 편하게 말로 풀어 봅니다. 완벽하지 않아도 됩니다.</span></div>
-          <div class="work-step"><span class="n">2</span><b>사람이 읽고 정리해 최종 문장을 정합니다.</b> <span class="desc">— AI가 만든 초안을 그대로 쓰지 않고 직접 다듬습니다. 판단은 사람의 몫입니다.</span></div>
-          <div class="work-step"><span class="n">3</span><b>Codex로 넘겨 prd.md 파일로 저장합니다.</b> <span class="desc">— 이후 모든 작업이 이 파일을 기준으로 진행됩니다. 대화가 아니라 파일로 남습니다.</span></div>
+        <div class="pr-steps" style="margin-top:12px;">
+          <div class="work-step"><span class="n">1</span><b>ChatGPT에서 대화하며 5항목 초안을 떠올립니다.</b> <span class="desc">대상·핵심·흐름·제외·완료를 편하게 말로 풀어 봅니다.</span></div>
+          <div class="work-step"><span class="n">2</span><b>사람이 읽고 정리해 최종 문장을 정합니다.</b> <span class="desc">AI 초안을 그대로 쓰지 않고 직접 다듬습니다.</span></div>
+          <div class="work-step"><span class="n">3</span><b>Codex로 넘겨 prd.md 파일로 저장합니다.</b> <span class="desc">이후 모든 작업이 이 파일을 기준으로 진행됩니다.</span></div>
         </div>
       </div>
     </section>
 
-    <section class="slide w2-practice" data-slide="C3-5">
+    <section class="slide w2-practice has-img-r" data-slide="C3-5">
       <header class="s-head">
         <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
         <span class="s-line"></span><div class="s-team">2주차<br>3교시</div>
       </header>
       <div class="s-full">
-        <h2 class="s-title">실습 ⑤ prd.md 만들기 (ChatGPT 초안 → 사람 수정 → Codex 저장)</h2>
+        <h2 class="s-title">실습 ⑤ prd.md 만들기</h2>
         <div class="accent-bar"></div>
         <div class="pr-steps">
-          <div class="work-step"><span class="n">1</span><b>ChatGPT로 5항목(대상·핵심·흐름·제외·완료) 초안을 만듭니다.</b> <span class="desc">— 자유롭게 대화하며 생각을 끌어냅니다. "이런 서비스를 만들고 싶은데 정리를 도와줘"처럼 편하게 물어봅니다. 완벽한 문장이 아니어도 괜찮습니다.</span></div>
-          <div class="work-step"><span class="n">2</span><b>사람이 읽고 최소 1개를 수정합니다.</b> <span class="desc">— 단어만 바꾸는 건 수정이 아닙니다. 왜 그렇게 정했는지 판단이 담긴 문장으로 바꿉니다. AI 초안을 그대로 베끼지 않습니다.</span></div>
-          <div class="work-step"><span class="n">3</span><b>Codex로 프로젝트에 prd.md로 저장합니다.</b> <span class="desc">— 이후 모든 작업이 이 파일을 기준으로 진행됩니다. 1주차 폴더에 이어 쓰지 않고 새 폴더 안에 그대로 저장합니다.</span></div>
+          <div class="work-step"><span class="n">1</span><b>ChatGPT로 5항목(대상·핵심·흐름·제외·완료) 초안을 만듭니다.</b> <span class="desc">자유롭게 대화하며 생각을 끌어냅니다.</span></div>
+          <div class="work-step"><span class="n">2</span><b>사람이 읽고 최소 1개를 수정합니다.</b> <span class="desc">판단이 담긴 문장으로 직접 바꿉니다.</span></div>
+          <div class="work-step"><span class="n">3</span><b>Codex로 프로젝트에 prd.md로 저장합니다.</b> <span class="desc">이후 모든 작업이 이 파일을 기준으로 진행됩니다.</span></div>
         </div>
-        <div class="pr-done"><span class="pr-tag">완성</span><p>5항목(대상·핵심·흐름·제외·완료)이 모두 채워진 prd.md 파일이 프로젝트 폴더 안에 저장되어 있습니다. 다음 실습부터 이 파일을 기준으로 작업합니다.</p></div>
+        <div class="pr-done"><span class="pr-tag">완성</span><p>5항목이 모두 채워진 prd.md 파일이 프로젝트 폴더 안에 저장되어 있습니다.</p></div>
       </div>
+      <figure class="c3-5-figure asset-slot asset-slot--support img-slot-r"
+        data-image-purpose="explanatory" data-image-state="expected"
+        data-expected-src="자료/images/s40_prd-practice-paper-cut-v1-transparent.png"
+        role="img"
+        aria-label="ChatGPT에서 뽑은 초안을 사람이 손으로 고쳐 Codex로 prd.md를 저장하는 실습 절차를 종이 오림 스타일로 보여주는 설명 이미지">
+      </figure>
     </section>
 
     <!-- ============ 3-6 (C3-6) ============ -->
@@ -421,7 +542,7 @@
           </div>
           <div class="fig-note">
             <div class="card surface">
-              <p class="s-body">파일 이름과 개수는 프로젝트마다 다릅니다 — <span class="hl-mint-underline">역할별로 나눈다는 원칙만</span> 기억합니다. 프로젝트가 커질수록 나누는 기준도 자연스럽게 늘어나며, Codex가 그때그때 알맞게 판단합니다.</p>
+              <p class="s-body">파일 이름과 개수는 프로젝트마다 다릅니다 — 역할별로 나눈다는 원칙만 기억합니다. 프로젝트가 커질수록 나누는 기준도 자연스럽게 늘어나며, Codex가 그때그때 알맞게 판단합니다.</p>
             </div>
           </div>
         </div>

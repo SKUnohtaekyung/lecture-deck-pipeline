@@ -1,80 +1,131 @@
 <style>
-/* ============ part-05 워커 스코프 CSS ============
-   RENDER_AUDIT.md 실측 결함(폰트<22px·바닥선>666·겹침·빈 asset-slot·저밀도)을
-   해소한다. shell.html(공통 컴포넌트)은 편집 권한이 없어 여기서 더 구체적인
-   [data-slide="..."] 선택자로 필요한 속성만 끌어올린다. 전역 셀렉터 금지. */
+/* ============ part-05 워커 스코프 CSS (2차 웨이브 갱신 2026-07-31) ============
+   RENDER_AUDIT.md·WAVE2.md 실측 결함(폰트 위계 붕괴·바닥선 초과·이미지 슬롯
+   기하 불일치)을 해소한다. shell.html은 편집 권한이 없어 여기서 더 구체적인
+   [data-slide="..."] 선택자로 필요한 속성만 끌어올린다. 전역 셀렉터 금지.
+   ⚠️ shell.html의 기존 비-스코프 규칙(.pr-steps .work-step b/span 등)이
+   명시도로 이겨 shell 자체의 전역 위계 규칙(.slide .desc{20px}·
+   .slide .pr-steps > * > b{26px})을 무력화한다 — 여기서 [data-slide] 스코프로
+   되돌린다. */
 
-/* ── C5-1 정보 구조: bg-vs 텍스트 22px 하한 ── */
-.slide[data-slide="C5-1"] .bg-vs > div > b{ font-size:22px; }
-.slide[data-slide="C5-1"] .bg-vs > div > span{ font-size:22px; line-height:1.4; }
+/* ── C5-1 정보 구조: bg-vs 제목 26px/800 · 설명 20px/500(위계) ── */
+.slide[data-slide="C5-1"] .bg-vs > div > b{ font-size:26px; font-weight:800; }
+.slide[data-slide="C5-1"] .bg-vs > div > span{ font-size:20px; font-weight:500; line-height:1.4; }
 
-/* ── C5-2 화면 순서·정보 우선순위: cm-* 텍스트 22px 하한 ── */
+/* ── C5-2 화면 순서·정보 우선순위: cm-* 텍스트 22px 하한.
+   .cm-el.t(모형 제목 26px)는 :not(.t)로 제외 — 안 그러면 "나쁜 예/좋은 예" 대비의
+   핵심인 제목 크기 차이가 사라진다(좋은 예의 큰 제목이 이 장의 논지다). ── */
 .slide[data-slide="C5-2"] .cm-col > .cap{ font-size:22px; }
-.slide[data-slide="C5-2"] .cm-el{ font-size:22px; }
+.slide[data-slide="C5-2"] .cm-el:not(.t){ font-size:22px; }
 .slide[data-slide="C5-2"] .cm-why{ font-size:22px; line-height:1.4; }
 .slide[data-slide="C5-2"] .cm-shot{ min-height:250px; }
 
-/* ── C5-3 화면 문구: mp-bad/mp-good 보조설명 22px 하한 ── */
-.slide[data-slide="C5-3"] .mp-bad, .slide[data-slide="C5-3"] .mp-good{ font-size:22px; }
-.slide[data-slide="C5-3"] .mp-bad > span, .slide[data-slide="C5-3"] .mp-good > span{ font-size:22px; line-height:1.3; }
+/* ── C5-3 화면 문구: mp-bad/mp-good은 카드(배경+보더)라 제목(문구 자체)/설명(그 아래
+   보조설명)의 위계가 필요하다 — 둘 다 22px로 같았던 것을 24/20으로 되돌린다(게이트4). ── */
+.slide[data-slide="C5-3"] .mp-bad, .slide[data-slide="C5-3"] .mp-good{ font-size:24px; font-weight:800; }
+.slide[data-slide="C5-3"] .mp-bad > span, .slide[data-slide="C5-3"] .mp-good > span{ font-size:20px; font-weight:500; line-height:1.3; }
 
-/* ── C5-4 기본 가독성·접근성: ay-* 텍스트 22px 하한 ── */
+/* ── C5-4 기본 가독성·접근성: ay-* 텍스트 22px 하한 + 바닥선 666 회복(실측 673) ── */
 .slide[data-slide="C5-4"] .ay-cap{ font-size:22px; }
 .slide[data-slide="C5-4"] .ay-row{ font-size:22px; }
 .slide[data-slide="C5-4"] .ay-txt.weak, .slide[data-slide="C5-4"] .ay-txt.strong{ font-size:22px; }
 .slide[data-slide="C5-4"] .ay-stat > .d{ font-size:22px; line-height:1.4; }
 .slide[data-slide="C5-4"] .cm-why{ font-size:22px; }
-.slide[data-slide="C5-4"] .ay-body{ gap:18px; }
+.slide[data-slide="C5-4"] .ay-body{ gap:14px; margin-top:10px; }
+.slide[data-slide="C5-4"] .ay-box{ padding:9px 12px; }
+.slide[data-slide="C5-4"] .ay-txt{ padding:7px 12px; margin-top:6px; }
+.slide[data-slide="C5-4"] .ay-band{ margin-top:8px; padding:9px 16px; }
 /* .ay-track가 span(인라인)이라 퍼센트 width의 기준폭이 없어 0px로 붕괴한다 — 블록화 */
-.slide[data-slide="C5-4"] .ay-track{ display:block; width:100%; }
+.slide[data-slide="C5-4"] .ay-track{ display:block; width:100%; margin-top:8px; }
 
-/* ── C5-5 DESIGN.md: mm-* 텍스트 22px 하한 ── */
-.slide[data-slide="C5-5"] .mm-row > .tag{ font-size:22px; }
-.slide[data-slide="C5-5"] .mm-row > .txt{ font-size:22px; line-height:1.35; }
-.slide[data-slide="C5-5"] .mm-row > .txt > span{ font-size:22px; }
-.slide[data-slide="C5-5"] .mm-memo > b{ font-size:22px; }
+/* ── C5-5 DESIGN.md: mm-* 위계(제목 26/800 · 보조설명 20/500) + 22px 하한 ── */
+.slide[data-slide="C5-5"] .mm-row > .tag{ font-size:20px; font-weight:800; }
+.slide[data-slide="C5-5"] .mm-row > .txt{ font-size:24px; font-weight:700; line-height:1.3; }
+.slide[data-slide="C5-5"] .mm-row > .txt > span{ font-size:20px; font-weight:500; line-height:1.4; margin-top:4px; }
+.slide[data-slide="C5-5"] .mm-memo > b{ font-size:26px; font-weight:800; }
 .slide[data-slide="C5-5"] .mm-memo > div{ font-size:22px; line-height:1.4; }
 
-/* ── C5-7 레퍼런스는 관찰: 바닥선 666 회복(실측 675) — 간격만 조인다 ── */
+/* ── C5-7 레퍼런스는 관찰: 바닥선 666 회복(실측 675) — 간격 조임.
+   pill 배지를 s-lead(22px 설명)보다 작게 되돌려 제목/설명 동일크기(게이트4)를 피한다.
+   이미지 슬롯은 표준 img-slot-r로 복원했다(§2 — 아래 마크업 참조, 커스텀 figure 좌표
+   규칙은 더 이상 쓰지 않는다). ── */
 .slide[data-slide="C5-7"] .ca-stack{ gap:2px; }
 .slide[data-slide="C5-7"] .ca-act{ padding:6px 22px; }
 .slide[data-slide="C5-7"] .ref-right{ margin:6px 0 0; padding:8px 0 8px 16px; }
-.slide[data-slide="C5-7"] .ca-act .pill{ font-size:22px; padding:6px 14px; }
+.slide[data-slide="C5-7"] .ca-act .pill{ font-size:16px; padding:5px 14px; }
 .slide[data-slide="C5-7"] .ca-down{ font-size:22px; }
-/* CSS/SVG 자체 제작 시각자료라 image-contract(asset-slot) 밖에 둔다 — 위치는 kit 기본값 재현 */
-.slide[data-slide="C5-7"] .c5-7-figure{ position:absolute; right:56px; top:144px; width:340px; height:390px; margin:0; z-index:1; }
 
-/* ── A4R1 레퍼런스를 그대로 복사했을 때: steps-full 패턴 기본(bottom:44=676)을 666으로 회복 ── */
+/* ── A4R1 레퍼런스를 그대로 복사했을 때: steps-full 패턴 기본(bottom:44=676)을 666으로
+   회복. 이미지 슬롯은 표준 img-slot-r로 복원했다(§2, 커스텀 figure 좌표 규칙 제거). ── */
 .slide[data-slide="A4R1"] .steps-full{ bottom:54px; }
-.slide[data-slide="A4R1"] .a4r1-figure{ position:absolute; right:56px; top:144px; width:340px; height:390px; margin:0; z-index:1; }
 
-/* ── C5-13 주소창 비교: CSS/SVG 자체 제작 시각자료를 cc-grid·compare-foot 사이 flex 행으로 ── */
+/* ── R-QC-19 대응으로 <b>/.desc 안에 감싼 <span>이 deck.css 기본값(.work-step
+   span{display:block})을 상속해 한 문장이 줄마다 끊겨 보였다 — 인라인으로 되돌린다.
+   (C5-8·C5-9·C5-16·C5-17은 <b> 안, C5-10은 .desc 안, A4R1은 <b> 안에 감쌌다) ── */
+.slide[data-slide="C5-8"] .work-step b span,
+.slide[data-slide="C5-9"] .work-step b span,
+.slide[data-slide="C5-10"] .work-step .desc span,
+.slide[data-slide="C5-16"] .work-step b span,
+.slide[data-slide="C5-17"] .work-step b span,
+.slide[data-slide="A4R1"] .work-step b span{
+  display:inline;
+}
+
+/* ── C5-13 주소창 비교: CSS/SVG 자체 제작 시각자료를 cc-grid·compare-foot 사이 flex 행으로
+   (WAVE2 §1: 1차에서 만든 이 비교는 유지) ── */
 .slide[data-slide="C5-13"] .c5-13-figure{
   position:static; margin:8px auto 0; width:1000px; height:190px; }
 .slide[data-slide="C5-13"] .compare-foot{ font-size:22px; line-height:1.5; margin-top:8px; }
 
-/* ── C5-15 핵심 기능은 한 단계씩: CSS/SVG 자체 제작 시각자료 위치(kit 기본값 재현) ── */
-.slide[data-slide="C5-15"] .c5-15-figure{ position:absolute; right:56px; top:144px; width:340px; height:390px; margin:0; z-index:1; }
-.slide[data-slide="C5-15"] .sw-warncard .tag{ font-size:22px; margin-bottom:4px; }
+/* ── C5-8·C5-9·C5-10·C5-16·C5-17 실습: work-step 제목 26px/800 · 설명 20px/500(위계)
+   (shell의 .pr-steps .work-step b/span{font-size:22px} 비-스코프 규칙을 되돌린다) ── */
+.slide[data-slide="C5-8"] .pr-steps .work-step b,
+.slide[data-slide="C5-9"] .pr-steps .work-step b,
+.slide[data-slide="C5-10"] .pr-steps .work-step b,
+.slide[data-slide="C5-16"] .pr-steps .work-step b,
+.slide[data-slide="C5-17"] .pr-steps .work-step b{
+  font-size:26px; font-weight:800; line-height:1.3; }
+.slide[data-slide="C5-8"] .pr-steps .work-step .desc,
+.slide[data-slide="C5-9"] .pr-steps .work-step .desc,
+.slide[data-slide="C5-10"] .pr-steps .work-step .desc,
+.slide[data-slide="C5-16"] .pr-steps .work-step .desc,
+.slide[data-slide="C5-17"] .pr-steps .work-step .desc{
+  font-size:20px; font-weight:500; line-height:1.4; }
 
-/* ── C5-18 마지막 작동 상태: CSS/SVG 자체 제작 시각자료 위치(shell 의도값 재현) ── */
-.slide[data-slide="C5-18"] .c5-18-figure{ position:absolute; right:56px; top:168px; width:300px; height:300px; margin:0; z-index:1; }
+/* ── C5-15 핵심 기능은 한 단계씩: 이미지 슬롯 표준 img-slot-r로 복원(§2).
+   sw-warncard 제목(.tag)을 26px로 올려 설명(p, 기본 22px)과 크기를 구분한다(게이트4).
+   sw-steps의 work-step도 shell 기본(b·desc 둘 다 22px)이 위계를 없애 26/20으로 되돌린다. ── */
+.slide[data-slide="C5-15"] .sw-warncard .tag{ font-size:26px; font-weight:800; margin-bottom:4px; }
+.slide[data-slide="C5-15"] .sw-steps .work-step b{ font-size:26px; font-weight:800; }
+.slide[data-slide="C5-15"] .sw-steps .work-step .desc{ font-size:20px; font-weight:500; }
 
-/* ── C5-16 실습⑩: desc 3줄 추가로 늘어난 높이 여유 확보 ── */
-.slide[data-slide="C5-16"] .pr-steps{ gap:8px; }
+/* ── C5-16 실습⑩: 바닥선 666 회복(실측 742 — 큰 초과, 간격을 크게 조인다) ── */
+.slide[data-slide="C5-16"] .pr-steps{ gap:6px; margin-top:10px; }
+.slide[data-slide="C5-16"] .pr-steps .work-step{ padding:8px 20px; }
+.slide[data-slide="C5-16"] .pr-done{ margin-top:8px; padding:10px 18px; }
 
-/* ── C5-17 실습⑪: 바닥선 666 회복(실측 709 → 간격 조임, 폰트는 22px 유지) ── */
+/* ── C5-17 실습⑪: 바닥선 666 회복(간격 조임, 위계 폰트는 유지) ── */
 .slide[data-slide="C5-17"] .accent-bar{ margin:4px 0 10px; }
 .slide[data-slide="C5-17"] .pr-steps{ margin-top:8px; gap:8px; }
 .slide[data-slide="C5-17"] .pr-steps .work-step{ padding:8px 20px; }
 .slide[data-slide="C5-17"] .callout{ margin:6px 0; padding:10px 18px; }
 .slide[data-slide="C5-17"] .pr-done{ margin-top:6px; }
 
-/* ── A6F1 모바일 폭 확인: sm-* 라벨 22px 하한 ── */
+/* ── C5-18 마지막 작동 상태: 제작지시서 19장 목록 밖 — 1차 SVG 유지(WAVE2 §2 결정),
+   CSS/SVG 자체 제작 시각자료 위치(shell 의도값 재현) ── */
+.slide[data-slide="C5-18"] .c5-18-figure{ position:absolute; right:56px; top:168px; width:300px; height:300px; margin:0; z-index:1; }
+
+/* ── A6F1 모바일 폭 확인: sm-k 라벨(18px, 에스브로우 성격)과 본문(22px)을 구분해
+   게이트4를 만족시키고, 바닥선 666 회복(실측 701 — 간격을 조인다) ── */
 .slide[data-slide="A6F1"] .sm-bar b{ font-size:22px; }
-.slide[data-slide="A6F1"] .sm-part .sm-k{ font-size:22px; }
+.slide[data-slide="A6F1"] .sm-part .sm-k{ font-size:18px; font-weight:800; }
 .slide[data-slide="A6F1"] .sm-part p{ font-size:22px; }
-.slide[data-slide="A6F1"] .sm-frame{ max-width:460px; }
+.slide[data-slide="A6F1"] .sm-frame{ max-width:440px; }
+.slide[data-slide="A6F1"] .sm-stage{ gap:20px; margin-top:12px; }
+.slide[data-slide="A6F1"] .sm-body{ gap:8px; padding:14px 18px; }
+.slide[data-slide="A6F1"] .sm-part{ padding:9px 14px; }
+.slide[data-slide="A6F1"] .sm-notes{ gap:8px; }
+.slide[data-slide="A6F1"] .sm-note{ padding:10px 16px; }
 </style>
 
 <section class="slide part-divider" data-slide="P5">
@@ -93,15 +144,30 @@
   <div class="s-full">
     <h2 class="s-title">5교시 이렇게 배웁니다</h2>
     <div class="rm-track">
-      <div class="rm-step"><span class="rm-n">1</span><b>정보 구조</b><span class="desc"><p style="font-size:22px;margin:8px 0 0;line-height:1.3;">무엇을 어디에 둘지 정합니다</p></span></div>
+      <div class="rm-step">
+        <span class="rm-ico" aria-hidden="true"><svg viewBox="0 0 32 32" width="32" height="32"><rect x="10" y="4" width="12" height="7" rx="1.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M16 11v5M8 20h16M8 20v-4M24 20v-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><rect x="3" y="20" width="10" height="7" rx="1.5" fill="none" stroke="currentColor" stroke-width="2"/><rect x="19" y="20" width="10" height="7" rx="1.5" fill="none" stroke="currentColor" stroke-width="2"/></svg></span>
+        <span class="rm-n">1</span><b>정보 구조</b><span class="desc"><p>무엇을 어디에 둘지 정합니다</p></span>
+      </div>
       <span class="rm-arrow" aria-hidden="true">→</span>
-      <div class="rm-step"><span class="rm-n">2</span><b>화면 순서·문구</b><span class="desc"><p style="font-size:22px;margin:8px 0 0;line-height:1.3;">먼저 볼 것과 문구를 다듬습니다</p></span></div>
+      <div class="rm-step">
+        <span class="rm-ico" aria-hidden="true"><svg viewBox="0 0 32 32" width="32" height="32"><circle cx="7" cy="9" r="2.2" fill="currentColor"/><circle cx="7" cy="16" r="2.2" fill="currentColor"/><circle cx="7" cy="23" r="2.2" fill="currentColor"/><path d="M13 9h14M13 16h14M13 23h10" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></span>
+        <span class="rm-n">2</span><b>화면 순서·문구</b><span class="desc"><p>먼저 볼 것과 문구를 다듬습니다</p></span>
+      </div>
       <span class="rm-arrow" aria-hidden="true">→</span>
-      <div class="rm-step"><span class="rm-n">3</span><b>읽기 쉬움</b><span class="desc"><p style="font-size:22px;margin:8px 0 0;line-height:1.3;">색과 대비로 누구나 읽게 합니다</p></span></div>
+      <div class="rm-step">
+        <span class="rm-ico" aria-hidden="true"><svg viewBox="0 0 32 32" width="32" height="32"><path d="M4 16c4-7 10-10 12-10s8 3 12 10c-4 7-10 10-12 10S8 23 4 16z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="16" cy="16" r="4.5" fill="none" stroke="currentColor" stroke-width="2"/></svg></span>
+        <span class="rm-n">3</span><b>읽기 쉬움</b><span class="desc"><p>색과 대비로 누구나 읽게 합니다</p></span>
+      </div>
       <span class="rm-arrow" aria-hidden="true">→</span>
-      <div class="rm-step"><span class="rm-n">4</span><b>기준 문서로 고정</b><span class="desc"><p style="font-size:22px;margin:8px 0 0;line-height:1.3;">DESIGN.md에 기준을 적습니다</p></span></div>
+      <div class="rm-step">
+        <span class="rm-ico" aria-hidden="true"><svg viewBox="0 0 32 32" width="32" height="32"><rect x="7" y="4" width="18" height="24" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M11 11h10M11 16h10M11 21h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="24" cy="24" r="5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M24 21.5v3l2 1.3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span class="rm-n">4</span><b>기준 문서로 고정</b><span class="desc"><p>DESIGN.md에 기준을 적습니다</p></span>
+      </div>
       <span class="rm-arrow" aria-hidden="true">→</span>
-      <div class="rm-step is-goal"><span class="rm-n">5</span><b>그 기준으로 구현</b><span class="desc"><p style="font-size:22px;margin:8px 0 0;line-height:1.3;">레퍼런스를 관찰해 완성합니다</p></span></div>
+      <div class="rm-step is-goal">
+        <span class="rm-ico" aria-hidden="true"><svg viewBox="0 0 32 32" width="32" height="32"><rect x="4" y="6" width="24" height="16" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M4 26h24" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M11 14l4 4 7-8" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span class="rm-n">5</span><b>그 기준으로 구현</b><span class="desc"><p>레퍼런스를 관찰해 완성합니다</p></span>
+      </div>
     </div>
   </div>
 </section>
@@ -408,24 +474,11 @@
     </div>
       <p class="ref-right">검색해서 나온다고 <span class="hl-mint-mark">무료가 아닙니다</span> &mdash; 이미지·글꼴은 출처와 사용 조건을 먼저 확인합니다.</p>
   </div>
-  <figure class="c5-7-figure"
-    role="img" aria-label="다른 서비스 화면을 창으로 표시하고 돋보기로 색·여백·순서를 관찰하는 그림">
-    <svg width="100%" height="100%" viewBox="0 0 340 390" aria-hidden="true">
-      <rect x="30" y="40" width="280" height="200" rx="16" fill="var(--white)" stroke="var(--blue-line-strong)" stroke-width="3"/>
-      <rect x="30" y="40" width="280" height="36" rx="16" fill="var(--blue-soft)"/>
-      <circle cx="52" cy="58" r="6" fill="var(--gray-400)"/>
-      <circle cx="72" cy="58" r="6" fill="var(--gray-400)"/>
-      <circle cx="92" cy="58" r="6" fill="var(--gray-400)"/>
-      <rect x="54" y="96" width="220" height="18" rx="6" fill="var(--blue-soft)"/>
-      <rect x="54" y="126" width="160" height="14" rx="6" fill="var(--surface)"/>
-      <rect x="54" y="150" width="180" height="14" rx="6" fill="var(--surface)"/>
-      <rect x="54" y="174" width="120" height="14" rx="6" fill="var(--surface)"/>
-      <rect x="54" y="200" width="90" height="26" rx="8" fill="var(--mint)"/>
-      <circle cx="248" cy="286" r="46" fill="var(--mint-soft)" stroke="var(--mint-deep)" stroke-width="6"/>
-      <line x1="282" y1="320" x2="316" y2="354" stroke="var(--mint-deep)" stroke-width="10" stroke-linecap="round"/>
-      <text x="170" y="358" text-anchor="middle" font-size="22" font-weight="800" fill="var(--ink)">색·여백·순서 관찰</text>
-    </svg>
-  </figure>
+  <!-- 이미지 슬롯 복원(2026-07-31 WAVE2 §2: 제작지시서 19장을 그대로 살린다).
+       직전에 임시로 넣었던 SVG 도식은 제거했다 — 이미지 제작지시 §4-16이 이 자리의 정본이다. -->
+  <figure class="asset-slot asset-slot--support img-slot-r" data-image-purpose="explanatory"
+    data-image-state="expected" data-expected-src="자료/images/s67_reference-observe-paper-cut-v1-transparent.png"
+    role="img" aria-label="레퍼런스 카드 위에 돋보기를 대고 구조선을 관찰하는 그림 — 겉모습이 아니라 패턴을 본다"></figure>
 </section>
 
 <section class="slide w2-practice" data-slide="C5-8">
@@ -438,7 +491,7 @@
     <div class="accent-bar"></div>
     <div class="pr-steps">
       <div class="work-step"><span class="n">1</span><b>참고 서비스 1개를 고릅니다.</b> <span class="desc">— 평소 즐겨 쓰는 서비스나 화면 중 잘 만들었다고 느낀 것 하나를 정합니다.</span></div>
-      <div class="work-step"><span class="n">2</span><b>색·여백·순서·구조 중 <strong>무엇을 참고하고 무엇은 안 할지</strong> 메모합니다.</b> <span class="desc">— 네 가지를 하나씩 놓고 따라 할지 말지 짧게 적습니다.</span></div>
+      <div class="work-step"><span class="n">2</span><b><span>색·여백·순서·구조 중 </span><strong>무엇을 참고하고 무엇은 안 할지</strong><span> 메모합니다.</span></b> <span class="desc">— 네 가지를 하나씩 놓고 따라 할지 말지 짧게 적습니다.</span></div>
     </div>
     <p class="sg-lead">"예쁘다"는 느낌만 적으면 다음 실습(design.md)에 옮길 수 없습니다 — <span class="hl-mint-mark">색·여백·순서처럼 말로 옮길 수 있는 특성</span>까지 적습니다.</p>
     <div class="pr-done"><span class="pr-tag">완성</span><p>복사할 것/안 할 것을 색·여백·순서·구조 중 최소 1가지씩 구분해 글로 적음</p></div>
@@ -455,28 +508,14 @@
         <div class="eval-steps">
           <div class="work-step"><span class="n">1</span><b>특정 서비스를 통째로 복제했다면</b></div>
           <div class="vf-down" aria-hidden="true">↓</div>
-          <div class="work-step"><span class="n">2</span><b>색·간격·구성 <strong>특성만 뽑아</strong> 내 구조에 다시 적용합니다.</b></div>
+          <div class="work-step"><span class="n">2</span><b><span>색·간격·구성 </span><strong>특성만 뽑아</strong><span> 내 구조에 다시 적용합니다.</span></b></div>
         </div>
       </div>
-      <figure class="a4r1-figure"
-        role="img" aria-label="같은 창을 통째로 복제한 모습에서 색·간격 특성만 추출해 다시 적용하는 그림">
-        <svg width="100%" height="100%" viewBox="0 0 340 390" aria-hidden="true">
-          <rect x="20" y="40" width="140" height="110" rx="14" fill="var(--surface)" stroke="var(--gray-400)" stroke-width="3"/>
-          <rect x="34" y="54" width="140" height="110" rx="14" fill="var(--white)" stroke="var(--coral)" stroke-width="3"/>
-          <text x="104" y="192" text-anchor="middle" font-size="22" font-weight="800" fill="var(--coral-deep)">통째로 복제</text>
-
-          <defs><marker id="a4arrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
-            <path d="M0 0 L8 4 L0 8 z" fill="var(--blue)"/></marker></defs>
-          <path d="M104 220 V250" stroke="var(--blue)" stroke-width="5" marker-end="url(#a4arrow)" fill="none"/>
-
-          <rect x="59" y="256" width="180" height="90" rx="14" fill="var(--white)" stroke="var(--blue-line-strong)" stroke-width="3"/>
-          <circle cx="86" cy="280" r="9" fill="var(--mint)"/>
-          <circle cx="86" cy="306" r="9" fill="var(--blue)"/>
-          <rect x="106" y="273" width="110" height="14" rx="6" fill="var(--blue-soft)"/>
-          <rect x="106" y="299" width="110" height="14" rx="6" fill="var(--blue-soft)"/>
-          <text x="149" y="330" text-anchor="middle" font-size="22" font-weight="800" fill="var(--blue)">특성만 추출</text>
-        </svg>
-      </figure>
+      <!-- 이미지 슬롯 복원(2026-07-31 WAVE2 §2: 제작지시서 19장을 그대로 살린다).
+           직전에 임시로 넣었던 SVG 도식은 제거했다 — 이미지 제작지시 §4-19가 이 자리의 정본이다. -->
+      <figure class="asset-slot asset-slot--support img-slot-r" data-image-purpose="explanatory"
+        data-image-state="expected" data-expected-src="자료/images/s104_reference-copied-paper-cut-v1-transparent.png"
+        role="img" aria-label="폴더 경계 밖에 있던 참고 파일이 복제되어 경계 안으로 들어오는 그림 — 원본은 그대로 남고 복사본이 프로젝트 폴더 안에 생긴다"></figure>
     </section>
 
 
@@ -490,7 +529,7 @@
     <div class="accent-bar"></div>
     <div class="pr-steps">
       <div class="work-step"><span class="n">1</span><b>design.md에 화면 기준을 짧게 적습니다.</b> <span class="desc">— 색·문구·간격처럼 앞서 관찰한 특성을 한두 줄로 정리합니다.</span></div>
-      <div class="work-step"><span class="n">2</span><b><strong>실제 화면에 최소 2가지를 적용</strong>합니다(문서만 만들고 끝 금지).</b> <span class="desc">— Codex에게 design.md를 근거로 화면을 고치라고 요청합니다.</span></div>
+      <div class="work-step"><span class="n">2</span><b><strong>실제 화면에 최소 2가지를 적용</strong><span>합니다(문서만 만들고 끝 금지).</span></b> <span class="desc">— Codex에게 design.md를 근거로 화면을 고치라고 요청합니다.</span></div>
     </div>
     <div class="pr-done"><span class="pr-tag">완성</span><p>색·버튼 문구 등 2가지가 화면에 반영됨</p></div>
     <div class="card surface pf-band">
@@ -511,7 +550,7 @@
     <div class="accent-bar"></div>
     <div class="pr-steps">
       <div class="work-step"><span class="n">1</span><b>정상값을 넣어 화면이 올바르게 반응하는지 확인합니다.</b> <span class="desc">— 평소 쓸 법한 값을 넣고 결과가 그대로 나오는지 봅니다.</span></div>
-      <div class="work-step"><span class="n">2</span><b>빈 칸으로 두거나 잘못된 값을 넣어 다시 확인합니다.</b> <span class="desc">— 빈 입력이 <span class="hl-mint-underline">무의미한 기능</span>(예: 단순 변환)은 생략합니다.</span></div>
+      <div class="work-step"><span class="n">2</span><b>빈 칸으로 두거나 잘못된 값을 넣어 다시 확인합니다.</b> <span class="desc"><span>— 빈 입력이 </span><span class="hl-mint-underline">무의미한 기능</span><span>(예: 단순 변환)은 생략합니다.</span></span></div>
     </div>
     <div class="pr-done"><span class="pr-tag">완성</span><p>필요한 경우 빈/오류 상태에서도 화면이 깨지지 않고 안내가 보임</p></div>
   </div>
@@ -592,20 +631,11 @@
           <div class="sw-warncard"><span class="tag">그 결과</span><p>어디서 틀렸는지 알기 어려워 고치는 데 더 오래 걸립니다.</p></div>
         </div>
       </div>
-      <figure class="c5-15-figure"
-        role="img" aria-label="상자 세 개를 하나씩 옮기듯 화면·핵심 동작·확인을 순서대로 진행하는 그림">
-        <svg width="100%" height="100%" viewBox="0 0 340 390" aria-hidden="true">
-          <rect x="40" y="240" width="90" height="80" rx="10" fill="var(--blue-soft)" stroke="var(--blue)" stroke-width="3"/>
-          <text x="85" y="288" text-anchor="middle" font-size="26" font-weight="800" fill="var(--blue)">1</text>
-          <rect x="140" y="180" width="90" height="80" rx="10" fill="var(--mint-soft)" stroke="var(--mint-deep)" stroke-width="3"/>
-          <text x="185" y="228" text-anchor="middle" font-size="26" font-weight="800" fill="var(--mint-deep)">2</text>
-          <rect x="215" y="90" width="90" height="80" rx="10" fill="var(--coral-soft)" stroke="var(--coral-deep)" stroke-width="3"/>
-          <text x="260" y="138" text-anchor="middle" font-size="26" font-weight="800" fill="var(--coral-deep)">3</text>
-          <path d="M100 250 Q160 200 170 190" stroke="var(--gray-400)" stroke-width="3" stroke-dasharray="6 6" fill="none"/>
-          <path d="M200 190 Q240 140 245 100" stroke="var(--gray-400)" stroke-width="3" stroke-dasharray="6 6" fill="none"/>
-          <text x="170" y="362" text-anchor="middle" font-size="22" font-weight="800" fill="var(--ink)">상자 하나씩 옮깁니다</text>
-        </svg>
-      </figure>
+      <!-- 이미지 슬롯 복원(2026-07-31 WAVE2 §2: 제작지시서 19장을 그대로 살린다).
+           직전에 임시로 넣었던 SVG 도식은 제거했다 — 이미지 제작지시 §4-17이 이 자리의 정본이다. -->
+      <figure class="asset-slot asset-slot--support img-slot-r" data-image-purpose="explanatory"
+        data-image-state="expected" data-expected-src="자료/images/s75_one-step-at-a-time-paper-cut-v1-transparent.png"
+        role="img" aria-label="한 줄로 연결된 계단식 단계, 각 단계 끝에 작은 체크 표시가 있고 다음 단계로 이어지는 그림 — 한 번에 여러 개를 바꾸지 않고 한 걸음씩 확인한다"></figure>
     </section>
 
 <section class="slide w2-practice" data-slide="C5-16">
@@ -619,7 +649,7 @@
         <div class="pr-steps">
           <div class="work-step"><span class="n">1</span><b>화면·입력·결과 영역을 만듭니다.</b> <span class="desc">— 아직 동작 안 해도 됩니다. 자리부터 잡습니다.</span></div>
           <div class="work-step"><span class="n">2</span><b>대표 입력 하나로 결과가 나오게 합니다.</b> <span class="desc">— 오늘의 활동 기록처럼, 가장 흔한 값 하나로 핵심 동작을 완성합니다.</span></div>
-          <div class="work-step"><span class="n">3</span><b>다른 값(·빈값)으로 <span class="hl-mint-underline">결과가 함께 바뀌는지</span> 다시 확인합니다.</b> <span class="desc">— 값을 바꿔도 화면이 깨지지 않는지 봅니다.</span></div>
+          <div class="work-step"><span class="n">3</span><b><span>다른 값(·빈값)으로 </span><span class="hl-mint-underline">결과가 함께 바뀌는지</span><span> 다시 확인합니다.</span></b> <span class="desc">— 값을 바꿔도 화면이 깨지지 않는지 봅니다.</span></div>
         </div>
         <div class="pr-done"><span class="pr-tag">완성</span><p>정상값·다른 값에서 결과가 바뀌고, 필요한 경우 빈값도 안전</p></div>
       </div>
@@ -634,8 +664,8 @@
         <h2 class="s-title">실습 ⑪ 불필요한 기능 제거</h2>
         <div class="accent-bar"></div>
         <div class="pr-steps">
-          <div class="work-step"><span class="n">1</span><b>구현 중 늘어난 기능 가운데 <strong>prd 범위 밖 1개</strong>를 고릅니다.</b> <span class="desc">— prd.md를 다시 열어 처음 약속한 범위와 지금 화면을 비교합니다.</span></div>
-          <div class="work-step"><span class="n">2</span><b>그 기능을 지우고 <span class="hl-mint-underline">남은 기능이 그대로 작동하는지</span> 확인합니다.</b> <span class="desc">— 삭제 후 처음 화면·입력·결과 흐름을 다시 눌러 봅니다.</span></div>
+          <div class="work-step"><span class="n">1</span><b><span>구현 중 늘어난 기능 가운데 </span><strong>prd 범위 밖 1개</strong><span>를 고릅니다.</span></b> <span class="desc">— prd.md를 다시 열어 처음 약속한 범위와 지금 화면을 비교합니다.</span></div>
+          <div class="work-step"><span class="n">2</span><b><span>그 기능을 지우고 </span><span class="hl-mint-underline">남은 기능이 그대로 작동하는지</span><span> 확인합니다.</span></b> <span class="desc">— 삭제 후 처음 화면·입력·결과 흐름을 다시 눌러 봅니다.</span></div>
         </div>
         <p class="callout orange"><strong>왜</strong> — 기능이 늘어날수록 고칠 곳도, 깨질 곳도 늘어납니다. <span class="hl-mint-mark">MVP는 적을수록 안전</span>합니다.</p>
         <div class="pr-done"><span class="pr-tag">완성</span><p>범위를 지킨 MVP — 제거한 기능과 이유가 한 줄 남음</p></div>

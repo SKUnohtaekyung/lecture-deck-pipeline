@@ -7,35 +7,45 @@
       .slide[data-slide="M2"] .rm-track{ margin-top:20px; }
       .slide[data-slide="M2"] .rm-step{ justify-content:flex-start; padding:22px 16px 16px; gap:8px; }
       .slide[data-slide="M2"] .rm-icon{ width:32px; height:32px; flex:0 0 auto; }
+      .slide[data-slide="M2"] .rm-step b{ font-size:26px; font-weight:800; }
       .slide[data-slide="M2"] .rm-step .desc{ display:block; }
-      .slide[data-slide="M2"] .rm-step .desc p{ margin:0; font-size:22px; line-height:1.38; color:var(--gray-700); }
+      .slide[data-slide="M2"] .rm-step .desc p{ margin:0; font-size:20px; font-weight:500; line-height:1.4; color:var(--gray-700); }
       .slide[data-slide="M2"] .rm-out{ display:block; width:100%; margin-top:auto; padding-top:12px;
         border-top:1px solid var(--blue-line); font-size:22px; font-weight:800; color:var(--blue); }
       .slide[data-slide="M2"] .rm-step.is-goal .rm-out{ color:var(--mint-deep); border-top-color:var(--mint-line); }
 
-      /* ── C2-1: 결과 vs 기능 + 흔한 실패 + 우측 다이어그램 ───────── */
+      /* ── C2-1: 결과 vs 기능 + 흔한 실패 + 우측 이미지(2차: 슬롯 복원) ─── */
       .slide[data-slide="C2-1"] .cc-icon{ width:26px; height:26px; display:block; margin-bottom:8px; }
-      .slide[data-slide="C2-1"] .cc-side li{ margin-bottom:8px; }
+      .slide[data-slide="C2-1"] .cc-side h3{ font-size:26px; font-weight:800; }
+      .slide[data-slide="C2-1"] .cc-side li{ margin-bottom:8px; font-size:20px; font-weight:500; }
       .slide[data-slide="C2-1"] .cc-side li:last-child{ margin-bottom:0; }
       .slide[data-slide="C2-1"] .s-body{ margin-bottom:6px; }
       .slide[data-slide="C2-1"] .cc-grid{ margin:8px 0; }
       .slide[data-slide="C2-1"] .cc-side{ padding:14px 18px; }
       .slide[data-slide="C2-1"] .itr-warn{ margin-top:8px; }
       .slide[data-slide="C2-1"] .itr-warncard{ padding:8px 16px; display:flex; align-items:flex-start; gap:10px; }
-      .slide[data-slide="C2-1"] .itr-warncard .tag{ font-size:22px; margin:0; flex:0 0 auto; }
-      .slide[data-slide="C2-1"] .itr-warncard p{ line-height:1.3; }
+      .slide[data-slide="C2-1"] .itr-warncard .tag{ font-size:20px; font-weight:800; margin:0; flex:0 0 auto; }
+      .slide[data-slide="C2-1"] .itr-warncard p{ font-size:22px; line-height:1.3; }
       .slide[data-slide="C2-1"] .itr-icon{ width:22px; height:22px; flex:0 0 auto; margin-top:2px; }
-      .slide[data-slide="C2-1"] .c21-visual{ position:absolute; right:64px; top:150px; width:404px; height:460px;
-        display:flex; align-items:center; justify-content:center; }
+      /* 2026-07-31 2차: 커스텀 SVG(.c21-visual) 걷어내고 표준 이미지 슬롯(img-slot-r)으로 복원.
+         has-img-r가 이미 .s-full 우측을 500px 인셋해 겹침이 없다. */
 
       /* ── C2-2: MVP 정의 강화 ─────────────────────────────────── */
       .slide[data-slide="C2-2"] .def-icon{ width:30px; height:30px; margin:0 auto 8px; display:block; }
       .slide[data-slide="C2-2"] .c22-visual{ position:absolute; right:56px; top:144px; width:340px; height:390px;
         display:flex; align-items:center; justify-content:center; }
 
-      /* ── C2-N1: MVP 비유(스케이트보드→자동차) 좌측 다이어그램 ──── */
-      .slide[data-slide="C2-N1"] .c2n1-visual{ position:absolute; left:64px; top:150px; width:404px; height:460px;
-        display:flex; align-items:center; justify-content:center; }
+      /* ── C2-N1: MVP(정식 명칭) 비유 — 좌측 55~60% 이미지(SLOT, 표준보다 넓음) + 우측 3블록 ──
+         2026-07-31 2차: §2-4-A 골격 확정 반영. 커스텀 SVG 제거, 이미지 슬롯 복원.
+         이미지가 좌측 주도(폭 55~60%)이므로 표준 img-slot-l(340px)이 아니라 전용 폭을 쓴다. */
+      .slide[data-slide="C2-N1"] .c2n1-figure{ position:absolute; left:64px; top:150px; width:600px; height:480px;
+        max-width:600px; max-height:480px; right:auto; bottom:auto;
+        border:2px dashed var(--blue-line-strong); border-radius:var(--r-lg); background:var(--surface); }
+      .slide[data-slide="C2-N1"].has-img-l .s-full{ left:684px; }
+      .slide[data-slide="C2-N1"] .s-title{ font-size:32px; line-height:1.22; margin-bottom:4px; }
+      .slide[data-slide="C2-N1"] .c2n1-blocks{ display:flex; flex-direction:column; gap:12px; margin-top:10px; }
+      .slide[data-slide="C2-N1"] .c2n1-block b{ display:block; font-size:24px; font-weight:800; line-height:1.15; color:var(--ink); }
+      .slide[data-slide="C2-N1"] .c2n1-block p{ margin:4px 0 0; font-size:22px; line-height:1.3; color:var(--gray-700); }
 
       /* ── C2-N2: 이 비유가 수업과 만나는 지점 — 카드 아이콘 ─────── */
       .slide[data-slide="C2-N2"] .c2n2-icon{ width:28px; height:28px; margin-bottom:6px; display:block; }
@@ -51,26 +61,40 @@
       /* ── C2-4: 핵심/부가 기능 카드 아이콘 ───────────────────────── */
       .slide[data-slide="C2-4"] .c24-icon{ width:28px; height:28px; margin-bottom:6px; display:block; }
 
-      /* ── C2-5: 범위는 세 칸 — sc-col 아이콘 + 우측 다이어그램 ──── */
+      /* ── C2-5: 범위는 세 칸 — sc-col 아이콘 + 우측 이미지(2차: 슬롯 복원) ──── */
       .slide[data-slide="C2-5"] .sc-icon{ width:28px; height:28px; margin-bottom:2px; display:block; }
-      .slide[data-slide="C2-5"] .c25-visual{ position:absolute; right:64px; top:150px; width:404px; height:460px;
-        display:flex; align-items:center; justify-content:center; }
+      .slide[data-slide="C2-5"] .sc-col h3{ font-size:26px; font-weight:800; }
+      .slide[data-slide="C2-5"] .sc-col p{ font-size:20px; font-weight:500; }
 
-      /* ── C2-6: 실습③ — work-step 아이콘 + 우측 다이어그램 ─────── */
+      /* ── C2-6: 실습③ — work-step 아이콘 + 우측 이미지(2차: 슬롯 복원) + 폰트 위계 ── */
       .slide[data-slide="C2-6"] .ws-icon{ width:24px; height:24px; }
       .slide[data-slide="C2-6"] .pr-done-icon, .slide[data-slide="C2-11"] .pr-done-icon{ width:24px; height:24px; flex:0 0 auto; margin-top:2px; }
-      .slide[data-slide="C2-6"] .c26-visual{ position:absolute; right:64px; top:150px; width:404px; height:460px;
-        display:flex; align-items:center; justify-content:center; }
+      .slide[data-slide="C2-6"] .work-step b, .slide[data-slide="C2-11"] .work-step b{ font-size:26px; font-weight:800; }
+      .slide[data-slide="C2-6"] .work-step .desc, .slide[data-slide="C2-6"] .work-step .desc p,
+      .slide[data-slide="C2-11"] .work-step .desc, .slide[data-slide="C2-11"] .work-step .desc p{
+        font-size:20px; font-weight:500; line-height:1.4; }
 
-      /* ── C2-7: User Flow란? — 정의 + 슬림 단계칩(카드 대신) ────── */
+      /* ── C2-7: User Flow란? — 정의 + 슬림 단계칩(카드 대신) + 예시를 문장 대신 미니 흐름칩으로 ── */
       .slide[data-slide="C2-7"] .uf-steps{ display:flex; align-items:center; gap:12px; margin:16px 0; flex-wrap:wrap; }
       .slide[data-slide="C2-7"] .uf-chip{ display:flex; align-items:center; gap:10px; }
       .slide[data-slide="C2-7"] .uf-chip b{ font-size:22px; font-weight:800; color:var(--ink); }
       .slide[data-slide="C2-7"] .uf-steps .fl-arrow{ font-size:22px; color:var(--blue); }
       .slide[data-slide="C2-7"] .uf-callout-icon{ width:20px; height:20px; vertical-align:-4px; margin-right:4px; }
+      .slide[data-slide="C2-7"] .uf-example{ display:flex; align-items:center; gap:10px; margin:14px 0; flex-wrap:wrap; }
+      .slide[data-slide="C2-7"] .uf-ex-tag{ font-size:20px; font-weight:800; color:var(--blue); flex:0 0 auto; }
+      .slide[data-slide="C2-7"] .uf-ex-chip{ padding:8px 16px; border-radius:var(--r-pill); background:var(--blue-soft);
+        border:1px solid var(--blue-line); font-size:20px; font-weight:600; color:var(--ink); }
+      .slide[data-slide="C2-7"] .uf-ex-chip.is-result{ background:var(--mint-soft); border-color:var(--mint-line); color:var(--mint-deep); font-weight:800; }
+      .slide[data-slide="C2-7"] .uf-example .fl-arrow{ font-size:18px; color:var(--gray-500); }
 
-      /* ── C2-8: 흐름 노드 아이콘 ─────────────────────────────────── */
+      /* ── C2-8: 흐름 노드 아이콘 + 하단 설명을 문장 2개→콜아웃 1개로 압축(줄글 완화) ── */
       .slide[data-slide="C2-8"] .fl-icon{ width:26px; height:26px; margin:0 auto 6px; display:block; }
+      .slide[data-slide="C2-8"] .dc-stage .s-body{ margin-top:16px; }
+      .slide[data-slide="C2-8"] .c28-fails{ display:flex; gap:16px; margin-top:14px; }
+      .slide[data-slide="C2-8"] .c28-fails .itr-warncard{ flex:1 1 0; padding:10px 18px; display:flex; align-items:flex-start; gap:10px; }
+      .slide[data-slide="C2-8"] .c28-fails .itr-warncard .tag{ font-size:20px; font-weight:800; margin:0; flex:0 0 auto; }
+      .slide[data-slide="C2-8"] .c28-fails .itr-warncard p{ margin:0; font-size:22px; line-height:1.35; }
+      .slide[data-slide="C2-8"] .c28-fails .itr-icon{ width:22px; height:22px; flex:0 0 auto; margin-top:2px; }
 
       /* ── C2-9: 잘못된 입력도 흐름의 일부 — 표 전환 ─────────────── */
       .slide[data-slide="C2-9"] .pf-lead{ font-size:22px; line-height:1.55; font-weight:600; color:var(--ink); margin:0 0 16px; }
@@ -79,8 +103,10 @@
 
       /* ── C2-10: 완료 기준 vs 테스트 — cc-side 아이콘 ───────────── */
       .slide[data-slide="C2-10"] .cc-icon{ width:26px; height:26px; display:block; margin-bottom:8px; }
+      .slide[data-slide="C2-10"] .cc-side h3{ font-size:26px; font-weight:800; }
+      .slide[data-slide="C2-10"] .cc-side li{ font-size:20px; font-weight:500; }
 
-      /* ── C2-11: 실습④ — 우측 다이어그램 신설(has-img-r) ───────── */
+      /* ── C2-11: 실습④ — 우측 다이어그램(SVG 유지, 이미지 지정 없음) ───── */
       .slide[data-slide="C2-11"] .ws-icon{ width:24px; height:24px; }
       .slide[data-slide="C2-11"] .c2n11-visual{ position:absolute; right:64px; top:150px; width:404px; height:460px;
         display:flex; align-items:center; justify-content:center; }
@@ -173,26 +199,9 @@
           </div>
         </div>
       </div>
-      <div class="c21-visual" aria-hidden="true">
-        <svg viewBox="0 0 300 340" width="300" height="340" fill="none">
-          <rect x="60" y="8" width="180" height="60" rx="16" style="fill:var(--blue-soft); stroke:var(--blue-line); stroke-width:1.5"/>
-          <text x="150" y="34" text-anchor="middle" style="fill:var(--ink); font-size:18px; font-weight:800;">기능 실행</text>
-          <text x="150" y="55" text-anchor="middle" style="fill:var(--gray-700); font-size:13px;">같은 화면, 같은 버튼</text>
-          <path d="M150 68 L150 92 M150 92 L92 118 M150 92 L208 118" style="stroke:var(--blue)" stroke-width="2.4" fill="none"/>
-          <rect x="8" y="140" width="128" height="112" rx="16" style="fill:var(--coral-soft); stroke:var(--coral-line); stroke-width:1.5"/>
-          <circle cx="72" cy="176" r="15" style="fill:var(--coral)"/>
-          <path d="M66 170l12 12M78 170l-12 12" style="stroke:var(--on-coral)" stroke-width="2.2" stroke-linecap="round"/>
-          <text x="72" y="212" text-anchor="middle" style="fill:var(--coral-deep); font-size:15px; font-weight:800;">아무도 안 씀</text>
-          <text x="72" y="233" text-anchor="middle" style="fill:var(--ink); font-size:13px;">결과 = 0</text>
-          <rect x="164" y="140" width="128" height="112" rx="16" style="fill:var(--mint-soft); stroke:var(--mint-line); stroke-width:1.5"/>
-          <circle cx="228" cy="176" r="15" style="fill:var(--mint)"/>
-          <path d="M221 177l5 5 9-11" style="stroke:var(--on-mint)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-          <text x="228" y="212" text-anchor="middle" style="fill:var(--mint-deep); font-size:15px; font-weight:800;">사용자가 달라짐</text>
-          <text x="228" y="233" text-anchor="middle" style="fill:var(--ink); font-size:13px;">결과 있음</text>
-          <text x="150" y="284" text-anchor="middle" style="fill:var(--ink); font-size:14px; font-weight:700;">같은 기능도 사용자를</text>
-          <text x="150" y="306" text-anchor="middle" style="fill:var(--ink); font-size:14px; font-weight:700;">못 움직이면 결과가 아닙니다</text>
-        </svg>
-      </div>
+      <figure class="asset-slot asset-slot--support img-slot-r" data-image-purpose="explanatory"
+        data-image-state="expected" data-expected-src="자료/images/s23_result-vs-function-paper-cut-v1-transparent.png"
+        role="img" aria-label="화살이 꽂힌 과녁과 별도로 놓인 기능 블록 더미가 서로 떨어져 있어, 성공은 기능의 수가 아니라 실제 결과로 판단해야 함을 보여준다"></figure>
     </section>
 
     <section class="slide" data-slide="C2-2">
@@ -236,56 +245,27 @@
         <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
         <span class="s-line"></span><div class="s-team">2주차<br>2교시</div>
       </header>
-      <div class="c2n1-visual" aria-hidden="true">
-        <svg viewBox="0 0 380 440" width="380" height="440" fill="none">
-          <text x="190" y="24" text-anchor="middle" style="fill:var(--coral-deep); font-size:16px; font-weight:800;">틀린 방법 — 부품만 늘어남</text>
-          <circle cx="50" cy="72" r="27" style="fill:var(--coral-soft); stroke:var(--coral-line); stroke-width:2"/>
-          <text x="50" y="77" text-anchor="middle" style="fill:var(--coral-deep); font-size:13px; font-weight:800;">바퀴</text>
-          <circle cx="150" cy="72" r="27" style="fill:var(--coral-soft); stroke:var(--coral-line); stroke-width:2"/>
-          <text x="150" y="77" text-anchor="middle" style="fill:var(--coral-deep); font-size:12px; font-weight:800;">바퀴+축</text>
-          <circle cx="250" cy="72" r="27" style="fill:var(--coral-soft); stroke:var(--coral-line); stroke-width:2"/>
-          <text x="250" y="77" text-anchor="middle" style="fill:var(--coral-deep); font-size:13px; font-weight:800;">프레임</text>
-          <circle cx="330" cy="72" r="27" style="fill:var(--coral-soft); stroke:var(--coral-line); stroke-width:2"/>
-          <text x="330" y="77" text-anchor="middle" style="fill:var(--coral-deep); font-size:13px; font-weight:800;">차체</text>
-          <path d="M79 72h44M179 72h44M279 72h24" style="stroke:var(--coral-line); stroke-width:2" stroke-dasharray="4 4"/>
-          <text x="190" y="122" text-anchor="middle" style="fill:var(--ink); font-size:14px;">4단계 모두 탈 수 없음 — 부분 완성일 뿐</text>
-          <path d="M18 152h344" style="stroke:var(--line); stroke-width:1.5"/>
-          <text x="190" y="188" text-anchor="middle" style="fill:var(--mint-deep); font-size:16px; font-weight:800;">맞는 방법 — 매 단계가 완성</text>
-          <circle cx="42" cy="234" r="25" style="fill:var(--mint-soft); stroke:var(--mint-line); stroke-width:2"/>
-          <text x="42" y="239" text-anchor="middle" style="fill:var(--mint-deep); font-size:12px; font-weight:800;">보드</text>
-          <circle cx="122" cy="234" r="25" style="fill:var(--mint-soft); stroke:var(--mint-line); stroke-width:2"/>
-          <text x="122" y="239" text-anchor="middle" style="fill:var(--mint-deep); font-size:12px; font-weight:800;">킥보드</text>
-          <circle cx="202" cy="234" r="25" style="fill:var(--mint-soft); stroke:var(--mint-line); stroke-width:2"/>
-          <text x="202" y="239" text-anchor="middle" style="fill:var(--mint-deep); font-size:12px; font-weight:800;">자전거</text>
-          <circle cx="282" cy="234" r="25" style="fill:var(--mint-soft); stroke:var(--mint-line); stroke-width:2"/>
-          <text x="282" y="239" text-anchor="middle" style="fill:var(--mint-deep); font-size:11px; font-weight:800;">오토바이</text>
-          <circle cx="342" cy="234" r="25" style="fill:var(--mint); stroke:var(--mint); stroke-width:2"/>
-          <text x="342" y="239" text-anchor="middle" style="fill:var(--on-mint); font-size:12px; font-weight:800;">자동차</text>
-          <path d="M67 234h30M147 234h30M227 234h30M307 234h10" style="stroke:var(--mint); stroke-width:2.4"/>
-          <text x="190" y="282" text-anchor="middle" style="fill:var(--ink); font-size:14px;">매 단계마다 실제로 이동을 경험합니다</text>
-          <rect x="28" y="304" width="324" height="118" rx="16" style="fill:var(--blue-soft); stroke:var(--blue-line); stroke-width:1.5"/>
-          <text x="190" y="336" text-anchor="middle" style="fill:var(--blue); font-size:16px; font-weight:800;">결론</text>
-          <text x="190" y="362" text-anchor="middle" style="fill:var(--ink); font-size:14px;">MVP는 가장 작은 기능이 아니라</text>
-          <text x="190" y="384" text-anchor="middle" style="fill:var(--ink); font-size:14px;">핵심 가치가 통하는지 가장 빨리</text>
-          <text x="190" y="406" text-anchor="middle" style="fill:var(--ink); font-size:14px;">확인하는 최소한의 형태입니다</text>
-        </svg>
-      </div>
+      <!-- 2026-07-31 2차: 사용자가 가장 강하게 지적한 장. 커스텀 SVG(겹침 유발) 제거하고
+           §2-4-A 골격대로 재구성 — 좌 55~60% 이미지 슬롯 / 우 3블록. 강조는 4개→2개로 재판정
+           (§0-7): "부분 완성"(코랄)과 결론 문장(블루)만 남기고 "가치"·"이동을 실제로 경험"은
+           문장 안에 자연스럽게 남긴다(중복 강조 제거). -->
+      <figure class="asset-slot asset-slot--hero c2n1-figure" data-image-purpose="explanatory"
+        data-image-state="expected" data-expected-src="자료/images/s24_mvp-skateboard-to-car-paper-cut-v1-transparent.png"
+        role="img" aria-label="완성된 작은 스케이트보드에서 완성된 자동차로 이어지는 성장 화살표가, MVP는 부서진 조각이 아니라 그 자체로 완성된 작은 버전임을 보여준다"></figure>
       <div class="s-full">
         <h2 class="s-title">MVP (Minimum Viable Product)</h2>
-        <div style="display:flex; gap:36px; align-items:flex-start; margin-top:18px;">
-          <div style="flex:1; display:flex; flex-direction:column; gap:20px;">
-            <div>
-              <b style="display:block; font-size:24px; color:var(--ink);">위 — 틀린 방법</b>
-              <p style="margin:6px 0 0; font-size:22px; line-height:1.6; color:var(--gray-700);">자동차를 만들려고 부품부터 내놓으면 사용자는 아무것도 못 합니다.<br>바퀴 2개, 프레임, 차체는 <span class="orange-bold">부분 완성</span>일 뿐 가치가 아닙니다.</p>
-            </div>
-            <div>
-              <b style="display:block; font-size:24px; color:var(--ink);">아래 — 맞는 방법</b>
-              <p style="margin:6px 0 0; font-size:22px; line-height:1.6; color:var(--gray-700);">같은 목적(이동)을 위해 처음부터 쓸 수 있는 형태로 만듭니다.<br>스케이트보드 → 킥보드 → 자전거 → 오토바이 → 자동차<br>매 단계마다 사용자는 이동을 실제로 경험합니다.</p>
-            </div>
-            <div>
-              <b style="display:block; font-size:24px; color:var(--ink);">결론</b>
-              <p style="margin:6px 0 0; font-size:22px; line-height:1.6; color:var(--gray-700);">MVP는 가장 작은 기능이 아니라, <span style="color:var(--blue); font-weight:800;">핵심 가치가 통하는지 가장 빨리 확인할 수 있는 최소한의 형태</span>입니다.</p>
-            </div>
+        <div class="c2n1-blocks">
+          <div class="c2n1-block">
+            <b>위 — 틀린 방법</b>
+            <p>자동차를 만들려고 부품부터 내놓으면 사용자는 아무것도 못 합니다. 바퀴 2개, 프레임, 차체는 <span class="orange-bold">부분 완성</span>일 뿐 가치가 아닙니다.</p>
+          </div>
+          <div class="c2n1-block">
+            <b>아래 — 맞는 방법</b>
+            <p>같은 목적(이동)을 위해 처음부터 쓸 수 있는 형태로 만듭니다.<br>스케이트보드 → 킥보드 → 자전거 → 오토바이 → 자동차<br>매 단계마다 사용자는 이동을 실제로 경험합니다.</p>
+          </div>
+          <div class="c2n1-block">
+            <b>결론</b>
+            <p>MVP는 가장 작은 기능이 아니라, <span style="color:var(--blue); font-weight:800;">핵심 가치가 통하는지 가장 빨리 확인할 수 있는 최소한의 형태</span>입니다.</p>
           </div>
         </div>
       </div>
@@ -302,13 +282,13 @@
         <div class="grid-2">
           <div class="card surface">
             <svg class="c2n2-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" style="stroke:var(--blue)" stroke-width="2"/><circle cx="12" cy="12" r="5" style="stroke:var(--blue)" stroke-width="2"/><circle cx="12" cy="12" r="1.6" style="fill:var(--blue)"/></svg>
-            <b style="display:block; font-size:26px; color:var(--blue);">핵심 기능 하나 고르기</b>
+            <b style="display:block; font-size:26px; font-weight:800; color:var(--blue);">핵심 기능 하나 고르기</b>
             <p class="s-body" style="margin:6px 0 0; font-size:22px;">이번 주 결과를 만드는 동작 1개만 남깁니다.</p>
             <p class="s-body c24-note" style="font-size:22px;">부품(로그인·저장·꾸미기)이 아니라 <span class="orange-bold">이동 그 자체</span>부터 고릅니다. 나머지는 나중 아이디어로 남겨 둡니다.</p>
           </div>
           <div class="card surface" style="background:var(--mint-soft); border-color:var(--mint-line);">
             <svg class="c2n2-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10" style="fill:var(--mint)"/><path d="M7.5 12.5l3 3 6-6.5" style="stroke:var(--on-mint)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
-            <b style="display:block; font-size:26px; color:var(--mint-deep);">첫 작동 확인하기</b>
+            <b style="display:block; font-size:26px; font-weight:800; color:var(--mint-deep);">첫 작동 확인하기</b>
             <p class="s-body" style="margin:6px 0 0; font-size:22px;">오늘 만든 것이 실제로 눌러서 돌아가는지 봅니다.</p>
             <p class="s-body c24-note" style="font-size:22px;"><span class="hl-mint-underline">완성된 뼈대가 아니라 작아도 쓸 수 있는 형태</span>가 목표입니다. 화면에서 눈으로 확인해야 끝난 것입니다.</p>
           </div>
@@ -352,13 +332,13 @@
         <div class="grid-2">
           <div class="card" style="background:var(--mint-soft); border-color:var(--mint-line);">
             <svg class="c24-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10" style="fill:var(--mint)"/><path d="M7.5 12.5l3 3 6-6.5" style="stroke:var(--on-mint)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
-            <b style="display:block; font-size:26px; color:var(--mint-deep);">핵심 기능</b>
+            <b style="display:block; font-size:26px; font-weight:800; color:var(--mint-deep);">핵심 기능</b>
             <p class="s-body" style="margin:6px 0 0;">없으면 가치가 사라지는 것(1개)</p>
             <p class="s-body c24-note">예: 한 줄 입력 → 기록하기. <span class="hl-mint-underline">이것부터 확실히 작동해야</span> 결과가 생깁니다.</p>
           </div>
           <div class="card">
             <svg class="c24-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" style="stroke:var(--blue)" stroke-width="2" stroke-dasharray="3 3"/><path d="M12 8v8M8 12h8" style="stroke:var(--blue)" stroke-width="2" stroke-linecap="round"/></svg>
-            <b style="display:block; font-size:26px; color:var(--blue);">부가 기능</b>
+            <b style="display:block; font-size:26px; font-weight:800; color:var(--blue);">부가 기능</b>
             <p class="s-body" style="margin:6px 0 0;">없어도 가치가 유지되는 것</p>
             <p class="s-body c24-note">예: 꾸미기(테마·색상) · 검색 · 정렬 · 태그 · 알림 · 공유 · 통계 그래프 · 다크모드 · 내보내기. 있으면 편리하지만 없어도 결과는 그대로 유지되므로 <span class="hl-mint-text">지금 버전</span>엔 넣지 않습니다.</p>
           </div>
@@ -388,19 +368,9 @@
           </div>
         </div>
       </div>
-      <div class="c25-visual" aria-hidden="true">
-        <svg viewBox="0 0 300 360" width="300" height="360" fill="none">
-          <path d="M40 20h220l-80 90v40l-60 30v-70z" style="fill:var(--blue-soft); stroke:var(--blue-line); stroke-width:1.6"/>
-          <text x="150" y="52" text-anchor="middle" style="fill:var(--blue); font-size:15px; font-weight:800;">떠오르는 아이디어들</text>
-          <path d="M150 182v22" style="stroke:var(--blue); stroke-width:2.4"/>
-          <rect x="20" y="212" width="260" height="42" rx="10" style="fill:var(--mint-soft); stroke:var(--mint-line); stroke-width:1.6"/>
-          <text x="150" y="238" text-anchor="middle" style="fill:var(--mint-deep); font-size:16px; font-weight:800;">이번에 만들 것</text>
-          <rect x="20" y="264" width="260" height="42" rx="10" style="fill:var(--coral-soft); stroke:var(--coral-line); stroke-width:1.6"/>
-          <text x="150" y="290" text-anchor="middle" style="fill:var(--coral-deep); font-size:16px; font-weight:800;">이번엔 안 만들 것</text>
-          <rect x="20" y="316" width="260" height="42" rx="10" style="fill:var(--white); stroke:var(--blue-line-strong); stroke-width:1.6"/>
-          <text x="150" y="342" text-anchor="middle" style="fill:var(--blue); font-size:16px; font-weight:800;">나중 아이디어</text>
-        </svg>
-      </div>
+      <figure class="asset-slot asset-slot--support img-slot-r" data-image-purpose="explanatory"
+        data-image-state="expected" data-expected-src="자료/images/s27_scope-three-slots-paper-cut-v1-transparent.png"
+        role="img" aria-label="나란히 놓인 세 개의 칸 중 하나만 작게 채워지고 나머지는 적거나 비어 있어, 범위를 반드시·있으면 좋음·나중으로 나누고 필수 칸을 작게 유지함을 보여준다"></figure>
     </section>
 
     <section class="slide w2-practice has-img-r" data-slide="C2-6">
@@ -414,34 +384,20 @@
         <div class="pr-steps">
           <div class="work-step">
             <span class="n">1</span>
-            <b><svg class="ws-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 5h16v10H9l-4 4v-4H4V5z" style="stroke:var(--mint-deep)" stroke-width="2" stroke-linejoin="round" fill="none"/></svg> ChatGPT에 기능 후보를 나열하게 합니다.</b>
+            <b><svg class="ws-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 5h16v10H9l-4 4v-4H4V5z" style="stroke:var(--mint-deep)" stroke-width="2" stroke-linejoin="round" fill="none"/></svg><span>ChatGPT에 기능 후보를 나열하게 합니다.</span></b>
             <span class="desc"><p>"이 서비스에 넣을 수 있는 기능을 10개 나열해줘"처럼 물어봅니다. 화면·버튼·데이터 단위로 구체적으로 물으면 더 쓸모 있는 답이 나옵니다.</p></span>
           </div>
           <div class="work-step">
             <span class="n">2</span>
-            <b><svg class="ws-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 7h14M9 7V5h6v2M7 7l1 12h8l1-12" style="stroke:var(--mint-deep)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg> 이번 주 핵심이 아닌 것 1개를 골라 제거합니다.</b>
+            <b><svg class="ws-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 7h14M9 7V5h6v2M7 7l1 12h8l1-12" style="stroke:var(--mint-deep)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg><span>이번 주 핵심이 아닌 것 1개를 골라 제거합니다.</span></b>
             <span class="desc"><p>예: 태그 기능·정렬 기능·알림 기능처럼 없어도 결과가 그대로 유지되는 것을 고릅니다. 왜 뺐는지 한 줄 이유도 함께 남깁니다.</p></span>
           </div>
         </div>
         <div class="pr-done"><svg class="pr-done-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10" style="fill:var(--mint)"/><path d="M7.5 12.5l3 3 6-6.5" style="stroke:var(--on-mint)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg><span class="pr-tag">완성</span><p>제외 목록에 뺀 기능과 이유 한 줄이 남아 있으면 완성입니다</p></div>
       </div>
-      <div class="c26-visual" aria-hidden="true">
-        <svg viewBox="0 0 300 360" width="300" height="360" fill="none">
-          <rect x="30" y="16" width="240" height="46" rx="12" style="fill:var(--blue-soft); stroke:var(--blue-line); stroke-width:1.5"/>
-          <text x="150" y="45" text-anchor="middle" style="fill:var(--ink); font-size:16px; font-weight:700;">기능 A — 기록하기</text>
-          <rect x="30" y="72" width="240" height="46" rx="12" style="fill:var(--blue-soft); stroke:var(--blue-line); stroke-width:1.5"/>
-          <text x="150" y="101" text-anchor="middle" style="fill:var(--ink); font-size:16px; font-weight:700;">기능 B — 목록 보기</text>
-          <rect x="30" y="128" width="240" height="46" rx="12" style="fill:var(--coral-soft); stroke:var(--coral-line); stroke-width:1.5"/>
-          <text x="150" y="157" text-anchor="middle" style="fill:var(--coral-deep); font-size:16px; font-weight:700; text-decoration:line-through;">기능 C — 태그 분류</text>
-          <rect x="30" y="184" width="240" height="46" rx="12" style="fill:var(--blue-soft); stroke:var(--blue-line); stroke-width:1.5"/>
-          <text x="150" y="213" text-anchor="middle" style="fill:var(--ink); font-size:16px; font-weight:700;">기능 D — 알림</text>
-          <path d="M270 151h20v146h-52" style="stroke:var(--coral-deep); stroke-width:2.4" stroke-dasharray="4 4" fill="none"/>
-          <path d="M246 289l-10 8 10 8" style="stroke:var(--coral-deep); stroke-width:2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-          <rect x="70" y="256" width="160" height="70" rx="14" style="fill:var(--coral-soft); stroke:var(--coral-line); stroke-width:1.6"/>
-          <path d="M120 276h60M133 276v34M167 276v34M126 276l4 40h40l4-40" style="stroke:var(--coral-deep); stroke-width:2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-          <text x="150" y="342" text-anchor="middle" style="fill:var(--coral-deep); font-size:15px; font-weight:800;">제외 목록</text>
-        </svg>
-      </div>
+      <figure class="asset-slot asset-slot--support img-slot-r" data-image-purpose="explanatory"
+        data-image-state="expected" data-expected-src="자료/images/s28_remove-one-feature-paper-cut-v1-transparent.png"
+        role="img" aria-label="쌓여 있는 표식 더미에서 하나만 화살표를 따라 옆으로 빠져나가는 모습이, 기능 하나를 의도적으로 골라 빼는 연습을 보여준다"></figure>
     </section>
 
     <section class="slide claim-rationale" data-slide="C2-7">
@@ -460,7 +416,14 @@
           <span class="fl-arrow" aria-hidden="true">→</span>
           <div class="uf-chip"><span class="timing">3</span><b>무엇을 보는지</b></div>
         </div>
-        <p class="s-body">예: 할 일 기록 앱이라면 "할 일을 입력하고 → 추가 버튼을 누르고 → 목록에 새 항목이 보인다"가 하나의 User Flow입니다.</p>
+        <div class="uf-example">
+          <span class="uf-ex-tag">예: 할 일 기록 앱</span>
+          <span class="uf-ex-chip">할 일을 입력</span>
+          <span class="fl-arrow" aria-hidden="true">→</span>
+          <span class="uf-ex-chip">추가 버튼을 누름</span>
+          <span class="fl-arrow" aria-hidden="true">→</span>
+          <span class="uf-ex-chip is-result">목록에 새 항목이 보임</span>
+        </div>
         <p class="callout">
           <svg class="uf-callout-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10" style="fill:var(--mint)"/><path d="M7.5 12.5l3 3 6-6.5" style="stroke:var(--on-mint)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
           <span class="hl-mint-mark">화면의 모든 기능이 아니라 대표 한 길을 먼저 그립니다</span> — 예외 흐름은 필요할 때만 뒤에서 더합니다.
@@ -493,8 +456,17 @@
             <b>결과</b><span>오늘 기록에 한 줄 추가 → 화면에 새 기록이 보임</span>
           </div>
         </div>
-        <p class="s-body" style="margin-top:20px;">입력이 있어야 실행할 수 있고, 실행해야 결과가 생기고, 결과가 눈에 보여야 변화입니다 — 이 순서를 건너뛰면 사용자는 무엇이 됐는지 알 수 없습니다.</p>
-        <p class="s-body" style="margin-top:12px;">예를 들어 입력만 받고 실행 버튼이 없으면 아무 일도 일어나지 않고, 실행은 되는데 화면에 결과가 안 보이면 사용자는 성공했는지조차 알 수 없습니다. 네 단계를 전부 눈으로 확인할 수 있어야 완성입니다.</p>
+        <p class="s-body">입력이 있어야 실행할 수 있고, 실행해야 결과가 생기고, 결과가 눈에 보여야 변화입니다 — <span class="hl-mint-underline">세 단계를 전부 눈으로 확인할 수 있어야 완성</span>입니다.</p>
+        <div class="c28-fails">
+          <div class="itr-warncard">
+            <svg class="itr-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10" style="stroke:var(--coral-deep)" stroke-width="2" fill="none"/><path d="M12 7v6M12 16.5v.1" style="stroke:var(--coral-deep)" stroke-width="2.2" stroke-linecap="round"/></svg>
+            <span><span class="tag">실행 버튼이 없으면</span><p>입력만 받고 끝 — 아무 일도 일어나지 않습니다.</p></span>
+          </div>
+          <div class="itr-warncard">
+            <svg class="itr-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10" style="stroke:var(--coral-deep)" stroke-width="2" fill="none"/><path d="M12 7v6M12 16.5v.1" style="stroke:var(--coral-deep)" stroke-width="2.2" stroke-linecap="round"/></svg>
+            <span><span class="tag">결과가 안 보이면</span><p>실행은 되는데 사용자는 성공했는지 알 수 없습니다.</p></span>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -578,12 +550,12 @@
         <div class="pr-steps">
           <div class="work-step">
             <span class="n">1</span>
-            <b><svg class="ws-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 20l1-4L15 6l3 3L8 19l-4 1z" style="stroke:var(--mint-deep)" stroke-width="2" stroke-linejoin="round" fill="none"/></svg> 핵심 기능의 대표 흐름을 3~5단계로 적습니다.</b>
+            <b><svg class="ws-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 20l1-4L15 6l3 3L8 19l-4 1z" style="stroke:var(--mint-deep)" stroke-width="2" stroke-linejoin="round" fill="none"/></svg><span>핵심 기능의 대표 흐름을 3~5단계로 적습니다.</span></b>
             <span class="desc"><p>예: 입력 → 저장 버튼 클릭 → 목록에 추가 확인처럼 순서대로 씁니다. 이 순서는 이후 화면·구현·테스트에서 그대로 다시 씁니다.</p></span>
           </div>
           <div class="work-step">
             <span class="n">2</span>
-            <b><svg class="ws-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2" style="stroke:var(--mint-deep)" stroke-width="2" fill="none"/><path d="M8 8h8M8 12l1.5 1.5L12 11M8 16h5" style="stroke:var(--mint-deep)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg> 완료 기준 한 줄을 함께 적습니다.</b>
+            <b><svg class="ws-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2" style="stroke:var(--mint-deep)" stroke-width="2" fill="none"/><path d="M8 8h8M8 12l1.5 1.5L12 11M8 16h5" style="stroke:var(--mint-deep)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg><span>완료 기준 한 줄을 함께 적습니다.</span></b>
             <span class="desc"><p>"무엇을 누르면 무엇이 보인다"는 형태로, 만들기 전에 미리 적어 둡니다. 화면을 만든 뒤 이 문장과 비교해 완료 여부를 판정합니다.</p></span>
           </div>
         </div>

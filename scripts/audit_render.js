@@ -105,7 +105,9 @@
     /* 3b) 화면 깨짐 — 넘침 · 본문바닥 초과 · 요소 겹침 · 단어 중간 줄바꿈 */
     var broken = { overflow: [], belowFloor: [], overlap: [], wordBreak: [] };
     [].slice.call(sl.querySelectorAll('*')).forEach(function (e) {
-      if (e.closest('.s-head')) return;
+      /* .s-pageno는 바닥선(666) 아래가 정상 위치인 푸터다. 제외하지 않으면
+         전 슬라이드가 `s-pageno@698`로 잡혀 진짜 결함이 묻힌다. */
+      if (e.closest('.s-head') || e.classList.contains('s-pageno') || e.closest('.s-pageno')) return;
       if (e.scrollHeight - e.clientHeight > 4 && e.clientHeight > 20) {
         var ocs = getComputedStyle(e);
         if (ocs.overflow === 'hidden' || ocs.overflowY === 'hidden' || ocs.overflow === 'auto') {
@@ -119,8 +121,15 @@
       for (var q = 0; q < e.childNodes.length; q++) {
         if (e.childNodes[q].nodeType === 3 && e.childNodes[q].textContent.trim()) hasOwnText = true;
       }
-      if (hasOwnText && by > BODY_BOT + 2 && by < H) {
-        broken.belowFloor.push((e.className || e.tagName).toString().slice(0, 32) + '@' + Math.round(by));
+      /* ⚠️ 2026-07-31 버그 수정: 종전에는 `by < H`(=720) 조건이 붙어 있어
+         슬라이드 밖으로 완전히 나간 요소(y > 720)를 오히려 놓쳤다. 가장 심각한
+         경우가 검출에서 빠져 워커들이 "바닥선 초과 0"을 보고하는 원인이 됐다
+         (실측: A5F2 y=835 · C4-15 y=1200이 전부 무시됐다).
+         이제 바닥선 초과와 슬라이드 이탈을 나눠서 잡는다. */
+      if (hasOwnText && by > BODY_BOT + 2 && by < 4000) {
+        var tag = by > H ? '@이탈' : '@';
+        broken.belowFloor.push((e.className || e.tagName).toString().slice(0, 32) + tag + Math.round(by));
+        if (by > H) broken.offSlide = (broken.offSlide || 0) + 1;
       }
     });
     /* 단어 중간 줄바꿈: 텍스트 노드가 2줄 이상이고 줄 경계가 공백이 아닌 경우 근사 검출 */
@@ -224,6 +233,7 @@
       sparse: sparse,
       broken: {
         ovf: broken.overflow.length, below: broken.belowFloor.length,
+        off: broken.offSlide || 0,          /* 슬라이드(720px) 밖으로 나간 요소 — 최악 등급 */
         lap: broken.overlap.length, wb: broken.wordBreak.length,
         d: broken.belowFloor.concat(broken.overlap).slice(0, 3).concat(broken.wordBreak.slice(0, 2))
       },

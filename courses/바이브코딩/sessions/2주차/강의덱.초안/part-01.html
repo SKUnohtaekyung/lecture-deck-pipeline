@@ -6,19 +6,34 @@
          data-image-state 제거) 제거하고 레이아웃을 다시 짠다.
          ───────────────────────────────────────────────────────────── */
 
-      /* ── M1: rm-track 6단계 desc 추가 후 카드 내부 여백 정리 ── */
+      /* ── 안전영역 공통: x∈[64,1216] y∈[118,666]. 이미지 슬롯을 넣을 때는
+         반드시 짝이 되는 본문 인셋도 함께 좁힌다(안 좁히면 100% 겹친다).
+         폰트 위계(2차 웨이브 사용자 결정): 박스·카드 제목 26px/800 ·
+         박스 안 설명문 20px/500 · 본문 문장 22px 하한. 전역 규칙이 더 뒤에
+         선언된 개별 규칙(예: .rm-step b)에 밀려 위계가 안 생기는 사고가
+         1차에서 있었으므로, 이 파일의 모든 박스 title/desc 쌍은 슬라이드
+         셀렉터로 다시 못박는다. ── */
+
+      /* ── M1: rm-track 6단계 위계 + 여백 정리 ── */
       .slide[data-slide="M1"] .rm-track{ margin-top:32px; }
       .slide[data-slide="M1"] .rm-step{ padding:16px 8px; gap:8px; }
-      .slide[data-slide="M1"] .rm-step b{ font-size:22px; line-height:1.2; }
-      .slide[data-slide="M1"] .rm-step .desc p{ margin:0; font-size:22px; line-height:1.22; color:var(--gray-700); }
+      .slide[data-slide="M1"] .rm-step b{ font-size:26px; font-weight:800; line-height:1.2; }
+      .slide[data-slide="M1"] .rm-step .desc p{ margin:0; font-size:20px; font-weight:500; line-height:1.3; color:var(--gray-700); }
       .slide[data-slide="M1"] .rm-step.is-goal .desc p{ color:var(--on-mint); }
 
-      /* ── C1-1: 박스 대비를 해시태그 자유 배치로 교체 ── */
+      /* ── C1-N1: 기획 전체 흐름 — 같은 rm-step 위계 적용 ── */
+      .slide[data-slide="C1-N1"] .rm-step b{ font-size:26px; font-weight:800; line-height:1.2; }
+      .slide[data-slide="C1-N1"] .rm-step .desc p{ margin:0; font-size:20px; font-weight:500; line-height:1.3; color:var(--gray-700); }
+
+      /* ── C1-1: 박스 대비를 해시태그 자유 배치로 교체 + 이미지 슬롯 복원(2차) ──
+         1차에서 지운 SVG를 걷어내고 제작지시서 s07 두 장을 다시 건다.
+         좌우 340×268을 슬라이드 스코프로 명시 고정해 asset-slot--support ×
+         img-slot-b2-* 캐스케이드 모호성 없이 확정한다. */
       .slide[data-slide="C1-1"] .cc-side{ background:transparent; border:none; box-shadow:none;
         padding:0 8px; gap:8px; align-self:center; }
-      .slide[data-slide="C1-1"] .cc-side h3{ font-size:24px; margin:0; }
+      .slide[data-slide="C1-1"] .cc-side h3{ font-size:26px; font-weight:800; margin:0; }
       .slide[data-slide="C1-1"] .cc-side ul{ display:none; }
-      .slide[data-slide="C1-1"] .c11-flow{ margin:0; font-size:23px; font-weight:800; line-height:1.3; color:var(--ink); }
+      .slide[data-slide="C1-1"] .c11-flow{ margin:0; font-size:22px; font-weight:700; line-height:1.3; color:var(--ink); }
       .slide[data-slide="C1-1"] .c11-tags{ display:flex; flex-wrap:wrap; gap:8px 10px; margin:6px 0 0; }
       .slide[data-slide="C1-1"] .c11-tag{ display:inline-block; padding:8px 16px; border-radius:999px;
         font-size:22px; font-weight:800; background:var(--blue-soft); border:1px solid var(--blue-line);
@@ -27,65 +42,120 @@
       .slide[data-slide="C1-1"] .c11-tag:nth-child(3){ transform:rotate(-1deg); }
       .slide[data-slide="C1-1"] .c11-tag.is-new{ background:var(--mint-soft); border-color:var(--mint-line); color:var(--mint-deep); }
       .slide[data-slide="C1-1"] .img-slot-b2-left,
-      .slide[data-slide="C1-1"] .img-slot-b2-right{ border-style:solid; border-color:var(--blue-line-strong);
-        background:var(--white); padding:12px; }
+      .slide[data-slide="C1-1"] .img-slot-b2-right{ position:absolute; top:392px;
+        width:340px; height:268px; max-width:340px; max-height:268px; }
+      .slide[data-slide="C1-1"] .img-slot-b2-left{ left:64px; right:auto; }
+      .slide[data-slide="C1-1"] .img-slot-b2-right{ right:64px; left:auto; }
 
-      /* ── C1-2: 타깃·페인포인트 정의 + 중앙 시각자료 ── */
-      .slide[data-slide="C1-2"] .c12-art{ margin:24px 0 0; width:100%; height:340px; }
-      .slide[data-slide="C1-2"] .c12-art svg{ width:100%; height:100%; display:block; }
+      /* ── C1-2: 타깃·페인포인트 정의 확장(정보량 지적) + SLOT-C 이미지 복원(2차) ── */
+      .slide[data-slide="C1-2"] .tg-defs{ gap:16px; margin-top:20px; }
+      .slide[data-slide="C1-2"] .tg-def{ align-items:flex-start; gap:14px; }
+      .slide[data-slide="C1-2"] .tg-def .tg-k{ flex:0 0 132px; font-size:26px; font-weight:800; }
+      .slide[data-slide="C1-2"] .tg-def p{ font-size:22px; line-height:1.5; }
+      .slide[data-slide="C1-2"] .tg-def .tg-eg{ display:block; margin-top:6px; font-size:20px;
+        font-weight:500; line-height:1.4; color:var(--gray-700); }
+      /* ⚠️ top은 .s-full 기준이다(.s-full{top:118px}). 슬라이드 절대좌표 352px를 쓰려면
+   352-118=234를 줘야 한다. 종전 352px는 실제 470px이 되어 하단이 750px로 이탈했다. */
+.slide[data-slide="C1-2"] .img-slot-c{ position:absolute; left:390px; right:auto; top:234px;
+        width:500px; height:280px; max-width:500px; max-height:280px; }
 
-      /* ── C1-3: 동심원 다이어그램이 이미 시각자료 — 중복 빈 슬롯 제거 + 바닥선 강화 ── */
-      .slide[data-slide="C1-3"] .ct-figure{ bottom:54px; }
-      .slide[data-slide="C1-3"] .fig-note .card{ padding:16px 18px; }
+      /* ── C1-N2: 나쁜 예=코랄 / 좋은 예=블루 색 구분(사용자 화면 지적) ── */
+      .slide[data-slide="C1-N2"] .cc-side h3{ font-size:26px; font-weight:800; }
+      .slide[data-slide="C1-N2"] .cc-side.is-bad{ background:var(--coral-soft); border:1px solid var(--coral-line); }
+      .slide[data-slide="C1-N2"] .cc-side.is-bad h3{ color:var(--coral-deep); }
+      .slide[data-slide="C1-N2"] .cc-side.is-good{ background:var(--blue-soft); border:1px solid var(--blue-line); }
+      .slide[data-slide="C1-N2"] .cc-side.is-good h3{ color:var(--blue); }
 
-      /* ── C1-4: 중앙 메시지 폭을 이미지 자리만큼 좁혀 겹침 방지 ── */
+      /* ── C1-3: 박스 카드형 폐기 → 라벨형 목록 + 인물 예시 구체화 + SLOT-R 이미지.
+         1차 실측 바닥선 818px(최악)였다 — 우측을 이미지에 내주고 폭을 좁혀
+         세로 여유를 확보한 뒤 bottom:54(=y666)로 강제한다. */
+      .slide[data-slide="C1-3"] .ct-figure{ right:424px; bottom:54px; }
+      .slide[data-slide="C1-3"] .fig-stage{ grid-template-columns:1fr 300px; gap:22px; }
+      .slide[data-slide="C1-3"] .viz-concentric{ width:300px; height:300px; }
+      .slide[data-slide="C1-3"] .c13-note{ display:flex; flex-direction:column; gap:18px; }
+      .slide[data-slide="C1-3"] .c13-item{ display:flex; flex-direction:column; gap:3px; }
+      .slide[data-slide="C1-3"] .c13-k{ font-size:26px; font-weight:800; color:var(--blue); }
+      .slide[data-slide="C1-3"] .c13-item p{ margin:0; font-size:20px; font-weight:500; line-height:1.42; color:var(--gray-700); }
+      .slide[data-slide="C1-3"] .c13-item strong{ color:var(--ink); font-weight:800; }
+      .slide[data-slide="C1-3"] .img-slot-r{ position:absolute; right:64px; top:150px;
+        width:340px; height:390px; max-width:340px; max-height:390px; }
+
+      /* ── C1-4: 중앙 메시지 폭을 이미지 자리만큼 좁혀 겹침 방지 + SLOT-R 이미지 복원(2차) ── */
       .slide[data-slide="C1-4"] .center-msg{ max-width:700px; }
       .slide[data-slide="C1-4"] .cm-title{ font-size:38px; line-height:1.32; margin-bottom:18px; }
       .slide[data-slide="C1-4"] .cm-sub{ font-size:22px; line-height:1.5; margin-bottom:10px; }
+      .slide[data-slide="C1-4"] .img-slot-r{ position:absolute; right:64px; top:150px;
+        width:340px; height:390px; max-width:340px; max-height:390px; }
 
-      /* ── C1-5: 우측 시각자료 채움(퍼즐 조각→한 문장) ── */
-      .slide[data-slide="C1-5"] .c15-art{ width:100%; height:100%; }
-      .slide[data-slide="C1-5"] .c15-art svg{ width:100%; height:100%; display:block; }
-      .slide[data-slide="C1-5"] .pr-steps .work-step .desc{ display:block; margin-top:2px; font-size:22px; line-height:1.4; color:var(--gray-700); }
+      /* ── A1F1: 저밀도 해소(사용자 지적: "디자인·내용 풍부하게 — 전혀 안 됨") —
+         리드 문장 + 위계 + 우측 깔때기 시각자료를 새로 건다. */
+      .slide[data-slide="A1F1"] .s-full.steps-full{ bottom:54px; right:420px; }
+      .slide[data-slide="A1F1"] .a1f1-lead{ margin:8px 0 16px; font-size:22px; line-height:1.5; color:var(--gray-700); }
+      .slide[data-slide="A1F1"] .eval-steps .work-step b{ font-size:26px; font-weight:800; }
+      .slide[data-slide="A1F1"] .eval-steps .work-step .desc{ display:block; margin-top:3px; font-size:20px; font-weight:500; line-height:1.4; color:var(--gray-700); }
+      .slide[data-slide="A1F1"] .a1f1-art{ position:absolute; right:64px; top:150px; width:340px; height:390px; }
 
-      /* ── A1F1: 바닥선 666 강제(kit 기본 steps-full은 676까지 하강) ── */
-      .slide[data-slide="A1F1"] .s-full.steps-full{ bottom:54px; }
-      .slide[data-slide="A1F1"] .eval-steps .work-step .desc{ display:block; margin-top:2px; font-size:22px; line-height:1.35; color:var(--gray-700); }
+      /* ── C1-5: 우측 시각자료를 실제 제작지시서 이미지(s11)로 교체(2차).
+         제목을 26px로 올리며 늘어난 높이를 실습 단계·완성 박스 여백에서
+         걷어내 바닥선(666)을 지킨다(실측: 조정 전 두 번째 완성 박스가 y=689). */
+      .slide[data-slide="C1-5"] .pr-steps{ gap:8px; margin-top:12px; }
+      .slide[data-slide="C1-5"] .pr-steps .work-step{ padding:9px 20px; }
+      .slide[data-slide="C1-5"] .pr-steps .work-step b{ font-size:26px; font-weight:800; line-height:1.28; }
+      .slide[data-slide="C1-5"] .pr-steps .work-step .desc{ display:block; margin-top:2px; font-size:20px; font-weight:500; line-height:1.3; color:var(--gray-700); }
+      .slide[data-slide="C1-5"] .pr-done{ margin-top:6px; padding:9px 20px; }
+      .slide[data-slide="C1-5"] .pr-done p{ line-height:1.32; }
+      .slide[data-slide="C1-5"] .img-slot-r{ position:absolute; right:64px; top:150px;
+        width:340px; height:390px; max-width:340px; max-height:390px; }
 
-      /* ── C1-11: 실습② 박스 축소 + 줄글 설명 + 새 폴더 시각자료 ── */
-      .slide[data-slide="C1-11"] .c111-body{ display:flex; align-items:center; gap:28px; margin:16px 0 0; }
-      .slide[data-slide="C1-11"] .c111-steps{ flex:1 1 0; min-width:0; display:flex; flex-direction:column; gap:12px; }
-      .slide[data-slide="C1-11"] .c111-steps .work-step{ padding:14px 18px; }
-      .slide[data-slide="C1-11"] .c111-steps .work-step .desc{ display:block; margin-top:4px; font-size:22px; line-height:1.4; color:var(--gray-700); }
-      .slide[data-slide="C1-11"] .c111-art{ flex:0 0 250px; width:250px; height:250px; margin:0; }
-      .slide[data-slide="C1-11"] .c111-art svg{ width:100%; height:100%; display:block; }
-
-      /* ── C1-5: 실습 완성 블록 2개 + 확장 desc가 바닥선을 살짝 넘어 조인다 ── */
-      .slide[data-slide="C1-5"] .pr-done{ margin-top:8px; }
       /* ── C1-6: 좋은 예 3항목 추가로 sl-case가 바닥선을 넘어 여백을 조인다 ── */
       .slide[data-slide="C1-6"] .sl-case{ padding:14px 22px; gap:6px; }
       .slide[data-slide="C1-6"] .sl-case p{ line-height:1.32; }
-      /* ── C1-7: 5단계 + 하단 결론이 원래도 바닥선을 넘던 장(실측 768) — 여백을 조여 해소 ── */
-      .slide[data-slide="C1-7"] .eval-steps{ gap:5px; }
-      .slide[data-slide="C1-7"] .eval-steps .work-step{ padding:5px 18px; }
-      .slide[data-slide="C1-7"] .eval-steps .work-step span{ font-size:22px; line-height:1.26; }
-      .slide[data-slide="C1-7"] .callout.c17-foot{ margin-top:4px; padding:8px 18px; }
+      .slide[data-slide="C1-6"] .sl-case h3{ font-size:26px; font-weight:800; }
+
+      /* ── C1-7: 6칸 균등 나열 폐기(수정요청서) → 좁힌 단계 목록 + 우측 깔때기
+         이미지(사용자 지적: "박스 가로 길이가 너무 길다 → 짧게 하고 이미지 넣어라"). */
+      .slide[data-slide="C1-7"] .s-full.steps-full.fill{ right:420px; bottom:54px; }
+      .slide[data-slide="C1-7"] .eval-steps{ gap:4px; }
+      .slide[data-slide="C1-7"] .eval-steps .work-step{ padding:4px 18px; }
+      .slide[data-slide="C1-7"] .eval-steps .work-step b{ font-size:26px; font-weight:800; line-height:1.2; }
+      .slide[data-slide="C1-7"] .eval-steps .work-step span{ font-size:20px; font-weight:500; line-height:1.2; }
+      .slide[data-slide="C1-7"] .callout.c17-foot{ margin-top:2px; padding:6px 18px; }
+      .slide[data-slide="C1-7"] .c17-art{ position:absolute; right:64px; top:150px; width:340px; height:390px; }
 
       /* ── A1F3: 화면 목업 안 실제 값 텍스트는 22px 하한을 지킨다(창 제목바·
          필드 라벨은 UI 크롬이라 예외, 값 텍스트는 본문으로 취급) ── */
       .slide[data-slide="A1F3"] .sm-part p{ font-size:22px; }
 
-      /* ── C1-12: ps-mid 시각자료 채움(대화는 흩어지고 파일은 남는다) ──
+      /* ── C1-9: 할 수 있는 것 / 범위 밖 항목의 제목·설명 위계 ── */
+      .slide[data-slide="C1-9"] .an2-item b{ font-size:26px; font-weight:800; }
+      .slide[data-slide="C1-9"] .an2-item span{ font-size:20px; font-weight:500; line-height:1.3; }
+
+      /* ── C1-11: 실습② 박스 축소 + 줄글 설명 + 새 폴더 시각자료 ── */
+      .slide[data-slide="C1-11"] .c111-body{ display:flex; align-items:center; gap:28px; margin:16px 0 0; }
+      .slide[data-slide="C1-11"] .c111-steps{ flex:1 1 0; min-width:0; display:flex; flex-direction:column; gap:12px; }
+      .slide[data-slide="C1-11"] .c111-steps .work-step{ padding:14px 18px; }
+      .slide[data-slide="C1-11"] .c111-steps .work-step b{ font-size:26px; font-weight:800; }
+      .slide[data-slide="C1-11"] .c111-steps .work-step .desc{ display:block; margin-top:4px; font-size:20px; font-weight:500; line-height:1.4; color:var(--gray-700); }
+      .slide[data-slide="C1-11"] .c111-art{ flex:0 0 250px; width:250px; height:250px; margin:0; }
+      .slide[data-slide="C1-11"] .c111-art svg{ width:100%; height:100%; display:block; }
+
+      /* ── C1-12: ps-mid 시각자료 채움(대화는 흩어지고 파일은 남는다) + 위계.
          asset-slot 클래스를 걷어냈으므로(이미지 계약의 decorative 예산 1/part
          회피) shell의 .asset-slot--support.ps-mid-img 결합 규칙이 더는 안 걸린다.
-         같은 시각 결과(260×260·정적 배치)를 이 스코프에서 직접 재현한다. */
-      /* 실측(브라우저): shell의 .ps-grid{min-height:0}과 flex-grow:0 조합이
-         grid 자체 배정 높이를 218px로 눌러도, stretch된 자식(ps-mid)이 더
-         크면 grid 밖으로 78px 튀어나와 callout과 겹쳤다(교차 실측 확인).
-         이미지 자체를 grid 배정 높이 안에 들어가는 크기로 줄여 해소한다. */
+         같은 시각 결과(150×150·정적 배치)를 이 스코프에서 직접 재현한다.
+         실측(브라우저): shell의 .ps-grid{min-height:0}과 flex-grow:0 조합이
+         grid 자체 배정 높이를 눌러도 stretch된 자식이 더 크면 grid 밖으로
+         튀어나와 callout과 겹쳤다(사용자 지적: "박스끼리 겹침") — 이미지를
+         grid 배정 높이 안에 들어가는 크기로 줄여 해소한다. */
       .slide[data-slide="C1-12"] .ps-mid-img{ width:150px; height:150px; margin:0;
         display:grid; place-items:center; overflow:hidden; border-radius:var(--r-lg); }
       .slide[data-slide="C1-12"] .ps-mid-img svg{ width:100%; height:100%; display:block; }
+      .slide[data-slide="C1-12"] .ps-col h3{ font-size:26px; font-weight:800; }
+      .slide[data-slide="C1-12"] .ps-col .ps-line{ font-size:20px; font-weight:500; }
+
+      /* ── C1-14: 준비 단계 위계 ── */
+      .slide[data-slide="C1-14"] .rd-step b{ font-size:26px; font-weight:800; }
+      .slide[data-slide="C1-14"] .rd-step .rd-desc{ font-size:20px; font-weight:500; }
     </style>
 
     <!-- ============ P1 · 1교시 간지 (1-간지) ============ -->
@@ -149,42 +219,12 @@
           </div>
         </div>
       </div>
-      <figure class="img-slot-b2-left viz-c11-loop-left"
-        role="img" aria-label="요청·확인·수정 세 단계가 원을 그리며 반복되는 지난주 루프 다이어그램">
-        <svg width="100%" height="100%" viewBox="0 0 560 268" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <rect x="30" y="96" width="130" height="56" rx="28" style="fill:var(--blue-soft);stroke:var(--blue-line-strong)"/>
-          <text x="95" y="130" text-anchor="middle" font-size="21" font-weight="800" style="fill:var(--blue)">요청</text>
-          <rect x="215" y="96" width="130" height="56" rx="28" style="fill:var(--blue-soft);stroke:var(--blue-line-strong)"/>
-          <text x="280" y="130" text-anchor="middle" font-size="21" font-weight="800" style="fill:var(--blue)">확인</text>
-          <rect x="400" y="96" width="130" height="56" rx="28" style="fill:var(--blue-soft);stroke:var(--blue-line-strong)"/>
-          <text x="465" y="130" text-anchor="middle" font-size="21" font-weight="800" style="fill:var(--blue)">수정</text>
-          <path d="M160 124 L211 124" style="stroke:var(--blue);fill:none" stroke-width="4" marker-end="url(#c11a1)"/>
-          <path d="M345 124 L396 124" style="stroke:var(--blue);fill:none" stroke-width="4" marker-end="url(#c11a1)"/>
-          <path d="M465 152 C 465 224, 95 224, 95 156" style="fill:none;stroke:var(--blue)" stroke-width="4" marker-end="url(#c11a1)"/>
-          <defs><marker id="c11a1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" style="fill:var(--blue)"/></marker></defs>
-        </svg>
-      </figure>
-      <figure class="img-slot-b2-right viz-c11-loop-right"
-        role="img" aria-label="이번 주에는 결정 단계가 앞에 붙고 하네스·에이전트가 함께 도는 확장된 루프 다이어그램">
-        <svg width="100%" height="100%" viewBox="0 0 560 268" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <rect x="15" y="92" width="110" height="56" rx="28" style="fill:var(--mint);stroke:var(--mint-deep)"/>
-          <text x="70" y="126" text-anchor="middle" font-size="19" font-weight="800" style="fill:var(--on-mint)">결정</text>
-          <rect x="150" y="92" width="110" height="56" rx="28" style="fill:var(--blue-soft);stroke:var(--blue-line-strong)"/>
-          <text x="205" y="126" text-anchor="middle" font-size="19" font-weight="800" style="fill:var(--blue)">요청</text>
-          <rect x="285" y="92" width="110" height="56" rx="28" style="fill:var(--blue-soft);stroke:var(--blue-line-strong)"/>
-          <text x="340" y="126" text-anchor="middle" font-size="19" font-weight="800" style="fill:var(--blue)">확인</text>
-          <rect x="420" y="92" width="110" height="56" rx="28" style="fill:var(--blue-soft);stroke:var(--blue-line-strong)"/>
-          <text x="475" y="126" text-anchor="middle" font-size="19" font-weight="800" style="fill:var(--blue)">수정</text>
-          <path d="M125 120 L146 120" style="stroke:var(--blue);fill:none" stroke-width="4" marker-end="url(#c11a2)"/>
-          <path d="M260 120 L281 120" style="stroke:var(--blue);fill:none" stroke-width="4" marker-end="url(#c11a2)"/>
-          <path d="M395 120 L416 120" style="stroke:var(--blue);fill:none" stroke-width="4" marker-end="url(#c11a2)"/>
-          <path d="M475 148 C 475 224, 70 224, 70 150" style="fill:none;stroke:var(--mint-deep)" stroke-width="4" stroke-dasharray="2 7" marker-end="url(#c11a3)"/>
-          <defs>
-            <marker id="c11a2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" style="fill:var(--blue)"/></marker>
-            <marker id="c11a3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" style="fill:var(--mint-deep)"/></marker>
-          </defs>
-        </svg>
-      </figure>
+      <figure class="asset-slot asset-slot--support img-slot-b2-left" data-image-purpose="explanatory"
+        data-image-state="expected" data-expected-src="자료/images/s07_last-week-loop-paper-cut-v1-transparent.png"
+        role="img" aria-label="요청·확인·수정 세 단계가 원을 그리며 반복되는 지난주 루프를 그린 종이 오림 스타일 이미지"></figure>
+      <figure class="asset-slot asset-slot--support img-slot-b2-right" data-image-purpose="explanatory"
+        data-image-state="expected" data-expected-src="자료/images/s07_this-week-decide-paper-cut-v1-transparent.png"
+        role="img" aria-label="이번 주에는 결정 단계가 앞에 붙고 하네스·에이전트가 함께 도는 확장된 루프를 그린 종이 오림 스타일 이미지"></figure>
     </section>
 
     <!-- ============ N1 · 기획 전체 흐름 ============ -->
@@ -222,24 +262,12 @@
       <div class="s-full">
         <h2 class="s-title">누구의 어떤 불편인가 — 타깃·페인포인트</h2>
         <div class="tg-defs">
-          <div class="tg-def"><span class="tg-k">타깃</span><p>내가 도우려는 사람이 대략 어떤 부류인지</p></div>
-          <div class="tg-def"><span class="tg-k">페인포인트</span><p>그 사람이 겪는 불편 하나 — 신발 속 돌멩이처럼 작고 반복되는 불편이 좋은 출발점입니다</p></div>
+          <div class="tg-def"><span class="tg-k">타깃</span><p>내가 도우려는 사람이 대략 어떤 부류인지 — 나이·직업·상황처럼 크게 묶이는 특징입니다.<span class="tg-eg">예: 퇴근길 직장인, 자취 3년 차 직장인, 아침이 바쁜 초등 학부모</span></p></div>
+          <div class="tg-def"><span class="tg-k">페인포인트</span><p>그 사람이 겪는 불편 하나 — 신발 속 돌멩이처럼 작고 반복되는 불편이 좋은 출발점입니다.<span class="tg-eg">예: 오늘 뭘 했는지 기억나지 않는다, 냉장고에 뭐가 있는지 몰라 장을 또 본다</span></p></div>
         </div>
-        <figure class="c12-art" role="img" aria-label="흐릿하게 흩어진 여러 사람 실루엣이 또렷하게 강조된 한 사람과 작은 불편 표식으로 좁혀지는 모습">
-          <svg viewBox="0 0 900 300" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <circle cx="120" cy="110" r="42" style="fill:var(--blue-soft)"/>
-            <circle cx="80" cy="220" r="34" style="fill:var(--blue-soft)"/>
-            <circle cx="200" cy="250" r="38" style="fill:var(--blue-soft)"/>
-            <circle cx="250" cy="130" r="30" style="fill:var(--blue-soft)"/>
-            <circle cx="150" cy="50" r="26" style="fill:var(--blue-soft)"/>
-            <path d="M290 165 C 420 155, 480 155, 560 155" style="stroke:var(--blue-line-strong);fill:none" stroke-width="3" stroke-dasharray="6 8"/>
-            <circle cx="650" cy="160" r="92" style="fill:var(--blue)"/>
-            <circle cx="650" cy="128" r="30" style="fill:var(--white)"/>
-            <path d="M602 210 Q650 172 698 210 Z" style="fill:var(--white)"/>
-            <circle cx="736" cy="90" r="28" style="fill:var(--coral)"/>
-            <text x="736" y="100" text-anchor="middle" font-size="28" font-weight="900" style="fill:var(--on-coral)">!</text>
-          </svg>
-        </figure>
+        <figure class="asset-slot asset-slot--support img-slot-c" data-image-purpose="explanatory"
+          data-image-state="expected" data-expected-src="자료/images/s08_who-what-pain-paper-cut-v1-transparent.png"
+          role="img" aria-label="흐릿하게 흩어진 여러 사람 실루엣 중 한 사람이 또렷하게 강조되고 그 옆에 작은 불편 표식이 붙는 모습을 그린 종이 오림 스타일 이미지"></figure>
       </div>
     </section>
 
@@ -252,12 +280,12 @@
       <div class="s-full cc-full">
         <h2 class="s-title">타깃을 좁힐수록 또렷해집니다</h2>
         <div class="cc-grid">
-          <div class="cc-side">
+          <div class="cc-side is-bad">
             <h3>나쁜 예</h3>
             <ul><li>타깃 = <strong>"모두"</strong> → 아무에게도 맞지 않는 가게가 됩니다. 넓게 잡을수록 오히려 아무도 남지 않습니다.</li></ul>
           </div>
           <div class="cc-neq" aria-hidden="true">→</div>
-          <div class="cc-side">
+          <div class="cc-side is-good">
             <h3>좋은 예</h3>
             <ul><li>타깃 = <strong>"퇴근길 직장인"</strong> + 페인포인트 = <strong>"오늘 뭘 했는지 잘 기억나지 않는다"</strong> → <span class="hl-mint-underline">오늘의 활동을 기록하는 도구</span>가 됩니다.</li></ul>
           </div>
@@ -281,12 +309,15 @@
             <div class="vc-ring vc-m"><span class="vc-lab">페르소나</span></div>
             <div class="vc-ring vc-i"><span class="vc-lab">사용자 가설</span></div>
           </div>
-          <div class="fig-note">
-            <div class="card" style="margin-bottom:12px; padding:14px 16px;"><h3 style="margin:0 0 4px; font-size:22px; font-weight:800; color:var(--ink);">페르소나</h3><p class="s-body" style="margin:0; font-size:22px; line-height:1.4;">대표 인물 한 명 — 예: "퇴근길 지하철에서 하루를 떠올리는 30대 직장인 민지"</p></div>
-            <div class="card" style="padding:14px 16px;"><h3 style="margin:0 0 4px; font-size:22px; font-weight:800; color:var(--ink);">사용자 가설</h3><p class="s-body" style="margin:0; font-size:22px; line-height:1.4;"><strong>아직 확인 안 된 주장</strong> — 예: "민지는 한 줄 기록 도구를 매일 쓸 것이다"</p></div>
+          <div class="fig-note c13-note">
+            <div class="c13-item"><span class="c13-k">페르소나</span><p>대표 인물 한 명 — <strong>지하철 3호선으로 매일 왕복 80분을 통근하는 32세 UX 디자이너 민지</strong>, 퇴근길이면 오늘 뭘 했는지 잘 떠오르지 않습니다.</p></div>
+            <div class="c13-item"><span class="c13-k">사용자 가설</span><p><strong>아직 확인 안 된 주장</strong> — "민지는 퇴근길 지하철에서 한 줄 기록 도구를 매일 열어 쓸 것이다"</p></div>
           </div>
         </div>
       </div>
+      <figure class="asset-slot asset-slot--support img-slot-r" data-image-purpose="explanatory"
+        data-image-state="expected" data-expected-src="자료/images/s09_persona-vs-hypothesis-paper-cut-v1-transparent.png"
+        role="img" aria-label="지하철에 앉은 대표 인물 페르소나와 그 위에 떠 있는 물음표 모양 가설 말풍선을 함께 그린 종이 오림 스타일 이미지"></figure>
     </section>
 
     <!-- ============ C1-4 · 아이디어는 아직 가설입니다 — AI 공감의 경계 ============ -->
@@ -303,17 +334,9 @@
         <p class="cm-sub">여러분은 본인 전문 분야에서 직접 겪었습니다 — 그 경험을 AI에게 밀고 가세요.</p>
         <p class="cm-sub">1주차 '아첨' 영상처럼 AI는 내가 옳다는 쪽으로 맞장구치기 쉽습니다 — 편향된 답변에 휩쓸리지 말고 본인 의견을 확고히 밀고 나가야 합니다.</p>
       </div>
-      <figure class="img-slot-r viz-c14-question"
-        role="img" aria-label="점선 윤곽의 흐릿한 생각 풍선 안에 물음표가 떠 있고, 옆의 작은 확인 체크 표시가 앞으로 확인이 필요함을 보여준다">
-        <svg width="100%" height="100%" viewBox="0 0 404 460" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <ellipse cx="202" cy="190" rx="150" ry="112" style="fill:none;stroke:var(--blue-line-strong)" stroke-width="4" stroke-dasharray="10 10"/>
-          <circle cx="78" cy="308" r="11" style="fill:none;stroke:var(--blue-line-strong)" stroke-width="4" stroke-dasharray="4 6"/>
-          <circle cx="54" cy="340" r="6" style="fill:none;stroke:var(--blue-line-strong)" stroke-width="3" stroke-dasharray="3 5"/>
-          <text x="202" y="216" text-anchor="middle" font-size="96" font-weight="800" style="fill:var(--blue-line-strong)">?</text>
-          <circle cx="314" cy="336" r="48" style="fill:var(--mint)"/>
-          <path d="M292 336 L309 353 L336 320" style="fill:none;stroke:var(--on-mint)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </figure>
+      <figure class="asset-slot asset-slot--support img-slot-r" data-image-purpose="explanatory"
+        data-image-state="expected" data-expected-src="자료/images/s10_ai-empathy-boundary-paper-cut-v1-transparent.png"
+        role="img" aria-label="점선 윤곽의 흐릿한 생각 풍선 안에 물음표가 떠 있고, 옆의 작은 확인 체크 표시가 앞으로 확인이 필요함을 보여주는 종이 오림 스타일 이미지"></figure>
     </section>
 
     <!-- ============ N3 · 프롬프트 vs 컨텍스트 ============ -->
@@ -347,12 +370,29 @@
       </header>
       <div class="s-full steps-full">
         <h2 class="s-title">타깃을 좁히는 질문들</h2>
+        <p class="a1f1-lead">넓은 주제도 세 번만 물으면 한 문장이 됩니다 — 다음 실습에서 바로 씁니다.</p>
         <div class="eval-steps">
-          <div class="work-step"><span class="n">1</span><div><b>"여행 앱" → 누구?</b><span class="desc">"혼자 국내 당일치기 사회초년생" — 무엇을 만들지보다 누구인지부터 좁힙니다.</span></div></div>
-          <div class="work-step"><span class="n">2</span><div><b>→ 어떤 한 순간?</b><span class="desc">"전날 밤 준비물 챙기기" — 하루 전체가 아니라 한 장면으로 좁힙니다.</span></div></div>
-          <div class="work-step"><span class="n">3</span><div><b>→ 한 결과?</b><span class="desc">"입력한 준비물이 오늘 목록에 쌓임" — 화면에 무엇이 보이면 끝인지 정합니다.</span></div></div>
+          <div class="work-step"><span class="n">1</span><div><b>"여행 앱" → 누구?</b><span class="desc">"혼자 국내 당일치기 사회초년생" — 무엇을 만들지보다 누구인지부터 좁힙니다. 대상이 넓으면 다음 질문도 흐려집니다.</span></div></div>
+          <div class="work-step"><span class="n">2</span><div><b>→ 어떤 한 순간?</b><span class="desc">"전날 밤 준비물 챙기기" — 하루 전체가 아니라 한 장면으로 좁힙니다. 장면이 좁을수록 화면 하나로 답이 나옵니다.</span></div></div>
+          <div class="work-step"><span class="n">3</span><div><b>→ 한 결과?</b><span class="desc">"입력한 준비물이 오늘 목록에 쌓임" — 화면에 무엇이 보이면 끝인지 정합니다. 결과가 또렷해야 완성을 판단할 수 있습니다.</span></div></div>
         </div>
       </div>
+      <figure class="a1f1-art" role="img" aria-label="여러 개의 넓은 질문 방울이 깔때기를 지나며 하나의 좁은 결과로 좁혀지는 모습을 보여주는 그림">
+        <svg width="100%" height="100%" viewBox="0 0 340 390" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <circle cx="90" cy="60" r="30" style="fill:var(--blue-soft);stroke:var(--blue-line-strong)" stroke-width="2"/>
+          <circle cx="180" cy="42" r="24" style="fill:var(--blue-soft);stroke:var(--blue-line-strong)" stroke-width="2"/>
+          <circle cx="250" cy="78" r="26" style="fill:var(--blue-soft);stroke:var(--blue-line-strong)" stroke-width="2"/>
+          <text x="90" y="68" text-anchor="middle" font-size="26" font-weight="800" style="fill:var(--blue)">?</text>
+          <text x="180" y="50" text-anchor="middle" font-size="22" font-weight="800" style="fill:var(--blue)">?</text>
+          <text x="250" y="86" text-anchor="middle" font-size="24" font-weight="800" style="fill:var(--blue)">?</text>
+          <path d="M40 120 L300 120 L210 260 L130 260 Z" style="fill:var(--blue-soft);stroke:var(--blue-line-strong)" stroke-width="3"/>
+          <line x1="70" y1="150" x2="270" y2="150" style="stroke:var(--blue-line-strong)" stroke-width="2" stroke-dasharray="4 6"/>
+          <line x1="95" y1="190" x2="245" y2="190" style="stroke:var(--blue-line-strong)" stroke-width="2" stroke-dasharray="4 6"/>
+          <path d="M170 260 L170 300" style="stroke:var(--mint-deep);fill:none" stroke-width="4" stroke-dasharray="4 6"/>
+          <circle cx="170" cy="340" r="42" style="fill:var(--mint)"/>
+          <path d="M150 340 L165 356 L192 322" style="fill:none;stroke:var(--on-mint)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </figure>
     </section>
 
     <section class="slide w2-practice has-img-r" data-slide="C1-5">
@@ -365,28 +405,14 @@
         <div class="accent-bar"></div>
         <div class="pr-steps">
           <div class="work-step"><span class="n">1</span><div><b>내가 반복하거나 자주 잊거나 기록하는 일을 하나 고릅니다.</b><span class="desc">예: 매주 장 볼 때마다 뭘 샀는지 까먹는 것, 아침마다 뭘 입을지 고민하는 것처럼 일상에서 반복되는 일이면 됩니다.</span></div></div>
-          <div class="work-step"><span class="n">2</span><div><b><strong>누가 · 언제 · 무엇을 하도록 돕는지</strong> 한 문장으로 적습니다.</b><span class="desc">예: "자취생이 장보기 전 냉장고 속 재료를 확인하도록 돕는다"처럼 대상과 행동이 한 문장에 다 보이게 씁니다.</span></div></div>
+          <div class="work-step"><span class="n">2</span><div><b><strong>누가 · 언제 · 무엇을 하도록 돕는지</strong><span>한 문장으로 적습니다.</span></b><span class="desc">예: "자취생이 장보기 전 냉장고 속 재료를 확인하도록 돕는다"처럼 대상과 행동이 한 문장에 다 보이게 씁니다.</span></div></div>
         </div>
-        <div class="pr-done"><span class="pr-tag">완성</span><p>다른 사람이 읽고 대상과 도움을 짐작할 수 있음 — "그냥 편한 도구"가 아니라 <strong>누가·무엇을</strong>이 보여야 합니다.</p></div>
+        <div class="pr-done"><span class="pr-tag">완성</span><p><span>다른 사람이 읽고 대상과 도움을 짐작할 수 있음 — "그냥 편한 도구"가 아니라 </span><strong>누가·무엇을</strong><span>이 보여야 합니다.</span></p></div>
         <div class="pr-done"><p>한 문장으로 하기 어려우시죠? GPT한테 물어보세요. 그냥 대화를 많이 해보세요.</p></div>
       </div>
-      <figure class="img-slot-r viz-c15-sentence"
-        role="img" aria-label="누가·언제·무엇을 돕는지 세 조각이 한 문장으로 이어지는 모습을 보여주는 그림">
-        <div class="c15-art">
-          <svg viewBox="0 0 380 420" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <rect x="20" y="30" width="340" height="66" rx="16" style="fill:var(--blue-soft);stroke:var(--blue-line-strong)" stroke-width="2"/>
-            <text x="190" y="72" text-anchor="middle" font-size="23" font-weight="800" style="fill:var(--blue)">누가</text>
-            <rect x="20" y="116" width="340" height="66" rx="16" style="fill:var(--blue-soft);stroke:var(--blue-line-strong)" stroke-width="2"/>
-            <text x="190" y="158" text-anchor="middle" font-size="23" font-weight="800" style="fill:var(--blue)">언제</text>
-            <rect x="20" y="202" width="340" height="66" rx="16" style="fill:var(--blue-soft);stroke:var(--blue-line-strong)" stroke-width="2"/>
-            <text x="190" y="244" text-anchor="middle" font-size="23" font-weight="800" style="fill:var(--blue)">무엇을</text>
-            <path d="M190 96 L190 116 M190 182 L190 202" style="stroke:var(--blue)" stroke-width="4"/>
-            <path d="M190 268 L190 300" style="stroke:var(--mint-deep);fill:none" stroke-width="4" stroke-dasharray="4 6"/>
-            <rect x="20" y="300" width="340" height="66" rx="16" style="fill:var(--mint-soft);stroke:var(--mint-line)" stroke-width="2"/>
-            <text x="190" y="342" text-anchor="middle" font-size="22" font-weight="800" style="fill:var(--mint-deep)">한 문장</text>
-          </svg>
-        </div>
-      </figure>
+      <figure class="asset-slot asset-slot--support img-slot-r" data-image-purpose="explanatory"
+        data-image-state="expected" data-expected-src="자료/images/s11_one-sentence-practice-paper-cut-v1-transparent.png"
+        role="img" aria-label="누가·언제·무엇을 돕는지 세 조각이 한 문장으로 이어지는 모습을 그린 종이 오림 스타일 이미지"></figure>
     </section>
 
     <!-- ============ C1-6 · 한 줄 정의는 제작 나침반 ============ -->
@@ -450,6 +476,21 @@
         </div>
         <p class="callout c17-foot">다섯 가지를 함께 만족하면 <span class="hl-mint-mark">그날 바로 시작해도 됩니다</span>.</p>
       </div>
+      <figure class="c17-art" role="img" aria-label="여러 후보 주제 조각이 다섯 조건을 통과하는 체 모양 필터를 거쳐 하나의 확정된 주제로 좁혀지는 모습을 보여주는 그림">
+        <svg width="100%" height="100%" viewBox="0 0 340 390" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect x="30" y="30" width="76" height="44" rx="10" style="fill:var(--blue-soft);stroke:var(--blue-line-strong)" stroke-width="2"/>
+          <rect x="132" y="18" width="76" height="44" rx="10" style="fill:var(--blue-soft);stroke:var(--blue-line-strong)" stroke-width="2"/>
+          <rect x="234" y="34" width="76" height="44" rx="10" style="fill:var(--blue-soft);stroke:var(--blue-line-strong)" stroke-width="2"/>
+          <path d="M40 100 L300 100 L230 200 L110 200 Z" style="fill:var(--blue-soft);stroke:var(--blue-line-strong)" stroke-width="3"/>
+          <line x1="70" y1="126" x2="270" y2="126" style="stroke:var(--blue-line-strong)" stroke-width="2" stroke-dasharray="4 6"/>
+          <line x1="90" y1="152" x2="250" y2="152" style="stroke:var(--blue-line-strong)" stroke-width="2" stroke-dasharray="4 6"/>
+          <line x1="110" y1="178" x2="230" y2="178" style="stroke:var(--blue-line-strong)" stroke-width="2" stroke-dasharray="4 6"/>
+          <path d="M170 200 L170 244" style="stroke:var(--mint-deep);fill:none" stroke-width="4" stroke-dasharray="4 6"/>
+          <rect x="90" y="244" width="160" height="90" rx="14" style="fill:var(--mint-soft);stroke:var(--mint-line)" stroke-width="2"/>
+          <text x="170" y="284" text-anchor="middle" font-size="22" font-weight="800" style="fill:var(--mint-deep)">우리 주제</text>
+          <text x="170" y="312" text-anchor="middle" font-size="18" font-weight="600" style="fill:var(--mint-deep)">다섯 조건 통과</text>
+        </svg>
+      </figure>
     </section>
 
     <!-- ============ C1-8 · 유형으로 고르면 쉽습니다 (2026-07-27: raw table 폐기 → S3PRV 색분류 카드+원칙배너) ============ -->

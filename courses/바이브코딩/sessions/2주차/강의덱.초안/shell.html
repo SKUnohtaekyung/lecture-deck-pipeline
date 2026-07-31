@@ -116,6 +116,22 @@
     .slide .desc, .slide .wk-desc, .slide .rm-desc, .slide .cd-out{
       font-size:20px; font-weight:500; line-height:1.5; }
 
+    /* 박스 제목 크기 정규화 — 실측 결과 21·22·23·24·26px가 섞여 덱 안에서
+       위계가 들쭉날쭉했다(26px 57개 · 나머지 43개). 파트 워커들이 각자
+       `.slide[data-slide="X"] .work-step b`(명시도 0,3,1)로 지정해 메인의
+       전역 규칙(0,2,1)을 이겼기 때문이다. `.deck`을 앞에 붙여 (0,4,1)로
+       올려 한 곳에서 통일한다 — !important는 쓰지 않는다(개별 예외가
+       필요한 장에서 더 높은 명시도로 덮을 여지를 남긴다). */
+    .deck .slide[data-slide] .work-step > b,
+    .deck .slide[data-slide] .rm-step b,
+    .deck .slide[data-slide] .w2r-step > b,
+    .deck .slide[data-slide] .pr-steps > * > b,
+    .deck .slide[data-slide] .card > h3,
+    .deck .slide[data-slide] .cc-side > h3,
+    .deck .slide[data-slide] .ps-col > h3,
+    .deck .slide[data-slide] .sc-col > h3{
+      font-size:26px; font-weight:800; line-height:1.25; }
+
     /* ── w2-roadmap · 교시 로드맵 가로 트랙 (flow) ───────────────── */
     .w2-roadmap .s-full{ bottom:54px; display:flex; flex-direction:column; }
     .rm-lead{ margin:6px 0 0; font-size:22px; font-weight:800; color:var(--blue); }
