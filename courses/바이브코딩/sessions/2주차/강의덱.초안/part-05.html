@@ -126,6 +126,51 @@
 .slide[data-slide="A6F1"] .sm-part{ padding:9px 14px; }
 .slide[data-slide="A6F1"] .sm-notes{ gap:8px; }
 .slide[data-slide="A6F1"] .sm-note{ padding:10px 16px; }
+/* ═══ 수정요청서 2차 반영 (2026-08-01) ═══════════════════════════ */
+
+/* M5(73p) — §0-12 공용 템플릿으로 이관(스코프 재정의·아이콘 제거) */
+
+/* C5-1(74p) — 빙산·박스를 아래로, 겹침 해소 */
+.slide[data-slide="C5-1"] .bg-body{ margin-top:14px; align-items:center; }
+.slide[data-slide="C5-1"] .bg-vs .a, .slide[data-slide="C5-1"] .bg-vs .b{ padding:12px 16px; }
+.slide[data-slide="C5-1"] .bg-vs .subline{ margin-top:2px; }
+
+/* C5-2(75p) — 눈이 지나가는 길을 굵고 직관적으로 */
+.slide[data-slide="C5-2"] .cm-f{ opacity:1; }
+.slide[data-slide="C5-2"] .cm-why .subline{ margin-top:4px; }
+
+/* C5-4(77p) — 색각 문구 완화 + 대비 블록 분리 */
+.slide[data-slide="C5-4"] .s-full{ bottom:54px; display:flex; flex-direction:column; }
+.slide[data-slide="C5-4"] .ay-body{ flex:1 1 auto; min-height:0; margin-top:10px; }
+.slide[data-slide="C5-4"] .ay-box{ padding:6px 10px; }
+.slide[data-slide="C5-4"] .ay-row{ font-size:20px; }
+.slide[data-slide="C5-4"] .ay-cap{ font-size:19px; }
+.slide[data-slide="C5-4"] .ay-txt{ margin:2px 0 0; font-size:18px; line-height:1.3; }
+.slide[data-slide="C5-4"] .ay-band{ flex:0 0 auto; }
+.slide[data-slide="C5-4"] .ay-note{ margin-top:7px; font-size:20px; line-height:1.35; }
+.slide[data-slide="C5-4"] .ay-contrast{ margin-top:10px; padding:10px 14px;
+  border-radius:var(--r-md); background:var(--surface); border:1px solid var(--blue-line); }
+.slide[data-slide="C5-4"] .ay-ch{ margin:0 0 4px; font-size:18px; font-weight:800; color:var(--blue); }
+.slide[data-slide="C5-4"] .ay-band{ margin-top:10px; }
+
+/* 실습 ⑦~⑪ — 완성 박스 제거 + 예시 프롬프트 삽입(§0-9·§0-9a) */
+.slide[data-slide="C5-8"] .s-full, .slide[data-slide="C5-9"] .s-full,
+.slide[data-slide="C5-10"] .s-full, .slide[data-slide="C5-16"] .s-full,
+.slide[data-slide="C5-17"] .s-full{ bottom:54px; display:flex; flex-direction:column; }
+.slide[data-slide="C5-8"] .accent-bar, .slide[data-slide="C5-9"] .accent-bar,
+.slide[data-slide="C5-10"] .accent-bar, .slide[data-slide="C5-16"] .accent-bar,
+.slide[data-slide="C5-17"] .accent-bar{ display:none; }
+.slide[data-slide="C5-8"] .pr-steps, .slide[data-slide="C5-9"] .pr-steps,
+.slide[data-slide="C5-10"] .pr-steps, .slide[data-slide="C5-16"] .pr-steps,
+.slide[data-slide="C5-17"] .pr-steps{ flex:0 0 auto; gap:10px; margin-top:12px; }
+.slide[data-slide="C5-8"] .pr-prompt, .slide[data-slide="C5-9"] .pr-prompt,
+.slide[data-slide="C5-10"] .pr-prompt, .slide[data-slide="C5-16"] .pr-prompt,
+.slide[data-slide="C5-17"] .pr-prompt{ margin-top:auto; }
+.slide[data-slide="C5-9"] .pf-band{ margin-top:8px; padding:8px 14px; }
+.slide[data-slide="C5-9"] .pf-band p{ font-size:19px; line-height:1.3; margin:0; }
+.slide[data-slide="C5-8"] .pr-prompt .terminal-copy, .slide[data-slide="C5-9"] .pr-prompt .terminal-copy,
+.slide[data-slide="C5-10"] .pr-prompt .terminal-copy, .slide[data-slide="C5-16"] .pr-prompt .terminal-copy,
+.slide[data-slide="C5-17"] .pr-prompt .terminal-copy{ font-size:19px; line-height:1.35; }
 </style>
 
 <section class="slide part-divider" data-slide="P5">
@@ -143,30 +188,36 @@
   </header>
   <div class="s-full">
     <h2 class="s-title">5교시 이렇게 배웁니다</h2>
-    <div class="rm-track">
+    <p class="rm-lead">정보 구조와 문구를 정하고, 그 기준을 DESIGN.md에 담아 화면에 적용합니다.</p>
+    <div class="rm-track is-5">
       <div class="rm-step">
-        <span class="rm-ico" aria-hidden="true"><svg viewBox="0 0 32 32" width="32" height="32"><rect x="10" y="4" width="12" height="7" rx="1.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M16 11v5M8 20h16M8 20v-4M24 20v-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><rect x="3" y="20" width="10" height="7" rx="1.5" fill="none" stroke="currentColor" stroke-width="2"/><rect x="19" y="20" width="10" height="7" rx="1.5" fill="none" stroke="currentColor" stroke-width="2"/></svg></span>
-        <span class="rm-n">1</span><b>정보 구조</b><span class="desc"><p>무엇을 어디에 둘지 정합니다</p></span>
+        <span class="rm-n">1</span><b>정보 구조</b>
+        <span class="desc">무엇을 어디에 둘지 정합니다.</span>
+        <span class="rm-out">산출물 · 화면 배치</span>
       </div>
       <span class="rm-arrow" aria-hidden="true">→</span>
       <div class="rm-step">
-        <span class="rm-ico" aria-hidden="true"><svg viewBox="0 0 32 32" width="32" height="32"><circle cx="7" cy="9" r="2.2" fill="currentColor"/><circle cx="7" cy="16" r="2.2" fill="currentColor"/><circle cx="7" cy="23" r="2.2" fill="currentColor"/><path d="M13 9h14M13 16h14M13 23h10" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></span>
-        <span class="rm-n">2</span><b>화면 순서·문구</b><span class="desc"><p>먼저 볼 것과 문구를 다듬습니다</p></span>
+        <span class="rm-n">2</span><b>화면 순서·문구</b>
+        <span class="desc">먼저 볼 것을 정하고 버튼·안내 문구를 다듬습니다.</span>
+        <span class="rm-out">산출물 · 우선순위·문구</span>
       </div>
       <span class="rm-arrow" aria-hidden="true">→</span>
       <div class="rm-step">
-        <span class="rm-ico" aria-hidden="true"><svg viewBox="0 0 32 32" width="32" height="32"><path d="M4 16c4-7 10-10 12-10s8 3 12 10c-4 7-10 10-12 10S8 23 4 16z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="16" cy="16" r="4.5" fill="none" stroke="currentColor" stroke-width="2"/></svg></span>
-        <span class="rm-n">3</span><b>읽기 쉬움</b><span class="desc"><p>색과 대비로 누구나 읽게 합니다</p></span>
+        <span class="rm-n">3</span><b>읽기 쉬움</b>
+        <span class="desc">색과 대비를 맞춰 누구나 읽게 합니다.</span>
+        <span class="rm-out">산출물 · 가독성 기준</span>
       </div>
       <span class="rm-arrow" aria-hidden="true">→</span>
       <div class="rm-step">
-        <span class="rm-ico" aria-hidden="true"><svg viewBox="0 0 32 32" width="32" height="32"><rect x="7" y="4" width="18" height="24" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M11 11h10M11 16h10M11 21h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="24" cy="24" r="5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M24 21.5v3l2 1.3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-        <span class="rm-n">4</span><b>기준 문서로 고정</b><span class="desc"><p>DESIGN.md에 기준을 적습니다</p></span>
+        <span class="rm-n">4</span><b>기준 문서로 고정</b>
+        <span class="desc">정한 기준을 DESIGN.md에 적습니다.</span>
+        <span class="rm-out">산출물 · DESIGN.md</span>
       </div>
       <span class="rm-arrow" aria-hidden="true">→</span>
       <div class="rm-step is-goal">
-        <span class="rm-ico" aria-hidden="true"><svg viewBox="0 0 32 32" width="32" height="32"><rect x="4" y="6" width="24" height="16" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M4 26h24" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M11 14l4 4 7-8" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-        <span class="rm-n">5</span><b>그 기준으로 구현</b><span class="desc"><p>레퍼런스를 관찰해 완성합니다</p></span>
+        <span class="rm-n">5</span><b>그 기준으로 구현</b>
+        <span class="desc">레퍼런스를 관찰해 화면을 완성합니다.</span>
+        <span class="rm-out">산출물 · 완성 화면</span>
       </div>
     </div>
   </div>
@@ -182,28 +233,29 @@
 
       <p class="sg-lead">화면에 보이는 메뉴는 <b>빙산의 일각</b>입니다. 그 아래에 <span class="hl-mint-mark">«무엇을 어디에 둘지»</span> 정한 결정이 눈에 보이지 않게 깔려 있습니다.</p>
 
-      <div class="bg-body">
+      <div class="bg-body viz-iceberg">
         <svg width="700" height="300" viewBox="0 0 700 300" role="img"
              aria-label="빙산 도해. 수면 위 작은 봉우리는 네비게이션·메뉴, 수면 아래 큰 덩어리는 무엇끼리 묶을지·어디에 둘지·어떤 순서로 둘지의 결정이다">
-          <polygon points="350,16 402,84 298,84" style="fill:var(--periwinkle)"/>
-          <polygon points="266,90 434,90 498,288 202,288" style="fill:var(--blue-panel); stroke:var(--blue)" stroke-width="2"/>
-          <line x1="10" y1="87" x2="690" y2="87" style="stroke:var(--blue)" stroke-width="3" stroke-dasharray="12 8"/>
-          <text x="16" y="76" font-size="22" font-weight="800" style="fill:var(--blue)">여기까지만 화면에 보입니다</text>
+          <polygon points="350,40 402,108 298,108" style="fill:var(--periwinkle)"/>
+          <polygon points="266,114 434,114 498,296 202,296" style="fill:var(--blue-panel); stroke:var(--blue)" stroke-width="2"/>
+          <line x1="10" y1="111" x2="690" y2="111" style="stroke:var(--blue)" stroke-width="3" stroke-dasharray="12 8"/>
+          <text x="16" y="100" font-size="22" font-weight="800" style="fill:var(--blue)">여기까지만 화면에 보입니다</text>
 
-          <text x="418" y="52" font-size="22" font-weight="800" style="fill:var(--ink)">네비게이션 · 메뉴 · 버튼</text>
+          <text x="418" y="76" font-size="22" font-weight="800" style="fill:var(--ink)">네비게이션 · 메뉴 · 버튼</text>
 
-          <text x="350" y="140" text-anchor="middle" font-size="22" font-weight="800" style="fill:var(--ink)">무엇끼리 묶을까</text>
-          <text x="350" y="140" text-anchor="middle" font-size="22" font-weight="800" style="fill:var(--ink)" dy="34">어디에 둘까</text>
-          <text x="350" y="140" text-anchor="middle" font-size="22" font-weight="800" style="fill:var(--ink)" dy="68">어떤 순서로</text>
-          <text x="350" y="266" text-anchor="middle" font-size="22" font-weight="700" style="fill:var(--blue)">설명 · 입력 · 결과를 어떻게 나눌지</text>
+          <text x="350" y="166" text-anchor="middle" font-size="22" font-weight="800" style="fill:var(--ink)">무엇끼리 묶을까</text>
+          <text x="350" y="202" text-anchor="middle" font-size="22" font-weight="800" style="fill:var(--ink)">어디에 둘까</text>
+          <text x="350" y="238" text-anchor="middle" font-size="22" font-weight="800" style="fill:var(--ink)">어떤 순서로</text>
+          <text x="350" y="278" text-anchor="middle" font-size="20" font-weight="700" style="fill:var(--blue)">설명 · 입력 · 결과를 어떻게 나눌지</text>
         </svg>
 
         <div class="bg-side">
           <div class="bg-vs">
-            <div class="a"><b>정보 구조</b><span>무엇이 어디에</span><span>— 구조를 정하는 일</span></div>
-            <div class="b"><b>사용자 흐름</b><span>어떤 순서로 움직이나</span><span>— 흐름을 정하는 일</span></div>
+            <div class="a"><b>정보 구조</b><span>무엇이 어디에 놓이나</span><span class="subline">구조를 정하는 일</span></div>
+            <div class="b"><b>사용자 흐름</b><span>어떤 순서로 움직이나</span><span class="subline">흐름을 정하는 일</span></div>
           </div>
-          <p class="sg-lead">한 페이지짜리라도 «설명 먼저, 그다음 입력, 그다음 결과»처럼 <b>놓는 순서를 정하는 것</b>이 정보 구조입니다.</p>
+          <p class="sg-lead">한 페이지라도 <b>놓는 순서를 정하는 것</b>이 정보 구조입니다.
+            <span class="subline">설명 먼저, 그다음 입력, 그다음 결과.</span></p>
         </div>
       </div>
 
@@ -220,7 +272,7 @@
 
       <p class="sg-lead"><span class="hl-mint-mark">무엇을 먼저 보여줄지</span> 정하는 것이 정보 우선순위입니다. 같은 내용, 같은 기능인데 순서와 크기만 바꿨습니다.</p>
 
-      <div class="cm-body">
+      <div class="cm-body viz-beforeafter">
         <div class="cm-col bad">
           <span class="cap">기준 없이 놓았을 때</span>
           <div class="cm-shot">
@@ -240,16 +292,20 @@
             <span class="cm-el">무엇을 했나요?</span>
             <span class="cm-el btn">기록하기</span>
             <span class="cm-el sm" style="margin-top:12px">오늘 기록<br>· 09:20 아침 산책 30분 &nbsp; · 13:05 점심 후 정리</span>
-            <svg class="cm-f" viewBox="0 0 340 238" preserveAspectRatio="none" aria-hidden="true">
-              <defs><marker id="fz" markerWidth="8" markerHeight="8" refX="6.5" refY="4" orient="auto">
-                <path d="M0 0 L8 4 L0 8 z" style="fill:var(--coral-deep)"/></marker></defs>
-              <path d="M20 34 H300" fill="none" style="stroke:var(--coral-deep)" stroke-width="3" opacity=".85"/>
-              <path d="M20 34 V96" fill="none" style="stroke:var(--coral-deep)" stroke-width="3" opacity=".85"/>
-              <path d="M20 96 H236" fill="none" style="stroke:var(--coral-deep)" stroke-width="3" opacity=".85"/>
-              <path d="M20 96 V158" fill="none" style="stroke:var(--coral-deep)" stroke-width="3" opacity=".85" marker-end="url(#fz)"/>
+            <svg class="cm-f" viewBox="0 0 340 238" preserveAspectRatio="none" role="img"
+                 aria-label="눈이 훑는 순서: 제목에서 입력칸, 버튼, 결과 목록으로 위에서 아래로 이어진다">
+              <defs>
+                <marker id="fz" markerWidth="11" markerHeight="11" refX="8" refY="5.5" orient="auto">
+                  <path d="M0 0 L11 5.5 L0 11 z" style="fill:var(--coral-deep)"/></marker>
+              </defs>
+              <path d="M24 34 H300 V96 H60 V158 H272" fill="none" style="stroke:var(--coral-deep)"
+                    stroke-width="5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fz)"/>
+              <circle cx="24" cy="34" r="12" style="fill:var(--coral-deep)"/>
+              <text x="24" y="40" text-anchor="middle" font-size="15" font-weight="800" style="fill:var(--on-coral)">1</text>
             </svg>
           </div>
-          <p class="cm-why"><span class="hl-mint-mark">한 눈에 순서가 보입니다</span> — 눈은 위에서 아래로, 왼쪽에서 오른쪽으로 훑습니다(코랄 선).</p>
+          <p class="cm-why"><span class="hl-mint-mark">한 눈에 순서가 보입니다.</span>
+            <span class="subline">굵은 선이 <b>눈이 지나가는 길</b>입니다. 제목으로 무엇인지 알고, 입력칸에서 무엇을 넣을지 알고, 버튼을 누른 뒤 아래에서 결과를 봅니다.</span></p>
         </div>
       </div>
 
@@ -303,9 +359,10 @@
     <div class="s-full">
       <h2 class="s-title">기본 가독성·접근성</h2>
 
-      <p class="sg-lead">색만으로 표시하면 <b>색각 이상 시야에서 뜻이 사라집니다</b> — 아래 대비 예시로 확인합니다.</p>
+      <p class="sg-lead">색만으로 표시하면 <b>색을 구분하기 어려운 사람에게는 뜻이 사라집니다.</b>
+        <span class="subline">아래 두 예시로 확인합니다.</span></p>
 
-      <div class="ay-body">
+      <div class="ay-body viz-contrast">
         <div>
           <span class="ay-cap">색만으로 구분했을 때</span>
           <div class="ay-box">
@@ -316,7 +373,8 @@
             <div class="ay-row"><span class="ay-dot ok"></span>저장</div>
             <div class="ay-row"><span class="ay-dot no"></span>저장</div>
           </div>
-          <p class="cm-why" style="margin-top:7px;font-size:22px">아래가 색각 이상 시야 &mdash; <b>둘이 같아 보입니다.</b></p>
+          <p class="cm-why ay-note">위는 보통 시야, <b>아래는 색을 구분하기 어려운 사람이 보는 화면</b>입니다.
+            <span class="subline">아래에서는 두 줄이 똑같아 보여서 무엇이 저장됐는지 알 수 없습니다.</span></p>
         </div>
 
         <div>
@@ -329,8 +387,11 @@
             <div class="ay-row"><span class="ay-dot ok"></span>저장됨</div>
             <div class="ay-row"><span class="ay-dot no"></span>다시 입력</div>
           </div>
-          <p class="ay-txt weak">대비가 낮은 글자 &mdash; 읽기 어렵습니다</p>
-          <p class="ay-txt strong">대비가 뚜렷한 글자 &mdash; 잘 읽힙니다</p>
+          <div class="ay-contrast">
+            <p class="ay-ch">글자와 배경의 밝기 차이</p>
+            <p class="ay-txt weak">대비가 낮으면 읽기 어렵습니다</p>
+            <p class="ay-txt strong">대비가 뚜렷하면 잘 읽힙니다</p>
+          </div>
         </div>
 
         <div class="ay-stat">
@@ -386,7 +447,7 @@
         <div class="mm-stack">
           <div class="mm-row before">
             <span class="tag">기준 없이</span>
-            <span class="txt">&ldquo;활동 기록 페이지 만들어 줘&rdquo;<span>요청할 때마다 색도 문구도 달라집니다 — 매번 다시 설명하게 됩니다</span></span>
+            <span class="txt">&ldquo;활동 기록 페이지 만들어 줘&rdquo;<span>요청할 때마다 색도 문구도 달라집니다. 매번 다시 설명하게 됩니다</span></span>
           </div>
           <div class="mm-row after">
             <span class="tag">기준을 주고</span>
@@ -413,9 +474,9 @@
     <div class="s-full">
       <h2 class="s-title">디자인 시스템·토큰</h2>
 
-      <p class="sg-lead">값을 그때그때 새로 고르면 화면이 들쭉날쭉해집니다 — <span class="hl-mint-mark">값 → 이름 → 재사용</span> 세 걸음으로 묶습니다.</p>
+      <p class="sg-lead">값을 그때그때 새로 고르면 화면이 들쭉날쭉해집니다. <span class="hl-mint-mark">값 → 이름 → 재사용</span> 세 걸음으로 묶습니다.</p>
 
-      <div class="ch-wrap">
+      <div class="ch-wrap viz-tokens">
         <svg width="1080" height="340" viewBox="0 0 1080 340" role="img"
              aria-label="값 하나에 이름을 붙이고, 버튼 배경·강조 글자·선택 항목·입력창 테두리 네 곳이 그 이름을 재사용한다">
           <defs>
@@ -472,7 +533,7 @@
       <p class="ca-down" aria-hidden="true">↓</p>
       <div class="card surface ca-act"><span class="pill">결정</span><p class="s-lead">무엇을 참고할지 · <strong class="hl-mint-underline">무엇은 안 따라 할지</strong>도 정하기</p></div>
     </div>
-      <p class="ref-right">검색해서 나온다고 <span class="hl-mint-mark">무료가 아닙니다</span> &mdash; 이미지·글꼴은 출처와 사용 조건을 먼저 확인합니다.</p>
+      <p class="ref-right">검색해서 나온다고 <span class="hl-mint-mark">무료가 아닙니다.</span> 이미지·글꼴은 출처와 사용 조건을 먼저 확인합니다.</p>
   </div>
   <!-- 이미지 슬롯 복원(2026-07-31 WAVE2 §2: 제작지시서 19장을 그대로 살린다).
        직전에 임시로 넣었던 SVG 도식은 제거했다 — 이미지 제작지시 §4-16이 이 자리의 정본이다. -->
@@ -490,12 +551,12 @@
     <h2 class="s-title">실습 ⑦ 레퍼런스 1개 관찰</h2>
     <div class="accent-bar"></div>
     <div class="pr-steps">
-      <div class="work-step"><span class="n">1</span><b>참고 서비스 1개를 고릅니다.</b> <span class="desc">— 평소 즐겨 쓰는 서비스나 화면 중 잘 만들었다고 느낀 것 하나를 정합니다.</span></div>
-      <div class="work-step"><span class="n">2</span><b><span>색·여백·순서·구조 중 </span><strong>무엇을 참고하고 무엇은 안 할지</strong><span> 메모합니다.</span></b> <span class="desc">— 네 가지를 하나씩 놓고 따라 할지 말지 짧게 적습니다.</span></div>
+      <div class="work-step"><span class="n">1</span><b>참고 서비스 1개를 고릅니다.</b> <span class="desc">평소 즐겨 쓰는 서비스나 화면 중 잘 만들었다고 느낀 것 하나를 정합니다.</span></div>
+      <div class="work-step"><span class="n">2</span><b><span>색·여백·순서·구조 중 </span><strong>무엇을 참고하고 무엇은 안 할지</strong><span> 메모합니다.</span></b> <span class="desc">네 가지를 하나씩 놓고 따라 할지 말지 짧게 적습니다.</span></div>
     </div>
-    <p class="sg-lead">"예쁘다"는 느낌만 적으면 다음 실습(design.md)에 옮길 수 없습니다 — <span class="hl-mint-mark">색·여백·순서처럼 말로 옮길 수 있는 특성</span>까지 적습니다.</p>
-    <div class="pr-done"><span class="pr-tag">완성</span><p>복사할 것/안 할 것을 색·여백·순서·구조 중 최소 1가지씩 구분해 글로 적음</p></div>
+    <p class="sg-lead">"예쁘다"는 느낌만 적으면 다음 실습(design.md)에 옮길 수 없습니다. <span class="hl-mint-mark">색·여백·순서처럼 말로 옮길 수 있는 특성</span>까지 적습니다.</p>
   </div>
+
 </section>
 
     <section class="slide w2-annex is-recovery has-img-r" data-slide="A4R1">
@@ -509,6 +570,16 @@
           <div class="work-step"><span class="n">1</span><b>특정 서비스를 통째로 복제했다면</b></div>
           <div class="vf-down" aria-hidden="true">↓</div>
           <div class="work-step"><span class="n">2</span><b><span>색·간격·구성 </span><strong>특성만 뽑아</strong><span> 내 구조에 다시 적용합니다.</span></b></div>
+        </div>
+        <div class="w2-prompt terminal-dark pr-prompt" aria-label="ChatGPT · 레퍼런스 관찰 예시 프롬프트">
+          <div class="terminal-bar"><span></span><span></span><span></span><b>ChatGPT · 레퍼런스 관찰</b></div>
+          <div class="terminal-body">
+            <span class="terminal-prompt">&gt;_</span>
+            <p class="terminal-copy">참고할 화면: «<strong>[서비스 이름 / 화면 이름]</strong>»<br>
+            이 화면에서 <strong>색 · 여백 · 순서 · 구조</strong> 네 가지를 각각 한 줄로 설명해 주세요.<br>
+            그다음 제 도구(«<strong>[한 줄 정의]</strong>»)에 <strong>따라 할 것</strong>과 <strong>안 할 것</strong>으로 나눠 주세요.</p>
+            <span class="terminal-cursor" aria-hidden="true"></span>
+          </div>
         </div>
       </div>
       <!-- 이미지 슬롯 복원(2026-07-31 WAVE2 §2: 제작지시서 19장을 그대로 살린다).
@@ -525,20 +596,51 @@
     <span class="s-line"></span><div class="s-team">2주차<br>5교시</div>
   </header>
   <div class="s-full">
-    <h2 class="s-title">실습 ⑧ design.md + 화면에 ≥2 적용</h2>
+    <h2 class="s-title">실습 ⑧ design.md 쓰고 화면에 두 가지 적용하기</h2>
     <div class="accent-bar"></div>
     <div class="pr-steps">
-      <div class="work-step"><span class="n">1</span><b>design.md에 화면 기준을 짧게 적습니다.</b> <span class="desc">— 색·문구·간격처럼 앞서 관찰한 특성을 한두 줄로 정리합니다.</span></div>
-      <div class="work-step"><span class="n">2</span><b><strong>실제 화면에 최소 2가지를 적용</strong><span>합니다(문서만 만들고 끝 금지).</span></b> <span class="desc">— Codex에게 design.md를 근거로 화면을 고치라고 요청합니다.</span></div>
+      <div class="work-step"><span class="n">1</span><b>design.md에 화면 기준을 짧게 적습니다.</b> <span class="desc">색·문구·간격처럼 앞서 관찰한 특성을 한두 줄로 정리합니다.</span></div>
+      <div class="work-step"><span class="n">2</span><b><strong>실제 화면에 최소 2가지를 적용</strong><span>합니다(문서만 만들고 끝 금지).</span></b> <span class="desc">Codex에게 design.md를 근거로 화면을 고치라고 요청합니다.</span></div>
     </div>
-    <div class="pr-done"><span class="pr-tag">완성</span><p>색·버튼 문구 등 2가지가 화면에 반영됨</p></div>
     <div class="card surface pf-band">
       <p class="pf-risk">문서만 쓰고 끝내기</p>
       <p class="pf-reason">design.md에 적기만 하고 화면은 그대로 두면 반영되지 않습니다.</p>
       <p class="pf-alt"><span class="ok">대신</span> 화면을 <span class="hl-mint-mark">직접 열어</span> 2가지가 바뀌었는지 확인합니다.</p>
     </div>
   </div>
+
 </section>
+
+    <!-- ============ C5-9P · 실습 ⑧ 프롬프트 전용 (4차 신설) ============ -->
+    <section class="slide" data-slide="C5-9P">
+      <header class="s-head">
+        <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+        <span class="s-line"></span><div class="s-team">2주차<br>5교시</div>
+      </header>
+      <div class="s-full pw-full">
+        <p class="s-eyebrow">실습 ⑧ 예시 프롬프트</p>
+        <h2 class="s-title">design.md를 화면에 적용할 때 이렇게 요청합니다</h2>
+        <div class="w2-prompt terminal-dark pw-term viz-prompt" aria-label="design.md 적용 예시 프롬프트">
+          <div class="terminal-bar"><span></span><span></span><span></span><b>Codex · design.md 적용</b></div>
+          <div class="terminal-body">
+            <span class="terminal-prompt">&gt;_</span>
+            <p class="terminal-copy">이 폴더의 <strong>design.md를 먼저 읽어</strong> 주세요.<br>
+            거기 적힌 기준 중 <strong>2가지 이상</strong>을 지금 화면에 적용해 주세요.<br>
+            <strong>무엇을 · 어디에</strong> 적용했는지 파일 이름과 함께 알려 주세요.<br>
+            <br>
+            design.md에 <strong>없는 기준은 만들지 마세요.</strong><br>
+            바꿀 곳이 애매하면 고치지 말고 저에게 먼저 물어봐 주세요.</p>
+            <span class="terminal-cursor" aria-hidden="true"></span>
+          </div>
+        </div>
+        <div class="pw-notes">
+          <div class="pw-note"><span class="pw-k">왜 «먼저 읽어»</span><p>문서를 기준으로 삼게 해야 화면과 문서가 갈라지지 않습니다.</p></div>
+          <div class="pw-note"><span class="pw-k">왜 «어디에»</span><p>파일 이름을 받아야 내가 직접 열어 확인할 수 있습니다.</p></div>
+          <div class="pw-note"><span class="pw-k">확인</span><p>화면을 열어 <b>2가지가 실제로 바뀌었는지</b> 눈으로 봅니다.</p></div>
+        </div>
+      </div>
+    </section>
+
 
 <section class="slide w2-practice" data-slide="C5-10">
   <header class="s-head">
@@ -549,11 +651,21 @@
     <h2 class="s-title">실습 ⑨ 빈 입력·오류 상태 확인</h2>
     <div class="accent-bar"></div>
     <div class="pr-steps">
-      <div class="work-step"><span class="n">1</span><b>정상값을 넣어 화면이 올바르게 반응하는지 확인합니다.</b> <span class="desc">— 평소 쓸 법한 값을 넣고 결과가 그대로 나오는지 봅니다.</span></div>
-      <div class="work-step"><span class="n">2</span><b>빈 칸으로 두거나 잘못된 값을 넣어 다시 확인합니다.</b> <span class="desc"><span>— 빈 입력이 </span><span class="hl-mint-underline">무의미한 기능</span><span>(예: 단순 변환)은 생략합니다.</span></span></div>
+      <div class="work-step"><span class="n">1</span><b>정상값을 넣어 화면이 올바르게 반응하는지 확인합니다.</b> <span class="desc">평소 쓸 법한 값을 넣고 결과가 그대로 나오는지 봅니다.</span></div>
+      <div class="work-step"><span class="n">2</span><b>빈 칸으로 두거나 잘못된 값을 넣어 다시 확인합니다.</b> <span class="desc"><span>빈 입력이 </span><span class="hl-mint-underline">무의미한 기능</span><span>(예: 단순 변환)은 생략합니다.</span></span></div>
+        <div class="w2-prompt terminal-dark pr-prompt" aria-label="Codex · 빈 입력·오류 확인 예시 프롬프트">
+          <div class="terminal-bar"><span></span><span></span><span></span><b>Codex · 빈 입력·오류 확인</b></div>
+          <div class="terminal-body">
+            <span class="terminal-prompt">&gt;_</span>
+            <p class="terminal-copy">지금 화면에서 <strong>정상값 · 빈칸 · 엉뚱한 값</strong> 세 경우를 각각 넣어 보고<br>
+            무엇이 보이는지 그대로 알려 주세요.<br>
+            안내 문구가 없거나 화면이 깨지는 경우가 있으면 어디인지 짚어 주세요.</p>
+            <span class="terminal-cursor" aria-hidden="true"></span>
+          </div>
     </div>
-    <div class="pr-done"><span class="pr-tag">완성</span><p>필요한 경우 빈/오류 상태에서도 화면이 깨지지 않고 안내가 보임</p></div>
+        </div>
   </div>
+
 </section>
 
 
@@ -571,19 +683,21 @@
           <div class="cc-side ai">
             <h3>직접 열기(file://)</h3>
             <ul>
-              <li>주소창이 <code>file:///</code>로 시작합니다 — <span class="hl-mint-mark">이번 수업은 이 방식</span></li>
+              <li>주소창이 <code>file:///</code>로 시작합니다.
+                <span class="subline">내 컴퓨터의 파일을 브라우저가 그대로 엽니다.</span></li>
             </ul>
           </div>
           <div class="cc-neq" aria-hidden="true">≠</div>
           <div class="cc-side human">
             <h3>서버 방식</h3>
             <ul>
-              <li>주소창이 <code>http://localhost:...</code>로 시작합니다 — 이번 범위 밖</li>
+              <li>주소창이 <code>http://localhost:…</code>로 시작합니다.
+                <span class="subline">파일을 넘겨주는 «서버»가 먼저 켜져 있어야 열립니다.</span></li>
             </ul>
           </div>
         </div>
-        <figure class="c5-13-figure"
-          role="img" aria-label="주소창 두 개 비교: 왼쪽은 file:///로 시작하는 직접 열기 방식이고 이번 수업은 이 방식을 씁니다. 오른쪽은 http://localhost로 시작하는 서버 방식입니다.">
+        <figure class="c5-13-figure viz-addressbar"
+          role="img" aria-label="주소창 두 개 비교: 왼쪽은 file:///로 시작하는 직접 열기, 오른쪽은 http://localhost로 시작하는 서버 방식">
           <svg width="100%" height="100%" viewBox="0 0 1000 190" aria-hidden="true">
             <rect x="20" y="10" width="450" height="170" rx="18" fill="var(--mint-soft)" stroke="var(--mint)" stroke-width="3"/>
             <rect x="38" y="26" width="150" height="38" rx="19" fill="var(--mint)"/>
@@ -625,7 +739,7 @@
           <div class="vf-down" aria-hidden="true">↓</div>
           <div class="work-step"><span class="n">3</span><b>다른 값으로 다시 확인하기</b><span class="desc">간 맞추기처럼, 중간에 맛을 보며 확인합니다.</span></div>
         </div>
-        <p class="callout" style="text-align:center;">이삿짐도 상자 하나씩 옮깁니다 — <span class="hl-mint-mark">한 번에 전부 완성하려 하지 않습니다</span>.</p>
+        <p class="callout" style="text-align:center;">이삿짐도 상자 하나씩 옮깁니다. <span class="hl-mint-mark">한 번에 전부 완성하려 하지 않습니다</span>.</p>
         <div class="sw-warn">
           <div class="sw-warncard"><span class="tag">그냥 다 시키면</span><p>범위가 부풀고 Codex가 추측으로 채우는 부분이 늘어납니다.</p></div>
           <div class="sw-warncard"><span class="tag">그 결과</span><p>어디서 틀렸는지 알기 어려워 고치는 데 더 오래 걸립니다.</p></div>
@@ -647,13 +761,47 @@
         <h2 class="s-title">실습 ⑩ 기능 구현 + 세 값 확인</h2>
         <div class="accent-bar"></div>
         <div class="pr-steps">
-          <div class="work-step"><span class="n">1</span><b>화면·입력·결과 영역을 만듭니다.</b> <span class="desc">— 아직 동작 안 해도 됩니다. 자리부터 잡습니다.</span></div>
-          <div class="work-step"><span class="n">2</span><b>대표 입력 하나로 결과가 나오게 합니다.</b> <span class="desc">— 오늘의 활동 기록처럼, 가장 흔한 값 하나로 핵심 동작을 완성합니다.</span></div>
-          <div class="work-step"><span class="n">3</span><b><span>다른 값(·빈값)으로 </span><span class="hl-mint-underline">결과가 함께 바뀌는지</span><span> 다시 확인합니다.</span></b> <span class="desc">— 값을 바꿔도 화면이 깨지지 않는지 봅니다.</span></div>
+          <div class="work-step"><span class="n">1</span><b>화면·입력·결과 영역을 만듭니다.</b> <span class="desc">아직 동작 안 해도 됩니다. 자리부터 잡습니다.</span></div>
+          <div class="work-step"><span class="n">2</span><b>대표 입력 하나로 결과가 나오게 합니다.</b> <span class="desc">오늘의 활동 기록처럼, 가장 흔한 값 하나로 핵심 동작을 완성합니다.</span></div>
+          <div class="work-step"><span class="n">3</span><b><span>다른 값(·빈값)으로 </span><span class="hl-mint-underline">결과가 함께 바뀌는지</span><span> 다시 확인합니다.</span></b> <span class="desc">값을 바꿔도 화면이 깨지지 않는지 봅니다.</span></div>
         </div>
-        <div class="pr-done"><span class="pr-tag">완성</span><p>정상값·다른 값에서 결과가 바뀌고, 필요한 경우 빈값도 안전</p></div>
+        </div>
+  
+    </section>
+
+    <!-- ============ C5-16P · 실습 프롬프트 전용 (3차 신설) ============ -->
+    <section class="slide" data-slide="C5-16P">
+      <header class="s-head">
+        <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+        <span class="s-line"></span><div class="s-team">2주차<br>5교시</div>
+      </header>
+      <div class="s-full pw-full">
+        <p class="s-eyebrow">실습 ⑩ 예시 프롬프트</p>
+        <h2 class="s-title">기능을 구현하고 세 값으로 확인합니다</h2>
+        <div class="w2-prompt terminal-dark pw-term viz-prompt" aria-label="기능을 구현하고 세 값으로 확인합니다 예시 프롬프트">
+          <div class="terminal-bar"><span></span><span></span><span></span><b>Codex · 기능 구현 + 세 값 확인</b></div>
+          <div class="terminal-body">
+            <span class="terminal-prompt">&gt;_</span>
+            <p class="terminal-copy">이 폴더의 <strong>prd.md를 먼저 읽고</strong> 시작해 주세요.<br>
+              거기 적힌 <strong>핵심 기능 하나</strong>만 화면에 구현해 주세요.<br>
+              순수 HTML·CSS·JS만 쓰고, 설치·빌드·프레임워크는 쓰지 마세요.<br>
+              <br>
+              구현이 끝나면 아래 <strong>세 가지</strong>를 각각 넣어 보고 결과를 표로 알려 주세요.<br>
+              ① 정상값  ② 빈칸  ③ 엉뚱한 값<br>
+              <br>
+              각 경우에 <strong>화면에 무엇이 보이는지</strong> 그대로 적어 주세요.<br>
+              안 되는 것은 «됨»으로 쓰지 말고 <strong>«안 됨»으로</strong> 적어 주세요.</p>
+            <span class="terminal-cursor" aria-hidden="true"></span>
+          </div>
+        </div>
+        <div class="pw-notes">
+          <div class="pw-note"><span class="pw-k">왜 세 값</span><p>정상값만 보면 빈칸·오류에서 깨지는 것을 못 봅니다.</p></div>
+          <div class="pw-note"><span class="pw-k">왜 표로</span><p>«다 됐습니다» 한 줄보다 경우별 결과가 확인하기 쉽습니다.</p></div>
+          <div class="pw-note"><span class="pw-k">확인</span><p>세 경우 모두 화면이 깨지지 않고 안내가 보이면 완료입니다.</p></div>
+        </div>
       </div>
     </section>
+
 
 <section class="slide w2-practice" data-slide="C5-17">
       <header class="s-head">
@@ -664,13 +812,44 @@
         <h2 class="s-title">실습 ⑪ 불필요한 기능 제거</h2>
         <div class="accent-bar"></div>
         <div class="pr-steps">
-          <div class="work-step"><span class="n">1</span><b><span>구현 중 늘어난 기능 가운데 </span><strong>prd 범위 밖 1개</strong><span>를 고릅니다.</span></b> <span class="desc">— prd.md를 다시 열어 처음 약속한 범위와 지금 화면을 비교합니다.</span></div>
-          <div class="work-step"><span class="n">2</span><b><span>그 기능을 지우고 </span><span class="hl-mint-underline">남은 기능이 그대로 작동하는지</span><span> 확인합니다.</span></b> <span class="desc">— 삭제 후 처음 화면·입력·결과 흐름을 다시 눌러 봅니다.</span></div>
+          <div class="work-step"><span class="n">1</span><b><span>구현 중 늘어난 기능 가운데 </span><strong>prd 범위 밖 1개</strong><span>를 고릅니다.</span></b> <span class="desc">prd.md를 다시 열어 처음 약속한 범위와 지금 화면을 비교합니다.</span></div>
+          <div class="work-step"><span class="n">2</span><b><span>그 기능을 지우고 </span><span class="hl-mint-underline">남은 기능이 그대로 작동하는지</span><span> 확인합니다.</span></b> <span class="desc">삭제 후 처음 화면·입력·결과 흐름을 다시 눌러 봅니다.</span></div>
         </div>
         <p class="callout orange"><strong>왜</strong> — 기능이 늘어날수록 고칠 곳도, 깨질 곳도 늘어납니다. <span class="hl-mint-mark">MVP는 적을수록 안전</span>합니다.</p>
-        <div class="pr-done"><span class="pr-tag">완성</span><p>범위를 지킨 MVP — 제거한 기능과 이유가 한 줄 남음</p></div>
+        </div>
+      
+    </section>
+
+    <!-- ============ C5-17P · 실습 프롬프트 전용 (3차 신설) ============ -->
+    <section class="slide" data-slide="C5-17P">
+      <header class="s-head">
+        <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+        <span class="s-line"></span><div class="s-team">2주차<br>5교시</div>
+      </header>
+      <div class="s-full pw-full">
+        <p class="s-eyebrow">실습 ⑪ 예시 프롬프트</p>
+        <h2 class="s-title">범위 밖 기능을 골라 지웁니다</h2>
+        <div class="w2-prompt terminal-dark pw-term viz-prompt" aria-label="범위 밖 기능을 골라 지웁니다 예시 프롬프트">
+          <div class="terminal-bar"><span></span><span></span><span></span><b>Codex · 범위 밖 기능 제거</b></div>
+          <div class="terminal-body">
+            <span class="terminal-prompt">&gt;_</span>
+            <p class="terminal-copy">이 폴더의 <strong>prd.md</strong>와 <strong>지금 화면</strong>을 비교해 주세요.<br>
+              prd.md의 «<strong>제외</strong>» 항목 밖으로 늘어난 기능을 <strong>목록으로</strong> 알려 주세요.<br>
+              각 기능마다 «없어도 한 줄 정의가 유지되는가»를 함께 적어 주세요.<br>
+              <br>
+              <strong>아직 지우지 마세요.</strong> 제가 하나를 고른 뒤에 알려 드리겠습니다.<br>
+              제가 고르면 그 기능만 지우고, 남은 기능이 그대로 되는지 확인해 주세요.</p>
+            <span class="terminal-cursor" aria-hidden="true"></span>
+          </div>
+        </div>
+        <div class="pw-notes">
+          <div class="pw-note"><span class="pw-k">왜 목록 먼저</span><p>무엇이 늘어났는지 보고 <b>사람이</b> 고릅니다.</p></div>
+          <div class="pw-note"><span class="pw-k">왜 «지우지 마»</span><p>확인 없이 지우면 되돌릴 것이 무엇인지 알 수 없습니다.</p></div>
+          <div class="pw-note"><span class="pw-k">확인</span><p>제외 목록에 뺀 기능과 이유 한 줄이 남아 있으면 완료입니다.</p></div>
+        </div>
       </div>
     </section>
+
 
 <section class="slide" data-slide="C5-18">
       <header class="s-head">
@@ -679,7 +858,7 @@
       </header>
       <div class="center-msg">
         <h2 class="cm-title">수정 전, 마지막 작동 상태를 지킵니다</h2>
-        <p class="cm-sub cm-statement">되돌아갈 기준을 남깁니다 — 고치다 잘못되면 그 상태로 돌아옵니다.</p>
+        <p class="cm-sub cm-statement">되돌아갈 기준을 남깁니다. 고치다 잘못되면 그 상태로 돌아옵니다.</p>
         <p class="cm-sub cm-detail"><span class="hl-mint-mark">작업 폴더를 통째로 복사</span>해 <span class="hl-mint-underline">프로젝트명_backup_날짜</span>로 이름 붙입니다.</p>
       </div>
       <figure class="c5-18-figure"

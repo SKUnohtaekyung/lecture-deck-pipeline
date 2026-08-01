@@ -42,7 +42,7 @@
 
     /* ── 본문 22px 하한(R-TYPE-01) 회복 ───────────────────────────
        .work-step은 b·span·.desc에만 22px를 걸어 두어, 클래스 없는
-       맨 텍스트와 <p>가 컨테이너 기본값 16px를 그대로 물려받았다.
+       맨 텍스트와 ‹p›가 컨테이너 기본값 16px를 그대로 물려받았다.
        실측(2026-07-31 전수): 46장 242건 4,537자가 하한 미만이었고
        그중 본문 문장 대부분이 이 경로였다. 컨테이너에 직접 건다. */
     .work-step{ font-size:22px; line-height:1.45; }
@@ -270,11 +270,13 @@
        캔버스 1280×720. 안전영역 x∈[64,1216]·y∈[118,666]을 벗어나지 않는다.
        각 슬롯은 position:absolute로 고정 좌표를 쓰며, 짝이 되는
        .has-img-* 클래스를 슬라이드에 함께 걸어 본문(.s-full) 인셋을 맞춘다. */
+    /* 2026-08-01 사용자 지시: "이미지 넣는 부분에 이미지만 보이게 해.
+       파란색 구간 표시하는 거 없애고." → 슬롯의 테두리·배경을 전부 없앤다.
+       좌표·크기·본문 인셋은 그대로다(이미지 기하 계약 유지). */
     .img-slot-r, .img-slot-l, .img-slot-b, .img-slot-c,
     .img-slot-b2-left, .img-slot-b2-right{
-      position:absolute; margin:0; border:1px dashed var(--line);
+      position:absolute; margin:0; border:0; background:none; box-shadow:none;
       display:flex; align-items:center; justify-content:center;
-      border-radius:var(--r-lg); background:var(--surface);
       overflow:hidden;
     }
     .img-slot-r{ right:64px; top:150px; width:404px; height:460px; }
@@ -466,7 +468,244 @@
     .thank-you h2{ margin:0; font-size:150px; font-weight:900; letter-spacing:-.03em;
       line-height:1; color:var(--ink); }
     .thank-you .s-brand{ color:var(--ink); }
-  
+
+    /* ═══════════════════════════════════════════════════════════════
+       수정요청서 2차 · P0 계약 (2026-08-01)
+       정본: courses/바이브코딩/sessions/2주차/2주차_슬라이드수정요청_2차.md
+       여기 정의한 것은 «여러 장이 함께 쓰는 계약»이다. 파트 워커는 이
+       클래스를 쓰되 재정의하지 않는다 — 재정의하면 또 5장이 제각각이 된다.
+       ═══════════════════════════════════════════════════════════════ */
+
+    /* ── §0-6 빈 이미지 슬롯: 점선·연파랑 배경을 화면에서 지운다 ────
+       "이미지를 넣을 공간에 박스로 영역을 표시해 놓는데 이거를 다 지워야 해."
+       슬롯의 좌표·크기·본문 인셋은 그대로 둔다(Codex 이미지 작업과 충돌 방지).
+       채워진 슬롯은 영향 없음 — 비어 있을 때만 투명해진다. */
+    .deck .slide .asset-slot,
+    .deck .slide .asset-slot[data-image-state="expected"],
+    .deck .slide [class*="img-slot-"]{
+      border:0; background:none; box-shadow:none; }
+    /* kit이 넣는 «이미지 예정» 자리표시 문구도 화면에서 지운다 */
+    .deck .slide .asset-slot[data-image-state="expected"]::before{ content:none; }
+
+    /* ── §0-1 '문장 — 부연' 구조의 대체 줄 ──────────────────────────
+       금지된 것: "…합니다. …합니다"로 두 완결 문장을 잇는 패턴.
+       대체 1순위가 «부연을 별도 줄로 내리기»다. 그 줄이 이 클래스다.
+       ⚠️ 이름은 .subline이다 — kit이 이미 .cmp .sub(13px)를 쓰고 있어
+          .sub를 쓰면 그 컴포넌트를 조용히 깨뜨린다. */
+    .slide .subline{ display:block; margin:5px 0 0; font-size:20px; font-weight:500;
+      line-height:1.5; color:var(--gray-700); }
+    .slide .s-body .subline, .slide .s-lead .subline{ font-size:22px; }
+
+    /* ── §0-8 카드·박스 간 여백 확대 ───────────────────────────────
+       "각 카드별 여백이 너무 적어" · "박스가 지금 너무 촘촘해". */
+    .slide .grid-2, .slide .grid-3{ gap:18px; }
+
+    /* ── §0-4 «표» 형태 표준 (박스 대신 표를 쓰는 자리) ────────────
+       kit의 table.t 기본은 15px라 본문 하한(22px)에 못 미친다.
+       파트마다 따로 올리면 또 제각각이 되므로 여기서 한 번만 정한다.
+       마크업: ‹div class="w2-tbl"›‹table class="t"›…‹/table›‹/div›
+               또는 ‹table class="t w2-tbl-inline"› */
+    .w2-tbl table.t, table.t.w2-tbl-inline{ font-size:22px; }
+    .w2-tbl table.t th, .w2-tbl table.t td,
+    table.t.w2-tbl-inline th, table.t.w2-tbl-inline td{ padding:14px 18px; line-height:1.45; }
+    .w2-tbl table.t th, table.t.w2-tbl-inline th{ font-size:22px; }
+    /* 표 안에서 좋은/나쁜 예를 색으로 가른다(10p 확정 규칙과 같은 문법) */
+    .w2-tbl .is-bad, table.t.w2-tbl-inline .is-bad{ color:var(--coral-deep); font-weight:700; }
+    .w2-tbl .is-good, table.t.w2-tbl-inline .is-good{ color:var(--blue); font-weight:700; }
+
+    /* ── §0-12 교시 로드맵 템플릿 v2 — M1~M5 공통 (최우선) ─────────
+       실측: 5장이 스텝 6·4·4·5·5 · 아이콘 클래스 rm-icon/rm-ico 혼재 ·
+       산출물 줄은 M2에만. 세 번째 요청이라 마크업까지 여기서 고정한다.
+
+       마크업 계약(파트 워커는 이대로만 쓴다):
+         section.slide.w2-roadmap[data-slide=MN]
+           > div.s-full
+             > h2.s-title            "N교시 이렇게 배웁니다"
+             > p.rm-lead             한 줄 리드문
+             > div.rm-track(.is-5)
+                 > div.rm-step
+                     > span.rm-n     번호
+                     > b             명사형 제목
+                     > span.desc     설명 한 줄
+                     > span.rm-out   "산출물 · …"
+                 > span.rm-arrow     스텝 사이 화살표
+       금지: 아이콘 SVG(§0-7) · .rm-icon/.rm-ico · .rm-foot · 스텝 6개 이상.
+       ⚠️ 주석 안에 실제 태그를 쓰지 않는다 — assemble_deck이 슬라이드로 세어
+          유령 슬라이드가 생긴다(2026-08-01 실측: data-slide="MN"이 1장 잡혔다). */
+    .w2-roadmap .s-full{ bottom:54px; display:flex; flex-direction:column; }
+    .w2-roadmap .rm-lead{ margin:8px 0 0; font-size:22px; font-weight:700;
+      color:var(--blue); line-height:1.4; }
+    .w2-roadmap .rm-track{ flex:1 1 auto; min-height:0; display:flex;
+      align-items:stretch; gap:10px; margin:20px 0 0; }
+    .w2-roadmap .rm-step{ flex:1 1 0; min-width:0; display:flex; flex-direction:column;
+      align-items:flex-start; justify-content:flex-start; gap:10px;
+      padding:22px 18px 18px; text-align:left;
+      border-radius:var(--r-lg); background:var(--blue-soft);
+      border:1px solid var(--blue-line); box-shadow:var(--shadow-md); }
+    .w2-roadmap .rm-step .rm-n{ flex:0 0 auto; width:44px; height:44px; border-radius:50%;
+      background:var(--blue); color:var(--white); display:grid; place-items:center;
+      font-size:20px; font-weight:800; }
+    .w2-roadmap .rm-step > b{ font-size:26px; font-weight:800; color:var(--ink);
+      line-height:1.22; }
+    .w2-roadmap .rm-step .desc{ font-size:20px; font-weight:500; color:var(--gray-700);
+      line-height:1.45; }
+    .w2-roadmap .rm-step .rm-out{ display:block; width:100%; margin-top:auto;
+      padding-top:12px; border-top:1px solid var(--blue-line);
+      font-size:20px; font-weight:800; color:var(--blue); line-height:1.35; }
+    .w2-roadmap .rm-step.is-goal{ background:var(--mint-soft); border-color:var(--mint-line); }
+    .w2-roadmap .rm-step.is-goal > b{ color:var(--on-mint); }
+    .w2-roadmap .rm-step.is-goal .rm-n{ background:var(--mint); color:var(--on-mint); }
+    .w2-roadmap .rm-step.is-goal .rm-out{ color:var(--mint-deep); border-top-color:var(--mint-line); }
+    .w2-roadmap .rm-arrow{ flex:0 0 auto; align-self:center; font-size:24px;
+      font-weight:800; color:var(--blue); }
+    /* 5스텝은 칸이 좁다 — 제목만 한 단계 내린다(설명·산출물은 유지). */
+    .w2-roadmap .rm-track.is-5 .rm-step > b{ font-size:24px; }
+    .w2-roadmap .rm-track.is-5 .rm-step{ padding:20px 14px 16px; }
+
+    /* ── §0-9 실습 예시 프롬프트 블록 ──────────────────────────────
+       "실습마다 예시로 작성해 놓은 완벽한 프롬프트가 있어야 하고,
+        이거는 실습에 대한 공통 규칙이야."
+       디자인 정본: 1주차 덱 슬라이드 32 detailed-terminal-slide.
+       .terminal-dark/.terminal-bar/.terminal-prompt/.terminal-cursor는
+       kit/styles/patterns.css가 이미 가지고 있다 — 여기선 2주차 치수만 잡는다.
+
+       마크업 계약:
+         ‹div class="w2-prompt terminal-dark" aria-label="…"›
+           ‹div class="terminal-bar"›‹span›‹/span›‹span›‹/span›‹span›‹/span›
+             ‹b›Codex · C:\VibeCoding\&lt;폴더&gt;‹/b›‹/div›
+           ‹div class="terminal-body"›
+             ‹span class="terminal-prompt"›&gt;_‹/span›
+             ‹p class="terminal-copy"›…‹br›…‹/p›
+             ‹span class="terminal-cursor" aria-hidden="true"›‹/span›
+           ‹/div›
+         ‹/div› */
+    .w2-prompt{ flex:0 0 auto; }
+    .w2-prompt .terminal-bar{ min-height:38px; padding:0 16px; }
+    .w2-prompt .terminal-bar b{ margin-left:8px; font-size:16px; font-weight:700;
+      font-family:var(--font-mono); }
+    .w2-prompt .terminal-body{ display:flex; align-items:flex-start; gap:12px;
+      padding:12px 18px 14px; line-height:1.4; }
+    .w2-prompt .terminal-prompt{ flex:0 0 auto; font-size:20px; }
+    .w2-prompt .terminal-copy{ margin:0; flex:1 1 auto; font-size:20px; line-height:1.4;
+      font-family:var(--font-mono); }
+    .w2-prompt .terminal-copy strong{ color:var(--mint-soft); }
+    .w2-prompt .terminal-cursor{ flex:0 0 auto; align-self:flex-end; }
+    /* 실습 슬라이드 하단에 붙는 표준 자리 */
+    .pr-prompt{ margin:14px 0 0; }
+
+    /* ── 프롬프트 «전용» 장 (3차 신설) ─────────────────────────────
+       사용자: "새로운 장을 추가해서 프롬프트만 터미널처럼 크게 보이게."
+       실습 장 안의 축소판이 아니라, 한 장을 통째로 프롬프트에 쓴다. */
+    .pw-full{ bottom:54px; display:flex; flex-direction:column; }
+    /* ⚠️ .terminal-dark 는 overflow:hidden 이라, 터미널을 flex:1로 늘려 두면
+       내용이 넘칠 때 «조용히 잘린다»(2026-08-01 실측: 프롬프트 3장에서 마지막
+       2~3줄이 사라져 있었다). 높이를 내용에 맞추고 노트를 아래로 민다. */
+    .pw-term{ flex:0 0 auto; margin:12px 0 0; display:flex; flex-direction:column; }
+    .pw-term .terminal-bar{ flex:0 0 auto; min-height:40px; }
+    .pw-term .terminal-bar b{ font-size:18px; }
+    .pw-term .terminal-body{ flex:0 0 auto; padding:14px 20px 16px; }
+    .pw-term .terminal-copy{ font-size:18px; line-height:1.42; }
+    .pw-notes{ flex:0 0 auto; display:grid; grid-template-columns:repeat(3,1fr);
+      gap:14px; margin:auto 0 0; padding-top:12px; }
+    .pw-note{ padding:8px 14px; border-radius:var(--r-md);
+      background:var(--surface); border:1px solid var(--blue-line); }
+    .pw-note .pw-k{ display:block; font-size:16px; font-weight:800; color:var(--blue); }
+    .pw-note p{ margin:2px 0 0; font-size:17px; line-height:1.32; color:var(--gray-700); }
+
+    /* ── 앱 UI 목업 (17p·29p·34p 공통) ─────────────────────────────
+       "실제 앱처럼 디자인해라" · "결과물을 찾기가 너무 어렵다".
+       이미지가 아니라 덱 안 HTML/CSS로 만든다(사용자 확정).
+       한 번 만들어 세 장에서 «상태만» 바꿔 재사용한다.
+
+       마크업 계약:
+         ‹div class="w2-app" role="img" aria-label="…"›
+           ‹div class="w2-app-bar"›‹span›‹/span›‹span›‹/span›‹span›‹/span›
+             ‹b›오늘의 활동 기록‹/b›‹/div›
+           ‹div class="w2-app-body"›
+             ‹label class="w2-app-label"›무엇을 했나요?‹/label›
+             ‹div class="w2-app-input is-filled"›저녁에 30분 걸었다‹/div›
+             ‹button class="w2-app-btn" type="button"›기록하기‹/button›
+             ‹div class="w2-app-list"›
+               ‹p class="w2-app-list-h"›오늘 기록‹/p›
+               ‹div class="w2-app-row is-new"›· 21:10 저녁에 30분 걸었다‹/div›
+             ‹/div›
+           ‹/div›
+         ‹/div›
+       상태 클래스: .is-empty(빈 입력) · .is-filled(입력됨) ·
+                    .is-pressed(버튼 눌림) · .is-new(방금 추가된 줄) */
+    .w2-app{ display:flex; flex-direction:column; overflow:hidden;
+      border:2px solid var(--blue-line-strong); border-radius:var(--r-lg);
+      background:var(--white); box-shadow:var(--shadow-lg); }
+    .w2-app-bar{ flex:0 0 auto; min-height:40px; display:flex; align-items:center; gap:8px;
+      padding:0 16px; background:var(--blue-panel); border-bottom:1px solid var(--blue-line); }
+    .w2-app-bar > span{ width:10px; height:10px; border-radius:50%;
+      background:var(--blue-line-strong); }
+    .w2-app-bar b{ margin-left:8px; font-size:20px; font-weight:800; color:var(--ink); }
+    .w2-app-body{ flex:1 1 auto; min-height:0; display:flex; flex-direction:column;
+      gap:12px; padding:18px 20px 20px; }
+    .w2-app-label{ font-size:20px; font-weight:700; color:var(--gray-700); }
+    .w2-app-input{ min-height:48px; display:flex; align-items:center; padding:0 14px;
+      border:2px solid var(--blue-line); border-radius:var(--r-md);
+      background:var(--surface); font-size:22px; color:var(--ink); }
+    .w2-app-input.is-empty{ color:var(--gray-400); }
+    .w2-app-input.is-filled{ border-color:var(--blue); background:var(--white); }
+    .w2-app-btn{ align-self:flex-start; padding:12px 26px; border:0;
+      border-radius:var(--r-pill); background:var(--blue); color:var(--white);
+      font-size:22px; font-weight:800; font-family:inherit; box-shadow:var(--shadow-md); }
+    .w2-app-btn.is-pressed{ background:var(--mint); color:var(--on-mint);
+      box-shadow:var(--shadow-sm); transform:translateY(1px); }
+    .w2-app-list{ flex:1 1 auto; min-height:0; display:flex; flex-direction:column; gap:8px;
+      padding:14px 16px; border-radius:var(--r-md);
+      background:var(--surface); border:1px solid var(--blue-line); }
+    .w2-app-list-h{ margin:0; font-size:20px; font-weight:800; color:var(--blue); }
+    .w2-app-row{ font-size:20px; line-height:1.4; color:var(--ink); }
+    .w2-app-row.is-new{ padding:6px 10px; border-radius:var(--r-sm);
+      background:var(--mint-soft); color:var(--on-mint); font-weight:700; }
+    .w2-app-empty{ font-size:20px; color:var(--gray-400); }
+
+    /* ── VS Code 풍 에디터 (40p 마크다운) ──────────────────────────
+       "VS 코드로 보이게끔 만들라 했는데 텍스트로 넣으니까 어색하다."
+       좌:우 = 3:7, 우측을 최대한 크게 쓴다.
+       마크업 계약:
+         ‹div class="w2-editor" role="img" aria-label="…"›
+           ‹div class="w2-ed-bar"›‹span›‹/span›‹span›‹/span›‹span›‹/span›
+             ‹b class="w2-ed-tab"›메모.md‹/b›‹/div›
+           ‹div class="w2-ed-body"›
+             ‹ol class="w2-ed-code"›‹li›…‹/li›‹/ol›
+             ‹div class="w2-ed-preview"›…‹/div›
+           ‹/div›
+         ‹/div› */
+    .w2-editor{ display:flex; flex-direction:column; overflow:hidden;
+      border:2px solid var(--ink); border-radius:var(--r-lg);
+      background:var(--ink); box-shadow:var(--shadow-lg); }
+    .w2-ed-bar{ flex:0 0 auto; min-height:38px; display:flex; align-items:center; gap:8px;
+      padding:0 14px; border-bottom:1px solid var(--gray-700); }
+    .w2-ed-bar > span{ width:10px; height:10px; border-radius:50%;
+      background:var(--white); opacity:.7; }
+    .w2-ed-tab{ margin-left:10px; padding:5px 14px; border-radius:var(--r-sm) var(--r-sm) 0 0;
+      background:var(--gray-700); color:var(--white);
+      font-size:16px; font-weight:700; font-family:var(--font-mono); }
+    .w2-ed-body{ flex:1 1 auto; min-height:0; display:grid;
+      grid-template-columns:minmax(0,1fr) minmax(0,1fr); }
+    .w2-ed-code{ margin:0; padding:14px 12px 14px 0; list-style:none; counter-reset:edln;
+      background:var(--ink); overflow:hidden; }
+    .w2-ed-code > li{ counter-increment:edln; display:grid;
+      grid-template-columns:42px minmax(0,1fr); gap:10px;
+      font-size:19px; line-height:1.55; font-family:var(--font-mono); color:var(--white); }
+    .w2-ed-code > li::before{ content:counter(edln); text-align:right;
+      color:var(--gray-400); font-size:17px; }
+    /* ⚠️ 한 줄의 내용은 반드시 .ln 하나로 감싼다. 맨 텍스트를 두면 익명 격자
+       아이템이 되어 42px 번호 칸에 떨어지고 줄이 세로로 무너진다
+       (2026-08-01 실측: 4줄이 133~207px로 부풀어 슬라이드를 1118px까지 넘겼다). */
+    .w2-ed-code > li > .ln{ grid-column:2; min-width:0; }
+    .w2-ed-code .t-h{ color:var(--mint-soft); font-weight:700; }
+    .w2-ed-code .t-b{ color:var(--periwinkle); font-weight:700; }
+    .w2-ed-code .t-l{ color:var(--ice); }
+    .w2-ed-code .t-c{ color:var(--gray-400); }
+    .w2-ed-preview{ padding:16px 18px; background:var(--white); color:var(--ink);
+      border-left:1px solid var(--gray-700); overflow:hidden; }
+
+
 /* ═══════════════════════════════════════════════════════════════════
    2026-07-30 재설계 4·5구간 통합 — 본 덱 편입분
    출처: 재설계/4구간/samples.css · 재설계/5구간/samples.css
@@ -677,7 +916,7 @@
    막대 상한을 플롯보다 낮게 두고 .mt-lead 아래 여백을 확보한다. */
 .mt-cap{ margin:14px 0 0; font-size:19px; font-weight:700; color:var(--gray-700); text-align:center; }
 .mt-notes{ display:flex; flex-direction:column; gap:13px; }
-/* 블록 제목은 "구조 라벨"이지 강조 스팬이 아니다 — R-EMPH-01의 슬라이드당 강조
+/* 블록 제목은 "구조 라벨"이지 강조 스팬이 아니다. R-EMPH-01의 슬라이드당 강조
    합계(≤3)는 문장 안 강조에만 적용된다. 라벨 색은 컴포넌트 스타일로 준다. */
 .mt-note > b{ display:block; font-size:22px; font-weight:800; color:var(--mint-deep); margin-bottom:3px; }
 .mt-note > span{ display:block; font-size:20px; font-weight:650; line-height:1.44; color:var(--gray-700); }
@@ -1272,7 +1511,7 @@
 /* ── css_part05.css ── */
 /* ══════════════════════════════════════════════════════════════════
    Part 5 뒷단(C5-7~C5-19) 보강 — 신규 스코프 CSS
-   병합 대상: shell.html <style id="kit-additions"> (본 파일 소유자가 병합)
+   병합 대상: shell.html ‹style id="kit-additions"› (본 파일 소유자가 병합)
    전부 .slide[data-slide="C5-N"] 로 범위를 잠갔다. 재사용 컴포넌트
    (callout·pf-band·work-step·dc-cap·quad-card·center-msg·asset-slot 등)는
    이미 kit-additions에서 22px 하한으로 올려져 있어 별도 폰트 규칙 없음.
@@ -1416,7 +1655,7 @@
    전부 .slide[data-slide="C1-N"] 로 범위를 잠갔다. 범용 클래스(.card·
    .callout·.center-msg·.work-step·.ca-act 등)의 전역 정의는 건드리지
    않는다. 색은 토큰만 사용. 본문 22px 하한 준수.
-   병합 대상: shell.html <style id="kit-additions"> (파일 소유자가 병합)
+   병합 대상: shell.html ‹style id="kit-additions"› (파일 소유자가 병합)
    ══════════════════════════════════════════════════════════════════ */
 
 /* ── C1-1: 지난주에서 이번 주로 — 보강 한 줄 ─────────────────────── */
@@ -1424,7 +1663,7 @@
   margin:8px 0 0; font-size:22px; line-height:1.5; color:var(--gray-700);
 }
 
-/* ── C1-4: 아이디어는 아직 가설입니다 — 이미지 슬롯 ──────────────────
+/* ── C1-4: 아이디어는 아직 가설입니다. 이미지 슬롯 ──────────────────
    center-msg 기본 max-width:900이면 우측 300px 슬롯(right:56)과 겹친다
    (900+64=964 vs 슬롯 좌변 1280-56-300=924). 760으로 좁혀 안전 여백을
    둔다(824 vs 924 = 100px 여유). 슬롯은 .slide 직계 자식(섹션 내
@@ -1458,7 +1697,7 @@
 .slide[data-slide="C1-6"] .sl-case .sl-ex{ margin-top:8px; font-weight:800; color:var(--ink); }
 .slide[data-slide="C1-6"] .sl-case .sl-why{ margin-top:4px; }
 
-/* ── C1-7: 주제는 이렇게 고릅니다 — 8칸(라벨만) → 6칸(라벨+설명) ──────
+/* ── C1-7: 주제는 이렇게 고릅니다. 8칸(라벨만) → 6칸(라벨+설명) ──────
    grid-2(2열×3행)를 유지해 카드 폭을 넉넉히(약 569px) 확보한다 —
    grid-3로 바꾸면 카드 폭이 좁아져(약 373px) 설명 문장이 3~4줄로
    길게 줄바꿈된다(실측 이전 사전 계산). 기존 인라인 배지 스타일을
@@ -1497,11 +1736,11 @@
 /* ── css_p3b.css ── */
 /* ═══════════════════════════════════════════════════════════════════
    2026-07-30 Part 3(3교시) 보강 CSS — C3-1~C3-6
-   병합 대상: shell.html <style id="kit-additions"> (본 파일 소유자가 병합)
+   병합 대상: shell.html ‹style id="kit-additions"› (본 파일 소유자가 병합)
    전부 .slide[data-slide="C3-N"] 로 범위를 잠갔다. 색은 토큰만 사용.
    ═══════════════════════════════════════════════════════════════════ */
 
-/* ── C3-1: Markdown은 메모에 구조를 붙입니다 — "왜 구조가 필요한지" 보강 문장.
+/* ── C3-1: Markdown은 메모에 구조를 붙입니다. "왜 구조가 필요한지" 보강 문장.
    .dc-stage > .dc-cap + .s-body는 patterns.css가 이미 margin-top:16px·
    text-align:center를 준다(공용 규칙, 재선언 불필요). 여기서는 22px 하한과,
    기존 이미지 슬롯(c3-1-figure, x=958~1258·y=275~615)과 겹치지 않도록
@@ -1732,8 +1971,7 @@
       <div class="s-full" style="top:64px; bottom:64px; display:flex; align-items:center; gap:48px;">
         <div style="flex:1.15; display:flex; flex-direction:column; justify-content:center;">
           <h2 class="s-title" style="font-size:58px; line-height:1.35; margin:0;">AI가 작성하고<br>사람이 검토하고<br><span class="hl-mint-text">사람이 결정합니다</span></h2>
-          <div class="accent-bar" style="margin-top:20px;"></div>
-          <div style="display:flex; flex-direction:column; gap:16px; margin-top:24px;">
+                    <div style="display:flex; flex-direction:column; gap:16px; margin-top:24px;">
             <p class="s-body" style="margin:0;">초안·후보·코드를 빠르게 만들어 냅니다.</p>
             <p class="s-body" style="margin:0;">화면과 문서를 직접 열어 눈으로 확인합니다.</p>
             <p class="s-body" style="margin:0;">무엇을 넣고 무엇을 뺄지는 사람이 정합니다.</p>
@@ -1756,7 +1994,7 @@
   </header>
   <div class="s-full">
     <p class="s-eyebrow">2주차 전체 흐름</p>
-    <h2 class="s-title">여섯 교시가 <span class="hl-mint-text">첫 MVP</span>로 이어집니다</h2>
+    <h2 class="s-title">오늘 하루로 <span class="hl-mint-text">첫 MVP</span>까지 갑니다</h2>
     <p class="wk-prev">지난주 요청하고 확인하고 고쳤다면, 이번 주는 문제를 정해 첫 MVP를 만듭니다.</p>
 
     <div class="wk-track">

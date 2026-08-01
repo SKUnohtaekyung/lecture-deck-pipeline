@@ -4,15 +4,6 @@
          shell.html(kit 정본)은 건드리지 않는다. 색은 토큰만 사용. */
 
       /* ── M2: 교시 로드맵 템플릿(M2·M3가 기준 장) ───────────────── */
-      .slide[data-slide="M2"] .rm-track{ margin-top:20px; }
-      .slide[data-slide="M2"] .rm-step{ justify-content:flex-start; padding:22px 16px 16px; gap:8px; }
-      .slide[data-slide="M2"] .rm-icon{ width:32px; height:32px; flex:0 0 auto; }
-      .slide[data-slide="M2"] .rm-step b{ font-size:26px; font-weight:800; }
-      .slide[data-slide="M2"] .rm-step .desc{ display:block; }
-      .slide[data-slide="M2"] .rm-step .desc p{ margin:0; font-size:20px; font-weight:500; line-height:1.4; color:var(--gray-700); }
-      .slide[data-slide="M2"] .rm-out{ display:block; width:100%; margin-top:auto; padding-top:12px;
-        border-top:1px solid var(--blue-line); font-size:22px; font-weight:800; color:var(--blue); }
-      .slide[data-slide="M2"] .rm-step.is-goal .rm-out{ color:var(--mint-deep); border-top-color:var(--mint-line); }
 
       /* ── C2-1: 결과 vs 기능 + 흔한 실패 + 우측 이미지(2차: 슬롯 복원) ─── */
       .slide[data-slide="C2-1"] .cc-icon{ width:26px; height:26px; display:block; margin-bottom:8px; }
@@ -38,9 +29,9 @@
       /* ── C2-N1: MVP(정식 명칭) 비유 — 좌측 55~60% 이미지(SLOT, 표준보다 넓음) + 우측 3블록 ──
          2026-07-31 2차: §2-4-A 골격 확정 반영. 커스텀 SVG 제거, 이미지 슬롯 복원.
          이미지가 좌측 주도(폭 55~60%)이므로 표준 img-slot-l(340px)이 아니라 전용 폭을 쓴다. */
-      .slide[data-slide="C2-N1"] .c2n1-figure{ position:absolute; left:64px; top:150px; width:600px; height:480px;
+      .slide[data-slide="C2-N1"] .c2n1-figure{ border:0; background:none; position:absolute; left:64px; top:150px; width:600px; height:480px;
         max-width:600px; max-height:480px; right:auto; bottom:auto;
-        border:2px dashed var(--blue-line-strong); border-radius:var(--r-lg); background:var(--surface); }
+        border-radius:var(--r-lg); background:none; }
       .slide[data-slide="C2-N1"] .c2n1-image-captions{ position:absolute; inset:12px 16px auto; z-index:1;
         display:flex; flex-direction:column; gap:208px; pointer-events:none; }
       .slide[data-slide="C2-N1"] .c2n1-image-captions span{ display:block; width:max-content; max-width:100%;
@@ -116,6 +107,148 @@
       .slide[data-slide="C2-11"] .ws-icon{ width:24px; height:24px; }
       .slide[data-slide="C2-11"] .c2n11-visual{ position:absolute; right:64px; top:150px; width:404px; height:460px;
         display:flex; align-items:center; justify-content:center; }
+
+      /* ═══ 수정요청서 2차 반영 (2026-08-01) ═══════════════════════════
+         정본: 2주차_슬라이드수정요청_2차.md §1 24~37p + §2-1 신설 */
+
+      /* M2 — §0-12 공용 템플릿으로 이관. 스코프 재정의는 «또 5장이 제각각»의
+         원인이라 전부 걷어낸다(아이콘도 §0-7로 삭제). */
+
+      /* C2-1(25p) — 제목·정의 재작성 */
+      .slide[data-slide="C2-1"] .c21-lead{ margin:8px 0 0; font-size:22px; line-height:1.5; }
+      .slide[data-slide="C2-1"] .cc-side li > .subline{ margin-top:4px; }
+
+      /* C2-3(29p) — 마우스 커서 삭제 · 실제 앱 화면 + 입력·실행·결과 연결 */
+      .slide[data-slide="C2-3"] .s-full{ bottom:54px; display:flex; flex-direction:column; }
+      .slide[data-slide="C2-3"] .c23-lead{ flex:0 0 auto; margin:8px 0 0; font-size:22px; line-height:1.45; }
+      .slide[data-slide="C2-3"] .c23-stage{ flex:1 1 auto; min-height:0; display:grid;
+        grid-template-columns:470px minmax(0,1fr); gap:34px; margin:14px 0 0; }
+      .slide[data-slide="C2-3"] .c23-flow{ display:flex; flex-direction:column;
+        justify-content:center; gap:4px; }
+      .slide[data-slide="C2-3"] .c23-step{ display:grid; grid-template-columns:64px minmax(0,1fr);
+        gap:14px; align-items:center; padding:10px 16px; border-radius:var(--r-md);
+        background:var(--surface); border:1px solid var(--blue-line); }
+      .slide[data-slide="C2-3"] .c23-step.is-result{ background:var(--mint-soft); border-color:var(--mint-line); }
+      .slide[data-slide="C2-3"] .c23-k{ padding:3px 0; border-radius:var(--r-pill);
+        background:var(--blue); color:var(--white); font-size:17px; font-weight:800; text-align:center; }
+      .slide[data-slide="C2-3"] .c23-step.is-result .c23-k{ background:var(--mint); color:var(--on-mint); }
+      .slide[data-slide="C2-3"] .c23-step b{ display:block; font-size:23px; font-weight:800;
+        color:var(--ink); line-height:1.25; }
+      .slide[data-slide="C2-3"] .c23-step .subline{ margin-top:2px; line-height:1.3; }
+      .slide[data-slide="C2-3"] .c23-arrow{ text-align:center; font-size:20px; font-weight:800;
+        color:var(--blue); line-height:1; }
+      .slide[data-slide="C2-3"] .w2-app-body{ gap:9px; padding:14px 18px 16px; }
+      .slide[data-slide="C2-3"] .w2-app-input{ min-height:42px; }
+
+      /* C2-7(33p) — 비유 제거 + 예시를 실제 «화면 흐름» 3컷으로 */
+      .slide[data-slide="C2-7"] .c27-extag{ margin:14px 0 0; font-size:20px; font-weight:800; color:var(--blue); }
+      .slide[data-slide="C2-7"] .c27-screens{ display:flex; align-items:center; justify-content:center;
+        gap:16px; margin:10px 0 0; }
+      .slide[data-slide="C2-7"] .c27-scr{ flex:0 0 268px; display:flex; flex-direction:column; }
+      .slide[data-slide="C2-7"] .c27-scr-bar{ display:flex; gap:5px; padding:7px 10px;
+        border:1px solid var(--blue-line); border-bottom:0;
+        border-radius:var(--r-md) var(--r-md) 0 0; background:var(--blue-panel); }
+      .slide[data-slide="C2-7"] .c27-scr-bar span{ width:7px; height:7px; border-radius:50%;
+        background:var(--blue-line-strong); }
+      .slide[data-slide="C2-7"] .c27-scr-body{ display:flex; flex-direction:column; gap:7px;
+        padding:12px; border:1px solid var(--blue-line); border-radius:0 0 var(--r-md) var(--r-md);
+        background:var(--white); }
+      .slide[data-slide="C2-7"] .c27-scr-input{ height:30px; border-radius:var(--r-sm);
+        border:1.5px solid var(--blue-line); background:var(--surface);
+        display:flex; align-items:center; padding:0 8px; font-size:17px; color:var(--gray-400); }
+      .slide[data-slide="C2-7"] .c27-scr-input.is-filled{ color:var(--ink); border-color:var(--blue); background:var(--white); }
+      .slide[data-slide="C2-7"] .c27-scr-btn{ align-self:flex-start; padding:5px 16px;
+        border-radius:var(--r-pill); background:var(--blue); color:var(--white);
+        font-size:17px; font-weight:800; }
+      .slide[data-slide="C2-7"] .c27-scr-btn.is-pressed{ background:var(--mint); color:var(--on-mint); }
+      .slide[data-slide="C2-7"] .c27-scr-list{ display:flex; flex-direction:column; gap:5px;
+        padding:8px; border-radius:var(--r-sm); background:var(--surface); }
+      .slide[data-slide="C2-7"] .c27-scr-list i{ height:8px; border-radius:4px; background:var(--blue-line); }
+      .slide[data-slide="C2-7"] .c27-scr-list i.is-new{ background:var(--mint); }
+      .slide[data-slide="C2-7"] .c27-cap{ margin-top:8px; font-size:20px; font-weight:800;
+        color:var(--ink); text-align:center; }
+      .slide[data-slide="C2-7"] .c27-scr.is-result .c27-cap{ color:var(--mint-deep); }
+      .slide[data-slide="C2-7"] .c27-arrow{ font-size:24px; font-weight:800; color:var(--blue); }
+      .slide[data-slide="C2-7"] .callout{ margin-top:14px; }
+
+      /* C2-8(34p) — 추상 아이콘 → 실제 화면 3컷 */
+      .slide[data-slide="C2-8"] .c28-shots{ display:flex; align-items:stretch; justify-content:center;
+        gap:14px; margin:14px 0 0; }
+      .slide[data-slide="C2-8"] .c28-shot{ flex:0 0 320px; display:flex; flex-direction:column; }
+      .slide[data-slide="C2-8"] .c28-k{ align-self:flex-start; margin-bottom:6px; padding:2px 14px;
+        border-radius:var(--r-pill); background:var(--blue); color:var(--white);
+        font-size:17px; font-weight:800; }
+      .slide[data-slide="C2-8"] .c28-shot.is-result .c28-k{ background:var(--mint); color:var(--on-mint); }
+      .slide[data-slide="C2-8"] .c28-shot .w2-app{ flex:1 1 auto; }
+      .slide[data-slide="C2-8"] .w2-app-bar{ min-height:32px; }
+      .slide[data-slide="C2-8"] .w2-app-bar b{ font-size:17px; }
+      .slide[data-slide="C2-8"] .w2-app-body{ gap:8px; padding:12px 14px 14px; }
+      .slide[data-slide="C2-8"] .w2-app-label{ font-size:18px; }
+      .slide[data-slide="C2-8"] .w2-app-input{ min-height:36px; font-size:19px; }
+      .slide[data-slide="C2-8"] .w2-app-btn{ padding:7px 18px; font-size:19px; }
+      .slide[data-slide="C2-8"] .w2-app-list{ padding:10px 12px; }
+      .slide[data-slide="C2-8"] .w2-app-list-h{ font-size:18px; }
+      .slide[data-slide="C2-8"] .w2-app-row{ font-size:18px; }
+      .slide[data-slide="C2-8"] .c28-cap{ margin-top:8px; font-size:20px; font-weight:800;
+        color:var(--ink); text-align:center; }
+      .slide[data-slide="C2-8"] .c28-shot.is-result .c28-cap{ color:var(--mint-deep); }
+      .slide[data-slide="C2-8"] .c28-arrow{ align-self:center; font-size:26px; font-weight:800; color:var(--blue); }
+
+      /* C2-10(36p) — 제목 완화 + 표 전환 + 우측 «없으니만 못한» 도해 제거 */
+      .slide[data-slide="C2-10"] .s-full.cc-full{ bottom:54px; }
+      .slide[data-slide="C2-10"] .c210-lead{ margin:8px 0 0; font-size:22px; line-height:1.5; }
+      .slide[data-slide="C2-10"] .c210-tbl{ margin-top:16px; }
+      .slide[data-slide="C2-10"] .c210-tbl th:first-child{ width:118px; }
+
+      /* 실습 장 공통 — 프롬프트 블록이 들어와 세로가 빡빡하다 */
+      .slide[data-slide="C2-6"] .pr-steps, .slide[data-slide="C2-11"] .pr-steps{
+        flex:0 0 auto; gap:10px; margin-top:10px; }
+      .slide[data-slide="C2-6"] .pr-steps .work-step,
+      .slide[data-slide="C2-11"] .pr-steps .work-step{ padding:10px 20px; }
+      .slide[data-slide="C2-6"] .pr-prompt, .slide[data-slide="C2-11"] .pr-prompt{ margin-top:auto; }
+      .slide[data-slide="C2-6"] .accent-bar, .slide[data-slide="C2-11"] .accent-bar{ display:none; }
+
+      /* C2-8(34p) — 하단 두 블록을 바닥선 안으로 */
+      .slide[data-slide="C2-8"] .dc-stage .s-body{ margin-top:10px; }
+      .slide[data-slide="C2-8"] .c28-fails{ margin-top:8px; }
+      .slide[data-slide="C2-8"] .c28-shots{ margin-top:8px; }
+      .slide[data-slide="C2-8"] .c28-shot .w2-app-body{ gap:6px; padding:10px 12px 12px; }
+      .slide[data-slide="C2-8"] .c28-shot .w2-app-input{ min-height:32px; }
+      .slide[data-slide="C2-8"] .c28-shot .w2-app-btn{ padding:5px 16px; }
+      .slide[data-slide="C2-8"] .c28-cap{ margin-top:6px; font-size:19px; }
+      .slide[data-slide="C2-8"] .c28-shot .w2-app-list{ padding:8px 10px; }
+      .slide[data-slide="C2-8"] .dc-title{ padding-bottom:0; }
+      .slide[data-slide="C2-8"] .c28-fails .itr-warncard{ padding:4px 14px; }
+      .slide[data-slide="C2-8"] .c28-fails p{ font-size:20px; line-height:1.3; }
+      .slide[data-slide="C2-8"] .dc-stage .s-body{ line-height:1.35; }
+      .slide[data-slide="C2-8"] .c28-fails p{ line-height:1.3; }
+
+      /* C2-9(35p) — 표가 바닥선을 넘지 않게 */
+      .slide[data-slide="C2-9"] table.t th, .slide[data-slide="C2-9"] table.t td{ padding:10px 16px; }
+      .slide[data-slide="C2-9"] table.t th:first-child, .slide[data-slide="C2-9"] table.t td:first-child{ width:210px; }
+
+      /* C2-10(36p) — 표 여백 미세 조정 */
+      .slide[data-slide="C2-10"] .c210-tbl table.t th,
+      .slide[data-slide="C2-10"] .c210-tbl table.t td{ padding:8px 16px; }
+      .slide[data-slide="C2-10"] .c210-lead{ font-size:21px; line-height:1.4; }
+      .slide[data-slide="C2-10"] .c210-tbl{ margin-top:12px; }
+
+      /* C2-N3(신설 §2-1) — 왜 3~5단계인가 */
+      .slide[data-slide="C2-N3"] .s-full.c2n3-full{ bottom:54px; display:flex; flex-direction:column; }
+      .slide[data-slide="C2-N3"] .c2n3-lead{ margin:8px 0 0; font-size:22px; line-height:1.45; }
+      .slide[data-slide="C2-N3"] .c2n3-core{ display:flex; align-items:stretch; gap:14px; margin:14px 0 0; }
+      .slide[data-slide="C2-N3"] .c2n3-cell{ flex:1 1 0; min-width:0; display:flex; flex-direction:column;
+        gap:5px; padding:12px 18px; border-radius:var(--r-lg);
+        background:var(--blue-soft); border:1px solid var(--blue-line); }
+      .slide[data-slide="C2-N3"] .c2n3-cell.is-key{ background:var(--mint-soft); border-color:var(--mint-line); }
+      .slide[data-slide="C2-N3"] .c2n3-n{ align-self:flex-start; padding:2px 14px; border-radius:var(--r-pill);
+        background:var(--blue); color:var(--white); font-size:18px; font-weight:800; }
+      .slide[data-slide="C2-N3"] .c2n3-cell.is-key .c2n3-n{ background:var(--mint); color:var(--on-mint); }
+      .slide[data-slide="C2-N3"] .c2n3-cell b{ font-size:23px; font-weight:800; color:var(--ink); line-height:1.25; }
+      .slide[data-slide="C2-N3"] .c2n3-arrow{ align-self:center; font-size:24px; font-weight:800; color:var(--blue); }
+      .slide[data-slide="C2-N3"] .c2n3-tbl{ margin:14px 0 0; }
+      .slide[data-slide="C2-N3"] .c2n3-tbl th:first-child{ width:150px; }
+      .slide[data-slide="C2-N3"] .c2n3-foot{ margin:auto 0 0; }
     </style>
 
     <!-- ============ PART 02 · 2교시 (15장) ============ -->
@@ -137,30 +270,26 @@
         <p class="rm-lead">핵심 기능 하나를 정하고, 실제로 작동하는 흐름과 완료 기준까지 만듭니다.</p>
         <div class="rm-track">
           <div class="rm-step">
-            <svg class="rm-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" style="stroke:var(--blue)" stroke-width="2"/><circle cx="12" cy="12" r="5" style="stroke:var(--blue)" stroke-width="2"/><circle cx="12" cy="12" r="1.6" style="fill:var(--blue)"/></svg>
             <span class="rm-n">1</span><b>결과 정하기</b>
-            <span class="desc"><p>사용자가 얻는 변화 하나를 먼저 정합니다. 예: 오늘 하루를 기록하고 바로 확인하는 순간처럼, 무엇이 바뀌는지가 분명해야 합니다.</p></span>
+            <span class="desc">사용자가 얻는 변화 하나를 먼저 정합니다. 예: 오늘 하루를 바로 확인하는 순간.</span>
             <span class="rm-out">산출물 · 결과 한 문장</span>
           </div>
           <span class="rm-arrow" aria-hidden="true">→</span>
           <div class="rm-step">
-            <svg class="rm-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 5h16l-6 8v6l-4-2v-4L4 5z" style="fill:var(--blue)"/></svg>
             <span class="rm-n">2</span><b>기능 줄이기</b>
-            <span class="desc"><p>그 결과를 만드는 기능 1개만 남깁니다. 나머지는 버리지 않고 나중 아이디어로만 적어 둡니다.</p></span>
+            <span class="desc">그 결과를 만드는 기능 1개만 남깁니다. 나머지는 나중 아이디어로 적어 둡니다.</span>
             <span class="rm-out">산출물 · MVP 범위표</span>
           </div>
           <span class="rm-arrow" aria-hidden="true">→</span>
           <div class="rm-step">
-            <svg class="rm-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="4" cy="12" r="2.2" style="fill:var(--blue)"/><circle cx="12" cy="12" r="2.2" style="fill:var(--blue)"/><circle cx="20" cy="12" r="2.2" style="fill:var(--blue)"/><path d="M6.5 12h3M14.5 12h3" style="stroke:var(--blue)" stroke-width="2"/></svg>
             <span class="rm-n">3</span><b>흐름 그리기</b>
-            <span class="desc"><p>입력부터 결과까지 대표 순서를 3~5단계로 그립니다. 예: 입력 → 실행 → 결과 → 화면 변화.</p></span>
+            <span class="desc">입력부터 결과까지 대표 순서를 3~5단계로 그립니다. 예: 입력 → 실행 → 결과.</span>
             <span class="rm-out">산출물 · User Flow 단계</span>
           </div>
           <span class="rm-arrow" aria-hidden="true">→</span>
           <div class="rm-step is-goal">
-            <svg class="rm-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10" style="fill:var(--mint)"/><path d="M7.5 12.5l3 3 6-6.5" style="stroke:var(--on-mint)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
             <span class="rm-n">4</span><b>완료 기준 정하기</b>
-            <span class="desc"><p>무엇이 보이면 끝인지 한 줄로 적어 둡니다. 예: 버튼을 누르면 목록에 그 줄이 보인다.</p></span>
+            <span class="desc">무엇이 보이면 끝인지 한 줄로 적어 둡니다. 예: 버튼을 누르면 목록에 그 줄이 보인다.</span>
             <span class="rm-out">산출물 · 완료 기준 한 줄</span>
           </div>
         </div>
@@ -174,34 +303,33 @@
         <span class="s-line"></span><div class="s-team">2주차<br>2교시</div>
       </header>
       <div class="s-full">
-        <h2 class="s-title">기능을 만들어도 결과는 안 생길 수 있습니다</h2>
-        <p class="itr-lead">결과 = 사용자가 얻는 변화 · 기능 = 웹이 하는 동작</p>
-        <p class="s-body">새 기능을 5개 내놓아도 아무도 안 쓰면 결과는 0입니다 — 기능은 '만든 것', 결과는 '그것이 일으킨 변화'이므로 기능이 있어도 결과가 없을 수 있습니다.</p>
+        <h2 class="s-title">기능을 다 만들어도 불편이 그대로일 수 있습니다</h2>
+        <p class="s-body c21-lead">기능은 <b>앱이 하는 일</b>, 결과는 <b>그걸로 해결된 불편</b>입니다. 앱이 일해도 불편이 그대로면 결과는 없습니다.</p>
         <div class="cc-grid">
           <div class="cc-side">
-            <svg class="cc-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="3.2" style="stroke:var(--blue)" stroke-width="2"/><path d="M12 3v2.4M12 18.6V21M21 12h-2.4M5.4 12H3M18.1 5.9l-1.7 1.7M7.6 16.4l-1.7 1.7M18.1 18.1l-1.7-1.7M7.6 7.6L5.9 5.9" style="stroke:var(--blue)" stroke-width="2" stroke-linecap="round"/></svg>
-            <h3>기능</h3>
+            <h3>기능 · 앱이 하는 일</h3>
             <ul>
-              <li>웹이 하는 동작 하나 — 예: 한 줄 입력 → 버튼 → 저장</li>
+              <li>한 줄을 입력하고 버튼을 누르면 저장된다
+                <span class="subline">화면에서 눈으로 확인할 수 있는 동작입니다.</span></li>
             </ul>
           </div>
           <div class="cc-neq" aria-hidden="true">→</div>
           <div class="cc-side">
-            <svg class="cc-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3l1.8 5.4L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.6L12 3z" style="fill:var(--mint)"/></svg>
-            <h3>결과</h3>
+            <h3>결과 · 그걸로 해결된 불편</h3>
             <ul>
-              <li>그 기능이 사용자에게 일으킨 변화 — <span class="hl-mint-underline">예: 하루를 확인하고 뿌듯함을 느낌</span></li>
+              <li><span class="hl-mint-underline">오늘 뭘 했는지 잊지 않게 됐다</span>
+                <span class="subline">사용자의 불편이 실제로 사라졌는지가 기준입니다.</span></li>
             </ul>
           </div>
         </div>
         <div class="itr-warn">
           <div class="itr-warncard">
             <svg class="itr-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10" style="stroke:var(--coral-deep)" stroke-width="2" fill="none"/><path d="M12 7v6M12 16.5v.1" style="stroke:var(--coral-deep)" stroke-width="2.2" stroke-linecap="round"/></svg>
-            <span><span class="tag">흔한 실패 ①</span><p>기능은 다 만들었는데 아무도 쓰지 않습니다.</p></span>
+            <span><span class="tag">흔한 실패 ①</span><p>기능은 5개 만들었는데 아무도 안 씁니다. 해결된 불편이 없습니다.</p></span>
           </div>
           <div class="itr-warncard">
             <svg class="itr-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10" style="stroke:var(--coral-deep)" stroke-width="2" fill="none"/><path d="M12 7v6M12 16.5v.1" style="stroke:var(--coral-deep)" stroke-width="2.2" stroke-linecap="round"/></svg>
-            <span><span class="tag">흔한 실패 ②</span><p>화면은 그럴듯한데 사용자가 달라졌는지 확인할 수 없습니다.</p></span>
+            <span><span class="tag">흔한 실패 ②</span><p>화면은 그럴듯한데, 불편이 사라졌는지 확인할 방법이 없습니다.</p></span>
           </div>
         </div>
       </div>
@@ -219,10 +347,11 @@
         <span class="def-term">MVP</span>
         <h2 class="cm-title">MVP는 대충 만든 게 아닙니다</h2>
         <div class="callout blue def-body">
-          <svg class="def-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" style="stroke:var(--blue)" stroke-width="2"/><circle cx="12" cy="12" r="5" style="stroke:var(--blue)" stroke-width="2"/><circle cx="12" cy="12" r="1.6" style="fill:var(--blue)"/></svg>
           <strong>MVP (Minimum Viable Product)</strong><br>가설을 확인하려고 범위를 의도적으로 줄여, 실제로 써 볼 수 있게 만든 첫 작동 버전입니다.
         </div>
-        <p class="cm-sub cm-statement">기능을 다 넣으면 <span class="hl-mint-underline">무엇이 진짜 통했는지 알 수 없습니다</span> — 그래서 <span class="hl-mint-mark">핵심 하나만 제대로 작동시켜 반응부터 확인합니다</span>. 실험용 모형이 아니라, 작아도 <strong>실제로 쓸 수 있는 첫 버전</strong>입니다.</p>
+        <p class="cm-sub cm-statement">기능을 다 넣으면 <span class="hl-mint-underline">무엇이 진짜 통했는지 알 수 없습니다.</span></p>
+        <p class="cm-sub cm-statement">그래서 <span class="hl-mint-mark">핵심 하나만 제대로 작동시켜 반응하는지 확인합니다.</span></p>
+        <p class="cm-sub cm-statement">실험용 모형이 아니라, 작아도 <strong>실제로 쓸 수 있는 버전</strong>입니다.</p>
         <div class="def-tags">
           <span class="pill">작게 만들고</span>
           <span class="fl-arrow" aria-hidden="true">→</span>
@@ -231,7 +360,7 @@
           <span class="pill">다음을 결정합니다</span>
         </div>
       </div>
-      <div class="c22-visual" aria-hidden="true">
+      <div class="c22-visual viz-compare" aria-hidden="true">
         <svg viewBox="0 0 300 340" width="300" height="340" fill="none">
           <path d="M40 150 L90 108 L140 150 V222 H40 Z" style="fill:var(--mint-soft); stroke:var(--mint-line); stroke-width:2"/>
           <rect x="78" y="185" width="24" height="37" style="fill:var(--white); stroke:var(--mint-deep); stroke-width:1.6"/>
@@ -277,30 +406,8 @@
       </div>
     </section>
 
-    <section class="slide" data-slide="C2-N2">
-      <header class="s-head">
-        <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-        <span class="s-line"></span><div class="s-team">2주차<br>2교시</div>
-      </header>
-      <div class="s-full">
-        <h2 class="s-title">이 비유가 우리 수업과 만나는 지점</h2>
-        <p style="margin:14px 0 24px; font-size:22px; line-height:1.6; color:var(--gray-700);">스케이트보드가 처음부터 "탈 수 있었던" 것처럼, 우리도 <span style="color:var(--blue); font-weight:800;">핵심 기능 하나</span>만 골라 오늘 안에 실제로 작동시킵니다.</p>
-        <div class="grid-2">
-          <div class="card surface">
-            <svg class="c2n2-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" style="stroke:var(--blue)" stroke-width="2"/><circle cx="12" cy="12" r="5" style="stroke:var(--blue)" stroke-width="2"/><circle cx="12" cy="12" r="1.6" style="fill:var(--blue)"/></svg>
-            <b style="display:block; font-size:26px; font-weight:800; color:var(--blue);">핵심 기능 하나 고르기</b>
-            <p class="s-body" style="margin:6px 0 0; font-size:22px;">이번 주 결과를 만드는 동작 1개만 남깁니다.</p>
-            <p class="s-body c24-note" style="font-size:22px;">부품(로그인·저장·꾸미기)이 아니라 <span class="orange-bold">이동 그 자체</span>부터 고릅니다. 나머지는 나중 아이디어로 남겨 둡니다.</p>
-          </div>
-          <div class="card surface" style="background:var(--mint-soft); border-color:var(--mint-line);">
-            <svg class="c2n2-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10" style="fill:var(--mint)"/><path d="M7.5 12.5l3 3 6-6.5" style="stroke:var(--on-mint)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
-            <b style="display:block; font-size:26px; font-weight:800; color:var(--mint-deep);">첫 작동 확인하기</b>
-            <p class="s-body" style="margin:6px 0 0; font-size:22px;">오늘 만든 것이 실제로 눌러서 돌아가는지 봅니다.</p>
-            <p class="s-body c24-note" style="font-size:22px;"><span class="hl-mint-underline">완성된 뼈대가 아니라 작아도 쓸 수 있는 형태</span>가 목표입니다. 화면에서 눈으로 확인해야 끝난 것입니다.</p>
-          </div>
-        </div>
-      </div>
-    </section>
+    <!-- ============ C2-N2 · 이 비유가 수업과 만나는 지점 — 2차 §3-1로 삭제 ============ -->
+    <!-- 사용자 결정(2026-07-31): "28페이지 삭제." -->
 
     <section class="slide w2-screen" data-slide="C2-3">
       <header class="s-head">
@@ -309,20 +416,27 @@
       </header>
       <div class="s-full">
         <h2 class="s-title">먼저 보여줄 결과 하나</h2>
-        <div class="sm-stage">
-          <div class="sm-frame">
-            <div class="sm-bar"><span></span><span></span><span></span><b>오늘의 활동 기록</b>
-              <svg class="sm-cursor" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 3l10 10-4 1 3 5-2 1-3-5-3 3V3z" style="fill:var(--blue)"/></svg>
-            </div>
-            <div class="sm-body">
-              <div class="sm-part"><span class="sm-k">입력</span><p>활동 한 줄 <svg class="sm-mini" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 20l1-4L15 6l3 3L8 19l-4 1z" style="stroke:var(--blue)" stroke-width="2" stroke-linejoin="round" fill="none"/></svg></p></div>
-              <div class="sm-part is-action"><span class="sm-k">실행</span><p>기록하기 클릭 <svg class="sm-mini" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 3l10 10-4 1 3 5-2 1-3-5-3 3V3z" style="fill:var(--mint-deep)"/></svg></p></div>
-              <div class="sm-part is-result"><span class="sm-k">결과</span><p>오늘 기록에 한 줄 추가 <svg class="sm-mini" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10" style="fill:var(--blue)"/><path d="M7.5 12.5l3 3 6-6.5" style="stroke:var(--white)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></p></div>
+        <p class="s-body c23-lead">사용자가 끝나고 <b>무엇을 보게 할지</b>부터 정합니다. 아래 초록 줄이 이번 버전의 «결과»입니다.</p>
+        <div class="c23-stage">
+          <div class="w2-app viz-appui" role="img" aria-label="오늘의 활동 기록 앱 화면. 활동 한 줄을 입력하고 기록하기 버튼을 누르면 오늘 기록 목록에 새 줄이 추가된다">
+            <div class="w2-app-bar"><span></span><span></span><span></span><b>오늘의 활동 기록</b></div>
+            <div class="w2-app-body">
+              <span class="w2-app-label">무엇을 했나요?</span>
+              <div class="w2-app-input is-filled">저녁에 30분 걸었다</div>
+              <button class="w2-app-btn is-pressed" type="button">기록하기</button>
+              <div class="w2-app-list">
+                <p class="w2-app-list-h">오늘 기록</p>
+                <div class="w2-app-row">· 09:20 아침 산책 30분</div>
+                <div class="w2-app-row is-new">· 21:10 저녁에 30분 걸었다</div>
+              </div>
             </div>
           </div>
-          <div class="sm-notes">
-            <div class="sm-note"><span class="n">1</span><p>"무엇을 만들까?"보다 <strong class="hl-mint-underline">"사용자가 끝나고 무엇을 보게 할까?"</strong>를 먼저 정합니다.</p></div>
-            <div class="sm-note"><span class="n">2</span><p>그 결과를 만드는 기능 하나만 이번 버전에 넣습니다.</p></div>
+          <div class="c23-flow viz-flow">
+            <div class="c23-step"><span class="c23-k">입력</span><div><b>활동 한 줄을 적는다</b><span class="subline">칸에 "저녁에 30분 걸었다"를 씁니다.</span></div></div>
+            <span class="c23-arrow" aria-hidden="true">↓</span>
+            <div class="c23-step"><span class="c23-k">실행</span><div><b>기록하기를 누른다</b><span class="subline">버튼 하나. 이번 버전의 기능은 이것뿐입니다.</span></div></div>
+            <span class="c23-arrow" aria-hidden="true">↓</span>
+            <div class="c23-step is-result"><span class="c23-k">결과</span><div><b>오늘 기록에 한 줄이 쌓인다</b><span class="subline">이 줄이 보이면 오늘 할 일을 잊지 않게 됩니다.</span></div></div>
           </div>
         </div>
       </div>
@@ -337,7 +451,7 @@
         <h2 class="s-title">핵심 기능과 부가 기능</h2>
         <div class="grid-2">
           <div class="card" style="background:var(--mint-soft); border-color:var(--mint-line);">
-            <svg class="c24-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10" style="fill:var(--mint)"/><path d="M7.5 12.5l3 3 6-6.5" style="stroke:var(--on-mint)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+            <svg class="c24-icon viz-split" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10" style="fill:var(--mint)"/><path d="M7.5 12.5l3 3 6-6.5" style="stroke:var(--on-mint)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
             <b style="display:block; font-size:26px; font-weight:800; color:var(--mint-deep);">핵심 기능</b>
             <p class="s-body" style="margin:6px 0 0;">없으면 가치가 사라지는 것(1개)</p>
             <p class="s-body c24-note">예: 한 줄 입력 → 기록하기. <span class="hl-mint-underline">이것부터 확실히 작동해야</span> 결과가 생깁니다.</p>
@@ -362,15 +476,18 @@
         <div class="sc-grid">
           <div class="sc-col is-in">
             <svg class="sc-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10" style="fill:var(--mint)"/><path d="M7.5 12.5l3 3 6-6.5" style="stroke:var(--on-mint)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
-            <h3>이번에 만들 것</h3><p>핵심 기능 하나 — <span class="hl-mint-underline">이것 하나가 작동해야</span> 진짜 써 보고 배울 수 있습니다.</p>
+            <h3>이번에 만들 것</h3><p>핵심 기능 하나.
+              <span class="subline"><span class="hl-mint-underline">이것 하나가 작동해야</span> 진짜 써 보고 배울 수 있습니다.</span></p>
           </div>
           <div class="sc-col is-out">
             <svg class="sc-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10" style="fill:var(--coral)"/><path d="M8.5 8.5l7 7M15.5 8.5l-7 7" style="stroke:var(--on-coral)" stroke-width="2.4" stroke-linecap="round"/></svg>
-            <h3>이번엔 안 만들 것</h3><p>이번 주 기술 경계 밖(로그인·서버 저장) — 지금 넣으면 완성도가 늦어지고 핵심이 묻힙니다.</p>
+            <h3>이번엔 안 만들 것</h3><p>꾸미기 · 검색 · 정렬 · 태그 · 알림.
+              <span class="subline">앞에서 본 부가 기능들입니다. 지금 넣으면 완성이 늦어지고 핵심이 묻힙니다.</span></p>
           </div>
           <div class="sc-col is-later">
             <svg class="sc-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" style="stroke:var(--blue)" stroke-width="2"/><path d="M12 7v5l3.5 2" style="stroke:var(--blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
-            <h3>나중 아이디어</h3><p>다음에 더할 것 — <span class="hl-mint-mark">버리지 않고 적어만 둡니다.</span></p>
+            <h3>나중 아이디어</h3><p>다음에 더할 것.
+              <span class="subline">버리지 않고 적어만 둡니다. 이번 주에 손대지 않을 뿐입니다.</span></p>
           </div>
         </div>
       </div>
@@ -390,16 +507,26 @@
         <div class="pr-steps">
           <div class="work-step">
             <span class="n">1</span>
-            <b><svg class="ws-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 5h16v10H9l-4 4v-4H4V5z" style="stroke:var(--mint-deep)" stroke-width="2" stroke-linejoin="round" fill="none"/></svg><span>ChatGPT에 기능 후보를 나열하게 합니다.</span></b>
-            <span class="desc"><p>"이 서비스에 넣을 수 있는 기능을 10개 나열해줘"처럼 물어봅니다. 화면·버튼·데이터 단위로 구체적으로 물으면 더 쓸모 있는 답이 나옵니다.</p></span>
+            <div><b>ChatGPT에 기능 후보 나열시키기</b>
+            <span class="desc">화면·버튼·데이터 단위로 구체적으로 물으면 더 쓸모 있는 답이 나옵니다.</span></div>
           </div>
           <div class="work-step">
             <span class="n">2</span>
-            <b><svg class="ws-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 7h14M9 7V5h6v2M7 7l1 12h8l1-12" style="stroke:var(--mint-deep)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg><span>이번 주 핵심이 아닌 것 1개를 골라 제거합니다.</span></b>
-            <span class="desc"><p>예: 태그 기능·정렬 기능·알림 기능처럼 없어도 결과가 그대로 유지되는 것을 고릅니다. 왜 뺐는지 한 줄 이유도 함께 남깁니다.</p></span>
+            <div><b>이번 주 핵심이 아닌 것 1개 골라 제거하기</b>
+            <span class="desc">태그·정렬·알림처럼 없어도 결과가 유지되는 것을 고릅니다. 뺀 기능과 이유 한 줄을 제외 목록에 남기면 끝입니다.</span></div>
           </div>
         </div>
-        <div class="pr-done"><svg class="pr-done-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10" style="fill:var(--mint)"/><path d="M7.5 12.5l3 3 6-6.5" style="stroke:var(--on-mint)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg><span class="pr-tag">완성</span><p>제외 목록에 뺀 기능과 이유 한 줄이 남아 있으면 완성입니다</p></div>
+        <div class="w2-prompt terminal-dark pr-prompt" aria-label="기능 후보를 뽑을 때 쓰는 예시 프롬프트">
+          <div class="terminal-bar"><span></span><span></span><span></span><b>ChatGPT · 기능 후보 뽑기</b></div>
+          <div class="terminal-body">
+            <span class="terminal-prompt">&gt;_</span>
+            <p class="terminal-copy">내 도구의 한 줄 정의: «<strong>[실습 ②에서 확정한 문장]</strong>»<br>
+            여기에 넣을 수 있는 기능을 <strong>10개</strong> 나열해 주세요.<br>
+            각 기능은 «버튼·입력칸과 보이는 화면»까지 한 줄로.<br>
+            그다음 정의가 깨지는지 기준으로 <strong>핵심 1개</strong>만 골라 주세요.</p>
+            <span class="terminal-cursor" aria-hidden="true"></span>
+          </div>
+        </div>
       </div>
       <figure class="asset-slot asset-slot--support img-slot-r" data-image-purpose="explanatory"
         data-image-state="ready" data-expected-src="자료/images/s28_remove-one-feature-paper-cut-v1-transparent.png"
@@ -413,27 +540,42 @@
       </header>
       <div class="s-full">
         <h2 class="s-title">User Flow란?</h2>
-        <p class="s-lead"><strong>User Flow(사용자 흐름)</strong>는 사용자가 하나의 목표를 완료하기 위해 제품 안에서 밟는 화면과 행동의 순서를 나타낸 지도입니다.</p>
-        <p class="s-body">우리 수업에서는 <strong>무엇을 입력·선택하고 → 어떤 버튼을 누르고 → 무엇을 보는지</strong>의 순서로 이 지도를 표현합니다.</p>
-        <div class="uf-steps">
-          <div class="uf-chip"><span class="timing">1</span><b>무엇을 입력·선택하고</b></div>
-          <span class="fl-arrow" aria-hidden="true">→</span>
-          <div class="uf-chip"><span class="timing">2</span><b>어떤 버튼을 누르고</b></div>
-          <span class="fl-arrow" aria-hidden="true">→</span>
-          <div class="uf-chip"><span class="timing">3</span><b>무엇을 보는지</b></div>
+        <p class="s-lead"><strong>User Flow(사용자 흐름)</strong>는 사용자가 목표 하나를 끝낼 때까지 거치는 화면과 행동의 순서입니다.</p>
+        <p class="s-body"><strong>무엇을 입력·선택하고 → 어떤 버튼을 누르고 → 무엇을 보는지</strong>의 순서로 적습니다.</p>
+        <p class="c27-extag">예: 할 일 기록 앱 — 화면이 이렇게 바뀝니다</p>
+        <div class="c27-screens viz-screenflow" role="img" aria-label="할 일을 입력한 화면, 추가 버튼을 누르는 화면, 목록에 새 항목이 보이는 화면이 순서대로 이어진다">
+          <div class="c27-scr">
+            <div class="c27-scr-bar"><span></span><span></span><span></span></div>
+            <div class="c27-scr-body">
+              <div class="c27-scr-input is-filled">우유 사기</div>
+              <div class="c27-scr-btn">추가</div>
+              <div class="c27-scr-list"><i></i><i></i></div>
+            </div>
+            <b class="c27-cap">할 일을 입력</b>
+          </div>
+          <span class="c27-arrow" aria-hidden="true">→</span>
+          <div class="c27-scr">
+            <div class="c27-scr-bar"><span></span><span></span><span></span></div>
+            <div class="c27-scr-body">
+              <div class="c27-scr-input is-filled">우유 사기</div>
+              <div class="c27-scr-btn is-pressed">추가</div>
+              <div class="c27-scr-list"><i></i><i></i></div>
+            </div>
+            <b class="c27-cap">추가 버튼을 누름</b>
+          </div>
+          <span class="c27-arrow" aria-hidden="true">→</span>
+          <div class="c27-scr is-result">
+            <div class="c27-scr-bar"><span></span><span></span><span></span></div>
+            <div class="c27-scr-body">
+              <div class="c27-scr-input"></div>
+              <div class="c27-scr-btn">추가</div>
+              <div class="c27-scr-list"><i></i><i></i><i class="is-new"></i></div>
+            </div>
+            <b class="c27-cap">목록에 새 항목이 보임</b>
+          </div>
         </div>
-        <div class="uf-example">
-          <span class="uf-ex-tag">예: 할 일 기록 앱</span>
-          <span class="uf-ex-chip">할 일을 입력</span>
-          <span class="fl-arrow" aria-hidden="true">→</span>
-          <span class="uf-ex-chip">추가 버튼을 누름</span>
-          <span class="fl-arrow" aria-hidden="true">→</span>
-          <span class="uf-ex-chip is-result">목록에 새 항목이 보임</span>
-        </div>
-        <p class="callout">
-          <svg class="uf-callout-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10" style="fill:var(--mint)"/><path d="M7.5 12.5l3 3 6-6.5" style="stroke:var(--on-mint)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
-          <span class="hl-mint-mark">화면의 모든 기능이 아니라 대표 한 길을 먼저 그립니다</span> — 예외 흐름은 필요할 때만 뒤에서 더합니다.
-        </p>
+        <p class="callout"><span class="hl-mint-mark">화면의 모든 기능이 아니라 대표 순서 하나를 먼저 그립니다.</span>
+          <span class="subline">예외 흐름은 필요할 때만 뒤에서 더합니다.</span></p>
       </div>
     </section>
 
@@ -446,23 +588,50 @@
         <h2 class="s-title">입력 → 실행 → 결과(변화까지)</h2>
       </div>
       <div class="dc-stage">
-        <div class="viz-flow-ph">
-          <div class="fl-node">
-            <svg class="fl-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 20l1-4L15 6l3 3L8 19l-4 1z" style="stroke:var(--blue)" stroke-width="2" stroke-linejoin="round" fill="none"/></svg>
-            <b>입력</b><span>활동 한 줄</span>
+        <div class="c28-shots viz-screenflow">
+          <div class="c28-shot">
+            <span class="c28-k">입력</span>
+            <div class="w2-app viz-appui" role="img" aria-label="활동 한 줄을 입력칸에 적은 화면">
+              <div class="w2-app-bar"><span></span><span></span><span></span><b>오늘의 활동 기록</b></div>
+              <div class="w2-app-body">
+                <span class="w2-app-label">무엇을 했나요?</span>
+                <div class="w2-app-input is-filled">저녁에 30분 걸었다</div>
+                <button class="w2-app-btn" type="button">기록하기</button>
+              </div>
+            </div>
+            <b class="c28-cap">활동 한 줄을 적습니다</b>
           </div>
-          <div class="fl-arrow" aria-hidden="true">→</div>
-          <div class="fl-node">
-            <svg class="fl-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 3l10 10-4 1 3 5-2 1-3-5-3 3V3z" style="fill:var(--blue)"/></svg>
-            <b>실행</b><span>기록하기 클릭</span>
+          <span class="c28-arrow" aria-hidden="true">→</span>
+          <div class="c28-shot">
+            <span class="c28-k">실행</span>
+            <div class="w2-app viz-appui" role="img" aria-label="기록하기 버튼을 누르는 화면">
+              <div class="w2-app-bar"><span></span><span></span><span></span><b>오늘의 활동 기록</b></div>
+              <div class="w2-app-body">
+                <span class="w2-app-label">무엇을 했나요?</span>
+                <div class="w2-app-input is-filled">저녁에 30분 걸었다</div>
+                <button class="w2-app-btn is-pressed" type="button">기록하기</button>
+              </div>
+            </div>
+            <b class="c28-cap">기록하기를 누릅니다</b>
           </div>
-          <div class="fl-arrow" aria-hidden="true">→</div>
-          <div class="fl-node key">
-            <svg class="fl-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10" style="fill:var(--white)"/><path d="M7.5 12.5l3 3 6-6.5" style="stroke:var(--blue)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
-            <b>결과</b><span>오늘 기록에 한 줄 추가 → 화면에 새 기록이 보임</span>
+          <span class="c28-arrow" aria-hidden="true">→</span>
+          <div class="c28-shot is-result">
+            <span class="c28-k">결과</span>
+            <div class="w2-app viz-appui" role="img" aria-label="오늘 기록 목록에 새 줄이 추가된 화면">
+              <div class="w2-app-bar"><span></span><span></span><span></span><b>오늘의 활동 기록</b></div>
+              <div class="w2-app-body">
+                <div class="w2-app-list">
+                  <p class="w2-app-list-h">오늘 기록</p>
+                  <div class="w2-app-row">· 09:20 아침 산책 30분</div>
+                  <div class="w2-app-row is-new">· 21:10 저녁에 30분 걸었다</div>
+                </div>
+              </div>
+            </div>
+            <b class="c28-cap">목록에 새 줄이 보입니다</b>
           </div>
         </div>
-        <p class="s-body">입력이 있어야 실행할 수 있고, 실행해야 결과가 생기고, 결과가 눈에 보여야 변화입니다 — <span class="hl-mint-underline">세 단계를 전부 눈으로 확인할 수 있어야 완성</span>입니다.</p>
+        <p class="s-body">입력이 있어야 실행하고, 실행해야 결과가 생기고, 결과가 눈에 보여야 변화입니다.
+          <span class="subline"><span class="hl-mint-underline">세 화면을 전부 눈으로 확인할 수 있어야 완성</span>입니다.</span></p>
         <div class="c28-fails">
           <div class="itr-warncard">
             <svg class="itr-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10" style="stroke:var(--coral-deep)" stroke-width="2" fill="none"/><path d="M12 7v6M12 16.5v.1" style="stroke:var(--coral-deep)" stroke-width="2.2" stroke-linecap="round"/></svg>
@@ -483,14 +652,14 @@
       </header>
       <div class="s-full">
         <h2 class="s-title">잘못된 입력도 흐름의 일부</h2>
-        <p class="pf-lead">User Flow를 정의할 때 반드시 넣어야 하는 필수 요소는 아니지만, 실제로 화면을 만들다 보면 자주 부딪히는 상황입니다. 이런 상황을 다루는 것을 <strong>예외 처리(exception handling)</strong>라고 부르며, 내 기능에 해당할 때만 다룹니다.</p>
-        <table class="t">
-          <thead><tr><th>상황</th><th>잘못된 예</th><th>잘된 예</th></tr></thead>
+        <p class="pf-lead">화면을 만들다 보면 자주 부딪히는 상황입니다. 이걸 다루는 것을 <strong>예외 처리(exception handling)</strong>라고 부릅니다.</p>
+        <table class="t w2-tbl-inline">
+          <thead><tr><th>상황</th><th class="is-bad">이러면 곤란합니다</th><th class="is-good">이렇게 합니다</th></tr></thead>
           <tbody>
-            <tr><td>빈 입력</td><td>안 넣고 누르면 무엇이 문제인지 알 수 없습니다.</td><td>안내 문구로 무엇을 넣을지 보여줍니다.</td></tr>
-            <tr><td>오류</td><td><span class="hl-mint-underline">예상과 다른 값</span>이 들어오면 결과가 깨집니다.</td><td>오류 문구로 잘못된 점을 알려줍니다.</td></tr>
-            <tr><td>재시도 분기</td><td>한 번 실패했다고 처음부터 다시 하면 사용자가 떠납니다.</td><td><span class="hl-mint-mark">다시 시도할 길을 남겨둡니다</span>.</td></tr>
-            <tr><td>중복 실행</td><td>버튼을 두 번 누르면 같은 결과가 두 번 생길 수 있습니다.</td><td>한 번 처리 중엔 버튼을 잠가 둡니다.</td></tr>
+            <tr><td>빈칸으로 눌렀을 때</td><td>아무 일도 안 일어나서, 고장인지 내가 뭘 안 한 건지 모릅니다.</td><td>"활동을 한 줄 적어 주세요"라고 칸 아래에 안내를 띄웁니다.</td></tr>
+            <tr><td>엉뚱한 값이 들어왔을 때</td><td><span class="hl-mint-underline">예상과 다른 값</span>이 들어와 화면이 깨집니다.</td><td>무엇이 잘못됐는지 한 줄로 알려 줍니다.</td></tr>
+            <tr><td>한 번 실패한 뒤</td><td>처음 화면으로 돌아가 버려서 적은 내용을 다시 씁니다.</td><td><span class="hl-mint-mark">적은 내용을 남겨 두고 다시 누를 수 있게</span> 합니다.</td></tr>
+            <tr><td>버튼을 두 번 눌렀을 때</td><td>같은 기록이 두 줄 생깁니다.</td><td>처리하는 동안 버튼을 잠깐 잠가 둡니다.</td></tr>
           </tbody>
         </table>
       </div>
@@ -502,46 +671,26 @@
         <span class="s-line"></span><div class="s-team">2주차<br>2교시</div>
       </header>
       <div class="s-full cc-full">
-        <h2 class="s-title">완료 기준과 테스트는 다릅니다</h2>
-        <div class="cc-grid">
-          <div class="cc-side ai">
-            <svg class="cc-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7z" style="stroke:var(--blue)" stroke-width="2" stroke-linejoin="round" fill="none"/><circle cx="12" cy="12" r="3" style="stroke:var(--blue)" stroke-width="2"/></svg>
-            <h3>완료 기준</h3>
-            <ul>
-              <li>확인 가능한 장면(무엇을 누르면 무엇이 보인다)</li>
-              <li>예: 버튼을 누르면 목록에 그 줄이 보인다</li>
-              <li><span class="hl-mint-underline">만들기 전에 미리</span> 한 문장으로 적어 둡니다</li>
-            </ul>
-          </div>
-          <div class="cc-neq" aria-hidden="true">≠</div>
-          <div class="cc-side human">
-            <svg class="cc-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2" style="stroke:var(--mint-deep)" stroke-width="2" fill="none"/><path d="M8 8h8M8 12l1.5 1.5L12 11M8 16h5" style="stroke:var(--mint-deep)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
-            <h3>테스트</h3>
-            <ul>
-              <li>정상·다른·빈값으로 확인하는 방법</li>
-              <li>완료 기준이 실제 화면에서 그대로 나오는지 봅니다</li>
-              <li><span class="hl-mint-mark">안 되면 미완료</span>, 원인을 다시 찾습니다</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div class="c2-10-figure" aria-hidden="true" style="position:absolute; right:56px; top:160px; width:340px; height:390px; display:flex; align-items:center; justify-content:center;">
-        <svg viewBox="0 0 300 340" width="300" height="340" fill="none">
-          <rect x="40" y="18" width="220" height="122" rx="16" style="fill:var(--blue-soft); stroke:var(--blue-line); stroke-width:1.6"/>
-          <path d="M100 80c10-22 34-22 44 0M100 80c10 22 34 22 44 0" style="stroke:var(--blue); stroke-width:2.2" fill="none"/>
-          <circle cx="150" cy="80" r="12" style="stroke:var(--blue); stroke-width:2.2" fill="none"/>
-          <text x="150" y="118" text-anchor="middle" style="fill:var(--blue); font-size:15px; font-weight:800;">완료 기준 — 목표 장면</text>
-          <path d="M150 148v26" style="stroke:var(--blue); stroke-width:2.4"/>
-          <path d="M142 166l8 10 8-10" style="stroke:var(--blue); stroke-width:2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-          <rect x="40" y="188" width="220" height="132" rx="16" style="fill:var(--mint-soft); stroke:var(--mint-line); stroke-width:1.6"/>
-          <rect x="70" y="208" width="160" height="18" rx="4" style="fill:var(--white); stroke:var(--mint-deep); stroke-width:1.4"/>
-          <path d="M78 217l4 4 6-8" style="stroke:var(--mint-deep); stroke-width:1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-          <rect x="70" y="234" width="160" height="18" rx="4" style="fill:var(--white); stroke:var(--mint-deep); stroke-width:1.4"/>
-          <path d="M78 243l4 4 6-8" style="stroke:var(--mint-deep); stroke-width:1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-          <rect x="70" y="260" width="160" height="18" rx="4" style="fill:var(--white); stroke:var(--mint-deep); stroke-width:1.4"/>
-          <path d="M78 269l4 4 6-8" style="stroke:var(--mint-deep); stroke-width:1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-          <text x="150" y="305" text-anchor="middle" style="fill:var(--mint-deep); font-size:15px; font-weight:800;">테스트 — 확인하는 방법</text>
-        </svg>
+        <h2 class="s-title">완료 기준과 테스트</h2>
+        <p class="s-body c210-lead"><b>완료 기준</b>은 «무엇이 보이면 끝인가»를 미리 적은 문장이고,
+          <b>테스트</b>는 그 문장이 실제 화면에서 나오는지 확인하는 행동입니다.</p>
+        <table class="t w2-tbl-inline c210-tbl">
+          <thead><tr><th>&nbsp;</th><th>완료 기준</th><th>테스트</th></tr></thead>
+          <tbody>
+            <tr><th>무엇인가</th>
+              <td>확인할 수 있는 장면을 적은 한 문장</td>
+              <td>그 장면이 나오는지 직접 해 보는 일</td></tr>
+            <tr><th>언제</th>
+              <td><span class="hl-mint-underline">만들기 전에 미리</span></td>
+              <td>화면을 만든 뒤에</td></tr>
+            <tr><th>예</th>
+              <td>"버튼을 누르면 목록에 그 줄이 보인다"</td>
+              <td>정상 입력 · 빈칸 · 엉뚟한 값으로 각각 눌러 본다</td></tr>
+            <tr><th>안 되면</th>
+              <td>기준을 고치는 게 아니라 그대로 둡니다</td>
+              <td><span class="hl-mint-mark">미완료로 보고</span> 원인을 다시 찾습니다</td></tr>
+          </tbody>
+        </table>
       </div>
     </section>
 
@@ -556,18 +705,28 @@
         <div class="pr-steps">
           <div class="work-step">
             <span class="n">1</span>
-            <b><svg class="ws-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 20l1-4L15 6l3 3L8 19l-4 1z" style="stroke:var(--mint-deep)" stroke-width="2" stroke-linejoin="round" fill="none"/></svg><span>핵심 기능의 대표 흐름을 3~5단계로 적습니다.</span></b>
-            <span class="desc"><p>예: 입력 → 저장 버튼 클릭 → 목록에 추가 확인처럼 순서대로 씁니다. 이 순서는 이후 화면·구현·테스트에서 그대로 다시 씁니다.</p></span>
+            <div><b>핵심 기능의 대표 흐름 3~5단계로 적기</b>
+            <span class="desc">예: 입력 → 저장 버튼 클릭 → 목록에 추가 확인. 이 순서는 이후 화면·구현·테스트에서 그대로 다시 씁니다.</span></div>
           </div>
           <div class="work-step">
             <span class="n">2</span>
-            <b><svg class="ws-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2" style="stroke:var(--mint-deep)" stroke-width="2" fill="none"/><path d="M8 8h8M8 12l1.5 1.5L12 11M8 16h5" style="stroke:var(--mint-deep)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg><span>완료 기준 한 줄을 함께 적습니다.</span></b>
-            <span class="desc"><p>"무엇을 누르면 무엇이 보인다"는 형태로, 만들기 전에 미리 적어 둡니다. 화면을 만든 뒤 이 문장과 비교해 완료 여부를 판정합니다.</p></span>
+            <div><b>완료 기준 한 줄 함께 적기</b>
+            <span class="desc">"무엇을 누르면 무엇이 보인다" 형태로 미리 적어 둡니다. 화면을 안 봐도 흐름과 완료 기준을 말할 수 있으면 끝입니다.</span></div>
           </div>
         </div>
-        <div class="pr-done"><svg class="pr-done-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10" style="fill:var(--mint)"/><path d="M7.5 12.5l3 3 6-6.5" style="stroke:var(--on-mint)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg><span class="pr-tag">완성</span><p>화면을 안 봐도 흐름과 완료 기준을 말할 수 있으면 완성입니다</p></div>
+        <div class="w2-prompt terminal-dark pr-prompt" aria-label="내 흐름과 완료 기준을 정리할 때 쓰는 예시 프롬프트">
+          <div class="terminal-bar"><span></span><span></span><span></span><b>ChatGPT · 흐름 + 완료 기준</b></div>
+          <div class="terminal-body">
+            <span class="terminal-prompt">&gt;_</span>
+            <p class="terminal-copy">내 핵심 기능: «<strong>[실습 ③에서 남긴 기능]</strong>»<br>
+            이 기능을 끝낼 때까지의 순서를 <strong>3~5단계</strong>로 적어 주세요.<br>
+            각 단계는 «무엇을 누르고 무엇이 보이는지»로.<br>
+            마지막에 <strong>완료 기준 한 줄</strong>도 붙여 주세요.</p>
+            <span class="terminal-cursor" aria-hidden="true"></span>
+          </div>
+        </div>
       </div>
-      <div class="c2n11-visual" aria-hidden="true">
+      <div class="c2n11-visual viz-flow" aria-hidden="true">
         <svg viewBox="0 0 300 360" width="300" height="360" fill="none">
           <circle cx="60" cy="58" r="28" style="fill:var(--blue-soft); stroke:var(--blue-line); stroke-width:1.8"/>
           <text x="60" y="64" text-anchor="middle" style="fill:var(--blue); font-size:14px; font-weight:800;">입력</text>
@@ -584,3 +743,36 @@
         </svg>
       </div>
     </section>
+
+    <!-- ============ C2-N3 · 왜 3~5단계인가 — 2차 §2-1 신설 ============ -->
+    <!-- 사용자 요청: "3에서 5단계를 조금 풀어서 설명하는 페이지가 있었으면 좋겠어.
+         결국은 입력 실행, 확인인 거잖아. 전체적인 흐름을 한 번 더 짚고 넘어가면 좋겠다." -->
+    <section class="slide" data-slide="C2-N3">
+      <header class="s-head">
+        <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+        <span class="s-line"></span><div class="s-team">2주차<br>2교시</div>
+      </header>
+      <div class="s-full c2n3-full">
+        <h2 class="s-title">왜 3~5단계인가</h2>
+        <p class="s-body c2n3-lead">단계를 몇 개로 나누든, 골격은 항상 <b>입력 · 실행 · 확인</b> 셋입니다.</p>
+        <div class="c2n3-core viz-flow">
+          <div class="c2n3-cell"><span class="c2n3-n">입력</span><b>사람이 무엇을 주는가</b><span class="desc">적는 칸 · 고르는 목록</span></div>
+          <span class="c2n3-arrow" aria-hidden="true">→</span>
+          <div class="c2n3-cell"><span class="c2n3-n">실행</span><b>앱이 무엇을 하는가</b><span class="desc">누르는 버튼 하나</span></div>
+          <span class="c2n3-arrow" aria-hidden="true">→</span>
+          <div class="c2n3-cell is-key"><span class="c2n3-n">확인</span><b>화면이 어떻게 바뀌는가</b><span class="desc">눈으로 보이는 결과</span></div>
+        </div>
+        <div class="w2-tbl c2n3-tbl">
+          <table class="t">
+            <thead><tr><th>단계 수</th><th>어떤 기능일 때</th><th>예</th></tr></thead>
+            <tbody>
+              <tr><th>3단계</th><td>입력 한 번, 버튼 한 번으로 끝나는 기능</td><td>한 줄 적기 → 기록하기 → 목록에 보임</td></tr>
+              <tr><th>4~5단계</th><td>고르거나 확인하는 중간 화면이 끼는 기능</td><td>날짜 고르기 → 한 줄 적기 → 미리보기 → 기록하기 → 목록에 보임</td></tr>
+              <tr><th>6단계 이상</th><td><span class="is-bad">기능이 두 개 이상 섞인 신호</span></td><td>다시 하나로 줄입니다</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="callout c2n3-foot"><span class="hl-mint-mark">화면이 바뀜 때마다 한 줄</span>씩 씁니다. 생각하는 과정은 단계가 아닙니다.</p>
+      </div>
+    </section>
+
