@@ -527,18 +527,7 @@
           <div class="work-step">
             <span class="n">2</span>
             <div><b>이번 주 핵심이 아닌 것 1개 골라 제거하기</b>
-            <span class="desc">태그·정렬·알림처럼 없어도 결과가 유지되는 것을 고릅니다. 뺀 기능과 이유 한 줄을 제외 목록에 남기면 끝입니다.</span></div>
-          </div>
-        </div>
-        <div class="w2-prompt terminal-dark pr-prompt" aria-label="기능 후보를 뽑을 때 쓰는 예시 프롬프트">
-          <div class="terminal-bar"><span></span><span></span><span></span><b>ChatGPT · 기능 후보 뽑기</b></div>
-          <div class="terminal-body">
-            <span class="terminal-prompt">&gt;_</span>
-            <p class="terminal-copy">내 도구의 한 줄 정의: «<strong>[실습 ②에서 확정한 문장]</strong>»<br>
-            여기에 넣을 수 있는 기능을 <strong>10개</strong> 나열해 주세요.<br>
-            각 기능은 «버튼·입력칸과 보이는 화면»까지 한 줄로.<br>
-            그다음 정의가 깨지는지 기준으로 <strong>핵심 1개</strong>만 골라 주세요.</p>
-            <span class="terminal-cursor" aria-hidden="true"></span>
+            <span class="desc">태그·정렬·알림처럼 없어도 결과가 유지되는 것을 고릅니다. 뺀 기능과 이유 한 줄이 제외 목록에 남았는지 확인합니다.</span></div>
           </div>
         </div>
       </div>
@@ -546,6 +535,40 @@
         data-image-state="ready" data-expected-src="자료/images/s28_remove-one-feature-paper-cut-v1-transparent.png"
         role="img" aria-label="쌓여 있는 표식 더미에서 하나만 화살표를 따라 옆으로 빠져나가는 모습이, 기능 하나를 의도적으로 골라 빼는 연습을 보여준다"><img src="자료/images/s28_remove-one-feature-paper-cut-v1-transparent.png" alt="쌓인 기능 표식에서 하나가 화살표를 따라 빠져나가 의도적인 제거를 보여준다"></figure>
     </section>
+
+    <!-- ============ C2-6P · 실습 프롬프트 전용 (2026-08-01: 배치 방식 통일) ============ -->
+    <section class="slide" data-slide="C2-6P">
+      <header class="s-head">
+        <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+        <span class="s-line"></span><div class="s-team">2주차<br>2교시</div>
+      </header>
+      <div class="s-full pw-full">
+        <p class="s-eyebrow">실습 ③ 예시 프롬프트</p>
+        <h2 class="s-title">기능 후보를 뽑고 하나를 고를 때 이렇게 요청합니다</h2>
+        <div class="w2-prompt terminal-dark pw-term viz-prompt" aria-label="실습 ③ 예시 프롬프트 — 기능 후보를 나열하고 핵심 하나를 고르게 요청한다">
+          <div class="terminal-bar"><span></span><span></span><span></span><b>ChatGPT · 기능 후보 뽑기</b></div>
+          <div class="terminal-body">
+            <span class="terminal-prompt">&gt;_</span>
+            <p class="terminal-copy">역할: 기능 범위를 같이 좁혀 주는 기획 파트너.<br>
+            [내 상황] 한 줄 정의: <b class="fill">[실습 ②에서 확정한 문장]</b><br>
+            · 이 사람이 지금 쓰는 방법: <b class="fill">[내가 아는 대로]</b><br>
+            · 이번 주에 제가 쓸 수 있는 시간: <b class="fill">[시간]</b><br>
+            · 절대 안 넣을 것: <b class="fill">[내가 미리 뺀 것]</b><br>
+            <br>
+            넣을 수 있는 기능을 <strong>10개</strong> 나열해 주세요. 각 기능은<br>
+            «어떤 버튼·입력칸이 생기고 화면에 무엇이 보이는지»까지 한 줄로.<br>
+            그다음 «없으면 한 줄 정의가 깨지는가»로 <strong>핵심 1개</strong>와 그 이유를 알려 주세요.</p>
+            <span class="terminal-cursor" aria-hidden="true"></span>
+          </div>
+        </div>
+        <div class="pw-notes">
+          <div class="pw-note"><span class="pw-k">이렇게 쓰는 이유</span><p>쓸 수 있는 시간을 알려 주면 이번 주에 못 할 크기를 걸러 줍니다.</p></div>
+          <div class="pw-note"><span class="pw-k">이 줄이 막는 것</span><p>«안 넣을 것»을 먼저 못박아야 뺀 기능이 다시 올라오지 않습니다.</p></div>
+          <div class="pw-note"><span class="pw-k">확인할 것</span><p>뺀 기능과 이유 한 줄이 제외 목록에 남았는지 확인합니다.</p></div>
+        </div>
+      </div>
+    </section>
+
 
     <section class="slide claim-rationale" data-slide="C2-7">
       <header class="s-head">
@@ -728,18 +751,7 @@
           <div class="work-step">
             <span class="n">2</span>
             <div><b>완료 기준 한 줄 함께 적기</b>
-            <span class="desc">"무엇을 누르면 무엇이 보인다" 형태로 미리 적어 둡니다. 화면을 안 봐도 흐름과 완료 기준을 말할 수 있으면 끝입니다.</span></div>
-          </div>
-        </div>
-        <div class="w2-prompt terminal-dark pr-prompt" aria-label="내 흐름과 완료 기준을 정리할 때 쓰는 예시 프롬프트">
-          <div class="terminal-bar"><span></span><span></span><span></span><b>ChatGPT · 흐름 + 완료 기준</b></div>
-          <div class="terminal-body">
-            <span class="terminal-prompt">&gt;_</span>
-            <p class="terminal-copy">내 핵심 기능: «<strong>[실습 ③에서 남긴 기능]</strong>»<br>
-            이 기능을 끝낼 때까지의 순서를 <strong>3~5단계</strong>로 적어 주세요.<br>
-            각 단계는 «무엇을 누르고 무엇이 보이는지»로.<br>
-            마지막에 <strong>완료 기준 한 줄</strong>도 붙여 주세요.</p>
-            <span class="terminal-cursor" aria-hidden="true"></span>
+            <span class="desc">"무엇을 누르면 무엇이 보인다" 형태로 미리 적어 둡니다. 화면을 안 보고 흐름과 완료 기준을 말할 수 있는지 확인합니다.</span></div>
           </div>
         </div>
       </div>
@@ -760,6 +772,40 @@
         </svg>
       </div>
     </section>
+
+    <!-- ============ C2-11P · 실습 프롬프트 전용 (2026-08-01: 배치 방식 통일) ============ -->
+    <section class="slide" data-slide="C2-11P">
+      <header class="s-head">
+        <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+        <span class="s-line"></span><div class="s-team">2주차<br>2교시</div>
+      </header>
+      <div class="s-full pw-full">
+        <p class="s-eyebrow">실습 ④ 예시 프롬프트</p>
+        <h2 class="s-title">흐름과 완료 기준을 정리할 때 이렇게 요청합니다</h2>
+        <div class="w2-prompt terminal-dark pw-term viz-prompt" aria-label="실습 ④ 예시 프롬프트 — 대표 흐름 3~5단계와 완료 기준을 정리해 달라고 요청한다">
+          <div class="terminal-bar"><span></span><span></span><span></span><b>ChatGPT · 흐름 + 완료 기준</b></div>
+          <div class="terminal-body">
+            <span class="terminal-prompt">&gt;_</span>
+            <p class="terminal-copy">역할: 사용자가 겪는 순서를 정리해 주는 파트너.<br>
+            [내 상황] 핵심 기능: <b class="fill">[실습 ③에서 고른 기능]</b><br>
+            · 사용자가 처음 보는 화면: <b class="fill">[내가 생각한 첫 화면]</b><br>
+            · 사용자가 넣을 값: <b class="fill">[무엇을 입력하는지]</b><br>
+            · 제가 «됐다»고 느끼는 순간: <b class="fill">[내 말로]</b><br>
+            <br>
+            이 기능을 끝낼 때까지의 순서를 <strong>3~5단계</strong>로 적어 주세요.<br>
+            각 단계는 «무엇을 누르고 화면에 무엇이 보이는지»로 씁니다.<br>
+            제가 안 적은 단계는 넣지 말고, 빠진 것 같으면 질문으로 남겨 주세요.</p>
+            <span class="terminal-cursor" aria-hidden="true"></span>
+          </div>
+        </div>
+        <div class="pw-notes">
+          <div class="pw-note"><span class="pw-k">이렇게 쓰는 이유</span><p>«됐다고 느끼는 순간»을 내 말로 주면 완료 기준이 남의 문장이 안 됩니다.</p></div>
+          <div class="pw-note"><span class="pw-k">이 줄이 막는 것</span><p>«안 적은 단계는 넣지 마»가 없으면 로그인·저장이 슬쩍 늘어납니다.</p></div>
+          <div class="pw-note"><span class="pw-k">확인할 것</span><p>화면을 안 보고 흐름과 완료 기준을 말할 수 있는지 확인합니다.</p></div>
+        </div>
+      </div>
+    </section>
+
 
     <!-- ============ C2-N3 · 왜 3~5단계인가 — 2차 §2-1 신설 ============ -->
     <!-- 사용자 요청: "3에서 5단계를 조금 풀어서 설명하는 페이지가 있었으면 좋겠어.
