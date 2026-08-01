@@ -290,6 +290,9 @@
       width:100%; height:100%; object-fit:contain; object-position:center;
     }
     .has-img-r .s-full{ right:500px; }
+    /* S02: introductory decision image is the visual anchor; enlarge it while
+       preserving a dedicated copy column to the left. */
+    .slide[data-slide="S02"] .img-slot-r{ right:64px; top:90px; width:650px; height:570px; }
     .has-img-l .s-full{ left:500px; }
     .has-img-b .s-full{ bottom:360px; }
     .has-img-b2 .s-full{ bottom:360px; }
@@ -1968,7 +1971,7 @@
 
     <!-- ============ 2 · 도입 (구조 필수 · 초안 관통 문장 + 6-10 부제 재배치) ============ -->
     <section class="slide s02-slide has-img-r has-image" data-slide="S02">
-      <div class="s-full" style="top:64px; bottom:64px; display:flex; align-items:center; gap:48px;">
+      <div class="s-full" style="top:64px; right:730px; bottom:64px; display:flex; align-items:center; gap:48px;">
         <div style="flex:1.15; display:flex; flex-direction:column; justify-content:center;">
           <h2 class="s-title" style="font-size:58px; line-height:1.35; margin:0;">AI가 작성하고<br>사람이 검토하고<br><span class="hl-mint-text">사람이 결정합니다</span></h2>
                     <div style="display:flex; flex-direction:column; gap:16px; margin-top:24px;">
@@ -1980,7 +1983,7 @@
       </div>
       <!-- 이미지 슬롯 복원(2026-07-31 사용자 결정: 이미지 제작지시서 19장을 그대로 살린다).
            직전에 임시로 넣었던 SVG 도식은 제거했다 — IMG 프롬프트 §4-1이 이 자리의 정본이다. -->
-      <figure class="asset-slot asset-slot--support img-slot-r" data-image-purpose="explanatory"
+      <figure class="asset-slot asset-slot--support img-slot-r" style="right:64px; top:118px; width:650px; height:548px; max-width:650px; max-height:548px;" data-image-purpose="explanatory"
         data-image-state="ready" data-expected-src="자료/images/s02_ai-writes-human-decides-paper-cut-v1-transparent.png"
         role="img" aria-label="빠르게 움직이는 펜이 초안을 쓰고, 그 위에 도장이 찍혀 사람이 검토하고 최종 결정을 내리는 관계"><img src="자료/images/s02_ai-writes-human-decides-paper-cut-v1-transparent.png" alt="빠르게 움직이는 펜이 초안을 쓰고, 그 위에 도장이 찍혀 사람이 검토하고 최종 결정을 내리는 관계"></figure>
     </section>

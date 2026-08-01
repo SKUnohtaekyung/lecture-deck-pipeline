@@ -98,6 +98,9 @@
 .slide[data-slide="C5-15"] .sw-warncard .tag{ font-size:26px; font-weight:800; margin-bottom:4px; }
 .slide[data-slide="C5-15"] .sw-steps .work-step b{ font-size:26px; font-weight:800; }
 .slide[data-slide="C5-15"] .sw-steps .work-step .desc{ font-size:20px; font-weight:500; }
+/* 문장을 감싼 파란 컨테이너는 제거하고, 강조 문장만 남긴다. */
+.slide[data-slide="C5-15"] .callout{ background:transparent; border:0; box-shadow:none;
+  border-radius:0; padding:0; margin:12px 0 16px; }
 
 /* ── C5-16 실습⑩: 바닥선 666 회복(실측 742 — 큰 초과, 간격을 크게 조인다) ── */
 .slide[data-slide="C5-16"] .pr-steps{ gap:6px; margin-top:10px; }
@@ -126,6 +129,21 @@
 .slide[data-slide="A6F1"] .sm-part{ padding:9px 14px; }
 .slide[data-slide="A6F1"] .sm-notes{ gap:8px; }
 .slide[data-slide="A6F1"] .sm-note{ padding:10px 16px; }
+.slide[data-slide="A6F1"] .sm-stage{ grid-template-columns:380px minmax(0,1fr); }
+.slide[data-slide="A6F1"] .sm-stage .mobile-app-figure.asset-slot{ position:relative; inset:auto; width:380px; height:400px;
+  max-width:380px; max-height:400px; margin:0; display:grid; place-items:center; align-self:start; justify-self:start; }
+.slide[data-slide="A6F1"] .mobile-app-figure img{ position:absolute; inset:0; display:block; width:100%; height:100%;
+  min-width:0; min-height:0; object-fit:contain; border-radius:var(--r-lg); box-shadow:var(--shadow-md); }
+
+/* ── 댓글 반영(2026-08-01): 81p는 두 상태의 모바일 화면을 더 크게 읽고,
+   실습 보조문·비교 상자·프롬프트는 각각 아래로 분리한다. ── */
+.slide[data-slide="A6F1"] .sm-stage{ grid-template-columns:500px minmax(0,1fr); }
+.slide[data-slide="A6F1"] .sm-stage .mobile-app-figure.asset-slot{
+  width:500px; height:340px; max-width:500px; max-height:340px;
+}
+.slide[data-slide="C5-8"] .sg-lead{ margin-top:auto; margin-bottom:8px; }
+.slide[data-slide="C5-9"] .pf-band{ margin-top:20px; }
+.slide[data-slide="C5-10"] .pr-prompt{ position:relative; top:8px; }
 /* ═══ 수정요청서 2차 반영 (2026-08-01) ═══════════════════════════ */
 
 /* M5(73p) — §0-12 공용 템플릿으로 이관(스코프 재정의·아이콘 제거) */
@@ -166,7 +184,7 @@
 .slide[data-slide="C5-8"] .pr-prompt, .slide[data-slide="C5-9"] .pr-prompt,
 .slide[data-slide="C5-10"] .pr-prompt, .slide[data-slide="C5-16"] .pr-prompt,
 .slide[data-slide="C5-17"] .pr-prompt{ margin-top:auto; }
-.slide[data-slide="C5-9"] .pf-band{ margin-top:8px; padding:8px 14px; }
+.slide[data-slide="C5-9"] .pf-band{ margin-top:auto; margin-bottom:0; padding:8px 14px; }
 .slide[data-slide="C5-9"] .pf-band p{ font-size:19px; line-height:1.3; margin:0; }
 .slide[data-slide="C5-8"] .pr-prompt .terminal-copy, .slide[data-slide="C5-9"] .pr-prompt .terminal-copy,
 .slide[data-slide="C5-10"] .pr-prompt .terminal-copy, .slide[data-slide="C5-16"] .pr-prompt .terminal-copy,
@@ -416,15 +434,11 @@
         <h2 class="s-title">모바일 폭 확인</h2>
         <p class="s-lead">설명 → 입력 → 실행 → 결과가 좁은 화면에서도 유지되나 확인합니다.</p>
         <div class="sm-stage">
-          <div class="sm-frame" style="max-width:420px;">
-            <div class="sm-bar"><span></span><span></span><span></span><b>좁은 화면</b></div>
-            <div class="sm-body">
-              <div class="sm-part"><span class="sm-k">설명</span><p>서비스 설명</p></div>
-              <div class="sm-part"><span class="sm-k">입력</span><p>입력 영역</p></div>
-              <div class="sm-part is-action"><span class="sm-k">실행</span><p>실행 버튼</p></div>
-              <div class="sm-part is-result"><span class="sm-k">결과</span><p>결과 영역</p></div>
-            </div>
-          </div>
+          <figure class="asset-slot asset-slot--support mobile-app-figure" data-image-purpose="explanatory" data-image-state="ready"
+            data-expected-src="자료/images/s65_mobile-responsive-app-ui-v1.png" role="img"
+            aria-label="텍스트 없는 두 모바일 앱 화면에서 설명·입력·실행 상태가 확인된 결과 화면으로 이어지는 예시">
+            <img src="자료/images/s65_mobile-responsive-app-ui-v1.png" alt="두 모바일 앱 화면에서 입력 흐름이 확인된 결과 화면으로 이어지는 예시">
+          </figure>
           <div class="sm-notes">
             <div class="sm-note"><span class="n">1</span><p>좁은 화면에서도 유지되나 확인합니다.</p></div>
           </div>
@@ -739,7 +753,6 @@
           <div class="vf-down" aria-hidden="true">↓</div>
           <div class="work-step"><span class="n">3</span><b>다른 값으로 다시 확인하기</b><span class="desc">간 맞추기처럼, 중간에 맛을 보며 확인합니다.</span></div>
         </div>
-        <p class="callout" style="text-align:center;">이삿짐도 상자 하나씩 옮깁니다. <span class="hl-mint-mark">한 번에 전부 완성하려 하지 않습니다</span>.</p>
         <div class="sw-warn">
           <div class="sw-warncard"><span class="tag">그냥 다 시키면</span><p>범위가 부풀고 Codex가 추측으로 채우는 부분이 늘어납니다.</p></div>
           <div class="sw-warncard"><span class="tag">그 결과</span><p>어디서 틀렸는지 알기 어려워 고치는 데 더 오래 걸립니다.</p></div>
@@ -749,7 +762,7 @@
            직전에 임시로 넣었던 SVG 도식은 제거했다 — 이미지 제작지시 §4-17이 이 자리의 정본이다. -->
       <figure class="asset-slot asset-slot--support img-slot-r" data-image-purpose="explanatory"
         data-image-state="ready" data-expected-src="자료/images/s75_one-step-at-a-time-paper-cut-v1-transparent.png"
-        role="img" aria-label="한 줄로 연결된 계단식 단계, 각 단계 끝에 작은 체크 표시가 있고 다음 단계로 이어지는 그림 — 한 번에 여러 개를 바꾸지 않고 한 걸음씩 확인한다"><img src="자료/images/s75_one-step-at-a-time-paper-cut-v1-transparent.png" alt="각 단계 뒤의 확인 표시가 한 번에 하나씩 바꾸고 확인하는 흐름을 보여준다"></figure>
+        role="img" aria-label="위에서 아래로 이어지는 세 단계에서 화면 구조를 만들고, 한 입력을 실행해 결과를 낸 뒤, 다른 값으로 결과를 확인하는 흐름을 보여준다"><img src="자료/images/s75_one-step-at-a-time-paper-cut-v1-transparent.png?v=20260801v2" alt="위에서 아래로 이어지는 세 단계가 화면 구조·입력 실행·다른 값 확인의 순서를 보여준다"></figure>
     </section>
 
 <section class="slide w2-practice" data-slide="C5-16">

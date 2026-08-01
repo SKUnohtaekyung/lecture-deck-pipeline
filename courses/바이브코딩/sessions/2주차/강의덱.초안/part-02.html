@@ -29,16 +29,27 @@
       /* ── C2-N1: MVP(정식 명칭) 비유 — 좌측 55~60% 이미지(SLOT, 표준보다 넓음) + 우측 3블록 ──
          2026-07-31 2차: §2-4-A 골격 확정 반영. 커스텀 SVG 제거, 이미지 슬롯 복원.
          이미지가 좌측 주도(폭 55~60%)이므로 표준 img-slot-l(340px)이 아니라 전용 폭을 쓴다. */
-      .slide[data-slide="C2-N1"] .c2n1-figure{ border:0; background:none; position:absolute; left:64px; top:150px; width:600px; height:480px;
-        max-width:600px; max-height:480px; right:auto; bottom:auto;
-        border-radius:var(--r-lg); background:none; }
-      .slide[data-slide="C2-N1"] .c2n1-image-captions{ position:absolute; inset:12px 16px auto; z-index:1;
-        display:flex; flex-direction:column; gap:208px; pointer-events:none; }
+      .slide[data-slide="C2-N1"] .c2n1-figure{ border:none; background:transparent; position:absolute; left:64px; top:118px; width:660px; height:548px;
+        max-width:660px; max-height:548px; right:auto; bottom:auto;
+        border-radius:0; }
+      /* 두 줄을 한 장에 겹쳐 보이지 않게 각각의 잘린 이미지 창으로 나눈다.
+         캡션 아래에 시각물을 두어 Wrong/Right가 어느 줄을 설명하는지도 즉시 읽힌다. */
+      .slide[data-slide="C2-N1"] .c2n1-image-captions{ position:absolute; top:72px; left:16px; z-index:2;
+        display:flex; flex-direction:column; gap:174px; pointer-events:none; }
       .slide[data-slide="C2-N1"] .c2n1-image-captions span{ display:block; width:max-content; max-width:100%;
         padding:5px 10px; border-radius:var(--r-pill); background:var(--white); border:1px solid var(--blue-line);
         color:var(--ink); font-size:18px; font-weight:800; line-height:1.25; }
       .slide[data-slide="C2-N1"] .c2n1-image-captions em{ color:var(--gray-700); font-style:normal; font-weight:700; }
-      .slide[data-slide="C2-N1"].has-img-l .s-full{ left:684px; }
+      .slide[data-slide="C2-N1"] .c2n1-image-row{ position:absolute; left:0; width:660px; height:160px; overflow:hidden; }
+      .slide[data-slide="C2-N1"] .c2n1-image-row--wrong{ top:118px; }
+      .slide[data-slide="C2-N1"] .c2n1-image-row--right{ top:326px; }
+      .slide[data-slide="C2-N1"] .c2n1-image-row img{ position:absolute; inset:0; width:660px; height:160px;
+        max-width:none; max-height:none; object-fit:cover; }
+      .slide[data-slide="C2-N1"] .c2n1-image-row--wrong img{ object-position:center 22%; }
+      .slide[data-slide="C2-N1"] .c2n1-image-row--right img{ object-position:center 75%; }
+      .slide[data-slide="C2-N1"].has-img-l .s-full{ left:744px; }
+      /* 우측 설명을 이미지 두 줄의 중심선과 맞춰 20px 아래로 내린다. */
+      .slide[data-slide="C2-N1"] .s-full{ top:138px; }
       .slide[data-slide="C2-N1"] .s-title{ font-size:32px; line-height:1.22; margin-bottom:4px; }
       .slide[data-slide="C2-N1"] .c2n1-blocks{ display:flex; flex-direction:column; gap:12px; margin-top:10px; }
       .slide[data-slide="C2-N1"] .c2n1-block b{ display:block; font-size:24px; font-weight:800; line-height:1.15; color:var(--ink); }
@@ -102,6 +113,9 @@
       .slide[data-slide="C2-10"] .cc-icon{ width:26px; height:26px; display:block; margin-bottom:8px; }
       .slide[data-slide="C2-10"] .cc-side h3{ font-size:26px; font-weight:800; }
       .slide[data-slide="C2-10"] .cc-side li{ font-size:20px; font-weight:500; }
+      .slide[data-slide="C2-10"] .cc-full{ right:430px; }
+      .slide[data-slide="C2-10"] .c210-figure{ position:absolute; right:64px; top:176px; width:330px; height:440px;
+        max-width:330px; max-height:440px; }
 
       /* ── C2-11: 실습④ — 우측 다이어그램(SVG 유지, 이미지 지정 없음) ───── */
       .slide[data-slide="C2-11"] .ws-icon{ width:24px; height:24px; }
@@ -248,7 +262,7 @@
       .slide[data-slide="C2-N3"] .c2n3-arrow{ align-self:center; font-size:24px; font-weight:800; color:var(--blue); }
       .slide[data-slide="C2-N3"] .c2n3-tbl{ margin:14px 0 0; }
       .slide[data-slide="C2-N3"] .c2n3-tbl th:first-child{ width:150px; }
-      .slide[data-slide="C2-N3"] .c2n3-foot{ margin:auto 0 0; }
+      .slide[data-slide="C2-N3"] .c2n3-foot{ flex:0 0 auto; margin:18px 0 0; padding:10px 16px; }
     </style>
 
     <!-- ============ PART 02 · 2교시 (15장) ============ -->
@@ -386,7 +400,7 @@
            문장 안에 자연스럽게 남긴다(중복 강조 제거). -->
       <figure class="asset-slot asset-slot--hero c2n1-figure" data-image-purpose="explanatory"
         data-image-state="ready" data-expected-src="자료/images/s24_mvp-skateboard-to-car-paper-cut-v1-transparent.png"
-        role="img" aria-label="윗줄의 바퀴와 차체 조각은 쓸 수 없지만, 아랫줄의 스케이트보드부터 자동차까지는 매 단계에서 실제로 쓸 수 있음을 비교한다"><img src="자료/images/s24_mvp-skateboard-to-car-paper-cut-v1-transparent.png" alt="윗줄의 바퀴와 차체 조각은 쓸 수 없지만, 아랫줄의 스케이트보드부터 자동차까지는 매 단계에서 실제로 쓸 수 있음을 비교한다"><figcaption class="c2n1-image-captions"><span lang="en">Wrong: parts are not usable <em lang="ko">/ 잘못된 방법: 부품은 쓸 수 없습니다</em></span><span lang="en">Right: each step is usable <em lang="ko">/ 맞는 방법: 매 단계에서 쓸 수 있습니다</em></span></figcaption></figure>
+        role="group" aria-label="윗줄의 바퀴와 차체 조각은 쓸 수 없지만, 아랫줄의 스케이트보드부터 자동차까지는 매 단계에서 실제로 쓸 수 있음을 비교한다"><figcaption class="c2n1-image-captions"><span lang="en">Wrong: parts are not usable <em lang="ko">/ 잘못된 방법: 부품은 쓸 수 없습니다</em></span><span lang="en">Right: each step is usable <em lang="ko">/ 맞는 방법: 매 단계에서 쓸 수 있습니다</em></span></figcaption><div class="c2n1-image-row c2n1-image-row--wrong"><img src="자료/images/s24_mvp-skateboard-to-car-paper-cut-v1-transparent.png" alt="바퀴와 프레임, 차체 조각을 차례로 내놓아도 사용자는 이동할 수 없음을 보여준다."></div><div class="c2n1-image-row c2n1-image-row--right"><img src="자료/images/s24_mvp-skateboard-to-car-paper-cut-v1-transparent.png" alt="스케이트보드부터 자동차까지 각 단계가 사용자의 이동이라는 핵심 가치를 제공함을 보여준다."></div></figure>
       <div class="s-full">
         <h2 class="s-title">MVP (Minimum Viable Product)</h2>
         <div class="c2n1-blocks">
@@ -692,6 +706,9 @@
           </tbody>
         </table>
       </div>
+      <figure class="asset-slot asset-slot--support c210-figure" data-image-purpose="explanatory"
+        data-image-state="ready" data-expected-src="자료/images/s34-completion-criteria-vs-test-paper-cut-v1-transparent.png"
+        role="img" aria-label="미리 적은 완료 기준 카드가 여러 입력을 확인하는 테스트 화면으로 이어지고, 결과 패널의 체크로 충족 여부를 확인하는 관계"><img src="자료/images/s34-completion-criteria-vs-test-paper-cut-v1-transparent.png" alt="미리 정한 완료 기준 카드가 테스트 화면으로 이어져 결과 확인으로 충족 여부를 판별하는 흐름"></figure>
     </section>
 
     <section class="slide w2-practice has-img-r" data-slide="C2-11">
@@ -768,7 +785,6 @@
             <tbody>
               <tr><th>3단계</th><td>입력 한 번, 버튼 한 번으로 끝나는 기능</td><td>한 줄 적기 → 기록하기 → 목록에 보임</td></tr>
               <tr><th>4~5단계</th><td>고르거나 확인하는 중간 화면이 끼는 기능</td><td>날짜 고르기 → 한 줄 적기 → 미리보기 → 기록하기 → 목록에 보임</td></tr>
-              <tr><th>6단계 이상</th><td><span class="is-bad">기능이 두 개 이상 섞인 신호</span></td><td>다시 하나로 줄입니다</td></tr>
             </tbody>
           </table>
         </div>
