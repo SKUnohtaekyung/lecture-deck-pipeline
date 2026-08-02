@@ -134,7 +134,13 @@ def main() -> int:
         return 1
 
     # ① 외부 참조 0건
-    non_data = [u for u in re.findall(r"""\b(?:src|href)\s*=\s*["']([^"']+)["']""", pv_html)
+    #    `\b`는 `data-expected-src=`의 꼬리 `src=`에도 걸린다(`-`와 `s` 사이가 단어경계라서).
+    #    그 속성은 «어떤 이미지가 들어가야 하는가»를 적어 둔 명세 메타데이터일 뿐 브라우저가
+    #    로드하지 않으므로 자립성과 무관하다. 2주차 배포본에서 27건이 전부 이 오탐이었다
+    #    (실제 이미지는 같은 figure의 <img src="data:…">로 인라인돼 있었다). 앞에 단어문자나
+    #    하이픈이 오면 다른 속성의 꼬리이므로 제외한다 — verify_distributable.py가 태그를
+    #    파싱해 속성명을 정확히 대조하는 것과 같은 판정을 정규식으로 낸다.
+    non_data = [u for u in re.findall(r"""(?<![\w-])(?:src|href)\s*=\s*["']([^"']+)["']""", pv_html)
                 if not u.startswith(("data:", "#"))]
     chk(not non_data, "외부 src/href(비-data) 0건",
         f"외부 참조 {len(non_data)}건 — 단일 파일 자립성 위반")
