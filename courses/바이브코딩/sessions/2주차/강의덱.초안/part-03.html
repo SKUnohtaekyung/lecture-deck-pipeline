@@ -123,7 +123,12 @@
          좌측을 넓히려고 이미지를 340 → 252px로 좁혔다(우측 여백 계약은 유지). */
       .slide[data-slide="C3-3"] .c3-3-figure{ right:64px; top:176px; width:252px; height:330px;
         max-width:252px; max-height:330px; }
-      .slide[data-slide="C3-3"] .dc-stage{ display:flex; flex-direction:column; }
+      /* 2026-08-03 사용자 지시: 무대 안 내용을 좌측 정렬한다.
+         킷 .dc-stage가 align-items:center라 리드·행·마무리 문장이 저마다 다른 폭으로
+         가운데 몰려, 왼쪽 시작선이 세 개로 흩어져 있었다. stretch로 바꿔 셋의 시작선을
+         하나로 맞춘다(세로 가운데 정렬 justify-content:center는 그대로 둔다). */
+      .slide[data-slide="C3-3"] .dc-stage{ display:flex; flex-direction:column;
+        align-items:stretch; text-align:left; }
       .slide[data-slide="C3-3"] .c33-lead{ margin:0; font-size:22px; line-height:1.45; color:var(--ink); }
       .slide[data-slide="C3-3"] .c33-lead b{ color:var(--coral-deep); font-weight:800; }
       .slide[data-slide="C3-3"] .c33-rows{ list-style:none; margin:16px 0 0; padding:0;

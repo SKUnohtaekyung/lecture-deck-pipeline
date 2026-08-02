@@ -34,25 +34,85 @@
    3분류를 화살표로 잇는 흐름으로 바꾸고(줄글 카드 3개 나열이었던 것을
    시각 구조로), 최초 출처 1건(Mitchell Hashimoto·2026-02)을 정확히
    넣는다 — 연표 나열은 하지 않는다(§26.3: 발명이 아니라 대중화). ── */
-.slide[data-slide="C4-2"] .gt-lead{ font-size:23px; }
-.slide[data-slide="C4-2"] .c42-formula{ margin:8px 0 0; padding:11px 18px; border-radius:var(--r-md);
-  background:var(--blue-panel); font-size:23px; font-weight:800; color:var(--ink); text-align:center; }
-.slide[data-slide="C4-2"] .c42-formula span{ font-size:23px; font-weight:800; color:var(--blue); margin:0 4px; }
-.slide[data-slide="C4-2"] .c42-formula .c42-eq{ color:var(--ink); }
-.slide[data-slide="C4-2"] .gt-rules{ display:flex; align-items:stretch; gap:0; margin-top:4px; }
-.slide[data-slide="C4-2"] .gt-rule{ flex:1 1 0; min-width:0; display:flex; flex-direction:column;
-  align-items:center; gap:6px; text-align:center; border-top:none; padding:14px 12px;
-  border-radius:var(--r-lg); background:var(--surface); border:1px solid var(--line); }
-.slide[data-slide="C4-2"] .gt-rule.is-key{ background:var(--blue-panel); border-color:var(--blue-line-strong); }
-.slide[data-slide="C4-2"] .gt-rule > b{ font-size:23px; font-weight:800; color:var(--ink); }
-.slide[data-slide="C4-2"] .gt-rule.is-key > b{ color:var(--blue); }
-.slide[data-slide="C4-2"] .gt-rule > span{ font-size:20px; font-weight:500; line-height:1.36; color:var(--gray-700); }
-.slide[data-slide="C4-2"] .c42-arrow{ flex:0 0 auto; display:grid; place-items:center; padding:0 4px; }
-.slide[data-slide="C4-2"] .c42-arrow svg{ display:block; }
-.slide[data-slide="C4-2"] .c42-origin{ margin:6px 0 0; padding:10px 16px; border-radius:var(--r-md);
-  background:var(--surface); font-size:19px; font-weight:600; line-height:1.42; color:var(--gray-700); }
-.slide[data-slide="C4-2"] .c42-origin b{ color:var(--ink); font-weight:800; }
-.slide[data-slide="C4-2"] .c42-origin .hl-mint-mark{ font-weight:700; }
+/* ══ C4-2 · C4-16 · 하네스 (2026-08-03 사용자 제공 이미지 기준 재작성) ═══════
+   처음엔 한 장에 정의·핵심 역할·공식·세 부품·용어 배경을 다 담았다가 세 부품 카드
+   자리가 8px로 붕괴했다(실측). 사용자 승인으로 두 장으로 나눴고, 나누고 나니
+   글자를 줄일 이유가 사라져 본문 22px 하한을 그대로 지킨다.
+   ⚠️ 블록 사이 여백은 전부 명시한다 — margin-top만 주면 .s-title의 margin-bottom과
+   <p> 기본 margin이 겹쳐 간격이 40·24px로 벌어진다(붕괴의 직접 원인이었다). */
+.w2-harness .s-full{ bottom:54px; display:flex; flex-direction:column; }
+.w2-harness .s-title{ margin-bottom:0; }
+
+/* ── 78p(C4-2): 정의 + 핵심 역할 + 공식 ── */
+.slide[data-slide="C4-2"] .hn-top{ display:grid; grid-template-columns:minmax(0,1fr) 400px;
+  gap:22px; margin-top:16px; align-items:start; }
+.slide[data-slide="C4-2"] .hn-lead{ margin:0 0 8px; font-size:22px; line-height:1.45;
+  font-weight:650; color:var(--ink); word-break:keep-all; }
+.slide[data-slide="C4-2"] .hn-lead b{ color:var(--blue); font-weight:800; }
+/* 「모델은 혼자 못 한다」는 이 장의 핵심 경고라 면으로 띄운다. */
+.slide[data-slide="C4-2"] .hn-notice{ display:flex; align-items:flex-start; gap:10px;
+  margin:14px 0 0; padding:12px 16px; border-radius:var(--r-md);
+  background:var(--mint-soft); border:1px solid var(--mint-line);
+  font-size:22px; line-height:1.45; color:var(--ink); word-break:keep-all; }
+.slide[data-slide="C4-2"] .hn-notice b{ color:var(--mint-deep); font-weight:800; }
+.slide[data-slide="C4-2"] .hn-i{ flex:0 0 auto; margin-top:3px; }
+.slide[data-slide="C4-2"] .hn-roles{ padding:16px 20px; border-radius:var(--r-lg);
+  background:var(--blue-panel); border:1px solid var(--blue-line-strong); }
+.slide[data-slide="C4-2"] .hn-roles-h{ display:block; margin-bottom:10px;
+  font-size:23px; font-weight:800; color:var(--blue); }
+.slide[data-slide="C4-2"] .hn-roles ul{ margin:0; padding:0; list-style:none;
+  display:flex; flex-direction:column; gap:7px; }
+/* 체크 표식은 색이 아니라 글머리 기호로 둔다 — 색만으로 뜻을 전하지 않는다. */
+.slide[data-slide="C4-2"] .hn-roles li{ position:relative; padding-left:27px;
+  font-size:22px; line-height:1.35; font-weight:650; color:var(--ink); word-break:keep-all; }
+.slide[data-slide="C4-2"] .hn-roles li::before{ content:"✓"; position:absolute; left:0; top:0;
+  color:var(--mint-deep); font-weight:800; }
+
+.slide[data-slide="C4-2"] .hn-formula{ flex:0 0 auto; margin:auto 0 0; padding:16px 20px;
+  border-radius:var(--r-md); background:var(--blue-panel-alt); border:1px solid var(--blue-line); }
+.slide[data-slide="C4-2"] .hn-eq{ margin:0; display:flex; flex-wrap:wrap;
+  align-items:center; justify-content:center; gap:10px 12px; }
+.slide[data-slide="C4-2"] .hn-unit{ display:inline-flex; align-items:center; gap:8px;
+  font-size:24px; font-weight:800; color:var(--blue); }
+.slide[data-slide="C4-2"] .hn-unit.is-key{ color:var(--mint-deep); }
+.slide[data-slide="C4-2"] .hn-op{ font-size:24px; font-weight:800; color:var(--gray-700); }
+.slide[data-slide="C4-2"] .hn-sum{ font-size:24px; font-weight:800; color:var(--ink); }
+.slide[data-slide="C4-2"] .hn-ic{ flex:0 0 auto; width:30px; height:30px; }
+.slide[data-slide="C4-2"] .hn-fnote{ margin:8px 0 0; font-size:20px; line-height:1.4;
+  color:var(--gray-700); text-align:center; word-break:keep-all; }
+
+/* ── 79p(C4-16): 세 부품 + 용어의 배경 ── */
+.slide[data-slide="C4-16"] .hn-sub{ margin:10px 0 0; font-size:22px; line-height:1.45;
+  font-weight:650; color:var(--gray-700); }
+.slide[data-slide="C4-16"] .hn-parts{ flex:1 1 auto; min-height:0; display:flex;
+  align-items:stretch; gap:10px; margin-top:18px; }
+.slide[data-slide="C4-16"] .hn-part{ flex:1 1 0; min-width:0; display:flex; flex-direction:column;
+  gap:8px; padding:16px 18px; border-radius:var(--r-lg);
+  background:var(--surface); border:1px solid var(--blue-line); }
+.slide[data-slide="C4-16"] .hn-part.is-key{ background:var(--mint-soft); border-color:var(--mint-line); }
+.slide[data-slide="C4-16"] .hn-part-h{ display:flex; align-items:center; gap:8px;
+  font-size:24px; font-weight:800; color:var(--ink); }
+.slide[data-slide="C4-16"] .hn-ic{ flex:0 0 auto; width:28px; height:28px; }
+.slide[data-slide="C4-16"] .hn-n{ color:var(--blue); }
+.slide[data-slide="C4-16"] .hn-part.is-key .hn-n{ color:var(--mint-deep); }
+.slide[data-slide="C4-16"] .hn-part-d{ margin:0; padding-bottom:9px;
+  border-bottom:1px solid var(--blue-line-strong); font-size:21px; line-height:1.4;
+  font-weight:700; color:var(--ink); word-break:keep-all; }
+.slide[data-slide="C4-16"] .hn-list{ margin:0; padding-left:19px; display:flex;
+  flex-direction:column; gap:6px; }
+.slide[data-slide="C4-16"] .hn-list li{ font-size:21px; line-height:1.38;
+  color:var(--gray-700); word-break:keep-all; }
+.slide[data-slide="C4-16"] .hn-arrow{ flex:0 0 auto; display:grid; place-items:center; }
+.slide[data-slide="C4-16"] .hn-arrow svg{ display:block; }
+.slide[data-slide="C4-16"] .hn-origin{ flex:0 0 auto; display:grid;
+  grid-template-columns:auto minmax(0,1fr); gap:4px 18px; align-items:baseline;
+  margin-top:16px; padding:12px 18px; border-radius:var(--r-md);
+  background:var(--surface); border-left:6px solid var(--blue); }
+.slide[data-slide="C4-16"] .hn-origin-h{ font-size:21px; font-weight:800; color:var(--blue); white-space:nowrap; }
+.slide[data-slide="C4-16"] .hn-origin p{ margin:0; font-size:20px; line-height:1.4;
+  color:var(--gray-700); word-break:keep-all; }
+.slide[data-slide="C4-16"] .hn-origin p b{ color:var(--ink); font-weight:800; }
+.slide[data-slide="C4-16"] .hn-origin-note{ grid-column:2; }
 
 /* ── C4-3 · 만든 파일의 하네스 위치 — 빈 asset-slot을 체크리스트 SVG로 교체
    했으므로 asset-slot 클래스가 빠졌다. shell.html의 위치·크기 규칙
@@ -332,11 +392,8 @@
 .slide[data-slide="C4-1"] .ax-pic .viz-diagram path[marker-end]{ stroke-width:3; }
 .slide[data-slide="C4-1"] .ax-pic marker{ overflow:visible; }
 
-/* C4-2(53p) — 등식: 좌변은 한 단계 낮추고, 합은 배경 없이 민트 글자로 키운다 */
-.slide[data-slide="C4-2"] .c42-term{ font-size:26px; font-weight:700; color:var(--ink); }
-.slide[data-slide="C4-2"] .c42-sum{ font-size:34px; font-weight:900; color:var(--mint-deep);
-  background:none; padding:0; }
-.slide[data-slide="C4-2"] .c42-origin{ font-size:20px; line-height:1.4; }
+/* C4-2의 옛 등식(.c42-term/.c42-sum/.c42-origin) 규칙은 2026-08-03 전면 재작성으로
+   마크업이 사라져 걷어냈다. 새 규칙은 위 「C4-2 재작성」 블록 하나에 모여 있다. */
 
 /* C4-N4(신설 §2-3) — 하네스, 사실 별거 아닙니다 */
 .slide[data-slide="C4-N4"] .s-full.c4n4-full{ bottom:54px; display:flex; flex-direction:column; }
@@ -578,42 +635,114 @@
   <!-- SLOT-C skipped for C4-1: existing dual-diagram layout occupies the full body; adding a center image would overlap. See report. -->
 
 
-<section class="slide w2-gantt" data-slide="C4-2">
+<section class="slide w2-harness" data-slide="C4-2">
+    <header class="s-head">
+      <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+      <span class="s-line"></span><div class="s-team">2주차<br>5교시</div>
+    </header>
+    <!-- 2026-08-03 사용자 제공 이미지 기준으로 전면 재작성.
+         한 장 유지가 사용자 확정이라, 22px 하한을 20~21px로 내려 잡았다(주차 계약 예외 등재).
+         날짜(2월 5·11·17일)는 뺐다 — 과목 지침 §4 「출처는 화면에 표시하지 않는다」와,
+         인물·기관은 «용어가 생긴 경위»라는 내용 자체이므로 남긴다는 사용자 확정을 함께 지킨다.
+         아이콘 3종(모델·하네스·작업 환경)은 요청대로 SVG로 그렸고 색은 토큰만 쓴다. -->
+    <div class="s-full">
+      <h2 class="s-title">하네스란 무엇인가</h2>
+
+      <div class="hn-top">
+        <div class="hn-def">
+          <p class="hn-lead">하네스는 모델과 <b>도구·작업 환경</b> 사이의 <b>반복 실행을 운영하는 시스템</b>입니다.</p>
+          <p class="hn-lead">모델이 다음 행동과 도구 사용을 판단하면, <b>하네스가 호출을 실행하고 결과를 다시 전달</b>하며
+            <b>상태·컨텍스트·권한과 실행 흐름</b>을 관리합니다.</p>
+          <p class="hn-notice">
+            <svg class="hn-i" viewBox="0 0 24 24" aria-hidden="true" width="22" height="22">
+              <circle cx="12" cy="12" r="9.5" fill="none" style="stroke:var(--mint-deep)" stroke-width="2"/>
+              <circle cx="12" cy="7.6" r="1.4" style="fill:var(--mint-deep)"/>
+              <path d="M12 11 V17" style="stroke:var(--mint-deep)" stroke-width="2.4" stroke-linecap="round"/>
+            </svg>
+            <span>모델 자체는 <b>외부 파일을 직접 저장하거나 명령을 실행할 수 없으며</b>, 실행 결과도 <b>하네스를 통해 전달받아야</b> 합니다.</span></p>
+        </div>
+
+        <aside class="hn-roles">
+          <b class="hn-roles-h">하네스의 핵심 역할</b>
+          <ul>
+            <li>모델의 도구 호출 실행</li>
+            <li>실행 결과와 검증 결과 전달</li>
+            <li>반복 실행(에이전트 루프) 관리</li>
+            <li>상태·컨텍스트·권한·설정 관리</li>
+            <li>안전 제약·정책·로그 관리</li>
+          </ul>
+        </aside>
+      </div>
+
+      <div class="hn-formula">
+        <p class="hn-eq">
+          <span class="hn-unit"><svg class="hn-ic" viewBox="0 0 32 32" aria-hidden="true"><path d="M12 6.5a4.2 4.2 0 0 0-4.2 4.2 3.8 3.8 0 0 0-1.6 6.9 4 4 0 0 0 2.4 6.9 4.2 4.2 0 0 0 7.4-2.7V9.9A3.4 3.4 0 0 0 12 6.5Z" fill="none" style="stroke:var(--blue)" stroke-width="2" stroke-linejoin="round"/><path d="M20 6.5a4.2 4.2 0 0 1 4.2 4.2 3.8 3.8 0 0 1 1.6 6.9 4 4 0 0 1-2.4 6.9 4.2 4.2 0 0 1-7.4-2.7V9.9A3.4 3.4 0 0 1 20 6.5Z" fill="none" style="stroke:var(--blue)" stroke-width="2" stroke-linejoin="round"/></svg>모델</span>
+          <span class="hn-op" aria-hidden="true">+</span>
+          <span class="hn-unit is-key"><svg class="hn-ic" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="4.4" fill="none" style="stroke:var(--mint-deep)" stroke-width="2"/><path d="M16 3.6v4.2M16 24.2v4.2M28.4 16h-4.2M7.8 16H3.6M24.8 7.2l-3 3M10.2 21.8l-3 3M24.8 24.8l-3-3M10.2 10.2l-3-3" style="stroke:var(--mint-deep)" stroke-width="2" stroke-linecap="round"/></svg>하네스</span>
+          <span class="hn-op" aria-hidden="true">+</span>
+          <span class="hn-unit"><svg class="hn-ic" viewBox="0 0 32 32" aria-hidden="true"><path d="M16 4.6 28 10l-12 5.4L4 10Z" fill="none" style="stroke:var(--blue)" stroke-width="2" stroke-linejoin="round"/><path d="M4 16l12 5.4L28 16" fill="none" style="stroke:var(--blue)" stroke-width="2" stroke-linejoin="round"/><path d="M4 22l12 5.4L28 22" fill="none" style="stroke:var(--blue)" stroke-width="2" stroke-linejoin="round"/></svg>연결된 도구·작업 환경</span>
+          <span class="hn-op" aria-hidden="true">→</span>
+          <span class="hn-sum">실제 행동할 수 있는 에이전트 시스템</span>
+        </p>
+        <p class="hn-fnote">하네스 안에 도구·작업 환경이 포함되기도 하며, 시스템에 따라 구성 방식이 다를 수 있습니다.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============ C4-16 · 하네스는 무엇으로 이루어지나 (2026-08-03 신설) ============
+       C4-2 한 장에 정의·핵심 역할·공식·세 부품·용어 배경을 다 넣으려다 세 부품 카드 자리가
+       8px로 붕괴했다. 사용자 승인으로 두 장으로 나눈다 — 앞 장은 «하네스가 무엇인가»,
+       이 장은 «무엇으로 이루어지나». 나누고 나니 글자를 줄일 이유도 사라져 본문 22px 하한을
+       그대로 지킨다. ID는 기존 번호를 밀지 않고 이어 붙였다(C4-15 다음). -->
+  <section class="slide w2-harness" data-slide="C4-16">
     <header class="s-head">
       <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
       <span class="s-line"></span><div class="s-team">2주차<br>5교시</div>
     </header>
     <div class="s-full">
-      <h2 class="s-title">하네스란 무엇인가</h2>
+      <h2 class="s-title">하네스는 무엇으로 이루어지나</h2>
+      <p class="hn-sub">세 부품이 각각 다른 일을 맡고, 화살표 방향으로 결과가 오갑니다.</p>
 
-      <p class="gt-lead">하네스는 모델이 <b>도구를 고르고 실행하고, 결과를 보고, 다음 행동을 정하고, 최종 결과를 돌려주게</b> 만드는 실행·제어 시스템입니다.
-        <span class="subline">모델 혼자서는 파일을 저장하지도, 명령을 실행하지도, 결과를 확인하지도 못합니다.</span></p>
-
-      <p class="c42-formula"><span class="c42-term">모델</span> <span aria-hidden="true">+</span> <span class="c42-term">하네스</span> <span aria-hidden="true">+</span> <span class="c42-term">작업 환경</span> <span class="c42-eq" aria-hidden="true">=</span> <span class="c42-sum">에이전트 시스템</span></p>
-
-      <div class="gt-rules viz-formula">
-        <div class="gt-rule">
-          <b>모델</b>
-          <span>입력을 보고 다음 행동을 판단하는 추론 엔진.<span class="subline">스스로는 아무것도 저장하지 못합니다.</span></span>
-        </div>
-        <div class="c42-arrow" aria-hidden="true">
-          <svg width="40" height="30" viewBox="0 0 46 34"><path d="M2 17 H30" style="stroke:var(--gray-400)" stroke-width="4" stroke-linecap="round"/><path d="M25 6 L40 17 L25 28" fill="none" style="stroke:var(--gray-400)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
-        <div class="gt-rule is-key">
-          <b>하네스</b>
-          <span>모델의 판단을 받아 도구를 부르고, 결과를 검증하고, 다음 입력을 다시 넣어 주는 제어 장치</span>
-        </div>
-        <div class="c42-arrow" aria-hidden="true">
-          <svg width="40" height="30" viewBox="0 0 46 34"><path d="M2 17 H30" style="stroke:var(--gray-400)" stroke-width="4" stroke-linecap="round"/><path d="M25 6 L40 17 L25 28" fill="none" style="stroke:var(--gray-400)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
-        <div class="gt-rule">
-          <b>작업 환경</b>
-          <span>파일·코드 저장소처럼 <span class="hl-mint-mark">실제로 결과가 남는</span> 자리</span>
-        </div>
+      <div class="hn-parts">
+        <article class="hn-part">
+          <b class="hn-part-h"><svg class="hn-ic" viewBox="0 0 32 32" aria-hidden="true"><path d="M12 6.5a4.2 4.2 0 0 0-4.2 4.2 3.8 3.8 0 0 0-1.6 6.9 4 4 0 0 0 2.4 6.9 4.2 4.2 0 0 0 7.4-2.7V9.9A3.4 3.4 0 0 0 12 6.5Z" fill="none" style="stroke:var(--blue)" stroke-width="2" stroke-linejoin="round"/><path d="M20 6.5a4.2 4.2 0 0 1 4.2 4.2 3.8 3.8 0 0 1 1.6 6.9 4 4 0 0 1-2.4 6.9 4.2 4.2 0 0 1-7.4-2.7V9.9A3.4 3.4 0 0 1 20 6.5Z" fill="none" style="stroke:var(--blue)" stroke-width="2" stroke-linejoin="round"/></svg><span class="hn-n">①</span> 모델</b>
+          <p class="hn-part-d">다음 행동과 도구 사용을 판단하는 추론 엔진</p>
+          <ul class="hn-list">
+            <li>계획 수립 · 추론 · 도구 선택</li>
+            <li>결과를 분석하고 다음 행동 결정</li>
+            <li>파일이나 작업 상태를 직접 남기지 못합니다</li>
+          </ul>
+        </article>
+        <span class="hn-arrow" aria-hidden="true"><svg viewBox="0 0 34 24" width="30" height="22"><path d="M2 12H24" style="stroke:var(--gray-400)" stroke-width="3" stroke-linecap="round"/><path d="M20 5l10 7-10 7" fill="none" style="stroke:var(--gray-400)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <article class="hn-part is-key">
+          <b class="hn-part-h"><svg class="hn-ic" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="4.4" fill="none" style="stroke:var(--mint-deep)" stroke-width="2"/><path d="M16 3.6v4.2M16 24.2v4.2M28.4 16h-4.2M7.8 16H3.6M24.8 7.2l-3 3M10.2 21.8l-3 3M24.8 24.8l-3-3M10.2 10.2l-3-3" style="stroke:var(--mint-deep)" stroke-width="2" stroke-linecap="round"/></svg><span class="hn-n">②</span> 하네스</b>
+          <p class="hn-part-d">모델과 도구를 연결하고 반복 실행을 운영하는 제어 시스템</p>
+          <ul class="hn-list">
+            <li>도구 호출 실행 및 결과 전달</li>
+            <li>실행 루프와 종료 조건 관리</li>
+            <li>상태 · 권한 · 설정 · 로그 관리</li>
+            <li>필요할 때 검증 도구를 실행</li>
+          </ul>
+        </article>
+        <span class="hn-arrow" aria-hidden="true"><svg viewBox="0 0 34 24" width="30" height="22"><path d="M2 12H24" style="stroke:var(--gray-400)" stroke-width="3" stroke-linecap="round"/><path d="M20 5l10 7-10 7" fill="none" style="stroke:var(--gray-400)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <article class="hn-part">
+          <b class="hn-part-h"><svg class="hn-ic" viewBox="0 0 32 32" aria-hidden="true"><path d="M16 4.6 28 10l-12 5.4L4 10Z" fill="none" style="stroke:var(--blue)" stroke-width="2" stroke-linejoin="round"/><path d="M4 16l12 5.4L28 16" fill="none" style="stroke:var(--blue)" stroke-width="2" stroke-linejoin="round"/><path d="M4 22l12 5.4L28 22" fill="none" style="stroke:var(--blue)" stroke-width="2" stroke-linejoin="round"/></svg><span class="hn-n">③</span> 작업 환경</b>
+          <p class="hn-part-d">실제 작업이 벌어지는 자리 — 파일·셸·브라우저</p>
+          <ul class="hn-list">
+            <li>파일 읽기 · 쓰기, 코드 편집</li>
+            <li>명령 실행, 패키지 설치</li>
+            <li>웹 탐색 · API 호출</li>
+            <li>로컬 또는 원격 환경을 사용</li>
+          </ul>
+        </article>
       </div>
 
-      <p class="c42-origin"><b>2026년 2월 Mitchell Hashimoto</b>가 이 활동에 &ldquo;harness engineering&rdquo;이라는 이름을 붙였고, 이후 OpenAI·LangChain도 같은 표현을 씁니다.
-        <span class="subline"><span class="hl-mint-mark">용어를 널리 쓰이게 만든 사례</span>입니다.</span></p>
+      <div class="hn-origin">
+        <b class="hn-origin-h">용어의 배경</b>
+        <p><b>Mitchell Hashimoto</b>가 에이전트의 반복 실수를 지침과 검증 도구로 막는 작업을 &ldquo;harness engineering&rdquo;이라고 불렀고, 비슷한 시기에 <b>OpenAI·LangChain</b>도 같은 표현을 썼습니다.</p>
+        <p class="hn-origin-note">최초 창시자라고 단정하기보다, <span class="hl-mint-mark">업계 공통 용어로 자리 잡아 가는 중인 말</span>입니다.</p>
+      </div>
 
     </div>
   </section>

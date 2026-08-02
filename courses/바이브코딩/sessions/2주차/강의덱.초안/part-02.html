@@ -215,8 +215,11 @@
       .slide[data-slide="C2-10"] .c210-tbl th:first-child{ width:118px; }
 
       /* 실습 장 공통 — 프롬프트 블록이 들어와 세로가 빡빡하다 */
-      .slide[data-slide="C2-6"] .pr-steps, .slide[data-slide="C2-11"] .pr-steps{
+      .slide[data-slide="C2-11"] .pr-steps{
         flex:0 0 auto; gap:10px; margin-top:10px; }
+      /* 2026-08-03 사용자 지시: C2-6은 단계가 2개뿐이라 위에 몰리고 아래가 텅 비었다.
+         제목 아래 여백을 위아래로 나눠 갖게 해 우측 이미지와 세로 중심을 맞춘다. */
+      .slide[data-slide="C2-6"] .pr-steps{ flex:0 0 auto; gap:14px; margin:auto 0; }
       .slide[data-slide="C2-6"] .pr-steps .work-step,
       .slide[data-slide="C2-11"] .pr-steps .work-step{ padding:10px 20px; }
       .slide[data-slide="C2-6"] .pr-prompt, .slide[data-slide="C2-11"] .pr-prompt{ margin-top:auto; }
