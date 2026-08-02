@@ -352,6 +352,22 @@
 .slide[data-slide="C4-N4"] .c4n4-foot{ flex:0 0 auto; margin:16px 0 0; padding-top:14px;
   border-top:2px solid var(--blue-line); font-size:22px; line-height:1.45; }
 
+/* C3-N4(3교시 → 5교시 이동) — AGENTS.md란 무엇인가 · 하네스 1단계 규칙 파일 */
+.slide[data-slide="C3-N4"] .s-full.c3n4-full{ bottom:54px; display:flex; flex-direction:column; }
+.slide[data-slide="C3-N4"] .c3n4-lead{ margin:8px 0 0; font-size:22px; line-height:1.45; }
+.slide[data-slide="C3-N4"] .c3n4-grid{ flex:1 1 auto; min-height:0; display:grid;
+  grid-template-columns:repeat(2,1fr); gap:14px; margin:14px 0 0; align-content:center; }
+.slide[data-slide="C3-N4"] .c3n4-card{ display:flex; flex-direction:column; gap:4px;
+  padding:12px 20px; border-radius:var(--r-lg);
+  background:var(--surface); border:1px solid var(--blue-line); }
+.slide[data-slide="C3-N4"] .c3n4-card.is-warn{ background:var(--coral-soft); border-color:var(--coral-line); }
+.slide[data-slide="C3-N4"] .c3n4-k{ align-self:flex-start; padding:2px 12px; border-radius:var(--r-pill);
+  background:var(--blue); color:var(--white); font-size:17px; font-weight:800; }
+.slide[data-slide="C3-N4"] .c3n4-card.is-warn .c3n4-k{ background:var(--coral); color:var(--on-coral); }
+.slide[data-slide="C3-N4"] .c3n4-card b{ font-size:24px; font-weight:800; color:var(--ink); line-height:1.25; }
+.slide[data-slide="C3-N4"] .c3n4-foot{ flex:0 0 auto; margin:14px 0 0; padding-top:12px;
+  border-top:2px solid var(--blue-line); font-size:22px; line-height:1.45; }
+
 /* C4-N5(신설 §2-4) — 규칙과 권한은 다릅니다 */
 .slide[data-slide="C4-N5"] .s-full.c4n5-full{ bottom:54px; display:flex; flex-direction:column; }
 .slide[data-slide="C4-N5"] .c4n5-lead{ margin:8px 0 0; font-size:22px; line-height:1.45; }
@@ -1187,6 +1203,40 @@
     <div class="st-base"></div>
   </div>
 </section>
+
+    <!-- ============ C3-N4 · AGENTS.md란 무엇인가 — 2차 §1 67p+68p 통합본 ============ -->
+    <!-- 2026-08-02 3교시 → 5교시 이동. 3교시(PRD 중심)에 «AGENTS.md란 무엇인가»가
+         끼어들어 맥락이 튄다는 사용자 지적에 따라, 앞 장 C4-15(하네스를 갖추는 단계)의
+         «1단계 · 규칙 파일» 칸 바로 뒤에 붙여 규칙 파일 개념을 하네스 1단계로 자리매김시켰다.
+         data-slide 값은 노트·이미지 매니페스트가 ID로 지목하므로 그대로 유지한다.
+         Skill 대비는 여기서 가져오지 않는다 — Skill은 뒤의 C4-N3이 맡는다(§1 67p-3). -->
+    <section class="slide" data-slide="C3-N4">
+      <header class="s-head">
+        <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+        <span class="s-line"></span><div class="s-team">2주차<br>5교시</div>
+      </header>
+      <div class="s-full c3n4-full">
+        <p class="s-eyebrow">하네스 1단계 · 규칙 파일</p>
+        <h2 class="s-title">AGENTS.md란 무엇인가</h2>
+        <p class="s-body c3n4-lead">에이전트가 <b>작업을 시작하기 전 자동으로 읽는</b> 규칙 파일입니다.</p>
+        <div class="c3n4-grid">
+          <div class="c3n4-card"><span class="c3n4-k">무엇을 담나</span>
+            <b>프로젝트에서 계속 지킬 공통 규칙</b>
+            <span class="subline">한 번만 쓰고 말 지시가 아니라, 매번 같이 적용될 약속만 적습니다.</span></div>
+          <div class="c3n4-card"><span class="c3n4-k">언제 읽히나</span>
+            <b>사람이 부르지 않아도 항상</b>
+            <span class="subline">작업을 시작할 때마다 자동으로 읽힙니다.</span></div>
+          <div class="c3n4-card"><span class="c3n4-k">어디에 만드나</span>
+            <b>프로젝트 루트에 직접 파일로</b>
+            <span class="subline">별도 도구나 설정 화면이 필요 없습니다.</span></div>
+          <div class="c3n4-card is-warn"><span class="c3n4-k">없으면</span>
+            <b>같은 이탈을 매번 반복합니다</b>
+            <span class="subline">새 대화를 열 때마다 같은 주의를 다시 말해야 합니다.</span></div>
+        </div>
+        <p class="c3n4-foot">AI의 기억이 아니라, <span class="hl-mint-mark">사람이 적어 둔 만큼만</span> 지키는 고정된 규칙입니다.
+          <span class="subline">하위 폴더에 규칙 파일을 또 두면 위쪽 규칙을 덮어쓰는 게 아니라 <b>누적</b>됩니다.</span></p>
+      </div>
+    </section>
 
     <!-- ============ 4-N2 (C4-N2) — 2026-08-01 C4-11 앞으로 이동.
          실습(C4-11)에서 AGENTS.md를 만들게 하기 전에 «무엇을 적나»를 먼저

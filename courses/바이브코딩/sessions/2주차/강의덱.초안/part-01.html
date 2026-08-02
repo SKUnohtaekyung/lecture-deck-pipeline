@@ -24,6 +24,9 @@
       /* ── C1-N1: 기획 전체 흐름 — 같은 rm-step 위계 적용 ── */
       .slide[data-slide="C1-N1"] .rm-step b{ font-size:26px; font-weight:800; line-height:1.2; }
       .slide[data-slide="C1-N1"] .rm-step .desc p{ margin:0; font-size:20px; font-weight:500; line-height:1.3; color:var(--gray-700); }
+      /* MVP·유저플로우 두 정의를 나란한 두 줄로 분리한다. 둘째 줄은 .rm-foot의
+         기본 margin-top:16px을 6px로 줄여 세로 예산(666px)을 넘기지 않는다. */
+      .slide[data-slide="C1-N1"] .rm-foot + .rm-foot{ margin-top:6px; }
 
       /* ── C1-1: 박스 대비를 해시태그 자유 배치로 교체 + 이미지 슬롯 복원(2차) ──
          1차에서 지운 SVG를 걷어내고 제작지시서 s07 두 장을 다시 건다.
@@ -194,17 +197,6 @@
       .slide[data-slide="C1-6"] .sl-case p{ line-height:1.32; }
       .slide[data-slide="C1-6"] .sl-case h3{ font-size:26px; font-weight:800; }
 
-      /* ── C1-7: 6칸 균등 나열 폐기(수정요청서) → 좁힌 단계 목록 + 우측 깔때기
-         이미지(사용자 지적: "박스 가로 길이가 너무 길다 → 짧게 하고 이미지 넣어라"). */
-      /* 2차 §1 18p: 하단 파란 결론 박스 삭제 · 박스별 여백 확대(gap 4 → 18) ·
-         우측 시각자료와의 여백 확보(right:420 → 490, 실측 간격 16 → 86px). */
-      .slide[data-slide="C1-7"] .s-full.steps-full.fill{ right:490px; bottom:54px; }
-      .slide[data-slide="C1-7"] .eval-steps{ gap:14px; justify-content:center; }
-      .slide[data-slide="C1-7"] .eval-steps .work-step{ padding:9px 22px; }
-      .slide[data-slide="C1-7"] .eval-steps .work-step b{ font-size:26px; font-weight:800; line-height:1.22; }
-      .slide[data-slide="C1-7"] .eval-steps .work-step span{ font-size:20px; font-weight:500; line-height:1.35; }
-      .slide[data-slide="C1-7"] .c17-art{ position:absolute; right:64px; top:170px; width:340px; height:360px; }
-
       /* ── A1F3: 화면 목업 안 실제 값 텍스트는 22px 하한을 지킨다(창 제목바·
          필드 라벨은 UI 크롬이라 예외, 값 텍스트는 본문으로 취급) ── */
       .slide[data-slide="A1F3"] .sm-part p{ font-size:22px; }
@@ -319,6 +311,30 @@
       </div>
     </section>
 
+    <!-- ============ N1 · 기획 전체 흐름 ============ -->
+    <section class="slide w2-roadmap" data-slide="C1-N1">
+      <header class="s-head">
+        <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+        <span class="s-line"></span><div class="s-team">2주차<br>1교시</div>
+      </header>
+      <div class="s-full">
+        <h2 class="s-title">기획 전체 흐름</h2>
+        <div class="rm-track">
+          <div class="rm-step"><span class="rm-n">1</span><b>타깃</b><span class="desc"><p>누구를 도울지 정하기</p></span></div>
+          <span class="rm-arrow" aria-hidden="true">→</span>
+          <div class="rm-step"><span class="rm-n">2</span><b>페인포인트</b><span class="desc"><p>그 사람의 불편 하나 찾기</p></span></div>
+          <span class="rm-arrow" aria-hidden="true">→</span>
+          <div class="rm-step is-goal"><span class="rm-n">3</span><b>MVP</b><span class="desc"><p>핵심 기능 하나로 첫 버전</p></span></div>
+          <span class="rm-arrow" aria-hidden="true">→</span>
+          <div class="rm-step"><span class="rm-n">4</span><b>유저플로우</b><span class="desc"><p>사용자가 움직이는 순서</p></span></div>
+          <span class="rm-arrow" aria-hidden="true">→</span>
+          <div class="rm-step"><span class="rm-n">5</span><b>화면</b><span class="desc"><p>실제로 보일 화면 그리기</p></span></div>
+        </div>
+        <p class="rm-foot"><strong>MVP</strong> — 핵심 기능 하나만 작동하는 첫 버전.</p>
+        <p class="rm-foot"><strong>유저플로우</strong> — 사용자가 어떤 순서로 움직이고 어떤 화면을 보는지 러프하게 그려 본 것.</p>
+      </div>
+    </section>
+
     <!-- ============ C1-1 · 지난주에서 이번 주로 ============ -->
     <section class="slide compare-slide has-img-b" data-slide="C1-1">
       <header class="s-head">
@@ -364,29 +380,6 @@
       <figure class="asset-slot asset-slot--support c11-week-art is-this" data-image-purpose="explanatory"
         data-image-state="ready" data-expected-src="자료/images/s07_this-week-decide-paper-cut-v1-transparent.png"
         role="img" aria-label="이번 주의 작업이 결정 지점을 향해 열린 경로로 나아가는 흐름"><img src="자료/images/s07_this-week-decide-paper-cut-v1-transparent.png" alt="이번 주의 작업이 결정 지점을 향해 열린 경로로 나아가는 흐름"></figure>
-    </section>
-
-    <!-- ============ N1 · 기획 전체 흐름 ============ -->
-    <section class="slide w2-roadmap" data-slide="C1-N1">
-      <header class="s-head">
-        <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-        <span class="s-line"></span><div class="s-team">2주차<br>1교시</div>
-      </header>
-      <div class="s-full">
-        <h2 class="s-title">기획 전체 흐름</h2>
-        <div class="rm-track">
-          <div class="rm-step"><span class="rm-n">1</span><b>타깃</b><span class="desc"><p>누구를 도울지 정하기</p></span></div>
-          <span class="rm-arrow" aria-hidden="true">→</span>
-          <div class="rm-step"><span class="rm-n">2</span><b>페인포인트</b><span class="desc"><p>그 사람의 불편 하나 찾기</p></span></div>
-          <span class="rm-arrow" aria-hidden="true">→</span>
-          <div class="rm-step is-goal"><span class="rm-n">3</span><b>MVP</b><span class="desc"><p>핵심 기능 하나로 첫 버전</p></span></div>
-          <span class="rm-arrow" aria-hidden="true">→</span>
-          <div class="rm-step"><span class="rm-n">4</span><b>유저플로우</b><span class="desc"><p>사용자가 움직이는 순서</p></span></div>
-          <span class="rm-arrow" aria-hidden="true">→</span>
-          <div class="rm-step"><span class="rm-n">5</span><b>화면</b><span class="desc"><p>실제로 보일 화면 그리기</p></span></div>
-        </div>
-        <p class="rm-foot"><strong>MVP</strong> — 핵심 기능 하나만 작동하는 첫 버전. 유저플로우는 사용자가 어떤 순서로 움직이고 어떤 화면을 보는지를 러프하게 그려 본 것입니다.</p>
-      </div>
     </section>
 
     <!-- ============ C1-2 · 누구의 어떤 불편인가 — 타깃·페인포인트 ============ -->
@@ -559,7 +552,7 @@
       </div>
     </section>
 
-    <!-- ============ C1-5 · 실습 ① 내 불편을 한 문장으로 ============ -->
+    <!-- ============ A1F1 · 세 번 물으면 한 문장이 됩니다 ============ -->
     <section class="slide w2-annex" data-slide="A1F1">
       <header class="s-head">
         <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
@@ -596,6 +589,24 @@
       </figure>
     </section>
 
+    <!-- ============ C1-6 · 한 줄 정의는 제작 나침반 ============ -->
+    <section class="slide w2-slot" data-slide="C1-6">
+      <header class="s-head">
+        <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+        <span class="s-line"></span><div class="s-team">2주차<br>1교시</div>
+      </header>
+      <div class="s-full">
+        <h2 class="s-title">한 줄 정의, 제작 기준 한 줄</h2>
+        <div class="sl-line"><span class="sl-slot">[누가]</span>가 <span class="sl-slot">[어떤 상황에서]</span>
+          <span class="sl-slot">[무엇을 하도록]</span> 돕는 도구</div>
+        <div class="sl-pair">
+          <div class="sl-case is-good"><h3>좋은 예</h3><p>범위를 좁힘</p><p class="sl-ex">"퇴근길 직장인이 오늘 한 일을 한 줄로 남기게 돕는 도구"</p><p class="sl-ex">"자취생이 장보기 전 냉장고 속 재료를 확인하게 돕는 도구"</p><p class="sl-ex">"평일 아침 요리 초보가 남은 재료로 뭘 만들지 정하게 돕는 도구"</p><p class="sl-why"><span class="hl-mint-underline">누가·어떤 상황·무엇을이 다 보입니다</span></p></div>
+          <div class="sl-case is-bad"><h3>나쁜 예</h3><p>멋진 홍보 문구</p><p class="sl-ex">"세상을 기록으로 바꾼다"</p><p class="sl-why">누가·어떤 상황인지 알 수 없습니다</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ C1-5 · 실습 ① 내 불편을 한 문장으로 ============ -->
     <section class="slide w2-practice has-img-r" data-slide="C1-5">
       <header class="s-head">
         <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
@@ -634,7 +645,7 @@
             · 이번에 안 다룰 것: <b class="fill">[빼 둘 것 하나]</b><br>
             <br>
             위 내용만 써서 «<b class="fill">[누가]</b>가 <b class="fill">[어떤 상황에서]</b> <b class="fill">[무엇을 하도록]</b> 돕는 도구»<br>
-            형식의 한 문장을 <strong>서로 다른 방향으로 3가지</strong> 만들어 주세요.<br>
+            형식의 <strong>한 줄 정의 후보 문장을 3개</strong>, 서로 다른 방향으로 만들어 주세요.<br>
             넓은 대상(직장인·학생 같은 말)은 쓰지 말고, 제 상황에 없는 건 지어내지 마세요.</p>
             <span class="terminal-cursor" aria-hidden="true"></span>
           </div>
@@ -647,23 +658,6 @@
       </div>
     </section>
 
-
-    <!-- ============ C1-6 · 한 줄 정의는 제작 나침반 ============ -->
-    <section class="slide w2-slot" data-slide="C1-6">
-      <header class="s-head">
-        <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-        <span class="s-line"></span><div class="s-team">2주차<br>1교시</div>
-      </header>
-      <div class="s-full">
-        <h2 class="s-title">한 줄 정의, 제작 기준 한 줄</h2>
-        <div class="sl-line"><span class="sl-slot">[누가]</span>가 <span class="sl-slot">[어떤 상황에서]</span>
-          <span class="sl-slot">[무엇을 하도록]</span> 돕는 도구</div>
-        <div class="sl-pair">
-          <div class="sl-case is-good"><h3>좋은 예</h3><p>범위를 좁힘</p><p class="sl-ex">"퇴근길 직장인이 오늘 한 일을 한 줄로 남기게 돕는 도구"</p><p class="sl-ex">"자취생이 장보기 전 냉장고 속 재료를 확인하게 돕는 도구"</p><p class="sl-ex">"평일 아침 요리 초보가 남은 재료로 뭘 만들지 정하게 돕는 도구"</p><p class="sl-why"><span class="hl-mint-underline">누가·어떤 상황·무엇을이 다 보입니다</span></p></div>
-          <div class="sl-case is-bad"><h3>나쁜 예</h3><p>멋진 홍보 문구</p><p class="sl-ex">"세상을 기록으로 바꾼다"</p><p class="sl-why">누가·어떤 상황인지 알 수 없습니다</p></div>
-        </div>
-      </div>
-    </section>
 
     <section class="slide w2-annex w2-screen" data-slide="A1F3">
       <header class="s-head">
@@ -698,39 +692,8 @@
     </section>
 
 
-    <!-- ============ C1-7 · 주제는 이렇게 고릅니다 ============ -->
-    <section class="slide" data-slide="C1-7">
-      <header class="s-head">
-        <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-        <span class="s-line"></span><div class="s-team">2주차<br>1교시</div>
-      </header>
-      <div class="s-full steps-full fill">
-        <h2 class="s-title">삶 속의 불편을 해결한다</h2>
-        <div class="eval-steps">
-          <div class="work-step"><span class="n">1</span><div><b>반복되는 불편</b><span class="desc"><span>신발 속 돌멩이처럼 작아도 자주 걸리는 불편이면 좋습니다.</span></span></div></div>
-          <div class="work-step"><span class="n">2</span><div><b>구체적 대상</b><span class="desc"><span>모두가 아니라 한 사람을 구체적으로 그릴 수 있어야 합니다.</span></span></div></div>
-          <div class="work-step"><span class="n">3</span><div><b>한 문장 요약</b><span class="desc"><span>누가·어떤 상황·무엇을 돕는지 한 문장으로 말할 수 있어야 합니다.</span></span></div></div>
-          <div class="work-step"><span class="n">4</span><div><b>기능 1~3개</b><span class="desc"><span>버튼·입력칸이 하나에서 세 개를 넘지 않아야 완주하기 쉽습니다.</span></span></div></div>
-          <div class="work-step"><span class="n">5</span><div><b>입력→결과 구조</b><span class="desc"><span>입력하면 결과가 보여야 하고, 없으면 예시 데이터로 채웁니다.</span></span></div>
-          </div>
-        </div>
-      </div>
-      <figure class="c17-art viz-filter" role="img" aria-label="여러 후보 주제 조각이 다섯 조건을 통과하는 체 모양 필터를 거쳐 하나의 확정된 주제로 좁혀지는 모습을 보여주는 그림">
-        <svg width="100%" height="100%" viewBox="0 0 340 390" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <rect x="30" y="30" width="76" height="44" rx="10" style="fill:var(--blue-soft);stroke:var(--blue-line-strong)" stroke-width="2"/>
-          <rect x="132" y="18" width="76" height="44" rx="10" style="fill:var(--blue-soft);stroke:var(--blue-line-strong)" stroke-width="2"/>
-          <rect x="234" y="34" width="76" height="44" rx="10" style="fill:var(--blue-soft);stroke:var(--blue-line-strong)" stroke-width="2"/>
-          <path d="M40 100 L300 100 L230 200 L110 200 Z" style="fill:var(--blue-soft);stroke:var(--blue-line-strong)" stroke-width="3"/>
-          <line x1="70" y1="126" x2="270" y2="126" style="stroke:var(--blue-line-strong)" stroke-width="2" stroke-dasharray="4 6"/>
-          <line x1="90" y1="152" x2="250" y2="152" style="stroke:var(--blue-line-strong)" stroke-width="2" stroke-dasharray="4 6"/>
-          <line x1="110" y1="178" x2="230" y2="178" style="stroke:var(--blue-line-strong)" stroke-width="2" stroke-dasharray="4 6"/>
-          <path d="M170 200 L170 244" style="stroke:var(--mint-deep);fill:none" stroke-width="4" stroke-dasharray="4 6"/>
-          <rect x="90" y="244" width="160" height="90" rx="14" style="fill:var(--mint-soft);stroke:var(--mint-line)" stroke-width="2"/>
-          <text x="170" y="284" text-anchor="middle" font-size="22" font-weight="800" style="fill:var(--mint-deep)">우리 주제</text>
-          <text x="170" y="312" text-anchor="middle" font-size="18" font-weight="600" style="fill:var(--mint-deep)">다섯 조건 통과</text>
-        </svg>
-      </figure>
-    </section>
+    <!-- ============ C1-7 · 주제는 이렇게 고릅니다 — 2026-08-02 사용자 결정으로 삭제 ============ -->
+    <!-- 다섯 조건 나열 + 깔때기 SVG. 실습 ①·C1-6의 «한 줄 정의» 기준과 겹쳐 폐기. -->
 
     <!-- ============ C1-8 · 유형으로 고르면 쉽습니다 (2026-07-27: raw table 폐기 → S3PRV 색분류 카드+원칙배너) ============ -->
     <!-- 소스: 초안 :60 · 개념KB C-기능후보유형:283,284,288,295 · 실습예제 mvp 5종 실제 스크린샷(자료/images/s13_*).
@@ -755,8 +718,8 @@
         <div class="accent-bar"></div>
         <div class="c111-body">
           <div class="pr-steps c111-steps">
-            <div class="work-step"><span class="n">1</span><div><b>한 줄 정의 확정해 메모장에 저장하기</b><span class="desc">실습 ①의 문장을 다듬습니다. 타깃·상황·행동 세 조각이 다 들어갔는지 확인하고, 그대로 복사해 쓸 수 있게 저장합니다.</span></div></div>
-            <div class="work-step"><span class="n">2</span><div><b>Codex로 새 프로젝트 폴더 만들고 열기</b><span class="desc">1주차 폴더에 이어 쓰지 않습니다. 이름은 자유롭게 지정합니다. 새 폴더가 열렸는지, 한 줄 정의가 저장됐는지 확인합니다.</span></div></div>
+            <div class="work-step"><span class="n">1</span><div><b>GPT에게 물어 한 줄 정의 확정하기</b><span class="desc">실습 ①의 문장을 GPT에게 보여 주고 다듬어 확정합니다. 누가·어떤 상황·무엇을 하도록 세 조각이 다 들어갔는지 확인합니다.</span></div></div>
+            <div class="work-step"><span class="n">2</span><div><b>Codex로 새 프로젝트 폴더 만들고 열기</b><span class="desc">1주차 폴더에 이어 쓰지 않습니다. 이름은 자유롭게 지정합니다. 새 폴더가 열렸는지, 한 줄 정의를 확정했는지 확인합니다.</span></div></div>
           </div>
           <figure class="c111-art viz-folder" role="img" aria-label="새 폴더를 만들고 여는 화면을 표현한 그림">
             <svg viewBox="0 0 300 260" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -769,38 +732,8 @@
       </div>
     </section>
 
-    <!-- ============ C1-11P · 실습 프롬프트 전용 (2026-08-01: 배치 방식 통일) ============ -->
-    <section class="slide" data-slide="C1-11P">
-      <header class="s-head">
-        <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-        <span class="s-line"></span><div class="s-team">2주차<br>1교시</div>
-      </header>
-      <div class="s-full pw-full">
-        <p class="s-eyebrow">실습 ② 예시 프롬프트</p>
-        <h2 class="s-title">새 프로젝트 폴더를 만들 때 이렇게 요청합니다</h2>
-        <div class="w2-prompt terminal-dark pw-term viz-prompt" aria-label="실습 ② 예시 프롬프트 — 새 프로젝트 폴더를 만들고 열어 달라고 요청한다">
-          <div class="terminal-bar"><span></span><span></span><span></span><b>Codex · 새 프로젝트 폴더</b></div>
-          <div class="terminal-body">
-            <span class="terminal-prompt">&gt;_</span>
-            <p class="terminal-copy">역할: 제 컴퓨터에 프로젝트 폴더를 만들어 주는 도우미.<br>
-            [내 결정] 폴더 이름: <b class="fill">[내가 정한 이름]</b><br>
-            · 둘 위치: <b class="fill">[내가 정한 경로 — 예: 바탕화면]</b><br>
-            · 이 도구의 한 줄 정의: <b class="fill">[실습 ①에서 고른 문장]</b><br>
-            <br>
-            이 위치에 폴더를 만들고 열어 주세요.<br>
-            <strong>아직 파일은 만들지 마세요.</strong> 폴더를 연 상태에서 멈춥니다.<br>
-            같은 이름이 이미 있으면 덮어쓰지 말고 저에게 먼저 알려 주세요.<br>
-            다 되면 만든 경로를 그대로 보여 주세요.</p>
-            <span class="terminal-cursor" aria-hidden="true"></span>
-          </div>
-        </div>
-        <div class="pw-notes">
-          <div class="pw-note"><span class="pw-k">이렇게 쓰는 이유</span><p>폴더가 무엇을 위한 것인지 알아야 다음 작업이 그 기준을 씁니다.</p></div>
-          <div class="pw-note"><span class="pw-k">이 줄이 막는 것</span><p>«덮어쓰지 마»가 없으면 기존 폴더를 지우고 새로 만들 수 있습니다.</p></div>
-          <div class="pw-note"><span class="pw-k">확인할 것</span><p>새 폴더가 열렸는지, 한 줄 정의가 저장됐는지 확인합니다.</p></div>
-        </div>
-      </div>
-    </section>
+    <!-- ============ C1-11P · 실습 ② 예시 프롬프트 — 2026-08-02 사용자 결정으로 삭제 ============ -->
+    <!-- 새 프로젝트 폴더 생성 터미널 프롬프트. 실습 ② 본장(C1-11)의 2번 단계로 충분해 폐기. -->
 
 
 <section class="slide w2-persist" data-slide="C1-12">

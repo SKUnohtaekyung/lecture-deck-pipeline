@@ -90,6 +90,19 @@
     .slide[data-slide="S02B"] .wk-track{ gap:6px; }
     .slide[data-slide="S02B"] .wk-row{ gap:8px; }
     .slide[data-slide="S02B"] .wk-prev{ font-size:20px; }
+    /* ⑤ 줄바꿈 화살표(↓) 위치 교정(2026-08-02 사용자 지적: "꺾이는 지점과 어긋나 애매하다")
+       흐름은 3번 노드 뒤에서 꺾이는데(1·2·3 / 4·5·6) 기본 .wk-mid는
+       justify-content:center라 ↓가 트랙 정중앙 = 2번 노드 아래에 찍혔다.
+       .wk-mid는 .wk-row와 같은 폭이므로(둘 다 .wk-track의 stretch 자식),
+       ↓를 '노드 한 칸' 폭의 박스로 만들어 오른쪽 끝에 붙이면 그 박스가
+       3번 노드 칸과 정확히 겹친다. 글리프 폭에 의존하지 않도록 박스 안에서
+       text-align:center로 가운데 정렬한다(flex-end만 쓰면 글리프의 오른쪽
+       변이 맞춰져 중심이 글리프 폭의 절반만큼 왼쪽으로 밀린다).
+         노드 폭 = (트랙폭 - 화살표 2×26px - gap 4×8px) / 3 */
+    .slide[data-slide="S02B"] .wk-mid{ justify-content:flex-end; }
+    .slide[data-slide="S02B"] .wk-mid-arrow{
+      flex:0 0 calc((100% - 2 * 26px - 4 * 8px) / 3);
+      text-align:center; }
 
     /* S03 — 항목 설명이 19px여서 하한 미달(7건). 6개 항목이 666px 안에
        들어가도록 줄간·간격을 함께 조인다. */
