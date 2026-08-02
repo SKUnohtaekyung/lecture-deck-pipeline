@@ -3895,19 +3895,60 @@
       .slide[data-slide="C3-3"] .c33-foot{ margin:16px 0 0; }
 
       /* ── A3F2 · ChatGPT/Codex 역할표 ────────────────────────────────
-         2026-08-02 수정요청 v2 9번: 하단 3단계(.pr-steps)를 삭제했다. 표 하나만 남으면
-         위쪽에 몰려 아래가 텅 비므로, 남은 표를 세로 가운데로 띄우고 글자·여백을 키워
-         한 장을 채운다. .pr-steps용 규칙은 대상이 사라져 함께 걷어냈다. */
+         2026-08-03 사용자 요청: 2행짜리 표 하나(아래가 텅 비던 구성)를 «카드 2장 +
+         5항목 비교표»로 교체하고, 두 도구를 **각자의 상징색**으로 갈랐다(사용자 확정).
+         시안의 파랑/초록은 임의 배색이라 쓰지 않는다 — ChatGPT는 OpenAI 그린,
+         Codex는 CLI 브랜딩대로 검정(--ink)이다. 제목 h2는 지시대로 단색을 유지한다.
+         ⚠️ R-COLOR-06(강조색 예외) 준수: 팔레트 밖 색은 --accent-gpt **하나뿐**이고
+         아래 스코프 선언 한 곳에만 raw 값을 둔다(사용처는 var()만 — C5-19 선례와 동일).
+         표식 `palette-x`는 ChatGPT 카드에 달았다. 덱 예산은 2%=2장이고 기존 보유가
+         C5-5 한 장이라 이 장이 두 번째다 — **더 늘리면 FAIL이다.**
+         Codex 쪽은 기존 토큰(--ink)이라 예외를 소비하지 않는다.
+         ⚠️ 세로 예산 — accent-bar 아래 약 285부터 바닥선 666까지 **약 380px**뿐이다.
+         카드 104 + 간격 16 + 표 6행 258로 맞췄으므로 **행 padding(6px)이나 카드
+         padding을 키우면 바로 넘친다.** 늘려야 하면 행 수가 아니라 여백을 다시 짜라. */
+      .slide[data-slide="A3F2"]{ --accent-gpt:#10A37F; }
       .slide[data-slide="A3F2"] .s-full{ bottom:54px; display:flex; flex-direction:column; }
-      .slide[data-slide="A3F2"] table.t{ font-size:26px; max-width:1000px;
-        margin:0 auto; align-self:center; width:100%; }
-      .slide[data-slide="A3F2"] table.t th, .slide[data-slide="A3F2"] table.t td{ padding:26px 24px; }
-      .slide[data-slide="A3F2"] table.t th{ width:220px; }
-      .slide[data-slide="A3F2"] table.t td b{ font-size:26px; }
-      .slide[data-slide="A3F2"] table.t td .subline{ margin-top:6px; font-size:22px; line-height:1.45; }
-      /* 표를 감싼 영역을 flex로 잡아 제목 아래 남는 세로를 표가 가운데서 나눠 갖게 한다. */
-      .slide[data-slide="A3F2"] .accent-bar{ margin-bottom:auto; }
-      .slide[data-slide="A3F2"] table.t + *{ margin-top:auto; }
+      /* 카드 보더를 2px로 올린 만큼(상하 +2) 여기서 되돌려 바닥선 여유를 4px 남긴다. */
+      .slide[data-slide="A3F2"] .accent-bar{ margin-bottom:8px; }
+
+      .slide[data-slide="A3F2"] .rc-cards{ flex:0 0 auto; display:grid;
+        grid-template-columns:1fr 1fr; gap:20px; }
+      /* R-COLOR-04 ②(흰 fill + 유색 보더)를 따른다 — 카드 표면을 브랜드색으로 넓게
+         칠하지 않는 것이 R-COLOR-06의 «큰 면적 금지»도 함께 지키는 방법이다.
+         색은 보더·아이콘·이름에만 얹고 본문 문장은 --gray-700 그대로 둔다. */
+      .slide[data-slide="A3F2"] .rc-card{ display:grid; grid-template-columns:104px 1fr;
+        align-items:center; gap:16px; padding:12px 18px; border-radius:14px;
+        background:var(--white); border:2px solid var(--ink); }
+      .slide[data-slide="A3F2"] .rc-card.is-gpt{ border-color:var(--accent-gpt); }
+      .slide[data-slide="A3F2"] .rc-id{ display:flex; flex-direction:column;
+        align-items:center; gap:6px; }
+      /* 원형 배지는 R-COLOR-03의 «민트 fill 배지 3종»이 아니므로 민트를 쓰지 않는다.
+         두 색 모두 흰 글리프와 대비 3:1 이상이라 비텍스트 대비 하한을 넘는다. */
+      .slide[data-slide="A3F2"] .rc-icon{ width:46px; height:46px; border-radius:50%;
+        background:var(--ink); display:flex; align-items:center; justify-content:center; }
+      .slide[data-slide="A3F2"] .is-gpt .rc-icon{ background:var(--accent-gpt); }
+      .slide[data-slide="A3F2"] .rc-name{ font-size:22px; font-weight:800; color:var(--ink); }
+      .slide[data-slide="A3F2"] .is-gpt .rc-name{ color:var(--accent-gpt); }
+      .slide[data-slide="A3F2"] .rc-icon svg{ width:24px; height:24px; display:block; }
+      .slide[data-slide="A3F2"] .rc-role{ display:block; font-size:23px; font-weight:800;
+        color:var(--ink); }
+      .slide[data-slide="A3F2"] .rc-desc{ display:block; margin-top:4px; font-size:22px;
+        line-height:1.4; color:var(--gray-700); }
+
+      .slide[data-slide="A3F2"] table.t{ width:100%; margin-top:16px; font-size:22px;
+        border-collapse:collapse; }
+      .slide[data-slide="A3F2"] table.t th,
+      .slide[data-slide="A3F2"] table.t td{ padding:6px 16px; text-align:left;
+        line-height:1.3; vertical-align:middle; }
+      .slide[data-slide="A3F2"] table.t thead th{ background:var(--surface);
+        font-size:22px; font-weight:800; color:var(--ink); }
+      /* 열 이름에도 같은 상징색을 얹어 카드 ↔ 표의 좌우가 눈으로 이어지게 한다. */
+      .slide[data-slide="A3F2"] table.t thead .col-gpt{ color:var(--accent-gpt); }
+      .slide[data-slide="A3F2"] table.t tbody th{ width:190px; font-size:22px;
+        font-weight:700; color:var(--ink); }
+      .slide[data-slide="A3F2"] table.t tbody td{ color:var(--gray-700); }
+      .slide[data-slide="A3F2"] table.t tbody tr + tr{ border-top:1px solid var(--line); }
 
       /* ── C3-5 · 실습⑤ prd.md 만들기 — 이미지 슬롯 복원(제작지시서 §4-14 s40) ──
          1차의 "이미지 없음" 판단이 틀렸다(§4-14가 s40_prd-practice로 이 장을
@@ -4031,10 +4072,9 @@
       /* C3-3의 .c33-note(하단 정정 문구)·.cd-leaf 관련 규칙은 2026-08-02 수정요청 v2 8번으로
          마크업이 사라져 함께 걷어냈다. 새 구조의 규칙은 위 C3-3 재설계 블록에 있다. */
 
-      /* A3F2(46p) — 표 안 키워드 */
-      .slide[data-slide="A3F2"] table.t{ font-size:22px; }
-      .slide[data-slide="A3F2"] table.t th, .slide[data-slide="A3F2"] table.t td{ padding:10px 16px; }
-      .slide[data-slide="A3F2"] table.t td b{ font-size:22px; font-weight:800; color:var(--ink); }
+      /* A3F2의 표 규칙은 2026-08-03 재설계 때 위쪽 A3F2 블록으로 통합했다.
+         여기 남아 있던 후행 override(font-size·padding)가 그 값을 되돌려 놓기 때문에
+         함께 걷어낸다 — 같은 슬라이드 규칙을 파일 두 곳에 두지 않는다. */
 
       /* C3-5(47p) — 완성 박스 제거 + 프롬프트 */
       .slide[data-slide="C3-5"] .accent-bar{ display:none; }
@@ -4408,12 +4448,43 @@
         <p class="ow-lead">두 도구는 <strong>묻는 질문이 다릅니다.</strong>
           <span class="subline">ChatGPT에는 "무엇을·왜"를 묻고, Codex에는 "어떻게 저장할지"를 맡깁니다.</span></p>
         <div class="accent-bar"></div>
-        <!-- 2026-08-02 수정요청 v2 9번: 하단 3단계 박스를 삭제하고 역할표만 남긴다.
-             남은 표가 화면을 채우도록 아래 스코프 CSS에서 세로 가운데로 띄우고 키운다. -->
+        <!-- 2026-08-03 사용자 요청: 카드 2장으로 두 도구의 성격을 먼저 보여 주고,
+             그 아래 5항목 비교표로 «같은 질문에 두 도구가 어떻게 다른가»를 행마다 맞세운다.
+             좌우 구분은 각자의 상징색(ChatGPT=OpenAI 그린 · Codex=검정)이 맡는다.
+             `palette-x`는 팔레트 밖 색을 쓰는 슬라이드를 세기 위한 R-COLOR-06 표식이다. -->
+        <div class="rc-cards">
+          <article class="rc-card is-gpt palette-x">
+            <div class="rc-id">
+              <span class="rc-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H10l-6 4V6a2 2 0 0 1 2-2z" fill="var(--white)"/></svg></span>
+              <span class="rc-name">ChatGPT</span>
+            </div>
+            <div class="rc-body">
+              <b class="rc-role">기획 · 질문 · 비판</b>
+              <span class="rc-desc">무엇을·왜. 대화하며 아이디어를 정리하고 다듬는 상대입니다.</span>
+            </div>
+          </article>
+          <article class="rc-card is-codex">
+            <div class="rc-id">
+              <span class="rc-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6.5L3.5 12 9 17.5M15 6.5L20.5 12 15 17.5" fill="none" stroke="var(--white)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              <span class="rc-name">Codex</span>
+            </div>
+            <div class="rc-body">
+              <b class="rc-role">구현 · 저장</b>
+              <span class="rc-desc">어떻게. 정리된 결정을 코드와 문서 파일로 만들어 폴더에 저장합니다.</span>
+            </div>
+          </article>
+        </div>
+
         <table class="t">
+          <thead>
+            <tr><th>비교 항목</th><th class="col-gpt">ChatGPT</th><th class="col-codex">Codex</th></tr>
+          </thead>
           <tbody>
-            <tr><th><strong>ChatGPT</strong></th><td><b>기획 · 질문 · 비판</b><span class="subline">무엇을·왜. 대화하며 아이디어를 정리하고 다듬는 상대입니다.</span></td></tr>
-            <tr><th><strong>Codex</strong></th><td><b>구현 · 저장</b><span class="subline">어떻게. 정리된 결정을 코드와 문서 파일로 만들어 폴더에 저장합니다.</span></td></tr>
+            <tr><th>핵심 역할</th><td>기획 · 아이디어 발굴 · 질문 · 비판</td><td>구현 · 저장 · 자동화</td></tr>
+            <tr><th>주요 질문</th><td>무엇을 만들까? 왜 지금 해야 할까?</td><td>어떻게 구현하고 어디에 저장할까?</td></tr>
+            <tr><th>주요 산출물</th><td>아이디어 정리 · 구조 설계 · 의사결정</td><td>코드 · 문서 파일 · 폴더 구조</td></tr>
+            <tr><th>사용 시점</th><td>작업 시작 전 · 기획 · 방향 설정 단계</td><td>결정이 끝난 후 · 구현 · 저장 단계</td></tr>
+            <tr><th>강점</th><td>폭넓은 사고 · 다양한 관점 · 빠른 정리</td><td>일관된 구현 · 자동 저장 · 재현성</td></tr>
           </tbody>
         </table>
       </div>
