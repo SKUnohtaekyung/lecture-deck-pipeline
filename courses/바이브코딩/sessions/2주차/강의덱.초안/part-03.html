@@ -38,12 +38,8 @@
         border-radius:var(--r-lg); background:var(--blue-soft); border:1px solid var(--blue-line); }
       .slide[data-slide="C3-1"] .md-col-def .def-term{ margin-bottom:8px; }
       .slide[data-slide="C3-1"] .md-col-def .s-body{ margin:0; font-size:22px; line-height:1.38; }
-      .slide[data-slide="C3-1"] .md-leg-h{ margin:10px 0 5px; font-size:16px; font-weight:800; color:var(--gray-700); }
-      .slide[data-slide="C3-1"] .md-legend{ display:flex; flex-direction:column; gap:2px; }
-      .slide[data-slide="C3-1"] .md-leg-row{ display:flex; align-items:baseline; gap:8px; }
-      .slide[data-slide="C3-1"] .md-leg-sym{ flex:0 0 84px; font-family:var(--font-mono); font-size:14px;
-        font-weight:800; color:var(--blue); white-space:pre; }
-      .slide[data-slide="C3-1"] .md-leg-mean{ font-size:14px; color:var(--gray-700); }
+      /* .md-legend/.md-leg-row/.md-leg-sym/.md-leg-mean은 2026-08-02 수정요청 v2 5번으로
+         마크업이 표(.md-leg-tbl)로 바뀌면서 대상이 사라져 걷어냈다. .md-leg-h만 남는다. */
       .slide[data-slide="C3-1"] .md-col .viz-code{ box-shadow:var(--shadow-sm); }
       .slide[data-slide="C3-1"] .md-col .co-bar{ font-size:20px; padding:6px 12px; }
       .slide[data-slide="C3-1"] .md-col .co-rows{ grid-template-columns:1.9em 1fr; }
@@ -123,22 +119,45 @@
          1차에서 "커미션된 이미지 없음"으로 판단해 슬롯을 SVG로 대체했으나,
          2주차_이미지-제작지시.md §4-12가 s38_prd-missing-items를 지정하고
          있어 되살린다. 기하 계약(SLOT-R 340×390 @ right64/top150)에 맞춘다. */
-      .slide[data-slide="C3-3"] .cd-leaves{ grid-template-columns:repeat(2,1fr); max-width:420px; gap:12px; margin-top:4px; }
-      .slide[data-slide="C3-3"] .cd-leaf{ padding:13px 14px; }
-      .slide[data-slide="C3-3"] .cd-leaf .cd-out{ font-size:17px; line-height:1.28; }
-      .slide[data-slide="C3-3"] .c3-3-figure{ right:64px; top:150px; width:340px; height:390px;
-        max-width:340px; max-height:390px; }
-      .slide[data-slide="C3-3"] .code-diagram + .s-body{ margin-top:8px !important; }
-      .slide[data-slide="C3-3"] .cd-arrow{ margin:2px 0; }
+      /* 2026-08-02 수정요청 v2 8번 재설계.
+         좌측을 넓히려고 이미지를 340 → 252px로 좁혔다(우측 여백 계약은 유지). */
+      .slide[data-slide="C3-3"] .c3-3-figure{ right:64px; top:176px; width:252px; height:330px;
+        max-width:252px; max-height:330px; }
+      .slide[data-slide="C3-3"] .dc-stage{ display:flex; flex-direction:column; }
+      .slide[data-slide="C3-3"] .c33-lead{ margin:0; font-size:22px; line-height:1.45; color:var(--ink); }
+      .slide[data-slide="C3-3"] .c33-lead b{ color:var(--coral-deep); font-weight:800; }
+      .slide[data-slide="C3-3"] .c33-rows{ list-style:none; margin:16px 0 0; padding:0;
+        display:flex; flex-direction:column; gap:10px; }
+      .slide[data-slide="C3-3"] .c33-row{ display:flex; align-items:center; gap:14px;
+        padding:10px 16px; border-radius:var(--r-md);
+        background:var(--surface); border:1px solid var(--blue-line); }
+      /* 항목 이름 — 아직 «중립»이므로 블루를 유지한다. */
+      .slide[data-slide="C3-3"] .c33-k{ flex:0 0 auto; min-width:58px; text-align:center;
+        padding:4px 12px; border-radius:var(--r-pill);
+        background:var(--blue); color:var(--white); font-size:20px; font-weight:800; }
+      /* 채워야 하는데 비어 있는 자리 그 자체. 화살표를 대신하는 «보이는 빈칸»이다. */
+      .slide[data-slide="C3-3"] .c33-blank{ flex:0 0 74px; height:22px; border-radius:var(--r-sm);
+        border:2px dashed var(--coral); background:var(--white); }
+      /* 나쁜 결과 — 2026-08-02 사용자 지시로 블루 → 코랄. 흰 배경 위 글자라
+         fill용 --coral(#F97360)이 아니라 딥 톤(--coral-deep)을 쓴다(R-COLOR-02). */
+      .slide[data-slide="C3-3"] .c33-v{ font-size:22px; line-height:1.3; font-weight:800;
+        color:var(--coral-deep); }
+      .slide[data-slide="C3-3"] .c33-foot{ margin:16px 0 0; }
 
-      /* ── A3F2 · ChatGPT/Codex 역할표 — 표 22px, 3단계는 3열 가로 배치 ──── */
-      .slide[data-slide="A3F2"] table.t{ font-size:22px; max-width:900px; margin:8px auto 0; }
-      .slide[data-slide="A3F2"] table.t th, .slide[data-slide="A3F2"] table.t td{ padding:10px 16px; }
-      .slide[data-slide="A3F2"] .pr-steps{ display:grid; grid-template-columns:repeat(3,1fr); gap:16px; max-width:none; margin-top:10px; }
-      .slide[data-slide="A3F2"] .pr-steps .work-step{ grid-template-columns:38px 1fr; grid-template-rows:auto auto; align-items:start; padding:14px 16px; }
-      .slide[data-slide="A3F2"] .pr-steps .work-step .n{ width:38px; height:38px; font-size:18px; grid-row:1/span 2; }
-      .slide[data-slide="A3F2"] .pr-steps .work-step b{ grid-column:2; display:block; }
-      .slide[data-slide="A3F2"] .pr-steps .work-step .desc{ grid-column:2; display:block; margin-top:4px; }
+      /* ── A3F2 · ChatGPT/Codex 역할표 ────────────────────────────────
+         2026-08-02 수정요청 v2 9번: 하단 3단계(.pr-steps)를 삭제했다. 표 하나만 남으면
+         위쪽에 몰려 아래가 텅 비므로, 남은 표를 세로 가운데로 띄우고 글자·여백을 키워
+         한 장을 채운다. .pr-steps용 규칙은 대상이 사라져 함께 걷어냈다. */
+      .slide[data-slide="A3F2"] .s-full{ bottom:54px; display:flex; flex-direction:column; }
+      .slide[data-slide="A3F2"] table.t{ font-size:26px; max-width:1000px;
+        margin:0 auto; align-self:center; width:100%; }
+      .slide[data-slide="A3F2"] table.t th, .slide[data-slide="A3F2"] table.t td{ padding:26px 24px; }
+      .slide[data-slide="A3F2"] table.t th{ width:220px; }
+      .slide[data-slide="A3F2"] table.t td b{ font-size:26px; }
+      .slide[data-slide="A3F2"] table.t td .subline{ margin-top:6px; font-size:22px; line-height:1.45; }
+      /* 표를 감싼 영역을 flex로 잡아 제목 아래 남는 세로를 표가 가운데서 나눠 갖게 한다. */
+      .slide[data-slide="A3F2"] .accent-bar{ margin-bottom:auto; }
+      .slide[data-slide="A3F2"] table.t + *{ margin-top:auto; }
 
       /* ── C3-5 · 실습⑤ prd.md 만들기 — 이미지 슬롯 복원(제작지시서 §4-14 s40) ──
          1차의 "이미지 없음" 판단이 틀렸다(§4-14가 s40_prd-practice로 이 장을
@@ -184,13 +203,21 @@
       .slide[data-slide="C3-1"] .w2-ed-preview{ overflow:hidden; }
       .slide[data-slide="C3-1"] .c31-doc{ display:flex; flex-direction:column; min-width:0; }
       .slide[data-slide="C3-1"] .c31-doc .c31-p{ margin:6px 0 0; font-size:20px; line-height:1.45; color:var(--gray-700); }
-      .slide[data-slide="C3-1"] .md-leg-h{ margin:12px 0 6px; font-size:20px; font-weight:800; color:var(--blue); }
-      .slide[data-slide="C3-1"] .md-legend{ display:grid; grid-template-columns:repeat(2,1fr);
-        gap:4px 10px; }
-      .slide[data-slide="C3-1"] .md-leg-row{ display:flex; align-items:baseline; gap:6px; }
-      .slide[data-slide="C3-1"] .md-leg-sym{ font-family:var(--font-mono); font-size:16px;
-        font-weight:800; color:var(--blue); }
-      .slide[data-slide="C3-1"] .md-leg-mean{ font-size:15px; color:var(--gray-700); }
+      .slide[data-slide="C3-1"] .md-leg-h{ margin:6px 0 4px; font-size:20px; font-weight:800; color:var(--blue); }
+      /* 표는 11행(헤더+10)이라 나열형보다 세로를 많이 먹는다. 실측 735 → 바닥선 666에
+         맞추려고 표 위쪽 여백부터 걷어낸다(정의 배지 아래 20px → 4px). */
+      .slide[data-slide="C3-1"] .c31-doc .def-term{ margin-bottom:4px; }
+      /* 기호 10개를 표로(2026-08-02 수정요청 v2 5번). 좌열 폭이 322px뿐이라
+         행 높이를 조여 10행 + 헤더가 바닥선 안에 들어가게 한다.
+         이전 격자판은 15·16px이어서 표 하한 17px에 미달했다 — 표로 옮기며 함께 올린다. */
+      .slide[data-slide="C3-1"] .md-leg-tbl{ margin:0; table-layout:fixed; }
+      .slide[data-slide="C3-1"] .md-leg-tbl th,
+      .slide[data-slide="C3-1"] .md-leg-tbl td{ padding:1px 10px; font-size:17px; line-height:1.18; }
+      .slide[data-slide="C3-1"] .md-leg-tbl th{ font-size:17px; }
+      .slide[data-slide="C3-1"] .md-leg-tbl th:first-child,
+      .slide[data-slide="C3-1"] .md-leg-tbl td:first-child{ width:124px; }
+      .slide[data-slide="C3-1"] .md-leg-tbl code{ font-family:var(--font-mono); font-size:17px;
+        font-weight:800; color:var(--blue); background:none; padding:0; }
       .slide[data-slide="C3-1"] .w2-ed-tab.is-side{ background:transparent; color:var(--gray-400); }
       .slide[data-slide="C3-1"] .w2-ed-preview.md-rendered{ font-size:17px; }
       .slide[data-slide="C3-1"] .w2-ed-preview .mdr-h1{ margin:0 0 6px; font-size:22px; font-weight:800; }
@@ -213,7 +240,11 @@
       .slide[data-slide="C1-13"] .s-full{ bottom:54px; display:flex; flex-direction:column; }
       .slide[data-slide="C1-13"] .ow-grid{ flex:1 1 auto; min-height:0; display:grid;
         grid-template-columns:repeat(3,1fr); gap:30px; align-content:center; }
-      .slide[data-slide="C1-13"] .ow-col{ padding:24px 26px; display:flex; flex-direction:column; gap:6px; }
+      /* 2026-08-02 수정요청 v2 6번: 박스 안을 좌측 정렬한다.
+         킷 .ow-col이 align-items:center·text-align:center라 문서명만 왼쪽(align-self)이고
+         나머지 세 줄은 가운데였다 — 한 카드 안에서 두 축이 섞여 읽는 눈이 좌우로 튀었다. */
+      .slide[data-slide="C1-13"] .ow-col{ padding:24px 26px; display:flex; flex-direction:column; gap:6px;
+        align-items:flex-start; text-align:left; }
       .slide[data-slide="C1-13"] .ow-file{ align-self:flex-start; padding:5px 16px;
         border-radius:var(--r-pill); background:var(--blue); color:var(--white);
         font-size:22px; font-weight:800; font-family:var(--font-mono); }
@@ -247,10 +278,8 @@
       .slide[data-slide="C3-2"] .cc-side{ padding:12px 18px; }
       .slide[data-slide="C3-2"] .cc-grid{ gap:12px; }
 
-      /* C3-3(45p) — 하단 정정 문구 */
-      .slide[data-slide="C3-3"] .c33-note{ margin-top:4px; font-size:21px; line-height:1.35; }
-      .slide[data-slide="C3-3"] .dc-stage .s-body{ margin-top:8px; }
-      .slide[data-slide="C3-3"] .cd-leaf{ padding-top:6px; padding-bottom:6px; }
+      /* C3-3의 .c33-note(하단 정정 문구)·.cd-leaf 관련 규칙은 2026-08-02 수정요청 v2 8번으로
+         마크업이 사라져 함께 걷어냈다. 새 구조의 규칙은 위 C3-3 재설계 블록에 있다. */
 
       /* A3F2(46p) — 표 안 키워드 */
       .slide[data-slide="A3F2"] table.t{ font-size:22px; }
@@ -352,7 +381,7 @@
       </header>
       <div class="s-full">
         <h2 class="s-title">3교시 이렇게 배웁니다</h2>
-        <p class="rm-lead">3교시에서 처음 만나는 것은 <b>마크다운 · prd.md · AGENTS.md · 역할별 파일 나누기</b>입니다.</p>
+        <p class="rm-lead">3교시에서 처음 만나는 것은 <b>마크다운 · prd.md · 역할별 파일 나누기</b>입니다.</p>
         <div class="rm-track">
           <div class="rm-step">
             <span class="rm-n">1</span><b>prd.md</b>
@@ -361,19 +390,13 @@
           </div>
           <span class="rm-arrow" aria-hidden="true">→</span>
           <div class="rm-step">
-            <span class="rm-n">2</span><b>에이전트가 읽을 최소한의 규칙</b>
-            <span class="desc">작업 전에 자동으로 읽히는 규칙을 짧게 둡니다.</span>
-            <span class="rm-out">산출물 · AGENTS.md</span>
-          </div>
-          <span class="rm-arrow" aria-hidden="true">→</span>
-          <div class="rm-step">
-            <span class="rm-n">3</span><b>역할별 파일 나누기</b>
+            <span class="rm-n">2</span><b>역할별 파일 나누기</b>
             <span class="desc">뼈대·모양·동작을 역할에 따라 나눕니다. 개수는 프로젝트마다 다릅니다.</span>
             <span class="rm-out">산출물 · 프로젝트 파일들</span>
           </div>
           <span class="rm-arrow" aria-hidden="true">→</span>
           <div class="rm-step is-goal">
-            <span class="rm-n">4</span><b>첫 화면 변화</b>
+            <span class="rm-n">3</span><b>첫 화면 변화</b>
             <span class="desc">버튼을 누르면 값이 바뀌는 첫 작동을 직접 확인합니다.</span>
             <span class="rm-out">산출물 · 작동하는 첫 화면</span>
           </div>
@@ -396,18 +419,24 @@
           <p class="c31-p">텍스트에 <span class="hl-mint-underline">약속된 기호</span>로 문서 구조를 표시하는 가벼운 문서 형식입니다.</p>
           <p class="c31-p">일반 텍스트와 달리 특정 기호가 정해진 서식(제목·굵게·목록)으로 바뀝니다.</p>
           <p class="md-leg-h">문서에 쓰인 기호 10개</p>
-          <div class="md-legend">
-            <div class="md-leg-row"><span class="md-leg-sym">#</span><span class="md-leg-mean">제목(h1)</span></div>
-            <div class="md-leg-row"><span class="md-leg-sym">##</span><span class="md-leg-mean">소제목(h2)</span></div>
-            <div class="md-leg-row"><span class="md-leg-sym">**굵게**</span><span class="md-leg-mean">강조(bold)</span></div>
-            <div class="md-leg-row"><span class="md-leg-sym">-</span><span class="md-leg-mean">목록(list)</span></div>
-            <div class="md-leg-row"><span class="md-leg-sym">- [ ]</span><span class="md-leg-mean">할 일(미완료)</span></div>
-            <div class="md-leg-row"><span class="md-leg-sym">- [x]</span><span class="md-leg-mean">할 일(완료)</span></div>
-            <div class="md-leg-row"><span class="md-leg-sym">&gt;</span><span class="md-leg-mean">인용(quote)</span></div>
-            <div class="md-leg-row"><span class="md-leg-sym">---</span><span class="md-leg-mean">구분선(hr)</span></div>
-            <div class="md-leg-row"><span class="md-leg-sym">[글](주소)</span><span class="md-leg-mean">링크(link)</span></div>
-            <div class="md-leg-row"><span class="md-leg-sym">```</span><span class="md-leg-mean">코드 블록</span></div>
-          </div>
+          <!-- 2026-08-02 수정요청 v2 5번: 2열 격자 나열 → 표. 기호와 뜻이 행으로 맞춰져
+               «이 기호가 무엇이 되는지»를 한 줄씩 짚어 읽을 수 있다. 동시에 15·16px이던
+               글자를 표 하한 17px 위로 올린다. -->
+          <table class="t md-leg-tbl">
+            <thead><tr><th scope="col">기호</th><th scope="col">화면에서 되는 것</th></tr></thead>
+            <tbody>
+              <tr><td><code>#</code></td><td>제목(h1)</td></tr>
+              <tr><td><code>##</code></td><td>소제목(h2)</td></tr>
+              <tr><td><code>**굵게**</code></td><td>강조(bold)</td></tr>
+              <tr><td><code>-</code></td><td>목록(list)</td></tr>
+              <tr><td><code>- [ ]</code></td><td>할 일(미완료)</td></tr>
+              <tr><td><code>- [x]</code></td><td>할 일(완료)</td></tr>
+              <tr><td><code>&gt;</code></td><td>인용(quote)</td></tr>
+              <tr><td><code>---</code></td><td>구분선(hr)</td></tr>
+              <tr><td><code>[글](주소)</code></td><td>링크(link)</td></tr>
+              <tr><td><code>```</code></td><td>코드 블록</td></tr>
+            </tbody>
+          </table>
         </div>
         <div class="w2-editor viz-editor" role="img" aria-label="코드 편집기 화면. 왼쪽에 메모.md 원문 12줄이 있고, 오른쪽에 그 문서가 제목·목록·체크박스·인용·링크·코드로 렌더링된 모습이 나란히 보인다">
           <div class="w2-ed-bar"><span></span><span></span><span></span>
@@ -587,19 +616,22 @@
       <div class="dc-title">
         <h2 class="s-title">각 항목이 왜 AI 결과를 바꾸나</h2>
       </div>
-      <div class="dc-stage" style="right:500px;">
-        <div class="code-diagram" role="img" aria-label="prd.md 항목에서 대상·핵심·제외·완료가 빠졌을 때 각각 생기는 문제 네 가지">
-          <div class="cd-root">prd.md 항목</div>
-          <div class="cd-arrow">↓</div>
-          <div class="cd-leaves">
-            <div class="cd-leaf"><span class="cd-in">대상 없음</span><span class="cd-to">→</span><b class="cd-out">결과가 매번 흔들림</b></div>
-            <div class="cd-leaf"><span class="cd-in">핵심 없음</span><span class="cd-to">→</span><b class="cd-out">기능이 제멋대로 늘어남</b></div>
-            <div class="cd-leaf"><span class="cd-in">제외 없음</span><span class="cd-to">→</span><b class="cd-out">범위가 계속 커짐</b></div>
-            <div class="cd-leaf"><span class="cd-in">완료 없음</span><span class="cd-to">→</span><b class="cd-out">끝을 아무도 모름</b></div>
-          </div>
-        </div>
-        <p class="s-body">빈칸은 AI의 추측이 됩니다. <span class="hl-mint-mark">결과가 흔들립니다.</span></p>
-        <p class="s-body c33-note"><b>다섯 항목을 먼저 정하고,</b> 결정이 바뀔 때만 고칩니다.</p>
+      <!-- 2026-08-02 수정요청 v2 8번 재설계.
+           ① 「화살표로 표시돼 직접 와닿지 않는다」 → 화살표(↓·→)를 걷어내고, 채워야 할 자리를
+              «점선 빈칸»으로 실제로 비워 보여 준다. 빈칸을 눈으로 보는 편이 화살표보다 직접적이다.
+           ② 45p가 말하는 다섯 항목 중 «흐름»이 빠져 네 짝뿐이었다 — 흐름 행을 채워 다섯을 맞춘다.
+           ③ 결과 문장을 블루 → 코랄(딥)로 바꿔 «좋지 않은 일»로 읽히게 한다.
+           ④ 우측 이미지를 좁혀 좌측 도식을 넓게 쓴다(right:500px → 372px). -->
+      <div class="dc-stage" style="right:372px;">
+        <p class="c33-lead">다섯 항목 가운데 하나라도 비워 두면, 그 자리를 <b>AI가 추측으로</b> 메웁니다.</p>
+        <ul class="c33-rows" role="list" aria-label="prd.md 다섯 항목을 비워 두었을 때 각각 벌어지는 일">
+          <li class="c33-row"><span class="c33-k">대상</span><span class="c33-blank" aria-hidden="true"></span><b class="c33-v">결과가 매번 흔들립니다</b></li>
+          <li class="c33-row"><span class="c33-k">핵심</span><span class="c33-blank" aria-hidden="true"></span><b class="c33-v">기능이 제멋대로 늘어납니다</b></li>
+          <li class="c33-row"><span class="c33-k">흐름</span><span class="c33-blank" aria-hidden="true"></span><b class="c33-v">화면 순서가 뒤죽박죽이 됩니다</b></li>
+          <li class="c33-row"><span class="c33-k">제외</span><span class="c33-blank" aria-hidden="true"></span><b class="c33-v">범위가 계속 커집니다</b></li>
+          <li class="c33-row"><span class="c33-k">완료</span><span class="c33-blank" aria-hidden="true"></span><b class="c33-v">끝을 아무도 모릅니다</b></li>
+        </ul>
+        <p class="s-body c33-foot">빈칸은 AI의 추측이 됩니다. <span class="hl-mint-mark">결과가 흔들립니다.</span></p>
       </div>
   <figure class="c3-3-figure asset-slot asset-slot--support img-slot-r"
         data-image-purpose="explanatory" data-image-state="ready"
@@ -626,17 +658,14 @@
         <p class="ow-lead">두 도구는 <strong>묻는 질문이 다릅니다.</strong>
           <span class="subline">ChatGPT에는 "무엇을·왜"를 묻고, Codex에는 "어떻게 저장할지"를 맡깁니다.</span></p>
         <div class="accent-bar"></div>
+        <!-- 2026-08-02 수정요청 v2 9번: 하단 3단계 박스를 삭제하고 역할표만 남긴다.
+             남은 표가 화면을 채우도록 아래 스코프 CSS에서 세로 가운데로 띄우고 키운다. -->
         <table class="t">
           <tbody>
             <tr><th><strong>ChatGPT</strong></th><td><b>기획 · 질문 · 비판</b><span class="subline">무엇을·왜. 대화하며 아이디어를 정리하고 다듬는 상대입니다.</span></td></tr>
             <tr><th><strong>Codex</strong></th><td><b>구현 · 저장</b><span class="subline">어떻게. 정리된 결정을 코드와 문서 파일로 만들어 폴더에 저장합니다.</span></td></tr>
           </tbody>
         </table>
-        <div class="pr-steps" style="margin-top:12px;">
-          <div class="work-step"><span class="n">1</span><div><b>ChatGPT로 5항목 초안 떠올리기</b><span class="desc">대상·핵심·흐름·제외·완료를 편하게 말로 풀어 봅니다.</span></div></div>
-          <div class="work-step"><span class="n">2</span><div><b>사람이 읽고 최종 문장 확정</b><span class="desc">AI 초안을 그대로 쓰지 않고 직접 다듬습니다.</span></div></div>
-          <div class="work-step"><span class="n">3</span><div><b>Codex로 prd.md 저장</b><span class="desc">이후 모든 작업이 이 파일을 기준으로 진행됩니다.</span></div></div>
-        </div>
       </div>
     </section>
 

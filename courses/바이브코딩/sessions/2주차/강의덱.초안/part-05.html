@@ -173,7 +173,7 @@
 .slide[data-slide="C4-10"] .mt-body{ gap:24px; }
 .slide[data-slide="C4-10"] .mt-rule{ margin-top:8px; }
 
-/* ── C4-11 · 실습 ⑫ 하네스 설계 — dg-lab 제목/설명 위계(22=22 동일 위반),
+/* ── C4-11 · 실습 ⑩ 하네스 설계 — dg-lab 제목/설명 위계(22=22 동일 위반),
    dg-say·dg-note는 본문이라 22px 하한만 지킨다. ── */
 .slide[data-slide="C4-11"] .dg-lab > b{ font-size:23px; font-weight:800; }
 .slide[data-slide="C4-11"] .dg-lab > span{ font-size:19px; font-weight:500; }
@@ -493,17 +493,18 @@
   </header>
   <div class="s-full">
     <h2 class="s-title">5교시 이렇게 배웁니다</h2>
-    <p class="rm-lead">오늘 여러 번 맡겨 봤습니다. 무엇을 주고, 무엇을 막고, 무엇을 확인할지 미리 정해 같은 작업을 더 예측 가능하게 만듭니다.</p>
-    <div class="rm-track is-5">
+    <!-- 2026-08-02 수정요청 v2 19번: 리드를 「오늘 AI에게 여러 번 맡겨 봤습니다」로 고치고,
+         같은 요청 20번으로 91~93p(서브에이전트·완료 증거·멀티에이전트)를 지우면서
+         대응 슬라이드를 잃은 4번 칸을 삭제, 5번을 4번으로 당겼다. 5칸 → 4칸. -->
+    <p class="rm-lead">오늘 AI에게 여러 번 맡겨 봤습니다. 무엇을 주고, 무엇을 막고, 무엇을 확인할지 미리 정해 같은 작업을 더 예측 가능하게 만듭니다.</p>
+    <div class="rm-track">
       <div class="rm-step"><span class="rm-n">1</span><b>워크플로와 에이전트</b><span class="desc">정해진 순서로 도는 것과 스스로 판단하는 것의 차이.</span><span class="rm-out">산출물 · 구분 기준</span></div>
       <span class="rm-arrow" aria-hidden="true">→</span>
       <div class="rm-step"><span class="rm-n">2</span><b>하네스</b><span class="desc">모델이 하는 일에 제약을 걸어 결과를 예측 가능하게 만듭니다.</span><span class="rm-out">산출물 · 하네스 6칸</span></div>
       <span class="rm-arrow" aria-hidden="true">→</span>
       <div class="rm-step"><span class="rm-n">3</span><b>규칙과 강제</b><span class="desc">적어 두는 것과 실제로 막는 것을 구분합니다.</span><span class="rm-out">산출물 · 분류 기준</span></div>
       <span class="rm-arrow" aria-hidden="true">→</span>
-      <div class="rm-step"><span class="rm-n">4</span><b>맡기기와 완료 확인</b><span class="desc">서브에이전트에게 맡기고 결과를 증거로 확인합니다.</span><span class="rm-out">산출물 · 확인 질문</span></div>
-      <span class="rm-arrow" aria-hidden="true">→</span>
-      <div class="rm-step is-goal"><span class="rm-n">5</span><b>AGENTS.md 쓰기</b><span class="desc">오늘 정한 규칙을 파일 하나로 남깁니다.</span><span class="rm-out">산출물 · AGENTS.md</span></div>
+      <div class="rm-step is-goal"><span class="rm-n">4</span><b>AGENTS.md 쓰기</b><span class="desc">오늘 정한 규칙을 파일 하나로 남깁니다.</span><span class="rm-out">산출물 · AGENTS.md</span></div>
     </div>
   </div>
 </section>
@@ -716,6 +717,58 @@
       <span class="subline">AGENTS.md가 «어떻게 일하나»를 담는 파일이라, 끝난 뒤 무엇을 확인할지·어디까지 손대도 되는지·무엇을 남길지가 다 여기 들어갑니다.</span></p>
   </div>
 </section>
+
+    <!-- 2026-08-02 수정요청 v2 21번: AGENTS.md 설명 2장(C3-N4 · C4-N2)을
+         C4-3 「만든 파일의 하네스 위치」 바로 뒤로 옮겼다. C4-3이 «오늘 AGENTS.md까지
+         더해도»라고 먼저 언급하므로 바로 뒤에서 설명하는 흐름이 맞다.
+         C3-N4의 라벨 «하네스 1단계 · 규칙 파일»은 근거가 될 C4-15(하네스 단계)보다
+         앞으로 오게 돼 삭제했다(사용자 확정). -->
+<section class="slide" data-slide="C3-N4">
+      <header class="s-head">
+        <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+        <span class="s-line"></span><div class="s-team">2주차<br>5교시</div>
+      </header>
+      <div class="s-full c3n4-full">
+        <h2 class="s-title">AGENTS.md란 무엇인가</h2>
+        <p class="s-body c3n4-lead">에이전트가 <b>작업을 시작하기 전 자동으로 읽는</b> 규칙 파일입니다.</p>
+        <div class="c3n4-grid">
+          <div class="c3n4-card"><span class="c3n4-k">무엇을 담나</span>
+            <b>프로젝트에서 계속 지킬 공통 규칙</b>
+            <span class="subline">한 번만 쓰고 말 지시가 아니라, 매번 같이 적용될 약속만 적습니다.</span></div>
+          <div class="c3n4-card"><span class="c3n4-k">언제 읽히나</span>
+            <b>사람이 부르지 않아도 항상</b>
+            <span class="subline">작업을 시작할 때마다 자동으로 읽힙니다.</span></div>
+          <div class="c3n4-card"><span class="c3n4-k">어디에 만드나</span>
+            <b>프로젝트 루트에 직접 파일로</b>
+            <span class="subline">별도 도구나 설정 화면이 필요 없습니다.</span></div>
+          <div class="c3n4-card is-warn"><span class="c3n4-k">없으면</span>
+            <b>같은 이탈을 매번 반복합니다</b>
+            <span class="subline">새 대화를 열 때마다 같은 주의를 다시 말해야 합니다.</span></div>
+        </div>
+        <p class="c3n4-foot">AI의 기억이 아니라, <span class="hl-mint-mark">사람이 적어 둔 만큼만</span> 지키는 고정된 규칙입니다.
+          <span class="subline">하위 폴더에 규칙 파일을 또 두면 위쪽 규칙을 덮어쓰는 게 아니라 <b>누적</b>됩니다.</span></p>
+      </div>
+    </section>
+
+<section class="slide" data-slide="C4-N2">
+      <header class="s-head">
+        <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+        <span class="s-line"></span><div class="s-team">2주차<br>5교시</div>
+      </header>
+      <div class="s-full">
+        <h2 class="s-title">AGENTS.md에 무엇을 적나</h2>
+        <p class="ow-lead">프로젝트마다 다르지만, 보통 <strong>이 세 종류</strong>를 적습니다.</p>
+        <div class="c4n2-list">
+          <div class="c4n2-row"><span class="c4n2-k">지켜야 할 규칙</span><b>외부 라이브러리를 쓰지 않는다</b></div>
+          <div class="c4n2-row"><span class="c4n2-k">쓸 수 있는 자료</span><b>이 폴더의 prd.md를 먼저 읽어라</b></div>
+          <div class="c4n2-row"><span class="c4n2-k">반복 절차</span><b>수정할 때는 항상 이 순서로</b></div>
+        </div>
+        <p class="s-body c4n2-foot">한 문장이 한 줄입니다. 길게 설명하지 않고 <span class="hl-mint-underline">지킬 것만 짧게</span> 적습니다.</p>
+        <p class="callout c4n2-tip"><b>직접 다 쓰지 않아도 됩니다.</b>
+          <span class="subline">내 폴더를 읽게 한 뒤 «이 규칙 형식대로 AGENTS.md를 채워 줘»라고 <b>에이전트에게 요청하는 것도 방법</b>입니다. 나온 초안에서 내가 고칠 줄만 고칩니다.</span></p>
+      </div>
+    </section>
+
 
 <section class="slide w2-pipe" data-slide="C4-4">
     <header class="s-head">
@@ -1024,157 +1077,11 @@
   </div>
 </section>
 
-<section class="slide w2-branch" data-slide="C4-9">
-    <header class="s-head">
-      <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-      <span class="s-line"></span><div class="s-team">2주차<br>5교시</div>
-    </header>
-    <div class="s-full">
-      <h2 class="s-title">서브에이전트와 검증 책임</h2>
 
-      <div class="br-fig viz-branch">
-        <svg width="700" height="196" viewBox="0 0 700 196" role="img" aria-label="맡긴 일에서 돌아온 보고와 실제 결과가 갈라지고, 둘은 같지 않다">
-          <defs>
-            <marker id="bh" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0 0 L9 4.5 L0 9 z" style="fill:var(--blue)"/></marker>
-            <marker id="gh" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0 0 L9 4.5 L0 9 z" style="fill:var(--gray-700)"/></marker>
-          </defs>
 
-          <rect x="2" y="72" width="140" height="52" rx="9" style="fill:var(--white); stroke:var(--gray-700)" stroke-width="3"/>
-          <text x="72" y="105" text-anchor="middle" font-size="21" font-weight="800" style="fill:var(--ink)">맡긴 일</text>
 
-          <path d="M144 86 L262 44" fill="none" style="stroke:var(--blue)" stroke-width="4" marker-end="url(#bh)"/>
-          <rect x="274" y="14" width="230" height="48" rx="8" style="fill:var(--blue)"/>
-          <text x="389" y="45" text-anchor="middle" font-size="21" font-weight="800" style="fill:var(--white)">돌아온 보고</text>
-          <text x="518" y="45" font-size="18" font-weight="700" style="fill:var(--gray-700)">즉시 온다</text>
 
-          <path d="M144 110 L262 152" fill="none" style="stroke:var(--gray-700)" stroke-width="4" stroke-dasharray="9 7" marker-end="url(#gh)"/>
-          <rect x="274" y="134" width="230" height="48" rx="8" style="fill:var(--white); stroke:var(--gray-700)" stroke-width="3" stroke-dasharray="9 7"/>
-          <text x="389" y="165" text-anchor="middle" font-size="21" font-weight="800" style="fill:var(--ink)">실제 결과</text>
-          <text x="518" y="165" font-size="18" font-weight="700" style="fill:var(--gray-700)">열어 봐야 보인다</text>
 
-          <text x="389" y="112" text-anchor="middle" font-size="42" font-weight="800" style="fill:var(--coral-deep)">&#8800;</text>
-        </svg>
-
-        <div class="br-side">
-          <b>보고는 결과가 아니라 주장입니다</b>
-          <p>서브에이전트는 자기가 만든 결과를 <b>직접 열어 확인하지 않고도</b> &ldquo;만들었습니다&rdquo;라고 답할 수 있습니다.</p>
-          <p>보고 문장이 자신 있고 구체적일수록 그대로 믿기 쉽습니다. 문장의 확신은 <span class="hl-mint-underline">증거가 아닙니다.</span></p>
-          <p>열어 보기 전까지는 &ldquo;됐다&rdquo;가 아니라 <b>&ldquo;됐다고 합니다&rdquo;</b>입니다.</p>
-        </div>
-      </div>
-
-      <div class="br-steps">
-        <div class="br-step">
-          <i>1단계</i><b>나눌 수 있는 일인지 본다</b>
-          <span>뒤 작업이 앞 결과를 봐야 시작되면, 그 둘은 나누지 않고 하나로 맡깁니다</span>
-        </div>
-        <div class="br-step">
-          <i>2단계</i><b>맡길 범위를 좁혀 준다</b>
-          <span>&ldquo;이 폴더의 오류만 찾아서 목록만 알려 줘&rdquo;처럼 시작과 끝을 문장으로 정해 줍니다</span>
-        </div>
-        <div class="br-step is-key">
-          <i>3단계</i><b>내 눈으로 연다</b>
-          <span>말한 파일이 실제로 있는지, 내용이 요청과 맞는지 <span class="hl-mint-mark">직접 열어 확인합니다</span></span>
-        </div>
-        <div class="br-step">
-          <i>4단계</i><b>합쳐진 결과는 내가 판정한다</b>
-          <span>합치는 작업 자체는 에이전트에게 시켜도 됩니다.<span class="subline">다만 결과가 서로 맞물리는지 판정할 사람이 없으면, 애초에 나누지 않습니다.</span></span>
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-<section class="slide w2-ladder" data-slide="C4-14">
-  <header class="s-head">
-    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span><div class="s-team">2주차<br>5교시</div>
-  </header>
-  <div class="s-full">
-    <h2 class="s-title">완료를 확인하는 증거</h2>
-
-    <p class="ld-lead">같은 &ldquo;다 됐습니다&rdquo;라도 무엇을 근거로 하느냐에 따라 <span class="hl-mint-text">믿을 수 있는 정도가 다릅니다.</span></p>
-
-    <div class="ld-body">
-      <svg class="viz-diagram ld-axis" width="30" height="252" viewBox="0 0 30 252" role="img"
-           aria-label="세로축: 위로 갈수록 강한 증거, 아래로 갈수록 약한 증거">
-        <line x1="15" y1="10" x2="15" y2="228" style="stroke:var(--gray-400)" stroke-width="4" stroke-linecap="round"/>
-        <path d="M6 18 L15 6 L24 18" fill="none" style="stroke:var(--mint)" stroke-width="4"
-              stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M6 234 L15 246 L24 234" fill="none" style="stroke:var(--coral)" stroke-width="4"
-              stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-
-      <div class="ld-stack">
-        <div class="ld-step is-top"><i>가장 강함</i><b>내가 직접 열어 본 것</b><span>파일을 열어 보고, 화면을 눌러 봤다</span></div>
-        <div class="ld-step"><b>기계가 판정한 것</b><span>실행했더니 오류 없이 끝났다</span></div>
-        <div class="ld-step"><b>AI가 보여 준 코드 · 기록</b><span>보여 주긴 했지만 돌려 본 것은 아니다</span></div>
-        <div class="ld-step is-weak"><i>가장 약함</i><b>&ldquo;완료했습니다&rdquo;라는 말</b><span>증거가 아니라 <span class="hl-mint-underline">주장</span>이다</span></div>
-      </div>
-
-      <div class="ld-side">
-        <p class="ld-sh">그래서 검토가 필요합니다</p>
-        <div class="ld-q"><b>검토 프롬프트를 따로 만든다</b><span class="subline">모든 조건에서 제대로 작동·작성됐는지 판정하게 하는 문장을 미리 써 둡니다.</span></div>
-        <div class="ld-q"><b>반복되면 검토 Skill로 옮긴다</b><span class="subline">매번 같은 검토를 붙여넣고 있다면 절차 파일로 만듭니다.</span></div>
-      </div>
-
-      <!-- 2026-08-01: 프롬프트를 우측 400px 칸에서 아래 전폭 행으로 내렸다.
-           우측 열에 쌓여 509px가 되면서 위(리드문)·아래(결론 띠)와 겹치고
-           바닥선을 9px 넘었다. 전폭으로 오면 같은 문장이 세 줄로 들어가고,
-           400px 칸에서 15~17px로 눌려 있던 글자도 정상 크기로 돌아온다. -->
-      <div class="w2-prompt terminal-dark ld-prompt viz-prompt" aria-label="AI 작업 결과를 검토할 때 쓰는 예시 프롬프트">
-        <div class="terminal-bar"><span></span><span></span><span></span><b>Codex · 결과 검토</b></div>
-        <div class="terminal-body">
-          <span class="terminal-prompt">&gt;_</span>
-          <p class="terminal-copy">방금 바꾼 <strong>파일 목록</strong>과 각 파일의 바뀐 부분을 보여 주세요.<br>
-          prd.md의 <strong>완료 기준</strong>과 하나씩 대조해 표로 정리해 주세요.<br>
-          원래 되던 기능이 아직 되는지도 확인하고, 못 한 건 «못 함»으로 적어 주세요.</p>
-          <span class="terminal-cursor" aria-hidden="true"></span>
-        </div>
-      </div>
-    </div>
-
-    <p class="ld-foot">보고를 의심하는 습관이 아니라, <span class="hl-mint-mark">증거를 한 가지 더 요청하는 습관</span>입니다.</p>
-  </div>
-</section>
-
-<section class="slide w2-metric" data-slide="C4-10">
-    <header class="s-head">
-      <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-      <span class="s-line"></span><div class="s-team">2주차<br>5교시</div>
-    </header>
-    <div class="s-full">
-      <h2 class="s-title">멀티에이전트의 한계</h2>
-
-      <div class="mt-def viz-compare">
-        <div class="mt-def-c"><b>서브에이전트</b><span><b>다른 일</b>을 다른 에이전트에게 시키기</span></div>
-        <div class="mt-def-c is-key"><b>멀티에이전트</b><span><b>한 작업</b>을 여럿이 동시에 나누기</span></div>
-      </div>
-      <p class="mt-lead">나눠 맡기면 <b>쓰는 양이 같이 늘어납니다.</b> 쓰는 양을 똑같이 맞추고 비교하면, 하나로 시킨 쪽이 <span class="hl-mint-underline">같거나 더 나았습니다.</span></p>
-
-      <div class="mt-body">
-        <div class="mt-chart">
-          <div class="code-chart" role="img" aria-label="세로막대: 그냥 대화 1배, 에이전트 하나 4배, 여럿에게 나눠 맡기기 15배">
-            <div class="cc-plot">
-              <div class="cc-bar"><span class="cc-val">1배</span><div class="cc-fill" style="height:16px"></div></div>
-              <div class="cc-bar"><span class="cc-val">4배</span><div class="cc-fill" style="height:55px"></div></div>
-              <div class="cc-bar"><span class="cc-val">15배</span><div class="cc-fill is-key" style="height:196px"></div></div>
-            </div>
-            <div class="cc-axis"><span>그냥 대화</span><span>에이전트<br>하나</span><span>여럿에게<br>나눠 맡기기</span></div>
-          </div>
-        </div>
-
-        <div class="mt-notes">
-          <div class="mt-note"><b>나누는 게 나을 때</b><span>서로 안 봐도 되는 일. 예: 세 주제를 각각 조사</span></div>
-          <div class="mt-note"><b>하나가 나을 때</b><span>앞 결과가 뒤 입력이 되는 일. <b>대부분의 만들기</b></span></div>
-          <div class="mt-note"><b>왜 이런 일이 생기나</b><span>나눌수록 상황을 다시 설명해야 하고, 조율 비용이 이득을 먹습니다</span></div>
-        </div>
-      </div>
-
-      <p class="mt-rule">먼저 물어야 할 것은 &ldquo;몇 개로 나눌까&rdquo;가 아니라 <span class="hl-mint-mark">&ldquo;이 일이 나뉘는 일인가&rdquo;</span>입니다.
-        <span class="subline">여럿에게 나눠 맡기는 구조는 출처마다 분류가 다릅니다. 하나의 표준 구조가 있는 것이 아닙니다.</span></p>
-    </div>
-  </section>
 
 <section class="slide w2-stair" data-slide="C4-15">
   <header class="s-head">
@@ -1210,55 +1117,12 @@
          «1단계 · 규칙 파일» 칸 바로 뒤에 붙여 규칙 파일 개념을 하네스 1단계로 자리매김시켰다.
          data-slide 값은 노트·이미지 매니페스트가 ID로 지목하므로 그대로 유지한다.
          Skill 대비는 여기서 가져오지 않는다 — Skill은 뒤의 C4-N3이 맡는다(§1 67p-3). -->
-    <section class="slide" data-slide="C3-N4">
-      <header class="s-head">
-        <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-        <span class="s-line"></span><div class="s-team">2주차<br>5교시</div>
-      </header>
-      <div class="s-full c3n4-full">
-        <p class="s-eyebrow">하네스 1단계 · 규칙 파일</p>
-        <h2 class="s-title">AGENTS.md란 무엇인가</h2>
-        <p class="s-body c3n4-lead">에이전트가 <b>작업을 시작하기 전 자동으로 읽는</b> 규칙 파일입니다.</p>
-        <div class="c3n4-grid">
-          <div class="c3n4-card"><span class="c3n4-k">무엇을 담나</span>
-            <b>프로젝트에서 계속 지킬 공통 규칙</b>
-            <span class="subline">한 번만 쓰고 말 지시가 아니라, 매번 같이 적용될 약속만 적습니다.</span></div>
-          <div class="c3n4-card"><span class="c3n4-k">언제 읽히나</span>
-            <b>사람이 부르지 않아도 항상</b>
-            <span class="subline">작업을 시작할 때마다 자동으로 읽힙니다.</span></div>
-          <div class="c3n4-card"><span class="c3n4-k">어디에 만드나</span>
-            <b>프로젝트 루트에 직접 파일로</b>
-            <span class="subline">별도 도구나 설정 화면이 필요 없습니다.</span></div>
-          <div class="c3n4-card is-warn"><span class="c3n4-k">없으면</span>
-            <b>같은 이탈을 매번 반복합니다</b>
-            <span class="subline">새 대화를 열 때마다 같은 주의를 다시 말해야 합니다.</span></div>
-        </div>
-        <p class="c3n4-foot">AI의 기억이 아니라, <span class="hl-mint-mark">사람이 적어 둔 만큼만</span> 지키는 고정된 규칙입니다.
-          <span class="subline">하위 폴더에 규칙 파일을 또 두면 위쪽 규칙을 덮어쓰는 게 아니라 <b>누적</b>됩니다.</span></p>
-      </div>
-    </section>
+    
 
     <!-- ============ 4-N2 (C4-N2) — 2026-08-01 C4-11 앞으로 이동.
          실습(C4-11)에서 AGENTS.md를 만들게 하기 전에 «무엇을 적나»를 먼저
          가르친다. 이동 전에는 실습 → 설명 → 프롬프트 순이라 뒤집혀 있었다. ============ -->
-    <section class="slide" data-slide="C4-N2">
-      <header class="s-head">
-        <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-        <span class="s-line"></span><div class="s-team">2주차<br>5교시</div>
-      </header>
-      <div class="s-full">
-        <h2 class="s-title">AGENTS.md에 무엇을 적나</h2>
-        <p class="ow-lead">프로젝트마다 다르지만, 보통 <strong>이 세 종류</strong>를 적습니다.</p>
-        <div class="c4n2-list">
-          <div class="c4n2-row"><span class="c4n2-k">지켜야 할 규칙</span><b>외부 라이브러리를 쓰지 않는다</b></div>
-          <div class="c4n2-row"><span class="c4n2-k">쓸 수 있는 자료</span><b>이 폴더의 prd.md를 먼저 읽어라</b></div>
-          <div class="c4n2-row"><span class="c4n2-k">반복 절차</span><b>수정할 때는 항상 이 순서로</b></div>
-        </div>
-        <p class="s-body c4n2-foot">한 문장이 한 줄입니다. 길게 설명하지 않고 <span class="hl-mint-underline">지킬 것만 짧게</span> 적습니다.</p>
-        <p class="callout c4n2-tip"><b>직접 다 쓰지 않아도 됩니다.</b>
-          <span class="subline">내 폴더를 읽게 한 뒤 «이 규칙 형식대로 AGENTS.md를 채워 줘»라고 <b>에이전트에게 요청하는 것도 방법</b>입니다. 나온 초안에서 내가 고칠 줄만 고칩니다.</span></p>
-      </div>
-    </section>
+    
 
 <section class="slide w2-dialog" data-slide="C4-11">
     <header class="s-head">
@@ -1266,7 +1130,7 @@
       <span class="s-line"></span><div class="s-team">2주차<br>5교시</div>
     </header>
     <div class="s-full">
-      <h2 class="s-title">실습 ⑫ 하네스 설계</h2>
+      <h2 class="s-title">실습 ⑩ 하네스 설계</h2>
 
       <p class="dg-note"><b>만들 것 · 내 프로젝트의 AGENTS.md 6~10줄</b>
         <span class="subline">고를 수 있는 규칙 &mdash; 정적 웹만 사용 · 서버 코드 금지 · 한 번에 하나만 수정 · 수정 후 재확인.
@@ -1326,7 +1190,7 @@
         <span class="s-line"></span><div class="s-team">2주차<br>5교시</div>
       </header>
       <div class="s-full pw-full">
-        <p class="s-eyebrow">실습 ⑫ 예시 프롬프트</p>
+        <p class="s-eyebrow">실습 ⑩ 예시 프롬프트</p>
         <h2 class="s-title">AGENTS.md를 만들 때 이렇게 요청합니다</h2>
         <div class="w2-prompt terminal-dark pw-term viz-prompt" aria-label="AGENTS.md를 만들 때 이렇게 요청합니다 예시 프롬프트">
           <div class="terminal-bar"><span></span><span></span><span></span><b>Codex · AGENTS.md 초안</b></div>

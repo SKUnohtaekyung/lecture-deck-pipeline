@@ -90,19 +90,10 @@
     .slide[data-slide="S02B"] .wk-track{ gap:6px; }
     .slide[data-slide="S02B"] .wk-row{ gap:8px; }
     .slide[data-slide="S02B"] .wk-prev{ font-size:20px; }
-    /* ⑤ 줄바꿈 화살표(↓) 위치 교정(2026-08-02 사용자 지적: "꺾이는 지점과 어긋나 애매하다")
-       흐름은 3번 노드 뒤에서 꺾이는데(1·2·3 / 4·5·6) 기본 .wk-mid는
-       justify-content:center라 ↓가 트랙 정중앙 = 2번 노드 아래에 찍혔다.
-       .wk-mid는 .wk-row와 같은 폭이므로(둘 다 .wk-track의 stretch 자식),
-       ↓를 '노드 한 칸' 폭의 박스로 만들어 오른쪽 끝에 붙이면 그 박스가
-       3번 노드 칸과 정확히 겹친다. 글리프 폭에 의존하지 않도록 박스 안에서
-       text-align:center로 가운데 정렬한다(flex-end만 쓰면 글리프의 오른쪽
-       변이 맞춰져 중심이 글리프 폭의 절반만큼 왼쪽으로 밀린다).
-         노드 폭 = (트랙폭 - 화살표 2×26px - gap 4×8px) / 3 */
-    .slide[data-slide="S02B"] .wk-mid{ justify-content:flex-end; }
-    .slide[data-slide="S02B"] .wk-mid-arrow{
-      flex:0 0 calc((100% - 2 * 26px - 4 * 8px) / 3);
-      text-align:center; }
+    /* ⑤ 줄바꿈 화살표(↓)는 2026-08-02 사용자 지시로 마크업에서 삭제했다(수정요청 v2 3번).
+       .wk-mid / .wk-mid-arrow를 겨냥하던 위치 교정 CSS도 대상이 사라져 함께 걷어냈다.
+       두 줄 사이 간격은 .wk-track의 gap이 그대로 맡는다. */
+    .slide[data-slide="S02B"] .wk-track{ gap:14px; }
 
     /* S03 — 항목 설명이 19px여서 하한 미달(7건). 6개 항목이 666px 안에
        들어가도록 줄간·간격을 함께 조인다. */
@@ -612,6 +603,10 @@
        채울 칸은 한눈에 들어와야 하므로 밝은 민트를 덱 토큰으로 따로 둔다(대비 12.01:1). */
     :root{ --mint-bright:#5EEAD4; }
     .w2-prompt .terminal-copy .fill{ color:var(--mint-bright); font-weight:800; }
+    /* 2026-08-02 수정요청 v2 4번: «빈칸 앞에서 학생이 멈춘다»는 지적에 따라
+       채울 칸 옆에 예시 답을 병기한다. 예시는 «내가 쓸 말»이 아니라 «참고»이므로
+       민트(채울 칸)·흰색(강조)과 겹치지 않는 흐린 톤으로 셋을 가른다. */
+    .w2-prompt .terminal-copy .eg{ color:var(--on-dark-caption); font-weight:400; font-size:.92em; }
     .w2-prompt .terminal-cursor{ flex:0 0 auto; align-self:flex-end; }
     /* 실습 슬라이드 하단에 붙는 표준 자리 */
     .pr-prompt{ margin:14px 0 0; }
@@ -2037,8 +2032,6 @@
           <p class="wk-desc">prd.md와 세 파일로 첫 화면</p>
         </article>
       </div>
-
-      <div class="wk-mid" aria-hidden="true"><span class="wk-mid-arrow">↓</span></div>
 
       <div class="wk-row" role="list" aria-label="4~6교시 흐름">
         <article class="wk-node" role="listitem">
