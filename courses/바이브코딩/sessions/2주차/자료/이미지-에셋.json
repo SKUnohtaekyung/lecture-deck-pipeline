@@ -1031,6 +1031,76 @@
         "visual": "pending",
         "notes": "프롬프트 작성 완료 · 실제 이미지 미생성 · 슬롯은 덱에 expected 상태로 배선됨"
       }
+    },
+    {
+      "slide_id": "C5-UIUX-1",
+      "part": 4,
+      "decision": "IMAGE_EXPLANATORY",
+      "decision_reason": "UI는 수면 위의 작은 접점이고 UX는 그 접점을 포함한 전체 경험이라는 부분-전체 관계를 빙산 비유로 빠르게 이해시킨다.",
+      "purpose": "explanatory",
+      "role": "hero",
+      "brief": {
+        "learning_point": "UI는 사용자가 보고 누르고 듣는 접점이고, UX는 그 접점을 포함해 사용 전부터 사용 후까지 겪는 전체 경험이다.",
+        "source_metaphor": "수면 위에는 작은 꼭대기만 보이고 수면 아래에는 훨씬 큰 덩어리가 이어지는 빙산.",
+        "metaphor_mapping": [
+          {"visual": "수면 위의 작은 빙산 꼭대기", "concept": "사용자가 직접 보는 UI 접점"},
+          {"visual": "수면 아래의 큰 빙산 덩어리", "concept": "사용 전·중·후의 전체 UX"},
+          {"visual": "수면선", "concept": "눈에 보이는 접점과 보이지 않는 경험 맥락의 경계"}
+        ],
+        "must_show": ["작은 수면 위 꼭대기", "훨씬 큰 수면 아래 덩어리", "뚜렷한 수면선"],
+        "must_not_imply": ["UI와 UX가 서로 관계없는 별개의 업무라는 것", "UX가 화면 디자인을 제외한다는 것"],
+        "alt_text": "수면 위의 작은 빙산 꼭대기는 UI를, 수면 아래의 훨씬 큰 빙산 덩어리는 사용자가 겪는 전체 UX를 나타낸다.",
+        "audience": "코딩 경험이 없는 입문자 중심의 혼합군(연령·경험 수준 다양)",
+        "components": ["수면선", "작은 빙산 꼭대기", "큰 수면 아래 빙산", "UI용 포인터", "UX용 포인터"],
+        "key_relationship": "containment"
+      },
+      "expected_file": "자료/images/s55-ui-ux-iceberg-paper-cut-v1-transparent.png",
+      "method": "generate",
+      "asset_id": "ASSET-121",
+      "parent_asset_ids": [],
+      "prompt_id": "P-S55-UIUX-ICEBERG",
+      "status": "ready",
+      "qa": {
+        "static": "pass",
+        "pixel": "pass",
+        "visual": "pass",
+        "notes": "built-in ImageGen으로 균일 마젠타 크로마 원본을 생성한 뒤 auto-key·soft-matte·despill로 제거했다. RGBA, 알파 범위 0~255, 네 모서리 알파 0, 피사체 여백 bbox(127,163)-(896,1356)를 확인했다."
+      }
+    },
+    {
+      "slide_id": "C5-UIUX-2",
+      "part": 4,
+      "decision": "IMAGE_EXPLANATORY",
+      "decision_reason": "풍경/걷기, 모빌/참여, 컵/사용 감각의 세 사례가 UI의 보이는 모양과 UX의 실제 사용 경험을 즉시 대비시킨다.",
+      "purpose": "explanatory",
+      "role": "hero",
+      "brief": {
+        "learning_point": "UI는 보이는 물건과 화면이고 UX는 그것을 실제로 사용하며 느끼는 과정까지 포함한다.",
+        "source_metaphor": "같은 물건이나 장면을 겉모습과 실제 사용 경험으로 짝지어 보는 세 개의 사진 사례.",
+        "metaphor_mapping": [
+          {"visual": "풍경과 실제로 걷는 길", "concept": "보이는 모양과 이동 경험의 차이"},
+          {"visual": "모빌과 참여하는 아이", "concept": "보이는 물건과 상호작용 경험의 차이"},
+          {"visual": "컵과 마시는 사람", "concept": "보이는 물건과 사용 감각의 차이"}
+        ],
+        "must_show": ["풍경/걷기 사례", "모빌/참여 사례", "컵/사용 감각 사례"],
+        "must_not_imply": ["UI가 중요하지 않다는 것", "UX가 감정만 뜻한다는 것"],
+        "alt_text": "세 이미지가 보이는 모양인 UI와 실제로 걷고 참여하고 마시는 UX를 각각 대비해 보여 준다.",
+        "audience": "코딩 경험이 없는 입문자 중심의 혼합군(연령·경험 수준 다양)",
+        "components": ["풍경 이미지", "모빌 이미지", "컵 이미지", "각 사례의 UI/UX 캡션"],
+        "key_relationship": "comparison"
+      },
+      "expected_file": "자료/images/image 34.png",
+      "method": "transform",
+      "asset_id": null,
+      "parent_asset_ids": [],
+      "prompt_id": null,
+      "status": "ready",
+      "qa": {
+        "static": "pass",
+        "pixel": "pass",
+        "visual": "pending",
+        "notes": "사용자 제공 image 34.png · image 35.png · image 36.png를 그대로 3열 예시로 배치했다. expected_file에는 첫 번째 파일을 대표로 적고, 세 파일 모두 shard에서 참조한다."
+      }
     }
   ]
 }

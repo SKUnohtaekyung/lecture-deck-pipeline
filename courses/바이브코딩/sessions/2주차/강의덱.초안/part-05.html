@@ -68,7 +68,10 @@
 .slide[data-slide="C4-2"] .hn-roles li::before{ content:"✓"; position:absolute; left:0; top:0;
   color:var(--mint-deep); font-weight:800; }
 
-.slide[data-slide="C4-2"] .hn-formula{ flex:0 0 auto; margin:auto 0 0; padding:16px 20px;
+/* 2026-08-03 사용자 지시: 공식 띠를 위로 올린다. margin-top:auto로 바닥에 붙여 뒀더니
+   위 블록과의 사이가 138px 비고 띠는 페이지 번호에 닿아 있었다 — 위아래 auto로 바꿔
+   남는 세로를 반씩 나눠 갖게 한다. */
+.slide[data-slide="C4-2"] .hn-formula{ flex:0 0 auto; margin:auto 0; padding:16px 20px;
   border-radius:var(--r-md); background:var(--blue-panel-alt); border:1px solid var(--blue-line); }
 .slide[data-slide="C4-2"] .hn-eq{ margin:0; display:flex; flex-wrap:wrap;
   align-items:center; justify-content:center; gap:10px 12px; }

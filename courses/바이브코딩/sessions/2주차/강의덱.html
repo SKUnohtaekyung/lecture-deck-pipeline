@@ -4884,6 +4884,39 @@
 .slide[data-slide="C5-8"] .pr-prompt .terminal-copy, .slide[data-slide="C5-9"] .pr-prompt .terminal-copy,
 .slide[data-slide="C5-10"] .pr-prompt .terminal-copy, .slide[data-slide="C5-16"] .pr-prompt .terminal-copy,
 .slide[data-slide="C5-17"] .pr-prompt .terminal-copy{ font-size:19px; line-height:1.35; }
+
+/* ── UI/UX 도입 2장 (2026-08-03 사용자 추가) ── */
+.slide.w2-uiux-definition .s-full{
+  top:104px; bottom:26px; display:flex; flex-direction:column;
+}
+.uiux-def-grid{
+  flex:1; min-height:0; margin-top:12px; display:grid;
+  grid-template-columns:minmax(0,1fr) 340px minmax(0,1fr); gap:18px; align-items:center;
+}
+.uiux-def-card{
+  min-height:0; height:100%; border-radius:var(--r-lg); padding:20px 22px;
+  display:flex; flex-direction:column; justify-content:space-between;
+}
+.uiux-def-card.is-ui{ background:var(--blue-panel); border:2px solid var(--blue-line); }
+.uiux-def-card.is-ux{ background:var(--mint-soft); border:2px solid var(--mint-line); }
+.uiux-abbr{ display:block; font-size:50px; line-height:1; font-weight:900; letter-spacing:-.05em; color:var(--blue); }
+.uiux-def-card.is-ux .uiux-abbr{ color:var(--mint-deep); }
+.uiux-def-card h3{ margin:6px 0 0; font-size:25px; line-height:1.2; color:var(--ink); }
+.uiux-def-card p{ margin:12px 0; font-size:21px; line-height:1.38; font-weight:700; color:var(--ink); word-break:keep-all; }
+.uiux-def-card ul{ margin:0; padding:12px 0 0; border-top:1px solid var(--line); list-style:none; display:grid; gap:6px; }
+.uiux-def-card li{ font-size:17px; line-height:1.3; color:var(--gray-700); word-break:keep-all; }
+.uiux-def-card li::before{ content:"✓"; margin-right:8px; color:var(--blue); font-weight:900; }
+.uiux-def-card.is-ux li::before{ color:var(--mint-deep); }
+.uiux-iceberg{ position:relative; align-self:center; width:340px; height:340px; margin:0; transform:translateY(-24px); }
+.uiux-iceberg img{ width:100%; height:100%; object-fit:contain; display:block; }
+.uiux-iceberg-label{ position:absolute; right:-4px; padding:7px 10px; border-radius:var(--r-sm); font-size:18px; line-height:1.2; font-weight:800; color:var(--ink); }
+.uiux-iceberg-label.is-ui{ top:46px; background:var(--blue-soft); }
+.uiux-iceberg-label.is-ux{ top:230px; background:var(--mint-soft); }
+.slide.w2-uiux-examples .s-full{ top:112px; bottom:38px; display:block; }
+.uiux-example-grid{ height:100%; min-height:0; margin:0; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; }
+.uiux-example-card{ min-height:0; padding:0; background:transparent; border:0; display:block; }
+.uiux-example-card figure.asset-slot{ position:relative; inset:auto; width:100%; height:100%; max-width:none; max-height:none; min-height:0; margin:0; display:flex; align-items:center; justify-content:center; }
+.uiux-example-card img{ width:100%; height:100%; min-height:0; object-fit:contain; display:block; }
 </style>
 
 <section class="slide part-divider" data-slide="P4">
@@ -4932,6 +4965,47 @@
         <span class="desc">레퍼런스를 관찰해 화면을 완성합니다.</span>
         <span class="rm-out">산출물 · 완성 화면</span>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ UI/UX ① · 보이는 접점과 경험 전체 ============ -->
+<section class="slide w2-uiux-definition" data-slide="C5-UIUX-1">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span><div class="s-team">2주차<br>4교시</div>
+  </header>
+  <div class="s-full">
+    <p class="s-eyebrow">화면 표현의 출발점</p>
+    <h2 class="s-title"><span class="hl">UI</span>는 보이는 접점, <span class="hl-mint-text">UX</span>는 경험 전체입니다</h2>
+    <div class="uiux-def-grid">
+      <article class="uiux-def-card is-ux">
+        <div><span class="uiux-abbr">UX</span><h3>User Experience</h3><p>사용 전부터 사용 후까지 사용자가 겪는 모든 경험</p></div>
+        <ul><li>목적을 바로 이해하는가</li><li>다음 행동이 쉬운가</li><li>결과가 기대와 맞는가</li></ul>
+      </article>
+      <figure class="asset-slot asset-slot--hero uiux-iceberg" data-image-purpose="explanatory" data-image-state="ready" data-asset-id="ASSET-121">
+        <img src="자료/images/s55-ui-ux-iceberg-paper-cut-v1-transparent.png" alt="수면 위의 작은 빙산 꼭대기는 UI를, 수면 아래의 훨씬 큰 빙산 덩어리는 사용자가 겪는 전체 UX를 나타낸다">
+        <span class="uiux-iceberg-label is-ui">UI · 보이는 일각</span><span class="uiux-iceberg-label is-ux">UX · 경험 전체</span>
+      </figure>
+      <article class="uiux-def-card is-ui">
+        <div><span class="uiux-abbr">UI</span><h3>User Interface</h3><p>사용자가 보고 · 누르고 · 듣는 서비스와 만나는 접점</p></div>
+        <ul><li>화면과 글자</li><li>버튼과 입력창</li><li>소리와 안내 문구</li></ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ UI/UX ② · 세 가지 예시 ============ -->
+<section class="slide w2-uiux-examples" data-slide="C5-UIUX-2">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span><div class="s-team">2주차<br>4교시</div>
+  </header>
+  <div class="s-full">
+    <div class="uiux-example-grid">
+      <article class="uiux-example-card"><figure class="asset-slot asset-slot--support" data-image-purpose="explanatory" data-image-state="ready" data-asset-kind="user-provided"><img src="자료/images/image 34.png" alt="UI와 UX의 차이를 보여 주는 다리와 보행 장면"></figure></article>
+      <article class="uiux-example-card"><figure class="asset-slot asset-slot--support" data-image-purpose="explanatory" data-image-state="ready" data-asset-kind="user-provided"><img src="자료/images/image 35.png" alt="UI와 UX의 차이를 보여 주는 모빌과 아이의 경험 장면"></figure></article>
+      <article class="uiux-example-card"><figure class="asset-slot asset-slot--support" data-image-purpose="explanatory" data-image-state="ready" data-asset-kind="user-provided"><img src="자료/images/image 36.png" alt="UI와 UX의 차이를 보여 주는 컵과 사용 장면"></figure></article>
     </div>
   </div>
 </section>
@@ -5684,8 +5758,6 @@
       </figure>
     </section>
 
-
-
 <style>
 /* ══════════════════════════════════════════════════════════════════
    PART4 워커 보정 2차(WAVE2) — 폰트 위계(박스 제목 26px/800 · 박스 안
@@ -5756,7 +5828,10 @@
 .slide[data-slide="C4-2"] .hn-roles li::before{ content:"✓"; position:absolute; left:0; top:0;
   color:var(--mint-deep); font-weight:800; }
 
-.slide[data-slide="C4-2"] .hn-formula{ flex:0 0 auto; margin:auto 0 0; padding:16px 20px;
+/* 2026-08-03 사용자 지시: 공식 띠를 위로 올린다. margin-top:auto로 바닥에 붙여 뒀더니
+   위 블록과의 사이가 138px 비고 띠는 페이지 번호에 닿아 있었다 — 위아래 auto로 바꿔
+   남는 세로를 반씩 나눠 갖게 한다. */
+.slide[data-slide="C4-2"] .hn-formula{ flex:0 0 auto; margin:auto 0; padding:16px 20px;
   border-radius:var(--r-md); background:var(--blue-panel-alt); border:1px solid var(--blue-line); }
 .slide[data-slide="C4-2"] .hn-eq{ margin:0; display:flex; flex-wrap:wrap;
   align-items:center; justify-content:center; gap:10px 12px; }
