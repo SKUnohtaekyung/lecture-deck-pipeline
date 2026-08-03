@@ -72,8 +72,14 @@ python scripts/verify_draft_quality.py <주차>                # .md 초안 단�
 python scripts/verify_deck_quality.py <덱>.html              # 조립된 덱 단계: 저밀도·근-빈 컨테이너·시각자료 비율·부록 강등
 # 브라우저 렌더 감사(필수 — 종료코드가 못 보는 것을 잡는다)
 #   python -m http.server 후 브라우저에서 scripts/audit_render.js를 fetch+eval 한다.
+#   ⚠️ 측정 전에 --scale을 1로 강제하고 슬라이드 rect가 1280x720인지 확인한다.
+#      브라우저 창이 작으면 덱 JS가 --scale을 0으로 계산해 전 장이 0으로 나오고,
+#      그 상태의 「결함 0」을 통과로 오판한 사고가 있다(2026-08-03 재현 확인).
 #   측정: 잉크 점유율 · 바닥선(666px) 초과 · 슬라이드(720px) 이탈 · 요소 겹침 ·
-#         박스면적÷글자수 · computed font-size · 빈 asset-slot
+#         단어 중간 줄바꿈 · 박스면적÷글자수 · 빈 asset-slot · 껍데기 컨테이너
+#   ⚠️ audit_render.js는 폰트 크기·행간·자간·앵커 좌표를 재지 않는다(코드 전문에
+#      font/fontSize 문자열 0건). 타이포·정렬 실측이 필요하면 별도 스크립트를 쓴다 —
+#      기준선 측정본이 plans/typography-grid-system/measure_typo_baseline.js에 있다.
 ```
 
 - ⚠️ **종료코드가 통과했다고 화면이 멀쩡한 것이 아니다.** 2026-07-31 사고: `verify_deck`·

@@ -1,5 +1,11 @@
 # Execution State
 
+> ## ⚠️ 2026-08-03 정정 — 이 문서는 낡았다. 종료된 계획의 기록물이다.
+>
+> 아래 「사용자 승인 대기(main 병합·push)」는 **더 이상 사실이 아니다.** `refactor/create-slides`는 이미 `main`에 병합됐다(`git merge-base --is-ancestor 907a634 main` → 참 · `git branch --merged main`에 등재). P0~P7 전부 완료·병합 완료이며 대기 중인 승인은 없다.
+>
+> 다음 세션이 이 문서를 「미완 작업」의 근거로 삼지 마라. 최종 보고는 `FINAL_REPORT.md`다.
+
 - Plan ID: CSR-2026-07
 - Plan Version: 1.0.0
 - Current Branch: `refactor/create-slides`
