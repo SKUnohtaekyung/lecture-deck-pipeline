@@ -97,7 +97,7 @@
 
     /* 3) 테두리/채움이 있는 상자 — 윤곽만 잉크로 인정(면 전체를 채운 것으로 치지 않는다)
      *    + 박스 대비 정보량: 글자 1자가 차지하는 면적(px²/자). 클수록 "큰 상자에 내용 조금". */
-    var boxes = 0, hollow = [], sparse = [];
+    var boxes = 0, hollow = [], hollowBadge = [], sparse = [];
     [].slice.call(sl.querySelectorAll('*')).forEach(function (e) {
       if (e.closest('.s-head') || e.classList.contains('asset-slot')) return;
       var cs = getComputedStyle(e);
@@ -118,9 +118,22 @@
 
       var t = (e.innerText || '').replace(/\s+/g, '');
       var hasGfx = !!e.querySelector('img,svg,canvas');
-      /* 껍데기: 글자 거의 없음 */
+      /* 껍데기: 글자 거의 없음
+         ⚠️ **번호 배지·표 헤더는 껍데기가 아니다**(2026-08-03 정정). 종전 정의로는
+         2주차 186개·1주차 95개가 잡혔는데, 표본을 가르니 76%가 50×50px 미만이었고
+         상위 클래스가 전부 번호 배지(.n 52 · .rm-n 26 · .wk-n · .an-num)와 표
+         헤더(TH 15)·칩·화살표였다 — 전부 «글자가 적은 것이 정상»인 요소다.
+         그 숫자를 밀도 신호로 읽으면 「박스로 화면을 채웠다」를 과대평가한다.
+         작은 배지류는 hollowBadge로 따로 세고, hollow는 «내용이 들어가야 할
+         크기인데 비어 있는 상자»만 남긴다. */
       if (t.length < 4 && !hasGfx) {
-        hollow.push((e.className || e.tagName).toString().slice(0, 40));
+        var wl = r.width / K, hl = r.height / K;
+        var cs2 = getComputedStyle(e);
+        var isBadge = (wl <= 72 && hl <= 72)                    /* 배지·칩 크기 */
+          || e.tagName === 'TH' || e.tagName === 'TD'           /* 표 셀 */
+          || parseFloat(cs2.borderTopLeftRadius) >= Math.min(wl, hl) / 2 - 0.5;  /* 원형·pill */
+        if (isBadge) hollowBadge.push((e.className || e.tagName).toString().slice(0, 40));
+        else hollow.push((e.className || e.tagName).toString().slice(0, 40));
         return;
       }
       /* 저밀도: 상자 면적을 글자수로 나눈 값이 큰 것 (로컬 좌표 기준) */
@@ -315,7 +328,8 @@
       txt: textLen,
       gfx: gfx,
       boxes: boxes,
-      hollow: hollow.length,
+      hollow: hollow.length,          /* 내용이 들어가야 할 크기인데 비어 있는 상자 */
+      hollowBadge: hollowBadge.length, /* 번호 배지·표 셀·칩 — 정상. 밀도 신호로 쓰지 마라 */
       sparse: sparse,
       broken: {
         ovf: broken.overflow.length, below: broken.belowFloor.length,

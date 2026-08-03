@@ -119,6 +119,14 @@ class DeckQualityGateTests(unittest.TestCase):
         self.assertTrue(warn_rules, "이 테스트 전제(2주차 냉동 스냅샷에 WARN 존재)가 깨졌다")
 
     def test_json_mode_writes_thresholds(self):
+        """--json 산출물이 임계·결과를 담는가.
+
+        ⚠️ **종료코드를 0으로 단정하지 않는다**(2026-08-03 갱신). R-QC-18·R-META-01이
+        상시 FAIL로 승격되면서, 이 냉동 스냅샷은 **정당하게 exit 1**이 된다 —
+        스냅샷이 remediation **이전** 상태라 메타 라벨 3건이 남아 있기 때문이다.
+        종전 단정(`returncode == 0`)은 「기본 모드에서는 아무것도 FAIL하지 않는다」는
+        옛 전제에 기대고 있었다. JSON이 정상 산출되는지만 본다.
+        """
         import json
         import tempfile
         with tempfile.TemporaryDirectory() as tmp:
@@ -131,11 +139,43 @@ class DeckQualityGateTests(unittest.TestCase):
                  str(W2_FROZEN_DECK), "--json", str(out)],
                 capture_output=True, text=True, encoding="utf-8", errors="replace",
             )
-            self.assertEqual(proc.returncode, 0, proc.stderr)
+            self.assertIn(proc.returncode, (0, 1), proc.stderr)
             self.assertTrue(out.is_file())
             payload = json.loads(out.read_text(encoding="utf-8"))
             self.assertIn("R-QC-01_chars", payload["thresholds"])
             self.assertIn("results", payload)
+
+    def test_promoted_rules_actually_fail_a_bad_deck(self):
+        """★ 승격이 실제로 무는지 본다 — 「승격했다」는 자기보고를 막는 회귀 테스트.
+
+        R-QC-18(빈 이미지 슬롯)·R-META-01(내부 라벨 노출)은 2026-08-03에
+        `--strict` 없이도 FAIL을 내도록 승격됐다. 두 주차 **현행** 덱은 둘 다 0건이라
+        승격해도 FAIL이 0이지만(그래서 승격이 안전했다), remediation 이전 상태인
+        이 냉동 스냅샷에는 메타 라벨이 남아 있어 **잡혀야 한다.**
+        잡히지 않으면 승격이 이름뿐이라는 뜻이다.
+        """
+        import subprocess
+        import sys
+        proc = subprocess.run(
+            [sys.executable, str(REPO_ROOT / "scripts" / "verify_deck_quality.py"),
+             str(W2_FROZEN_DECK)],
+            capture_output=True, text=True, encoding="utf-8", errors="replace",
+        )
+        self.assertEqual(proc.returncode, 1,
+                         "냉동 스냅샷은 상시 FAIL 규칙에 걸려야 한다 — 승격이 무력하다")
+        self.assertIn("[FAIL]", proc.stdout)
+        self.assertRegex(proc.stdout, r"\[FAIL\].*(R-META-01|R-QC-18)",
+                         "FAIL이 났는데 승격 대상 규칙 때문이 아니다")
+
+    def test_promotion_list_is_not_silently_widened(self):
+        """상시 FAIL 목록에 함부로 규칙이 늘지 않았는지 고정한다.
+
+        특히 R-QC-17(실측이 비율형처럼 움직인다)·R-QC-19(1주차 1건 잔존)·
+        비율형 6종(방향 역전·사용자 지시 충돌)은 들어오면 안 된다.
+        늘리려면 두 주차에 먼저 돌려 FAIL 건수를 산출하고 이 테스트를 함께 고쳐라.
+        """
+        from scripts.verify_deck_quality import ALWAYS_FAIL
+        self.assertEqual(ALWAYS_FAIL, {"R-QC-18", "R-META-01"})
 
 
 class IntentionalMinimalExemptionTests(unittest.TestCase):

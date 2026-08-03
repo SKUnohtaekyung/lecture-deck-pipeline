@@ -36,8 +36,15 @@
   if (typo && typo.INVALID) return JSON.stringify({ INVALID: typo.INVALID }, null, 1);
 
   var slides = Array.isArray(render) ? render : [];
-  var agg = { below: 0, off: 0, lap: 0, lapAbs: 0, wb: 0, ovf: 0, slots: 0, hollow: 0 };
+  var agg = { below: 0, off: 0, lap: 0, lapAbs: 0, wb: 0, ovf: 0, slots: 0,
+    hollow: 0, hollowBadge: 0, sparse: 0 };
   var offenders = [];
+  /* ⚠️ 밀도 지표를 압축본에 반드시 싣는다(2026-08-03 신설).
+     종전 압축본은 broken 계열과 hollow만 실어, 러너가 읽는 증거에
+     **저밀도를 판정할 수치가 하나도 없었다.** audit_render.js는 ink·sparse·
+     deadBottom·deadRight를 이미 재고 있었는데 러너까지 오지 않았다 —
+     「재는데 아무도 안 보는」 상태였다. */
+  var inks = [], lowInk = [], deadZones = [], sparseSlides = [];
   slides.forEach(function (s) {
     var b = (s && s.broken) || {};
     agg.below += b.below || 0;
@@ -47,7 +54,25 @@
     agg.wb += b.wb || 0;
     agg.ovf += b.ovf || 0;
     agg.hollow += (s && s.hollow) || 0;
+    agg.hollowBadge += (s && s.hollowBadge) || 0;
+    agg.sparse += ((s && s.sparse) || []).length;
     agg.slots += ((s && s.emptySlots) || []).length;
+
+    if (typeof s.ink === 'number') {
+      inks.push(s.ink);
+      if (s.ink < 0.22) {
+        lowInk.push({ id: s.id, kind: s.kind, ink: s.ink, boxes: s.boxes,
+          gfx: s.gfx, txt: s.txt });
+      }
+    }
+    if ((s.deadBottom || 0) >= 96 || (s.deadRight || 0) >= 200) {
+      deadZones.push({ id: s.id, bottom: s.deadBottom || 0, right: s.deadRight || 0 });
+    }
+    if (((s && s.sparse) || []).length) {
+      sparseSlides.push({ id: s.id, n: s.sparse.length,
+        worst: s.sparse.slice().sort(function (x, y) { return y.p - x.p; })[0] });
+    }
+
     if ((b.below || 0) + (b.off || 0) + (b.lap || 0) + (b.wb || 0) + ((s.emptySlots || []).length)) {
       offenders.push({
         id: s.id, below: b.below || 0, off: b.off || 0, lap: b.lap || 0,
@@ -56,6 +81,22 @@
       });
     }
   });
+  inks.sort(function (a, b) { return a - b; });
+  function pct(p) { return inks.length ? inks[Math.min(inks.length - 1, Math.floor(inks.length * p))] : null; }
+  var density = {
+    ink: { min: inks[0], p10: pct(0.1), median: pct(0.5), p90: pct(0.9), max: inks[inks.length - 1] },
+    /* ★ 「박스는 많은데 시각자료가 없다」 — 가장 위험한 조합 */
+    boxHeavyNoVisualCount: slides.filter(function (s) {
+      return (s.boxes || 0) >= 4 && (s.gfx || 0) === 0;
+    }).length,
+    boxHeavyNoVisual: slides.filter(function (s) {
+      return (s.boxes || 0) >= 4 && (s.gfx || 0) === 0;
+    }).sort(function (a, b) { return (b.boxes || 0) - (a.boxes || 0); })
+      .slice(0, 20).map(function (s) { return [s.id, s.boxes, s.ink]; }),
+    lowInk: lowInk.slice(0, 20),
+    deadZones: deadZones.slice(0, 20),
+    sparseSlides: sparseSlides.slice(0, 20)
+  };
 
   var nmTotal = 0, clashTotal = 0, nmByAxis = {};
   var nmSrc = ((typo.anchors || {}).nearMiss) || {};
@@ -76,7 +117,15 @@
        사람이 파일만 열어도 대상이 무엇인지 알 수 있게 함께 적는다 */
     url: location.pathname,
     slideCount: slides.length,
-    render: { totals: agg, offenders: offenders },
+    render: { totals: agg, offenders: offenders, density: density },
+    /* 장별 원자료 — 기준판 비교 도구(compare_baseline_panel.py)가 읽는다.
+       ⚠️ 객체가 아니라 **배열 행**으로 싣는다. 110장을 객체로 담으면 증거가
+          30KB를 넘어 콘솔에서 복사해 파일로 옮기기가 어려워진다(실측). */
+    perSlideCols: ["id", "kind", "ink", "boxes", "gfx", "txt", "hollow", "deadBottom", "deadRight"],
+    perSlide: slides.map(function (s) {
+      return [s.id, s.kind, Math.round((s.ink || 0) * 100) / 100, s.boxes, s.gfx,
+        s.txt, s.hollow, s.deadBottom, s.deadRight];
+    }),
     typography: {
       textElements: (typo.meta || {}).textElements,
       fontFloor: { count: (typo.fontFloor || {}).count, byRole: (typo.fontFloor || {}).byRole,
@@ -85,5 +134,9 @@
       lineHeightNormal: (typo.lineHeightNormal || {}).count,
       nearMissAnchors: { total: nmTotal, dominantClashTotal: clashTotal, byAxis: nmByAxis }
     }
-  }, null, 1);
+  });
+  /* ⚠️ 들여쓰기를 넣지 않는다 — 110장 × 9열이면 들여쓴 JSON이 30KB를 넘어
+     콘솔에서 옮기기 어려워진다(실측 30,111자 → 압축 시 1/3). 이 파일은 사람이
+     읽는 것이 아니라 run_deck_checks.py·compare_baseline_panel.py가 읽는다.
+     사람은 러너 요약을 본다. */
 })()

@@ -113,6 +113,28 @@ THRESH_META01_COUNT = 0  # 명백한 결함형 — 내부 작업 라벨이 학�
 THRESH_QC18_EMPTY_SLOT_COUNT = 0   # 빈 이미지 슬롯은 연파랑 점선 상자로 학생 화면에 노출된다.
 THRESH_QC19_BARE_TEXT_COUNT = 0    # 격자 컨테이너의 맨 텍스트는 익명 아이템이 돼 좁은 칸에 갇힌다.
                           # 1주차 0건 · 2주차 3건(2026-07-31 실측).
+
+# ── 상시 FAIL 규칙 (2026-08-03 승격 · --strict 없이도 exit 1) ──────────────
+# 「전부 WARN이라 아무도 안 본다」와 「전부 FAIL이라 게이트가 무력해진다」 사이에서,
+# **승격해도 기존 덱이 FAIL 나지 않는 것만** 골라 올린다. 사전 산출은
+# plans/typography-grid-system/F12-GATE-TRIAGE.md §C에 있다.
+#
+#   R-QC-18 빈 이미지 슬롯     1주차 0건 · 2주차 0건 → 승격 시 FAIL 0
+#   R-META-01 내부 라벨 노출   1주차 0건 · 2주차 0건 → 승격 시 FAIL 0
+#
+# 둘 다 «비율 상한»이 아니라 «결함 개수»라 임계 0이 원래 정의다(하나라도 있으면
+# 결함). 비율형 지표의 임계를 0으로 낮추는 변경이 아니다 — 그건 요청을 금지
+# 규칙으로 바꾸는 일이라 하지 않는다.
+#
+# ⚠️ **여기에 함부로 추가하지 마라.** 특히:
+#   · R-QC-17(실습 완결성) — 「결함형」으로 분류돼 있으나 실측은 비율형처럼 움직인다
+#     (1주차 50.0% · 2주차 43.8%). 승격하면 9건을 강등 등재해야 하고 그러면
+#     게이트가 사실상 무력해진다. **판정 로직의 타당도 재검증이 선행이다.**
+#   · R-QC-19 — 1주차에 1건(S56) 있어 강등 등재 없이는 즉시 FAIL이 된다.
+#   · 비율형 6종(R-QC-01·02·03·05·08·15·16) — 방향 역전이 확인됐거나 사용자 지시와
+#     충돌한다. 특히 R-QC-01은 아래 주석에 「손대지 말라는 지시」가 남아 있다.
+# 추가 전에는 반드시 두 주차에 먼저 돌려 FAIL 건수를 산출하라.
+ALWAYS_FAIL = {"R-QC-18", "R-META-01"}
 THRESH_DERIVATION = """\
 [임계값 도출 근거 — reports/create-slides-quality/deck_quality_metrics.json 기준, 개념설명 슬라이드만]
   R-QC-01 본문 글자수 < 76자(W1_FINAL p10)          flag률: W1 11.6%(5/43) · W2 62.2%(23/37)      [목표 충족: W1<=15%, W2>=55%]
@@ -906,7 +928,7 @@ def main():
     effective = []
     for rule_id, level, msg in results:
         eff = level
-        if a.strict and level == "WARN":
+        if level == "WARN" and (a.strict or rule_id in ALWAYS_FAIL):
             eff = "FAIL"
         effective.append((rule_id, eff, msg))
         mark = {"PASS": "✓", "WARN": "△", "FAIL": "✗"}[eff]
@@ -930,7 +952,8 @@ def main():
     warns = sum(1 for _r, lvl, _m in effective if lvl == "WARN")
     passes = sum(1 for _r, lvl, _m in effective if lvl == "PASS")
     print(f"\n요약: FAIL {fails} · WARN {warns} · PASS {passes}"
-          f"{' (--strict: WARN→FAIL 승격됨)' if a.strict else ' (기본 모드: WARN은 exit 0)'}")
+          f"{' (--strict: WARN→FAIL 승격됨)' if a.strict else ' (기본 모드: WARN은 exit 0)'}"
+          f" · 상시 FAIL 규칙: {', '.join(sorted(ALWAYS_FAIL))}")
 
     if a.json:
         payload = {

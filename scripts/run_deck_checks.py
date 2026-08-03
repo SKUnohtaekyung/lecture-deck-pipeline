@@ -215,10 +215,26 @@ class Runner:
                  f"행간 normal {t.get('lineHeightNormal')} · "
                  f"근-미스앵커 {nma.get('total')}"
                  f"(지배값충돌 {nma.get('dominantClashTotal', '?')})")
-        print(f"\n=== 렌더·타이포 감사 (audit_all) ===\n  {line1}\n  {line2}")
+        # ★ 밀도 — 「박스로 화면을 채웠는가」를 보는 축. 종전 압축본에는 이 수치가
+        #   하나도 실리지 않아, 러너를 통과해도 저밀도를 판정할 근거가 없었다.
+        dens = (d.get("render") or {}).get("density") or {}
+        ink = dens.get("ink") or {}
+        n_slides_i = n_slides or 1
+        bh = dens.get("boxHeavyNoVisualCount", "?")
+        line3 = (f"밀도 — 잉크 중앙값 {ink.get('median')} (하위10% {ink.get('p10')}) · "
+                 f"★박스4개↑+시각자료0 {bh}장 · 저밀도상자 {(r.get('sparse'))} · "
+                 f"빈상자 {r.get('hollow')}(배지 {r.get('hollowBadge')} 제외)")
+        print(f"\n=== 렌더·타이포 감사 (audit_all) ===\n  {line1}\n  {line2}\n  {line3}")
         for o in ((d.get("render") or {}).get("offenders") or [])[:8]:
             print(f"    · {o.get('id')}: " + " ".join(map(str, o.get("d") or [])))
-        self.steps.append(("렌더·타이포 감사", True, line1 + " / " + line2))
+        if isinstance(bh, int) and bh:
+            worst = (dens.get("boxHeavyNoVisual") or [])[:5]
+            print("    ★ 박스만 있고 시각자료가 없는 장(상위):")
+            for row in worst:
+                print(f"       · {row[0]}  박스 {row[1]} · 잉크 {row[2]}")
+            print(f"       → 사람이 다시 본다(R-BOX-01·R-DENS-03). 비교: "
+                  f"python scripts/compare_baseline_panel.py {self.num}")
+        self.steps.append(("렌더·타이포 감사", True, line1 + " / " + line2 + " / " + line3))
 
         # ⚠️ 여기서 임계로 FAIL시키지 않는다. 신설 검사는 WARN으로 시작하고 기준선을
         #    먼저 쌓는다(§0-1: 요청을 금지 규칙으로 바꾸지 않는다). 러너가 강제하는
