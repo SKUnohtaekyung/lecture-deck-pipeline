@@ -26,9 +26,23 @@ verify_notes.py — 강의덱과 발표자노트 페이지 정합성 검증.
 
 사용:
   python scripts/verify_notes.py <덱.html> <노트.html>
-종료코드: 불일치 있으면 1, 없으면 0.
+    [--snapshot <경로>] [--baseline <경로>]
+종료코드: 불일치(기존 3종 검사 또는 --baseline 회귀) 있으면 1, 없으면 0.
+
+--snapshot/--baseline (멘트 유실 회귀 검사, 2026-08-03 신설)
+  기존 3종 검사(부분집합·단조증가·제목전방일치)는 "노트가 가리키는 슬라이드가
+  실재하는가"만 본다. 노트 블록 안 실제 멘트(`pn-item`) 개수는 보지 않으므로,
+  머지 등으로 멘트 텍스트만 사라져도 통과해 버린다(2026-08-03 실사고: 3-way
+  머지로 멘트 4건이 조용히 유실된 채 커밋·푸시됨). 이를 잡기 위해:
+    --snapshot <경로> : 현재 노트의 슬라이드별 pn-item 개수 + 총계를 JSON으로 기록.
+                        슬라이드 식별자는 (pn-no, 제목) 조합.
+    --baseline <경로> : 이전 스냅샷과 대조. 어떤 슬라이드의 pn-item 개수가
+                        줄었거나 슬라이드 자체가 사라졌으면 FAIL. 늘어난 것은 통과.
+  두 옵션은 각각 독립적으로 켤 수 있고(같이 줘도 됨), 기존 3종 검사의 판정·
+  출력·종료코드는 건드리지 않는다 — 순수 추가다.
 """
 import argparse
+import json
 import re
 import sys
 from html.parser import HTMLParser
@@ -39,6 +53,72 @@ VOID_ELEMENTS = {
     "param", "source", "track", "wbr",
 }
 HEADING_TAGS = {"h1", "h2", "h3"}
+
+# 노트 블록(`pn-slide`)·항목(`pn-item`) 범위를 찾는 태그 스캐너.
+# `inject_presenter.iter_class_blocks`와 동일한 방식(범위 스캔)을 그대로 옮겨 쓴다 —
+# 상태 기반 HTMLParser 서브클래스로 깊이를 세면 `<br>` 같은 void 요소에서 깊이가
+# 어긋나 항목이 닫히지 않는다(실측: 67개 중 33개만 잡히고 뒤쪽 26블록이 통째로
+# 0개가 됐다). verify_notes는 inject_presenter에서 import되는 쪽이라(역방향
+# import는 순환) 이 유틸을 별도로 복제해 둔다.
+_TAG_RE = re.compile(r"<(/?)([a-zA-Z][\w-]*)((?:[^>\"']|\"[^\"]*\"|'[^']*')*)>", re.S)
+
+
+def _classes_of(attr_text):
+    m = re.search(r"""\bclass\s*=\s*("([^"]*)"|'([^']*)'|([^\s>]+))""", attr_text, re.I)
+    if not m:
+        return set()
+    return set((m.group(2) or m.group(3) or m.group(4) or "").split())
+
+
+def iter_class_blocks(html, token, start=0, end=None):
+    """class에 `token`을 가진 요소의 (시작, 내용시작, 내용끝)을 문서 순서로 돌려준다."""
+    end = len(html) if end is None else end
+    pos = start
+    while True:
+        m = _TAG_RE.search(html, pos)
+        if not m or m.start() >= end:
+            return
+        closing, name, attrs = m.group(1), m.group(2).lower(), m.group(3)
+        if closing or name in VOID_ELEMENTS or token not in _classes_of(attrs):
+            pos = m.end()
+            continue
+        depth = 1
+        inner_end = None
+        for n in _TAG_RE.finditer(html, m.end()):
+            if n.group(2).lower() != name or n.group(2).lower() in VOID_ELEMENTS:
+                continue
+            if n.group(3).rstrip().endswith("/"):
+                continue
+            depth += -1 if n.group(1) else 1
+            if depth == 0:
+                inner_end = n.start()
+                break
+        if inner_end is None or inner_end > end:
+            return
+        yield m.start(), m.end(), inner_end
+        pos = inner_end
+
+
+def count_items_per_slide(notes_html):
+    """`pn-slide` 블록별 `pn-item` 개수를 문서 순서 리스트로 돌려준다."""
+    counts = []
+    for _s, inner_start, inner_end in iter_class_blocks(notes_html, "pn-slide"):
+        n = sum(1 for _ in iter_class_blocks(notes_html, "pn-item", inner_start, inner_end))
+        counts.append(n)
+    return counts
+
+
+def build_snapshot(entries, item_counts):
+    """(pn-no, 제목) 조합을 슬라이드 식별자로 삼아 항목 수 스냅샷을 만든다.
+
+    `entries`는 NotesParser가 문서 순서로 뽑은 (raw_no, title) 목록이고, `item_counts`는
+    같은 문서 순서로 뽑은 `pn-slide` 블록별 pn-item 개수다. 두 스캔 모두 같은 문서를
+    순서대로 훑으므로 위치가 대응한다(inject_presenter.parse_notes와 동일한 전제)."""
+    slides = []
+    for i, (raw_no, title) in enumerate(entries):
+        n = item_counts[i] if i < len(item_counts) else 0
+        slides.append({"pn_no": raw_no, "title": title, "items": n})
+    return {"slides": slides, "total_items": sum(s["items"] for s in slides)}
 
 # 덱 JS 안에서 s-pageno 생성을 가드하는 조건의 제외 클래스 알터네이션을 직접 뽑는다.
 # if(!/\b(A|B|C)\b/.test(s.className)){ ... s-pageno ... } 형태(공백 유무 무관).
@@ -209,6 +289,8 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("deck", help="강의덱.html 경로")
     ap.add_argument("notes", help="강의덱_발표자노트.html 경로")
+    ap.add_argument("--snapshot", help="현재 노트의 슬라이드별 pn-item 개수 + 총계를 JSON으로 기록할 경로")
+    ap.add_argument("--baseline", help="이전 --snapshot 결과와 대조해 멘트 총량 회귀(감소·소실)를 검사할 경로")
     args = ap.parse_args()
 
     deck_path = Path(args.deck)
@@ -314,10 +396,86 @@ def main():
         print(f"MISMATCH | {m}")
 
     print()
+
+    # (1) 항목(pn-item) 0개 블록 리포트 — WARN 전용, 판정(mismatches/종료코드)에는 영향 없음.
+    # 블록은 있으나 멘트가 하나도 없는 슬라이드를 잡는다(emptySlides는 "블록 자체가
+    # 매핑 안 된 슬라이드"만 세서 이 경우를 놓친다 — inject_presenter.py map_notes 참고).
+    item_counts = count_items_per_slide(notes_html)
+    snapshot = build_snapshot(entries, item_counts)
+    zero_blocks = [s for s in snapshot["slides"] if s["items"] == 0]
+    if zero_blocks:
+        print(f"WARN | 항목(pn-item) 0개인 슬라이드 {len(zero_blocks)}개:")
+        for s in zero_blocks:
+            print(f"  WARN | pn-no={s['pn_no']} — {s['title']!r}")
+    else:
+        print("WARN | 항목(pn-item) 0개인 슬라이드: 없음")
+    print()
+
+    # (2) --snapshot: 현재 노트의 슬라이드별 pn-item 개수 + 총계를 JSON으로 기록.
+    if args.snapshot:
+        snap_path = Path(args.snapshot)
+        try:
+            snap_path.write_text(
+                json.dumps(snapshot, ensure_ascii=False, indent=2), encoding="utf-8"
+            )
+        except OSError as e:
+            print(f"FAIL: 스냅샷을 쓸 수 없음: {snap_path} ({e})")
+            sys.exit(1)
+        print(
+            f"SNAPSHOT | 저장: {snap_path} "
+            f"(슬라이드 {len(snapshot['slides'])}개 · 항목 총 {snapshot['total_items']}개)"
+        )
+        print()
+
+    # (2) --baseline: 이전 스냅샷과 대조해 멘트 총량 회귀(감소·소실)를 검사.
+    # 슬라이드 식별자는 (pn-no, 제목) 조합 — 늘어난 것은 통과, 줄었거나 슬라이드
+    # 자체가 사라졌으면 FAIL.
+    regression_fails = []
+    if args.baseline:
+        baseline_path = Path(args.baseline)
+        try:
+            baseline_raw = baseline_path.read_text(encoding="utf-8")
+        except OSError as e:
+            print(f"FAIL: 베이스라인 스냅샷을 읽을 수 없음: {baseline_path} ({e})")
+            sys.exit(1)
+        try:
+            baseline_data = json.loads(baseline_raw)
+        except json.JSONDecodeError as e:
+            print(f"FAIL: 베이스라인 스냅샷 JSON 파싱 실패: {baseline_path} ({e})")
+            sys.exit(1)
+
+        current_by_key = {(s["pn_no"], s["title"]): s["items"] for s in snapshot["slides"]}
+        for b in baseline_data.get("slides", []):
+            key = (b.get("pn_no"), b.get("title"))
+            prev_n = b.get("items", 0)
+            if key not in current_by_key:
+                regression_fails.append(
+                    f"[슬라이드소실] pn-no={b.get('pn_no')} — {b.get('title')!r} "
+                    f"(이전 항목 {prev_n}개) — 현재 노트에 이 슬라이드가 없음"
+                )
+                continue
+            cur_n = current_by_key[key]
+            if cur_n < prev_n:
+                regression_fails.append(
+                    f"[항목감소] pn-no={b.get('pn_no')} — {b.get('title')!r} — "
+                    f"이전 {prev_n}개 → 현재 {cur_n}개"
+                )
+
+        for r in regression_fails:
+            print(f"REGRESSION | {r}")
+        print()
+        print(
+            f"--- REGRESSION={len(regression_fails)} "
+            f"(baseline={baseline_path}, baseline 항목 총 {baseline_data.get('total_items', '?')}개 "
+            f"→ 현재 항목 총 {snapshot['total_items']}개) ---"
+        )
+        print()
+
     print(f"--- MISMATCH={len(mismatches)} OK={ok}/{len(parsed_entries)} ---")
-    result = "FAIL(불일치 있음)" if mismatches else "PASS(불일치 없음)"
+    total_fail = len(mismatches) + len(regression_fails)
+    result = "FAIL(불일치 있음)" if total_fail else "PASS(불일치 없음)"
     print(f"RESULT | {result}")
-    sys.exit(1 if mismatches else 0)
+    sys.exit(1 if total_fail else 0)
 
 
 if __name__ == "__main__":
