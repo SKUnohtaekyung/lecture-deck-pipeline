@@ -2,8 +2,12 @@
 
 1주차 실덱에 과적합되지 않도록, 1주차 파일을 복사·참조하지 않는 독립 픽스처
 (`tests/fixtures/mini-week/`)로 검사한다. 1주차는 동결(DEC-06)이라 이 테스트에서
-읽지도 쓰지도 않는다 — 유일한 예외는 `_contracts` 폴백 **경로 해석** 검증이며,
-그조차 파일을 열지 않고 경로만 확인한다.
+읽지도 쓰지도 않는다 — `_contracts` 폴백 검증도 예외가 아니다: 1주차가
+`courses/바이브코딩/sessions/1주차/`로 이관되며 동폴더에 `deck.contract.json`이
+생겨 더는 ② `sessions/_contracts` 폴백을 타지 않으므로(① 동폴더에서 이미 찾는다),
+1주차 실경로에 기대는 대신 tempdir 합성 픽스처 + `_contracts_dir` 패치로 폴백
+"동작 자체"를 검증한다(`find_deck_contract`의 `repo_root`가 `__file__` 기준으로
+고정돼 있어 순수 tempdir만으로는 ② 분기를 재현할 수 없다).
 """
 from __future__ import annotations
 
@@ -14,6 +18,7 @@ import sys
 import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
 from scripts.assemble_deck import assemble
 from scripts.verify_deck import find_deck_contract
@@ -67,12 +72,32 @@ class ContractLookupTests(unittest.TestCase):
         self.assertEqual(found, (FIXTURE / "deck.contract.json").resolve())
 
     def test_falls_back_to_contracts_directory(self):
-        # 1주차 덱은 동폴더에 계약이 없고 sessions/_contracts/1주차… 로 폴백해야 한다.
-        # (경로 해석만 확인한다 — 1주차 파일을 열지 않는다.)
-        found = find_deck_contract(REPO / "sessions" / "1주차" / "강의덱.html")
-        self.assertIsNotNone(found)
-        self.assertEqual(found.parent.name, "_contracts")
-        self.assertEqual(found.name, "1주차.deck.contract.json")
+        # 동폴더에 deck.contract.json이 없고, _contracts 디렉터리에
+        # <부모폴더명>.deck.contract.json이 있으면 그걸 찾아야 한다(② 분기).
+        # 1주차 실경로에 기대지 않는 합성 tempdir 픽스처로 검증한다. repo_root는
+        # find_deck_contract 내부에서 __file__ 기준으로 고정돼 매개변수화할 수
+        # 없으므로, ②단이 조회하는 _contracts_dir()만 패치해 tempdir을 가리키게
+        # 한다 — find_deck_contract 자체(①→②→③ 탐색 순서·조기 반환 조건)는
+        # 손대지 않는다.
+        with tempfile.TemporaryDirectory() as td:
+            td_path = Path(td)
+            contracts_dir = td_path / "_contracts"
+            contracts_dir.mkdir()
+            week_dir = td_path / "9주차"
+            week_dir.mkdir()
+            deck_path = week_dir / "강의덱.html"
+            deck_path.write_text("<html></html>", encoding="utf-8")
+            # 동폴더에는 일부러 deck.contract.json을 두지 않는다(① 미스를 강제).
+            contract_path = contracts_dir / "9주차.deck.contract.json"
+            contract_path.write_text("{}", encoding="utf-8")
+
+            with mock.patch("scripts.verify_deck._contracts_dir", return_value=contracts_dir):
+                found = find_deck_contract(deck_path)
+
+            self.assertIsNotNone(found)
+            self.assertEqual(found.parent.name, "_contracts")
+            self.assertEqual(found.name, "9주차.deck.contract.json")
+            self.assertEqual(found, contract_path.resolve())
 
     def test_missing_contract_returns_none(self):
         with tempfile.TemporaryDirectory() as td:
