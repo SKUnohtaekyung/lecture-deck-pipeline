@@ -70,16 +70,23 @@ python scripts/analyze_agent_usage.py --tool-audit --session <세션ID>  # 리�
 # 내용 품질 게이트(WARN 기본·--strict로 FAIL 승격 — 2주차 저밀도 사고 이후 신설, 회귀 아님)
 python scripts/verify_draft_quality.py <주차>                # .md 초안 단계: 저밀도·노트과다·교시당 장수·필수 산출물
 python scripts/verify_deck_quality.py <덱>.html              # 조립된 덱 단계: 저밀도·근-빈 컨테이너·시각자료 비율·부록 강등
+# ★ 덱 검증 러너 — 조립 이후 검사를 한 명령으로 잇는다(렌더 증거 없으면 exit 1)
+python scripts/run_deck_checks.py <주차>            # 정적 게이트 + 노트 + 렌더 증거 판정
+python scripts/run_deck_checks.py <주차> --assemble --parts N
+python scripts/check_title_survival.py <주차>       # 초안 제목이 덱 화면에 살아남았는가(참고)
 # 브라우저 렌더 감사(필수 — 종료코드가 못 보는 것을 잡는다)
-#   python -m http.server 후 브라우저에서 scripts/audit_render.js를 fetch+eval 한다.
-#   ⚠️ 측정 전에 --scale을 1로 강제하고 슬라이드 rect가 1280x720인지 확인한다.
-#      브라우저 창이 작으면 덱 JS가 --scale을 0으로 계산해 전 장이 0으로 나오고,
-#      그 상태의 「결함 0」을 통과로 오판한 사고가 있다(2026-08-03 재현 확인).
-#   측정: 잉크 점유율 · 바닥선(666px) 초과 · 슬라이드(720px) 이탈 · 요소 겹침 ·
-#         단어 중간 줄바꿈 · 박스면적÷글자수 · 빈 asset-slot · 껍데기 컨테이너
-#   ⚠️ audit_render.js는 폰트 크기·행간·자간·앵커 좌표를 재지 않는다(코드 전문에
-#      font/fontSize 문자열 0건). 타이포·정렬 실측이 필요하면 별도 스크립트를 쓴다 —
-#      기준선 측정본이 plans/typography-grid-system/measure_typo_baseline.js에 있다.
+#   python -m http.server 8799 후 브라우저에서 덱을 열고 콘솔에서:
+#     await (await fetch('/scripts/audit_all.js')).text().then(eval)
+#   → 출력 JSON을 sessions/_verify/<주차>/deck-audit.json 으로 저장하면
+#     run_deck_checks.py가 그것을 증거로 판정한다(없으면 통과시키지 않는다).
+#   ⚠️ 창을 1280x720 이상으로 열어라. 작으면 덱 JS가 --scale을 0으로 계산해 전 장이
+#      0으로 나오고, 그 상태의 「결함 0」을 통과로 오판한 사고가 있다(2026-08-03 재현).
+#      이제 두 감사기가 fail-closed assert로 막고 { INVALID:[...] }를 돌려준다.
+#   audit_render.js  잉크 점유율 · 바닥선(666) 초과 · 슬라이드(720) 이탈 · 요소 겹침 ·
+#                    단어 중간 줄바꿈 · 박스면적÷글자수 · 빈 asset-slot · 껍데기 컨테이너
+#   audit_typography.js  역할별 폰트 하한 · 자간 광학 보정 누락(≥32px) ·
+#                    행간 normal 잔존 · 근-미스 앵커(지배값 ±1~5px)
+#   audit_all.js     위 둘을 함께 돌려 러너용 압축 증거를 만든다
 ```
 
 - ⚠️ **종료코드가 통과했다고 화면이 멀쩡한 것이 아니다.** 2026-07-31 사고: `verify_deck`·
@@ -88,6 +95,14 @@ python scripts/verify_deck_quality.py <덱>.html              # 조립된 덱 �
   밀려난 요소, 빈 이미지 슬롯 24개가 화면에 있었다. **조립 후에는 반드시 브라우저에서
   `scripts/audit_render.js`를 돌려 전수 측정한다.** 정적 검사로 승격할 수 있는 것은
   `R-QC-18`(빈 슬롯)·`R-QC-19`(격자 안 맨 텍스트)로 `verify_deck_quality.py`에 넣었다.
+- ⚠️ **검출기의 「0」이 눈먼 범위 안의 0일 수 있다.** 2026-08-03 규명: `audit_render.js`가
+  ① `hasOwnText` 조건 때문에 `<img>`·`<figure>`·`<svg>`를 바닥선·이탈 검사에서 **통째로
+  빼고** ② 겹침을 `.s-full` 2단계까지만 봐서 최소 17장은 아예 검사하지 않았다. 둘 다 고친
+  뒤 재측정하니 1주차 바닥선 초과가 **17 → 25건**으로 늘었다(전부 이미지 계열). 검사 범위를
+  넓힐 때는 **오탐률을 함께 재라** — 겹침 검사를 깊이만 풀었더니 2주차에서 잡힌 7건이 전부
+  오탐이어서(인라인 요소의 합집합 상자), 인라인 제외 + 절대배치 분리로 좁혀야 했다.
+- **덱을 고쳤으면 `run_deck_checks.py`를 돌려라.** 렌더 증거가 없거나·덱보다 낡았거나·
+  INVALID면 종료코드 1이다. 「필수」를 사람 기억에 맡기지 않기 위한 장치다.
 
 - ⚠️ **`courses/<과목>/sessions/N주차/강의덱.html`은 생성물이다.** 정본은 `강의덱.초안/`의 `shell.html`(head·고정 슬라이드·`<!-- ::PARTS:: -->` 마커·JS) + `part-NN.html`이고, `assemble_deck.py`가 이를 합쳐 덱을 **덮어쓴다**. 덱을 직접 고치면 다음 조립 때 유실되고, 생성물에만 있는 슬라이드는 조립 즉시 사라진다. 수정은 shard에 하고 조립한다(급히 덱을 고쳤다면 같은 내용을 shard에도 반영). 규약 상세는 `sessions/README.md`.
 - 생성물과 shard가 어긋났다면 shard를 하나씩 맞추지 말고, 완성된 `강의덱.html`을 파트 경계로 잘라 shard를 재생성한 뒤 조립 결과를 조립 전 사본과 diff해 검증한다. 조립 전에는 반드시 현재 덱 사본을 떠둔다.

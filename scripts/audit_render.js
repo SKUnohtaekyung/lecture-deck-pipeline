@@ -19,6 +19,37 @@
     return n ? parseFloat(n[1]) : 1;
   }
 
+  /* ── 측정 유효성 assert (fail-closed · 2026-08-03 신설) ─────────────────
+     이 검사가 없으면 「측정이 무효인 상태」와 「결함이 없는 상태」가 구별되지
+     않는다. 실제 사고: --scale=0으로 전 장이 0으로 나왔는데 「문제 없음」으로
+     읽혔다. 2026-08-03 재현 확인 — 브라우저 창이 작으면 덱 JS의 fit()이
+     --scale을 0에 가깝게 계산하고, 그 상태에서 모든 rect가 0이 된다.
+     ⚠️ 실패하면 수치를 내지 않고 { INVALID: [...] }를 돌려준다. 이 반환값을
+        「결함 0」으로 집계하는 코드를 만들지 마라. */
+  if (!slides.length) return JSON.stringify({ INVALID: ['no .slide element found'] });
+  document.documentElement.style.setProperty('--scale', 1);
+  slides.forEach(function (x) { x.classList.remove('is-active'); });
+  slides[0].classList.add('is-active');
+  var _pr = slides[0].getBoundingClientRect();
+  var _invalid = [];
+  if (Math.abs(_pr.width - W) > 0.5) _invalid.push('slide width ' + _pr.width + ' != ' + W);
+  if (Math.abs(_pr.height - H) > 0.5) _invalid.push('slide height ' + _pr.height + ' != ' + H);
+  var _sv = getComputedStyle(document.documentElement).getPropertyValue('--scale').trim();
+  if (_sv && _sv !== '1') _invalid.push('--scale=' + _sv + ' (must be 1)');
+  if (location.protocol === 'file:') _invalid.push('file:// 로 열렸다 — 로컬 HTTP 서버를 쓰라');
+  if (document.fonts && document.fonts.check('16px Pretendard') !== true) {
+    _invalid.push('Pretendard 미로드 — 줄바꿈·폭 측정이 재현되지 않는다');
+  }
+  if (_invalid.length) return JSON.stringify({ INVALID: _invalid });
+
+  /* 그래픽 요소 판정 — 아래 「바닥선·이탈」 검사가 이미지를 통째로 놓치던
+     버그(2026-08-03 규명)를 고치는 데 쓴다. */
+  function isGraphic(e) {
+    var t = e.tagName;
+    return t === 'IMG' || t === 'SVG' || t === 'CANVAS' || t === 'VIDEO'
+      || t === 'FIGURE' || t === 'PICTURE';
+  }
+
   for (var i = 0; i < slides.length; i++) {
     slides.forEach(function (x) { x.classList.remove('is-active'); });
     var sl = slides[i];
@@ -103,7 +134,7 @@
     });
 
     /* 3b) 화면 깨짐 — 넘침 · 본문바닥 초과 · 요소 겹침 · 단어 중간 줄바꿈 */
-    var broken = { overflow: [], belowFloor: [], overlap: [], wordBreak: [] };
+    var broken = { overflow: [], belowFloor: [], overlap: [], overlapAbs: [], wordBreak: [] };
     [].slice.call(sl.querySelectorAll('*')).forEach(function (e) {
       /* .s-pageno는 바닥선(666) 아래가 정상 위치인 푸터다. 제외하지 않으면
          전 슬라이드가 `s-pageno@698`로 잡혀 진짜 결함이 묻힌다. */
@@ -125,8 +156,25 @@
          슬라이드 밖으로 완전히 나간 요소(y > 720)를 오히려 놓쳤다. 가장 심각한
          경우가 검출에서 빠져 워커들이 "바닥선 초과 0"을 보고하는 원인이 됐다
          (실측: A5F2 y=835 · C4-15 y=1200이 전부 무시됐다).
-         이제 바닥선 초과와 슬라이드 이탈을 나눠서 잡는다. */
-      if (hasOwnText && by > BODY_BOT + 2 && by < 4000) {
+         이제 바닥선 초과와 슬라이드 이탈을 나눠서 잡는다.
+
+         ⚠️ 2026-08-03 버그 수정 — 두 번째 사각지대: 판정 조건이 `hasOwnText`
+         **하나뿐**이라 자기 텍스트 노드가 없는 <img>·<svg>·<figure>는 아무리
+         아래로 내려가도 **영원히 잡히지 않았다.** MEMORY는 "텍스트를 가진
+         노드와 IMG만 판정 대상"이라 규정했는데 IMG 분기가 구현된 적이 없다.
+         그래서 「이탈 0」·「바닥선 초과 0」이 이미지에 대해서는 아무것도
+         증명하지 못하는 값이었다. 그래픽 요소를 판정 대상에 넣는다. */
+      /* 전면 배경(full-bleed)은 예외 — 슬라이드 전체를 덮는 것이 설계다.
+         「바닥선 아래로 내려간 콘텐츠」가 아니라 캔버스 자체이기 때문.
+         판정: 슬라이드 폭의 95% 이상 + 상단이 0에 붙어 있음. 이 조건을
+         만족하지 않는 히어로·삽화는 예외로 봐주지 않는다(1주차 실측에서
+         s00-hero@697 · intro-ai-art@674 · task-shot IMG@683이 여기 걸린다). */
+      var gfxNode = isGraphic(e) && r.width >= 6 && r.height >= 6;
+      if (gfxNode) {
+        var gx = (r.left - sr.left) / K, gy = (r.top - sr.top) / K;
+        if (r.width / K >= W * 0.95 && gy <= 2 && gx <= 2) gfxNode = false;
+      }
+      if ((hasOwnText || gfxNode) && by > BODY_BOT + 2 && by < 4000) {
         var tag = by > H ? '@이탈' : '@';
         broken.belowFloor.push((e.className || e.tagName).toString().slice(0, 32) + tag + Math.round(by));
         if (by > H) broken.offSlide = (broken.offSlide || 0) + 1;
@@ -161,10 +209,45 @@
         }
       }
     }
-    /* 겹침: 형제 레벨 블록끼리 면적 20% 이상 교차 */
-    var blocks = [].slice.call(sl.querySelectorAll('.s-full > *, .s-full > * > *')).filter(function (e) {
-      var r = e.getBoundingClientRect(); return r.width > 40 && r.height > 24;
-    });
+    /* 겹침: 콘텐츠 블록끼리 면적 20% 이상 교차
+       ⚠️ 2026-08-03 버그 수정: 종전에는 `.s-full > *, .s-full > * > *`로 **2단계까지만**
+          훑었다. 두 가지 결과 — ① `.s-full`이 없는 슬라이드(표지·간지·아젠다·마무리·
+          `.s-body-wrap`/`.center-msg` 계열)는 겹침 검사가 **아예 돌지 않았다**
+          ② 3단계 이상 중첩된 요소는 보이지 않았는데, 사용자가 두 번 지적한
+          「차트×텍스트 겹침」이 대개 그 깊이다.
+          이제 슬라이드 전체를 깊이 제한 없이 훑되, 다음으로 오탐을 막는다:
+            · 콘텐츠 블록만 본다(자기 텍스트가 있거나 그래픽인 것)
+            · 조상-자손 관계는 건너뛴다(중첩은 겹침이 아니다)
+            · 장식(aria-hidden)·헤더·페이지번호는 제외
+
+       ⚠️ **인라인 요소를 제외하는 이유(실측으로 확정)**: `<b>`·`<strong>`·`<span>`은
+          줄바꿈되면 여러 줄에 걸친 **합집합 상자**가 rect로 나온다. 같은 줄에
+          나란히 있는 두 인라인의 상자는 글자가 전혀 겹치지 않는데도 100%
+          교차한다. 깊이 제한만 풀고 인라인을 넣었더니 2주차에서 잡힌 7건이
+          **전부 오탐**이었다(C1-N2 2 · C4-2 1 · C4-13 2 = 인라인 합집합 상자,
+          C5-UIUX-1 2 = 빙산 그림 위 의도된 라벨). 그래서 두 겹으로 좁힌다:
+            ① 인라인(display:inline)은 제외 — 상자가 의미를 갖지 않는다
+            ② 절대배치(absolute/fixed)가 낀 쌍은 `lapAbs`로 따로 센다 —
+               「그림 위 라벨」처럼 의도된 겹침이 대부분이라 참고치로만 둔다.
+               정상 흐름(normal flow) 블록끼리의 겹침만 `lap`으로 판정한다 —
+               흐름 블록은 원래 겹칠 수 없으므로 겹치면 진짜 결함이다. */
+    function overlapCandidate(e) {
+      if (e.closest('.s-head') || e.closest('.s-pageno') || e.classList.contains('s-pageno')) return null;
+      if (e.getAttribute('aria-hidden') === 'true' || e.closest('[aria-hidden="true"]')) return null;
+      var cs = getComputedStyle(e);
+      if (cs.visibility === 'hidden' || cs.display === 'none' || parseFloat(cs.opacity) === 0) return null;
+      if (cs.display === 'inline') return null;                 /* ① */
+      var own = false;
+      for (var c = 0; c < e.childNodes.length; c++) {
+        if (e.childNodes[c].nodeType === 3 && e.childNodes[c].textContent.trim()) own = true;
+      }
+      if (!own && !isGraphic(e)) return null;
+      var r = e.getBoundingClientRect();
+      if (!(r.width > 40 && r.height > 24)) return null;
+      e.__abs = (cs.position === 'absolute' || cs.position === 'fixed');   /* ② */
+      return e;
+    }
+    var blocks = [].slice.call(sl.querySelectorAll('*')).map(overlapCandidate).filter(Boolean);
     for (var p = 0; p < blocks.length; p++) for (var q2 = p + 1; q2 < blocks.length; q2++) {
       var A = blocks[p], B = blocks[q2];
       if (A.contains(B) || B.contains(A)) continue;
@@ -173,9 +256,12 @@
       var iy = Math.max(0, Math.min(ra.bottom, rb.bottom) - Math.max(ra.top, rb.top));
       var inter = ix * iy;
       if (inter > 0.2 * Math.min(ra.width * ra.height, rb.width * rb.height)) {
-        broken.overlap.push((A.className || A.tagName).toString().slice(0, 24) + '×' + (B.className || B.tagName).toString().slice(0, 24));
+        var pair = (A.className || A.tagName).toString().slice(0, 24) + '×' + (B.className || B.tagName).toString().slice(0, 24);
+        if (A.__abs || B.__abs) broken.overlapAbs.push(pair);   /* 참고치 — 의도된 오버레이가 많다 */
+        else broken.overlap.push(pair);                          /* 판정 — 흐름 블록은 겹칠 수 없다 */
       }
     }
+    blocks.forEach(function (e) { delete e.__abs; });
 
     /* 4) 빈 이미지 슬롯 */
     var emptySlots = [].slice.call(sl.querySelectorAll('.asset-slot')).filter(function (e) {
@@ -234,7 +320,9 @@
       broken: {
         ovf: broken.overflow.length, below: broken.belowFloor.length,
         off: broken.offSlide || 0,          /* 슬라이드(720px) 밖으로 나간 요소 — 최악 등급 */
-        lap: broken.overlap.length, wb: broken.wordBreak.length,
+        lap: broken.overlap.length,          /* 흐름 블록끼리 겹침 — 판정 대상 */
+        lapAbs: broken.overlapAbs.length,    /* 절대배치가 낀 겹침 — 참고치(의도된 오버레이 다수) */
+        wb: broken.wordBreak.length,
         d: broken.belowFloor.concat(broken.overlap).slice(0, 3).concat(broken.wordBreak.slice(0, 2))
       },
       emptySlots: emptySlots
