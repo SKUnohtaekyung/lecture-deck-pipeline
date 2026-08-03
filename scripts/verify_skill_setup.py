@@ -12,12 +12,18 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 
-# T4: 팀 워크플로 스킬 4종(리서치·콘텐츠·검토·하네스)의 정본/어댑터 정합 검사용 데이터.
+# T4: 팀 워크플로 스킬 3종(리서치·검토·하네스)의 정본/어댑터 정합 검사용 데이터.
 # body_markers는 "이 게이트가 정본 본문에 실제로 문서화됐다"는 증거로 쓰는 문자열이며,
 # 동시에 어댑터 본문에는 있으면 안 되는 규칙 복제 방지 마커이기도 하다.
+#
+# 「콘텐츠」는 2026-08-03에 폐기했다(실행 이력 0 · 집필은 create-slides가 ⓐ/ⓑ로 흡수).
+# 폐기 전에 그 파일에만 있던 정본을 전부 옮겼다 — R-PLAN-01/02·R-COMP-01 →
+# references/phases/02, R-ANNEX-01·R-ACC-01/02·R-CAL-01·R-DENS-01/02 → phases/04,
+# R-EMPH-02 → kit/guide/디자인시스템.md, R-JUDGE-01·집필노트 규격 → 루트 SKILL.md.
+# ⚠️ 사람이 초안을 써서 넘기는 ⓐ 경로와 그 스키마(입력양식/콘텐츠초안템플릿.md ·
+# references/콘텐츠초안-입력형식.md)는 살아 있다 — 그 파일들을 지우지 마라.
 TEAM_SKILLS = {
     "리서치": {"body_markers": ("5개월", "출처 URL", "확인 날짜", "deep-research", "조사 범위")},
-    "콘텐츠": {"body_markers": ("자료 충분성", "콘텐츠초안템플릿", "출처 추적", "분할 제안")},
     "검토": {"body_markers": ("읽기 전용", "FAIL", "WARN", "검토보고")},
     "하네스": {"body_markers": ("55.2M", "게이트 기준 6종", "allowlist", "단일 라이터", "안티패턴")},
 }
@@ -98,7 +104,7 @@ def body_only(path: Path) -> str:
 
 
 def verify_team_skills(check: Check) -> None:
-    """T4: 팀 워크플로 스킬 4종(리서치·콘텐츠·검토·하네스)의 정본/어댑터 정합 검사.
+    """T4: 팀 워크플로 스킬 3종(리서치·검토·하네스)의 정본/어댑터 정합 검사.
 
     T1~T3가 병행 작업 중이므로 실행 시점에 일부 파일이 없어 FAIL이 나는 것은
     정상이다 — 통합 단계에서 리더가 최종 PASS를 확인한다.
@@ -194,7 +200,7 @@ def verify_team_skills(check: Check) -> None:
     missing_names = [name for name in TEAM_SKILLS if name not in readme_source]
     check(
         readme_path.is_file() and not missing_names,
-        "skills/README.md가 팀 스킬 4종 이름을 모두 등재",
+        f"skills/README.md가 팀 스킬 {len(TEAM_SKILLS)}종 이름을 모두 등재",
         f"skills/README.md 등재 누락(파일 없음 포함): {missing_names}",
     )
 

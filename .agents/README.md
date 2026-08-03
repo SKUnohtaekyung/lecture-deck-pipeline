@@ -5,7 +5,7 @@
 ## 구성
 
 - `skills/create-slides/`: Codex 탐색용 얇은 어댑터. 루트 `SKILL.md`를 완전히 읽고 저장소 루트를 기준으로 공통 참조와 스크립트를 사용한다.
-- `skills/리서치/`·`skills/콘텐츠/`·`skills/검토/`: 팀 워크플로 스킬 3종의 Codex 얇은 어댑터. 각 정본은 저장소 루트 `skills/<이름>/SKILL.md`이며, `$리서치`처럼 명시 호출로만 발동한다(하단 "팀 워크플로 스킬" 참조).
+- `skills/리서치/`·`skills/검토/`: 팀 워크플로 스킬 2종의 Codex 얇은 어댑터. 각 정본은 저장소 루트 `skills/<이름>/SKILL.md`이며, `$리서치`처럼 명시 호출로만 발동한다(하단 "팀 워크플로 스킬" 참조).
 - `skills/하네스/`: 횡단 오케스트레이션 프로토콜(파이프라인 역할 아님)의 Codex 얇은 어댑터. 정본은 저장소 루트 `skills/하네스/SKILL.md`이며, `$하네스`로 명시 호출한다.
 - `skills/ui-ux-pro-max/`: Codex용 디자인 근거 Skill. `SKILL.md`, 검색 스크립트, 디자인 데이터가 함께 들어 있다.
 - `skills/_template/`: 새 프로젝트 스킬을 만들 때 복사하는 Codex 규격 골격.
@@ -38,4 +38,4 @@ python scripts/verify_skill_setup.py
 
 ## 팀 워크플로 스킬
 
-이 폴더의 `skills/리서치/`·`skills/콘텐츠/`·`skills/검토/` 어댑터 정본은 저장소 루트 `skills/<이름>/SKILL.md`다. 등재·계약·호출 규약은 루트 `skills/README.md` 참조(여기에 복제하지 않는다). 횡단 프로토콜 `skills/하네스/`도 같은 원칙을 따른다.
+이 폴더의 `skills/리서치/`·`skills/검토/` 어댑터 정본은 저장소 루트 `skills/<이름>/SKILL.md`다. 등재·계약·호출 규약은 루트 `skills/README.md` 참조(여기에 복제하지 않는다). 횡단 프로토콜 `skills/하네스/`도 같은 원칙을 따른다.

@@ -10,12 +10,12 @@
 결함을 조립 후 덱에서 잡는 것(`verify_deck_quality.py`)보다 **초안 단계에서 먼저 잡는 것이 훨씬
 싸다** — 이 스크립트가 그 자리를 채운다.
 
-초안 표 형식은 `입력양식/콘텐츠초안템플릿.md`·`skills/콘텐츠/SKILL.md` §0-1이 정본이다:
+초안 표 형식은 `입력양식/콘텐츠초안템플릿.md`·`references/콘텐츠초안-입력형식.md`가 정본이다:
 `| # | 슬라이드 제목 | 본문 문구 | 비유·멘트 |` 4열 표, 교시(또는 PART)별 `##` 헤더 아래 배치.
 이 스크립트는 파일명이 아니라 실제 1주차·2주차 초안 파일을 읽어 그 형식을 그대로 파싱한다.
 
 **임계값은 W1_FINAL(1주차 최종 초안) 분포에서 도출**(발명 금지). 표지(선/간지)·마무리·실습 행은
-원래 짧아야 하므로 R-QD-01·03 도출·판정에서 제외한다(`skills/콘텐츠/SKILL.md` §0-6의
+원래 짧아야 하므로 R-QD-01·03 도출·판정에서 제외한다(`references/phases/04-조립.md`(R-DENS-01)의
 screen-operation 예외와 같은 취지 — 정보 밀도 하한은 "설명" 성격의 행에만 의미가 있다).
 도출 근거는 하단 THRESH_DERIVATION과 스크래치패드 `analyze_drafts.py`(이 세션 산출, 저장소 밖)에
 있다.
@@ -26,7 +26,7 @@ screen-operation 예외와 같은 취지 — 정보 밀도 하한은 "설명" �
 독립 리뷰에서 **`[사람검토]`로 강등됐다** — 어휘 신호(bold·원문자·`<br>`) 기반 근사치가 W1/W2를
 거의 구분하지 못해(3.6% vs 10.7%) 자동 판정으로 쓰기엔 판별력이 부족하다.
 
-**R-QD-01은 목표가 아니라 대리 신호(proxy)다.** `skills/콘텐츠/SKILL.md` §0-6은 "문자수 목표는
+**R-QD-01은 목표가 아니라 대리 신호(proxy)다.** `references/phases/04-조립.md`(R-DENS-01)은 "문자수 목표는
 두지 않는다 — 리치함은 글자수가 아니라 단위 수"라고 명시한다. R-QD-01의 WARN 문구는 그래서
 "글자수를 늘려라"가 아니라 "정보 단위가 부족할 가능성"으로 표현한다(2026-07-27 B2). **화면 조작
 안내 행은 R-QD-01/02에서 제외된다**(R-DENS-01a 계약 예외 — `is_screen_operation_row()`, 초안
@@ -82,7 +82,7 @@ except Exception:
 #   W1 n=55행 · W2 n=84행(스크래치패드 실측, 이 파일의 _sections/_parse_rows로 직접 재계산).
 # ============================================================================
 THRESH_QD01_CHARS = 52           # W1 non-fixed/non-practice 행 분포. flag: W1 3.6%(2/55) · W2 56.0%(47/84) — 목표(<=15%/>=55%) 충족
-THRESH_QD02_UNITS = 1            # skills/콘텐츠/SKILL.md:32 "정보 단위 1개 이하 지양" 정책값 그대로 — [사람검토] 강등됨(아래 참고), 자동 판정에는 쓰지 않는다
+THRESH_QD02_UNITS = 1            # references/phases/04-조립.md(R-DENS-01) "정보 단위 1개 이하 지양" 정책값 그대로 — [사람검토] 강등됨(아래 참고), 자동 판정에는 쓰지 않는다
 THRESH_QD03_RATIO = 0.85         # 노트:본문 글자수 비율. flag: W1 3.6%(2/55) · W2 70.2%(59/84) — 목표 충족
 THRESH_QD07_ADJACENT_JACCARD = 0.25   # 인접 행 3-gram 자카드 유사도. W1 실측 최댓값 0.190·W2 실측 최댓값 0.124 위 안전마진
 
@@ -191,7 +191,7 @@ def _char_len(s):
 
 def _info_units(body):
     """정보 단위 근사치 — bold 라벨(**x**) · 원문자(①②…) · <br> 절 중 최댓값.
-    skills/콘텐츠/SKILL.md §0-6의 '본문 개념 블록·비유/예시 카드·비교표·오해→교정·체크/콜아웃'
+    references/phases/04-조립.md(R-DENS-01)의 '본문 개념 블록·비유/예시 카드·비교표·오해→교정·체크/콜아웃'
     각 1단위를 완전히 자동화할 수 없어(의미 판단 필요) 어휘 신호로만 근사한다 — 위 THRESH_DERIVATION의
     낮은 판별력 캐비어트를 반드시 함께 읽을 것."""
     clean = re.sub(r"<!--.*?-->", "", body, flags=re.S)
@@ -251,7 +251,7 @@ def intra_row_duplicate(body_stripped):
 
 
 # ============================================================================
-# 화면 조작 안내 예외(R-DENS-01a) — 2026-07-27 B1: `skills/콘텐츠/SKILL.md` §0-6 각주가
+# 화면 조작 안내 예외(R-DENS-01a) — 2026-07-27 B1: `references/phases/04-조립.md`(R-DENS-01a) 각주가
 # 이미 "화면 조작 안내 슬라이드는 이 하한에서 제외한다"고 규정한다(커리큘럼 기준안 §6 원칙 9).
 # 초안(.md) 단계엔 CSS 클래스가 없어 덱 단계(family_signature)만큼 신뢰할 신호가 없다 — 실제
 # 관찰된 저작 어휘(제목이 열기/켜기/누르기로 끝나거나, 본문에 버튼·메뉴·권한 요청·허용창처럼
@@ -336,7 +336,7 @@ def run_checks(root, wk):
                             f"{len(screen_op_rows)}개: " + ", ".join(r["num"] for r in screen_op_rows[:10])))
 
     # ── R-QD-01: 슬라이드당 본문 글자수 하한 — B2(2026-07-27): 목표가 아니라 정보 단위 부족의
-    # 대리 신호(proxy)일 뿐이다(`skills/콘텐츠/SKILL.md` §0-6 "문자수 목표는 두지 않는다"). ──
+    # 대리 신호(proxy)일 뿐이다(`references/phases/04-조립.md`(R-DENS-01) "문자수 목표는 두지 않는다"). ──
     low = [r for r in density_rows if r["chars"] < THRESH_QD01_CHARS]
     if density_rows:
         pct = len(low) / len(density_rows) * 100
@@ -433,7 +433,7 @@ def run_checks(root, wk):
     materials = sess / "자료"
     review_html_candidates = [sess / f"{wk}주차_콘텐츠_리뷰.html", materials / f"{wk}주차_콘텐츠_리뷰.html"]
     review_html = next((p for p in review_html_candidates if p.exists()), None)
-    # 집필노트·리뷰HTML은 skills/콘텐츠/SKILL.md 8단계가 무조건 산출 항목으로 못박는다(리뷰HTML은 "필수" 명시) → FAIL.
+    # 집필노트는 루트 SKILL.md ① R-TRACE-01(ⓑ 진입)이 산출을 못박는다(리뷰HTML은 "필수" 명시) → FAIL.
     if note_exists:
         results.append(("R-QD-05", "PASS", f"집필노트 존재: {note_path}"))
         # B3(2026-07-27): 집필노트가 있으면 「PPT 소재 처분표」 섹션도 있어야 한다 — 개념KB의
@@ -446,18 +446,18 @@ def run_checks(root, wk):
             results.append(("R-QD-05", "PASS", "집필노트에 「재료 처분표」(옛 「PPT 소재 처분표」) 섹션 존재"))
         else:
             results.append(("R-QD-05", "WARN",
-                             "집필노트에 「재료 처분표」 섹션 없음(skills/콘텐츠/SKILL.md 집필노트 규격) — "
+                             "집필노트에 「재료 처분표」 섹션 없음(루트 SKILL.md ① 집필노트 규격) — "
                              "개념KB의 PPT 소재·필수 진술이 화면/부록/노트 어디에도 실현 여부를 대조받지 "
                              "못했을 위험. 생략(판단 5분류 S) 기록도 이 표가 유일한 검사기다"))
     else:
-        results.append(("R-QD-05", "FAIL", f"집필노트 없음(필수, skills/콘텐츠/SKILL.md 8단계): {note_path}"))
+        results.append(("R-QD-05", "FAIL", f"집필노트 없음(필수, 루트 SKILL.md ① R-TRACE-01): {note_path}"))
     if review_html:
         results.append(("R-QD-05", "PASS", f"콘텐츠 리뷰 HTML 존재: {review_html}"))
     else:
         results.append(("R-QD-05", "FAIL",
-                         f"콘텐츠 리뷰 HTML 없음(필수, skills/콘텐츠/SKILL.md 8단계 '(필수)'): "
+                         f"콘텐츠 리뷰 HTML 없음(필수): "
                          f"{review_html_candidates[0]} 또는 {review_html_candidates[1]}"))
-    # 이미지-에셋.json·이미지-프롬프트.md는 skills/콘텐츠/SKILL.md의 산출물 목록에 없다 —
+    # 이미지-에셋.json·이미지-프롬프트.md는 집필 단계 산출물 목록에 없다 —
     # create-slides SKILL.md ⑥ 이미지 단계(조립 이후)의 산출물이라 초안 단계 필수로 강제하면
     # 정상적인 파이프라인 순서(콘텐츠 → create-slides)에서도 상시 FAIL이 된다. WARN으로 강등한다.
     for label, fname in (("이미지-에셋.json", "이미지-에셋.json"), ("이미지-프롬프트.md", "이미지-프롬프트.md")):

@@ -171,7 +171,7 @@ def classify_slide_type(idx, cls_str, title_text):
 
 # ============================================================================
 # 화면 조작 안내 예외(R-DENS-01a) — 2026-07-27 B1: 이 예외는 `data-intentional-minimal`보다
-# 먼저 있던 **표준 계약**이다(`skills/콘텐츠/SKILL.md` §0-6 각주, `references/phases/04-조립.md`
+# 먼저 있던 **표준 계약**이다(`references/phases/04-조립.md` R-DENS-01a 각주,
 # R-DENS-01a, 커리큘럼 기준안 §6 원칙 9 "한 화면에는 한 단계만 보여준다"). 저작자가 손으로
 # 표시하는 예외가 아니라 **정보 모양이 screen-operation이면 자동으로** 밀도 하한 대상에서 빠진다.
 # 이 덱들에서 실제로 screen-operation을 구현하는 신호는 family_signature()가 이미 인식하는
@@ -426,7 +426,7 @@ def run_checks(deck_path):
     density_pool = [r for r in explanation if not r["intentional_minimal"]]
 
     # ── R-QC-02: 설명 슬라이드 의미 블록(text_leaf) 수 하한 — B2(2026-07-27): 주 신호로 승격 ──
-    # (`skills/콘텐츠/SKILL.md`의 목표는 '정보 단위' 수이지 글자수가 아니다 — 이 검사가 그
+    # (`references/phases/04-조립.md` R-DENS-01의 목표는 '정보 단위' 수이지 글자수가 아니다 — 이 검사가 그
     # 목표를 가장 직접 재는 지표이므로 보고 순서·우선순위 모두 R-QC-01보다 앞에 둔다.)
     low_blocks = []
     for r in density_pool:
@@ -446,7 +446,7 @@ def run_checks(deck_path):
         results.append(("R-QC-02", "PASS", "설명 슬라이드 없음(검사 대상 0)"))
 
     # ── R-QC-01: 설명 슬라이드 본문 글자수 하한 — B2(2026-07-27): 목표가 아니라 정보 단위
-    # 부족의 **대리 신호(proxy)**일 뿐이다. `skills/콘텐츠/SKILL.md`§0-6은 "문자수 목표는
+    # 부족의 **대리 신호(proxy)**일 뿐이다. `references/phases/04-조립.md`(R-DENS-01)은 "문자수 목표는
     # 두지 않는다"고 명시하므로, WARN 문구가 "글자수를 늘려라"로 읽히지 않게 표현한다 —
     # 실제 조치는 R-QC-02(의미 블록 수)로 확인해 정보 단위를 더하는 것이다. ──
     low_chars = [r for r in density_pool if r["chars"] < THRESH_QC01_CHARS]
