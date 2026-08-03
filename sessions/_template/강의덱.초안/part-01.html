@@ -20,8 +20,55 @@
     <span class="pd-dot"></span><span class="pd-dot"></span>
   </div>
   <p class="pd-eyebrow">PART 1 / 4</p><!-- ✏️ N=전체 파트 수 -->
-  <h2 class="pd-title">파트 제목</h2><!-- ✏️ 12자 이내 권장(96px·한 줄 고정, nowrap) -->
+  <h2 class="pd-title">파트 제목</h2><!-- ✏️ 한 줄 고정(nowrap). 실측 56px·상자 1080px → 한글 약 19자까지 들어간다. 짧을수록 좋다 -->
+
   <p class="pd-sub">이 파트에서 다루는 것 한 줄</p>
+</section>
+
+<!-- ============ 교시 로드맵 (골격 · 교시마다 같은 모양) ============
+     사용자가 세 번 요청한 「교시 로드맵 템플릿 통일」의 마크업 계약이다.
+     이 슬라이드를 교시 수만큼 복사하고 data-slide만 M1·M2·… 로 바꾼다.
+     CSS는 shell.html의 .roadmap 블록이 소유한다 — 파트에서 재정의하지 않는다.
+
+     계약: section.slide.roadmap > div.s-full > h2.s-title + p.rm-lead + div.rm-track
+           rm-track > div.rm-step( span.rm-n + b + span.desc + span.rm-out )
+                    > span.rm-arrow (스텝 사이)
+     · 스텝 3~5개. 5개면 .rm-track에 is-5를 함께 준다(제목 한 단계 축소).
+     · 마지막 스텝을 도착점으로 강조하려면 .rm-step에 is-goal.
+     · 금지: 장식 아이콘 SVG · 스텝 6개 이상 · .rm-* 재정의.
+     · 이 장은 박스만 남기 쉽다 — 시각자료를 함께 둘 수 있는지 먼저 보라.
+     · .roadmap을 deck.contract.json의 layout_families에 등재할 것. -->
+<section class="slide roadmap" data-slide="M1">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span><div class="s-team">팀명<br>부제</div>
+  </header>
+  <div class="s-full">
+    <h2 class="s-title">1교시 이렇게 배웁니다</h2><!-- ✏️ 교시 번호만 바꾼다 -->
+    <p class="rm-lead">이 교시에서 무엇을 만들고 나가는지 한 줄.</p><!-- ✏️ -->
+    <div class="rm-track"><!-- ✏️ 스텝 3~5개. 5개면 class="rm-track is-5" -->
+      <div class="rm-step">
+        <span class="rm-n">1</span>
+        <b>단계 제목</b><!-- ✏️ 명사형 -->
+        <span class="desc">무엇을 하는 단계인지 한 줄.</span><!-- ✏️ 25자 이내 -->
+        <span class="rm-out">산출물 · 무엇이 남는가</span><!-- ✏️ -->
+      </div>
+      <span class="rm-arrow" aria-hidden="true">→</span>
+      <div class="rm-step">
+        <span class="rm-n">2</span>
+        <b>단계 제목</b>
+        <span class="desc">무엇을 하는 단계인지 한 줄.</span>
+        <span class="rm-out">산출물 · 무엇이 남는가</span>
+      </div>
+      <span class="rm-arrow" aria-hidden="true">→</span>
+      <div class="rm-step is-goal">
+        <span class="rm-n">3</span>
+        <b>도착점</b>
+        <span class="desc">이 교시를 마치면 할 수 있는 것.</span>
+        <span class="rm-out">산출물 · 무엇이 남는가</span>
+      </div>
+    </div>
+  </div>
 </section>
 
 <!-- 이 파트의 본문 슬라이드(section.slide)는 이 아래에 이어서 추가한다. -->

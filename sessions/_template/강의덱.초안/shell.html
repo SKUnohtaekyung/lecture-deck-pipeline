@@ -23,6 +23,119 @@
        kit/styles/patterns.css 환류는 「서로 다른 과목에서 이미 2회 이상 쓰인」
        형태만 검토 대상이다(2026-07-29 확정 · R-PROMO-01). 「앞으로 쓸 것 같다」는
        예측으로 올리지 마라. 상세는 references/phases/05-시각화.md 환류 규칙. */
+
+    /* ══════════════════════════════════════════════════════════════════
+       기본 경화 5종 — 지우지 말 것 (2026-08-03 신설)
+       ══════════════════════════════════════════════════════════════════
+       왜 여기 있나: 지금까지 주차별 교정이 그 주차 shell에만 쌓이고 템플릿으로
+       돌아오는 경로가 없었다. 그래서 새 주차를 시작할 때마다 아래 5종이 전부
+       원상복귀했고, 사용자가 같은 지적을 반복했다(실측: 2주차가 얻어낸 교정 5종
+       중 템플릿에 반영된 것 0건).
+
+       값의 정본은 kit/guide/토큰-치트시트.md(R-TYPE-01·03)이고 여기는 집행부다.
+       규칙이 바뀌면 정본을 먼저 고치고 여기를 맞춘다 — 반대로 하지 않는다.
+       ⚠️ 이 블록의 셀렉터는 전부 kit에 실재하는 클래스만 겨냥한다. 없는 클래스를
+          적어 두면 「규칙이 있는 것처럼 보이는데 아무 일도 안 하는」 상태가 된다.
+       ────────────────────────────────────────────────────────────────── */
+
+    /* ① 본문 22px 하한 회복 (R-TYPE-01) ───────────────────────────────
+       kit의 .work-step은 b·span에만 크기를 걸어 두어, 클래스 없는 맨 텍스트와
+       <p>가 컨테이너 기본값 16px를 그대로 물려받는다. 컨테이너에 직접 건다.
+       (선례: 46장 242건 4,537자가 이 경로로 하한 미만이 됐다) */
+    .slide .work-step{ font-size:22px; line-height:1.45; }
+    .slide .work-step p{ margin:0; font-size:22px; line-height:1.45; }
+
+    /* ② 역할 위계 — 박스 제목 26/800 · 박스 설명 20/500 ────────────────
+       2026-07-31 사용자 결정: "제목과 설명 폰트 사이즈가 똑같다. 설명이 더
+       작아야지" · "전체적으로 다 볼드에 글씨 크기 똑같다. 폰트 시스템 쓰자" ·
+       "bold를 미디움 정도로 낮춰 써도 된다 — 본문이나 설명 글씨는".
+       R-TYPE-01의 「박스 제목」·「박스 안 설명문」 행이 이 규칙의 정본이다.
+
+       ⚠️ 명시도를 .deck .slide[data-slide]로 올려 둔 이유: 파트별로 작업하면
+          `.slide[data-slide="X"] .work-step b`(0,3,1) 같은 국소 규칙이 전역
+          규칙(0,2,1)을 이겨 한 덱 안에서 21·22·23·24·26px가 섞인다.
+          !important는 쓰지 않는다 — 정당한 개별 예외의 여지를 남긴다.
+
+       ⚠️ 이 주차가 새 박스 구도를 만들면 그 제목·설명 셀렉터를 아래 목록에
+          **추가**하라. 추가하지 않으면 그 구도만 위계 밖에 남는다.
+
+       ⚠️ 설명문 20px은 「박스 내부 보조 서술」 한정이다. 본문 문장
+          (.s-body·.s-lead)의 22px 하한은 그대로다. 그리고 20px 줄은 짧아야
+          한다 — 긴 문장을 20px로 내리면 가독성이 떨어진다(권장 25자 이내,
+          넘으면 문장을 나누거나 22px 본문으로 올린다).
+
+       ⚠️ `.cd-leaf > b`·`.cd-out`는 일부러 뺐다. kit의 실제 마크업이
+          `<b class="cd-out">`(= .cd-leaf의 직계 자식이자 같은 노드)이라 두
+          규칙이 **같은 노드**를 겨냥하고, 타입 셀렉터 한 칸 차이로 제목 규칙이
+          이겨 설명 규칙이 죽는다. 게다가 kit의 `.cd-out`(19px/800 블루)은
+          「박스 안 설명문」이 아니라 **결론 라벨**이다. R-TYPE-01이 `.cd-out`을
+          설명문 행에 적어 둔 것은 정정 대상이다(FINDINGS.md 참고). */
+    .deck .slide[data-slide] .work-step > b,
+    .deck .slide[data-slide] .card > h3,
+    .deck .slide[data-slide] .cc-side > h3{
+      font-size:26px; font-weight:800; line-height:1.25; }
+    .deck .slide[data-slide] .desc{
+      font-size:20px; font-weight:500; line-height:1.5; }
+
+    /* ③ 카드·박스 간 여백 — kit 기본 14px는 촘촘하다 ────────────────────
+       사용자 지시: "각 카드별 여백이 너무 적어" · "박스가 지금 너무 촘촘해". */
+    .slide .grid-2, .slide .grid-3{ gap:18px; }
+
+    /* ④ 빈 이미지 슬롯을 학생 화면에 표시하지 않는다 ────────────────────
+       사용자 지시: "이미지를 넣을 공간에 박스로 영역을 표시해 놓는데 이거를
+       다 지워야 해." kit/styles/deck.css는 빈 슬롯에 점선 테두리 + 연파랑
+       배경 + "이미지 예정" 라벨을 그린다 — 그 표시만 끈다.
+       ⚠️ 슬롯 자체를 없애는 게 아니다. 좌표·크기·본문 인셋은 그대로 두고
+          (이미지 작업과 충돌 방지), verify_deck_quality의 R-QC-18(빈 슬롯
+          검출)도 계속 유효하다. 화면 노출만 막는 것이다. */
+    .deck .slide .asset-slot,
+    .deck .slide .asset-slot[data-image-state="expected"]{
+      border:0; background:none; box-shadow:none; }
+    .deck .slide .asset-slot[data-image-state="expected"]::before{ content:none; }
+
+    /* ⑤ 교시 로드맵(.roadmap) — 교시마다 같은 모양을 쓴다 ────────────────
+       사용자가 세 번 요청한 「교시 로드맵 템플릿 통일」이다. 통일되지 않으면
+       교시마다 스텝 수·아이콘·산출물 줄이 제각각이 된다(실측: 5장이 스텝
+       6·4·4·5·5 · 아이콘 클래스 2종 혼재 · 산출물 줄은 1장에만).
+
+       마크업 골격은 part-01.html의 data-slide="M1" 슬라이드에 있다 — 그것을
+       복사해 교시 수만큼 만든다.
+       금지: 장식 아이콘 SVG · 스텝 6개 이상 · .rm-* 클래스 재정의.
+       ⚠️ 로드맵은 「박스만 있고 시각자료가 없는 장」이 되기 쉽다(실측: 로드맵
+          5장이 장당 박스 12.6개로 기준판의 2.3배인데 시각자료 보유 0). 스텝을
+          늘리는 대신 이해를 돕는 시각자료를 함께 두는 쪽을 먼저 검토하라.
+       ⚠️ .roadmap을 이 주차 deck.contract.json의 layout_families에 등재할 것. */
+    .roadmap .s-full{ bottom:54px; display:flex; flex-direction:column; }
+    .roadmap .rm-lead{ margin:8px 0 0; font-size:22px; font-weight:700;
+      color:var(--blue); line-height:1.4; }
+    .roadmap .rm-track{ flex:1 1 auto; min-height:0; display:flex;
+      align-items:stretch; gap:10px; margin:20px 0 0; }
+    .roadmap .rm-step{ flex:1 1 0; min-width:0; display:flex; flex-direction:column;
+      align-items:flex-start; justify-content:flex-start; gap:10px;
+      padding:22px 18px 18px; text-align:left;
+      border-radius:var(--r-lg); background:var(--blue-soft);
+      border:1px solid var(--blue-line); box-shadow:var(--shadow-md); }
+    .roadmap .rm-step .rm-n{ flex:0 0 auto; width:44px; height:44px; border-radius:50%;
+      background:var(--blue); color:var(--white); display:grid; place-items:center;
+      font-size:20px; font-weight:800; }
+    .roadmap .rm-step > b{ font-size:26px; font-weight:800; color:var(--ink);
+      line-height:1.22; }
+    /* 크기·굵기·행간은 ②의 .desc 티어가 준다 — 여기서 다시 적지 않는다.
+       (다시 적으면 명시도가 낮아 조용히 무시되고, 「있는데 안 듣는 규칙」이 된다) */
+    .roadmap .rm-step .desc{ color:var(--gray-700); }
+    .roadmap .rm-step .rm-out{ display:block; width:100%; margin-top:auto;
+      padding-top:12px; border-top:1px solid var(--blue-line);
+      font-size:20px; font-weight:800; color:var(--blue); line-height:1.35; }
+    /* 마지막 스텝을 「이 교시의 도착점」으로 쓸 때만 .is-goal */
+    .roadmap .rm-step.is-goal{ background:var(--mint-soft); border-color:var(--mint-line); }
+    .roadmap .rm-step.is-goal > b{ color:var(--on-mint); }
+    .roadmap .rm-step.is-goal .rm-n{ background:var(--mint); color:var(--on-mint); }
+    .roadmap .rm-step.is-goal .rm-out{ color:var(--mint-deep); border-top-color:var(--mint-line); }
+    .roadmap .rm-arrow{ flex:0 0 auto; align-self:center; font-size:24px;
+      font-weight:800; color:var(--blue); }
+    /* 5스텝은 칸이 좁다 — 제목만 한 단계 내린다(설명·산출물은 유지). */
+    .roadmap .rm-track.is-5 .rm-step > b{ font-size:24px; }
+    .roadmap .rm-track.is-5 .rm-step{ padding:20px 14px 16px; }
   </style>
   <!--
     ┌── 새 덱 만드는 법 ─────────────────────────────────────────────┐
