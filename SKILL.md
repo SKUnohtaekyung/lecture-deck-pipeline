@@ -28,7 +28,7 @@ description: >-
 
 ## ② 출력 계약
 
-- **정본은 조각이다**: 편집본은 `courses/<과목>/sessions/N주차/강의덱.초안/`에 `shell.html`(head·고정 슬라이드·`<!-- ::PARTS:: -->` 마커·JS) + PART마다 `part-NN.html`로 쓴다. kit CSS 링크는 `../../kit/styles/…`(세션 폴더 2단계).
+- **정본은 조각이다**: 편집본은 `courses/<과목>/sessions/N주차/강의덱.초안/`에 `shell.html`(head·고정 슬라이드·`<!-- ::PARTS:: -->` 마커·JS) + PART마다 `part-NN.html`로 쓴다. kit CSS 링크는 `../../../../kit/styles/…`(생성물 `강의덱.html` 위치에서 저장소 루트까지 **4단계**). ⚠️ 2단계(`../../`)는 2026-07 폴더 이동 이전의 낡은 값이고, 지금 쓰면 CSS가 404인데 **정적 검증은 전부 PASS한다** — 브라우저에서만 드러난다.
 - **생성물**: `python scripts/assemble_deck.py courses/<과목>/sessions/N주차/강의덱.초안` → `강의덱.html`(미리보기 통합본, `--watch`로 자동 재조립).
 - **배포본**: `python scripts/build_release.py courses/<과목>/sessions/N주차/강의덱.초안` → `강의덱_배포.html`(단일 자립).
 - **발표자 노트**: 초안에 `💬`/`👀`/`🗣`가 하나라도 있으면 `<덱이름>_발표자노트.html`을 같은 폴더에 별도 산출한다.
