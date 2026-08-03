@@ -200,6 +200,9 @@
 8. **보정 실패 숨은 제약 감사(2026-07-27, 읽기 전용)**: `remediation-constraint-auditor`가 `remediation_constraint_audit.md`(70행) 산출 — `week2_remediation_plan.md`·`sample_before_after.md`·`skills/콘텐츠/SKILL.md`·`scripts/verify_deck_quality.py`를 원문 대조 + 실제 함수 재계산으로 감사. 결론과 8질문 답변은 §D 신규 행·§F "보정 실패 원인 진단" 참고(파일 목록은 §C.6).
 9. **1주차 화면구조 벤치마크(2026-07-27)**: `week1-visual-benchmark-analyst`가 `week1_visual_benchmark.md`(127행) 산출 — Part3(34~52페이지) 19장 전수분석 + 유형별 벤치마크(대표 6원리) + 2주차 표본 6장↔1주차 기준 매핑(§D) + 자료 가용성 점검(§E). §G 순서 3·4·5·6의 산출물을 겸한다.
 10. **V2 전면 재설계 실행(2026-07-27)**: `sample-redesign-writer`가 표본 6장(C1-2·C1-8·C1-9·C2-1·C3-4·C5-6, 페이지 7·13·14·19·35·58)을 신규 레이아웃 패밀리 6종(`w2-target`·`w2-typecard`·`w2-analogy`·`w2-itr`·`w2-handoff`·`w2-stepwarn`)으로 전면 재설계. 실습예제 실제 실행 화면 스크린샷 5장(`자료/images/s13_mvp-*-shot-v1.png`) 생성, 이미지 계약 문서 2종(`자료/2주차_이미지-프롬프트.md`·`자료/이미지-에셋.json`) 신규. 백업 2차 `_backup_v2_2026-07-27/` 생성. 슬라이드 수 107 유지(직접 확인).
+
+> ⛔ **2026-08-04**: 위에서 언급한 2주차 백업 폴더(`_backup_2026-07-27/`·`_backup_v2_2026-07-27/`·`_backup_harness_visual_2026-08-03/`)는 **삭제됐다.** 이 문장은 그 시점의 실측 기록이라 그대로 둔다. 앞의 2종은 git 추적 중이었어 삭제 커밋 직전 시점에서 복원 가능하다. 처분 근거·복원 방법 정본: `courses/바이브코딩/sessions/2주차/개정이력/README.md` §「삭제된 백업 폴더 3종」.
+
 11. **메인 직접 렌더링 판정(2026-07-27, 1차)**: 오케스트레이터가 헤드리스 Chrome(1280×760)으로 6장 전수 육안 확인 — PASS 2(p35·p14), PASS(경미 결함) 2(p58·p7), 확인 필요 1(p19), FAIL 1(p13). 결함 5건(D1~D5) 수정 라운드 진행 중(§G 갱신분 참고).
 
 ### C.2 가설 채택/기각 요약 (H1~H8, `root_cause_decision.md` 정본)

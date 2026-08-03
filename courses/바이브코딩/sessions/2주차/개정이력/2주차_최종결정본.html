@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2주차 강의 내용 — 바이브코딩</title>
+<style>
+:root{
+  --bg:#f7f8fa; --surface:#ffffff; --surface-2:#f1f3f7;
+  --text:#1a1d23; --text-2:#4a515c; --text-3:#767e8b;
+  --line:#e2e6ec; --line-2:#cdd4de;
+  --accent:#1f6feb; --accent-soft:#e8f0fe;
+  --mint:#12876f; --mint-soft:#e2f5f0;
+  --coral:#c2413a; --coral-soft:#fdeceb;
+  --amber:#9a6700; --amber-soft:#fdf3d8;
+  --violet:#6b4bd6; --violet-soft:#eee9fd;
+  --shadow:0 1px 2px rgba(16,24,40,.05), 0 4px 16px rgba(16,24,40,.06);
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#0f1216; --surface:#171b21; --surface-2:#1e242c;
+    --text:#e7ebf0; --text-2:#b3bcc7; --text-3:#8b95a2;
+    --line:#2a313a; --line-2:#3a434e;
+    --accent:#63a0ff; --accent-soft:#16283f;
+    --mint:#4fd3b3; --mint-soft:#10302a;
+    --coral:#ff8b83; --coral-soft:#361c1a;
+    --amber:#e8b93a; --amber-soft:#332714;
+    --violet:#a992ff; --violet-soft:#221c3a;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 4px 16px rgba(0,0,0,.3);
+  }
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; background:var(--bg); color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Malgun Gothic","맑은 고딕",Roboto,"Helvetica Neue",sans-serif;
+  font-size:16px; line-height:1.75; letter-spacing:-.005em; -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1240px; margin:0 auto; padding:0 24px 96px}
+
+header.doc{padding:56px 0 30px; border-bottom:1px solid var(--line)}
+.eyebrow{font-size:13px; font-weight:700; letter-spacing:.08em; color:var(--accent); text-transform:uppercase; margin:0 0 10px}
+h1{font-size:clamp(28px,4.2vw,42px); line-height:1.25; margin:0 0 14px; letter-spacing:-.02em; font-weight:800}
+.sub{font-size:17px; color:var(--text-2); margin:0 0 22px; max-width:74ch}
+.meta{display:flex; flex-wrap:wrap; gap:8px 10px; margin:0; padding:0; list-style:none}
+.meta li{font-size:13px; color:var(--text-2); background:var(--surface); border:1px solid var(--line); border-radius:999px; padding:5px 12px}
+.meta li b{color:var(--text); font-weight:700}
+
+.body-grid{display:grid; grid-template-columns:1fr; gap:40px; padding-top:36px}
+@media (min-width:1100px){ .body-grid{grid-template-columns:222px 1fr; gap:52px} }
+nav.toc{font-size:14px}
+@media (min-width:1100px){ nav.toc{position:sticky; top:24px; align-self:start; max-height:calc(100vh - 48px); overflow-y:auto} }
+nav.toc .toc-title{font-size:12px; font-weight:800; letter-spacing:.09em; color:var(--text-3); text-transform:uppercase; margin:0 0 12px}
+nav.toc ol{list-style:none; margin:0; padding:0; border-left:2px solid var(--line)}
+nav.toc a{display:block; padding:6px 0 6px 14px; margin-left:-2px; border-left:2px solid transparent; color:var(--text-2); text-decoration:none; line-height:1.45}
+nav.toc a:hover{color:var(--accent); border-left-color:var(--accent); background:var(--accent-soft)}
+nav.toc .num{color:var(--text-3); font-variant-numeric:tabular-nums; margin-right:6px; font-size:12px}
+nav.toc .sub-item a{padding-left:26px; font-size:13.5px; color:var(--text-3)}
+main{min-width:0}
+
+section{margin:0 0 56px; scroll-margin-top:24px}
+h2{font-size:24px; line-height:1.35; margin:0 0 14px; letter-spacing:-.015em; font-weight:800; padding-bottom:12px; border-bottom:2px solid var(--line)}
+h2 .sec-num{display:inline-block; min-width:1.9em; color:var(--accent); font-weight:800}
+h3{font-size:18px; margin:30px 0 10px; font-weight:700; letter-spacing:-.01em}
+h4{font-size:14px; margin:18px 0 8px; font-weight:800; color:var(--text-3); letter-spacing:.03em; text-transform:uppercase}
+p{margin:0 0 14px; color:var(--text-2)}
+p strong, li strong, td strong, dd strong{color:var(--text); font-weight:700}
+ul,ol{margin:0 0 16px; padding-left:20px; color:var(--text-2)}
+li{margin:0 0 6px}
+a{color:var(--accent)}
+code{font-family:ui-monospace,SFMono-Regular,"Cascadia Mono",Consolas,monospace; font-size:.88em;
+  background:var(--surface-2); border:1px solid var(--line); border-radius:5px; padding:1px 5px; color:var(--text)}
+
+.cards{display:grid; gap:14px; grid-template-columns:repeat(auto-fit,minmax(215px,1fr)); margin:0 0 20px}
+.card{background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:16px 18px; box-shadow:var(--shadow)}
+.card .k{font-size:12px; font-weight:800; letter-spacing:.06em; text-transform:uppercase; color:var(--text-3); margin:0 0 8px}
+.card .v{font-size:15px; color:var(--text); margin:0; line-height:1.6}
+.card .v.big{font-size:24px; font-weight:800; letter-spacing:-.02em; font-variant-numeric:tabular-nums}
+.card.accent{border-left:3px solid var(--accent)}
+.card.mint{border-left:3px solid var(--mint)}
+.card.coral{border-left:3px solid var(--coral)}
+.card.amber{border-left:3px solid var(--amber)}
+
+.def{background:var(--accent-soft); border-left:4px solid var(--accent); border-radius:10px; padding:16px 20px; margin:0 0 18px}
+.def p{margin:0; color:var(--text); font-size:17px; font-weight:600; line-height:1.6}
+.def .label{font-size:12px; font-weight:800; letter-spacing:.06em; color:var(--accent); text-transform:uppercase; display:block; margin-bottom:6px}
+.def.m{background:var(--mint-soft); border-left-color:var(--mint)}
+.def.m .label{color:var(--mint)}
+
+.note{border-radius:10px; padding:13px 18px; margin:0 0 18px; border:1px solid var(--line); background:var(--surface); font-size:15px}
+.note p:last-child{margin-bottom:0}
+.note .tag{display:block; font-size:12px; font-weight:800; letter-spacing:.05em; text-transform:uppercase; margin-bottom:5px}
+.note.warn{background:var(--coral-soft); border-color:transparent; border-left:4px solid var(--coral)}
+.note.warn .tag{color:var(--coral)}
+.note.info{background:var(--amber-soft); border-color:transparent; border-left:4px solid var(--amber)}
+.note.info .tag{color:var(--amber)}
+.note.ok{background:var(--mint-soft); border-color:transparent; border-left:4px solid var(--mint)}
+.note.ok .tag{color:var(--mint)}
+
+.badge{display:inline-block; font-size:11.5px; font-weight:800; letter-spacing:.03em; padding:2px 8px; border-radius:999px; vertical-align:middle; white-space:nowrap}
+.b-fix{background:var(--mint-soft); color:var(--mint)}
+.b-open{background:var(--coral-soft); color:var(--coral)}
+.b-hold{background:var(--amber-soft); color:var(--amber)}
+.b-new{background:var(--violet-soft); color:var(--violet)}
+.b-move{background:var(--accent-soft); color:var(--accent)}
+
+.tw{overflow-x:auto; margin:0 0 22px; border:1px solid var(--line); border-radius:12px; background:var(--surface); box-shadow:var(--shadow)}
+table{border-collapse:collapse; width:100%; font-size:14.5px; min-width:520px}
+th,td{text-align:left; padding:10px 13px; border-bottom:1px solid var(--line); vertical-align:top; color:var(--text-2)}
+thead th{background:var(--surface-2); color:var(--text); font-weight:700; font-size:13px; white-space:nowrap; border-bottom:1px solid var(--line-2)}
+tbody tr:last-child td{border-bottom:0}
+td.num, th.num{text-align:right; font-variant-numeric:tabular-nums; white-space:nowrap}
+td.c, th.c{text-align:center}
+tbody tr:hover{background:var(--surface-2)}
+table.tight{font-size:14px}
+table.tight th, table.tight td{padding:8px 12px}
+
+/* concept chips */
+.chips{display:flex; flex-wrap:wrap; gap:7px; margin:0 0 8px; padding:0; list-style:none}
+.chip{display:inline-flex; align-items:center; gap:6px; font-size:13.5px; padding:5px 11px; border-radius:8px;
+  background:var(--surface-2); border:1px solid var(--line); color:var(--text)}
+.chip .p{font-size:10.5px; font-weight:800; letter-spacing:.02em; padding:1px 5px; border-radius:4px}
+.chip .p.p0{background:var(--coral-soft); color:var(--coral)}
+.chip .p.p1{background:var(--accent-soft); color:var(--accent)}
+.chip .p.p2{background:var(--surface); color:var(--text-3); border:1px solid var(--line)}
+.chip.adj{border-style:dashed; background:transparent; color:var(--text-3)}
+.legend{font-size:13px; color:var(--text-3); margin:0 0 18px}
+.legend b{color:var(--text-2)}
+
+/* module block */
+.mod{background:var(--surface); border:1px solid var(--line); border-radius:14px; margin:0 0 22px; overflow:hidden; box-shadow:var(--shadow)}
+.mod > .head{display:flex; flex-wrap:wrap; align-items:center; gap:10px; padding:14px 20px; background:var(--surface-2); border-bottom:1px solid var(--line)}
+.mod > .head .n{display:inline-flex; align-items:center; justify-content:center; width:28px; height:28px; border-radius:8px; background:var(--accent); color:#fff; font-weight:800; font-size:14px; flex:none}
+.mod > .head .t{font-size:17px; font-weight:800; letter-spacing:-.01em; color:var(--text); margin:0}
+.mod > .head .time{margin-left:auto; font-size:13px; font-weight:700; color:var(--text-2); font-variant-numeric:tabular-nums; white-space:nowrap}
+.mod > .in{padding:18px 20px 8px}
+.mod .tw{box-shadow:none; margin-bottom:16px}
+.goal{background:var(--accent-soft); border-radius:9px; padding:12px 16px; margin:0 0 18px; font-size:15px; color:var(--text); line-height:1.65}
+.goal .lb{display:block; font-size:11.5px; font-weight:800; letter-spacing:.06em; text-transform:uppercase; color:var(--accent); margin-bottom:4px}
+
+.prac{border:1px solid var(--line); border-left:3px solid var(--mint); border-radius:10px; padding:13px 16px; margin:0 0 12px; background:var(--surface)}
+.prac .ph{display:flex; flex-wrap:wrap; align-items:baseline; gap:8px; margin-bottom:6px}
+.prac .pn{font-weight:800; color:var(--mint); font-size:15px}
+.prac .pt{font-weight:700; color:var(--text); font-size:15px}
+.prac .pm{margin-left:auto; font-size:12.5px; color:var(--text-3); font-variant-numeric:tabular-nums; white-space:nowrap}
+.prac dl{display:grid; grid-template-columns:76px 1fr; gap:3px 12px; margin:0; font-size:14px}
+.prac dt{font-weight:700; color:var(--text-3); font-size:12.5px; padding-top:2px}
+.prac dd{margin:0; color:var(--text-2)}
+
+.flow{margin:0 0 20px; padding:18px; background:var(--surface); border:1px solid var(--line); border-radius:12px}
+.flow .step{padding:9px 12px; border-radius:9px; background:var(--surface-2); border:1px solid var(--line); font-size:14.5px; color:var(--text)}
+.flow .step.key{background:var(--accent-soft); border-color:transparent; border-left:3px solid var(--accent)}
+.flow .step .lab{font-weight:700}
+.flow .step .why{color:var(--text-3); font-size:13px; display:block; margin-top:2px; font-weight:400}
+.flow .arrow{text-align:center; color:var(--line-2); font-size:15px; line-height:1; padding:5px 0; user-select:none}
+.flow .pair{display:grid; gap:10px; grid-template-columns:1fr}
+@media (min-width:620px){ .flow .pair{grid-template-columns:1fr 1fr} }
+
+.rail{display:grid; gap:0; margin:0 0 22px}
+.rail .r{display:grid; grid-template-columns:64px 1fr; gap:0; align-items:stretch}
+.rail .r .l{display:flex; flex-direction:column; align-items:center; gap:0}
+.rail .r .dot{width:30px; height:30px; border-radius:50%; background:var(--accent); color:#fff; display:flex; align-items:center;
+  justify-content:center; font-weight:800; font-size:13px; flex:none; margin-top:4px}
+.rail .r .bar{flex:1; width:2px; background:var(--line)}
+.rail .r:last-child .bar{display:none}
+.rail .r .c{padding:0 0 18px 6px}
+.rail .r .ct{font-weight:700; color:var(--text); margin:6px 0 2px; font-size:15.5px}
+.rail .r .cd{font-size:14px; color:var(--text-2); margin:0}
+.rail .r .cd b{color:var(--text)}
+
+.srcs{display:grid; gap:10px; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); padding:0; list-style:none; margin:0 0 18px}
+.srcs li{background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:12px 14px; font-size:14px}
+.srcs code{background:transparent; border:0; padding:0; color:var(--text); font-weight:600; word-break:break-all}
+.srcs .role{display:block; color:var(--text-3); font-size:13px; margin-top:3px}
+
+footer.doc{border-top:1px solid var(--line); padding-top:22px; margin-top:56px; font-size:13px; color:var(--text-3)}
+footer.doc p{margin:0 0 6px; color:var(--text-3)}
+
+@media print{
+  body{background:#fff; font-size:10.5pt}
+  nav.toc{display:none}
+  .body-grid{grid-template-columns:1fr; padding-top:16px}
+  .wrap{max-width:none; padding:0}
+  section{margin-bottom:26px}
+  h2{page-break-after:avoid}
+  .mod,.tw,.note,.def,.flow,.prac{page-break-inside:avoid; box-shadow:none}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="doc">
+  <p class="eyebrow">바이브코딩 3주 특강 · 팀 공유용</p>
+  <h1>2주차 — 내 아이디어를 기획하고<br>핵심 기능이 작동하는 MVP 만들기</h1>
+  <p class="sub">6개 구간에 어떤 개념이 들어가고, 학생이 무엇을 만들며, 실습이 어떻게 이어지는지를 정리한 문서입니다.
+     2026-07-28 확정 구조 기준.</p>
+  <ul class="meta">
+    <li>구성 <b>6구간</b></li>
+    <li>개념 <b>79개</b>(코어 63 · 질문대응 16)</li>
+    <li>실습 <b>14개</b>(체인 ①~⑫ + 하네스 + 짝 점검)</li>
+    <li>대상 <b>비전공 혼합군(20~60대)</b></li>
+    <li>정원 <b>최대 12명</b> · 주강사 1 · 보조 1</li>
+    <li>도구 <b>ChatGPT + Codex</b></li>
+  </ul>
+</header>
+
+<div class="body-grid">
+
+<nav class="toc">
+  <p class="toc-title">목차</p>
+  <ol>
+    <li><a href="#s1"><span class="num">1</span>이 주차가 하는 일</a></li>
+    <li><a href="#s2"><span class="num">2</span>전체 흐름 한 장</a></li>
+    <li><a href="#s3"><span class="num">3</span>구간별 내용</a></li>
+    <li class="sub-item"><a href="#m1">1구간 · 사용자 문제</a></li>
+    <li class="sub-item"><a href="#m2">2구간 · MVP와 흐름</a></li>
+    <li class="sub-item"><a href="#m3">3구간 · 문서와 첫 작동</a></li>
+    <li class="sub-item"><a href="#m4">4구간 · AI 작업 시스템</a></li>
+    <li class="sub-item"><a href="#m5">5구간 · 화면과 기능</a></li>
+    <li class="sub-item"><a href="#m6">6구간 · 관찰과 개선</a></li>
+    <li><a href="#s4"><span class="num">4</span>실습 체인 전체</a></li>
+    <li><a href="#s5"><span class="num">5</span>사람이 판단하는 3지점</a></li>
+    <li><a href="#s6"><span class="num">6</span>수업에 쓰는 예제</a></li>
+    <li><a href="#s7"><span class="num">7</span>운영 정보</a></li>
+    <li><a href="#s8"><span class="num">8</span>3주차로 넘기는 것</a></li>
+    <li><a href="#s9"><span class="num">9</span>확정·미확정 요약</a></li>
+    <li><a href="#s10"><span class="num">10</span>원본 문서</a></li>
+  </ol>
+</nav>
+
+<main>
+
+<!-- ============ 1 ============ -->
+<section id="s1">
+  <h2><span class="sec-num">1.</span>이 주차가 하는 일</h2>
+
+  <div class="def">
+    <span class="label">한 줄 정의</span>
+    <p>관심사나 불편을 사용자 문제로 좁히고, AI와 한 장 기획서를 작성해 핵심 기능 하나가 작동하는 MVP를 만든다.</p>
+  </div>
+  <div class="def m">
+    <span class="label">학생이 품고 가는 질문</span>
+    <p>내 아이디어를 AI가 이해하고 만들 수 있는 기획과 작동하는 서비스로 어떻게 바꿀까?</p>
+  </div>
+
+  <h3>수업이 끝났을 때 학생의 손에 있는 것</h3>
+  <div class="cards">
+    <div class="card accent"><p class="k">한 문장</p><p class="v">누구의 어떤 문제를 해결하는 서비스인지 <b>말로 설명</b>할 수 있다</p></div>
+    <div class="card accent"><p class="k">기획 문서</p><p class="v"><code>prd.md</code> — 만드는 내내 <b>다시 읽는 기준 문서</b></p></div>
+    <div class="card mint"><p class="k">작동하는 MVP</p><p class="v">화면과 <b>핵심 기능 하나</b>가 실제로 돈다</p></div>
+    <div class="card mint"><p class="k">작업 환경 파일</p><p class="v">AI가 지킬 <b>규칙 5개 · 완료 기준 3개</b>를 담은 파일</p></div>
+    <div class="card"><p class="k">관찰 기록</p><p class="v">짝이 <b>어디서 막혔는지</b> 본 기록</p></div>
+    <div class="card"><p class="k">수정 경험</p><p class="v">가장 중요한 문제 <b>하나를 골라 고친</b> 경험</p></div>
+  </div>
+
+  <div class="note ok">
+    <span class="tag">전 주차를 관통하는 한 문장</span>
+    <p><b>AI가 작성하고, 사람이 검토하고, 사람이 결정한다.</b><br>
+    1주차의 「요청 → 확인 → 수정」 사이클은 <b>재사용</b>하되 다시 가르치지 않는다.
+    저장·배포·공개·발표는 <b>3주차 몫</b>이라 건드리지 않는다 — 2주차는 “무엇을 저장할지 정의”하는 데서 멈춘다.</p>
+  </div>
+</section>
+
+<!-- ============ 2 ============ -->
+<section id="s2">
+  <h2><span class="sec-num">2.</span>전체 흐름 한 장</h2>
+
+  <div class="rail">
+    <div class="r"><div class="l"><div class="dot">1</div><div class="bar"></div></div><div class="c">
+      <p class="ct">아이디어를 사용자 문제로 바꾸기</p>
+      <p class="cd">내 불편 하나 → <b>누구의</b> 불편인가 → 아직 <b>가정</b>일 뿐. 한 문장으로 정의하고 새 프로젝트 폴더를 연다.<br>
+      <b>개념 12</b> · 실습 ①② · <b>≈63분</b></p></div></div>
+
+    <div class="r"><div class="l"><div class="dot">2</div><div class="bar"></div></div><div class="c">
+      <p class="ct">MVP와 흐름을 결정하기</p>
+      <p class="cd">결과와 기능을 구분하고, 기능 하나로 좁히고, 쓰는 순서(User Flow)와 “다 됐다”의 기준을 쓴다.<br>
+      <b>개념 9</b> · 실습 ③④ · <b>≈60분</b></p></div></div>
+
+    <div class="r"><div class="l"><div class="dot">3</div><div class="bar"></div></div><div class="c">
+      <p class="ct">결정을 문서로 고정하고 첫 작동 만들기</p>
+      <p class="cd"><code>prd.md</code>를 쓰고 저장한다. 파일 세 개를 만들어 <b>버튼을 누르면 화면이 바뀌는</b> 첫 반응을 본다.<br>
+      <b>개념 11</b> · 실습 ⑤⑥ · <b>≈62분</b></p></div></div>
+
+    <div class="r"><div class="l"><div class="dot">4</div><div class="bar"></div></div><div class="c">
+      <p class="ct">AI에게 큰 작업을 맡기는 시스템 이해하기 <span class="badge b-new">신설</span></p>
+      <p class="cd">규칙 파일은 <b>부탁이지 잠금장치가 아니다.</b> 승인 창이 뜨는 순간의 의미, 일을 나눌 때의 한계를 알고,
+      AI와 대화해 <b>내 프로젝트 규칙을 직접 만든다.</b><br>
+      <b>개념 20</b> · 하네스 실습 · <b>40분</b></p></div></div>
+
+    <div class="r"><div class="l"><div class="dot">5</div><div class="bar"></div></div><div class="c">
+      <p class="ct">설계한 기준으로 화면과 핵심 기능 만들기</p>
+      <p class="cd">레퍼런스에서 특성을 뽑아 <code>DESIGN.md</code>를 쓰고, 그 기준으로 화면을 만들고, 기능을 <b>세 가지 값으로 확인</b>한다.<br>
+      <b>개념 24</b> · 실습 ⑦⑧⑨⑩⑪ · <b>90분 단일 블록</b></p></div></div>
+
+    <div class="r"><div class="l"><div class="dot">6</div></div><div class="c">
+      <p class="ct">사용자 관찰과 개선</p>
+      <p class="cd">짝이 쓰는 걸 <b>돕지 않고</b> 본다. 가장 중요한 문제 하나를 고르고 고친 뒤 전체를 다시 돌린다.<br>
+      <b>개념 9</b> · 짝 점검 + 실습 ⑫ · <b>≈65분</b></p></div></div>
+  </div>
+
+  <div class="note info">
+    <span class="tag">배치의 핵심 세 가지</span>
+    <p>① <b>첫 작동을 3구간으로 앞당겼다</b> — 학생이 “되는 걸” 보는 시점이 수업 절반 전에 온다.<br>
+    ② <b>화면 기준을 구현 직전에 둔다</b> — 예전엔 화면(3구간)과 구현(5구간) 사이에 한 구간이 끼어 기준이 식었다. 지금은 정하자마자 쓴다.<br>
+    ③ <b>1~3구간은 기획, 4구간은 전환, 5구간이 메인 실습</b> — 5구간 90분은 전체의 27%로,
+    학생이 <b>자기 서비스를 만드는 시간</b>이 이 주차의 중심이다.</p>
+  </div>
+</section>
+
+<!-- ============ 3 ============ -->
+<section id="s3">
+  <h2><span class="sec-num">3.</span>구간별 내용</h2>
+  <p class="legend">개념 태그 — <b class="badge b-open">P0</b> 반드시 다룸 ·
+     <b class="badge b-move">P1</b> 표준 ·
+     <b>P2</b> 배경 · <b>점선 칩</b> = 질문 대응용(슬라이드 본문 아님, 강사 멘트·노트로만)</p>
+
+  <!-- 1구간 -->
+  <div class="mod" id="m1">
+    <div class="head"><span class="n">1</span><p class="t">주제와 사용자를 이해한다</p><span class="time">≈63분</span></div>
+    <div class="in">
+      <p class="goal"><span class="lb">학습 목표</span>
+        자신의 반복적 불편 하나를 골라 <b>타깃과 페인포인트를 구분해</b> 서술하고,
+        사용자 가설이 <b>“검증 전 가정”</b>임을 설명하며, 정적 웹 범위 안에서 아이디어를 축소해 새 프로젝트 폴더를 만든다.</p>
+
+      <h4>다루는 개념 12</h4>
+      <ul class="chips">
+        <li class="chip"><span class="p p0">P0</span>사용자 가설</li>
+        <li class="chip"><span class="p p0">P0</span>페르소나</li>
+        <li class="chip"><span class="p p0">P0</span>페인포인트</li>
+        <li class="chip"><span class="p p1">P1</span>타깃 사용자</li>
+        <li class="chip"><span class="p p0">P0</span>서비스 한 줄 정의</li>
+        <li class="chip"><span class="p p0">P0</span>아이디어 축소</li>
+        <li class="chip"><span class="p p0">P0</span>고위험 주제 축소·제외</li>
+        <li class="chip"><span class="p p1">P1</span>아이디어 발굴 질문</li>
+        <li class="chip"><span class="p p1">P1</span>한 화면 정적 웹 범위</li>
+        <li class="chip"><span class="p p1">P1</span>웹과 앱</li>
+        <li class="chip"><span class="p p1">P1</span>개인정보와 연습 데이터</li>
+        <li class="chip"><span class="p p2">P2</span>프론트엔드·백엔드</li>
+      </ul>
+
+      <h4>진행 순서</h4>
+      <div class="tw"><table class="tight">
+        <thead><tr><th style="width:96px">단계</th><th>내용</th><th class="num" style="width:56px">시간</th></tr></thead>
+        <tbody>
+          <tr><td>도입·연결</td><td>1주차 콜백(“요청→확인→수정”은 그대로 쓰고, 이번 주는 <b>“무엇을 만들지” 결정이 앞에 붙는다</b>) + 로드맵</td><td class="num">4분</td></tr>
+          <tr><td>핵심 개념 ①</td><td>사용자 가설 → 타깃 → 페인포인트를 <b>하나의 서사</b>로: “내 불편 하나 → 누구의 불편인가 → 아직 가정일 뿐”</td><td class="num">8분</td></tr>
+          <tr><td><b>강사 시연</b></td><td>앵커 예시(오늘의 활동 기록)로 타깃 → 페인포인트 → 가설을 <b>라이브로 도출</b></td><td class="num">4분</td></tr>
+          <tr><td>오해·반례</td><td>페르소나 = 가설(반향실 경고) · <b>AI 공감은 능력이 아니라 책임 경계</b> · 정적 웹 반례(공유 아이디어 → 한 화면 기록으로 축소)</td><td class="num">6분</td></tr>
+          <tr><td>실습 ①</td><td>내 불편 → 한 문장(타깃 + 상황 + 도움)</td><td class="num">10분</td></tr>
+          <tr><td>핵심 개념 ②</td><td>기능 후보 유형 5종 + 주제 선정 8기준</td><td class="num">4분</td></tr>
+          <tr><td>실습 ②</td><td>한 줄 정의 확정 + Codex로 새 프로젝트 폴더 생성</td><td class="num">5분</td></tr>
+          <tr><td>점검·마무리</td><td>QA + 다음 구간 연결(정한 한 줄 정의 → 결과·기능으로 구체화)</td><td class="num">4분</td></tr>
+        </tbody>
+      </table></div>
+
+      <div class="prac">
+        <div class="ph"><span class="pn">실습 ①</span><span class="pt">내 불편을 한 문장으로</span><span class="pm">10분</span></div>
+        <dl>
+          <dt>하는 일</dt><dd>ChatGPT로 문장을 다듬는다. <b>어느 불편을 고를지는 학생이 판단.</b></dd>
+          <dt>완료 기준</dt><dd><b>남이 읽고 대상·도움을 짐작할 수 있으면</b> 완료</dd>
+          <dt>다음 사용</dt><dd>실습 ②의 입력</dd>
+        </dl>
+      </div>
+      <div class="prac">
+        <div class="ph"><span class="pn">실습 ②</span><span class="pt">정의 확정 + 새 프로젝트 폴더</span><span class="pm">5분</span></div>
+        <dl>
+          <dt>하는 일</dt><dd>Codex로 새 폴더를 만들고 연다. <b>정적 웹 범위인지 학생이 판단.</b></dd>
+          <dt>완료 기준</dt><dd>새 폴더가 열리면 완료</dd>
+          <dt>다음 사용</dt><dd>이후 전 구간의 작업 위치</dd>
+        </dl>
+      </div>
+
+      <h4>예상 질문</h4>
+      <ul>
+        <li>“타깃을 너무 좁히면 사람이 없지 않나요?” → <b>라디오 주파수 비유</b>로 응답</li>
+        <li>“페르소나 없이 가설만 써도 되나요?” → 타깃·페인포인트·가설·페르소나 <b>4용어의 깔때기 관계</b>로 정리</li>
+        <li>“내 불편이 남도 불편한지 어떻게 아나요?” → <b>그게 바로 “아직 가정”</b>이라는 것</li>
+      </ul>
+      <p><b>시간이 밀리면:</b> 기능 후보 유형 비교표를 실습 ② 뒤 여백으로 옮기고 <b>8기준 체크리스트만</b> 화면에 남긴다.</p>
+    </div>
+  </div>
+
+  <!-- 2구간 -->
+  <div class="mod" id="m2">
+    <div class="head"><span class="n">2</span><p class="t">MVP와 흐름을 결정한다</p><span class="time">≈60분</span></div>
+    <div class="in">
+      <p class="goal"><span class="lb">학습 목표</span>
+        <b>결과와 기능을 구분</b>해 설명하고, MVP가 “완성도 낮은 것”이 아님을 안 뒤,
+        핵심 기능 하나를 정해 User Flow 3~5단계와 완료 기준을 작성한다.
+        <b>AI가 제안한 기능 중 불필요한 것을 스스로 판단해 제거한다.</b></p>
+
+      <h4>다루는 개념 9</h4>
+      <ul class="chips">
+        <li class="chip"><span class="p p0">P0</span>MVP</li>
+        <li class="chip"><span class="p p0">P0</span>핵심 결과 vs 핵심 기능</li>
+        <li class="chip"><span class="p p0">P0</span>구현 완료 기준</li>
+        <li class="chip"><span class="p p0">P0</span>기능 후보 유형과 복잡도 예산</li>
+        <li class="chip"><span class="p p1">P1</span>대표 사용 흐름(User Flow)</li>
+        <li class="chip"><span class="p p1">P1</span>입력·결과·변화</li>
+        <li class="chip"><span class="p p1">P1</span>포함·제외 범위</li>
+        <li class="chip adj">MVP vs 프로토타입·베타</li>
+        <li class="chip adj">브라우저 저장(왜 새로고침하면 사라지나)</li>
+      </ul>
+
+      <h4>진행 순서</h4>
+      <div class="tw"><table class="tight">
+        <thead><tr><th style="width:96px">단계</th><th>내용</th><th class="num" style="width:56px">시간</th></tr></thead>
+        <tbody>
+          <tr><td>도입·연결</td><td>1구간 한 줄 정의 리콜 + 로드맵</td><td class="num">2분</td></tr>
+          <tr><td>핵심 개념 ①</td><td>결과 vs 기능(<b>택시 비유</b>) + 기능만 쌓다 실패한 사례</td><td class="num">6분</td></tr>
+          <tr><td>핵심 개념 ②</td><td>MVP 정의(시식코너·징검다리 비유) + SLC 대안 + Dropbox·Zappos 사례 + <b>“대충 만든 것”이라는 오해 교정</b></td><td class="num">7분</td></tr>
+          <tr><td><b>강사 시연</b></td><td>앵커 <code>prd.md</code>를 띄우고 <b>핵심 기능 1개와 제외 목록</b>을 직접 짚기</td><td class="num">4분</td></tr>
+          <tr><td>실습 ③</td><td>기능 나열 → <b>불필요한 것 1개 제거</b></td><td class="num">8분</td></tr>
+          <tr><td>핵심 개념 ③</td><td>User Flow 정의(해피패스 — 분기는 실무 확장) + 완료 기준(Given-When-Then)</td><td class="num">7분</td></tr>
+          <tr><td>실습 ④</td><td>User Flow 3~5단계 + 완료 기준 한 줄</td><td class="num">8분</td></tr>
+          <tr><td>점검·마무리</td><td>QA + 다음 구간 연결(User Flow → <code>prd.md</code>의 “대표 흐름” 항목)</td><td class="num">3분</td></tr>
+        </tbody>
+      </table></div>
+
+      <div class="prac">
+        <div class="ph"><span class="pn">실습 ③</span><span class="pt">AI가 제안한 기능 중 하나를 지운다</span><span class="pm">8분 · CP2</span></div>
+        <dl>
+          <dt>하는 일</dt><dd>ChatGPT에게 기능 후보를 나열·비판하게 한 뒤, <b>불필요한 1개를 학생이 골라 제거</b>하고 이유를 적는다</dd>
+          <dt>산출물</dt><dd>핵심 기능 1개 + 제외 목록</dd>
+          <dt>완료 기준</dt><dd><b>제외 목록에 이유가 있고, 기능이 실제로 빠지면</b> 완료</dd>
+          <dt>다음 사용</dt><dd><code>prd.md</code>의 재료</dd>
+        </dl>
+      </div>
+      <div class="prac">
+        <div class="ph"><span class="pn">실습 ④</span><span class="pt">User Flow 3~5단계 + 완료 기준</span><span class="pm">8분</span></div>
+        <dl>
+          <dt>하는 일</dt><dd>ChatGPT가 흐름 초안 → <b>3~5단계가 맞는지 학생이 판단</b></dd>
+          <dt>완료 기준</dt><dd>흐름을 <b>말로 설명할 수 있으면</b> 완료</dd>
+          <dt>다음 사용</dt><dd>화면 설계 · 구현 · 테스트 전부의 기준</dd>
+        </dl>
+      </div>
+
+      <h4>예상 질문</h4>
+      <ul>
+        <li>“기능을 다 만들면 안 되나요?” → <b>스코프 크리프</b> 반론</li>
+        <li>“완료 기준이 너무 뻔해 보여요” → <b>“잘 되면 완료”는 기준이 아니다</b></li>
+      </ul>
+      <p><b>시간이 밀리면:</b> 실습 ③의 ChatGPT 대화를 <b>강사 시연으로 대체</b>하고 학생은 결과 판단만 한다.</p>
+    </div>
+  </div>
+
+  <!-- 3구간 -->
+  <div class="mod" id="m3">
+    <div class="head"><span class="n">3</span><p class="t">결정을 문서로 고정하고 첫 작동을 만든다</p><span class="time">≈62분</span></div>
+    <div class="in">
+      <p class="goal"><span class="lb">학습 목표</span>
+        <code>prd.md</code> 5항목을 작성해 저장하고, <code>AGENTS.md</code>가
+        <b>“AI의 기억이 아니라 고정된 규칙 파일”</b>임을 Skill과 구분해 설명하며,
+        파일 세 개를 만들어 브라우저에서 <b>첫 화면 변화</b>를 확인한다.</p>
+
+      <h4>다루는 개념 11</h4>
+      <ul class="chips">
+        <li class="chip"><span class="p p0">P0</span>최소 prd.md</li>
+        <li class="chip"><span class="p p1">P1</span>대화 vs 프로젝트 문서</li>
+        <li class="chip"><span class="p p1">P1</span>AI 기획 인터뷰</li>
+        <li class="chip"><span class="p p1">P1</span>Markdown</li>
+        <li class="chip"><span class="p p1">P1</span>문서 우선 변경</li>
+        <li class="chip"><span class="p p1">P1</span>Plan First</li>
+        <li class="chip"><span class="p p1">P1</span>컨텍스트</li>
+        <li class="chip adj">전문 조직의 PRD</li>
+        <li class="chip adj">.md 미리보기</li>
+        <li class="chip adj">Word·한글과의 차이</li>
+        <li class="chip adj">컨텍스트 창 한도</li>
+      </ul>
+      <p style="font-size:14px; color:var(--text-3)">＋ 분리 파일(HTML·CSS·JS 역할)과 상대경로를 <b>여기서 처음 소개</b>한다 —
+         실습 ⑥에서 세 파일을 만들어야 하므로. 심화는 5구간.</p>
+
+      <h4>진행 순서</h4>
+      <div class="tw"><table class="tight">
+        <thead><tr><th style="width:96px">단계</th><th>내용</th><th class="num" style="width:56px">시간</th></tr></thead>
+        <tbody>
+          <tr><td>도입·연결</td><td><b>대화 vs 문서</b> 콜백 — 1주차의 “중간에 유실됐던” 경험과 연결</td><td class="num">2분</td></tr>
+          <tr><td>핵심 개념 ①</td><td>Markdown 짧게(제목·목록·체크박스)</td><td class="num">2분</td></tr>
+          <tr><td>핵심 개념 ②</td><td><code>prd.md</code> 정의 + 전문 조직 PRD와의 비교</td><td class="num">4분</td></tr>
+          <tr><td>핵심 개념 ③</td><td><b>각 항목이 AI 결과를 어떻게 바꾸는가</b>(“대상이 없으면 결과가 흔들린다”)</td><td class="num">4분</td></tr>
+          <tr><td>핵심 개념 ④</td><td><code>AGENTS.md</code> 정의 — <b>Skill과 분리된 단독 슬라이드</b></td><td class="num">3분</td></tr>
+          <tr><td>실습 ⑤</td><td><code>prd.md</code> 5항목 초안 → <b>사람이 1개 수정</b> → 저장</td><td class="num">10분</td></tr>
+          <tr><td>핵심 개념 ⑤</td><td>분리 파일 소개(index/style/script 역할) — 1주차 단일 파일과 대조</td><td class="num">3분</td></tr>
+          <tr><td>실습 ⑥</td><td>세 파일 생성 + <b>첫 화면 변화 확인</b></td><td class="num">12분</td></tr>
+          <tr><td>점검·복구</td><td>첫 작동이 안 되는 조에 한해 “어디서 멈췄는지” 확인</td><td class="num">4분</td></tr>
+        </tbody>
+      </table></div>
+
+      <div class="prac">
+        <div class="ph"><span class="pn">실습 ⑤</span><span class="pt">prd.md 초안 → 사람이 고쳐서 저장</span><span class="pm">10분 · CP1</span></div>
+        <dl>
+          <dt>하는 일</dt><dd>ChatGPT가 5항목 초안 → <b>AI 초안 중 1개를 학생이 직접 수정</b> → Codex로 프로젝트에 저장</dd>
+          <dt>완료 기준</dt><dd><b>가정이 실제로 바뀌고 그 이유가 기록되면</b> 완료</dd>
+          <dt>다음 사용</dt><dd>이후 전 구간의 기준 문서</dd>
+        </dl>
+      </div>
+      <div class="prac">
+        <div class="ph"><span class="pn">실습 ⑥</span><span class="pt">세 파일 + 첫 작동</span><span class="pm">12분 · 이 주차의 첫 성공 경험</span></div>
+        <dl>
+          <dt>하는 일</dt><dd>Codex가 세 파일을 만들고 구현. <b>학생은 계획을 승인하고 범위를 확인</b>한다</dd>
+          <dt>완료 기준</dt><dd><b>버튼을 누르면 화면이 바뀌는 첫 반응</b>이 나오면 완료</dd>
+          <dt>다음 사용</dt><dd>5구간 완성의 대상</dd>
+        </dl>
+      </div>
+
+      <h4>예상 질문</h4>
+      <ul>
+        <li>“<code>AGENTS.md</code>랑 Skill이랑 뭐가 달라요?” → <b>정확히 이 질문을 노리고 슬라이드를 나눴다</b></li>
+        <li>“<code>prd.md</code>를 웹페이지가 실행 중에 읽나요?” → 아니다(오해 교정)</li>
+      </ul>
+      <p><b>시간이 밀리면:</b> Skill 비교표를 발표자 노트로 내리고 <code>AGENTS.md</code> 정의만 화면에 남긴다.</p>
+    </div>
+  </div>
+
+  <!-- 4구간 -->
+  <div class="mod" id="m4">
+    <div class="head"><span class="n">4</span><p class="t">AI에게 큰 작업을 맡기는 시스템</p>
+      <span class="badge b-new">신설</span><span class="time">40분</span></div>
+    <div class="in">
+      <p class="goal"><span class="lb">완료 시점에 학생이 할 수 있어야 하는 것</span>
+        ① 맡기려는 일이 <b>순서가 정해진 일인지 판단이 필요한 일인지</b> 구분해 말한다 ·
+        ② <b>규칙 파일에 적을 것과 장치로 막을 것을 구분</b>해 자기 항목을 두 갈래로 나눈다 ·
+        ③ AI에게 규칙·완료 기준 초안을 시키고 <b>최소 한 군데를 자기 손으로 고쳐</b> 파일로 저장한다 ·
+        ④ <b>“일을 나눌수록 좋다”가 왜 항상 참이 아닌지</b> 근거를 들어 설명한다 ·
+        ⑤ 승인 창이 뜨는 순간의 의미를 말하고, 누르기 전에 확인할 것을 안다.</p>
+
+      <div class="note info">
+        <span class="tag">여기에 “하네스의 정의를 외운다”는 없다</span>
+        <p>반년 된 신조어라 <b>정의 암기는 가치가 낮고, 아직 합의된 표준 용어가 아니라는 사실 자체를 아는 것</b>이 더 중요하다.
+        용어가 아니라 <b>작업 자체</b>를 가르친다.</p>
+      </div>
+
+      <h4>다루는 개념 20 (신설 축)</h4>
+      <ul class="chips">
+        <li class="chip"><span class="p p0">P0</span>에이전트 vs 워크플로</li>
+        <li class="chip"><span class="p p1">P1</span>에이전트의 구성요소</li>
+        <li class="chip"><span class="p p1">P1</span>자율성의 정도</li>
+        <li class="chip"><span class="p p0">P0</span>하네스 엔지니어링</li>
+        <li class="chip"><span class="p p0">P0</span>하네스의 구성요소</li>
+        <li class="chip"><span class="p p1">P1</span>컨텍스트 엔지니어링</li>
+        <li class="chip"><span class="p p0">P0</span>규칙 파일 vs 기술적 강제</li>
+        <li class="chip"><span class="p p0">P0</span>Skill · SKILL.md</li>
+        <li class="chip"><span class="p p0">P0</span>AGENTS.md</li>
+        <li class="chip"><span class="p p0">P0</span>인간 승인·감독</li>
+        <li class="chip"><span class="p p0">P0</span>서브에이전트</li>
+        <li class="chip"><span class="p p0">P0</span>멀티에이전트</li>
+        <li class="chip"><span class="p p0">P0</span>멀티에이전트의 한계</li>
+        <li class="chip"><span class="p p0">P0</span>LLM과 대화해 하네스 만들기</li>
+        <li class="chip adj">scaffold·runtime·framework 구분</li>
+        <li class="chip adj">ReAct 루프</li>
+        <li class="chip adj">훅(hooks)</li>
+        <li class="chip adj">샌드박스 vs 승인정책</li>
+        <li class="chip adj">고전 MAS</li>
+        <li class="chip adj">오케스트레이터-워커 패턴</li>
+      </ul>
+
+      <h4>가르치는 순서 — 화살표는 “앞을 모르면 뒤가 이해되지 않는다”</h4>
+      <div class="flow">
+        <div class="step"><span class="lab">에이전트 vs 워크플로<span class="why">구간 전체의 프레임 — <b>제어권을 누가 갖는가</b></span></span></div>
+        <div class="arrow">↓</div>
+        <div class="pair">
+          <div class="step"><span class="lab">에이전트의 구성요소<span class="why">무엇으로 이뤄지나</span></span></div>
+          <div class="step"><span class="lab">자율성의 정도<span class="why">얼마나 맡길 수 있나</span></span></div>
+        </div>
+        <div class="arrow">↓</div>
+        <div class="step"><span class="lab">하네스 엔지니어링 → 하네스의 구성요소<span class="why">모델 “밖”을 설계한다는 관점</span></span></div>
+        <div class="arrow">↓</div>
+        <div class="step"><span class="lab">Skill · AGENTS.md<span class="why">두 파일이 무엇인지 <b>먼저</b> 알아야 다음 장이 충격으로 작동한다</span></span></div>
+        <div class="arrow">↓</div>
+        <div class="step key"><span class="lab">★ 규칙 파일 vs 기술적 강제<span class="why">이 구간의 핵심 — <b>“그런데 그건 강제가 아니다”</b> · 부탁 메모 vs 잠금장치</span></span></div>
+        <div class="arrow">↓</div>
+        <div class="step"><span class="lab">인간 승인·감독<span class="why">실제 강제가 일어나는 지점 — 승인 정책 × 샌드박스</span></span></div>
+        <div class="arrow">↓</div>
+        <div class="step key"><span class="lab">★ 서브에이전트 → 멀티에이전트 → 그 한계<span class="why">두 번째 핵심 — <b>완료 보고는 증거가 아니다</b></span></span></div>
+        <div class="arrow">↓</div>
+        <div class="step"><span class="lab">LLM과 대화해 하네스 만들기<span class="why">5구간으로 넘어가는 다리 — 대화만 하면 휘발된다</span></span></div>
+      </div>
+
+      <h4>각 덩어리를 어떻게 보여주는가</h4>
+      <div class="tw"><table class="tight">
+        <thead><tr><th style="width:22%">덩어리</th><th>화면에 반드시 있어야 하는 것</th></tr></thead>
+        <tbody>
+          <tr><td><b>에이전트 vs 워크플로</b></td>
+              <td>카드 2장을 나란히 놓는 게 아니라 <b>가운데 “제어권을 누가 갖나” 라벨을 붙인 연결선</b>으로 관계를 드러낸다.
+                  각 측 주장 최소 3개(제어·예측가능성·비용) + 아래 종합 한 줄</td></tr>
+          <tr><td><b>하네스 엔지니어링</b></td>
+              <td>연표 <b>앞에</b> “왜 이걸 먼저 말하는가”라는 경고를 둔다.
+                  2026-02 등장 → 04 정리 → 05 <b>“합의 없음” 선언</b> → 06 최초 정의 시도. 저자·URL은 노트로</td></tr>
+          <tr><td><b>★ 규칙 vs 기술적 강제</b></td>
+              <td>정의 → 판단 기준 → <b>나쁜 예 / 좋은 예</b> 3단.
+                  공식 문서가 스스로 <b>“컨텍스트일 뿐 강제가 아니다”</b>라고 밝힌 문장 + 우리 저장소가 그 간극을 인정한 실제 사례.
+                  <b>“부탁 메모 vs 잠금장치”</b> 이미지는 장식이 아니라 개념의 핵심 대비</td></tr>
+          <tr><td><b>인간 승인·감독</b></td>
+              <td>값을 표로 나열하지 않고 <b>색 분류 카드 + 판단 원칙 배너</b>.
+                  <b>실제 승인 다이얼로그 스크린샷</b>이 필요하다(공식 문서에 화면 인용이 없어 대체 불가 — 강사 준비 항목)</td></tr>
+          <tr><td><b>★ 서브·멀티에이전트와 한계</b></td>
+              <td>구조도는 번호+제목+<b>설명문</b> 3요소. 한계는 각 측 3개 주장 + 종합 한 줄.
+                  <b>실제로 3회 일어난 “완료 보고 실패” 사고 기록을 그대로 화면에</b> — 학생은 규칙을 설명하는 <b>실패</b>를 기억한다</td></tr>
+          <tr><td><b>대화로 하네스 만들기</b></td>
+              <td>순환 <b>앞에</b> “왜 파일로 고정해야 하는가(대화만 하면 휘발된다)”를 두고,
+                  7단계가 <b>4→5→6구간과 겹쳐 보이게</b> 배치. <b>“사람이 검토한다” 단계를 시각적으로 강조</b></td></tr>
+        </tbody>
+      </table></div>
+
+      <div class="prac">
+        <div class="ph"><span class="pn">하네스 실습</span><span class="pt">AI와 대화해 규칙을 만들고 파일로 고정하기</span><span class="pm">FAST 12분 / NORMAL 18분</span></div>
+        <p style="margin:2px 0 10px; font-size:14.5px"><b>학생 안내문:</b>
+          “지금까지는 AI에게 하나씩 부탁했습니다. 이번에는 <b>AI가 일하는 방식 자체를 먼저 정해</b> 보겠습니다.
+          내 프로젝트를 AI가 살펴보게 하고, 앞으로 지킬 규칙과 ‘다 됐다’의 기준을 AI가 초안으로 써 주면,
+          여러분이 그걸 고쳐서 파일로 저장합니다. 그 파일이 다음 시간부터 계속 쓰입니다.”</p>
+        <dl>
+          <dt>형태</dt><dd>단일 에이전트에게 <b>탐색자 → 기획자 → 구현자 → 검증자</b> 역할을 <b>순서대로</b> 시킨다.
+            병렬 실행은 요구하지 않는다(추가 설치·유료 플랜·실험 기능 없이 <b>12명 전원 동일 재현</b>이 가능한 게 이 방식을 택한 이유)</dd>
+          <dt>요청문</dt><dd>
+            <b>1차(진단)</b> “내 프로젝트 폴더를 먼저 읽고, 지금 어떤 파일이 있고 무엇이 부족한지 알려줘. <b>아직 코드는 고치지 마.</b>”<br>
+            <b>2차(초안)</b> “앞으로 지킬 규칙 5개와 ‘기능이 완성됐다’고 볼 확인 기준 3개를 초안으로 써 줘.”<br>
+            <b>3차(고정)</b> “내가 고친 내용을 반영해서 <code>AGENTS.md</code>로 저장해 줘.”<br>
+            <b>4차(검증)</b> “방금 만든 확인 기준으로 지금 화면을 점검하고 통과/실패를 항목별로 알려줘.”</dd>
+          <dt>필수 단계</dt><dd><b>학생이 초안을 직접 고치는 단계에 최소 4분.</b> 여길 건너뛰면 실습의 학습 목표가 통째로 사라진다</dd>
+          <dt>완료 기준</dt><dd>① 규칙 파일이 <b>실제로 저장돼 있다</b>(학생이 파일을 열어 확인)
+            ② <b>직접 고친 흔적이 최소 1군데</b> 있다 ③ 완료 기준 1개로 실제 점검을 돌려 통과/실패를 말할 수 있다</dd>
+          <dt>흔한 오류</dt><dd>AI가 진단 없이 바로 코드를 고침 · 초안이 너무 추상적이라(“좋은 코드를 쓴다”) 점검 불가 ·
+            <b>저장했다고 했는데 파일이 실제로 없음</b> · <b>학생이 초안을 그대로 승인하고 넘어감(가장 흔하고, 학습 목표를 정면으로 놓침)</b></dd>
+          <dt>복구</dt><dd>“읽기만 하고 수정하지 마”를 첫 문장에 두고 재요청 · “이 기준으로 통과/실패를 판정할 수 있어?”로 되물어 구체화 ·
+            <b>파일 목록을 직접 확인</b>하고 없으면 재저장(“만들었다”는 답을 증거로 인정하지 않는 습관을 여기서 가르친다) ·
+            강사가 “이 규칙 중 하나는 우리 프로젝트에 안 맞습니다. 어느 걸까요?”로 개입</dd>
+          <dt>정답 파일</dt><dd><b>학생용 정답 파일은 만들지 않는다</b> — 프로젝트마다 규칙이 달라야 하는 것이 이 실습의 요지</dd>
+        </dl>
+      </div>
+
+      <div class="note ok">
+        <span class="tag">이 구간이 다음으로 넘기는 것</span>
+        <p><b>학생이 고친 규칙 파일</b> → 5구간 구현의 전제 · <b>완료 기준 3개</b> → 6구간 점검의 기준 ·
+        <b>“검증 없이 믿지 않는다”는 습관</b> → 6구간 짝 점검의 태도</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5구간 -->
+  <div class="mod" id="m5">
+    <div class="head"><span class="n">5</span><p class="t">설계한 기준으로 화면과 핵심 기능 만들기</p>
+      <span class="badge b-move">화면 블록 이동</span><span class="time">90분 · 단일 실습 블록</span></div>
+    <div class="in">
+      <p class="goal"><span class="lb">학습 목표</span>
+        레퍼런스에서 <b>특성을 추출</b>해 <code>DESIGN.md</code>를 쓰고 화면에 최소 2가지를 적용한다.
+        파일 분리·상대경로·<code>file://</code> 실행 원리를 이해하고, 자신의 핵심 기능을
+        <b>정상값·다른 값·(필요 시) 빈 값</b>으로 검증하며, 수정 전 백업 습관을 들이고 범위 밖 기능을 제거한다.</p>
+
+      <h4>다루는 개념 24</h4>
+      <ul class="chips">
+        <li class="chip"><span class="p p1">P1</span>정보 구조(IA·Mini-IA)</li>
+        <li class="chip"><span class="p p1">P1</span>화면 순서·정보 우선순위</li>
+        <li class="chip"><span class="p p1">P1</span>레퍼런스 특성 활용</li>
+        <li class="chip"><span class="p p1">P1</span>화면 문구(라벨·버튼·결과·오류)</li>
+        <li class="chip"><span class="p p1">P1</span>기본 가독성·접근성</li>
+        <li class="chip"><span class="p p1">P1</span>DESIGN.md</li>
+        <li class="chip"><span class="p p2">P2</span>디자인 시스템·토큰</li>
+        <li class="chip"><span class="p p2">P2</span>디자인 참고자료·무료 에셋</li>
+        <li class="chip"><span class="p p0">P0</span>분리 파일(심화)</li>
+        <li class="chip"><span class="p p0">P0</span>상대경로</li>
+        <li class="chip"><span class="p p0">P0</span>브라우저 직접 실행</li>
+        <li class="chip"><span class="p p0">P0</span>기술 제한(모듈·fetch가 막히는 이유)</li>
+        <li class="chip"><span class="p p0">P0</span>공통 수동 제작 절차</li>
+        <li class="chip"><span class="p p0">P0</span>마지막 작동 상태 보호</li>
+        <li class="chip"><span class="p p1">P1</span>리팩터링</li>
+        <li class="chip"><span class="p p1">P1</span>Task 분할</li>
+        <li class="chip"><span class="p p1">P1</span>Plan First</li>
+        <li class="chip"><span class="p p1">P1</span>오류 보고 문형</li>
+        <li class="chip"><span class="p p1">P1</span>하네스 검증·가드레일</li>
+        <li class="chip"><span class="p p0">P0</span>Skill·AGENTS.md 적용</li>
+        <li class="chip adj">절대경로</li>
+        <li class="chip adj">file:// vs http://</li>
+        <li class="chip adj">GPTs·커스텀 지침과의 차이</li>
+        <li class="chip adj">(4구간 하네스 개념의 적용분)</li>
+      </ul>
+
+      <h4>진행 순서</h4>
+      <div class="flow">
+        <div class="step"><span class="lab">화면 기준 세우기<span class="why">IA · 화면 순서 · 레퍼런스 관찰 → <code>DESIGN.md</code> · 화면 문구 · 기본 접근성</span></span></div>
+        <div class="arrow">↓</div>
+        <div class="step key"><span class="lab">4구간에서 만든 규칙 파일 적용<span class="why">다리 — <b>“내가 정한 기준으로 AI에게 시킨다”</b></span></span></div>
+        <div class="arrow">↓</div>
+        <div class="step"><span class="lab">핵심 기능 구현<span class="why">입력 → 처리 → 결과 · 세 가지 값으로 확인</span></span></div>
+        <div class="arrow">↓</div>
+        <div class="step"><span class="lab">기술 제한과 실패 복구<span class="why">왜 막히는지, 어떻게 되돌리는지</span></span></div>
+      </div>
+
+      <h4>실습 진행 방식 — 90분 단일 블록 <span class="badge b-fix">2026-07-29 확정</span></h4>
+      <p>이 구간의 실습은 <b>쪼개지 않고 하나의 블록</b>으로 돌린다.
+         학생은 계속 만들고 있고, <b>강사가 중간중간 짧게 끼어들어 필요한 정보를 준다.</b>
+         “90분 드릴 테니 알아서 하세요”가 아니고, 그렇다고 설명할 때마다 전원을 멈추지도 않는다.</p>
+      <div class="tw"><table class="tight">
+        <thead><tr><th class="num" style="width:64px">시점</th><th>무엇</th><th class="num" style="width:56px">길이</th></tr></thead>
+        <tbody>
+          <tr><td class="num">T+0</td><td><b>전원</b> — 오늘 만들 것 + 4구간에서 만든 <b>완료 기준 3개</b> 확인</td><td class="num">5분</td></tr>
+          <tr><td class="num">T+5</td><td><b>화면 기준 세우기</b> — 레퍼런스 관찰 → <code>DESIGN.md</code> (실습 ⑦⑧)</td><td class="num">25분</td></tr>
+          <tr style="background:var(--mint-soft)"><td class="num">T+30</td><td><b>─── 구현 시작 · 여기서부터 학생은 계속 만든다 ───</b></td><td class="num">—</td></tr>
+          <tr><td class="num">T+40</td><td><b>끼어들기 ①</b> 화면 순서 — 화면 뼈대가 나올 시점</td><td class="num">3분</td></tr>
+          <tr><td class="num">T+55</td><td><b>정렬 ①</b> 화면에 기준 2가지 반영됐나 + 방금 나온 오류 하나 공유</td><td class="num">5분</td></tr>
+          <tr><td class="num">T+65</td><td><b>끼어들기 ②</b> 세 가지 값으로 확인하기 — 기능이 돌기 시작할 시점</td><td class="num">3분</td></tr>
+          <tr><td class="num">T+75</td><td><b>정렬 ②</b> 정상값·다른 값 통과했나 (실습 ⑩)</td><td class="num">5분</td></tr>
+          <tr><td class="num">T+82</td><td><b>끼어들기 ③</b> 범위 밖 기능 정리(실습 ⑪) + 마지막 작동 상태 저장</td><td class="num">3분</td></tr>
+          <tr><td class="num">T+87</td><td><b>마감</b> — 저장 확인 · 6구간 예고</td><td class="num">3분</td></tr>
+        </tbody>
+      </table></div>
+
+      <div class="note info">
+        <span class="tag">끼어들기 3원칙</span>
+        <p><b>① 3분을 넘지 않는다.</b> 넘으면 학생이 작업 맥락을 잃는다.<br>
+        <b>② “지금 필요한 것”만 넣는다.</b> 배경·연혁·비교는 발표자 노트나 FLEX로.<br>
+        <b>③ 말로 하고 넘기지 않는다.</b> 놓친 학생이 따라올 수 있게 화면에 남긴다.</p>
+      </div>
+
+      <p><b>이 방식이 요구하는 슬라이드 유형</b> — 지금 덱에는 “설명”과 “실습 지시” 두 가지뿐이라 두 종류가 더 필요하다.</p>
+      <ul>
+        <li><b>상시 참조판</b> — 작업 내내 띄워두는 판. 완료 기준 3개 · 요청문 예시 · 막혔을 때 확인 순서.
+            <b>이 구조의 핵심 장치</b>다. 끼어들기를 놓친 학생도 이걸 보고 따라오고, 강사가 순회하며 가리킬 수 있다.</li>
+        <li><b>정렬 슬라이드</b> — “여기까지 됐나” 체크 항목. 전원을 세우는 게 아니라 각자 확인용.</li>
+      </ul>
+
+      <h4>강사 시연 2개</h4>
+      <ul>
+        <li>앵커 예시 화면에 <b>“설명 → 입력 → 버튼 → 결과”</b> 순서를 손가락으로 짚기</li>
+        <li><code>실습예제/이탈재현/case_module/broken/</code>을 실제로 열어 <b>콘솔의 CORS 오류를 라이브로 재현</b></li>
+      </ul>
+
+      <div class="prac">
+        <div class="ph"><span class="pn">실습 ⑦</span><span class="pt">참고 서비스 1개 관찰 → 특성 4가지 메모</span><span class="pm">8분</span></div>
+        <dl>
+          <dt>학생 판단</dt><dd>무엇을 참고하고 무엇은 하지 않을지</dd>
+          <dt>완료 기준</dt><dd><b>복사 / 분위기 / 구조 / 사용성</b> 4구분으로 설명할 수 있으면 완료</dd>
+        </dl>
+      </div>
+      <div class="prac">
+        <div class="ph"><span class="pn">실습 ⑧</span><span class="pt">design.md 작성 → 화면에 적용</span><span class="pm">6분</span></div>
+        <dl>
+          <dt>하는 일</dt><dd>ChatGPT가 기준 초안 → Codex가 화면에 적용</dd>
+          <dt>완료 기준</dt><dd>화면에 <b>2가지 이상</b> 반영되면 완료</dd>
+          <dt>다음 사용</dt><dd>6구간에서 “기준대로 됐는지” 대조하는 대상</dd>
+        </dl>
+      </div>
+      <div class="prac">
+        <div class="ph"><span class="pn">실습 ⑨</span><span class="pt">빈 입력·오류 상태 문구</span><span class="pm">기능 유형상 필요할 때만</span></div>
+        <dl>
+          <dt>하는 일</dt><dd>초기·정상·빈/오류 상태 문구를 화면에 만든다 — 디자인과 테스트가 만나는 지점</dd>
+          <dt>완료 기준</dt><dd>상태가 화면에 실제로 보이면 완료</dd>
+          <dt>주의</dt><dd>단위변환처럼 <b>빈 값이 무의미한 기능은 생략</b></dd>
+        </dl>
+      </div>
+      <div class="prac">
+        <div class="ph"><span class="pn">실습 ⑩</span><span class="pt">기능 구현 + 세 가지 값 확인</span><span class="pm">12분</span></div>
+        <dl>
+          <dt>하는 일</dt><dd>Codex에게 <b>한 단계씩</b> 시키고 값마다 결과를 확인. <b>세 값의 결과는 학생이 판단</b></dd>
+          <dt>완료 기준</dt><dd><b>정상값 + 다른 값</b> 통과(빈 값은 기능 유형상 필요할 때만)</dd>
+        </dl>
+      </div>
+      <div class="prac">
+        <div class="ph"><span class="pn">실습 ⑪</span><span class="pt">구현 중 늘어난 범위 밖 기능 1개 제거</span><span class="pm">4분</span></div>
+        <dl>
+          <dt>학생 판단</dt><dd>무엇이 <code>prd.md</code> 범위 밖인가</dd>
+          <dt>완료 기준</dt><dd>범위 밖 기능이 <b>실제로 빠지면</b> 완료</dd>
+        </dl>
+      </div>
+
+      <h4>예상 질문</h4>
+      <ul>
+        <li>“레퍼런스 참고랑 베끼는 거랑 뭐가 달라요?” → <b>신호등 카드</b>로 경계 제시</li>
+        <li>“색만 다르면 접근성 통과 아닌가요?” → <b>색 옆에 글자</b> 원칙</li>
+        <li>“왜 화면이 안 뜨죠?” → <b>오류 보고 4조각 문형</b>으로 유도</li>
+        <li>“제 컴퓨터에서만 되는 것 같아요” → 절대경로 오해</li>
+      </ul>
+      <p><b>오류 대응 카드</b>(파일명 불일치 · 하위폴더 · 절대경로 상시 / 모듈 · fetch 예비)는
+         <b>발생한 조에만</b> 쓴다. 오류가 없으면 통째로 넘긴다.</p>
+    </div>
+  </div>
+
+  <!-- 6구간 -->
+  <div class="mod" id="m6">
+    <div class="head"><span class="n">6</span><p class="t">사용자 관찰과 개선</p><span class="time">≈65분</span></div>
+    <div class="in">
+      <p class="goal"><span class="lb">학습 목표</span>
+        대표 시나리오를 자체 점검하고 <b>AI Self Review와 사람 확인의 차이</b>를 설명하며,
+        가장 중요한 문제 하나를 골라 수정한 뒤 전체를 재실행한다. 3주차로 넘길 상태를 확인한다.</p>
+
+      <h4>다루는 개념 9</h4>
+      <ul class="chips">
+        <li class="chip"><span class="p p0">P0</span>대표 시나리오 자체 점검</li>
+        <li class="chip"><span class="p p1">P1</span>Self Review</li>
+        <li class="chip"><span class="p p1">P1</span>한 문제 수정(우선순위)</li>
+        <li class="chip"><span class="p p0">P0</span>마지막 작동 상태 보호</li>
+        <li class="chip"><span class="p p1">P1</span>오류 보고 문형</li>
+        <li class="chip"><span class="p p1">P1</span>하네스 검증·가드레일</li>
+        <li class="chip"><span class="p p0">P0</span>3주차 인수 상태</li>
+        <li class="chip"><span class="p p0">P0</span>ChatGPT Sites(예고)</li>
+        <li class="chip adj">배포와 URL</li>
+      </ul>
+
+      <h4>진행 순서</h4>
+      <div class="tw"><table class="tight">
+        <thead><tr><th style="width:96px">단계</th><th>내용</th><th class="num" style="width:56px">시간</th></tr></thead>
+        <tbody>
+          <tr><td>도입·연결</td><td>5구간 완성 리콜</td><td class="num">2분</td></tr>
+          <tr><td>핵심 개념 ①</td><td>대표 시나리오 자체 점검의 정의 + <b>사용자 테스트와의 차이</b></td><td class="num">5분</td></tr>
+          <tr><td>핵심 개념 ②</td><td><b>다섯 질문 점검</b></td><td class="num">3분</td></tr>
+          <tr><td><b>강사 시연</b></td><td><code>pick_선택추천</code>의 결함을 라이브로 재현 — 종류를 안 고른 상태에서 <b>“오늘의 추천: undefined”</b></td><td class="num">4분</td></tr>
+          <tr><td>짝 점검</td><td>6쌍 동시 진행(아래 상세)</td><td class="num">8~15분</td></tr>
+          <tr><td>핵심 개념 ③</td><td>Self Review는 <b>보조 점검</b>일 뿐(LLM 자기교정의 한계)</td><td class="num">4분</td></tr>
+          <tr><td>실습 ⑫</td><td>가장 중요한 문제 1개 수정 + 대표 흐름 전체 재실행</td><td class="num">12분</td></tr>
+          <tr><td>핵심 개념 ④⑤</td><td>문서-구현 동기화 · 저장 경계(3주차로 이월) · <b>3주차 인수 상태 확인</b>(폴더 자립)</td><td class="num">7분</td></tr>
+          <tr><td>마무리·예고</td><td>QA + 3주차 예고</td><td class="num">8분</td></tr>
+        </tbody>
+      </table></div>
+
+      <div class="prac">
+        <div class="ph"><span class="pn">짝 점검</span><span class="pt">짝이 쓰는 걸 돕지 않고 본다</span><span class="pm">FAST 8분 / NORMAL 15분 · 신설</span></div>
+        <p style="margin:2px 0 10px; font-size:14.5px">
+          3주차가 전제하는 <b>“사용자 관찰 경험”이 2주차에서 끊겨 있었다.</b> 짝 점검이 그 공백을 메운다 —
+          <b>공개가 아니므로 3주차의 공개 피드백을 침범하지 않는다.</b> 30초 이벤트로 끝내지 않는다.</p>
+        <div class="flow" style="padding:14px; margin-bottom:12px">
+          <div class="step key"><span class="lab">짝이 설명 없이 사용 → 제작자는 <b>돕지 않고 관찰</b><span class="why">개입 금지 — 도우면 관찰이 아니라 시연이 된다</span></span></div>
+          <div class="arrow">↓</div>
+          <div class="step"><span class="lab">막힌 지점 · 예상과 다른 행동 · 혼란스러운 문구를 <b>3칸 양식</b>에 기록</span></div>
+          <div class="arrow">↓</div>
+          <div class="step"><span class="lab">대표 시나리오 점검(다섯 질문)과 연결</span></div>
+          <div class="arrow">↓</div>
+          <div class="step"><span class="lab">수정 후보 1~3개 추출 → <b>영향도 × 수정비용</b>으로 우선순위</span></div>
+          <div class="arrow">↓</div>
+          <div class="step"><span class="lab">가능하면 하나 즉시 수정 → 전체 재실행</span></div>
+          <div class="arrow">↓</div>
+          <div class="step"><span class="lab">3주차 공개 피드백과 무엇이 다른지 정리</span></div>
+        </div>
+        <dl>
+          <dt>교실 운영</dt><dd><b>6쌍 동시 진행</b>(순차로 하면 90분이 든다) · 짝은 <b>사전 배정</b> · FAST에서는 역할 교대 라운드를 뺀다</dd>
+          <dt>핵심 규율</dt><dd>제작자는 <b>돕지 않는다.</b> 도우면 3주차가 전제하는 “타인이 막히는 지점을 본 경험”이 생기지 않는다</dd>
+        </dl>
+      </div>
+
+      <div class="prac">
+        <div class="ph"><span class="pn">실습 ⑫</span><span class="pt">가장 중요한 문제 하나를 고쳐서 다시 돌린다</span><span class="pm">12분 · CP3</span></div>
+        <dl>
+          <dt>학생 판단</dt><dd><b>무엇이 가장 중요한 문제인가</b>를 스스로 고른다</dd>
+          <dt>완료 기준</dt><dd>타깃 · User Flow · 완료 기준과 안 맞는 요소를 고치고 <b>흐름 전체를 재실행</b>하면 완료.
+            <b>표현만 바꾸는 것은 반려</b></dd>
+          <dt>다음 사용</dt><dd>3주차 인수 상태</dd>
+        </dl>
+      </div>
+
+      <h4>모바일 확인 (짝 점검에 얹음)</h4>
+      <p>학습 목표를 <b>딱 4가지로 제한</b>한다 — 좁은 화면에서 깨질 수 있음을 안다 / 폭을 줄여 한 번 확인한다 /
+         텍스트 겹침·가로 넘침·버튼 크기를 관찰한다 / 큰 수정은 3주차 후보로 기록한다.
+         <b>범위 밖:</b> 미디어 쿼리 문법 · 반응형 그리드 · 디자인 시스템 · 전 기기 테스트.</p>
+
+      <h4>예상 질문</h4>
+      <ul>
+        <li>“제가 만든 걸 제가 테스트한 게 유효한가요?” → 자체 점검의 한계. <b>그래서 짝 점검을 한다</b></li>
+        <li>“AI Self Review를 돌리면 끝난 거 아닌가요?” → 보조 점검일 뿐(오해 교정)</li>
+      </ul>
+      <p><b>시간이 밀리면:</b> QA·마무리 블록에서 최대 4분 흡수. 문서-구현 동기화는
+         “<code>prd.md</code>·<code>design.md</code>를 갱신한다” 한 줄 요약으로 축소.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 4 ============ -->
+<section id="s4">
+  <h2><span class="sec-num">4.</span>실습 체인 전체 — 앞의 산출물이 다음의 입력</h2>
+  <p>모든 실습은 <b>자유 주제와 템플릿 주제가 동일한 흐름</b>이다.
+     템플릿 주제(오늘의 활동 기록) 사용자는 실습 ①②에서 <b>주어진 한 줄 정의를 채택</b>해 정의하는 시간만 아끼고,
+     ③부터는 자유 주제와 <b>완전히 동일하게</b> 진행한다 — 완료 기준·검증도 같다.</p>
+
+  <div class="tw"><table class="tight">
+    <thead><tr>
+      <th class="c" style="width:40px">#</th><th style="width:15%">실습</th><th>입력</th><th>ChatGPT</th><th>Codex</th>
+      <th style="width:15%">학생이 판단하는 것</th><th>완료 기준</th>
+    </tr></thead>
+    <tbody>
+      <tr><td class="c"><b>①</b></td><td>불편 → 한 문장</td><td>내 불편·필요</td><td>문장 다듬기</td><td>—</td>
+          <td>어느 불편을 고를지</td><td>남이 대상·도움을 짐작</td></tr>
+      <tr><td class="c"><b>②</b></td><td>정의 확정 + 폴더</td><td>① 문장</td><td>—</td><td>새 폴더 생성·열기</td>
+          <td>정적 웹 범위인가</td><td>폴더가 열림</td></tr>
+      <tr><td class="c"><b>③</b></td><td>기능 삭제</td><td>아이디어</td><td>기능 후보 나열·비판</td><td>—</td>
+          <td><b>불필요한 1개 제거</b></td><td>핵심 기능 하나로 좁혀짐</td></tr>
+      <tr><td class="c"><b>④</b></td><td>User Flow</td><td>③ 핵심 기능</td><td>흐름 초안</td><td>—</td>
+          <td>3~5단계가 맞나</td><td>흐름을 말할 수 있음</td></tr>
+      <tr><td class="c"><b>⑤</b></td><td><code>prd.md</code></td><td>①~④</td><td>5항목 초안</td><td>프로젝트에 저장</td>
+          <td><b>AI 초안 1개 수정</b></td><td>다시 읽을 기준이 됨</td></tr>
+      <tr><td class="c"><b>⑥</b></td><td>세 파일 + 첫 작동</td><td><code>prd.md</code></td><td>—</td><td>세 파일 생성·구현</td>
+          <td>계획 승인 · 범위 확인</td><td><b>첫 작동이 보임</b></td></tr>
+      <tr style="background:var(--violet-soft)">
+          <td class="c"><b>H</b></td><td><b>하네스 만들기</b><br><span class="badge b-new">신설</span></td><td>3구간까지의 폴더</td>
+          <td colspan="2">한 에이전트에게 <b>탐색자 → 기획자 → 구현자 → 검증자</b> 순차 역할</td>
+          <td><b>초안 최소 1군데 직접 수정</b></td><td>파일 저장 + 고친 흔적 + 기준 1개로 점검</td></tr>
+      <tr><td class="c"><b>⑦</b></td><td>레퍼런스 관찰</td><td>참고 서비스 1개</td><td>특성 분해</td><td>—</td>
+          <td>무엇을 참고/안 할지</td><td>4구분으로 설명</td></tr>
+      <tr><td class="c"><b>⑧</b></td><td><code>design.md</code> 적용</td><td>④·⑦</td><td>기준 초안</td><td>화면에 적용</td>
+          <td>2가지 이상 적용됐나</td><td>화면에 2가지 반영</td></tr>
+      <tr><td class="c"><b>⑨</b></td><td>빈/오류 상태</td><td>④ 분기</td><td>문구 초안</td><td>상태 구현</td>
+          <td>문구가 적절한가</td><td>상태가 보임 <span style="color:var(--text-3)">(필요한 기능만)</span></td></tr>
+      <tr><td class="c"><b>⑩</b></td><td>기능 + 3값</td><td>⑥</td><td>—</td><td>한 단계씩 · 값 확인</td>
+          <td>세 값의 결과 판단</td><td>정상 + 다른 값 통과</td></tr>
+      <tr><td class="c"><b>⑪</b></td><td>불필요 제거</td><td>⑩</td><td>—</td><td>범위 밖 제거</td>
+          <td>무엇이 범위 밖인가</td><td>제외 범위 준수</td></tr>
+      <tr style="background:var(--mint-soft)">
+          <td class="c"><b>P</b></td><td><b>짝 점검</b><br><span class="badge b-new">신설</span></td><td>⑩·⑧</td>
+          <td colspan="2">도구 없음 — <b>짝이 쓰고 제작자는 관찰만</b></td>
+          <td>막힌 지점 · 혼란 문구</td><td>3칸 기록 + 수정 후보 1~3개</td></tr>
+      <tr><td class="c"><b>⑫</b></td><td>한 문제 수정</td><td>P·⑩·⑧</td><td>—</td><td>한 문제만 수정</td>
+          <td><b>가장 중요한 문제 선택</b></td><td>재실행 통과 <span style="color:var(--coral)">(표현만 바꾸면 반려)</span></td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="note info">
+    <span class="tag">막혔을 때의 공통 폴백</span>
+    <p>완성 프롬프트는 <b>학생 화면에 띄우지 않는다</b> — 강사가 막힌 학생에게만 안내한다.
+    그래도 막히면 강사 시연 또는 공통 폴백 프롬프트로 전환한다(<b>설치·호출 문제로 제작이 멈추지 않게</b>).
+    빠른 학생은 선택 확장(FLEX)으로 보낸다.</p>
+  </div>
+</section>
+
+<!-- ============ 5 ============ -->
+<section id="s5">
+  <h2><span class="sec-num">5.</span>사람이 판단하는 3지점</h2>
+  <p>“AI가 작성하고, 사람이 검토하고, 사람이 결정한다”가 <b>말이 아니라 실습으로</b> 박히는 자리다.
+     세 지점 모두 <b>학생이 실제로 무언가를 바꿔야</b> 완료로 인정한다.</p>
+  <div class="cards">
+    <div class="card coral">
+      <p class="k">CP1 · 3구간 실습 ⑤</p>
+      <p class="v"><b>AI가 쓴 <code>prd.md</code> 초안 중 1개를 고친다</b><br>
+      <span style="color:var(--text-3); font-size:13.5px">가정이 실제로 바뀌고 그 이유가 기록돼야 완료</span></p>
+    </div>
+    <div class="card coral">
+      <p class="k">CP2 · 2구간 실습 ③</p>
+      <p class="v"><b>AI가 제안한 기능 중 1개를 지운다</b><br>
+      <span style="color:var(--text-3); font-size:13.5px">제외 이유가 있고 기능이 실제로 빠져야 완료</span></p>
+    </div>
+    <div class="card coral">
+      <p class="k">CP3 · 6구간 실습 ⑫</p>
+      <p class="v"><b>가장 중요한 문제를 스스로 고른다</b><br>
+      <span style="color:var(--text-3); font-size:13.5px">표현만 바꾸면 반려 — 판단이 들어가야 한다</span></p>
+    </div>
+  </div>
+  <p>4구간의 하네스 실습도 같은 계열이다 — <b>“AI가 만든 규칙은 초안이고, 사람이 검토해 결정한다”</b>를
+     파일에 남는 형태로 경험시킨다. 그래서 <b>초안을 그대로 승인하고 넘어가는 것</b>이 이 실습의 가장 흔한 실패다.</p>
+</section>
+
+<!-- ============ 6 ============ -->
+<section id="s6">
+  <h2><span class="sec-num">6.</span>수업에 쓰는 예제</h2>
+
+  <h3>미니 MVP 5종 — 기능 유형별 견본</h3>
+  <p>각 예제는 <code>index.html</code> · <code>style.css</code> · <code>script.js</code> · <code>prd.md</code>로 구성된다.
+     <b>앵커 예시</b>는 강사 시연의 기준 프로젝트로 계속 쓰인다.</p>
+  <div class="tw"><table class="tight">
+    <thead><tr><th style="width:20%">예제</th><th style="width:16%">기능 유형</th><th>쓰이는 곳</th></tr></thead>
+    <tbody>
+      <tr><td><code>anchor_활동기록</code> <span class="badge b-move">앵커</span></td><td>기록·목록</td>
+          <td>1구간 타깃→페인포인트 도출 시연 · 2구간 핵심기능/제외 짚기 · 하네스 실습의 기준 프로젝트</td></tr>
+      <tr><td><code>calc_가상예산</code></td><td>계산</td><td>기능 유형 비교 · 학생 선택지</td></tr>
+      <tr><td><code>convert_단위변환</code></td><td>변환</td><td>기능 유형 비교 · <b>빈 값 확인이 무의미한 사례</b>(실습 ⑨ 생략 판단)</td></tr>
+      <tr><td><code>pick_선택추천</code></td><td>선택·추천</td><td>6구간 <b>결함 라이브 재현</b>(“오늘의 추천: undefined”)</td></tr>
+      <tr><td><code>timer_집중타이머</code></td><td>타이머</td><td>기능 유형 비교 · 학생 선택지</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>이탈 재현 5케이스 — 오류가 났을 때만 꺼내는 카드</h3>
+  <p>학생이 실제로 겪는 “안 돼요”를 <b>미리 재현해 둔</b> 폴더다.
+     상시 3종(파일명 불일치 · 하위폴더 · 절대경로)과 예비 2종(모듈 · fetch)으로 나뉜다.
+     <b>오류가 발생한 조에만</b> 쓰고, 아무도 안 겪으면 통째로 넘어간다.
+     <code>case_module</code>은 5구간 강사 시연(콘솔 CORS 오류)에 쓴다.</p>
+
+  <div class="note info">
+    <span class="tag">강사가 미리 준비할 것</span>
+    <p><b>Codex 승인 다이얼로그 실물 캡처</b> — 학생이 화면에서 보게 될 문구와 버튼 라벨은
+    <b>공식 문서 어디에도 없다.</b> 문서 인용만으로 화면을 설명하면 현장에서 어긋나므로,
+    <b>교육일 전에 강사가 직접 캡처</b>해야 한다.</p>
+  </div>
+</section>
+
+<!-- ============ 7 ============ -->
+<section id="s7">
+  <h2><span class="sec-num">7.</span>운영 정보</h2>
+
+  <div class="tw"><table class="tight">
+    <thead><tr><th>구간</th><th>대목차</th><th class="num" style="width:90px">시간</th><th>비고</th></tr></thead>
+    <tbody>
+      <tr><td class="num">1</td><td>주제와 사용자를 이해한다</td><td class="num">55분</td><td>기획</td></tr>
+      <tr><td class="num">2</td><td>MVP와 흐름을 결정한다</td><td class="num">50분</td><td>기획</td></tr>
+      <tr><td class="num">3</td><td>결정을 문서로 고정하고 첫 작동</td><td class="num">50분</td><td>기획 + <b>첫 작동이 여기서 나온다</b></td></tr>
+      <tr><td class="num">4</td><td>AI에게 큰 작업을 맡기는 시스템</td><td class="num">40분</td>
+          <td>전환·예고 + 하네스 실습</td></tr>
+      <tr style="background:var(--mint-soft)"><td class="num">5</td><td><b>화면과 핵심 기능 만들기</b></td><td class="num"><b>90분</b></td>
+          <td><b>이 주차의 메인 — 단일 실습 블록</b></td></tr>
+      <tr><td class="num">6</td><td>사용자 관찰과 개선</td><td class="num">45분</td><td>짝 점검 + 실습 ⑫</td></tr>
+      <tr><td class="num"></td><td><b>합계</b></td><td class="num"><b>330분</b></td><td>실제 수업(FAST) 기준 · 휴식 제외</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="note warn">
+    <span class="tag">이 시간표를 쓰는 방식</span>
+    <p>이전 설계의 실패가 정확히 <b>“분을 먼저 정하고 내용을 거기 맞춰 깎은 것”</b>이었다.
+    그 결과 개념당 설명 시간이 <b>3.9분</b>까지 떨어졌고, 실제 수업에서 <b>준비한 내용이 너무 빨리 소진돼 시간이 크게 남았다.</b><br>
+    그래서 이 표는 <b>배분의 기준이지 내용을 깎는 근거가 아니다.</b>
+    <b>개념당 최소 7분</b> 하한은 그대로 유효하고, 시간이 모자라면 개념의 깊이를 줄이는 대신
+    <b>완화 밸브</b>(인접 개념 병합 · FLEX 강등)를 쓰고 그 사유를 남긴다.</p>
+  </div>
+
+  <div class="cards">
+    <div class="card"><p class="k">진행 모드</p><p class="v"><b>FAST / NORMAL</b> 두 모드.
+      배율은 아직 <b>검증 전</b>이라 리허설에서 세션별 실제 종료 시각을 재서 확정한다</p></div>
+    <div class="card"><p class="k">인원·운영</p><p class="v">최대 12명 · 주강사 1 · 보조강사 1.
+      짝 점검은 <b>6쌍 동시</b>, 짝은 사전 배정</p></div>
+    <div class="card"><p class="k">별도 평가</p><p class="v"><b>없음.</b> 강사는 실습 지원과 <b>최소 완료 상태 확인</b>만 한다</p></div>
+    <div class="card"><p class="k">추가 설치</p><p class="v"><b>없음.</b> 유료 플랜·실험 기능 토글 없이 기본 대화만으로 전원 재현 가능해야 한다</p></div>
+  </div>
+</section>
+
+<!-- ============ 8 ============ -->
+<section id="s8">
+  <h2><span class="sec-num">8.</span>3주차로 넘기는 것</h2>
+  <div class="tw"><table class="tight">
+    <thead><tr><th style="width:36%">2주차가 넘기는 것</th><th>3주차에서의 쓰임</th></tr></thead>
+    <tbody>
+      <tr><td><b>로컬에서 작동하는 MVP</b></td><td>저장·배포의 대상</td></tr>
+      <tr><td><code>prd.md</code></td><td>최종 범위를 확정하는 기준</td></tr>
+      <tr><td><b>작업 환경 파일</b>(규칙·완료 기준) <span class="badge b-new">4구간 신설분</span></td>
+          <td><b>새로 만들지 않고 이어받아 고쳐 쓴다</b></td></tr>
+      <tr><td><b>수정·복구 경험</b></td><td>재배포할 때 그대로 재사용</td></tr>
+      <tr><td><b>타인 관찰 경험</b>(짝 점검) <span class="badge b-new">6구간 신설분</span></td>
+          <td>공개 피드백으로 확장 — 3주차가 전제하던 <b>공백을 메운다</b></td></tr>
+    </tbody>
+  </table></div>
+  <div class="note ok">
+    <span class="tag">경계</span>
+    <p>2주차는 <b>“무엇을 저장할지 정의”하는 데서 멈춘다.</b>
+    저장 구현 · Netlify 공개 · 공개 URL · 피드백 · 재배포 · 발표는 전부 <b>3주차 몫</b>이다.
+    짝 점검은 공개가 아니므로 이 경계를 넘지 않는다.</p>
+  </div>
+</section>
+
+<!-- ============ 9 ============ -->
+<section id="s9">
+  <h2><span class="sec-num">9.</span>확정·미확정 요약</h2>
+
+  <h3>이번 버전에서 바뀐 것</h3>
+  <ul>
+    <li><b>4구간이 새로 생겼다</b> — “AI에게 큰 작업을 맡기는 시스템”. 개념 20개(신규 19청크)와 하네스 실습이 들어간다.</li>
+    <li><b>화면 구조가 5구간 앞단으로 이동</b>했다 — 실습 ⑦~⑪ 체인이 통째로 함께 움직여서 기준을 정한 직후 구현으로 이어진다.</li>
+    <li><b>짝 점검이 6구간에 신설</b>됐다 — 3주차가 전제하던 “타인 관찰 경험”의 공백을 메운다.</li>
+    <li><b>분리 파일·상대경로는 3구간에 그대로 둔다</b> — 실습 ⑥에서 세 파일을 만들어야 하므로 되돌리지 않는다.</li>
+    <li>개념 재료가 <b>60 → 79청크</b>, 출처가 <b>138 → 175개</b>로 늘었다.</li>
+    <li><b>5구간 실습을 90분 단일 블록으로 확정</b>했다(2026-07-29) — 쪼개지 않고 한 번에 돌리되,
+        강사가 중간에 <b>3분짜리 끼어들기와 정렬 지점</b>으로 정보를 넣는다. 시간표도 이에 맞춰 확정(총 330분).</li>
+  </ul>
+
+  <h3>아직 정해지지 않은 것</h3>
+  <div class="tw"><table class="tight">
+    <thead><tr><th style="width:44px">#</th><th style="width:26%">항목</th><th>내용</th><th style="width:100px">필요한 것</th></tr></thead>
+    <tbody>
+      <tr><td class="num">1</td><td><b>모바일 “카드 쌓임” 관찰</b></td>
+          <td>현재 예제 5종은 전부 카드가 <b>1개뿐</b>이라 좁은 화면에서도 <b>쌓일 것이 없다</b> — 시연 자체가 불가능.
+              ⓐ 관찰 목록에서 빼거나 ⓑ 다중 카드 예제를 새로 만들어야 한다</td>
+          <td><span class="badge b-open">사람 결정</span></td></tr>
+      <tr><td class="num">2</td><td><b>4구간이 40분에 들어가는가</b></td>
+          <td>시간표는 확정됐지만 4구간은 개념이 20개다. 개념 구성은 <b>기존안을 그대로 두고</b>,
+              실제로 넘치는지는 리허설에서 본 뒤 완화 밸브를 적용한다</td>
+          <td><span class="badge b-hold">리허설</span></td></tr>
+      <tr><td class="num">3</td><td><b>FAST 모드 배율</b></td><td>추정값이라 리허설에서 실제 종료 시각을 재야 한다</td>
+          <td><span class="badge b-hold">리허설</span></td></tr>
+      <tr><td class="num">4</td><td><b>하네스 실습 실행</b></td><td>12명 교실에서 “초안 고치기” 소요와 <b>파일 미생성 오류율</b>을 재본 적이 없다</td>
+          <td><span class="badge b-hold">리허설</span></td></tr>
+      <tr><td class="num">5</td><td><b>짝 점검 실행</b></td><td>6쌍 동시 진행의 실제 소요와 <b>소음 수준</b> 미확인</td>
+          <td><span class="badge b-hold">리허설</span></td></tr>
+      <tr><td class="num">6</td><td><b>승인 다이얼로그 캡처</b></td><td>강사가 교육일 전 실물 캡처</td>
+          <td><span class="badge b-open">강사 준비</span></td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="note warn">
+    <span class="tag">⚠ 문서와 실물의 상태 차이</span>
+    <p>이 문서는 <b>확정된 설계</b>다. 저장소의 <code>2주차_초안.md</code>와 <code>강의덱.html</code>은
+    아직 <b>개편 전 구조</b>이며, 덱 재집필은 <b>표본 검증 통과 후</b> 시작한다.
+    지금 덱을 열어 보면 이 문서와 다르게 보이는 것이 정상이다.</p>
+  </div>
+</section>
+
+<!-- ============ 10 ============ -->
+<section id="s10">
+  <h2><span class="sec-num">10.</span>원본 문서</h2>
+  <p>이 문서는 아래를 한 장으로 합친 <b>읽기용 요약</b>이다. 내용이 어긋나면 <b>언제나 원본이 이긴다.</b></p>
+  <ul class="srcs">
+    <li><code>courses/바이브코딩/커리큘럼_기준안.md</code>
+        <span class="role">§9 2주차 큰 설계 · §11 개념 배치표 · §12 주차 간 연결 — <b>구간 경계의 정본</b></span></li>
+    <li><code>.../2주차/자료/2주차_개념KB.md</code>
+        <span class="role">79청크 — <b>모든 사실의 정본.</b> 통독하지 말고 청크 인덱스에서 필요한 것만 회수</span></li>
+    <li><code>.../2주차/자료/2주차_실습안_검증결과.md</code>
+        <span class="role">실습별 안내문·요청문·오류·복구 — <b>실습 상세의 정본</b></span></li>
+    <li><code>.../2주차/2주차_최종수정계획.md</code>
+        <span class="role">§7 실습 체인 ①~⑫ · 구간별 슬라이드 계획</span></li>
+    <li><code>reports/create-slides-quality/week2_revised_curriculum.md</code>
+        <span class="role">이번 개편의 배경과 판단 근거</span></li>
+    <li><code>reports/create-slides-quality/module4_ai_work_system_blueprint.md</code>
+        <span class="role">4구간 상세 — 개념 순서 · 화면 요건</span></li>
+    <li><code>reports/create-slides-quality/module5_6_harness_validation_blueprint.md</code>
+        <span class="role">5·6구간 상세 — 짝 점검 · 모바일</span></li>
+    <li><code>reports/create-slides-quality/week2_module_plan.md</code>
+        <span class="role">구간별 진행 순서와 예상 질문의 출처</span></li>
+  </ul>
+</section>
+
+<footer class="doc">
+  <p><b>2주차 강의 내용 정리</b> · 설계 기준일 2026-07-28 · 문서 작성 2026-07-29</p>
+  <p>원본 문서를 수정하지 않고 새로 만든 <b>공유용 요약본</b>이다. 내용이 원본과 어긋나면 §10의 원본을 따른다.</p>
+</footer>
+
+</main>
+</div>
+</div>
+</body>
+</html>

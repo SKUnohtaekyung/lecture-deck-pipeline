@@ -7,6 +7,9 @@
 > 범위: `sessions/2주차/강의덱.초안/part-01,02,03,05,07.html` 편집 + `deck.contract.json`(108→107) + `2주차_초안.md` 동기화
 > 백업: `sessions/2주차/_backup_2026-07-27/`(강의덱.html 176KB · 강의덱.초안/ 196KB · 2주차_초안.md 52KB · deck.contract.json 1.0KB)
 
+> ⛔ **2026-08-04**: 위에서 언급한 2주차 백업 폴더(`_backup_2026-07-27/`·`_backup_v2_2026-07-27/`·`_backup_harness_visual_2026-08-03/`)는 **삭제됐다.** 이 문장은 그 시점의 실측 기록이라 그대로 둔다. 앞의 2종은 git 추적 중이었어 삭제 커밋 직전 시점에서 복원 가능하다. 처분 근거·복원 방법 정본: `courses/바이브코딩/sessions/2주차/개정이력/README.md` §「삭제된 백업 폴더 3종」.
+
+
 ## 1. 8장 Before/After 지표
 
 측정 스크립트: 각 슬라이드 섹션에서 `s-head`(로고·브랜드) 제거 후 텍스트 글자수·`div/p/li/h*/table/tr` 블록 수·콘텐츠 시각자료 수(`svg`[로고 제외]+`table`+`img`)를 집계.

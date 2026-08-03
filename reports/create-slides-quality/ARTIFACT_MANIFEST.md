@@ -10,6 +10,7 @@
 - **복원 파일 3개**(원 에이전트가 파일을 쓰지 않아 대화 기록에서 복원, 인용 표본 검증 완료): `pipeline_depth_contract_audit.md`(8,497B) · `visual_system_revision_plan.md`(7,894B) · `week2_curriculum_options.md`(12,265B). 세 파일 모두 서두에 "이 문서는 … 오케스트레이터가 복원한 것이다. 원 에이전트가 파일을 쓰지 않아 대화에만 존재하던 결과를 보존한 것이며, 인용은 표본 검증됐다"는 동일 고지문이 있음을 이 세션에서 직접 확인했다(`FINAL_DECISION_PACKET.md` §16 하네스 결함 이력과 연동).
 - **Git**: 브랜치 `main`, 변경·미추적 총 **29**개 경로(`git status --porcelain` 재실행 재확인), 추적 파일 **18개 +677/−152**(`git diff --stat` 재실행 재확인), `reports/` 전체 **미추적**(`?? reports/` 한 줄).
 - **백업 2종 실재**: `sessions/2주차/_backup_2026-07-27/` · `sessions/2주차/_backup_v2_2026-07-27/`(이 세션 `ls` 재확인).
+  - > ⛔ **2026-08-04 삭제됨 — 이 문서의 다른 백업 언급도 전부 같다.** 위 2종은 그 시점의 실측 기록이라 문장을 고치지 않았다. 두 폴더 다 **git 추적 중이었으므로 삭제 커밋 직전 시점에서 전량 복원된다**: `git show <삭제전커밋>:courses/바이브코딩/sessions/2주차/_backup_2026-07-27/<파일>`. 삭제 근거와 8/3 백업(`_backup_harness_visual_2026-08-03/`, 미추적 81MB)의 처분 내역은 `courses/바이브코딩/sessions/2주차/개정이력/README.md` §「삭제된 백업 폴더 3종」이 정본이다.
 - **PM PDF 4종 실재**: `sessions/references/PM_1.pdf` · `PM_2.pdf` · `PM_3.pdf` · `PM_4.pdf`(이 세션 재확인).
 - **2주차 덱 107장**(`sessions/2주차/강의덱.html`의 `<section data-slide="…">` 태그 수, 이 세션에서 정규식 재실행해 재확인 — CSS 선택자 오염을 배제하기 위해 `<section` 접두 패턴으로 한정).
 - **개념KB 청크 60개**(`sessions/2주차/자료/2주차_개념KB.md`의 `[C-…]` 헤딩 수, 이 세션에서 재집계).
