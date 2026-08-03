@@ -42,8 +42,11 @@
        kit의 .work-step은 b·span에만 크기를 걸어 두어, 클래스 없는 맨 텍스트와
        <p>가 컨테이너 기본값 16px를 그대로 물려받는다. 컨테이너에 직접 건다.
        (선례: 46장 242건 4,537자가 이 경로로 하한 미만이 됐다) */
-    .slide .work-step{ font-size:22px; line-height:1.45; }
-    .slide .work-step p{ margin:0; font-size:22px; line-height:1.45; }
+    .slide .work-step{ font-size:var(--fs-body); line-height:1.45; }
+    .slide .work-step p{ margin:0; font-size:var(--fs-body); line-height:1.45; }
+    /* ⚠️ line-height 1.45는 리터럴로 둔다. 값이 같은 토큰(`--lh-lead`)이 있지만
+          그건 「리드」 역할이라, 여기 쓰면 **값은 맞고 의미는 틀린** 배선이 된다.
+          토큰은 값이 같다고 쓰는 것이 아니라 역할이 같을 때 쓴다. */
 
     /* ② 역할 위계 — 박스 제목 26/800 · 박스 설명 20/500 ────────────────
        2026-07-31 사용자 결정: "제목과 설명 폰트 사이즈가 똑같다. 설명이 더
@@ -73,13 +76,13 @@
     .deck .slide[data-slide] .work-step > b,
     .deck .slide[data-slide] .card > h3,
     .deck .slide[data-slide] .cc-side > h3{
-      font-size:26px; font-weight:800; line-height:1.25; }
+      font-size:var(--fs-box-title); font-weight:800; line-height:var(--lh-box-title); }
     .deck .slide[data-slide] .desc{
-      font-size:20px; font-weight:500; line-height:1.5; }
+      font-size:var(--fs-box-desc); font-weight:500; line-height:var(--lh-box-desc); }
 
     /* ③ 카드·박스 간 여백 — kit 기본 14px는 촘촘하다 ────────────────────
        사용자 지시: "각 카드별 여백이 너무 적어" · "박스가 지금 너무 촘촘해". */
-    .slide .grid-2, .slide .grid-3{ gap:18px; }
+    .slide .grid-2, .slide .grid-3{ gap:var(--sp-18); }
 
     /* ④ 빈 이미지 슬롯을 학생 화면에 표시하지 않는다 ────────────────────
        사용자 지시: "이미지를 넣을 공간에 박스로 영역을 표시해 놓는데 이거를
@@ -106,7 +109,7 @@
           늘리는 대신 이해를 돕는 시각자료를 함께 두는 쪽을 먼저 검토하라.
        ⚠️ .roadmap을 이 주차 deck.contract.json의 layout_families에 등재할 것. */
     .roadmap .s-full{ bottom:54px; display:flex; flex-direction:column; }
-    .roadmap .rm-lead{ margin:8px 0 0; font-size:22px; font-weight:700;
+    .roadmap .rm-lead{ margin:8px 0 0; font-size:var(--fs-body); font-weight:700;
       color:var(--blue); line-height:1.4; }
     .roadmap .rm-track{ flex:1 1 auto; min-height:0; display:flex;
       align-items:stretch; gap:10px; margin:20px 0 0; }
@@ -118,7 +121,7 @@
     .roadmap .rm-step .rm-n{ flex:0 0 auto; width:44px; height:44px; border-radius:50%;
       background:var(--blue); color:var(--white); display:grid; place-items:center;
       font-size:20px; font-weight:800; }
-    .roadmap .rm-step > b{ font-size:26px; font-weight:800; color:var(--ink);
+    .roadmap .rm-step > b{ font-size:var(--fs-box-title); font-weight:800; color:var(--ink);
       line-height:1.22; }
     /* 크기·굵기·행간은 ②의 .desc 티어가 준다 — 여기서 다시 적지 않는다.
        (다시 적으면 명시도가 낮아 조용히 무시되고, 「있는데 안 듣는 규칙」이 된다) */

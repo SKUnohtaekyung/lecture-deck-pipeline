@@ -60,6 +60,8 @@ python .claude/skills/ui-ux-pro-max/scripts/search.py ...
 python scripts/verify_skill_setup.py
 python scripts/verify_kit.py
 python scripts/verify_subject_isolation.py   # 스킬 본문에 과목 고유 값이 남아 있으면 FAIL
+python scripts/verify_declared_vs_enforced.py        # 선언(정본표) ↔ kit 실효값 불일치(유형⑤)
+python scripts/verify_declared_vs_enforced.py --list # 등재된 알려진 불일치까지 전부
 python scripts/verify_required_statements.py <주차>   # 개념KB 필수 진술이 덱 화면에 남았는가(기본 WARN·--strict FAIL)
 python scripts/verify_judgement_log.py <주차>         # 집필노트 판단 기록 정합(D2 근거·처분값·필수 보류 금지)
 python -m unittest tests.test_deck_pipeline tests.test_image_pipeline tests.test_quality_gates
@@ -107,6 +109,12 @@ python scripts/check_title_survival.py <주차>       # 초안 제목이 덱 화
   family 오판·목차 세로 예산·실습 번호·이미지 매니페스트) — 정본 `references/phases/04-조립.md`
   R-MOVE-01. 노트를 건드리는 작업은 `verify_notes.py --snapshot`/`--baseline`으로 감싼다
   (R-NOTE-02). **2026-08-03 실측: 1·2주차 노트가 둘 다 FAIL 상태였고 아무도 안 돌리고 있었다.**
+- ⚠️ **규칙 문서를 고쳤으면 집행부도 고쳤는지 확인한다**(유형⑤ · `verify_declared_vs_enforced.py`).
+  「정본표에 값을 적었다」와 「kit CSS가 그 값을 낸다」는 다른 일이다. 실측: 정본표가
+  선언한 값 중 **8건이 kit에서 실현되지 않고** 각 주차 shell 오버라이드에만 있었다 —
+  kit을 직접 쓰거나 다른 과목에 배포하면 원상복귀하는 상태다. 못 고치는 사정이 있으면
+  **사유와 함께 등재**하고, 등재 없는 새 불일치는 FAIL이다.
+  ⚠️ **불일치를 없애려고 문서 쪽 값을 낮추지 마라** — 규칙을 현실에 맞춰 깎는 것이다.
 - **수정 라운드를 마칠 때 「이번 지적 중 규칙층에 올릴 것」을 판정한다**(R-FEEDBACK-01 ·
   정본 `references/phases/08-검증.md`). 같은 지적이 2회 이상이면 슬라이드 문제가 아니라
   규칙 문제다. **등재 위치를 반드시 적는다** — 「고쳤다」로 끝내면 그 주차 shell에만 남아
