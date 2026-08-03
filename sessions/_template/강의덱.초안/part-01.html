@@ -1,25 +1,13 @@
 <!-- ============ PART 1 전환 (불변요소 — 모든 파트 앞 필수 · 헤더 없음 · 아이소 큐브 클러스터) ============ -->
 <section class="slide part-divider" data-slide="P1">
-  <svg class="dv-hero" viewBox="0 0 1280 720" fill="none" aria-hidden="true"><!-- 아이소메트릭 큐브 클러스터(표지 §11과 동일 토큰) + 코랄 스파크 -->
-    <polygon points="640,230 710,265 640,300 570,265" fill="var(--blue-soft)"/>
-    <polygon points="570,265 640,300 640,370 570,335" fill="var(--blue)"/>
-    <polygon points="640,300 710,265 710,335 640,370" fill="var(--mint)"/>
-
-    <polygon points="560,150 620,180 560,210 500,180" fill="var(--blue-soft)"/>
-    <polygon points="500,180 560,210 560,270 500,240" fill="var(--blue)"/>
-    <polygon points="560,210 620,180 620,240 560,270" fill="var(--mint)"/>
-
-    <polygon points="650,110 700,135 650,160 600,135" fill="var(--blue-soft)"/>
-    <polygon points="600,135 650,160 650,210 600,185" fill="var(--blue)"/>
-    <polygon points="650,160 700,135 700,185 650,210" fill="var(--mint)"/>
-
-    <circle cx="718" cy="122" r="7" fill="var(--coral)"/>
-  </svg>
-  <div class="pd-dots" aria-hidden="true"><!-- ✏️ 파트 수만큼 도트, 현재 파트에 is-active -->
-    <span class="pd-dot is-active"></span><span class="pd-dot"></span>
-    <span class="pd-dot"></span><span class="pd-dot"></span>
-  </div>
-  <p class="pd-eyebrow">PART 1 / 4</p><!-- ✏️ N=전체 파트 수 -->
+  <!-- ⚠️ 도형·도트·PART n/N은 **JS가 자동 생성**한다(shell의 hydratePartDivider).
+       손으로 큐브를 그리거나 도트를 세지 마라 — 파트 수가 바뀌면 전부 어긋난다.
+       종전 이 템플릿은 큐브 3개와 도트 4개를 하드코딩하고 있었고, 자동 생성기
+       자체가 shell에 없어 **새 주차가 첫 조립부터 verify_deck FAIL 1**이었다
+       (「파트 전환 자동 생성기 누락」, 2026-08-03 실측·수정). 빈 훅으로 둔다. -->
+  <svg class="dv-hero" viewBox="0 0 1280 720" fill="none" aria-hidden="true"><!-- JS가 현재 파트 번호만큼 아이소 큐브를 자동 생성 --></svg>
+  <div class="pd-dots" aria-hidden="true"><!-- JS가 전체 파트 수만큼 자동 생성 --></div>
+  <p class="pd-eyebrow">PART</p><!-- JS가 PART n / N으로 자동 갱신 -->
   <h2 class="pd-title">파트 제목</h2><!-- ✏️ 한 줄 고정(nowrap). 실측 56px·상자 1080px → 한글 약 19자까지 들어간다. 짧을수록 좋다 -->
 
   <p class="pd-sub">이 파트에서 다루는 것 한 줄</p>
@@ -38,7 +26,11 @@
      · 금지: 장식 아이콘 SVG · 스텝 6개 이상 · .rm-* 재정의.
      · 이 장은 박스만 남기 쉽다 — 시각자료를 함께 둘 수 있는지 먼저 보라.
      · .roadmap을 deck.contract.json의 layout_families에 등재할 것. -->
-<section class="slide roadmap" data-slide="M1">
+<!-- ⚠️ data-shape — 결정표에서 정한 정보 모양을 그대로 적는다(R-BOX-01b).
+     정준 12종만: declaration·concept·comparison·contrast·flow·containment·
+     mapping·classification·numeric·structure·checklist·screen-operation
+     안 적으면 「모양의 1순위가 시각물인데 시각자료 0」 검사가 **측정 불가**가 된다. -->
+<section class="slide roadmap" data-slide="M1" data-shape="flow">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
     <span class="s-line"></span><div class="s-team">팀명<br>부제</div>
@@ -46,16 +38,22 @@
   <div class="s-full">
     <h2 class="s-title">1교시 이렇게 배웁니다</h2><!-- ✏️ 교시 번호만 바꾼다 -->
     <p class="rm-lead">이 교시에서 무엇을 만들고 나가는지 한 줄.</p><!-- ✏️ -->
-    <!-- ⚠️ 시각자료 자리 — 지우지 말고 채워라.
+    <!-- ★ 시각자료 자리 — 아래 한 줄의 주석을 풀어 쓴다.
          2주차 교시 로드맵 5장은 **장당 박스 12.6개(기준판의 2.3배)에 시각자료 0**이었다.
-         「박스만 있는 장」이 되는 가장 흔한 자리가 여기다. 경고 문구만으로는 안 막힌다.
+         「박스만 있는 장」이 되는 가장 흔한 자리가 여기다.
          무엇을 넣나: 이 교시의 산출물 실제 캡처 · 흐름 다이어그램(D-flow-h) ·
-         화면 목업 중 하나. 정말 넣을 것이 없으면 스텝을 줄여 여백으로 두어라 —
-         스텝을 늘려 채우지 마라(그게 박스 남용이다).
-         쓰지 않을 때는 이 figure를 **삭제**한다(빈 슬롯으로 남기지 않는다). -->
+         화면 목업 중 하나. 주석을 풀면 CSS(.rm-visual)가 트랙을 자동으로 좁힌다.
+         정말 넣을 것이 없으면 **스텝을 줄여 여백으로 두어라** — 스텝을 늘려
+         채우지 마라(그게 박스 남용이다).
+         ⚠️ 주석으로 두는 이유: 빈 `asset-slot`을 그대로 두면 R-QC-18(상시 FAIL)이
+            「채우기로 해 놓고 안 채운 자리」로 잡는다. 템플릿이 첫 조립부터 FAIL을
+            만들면 게이트를 무시하는 습관이 생긴다 — 쓸 때 풀어라.
+         ⚠️ 넣지 않기로 했으면 그 판단이 맞는지 조립 후 확인된다:
+            run_deck_checks가 「교시 로드맵에 시각자료 0」을 이름으로 지목한다.
     <figure class="asset-slot asset-slot--support rm-visual" data-image-purpose="explanatory"
       data-image-state="expected" data-expected-src="자료/images/roadmap-01.png"
       role="img" aria-label="이 교시에서 만들어 가는 결과물의 실제 화면"></figure>
+    -->
     <div class="rm-track"><!-- ✏️ 스텝 3~5개. 5개면 class="rm-track is-5" -->
       <div class="rm-step">
         <span class="rm-n">1</span>

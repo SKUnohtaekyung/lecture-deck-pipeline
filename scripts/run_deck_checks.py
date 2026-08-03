@@ -227,11 +227,49 @@ class Runner:
         print(f"\n=== 렌더·타이포 감사 (audit_all) ===\n  {line1}\n  {line2}\n  {line3}")
         for o in ((d.get("render") or {}).get("offenders") or [])[:8]:
             print(f"    · {o.get('id')}: " + " ".join(map(str, o.get("d") or [])))
+        # ★ 「사람이 다시 볼 자리」 — 임계로 막지 않고 이름으로 지목한다.
+        #   판정이 아니라 보고다. 저밀도 자체는 결함이 아니고, 의도된 것인지
+        #   아닌지는 사람이 가른다(R-DENS-03).
+        # ⚠️ 목록은 감사기가 상한을 두고 자른다. **자른 사실을 반드시 밝힌다** —
+        #   「20장」으로 찍히면 실제 51장이 20장으로 읽힌다. 조용한 절단이
+        #   「다 봤다」로 읽히는 것이 이 저장소가 반복해서 겪은 실패다.
+        for label, key, count_key, fmt in (
+            ("박스만 있고 시각자료가 없는 장", "boxHeavyNoVisual", "boxHeavyNoVisualCount",
+             lambda r: f"{r[0]}  박스 {r[1]} · 잉크 {r[2]}"),
+            ("잉크는 낮은데 박스는 많은 장(큰 빈 상자 의심)", "lowInkManyBoxes", None,
+             lambda r: f"{r[0]}  잉크 {r[1]} · 박스 {r[2]}"),
+            ("교시 로드맵인데 시각자료 0", "roadmapNoVisual", None,
+             lambda r: f"{r[0]}  박스 {r[1]}"),
+            ("껍데기 상자가 2개 이상인 장", "hollowSlides", None,
+             lambda r: f"{r[0]}  빈상자 {r[1]}"),
+            ("정보 모양의 1순위가 시각물인데 시각자료 0", "visualShapeNoVisual", None,
+             lambda r: f"{r[0]}  모양 {r[1]} · 박스 {r[2]}"),
+            ("이 덱에서 가장 얇은 장(상대값·기준 미달 아님)", "thinnest", None,
+             lambda r: f"{r[0]}  잉크 {r[1]} · 박스 {r[2]} · 시각 {r[3]} · 글자 {r[4]}"),
+        ):
+            rows = dens.get(key) or []
+            if not rows:
+                continue
+            total = dens.get(count_key) if count_key else None
+            shown = min(5, len(rows))
+            head = f"    ★ {label}: {total if total is not None else len(rows)}장"
+            hidden = (total if total is not None else len(rows)) - shown
+            if hidden > 0:
+                head += f" (아래 {shown}장만 표시 · {hidden}장 생략)"
+            print(head)
+            for row in rows[:5]:
+                print(f"       · {fmt(row)}")
+        # ⚠️ 「측정 불가」를 「0건」으로 읽지 않게 명시한다.
+        cov = dens.get("shapeCoverage")
+        if isinstance(cov, list) and len(cov) == 2:
+            got, tot = cov
+            if tot and got == 0:
+                print(f"    ⚠️ 정보 모양 기록 0/{tot}장 — 「모양 대비 시각자료」 신호는 "
+                      f"**측정 불가**다(0건이 아니다). 슬라이드에 data-shape를 적어라(R-BOX-01b).")
+            elif tot and got < tot:
+                print(f"    ⚠️ 정보 모양 기록 {got}/{tot}장 — 나머지 {tot - got}장은 "
+                      f"「모양 대비 시각자료」 신호의 검사 밖이다.")
         if isinstance(bh, int) and bh:
-            worst = (dens.get("boxHeavyNoVisual") or [])[:5]
-            print("    ★ 박스만 있고 시각자료가 없는 장(상위):")
-            for row in worst:
-                print(f"       · {row[0]}  박스 {row[1]} · 잉크 {row[2]}")
             print(f"       → 사람이 다시 본다(R-BOX-01·R-DENS-03). 비교: "
                   f"python scripts/compare_baseline_panel.py {self.num}")
         self.steps.append(("렌더·타이포 감사", True, line1 + " / " + line2 + " / " + line3))

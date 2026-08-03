@@ -18,6 +18,10 @@
  *    러너는 INVALID를 「결함 0」으로 세지 않고 실패로 처리한다.
  */
 (async function () {
+  /* 1순위 표현이 차트·다이어그램인 정보 모양(kit/charts/by-shape.md 기준).
+     comparison은 표·2열 패널도 정당한 1순위라 여기 넣지 않는다 — 오탐이 된다. */
+  var VISUAL_FIRST_SHAPES = ['numeric', 'structure', 'containment', 'mapping', 'flow'];
+
   async function load(path) {
     var src = await (await fetch(path + '?v=' + Date.now())).text();
     /* 두 감사기 모두 «마지막 표현식이 JSON 문자열»인 IIFE다 */
@@ -44,7 +48,7 @@
      **저밀도를 판정할 수치가 하나도 없었다.** audit_render.js는 ink·sparse·
      deadBottom·deadRight를 이미 재고 있었는데 러너까지 오지 않았다 —
      「재는데 아무도 안 보는」 상태였다. */
-  var inks = [], lowInk = [], deadZones = [], sparseSlides = [];
+  var inks = [], deadZones = [], sparseSlides = [];
   slides.forEach(function (s) {
     var b = (s && s.broken) || {};
     agg.below += b.below || 0;
@@ -58,13 +62,7 @@
     agg.sparse += ((s && s.sparse) || []).length;
     agg.slots += ((s && s.emptySlots) || []).length;
 
-    if (typeof s.ink === 'number') {
-      inks.push(s.ink);
-      if (s.ink < 0.22) {
-        lowInk.push({ id: s.id, kind: s.kind, ink: s.ink, boxes: s.boxes,
-          gfx: s.gfx, txt: s.txt });
-      }
-    }
+    if (typeof s.ink === 'number' && !s.fixed) inks.push(s.ink);
     if ((s.deadBottom || 0) >= 96 || (s.deadRight || 0) >= 200) {
       deadZones.push({ id: s.id, bottom: s.deadBottom || 0, right: s.deadRight || 0 });
     }
@@ -83,17 +81,54 @@
   });
   inks.sort(function (a, b) { return a - b; });
   function pct(p) { return inks.length ? inks[Math.min(inks.length - 1, Math.floor(inks.length * p))] : null; }
+  var body = slides.filter(function (s) { return !s.fixed; });
+  var medianInk = pct(0.5), p10Ink = pct(0.1);
+  var avgBoxes = body.length
+    ? body.reduce(function (a, s) { return a + (s.boxes || 0); }, 0) / body.length : 0;
+
+  /* ⚠️ **절대 임계로 「저밀도」를 정의하지 않는다**(2026-08-03 정정).
+     처음엔 `ink < 0.22`를 썼는데, 2주차 최솟값이 0.257이라 **영원히 발동하지
+     않는 죽은 신호**였다. 「재는데 아무도 못 보는」 문제를 고치면서 「발동하지
+     않는 검사」를 새로 만든 셈이다.
+     대신 **이 덱 안에서의 상대 위치**로 본다 — 「하위 10%」는 어느 덱에서나
+     존재하므로 항상 볼거리가 나온다. 이건 **판정이 아니라 보고**다:
+     「이 덱에서 가장 얇은 장들」이지 「기준 미달」이 아니다.
+     ⚠️ 이 값을 게이트 임계로 굳히지 마라 — 그러면 그 덱 수준으로 수렴한다. */
+  var thinnest = body.slice().sort(function (a, b) { return (a.ink || 0) - (b.ink || 0); })
+    .slice(0, 10).map(function (s) { return [s.id, s.ink, s.boxes, s.gfx, s.txt]; });
+
+  function boxHeavy(s) { return (s.boxes || 0) >= 4 && (s.gfx || 0) === 0; }
   var density = {
-    ink: { min: inks[0], p10: pct(0.1), median: pct(0.5), p90: pct(0.9), max: inks[inks.length - 1] },
+    ink: { min: inks[0], p10: p10Ink, median: medianInk, p90: pct(0.9), max: inks[inks.length - 1] },
+    avgBoxes: Math.round(avgBoxes * 10) / 10,
     /* ★ 「박스는 많은데 시각자료가 없다」 — 가장 위험한 조합 */
-    boxHeavyNoVisualCount: slides.filter(function (s) {
-      return (s.boxes || 0) >= 4 && (s.gfx || 0) === 0;
-    }).length,
-    boxHeavyNoVisual: slides.filter(function (s) {
-      return (s.boxes || 0) >= 4 && (s.gfx || 0) === 0;
-    }).sort(function (a, b) { return (b.boxes || 0) - (a.boxes || 0); })
+    boxHeavyNoVisualCount: body.filter(boxHeavy).length,
+    boxHeavyNoVisual: body.filter(boxHeavy)
+      .sort(function (a, b) { return (b.boxes || 0) - (a.boxes || 0); })
       .slice(0, 20).map(function (s) { return [s.id, s.boxes, s.ink]; }),
-    lowInk: lowInk.slice(0, 20),
+    /* ★ 「잉크는 낮은데 박스는 많다」 — 큰 빈 상자로 채운 신호 */
+    lowInkManyBoxes: body.filter(function (s) {
+      return (s.ink || 0) < medianInk && (s.boxes || 0) > avgBoxes;
+    }).map(function (s) { return [s.id, s.ink, s.boxes]; }).slice(0, 20),
+    /* ★ 교시 로드맵에 시각자료 0 — 2주차에서 5장 전부 이 상태였다 */
+    roadmapNoVisual: body.filter(function (s) {
+      return s.kind === '교시' && (s.gfx || 0) === 0;
+    }).map(function (s) { return [s.id, s.boxes]; }),
+    /* ★ 「정보 모양의 1순위 표현이 시각물인데 시각자료가 0」
+       — numeric·structure·containment·mapping·flow는 차트·다이어그램이 1순위다
+         (kit/charts/by-shape.md). 그 모양인데 시각자료가 없으면 글·박스로 푼 것이다.
+       ⚠️ **모양이 기록돼 있어야 계산된다.** 슬라이드에 `data-shape`가 없으면
+          이 신호는 «0건»이 아니라 **측정 불가**다. 둘을 섞지 않으려고
+          shapeCoverage로 «몇 장이 모양을 기록했는가»를 함께 낸다.
+          0/N이면 이 신호를 「깨끗하다」로 읽지 마라 — 아무것도 안 본 것이다. */
+    shapeCoverage: [body.filter(function (s) { return !!s.shape; }).length, body.length],
+    visualShapeNoVisual: body.filter(function (s) {
+      return s.shape && VISUAL_FIRST_SHAPES.indexOf(s.shape) >= 0 && (s.gfx || 0) === 0;
+    }).map(function (s) { return [s.id, s.shape, s.boxes]; }).slice(0, 20),
+    /* ★ 껍데기 상자가 장당 여러 개(배지 제외) */
+    hollowSlides: body.filter(function (s) { return (s.hollow || 0) >= 2; })
+      .map(function (s) { return [s.id, s.hollow]; }).slice(0, 20),
+    thinnest: thinnest,
     deadZones: deadZones.slice(0, 20),
     sparseSlides: sparseSlides.slice(0, 20)
   };
@@ -121,10 +156,10 @@
     /* 장별 원자료 — 기준판 비교 도구(compare_baseline_panel.py)가 읽는다.
        ⚠️ 객체가 아니라 **배열 행**으로 싣는다. 110장을 객체로 담으면 증거가
           30KB를 넘어 콘솔에서 복사해 파일로 옮기기가 어려워진다(실측). */
-    perSlideCols: ["id", "kind", "ink", "boxes", "gfx", "txt", "hollow", "deadBottom", "deadRight"],
+    perSlideCols: ["id", "kind", "ink", "boxes", "gfx", "txt", "hollow", "deadBottom", "deadRight", "fixed"],
     perSlide: slides.map(function (s) {
       return [s.id, s.kind, Math.round((s.ink || 0) * 100) / 100, s.boxes, s.gfx,
-        s.txt, s.hollow, s.deadBottom, s.deadRight];
+        s.txt, s.hollow, s.deadBottom, s.deadRight, s.fixed ? 1 : 0];
     }),
     typography: {
       textElements: (typo.meta || {}).textElements,

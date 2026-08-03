@@ -104,9 +104,16 @@ def main() -> int:
     # 증거는 크기를 줄이려고 «열 이름 + 배열 행»으로 실린다
     rows = [dict(zip(cols, r)) for r in raw]
 
-    # 고정 슬라이드는 별도 좌표계라 비교 대상이 아니다(표지·간지·마무리)
-    body = [r for r in rows if (r.get("kind") or "") not in ("파트표지",)
-            and not str(r.get("id") or "").startswith(("S0", "P", "END", "THX"))]
+    # 고정 슬라이드는 별도 좌표계라 비교 대상이 아니다(표지·도입·아젠다·간지·마무리).
+    # ⚠️ **data-slide 접두어로 가르지 않는다.** 실측: 1주차에 `PAL1`·`PAL2`·`PAL3`라는
+    #    본문 슬라이드가 있어 「P로 시작하면 간지」 규칙이 셋을 통째로 빼 버렸다.
+    #    audit_render.js가 **클래스로 판정한** fixed 플래그를 쓴다.
+    if "fixed" in (cols or []):
+        body = [r for r in rows if not r.get("fixed")]
+    else:
+        print("[경고] 증거에 fixed 플래그가 없다(낡은 audit_all.js) — 고정 슬라이드가"
+              " 비교에 섞인다. audit_all.js를 다시 돌려라.")
+        body = rows
     if not body:
         body = rows
 

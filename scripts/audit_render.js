@@ -311,6 +311,15 @@
       }
     }
 
+    /* 고정 구조 슬라이드 판정 — **클래스로 본다**(2026-08-03 신설).
+       ⚠️ data-slide 접두어로 가르면 안 된다. 실측: 1주차에 `PAL1`·`PAL2`·`PAL3`라는
+          **본문** 슬라이드가 있어 「P로 시작하면 간지」 규칙이 셋을 통째로 본문
+          집계에서 빼 버렸다. 고정 슬라이드의 정의는 원래 클래스다
+          (토큰-치트시트 「고정 구조 슬라이드」: cover·s02-slide·s03-slide·
+          part-divider·concept-recap·closing). */
+    var fixed = /\b(cover|s02-slide|s03-slide|part-divider|concept-recap|closing)\b/
+      .test(sl.className);
+
     var title = (sl.querySelector('.s-title') || {}).innerText || '';
     var kind = /M[0-9]$/.test(sl.dataset.slide || '') ? '교시'
       : /이렇게 배웁니다|이렇게배웁니다/.test(title) ? '이렇게배웁니다'
@@ -321,6 +330,12 @@
       i: i,
       id: sl.dataset.slide,
       kind: kind,
+      fixed: fixed,        /* 고정 구조 슬라이드(별도 좌표계) — 밀도 비교 대상이 아니다 */
+      /* 정보 모양 — 조립 시 `data-shape="numeric"` 처럼 적어 둔 값.
+         ⚠️ 없으면 **null**이다. 0이나 빈 문자열로 두지 마라 — 「모양이 없다」와
+            「기록하지 않았다」가 섞이면 「해당 신호 0건」이 «검사했는데 깨끗함»으로
+            잘못 읽힌다. 이 저장소가 반복해서 겪은 실패다. */
+      shape: sl.dataset.shape || null,
       title: title.replace(/\s+/g, ' ').slice(0, 34),
       ink: +cov(BODY_L, BODY_TOP, BODY_R, BODY_BOT).toFixed(3),
       deadBottom: Math.max(0, BODY_BOT - lastRow),

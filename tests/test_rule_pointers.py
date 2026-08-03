@@ -96,6 +96,22 @@ class TaxonomyPointerTests(unittest.TestCase):
                          "kit/charts/by-shape.md에 없는 element를 지목한다:\n  "
                          + "\n  ".join(offenders))
 
+    def test_every_catalog_element_is_reachable_from_the_mapping_table(self):
+        """킷에 있는데 표가 **한 번도 안 가리키는** element가 없어야 한다.
+
+        가리켜지지 않은 element는 제작자가 **영영 못 보는 선택지**가 된다 —
+        「없는 것을 지목한다」의 반대 방향 결함이고, 「시각 요소를 우선하라」는
+        규칙을 조용히 무력화한다(쓸 수 있는 시각물을 모르면 박스로 간다).
+        """
+        known = catalog_element_ids()
+        text = _read(PHASES / "03-레이아웃선택.md")
+        table = text.split("### 2단계", 1)[1].split("### 3단계", 1)[0]
+        named = set(re.findall(r"`([CDE]-[a-z0-9-]+)`", table))
+        orphans = sorted(known - named)
+        self.assertEqual(orphans, [],
+                         "킷에 있는데 R-BOX-01 표가 가리키지 않는 element "
+                         f"({len(orphans)}/{len(known)}):\n  " + "\n  ".join(orphans))
+
     def test_box_mapping_table_rows_are_all_canonical(self):
         """R-BOX-01 매핑표의 **모든 행**이 정준 모양을 지목해야 한다.
 

@@ -320,12 +320,55 @@
 
   <script>
   (function(){
+    /* ── 파트 전환 자동 생성기 (kit/starter/deck-template.html과 같은 계약) ──
+       ⚠️ 이 세 함수가 없으면 verify_deck이 「파트 전환 자동 생성기 누락」으로
+          **FAIL**한다. 2026-08-03 실측: 이 템플릿에만 빠져 있어 새 주차가
+          첫 조립부터 FAIL 1로 시작했다(1·2주차 덱과 킷 스타터에는 있었다).
+       도형·도트·PART n/N을 파트 수에 맞춰 만든다 — part-NN.html은 빈 훅만 둔다. */
+    function partGeometry(n){
+      var presets={
+        1:[[640,126,92,92]],
+        2:[[560,150,60,60],[640,230,70,70]],
+        3:[[670,136,58,58],[584,228,58,58],[756,228,58,58]],
+        4:[[620,94,58,58],[726,158,66,66],[522,188,50,50],[628,264,48,48]],
+        5:[[640,78,48,48],[532,146,62,62],[730,142,46,46],[574,258,48,48],[694,238,64,64]],
+        6:[[610,70,42,42],[510,138,56,56],[724,122,52,52],[466,246,40,40],[604,214,66,66],[764,246,44,44]]
+      }, points=presets[n]&&presets[n].slice();
+      if(!points){
+        points=[];
+        var size=Math.max(28,44-Math.floor((n-7)/2));
+        for(var i=0;i<n;i++){
+          var angle=-Math.PI/2+(Math.PI*2*i/n), ring=i%2?1:.72;
+          points.push([640+Math.cos(angle)*150*ring,178+Math.sin(angle)*82*ring+(i%3)*12,size,size]);
+        }
+      }
+      return points.sort(function(a,b){return a[1]-b[1];});
+    }
+    function cubeMarkup(p,i){
+      var x=Math.round(p[0]),y=Math.round(p[1]),w=Math.round(p[2]),d=Math.round(p[3]),h=Math.round(w/2);
+      return '<g class="pd-cube pd-cube-'+(i+1)+'" data-cube="'+(i+1)+'">'+
+        '<ellipse class="pd-cube-shadow" cx="'+x+'" cy="'+(y+w+d+9)+'" rx="'+Math.round(w*.72)+'" ry="'+Math.max(6,Math.round(w*.17))+'"/>'+
+        '<polygon points="'+x+','+y+' '+(x+w)+','+(y+h)+' '+x+','+(y+w)+' '+(x-w)+','+(y+h)+'" fill="var(--blue-soft)"/>'+
+        '<polygon points="'+(x-w)+','+(y+h)+' '+x+','+(y+w)+' '+x+','+(y+w+d)+' '+(x-w)+','+(y+h+d)+'" fill="var(--blue)"/>'+
+        '<polygon points="'+x+','+(y+w)+' '+(x+w)+','+(y+h)+' '+(x+w)+','+(y+h+d)+' '+x+','+(y+w+d)+'" fill="var(--mint)"/></g>';
+    }
+    function hydratePartDivider(s,index,total){
+      var hero=s.querySelector('.dv-hero'), points=partGeometry(index), html='';
+      for(var i=0;i<points.length;i++)html+=cubeMarkup(points[i],i);
+      if(hero){hero.innerHTML=html+'<circle class="pd-spark" cx="820" cy="112" r="7"/>';hero.setAttribute('data-geometry-count',index);}
+      var dots=s.querySelector('.pd-dots'), dotHtml='';
+      for(var d=1;d<=total;d++)dotHtml+='<span class="pd-dot'+(d===index?' is-active':'')+'"></span>';
+      if(dots)dots.innerHTML=dotHtml;
+      var eyebrow=s.querySelector('.pd-eyebrow');if(eyebrow)eyebrow.textContent='PART '+index+' / '+total;
+      s.setAttribute('data-part-index',index);s.setAttribute('data-part-total',total);
+    }
+
     var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
     var totalParts = 0;
     slides.forEach(function(s){ if (/\bpart-divider\b/.test(s.className)) totalParts++; });
     var curPart = 0;
     slides.forEach(function(s, i){
-      if (/\bpart-divider\b/.test(s.className)) curPart++;
+      if (/\bpart-divider\b/.test(s.className)) { curPart++; hydratePartDivider(s, curPart, totalParts); }
       var fixed = /\b(cover|s02-slide|s03-slide|part-divider|concept-recap|closing)\b/.test(s.className);
       if (!/\b(cover|concept-recap|closing)\b/.test(s.className)) {
         var pg = document.createElement('div');
