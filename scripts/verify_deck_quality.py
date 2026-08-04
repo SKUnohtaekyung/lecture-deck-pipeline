@@ -3,7 +3,7 @@
 
 사용: python scripts/verify_deck_quality.py <deck.html> [--baseline <deck.html>] [--json <out>] [--strict]
 
-배경(2026-07-26 근본원인 감사, `reports/create-slides-quality/`): `scripts/verify_deck.py`의
+배경(2026-07-26 근본원인 감사, `_dev/설계기록/품질감사-2026-07/`): `scripts/verify_deck.py`의
 ~90개 검사는 구조·경로·문법·색·접근성만 재고 "완성된 슬라이드의 내용 품질"을 재는 검사가 0개였다
 (`validation_gap_report.md` §A.1). 2주차 저밀도 결함(설명 슬라이드 본문 글자수 중앙값 70자 —
 1주차 최종본 156자의 45%)이 모든 기존 게이트를 exit 0으로 통과한 근본 이유다. 이 스크립트는
@@ -11,7 +11,7 @@
 건드리지 않는다(별도 스크립트로 분리, `validation_gap_report.md` §F 권고).
 
 **임계값은 전부 W1_FINAL(1주차 최종본, 2026-07-26 사용자 동결 당시 유일한 "완성" 기준선) 분포에서
-도출했다** — 발명하지 않는다. 도출 방법: `reports/create-slides-quality/deck_quality_metrics.json`의
+도출했다** — 발명하지 않는다. 도출 방법: `_dev/설계기록/품질감사-2026-07/deck_quality_metrics.json`의
 `per_slide.W1_FINAL`/`per_slide.W2_CURRENT`에서 슬라이드 타입별 지표를 뽑아, "W1_FINAL 슬라이드의
 ≤15%만 플래그되고 W2_CURRENT 슬라이드의 ≥55%가 플래그되는 백분위"를 탐색했다(스크래치패드
 `analyze_metrics_thresholds.py`, 이 파일 하단 THRESH_DERIVATION 상수에 그 결과를 그대로 기록).
@@ -19,7 +19,7 @@
 값이 존재하지 않았다 — 발명 대신 **실제로 도출된 값과 그 값이 두 목표 중 무엇을 못 채우는지를
 그대로 보고**한다(발명 금지 원칙이 목표 강제보다 우선).
 
-분류(슬라이드 type)는 `reports/create-slides-quality/deck_quality_analysis.md` §2의 12분류
+분류(슬라이드 type)는 `_dev/설계기록/품질감사-2026-07/deck_quality_analysis.md` §2의 12분류
 우선순위 규칙을 그대로 옮긴다 — 형태소(하이픈 분해) **정확 일치**만 쓴다(부분문자열 매칭 금지).
 그 문서가 스팟체크 도중 발견해 수정한 버그 2건을 여기서도 그대로 반영한다:
   버그1: `is-recovery`가 부분문자열 "cover" 때문에 표지로 오분류됨 → 형태소 정확 일치로 해결.
@@ -136,7 +136,7 @@ THRESH_QC19_BARE_TEXT_COUNT = 0    # 격자 컨테이너의 맨 텍스트는 익
 # 추가 전에는 반드시 두 주차에 먼저 돌려 FAIL 건수를 산출하라.
 ALWAYS_FAIL = {"R-QC-18", "R-META-01"}
 THRESH_DERIVATION = """\
-[임계값 도출 근거 — reports/create-slides-quality/deck_quality_metrics.json 기준, 개념설명 슬라이드만]
+[임계값 도출 근거 — _dev/설계기록/품질감사-2026-07/deck_quality_metrics.json 기준, 개념설명 슬라이드만]
   R-QC-01 본문 글자수 < 76자(W1_FINAL p10)          flag률: W1 11.6%(5/43) · W2 62.2%(23/37)      [목표 충족: W1<=15%, W2>=55%]
   R-QC-02 의미 블록 수 < 5개(W1_FINAL p15)           flag률: W1 11.6%(5/43) · W2 67.6%(25/37)      [목표 충족]
   R-QC-03 근-빈 컨테이너 존재(전수, 임계값 없음)      flag률: W1  2.7%(2/75) · W2 24.1%(26/108)     [W1<=15% 충족 · W2>=55%는 지표 성격상 미충족 — 희소 결함이라 그대로 보고]

@@ -60,7 +60,7 @@ SCAN_WARN = [
     "references/*.md",
     "입력양식/*.md",
 ]
-EXCLUDE_DIRS = ("sessions/", "reports/", "_dev/", ".agents/", ".claude/", "evals/")
+EXCLUDE_DIRS = ("sessions/", "_dev/", ".agents/", ".claude/", "evals/")
 # 문서 전체가 과목 종속 산출물이라 격리 대상이 아니라 재분류 대상인 파일.
 # 사유는 `courses/<과목>/profile.md` §8 「검사에서 제외한 것과 사유」가 정본이다.
 EXCLUDE_FILES = ("kit/guide/교육원칙-요약.md",)

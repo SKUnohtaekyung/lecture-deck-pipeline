@@ -1,6 +1,6 @@
 """내용 품질 게이트(scripts/verify_deck_quality.py · scripts/verify_draft_quality.py) 회귀 테스트.
 
-2주차 저밀도 사고(2026-07-26 근본원인 감사, reports/create-slides-quality/)를 계기로 신설된
+2주차 저밀도 사고(2026-07-26 근본원인 감사, _dev/설계기록/품질감사-2026-07/)를 계기로 신설된
 게이트가 실제로 "사전 상태"를 탐지하는지 잠근다. 2주차 원본(sessions/2주차/)은 다른 작업자가
 이후 별도로 재밀도화(remediation)하므로, 그 파일들이 바뀌어도 이 테스트가 깨지지 않도록
 **현재 상태를 tests/fixtures/quality_gates/에 스냅샷으로 얼려서** 그 스냅샷과 비교한다.
