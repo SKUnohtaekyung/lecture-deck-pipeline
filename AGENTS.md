@@ -64,7 +64,8 @@ python scripts/verify_declared_vs_enforced.py        # 선언(정본표) ↔ kit
 python scripts/verify_declared_vs_enforced.py --list # 등재된 알려진 불일치까지 전부
 python scripts/verify_required_statements.py <주차>   # 개념KB 필수 진술이 덱 화면에 남았는가(기본 WARN·--strict FAIL)
 python scripts/verify_judgement_log.py <주차>         # 집필노트 판단 기록 정합(D2 근거·처분값·필수 보류 금지)
-python -m unittest tests.test_deck_pipeline tests.test_image_pipeline tests.test_quality_gates
+# 회귀 테스트 8모듈 155개 — 일부만 돌리면 나머지 게이트는 검증되지 않는다(`discover`는 tests/에 __init__.py가 없어 동작하지 않으므로 모듈을 명시한다)
+python -m unittest tests.test_deck_pipeline tests.test_image_pipeline tests.test_quality_gates tests.test_deck_contract tests.test_declared_vs_enforced tests.test_rule_pointers tests.test_typography_rules tests.test_analyze_agent_usage
 # 파이프라인 문서 게이트(리서치·콘텐츠 산출물)
 python scripts/verify_session_docs.py <주차> --target 자료   # 기본 5파일 스키마·출처ID·[C-슬러그] 해소
 python scripts/verify_research_chunks.py <주차>              # 개념KB 청크 깊이·G8 관점·인덱스 일치

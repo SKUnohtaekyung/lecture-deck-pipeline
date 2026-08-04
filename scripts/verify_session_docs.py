@@ -90,9 +90,9 @@ LEFTOVER_PATTERNS = (
 )
 
 ALLOWLIST = {
-    "자료": ["sessions/*주차/자료/*", "courses/*/sessions/*주차/자료/*", ".omc/*"],
-    "초안": ["sessions/*주차/초안.md", "sessions/*주차/*초안.md", "sessions/*주차/자료/*집필노트*", "courses/*/sessions/*주차/*초안.md", "courses/*/sessions/*주차/자료/*집필노트*", ".omc/*"],
-    "검토": ["sessions/*주차/검토보고_*.md", "courses/*/sessions/*주차/검토보고_*.md", ".omc/*"],
+    "자료": ["sessions/*주차/자료/*", "courses/*/sessions/*주차/자료/*"],
+    "초안": ["sessions/*주차/초안.md", "sessions/*주차/*초안.md", "sessions/*주차/자료/*집필노트*", "courses/*/sessions/*주차/*초안.md", "courses/*/sessions/*주차/자료/*집필노트*"],
+    "검토": ["sessions/*주차/검토보고_*.md", "courses/*/sessions/*주차/검토보고_*.md"],
 }
 
 results = []  # (check, status, detail)
