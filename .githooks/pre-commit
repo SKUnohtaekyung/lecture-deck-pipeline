@@ -1,0 +1,13 @@
+#!/bin/sh
+# pre-commit — 얇은 진입점. 실제 로직은 전부 _gate.py에 있다(Windows sh에서
+# 한글 경로·조건 분기를 셸로 다루면 깨지므로 셸에는 인터프리터 탐색만 둔다).
+DIR="$(dirname "$0")"
+
+if command -v python >/dev/null 2>&1; then
+  exec python "$DIR/_gate.py"
+elif command -v py >/dev/null 2>&1; then
+  exec py "$DIR/_gate.py"
+else
+  echo "[경고] python(또는 py)을 PATH에서 찾을 수 없어 pre-commit 게이트를 건너뜁니다. 커밋은 계속 진행됩니다." >&2
+  exit 0
+fi

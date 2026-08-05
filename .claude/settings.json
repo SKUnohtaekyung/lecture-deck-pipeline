@@ -32,6 +32,18 @@
             "command": "python \"$CLAUDE_PROJECT_DIR/scripts/hook_slide_guard.py\" --mode course",
             "timeout": 15,
             "statusMessage": "과목 슬라이드 지침 주입"
+          },
+          {
+            "type": "command",
+            "command": "python \"$CLAUDE_PROJECT_DIR/scripts/hook_slide_guard.py\" --mode generated-guard",
+            "timeout": 15,
+            "statusMessage": "생성물 직접 편집 검사 (관측)"
+          },
+          {
+            "type": "command",
+            "command": "python \"$CLAUDE_PROJECT_DIR/scripts/hook_slide_guard.py\" --mode tmp-guard",
+            "timeout": 15,
+            "statusMessage": "저장소 밖 쓰기 검사 (관측)"
           }
         ]
       }

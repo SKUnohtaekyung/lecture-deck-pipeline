@@ -208,15 +208,25 @@ def get_repo_root():
     return os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
-def log_observation():
-    """관측 위반 1건을 tmp/guard-observations.jsonl에 덧붙인다.
-    경로·모드·판정·타임스탬프는 넣지 않는다 — 지금은 오탐률을 건수로만 재는
-    단계라 상세 필드는 필요해질 때 추가한다(시간 함수 호출 자체를 피해 훅을 가볍게 유지)."""
+def log_observation(mode, path, verdict, reason=""):
+    """관측 1건을 tmp/guard-observations.jsonl에 덧붙인다.
+
+    오탐률을 재기 위한 로그다. **건수만 세면 오탐률을 계산할 수 없다** —
+    「무엇을 왜 걸었는가」가 있어야 사람이 오탐/정탐을 판정할 수 있기 때문에
+    모드·경로·판정·사유를 함께 남긴다. (첫 구현이 `{}`만 기록해 6줄이 전부
+    빈 객체였다. 그 상태로는 차단 승격 근거를 만들 수 없다.)
+
+    타임스탬프는 넣지 않는다 — `Date`/`time` 호출 없이도 순서는 파일 순서로
+    충분하고, 훅은 매 편집마다 도므로 가볍게 유지한다.
+    """
     try:
         log_dir = os.path.join(get_repo_root(), "tmp")
         os.makedirs(log_dir, exist_ok=True)
+        rec = {"mode": mode, "path": path, "verdict": verdict}
+        if reason:
+            rec["reason"] = reason[:300]
         with open(os.path.join(log_dir, "guard-observations.jsonl"), "a", encoding="utf-8") as fh:
-            fh.write(json.dumps({}) + "\n")
+            fh.write(json.dumps(rec, ensure_ascii=False) + "\n")
     except Exception:
         pass
 
@@ -359,14 +369,19 @@ def mode_generated_guard(path, host, enforce):
         emit_block(reason, host)
     else:
         emit_context("[관측 모드 — 아직 차단 아님. --enforce로 승격 전까지는 경고만]\n" + reason)
-        log_observation()
+        log_observation("generated-guard", path, "would-block", reason)
 
 
 def mode_tmp_guard(path, host, enforce):
     """쓰기 대상이 저장소 루트 밖이면 위반. 저장소 루트는 이 스크립트 위치의
     부모(scripts/의 부모)로 계산한다. 기본은 관측만, --enforce일 때만 차단."""
     repo_root = os.path.abspath(get_repo_root())
-    abs_path = os.path.abspath(path)
+    # ⚠️ 상대경로는 **저장소 루트 기준**으로 푼다. os.path.abspath()만 쓰면 훅
+    # 프로세스의 CWD 기준이 되는데, 훅이 어디서 실행될지는 호스트가 정하므로
+    # 저장소 안 파일(plans/x.md)이 「밖」으로 잡히는 오탐이 난다.
+    # 2026-08-05 관측 모드에서 실제로 재현됐다 — 차단으로 승격했다면 정상 편집이
+    # 막혔을 것이다. `../밖.txt` 같은 이탈은 normpath가 그대로 잡아낸다.
+    abs_path = os.path.abspath(path if os.path.isabs(path) else os.path.join(repo_root, path))
     try:
         common = os.path.commonpath([repo_root, abs_path])
     except ValueError:
@@ -378,7 +393,7 @@ def mode_tmp_guard(path, host, enforce):
         emit_block(reason, host)
     else:
         emit_context("[관측 모드 — 아직 차단 아님. --enforce로 승격 전까지는 경고만]\n" + reason)
-        log_observation()
+        log_observation("tmp-guard", path, "would-block", reason)
 
 
 def _flag_value(argv, name, default=None):
