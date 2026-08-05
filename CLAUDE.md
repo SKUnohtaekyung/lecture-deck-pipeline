@@ -1,22 +1,21 @@
 @AGENTS.md
 
-# Claude Code 차이
+# Claude Code 전용
 
-- Claude Code 프로젝트 스킬 진입점은 `.claude/skills/create-slides/SKILL.md`다.
-- 명시 호출은 `/create-slides`, 일반 강의덱·교육 슬라이드 요청은 진입점의 `description`으로 자동 호출한다.
-- 진입점은 규칙을 복제하지 않는 얇은 어댑터다. 호출되면 저장소 루트 `SKILL.md`를 끝까지 읽고, 그 문서가 가리키는 모든 상대 경로를 저장소 루트 기준으로 해석한다.
-- 공통 작업 매뉴얼과 PPT 제작 규칙은 각각 `AGENTS.md`와 루트 `SKILL.md`가 정본이다. `.claude/`에는 Claude Code의 탐색·호출 차이만 둔다.
-- Windows에서는 `python`을 사용한다. Claude 전용 `ui-ux-pro-max`를 직접 실행할 때는 저장소 루트에서 `python .claude/skills/ui-ux-pro-max/scripts/search.py ...`를 사용한다.
-- 팀 워크플로 스킬은 .claude/skills/의 어댑터로 발견된다 — 역할 2종(/리서치·/검토)은 명시 호출 전용이고, 횡단 프로토콜 /하네스도 같은 위치에 명시 호출 진입점을 둔다(기본 발동 규칙은 AGENTS.md 「공통 작업 방식」이 정본). 정본과 계약은 루트 skills/README.md.
-- `/리서치` 워커는 `Agent(subagent_type: "Explore", model: "sonnet")`으로만 띄우고, 실행 후 `python scripts/analyze_agent_usage.py --tool-audit --session <세션ID>`로 도구·모델을 감사한다. 규정은 `.claude/skills/리서치/SKILL.md` 「워커 실행 통제」.
+공통 규칙은 위 import가 전부다. 여기에는 **Claude Code에서만 다른 것**만 둔다 — 중복해 적으면 두 파일이 어긋난다.
 
-# 세션 시작 필수 읽기 (프로젝트 지도)
+## 강제 계층
 
-새 세션은 작업 전 아래를 순서대로 훑어 프로젝트 전체 맥락을 잡는다. 재탐색 비용을 줄이는 인덱스다(내용은 각 정본이 소유).
+- 훅 배선은 `.claude/settings.json`(PreToolUse `checklist`·`course`·`generated-guard`·`tmp-guard` / PostToolUse `css-lint`)이고, 검사 로직은 전부 `scripts/hook_slide_guard.py` **한 벌**이다. 플랫폼별로 복제하지 않는다.
+- 역할·도구·모델 제한은 `.claude/agents/*.md`가 정본이다. `/리서치` 워커는 `research-worker`(tools 화이트리스트 · `model: sonnet` · `maxTurns`)를 쓰고, 실행 후 `python scripts/analyze_agent_usage.py --tool-audit --session <세션ID>`로 감사한다(0 통과 / 3 위반). 규정 상세는 `.claude/skills/리서치/SKILL.md` 「워커 실행 통제」.
+- 무엇이 실제로 막히는지는 `AGENTS.md` 「무엇이 기계로 강제되는가」 표가 정본이다.
 
-1. `AGENTS.md` — 공통 작업 매뉴얼·폴더 구조(①~⑤층)·불변 규칙. (이미 위에서 import)
-2. `.agents/agent-memory/create-slides/MEMORY.md`의 `## 미해결`(현재 상태와 다음 할 일)은 **무조건** 읽는다. 나머지(누적 규칙·색 시스템 정본)는 덱 조립·규칙 변경 작업 시 읽는다.
-3. `skills/README.md` — 팀 워크플로 스킬(`/리서치`·`/검토`·`/하네스`) **호출 시** 계약표·파이프라인 지도·명시 호출 규약을 확인한다.
-4. 커리큘럼: `courses/바이브코딩/커리큘럼_기준안.md`(전 주차 상위 기준) + `courses/<과목>/sessions/N주차/N주차_강의안설계.md`(주차 상세, 옛 인수인계서 역할) — **해당 주차 파일을 열거나 쓰기 전에, 그 주차 것만** 읽는다.
-5. 루트 `SKILL.md` — 덱 조립 규칙(create-slides). 덱 작업 시.
-6. `sessions/README.md` — 세션 폴더 규약(주차별 산출물 위치). **새 주차 폴더를 만들 때** 읽는다.
+## 서브에이전트에 규칙이 상속되지 않는다
+
+built-in `Explore`·`Plan`은 속도를 위해 **`CLAUDE.md`와 부모 세션 Git 상태를 로드하지 않는다**(공식 동작). 그 워커가 반드시 지켜야 할 제약(특히 「임시 파일은 저장소 안 `tmp/`에만」)은 **위임 프롬프트에 직접 적어 보낸다.** 다른 서브에이전트는 프로젝트 memory를 로드한다.
+
+## 확인 수단
+
+- 실제로 로드된 지침은 `/context`로 확인한다. 상시 지침이 과다한지는 `/doctor`가 진단한다.
+- `@` import는 파일을 나눌 뿐 **컨텍스트를 줄이지 않는다.** 상시 로드에서 빼려면 import가 아니라 «필요할 때 여는 참조 문서»로 옮겨야 한다(예: `references/검증-명령-지도.md`).
+- Windows에서 Claude 전용 `ui-ux-pro-max`를 직접 실행할 때는 저장소 루트에서 `python .claude/skills/ui-ux-pro-max/scripts/search.py ...`.
