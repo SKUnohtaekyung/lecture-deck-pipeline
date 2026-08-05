@@ -1,0 +1,57 @@
+{
+  "_comment": "Gate 0 프로브 전용 (PLAN.md §5.0). 아무것도 차단하지 않고 페이로드만 기록한다. 실측이 끝나면 이 파일은 §5.1의 실제 강제 훅으로 교체한다.",
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \".codex/hooks/probe.py\" --event SessionStart",
+            "commandWindows": "python \".codex\\hooks\\probe.py\" --event SessionStart",
+            "timeout": 15,
+            "statusMessage": "Gate 0 프로브 — SessionStart"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \".codex/hooks/probe.py\" --event PreToolUse",
+            "commandWindows": "python \".codex\\hooks\\probe.py\" --event PreToolUse",
+            "timeout": 15,
+            "statusMessage": "Gate 0 프로브 — PreToolUse"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \".codex/hooks/probe.py\" --event PostToolUse",
+            "commandWindows": "python \".codex\\hooks\\probe.py\" --event PostToolUse",
+            "timeout": 15,
+            "statusMessage": "Gate 0 프로브 — PostToolUse"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \".codex/hooks/probe.py\" --event Stop",
+            "commandWindows": "python \".codex\\hooks\\probe.py\" --event Stop",
+            "timeout": 15,
+            "statusMessage": "Gate 0 프로브 — Stop"
+          }
+        ]
+      }
+    ]
+  }
+}
