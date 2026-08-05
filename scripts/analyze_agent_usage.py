@@ -187,7 +187,8 @@ CORRECTIONS = [
 class AgentStat:
     __slots__ = ("label", "kind", "wf", "turns", "inp", "cc", "cr", "out",
                  "first_cc", "first_prompt", "first_cr", "tools", "models", "fetch_urls",
-                 "queries", "returns", "bad_lines", "ctx_seq", "no_usage_msgs")
+                 "queries", "returns", "bad_lines", "ctx_seq", "no_usage_msgs",
+                 "seen_msg_ids", "dup_usage_records")
 
     def __init__(self, label, kind, wf=""):
         self.label = label
@@ -212,6 +213,13 @@ class AgentStat:
         self.bad_lines = 0
         self.no_usage_msgs = 0    # usage 없는 assistant 레코드 수(경고용)
         self.ctx_seq = []         # 턴별 프롬프트 크기(cc+cr)
+        # ⚠️ 중복 계수 방지 (2026-08-06 신설).
+        # 트랜스크립트는 **응답 1건을 콘텐츠 블록(thinking·text·tool_use)마다
+        # 별도 레코드로 쓰면서 모든 레코드에 같은 message.usage를 복사한다.**
+        # 레코드를 세면 같은 API 호출이 2~4회 계수된다 — 실측 2.05배 과대(159 호출을
+        # 330으로 보고). message.id는 API 응답 1건당 하나이므로 이것으로 중복을 막는다.
+        self.seen_msg_ids = set()
+        self.dup_usage_records = 0
 
     @property
     def total(self):
@@ -263,6 +271,17 @@ def collect(path: str, label: str, kind: str, wf: str = "") -> AgentStat:
 
             usage = msg.get("usage")
             if usage:                                   # ← TURN_RULE
+                # 같은 API 응답이 콘텐츠 블록 수만큼 반복 기록된다. message.id로
+                # 첫 레코드만 집계한다. id가 없는 로그(구버전)는 중복 판정이
+                # 불가능하므로 **집계에서 빼지 않고** 그대로 센다 —
+                # 조용한 누락을 만드느니 과대 계상 쪽이 안전하고, 그 사실은
+                # 이상 징후 절에 건수로 드러난다.
+                msg_id = msg.get("id")
+                if msg_id is not None:
+                    if msg_id in st.seen_msg_ids:
+                        st.dup_usage_records += 1
+                        continue
+                    st.seen_msg_ids.add(msg_id)
                 st.turns += 1
                 missing = [k for k in ("input_tokens",
                                        "cache_creation_input_tokens",
@@ -413,6 +432,16 @@ def section_anomalies(stats):
 
     nu = sum(s.no_usage_msgs for s in stats)
     print(f"  usage 없는 assistant: {nu}건 (턴으로 세지 않음)")
+
+    dup = sum(s.dup_usage_records for s in stats)
+    kept = sum(s.turns for s in stats)
+    if dup:
+        ratio = (kept + dup) / kept if kept else 0
+        print(f"  중복 usage 레코드   : {dup}건 제외 (같은 message.id 반복)")
+        print(f"      → 중복제거 안 했다면 {ratio:.2f}배 과대 계상됐을 것"
+              f" (레코드 {kept + dup} → 실제 호출 {kept})")
+    else:
+        print("  중복 usage 레코드   : 0건")
 
     mf = UNKNOWN["missing_usage_fields"]
     print(f"  usage 필드 누락     : {sum(mf.values())}건")

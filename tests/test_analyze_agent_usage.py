@@ -31,6 +31,7 @@ FIXTURE_FILES = [
     os.path.join(FIX, f"{SESSION}.jsonl"),
     os.path.join(FIX, SESSION, "subagents", "workflows", WF,
                  "agent-aWORKER01x.jsonl"),
+    os.path.join(FIX, "sess-dup.jsonl"),
 ]
 
 
@@ -171,6 +172,63 @@ class TestScopeSelection(unittest.TestCase):
 
     def test_scope_all_is_default(self):
         self.assertNotIn("[--scope", run())
+
+
+DUP_SESSION = "sess-dup"
+
+
+def run_dup(*extra):
+    """중복 message.id fixture로 계측기를 실행한다(워크플로 없음)."""
+    cmd = [sys.executable, SCRIPT,
+           "--projects-dir", FIX,
+           "--session", DUP_SESSION,
+           "--archive", "",
+           "--no-baseline", *extra]
+    p = subprocess.run(cmd, capture_output=True, text=True,
+                       encoding="utf-8", errors="replace", cwd=ROOT)
+    if p.returncode not in (0, 2):
+        raise AssertionError(f"실행 실패 rc={p.returncode}\n{p.stdout}\n{p.stderr}")
+    return p.stdout
+
+
+class TestDuplicateUsageRecords(unittest.TestCase):
+    """⑧ 같은 API 응답이 콘텐츠 블록마다 반복 기록돼도 한 번만 센다.
+
+    트랜스크립트는 응답 1건을 thinking·text·tool_use 블록마다 별도 레코드로
+    쓰면서 **모든 레코드에 같은 message.usage를 복사한다.** 레코드를 세면
+    같은 호출이 2~4회 계수된다(2026-08-06 실측: 실제 159 호출을 330으로,
+    50.0M을 102.3M으로 보고). 이 테스트가 그 회귀를 막는다.
+
+    fixture 구성: msg_A 3회 반복 · msg_B 1회 · id 없는 레코드 1회.
+    """
+
+    def test_duplicate_ids_counted_once(self):
+        out = run_dup()
+        # 레코드 5건 중 실제 호출은 3건(msg_A · msg_B · id 없는 것)
+        self.assertEqual(num(out, r"메인\s+\d+\s+(\d+)\s"), 3,
+                         "중복 message.id가 턴으로 중복 계수됐다")
+
+    def test_totals_exclude_duplicates(self):
+        out = run_dup()
+        # 중복제거 후 = A(10+100+1000+5) + B(0+0+2000+7) + legacy(1+0+500+3)
+        self.assertEqual(num(out, r"메인\s+\d+\s+\d+\s+([\d,]+)"), 3626,
+                         "중복 레코드의 usage가 합산됐다")
+
+    def test_duplicate_count_is_reported(self):
+        """조용히 버리지 않고 몇 건을 제외했는지 보고해야 한다."""
+        out = run_dup()
+        self.assertIn("중복 usage 레코드", out)
+        self.assertEqual(num(out, r"중복 usage 레코드\s*:\s*(\d+)건 제외"), 2)
+        self.assertIn("레코드 5 → 실제 호출 3", out)
+
+    def test_record_without_id_is_not_dropped(self):
+        """message.id가 없는 구버전 로그는 중복 판정이 불가능하므로 그대로 센다.
+
+        조용한 누락을 만드느니 과대 계상 쪽이 안전하다는 판단이다.
+        """
+        out = run_dup()
+        # legacy 레코드의 cache_read 500이 합계에 들어 있어야 한다
+        self.assertEqual(num(out, r"메인\s+\d+\s+\d+\s+([\d,]+)"), 3626)
 
 
 class TestDeterminism(unittest.TestCase):
