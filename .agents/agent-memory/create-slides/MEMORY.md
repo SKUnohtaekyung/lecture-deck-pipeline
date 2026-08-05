@@ -148,6 +148,16 @@
 
 ## 미해결
 
+### ⏸ 지침 생태계 리팩터링 — Codex 강제 패리티가 절반만 됐다 (2026-08-05)
+
+브랜치 `refactor/instruction-ecosystem`(커밋 6개 · `39659ea`→`00c5f82`). **main 미병합.** 계획·보고 정본은 `plans/instruction-refactor/{PLAN,FINAL_REPORT}.md` — 상세는 거기 있고 여기엔 상태만 둔다.
+
+- **된 것**: `.githooks/pre-commit`(플랫폼 공통 최종 증거 층 — 이 저장소 최초) · Claude 훅 2종 추가(관측 모드) · `.claude/agents/`·`.codex/agents/` 역할 파일 4종 · `AGENTS.md` −34.6%(Codex 결합 예산 78.0%→56.1%) · 사실 오류 6건 정정.
+- **⏸ 막힌 것 — 사람만 할 수 있다**: **Codex에서 `/hooks` 승인**이 없으면 Gate 0를 못 끝낸다. 그전까지 **Codex 세션의 기계적 강제는 git 층 하나뿐**이고, 이건 「동등」이 아니라 **「지연된 동등」**이다. `.codex/hooks.json`은 지금 **프로브**(아무것도 차단하지 않고 `tmp/codex-hook-probe.jsonl`에 페이로드만 기록)다.
+- **훅은 클론마다 `python scripts/install_hooks.py`를 한 번 돌려야 한다.** 미설치면 `verify_skill_setup.py`가 exit 1로 잡는다(2026-08-05 신설).
+- **`generated-guard`·`tmp-guard`는 아직 관측 모드다.** `--enforce`로 승격하기 전에 오탐 0을 확인한다 — 실제로 관측 모드가 오탐 1건(상대경로를 훅 프로세스 CWD 기준으로 해석)을 잡아냈다.
+- **다음 과목이 추가되면 `course` 훅이 조용히 죽는다.** `_course_paths.guide_path()`가 `courses/*/슬라이드지침.md` 후보가 **정확히 1개**일 때만 경로를 돌려주고, 아니면 `None`을 받아 훅이 침묵한다. 두 번째 과목이 그 시험대다.
+
 ### ✅ 세션 폴더 덱의 kit CSS 상대경로 — 2026-08-03 전량 해소(교훈은 유효하니 남긴다)
 
 **`courses/<과목>/sessions/N주차/강의덱.html`에서 `../../kit/styles/`는 404다.** 덱이 `sessions/N주차/`에 있던 시절의 깊이(2단계)인데, 2026-07 폴더 이동(`b5756e7`)으로 `courses/<과목>/sessions/N주차/`(4단계)가 되면서 전부 깨졌다. 올바른 값은 **`../../../../kit/styles/`**.
