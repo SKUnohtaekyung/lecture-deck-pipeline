@@ -232,6 +232,34 @@
 
 > **이 게이트를 통과하기 전에는 §5.1~5.3을 작성하지 않는다.** 문서만 보고 만든 설정 파일은 「선언과 집행 불일치」(유형⑤)를 새로 만드는 짓이다.
 
+### 5.0-R Gate 0 실행 결과 (2026-08-06 · **부분 완료**)
+
+`codex exec --dangerously-bypass-hook-trust`로 실측했다. 이 플래그는 **호출 1회에 한해** 훅을 신뢰 없이 실행하며 `~/.codex/config.toml`의 신뢰 저장소를 **바꾸지 않는다** — 사용자 계정의 보안 설정을 에이전트가 대신 수정하지 않고 측정할 수 있는 경로다.
+
+**확정된 것**
+
+| 항목 | 결과 |
+|---|---|
+| 저장소 `.codex/hooks.json` 로드 | ✅ 된다(project trust `trusted` 작동) |
+| `SessionStart` 발화 | ✅ 페이로드 확인 — `session_id`·`transcript_path`·`cwd`·`hook_event_name`·`model`·`permission_mode`·`source` |
+| 훅 실행 시 CWD | ✅ **저장소 루트** → 상대경로(`.codex/hooks/probe.py`)가 해석된다 |
+| Codex가 읽는 지침 | ✅ 루트 `AGENTS.md`. 전역 `~/.codex/AGENTS.md`는 보고 목록에 **나타나지 않았다** — §2.3의 결합 바이트 추정은 보수적(과대)이었을 수 있다 |
+| 이벤트 목록(타 설정에서 실증) | `UserPromptSubmit` `SessionStart` `PreToolUse` `PermissionRequest` `PostToolUse` **`PostToolUseFailure`** `SubagentStart` `SubagentStop` `PreCompact` `Stop` `SessionEnd` |
+| **`PreToolUse`·`PostToolUse` 발화** | ❌ **미확정** — 도구 호출 직전에 계정 사용량 한도 소진 |
+
+**실패로 배운 스키마 제약 2가지 (둘 다 이 작업의 실수였다)**
+
+1. **최상위 필드는 `description`·`hooks` 둘뿐이다.** 넣어둔 `_comment` 때문에 `failed to parse hooks config … unknown field _comment`로 **파일 전체가 파싱 실패해 훅이 하나도 걸리지 않았다.** 그런데도 콘솔에는 `hook: PostToolUse`가 찍혀 성공처럼 보였다 — 전부 **전역 플러그인**(`oh-my-claudecode`)의 훅이었다. 남의 훅 로그를 내 훅의 증거로 오독할 뻔했다.
+2. **`PreToolUse`·`PostToolUse`는 `"matcher"`가 없으면 아무것도 매치하지 않는다.** `"matcher": "*"`를 명시해야 한다(형식 근거: 같은 PC에서 동작 중인 플러그인 hooks.json).
+
+**운영 주의**
+
+- `codex exec`는 stdin이 열려 있으면 `Reading additional input from stdin...`에서 멈춘다 → `< /dev/null`.
+- `bin/<해시>/codex.exe` 경로는 자동 업데이트로 바뀐다(같은 날 `d7e8094…`→`68de26a…`). 문서에 박지 말고 `~/.codex/config.toml`의 `CODEX_CLI_PATH`를 참조한다.
+- **실측이 계정 사용량을 태운다.** 4회 실행으로 한도가 소진됐다(복구 2026-08-10).
+
+**남은 절차**: 한도 복구 후 `tmp/gate0-ok.txt`를 쓰게 하는 1회 실행으로 `PreToolUse`/`PostToolUse` 발화와 페이로드의 **파일 경로 키 이름**만 확인하면 Gate 0가 끝난다. 그 값이 나와야 §5.1의 `matcher` 대상과 `--host codex` 파싱을 확정할 수 있다.
+
 ### 5.1 `.codex/hooks.json` (신규)
 
 ```jsonc
