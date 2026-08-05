@@ -161,7 +161,7 @@
 | ID | 결함 | 근거 |
 |---|---|---|
 | C1 | **보안·품질 금지를 Markdown만으로 강제**(플레이북 §12.1) — Codex 측에 강제 계층이 **0**이다. `tmp/` 금지·생성물 직접수정 금지·evals 회귀 전부 자연어뿐 | §2.5, §2.6 |
-| C2 | **개인 절대경로가 git에 커밋됨** — `.claude/launch.json:8`의 `C:/Users/Noh TaeKyung/Desktop/lecture-deck-pipeline`(다른 PC 사용자 경로). 존재하지 않는 디렉터리를 가리키는 서버 설정이 팀 공유 파일에 들어 있다 | `[실측]` |
+| C2 | **개인 절대경로가 git에 커밋됨** — `.claude/launch.json:8`의 `C:/Users/<타 사용자>/Desktop/lecture-deck-pipeline`(다른 PC 사용자 경로). 존재하지 않는 디렉터리를 가리키는 서버 설정이 팀 공유 파일에 들어 있다 | `[실측]` |
 | C3 | **정본끼리 충돌** — F1(charts 23 vs 21). 어느 쪽을 믿어야 하는지 에이전트가 판정할 수 없다 | §2.7 |
 
 ### 3.2 높음 (High)

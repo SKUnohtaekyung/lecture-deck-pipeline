@@ -58,7 +58,7 @@
 **Critical**
 
 - **C1** 보안·품질 금지가 Codex 쪽에서 Markdown 문장뿐 — 강제 계층 0. → **부분 해소**(git 층 신설, Codex 훅은 Gate 0 대기)
-- **C2** `.claude/launch.json`에 타 PC 사용자 절대경로(`C:/Users/Noh TaeKyung/…`)가 git에 커밋됨. → **해소**
+- **C2** `.claude/launch.json`에 타 PC 사용자 절대경로(`C:/Users/<타 사용자>/…`)가 git에 커밋됨. → **해소**
 - **C3** 정본끼리 충돌 — `AGENTS.md`는 charts 23개, `kit/charts/README.md`는 21개. → **해소**
 - **C4**(독립 검토 발견) **훅 설치 상태를 검사하는 코드가 어디에도 없었다.** 문서와 계획은 검사한다고 적었으나 실제 코드는 0건. 훅이 미설치면 pre-commit이 아예 안 돌아 **스스로 미설치를 알릴 수 없는 자기참조 사각지대**였다. → **해소**(실증까지)
 
