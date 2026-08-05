@@ -18,6 +18,8 @@
 - `.claude/settings.json`: Claude의 도구 권한 문법이다. Codex 권한은 실행 환경과 승인 정책이 관리한다.
 - `.claude/launch.json`: Claude 임시 scratch 서버의 절대 경로를 담고 있어 이식성이 없다. 필요할 때 `python -m http.server`를 실행한다.
 
+`.codex/hooks.json`·`.codex/hooks/`·`.codex/agents/`는 신설된 Codex 전용 자산이라 옮기지 않는다(현재 `hooks.json`은 **Gate 0 프로브** 상태 — 아무것도 차단하지 않고 페이로드만 기록한다). `.gitignore`도 `.codex/`에서 `.codex/*` + negation으로 바뀌어 이 파일들만 추적되고 브라우저 프로파일은 계속 제외된다. 이 저장소 전체의 강제 계층 지도(무엇이 사람 규율에 의존하고 무엇이 기계로 강제되는가)는 `AGENTS.md` 「무엇이 기계로 강제되는가」가 정본이다 — 여기에 표를 복제하지 않는다.
+
 ## 공통 정본과 동기화 원칙
 
 - PPT 제작 조건과 디자인 규칙은 루트 `SKILL.md` 및 그 참조 파일에서만 수정한다. `.agents/skills/create-slides/SKILL.md`에는 Codex 탐색 메타데이터와 공통 정본을 여는 절차만 둔다.

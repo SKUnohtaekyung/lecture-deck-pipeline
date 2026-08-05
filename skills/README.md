@@ -52,7 +52,9 @@
 
 ## 명명 규약 예외
 
-저장소 템플릿(`.claude/skills/_template/`)은 kebab-case 이름을 권장하지만, 팀 스킬은 **한글 보통명사**를 사용한다 — 팀 내부 용어와의 일치(협업 문서·인수인계서가 전부 한글 역할명 사용)가 우선이며, 스모크 테스트로 한글 스킬명 인식을 검증했다(2026-07-17, `claude -p` 새 세션 YES). Codex CLI는 로컬에 없어 `$스킬명` 스모크는 미실시 — Codex 어댑터는 create-slides와의 패턴 패리티를 위해 유지한다.
+저장소 템플릿(`.claude/skills/_template/`)은 kebab-case 이름을 권장하지만, 팀 스킬은 **한글 보통명사**를 사용한다 — 팀 내부 용어와의 일치(협업 문서·인수인계서가 전부 한글 역할명 사용)가 우선이며, 스모크 테스트로 한글 스킬명 인식을 검증했다(2026-07-17, `claude -p` 새 세션 YES).
+
+Codex CLI는 로컬에 설치돼 있다(2026-08-05 실측: `C:\Users\miso\AppData\Local\OpenAI\Codex\bin\d7e8094cfb76a267\codex.exe`, 버전 `codex-cli 0.146.0-alpha.9.2`, 서브커맨드에 비대화형 `exec`·진단용 `doctor`·`review`가 있다). **PATH에는 없을 뿐**이라 `$스킬명` 스모크와 지침 로드 그래프 검증은 전체 경로를 쓰거나 PATH에 추가하면 실행 가능하다 — 예: `& "C:\Users\miso\AppData\Local\OpenAI\Codex\bin\d7e8094cfb76a267\codex.exe" exec "새 세션에서 \$리서치로 2주차 조사해줘"` 형태로 새 세션을 열어 스킬 인식 여부를 관찰한다. **다만 이 스모크는 아직 실제로 돌리지 않았다 — 여기 적힌 것은 "가능하다(미실시)"이지 "통과했다"가 아니다.** Codex 어댑터(`.agents/skills/리서치/`·`.agents/skills/검토/`)는 create-slides와의 패턴 패리티를 위한 것이 아니라, 위 실측대로 Codex CLI가 로컬에서 실제로 구동 가능한 **실제 발동 대상**이기 때문에 유지한다.
 
 ## 검증·회귀
 

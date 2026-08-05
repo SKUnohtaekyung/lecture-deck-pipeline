@@ -29,22 +29,22 @@ description: >-
 Codex에는 `Explore`가 없으므로 이 절은 적용되지 않고, 정본 4단계의 내장 폴백을 그대로 쓴다.
 
 ```
-Agent(subagent_type: "Explore", model: "sonnet", prompt: <청크 1개 분량 조사 지시>)
+Agent(subagent_type: "research-worker", prompt: <청크 1개 분량 조사 지시>)
 ```
+
+모델·허용 도구·턴 상한은 `.claude/agents/research-worker.md` frontmatter에 고정돼 있으므로 호출부에서 다시 지정하지 않는다.
 
 ## 강제 수준을 혼동하지 마라
 
 | 항목 | 값 | 강제 수준 |
 |---|---|---|
-| 서브에이전트 타입 | `Explore` | **구조적** — `Write`·`Edit`·`NotebookEdit`·`Agent`를 애초에 보유하지 않는다(중첩 차단 포함) |
-| 모델 | `sonnet` | **구조적** — 호출 파라미터. 실측 해석값 `claude-sonnet-5`. `inherit` 금지 |
-| 허용 도구 | `WebSearch` `WebFetch` `Read` `Grep` `Glob` + **`ToolSearch`(전제 조건)** | ⚠️ **자연어 지시 + 사후 감사** |
-| 불허 도구 | 위 목록 외 **전부** — `Bash`·`PowerShell`·브라우저 자동화·`Skill`·알림/스케줄/메시지 계열 포함 | ⚠️ **자연어 지시 + 사후 감사** |
-| 턴 상한 | **없음** | ❌ **강제 수단 없음.** `maxTurns`는 `.claude/agents/` frontmatter 전용이라 이 경로에서는 쓸 수 없다 |
+| 서브에이전트 타입 | `research-worker` | **구조적** — `.claude/agents/research-worker.md`의 `tools:` 목록이 `Read, Grep, Glob, WebSearch, WebFetch, ToolSearch`뿐이라 `Write`·`Edit`·`NotebookEdit`·`Agent`·`Bash`·`PowerShell`을 애초에 보유하지 않는다(중첩 차단 포함) |
+| 모델 | `sonnet` | **구조적** — agent frontmatter `model: sonnet`. 실측 해석값 `claude-sonnet-5`. `inherit` 금지 |
+| 허용 도구 | `Read` `Grep` `Glob` `WebSearch` `WebFetch` `ToolSearch`(전제 조건) | **구조적** — agent frontmatter `tools:`가 이 목록으로 고정한다 |
+| 불허 도구 | 위 목록 외 **전부** — `Bash`·`PowerShell`·브라우저 자동화·`Skill`·알림/스케줄/메시지 계열 포함 | **구조적** — frontmatter에 없는 도구는 애초에 호출 불가 |
+| 턴 상한 | `maxTurns: 30` | **✅ 구조적** — 2026-08-05 `.claude/agents/research-worker.md` 신설로 이 프로젝트가 이제껏 걸지 못했던 상한이 걸렸다 |
 
-`Explore`는 부모 세션의 도구에서 `Agent`·`Artifact`·`ExitPlanMode`·`Edit`·`Write`·`NotebookEdit`만 뺀 집합을 갖는다.
-**`Bash`와 `PowerShell`이 남아 있으므로 `Write` 차단만으로는 파일 쓰기를 막지 못한다.**
-근거와 실측 기록은 `_dev/설계기록/Phase2-워커실행통제-검증절차.md`.
+**왜 `Explore`를 더는 쓰지 않는가**: `Explore`는 부모 세션의 도구에서 `Agent`·`Artifact`·`ExitPlanMode`·`Edit`·`Write`·`NotebookEdit`만 뺀 집합을 갖는데, **`Bash`와 `PowerShell`이 남아 있어 `Write` 차단만으로는 파일 쓰기를 막지 못했다**(자연어 지시 + 사후 감사에만 의존하던 상태). `research-worker`는 허용목록 자체가 `Bash`·`PowerShell`을 포함하지 않으므로 이 구멍이 구조적으로 막힌다. **이 사고 이력은 규칙의 근거이므로 지우지 않는다.** 근거와 실측 기록은 `_dev/설계기록/Phase2-워커실행통제-검증절차.md`.
 
 ⚠️ **`ToolSearch`는 조사 도구가 아니라 전제 조건이다.** 이 환경에서 `WebSearch`·`WebFetch`는
 deferred(이름만 노출·스키마 미로드) 상태라 `ToolSearch`로 스키마를 먼저 로드해야 호출된다 —

@@ -31,7 +31,10 @@ python .claude/skills/ui-ux-pro-max/scripts/search.py ...
 - `../../../SKILL.md`가 실제 루트 공통 정본을 가리키는가
 - `/create-slides` 명시 호출과 일반 강의덱 요청의 자동 호출이 새 세션에서 동작하는가
 - 공통 문서의 상대 경로가 어댑터 폴더가 아니라 저장소 루트에서 해석되는가
+- `.claude/agents/`(예: `research-worker.md`)가 신설·변경됐다면 강제 계층 정본 `AGENTS.md` 「무엇이 기계로 강제되는가」와 어긋나지 않는가
 
 ## 팀 워크플로 스킬
 
 리서치·검토 어댑터의 정본은 루트 `skills/<이름>/SKILL.md` — 등재·계약·호출 규약은 `skills/README.md` 참조(여기에 복제하지 않는다). 횡단 오케스트레이션 프로토콜 `하네스`(파이프라인 역할 아님)도 같은 방식의 어댑터를 `.claude/skills/하네스/`에 둔다.
+
+`/리서치` 워커 실행용 `.claude/agents/research-worker.md`가 신설됐다(허용 도구·모델·`maxTurns`를 frontmatter로 구조적 강제). 이 저장소 전체의 강제 계층 지도는 `AGENTS.md` 「무엇이 기계로 강제되는가」가 정본이다 — 여기에 상태를 복제하지 않는다.
