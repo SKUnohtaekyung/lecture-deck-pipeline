@@ -6,6 +6,7 @@ from __future__ import annotations
 import hashlib
 import json
 import re
+import subprocess
 import sys
 from pathlib import Path
 
@@ -433,6 +434,33 @@ def main() -> int:
         "메모리 포인터 규약(정본 .agents · .claude는 포인터)",
         "메모리 포인터 규약 위반: 정본·포인터 파일 존재, 포인터가 .agents/agent-memory/ 지목,"
         " 400바이트 미만, '## ' 헤더 0건을 모두 만족해야 한다",
+    )
+
+    # git 훅 층 — Codex·Claude와 무관하게 커밋 시점에 도는 유일한 공통 강제 층이다.
+    # 훅이 미설치면 pre-commit 자체가 실행되지 않으므로 **스스로 미설치를 알릴 수 없다.**
+    # 그래서 설치 여부를 여기서(수동 실행되는 검증기에서) 검사한다.
+    # 2026-08-05 독립 검토 지적: 이 검사가 없어 「공통 최종 증거 층」이 조용히
+    # 무력화될 수 있었고, 문서는 이미 검사한다고 적고 있었다(선언과 집행 불일치).
+    hooks_dir = ROOT / ".githooks"
+    pre_commit = hooks_dir / "pre-commit"
+    try:
+        configured = subprocess.run(
+            ["git", "config", "--get", "core.hooksPath"],
+            cwd=str(ROOT), capture_output=True, text=True,
+        ).stdout.strip().replace("\\", "/").rstrip("/")
+    except Exception:
+        configured = ""
+    check(
+        pre_commit.is_file(),
+        "git 훅 스크립트 존재(.githooks/pre-commit)",
+        ".githooks/pre-commit 없음 — 플랫폼 공통 강제 층이 비어 있다",
+    )
+    check(
+        configured == ".githooks",
+        "git 훅 설치됨(core.hooksPath=.githooks)",
+        "core.hooksPath가 '.githooks'가 아니다(현재: %r). "
+        "`python scripts/install_hooks.py`로 설치하라 — 클론마다 한 번 필요하다"
+        % (configured or "미설정",),
     )
 
     for platform_dir, prefix in (
