@@ -1,0 +1,1103 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=1280">
+  <title>바이브코딩 3주차 — 에이전트 팀과 함께 다듬고 세상에 내놓기</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 96'><line x1='28.8' y1='28.7' x2='49' y2='70' stroke='%2314B8A6' stroke-width='18' stroke-linecap='round'/><line x1='70.9' y1='25.1' x2='49' y2='70' stroke='%231D4ED8' stroke-width='19' stroke-linecap='round'/><circle cx='49' cy='70' r='9.5' fill='%23141821'/></svg>">
+  <!-- 폰트: Pretendard (문서가 인정하는 유일한 외부 의존성) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+  <!-- ▼ 킷 상속: deck.css(베이스) → legibility.css(강의장 가독성) 순서 고정.
+       덱을 패키지 밖에 생성할 땐 이 두 파일을 옆에 복사하거나 <style>로 인라인(base64 단일파일 배포). -->
+  <!-- ⚠️ 경로는 «생성물 강의덱.html의 위치» 기준이다. 이 템플릿은 courses/<과목>/sessions/N주차/로
+       복사되므로 저장소 루트까지 4단계다. 2단계(../../)로 두면 CSS가 404인데 정적 검사는 전부
+       PASS하고 브라우저에서만 «전 슬라이드 동시 표시 + 로고 0×0»으로 드러난다(2026-07 실제 사고).
+       덱을 만들면 반드시 로컬 http로 열어 document.styleSheets.length를 확인할 것. -->
+  <link rel="stylesheet" href="../../../../kit/styles/deck.css">
+  <link rel="stylesheet" href="../../../../kit/styles/legibility.css">
+  <link rel="stylesheet" href="../../../../kit/styles/patterns.css"><!-- 코드 코어: 검증된 레이아웃/element CSS(재사용) -->
+  <style id="kit-additions">
+    /* ⚠️ **kit에 없는 토큰을 쓰지 마라 — 조용히 무효가 된다.**
+       2026-08-08 실측: 이 shell이 `--blue-tint`·`--mint-tint`·`--coral-tint`·
+       `--gray-100`·`--gray-500`·`--gray-800` 6종을 17곳에서 쓰고 있었는데
+       kit 어디에도 정의가 없었다. `background:var(--blue-tint)`는 **투명**으로
+       렌더됐고, 카드가 안 그려진 슬라이드가 「잉크 0.18」로 잡혀 "정보가 적다"로
+       오진될 뻔했다. 문법이 유효한 CSS라 정적 게이트·렌더 감사 둘 다 못 잡는다.
+       정본 토큰: --blue-soft · --mint-soft · --coral-soft · --surface ·
+                  --gray-400 · --gray-700  (kit/styles/deck.css)
+       꼭 새 값이 필요하면 아래처럼 **이 블록에서 선언하고 사유를 적어라.** */
+    .deck{
+      /* 검은 터미널 위 강조색. --mint(#14B8A6)는 --ink 위에서 눌려 보이고
+         --mint-soft(#E9F8F5)는 거의 흰색이라 강조로 안 읽힌다(2주차 실측).
+         #5EEAD4는 --ink 대비 12.01:1. 쓰는 곳은 .w3-prompt strong 하나뿐이다. */
+      --mint-bright:#5EEAD4;
+    }
+
+    /* 이 주차 전용 신규 구도의 CSS는 여기 둔다(그게 기본이다).
+       클래스는 반드시 이 주차 deck.contract.json의 layout_families에 등재할 것 —
+       미등재 구도는 전부 'full'로 뭉개져 「동일 구도 연속」 FAIL 오탐이 난다.
+       kit/styles/patterns.css 환류는 「서로 다른 과목에서 이미 2회 이상 쓰인」
+       형태만 검토 대상이다(2026-07-29 확정 · R-PROMO-01). 「앞으로 쓸 것 같다」는
+       예측으로 올리지 마라. 상세는 references/phases/05-시각화.md 환류 규칙. */
+
+    /* ══════════════════════════════════════════════════════════════════
+       기본 경화 5종 — 지우지 말 것 (2026-08-03 신설)
+       ══════════════════════════════════════════════════════════════════
+       왜 여기 있나: 지금까지 주차별 교정이 그 주차 shell에만 쌓이고 템플릿으로
+       돌아오는 경로가 없었다. 그래서 새 주차를 시작할 때마다 아래 5종이 전부
+       원상복귀했고, 사용자가 같은 지적을 반복했다(실측: 2주차가 얻어낸 교정 5종
+       중 템플릿에 반영된 것 0건).
+
+       값의 정본은 kit/guide/토큰-치트시트.md(R-TYPE-01·03)이고 여기는 집행부다.
+       규칙이 바뀌면 정본을 먼저 고치고 여기를 맞춘다 — 반대로 하지 않는다.
+       ⚠️ 이 블록의 셀렉터는 전부 kit에 실재하는 클래스만 겨냥한다. 없는 클래스를
+          적어 두면 「규칙이 있는 것처럼 보이는데 아무 일도 안 하는」 상태가 된다.
+       ────────────────────────────────────────────────────────────────── */
+
+    /* ① 본문 22px 하한 회복 (R-TYPE-01) ───────────────────────────────
+       kit의 .work-step은 b·span에만 크기를 걸어 두어, 클래스 없는 맨 텍스트와
+       <p>가 컨테이너 기본값 16px를 그대로 물려받는다. 컨테이너에 직접 건다.
+       (선례: 46장 242건 4,537자가 이 경로로 하한 미만이 됐다) */
+    .slide .work-step{ font-size:var(--fs-body); line-height:1.45; }
+    .slide .work-step p{ margin:0; font-size:var(--fs-body); line-height:1.45; }
+    /* ⚠️ line-height 1.45는 리터럴로 둔다. 값이 같은 토큰(`--lh-lead`)이 있지만
+          그건 「리드」 역할이라, 여기 쓰면 **값은 맞고 의미는 틀린** 배선이 된다.
+          토큰은 값이 같다고 쓰는 것이 아니라 역할이 같을 때 쓴다. */
+
+    /* ② 역할 위계 — 박스 제목 26/800 · 박스 설명 20/500 ────────────────
+       2026-07-31 사용자 결정: "제목과 설명 폰트 사이즈가 똑같다. 설명이 더
+       작아야지" · "전체적으로 다 볼드에 글씨 크기 똑같다. 폰트 시스템 쓰자" ·
+       "bold를 미디움 정도로 낮춰 써도 된다 — 본문이나 설명 글씨는".
+       R-TYPE-01의 「박스 제목」·「박스 안 설명문」 행이 이 규칙의 정본이다.
+
+       ⚠️ 명시도를 .deck .slide[data-slide]로 올려 둔 이유: 파트별로 작업하면
+          `.slide[data-slide="X"] .work-step b`(0,3,1) 같은 국소 규칙이 전역
+          규칙(0,2,1)을 이겨 한 덱 안에서 21·22·23·24·26px가 섞인다.
+          !important는 쓰지 않는다 — 정당한 개별 예외의 여지를 남긴다.
+
+       ⚠️ 이 주차가 새 박스 구도를 만들면 그 제목·설명 셀렉터를 아래 목록에
+          **추가**하라. 추가하지 않으면 그 구도만 위계 밖에 남는다.
+
+       ⚠️ 설명문 20px은 「박스 내부 보조 서술」 한정이다. 본문 문장
+          (.s-body·.s-lead)의 22px 하한은 그대로다. 그리고 20px 줄은 짧아야
+          한다 — 긴 문장을 20px로 내리면 가독성이 떨어진다(권장 25자 이내,
+          넘으면 문장을 나누거나 22px 본문으로 올린다).
+
+       ⚠️ `.cd-leaf > b`·`.cd-out`는 일부러 뺐다. kit의 실제 마크업이
+          `<b class="cd-out">`(= .cd-leaf의 직계 자식이자 같은 노드)이라 두
+          규칙이 **같은 노드**를 겨냥하고, 타입 셀렉터 한 칸 차이로 제목 규칙이
+          이겨 설명 규칙이 죽는다. 게다가 kit의 `.cd-out`(19px/800 블루)은
+          「박스 안 설명문」이 아니라 **결론 라벨**이다. R-TYPE-01이 `.cd-out`을
+          설명문 행에 적어 둔 것은 정정 대상이다(FINDINGS.md 참고). */
+    .deck .slide[data-slide] .work-step > b,
+    .deck .slide[data-slide] .card > h3,
+    .deck .slide[data-slide] .cc-side > h3{
+      font-size:var(--fs-box-title); font-weight:800; line-height:var(--lh-box-title); }
+    .deck .slide[data-slide] .desc{
+      font-size:var(--fs-box-desc); font-weight:500; line-height:var(--lh-box-desc); }
+
+    /* ③ 카드·박스 간 여백 — kit 기본 14px는 촘촘하다 ────────────────────
+       사용자 지시: "각 카드별 여백이 너무 적어" · "박스가 지금 너무 촘촘해". */
+    .slide .grid-2, .slide .grid-3{ gap:var(--sp-18); }
+
+    /* ④ 빈 이미지 슬롯을 학생 화면에 표시하지 않는다 ────────────────────
+       사용자 지시: "이미지를 넣을 공간에 박스로 영역을 표시해 놓는데 이거를
+       다 지워야 해." kit/styles/deck.css는 빈 슬롯에 점선 테두리 + 연파랑
+       배경 + "이미지 예정" 라벨을 그린다 — 그 표시만 끈다.
+       ⚠️ 슬롯 자체를 없애는 게 아니다. 좌표·크기·본문 인셋은 그대로 두고
+          (이미지 작업과 충돌 방지), verify_deck_quality의 R-QC-18(빈 슬롯
+          검출)도 계속 유효하다. 화면 노출만 막는 것이다. */
+    .deck .slide .asset-slot,
+    .deck .slide .asset-slot[data-image-state="expected"]{
+      border:0; background:none; box-shadow:none; }
+    .deck .slide .asset-slot[data-image-state="expected"]::before{ content:none; }
+
+    /* ⑤ 교시 로드맵(.roadmap) — 교시마다 같은 모양을 쓴다 ────────────────
+       사용자가 세 번 요청한 「교시 로드맵 템플릿 통일」이다. 통일되지 않으면
+       교시마다 스텝 수·아이콘·산출물 줄이 제각각이 된다(실측: 5장이 스텝
+       6·4·4·5·5 · 아이콘 클래스 2종 혼재 · 산출물 줄은 1장에만).
+
+       마크업 골격은 part-01.html의 data-slide="M1" 슬라이드에 있다 — 그것을
+       복사해 교시 수만큼 만든다.
+       금지: 장식 아이콘 SVG · 스텝 6개 이상 · .rm-* 클래스 재정의.
+       ⚠️ 로드맵은 「박스만 있고 시각자료가 없는 장」이 되기 쉽다(실측: 로드맵
+          5장이 장당 박스 12.6개로 기준판의 2.3배인데 시각자료 보유 0). 스텝을
+          늘리는 대신 이해를 돕는 시각자료를 함께 두는 쪽을 먼저 검토하라.
+       ⚠️ .roadmap을 이 주차 deck.contract.json의 layout_families에 등재할 것. */
+    .roadmap .s-full{ bottom:54px; display:flex; flex-direction:column; }
+    .roadmap .rm-lead{ margin:8px 0 0; font-size:var(--fs-body); font-weight:700;
+      color:var(--blue); line-height:1.4; }
+    .roadmap .rm-track{ flex:1 1 auto; min-height:0; display:flex;
+      align-items:stretch; gap:10px; margin:20px 0 0; }
+    .roadmap .rm-step{ flex:1 1 0; min-width:0; display:flex; flex-direction:column;
+      align-items:flex-start; justify-content:flex-start; gap:10px;
+      padding:22px 18px 18px; text-align:left;
+      border-radius:var(--r-lg); background:var(--blue-soft);
+      border:1px solid var(--blue-line); box-shadow:var(--shadow-md); }
+    .roadmap .rm-step .rm-n{ flex:0 0 auto; width:44px; height:44px; border-radius:50%;
+      background:var(--blue); color:var(--white); display:grid; place-items:center;
+      font-size:20px; font-weight:800; }
+    .roadmap .rm-step > b{ font-size:var(--fs-box-title); font-weight:800; color:var(--ink);
+      line-height:1.22; }
+    /* 크기·굵기·행간은 ②의 .desc 티어가 준다 — 여기서 다시 적지 않는다.
+       (다시 적으면 명시도가 낮아 조용히 무시되고, 「있는데 안 듣는 규칙」이 된다) */
+    .roadmap .rm-step .desc{ color:var(--gray-700); }
+    .roadmap .rm-step .rm-out{ display:block; width:100%; margin-top:auto;
+      padding-top:12px; border-top:1px solid var(--blue-line);
+      font-size:20px; font-weight:800; color:var(--blue); line-height:1.35; }
+    /* 마지막 스텝을 「이 교시의 도착점」으로 쓸 때만 .is-goal */
+    .roadmap .rm-step.is-goal{ background:var(--mint-soft); border-color:var(--mint-line); }
+    .roadmap .rm-step.is-goal > b{ color:var(--on-mint); }
+    .roadmap .rm-step.is-goal .rm-n{ background:var(--mint); color:var(--on-mint); }
+    .roadmap .rm-step.is-goal .rm-out{ color:var(--mint-deep); border-top-color:var(--mint-line); }
+    .roadmap .rm-arrow{ flex:0 0 auto; align-self:center; font-size:24px;
+      font-weight:800; color:var(--blue); }
+    /* 5스텝은 칸이 좁다 — 제목만 한 단계 내린다(설명·산출물은 유지). */
+    .roadmap .rm-track.is-5 .rm-step > b{ font-size:24px; }
+    .roadmap .rm-track.is-5 .rm-step{ padding:20px 14px 16px; }
+
+    /* 로드맵 시각자료 자리 — 있으면 트랙을 그만큼 좁힌다.
+       ⚠️ .asset-slot은 position:absolute라 그냥 두면 트랙 **위에 겹친다**.
+          `:has()`로 «슬롯이 있을 때만» 인셋을 준다 — 슬롯을 지우면 자동으로
+          전폭으로 돌아간다(작성자가 클래스를 따로 붙일 필요가 없다).
+       ⚠️ 슬롯을 안 쓸 거면 figure를 **삭제**한다. 남겨 두면 R-QC-18이 빈 슬롯으로
+          잡는다(그게 의도다 — 「채우기로 해 놓고 안 채운 자리」를 잡는 검사다). */
+    .roadmap .rm-visual{ top:150px; bottom:96px; height:auto; max-height:none; }
+    .roadmap .s-full:has(.rm-visual) .rm-track{ margin-right:412px; }
+    .roadmap .s-full:has(.rm-visual) .rm-lead{ max-width:760px; }
+
+    /* ⑥ 어절 중간 줄바꿈 금지 (R-TYPE-03 보조) ──────────────────────────
+       CSS 기본값 `word-break:normal`은 한글을 **낱글자 단위로** 끊는다
+       (CJK는 어느 글자 사이에서나 줄바꿈 가능한 것이 표준 동작이다).
+       그래서 좁은 칸에서 「끝까지 돌 / 립니다」 「누가 깼는 / 지」처럼 렌더된다.
+       1·2·3주차에서 모두 나온 지적이라 슬라이드가 아니라 규칙 문제다
+       (R-FEEDBACK-01 · 2주차 64p 사용자 지적 · 3주차 실측 wb:5).
+
+       kit은 `.recap-card`·`.note p`·`.lc p` 등 **7곳에만** keep-all을 걸어 둬
+       나머지 전 구도가 무방비다. 여기서 덱 전체에 상속으로 건다.
+       ⚠️ kit/styles/deck.css로 승격하려면 1·2주차 덱을 함께 재측정해야 한다 —
+          keep-all은 줄을 길게 만들어 기존 덱에서 가로 오버플로를 낼 수 있다
+          (1주차는 2026-07-26 동결이라 임의 재렌더 금지). 승격 판단은 별건이다.
+       overflow-wrap:break-word는 탈출구다 — 칸보다 긴 단어 하나(URL·긴 코드)는
+       그때만 끊는다. 이게 없으면 keep-all이 가로 오버플로를 만든다. */
+    .deck .slide{ word-break:keep-all; overflow-wrap:break-word; }
+
+    /* ⑦ 킷 컴포넌트 폰트 하한 회복 (R-TYPE-01) ──────────────────────────
+       킷 기본값은 19~21px이지만, 이 자리에 들어가는 것은 보조 캡션이 아니라
+       초안 「본문 문구」 그 자체다. 2주차가 얻어낸 교정인데 템플릿으로 돌아오는
+       경로가 없어 3주차 shell에 원상복귀해 있었다(①~⑤ 블록이 경고하는 바로
+       그 현상 — 실측: legibility.css가 .callout을 19px로 되돌려 놓고 있었다).
+       코드·표·주석 캡션은 문서화된 예외라 올리지 않는다(table 17 · co-note 20).
+
+       ⚠️ .desc는 ②가 (0,3,1)로 20px를 걸어 둬서, 실습 단계 문장처럼 「박스 안
+          이지만 본문 문장」인 자리는 명시도를 그보다 높여야 22px가 먹는다.
+          (0,2,0)짜리 `.eval-steps .work-step .desc`로 적으면 조용히 무시된다. */
+    .deck .slide .callout{ font-size:var(--fs-body); line-height:1.6; }
+    .deck .slide .callout .note{ font-size:var(--fs-19); }
+    .deck .slide .cc-side li{ font-size:var(--fs-body); line-height:1.5; }
+    .deck .slide .dc-cap{ font-size:var(--fs-body); }
+    .deck .slide[data-slide] .eval-steps .work-step .desc{
+      font-size:var(--fs-body); font-weight:500; line-height:1.45; }
+    /* .s-full.fill 안의 격자는 flex item 기본 min-height:auto 때문에 줄지 않아
+       4행 격자에서 바닥선을 넘긴다(2주차 실측 C1-7: grid 524 vs 가용 484). */
+    .s-full.fill > .grid-2, .s-full.fill > .grid-3{ min-height:0; }
+    /* 킷 `.fill`은 bottom:54px로 높이만 확정하고 남는 세로는 그대로 둔다 —
+       그래서 내용이 위로 몰리고 하단에 죽은 공간이 남는다(실측 106~170px).
+       박스를 키우지 않고 **항목 사이 간격만 균등하게 늘려** 채운다(R-DENS-03 ③). */
+    .deck .slide .s-full.fill{ justify-content:space-evenly; }
+    /* 킷 기본 좌표가 바닥선 666을 넘는 셋 — 1·2주차와 같은 값이라 관행 결함이다.
+       .pd-sub는 초안 부제가 2줄이라 폰트를 줄이는 대신 시작점을 올린다. */
+    .pd-sub{ font-size:var(--fs-body); top:594px; }
+    .cover-presenter{ bottom:54px; }
+    .dc-stage{ bottom:54px; }
+
+    /* ===== 도입 신규 구도 =====
+       오늘의 약속 — 지난주 두 칸 + 오늘 붙는 두 칸 (S02) */
+    .w3-vow{display:grid;grid-template-columns:1fr auto 1fr;gap:18px;align-items:stretch;
+      margin:18px 0 16px}
+    .w3-vow-band{border-radius:var(--r-lg);padding:18px 20px;display:flex;flex-direction:column;gap:10px}
+    .w3-vow-band.is-past{background:var(--surface)}
+    .w3-vow-band.is-new{background:var(--blue-soft);box-shadow:inset 0 0 0 2px var(--blue)}
+    .w3-vow-tag{font-size:19px;font-weight:800;color:var(--gray-700)}
+    .w3-vow-band.is-new .w3-vow-tag{color:var(--blue)}
+    .w3-vow-cells{display:flex;flex-direction:column;gap:8px}
+    .w3-vow-cell{background:var(--white);border-radius:var(--r-sm);padding:10px 14px;
+      font-size:var(--fs-body);font-weight:800;color:var(--ink);line-height:1.35}
+    .w3-vow-plus{align-self:center;font-size:32px;font-weight:800;color:var(--blue)}
+    /* 킷 기본이 하한 미만인 도입·마무리 문장 둘 — 둘 다 초안 「본문 문구」다 */
+    /* 명시도 주의: 킷은 `.s03-slide .an-intro`(0,2,0)로 21px를 건다 — 같은 형태로 올린다 */
+    .s03-slide .an-intro{font-size:var(--fs-body)}
+    .concept-recap .concept-lead{font-size:var(--fs-body)}
+    /* S02는 밴드가 짧아 하단이 154px 비었다. 세로 간격을 균등하게 늘려 채운다. */
+    .s02-slide .s-body-wrap{bottom:54px;display:flex;flex-direction:column;justify-content:space-evenly}
+
+    /* ===== 3주차 PART 1 신규 구도 (G1 결정표 등재분) =====
+       토큰만 사용(R-COLOR-01) · 흰 fill + --line 단독 보더 금지(R-COLOR-04)
+       본문 22px 하한(R-TYPE-01) · 바닥선 666(R-TYPE-03) */
+
+    /* 정의 + 도해 2단 — V1-01 · V1-05 */
+    .w3-deffig{position:absolute;left:64px;right:64px;top:132px;bottom:54px;
+      display:grid;grid-template-columns:590px 1fr;gap:38px;align-items:start;min-height:0}
+    /* ⚠️ 격자·flex 아이템의 기본 `min-width:auto`는 **자식의 min-content가 크면
+       선언한 비율을 이긴다.** SVG를 우측 칸에 넣자 `1.06fr .94fr`이 실제로는
+       214px / 900px로 무너졌다(V2-04 실측) — 좌측 본문이 214px 폭에 갇힌다.
+       정적 게이트·렌더 감사 모두 통과했다(이탈·겹침이 아니라 «비율만» 틀렸다).
+       도해를 넣는 칸에는 예외 없이 min-width:0을 함께 준다. */
+    .w3-deffig > *{min-width:0}
+    .w3-deffig-text{display:flex;flex-direction:column;gap:12px;min-height:0;min-width:0}
+    .w3-deffig-text .s-title{margin:0 0 2px}
+    .w3-deffig-text .s-body{margin:0;font-size:22px;line-height:1.62;color:var(--gray-700)}
+    .w3-deffig-box{display:flex;flex-direction:column;justify-content:space-evenly;gap:10px;
+      min-height:0;height:100%;background:var(--blue-soft);border-radius:16px;padding:18px 20px}
+    .w3-deffig-text .w3-def{margin:0}
+    /* 우측 칸이 박스가 아니라 도해일 때 — V2-02 · V2-04.
+       배경 박스를 두르지 않는다(도해 자체가 형태를 가진다 · 껍데기 상자 방지). */
+    /* ⚠️ SVG를 **일반 흐름**에 두면 도해의 종횡비가 격자 폭을 역으로 밀어낸다.
+       V2-04(viewBox 400×400)에서 `1.06fr .94fr`이 214/900으로, 컬럼을 590px로
+       고정한 뒤에도 우측이 900px로 넘쳤다. 종횡비가 있는 대체요소는 min-width:0
+       으로도 안 잡힌다 — **absolute로 흐름에서 빼내** 크기 되먹임을 끊는다. */
+    .w3-deffig-fig{margin:0;min-height:0;height:100%;position:relative}
+    .w3-deffig-fig svg{position:absolute;inset:0;width:100%;height:100%}
+
+    /* 하네스 5칸(세로) — V1-01 */
+    .w3-hn{display:grid;grid-template-columns:38px 1fr;grid-template-rows:auto auto;
+      column-gap:12px;row-gap:2px;align-items:center;background:var(--white);
+      border-left:4px solid var(--blue);border-radius:10px;padding:10px 14px}
+    .w3-hn-n{grid-row:1 / span 2;align-self:center;width:32px;height:32px;border-radius:50%;
+      background:var(--blue);color:var(--white);display:grid;place-items:center;
+      font-weight:800;font-size:17px}
+    .w3-hn b{font-size:22px;font-weight:800;color:var(--ink)}
+    .w3-hn .desc{font-size:19px;color:var(--gray-700);line-height:1.45}
+
+    /* 백업 흐름 노드 — V1-05 */
+    .w3-bk{background:var(--white);border-left:4px solid var(--blue);border-radius:10px;padding:12px 16px}
+    .w3-bk b{display:block;font-size:22px;font-weight:800;color:var(--ink)}
+    .w3-bk .desc{display:block;font-size:19px;color:var(--gray-700);margin-top:2px}
+    .w3-bk.is-keep{border-left-color:var(--gray-400)}
+    .w3-bk.is-work{border-left-color:var(--mint)}
+    .w3-bk-arrow{text-align:center;font-size:19px;font-weight:800;color:var(--blue);letter-spacing:.02em}
+
+    /* 동심 포함도 + 앞 두 칸 설명 — V1-02 (정보모양 containment · D-concentric)
+       ⚠️ 처음 조립본은 가로 5칸 밴드만 두어 element를 빠뜨렸고, 그래서
+          「1순위가 시각물인데 시각자료 0」(visualShapeNoVisual)에 잡혔다.
+          containment는 «5칸 안에 오늘의 2칸이 들어 있다»는 포함 관계라
+          나열 밴드로는 그 관계가 안 보인다 — 링 2겹이 그 관계 자체다.
+       링은 2겹만 쓴다(D-concentric capacity: 2~4겹 · 5겹↑ 판독 붕괴). */
+    .w3-cont{position:absolute;left:64px;right:64px;top:118px;bottom:54px;
+      display:flex;flex-direction:column;min-height:0}
+    .w3-cont > .s-title{margin:0}
+    .w3-cont > .s-lead{margin:10px 0 0}
+    .w3-cont-body{flex:1 1 auto;min-height:0;display:grid;
+      grid-template-columns:376px 1fr;gap:40px;align-items:center;margin:14px 0 0}
+    .w3-cont-body > *{min-width:0}
+    .w3-conc{margin:0;min-height:0;min-width:0;position:relative;height:100%}
+    .w3-conc svg{position:absolute;inset:0;width:100%;height:100%}
+    .w3-cont-side{display:flex;flex-direction:column;justify-content:center;gap:16px}
+    .w3-gate-cell{background:var(--blue-soft);border-radius:14px;padding:16px 18px 18px;
+      display:grid;grid-template-columns:34px 1fr;grid-template-rows:auto auto;
+      column-gap:12px;row-gap:4px;box-shadow:inset 0 0 0 2px var(--blue)}
+    .w3-gate-cell .w3-hn-n{grid-row:1 / span 2;align-self:center;width:34px;height:34px;font-size:18px}
+    .w3-gate-cell b{font-size:var(--fs-box-title);font-weight:800;color:var(--ink);line-height:1.25}
+    .w3-gate-cell .desc{color:var(--gray-700)}
+    .w3-cont > .callout{margin:14px 0 0}
+
+    /* 글 + 시각 비대칭 — V1-07 (split · 덱 전체 3장만) */
+    /* ⚠️ bottom을 주지 않으면 .s-full이 내용 높이로 주저앉아 하단에 죽은 공간이
+       남는다(실측 deadBottom 218~234px). 신규 구도는 예외 없이 bottom:54px로
+       높이를 먼저 확정하고, 남는 세로는 space-evenly로 «간격을 균등하게 늘려»
+       메운다 — 박스를 키워 채우지 않는다(R-DENS-03). */
+    .w3-leadsplit .s-full{bottom:54px;display:grid;grid-template-columns:1.18fr .82fr;
+      gap:40px;align-items:stretch}
+    .w3-leadsplit .s-full > *{min-width:0}
+    .w3-ls-text{display:flex;flex-direction:column;justify-content:space-evenly;gap:12px;min-width:0}
+    .w3-ls-text .s-body{margin:0;font-size:22px;line-height:1.62;color:var(--gray-700)}
+    .w3-term{display:inline-block;align-self:flex-start;background:var(--blue);color:var(--white);
+      font-size:24px;font-weight:800;border-radius:10px;padding:8px 16px;margin-top:4px}
+    .w3-ls-visual{display:flex;flex-direction:column;gap:14px;align-items:center;justify-content:center}
+    .w3-hover-card{width:100%;background:var(--white);border-radius:14px;padding:20px 18px;
+      box-shadow:var(--shadow-sm);text-align:center}
+    .w3-hover-card b{display:block;font-size:24px;font-weight:800;color:var(--ink);margin-top:6px}
+    .w3-hover-card.is-lift{box-shadow:var(--shadow-lg);transform:translateY(-8px)}
+    .w3-hover-tag{display:inline-block;font-size:18px;font-weight:700;color:var(--gray-700);
+      background:var(--surface);border-radius:999px;padding:3px 12px}
+    .w3-hover-card.is-lift .w3-hover-tag{background:var(--mint-soft);color:var(--on-mint)}
+
+    /* 레퍼런스 3종 — V1-08 */
+    .w3-ref3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+    .w3-ref{background:var(--blue-soft);border-radius:16px;padding:22px 20px;
+      display:flex;flex-direction:column;gap:8px}
+    /* 세 카드의 «움직임»을 글자 글리프(▭▤◉) 대신 도해로 보여 준다.
+       글리프는 모양만 알리고 «어떻게 움직이는지»를 못 보여 줬고, 잉크 점유율도
+       0.18로 덱 최하위였다(실측). 도해는 R-DENS-03의 ①번 처방이다 —
+       박스를 키우는 게 아니라 시각자료로 이해를 보강한다. */
+    .w3-ref-ico{height:92px;display:flex;align-items:center;justify-content:center}
+    .w3-ref-ico svg{width:100%;height:100%;max-width:190px}
+    .w3-ref b{font-size:24px;font-weight:800;color:var(--ink)}
+    .w3-ref p{margin:0;font-size:22px;line-height:1.55;color:var(--gray-700)}
+
+    /* 두 칸 대비(할 수 있는 것 / 못 하는 것) — V1-10 */
+    .w3-two{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+    .w3-two-col{border-radius:16px;padding:20px 22px;display:flex;flex-direction:column;gap:8px}
+    .w3-two-col h3{margin:0 0 4px;font-size:24px;font-weight:800;color:var(--ink)}
+    .w3-two-col p{margin:0;font-size:22px;line-height:1.55;color:var(--gray-700)}
+    .w3-two-col.is-can{background:var(--blue-soft)}
+    .w3-two-col.is-cant{background:var(--coral-soft)}
+    /* 두 칸 안에 도해를 함께 둘 때(V2-01) — 글보다 먼저 보이게 제목 바로 아래 */
+    .w3-two-fig{margin:2px 0 6px;display:flex;justify-content:center}
+    .w3-two-fig svg{width:100%;max-width:100%;height:auto}
+
+    /* 공개 금지 파일 격자 — V1-11 */
+    .w3-danger{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    .w3-dg{background:var(--surface);border-radius:14px;padding:16px 18px;
+      display:flex;flex-direction:column;gap:4px}
+    .w3-dg b{font-size:23px;font-weight:800;color:var(--ink)}
+    .w3-dg p{margin:0;font-size:20px;line-height:1.5;color:var(--gray-700)}
+    .w3-dg.is-fix{background:var(--mint-soft)}
+    .w3-dg.is-fix b,.w3-dg.is-fix p{color:var(--on-mint)}
+
+    /* 완료 체크 행 — V1-12 */
+    /* 선언 장 — 내용이 짧아 하단이 비므로 세로 간격을 균등하게 늘려 채운다 */
+    .w3-decl{bottom:54px;display:flex;flex-direction:column;justify-content:space-evenly}
+    .w3-decl > .s-title, .w3-decl > .s-body, .w3-decl > .s-lead{margin:0}
+    .w3-done-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:0}
+    .w3-done-row.is-2{grid-template-columns:repeat(2,1fr)}
+    .w3-done{background:var(--blue-soft);border-radius:14px;padding:16px 18px;
+      display:flex;align-items:center;gap:12px}
+    .w3-done-mk{width:32px;height:32px;flex:0 0 32px;border-radius:50%;background:var(--mint);
+      color:var(--on-mint);display:grid;place-items:center;font-weight:800;font-size:18px}
+    .w3-done b{font-size:22px;font-weight:800;color:var(--ink)}
+
+    /* 실습 완료 기준 띠 — 민트 fill 위 흰 글자 금지(R-COLOR-02)라 좌측 보더로 */
+    .w3-goal{border-left:5px solid var(--mint)}
+
+    /* 실습 프롬프트 — 학생이 실제로 타이핑하는 문장 (초안 🗣 줄)
+       ⚠️ 1차 조립에서 **이 줄이 통째로 빠져 있었다.** 초안의 🗣는 「비유·멘트」 열에
+          있지만 강사 멘트가 아니라 **학생이 입력하는 문장**이다 — 화면에 없으면
+          실습이 성립하지 않는다(MEMORY: 학생이 타이핑하는 장을 반드시 포함시켜라).
+       2주차는 이걸 별도 슬라이드로 뒀지만 3주차는 4시간에 실습이 15개라
+       장수를 두 배로 늘릴 수 없다. 실습 장 안에 인라인으로 둔다(A4R1 선례).
+       검은 터미널 위 본문은 --white, 강조만 밝은 민트(R-COLOR: --mint는 검정
+       위에서 눌려 보이고, --mint-soft는 거의 흰색이라 강조가 안 보인다). */
+    .w3-prompt{background:var(--ink);border-radius:var(--r-md);padding:14px 18px;
+      display:grid;grid-template-columns:auto 1fr;column-gap:14px;align-items:start}
+    .w3-prompt-tag{background:var(--mint);color:var(--on-mint);border-radius:var(--r-pill);
+      padding:4px 12px;font-size:18px;font-weight:800;white-space:nowrap}
+    .w3-prompt p{margin:0;color:var(--white);font-size:var(--fs-body);line-height:1.5}
+    .w3-prompt strong{color:var(--mint-bright)}
+
+    /* ===== 3주차 PART 2 신규 구도 (G1 결정표 등재분) =====
+       PART 2는 실습 0개 · 개념 7장이라 「정의 슬라이드가 연달아 오는」 구간이다.
+       그래서 레이아웃 자체를 번갈아 쓴다 — deffig(좌 정의/우 도해) → stage(중앙
+       대형 도해) → deffig → table → stage → chartsplit. 같은 패밀리가 연속으로
+       붙지 않게 배치했고, 같은 패밀리라도 element 축을 바꿨다(직선→왕복→방사).
+       ⚠️ 전부 deck.contract.json의 layout_families에 등재할 것. */
+
+    /* 용어 정의 한 줄 — 초안의 <small> 자리. 제목 바로 아래 회색 부제 */
+    .w3-def{margin:0;font-size:var(--fs-body);line-height:1.5;color:var(--gray-700)}
+
+    /* ⛔ `viz-*`는 자유 태그가 아니다 — 일부는 **킷이 CSS를 소유**한다.
+       `.viz-radial svg{width:900px;height:360px}`(patterns.css:54) ·
+       `.viz-concentric{width:400px;height:400px}` · `.viz-cycle` · `.viz-gantt` ·
+       `.viz-split` · `.viz-code` · `.viz-tree` · `.viz-flow-ph`가 그렇다.
+       내 SVG에 `viz-radial`을 달았더니 **킷이 폭을 900px로 못박아** 524px 칸을
+       뚫고 나갔다(V2-04 실측: 격자가 590/900이 됐다). 그런데 이탈·겹침이
+       아니라 «비율만» 틀린 형태라 정적 게이트도 렌더 감사도 통과했다.
+       킷 마크업(`.rad-*` 등)을 그대로 쓰는 게 아니면 **킷이 소유하지 않은
+       viz 이름**을 골라라(viz-flow-h/-v · viz-matrix · viz-column · viz-containment). */
+
+    /* 중앙 대형 도해 무대 — V2-03 · V2-06 */
+    .w3-stage{position:absolute;left:64px;right:64px;top:118px;bottom:54px;
+      display:flex;flex-direction:column;min-height:0}
+    .w3-stage > .s-title{margin:0}
+    .w3-stage > .w3-def{margin:8px 0 0}
+    .w3-stage-fig{flex:1 1 auto;min-height:0;margin:14px 0 0;position:relative}
+    .w3-stage-fig svg{position:absolute;inset:0;width:100%;height:100%}
+    .w3-stage > .s-body{margin:0}
+    .w3-stage > .callout{margin:12px 0 0}
+
+    /* 3열 비교표 — V2-05. 킷 표 기본 17px은 이 장에서 「초안 본문 문구」라 올린다
+       (표 17px 예외는 «촘촘한 데이터 표» 전제다 — 여기는 3열 3행뿐이다). */
+    .w3-tri table.t{font-size:21px}
+    .w3-tri table.t th{font-size:22px;white-space:normal}
+    .w3-tri table.t th:first-child{width:150px}
+    .w3-tri table.t td{line-height:1.5}
+    .w3-tri table.t tbody th{background:var(--surface);color:var(--ink);text-align:left}
+    /* 3행뿐이라 그냥 두면 표가 위에 붙고 아래가 빈다. 킷 .canvas-fill이 표에 쓰는
+       것과 같은 처리 — 행 높이를 늘려 채우고 셀 내용은 수직 중앙에 둔다. */
+    .w3-tri .s-full.fill > table.t{flex:1 1 auto}
+    .w3-tri table.t th, .w3-tri table.t td{vertical-align:middle}
+
+    /* 글 좁게 · 차트 크게 — V2-07 (numeric) */
+    .w3-chartsplit{position:absolute;left:64px;right:64px;top:118px;bottom:54px;
+      display:grid;grid-template-columns:.86fr 1.14fr;gap:40px;align-items:center;min-height:0}
+    .w3-chartsplit > *{min-width:0}
+    .w3-cs-text{display:flex;flex-direction:column;justify-content:center;gap:12px;min-width:0}
+    .w3-cs-text .s-title{margin:0}
+    .w3-cs-text .s-body{margin:0;font-size:var(--fs-body);line-height:1.6;color:var(--gray-700)}
+    .w3-cost{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:2px 0 0}
+    .w3-cost span{background:var(--coral-soft);color:var(--coral-deep);border-radius:var(--r-pill);
+      padding:8px 4px;text-align:center;font-size:20px;font-weight:800}
+    .w3-cs-chart{display:flex;flex-direction:column;justify-content:center}
+    .w3-cs-chart .cc-plot{height:300px}
+    .w3-cs-chart .cc-axis span{width:auto;flex:1 1 0;font-size:20px;line-height:1.3}
+    .w3-cs-note{margin:14px 0 0;font-size:var(--fs-body);line-height:1.45;
+      color:var(--gray-700);text-align:center}
+
+    /* ===== 3주차 PART 3 신규 구도 (G1 결정표 등재분) =====
+       ★ 담당 4색은 여기서 정하고 PART 3~6 내내 같은 값을 쓴다(초안 3-2 지시:
+         "4색 고정 — 오늘 내내 같은 색"). 색=의미(R-COLOR-05)의 범주 용법이다.
+         토큰만 쓴다: HTML=blue · CSS=mint · JS=coral · QA=periwinkle.
+         ⚠️ 민트·코랄 fill 위에는 --on-mint·--on-coral (R-COLOR-02).
+         ⚠️ 민트 fill **원형 번호 배지**는 금지(R-COLOR-03) — 담당 표식은
+            원이 아니라 pill/사각 칩으로 만든다. */
+    .w3-own-html{--own:var(--blue);--own-on:var(--white);--own-soft:var(--blue-soft)}
+    .w3-own-css{--own:var(--mint);--own-on:var(--on-mint);--own-soft:var(--mint-soft)}
+    .w3-own-js{--own:var(--coral);--own-on:var(--on-coral);--own-soft:var(--coral-soft)}
+    .w3-own-qa{--own:var(--periwinkle);--own-on:var(--ink);--own-soft:var(--surface)}
+    .w3-own-chip{display:inline-block;background:var(--own);color:var(--own-on);
+      border-radius:var(--r-pill);padding:5px 16px;font-size:20px;font-weight:800}
+
+    /* 파일 ↔ 담당 매핑 4행 — V3-02 */
+    .w3-map{display:flex;flex-direction:column;gap:14px}
+    .w3-map-row{display:grid;grid-template-columns:300px 56px 1fr;align-items:center;
+      column-gap:16px;background:var(--own-soft);border-left:6px solid var(--own);
+      border-radius:var(--r-md);padding:14px 20px}
+    .w3-map-file{font-family:var(--font-mono);font-size:23px;font-weight:800;color:var(--ink)}
+    .w3-map-arrow{text-align:center;font-size:24px;font-weight:800;color:var(--own)}
+    .w3-map-role{display:flex;align-items:baseline;gap:14px;min-width:0}
+    .w3-map-role .desc{color:var(--gray-700)}
+
+    /* 같은 화면 · 담당별 관점 4구역 — V3-03 (CSS 목업 + 4색 영역)
+       ⚠️ 실제 제품 화면이 아니라 **강사 예시 앱**의 개념 목업이다. 실제 버튼
+          위치를 가르치는 장이 아니므로 CSS 목업이 허용된다(MEMORY 이미지·GUI). */
+    .w3-zones{display:grid;grid-template-columns:1.02fr .98fr;gap:34px;
+      flex:1 1 auto;min-height:0;align-items:center}
+    .w3-mock{background:var(--white);border:2px solid var(--blue-line-strong);
+      border-radius:var(--r-lg);box-shadow:var(--shadow-md);overflow:hidden;
+      display:flex;flex-direction:column}
+    .w3-mock-bar{background:var(--surface);border-bottom:1px solid var(--line);
+      padding:10px 16px;font-size:19px;font-weight:800;color:var(--gray-700)}
+    .w3-mock-body{padding:16px;display:flex;flex-direction:column;gap:10px}
+    .w3-mock-zone{border:2px dashed var(--own);border-radius:var(--r-sm);
+      padding:10px 14px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .w3-mock-zone b{font-size:21px;font-weight:800;color:var(--ink)}
+    .w3-zone-list{display:flex;flex-direction:column;gap:12px;min-width:0}
+    .w3-zone-item{border-left:6px solid var(--own);background:var(--own-soft);
+      border-radius:var(--r-md);padding:12px 18px}
+    .w3-zone-item b{display:block;font-size:22px;font-weight:800;color:var(--ink)}
+    .w3-zone-item span{display:block;margin-top:2px;font-size:20px;line-height:1.45;color:var(--gray-700)}
+
+    /* ===== 3주차 PART 4 신규 구도 (G1 결정표 등재분) ===== */
+
+    /* 검토 요청 3칸 — V4-02 (③만 경고색: 가장 자주 빠뜨리는 칸) */
+    .w3-req3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;
+      flex:1 1 auto;min-height:0;align-items:stretch}
+    .w3-req{background:var(--blue-soft);border-radius:var(--r-lg);padding:22px 20px;
+      display:flex;flex-direction:column;gap:10px}
+    .w3-req .w3-req-n{width:44px;height:44px;border-radius:var(--r-md);background:var(--blue);
+      color:var(--white);display:grid;place-items:center;font-size:22px;font-weight:800}
+    .w3-req b{font-size:var(--fs-box-title);font-weight:800;color:var(--ink);line-height:1.25}
+    .w3-req p{margin:0;font-size:var(--fs-body);line-height:1.5;color:var(--gray-700)}
+    .w3-req.is-warn{background:var(--coral-soft)}
+    .w3-req.is-warn .w3-req-n{background:var(--coral);color:var(--on-coral)}
+    .w3-req.is-warn p strong{color:var(--coral-deep)}
+
+    /* 판정값 4칸 + 다수결 ✗ 배너 — V4-06 */
+    .w3-nomajority{display:flex;align-items:center;justify-content:center;gap:16px;
+      background:var(--coral-soft);border-radius:var(--r-md);padding:12px 20px;
+      font-size:var(--fs-body);font-weight:700;color:var(--coral-deep)}
+    .w3-nomajority .mk{font-size:26px;font-weight:800}
+    .w3-verdict4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;
+      flex:1 1 auto;min-height:0}
+    .w3-vcard{border-radius:var(--r-lg);padding:20px 18px;display:flex;flex-direction:column;gap:8px;
+      background:var(--blue-soft)}
+    .w3-vcard b{font-size:var(--fs-box-title);font-weight:800;color:var(--ink)}
+    .w3-vcard p{margin:0;font-size:20px;line-height:1.45;color:var(--gray-700)}
+    .w3-vcard.is-ok{background:var(--mint-soft)}
+    .w3-vcard.is-unknown{background:var(--surface)}
+
+    /* 판정표 3열 — V4-07 (판정 칸은 학생이 채운다) */
+    .w3-vtable{width:100%;border-collapse:collapse}
+    .w3-vtable th,.w3-vtable td{border:1px solid var(--blue-line-strong);padding:12px 16px;
+      text-align:left;vertical-align:middle;font-size:21px;line-height:1.45}
+    .w3-vtable th{background:var(--blue-soft);color:var(--blue);font-weight:800;font-size:22px}
+    .w3-vtable td.is-blank{background:var(--surface);color:var(--gray-400);
+      text-align:center;font-weight:800}
+    /* V4-07은 실습 3단계 + 판정표 + 완료 띠가 한 장에 들어간다. 킷 기본 여백으로는
+       마지막 행이 697px까지 내려가 바닥선(666)을 31px 넘었다(실측). 폰트를 하한
+       아래로 내리지 않고 **행 패딩과 표 위 여백만** 조여 되돌린다(표 하한은 17px). */
+    /* 단계와 판정표를 **가로로** 나란히 둔다 — 세로로 쌓으면 완료 띠가 730px까지
+       내려가 슬라이드를 벗어난다(실측). 가로 공간이 남아 있는데 세로로 쌓아
+       넘치는 것은 구도 선택의 문제지 폰트의 문제가 아니다. */
+    .w3-vt-body{flex:1 1 auto;min-height:0;display:grid;
+      grid-template-columns:1fr 1.08fr;gap:30px;align-items:center;margin:10px 0 0}
+    .w3-vt-body > *{min-width:0}
+    .w3-vtableslide .eval-steps{margin:0}
+    .w3-vtableslide .w3-vtable{margin:0}
+    .w3-vtableslide .w3-vtable th,
+    .w3-vtableslide .w3-vtable td{padding:8px 14px;font-size:20px;line-height:1.35}
+    .w3-vtableslide .w3-vtable th{font-size:21px}
+    .w3-vtableslide .eval-steps{gap:8px}
+    .w3-vtableslide .callout{margin:8px 0 0}
+
+    /* 앵커 문장 + 대비 도해 — V4-09 (split 2/3) */
+    .w3-anchorsplit .s-full{bottom:54px;display:grid;grid-template-columns:520px 1fr;
+      gap:40px;align-items:center;min-height:0}
+    .w3-anchorsplit .s-full > *{min-width:0}
+    .w3-as-text{display:flex;flex-direction:column;justify-content:center;gap:14px}
+    .w3-as-text .s-title{margin:0}
+    .w3-as-text .s-body{margin:0;font-size:var(--fs-body);line-height:1.6;color:var(--gray-700)}
+    .w3-as-fig{margin:0;min-height:0;height:100%;position:relative}
+    .w3-as-fig svg{position:absolute;inset:0;width:100%;height:100%}
+
+    /* 두 시안 나란히 렌더 — V4-05 */
+    .w3-shots{display:grid;grid-template-columns:1fr 1fr;gap:28px;flex:1 1 auto;min-height:0}
+    .w3-shot{display:flex;flex-direction:column;gap:10px;min-width:0}
+    .w3-shot-head{display:flex;align-items:baseline;gap:12px}
+    .w3-shot-head b{font-size:var(--fs-box-title);font-weight:800;color:var(--ink)}
+    .w3-shot-head span{font-size:20px;color:var(--gray-700)}
+    .w3-shot .w3-mock{flex:1 1 auto;min-height:0}
+
+    /* 화면 QA 6항목 × 3상태 — V4-11 */
+    .w3-qa6{width:100%;border-collapse:collapse}
+    .w3-qa6 th,.w3-qa6 td{border:1px solid var(--blue-line-strong);padding:9px 14px;
+      font-size:21px;line-height:1.35;vertical-align:middle}
+    .w3-qa6 th{background:var(--blue-soft);color:var(--blue);font-weight:800;text-align:center}
+    .w3-qa6 th:first-child{text-align:left}
+    .w3-qa6 td:first-child{font-weight:800;color:var(--ink)}
+    .w3-qa6 td:not(:first-child){text-align:center;color:var(--gray-400);
+      font-weight:800;background:var(--surface);width:118px}
+
+    /* ===== 3주차 PART 5·6 신규 구도 (G1 결정표 등재분) ===== */
+
+    /* 계층 밴드 — V5-02. ⚠️ 초안이 「나란한 카드 4개로 그리지 말 것」을 명시했다.
+       플러그인이 나머지를 담는 **포함 관계**가 요지이므로 세로로 겹쳐 담는다. */
+    .w3-layers{display:flex;flex-direction:column;gap:0;flex:1 1 auto;min-height:0;
+      justify-content:center}
+    .w3-layer{border-radius:var(--r-lg);padding:16px 22px;display:grid;
+      grid-template-columns:210px 1fr;align-items:center;column-gap:20px}
+    .w3-layer b{font-size:var(--fs-box-title);font-weight:800;color:var(--ink)}
+    .w3-layer span{font-size:var(--fs-body);line-height:1.45;color:var(--gray-700)}
+    .w3-layer.l1{background:var(--blue-soft);box-shadow:inset 0 0 0 2px var(--blue)}
+    .w3-layer.l2{background:var(--white);margin:10px 26px 0;box-shadow:inset 0 0 0 2px var(--blue-line-strong)}
+    .w3-layer.l3{background:var(--white);margin:10px 26px 0;box-shadow:inset 0 0 0 2px var(--blue-line-strong)}
+    .w3-layer.l4{background:var(--mint-soft);margin:10px 52px 0;box-shadow:inset 0 0 0 2px var(--mint-line)}
+    .w3-layer.l4 b{color:var(--on-mint)}
+
+    /* 상태 3단 — V5-04 (연결됨 / 승인 대기 / 범위 초과) */
+    .w3-states{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:14px;
+      align-items:stretch;flex:1 1 auto;min-height:0}
+    .w3-state{border-radius:var(--r-lg);padding:20px 18px;display:flex;flex-direction:column;gap:10px;
+      background:var(--blue-soft)}
+    .w3-state b{font-size:var(--fs-box-title);font-weight:800;color:var(--ink)}
+    .w3-state p{margin:0;font-size:var(--fs-body);line-height:1.5;color:var(--gray-700)}
+    .w3-state.is-wait{background:var(--surface)}
+    .w3-state.is-over{background:var(--coral-soft)}
+    .w3-state.is-over b{color:var(--coral-deep)}
+    .w3-state-arrow{align-self:center;font-size:26px;font-weight:800;color:var(--blue)}
+
+    /* 위험 파일 제외 — V5-08 */
+    .w3-exclude{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
+    .w3-ex{background:var(--white);border-radius:var(--r-md);padding:14px 16px;
+      box-shadow:inset 0 0 0 2px var(--coral-line);display:flex;flex-direction:column;gap:6px}
+    .w3-ex b{font-size:22px;font-weight:800;color:var(--ink)}
+    .w3-ex span{font-size:19px;line-height:1.4;color:var(--coral-deep);font-weight:700}
+
+    /* 커밋 메시지 ✗3 → ✓1 — V5-09 */
+    .w3-msgcompare{display:grid;grid-template-columns:1fr auto 1.15fr;gap:20px;align-items:center}
+    .w3-msg-bad{display:flex;flex-direction:column;gap:10px}
+    .w3-msg-bad span{background:var(--coral-soft);color:var(--coral-deep);border-radius:var(--r-md);
+      padding:11px 18px;font-size:22px;font-weight:800;font-family:var(--font-mono)}
+    .w3-msg-arrow{font-size:28px;font-weight:800;color:var(--blue)}
+    .w3-msg-good{background:var(--mint-soft);border-radius:var(--r-lg);padding:20px 22px;
+      display:flex;flex-direction:column;gap:8px}
+    .w3-msg-good b{font-size:24px;font-weight:800;color:var(--on-mint);font-family:var(--font-mono);line-height:1.35}
+    .w3-msg-good span{font-size:20px;line-height:1.45;color:var(--mint-deep);font-weight:700}
+
+    /* 4칸 점검 — V6-06 */
+    .w3-quad4{display:grid;grid-template-columns:1fr 1fr;gap:18px;flex:1 1 auto;min-height:0}
+    .w3-quad{background:var(--blue-soft);border-radius:var(--r-lg);padding:20px 22px;
+      display:flex;flex-direction:column;gap:8px;justify-content:center}
+    .w3-quad b{font-size:var(--fs-box-title);font-weight:800;color:var(--ink)}
+    .w3-quad p{margin:0;font-size:var(--fs-body);line-height:1.5;color:var(--gray-700)}
+
+    /* 3갈래 분기 — V6-05 */
+    .w3-branch{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;flex:1 1 auto;min-height:0}
+    .w3-br{border-radius:var(--r-lg);padding:20px 20px;display:flex;flex-direction:column;gap:10px}
+    .w3-br b{font-size:var(--fs-box-title);font-weight:800;color:var(--ink)}
+    .w3-br p{margin:0;font-size:var(--fs-body);line-height:1.5;color:var(--gray-700)}
+    .w3-br.is-ok{background:var(--mint-soft)}
+    .w3-br.is-ok b{color:var(--on-mint)}
+    .w3-br.is-fallback{background:var(--blue-soft)}
+    .w3-br.is-none{background:var(--coral-soft)}
+    .w3-br.is-none b{color:var(--coral-deep)}
+
+    /* 큰 문장 앵커 + 3단 밴드 — V6-08 (split 3/3) */
+    .w3-goldensplit .s-full{bottom:54px;display:grid;grid-template-columns:1.1fr .9fr;
+      gap:44px;align-items:center;min-height:0}
+    .w3-goldensplit .s-full > *{min-width:0}
+    .w3-gs-text{display:flex;flex-direction:column;justify-content:center;gap:16px}
+    .w3-gs-text .s-title{margin:0}
+    .w3-gs-text .s-body{margin:0;font-size:var(--fs-body);line-height:1.6;color:var(--gray-700)}
+    .w3-gs-fig{margin:0;min-height:0;height:100%;position:relative}
+    .w3-gs-fig svg{position:absolute;inset:0;width:100%;height:100%}
+
+    /* 실계정 확인 전까지 화면 자리를 비워 두는 표시 — V6-03 · V6-04
+       ⚠️ 빈 asset-slot을 만들면 R-QC-18 상시 FAIL이다. 슬롯이 아니라
+          「아직 확인되지 않았다」는 **문구**만 둔다(학생 화면에도 정직하게 보인다). */
+    .w3-pending{background:var(--surface);border-radius:var(--r-lg);padding:22px 24px;
+      display:flex;flex-direction:column;gap:8px;box-shadow:inset 0 0 0 2px var(--blue-line-strong)}
+    .w3-pending b{font-size:var(--fs-box-title);font-weight:800;color:var(--blue)}
+    /* V6-04는 실습 3단계 + 안내 + 완료 띠라 킷 여백으로는 673px(바닥선 666 초과)다.
+       본문 폰트는 그대로 두고 안내 박스의 패딩·제목만 한 단계 줄인다. */
+    [data-slide="V6-04"] .w3-pending{padding:14px 20px;gap:4px}
+    [data-slide="V6-04"] .w3-pending b{font-size:22px}
+    .w3-pending p{margin:0;font-size:var(--fs-body);line-height:1.5;color:var(--gray-700)}
+
+    </style>
+  <!--
+    ┌── 새 덱 만드는 법 ─────────────────────────────────────────────┐
+    │ 1) 이 파일을 복사. 고정 1·2·3(표지·도입·아젠다) 텍스트를 교체.   │
+    │ 2) 파트 수만큼 part-divider 배치(진행 도트 is-active 이동).      │
+    │ 3) 각 슬라이드: 정보 모양 판단 → kit/layouts/by-shape.md에서     │
+    │    레이아웃 후보 → (필요시) kit/charts/by-shape.md에서 element.  │
+    │    직전 슬라이드와 같은 구도 패밀리 회피, split은 희소하게.      │
+    │ 4) 레이아웃 <section>은 kit/layouts/catalog.html(코드 코어)에서  │
+    │    복사하거나 families/*.md 스펙대로 조립(토큰-치트시트 준수).   │
+    │ 5) 브라우저 검증(측정 우선) → base64 단일파일 배포.             │
+    └────────────────────────────────────────────────────────────────┘
+  -->
+</head>
+<body>
+  <div class="deck">
+
+    <!-- ============ 1 · 표지 (불변요소 · 라이트 지오메트리 최종) ============ -->
+    <!-- ⚠️ 모든 .slide는 data-slide를 반드시 갖고, 값은 덱 안에서 유일해야 한다(R-SLIDE-ID-01).
+         이 값이 슬라이드의 영구 ID다 — 발표본의 강사 메모가 순번이 아니라 이 값에 붙으므로,
+         한 번 정한 값은 바꾸지 않는다. 누락·중복이면 verify_deck FAIL, 주입기는 중단한다. -->
+    <section class="slide cover" data-slide="S01">
+      <svg class="cover-geo" viewBox="0 0 1280 720" fill="none" aria-hidden="true"><!-- 아이소메트릭 3단 스택: data-cube 3개 × 면 3개 + 코랄 스파크. fill=토큰 -->
+        <g data-cube="top">
+        <polygon points="1170,300 1226,328 1170,356 1114,328" fill="var(--blue-soft)"/>
+        <polygon points="1114,328 1170,356 1170,414 1114,386" fill="var(--blue)"/>
+        <polygon points="1170,356 1226,328 1226,386 1170,414" fill="var(--mint)"/>
+        </g>
+        <g data-cube="middle">
+        <polygon points="1084,352 1140,380 1084,408 1028,380" fill="var(--blue-soft)"/>
+        <polygon points="1028,380 1084,408 1084,466 1028,438" fill="var(--blue)"/>
+        <polygon points="1084,408 1140,380 1140,438 1084,466" fill="var(--mint)"/>
+        </g>
+        <g data-cube="base">
+        <polygon points="998,404 1054,432 998,460 942,432" fill="var(--blue-soft)"/>
+        <polygon points="942,432 998,460 998,518 942,490" fill="var(--blue)"/>
+        <polygon points="998,460 1054,432 1054,490 998,518" fill="var(--mint)"/>
+        </g>
+        <circle cx="1170" cy="256" r="13" fill="var(--coral)"/>
+      </svg>
+      <header class="s-head cover-head">
+        <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg>
+        <div class="brand-stack">
+          <span class="s-brand">VIBECODING</span><!-- ✏️ 브랜드 -->
+          <span class="track">3주 아카데미</span>
+        </div>
+        <div class="s-team">WEEK 03 / 03</div>
+      </header>
+      <div class="cover-lead">WEEK 03 · 지휘하고 판정하고 공개하기</div>
+      <div class="cover-title">
+        <h1 class="ko">에이전트 팀과 함께,<br>오늘 <span class="hl">세상에 내놓습니다</span></h1>
+      </div>
+      <div class="cover-terminal"><span class="pfx">&gt;_</span><span class="q">담당을 나눠서 검토하고, 내가 판정할게</span><span class="cur" aria-hidden="true"></span></div><!-- ✏️ 예: "첫 웹페이지 만들어줘" -->
+      <div class="cover-presenter">바이브코딩 3주 아카데미</div>
+    </section>
+
+    <!-- ============ 2 · 도입 — 오늘의 약속 (declaration) ============ -->
+    <section class="slide s02-slide" data-slide="S02" data-shape="declaration">
+      <header class="s-head">
+        <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+        <span class="s-line"></span>
+      </header>
+      <div class="s-body-wrap">
+        <p class="s-eyebrow">3주차</p>
+        <h2 class="s-title">오늘의 약속</h2>
+        <div class="w3-vow viz-flow-h" role="img"
+             aria-label="지난주까지의 두 칸에 오늘 두 칸이 더 붙는다: AI가 작성하고, 사람이 검토하고, 사람이 공개를 결정하며, 공개의 책임도 사람이 진다">
+          <div class="w3-vow-band is-past">
+            <span class="w3-vow-tag">지난주까지</span>
+            <div class="w3-vow-cells">
+              <span class="w3-vow-cell">AI가 작성하고</span>
+              <span class="w3-vow-cell">사람이 검토하고</span>
+            </div>
+          </div>
+          <div class="w3-vow-plus" aria-hidden="true">+</div>
+          <div class="w3-vow-band is-new">
+            <span class="w3-vow-tag">오늘 붙는 두 칸</span>
+            <div class="w3-vow-cells">
+              <span class="w3-vow-cell">사람이 공개를 결정하며</span>
+              <span class="w3-vow-cell">공개의 책임도 사람이 집니다</span>
+            </div>
+          </div>
+        </div>
+        <p class="s-lead">공개할지 정하는 것도, 공개한 뒤 책임지는 것도 <strong>사람</strong>입니다.</p>
+      </div>
+    </section>
+
+    <!-- ============ 3 · 도입 — 오늘부터 AI는 한 명이 아닙니다 (contrast) ============ -->
+    <section class="slide w3-vs-2col" data-slide="S03" data-shape="contrast">
+      <header class="s-head">
+        <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+        <span class="s-line"></span>
+      </header>
+      <div class="s-full fill">
+        <h2 class="s-title">오늘부터 "AI"는 한 명이 아닙니다</h2>
+        <div class="w3-two viz-matrix">
+          <div class="w3-two-col is-can">
+            <h3>지금까지</h3>
+            <figure class="w3-two-fig" role="img" aria-label="대화창 하나만 있는 그림">
+              <svg viewBox="0 0 460 130" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <rect x="120" y="26" width="220" height="78" rx="14" fill="var(--white)" stroke="var(--blue-line-strong)" stroke-width="2"/>
+                <text x="230" y="72" text-anchor="middle" font-size="22" font-weight="800" fill="var(--ink)">대화창 하나</text>
+              </svg>
+            </figure>
+            <p>AI <strong>하나</strong>와 대화했습니다.</p>
+          </div>
+          <div class="w3-two-col is-can">
+            <h3>오늘</h3>
+            <figure class="w3-two-fig" role="img" aria-label="HTML CSS JS QA 네 담당이 각자 다른 파일을 맡은 그림">
+              <svg viewBox="0 0 460 130" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <rect x="4" y="26" width="106" height="78" rx="12" fill="var(--blue)"/>
+                <text x="57" y="72" text-anchor="middle" font-size="20" font-weight="800" fill="var(--white)">HTML</text>
+                <rect x="120" y="26" width="106" height="78" rx="12" fill="var(--mint)"/>
+                <text x="173" y="72" text-anchor="middle" font-size="20" font-weight="800" fill="var(--on-mint)">CSS</text>
+                <rect x="236" y="26" width="106" height="78" rx="12" fill="var(--coral)"/>
+                <text x="289" y="72" text-anchor="middle" font-size="20" font-weight="800" fill="var(--on-coral)">JS</text>
+                <rect x="352" y="26" width="106" height="78" rx="12" fill="var(--periwinkle)"/>
+                <text x="405" y="72" text-anchor="middle" font-size="20" font-weight="800" fill="var(--ink)">QA</text>
+              </svg>
+            </figure>
+            <p><strong>네 담당</strong>이 각자 다른 파일을 맡습니다.</p>
+          </div>
+        </div>
+        <div class="callout blue hug-center">담당이 다르면 <strong>의견도 갈립니다.</strong> 그건 고장이 아니라 정상입니다 — 갈렸을 때 누구 말을 들을지 정하는 사람, 그게 오늘 여러분의 자리입니다.</div>
+      </div>
+    </section>
+
+    <!-- ============ 4 · 도입 — 지난주에서 이번 주로 (flow) ============ -->
+    <section class="slide" data-slide="S04" data-shape="flow">
+      <header class="s-head">
+        <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+        <span class="s-line"></span>
+      </header>
+      <div class="s-full w3-stage">
+        <h2 class="s-title">지난주에서 이번 주로</h2>
+        <p class="w3-def">2주차에는 내 MVP를 <strong>하나 완성</strong>했습니다. 3주차에는 그걸 <strong>팀으로 다듬고 · 기록하고 · 공개</strong>합니다.</p>
+        <figure class="w3-stage-fig viz-flow-h" role="img"
+                aria-label="내 컴퓨터에서만 열리던 MVP가 다듬기와 기록을 거쳐 누구나 열 수 있는 주소가 되는 흐름">
+          <svg viewBox="0 0 1000 300" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect x="20" y="86" width="230" height="128" rx="18" fill="var(--surface)" stroke="var(--blue-line-strong)" stroke-width="2"/>
+            <text x="135" y="62" text-anchor="middle" font-size="21" font-weight="800" fill="var(--gray-700)">2주차 끝</text>
+            <text x="135" y="140" text-anchor="middle" font-size="23" font-weight="800" fill="var(--ink)">내 MVP 하나</text>
+            <text x="135" y="176" text-anchor="middle" font-size="20" font-weight="700" fill="var(--gray-700)">내 컴퓨터에서만</text>
+            <path d="M266 150 L330 150 M316 140 L332 150 L316 160" fill="none" stroke="var(--blue)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <rect x="346" y="86" width="300" height="128" rx="18" fill="var(--blue-soft)" stroke="var(--blue)" stroke-width="2"/>
+            <text x="496" y="62" text-anchor="middle" font-size="21" font-weight="800" fill="var(--blue)">오늘 하는 일</text>
+            <text x="496" y="132" text-anchor="middle" font-size="22" font-weight="800" fill="var(--ink)">팀으로 다듬고</text>
+            <text x="496" y="168" text-anchor="middle" font-size="22" font-weight="800" fill="var(--ink)">기록하고 · 공개하기</text>
+            <path d="M662 150 L726 150 M712 140 L728 150 L712 160" fill="none" stroke="var(--mint-deep)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <rect x="742" y="86" width="238" height="128" rx="18" fill="var(--mint-soft)" stroke="var(--mint-line)" stroke-width="2"/>
+            <text x="861" y="62" text-anchor="middle" font-size="21" font-weight="800" fill="var(--mint-deep)">3주차 끝</text>
+            <text x="861" y="140" text-anchor="middle" font-size="23" font-weight="800" fill="var(--on-mint)">열리는 주소</text>
+            <text x="861" y="176" text-anchor="middle" font-size="20" font-weight="700" fill="var(--mint-deep)">누구나 열 수 있게</text>
+            <text x="500" y="266" text-anchor="middle" font-size="22" font-weight="800" fill="var(--gray-700)">쓰는 폴더는 하나입니다 - 2주차에 만든 그 폴더</text>
+          </svg>
+        </figure>
+        <div class="callout blue hug-center"><strong>새 프로젝트를 만들지 않습니다.</strong> 하루 종일 그 폴더 하나만 씁니다.</div>
+      </div>
+    </section>
+
+    <!-- ============ 5 · 아젠다 (불변요소·구조 고정) ============
+         제목은 고정 멘트 "오늘 배우게 될 것"(verify 강제). 6정거장 = 1열 연속.
+         [주의] an-2col은 7개 이상 오버플로 시의 탈출구다 - 6개는 1열이 기본이다
+            (2열이 되면 ::after 세로 연결선이 꺼져 「배울 순서」라는 뜻이 사라진다). -->
+    <section class="slide s03-slide" data-slide="S05" data-shape="flow">
+      <header class="s-head">
+        <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+        <span class="s-line"></span>
+      </header>
+      <div class="an-left">
+        <span class="an-spark" aria-hidden="true"></span>
+        <h2 class="an-title">오늘 배우게 될 것</h2>
+        <div class="an-bar"></div>
+        <p class="an-intro">여섯 정거장, <span class="hl">실습 15개</span>입니다<br>정거장마다 손에 남는 결과가 하나씩 생깁니다</p>
+      </div>
+      <div class="an-right">
+        <div class="an-item"><div class="an-num">1</div><div class="an-body"><div class="an-h">시작 상태 보호</div><div class="an-d">실행 확인 · 백업 · 공개 금지 파일</div></div></div>
+        <div class="an-item"><div class="an-num">2</div><div class="an-body"><div class="an-h">에이전트 세 방식</div><div class="an-d">싱글 · 서브 · 멀티</div></div></div>
+        <div class="an-item"><div class="an-num">3</div><div class="an-body"><div class="an-h">담당 나누기</div><div class="an-d">HTML · CSS · JS · QA</div></div></div>
+        <div class="an-item"><div class="an-num">4</div><div class="an-body"><div class="an-h">검토 · 판정 · 구현</div><div class="an-d">엇갈린 결과를 근거로 정합니다</div></div></div>
+        <div class="an-item"><div class="an-num">5</div><div class="an-body"><div class="an-h">GitHub에 기록</div><div class="an-d">저장소 · 커밋 · 안전 점검</div></div></div>
+        <div class="an-item"><div class="an-num">6</div><div class="an-body"><div class="an-h">공개하기</div><div class="an-d">공유 범위 · URL 자가 점검</div></div></div>
+      </div>
+    </section>
+
+<!-- ::PARTS:: -->
+
+    <!-- ============ 마무리 · 개념 정리 (불변요소·기본 마무리) — v2 풀폭 상하 밴드
+         .concept-panel = 세로 flex(메시지·프로세스·카드·배너 4밴드), 캔버스 전체 폭 사용.
+         .concept-flow span(flex:1)·.concept-cards(auto-fit)는 개수(N)에 자동 대응 —
+         프로세스 3~6단계·카드 3~6장 어떤 조합이든 이 마크업 구조 그대로 개수만 늘리면 된다. -->
+    <section class="slide concept-recap" data-slide="END">
+      <header class="s-head">
+        <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+        <span class="s-line"></span><div class="s-team">팀명<br>부제</div>
+      </header>
+      <div class="concept-panel">
+        <div class="concept-top">
+          <p class="s-eyebrow">3주 회고</p>
+          <h2 class="s-title">오늘 <span class="hl">한 문장</span>으로 남기기</h2>
+          <p class="concept-lead">AI가 여럿이어도 <strong>채택은 사람이 하고, 완료는 증거로 결정합니다.</strong></p>
+        </div>
+        <div class="concept-flow">
+          <span>1주차 · 요청하는 사람</span><b>&#8594;</b><span>2주차 · 기획하는 사람</span><b>&#8594;</b><span>3주차 · 지휘하고 판정하고 공개하는 사람</span>
+        </div>
+        <div class="concept-cards">
+          <div class="concept-card"><h3>나눴습니다</h3><p>파일을 경계로 담당 넷을 두었습니다</p></div>
+          <div class="concept-card"><h3>판정했습니다</h3><p>다수결이 아니라 근거로 골랐습니다</p></div>
+          <div class="concept-card"><h3>기록했습니다</h3><p>무엇을 왜 바꿨는지 커밋에 남겼습니다</p></div>
+          <div class="concept-card"><h3>공개했습니다</h3><p>로그인 없이 열리는 것을 확인했습니다</p></div>
+        </div>
+        <div class="concept-bottom">검증된 것만 완료로 봅니다.<small>3주간 고생하셨습니다 &#183; THANK YOU</small></div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- 발표 리모컨 + 상세 메뉴 (불변요소 · 브라우저 검증된 엔진) -->
+  <div class="controls" id="controls">
+    <div class="navbar">
+      <button class="nav-btn" id="prevBtn" aria-label="이전 슬라이드">‹</button>
+      <button class="nav-counter" id="counter" aria-label="상세 발표 메뉴 열기" aria-expanded="false">1 / 1</button>
+      <button class="nav-btn" id="nextBtn" aria-label="다음 슬라이드">›</button>
+      <span class="nav-sep"></span>
+      <button class="nav-btn menu" id="menuBtn" aria-label="상세 발표 메뉴 열기" aria-expanded="false" title="상세 메뉴 (G)">☰</button>
+      <button class="nav-btn fs" id="fsBtn" aria-label="전체화면 (F)" title="전체화면 (F)">⛶</button>
+    </div>
+  </div>
+  <section class="presentation-menu" id="presentationMenu" role="dialog" aria-label="발표 상세 메뉴" hidden>
+    <div class="menu-head">
+      <div><p class="menu-eyebrow" id="menuPart">현재 슬라이드</p><p class="menu-title" id="menuTitle">슬라이드 제목</p></div>
+      <button class="menu-close" id="menuClose" aria-label="상세 메뉴 닫기">×</button>
+    </div>
+    <div class="menu-actions">
+      <button class="menu-action" id="homeBtn" aria-label="표지로 이동" title="홈">⌂</button>
+      <label class="page-jump" aria-label="페이지 번호로 이동"><input id="pageInput" type="number" min="1" inputmode="numeric" placeholder="페이지 번호"><button class="menu-go" id="goBtn">이동</button></label>
+      <button class="menu-action" id="pdfBtn" aria-label="PDF로 출력">PDF</button>
+      <button class="menu-action" id="helpBtn" aria-label="단축키 안내" title="단축키">?</button>
+    </div>
+    <div class="slide-list" id="slideList" aria-label="전체 슬라이드 목록"></div>
+  </section>
+  <section class="keyboard-help" id="keyboardHelp" role="dialog" aria-label="발표 단축키" hidden>
+    <button class="menu-close" id="helpClose" aria-label="단축키 안내 닫기">×</button>
+    <h2>발표 단축키</h2>
+    <dl><dt>← / →</dt><dd>이전·다음 슬라이드</dd><dt>Home / End</dt><dd>표지·마지막으로 이동</dd><dt>G</dt><dd>상세 메뉴 열기</dd><dt>B</dt><dd>화면 가리기</dd><dt>F</dt><dd>전체화면</dd><dt>?</dt><dd>이 안내 열기</dd><dt>Esc</dt><dd>열린 창 또는 화면 가리기 닫기</dd></dl>
+  </section>
+  <div class="presentation-blackout" id="blackout" aria-label="화면 가리기, 클릭하면 해제" hidden></div>
+
+  <script>
+  (function(){
+    /* ── 파트 전환 자동 생성기 (kit/starter/deck-template.html과 같은 계약) ──
+       ⚠️ 이 세 함수가 없으면 verify_deck이 「파트 전환 자동 생성기 누락」으로
+          **FAIL**한다. 2026-08-03 실측: 이 템플릿에만 빠져 있어 새 주차가
+          첫 조립부터 FAIL 1로 시작했다(1·2주차 덱과 킷 스타터에는 있었다).
+       도형·도트·PART n/N을 파트 수에 맞춰 만든다 — part-NN.html은 빈 훅만 둔다. */
+    function partGeometry(n){
+      var presets={
+        1:[[640,126,92,92]],
+        2:[[560,150,60,60],[640,230,70,70]],
+        3:[[670,136,58,58],[584,228,58,58],[756,228,58,58]],
+        4:[[620,94,58,58],[726,158,66,66],[522,188,50,50],[628,264,48,48]],
+        5:[[640,78,48,48],[532,146,62,62],[730,142,46,46],[574,258,48,48],[694,238,64,64]],
+        6:[[610,70,42,42],[510,138,56,56],[724,122,52,52],[466,246,40,40],[604,214,66,66],[764,246,44,44]]
+      }, points=presets[n]&&presets[n].slice();
+      if(!points){
+        points=[];
+        var size=Math.max(28,44-Math.floor((n-7)/2));
+        for(var i=0;i<n;i++){
+          var angle=-Math.PI/2+(Math.PI*2*i/n), ring=i%2?1:.72;
+          points.push([640+Math.cos(angle)*150*ring,178+Math.sin(angle)*82*ring+(i%3)*12,size,size]);
+        }
+      }
+      return points.sort(function(a,b){return a[1]-b[1];});
+    }
+    function cubeMarkup(p,i){
+      var x=Math.round(p[0]),y=Math.round(p[1]),w=Math.round(p[2]),d=Math.round(p[3]),h=Math.round(w/2);
+      return '<g class="pd-cube pd-cube-'+(i+1)+'" data-cube="'+(i+1)+'">'+
+        '<ellipse class="pd-cube-shadow" cx="'+x+'" cy="'+(y+w+d+9)+'" rx="'+Math.round(w*.72)+'" ry="'+Math.max(6,Math.round(w*.17))+'"/>'+
+        '<polygon points="'+x+','+y+' '+(x+w)+','+(y+h)+' '+x+','+(y+w)+' '+(x-w)+','+(y+h)+'" fill="var(--blue-soft)"/>'+
+        '<polygon points="'+(x-w)+','+(y+h)+' '+x+','+(y+w)+' '+x+','+(y+w+d)+' '+(x-w)+','+(y+h+d)+'" fill="var(--blue)"/>'+
+        '<polygon points="'+x+','+(y+w)+' '+(x+w)+','+(y+h)+' '+(x+w)+','+(y+h+d)+' '+x+','+(y+w+d)+'" fill="var(--mint)"/></g>';
+    }
+    function hydratePartDivider(s,index,total){
+      var hero=s.querySelector('.dv-hero'), points=partGeometry(index), html='';
+      for(var i=0;i<points.length;i++)html+=cubeMarkup(points[i],i);
+      if(hero){hero.innerHTML=html+'<circle class="pd-spark" cx="820" cy="112" r="7"/>';hero.setAttribute('data-geometry-count',index);}
+      var dots=s.querySelector('.pd-dots'), dotHtml='';
+      for(var d=1;d<=total;d++)dotHtml+='<span class="pd-dot'+(d===index?' is-active':'')+'"></span>';
+      if(dots)dots.innerHTML=dotHtml;
+      var eyebrow=s.querySelector('.pd-eyebrow');if(eyebrow)eyebrow.textContent='PART '+index+' / '+total;
+      s.setAttribute('data-part-index',index);s.setAttribute('data-part-total',total);
+    }
+
+    var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+    var totalParts = 0;
+    slides.forEach(function(s){ if (/\bpart-divider\b/.test(s.className)) totalParts++; });
+    var curPart = 0;
+    slides.forEach(function(s, i){
+      if (/\bpart-divider\b/.test(s.className)) { curPart++; hydratePartDivider(s, curPart, totalParts); }
+      var fixed = /\b(cover|s02-slide|s03-slide|part-divider|concept-recap|closing)\b/.test(s.className);
+      if (!/\b(cover|concept-recap|closing)\b/.test(s.className)) {
+        var pg = document.createElement('div');
+        pg.className = 's-pageno';
+        pg.textContent = (i + 1) + ' / ' + slides.length;
+        s.appendChild(pg);
+      }
+      if (!fixed && curPart >= 1 && totalParts >= 1) {
+        var team = s.querySelector('.s-head .s-team');
+        if (team) {
+          var h = '<span class="lbl">PART ' + curPart + ' / ' + totalParts + '</span><span class="dots">';
+          for (var d = 1; d <= totalParts; d++) h += '<span class="pd' + (d === curPart ? ' on' : '') + '"></span>';
+          team.className = 's-part';
+          team.innerHTML = h + '</span>';
+        }
+      }
+    });
+    var controls = document.getElementById('controls');
+    var counter  = document.getElementById('counter');
+    var prevBtn  = document.getElementById('prevBtn');
+    var nextBtn  = document.getElementById('nextBtn');
+    var fsBtn    = document.getElementById('fsBtn');
+    var menuBtn  = document.getElementById('menuBtn');
+    var menu     = document.getElementById('presentationMenu');
+    var menuClose = document.getElementById('menuClose');
+    var homeBtn  = document.getElementById('homeBtn');
+    var pageInput = document.getElementById('pageInput');
+    var goBtn    = document.getElementById('goBtn');
+    var pdfBtn   = document.getElementById('pdfBtn');
+    var helpBtn  = document.getElementById('helpBtn');
+    var help     = document.getElementById('keyboardHelp');
+    var helpClose = document.getElementById('helpClose');
+    var blackout = document.getElementById('blackout');
+    var slideList = document.getElementById('slideList');
+    var menuTitle = document.getElementById('menuTitle');
+    var menuPart = document.getElementById('menuPart');
+    var idx = 0, hideTimer = null;
+    var storageKey = 'create-slides';  /* ✏️ 덱마다 고유 문자열로 바꾸면 위치 기억이 분리됨 */
+
+    function initialIndex(){
+      var m = String(location.hash || '').match(/slide=(\d+)/i);
+      if (m) return Math.max(0, parseInt(m[1], 10) - 1);
+      try { var saved = parseInt(localStorage.getItem(storageKey), 10); return isNaN(saved) ? 0 : saved; }
+      catch (e) { return 0; }
+    }
+    function fit(){
+      var s = Math.min(window.innerWidth / 1280, window.innerHeight / 720);
+      document.documentElement.style.setProperty('--scale', s);
+    }
+    function show(i){
+      idx = Math.max(0, Math.min(slides.length - 1, i));
+      for (var n = 0; n < slides.length; n++){ slides[n].classList.toggle('is-active', n === idx); }
+      counter.textContent = (idx + 1) + ' / ' + slides.length;
+      prevBtn.disabled = (idx === 0);
+      nextBtn.disabled = (idx === slides.length - 1);
+      updateMenu();
+      try { localStorage.setItem(storageKey, String(idx)); } catch (e) {}
+      try { history.replaceState(null, '', '#slide=' + (idx + 1)); } catch (e) {}
+    }
+    function next(){ show(idx + 1); }
+    function prev(){ show(idx - 1); }
+    function slideName(s, i){
+      var heading = s.querySelector('h1,h2,h3');
+      var text = heading ? heading.textContent.replace(/\s+/g, ' ').trim() : '';
+      return text || s.getAttribute('data-slide') || ('슬라이드 ' + (i + 1));
+    }
+    function slidePart(s){
+      var el = s.querySelector('.s-part .lbl');
+      return el ? el.textContent : (s.classList.contains('cover') ? '표지' : '발표 슬라이드');
+    }
+    function buildSlideList(){
+      slides.forEach(function(s, i){
+        var btn = document.createElement('button');
+        var number = document.createElement('span');
+        var label = document.createElement('span');
+        btn.type = 'button'; btn.dataset.slideIndex = i;
+        number.className = 'list-num'; number.textContent = String(i + 1).padStart(3, '0');
+        label.textContent = slideName(s, i); btn.appendChild(number); btn.appendChild(label);
+        btn.addEventListener('click', function(){ show(i); closeMenu(); poke(); });
+        slideList.appendChild(btn);
+      });
+    }
+    function updateMenu(){
+      var current = slides[idx];
+      menuTitle.textContent = slideName(current, idx);
+      menuPart.textContent = slidePart(current);
+      pageInput.value = idx + 1;
+      Array.prototype.forEach.call(slideList.children, function(btn, i){ btn.classList.toggle('is-current', i === idx); });
+    }
+    function openMenu(){
+      menu.hidden = false; help.hidden = true; blackout.hidden = true;
+      menuBtn.setAttribute('aria-expanded', 'true'); counter.setAttribute('aria-expanded', 'true');
+      controls.classList.add('show'); clearTimeout(hideTimer); updateMenu();
+      setTimeout(function(){ pageInput.focus(); pageInput.select(); }, 0);
+    }
+    function closeMenu(){
+      menu.hidden = true; menuBtn.setAttribute('aria-expanded', 'false'); counter.setAttribute('aria-expanded', 'false');
+      poke();
+    }
+    function toggleMenu(){ menu.hidden ? openMenu() : closeMenu(); }
+    function openHelp(){ help.hidden = false; menu.hidden = true; menuBtn.setAttribute('aria-expanded', 'false'); counter.setAttribute('aria-expanded', 'false'); controls.classList.add('show'); clearTimeout(hideTimer); helpClose.focus(); }
+    function closeHelp(){ help.hidden = true; poke(); }
+    function jumpToInput(){ var n = parseInt(pageInput.value, 10); if (!isNaN(n)) { show(n - 1); closeMenu(); } }
+    function toggleBlackout(){ blackout.hidden = !blackout.hidden; if (blackout.hidden) poke(); }
+    function poke(){ controls.classList.add('show'); clearTimeout(hideTimer);
+      if (!menu.hidden || !help.hidden || !blackout.hidden) return;
+      hideTimer = setTimeout(function(){ controls.classList.remove('show'); }, 1000); }
+    function toggleFullscreen(){
+      if (!document.fullscreenElement){ (document.documentElement.requestFullscreen || function(){}).call(document.documentElement); }
+      else { (document.exitFullscreen || function(){}).call(document); }
+    }
+    document.addEventListener('keydown', function(e){
+      if (e.key === 'Escape') { if (!blackout.hidden) { blackout.hidden = true; } else if (!help.hidden) { closeHelp(); } else if (!menu.hidden) { closeMenu(); } return; }
+      if ((e.key === 'g' || e.key === 'G') && !e.ctrlKey && !e.metaKey) { toggleMenu(); e.preventDefault(); return; }
+      if (e.key === '?' && !e.ctrlKey && !e.metaKey) { openHelp(); e.preventDefault(); return; }
+      if ((e.key === 'b' || e.key === 'B') && !e.ctrlKey && !e.metaKey) { toggleBlackout(); e.preventDefault(); return; }
+      if (!menu.hidden || !help.hidden || !blackout.hidden) return;
+      switch (e.key){
+        /* 슬라이드 전환은 리모컨을 노출하지 않는다 — 리모컨은 마우스 이동(mousemove→poke)에만 나타난다. */
+        case 'ArrowRight': case 'PageDown': case ' ': case 'Spacebar': next(); e.preventDefault(); break;
+        case 'ArrowLeft': case 'PageUp': prev(); e.preventDefault(); break;
+        case 'Home': show(0); e.preventDefault(); break;
+        case 'End':  show(slides.length - 1); e.preventDefault(); break;
+        case 'f': case 'F': toggleFullscreen(); break;
+      }
+    });
+    prevBtn.addEventListener('click', function(){ prev(); poke(); });
+    nextBtn.addEventListener('click', function(){ next(); poke(); });
+    fsBtn.addEventListener('click', function(e){ e.stopPropagation(); toggleFullscreen(); poke(); });
+    menuBtn.addEventListener('click', function(e){ e.stopPropagation(); toggleMenu(); });
+    counter.addEventListener('click', function(e){ e.stopPropagation(); toggleMenu(); });
+    menuClose.addEventListener('click', closeMenu);
+    homeBtn.addEventListener('click', function(){ show(0); closeMenu(); });
+    goBtn.addEventListener('click', jumpToInput);
+    pageInput.addEventListener('keydown', function(e){ if (e.key === 'Enter') { jumpToInput(); e.preventDefault(); } });
+    pdfBtn.addEventListener('click', function(){ window.print(); });
+    helpBtn.addEventListener('click', openHelp);
+    helpClose.addEventListener('click', closeHelp);
+    blackout.addEventListener('click', toggleBlackout);
+    document.addEventListener('fullscreenchange', fit);
+    window.addEventListener('mousemove', poke);
+    window.addEventListener('resize', fit);
+    buildSlideList();
+    fit(); show(initialIndex()); poke();
+  })();
+  </script>
+</body>
+</html>
