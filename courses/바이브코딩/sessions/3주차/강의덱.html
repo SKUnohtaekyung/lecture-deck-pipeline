@@ -766,6 +766,65 @@
     .w3-gs-fig{margin:0;min-height:0;height:100%;position:relative}
     .w3-gs-fig svg{position:absolute;inset:0;width:100%;height:100%}
 
+    /* ===== 2026-08-08 추가분 (사용자 제공 실화면·프롬프트 반영) ===== */
+
+    /* 긴 프롬프트 전문 — V3-10. 학생이 그대로 복사해 쓰는 문장이라 줄을 줄이지 않는다.
+       ⚠️ 한 컬럼 22px로는 9줄이 세로 예산이다(2주차 실측). 16줄짜리는 **가로 2단**으로
+          나눠야 들어간다 — 폰트를 내려 밀어 넣지 않는다(R-TYPE-01). */
+    .w3-bigprompt{background:var(--ink);border-radius:var(--r-lg);padding:22px 26px;
+      flex:1 1 auto;min-height:0;display:grid;grid-template-columns:1fr 1fr;
+      column-gap:34px;align-items:start}
+    .w3-bigprompt > *{min-width:0}
+    .w3-bp-col{display:flex;flex-direction:column;gap:10px;min-height:0}
+    .w3-bigprompt p{margin:0;color:var(--white);font-size:var(--fs-body);line-height:1.45}
+    .w3-bigprompt strong{color:var(--mint-bright)}
+    .w3-bigprompt .w3-bp-num{color:var(--mint-bright);font-weight:800}
+    .w3-bp-tag{grid-column:1 / -1;justify-self:start;background:var(--mint);color:var(--on-mint);
+      border-radius:var(--r-pill);padding:5px 16px;font-size:19px;font-weight:800;margin-bottom:4px}
+
+    /* Codex 화면 목업 — V6-03 (사이드바 + 사이트 목록) · V6-04 (공유 모달)
+       ⚠️ 실제 캡처가 아니라 사용자 제공 화면을 보고 그린 **개념 목업**이다.
+          계정명·이메일은 넣지 않는다(공개 자료에 개인정보 금지). */
+    .w3-codex{display:grid;grid-template-columns:250px 1fr;gap:26px;
+      flex:1 1 auto;min-height:0;align-items:stretch}
+    .w3-codex > *{min-width:0}
+    .w3-cx-side{background:var(--ink);border-radius:var(--r-lg);padding:18px 14px;
+      display:flex;flex-direction:column;gap:6px}
+    .w3-cx-brand{color:var(--white);font-size:21px;font-weight:800;padding:4px 10px 12px}
+    .w3-cx-item{color:var(--on-dark-muted);font-size:20px;font-weight:700;
+      padding:9px 12px;border-radius:var(--r-sm)}
+    .w3-cx-item.is-on{background:var(--blue);color:var(--white);font-weight:800}
+    .w3-cx-main{background:var(--white);border:2px solid var(--blue-line-strong);
+      border-radius:var(--r-lg);padding:18px 20px;display:flex;flex-direction:column;gap:12px;
+      box-shadow:var(--shadow-md);min-height:0}
+    .w3-cx-top{display:flex;align-items:center;justify-content:space-between;gap:14px}
+    .w3-cx-top b{font-size:var(--fs-box-title);font-weight:800;color:var(--ink)}
+    .w3-cx-btn{background:var(--mint);color:var(--on-mint);border-radius:var(--r-md);
+      padding:7px 18px;font-size:20px;font-weight:800;white-space:nowrap}
+    .w3-cx-head{display:grid;grid-template-columns:1fr 150px 96px;gap:12px;
+      border-bottom:2px solid var(--line);padding-bottom:8px;
+      font-size:19px;font-weight:800;color:var(--gray-700)}
+    .w3-cx-row{display:grid;grid-template-columns:1fr 150px 96px;gap:12px;align-items:center}
+    .w3-cx-row .nm{font-size:21px;font-weight:800;color:var(--ink)}
+    .w3-cx-row .ad{display:block;font-size:19px;font-weight:700;color:var(--blue);
+      font-family:var(--font-mono);margin-top:3px}
+    .w3-cx-lock{font-size:20px;font-weight:800;color:var(--coral-deep)}
+    .w3-cx-share{background:var(--surface);border-radius:var(--r-sm);text-align:center;
+      padding:7px 0;font-size:19px;font-weight:800;color:var(--ink)}
+
+    /* 공유 모달 — V6-04 */
+    .w3-modal{background:var(--white);border:2px solid var(--blue);border-radius:var(--r-lg);
+      padding:18px 20px;display:flex;flex-direction:column;gap:12px;box-shadow:var(--shadow-lg)}
+    .w3-modal-t{font-size:var(--fs-box-title);font-weight:800;color:var(--ink)}
+    .w3-modal-lbl{font-size:20px;font-weight:800;color:var(--gray-700)}
+    .w3-modal-sel{background:var(--blue-soft);border:2px solid var(--blue);border-radius:var(--r-md);
+      padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;
+      font-size:22px;font-weight:800;color:var(--ink)}
+    .w3-modal-act{display:flex;justify-content:flex-end;gap:10px;align-items:center}
+    .w3-modal-act .ghost{font-size:20px;font-weight:700;color:var(--gray-700);padding:7px 16px}
+    .w3-modal-act .go{background:var(--mint);color:var(--on-mint);border-radius:var(--r-md);
+      padding:8px 22px;font-size:21px;font-weight:800}
+
     /* 실계정 확인 전까지 화면 자리를 비워 두는 표시 — V6-03 · V6-04
        ⚠️ 빈 asset-slot을 만들면 R-QC-18 상시 FAIL이다. 슬롯이 아니라
           「아직 확인되지 않았다」는 **문구**만 둔다(학생 화면에도 정직하게 보인다). */
@@ -954,12 +1013,12 @@
         <p class="an-intro">여섯 정거장, <span class="hl">실습 15개</span>입니다<br>정거장마다 손에 남는 결과가 하나씩 생깁니다</p>
       </div>
       <div class="an-right">
-        <div class="an-item"><div class="an-num">1</div><div class="an-body"><div class="an-h">시작 상태 보호</div><div class="an-d">실행 확인 · 백업 · 공개 금지 파일</div></div></div>
-        <div class="an-item"><div class="an-num">2</div><div class="an-body"><div class="an-h">에이전트 세 방식</div><div class="an-d">싱글 · 서브 · 멀티</div></div></div>
-        <div class="an-item"><div class="an-num">3</div><div class="an-body"><div class="an-h">담당 나누기</div><div class="an-d">HTML · CSS · JS · QA</div></div></div>
-        <div class="an-item"><div class="an-num">4</div><div class="an-body"><div class="an-h">검토 · 판정 · 구현</div><div class="an-d">엇갈린 결과를 근거로 정합니다</div></div></div>
-        <div class="an-item"><div class="an-num">5</div><div class="an-body"><div class="an-h">GitHub에 기록</div><div class="an-d">저장소 · 커밋 · 안전 점검</div></div></div>
-        <div class="an-item"><div class="an-num">6</div><div class="an-body"><div class="an-h">공개하기</div><div class="an-d">공유 범위 · URL 자가 점검</div></div></div>
+        <div class="an-item"><div class="an-num">1</div><div class="an-body"><div class="an-h">시작 상태 보호와 하네스</div><div class="an-d">실행 확인 · 백업 · 공개 금지 파일</div></div></div>
+        <div class="an-item"><div class="an-num">2</div><div class="an-body"><div class="an-h">싱글 · 서브 · 멀티 에이전트</div><div class="an-d">싱글 · 서브 · 멀티</div></div></div>
+        <div class="an-item"><div class="an-num">3</div><div class="an-body"><div class="an-h">담당 나누기와 팀 규칙</div><div class="an-d">HTML · CSS · JS · QA</div></div></div>
+        <div class="an-item"><div class="an-num">4</div><div class="an-body"><div class="an-h">병렬 검토 · 결과 판정 · 구현</div><div class="an-d">엇갈린 결과를 근거로 정합니다</div></div></div>
+        <div class="an-item"><div class="an-num">5</div><div class="an-body"><div class="an-h">플러그인 · MCP · GitHub 기록</div><div class="an-d">저장소 · 커밋 · 안전 점검</div></div></div>
+        <div class="an-item"><div class="an-num">6</div><div class="an-body"><div class="an-h">공개와 공유 범위</div><div class="an-d">공유 범위 · URL 자가 점검</div></div></div>
       </div>
     </section>
 
@@ -1056,11 +1115,11 @@
     <span class="s-line"></span>
   </header>
   <div class="s-full w3-cont">
-    <h2 class="s-title">담당에게 맡기기 전 준비</h2>
-    <p class="s-lead">담당에게 맡기기 전에 할 일은 <strong>딱 둘</strong>입니다. 이 둘이 끝나야 코드를 만집니다.</p>
+    <h2 class="s-title">고치기 전에 해 둘 두 가지</h2>
+    <p class="s-lead">코드에 손대기 전에 할 일은 <strong>딱 둘</strong>입니다. 이 둘이 끝나야 시작합니다.</p>
     <div class="w3-cont-body">
       <figure class="w3-gatefig viz-flow-v" role="img"
-              aria-label="준비 게이트 흐름: 먼저 MVP 실행 확인, 다음 백업, 두 가지가 끝나야 그 아래 담당에게 맡기기로 넘어간다">
+              aria-label="준비 흐름: 먼저 MVP 실행 확인, 다음 백업, 두 가지가 끝나야 그 아래 코드 고치기로 넘어간다">
         <svg viewBox="0 0 360 440" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <rect x="20" y="8" width="320" height="92" rx="16" fill="var(--blue-soft)" stroke="var(--blue)" stroke-width="2"/>
           <text x="180" y="48" text-anchor="middle" font-size="24" font-weight="800" fill="var(--ink)">① MVP 실행 확인</text>
@@ -1075,7 +1134,7 @@
           <text x="180" y="281" text-anchor="middle" font-size="19" font-weight="800" fill="var(--on-mint)">준비 완료</text>
           <path d="M180 300 L180 330 M171 321 L180 331 L189 321" fill="none" stroke="var(--mint-deep)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
           <rect x="20" y="338" width="320" height="92" rx="16" fill="var(--mint-soft)" stroke="var(--mint-line)" stroke-width="2"/>
-          <text x="180" y="378" text-anchor="middle" font-size="24" font-weight="800" fill="var(--on-mint)">담당에게 맡기기</text>
+          <text x="180" y="378" text-anchor="middle" font-size="24" font-weight="800" fill="var(--on-mint)">이제 고쳐도 됩니다</text>
           <text x="180" y="408" text-anchor="middle" font-size="19" font-weight="700" fill="var(--mint-deep)">여기서부터 코드를 만집니다</text>
         </svg>
       </figure>
@@ -1083,12 +1142,12 @@
         <div class="w3-gate-cell">
           <span class="w3-hn-n">1</span>
           <b>MVP 실행 확인</b>
-          <span class="desc">고장 난 걸 넘기면 <strong>누가 깼는지 알 수 없습니다.</strong></span>
+          <span class="desc">고장 난 채로 시작하면 <strong>무엇 때문에 깨졌는지 알 수 없습니다.</strong></span>
         </div>
         <div class="w3-gate-cell">
           <span class="w3-hn-n">2</span>
           <b>백업</b>
-          <span class="desc">여럿이 만지면 <strong>되돌리기가 어려워집니다.</strong></span>
+          <span class="desc">잘못 고쳤을 때 <strong>돌아갈 자리가 없습니다.</strong></span>
         </div>
       </div>
     </div>
@@ -1420,16 +1479,16 @@
       <span class="rm-arrow" aria-hidden="true">→</span>
       <div class="rm-step">
         <span class="rm-n">2</span>
-        <b>세 가지 방식</b>
+        <b>에이전트의 세 가지 방식</b>
         <span class="desc">싱글 · 서브 · 멀티를 차례로 봅니다.</span>
         <span class="rm-out">이름과 그림</span>
       </div>
       <span class="rm-arrow" aria-hidden="true">→</span>
       <div class="rm-step">
         <span class="rm-n">3</span>
-        <b>나란히 비교</b>
-        <span class="desc">통제권 · 장면 · 적합을 견줍니다.</span>
-        <span class="rm-out">3열 비교표</span>
+        <b>셋은 어떻게 다른가</b>
+        <span class="desc">누가 쥐고, 언제 쓰는지 봅니다.</span>
+        <span class="rm-out">한눈에 보는 비교표</span>
       </div>
       <span class="rm-arrow" aria-hidden="true">→</span>
       <div class="rm-step">
@@ -1753,37 +1812,37 @@
     <div class="rm-track is-5 viz-flow-h">
       <div class="rm-step">
         <span class="rm-n">1</span>
-        <b>우리 프로젝트의 사정</b>
-        <span class="desc">왜 파일로 나누는지 봅니다.</span>
+        <b>왜 파일로 나누나</b>
+        <span class="desc">우리가 가진 건 파일뿐입니다.</span>
         <span class="rm-out">나누는 기준</span>
       </div>
       <span class="rm-arrow" aria-hidden="true">→</span>
       <div class="rm-step">
         <span class="rm-n">2</span>
-        <b>담당 넷과 보는 것</b>
-        <span class="desc">네 담당을 정합니다.</span>
-        <span class="rm-out">담당 4색</span>
+        <b>누가 어느 파일을 맡나</b>
+        <span class="desc">파일마다 담당을 정합니다.</span>
+        <span class="rm-out">담당 배정 규칙</span>
       </div>
       <span class="rm-arrow" aria-hidden="true">→</span>
       <div class="rm-step">
         <span class="rm-n">3</span>
-        <b>내 프로젝트에 배정</b>
-        <span class="desc">실습 ④ — 내 파일에 담당을 붙입니다.</span>
+        <b>내 파일에 담당 붙이기</b>
+        <span class="desc">실습 ④ — 직접 배정합니다.</span>
         <span class="rm-out">담당 배정표</span>
       </div>
       <span class="rm-arrow" aria-hidden="true">→</span>
       <div class="rm-step">
         <span class="rm-n">4</span>
-        <b>단일 작성자</b>
-        <span class="desc">쓰는 사람은 한 명이라는 규칙.</span>
+        <b>고치는 사람은 한 명</b>
+        <span class="desc">같은 파일을 둘이 안 만집니다.</span>
         <span class="rm-out">충돌을 막는 약속</span>
       </div>
       <span class="rm-arrow" aria-hidden="true">→</span>
       <div class="rm-step is-goal">
         <span class="rm-n">5</span>
-        <b>팀 규칙 쓰기</b>
+        <b>팀 규칙 적어 두기</b>
         <span class="desc">실습 ⑤ — 규칙을 팀용으로.</span>
-        <span class="rm-out">팀 규칙이 적힌 파일</span>
+        <span class="rm-out">규칙이 적힌 파일</span>
       </div>
     </div>
   </div>
@@ -1875,35 +1934,6 @@
   </div>
 </section>
 
-<!-- V3-03 담당별로 무엇을 보나 (강사 예시) — mapping -->
-<section class="slide w3-screen-zones" data-slide="V3-03" data-shape="mapping">
-  <header class="s-head">
-    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
-  </header>
-  <div class="s-full fill">
-    <p class="s-eyebrow">강사 예시</p>
-    <h2 class="s-title">담당별로 무엇을 보나</h2>
-    <div class="w3-zones viz-matrix">
-      <div class="w3-mock" role="img" aria-label="활동 기록 도구 예시 화면. 제목 영역, 목록 영역, 추가·삭제 버튼 영역이 담당별 색으로 나뉘어 있다">
-        <div class="w3-mock-bar">활동 기록 도구</div>
-        <div class="w3-mock-body">
-          <div class="w3-mock-zone w3-own-html"><b>기록 목록이 놓일 자리</b><span class="w3-own-chip">HTML</span></div>
-          <div class="w3-mock-zone w3-own-css"><b>색 · 여백 · 글자 크기</b><span class="w3-own-chip">CSS</span></div>
-          <div class="w3-mock-zone w3-own-js"><b>추가 · 삭제 버튼</b><span class="w3-own-chip">JS</span></div>
-          <div class="w3-mock-zone w3-own-qa"><b>지운 뒤의 화면 전체</b><span class="w3-own-chip">QA</span></div>
-        </div>
-      </div>
-      <div class="w3-zone-list">
-        <div class="w3-zone-item w3-own-html"><b>HTML 담당</b><span>기록 목록이 놓일 자리와 순서</span></div>
-        <div class="w3-zone-item w3-own-css"><b>CSS 담당</b><span>색 · 여백 · 글자 크기</span></div>
-        <div class="w3-zone-item w3-own-js"><b>JS 담당</b><span>기록 추가와 삭제가 실제로 되는가</span></div>
-        <div class="w3-zone-item w3-own-qa"><b>QA 담당</b><span>지운 뒤에도 화면이 맞는가</span></div>
-      </div>
-    </div>
-    <div class="callout blue hug-center">같은 화면인데 <strong>보는 것이 서로 다릅니다.</strong> 이건 제 예시입니다 — <strong>여러분은 각자 프로젝트로</strong> 하세요.</div>
-  </div>
-</section>
 
 <!-- V3-04 실습④ — screen-operation -->
 <section class="slide w3-practice" data-slide="V3-04" data-shape="screen-operation">
@@ -1927,44 +1957,6 @@
   </div>
 </section>
 
-<!-- V3-05 담당은 자기 구역만 봅니다 — structure -->
-<section class="slide" data-slide="V3-05" data-shape="structure">
-  <header class="s-head">
-    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
-  </header>
-  <div class="s-full w3-stage">
-    <h2 class="s-title">담당은 자기 구역만 봅니다</h2>
-    <p class="w3-def">담당마다 <strong>자기 파일 관점에서만</strong> 의견을 받습니다. 요청창을 <strong>담당 수만큼 나눠서</strong> 엽니다.</p>
-    <figure class="w3-stage-fig viz-hub" role="img"
-            aria-label="담당 넷이 각각 자기 파일 하나만 들여다보고, 시선이 서로 교차하지 않는 그림">
-      <svg viewBox="0 0 1000 300" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <rect x="20" y="16" width="216" height="60" rx="14" fill="var(--blue)"/>
-        <text x="128" y="54" text-anchor="middle" font-size="22" font-weight="800" fill="var(--white)">HTML 담당</text>
-        <path d="M128 82 L128 148 M120 138 L128 150 L136 138" fill="none" stroke="var(--blue)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-        <rect x="20" y="156" width="216" height="60" rx="12" fill="var(--white)" stroke="var(--blue)" stroke-width="2"/>
-        <text x="128" y="194" text-anchor="middle" font-size="21" font-weight="800" fill="var(--ink)">index.html</text>
-        <rect x="256" y="16" width="216" height="60" rx="14" fill="var(--mint)"/>
-        <text x="364" y="54" text-anchor="middle" font-size="22" font-weight="800" fill="var(--on-mint)">CSS 담당</text>
-        <path d="M364 82 L364 148 M356 138 L364 150 L372 138" fill="none" stroke="var(--mint-deep)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-        <rect x="256" y="156" width="216" height="60" rx="12" fill="var(--white)" stroke="var(--mint-deep)" stroke-width="2"/>
-        <text x="364" y="194" text-anchor="middle" font-size="21" font-weight="800" fill="var(--ink)">style.css</text>
-        <rect x="492" y="16" width="216" height="60" rx="14" fill="var(--coral)"/>
-        <text x="600" y="54" text-anchor="middle" font-size="22" font-weight="800" fill="var(--on-coral)">JS 담당</text>
-        <path d="M600 82 L600 148 M592 138 L600 150 L608 138" fill="none" stroke="var(--coral-deep)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-        <rect x="492" y="156" width="216" height="60" rx="12" fill="var(--white)" stroke="var(--coral-deep)" stroke-width="2"/>
-        <text x="600" y="194" text-anchor="middle" font-size="21" font-weight="800" fill="var(--ink)">script.js</text>
-        <rect x="728" y="16" width="216" height="60" rx="14" fill="var(--periwinkle)"/>
-        <text x="836" y="54" text-anchor="middle" font-size="22" font-weight="800" fill="var(--ink)">QA 담당</text>
-        <path d="M836 82 L836 148 M828 138 L836 150 L844 138" fill="none" stroke="var(--periwinkle)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-        <rect x="728" y="156" width="216" height="60" rx="12" fill="var(--white)" stroke="var(--periwinkle)" stroke-width="2"/>
-        <text x="836" y="194" text-anchor="middle" font-size="21" font-weight="800" fill="var(--ink)">화면</text>
-        <text x="500" y="270" text-anchor="middle" font-size="22" font-weight="800" fill="var(--gray-700)">시선이 겹치지 않습니다 — 서로의 파일을 보지 않습니다</text>
-      </svg>
-    </figure>
-    <div class="callout blue hug-center">한 번에 전부 물어보면 <strong>다시 싱글 에이전트로 돌아가는 것</strong>이라 나눈 의미가 없어집니다.</div>
-  </div>
-</section>
 
 <!-- V3-06 단일 작성자 — contrast -->
 <section class="slide w3-vs-2col" data-slide="V3-06" data-shape="contrast">
@@ -2070,24 +2062,40 @@
     <div class="callout blue hug-center w3-goal">완성 기준 — <strong>세 항목이 파일에 실제로 적혀 있음</strong></div>
   </div>
 </section>
-
-<!-- V3-09 이제 팀을 돌립니다 — declaration -->
-<section class="slide" data-slide="V3-09" data-shape="declaration">
+<!-- V3-10 팀 구성 프롬프트 — screen-operation
+     사용자 제공 실사용 프롬프트를 사람 이름(수진·민호·지훈·도윤) 대신
+     이 과정의 담당 이름(HTML·CSS·JS·QA)으로 옮겨 적었다. 학생이 그대로
+     복사해 쓰는 문장이라 줄을 줄이거나 요약하지 않는다. -->
+<section class="slide" data-slide="V3-10" data-shape="screen-operation">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
     <span class="s-line"></span>
   </header>
-  <div class="s-full w3-decl">
-    <h2 class="s-title">이제 팀을 돌립니다</h2>
-    <div class="w3-done-row is-2 viz-flow-h">
-      <div class="w3-done"><span class="w3-done-mk" aria-hidden="true">✓</span><b>담당 배정</b></div>
-      <div class="w3-done"><span class="w3-done-mk" aria-hidden="true">✓</span><b>팀 규칙</b></div>
+  <div class="s-full fill">
+    <p class="s-eyebrow">실습 ⑤ — 그대로 복사해 쓰세요</p>
+    <h2 class="s-title">팀 구성 프롬프트</h2>
+    <div class="w3-bigprompt">
+      <span class="w3-bp-tag">이렇게 말하세요</span>
+      <div class="w3-bp-col">
+        <p>이 프로젝트에 <strong>AI 개발팀</strong>을 구성해 줘.</p>
+        <p>다음 네 개의 전문 서브에이전트를 만들어.</p>
+        <p><span class="w3-bp-num">1.</span> <strong>HTML 담당</strong> — 화면 구조 · index.html</p>
+        <p><span class="w3-bp-num">2.</span> <strong>CSS 담당</strong> — 스타일 · style.css</p>
+        <p><span class="w3-bp-num">3.</span> <strong>JS 담당</strong> — 동작 · script.js</p>
+        <p><span class="w3-bp-num">4.</span> <strong>QA 담당</strong> — 검증 · 화면 전체</p>
+      </div>
+      <div class="w3-bp-col">
+        <p>각 담당은 자신의 이름과 역할을 인식해야 한다. 역할을 질문받으면 <strong>"나는 OO 담당이야."</strong>라고 답해야 한다.</p>
+        <p>각 담당은 <strong>자기 파일에만</strong> 집중하고, 메인은 요청에 따라 적절한 담당에게 작업을 위임한다.</p>
+        <p>이 구성이 이후 작업에도 유지되도록 필요한 <strong>Codex 설정 파일과 AGENTS.md</strong>를 생성해 줘.</p>
+        <p>초보자가 추가로 수정하지 않아도 <strong>바로 사용할 수 있도록</strong> 완성해 줘.</p>
+        <p>마지막에 <strong>생성한 파일과 각 담당의 호출 방법</strong>을 설명해 줘.</p>
+      </div>
     </div>
-    <p class="s-body">다음 파트에서 <strong>실제로 네 담당을 부릅니다.</strong></p>
-    <p class="s-lead">거기서 처음으로 <strong>의견이 갈리는 상황</strong>을 만나게 됩니다.</p>
-    <div class="callout blue hug-center">그때 무엇을 기준으로 정할지가 <strong>오늘의 가장 중요한 대목</strong>입니다.</div>
   </div>
 </section>
+
+
 
 <!-- ============ PART 4 전환 ============
      ⚠️ 도형·도트·PART n/N은 shell의 hydratePartDivider()가 자동 생성한다. 빈 훅으로 둔다. -->
@@ -2109,7 +2117,7 @@
   </header>
   <div class="s-full">
     <h2 class="s-title">PART 4는 이렇게 배웁니다</h2>
-    <p class="rm-lead">오늘 <strong>실습이 가장 많은 구간</strong>입니다. 손이 바빠집니다.</p>
+    <p class="rm-lead"><strong>순서는 지난주와 똑같습니다</strong> — 사람만 늘었습니다. 오늘 실습이 가장 많은 구간이라 손이 바빠집니다.</p>
     <div class="rm-track is-5 viz-flow-h">
       <div class="rm-step">
         <span class="rm-n">1</span>
@@ -2149,62 +2157,6 @@
   </div>
 </section>
 
-<!-- V4-01 겁먹지 마세요, 사실 이미 하던 것 — contrast -->
-<section class="slide w3-vs-2col" data-slide="V4-01" data-shape="contrast">
-  <header class="s-head">
-    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
-  </header>
-  <div class="s-full fill">
-    <h2 class="s-title">겁먹지 마세요, 사실 이미 하던 것</h2>
-    <p class="s-lead">어려워 보이지만 <strong>나누고 · 맡기고 · 확인하기</strong>, 지난주에도 한 일입니다.</p>
-    <div class="w3-two viz-matrix">
-      <div class="w3-two-col is-can">
-        <h3>2주차 — 혼자</h3>
-        <figure class="w3-two-fig" role="img" aria-label="나누고 맡기고 확인하는 세 단계가 한 명에게 이어지는 그림">
-          <svg viewBox="0 0 460 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <rect x="6" y="42" width="128" height="52" rx="11" fill="var(--white)" stroke="var(--blue-line-strong)" stroke-width="2"/>
-            <text x="70" y="75" text-anchor="middle" font-size="21" font-weight="800" fill="var(--ink)">나누고</text>
-            <path d="M142 68 L162 68 M154 60 L164 68 L154 76" fill="none" stroke="var(--blue)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-            <rect x="170" y="42" width="128" height="52" rx="11" fill="var(--white)" stroke="var(--blue-line-strong)" stroke-width="2"/>
-            <text x="234" y="75" text-anchor="middle" font-size="21" font-weight="800" fill="var(--ink)">맡기고</text>
-            <path d="M306 68 L326 68 M318 60 L328 68 L318 76" fill="none" stroke="var(--blue)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-            <rect x="334" y="42" width="120" height="52" rx="11" fill="var(--white)" stroke="var(--blue-line-strong)" stroke-width="2"/>
-            <text x="394" y="75" text-anchor="middle" font-size="21" font-weight="800" fill="var(--ink)">확인하기</text>
-            <circle cx="70" cy="20" r="15" fill="var(--blue)"/>
-            <text x="70" y="27" text-anchor="middle" font-size="16" font-weight="800" fill="var(--white)">1</text>
-          </svg>
-        </figure>
-        <p>순서는 <strong>이 세 단계</strong>였습니다.</p>
-      </div>
-      <div class="w3-two-col is-can">
-        <h3>3주차 — 담당 넷</h3>
-        <figure class="w3-two-fig" role="img" aria-label="같은 세 단계에 사람만 넷으로 늘어난 그림">
-          <svg viewBox="0 0 460 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <rect x="6" y="42" width="128" height="52" rx="11" fill="var(--white)" stroke="var(--blue-line-strong)" stroke-width="2"/>
-            <text x="70" y="75" text-anchor="middle" font-size="21" font-weight="800" fill="var(--ink)">나누고</text>
-            <path d="M142 68 L162 68 M154 60 L164 68 L154 76" fill="none" stroke="var(--blue)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-            <rect x="170" y="42" width="128" height="52" rx="11" fill="var(--white)" stroke="var(--blue-line-strong)" stroke-width="2"/>
-            <text x="234" y="75" text-anchor="middle" font-size="21" font-weight="800" fill="var(--ink)">맡기고</text>
-            <path d="M306 68 L326 68 M318 60 L328 68 L318 76" fill="none" stroke="var(--blue)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-            <rect x="334" y="42" width="120" height="52" rx="11" fill="var(--white)" stroke="var(--blue-line-strong)" stroke-width="2"/>
-            <text x="394" y="75" text-anchor="middle" font-size="21" font-weight="800" fill="var(--ink)">확인하기</text>
-            <circle cx="34" cy="20" r="15" fill="var(--blue)"/>
-            <text x="34" y="27" text-anchor="middle" font-size="15" font-weight="800" fill="var(--white)">1</text>
-            <circle cx="66" cy="20" r="15" fill="var(--mint)"/>
-            <text x="66" y="27" text-anchor="middle" font-size="15" font-weight="800" fill="var(--on-mint)">2</text>
-            <circle cx="98" cy="20" r="15" fill="var(--coral)"/>
-            <text x="98" y="27" text-anchor="middle" font-size="15" font-weight="800" fill="var(--on-coral)">3</text>
-            <circle cx="130" cy="20" r="15" fill="var(--periwinkle)"/>
-            <text x="130" y="27" text-anchor="middle" font-size="15" font-weight="800" fill="var(--ink)">4</text>
-          </svg>
-        </figure>
-        <p><strong>같은 모양입니다.</strong> 사람만 늘었습니다.</p>
-      </div>
-    </div>
-    <div class="callout blue hug-center">새 개념을 배우는 게 아닙니다. <strong>순서는 지난주와 똑같습니다.</strong></div>
-  </div>
-</section>
 
 <!-- V4-02 검토 요청에 넣을 것 셋 — classification -->
 <section class="slide w3-req3slide" data-slide="V4-02" data-shape="classification">
@@ -2246,7 +2198,7 @@
     <p class="s-eyebrow">실습 ⑥</p>
     <h2 class="s-title">담당별 병렬 검토 요청</h2>
     <div class="eval-steps viz-flow-v">
-      <div class="work-step"><span class="n">1</span><span class="desc">담당 파일마다 <strong>따로</strong> 요청합니다.</span></div>
+      <div class="work-step"><span class="n">1</span><span class="desc">담당 파일마다 <strong>따로</strong> 요청합니다 — 요청창을 <strong>담당 수만큼</strong> 나눠서 엽니다.</span></div>
       <div class="work-step"><span class="n">2</span><span class="desc">HTML · CSS · JS 담당 셋에게 <strong>같은 형식</strong>으로 이어서 보냅니다.</span></div>
       <div class="work-step"><span class="n">3</span><span class="desc">결과가 다 돌아올 때까지 <strong>아무것도 고치지 않습니다.</strong></span></div>
     </div>
@@ -2499,23 +2451,23 @@
     <div class="rm-track is-5 viz-flow-h">
       <div class="rm-step">
         <span class="rm-n">1</span>
-        <b>왜 바깥 도구가</b>
+        <b>왜 바깥 도구를 붙이나</b>
         <span class="desc">폴더 밖을 볼 수 있게 됩니다.</span>
         <span class="rm-out">넓어진 범위</span>
       </div>
       <span class="rm-arrow" aria-hidden="true">→</span>
       <div class="rm-step">
         <span class="rm-n">2</span>
-        <b>네 이름의 층위</b>
-        <span class="desc">네 이름을 층으로 봅니다.</span>
-        <span class="rm-out">겹치는 관계</span>
+        <b>네 이름 구분하기</b>
+        <span class="desc">무엇이 무엇을 담고 있나.</span>
+        <span class="rm-out">넷의 관계</span>
       </div>
       <span class="rm-arrow" aria-hidden="true">→</span>
       <div class="rm-step">
         <span class="rm-n">3</span>
-        <b>MCP 구조</b>
+        <b>MCP와 프로토콜</b>
         <span class="desc">어디부터가 바깥인지 봅니다.</span>
-        <span class="rm-out">세 자리와 승인</span>
+        <span class="rm-out">연결과 승인</span>
       </div>
       <span class="rm-arrow" aria-hidden="true">→</span>
       <div class="rm-step">
@@ -2527,8 +2479,8 @@
       <span class="rm-arrow" aria-hidden="true">→</span>
       <div class="rm-step is-goal">
         <span class="rm-n">5</span>
-        <b>올리고 확인</b>
-        <span class="desc">실습 ⑫ — 웹에서 봅니다.</span>
+        <b>GitHub에 올리기</b>
+        <span class="desc">실습 ⑫ — 웹에서 확인합니다.</span>
         <span class="rm-out">도착한 커밋</span>
       </div>
     </div>
@@ -2594,6 +2546,93 @@
     <div class="callout blue hug-center">공구세트 안에 드라이버도 있고 콘센트 어댑터도 있는 것과 같습니다.</div>
   </div>
 </section>
+<!-- V5-12 MCP — concept -->
+<section class="slide" data-slide="V5-12" data-shape="concept">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span>
+  </header>
+  <div class="s-full w3-deffig">
+    <div class="w3-deffig-text">
+      <p class="s-eyebrow">용어</p>
+      <h2 class="s-title">MCP</h2>
+      <p class="w3-def">AI와 바깥 도구를 잇는 <strong>공통 연결 규격</strong></p>
+      <p class="s-body">도구마다 연결 방법이 다르면, 도구 수만큼 따로 배우고 따로 만들어야 합니다.</p>
+      <p class="s-body">연결 방식을 <strong>하나로 정해 두면</strong> 한 번 배운 방법으로 여러 도구를 붙일 수 있습니다.</p>
+      <p class="s-body">콘센트 규격이 같으면 어느 가전이든 꽂히는 것과 같습니다.</p>
+    </div>
+    <figure class="w3-deffig-fig viz-matrix" role="img"
+            aria-label="규격이 없으면 앱과 도구가 서로 얽힌 선으로 이어지고, 공통 규격을 두면 가운데 한 줄로 정리되는 대비">
+      <svg viewBox="0 0 400 420" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <rect x="6" y="6" width="388" height="192" rx="16" fill="var(--coral-soft)" stroke="var(--coral-line)" stroke-width="2"/>
+        <text x="200" y="36" text-anchor="middle" font-size="21" font-weight="800" fill="var(--coral-deep)">규격이 없으면</text>
+        <circle cx="70" cy="76" r="20" fill="var(--white)" stroke="var(--coral)" stroke-width="2"/>
+        <circle cx="70" cy="140" r="20" fill="var(--white)" stroke="var(--coral)" stroke-width="2"/>
+        <circle cx="330" cy="66" r="18" fill="var(--white)" stroke="var(--coral)" stroke-width="2"/>
+        <circle cx="330" cy="112" r="18" fill="var(--white)" stroke="var(--coral)" stroke-width="2"/>
+        <circle cx="330" cy="158" r="18" fill="var(--white)" stroke="var(--coral)" stroke-width="2"/>
+        <path d="M90 76 L312 66 M90 76 L312 112 M90 76 L312 158 M90 140 L312 66 M90 140 L312 112 M90 140 L312 158"
+              stroke="var(--coral)" stroke-width="1.8" opacity=".7"/>
+        <text x="200" y="186" text-anchor="middle" font-size="19" font-weight="700" fill="var(--coral-deep)">연결마다 따로 배우고 따로 만든다</text>
+        <rect x="6" y="216" width="388" height="198" rx="16" fill="var(--blue-soft)" stroke="var(--blue)" stroke-width="2"/>
+        <text x="200" y="246" text-anchor="middle" font-size="21" font-weight="800" fill="var(--blue)">공통 규격을 두면</text>
+        <circle cx="70" cy="286" r="20" fill="var(--white)" stroke="var(--blue)" stroke-width="2"/>
+        <circle cx="70" cy="348" r="20" fill="var(--white)" stroke="var(--blue)" stroke-width="2"/>
+        <rect x="160" y="288" width="80" height="58" rx="12" fill="var(--blue)"/>
+        <text x="200" y="324" text-anchor="middle" font-size="21" font-weight="800" fill="var(--white)">MCP</text>
+        <circle cx="330" cy="276" r="18" fill="var(--white)" stroke="var(--blue)" stroke-width="2"/>
+        <circle cx="330" cy="322" r="18" fill="var(--white)" stroke="var(--blue)" stroke-width="2"/>
+        <circle cx="330" cy="368" r="18" fill="var(--white)" stroke="var(--blue)" stroke-width="2"/>
+        <path d="M90 286 L158 305 M90 348 L158 330 M242 305 L312 276 M242 317 L312 322 M242 329 L312 368"
+              stroke="var(--blue)" stroke-width="2.5"/>
+        <text x="200" y="402" text-anchor="middle" font-size="19" font-weight="700" fill="var(--blue)">한 번 배운 방법으로 여러 도구를</text>
+      </svg>
+    </figure>
+  </div>
+</section>
+<!-- V5-13 프로토콜 — concept
+     MCP의 P가 무엇인지 풀어 주는 장. 봉투 그림은 「자리를 미리 정해 둔 약속」의
+     가장 익숙한 예다 — 직접 그렸다(외부 이미지 사용 안 함). -->
+<section class="slide" data-slide="V5-13" data-shape="concept">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span>
+  </header>
+  <div class="s-full w3-stage">
+    <h2 class="s-title">프로토콜</h2>
+    <p class="w3-def">서로 다른 둘이 <strong>오해 없이 주고받기 위해 미리 맞춰 둔 약속</strong> — MCP의 <strong>P</strong>가 이 P입니다.</p>
+    <figure class="w3-stage-fig viz-matrix" role="img"
+            aria-label="우편 봉투 그림: 보내는 사람은 좌측 상단, 받는 사람은 우측 하단, 우표는 우측 상단, 우편번호는 각 주소 아래에 자리가 정해져 있다">
+      <svg viewBox="0 0 1000 330" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <rect x="150" y="16" width="700" height="272" rx="10" fill="var(--white)" stroke="var(--gray-400)" stroke-width="2.5"/>
+        <rect x="742" y="36" width="86" height="104" rx="6" fill="var(--surface)" stroke="var(--blue)" stroke-width="2.5"/>
+        <text x="785" y="82" text-anchor="middle" font-size="19" font-weight="800" fill="var(--blue)">우</text>
+        <text x="785" y="108" text-anchor="middle" font-size="19" font-weight="800" fill="var(--blue)">표</text>
+        <text x="785" y="164" text-anchor="middle" font-size="18" font-weight="800" fill="var(--blue)">우측 상단</text>
+        <text x="182" y="62" font-size="21" font-weight="800" fill="var(--mint-deep)">보내는 사람</text>
+        <text x="182" y="94" font-size="20" font-weight="700" fill="var(--ink)">서울시 종로구 …</text>
+        <rect x="182" y="112" width="150" height="34" rx="7" fill="var(--surface)" stroke="var(--line)" stroke-width="2"/>
+        <text x="257" y="136" text-anchor="middle" font-size="19" font-weight="800" fill="var(--gray-700)">우편번호</text>
+        <text x="182" y="172" font-size="18" font-weight="800" fill="var(--mint-deep)">좌측 상단</text>
+        <text x="420" y="212" font-size="21" font-weight="800" fill="var(--coral-deep)">받는 사람</text>
+        <text x="420" y="244" font-size="20" font-weight="700" fill="var(--ink)">서울시 광진구 …</text>
+        <rect x="600" y="222" width="150" height="34" rx="7" fill="var(--surface)" stroke="var(--line)" stroke-width="2"/>
+        <text x="675" y="246" text-anchor="middle" font-size="19" font-weight="800" fill="var(--gray-700)">우편번호</text>
+        <text x="420" y="276" font-size="18" font-weight="800" fill="var(--coral-deep)">우측 하단</text>
+        <text x="14" y="96" font-size="20" font-weight="800" fill="var(--gray-700)">보내는 쪽</text>
+        <path d="M18 112 L18 150 M10 142 L18 152 L26 142" fill="none" stroke="var(--gray-400)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <text x="14" y="180" font-size="19" font-weight="700" fill="var(--gray-700)">자리를</text>
+        <text x="14" y="204" font-size="19" font-weight="700" fill="var(--gray-700)">지켜 적는다</text>
+        <text x="880" y="200" font-size="20" font-weight="800" fill="var(--gray-700)">받는 쪽</text>
+        <text x="880" y="230" font-size="19" font-weight="700" fill="var(--gray-700)">같은 자리에서</text>
+        <text x="880" y="254" font-size="19" font-weight="700" fill="var(--gray-700)">읽는다</text>
+      </svg>
+    </figure>
+    <div class="callout blue hug-center">봉투에 주소를 아무 데나 적으면 우체국이 못 읽습니다. <strong>자리를 미리 정해 둔 것</strong>이 프로토콜입니다.</div>
+  </div>
+</section>
+
+
 
 <!-- V5-03 MCP의 세 자리 — flow -->
 <section class="slide" data-slide="V5-03" data-shape="flow">
@@ -2993,47 +3032,42 @@
 </section>
 
 <!-- V6-03 사이트 만들기 — screen-operation
-     ⛔ 실계정 캡처 없이는 화면을 채울 수 없다(결정요청 D16). 빈 asset-slot을 두면
-        R-QC-18 상시 FAIL이므로 슬롯이 아니라 「아직 확인되지 않았다」는 문구만 둔다. -->
+     2026-08-08 사용자 제공 실화면으로 재작성. 사이드바·목록·주소 형식·기본 공유
+     대상은 확인됐다. **「만들기」를 누른 뒤의 화면은 아직 확인되지 않았다.** -->
 <section class="slide" data-slide="V6-03" data-shape="screen-operation">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
     <span class="s-line"></span>
   </header>
-  <div class="s-full w3-stage">
+  <div class="s-full fill">
     <h2 class="s-title">사이트 만들기</h2>
-    <p class="w3-def">URL은 <strong>&lt;내가 정한 이름&gt;.&lt;내 계정&gt;.chatgpt.site</strong> 모양입니다.</p>
-    <figure class="w3-stage-fig viz-flow-h" role="img"
-            aria-label="왼쪽 사이드바의 사이트 메뉴로 들어가 오른쪽 위 만들기를 누르면 목록에 주소가 생기는 흐름">
-      <svg viewBox="0 0 1000 300" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <rect x="14" y="60" width="270" height="180" rx="16" fill="var(--surface)" stroke="var(--blue-line-strong)" stroke-width="2"/>
-        <text x="149" y="40" text-anchor="middle" font-size="20" font-weight="800" fill="var(--gray-700)">왼쪽 메뉴</text>
-        <rect x="38" y="90" width="222" height="38" rx="9" fill="var(--white)" stroke="var(--blue-line-strong)" stroke-width="1.5"/>
-        <rect x="38" y="136" width="222" height="38" rx="9" fill="var(--blue)"/>
-        <text x="149" y="161" text-anchor="middle" font-size="21" font-weight="800" fill="var(--white)">사이트</text>
-        <rect x="38" y="182" width="222" height="38" rx="9" fill="var(--white)" stroke="var(--blue-line-strong)" stroke-width="1.5"/>
-        <path d="M298 150 L356 150 M342 140 L358 150 L342 160" fill="none" stroke="var(--blue)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
-        <rect x="372" y="60" width="614" height="180" rx="16" fill="var(--white)" stroke="var(--blue)" stroke-width="2"/>
-        <text x="679" y="40" text-anchor="middle" font-size="20" font-weight="800" fill="var(--blue)">사이트 목록</text>
-        <rect x="836" y="76" width="134" height="38" rx="9" fill="var(--mint)"/>
-        <text x="903" y="101" text-anchor="middle" font-size="20" font-weight="800" fill="var(--on-mint)">만들기</text>
-        <line x1="392" y1="132" x2="966" y2="132" stroke="var(--line)" stroke-width="2"/>
-        <text x="402" y="124" font-size="18" font-weight="800" fill="var(--gray-700)">사이트</text>
-        <text x="770" y="124" font-size="18" font-weight="800" fill="var(--gray-700)">공유 대상</text>
-        <text x="402" y="170" font-size="20" font-weight="800" fill="var(--ink)">내-사이트.내계정.chatgpt.site</text>
-        <text x="770" y="170" font-size="20" font-weight="800" fill="var(--coral-deep)">나만</text>
-        <text x="402" y="212" font-size="19" font-weight="700" fill="var(--gray-400)">누르면 여기에 주소가 생깁니다</text>
-      </svg>
-    </figure>
-    <div class="w3-pending">
-      <b>[실제 화면 확인 필요]</b>
-      <p>기존 프로젝트를 사이트로 넘기는 방법은 <strong>당일 시연으로 확인</strong>합니다. 위 그림은 자리와 순서만 보여 주는 안내도입니다.</p>
+    <p class="s-lead">왼쪽 메뉴 <strong>사이트</strong>로 들어가, 오른쪽 위 <strong>만들기</strong>를 누릅니다.</p>
+    <div class="w3-codex viz-matrix">
+      <div class="w3-cx-side" role="img" aria-label="Codex 왼쪽 메뉴에서 사이트 항목이 선택된 상태">
+        <span class="w3-cx-brand">Codex</span>
+        <span class="w3-cx-item">새 채팅</span>
+        <span class="w3-cx-item">풀 리퀘스트</span>
+        <span class="w3-cx-item is-on">사이트</span>
+        <span class="w3-cx-item">예약</span>
+        <span class="w3-cx-item">플러그인</span>
+      </div>
+      <div class="w3-cx-main" role="img" aria-label="사이트 목록 화면. 오른쪽 위에 만들기 버튼, 행에는 주소와 공유 대상 나만, 공유 버튼이 있다">
+        <div class="w3-cx-top"><b>사이트</b><span class="w3-cx-btn">만들기</span></div>
+        <div class="w3-cx-head"><span>사이트</span><span>공유 대상</span><span></span></div>
+        <div class="w3-cx-row">
+          <span><span class="nm">내 프로젝트</span><span class="ad">내-사이트.내계정.chatgpt.site</span></span>
+          <span class="w3-cx-lock">🔒 나만</span>
+          <span class="w3-cx-share">공유</span>
+        </div>
+      </div>
     </div>
+    <div class="callout blue hug-center">주소는 <strong>&lt;사이트 이름&gt;.&lt;내 계정&gt;.chatgpt.site</strong> 모양으로 생깁니다. 만든 직후 공유 대상은 <strong>「나만」</strong>입니다.</div>
   </div>
 </section>
 
-<!-- V6-04 실습⑬ — screen-operation
-     ⛔ 화면 캡처 자리는 V6-03과 같은 이유로 비워 둔다. -->
+<!-- V6-04 실습 ⑬ — screen-operation
+     2026-08-08 사용자 제공 실화면으로 재작성. 「공유 → 관리 → 인터넷 사용자
+     누구나 → 게시」 절차가 확인되어 결정요청 D16이 해소됐다. -->
 <section class="slide w3-practice" data-slide="V6-04" data-shape="screen-operation">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
@@ -3042,14 +3076,19 @@
   <div class="s-full fill">
     <p class="s-eyebrow">실습 ⑬</p>
     <h2 class="s-title">공유 범위 바꾸고 URL 확인</h2>
-    <div class="eval-steps viz-flow-v">
-      <div class="work-step"><span class="n">1</span><span class="desc">만든 직후 공유 대상은 <strong>「나만」(자물쇠)</strong>입니다 — 아직 아무도 못 봅니다.</span></div>
-      <div class="work-step"><span class="n">2</span><span class="desc">목록에서 <strong>「공유」</strong>를 눌러 공유 범위를 바꿉니다.</span></div>
-      <div class="work-step"><span class="n">3</span><span class="desc">바뀐 URL을 <strong>다른 창이나 휴대폰</strong>에서 열어 확인합니다.</span></div>
-    </div>
-    <div class="w3-pending">
-      <b>[실제 화면 확인 필요]</b>
-      <p>「공유」 이후 화면은 <strong>당일 시연으로 확인</strong>합니다.</p>
+    <div class="w3-vt-body">
+      <div class="eval-steps viz-flow-v">
+        <div class="work-step"><span class="n">1</span><span class="desc">만든 직후 공유 대상은 <strong>「나만」</strong>입니다 — 아직 아무도 못 봅니다.</span></div>
+        <div class="work-step"><span class="n">2</span><span class="desc">사이트를 열고 <strong>공유 → 관리</strong>를 누릅니다.</span></div>
+        <div class="work-step"><span class="n">3</span><span class="desc">범위를 <strong>인터넷 사용자 누구나</strong>로 바꾸고 <strong>게시</strong>를 누릅니다.</span></div>
+        <div class="work-step"><span class="n">4</span><span class="desc">바뀐 주소를 <strong>다른 창이나 휴대폰</strong>에서 열어 봅니다.</span></div>
+      </div>
+      <div class="w3-modal" role="img" aria-label="공유 모달. 액세스 권한이 있는 사용자를 인터넷 사용자 누구나로 바꾸고 게시를 누른다">
+        <span class="w3-modal-t">공유</span>
+        <span class="w3-modal-lbl">액세스 권한이 있는 사용자</span>
+        <div class="w3-modal-sel"><span>🌐 인터넷 사용자 누구나</span><span aria-hidden="true">⌄</span></div>
+        <div class="w3-modal-act"><span class="ghost">취소</span><span class="go">게시</span></div>
+      </div>
     </div>
     <div class="callout blue hug-center w3-goal">완성 기준 — <strong>로그인하지 않은 상태에서도</strong> 내 프로젝트가 열림</div>
   </div>

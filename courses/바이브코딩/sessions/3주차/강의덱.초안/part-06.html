@@ -123,47 +123,42 @@
 </section>
 
 <!-- V6-03 사이트 만들기 — screen-operation
-     ⛔ 실계정 캡처 없이는 화면을 채울 수 없다(결정요청 D16). 빈 asset-slot을 두면
-        R-QC-18 상시 FAIL이므로 슬롯이 아니라 「아직 확인되지 않았다」는 문구만 둔다. -->
+     2026-08-08 사용자 제공 실화면으로 재작성. 사이드바·목록·주소 형식·기본 공유
+     대상은 확인됐다. **「만들기」를 누른 뒤의 화면은 아직 확인되지 않았다.** -->
 <section class="slide" data-slide="V6-03" data-shape="screen-operation">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
     <span class="s-line"></span>
   </header>
-  <div class="s-full w3-stage">
+  <div class="s-full fill">
     <h2 class="s-title">사이트 만들기</h2>
-    <p class="w3-def">URL은 <strong>&lt;내가 정한 이름&gt;.&lt;내 계정&gt;.chatgpt.site</strong> 모양입니다.</p>
-    <figure class="w3-stage-fig viz-flow-h" role="img"
-            aria-label="왼쪽 사이드바의 사이트 메뉴로 들어가 오른쪽 위 만들기를 누르면 목록에 주소가 생기는 흐름">
-      <svg viewBox="0 0 1000 300" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <rect x="14" y="60" width="270" height="180" rx="16" fill="var(--surface)" stroke="var(--blue-line-strong)" stroke-width="2"/>
-        <text x="149" y="40" text-anchor="middle" font-size="20" font-weight="800" fill="var(--gray-700)">왼쪽 메뉴</text>
-        <rect x="38" y="90" width="222" height="38" rx="9" fill="var(--white)" stroke="var(--blue-line-strong)" stroke-width="1.5"/>
-        <rect x="38" y="136" width="222" height="38" rx="9" fill="var(--blue)"/>
-        <text x="149" y="161" text-anchor="middle" font-size="21" font-weight="800" fill="var(--white)">사이트</text>
-        <rect x="38" y="182" width="222" height="38" rx="9" fill="var(--white)" stroke="var(--blue-line-strong)" stroke-width="1.5"/>
-        <path d="M298 150 L356 150 M342 140 L358 150 L342 160" fill="none" stroke="var(--blue)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
-        <rect x="372" y="60" width="614" height="180" rx="16" fill="var(--white)" stroke="var(--blue)" stroke-width="2"/>
-        <text x="679" y="40" text-anchor="middle" font-size="20" font-weight="800" fill="var(--blue)">사이트 목록</text>
-        <rect x="836" y="76" width="134" height="38" rx="9" fill="var(--mint)"/>
-        <text x="903" y="101" text-anchor="middle" font-size="20" font-weight="800" fill="var(--on-mint)">만들기</text>
-        <line x1="392" y1="132" x2="966" y2="132" stroke="var(--line)" stroke-width="2"/>
-        <text x="402" y="124" font-size="18" font-weight="800" fill="var(--gray-700)">사이트</text>
-        <text x="770" y="124" font-size="18" font-weight="800" fill="var(--gray-700)">공유 대상</text>
-        <text x="402" y="170" font-size="20" font-weight="800" fill="var(--ink)">내-사이트.내계정.chatgpt.site</text>
-        <text x="770" y="170" font-size="20" font-weight="800" fill="var(--coral-deep)">나만</text>
-        <text x="402" y="212" font-size="19" font-weight="700" fill="var(--gray-400)">누르면 여기에 주소가 생깁니다</text>
-      </svg>
-    </figure>
-    <div class="w3-pending">
-      <b>[실제 화면 확인 필요]</b>
-      <p>기존 프로젝트를 사이트로 넘기는 방법은 <strong>당일 시연으로 확인</strong>합니다. 위 그림은 자리와 순서만 보여 주는 안내도입니다.</p>
+    <p class="s-lead">왼쪽 메뉴 <strong>사이트</strong>로 들어가, 오른쪽 위 <strong>만들기</strong>를 누릅니다.</p>
+    <div class="w3-codex viz-matrix">
+      <div class="w3-cx-side" role="img" aria-label="Codex 왼쪽 메뉴에서 사이트 항목이 선택된 상태">
+        <span class="w3-cx-brand">Codex</span>
+        <span class="w3-cx-item">새 채팅</span>
+        <span class="w3-cx-item">풀 리퀘스트</span>
+        <span class="w3-cx-item is-on">사이트</span>
+        <span class="w3-cx-item">예약</span>
+        <span class="w3-cx-item">플러그인</span>
+      </div>
+      <div class="w3-cx-main" role="img" aria-label="사이트 목록 화면. 오른쪽 위에 만들기 버튼, 행에는 주소와 공유 대상 나만, 공유 버튼이 있다">
+        <div class="w3-cx-top"><b>사이트</b><span class="w3-cx-btn">만들기</span></div>
+        <div class="w3-cx-head"><span>사이트</span><span>공유 대상</span><span></span></div>
+        <div class="w3-cx-row">
+          <span><span class="nm">내 프로젝트</span><span class="ad">내-사이트.내계정.chatgpt.site</span></span>
+          <span class="w3-cx-lock">🔒 나만</span>
+          <span class="w3-cx-share">공유</span>
+        </div>
+      </div>
     </div>
+    <div class="callout blue hug-center">주소는 <strong>&lt;사이트 이름&gt;.&lt;내 계정&gt;.chatgpt.site</strong> 모양으로 생깁니다. 만든 직후 공유 대상은 <strong>「나만」</strong>입니다.</div>
   </div>
 </section>
 
-<!-- V6-04 실습⑬ — screen-operation
-     ⛔ 화면 캡처 자리는 V6-03과 같은 이유로 비워 둔다. -->
+<!-- V6-04 실습 ⑬ — screen-operation
+     2026-08-08 사용자 제공 실화면으로 재작성. 「공유 → 관리 → 인터넷 사용자
+     누구나 → 게시」 절차가 확인되어 결정요청 D16이 해소됐다. -->
 <section class="slide w3-practice" data-slide="V6-04" data-shape="screen-operation">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
@@ -172,14 +167,19 @@
   <div class="s-full fill">
     <p class="s-eyebrow">실습 ⑬</p>
     <h2 class="s-title">공유 범위 바꾸고 URL 확인</h2>
-    <div class="eval-steps viz-flow-v">
-      <div class="work-step"><span class="n">1</span><span class="desc">만든 직후 공유 대상은 <strong>「나만」(자물쇠)</strong>입니다 — 아직 아무도 못 봅니다.</span></div>
-      <div class="work-step"><span class="n">2</span><span class="desc">목록에서 <strong>「공유」</strong>를 눌러 공유 범위를 바꿉니다.</span></div>
-      <div class="work-step"><span class="n">3</span><span class="desc">바뀐 URL을 <strong>다른 창이나 휴대폰</strong>에서 열어 확인합니다.</span></div>
-    </div>
-    <div class="w3-pending">
-      <b>[실제 화면 확인 필요]</b>
-      <p>「공유」 이후 화면은 <strong>당일 시연으로 확인</strong>합니다.</p>
+    <div class="w3-vt-body">
+      <div class="eval-steps viz-flow-v">
+        <div class="work-step"><span class="n">1</span><span class="desc">만든 직후 공유 대상은 <strong>「나만」</strong>입니다 — 아직 아무도 못 봅니다.</span></div>
+        <div class="work-step"><span class="n">2</span><span class="desc">사이트를 열고 <strong>공유 → 관리</strong>를 누릅니다.</span></div>
+        <div class="work-step"><span class="n">3</span><span class="desc">범위를 <strong>인터넷 사용자 누구나</strong>로 바꾸고 <strong>게시</strong>를 누릅니다.</span></div>
+        <div class="work-step"><span class="n">4</span><span class="desc">바뀐 주소를 <strong>다른 창이나 휴대폰</strong>에서 열어 봅니다.</span></div>
+      </div>
+      <div class="w3-modal" role="img" aria-label="공유 모달. 액세스 권한이 있는 사용자를 인터넷 사용자 누구나로 바꾸고 게시를 누른다">
+        <span class="w3-modal-t">공유</span>
+        <span class="w3-modal-lbl">액세스 권한이 있는 사용자</span>
+        <div class="w3-modal-sel"><span>🌐 인터넷 사용자 누구나</span><span aria-hidden="true">⌄</span></div>
+        <div class="w3-modal-act"><span class="ghost">취소</span><span class="go">게시</span></div>
+      </div>
     </div>
     <div class="callout blue hug-center w3-goal">완성 기준 — <strong>로그인하지 않은 상태에서도</strong> 내 프로젝트가 열림</div>
   </div>
