@@ -1,0 +1,343 @@
+<!-- ============ PART 6 전환 ============
+     ⚠️ 도형·도트·PART n/N은 shell의 hydratePartDivider()가 자동 생성한다. 빈 훅으로 둔다. -->
+<section class="slide part-divider" data-slide="P6">
+  <svg class="dv-hero" viewBox="0 0 1280 720" fill="none" aria-hidden="true"></svg>
+  <div class="pd-dots" aria-hidden="true"></div>
+  <p class="pd-eyebrow">PART</p>
+  <h2 class="pd-title">공개와 공유 범위</h2>
+  <p class="pd-sub">세상에 내놓습니다.</p>
+</section>
+
+<!-- ============ PART 6 로드맵 ============
+     ⚠️ 초안 6-MAP은 6단계인데 템플릿 상한이 5단계라 ④⑤(자가 점검 / 한 곳만 고쳐 재공개)를
+        「점검하고 한 건 고치기」 한 칸으로 묶었다(2026-08-08 사용자 확정). -->
+<section class="slide roadmap" data-slide="M6" data-shape="flow">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span>
+  </header>
+  <div class="s-full">
+    <h2 class="s-title">PART 6은 이렇게 배웁니다</h2>
+    <p class="rm-lead">②와 ③은 <strong>다른 단계</strong>입니다. 만들었다고 공개된 게 아닙니다.</p>
+    <div class="rm-track is-5 viz-flow-h">
+      <div class="rm-step">
+        <span class="rm-n">1</span>
+        <b>공개 전 마지막 점검</b>
+        <span class="desc">되돌릴 수 있는 마지막 지점.</span>
+        <span class="rm-out">안전한 화면</span>
+      </div>
+      <span class="rm-arrow" aria-hidden="true">→</span>
+      <div class="rm-step">
+        <span class="rm-n">2</span>
+        <b>사이트 만들기</b>
+        <span class="desc">내 프로젝트에 주소가 생깁니다.</span>
+        <span class="rm-out">내 URL</span>
+      </div>
+      <span class="rm-arrow" aria-hidden="true">→</span>
+      <div class="rm-step">
+        <span class="rm-n">3</span>
+        <b>공유 범위 바꾸기</b>
+        <span class="desc">실습 ⑬ — 여기가 진짜 공개.</span>
+        <span class="rm-out">열리는 주소</span>
+      </div>
+      <span class="rm-arrow" aria-hidden="true">→</span>
+      <div class="rm-step">
+        <span class="rm-n">4</span>
+        <b>점검하고 한 건 고치기</b>
+        <span class="desc">실습 ⑭⑮ — 낯선 눈으로.</span>
+        <span class="rm-out">고쳐진 공개본</span>
+      </div>
+      <span class="rm-arrow" aria-hidden="true">→</span>
+      <div class="rm-step is-goal">
+        <span class="rm-n">5</span>
+        <b>3주 회고</b>
+        <span class="desc">무엇이 달라졌는지 봅니다.</span>
+        <span class="rm-out">한 문장</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- V6-01 저장소에 있는 것과, 열리는 것은 다릅니다 — contrast -->
+<section class="slide w3-vs-2col" data-slide="V6-01" data-shape="contrast">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span>
+  </header>
+  <div class="s-full fill">
+    <h2 class="s-title">저장소에 있는 것과, 열리는 것은 다릅니다</h2>
+    <div class="w3-two viz-matrix">
+      <div class="w3-two-col is-cant">
+        <h3>저장소에 있는 것 — 파일</h3>
+        <figure class="w3-two-fig" role="img" aria-label="저장소의 파일 목록 화면">
+          <svg viewBox="0 0 460 130" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect x="10" y="6" width="440" height="118" rx="12" fill="var(--white)" stroke="var(--coral-line)" stroke-width="2"/>
+            <rect x="10" y="6" width="440" height="26" rx="12" fill="var(--surface)"/>
+            <text x="26" y="25" font-size="16" font-weight="800" fill="var(--gray-700)">파일 목록</text>
+            <text x="30" y="58" font-size="19" font-weight="700" fill="var(--ink)">index.html</text>
+            <text x="30" y="86" font-size="19" font-weight="700" fill="var(--ink)">style.css</text>
+            <text x="30" y="114" font-size="19" font-weight="700" fill="var(--ink)">script.js</text>
+          </svg>
+        </figure>
+        <p>파일을 받아서 <strong>직접 열어 보라고</strong> 할 수는 없습니다.</p>
+      </div>
+      <div class="w3-two-col is-can">
+        <h3>사람들에게 필요한 것 — 열리는 URL</h3>
+        <figure class="w3-two-fig" role="img" aria-label="브라우저 주소창에 주소가 있고 실제 서비스 화면이 열린 그림">
+          <svg viewBox="0 0 460 130" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect x="10" y="6" width="440" height="118" rx="12" fill="var(--white)" stroke="var(--blue)" stroke-width="2"/>
+            <rect x="10" y="6" width="440" height="30" rx="12" fill="var(--surface)"/>
+            <rect x="60" y="12" width="376" height="18" rx="9" fill="var(--white)" stroke="var(--blue-line-strong)" stroke-width="1.5"/>
+            <text x="72" y="26" font-size="14" font-weight="700" fill="var(--gray-700)">내-사이트.chatgpt.site</text>
+            <rect x="30" y="48" width="180" height="20" rx="6" fill="var(--blue)"/>
+            <rect x="30" y="76" width="400" height="12" rx="6" fill="var(--surface)"/>
+            <rect x="30" y="96" width="320" height="12" rx="6" fill="var(--surface)"/>
+          </svg>
+        </figure>
+        <p><strong>열리는 주소</strong>가 있어야 남이 씁니다.</p>
+      </div>
+    </div>
+    <div class="callout blue hug-center">레시피를 공유한 것과 <strong>요리를 내놓은 것</strong>의 차이입니다.</div>
+  </div>
+</section>
+
+<!-- V6-02 공개하면 되돌리기 어렵습니다 — checklist -->
+<section class="slide w3-excludeslide" data-slide="V6-02" data-shape="checklist">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span>
+  </header>
+  <div class="s-full fill">
+    <p class="s-eyebrow">오늘 세 번째 안전 점검</p>
+    <h2 class="s-title">공개하면 되돌리기 어렵습니다</h2>
+    <p class="s-lead">공개하면 <strong>누구나</strong> 봅니다. 링크를 몰라도 검색으로 닿을 수 있습니다.</p>
+    <div class="w3-exclude viz-matrix">
+      <div class="w3-ex"><b>개인정보</b><span>화면에 남았나요?</span></div>
+      <div class="w3-ex"><b>남의 정보</b><span>화면에 남았나요?</span></div>
+      <div class="w3-ex"><b>미완성 안내문</b><span>화면에 남았나요?</span></div>
+      <div class="w3-ex"><b>테스트용 값</b><span>화면에 남았나요?</span></div>
+      <div class="w3-ex"><b>여기가 경계선</b><span>넘으면 회수 불가</span></div>
+    </div>
+    <div class="callout blue hug-center">지금이 <strong>마지막으로 되돌릴 수 있는 지점</strong>입니다 — 오늘 세 번 한 점검 중 이번이 제일 중요합니다.</div>
+  </div>
+</section>
+
+<!-- V6-03 사이트 만들기 — screen-operation
+     2026-08-08 사용자 제공 실화면으로 재작성. 사이드바·목록·주소 형식·기본 공유
+     대상은 확인됐다. **「만들기」를 누른 뒤의 화면은 아직 확인되지 않았다.** -->
+<section class="slide" data-slide="V6-03" data-shape="screen-operation">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span>
+  </header>
+  <div class="s-full fill">
+    <h2 class="s-title">사이트 만들기</h2>
+    <p class="s-lead">왼쪽 메뉴 <strong>사이트</strong>로 들어가, 오른쪽 위 <strong>만들기</strong>를 누릅니다.</p>
+    <div class="w3-codex viz-matrix">
+      <div class="w3-cx-side" role="img" aria-label="Codex 왼쪽 메뉴에서 사이트 항목이 선택된 상태">
+        <span class="w3-cx-brand">Codex</span>
+        <span class="w3-cx-item">새 채팅</span>
+        <span class="w3-cx-item">풀 리퀘스트</span>
+        <span class="w3-cx-item is-on">사이트</span>
+        <span class="w3-cx-item">예약</span>
+        <span class="w3-cx-item">플러그인</span>
+      </div>
+      <div class="w3-cx-main" role="img" aria-label="사이트 목록 화면. 오른쪽 위에 만들기 버튼, 행에는 주소와 공유 대상 나만, 공유 버튼이 있다">
+        <div class="w3-cx-top"><b>사이트</b><span class="w3-cx-btn">만들기</span></div>
+        <div class="w3-cx-head"><span>사이트</span><span>공유 대상</span><span></span></div>
+        <div class="w3-cx-row">
+          <span><span class="nm">내 프로젝트</span><span class="ad">내-사이트.내계정.chatgpt.site</span></span>
+          <span class="w3-cx-lock">🔒 나만</span>
+          <span class="w3-cx-share">공유</span>
+        </div>
+      </div>
+    </div>
+    <div class="callout blue hug-center">주소는 <strong>&lt;사이트 이름&gt;.&lt;내 계정&gt;.chatgpt.site</strong> 모양으로 생깁니다. 만든 직후 공유 대상은 <strong>「나만」</strong>입니다.</div>
+  </div>
+</section>
+
+<!-- V6-04 실습 ⑬ — screen-operation
+     2026-08-08 사용자 제공 실화면으로 재작성. 「공유 → 관리 → 인터넷 사용자
+     누구나 → 게시」 절차가 확인되어 결정요청 D16이 해소됐다. -->
+<section class="slide w3-practice" data-slide="V6-04" data-shape="screen-operation">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span>
+  </header>
+  <div class="s-full fill">
+    <p class="s-eyebrow">실습 ⑬</p>
+    <h2 class="s-title">공유 범위 바꾸고 URL 확인</h2>
+    <div class="w3-vt-body">
+      <div class="eval-steps viz-flow-v">
+        <div class="work-step"><span class="n">1</span><span class="desc">만든 직후 공유 대상은 <strong>「나만」</strong>입니다 — 아직 아무도 못 봅니다.</span></div>
+        <div class="work-step"><span class="n">2</span><span class="desc">사이트를 열고 <strong>공유 → 관리</strong>를 누릅니다.</span></div>
+        <div class="work-step"><span class="n">3</span><span class="desc">범위를 <strong>인터넷 사용자 누구나</strong>로 바꾸고 <strong>게시</strong>를 누릅니다.</span></div>
+        <div class="work-step"><span class="n">4</span><span class="desc">바뀐 주소를 <strong>다른 창이나 휴대폰</strong>에서 열어 봅니다.</span></div>
+      </div>
+      <div class="w3-modal" role="img" aria-label="공유 모달. 액세스 권한이 있는 사용자를 인터넷 사용자 누구나로 바꾸고 게시를 누른다">
+        <span class="w3-modal-t">공유</span>
+        <span class="w3-modal-lbl">액세스 권한이 있는 사용자</span>
+        <div class="w3-modal-sel"><span>🌐 인터넷 사용자 누구나</span><span aria-hidden="true">⌄</span></div>
+        <div class="w3-modal-act"><span class="ghost">취소</span><span class="go">게시</span></div>
+      </div>
+    </div>
+    <div class="callout blue hug-center w3-goal">완성 기준 — <strong>로그인하지 않은 상태에서도</strong> 내 프로젝트가 열림</div>
+  </div>
+</section>
+
+<!-- V6-05 (폴백) 공개가 안 되면 — flow -->
+<section class="slide w3-branchslide" data-slide="V6-05" data-shape="flow">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span>
+  </header>
+  <div class="s-full fill">
+    <h2 class="s-title">공개가 안 되면</h2>
+    <p class="s-lead">계정이나 기능 문제로 막히면 <strong>거기서 멈추지 않습니다.</strong></p>
+    <div class="w3-branch viz-flow-h">
+      <div class="w3-br is-ok">
+        <b>공개 성공</b>
+        <p>공개 URL이 로그인 없이 열립니다. 그대로 다음 실습으로 갑니다.</p>
+      </div>
+      <div class="w3-br is-fallback">
+        <b>폴백</b>
+        <p>로컬에서 실행한 화면을 <strong>캡처하거나 녹화해서</strong> 남깁니다.</p>
+      </div>
+      <div class="w3-br is-none">
+        <b>미완료</b>
+        <p><strong>어디까지 갔는지</strong>를 기록합니다. 안 된 것을 됐다고 적지 않습니다.</p>
+      </div>
+    </div>
+    <div class="callout blue hug-center">오늘의 목표는 "내 결과물이 밖에서 열린다"입니다. 방법이 막혀도 <strong>경험은 지킵니다.</strong></div>
+  </div>
+</section>
+
+<!-- V6-06 공개된 화면은 내 컴퓨터와 다를 수 있습니다 — classification -->
+<section class="slide w3-quadslide" data-slide="V6-06" data-shape="classification">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span>
+  </header>
+  <div class="s-full fill">
+    <h2 class="s-title">공개된 화면은 내 컴퓨터와 다를 수 있습니다</h2>
+    <p class="s-lead">파일 경로, 대문자·소문자, 캐시 때문입니다. 그래서 <strong>처음 방문한 사람처럼</strong> 네 가지를 봅니다.</p>
+    <div class="w3-quad4 viz-matrix">
+      <div class="w3-quad"><b>첫 화면</b><p>주소를 열자마자 보이는 것이 의도한 화면인가</p></div>
+      <div class="w3-quad"><b>대표 흐름</b><p>가장 중요한 동작이 끝까지 되는가</p></div>
+      <div class="w3-quad"><b>좁은 화면</b><p>휴대폰 폭에서 글자와 버튼이 살아 있는가</p></div>
+      <div class="w3-quad"><b>새로고침</b><p>다시 불러와도 같은 화면이 나오는가</p></div>
+    </div>
+    <div class="callout blue hug-center">만든 사람 눈으로 보면 다 정상으로 보입니다. <strong>일부러 낯설게 보세요.</strong></div>
+  </div>
+</section>
+
+<!-- V6-07 실습⑭ — screen-operation -->
+<section class="slide w3-practice" data-slide="V6-07" data-shape="screen-operation">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span>
+  </header>
+  <div class="s-full fill">
+    <p class="s-eyebrow">실습 ⑭ · 5분</p>
+    <h2 class="s-title">공개 URL 자가 점검</h2>
+    <div class="eval-steps viz-flow-v">
+      <div class="work-step"><span class="n">1</span><span class="desc">내 공개 URL을 <strong>로그인하지 않은 창</strong>에서 엽니다.</span></div>
+      <div class="work-step"><span class="n">2</span><span class="desc"><strong>첫 화면 · 대표 흐름 · 좁은 화면 · 새로고침</strong>을 차례로 확인합니다.</span></div>
+      <div class="work-step"><span class="n">3</span><span class="desc">이상한 곳을 찾으면 <strong>한 가지만</strong> 적어 둡니다.</span></div>
+    </div>
+    <div class="callout blue hug-center w3-goal">완성 기준 — 고칠 것 <strong>한 건이 문장으로</strong> 적힘</div>
+  </div>
+</section>
+
+<!-- V6-08 한 번에 하나만 고칩니다 — flow (split 3/3) -->
+<section class="slide w3-goldensplit" data-slide="V6-08" data-shape="flow">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span>
+  </header>
+  <div class="s-full">
+    <div class="w3-gs-text">
+      <h2 class="s-title">한 번에 하나만 고칩니다</h2>
+      <p class="s-body">여러 개를 찾아도 오늘은 <strong>가장 중요한 하나만</strong> 고칩니다.</p>
+      <p class="s-body">한꺼번에 고치면 <strong>뭐 때문에 나아졌는지</strong> 알 수 없습니다.</p>
+      <p class="s-body">3주 내내 지킨 원칙을 마지막까지 그대로 씁니다.</p>
+    </div>
+    <figure class="w3-gs-fig viz-flow-v" role="img"
+            aria-label="발견 여러 건 중 하나만 뽑히고, 그 하나가 유지·변경·확인 세 단계를 거치는 그림">
+      <svg viewBox="0 0 460 440" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <text x="230" y="26" text-anchor="middle" font-size="20" font-weight="800" fill="var(--gray-700)">발견 여러 건</text>
+        <rect x="14" y="40" width="128" height="42" rx="10" fill="var(--surface)" stroke="var(--line)" stroke-width="2"/>
+        <text x="78" y="68" text-anchor="middle" font-size="18" font-weight="700" fill="var(--gray-400)">발견 A</text>
+        <rect x="166" y="40" width="128" height="42" rx="10" fill="var(--blue)"/>
+        <text x="230" y="68" text-anchor="middle" font-size="18" font-weight="800" fill="var(--white)">발견 B</text>
+        <rect x="318" y="40" width="128" height="42" rx="10" fill="var(--surface)" stroke="var(--line)" stroke-width="2"/>
+        <text x="382" y="68" text-anchor="middle" font-size="18" font-weight="700" fill="var(--gray-400)">발견 C</text>
+        <path d="M230 92 L230 128 M220 118 L230 130 L240 118" fill="none" stroke="var(--blue)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        <text x="300" y="118" font-size="19" font-weight="800" fill="var(--blue)">하나만</text>
+        <rect x="14" y="140" width="432" height="80" rx="14" fill="var(--blue-soft)" stroke="var(--blue)" stroke-width="2"/>
+        <text x="230" y="176" text-anchor="middle" font-size="21" font-weight="800" fill="var(--ink)">① 무엇을 유지할지</text>
+        <text x="230" y="206" text-anchor="middle" font-size="19" font-weight="700" fill="var(--gray-700)">건드리지 않을 것을 먼저 못박습니다</text>
+        <rect x="14" y="234" width="432" height="80" rx="14" fill="var(--blue-soft)" stroke="var(--blue)" stroke-width="2"/>
+        <text x="230" y="270" text-anchor="middle" font-size="21" font-weight="800" fill="var(--ink)">② 무엇을 바꿀지</text>
+        <text x="230" y="300" text-anchor="middle" font-size="19" font-weight="700" fill="var(--gray-700)">고칠 한 건을 문장으로 적습니다</text>
+        <rect x="14" y="328" width="432" height="80" rx="14" fill="var(--mint-soft)" stroke="var(--mint-line)" stroke-width="2"/>
+        <text x="230" y="364" text-anchor="middle" font-size="21" font-weight="800" fill="var(--on-mint)">③ 바뀐 뒤 무엇을 확인할지</text>
+        <text x="230" y="394" text-anchor="middle" font-size="19" font-weight="700" fill="var(--mint-deep)">확인할 화면을 미리 정합니다</text>
+      </svg>
+    </figure>
+  </div>
+</section>
+
+<!-- V6-09 실습⑮ — screen-operation -->
+<section class="slide w3-practice" data-slide="V6-09" data-shape="screen-operation">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span>
+  </header>
+  <div class="s-full fill">
+    <p class="s-eyebrow">실습 ⑮ · 마지막</p>
+    <h2 class="s-title">한 건 고치고 다시 공개</h2>
+    <div class="eval-steps viz-flow-v">
+      <div class="work-step"><span class="n">1</span><span class="desc">고른 한 건을 반영합니다. <strong>다른 기능은 그대로</strong> 둡니다.</span></div>
+      <div class="work-step"><span class="n">2</span><span class="desc">끝나면 <strong>다시 공개</strong>해 바뀐 화면이 URL에 반영됐는지 확인합니다.</span></div>
+      <div class="work-step"><span class="n">3</span><span class="desc">옛 화면이 보이면 고장이 아니라 <strong>캐시</strong>입니다 — 새로고침하면 됩니다.</span></div>
+    </div>
+    <div class="w3-prompt">
+      <span class="w3-prompt-tag">이렇게 말하세요</span>
+      <p>"공개 URL에서 확인한 이 문제만 고쳐 줘: <strong>[문제]</strong>. 다른 기능은 그대로 두고, 반영되면 다시 공개해 줘."</p>
+    </div>
+    <div class="callout blue hug-center w3-goal">완성 기준 — 공개 URL에서 <strong>변경이 실제로 보임</strong></div>
+  </div>
+</section>
+
+<!-- V6-10 3주 회고 — flow -->
+<section class="slide" data-slide="V6-10" data-shape="flow">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span>
+  </header>
+  <div class="s-full w3-stage">
+    <h2 class="s-title">3주 회고</h2>
+    <p class="w3-def">AI가 여럿이어도 <strong>채택은 사람이 하고, 완료는 증거로 결정합니다.</strong></p>
+    <figure class="w3-stage-fig viz-flow-h" role="img"
+            aria-label="1주차 요청하는 사람에서 2주차 기획하는 사람을 거쳐 3주차 지휘하고 판정하고 공개하는 사람으로 이어지는 타임라인">
+      <svg viewBox="0 0 1000 300" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M60 200 L940 200" stroke="var(--blue-line-strong)" stroke-width="4" stroke-linecap="round"/>
+        <circle cx="150" cy="200" r="16" fill="var(--periwinkle)"/>
+        <text x="150" y="118" text-anchor="middle" font-size="21" font-weight="800" fill="var(--gray-700)">1주차</text>
+        <text x="150" y="156" text-anchor="middle" font-size="24" font-weight="800" fill="var(--ink)">요청하는 사람</text>
+        <circle cx="500" cy="200" r="16" fill="var(--blue)"/>
+        <text x="500" y="118" text-anchor="middle" font-size="21" font-weight="800" fill="var(--blue)">2주차</text>
+        <text x="500" y="156" text-anchor="middle" font-size="24" font-weight="800" fill="var(--ink)">기획하는 사람</text>
+        <circle cx="850" cy="200" r="20" fill="var(--mint)"/>
+        <text x="850" y="112" text-anchor="middle" font-size="21" font-weight="800" fill="var(--mint-deep)">3주차 · 오늘</text>
+        <text x="850" y="150" text-anchor="middle" font-size="24" font-weight="800" fill="var(--on-mint)">지휘하고 · 판정하고</text>
+        <text x="850" y="180" text-anchor="middle" font-size="24" font-weight="800" fill="var(--on-mint)">공개를 결정하는 사람</text>
+        <text x="150" y="252" text-anchor="middle" font-size="20" font-weight="700" fill="var(--gray-700)">첫 화면을 얻었습니다</text>
+        <text x="500" y="252" text-anchor="middle" font-size="20" font-weight="700" fill="var(--gray-700)">내 MVP를 완성했습니다</text>
+        <text x="850" y="252" text-anchor="middle" font-size="20" font-weight="700" fill="var(--mint-deep)">세상에 내놓았습니다</text>
+      </svg>
+    </figure>
+    <div class="callout blue hug-center">이 문장 하나만 가져가시면 <strong>오늘 수업은 성공</strong>입니다.</div>
+  </div>
+</section>

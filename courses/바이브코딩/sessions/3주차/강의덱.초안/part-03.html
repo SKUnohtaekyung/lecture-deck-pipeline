@@ -1,0 +1,308 @@
+<!-- ============ PART 3 전환 ============
+     ⚠️ 도형·도트·PART n/N은 shell의 hydratePartDivider()가 자동 생성한다. 빈 훅으로 둔다. -->
+<section class="slide part-divider" data-slide="P3">
+  <svg class="dv-hero" viewBox="0 0 1280 720" fill="none" aria-hidden="true"></svg>
+  <div class="pd-dots" aria-hidden="true"></div>
+  <p class="pd-eyebrow">PART</p>
+  <h2 class="pd-title">담당 나누기와 팀 규칙</h2>
+  <p class="pd-sub">내 프로젝트를 넷으로 나눕니다.</p>
+</section>
+
+<!-- ============ PART 3 로드맵 ============
+     ⚠️ 초안 3-MAP은 6단계인데 템플릿 상한이 5단계라 ②③을 「담당 넷과 보는 것」
+        한 칸으로 묶었다(2026-08-08 사용자 확정 · 조립_보고 「계층 문제 4」). -->
+<section class="slide roadmap" data-slide="M3" data-shape="flow">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span>
+  </header>
+  <div class="s-full">
+    <h2 class="s-title">PART 3은 이렇게 배웁니다</h2>
+    <p class="rm-lead">끝나면 <strong>누가 어느 파일을 맡는지</strong>가 파일에 남습니다.</p>
+    <div class="rm-track is-5 viz-flow-h">
+      <div class="rm-step">
+        <span class="rm-n">1</span>
+        <b>왜 파일로 나누나</b>
+        <span class="desc">우리가 가진 건 파일뿐입니다.</span>
+        <span class="rm-out">나누는 기준</span>
+      </div>
+      <span class="rm-arrow" aria-hidden="true">→</span>
+      <div class="rm-step">
+        <span class="rm-n">2</span>
+        <b>누가 어느 파일을 맡나</b>
+        <span class="desc">파일마다 담당을 정합니다.</span>
+        <span class="rm-out">담당 배정 규칙</span>
+      </div>
+      <span class="rm-arrow" aria-hidden="true">→</span>
+      <div class="rm-step">
+        <span class="rm-n">3</span>
+        <b>내 파일에 담당 붙이기</b>
+        <span class="desc">실습 ④ — 직접 배정합니다.</span>
+        <span class="rm-out">담당 배정표</span>
+      </div>
+      <span class="rm-arrow" aria-hidden="true">→</span>
+      <div class="rm-step">
+        <span class="rm-n">4</span>
+        <b>고치는 사람은 한 명</b>
+        <span class="desc">같은 파일을 둘이 안 만집니다.</span>
+        <span class="rm-out">충돌을 막는 약속</span>
+      </div>
+      <span class="rm-arrow" aria-hidden="true">→</span>
+      <div class="rm-step is-goal">
+        <span class="rm-n">5</span>
+        <b>팀 규칙 적어 두기</b>
+        <span class="desc">실습 ⑤ — 규칙을 팀용으로.</span>
+        <span class="rm-out">규칙이 적힌 파일</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- V3-01 우리 프로젝트는 조금 다릅니다 — contrast -->
+<section class="slide w3-vs-2col" data-slide="V3-01" data-shape="contrast">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span>
+  </header>
+  <div class="s-full fill">
+    <h2 class="s-title">우리 프로젝트는 조금 다릅니다</h2>
+    <div class="w3-two viz-matrix">
+      <div class="w3-two-col is-cant">
+        <h3>보통 팀은 이렇게 나눕니다</h3>
+        <figure class="w3-two-fig" role="img"
+                aria-label="일반 팀의 네 역할 중 백엔드와 데이터베이스가 회색으로 꺼져 있는 그림">
+          <svg viewBox="0 0 460 130" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect x="4" y="10" width="216" height="48" rx="10" fill="var(--white)" stroke="var(--coral-line)" stroke-width="2"/>
+            <text x="112" y="41" text-anchor="middle" font-size="21" font-weight="800" fill="var(--ink)">프론트엔드</text>
+            <rect x="240" y="10" width="216" height="48" rx="10" fill="var(--surface)" stroke="var(--line)" stroke-width="2"/>
+            <text x="348" y="41" text-anchor="middle" font-size="21" font-weight="800" fill="var(--gray-400)">백엔드</text>
+            <path d="M262 22 L434 46 M434 22 L262 46" stroke="var(--gray-400)" stroke-width="2.5" stroke-linecap="round"/>
+            <rect x="240" y="68" width="216" height="48" rx="10" fill="var(--surface)" stroke="var(--line)" stroke-width="2"/>
+            <text x="348" y="99" text-anchor="middle" font-size="21" font-weight="800" fill="var(--gray-400)">데이터베이스</text>
+            <path d="M262 80 L434 104 M434 80 L262 104" stroke="var(--gray-400)" stroke-width="2.5" stroke-linecap="round"/>
+            <rect x="4" y="68" width="216" height="48" rx="10" fill="var(--white)" stroke="var(--coral-line)" stroke-width="2"/>
+            <text x="112" y="99" text-anchor="middle" font-size="21" font-weight="800" fill="var(--ink)">QA</text>
+          </svg>
+        </figure>
+        <p>그런데 우리는 <strong>프론트엔드만</strong> 만들었습니다. 서버도 데이터베이스도 없습니다.</p>
+        <p>백엔드 담당을 불러도 <strong>할 일이 없습니다.</strong></p>
+      </div>
+      <div class="w3-two-col is-can">
+        <h3>그래서 다른 기준으로 나눕니다</h3>
+        <figure class="w3-two-fig" role="img"
+                aria-label="파일 세 개와 화면 하나가 각각 담당 넷으로 갈리는 그림">
+          <svg viewBox="0 0 460 130" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect x="4" y="10" width="216" height="48" rx="10" fill="var(--white)" stroke="var(--blue-line-strong)" stroke-width="2"/>
+            <text x="112" y="41" text-anchor="middle" font-size="20" font-weight="800" fill="var(--ink)">index.html</text>
+            <rect x="240" y="10" width="216" height="48" rx="10" fill="var(--white)" stroke="var(--blue-line-strong)" stroke-width="2"/>
+            <text x="348" y="41" text-anchor="middle" font-size="20" font-weight="800" fill="var(--ink)">style.css</text>
+            <rect x="4" y="68" width="216" height="48" rx="10" fill="var(--white)" stroke="var(--blue-line-strong)" stroke-width="2"/>
+            <text x="112" y="99" text-anchor="middle" font-size="20" font-weight="800" fill="var(--ink)">script.js</text>
+            <rect x="240" y="68" width="216" height="48" rx="10" fill="var(--white)" stroke="var(--blue-line-strong)" stroke-width="2"/>
+            <text x="348" y="99" text-anchor="middle" font-size="20" font-weight="800" fill="var(--ink)">화면</text>
+          </svg>
+        </figure>
+        <p>기준은 <strong>파일</strong>입니다.</p>
+        <p>우리가 실제로 가진 것에 맞춰 나눕니다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- V3-02 HTML · CSS · JS · QA 담당 — mapping -->
+<section class="slide w3-mapslide" data-slide="V3-02" data-shape="mapping">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span>
+  </header>
+  <div class="s-full fill">
+    <h2 class="s-title">HTML · CSS · JS · QA 담당</h2>
+    <p class="s-lead">사람 이름이 아니라 <strong>파일 이름</strong>이 담당 경계가 됩니다.</p>
+    <div class="w3-map viz-matrix">
+      <div class="w3-map-row w3-own-html">
+        <span class="w3-map-file">index.html</span>
+        <span class="w3-map-arrow" aria-hidden="true">→</span>
+        <span class="w3-map-role"><b class="w3-own-chip">HTML 담당</b><span class="desc">구조를 봅니다</span></span>
+      </div>
+      <div class="w3-map-row w3-own-css">
+        <span class="w3-map-file">style.css</span>
+        <span class="w3-map-arrow" aria-hidden="true">→</span>
+        <span class="w3-map-role"><b class="w3-own-chip">CSS 담당</b><span class="desc">스타일을 봅니다</span></span>
+      </div>
+      <div class="w3-map-row w3-own-js">
+        <span class="w3-map-file">script.js</span>
+        <span class="w3-map-arrow" aria-hidden="true">→</span>
+        <span class="w3-map-role"><b class="w3-own-chip">JS 담당</b><span class="desc">동작을 봅니다</span></span>
+      </div>
+      <div class="w3-map-row w3-own-qa">
+        <span class="w3-map-file">화면</span>
+        <span class="w3-map-arrow" aria-hidden="true">→</span>
+        <span class="w3-map-role"><b class="w3-own-chip">QA 담당</b><span class="desc">파일이 아니라 화면을 검증합니다</span></span>
+      </div>
+    </div>
+    <div class="callout blue hug-center">경계가 파일이라 <strong>겹칠 수가 없습니다.</strong> 이게 오늘 사고를 막아 줍니다.</div>
+  </div>
+</section>
+
+
+<!-- V3-04 실습④ — screen-operation -->
+<section class="slide w3-practice" data-slide="V3-04" data-shape="screen-operation">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span>
+  </header>
+  <div class="s-full fill">
+    <p class="s-eyebrow">실습 ④</p>
+    <h2 class="s-title">내 프로젝트에 담당 배정하기</h2>
+    <div class="eval-steps viz-flow-v">
+      <div class="work-step"><span class="n">1</span><span class="desc">내 프로젝트를 HTML · CSS · JS · QA <strong>네 담당</strong>으로 나눕니다.</span></div>
+      <div class="work-step"><span class="n">2</span><span class="desc">각 담당이 <strong>어느 파일</strong>을 맡을지 한 줄씩 적습니다.</span></div>
+      <div class="work-step"><span class="n">3</span><span class="desc">파일이 3개뿐이어도 괜찮습니다 — QA 담당은 파일 대신 <strong>화면</strong>을 맡습니다.</span></div>
+    </div>
+    <div class="w3-prompt">
+      <span class="w3-prompt-tag">이렇게 말하세요</span>
+      <p>"내 프로젝트를 HTML(구조) · CSS(스타일) · JS(동작) · QA(검증) 네 담당으로 나눈다면 각각 어떤 파일을 맡으면 좋을지 제안해 줘. <strong>파일은 아직 고치지 마.</strong>"</p>
+    </div>
+    <div class="callout blue hug-center w3-goal">완성 기준 — 파일마다 <strong>담당이 하나씩</strong> 정해짐</div>
+  </div>
+</section>
+
+
+<!-- V3-06 단일 작성자 — contrast -->
+<section class="slide w3-vs-2col" data-slide="V3-06" data-shape="contrast">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span>
+  </header>
+  <div class="s-full fill">
+    <p class="s-eyebrow">용어</p>
+    <h2 class="s-title">단일 작성자</h2>
+    <p class="w3-def">같은 수정 단계에서 <strong>한 파일을 쓰는 역할은 한 명뿐</strong>이라는 규칙</p>
+    <div class="w3-two viz-matrix">
+      <div class="w3-two-col is-cant">
+        <h3>둘이 동시에 고치면</h3>
+        <figure class="w3-two-fig" role="img" aria-label="같은 파일에 두 손이 얹혀 충돌하는 그림">
+          <svg viewBox="0 0 460 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect x="150" y="46" width="160" height="60" rx="12" fill="var(--white)" stroke="var(--coral)" stroke-width="3"/>
+            <text x="230" y="84" text-anchor="middle" font-size="21" font-weight="800" fill="var(--ink)">style.css</text>
+            <circle cx="96" cy="30" r="22" fill="var(--coral)"/>
+            <text x="96" y="38" text-anchor="middle" font-size="19" font-weight="800" fill="var(--on-coral)">A</text>
+            <circle cx="364" cy="30" r="22" fill="var(--coral)"/>
+            <text x="364" y="38" text-anchor="middle" font-size="19" font-weight="800" fill="var(--on-coral)">B</text>
+            <path d="M114 44 L172 62 M346 44 L288 62" stroke="var(--coral)" stroke-width="3" stroke-linecap="round"/>
+            <text x="230" y="30" text-anchor="middle" font-size="21" font-weight="800" fill="var(--coral-deep)">충돌</text>
+          </svg>
+        </figure>
+        <p>서로의 결과를 <strong>덮어씁니다.</strong></p>
+      </div>
+      <div class="w3-two-col is-can">
+        <h3>쓰는 건 한 명입니다</h3>
+        <figure class="w3-two-fig" role="img" aria-label="같은 파일에 한 손만 얹혀 있고 나머지는 읽기만 하는 그림">
+          <svg viewBox="0 0 460 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect x="150" y="46" width="160" height="60" rx="12" fill="var(--white)" stroke="var(--blue)" stroke-width="3"/>
+            <text x="230" y="84" text-anchor="middle" font-size="21" font-weight="800" fill="var(--ink)">style.css</text>
+            <circle cx="96" cy="30" r="22" fill="var(--blue)"/>
+            <text x="96" y="38" text-anchor="middle" font-size="19" font-weight="800" fill="var(--white)">A</text>
+            <path d="M114 44 L172 62" stroke="var(--blue)" stroke-width="3" stroke-linecap="round"/>
+            <text x="230" y="30" text-anchor="middle" font-size="21" font-weight="800" fill="var(--blue)">쓰기 한 명</text>
+            <circle cx="364" cy="30" r="22" fill="var(--surface)" stroke="var(--blue-line-strong)" stroke-width="2"/>
+            <text x="364" y="38" text-anchor="middle" font-size="19" font-weight="800" fill="var(--gray-700)">B</text>
+            <path d="M346 44 L288 62" stroke="var(--blue-line-strong)" stroke-width="3" stroke-linecap="round" stroke-dasharray="5 5"/>
+          </svg>
+        </figure>
+        <p><strong>읽는 건 여럿이 동시에</strong> 해도 됩니다.</p>
+      </div>
+    </div>
+    <div class="callout blue hug-center"><strong>QA 담당은 어떤 파일도 쓰지 않습니다.</strong></div>
+  </div>
+</section>
+
+<!-- V3-07 팀 규칙을 다시 쓰는 이유 — flow -->
+<section class="slide" data-slide="V3-07" data-shape="flow">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span>
+  </header>
+  <div class="s-full w3-stage">
+    <h2 class="s-title">팀 규칙을 다시 쓰는 이유</h2>
+    <p class="w3-def">새로 만드는 게 아니라 지난주 것을 <strong>팀용으로 넓히는</strong> 겁니다.</p>
+    <figure class="w3-stage-fig viz-flow-h" role="img"
+            aria-label="혼자용 규칙 카드가 팀용 규칙 카드로 확장되며 두 줄이 더해지는 그림">
+      <svg viewBox="0 0 1000 320" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <rect x="20" y="60" width="330" height="200" rx="18" fill="var(--surface)" stroke="var(--blue-line-strong)" stroke-width="2"/>
+        <text x="185" y="42" text-anchor="middle" font-size="21" font-weight="800" fill="var(--gray-700)">2주차 · 혼자용</text>
+        <text x="185" y="110" text-anchor="middle" font-size="22" font-weight="700" fill="var(--ink)">나 혼자 + 싱글 에이전트</text>
+        <text x="185" y="152" text-anchor="middle" font-size="22" font-weight="700" fill="var(--ink)">목표 · 읽을 자료</text>
+        <text x="185" y="194" text-anchor="middle" font-size="22" font-weight="700" fill="var(--ink)">권한 · 완료 조건</text>
+        <text x="185" y="236" text-anchor="middle" font-size="22" font-weight="700" fill="var(--ink)">사후 확인</text>
+        <path d="M370 160 L440 160 M428 150 L442 160 L428 170" fill="none" stroke="var(--blue)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <text x="406" y="136" text-anchor="middle" font-size="20" font-weight="800" fill="var(--blue)">넓힌다</text>
+        <rect x="460" y="60" width="520" height="200" rx="18" fill="var(--blue-soft)" stroke="var(--blue)" stroke-width="2.5"/>
+        <text x="720" y="42" text-anchor="middle" font-size="21" font-weight="800" fill="var(--blue)">3주차 · 팀용</text>
+        <text x="720" y="106" text-anchor="middle" font-size="21" font-weight="700" fill="var(--gray-700)">지난주 다섯 칸은 그대로 두고</text>
+        <rect x="486" y="126" width="468" height="52" rx="12" fill="var(--white)" stroke="var(--blue)" stroke-width="2"/>
+        <text x="720" y="160" text-anchor="middle" font-size="22" font-weight="800" fill="var(--ink)">누가 어느 파일을 맡나</text>
+        <rect x="486" y="188" width="468" height="52" rx="12" fill="var(--white)" stroke="var(--blue)" stroke-width="2"/>
+        <text x="720" y="222" text-anchor="middle" font-size="22" font-weight="800" fill="var(--ink)">남의 파일은 안 건드린다</text>
+        <text x="720" y="294" text-anchor="middle" font-size="21" font-weight="800" fill="var(--blue)">새로 필요한 건 이 두 줄뿐입니다</text>
+      </svg>
+    </figure>
+    <div class="callout blue hug-center">오늘은 <strong>여러 담당이 같은 폴더</strong>를 봅니다. 전제가 달라졌습니다.</div>
+  </div>
+</section>
+
+<!-- V3-08 실습⑤ — screen-operation -->
+<section class="slide w3-practice" data-slide="V3-08" data-shape="screen-operation">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span>
+  </header>
+  <div class="s-full fill">
+    <p class="s-eyebrow">실습 ⑤</p>
+    <h2 class="s-title"><code>AGENTS.md</code>에 팀 규칙 추가</h2>
+    <div class="eval-steps viz-flow-v">
+      <div class="work-step"><span class="n">1</span><span class="desc">기존 <code>AGENTS.md</code>에 세 가지를 더합니다 — <strong>담당 파일 표</strong>.</span></div>
+      <div class="work-step"><span class="n">2</span><span class="desc"><strong>남의 파일은 건드리지 않음</strong>, 그리고 <strong>끝내기 전에 확인할 것</strong>.</span></div>
+      <div class="work-step"><span class="n">3</span><span class="desc">이미 있는 내용은 지우지 않고 <strong>덧붙이기만</strong> 합니다.</span></div>
+    </div>
+    <div class="w3-prompt">
+      <span class="w3-prompt-tag">이렇게 말하세요</span>
+      <p>"지금부터 여러 담당이 이 프로젝트를 나눠서 볼 거야. AGENTS.md에 담당 파일 표, 남의 파일은 수정하지 않는다는 규칙, 완료 전에 확인할 항목을 추가해 줘. <strong>기존 내용은 지우지 마.</strong>"</p>
+    </div>
+    <div class="callout blue hug-center w3-goal">완성 기준 — <strong>세 항목이 파일에 실제로 적혀 있음</strong></div>
+  </div>
+</section>
+<!-- V3-10 팀 구성 프롬프트 — screen-operation
+     사용자 제공 실사용 프롬프트를 사람 이름(수진·민호·지훈·도윤) 대신
+     이 과정의 담당 이름(HTML·CSS·JS·QA)으로 옮겨 적었다. 학생이 그대로
+     복사해 쓰는 문장이라 줄을 줄이거나 요약하지 않는다. -->
+<section class="slide" data-slide="V3-10" data-shape="screen-operation">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span>
+  </header>
+  <div class="s-full fill">
+    <p class="s-eyebrow">실습 ⑤ — 그대로 복사해 쓰세요</p>
+    <h2 class="s-title">팀 구성 프롬프트</h2>
+    <div class="w3-bigprompt">
+      <span class="w3-bp-tag">이렇게 말하세요</span>
+      <div class="w3-bp-col">
+        <p>이 프로젝트에 <strong>AI 개발팀</strong>을 구성해 줘.</p>
+        <p>다음 네 개의 전문 서브에이전트를 만들어.</p>
+        <p><span class="w3-bp-num">1.</span> <strong>HTML 담당</strong> — 화면 구조 · index.html</p>
+        <p><span class="w3-bp-num">2.</span> <strong>CSS 담당</strong> — 스타일 · style.css</p>
+        <p><span class="w3-bp-num">3.</span> <strong>JS 담당</strong> — 동작 · script.js</p>
+        <p><span class="w3-bp-num">4.</span> <strong>QA 담당</strong> — 검증 · 화면 전체</p>
+      </div>
+      <div class="w3-bp-col">
+        <p>각 담당은 자신의 이름과 역할을 인식해야 한다. 역할을 질문받으면 <strong>"나는 OO 담당이야."</strong>라고 답해야 한다.</p>
+        <p>각 담당은 <strong>자기 파일에만</strong> 집중하고, 메인은 요청에 따라 적절한 담당에게 작업을 위임한다.</p>
+        <p>이 구성이 이후 작업에도 유지되도록 필요한 <strong>Codex 설정 파일과 AGENTS.md</strong>를 생성해 줘.</p>
+        <p>초보자가 추가로 수정하지 않아도 <strong>바로 사용할 수 있도록</strong> 완성해 줘.</p>
+        <p>마지막에 <strong>생성한 파일과 각 담당의 호출 방법</strong>을 설명해 줘.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+

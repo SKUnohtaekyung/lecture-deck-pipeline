@@ -1,0 +1,337 @@
+<!-- ============ PART 2 전환 ============
+     ⚠️ 도형·도트·PART n/N은 shell의 hydratePartDivider()가 자동 생성한다. 빈 훅으로 둔다. -->
+<section class="slide part-divider" data-slide="P2">
+  <svg class="dv-hero" viewBox="0 0 1280 720" fill="none" aria-hidden="true"></svg>
+  <div class="pd-dots" aria-hidden="true"></div>
+  <p class="pd-eyebrow">PART</p>
+  <h2 class="pd-title">싱글 · 서브 · 멀티 에이전트</h2>
+  <p class="pd-sub">AI를 쓰는 방식은 하나가 아닙니다.</p>
+</section>
+
+<!-- ============ PART 2 로드맵 ============ -->
+<section class="slide roadmap" data-slide="M2" data-shape="flow">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span>
+  </header>
+  <div class="s-full">
+    <h2 class="s-title">PART 2는 이렇게 배웁니다</h2>
+    <p class="rm-lead">이번 파트는 <strong>개념만</strong> 합니다. 실습은 PART 3부터입니다.</p>
+    <div class="rm-track is-5 viz-flow-h">
+      <div class="rm-step">
+        <span class="rm-n">1</span>
+        <b>왜 나누나</b>
+        <span class="desc">혼자 하면 놓치는 것부터 봅니다.</span>
+        <span class="rm-out">나누는 이유</span>
+      </div>
+      <span class="rm-arrow" aria-hidden="true">→</span>
+      <div class="rm-step">
+        <span class="rm-n">2</span>
+        <b>에이전트의 세 가지 방식</b>
+        <span class="desc">싱글 · 서브 · 멀티를 차례로 봅니다.</span>
+        <span class="rm-out">이름과 그림</span>
+      </div>
+      <span class="rm-arrow" aria-hidden="true">→</span>
+      <div class="rm-step">
+        <span class="rm-n">3</span>
+        <b>셋은 어떻게 다른가</b>
+        <span class="desc">누가 쥐고, 언제 쓰는지 봅니다.</span>
+        <span class="rm-out">한눈에 보는 비교표</span>
+      </div>
+      <span class="rm-arrow" aria-hidden="true">→</span>
+      <div class="rm-step">
+        <span class="rm-n">4</span>
+        <b>오케스트레이터</b>
+        <span class="desc">전체를 아는 자리를 확인합니다.</span>
+        <span class="rm-out">지휘자는 나</span>
+      </div>
+      <span class="rm-arrow" aria-hidden="true">→</span>
+      <div class="rm-step is-goal">
+        <span class="rm-n">5</span>
+        <b>나누면 무조건 좋을까</b>
+        <span class="desc">늘어나는 비용도 함께 봅니다.</span>
+        <span class="rm-out">나눌지 판단하는 기준</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- V2-01 왜 나눠서 시킬까요 — contrast (w3-vs-2col) -->
+<section class="slide w3-vs-2col" data-slide="V2-01" data-shape="contrast">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span>
+  </header>
+  <div class="s-full fill">
+    <!-- 2026-08-08: 회사 비유를 하단 callout에서 리드로 올렸다. 이 문장은 「비교를
+         설명하는」 문장이라 두 칸 아래에 결론 박스로 떠 있을 자리가 아니다 —
+         비교를 여는 전제로 읽히는 자리가 맞다(사용자 지시 · MEMORY 「마무리 한 줄 습관」). -->
+    <div class="w3-hd">
+      <h2 class="s-title">왜 나눠서 시킬까요</h2>
+      <p class="s-lead">회사도 기획 · 디자인 · 개발 · 검수를 한 사람이 다 하지 않습니다.</p>
+    </div>
+    <div class="w3-two viz-matrix">
+      <div class="w3-two-col is-cant">
+        <h3>한 명이 처음부터 끝까지</h3>
+        <figure class="w3-two-fig" role="img"
+                aria-label="눈 하나가 네 파일을 한꺼번에 보고, 그중 둘을 놓친 그림">
+          <svg viewBox="0 0 460 150" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <circle cx="60" cy="75" r="34" fill="var(--coral)"/>
+            <text x="60" y="85" text-anchor="middle" font-size="26" font-weight="800" fill="var(--on-coral)">1</text>
+            <path d="M98 75 L152 40 M98 75 L152 68 M98 75 L152 96 M98 75 L152 124" fill="none" stroke="var(--coral)" stroke-width="2" stroke-linecap="round" opacity=".55"/>
+            <rect x="158" y="22" width="124" height="36" rx="9" fill="var(--white)" stroke="var(--coral-line)" stroke-width="2"/>
+            <text x="220" y="46" text-anchor="middle" font-size="19" font-weight="800" fill="var(--ink)">HTML</text>
+            <rect x="158" y="64" width="124" height="36" rx="9" fill="var(--white)" stroke="var(--coral-line)" stroke-width="2"/>
+            <text x="220" y="88" text-anchor="middle" font-size="19" font-weight="800" fill="var(--ink)">CSS</text>
+            <rect x="158" y="106" width="124" height="36" rx="9" fill="var(--white)" stroke="var(--coral-line)" stroke-width="2" opacity=".45"/>
+            <text x="220" y="130" text-anchor="middle" font-size="19" font-weight="800" fill="var(--ink)" opacity=".45">JS</text>
+            <text x="300" y="130" font-size="19" font-weight="800" fill="var(--coral-deep)">여기서 샌다</text>
+          </svg>
+        </figure>
+        <p><strong>느리고, 놓치는 게 생깁니다.</strong></p>
+        <p>특히 자기가 방금 만든 것은 <strong>자기 눈에 안 보입니다.</strong></p>
+      </div>
+      <div class="w3-two-col is-can">
+        <h3>담당을 나누면</h3>
+        <figure class="w3-two-fig" role="img"
+                aria-label="담당 셋이 각자 자기 파일 하나씩만 보는 그림">
+          <svg viewBox="0 0 460 150" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <circle cx="60" cy="40" r="20" fill="var(--blue)"/>
+            <text x="60" y="47" text-anchor="middle" font-size="18" font-weight="800" fill="var(--white)">A</text>
+            <path d="M84 40 L152 40" fill="none" stroke="var(--blue)" stroke-width="2.5" stroke-linecap="round"/>
+            <rect x="158" y="22" width="124" height="36" rx="9" fill="var(--white)" stroke="var(--blue-line-strong)" stroke-width="2"/>
+            <text x="220" y="46" text-anchor="middle" font-size="19" font-weight="800" fill="var(--ink)">HTML</text>
+            <circle cx="60" cy="82" r="20" fill="var(--blue)"/>
+            <text x="60" y="89" text-anchor="middle" font-size="18" font-weight="800" fill="var(--white)">B</text>
+            <path d="M84 82 L152 82" fill="none" stroke="var(--blue)" stroke-width="2.5" stroke-linecap="round"/>
+            <rect x="158" y="64" width="124" height="36" rx="9" fill="var(--white)" stroke="var(--blue-line-strong)" stroke-width="2"/>
+            <text x="220" y="88" text-anchor="middle" font-size="19" font-weight="800" fill="var(--ink)">CSS</text>
+            <circle cx="60" cy="124" r="20" fill="var(--blue)"/>
+            <text x="60" y="131" text-anchor="middle" font-size="18" font-weight="800" fill="var(--white)">C</text>
+            <path d="M84 124 L152 124" fill="none" stroke="var(--blue)" stroke-width="2.5" stroke-linecap="round"/>
+            <rect x="158" y="106" width="124" height="36" rx="9" fill="var(--white)" stroke="var(--blue-line-strong)" stroke-width="2"/>
+            <text x="220" y="130" text-anchor="middle" font-size="19" font-weight="800" fill="var(--ink)">JS</text>
+            <text x="300" y="130" font-size="19" font-weight="800" fill="var(--mint-deep)">끝까지 본다</text>
+          </svg>
+        </figure>
+        <p>각자 <strong>자기 구역만</strong> 봅니다.</p>
+        <p>보는 범위가 좁아지면 더 깊이 보입니다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- V2-02 싱글 에이전트 — concept (정의 + 직선 흐름) -->
+<section class="slide" data-slide="V2-02" data-shape="concept">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span>
+  </header>
+  <div class="s-full w3-deffig">
+    <div class="w3-deffig-text">
+      <p class="s-eyebrow">용어</p>
+      <h2 class="s-title">싱글 에이전트</h2>
+      <p class="w3-def">하나의 에이전트가 계획 · 실행 · 보고를 혼자 다 하는 방식</p>
+      <p class="s-body"><strong>지금까지 여러분이 써 온 방식</strong>입니다. 새로 배우는 게 아니라 이름을 붙이는 겁니다.</p>
+      <p class="s-body">한 번 요청하면 한 결과가 돌아옵니다. 작은 수정 하나에는 이게 가장 빠릅니다.</p>
+    </div>
+    <figure class="w3-deffig-fig viz-flow-v" role="img"
+            aria-label="세로 직선 흐름: 요청 하나가 에이전트 하나로 들어가고, 결과 하나가 나온다">
+      <svg viewBox="0 0 360 400" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <rect x="60" y="8" width="240" height="66" rx="14" fill="var(--white)" stroke="var(--blue-line-strong)" stroke-width="2"/>
+        <text x="180" y="49" text-anchor="middle" font-size="22" font-weight="800" fill="var(--ink)">요청 하나</text>
+        <path d="M180 78 L180 122 M170 112 L180 124 L190 112" fill="none" stroke="var(--blue)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        <rect x="30" y="130" width="300" height="140" rx="18" fill="var(--blue)"/>
+        <text x="180" y="180" text-anchor="middle" font-size="24" font-weight="800" fill="var(--white)">에이전트 하나</text>
+        <text x="180" y="216" text-anchor="middle" font-size="20" font-weight="700" fill="var(--white)" opacity=".86">계획 · 실행 · 보고</text>
+        <text x="180" y="246" text-anchor="middle" font-size="20" font-weight="700" fill="var(--white)" opacity=".86">전부 이 안에서</text>
+        <path d="M180 274 L180 318 M170 308 L180 320 L190 308" fill="none" stroke="var(--blue)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        <rect x="60" y="326" width="240" height="66" rx="14" fill="var(--mint-soft)" stroke="var(--mint-line)" stroke-width="2"/>
+        <text x="180" y="367" text-anchor="middle" font-size="22" font-weight="800" fill="var(--on-mint)">결과 하나</text>
+      </svg>
+    </figure>
+  </div>
+</section>
+
+<!-- V2-03 서브에이전트 — concept (중앙 대형 왕복 도해) -->
+<section class="slide" data-slide="V2-03" data-shape="concept">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span>
+  </header>
+  <div class="s-full w3-stage">
+    <h2 class="s-title">서브에이전트</h2>
+    <p class="w3-def">메인이 특정 작업 하나를 떼어 다른 에이전트에게 맡기는 것 — 통제권은 <strong>메인이 계속 쥐고 있습니다.</strong></p>
+    <figure class="w3-stage-fig viz-flow-h" role="img"
+            aria-label="왕복 흐름: 메인 에이전트가 작업 하나를 서브에이전트에게 떼어 주고, 서브는 그 결과만 메인에게 돌려준다">
+      <svg viewBox="0 0 1000 280" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <rect x="20" y="70" width="290" height="140" rx="18" fill="var(--blue)"/>
+        <text x="165" y="126" text-anchor="middle" font-size="26" font-weight="800" fill="var(--white)">메인</text>
+        <text x="165" y="162" text-anchor="middle" font-size="20" font-weight="700" fill="var(--white)" opacity=".86">전체를 계속 쥔다</text>
+        <path d="M330 108 L650 108 M634 98 L652 108 L634 118" fill="none" stroke="var(--blue)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        <text x="490" y="90" text-anchor="middle" font-size="21" font-weight="800" fill="var(--blue)">작업 하나만 떼어 준다</text>
+        <path d="M650 176 L330 176 M346 166 L328 176 L346 186" fill="none" stroke="var(--mint-deep)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        <text x="490" y="212" text-anchor="middle" font-size="21" font-weight="800" fill="var(--mint-deep)">결과만 돌려준다</text>
+        <rect x="670" y="70" width="290" height="140" rx="18" fill="var(--surface)" stroke="var(--blue-line-strong)" stroke-width="2"/>
+        <text x="815" y="126" text-anchor="middle" font-size="26" font-weight="800" fill="var(--ink)">서브에이전트</text>
+        <text x="815" y="162" text-anchor="middle" font-size="20" font-weight="700" fill="var(--gray-700)">떼어 준 일만 한다</text>
+      </svg>
+    </figure>
+    <!-- 2026-08-08: 요리 비유를 하단 callout에서 도해 캡션으로 내렸다. 이 문장은
+         위 왕복 도해가 보여 주는 「통제권」 구조를 말로 옮긴 것이라 도해에 붙는 자리가
+         맞다 — 박스로 띄우면 도해와 경쟁한다(사용자 지시). 문장은 그대로 보존한다. -->
+    <p class="w3-stage-cap">요리하다가 "마늘만 다져 줘"라고 부탁하는 것과 같습니다 — <strong>요리는 여전히 내가 합니다.</strong></p>
+  </div>
+</section>
+
+<!-- V2-04 멀티에이전트 — concept (정의 + 방사 4담당) -->
+<section class="slide" data-slide="V2-04" data-shape="concept">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span>
+  </header>
+  <div class="s-full w3-deffig">
+    <div class="w3-deffig-text">
+      <p class="s-eyebrow">용어</p>
+      <h2 class="s-title">멀티에이전트</h2>
+      <p class="w3-def">하나의 프로젝트를 여러 전문 역할로 나눠, 각자 담당 구역을 살펴보게 하는 방식</p>
+      <p class="s-body">여러 결과가 <strong>동시에</strong> 돌아오고, 그걸 모아 <strong>사람이 판정</strong>합니다.</p>
+      <p class="s-body">중요한 건 <strong>개수가 아닙니다.</strong> 일이 정말 <strong>독립적으로 나뉘는가</strong>입니다.</p>
+    </div>
+    <figure class="w3-deffig-fig viz-flow-v" role="img"
+            aria-label="한 프로젝트가 HTML·CSS·JS·QA 네 담당으로 동시에 갈라지고, 네 결과가 다시 사람의 판정으로 모인다">
+      <!-- ⚠️ 2026-08-08 재배치. 이전 판은 「네 결과가 동시에」 라벨(baseline y=248)이
+           수집 세로선 4개(x=60·153·247·340 · y 224→256)를 **가로질렀다** — 글자 상자가
+           y 234~252라 x=153·247 선과 실제로 겹쳤다(사용자 지적).
+           폰트를 줄이지 않고 아래처럼 고쳤다:
+             ① 상단을 12px 압축해 하단에 라벨 띠를 만들 세로 예산을 확보
+             ② 수집 가로선을 y=236으로 올려 라벨 위로 보냈다
+             ③ 라벨을 수집선 **아래** 전용 칩(y 252~286)에 넣어 선과 16px 떼어 놓았다
+           읽는 순서는 네 담당 → 수집 → 「네 결과가 동시에」 → 화살표 → 사람이 판정. -->
+      <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <rect x="110" y="4" width="180" height="54" rx="14" fill="var(--blue)"/>
+        <text x="200" y="39" text-anchor="middle" font-size="22" font-weight="800" fill="var(--white)">내 프로젝트</text>
+        <path d="M200 58 L200 84 M60 84 L340 84 M60 84 L60 116 M153 84 L153 116 M247 84 L247 116 M340 84 L340 116" fill="none" stroke="var(--blue)" stroke-width="2.5" stroke-linecap="round"/>
+        <rect x="16" y="118" width="88" height="82" rx="14" fill="var(--surface)" stroke="var(--blue-line-strong)" stroke-width="2"/>
+        <text x="60" y="166" text-anchor="middle" font-size="21" font-weight="800" fill="var(--ink)">HTML</text>
+        <rect x="109" y="118" width="88" height="82" rx="14" fill="var(--surface)" stroke="var(--blue-line-strong)" stroke-width="2"/>
+        <text x="153" y="166" text-anchor="middle" font-size="21" font-weight="800" fill="var(--ink)">CSS</text>
+        <rect x="203" y="118" width="88" height="82" rx="14" fill="var(--surface)" stroke="var(--blue-line-strong)" stroke-width="2"/>
+        <text x="247" y="166" text-anchor="middle" font-size="21" font-weight="800" fill="var(--ink)">JS</text>
+        <rect x="296" y="118" width="88" height="82" rx="14" fill="var(--surface)" stroke="var(--blue-line-strong)" stroke-width="2"/>
+        <text x="340" y="166" text-anchor="middle" font-size="21" font-weight="800" fill="var(--ink)">QA</text>
+        <path d="M60 204 L60 236 M153 204 L153 236 M247 204 L247 236 M340 204 L340 236 M60 236 L340 236" fill="none" stroke="var(--mint-deep)" stroke-width="2.5" stroke-linecap="round"/>
+        <path d="M200 236 L200 248" fill="none" stroke="var(--mint-deep)" stroke-width="2.5" stroke-linecap="round"/>
+        <rect x="106" y="248" width="188" height="42" rx="21" fill="var(--white)" stroke="var(--mint-deep)" stroke-width="2"/>
+        <text x="200" y="275" text-anchor="middle" font-size="20" font-weight="800" fill="var(--mint-deep)">네 결과가 동시에</text>
+        <path d="M200 290 L200 304 M191 295 L200 305 L209 295" fill="none" stroke="var(--mint-deep)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <rect x="86" y="308" width="228" height="64" rx="14" fill="var(--mint-soft)" stroke="var(--mint-line)" stroke-width="2"/>
+        <text x="200" y="348" text-anchor="middle" font-size="22" font-weight="800" fill="var(--on-mint)">사람이 판정</text>
+      </svg>
+    </figure>
+  </div>
+</section>
+
+<!-- V2-05 셋을 나란히 보면 — comparison (3열 비교표) -->
+<section class="slide w3-tri" data-slide="V2-05" data-shape="comparison">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span>
+  </header>
+  <div class="s-full fill">
+    <h2 class="s-title">셋을 나란히 보면</h2>
+    <table class="t viz-matrix">
+      <thead>
+        <tr><th></th><th>싱글</th><th>서브</th><th>멀티</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th>통제권</th>
+          <td>에이전트 하나</td>
+          <td>메인이 유지</td>
+          <td>메인이 수집 · 판정</td>
+        </tr>
+        <tr>
+          <th>장면</th>
+          <td>한 요청 → 한 결과</td>
+          <td>메인 → 떼어낸 작업 → 반환</td>
+          <td>병렬 검토 → 비교 → 한 명이 구현</td>
+        </tr>
+        <tr>
+          <th>적합</th>
+          <td>작은 단일 수정</td>
+          <td>검토 · 읽기 같은 한 가지 일</td>
+          <td>서로 독립적인 검토 묶음</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- V2-06 오케스트레이터 — structure (중앙 대형 방사 · 위성 간 연결선 없음) -->
+<section class="slide" data-slide="V2-06" data-shape="structure">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span>
+  </header>
+  <div class="s-full w3-stage">
+    <h2 class="s-title">오케스트레이터</h2>
+    <p class="w3-def">전체 순서와 역할표를 아는 지휘자 — 각 담당은 <strong>자기 일만</strong> 압니다. 옆 담당이 뭘 하는지 모릅니다.</p>
+    <figure class="w3-stage-fig viz-hub" role="img"
+            aria-label="가운데 오케스트레이터가 네 담당과 각각 연결되어 있고, 담당끼리는 연결선이 없다">
+      <svg viewBox="0 0 1000 300" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M500 106 L190 190 M500 106 L397 190 M500 106 L603 190 M500 106 L810 190" fill="none" stroke="var(--blue)" stroke-width="2.5" stroke-linecap="round"/>
+        <rect x="360" y="18" width="280" height="76" rx="18" fill="var(--blue)"/>
+        <text x="500" y="52" text-anchor="middle" font-size="24" font-weight="800" fill="var(--white)">오케스트레이터</text>
+        <text x="500" y="80" text-anchor="middle" font-size="20" font-weight="700" fill="var(--white)" opacity=".86">전체 악보를 본다</text>
+        <rect x="96" y="192" width="188" height="86" rx="16" fill="var(--surface)" stroke="var(--blue-line-strong)" stroke-width="2"/>
+        <text x="190" y="228" text-anchor="middle" font-size="22" font-weight="800" fill="var(--ink)">HTML 담당</text>
+        <text x="190" y="256" text-anchor="middle" font-size="19" font-weight="700" fill="var(--gray-700)">자기 악보만</text>
+        <rect x="303" y="192" width="188" height="86" rx="16" fill="var(--surface)" stroke="var(--blue-line-strong)" stroke-width="2"/>
+        <text x="397" y="228" text-anchor="middle" font-size="22" font-weight="800" fill="var(--ink)">CSS 담당</text>
+        <text x="397" y="256" text-anchor="middle" font-size="19" font-weight="700" fill="var(--gray-700)">자기 악보만</text>
+        <rect x="509" y="192" width="188" height="86" rx="16" fill="var(--surface)" stroke="var(--blue-line-strong)" stroke-width="2"/>
+        <text x="603" y="228" text-anchor="middle" font-size="22" font-weight="800" fill="var(--ink)">JS 담당</text>
+        <text x="603" y="256" text-anchor="middle" font-size="19" font-weight="700" fill="var(--gray-700)">자기 악보만</text>
+        <rect x="716" y="192" width="188" height="86" rx="16" fill="var(--surface)" stroke="var(--blue-line-strong)" stroke-width="2"/>
+        <text x="810" y="228" text-anchor="middle" font-size="22" font-weight="800" fill="var(--ink)">QA 담당</text>
+        <text x="810" y="256" text-anchor="middle" font-size="19" font-weight="700" fill="var(--gray-700)">자기 악보만</text>
+        <text x="946" y="150" text-anchor="end" font-size="20" font-weight="800" fill="var(--gray-700)">담당끼리는 연결선이 없습니다</text>
+      </svg>
+    </figure>
+    <!-- PART 2에서 하단 박스를 유지하는 유일한 장이다. 앞의 두 문장과 달리 이 문장은
+         도해를 설명하는 것이 아니라 «오늘 그 자리는 여러분» 이라고 청중을 직접 지목하는
+         핵심 결론이라 독립된 자리가 필요하다(사용자 지시).
+         줄바꿈은 사용자 지정이다 — 구 경계에서 끊고 세 줄 모두 중앙 정렬한다. -->
+    <div class="callout blue hug-center w3-close">오케스트라에서 연주자는 자기 악보만 보고, 전체 악보를 보는 건 지휘자뿐입니다.<br>오늘 그 자리는<br><strong>여러분</strong>입니다.</div>
+  </div>
+</section>
+
+<!-- V2-07 나누면 무조건 좋을까요 — numeric (C-column) -->
+<section class="slide" data-slide="V2-07" data-shape="numeric">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span>
+  </header>
+  <div class="s-full w3-chartsplit">
+    <div class="w3-cs-text">
+      <h2 class="s-title">나누면 무조건 좋을까요</h2>
+      <p class="s-body">아닙니다. 담당이 늘수록 <strong>비용도 같이 늘어납니다.</strong></p>
+      <div class="w3-cost"><span>설명 중복</span><span>결과 충돌</span><span>취합 비용</span></div>
+      <p class="s-body"><strong>"에이전트가 많을수록 좋다"도, "병렬로 돌리면 무조건 빠르다"도 틀린 말입니다.</strong></p>
+      <p class="s-body">회의 참석자가 두 배가 되면 회의가 두 배 빨라지지 않는 것과 같습니다.</p>
+    </div>
+    <div class="w3-cs-chart">
+      <div class="code-chart viz-column" role="img"
+           aria-label="세로막대: 같은 일을 시켰을 때 쓰는 분량이 싱글 1배, 멀티는 최소 3배에서 최대 10배">
+        <div class="cc-plot">
+          <div class="cc-bar"><span class="cc-val">1배</span><span class="cc-fill is-key" style="height:28px"></span></div>
+          <div class="cc-bar"><span class="cc-val">3배</span><span class="cc-fill" style="height:84px"></span></div>
+          <div class="cc-bar"><span class="cc-val">10배</span><span class="cc-fill" style="height:270px"></span></div>
+        </div>
+        <div class="cc-axis"><span>싱글</span><span>멀티 최소</span><span>멀티 최대</span></div>
+      </div>
+      <p class="w3-cs-note">같은 일을 시켰을 때 쓰는 분량입니다. 나누는 순간부터 <strong>이만큼을 더 씁니다.</strong></p>
+    </div>
+  </div>
+</section>
