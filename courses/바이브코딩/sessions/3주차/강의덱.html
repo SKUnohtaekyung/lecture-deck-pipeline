@@ -314,13 +314,10 @@
     .w3-term{display:inline-block;align-self:flex-start;background:var(--blue);color:var(--white);
       font-size:24px;font-weight:800;border-radius:10px;padding:8px 16px;margin-top:4px}
     .w3-ls-visual{display:flex;flex-direction:column;gap:14px;align-items:center;justify-content:center}
-    .w3-hover-card{width:100%;background:var(--white);border-radius:14px;padding:20px 18px;
-      box-shadow:var(--shadow-sm);text-align:center}
-    .w3-hover-card b{display:block;font-size:24px;font-weight:800;color:var(--ink);margin-top:6px}
-    .w3-hover-card.is-lift{box-shadow:var(--shadow-lg);transform:translateY(-8px)}
-    .w3-hover-tag{display:inline-block;font-size:18px;font-weight:700;color:var(--gray-700);
-      background:var(--surface);border-radius:999px;padding:3px 12px}
-    .w3-hover-card.is-lift .w3-hover-tag{background:var(--mint-soft);color:var(--on-mint)}
+    /* ⚠️ 옛 .w3-hover-card / .w3-hover-tag(버튼 카드 2장 세로 나열)는 2026-08-08에
+       삭제했다. 「전환 없음 / 전환 있음」 카드 두 장은 **결과 두 상태만** 보여 줄 뿐
+       «마우스를 올렸을 때만 움직인다»는 인과를 못 보여 줬다(사용자 지적).
+       대체물은 아래 .w3-hoverfig — 평소 → 커서 올림 → 떠오른 버튼을 한 도해로 잇는다. */
 
     /* 레퍼런스 3종 — V1-08 */
     .w3-ref3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
@@ -385,6 +382,104 @@
     .w3-prompt p{margin:0;color:var(--white);font-size:var(--fs-body);line-height:1.5}
     .w3-prompt strong{color:var(--mint-bright)}
 
+    /* ═══ 2026-08-08 · PART 1 수정 12건 (사용자 지시) ═══════════════════
+       ⚠️ 전부 PART 1 슬라이드에 scoped다. .w3-hn·.w3-cont·.w3-gate-cell은
+          part-05가 함께 쓰므로 전역으로 고치면 그쪽 화면이 같이 바뀐다
+          (실측: w3-hn 12/2 · w3-gate-cell 2/2로 part-01·part-05 공유).
+       ⚠️ .w3-prompt(위)·.w3-goal은 PART 3~6이 아직 쓴다 — 지우지 마라.
+          PART 1만 프롬프트 카드(.w3-ask)·기준 행(.w3-crit)으로 옮겼다. */
+
+    /* ── V1-01 · V1-05 : 장식성 좌측 세로선 제거 ────────────────────────
+       AI가 자동으로 붙인 것처럼 보이는 선이다(사용자 지적). 선을 지우면
+       좌측 인셋이 4px 줄어 글이 왼쪽으로 밀리므로 padding으로 되돌린다. */
+    [data-slide="V1-01"] .w3-hn{border-left:0;padding-left:18px}
+
+    /* ── V1-02 : 「하네스의 앞 두 칸」 동심원 → 「맡기기 전 준비」 게이트 ──
+       이 장은 하네스 5칸의 부분집합을 설명하는 장이 아니라 «맡기기 전에
+       끝내야 하는 두 단계»를 설명하는 장이다. 포함(containment)이 아니라
+       순서·관문(gate)이므로 링 2겹이 아니라 세로 흐름이 그 관계 자체다.
+       ⚠️ 링 도해와 달리 세로 흐름은 세로를 다 써야 읽힌다 — 행을 stretch로
+          바꿔 도해가 칸 높이를 실제로 받게 한다(center면 우측 셀 높이에 갇힌다). */
+    [data-slide="V1-02"] .w3-cont-body{align-items:stretch}
+    [data-slide="V1-02"] .w3-cont-side{justify-content:center;gap:18px}
+    [data-slide="V1-02"] .w3-gate-cell{padding:18px 20px 20px}
+    .w3-gatefig{margin:0;min-width:0;min-height:0;height:100%;position:relative}
+    .w3-gatefig svg{position:absolute;inset:0;width:100%;height:100%}
+
+    /* ── V1-05 : 백업 흐름 — 선 제거 + 「복제」가 홀로 뜨지 않게 ──────────
+       좌측 보더로 원본/백업본/작업본을 갈랐었는데 그 선이 장식으로 읽혔다.
+       구분은 선이 아니라 «면»으로 옮긴다(흰 → 회 → 민트). */
+    [data-slide="V1-05"] .w3-bk{border-left:0;padding:14px 18px;background:var(--white)}
+    [data-slide="V1-05"] .w3-bk.is-keep{background:var(--surface)}
+    [data-slide="V1-05"] .w3-bk.is-work{background:var(--mint-soft)}
+    [data-slide="V1-05"] .w3-bk.is-work b{color:var(--on-mint)}
+    [data-slide="V1-05"] .w3-bk.is-work .desc{color:var(--mint-deep)}
+    /* 「복제」 한 단어만 떠 있던 자리 — 연결 기호와 한 줄로 묶어 화살표로 읽히게 */
+    [data-slide="V1-05"] .w3-bk-arrow{display:flex;align-items:center;justify-content:center;
+      gap:8px;font-size:20px;font-weight:800;color:var(--blue);letter-spacing:0}
+    [data-slide="V1-05"] .w3-bk-arrow .ar{font-size:26px;line-height:1}
+    [data-slide="V1-05"] .w3-bk-arrow.is-stay{color:var(--mint-deep)}
+
+    /* ── V1-04 · V1-06 · V1-09 : 실습 프롬프트 카드 ─────────────────────
+       옛 .w3-prompt는 «다크 박스 + 좌측 민트 태그 + 본문»이 한 줄에 붙어
+       있어 본문 문단과 구분이 약했다(사용자 지적: "일반 텍스트로 보인다").
+       1주차 터미널(.terminal-dark + .terminal-bar + >_ 프리픽스) 골격을
+       그대로 쓴다 — 킷 소유 클래스라 새로 그리지 않는다.
+       ⚠️ 킷 `.terminal-bar b`는 14px이다. 여기 들어가는 「이렇게 말하세요」는
+          프롬프트 라벨이라 강의장에서 읽혀야 한다 → (0,2,1)로 19px로 올린다.
+       ⚠️ `.terminal-dark *{color:var(--white)}`(0,1,0)와 같은 명시도인 규칙은
+          **이 블록이 뒤에 오므로** 이긴다. 순서를 바꾸면 강조색이 죽는다. */
+    .w3-ask .terminal-bar{min-height:42px;padding:0 16px}
+    .w3-ask .terminal-bar b{margin-left:10px;font-size:19px;font-weight:800;
+      color:var(--mint-bright)}
+    .w3-ask-body{display:grid;grid-template-columns:auto 1fr;column-gap:12px;
+      align-items:start;padding:14px 18px 16px}
+    .w3-ask-pfx{color:var(--mint-bright);font-weight:900;font-size:22px;line-height:1.5}
+    .w3-ask-body p{margin:0;color:var(--white);font-size:var(--fs-body);line-height:1.5}
+    .w3-ask-body strong{color:var(--mint-bright)}
+    .w3-ask-body code{background:none;color:var(--mint-bright);font-weight:800;padding:0}
+
+    /* 실습 머리 블록 — 실습번호 · 큰 제목 · 완성 기준을 한 덩어리로 묶는다.
+       완성 기준을 슬라이드 하단에 큰 콜아웃으로 띄우지 않는다(사용자 지시).
+       하나로 묶어야 .s-full.fill의 space-evenly가 «머리 / 단계 / 프롬프트»
+       3덩어리로 나뉘어 위계가 보인다 — 안 묶으면 5개가 균등하게 흩어진다. */
+    .w3-pr-hd{display:flex;flex-direction:column;gap:2px}
+    .w3-pr-hd .s-eyebrow,.w3-pr-hd .s-title{margin:0}
+    .w3-crit{margin:8px 0 0;display:flex;align-items:baseline;gap:10px;
+      font-size:var(--fs-body);line-height:1.45;color:var(--gray-700)}
+    .w3-crit-k{flex:0 0 auto;background:var(--mint-soft);color:var(--on-mint);
+      border-radius:var(--r-pill);padding:3px 12px;font-size:19px;font-weight:800}
+
+    /* ── V1-07 : 문장 간격 축소 + 우측을 hover 인과 도해로 ───────────────
+       ⚠️ 폰트는 건드리지 않는다(22px 하한). 줄어드는 것은 space-evenly가
+          만들던 문단 사이 45px 간격이다 — 묶고 center로 바꿔 회수한다. */
+    [data-slide="V1-07"] .w3-ls-text{justify-content:center;gap:14px}
+    [data-slide="V1-07"] .w3-ls-text .s-body{line-height:1.5}
+    [data-slide="V1-07"] .w3-ls-visual{justify-content:center;gap:10px}
+    .w3-termgrp{display:flex;flex-direction:column;align-items:flex-start;gap:8px}
+    .w3-termgrp .w3-term{margin-top:0}
+    .w3-hoverfig{margin:0;width:100%;flex:1 1 auto;min-height:0;position:relative}
+    .w3-hoverfig svg{position:absolute;inset:0;width:100%;height:100%}
+
+    /* ── V1-11 : 제목과 리드를 한 덩어리로(사이 간격 축소) ────────────────
+       space-evenly가 제목·리드·격자·콜아웃 4개를 균등 분배해 제목과 리드가
+       멀어져 있었다. 둘을 한 flex 아이템으로 묶으면 3덩어리가 된다. */
+    .w3-hd{display:flex;flex-direction:column;gap:6px}
+    .w3-hd > .s-title,.w3-hd > .s-lead{margin:0}
+
+    /* ── V1-12 : 본문 두 문장 묶기 + 하단 콜아웃 → 얇은 전환 스트립 ───────
+       큰 둥근 파란 콜아웃이 선언형(.w3-decl) 레이아웃의 하단을 통째로
+       차지하고 있었다. 폭을 내용에 맞춰 줄이고(align-self) 「PART 2 → 판단
+       기준」 형태의 연결 밴드로 바꾼다. */
+    .w3-qwrap{display:flex;flex-direction:column;gap:8px}
+    .w3-qwrap > .s-body,.w3-qwrap > .s-lead{margin:0}
+    .w3-next{align-self:flex-start;display:flex;align-items:center;gap:14px;
+      background:var(--blue-soft);border-radius:var(--r-pill);padding:9px 24px 9px 10px}
+    .w3-next-k{background:var(--blue);color:var(--white);border-radius:var(--r-pill);
+      padding:5px 16px;font-size:20px;font-weight:800}
+    .w3-next-ar{font-size:22px;font-weight:800;color:var(--blue)}
+    .w3-next-t{font-size:22px;font-weight:800;color:var(--ink)}
+
     /* ===== 3주차 PART 2 신규 구도 (G1 결정표 등재분) =====
        PART 2는 실습 0개 · 개념 7장이라 「정의 슬라이드가 연달아 오는」 구간이다.
        그래서 레이아웃 자체를 번갈아 쓴다 — deffig(좌 정의/우 도해) → stage(중앙
@@ -414,6 +509,35 @@
     .w3-stage-fig svg{position:absolute;inset:0;width:100%;height:100%}
     .w3-stage > .s-body{margin:0}
     .w3-stage > .callout{margin:12px 0 0}
+
+    /* ═══ 2026-08-08 · PART 2 하단 박스 정리 (사용자 지시) ═══════════════
+       PART 2 본문 7장 중 3장이 똑같은 `callout blue hug-center`로 끝나고 있었다.
+       MEMORY 「슬라이드 하단 마무리 한 줄을 습관처럼 붙이지 않는다」에 걸리는
+       패턴이라 장마다 판정했다 — 문장은 하나도 버리지 않고 **자리만** 옮겼다.
+         · V2-01 회사 비유 → 리드로 승격(비교를 여는 전제)
+         · V2-03 요리 비유 → 도해 캡션(.w3-stage-cap)으로 하강
+         · V2-06 지휘자 + 청중 지목 → 하단 박스 유지(핵심 결론 · 독립 역할)
+       ⚠️ PART 2에만 scoped다. 다른 PART의 하단 박스는 이 작업의 범위가 아니다. */
+
+    /* 도해에 붙는 캡션 — 박스가 아니라 캡션이라 fill·보더를 주지 않는다.
+       (킷 .dc-cap과 역할이 같지만 .dc-cap은 킷이 소유하고 다른 구도가 함께 쓴다) */
+    .w3-stage > .w3-stage-cap{margin:14px 0 0;text-align:center;
+      font-size:var(--fs-body);line-height:1.5;color:var(--gray-700)}
+    .w3-stage > .w3-stage-cap strong{color:var(--ink)}
+
+    /* V2-01 — 콜아웃이 빠진 만큼 두 칸이 세로를 받게 한다.
+       안 주면 space-evenly가 남은 높이를 «칸 사이 빈 공간»으로 흘린다. */
+    [data-slide="V2-01"] .w3-two{flex:1 1 auto;min-height:0}
+    [data-slide="V2-01"] .w3-two-col{justify-content:space-evenly}
+
+    /* V2-06 — 3줄이 된 마무리 박스. 폰트는 그대로 두고 행간·패딩만 조인다
+       (사용자 지시: 억지로 축소하지 말 것). 킷 .callout은 line-height 1.6이라
+       3줄이면 105px + 패딩이 되어 도해를 그만큼 밀어낸다.
+       ⚠️ 명시도: 이 블록 위의 `.deck .slide .callout`이 (0,3,0)이라
+          `[data-slide=…] .w3-close`(0,2,0)로는 **행간이 조용히 무시된다.**
+          실측으로 잡았다(선언 1.45 · 실제 35.2px=1.6). `.deck .slide[…]`로 (0,4,0)를
+          만들어야 먹는다 — 이 파일 ② 블록이 경고하는 바로 그 함정이다. */
+    .deck .slide[data-slide="V2-06"] .w3-close{text-align:center;line-height:1.45;padding:12px 22px}
 
     /* 3열 비교표 — V2-05. 킷 표 기본 17px은 이 장에서 「초안 본문 문구」라 올린다
        (표 17px 예외는 «촘촘한 데이터 표» 전제다 — 여기는 3열 3행뿐이다). */
@@ -810,7 +934,7 @@
             <text x="500" y="266" text-anchor="middle" font-size="22" font-weight="800" fill="var(--gray-700)">쓰는 폴더는 하나입니다 - 2주차에 만든 그 폴더</text>
           </svg>
         </figure>
-        <div class="callout blue hug-center"><strong>새 프로젝트를 만들지 않습니다.</strong> 하루 종일 그 폴더 하나만 씁니다.</div>
+        <div class="callout blue hug-center"><strong>새 프로젝트를 만들지 않습니다.</strong> 진행하던 폴더 그대로 씁니다.</div>
       </div>
     </section>
 
@@ -861,9 +985,9 @@
     <div class="rm-track is-5 viz-flow-h">
       <div class="rm-step">
         <span class="rm-n">1</span>
-        <b>하네스 회수</b>
-        <span class="desc">지난주 작업 틀을 다시 꺼냅니다.</span>
-        <span class="rm-out">앞 두 칸이 오늘 할 일</span>
+        <b>하네스 복습</b>
+        <span class="desc">지난주에 배운 작업 틀을 다시 떠올립니다.</span>
+        <span class="rm-out">오늘 쓸 작업 틀</span>
       </div>
       <span class="rm-arrow" aria-hidden="true">→</span>
       <div class="rm-step">
@@ -921,28 +1045,38 @@
   </div>
 </section>
 
-<!-- V1-02 하네스의 앞 두 칸 — containment -->
-<section class="slide" data-slide="V1-02" data-shape="containment">
+<!-- V1-02 담당에게 맡기기 전 준비 — sequence(준비 게이트)
+     ⚠️ 2026-08-08 재설계. 이전 판은 「하네스의 앞 두 칸」이라는 제목으로 동심원
+        도해를 썼는데, 이 장이 실제로 말하는 것은 하네스 5칸의 부분집합이 아니라
+        «맡기기 전에 끝내야 하는 두 단계»다. 포함이 아니라 순서라서 링을 흐름으로
+        바꾸고 「앞 두 칸」 표현을 전부 걷어냈다(사용자 지시). -->
+<section class="slide" data-slide="V1-02" data-shape="sequence">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
     <span class="s-line"></span>
   </header>
   <div class="s-full w3-cont">
-    <h2 class="s-title">하네스의 앞 두 칸</h2>
-    <p class="s-lead">담당에게 맡기기 전에 할 일은 <strong>딱 둘</strong>입니다.</p>
+    <h2 class="s-title">담당에게 맡기기 전 준비</h2>
+    <p class="s-lead">담당에게 맡기기 전에 할 일은 <strong>딱 둘</strong>입니다. 이 둘이 끝나야 코드를 만집니다.</p>
     <div class="w3-cont-body">
-      <figure class="w3-conc viz-containment" role="img"
-              aria-label="동심 포함도: 바깥 링은 하네스 다섯 칸(권한·완료 조건·사후 확인), 그 안에 오늘 하는 앞 두 칸인 MVP 실행 확인과 백업이 들어 있다">
-        <svg viewBox="0 0 392 392" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <circle cx="196" cy="196" r="188" fill="var(--surface)" stroke="var(--blue-line)" stroke-width="2"/>
-          <text x="196" y="52" text-anchor="middle" font-size="21" font-weight="800" fill="var(--blue)">하네스 · 다섯 칸</text>
-          <circle cx="196" cy="196" r="118" fill="var(--blue)"/>
-          <text x="196" y="160" text-anchor="middle" font-size="19" font-weight="700" fill="var(--white)" opacity=".82">오늘 여기까지</text>
-          <text x="196" y="198" text-anchor="middle" font-size="21" font-weight="800" fill="var(--white)">① MVP 실행 확인</text>
-          <text x="196" y="234" text-anchor="middle" font-size="21" font-weight="800" fill="var(--white)">② 백업</text>
-          <text x="104" y="288" text-anchor="middle" font-size="20" font-weight="700" fill="var(--gray-700)">③ 권한</text>
-          <text x="196" y="336" text-anchor="middle" font-size="20" font-weight="700" fill="var(--gray-700)">④ 완료 조건</text>
-          <text x="292" y="288" text-anchor="middle" font-size="20" font-weight="700" fill="var(--gray-700)">⑤ 사후 확인</text>
+      <figure class="w3-gatefig viz-flow-v" role="img"
+              aria-label="준비 게이트 흐름: 먼저 MVP 실행 확인, 다음 백업, 두 가지가 끝나야 그 아래 담당에게 맡기기로 넘어간다">
+        <svg viewBox="0 0 360 440" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect x="20" y="8" width="320" height="92" rx="16" fill="var(--blue-soft)" stroke="var(--blue)" stroke-width="2"/>
+          <text x="180" y="48" text-anchor="middle" font-size="24" font-weight="800" fill="var(--ink)">① MVP 실행 확인</text>
+          <text x="180" y="78" text-anchor="middle" font-size="19" font-weight="700" fill="var(--gray-700)">지금이 정상이라는 증거</text>
+          <path d="M180 106 L180 140 M171 131 L180 141 L189 131" fill="none" stroke="var(--blue)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <rect x="20" y="148" width="320" height="92" rx="16" fill="var(--blue-soft)" stroke="var(--blue)" stroke-width="2"/>
+          <text x="180" y="188" text-anchor="middle" font-size="24" font-weight="800" fill="var(--ink)">② 백업</text>
+          <text x="180" y="218" text-anchor="middle" font-size="19" font-weight="700" fill="var(--gray-700)">되돌아갈 폴더</text>
+          <path d="M180 246 L180 262" fill="none" stroke="var(--blue)" stroke-width="3.5" stroke-linecap="round"/>
+          <line x1="8" y1="274" x2="352" y2="274" stroke="var(--mint-deep)" stroke-width="2.5" stroke-dasharray="7 7"/>
+          <rect x="118" y="260" width="124" height="30" rx="15" fill="var(--mint-soft)" stroke="var(--mint-deep)" stroke-width="2"/>
+          <text x="180" y="281" text-anchor="middle" font-size="19" font-weight="800" fill="var(--on-mint)">준비 완료</text>
+          <path d="M180 300 L180 330 M171 321 L180 331 L189 321" fill="none" stroke="var(--mint-deep)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <rect x="20" y="338" width="320" height="92" rx="16" fill="var(--mint-soft)" stroke="var(--mint-line)" stroke-width="2"/>
+          <text x="180" y="378" text-anchor="middle" font-size="24" font-weight="800" fill="var(--on-mint)">담당에게 맡기기</text>
+          <text x="180" y="408" text-anchor="middle" font-size="19" font-weight="700" fill="var(--mint-deep)">여기서부터 코드를 만집니다</text>
         </svg>
       </figure>
       <div class="w3-cont-side">
@@ -958,7 +1092,6 @@
         </div>
       </div>
     </div>
-    <div class="callout blue hug-center">이 둘이 끝나야 코드를 만집니다.</div>
   </div>
 </section>
 
@@ -990,7 +1123,7 @@
         </ul>
       </div>
     </div>
-    <div class="callout blue hug-center">지금 확인하는 게 <strong>가장 쌉니다.</strong> 나중에 발견하면 원인 찾는 데 열 배 걸립니다.</div>
+    <div class="callout blue hug-center">나중에 발견하면 <strong>원인을 찾기 어렵습니다.</strong> 그래서 지금 확인하는 게 가장 좋습니다.</div>
   </div>
 </section>
 
@@ -1001,18 +1134,23 @@
     <span class="s-line"></span>
   </header>
   <div class="s-full fill">
-    <p class="s-eyebrow">실습 ①</p>
-    <h2 class="s-title">MVP 실행 확인</h2>
+    <div class="w3-pr-hd">
+      <p class="s-eyebrow">실습 ①</p>
+      <h2 class="s-title">MVP 실행 확인</h2>
+      <p class="w3-crit"><span class="w3-crit-k">완성 기준</span>지금이 <strong>"정상"</strong>이라는 증거가 손에 있음</p>
+    </div>
     <div class="eval-steps viz-flow-v">
       <div class="work-step"><span class="n">1</span><span class="desc"><code>index.html</code>을 열고 <strong>대표 흐름을 끝까지</strong> 한 번 실행합니다.</span></div>
       <div class="work-step"><span class="n">2</span><span class="desc">중간에 멈추지 말고 결과 화면이 나올 때까지 갑니다.</span></div>
       <div class="work-step"><span class="n">3</span><span class="desc">정상 화면을 <strong>캡처하거나 메모</strong>로 남깁니다 — 오늘 뭔가 깨지면 이게 비교 기준이 됩니다.</span></div>
     </div>
-    <div class="w3-prompt">
-      <span class="w3-prompt-tag">이렇게 말하세요</span>
-      <p>"지금 이 프로젝트가 실제로 작동하는지, <code>index.html</code>을 열어서 대표 흐름을 처음부터 끝까지 확인해 줘. <strong>고치지는 말고 결과만 알려 줘.</strong>"</p>
+    <div class="w3-ask terminal-dark" aria-label="AI에게 그대로 입력하는 요청문">
+      <div class="terminal-bar"><span></span><span></span><span></span><b>이렇게 말하세요</b></div>
+      <div class="w3-ask-body">
+        <span class="w3-ask-pfx" aria-hidden="true">&gt;_</span>
+        <p>지금 이 프로젝트가 실제로 작동하는지, <code>index.html</code>을 열어서 대표 흐름을 처음부터 끝까지 확인해 줘. <strong>고치지는 말고 결과만 알려 줘.</strong></p>
+      </div>
     </div>
-    <div class="callout blue hug-center w3-goal">완성 기준 — 지금이 <strong>"정상"</strong>이라는 증거가 손에 있음</div>
   </div>
 </section>
 
@@ -1031,9 +1169,10 @@
       <div class="callout blue">게임에서 보스 앞에 세이브하는 것, 문서를 고치기 전에 「다른 이름으로 저장」해 두는 것과 같습니다.</div>
     </div>
     <div class="w3-deffig-box viz-flow-v">
-      <div class="w3-bk"><b>내 프로젝트</b><span class="desc">지금 상태</span></div>
-      <div class="w3-bk-arrow" aria-hidden="true">복제</div>
-      <div class="w3-bk is-keep"><b>백업_2026-08-08</b><span class="desc">손대지 않습니다</span></div>
+      <div class="w3-bk"><b>내 프로젝트</b><span class="desc">지금 상태 — 원본</span></div>
+      <div class="w3-bk-arrow"><span class="ar" aria-hidden="true">⤷</span>복제</div>
+      <div class="w3-bk is-keep"><b>백업_2026-08-08</b><span class="desc">복제본 — 손대지 않습니다</span></div>
+      <div class="w3-bk-arrow is-stay"><span class="ar" aria-hidden="true">↳</span>원본에서 계속</div>
       <div class="w3-bk is-work"><b>내 프로젝트</b><span class="desc">여기서 계속 작업합니다</span></div>
     </div>
   </div>
@@ -1046,18 +1185,23 @@
     <span class="s-line"></span>
   </header>
   <div class="s-full fill">
-    <p class="s-eyebrow">실습 ②</p>
-    <h2 class="s-title">백업 만들기</h2>
+    <div class="w3-pr-hd">
+      <p class="s-eyebrow">실습 ②</p>
+      <h2 class="s-title">백업 만들기</h2>
+      <p class="w3-crit"><span class="w3-crit-k">완성 기준</span>백업본과 작업본이 <strong>이름만 봐도 구분됨</strong></p>
+    </div>
     <div class="eval-steps viz-flow-v">
       <div class="work-step"><span class="n">1</span><span class="desc">프로젝트 폴더를 <strong>통째로 복제</strong>합니다.</span></div>
       <div class="work-step"><span class="n">2</span><span class="desc">폴더 이름에 <code>백업</code>과 오늘 날짜를 넣습니다 — 어느 쪽이 원본인지 헷갈리지 않게.</span></div>
       <div class="work-step"><span class="n">3</span><span class="desc">복제한 뒤 <strong>작업은 원래 폴더에서</strong> 계속합니다.</span></div>
     </div>
-    <div class="w3-prompt">
-      <span class="w3-prompt-tag">이렇게 말하세요</span>
-      <p>"지금 폴더 상태를 그대로 복제해서 <code>백업_2026-08-07</code> 폴더로 남겨 줘. <strong>원본은 그대로 두고</strong> 작업은 지금 폴더에서 계속할게."</p>
+    <div class="w3-ask terminal-dark" aria-label="AI에게 그대로 입력하는 요청문">
+      <div class="terminal-bar"><span></span><span></span><span></span><b>이렇게 말하세요</b></div>
+      <div class="w3-ask-body">
+        <span class="w3-ask-pfx" aria-hidden="true">&gt;_</span>
+        <p>지금 폴더 상태를 그대로 복제해서 <code>백업_2026-08-07</code> 폴더로 남겨 줘. <strong>원본은 그대로 두고</strong> 작업은 지금 폴더에서 계속할게.</p>
+      </div>
     </div>
-    <div class="callout blue hug-center w3-goal">완성 기준 — 백업본과 작업본이 <strong>이름만 봐도 구분됨</strong></div>
   </div>
 </section>
 
@@ -1072,13 +1216,31 @@
       <h2 class="s-title">이제 처음으로 코드를 만집니다</h2>
       <p class="s-body">백업이 끝났으니 이제 <strong>안전하게</strong> 고칠 수 있습니다.</p>
       <p class="s-body">첫 수정은 가볍게 — 같은 화면도 작은 움직임 하나로 인상이 달라집니다.</p>
-      <div class="w3-term">마우스 오버 효과</div>
-      <p class="s-body">마우스를 올렸을 때만 잠깐 반응하는 변화입니다. 기능을 바꾸는 게 아니라 <strong>살아 있는 느낌</strong>을 더하는 일입니다.</p>
+      <div class="w3-termgrp">
+        <div class="w3-term">마우스 오버 효과</div>
+        <p class="s-body">마우스를 올렸을 때만 잠깐 반응하는 변화입니다. 기능을 바꾸는 게 아니라 <strong>살아 있는 느낌</strong>을 더하는 일입니다.</p>
+      </div>
     </div>
     <div class="w3-ls-visual viz-column">
-      <div class="w3-hover-card is-flat"><span class="w3-hover-tag">전환 없음</span><b>버튼</b></div>
-      <div class="w3-hover-card is-lift"><span class="w3-hover-tag">전환 있음</span><b>버튼</b></div>
-      <p class="dc-cap">같은 버튼, 마우스를 올렸을 때</p>
+      <figure class="w3-hoverfig" role="img"
+              aria-label="같은 버튼의 두 상태: 평소에는 원래 자리에 가만히 있고, 마우스 커서를 올리면 그 자리를 점선으로 남긴 채 살짝 위로 떠오르며 아래에 그림자가 생긴다">
+        <svg viewBox="0 0 440 430" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <text x="20" y="26" font-size="21" font-weight="800" fill="var(--gray-700)">① 평소</text>
+          <rect x="100" y="44" width="240" height="62" rx="14" fill="var(--surface)" stroke="var(--blue-line-strong)" stroke-width="2"/>
+          <text x="220" y="84" text-anchor="middle" font-size="24" font-weight="800" fill="var(--ink)">버튼</text>
+          <path d="M220 124 L220 158 M211 149 L220 159 L229 149" fill="none" stroke="var(--blue)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M248 122 L248 156 L257 148 L263 162 L271 159 L265 145 L276 144 Z" fill="var(--ink)" stroke="var(--white)" stroke-width="2" stroke-linejoin="round"/>
+          <text x="220" y="192" text-anchor="middle" font-size="21" font-weight="800" fill="var(--blue)">마우스를 올리면</text>
+          <text x="20" y="232" font-size="21" font-weight="800" fill="var(--gray-700)">② 살짝 떠오릅니다</text>
+          <rect x="100" y="252" width="240" height="62" rx="14" fill="var(--blue)"/>
+          <text x="220" y="292" text-anchor="middle" font-size="24" font-weight="800" fill="var(--white)">버튼</text>
+          <ellipse cx="220" cy="326" rx="100" ry="9" fill="var(--ink)" opacity=".16"/>
+          <path d="M370 372 L370 294 M361 305 L370 293 L379 305" fill="none" stroke="var(--mint-deep)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <rect x="100" y="346" width="240" height="58" rx="14" fill="none" stroke="var(--blue-line-strong)" stroke-width="2" stroke-dasharray="7 7"/>
+          <text x="220" y="382" text-anchor="middle" font-size="20" font-weight="700" fill="var(--gray-700)">원래 자리</text>
+        </svg>
+      </figure>
+      <p class="dc-cap">같은 버튼입니다. 마우스를 올렸을 때만 움직입니다.</p>
     </div>
   </div>
 </section>
@@ -1137,18 +1299,23 @@
     <span class="s-line"></span>
   </header>
   <div class="s-full fill">
-    <p class="s-eyebrow">실습 ③</p>
-    <h2 class="s-title">내 화면에 움직임 하나 넣기</h2>
+    <div class="w3-pr-hd">
+      <p class="s-eyebrow">실습 ③</p>
+      <h2 class="s-title">내 화면에 움직임 하나 넣기</h2>
+      <p class="w3-crit"><span class="w3-crit-k">완성 기준</span>마우스를 올리면 움직임이 보이고, <strong>나머지는 그대로</strong>임</p>
+    </div>
     <div class="eval-steps viz-flow-v">
       <div class="work-step"><span class="n">1</span><span class="desc">세 가지 중 <strong>하나만</strong> 고릅니다.</span></div>
       <div class="work-step"><span class="n">2</span><span class="desc">내 페이지의 버튼이나 카드에 그 효과를 넣습니다.</span></div>
       <div class="work-step"><span class="n">3</span><span class="desc">다른 기능과 배치는 <strong>그대로 둡니다.</strong></span></div>
     </div>
-    <div class="w3-prompt">
-      <span class="w3-prompt-tag">이렇게 말하세요</span>
-      <p>"내 페이지에서 버튼(또는 카드)에 마우스를 올리면 살짝 떠오르는 효과를 넣어 줘. 0.2초 정도로 과하지 않게. <strong>다른 기능과 배치는 그대로 둬.</strong>"</p>
+    <div class="w3-ask terminal-dark" aria-label="AI에게 그대로 입력하는 요청문">
+      <div class="terminal-bar"><span></span><span></span><span></span><b>이렇게 말하세요</b></div>
+      <div class="w3-ask-body">
+        <span class="w3-ask-pfx" aria-hidden="true">&gt;_</span>
+        <p>내 페이지에서 버튼(또는 카드)에 마우스를 올리면 살짝 떠오르는 효과를 넣어 줘. 0.2초 정도로 과하지 않게. <strong>다른 기능과 배치는 그대로 둬.</strong></p>
+      </div>
     </div>
-    <div class="callout blue hug-center w3-goal">완성 기준 — 마우스를 올리면 움직임이 보이고, <strong>나머지는 그대로</strong>임</div>
   </div>
 </section>
 
@@ -1186,8 +1353,10 @@
     <span class="s-line"></span>
   </header>
   <div class="s-full fill">
-    <h2 class="s-title">밖에 나가면 안 되는 파일부터 걸러 둡니다</h2>
-    <p class="s-lead">오늘 이 프로젝트는 <strong>커밋되고, 공개됩니다.</strong> 지금 미리 확인합니다.</p>
+    <div class="w3-hd">
+      <h2 class="s-title">밖에 나가면 안 되는 파일부터 걸러 둡니다</h2>
+      <p class="s-lead">오늘 이 프로젝트는 <strong>커밋되고, 공개됩니다.</strong> 지금 미리 확인합니다.</p>
+    </div>
     <div class="w3-danger viz-matrix">
       <div class="w3-dg"><b>비밀번호</b><p>파일 안에 적어 둔 적 없나요?</p></div>
       <div class="w3-dg"><b>API 키</b><p>연습하며 붙여 넣지 않았나요?</p></div>
@@ -1196,7 +1365,7 @@
       <div class="w3-dg"><b>내 컴퓨터 경로</b><p>내 사용자 이름이 든 경로가 남았나요?</p></div>
       <div class="w3-dg is-fix"><b>있으면 지금</b><p>빼거나 <strong>가짜 값으로 바꿉니다.</strong></p></div>
     </div>
-    <div class="callout blue hug-center">한 번 나간 것은 지워도 흔적이 남습니다. <strong>지금이 가장 싼 시점입니다.</strong></div>
+    <div class="callout blue hug-center">한 번 나간 것은 지워도 흔적이 남습니다. <strong>초반에 안전 기준을 잘 정해 두어야</strong> 나중에 문제를 줄일 수 있습니다.</div>
   </div>
 </section>
 
@@ -1211,12 +1380,14 @@
     <div class="w3-done-row viz-flow-h">
       <div class="w3-done"><span class="w3-done-mk" aria-hidden="true">✓</span><b>실행 확인</b></div>
       <div class="w3-done"><span class="w3-done-mk" aria-hidden="true">✓</span><b>백업</b></div>
-      <div class="w3-done"><span class="w3-done-mk" aria-hidden="true">✓</span><b>첫 수정</b></div>
+      <div class="w3-done"><span class="w3-done-mk" aria-hidden="true">✓</span><b>수정</b></div>
       <div class="w3-done"><span class="w3-done-mk" aria-hidden="true">✓</span><b>공개 금지 파일</b></div>
     </div>
-    <p class="s-body">다음 질문은 <strong>"몇 개를 띄울까"가 아닙니다.</strong></p>
-    <p class="s-lead">"어떤 일이 서로 <strong>독립적인가</strong>" — 나눌 수 있는 일이 있어야 나누는 의미가 생깁니다.</p>
-    <div class="callout blue hug-center">PART 2에서 그 판단 기준부터 잡습니다.</div>
+    <div class="w3-qwrap">
+      <p class="s-body">다음 질문은 <strong>"몇 개를 띄울까"가 아닙니다.</strong></p>
+      <p class="s-lead">"어떤 일이 서로 <strong>독립적인가</strong>" — 나눌 수 있는 일이 있어야 나누는 의미가 생깁니다.</p>
+    </div>
+    <div class="w3-next"><span class="w3-next-k">PART 2</span><span class="w3-next-ar" aria-hidden="true">→</span><span class="w3-next-t">판단 기준부터 잡습니다</span></div>
   </div>
 </section>
 
@@ -1285,7 +1456,13 @@
     <span class="s-line"></span>
   </header>
   <div class="s-full fill">
-    <h2 class="s-title">왜 나눠서 시킬까요</h2>
+    <!-- 2026-08-08: 회사 비유를 하단 callout에서 리드로 올렸다. 이 문장은 「비교를
+         설명하는」 문장이라 두 칸 아래에 결론 박스로 떠 있을 자리가 아니다 —
+         비교를 여는 전제로 읽히는 자리가 맞다(사용자 지시 · MEMORY 「마무리 한 줄 습관」). -->
+    <div class="w3-hd">
+      <h2 class="s-title">왜 나눠서 시킬까요</h2>
+      <p class="s-lead">회사도 기획 · 디자인 · 개발 · 검수를 한 사람이 다 하지 않습니다.</p>
+    </div>
     <div class="w3-two viz-matrix">
       <div class="w3-two-col is-cant">
         <h3>한 명이 처음부터 끝까지</h3>
@@ -1334,7 +1511,6 @@
         <p>보는 범위가 좁아지면 더 깊이 보입니다.</p>
       </div>
     </div>
-    <div class="callout blue hug-center">회사도 기획 · 디자인 · 개발 · 검수를 한 사람이 다 하지 않습니다.</div>
   </div>
 </section>
 
@@ -1394,7 +1570,10 @@
         <text x="815" y="162" text-anchor="middle" font-size="20" font-weight="700" fill="var(--gray-700)">떼어 준 일만 한다</text>
       </svg>
     </figure>
-    <div class="callout blue hug-center">요리하다가 "마늘만 다져 줘"라고 부탁하는 것과 같습니다 — <strong>요리는 여전히 내가 합니다.</strong></div>
+    <!-- 2026-08-08: 요리 비유를 하단 callout에서 도해 캡션으로 내렸다. 이 문장은
+         위 왕복 도해가 보여 주는 「통제권」 구조를 말로 옮긴 것이라 도해에 붙는 자리가
+         맞다 — 박스로 띄우면 도해와 경쟁한다(사용자 지시). 문장은 그대로 보존한다. -->
+    <p class="w3-stage-cap">요리하다가 "마늘만 다져 줘"라고 부탁하는 것과 같습니다 — <strong>요리는 여전히 내가 합니다.</strong></p>
   </div>
 </section>
 
@@ -1414,22 +1593,33 @@
     </div>
     <figure class="w3-deffig-fig viz-flow-v" role="img"
             aria-label="한 프로젝트가 HTML·CSS·JS·QA 네 담당으로 동시에 갈라지고, 네 결과가 다시 사람의 판정으로 모인다">
+      <!-- ⚠️ 2026-08-08 재배치. 이전 판은 「네 결과가 동시에」 라벨(baseline y=248)이
+           수집 세로선 4개(x=60·153·247·340 · y 224→256)를 **가로질렀다** — 글자 상자가
+           y 234~252라 x=153·247 선과 실제로 겹쳤다(사용자 지적).
+           폰트를 줄이지 않고 아래처럼 고쳤다:
+             ① 상단을 12px 압축해 하단에 라벨 띠를 만들 세로 예산을 확보
+             ② 수집 가로선을 y=236으로 올려 라벨 위로 보냈다
+             ③ 라벨을 수집선 **아래** 전용 칩(y 252~286)에 넣어 선과 16px 떼어 놓았다
+           읽는 순서는 네 담당 → 수집 → 「네 결과가 동시에」 → 화살표 → 사람이 판정. -->
       <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <rect x="110" y="6" width="180" height="56" rx="14" fill="var(--blue)"/>
-        <text x="200" y="42" text-anchor="middle" font-size="22" font-weight="800" fill="var(--white)">내 프로젝트</text>
-        <path d="M200 66 L200 96 M60 96 L340 96 M60 96 L60 128 M153 96 L153 128 M247 96 L247 128 M340 96 L340 128" fill="none" stroke="var(--blue)" stroke-width="2.5" stroke-linecap="round"/>
-        <rect x="16" y="132" width="88" height="88" rx="14" fill="var(--surface)" stroke="var(--blue-line-strong)" stroke-width="2"/>
-        <text x="60" y="184" text-anchor="middle" font-size="21" font-weight="800" fill="var(--ink)">HTML</text>
-        <rect x="109" y="132" width="88" height="88" rx="14" fill="var(--surface)" stroke="var(--blue-line-strong)" stroke-width="2"/>
-        <text x="153" y="184" text-anchor="middle" font-size="21" font-weight="800" fill="var(--ink)">CSS</text>
-        <rect x="203" y="132" width="88" height="88" rx="14" fill="var(--surface)" stroke="var(--blue-line-strong)" stroke-width="2"/>
-        <text x="247" y="184" text-anchor="middle" font-size="21" font-weight="800" fill="var(--ink)">JS</text>
-        <rect x="296" y="132" width="88" height="88" rx="14" fill="var(--surface)" stroke="var(--blue-line-strong)" stroke-width="2"/>
-        <text x="340" y="184" text-anchor="middle" font-size="21" font-weight="800" fill="var(--ink)">QA</text>
-        <path d="M60 224 L60 256 M153 224 L153 256 M247 224 L247 256 M340 224 L340 256 M60 256 L340 256 M200 256 L200 288" fill="none" stroke="var(--mint-deep)" stroke-width="2.5" stroke-linecap="round"/>
-        <text x="200" y="248" text-anchor="middle" font-size="20" font-weight="800" fill="var(--mint-deep)">네 결과가 동시에</text>
-        <rect x="86" y="292" width="228" height="62" rx="14" fill="var(--mint-soft)" stroke="var(--mint-line)" stroke-width="2"/>
-        <text x="200" y="331" text-anchor="middle" font-size="22" font-weight="800" fill="var(--on-mint)">사람이 판정</text>
+        <rect x="110" y="4" width="180" height="54" rx="14" fill="var(--blue)"/>
+        <text x="200" y="39" text-anchor="middle" font-size="22" font-weight="800" fill="var(--white)">내 프로젝트</text>
+        <path d="M200 58 L200 84 M60 84 L340 84 M60 84 L60 116 M153 84 L153 116 M247 84 L247 116 M340 84 L340 116" fill="none" stroke="var(--blue)" stroke-width="2.5" stroke-linecap="round"/>
+        <rect x="16" y="118" width="88" height="82" rx="14" fill="var(--surface)" stroke="var(--blue-line-strong)" stroke-width="2"/>
+        <text x="60" y="166" text-anchor="middle" font-size="21" font-weight="800" fill="var(--ink)">HTML</text>
+        <rect x="109" y="118" width="88" height="82" rx="14" fill="var(--surface)" stroke="var(--blue-line-strong)" stroke-width="2"/>
+        <text x="153" y="166" text-anchor="middle" font-size="21" font-weight="800" fill="var(--ink)">CSS</text>
+        <rect x="203" y="118" width="88" height="82" rx="14" fill="var(--surface)" stroke="var(--blue-line-strong)" stroke-width="2"/>
+        <text x="247" y="166" text-anchor="middle" font-size="21" font-weight="800" fill="var(--ink)">JS</text>
+        <rect x="296" y="118" width="88" height="82" rx="14" fill="var(--surface)" stroke="var(--blue-line-strong)" stroke-width="2"/>
+        <text x="340" y="166" text-anchor="middle" font-size="21" font-weight="800" fill="var(--ink)">QA</text>
+        <path d="M60 204 L60 236 M153 204 L153 236 M247 204 L247 236 M340 204 L340 236 M60 236 L340 236" fill="none" stroke="var(--mint-deep)" stroke-width="2.5" stroke-linecap="round"/>
+        <path d="M200 236 L200 248" fill="none" stroke="var(--mint-deep)" stroke-width="2.5" stroke-linecap="round"/>
+        <rect x="106" y="248" width="188" height="42" rx="21" fill="var(--white)" stroke="var(--mint-deep)" stroke-width="2"/>
+        <text x="200" y="275" text-anchor="middle" font-size="20" font-weight="800" fill="var(--mint-deep)">네 결과가 동시에</text>
+        <path d="M200 290 L200 304 M191 295 L200 305 L209 295" fill="none" stroke="var(--mint-deep)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <rect x="86" y="308" width="228" height="64" rx="14" fill="var(--mint-soft)" stroke="var(--mint-line)" stroke-width="2"/>
+        <text x="200" y="348" text-anchor="middle" font-size="22" font-weight="800" fill="var(--on-mint)">사람이 판정</text>
       </svg>
     </figure>
   </div>
@@ -1502,7 +1692,11 @@
         <text x="946" y="150" text-anchor="end" font-size="20" font-weight="800" fill="var(--gray-700)">담당끼리는 연결선이 없습니다</text>
       </svg>
     </figure>
-    <div class="callout blue hug-center">오케스트라에서 연주자는 자기 악보만 보고, 전체 악보를 보는 건 지휘자뿐입니다. 오늘 그 자리는 <strong>여러분</strong>입니다.</div>
+    <!-- PART 2에서 하단 박스를 유지하는 유일한 장이다. 앞의 두 문장과 달리 이 문장은
+         도해를 설명하는 것이 아니라 «오늘 그 자리는 여러분» 이라고 청중을 직접 지목하는
+         핵심 결론이라 독립된 자리가 필요하다(사용자 지시).
+         줄바꿈은 사용자 지정이다 — 구 경계에서 끊고 세 줄 모두 중앙 정렬한다. -->
+    <div class="callout blue hug-center w3-close">오케스트라에서 연주자는 자기 악보만 보고, 전체 악보를 보는 건 지휘자뿐입니다.<br>오늘 그 자리는<br><strong>여러분</strong>입니다.</div>
   </div>
 </section>
 
