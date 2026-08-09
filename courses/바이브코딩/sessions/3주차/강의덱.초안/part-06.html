@@ -28,7 +28,10 @@
     <div class="rm-track is-5 viz-flow-h">
       <div class="rm-step">
         <span class="rm-n">1</span>
-        <b>공개 전 마지막 점검</b>
+        <!-- 2026-08-09 사용자 지시: 이 로드맵 칸만 「배포」로 바꾼다.
+             ⚠️ 본문(V6-02·V6-05·V6-07·V6-09)은 여전히 「공개」다 — 전면 통일은 사용자 미결이므로
+                여기서 함께 바꾸지 마라. 용어가 갈린 상태임을 조립_보고.md에 기록했다. -->
+        <b>배포 전 마지막 점검</b>
         <span class="desc">되돌릴 수 있는 마지막 지점.</span>
         <span class="rm-out">안전한 화면</span>
       </div>
@@ -114,7 +117,9 @@
     <span class="s-line"></span><div class="s-team"></div>
   </header>
   <div class="s-full fill">
-    <p class="s-eyebrow">오늘 세 번째 안전 점검</p>
+    <!-- 2026-08-09 사용자 지시로 eyebrow「오늘 세 번째 안전 점검」삭제.
+         PART 5의 「오늘 두 번째」도 같이 빠져 덱에서 「몇 번째」 표기가 0이 됐다.
+         회차를 세는 메타 표현이라 수강생에게 정보를 주지 않는다 — 되살리지 마라. -->
     <h2 class="s-title">공개하면 되돌리기 어렵습니다</h2>
     <p class="s-lead">공개하면 <strong>누구나</strong> 봅니다. 링크를 몰라도 검색으로 닿을 수 있습니다.</p>
     <div class="w3-exclude viz-matrix">
@@ -328,17 +333,25 @@
     <figure class="w3-stage-fig viz-flow-h" role="img"
             aria-label="1주차 요청하는 사람에서 2주차 기획하는 사람을 거쳐 3주차 지휘하고 판정하고 공개하는 사람으로 이어지는 타임라인">
       <svg viewBox="0 0 1000 300" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <!-- 2026-08-09 겹침 교정(실측 근거). before: 3주차 마지막 줄「공개를 결정하는 사람」의
+             baseline이 y=180이고 민트 원 상단도 180(cy=200 · r=20)이라 **글자 하단과 원이 맞닿았다.**
+             같은 그림의 1주차는 역할명 baseline 156 / 원 상단 184로 28px가 떠 있어 세 기둥이
+             제각각이기도 했다.
+             after: 세 기둥의 **역할명 마지막 줄을 전부 y=152로 통일**하고, 3주차만 3줄이므로
+             한 줄씩 위로 올렸다(년도 76 · 역할1 114 · 역할2 152 · 줄간격 38 = 1·2주차와 동일).
+             민트 원 상단 180까지 28px가 확보돼 1주차 여백과 같아진다.
+             ⚠️ 폰트 크기·아래 캡션(y=252)·원(cy=200)은 건드리지 않았다. -->
         <path d="M60 200 L940 200" stroke="var(--blue-line-strong)" stroke-width="4" stroke-linecap="round"/>
         <circle cx="150" cy="200" r="16" fill="var(--periwinkle)"/>
-        <text x="150" y="118" text-anchor="middle" font-size="21" font-weight="800" fill="var(--gray-700)">1주차</text>
-        <text x="150" y="156" text-anchor="middle" font-size="24" font-weight="800" fill="var(--ink)">요청하는 사람</text>
+        <text x="150" y="114" text-anchor="middle" font-size="21" font-weight="800" fill="var(--gray-700)">1주차</text>
+        <text x="150" y="152" text-anchor="middle" font-size="24" font-weight="800" fill="var(--ink)">요청하는 사람</text>
         <circle cx="500" cy="200" r="16" fill="var(--blue)"/>
-        <text x="500" y="118" text-anchor="middle" font-size="21" font-weight="800" fill="var(--blue)">2주차</text>
-        <text x="500" y="156" text-anchor="middle" font-size="24" font-weight="800" fill="var(--ink)">기획하는 사람</text>
+        <text x="500" y="114" text-anchor="middle" font-size="21" font-weight="800" fill="var(--blue)">2주차</text>
+        <text x="500" y="152" text-anchor="middle" font-size="24" font-weight="800" fill="var(--ink)">기획하는 사람</text>
         <circle cx="850" cy="200" r="20" fill="var(--mint)"/>
-        <text x="850" y="112" text-anchor="middle" font-size="21" font-weight="800" fill="var(--mint-deep)">3주차 · 오늘</text>
-        <text x="850" y="150" text-anchor="middle" font-size="24" font-weight="800" fill="var(--on-mint)">지휘하고 · 판정하고</text>
-        <text x="850" y="180" text-anchor="middle" font-size="24" font-weight="800" fill="var(--on-mint)">공개를 결정하는 사람</text>
+        <text x="850" y="76" text-anchor="middle" font-size="21" font-weight="800" fill="var(--mint-deep)">3주차 · 오늘</text>
+        <text x="850" y="114" text-anchor="middle" font-size="24" font-weight="800" fill="var(--on-mint)">지휘하고 · 판정하고</text>
+        <text x="850" y="152" text-anchor="middle" font-size="24" font-weight="800" fill="var(--on-mint)">공개를 결정하는 사람</text>
         <text x="150" y="252" text-anchor="middle" font-size="20" font-weight="700" fill="var(--gray-700)">첫 화면을 얻었습니다</text>
         <text x="500" y="252" text-anchor="middle" font-size="20" font-weight="700" fill="var(--gray-700)">내 MVP를 완성했습니다</text>
         <text x="850" y="252" text-anchor="middle" font-size="20" font-weight="700" fill="var(--mint-deep)">세상에 내놓았습니다</text>

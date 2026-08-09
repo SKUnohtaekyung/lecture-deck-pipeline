@@ -301,6 +301,61 @@
   </div>
 </section>
 
+<!-- ═══ 2026-08-09 신설 (사용자 지시) ═══════════════════════════════════════
+     PART 5 간지가 「플러그인 · MCP · GitHub 기록」이고 M5 리드가 「외부 도구를 붙이는
+     방법을 먼저 보고, GitHub로 실제로 붙여 봅니다」인데, 정작 V5-02(계층) 다음이 곧장
+     V5-05(GitHub 용어)라 **「GitHub가 그 플러그인 중 하나」라는 연결 고리가 없었다.**
+     ⚠️ 연결 「방법」(계정 만들기·로그인·승인 절차)은 화면에 올리지 않는다 —
+        개념KB 필수 진술 [C-GitHub저장소]가 «연결·인증은 사전 조건이며 연결 방법 자체는
+        다루지 않는다»고 못박는다. 여기서는 「무엇이 붙어 있나」만 다룬다.
+        V5-05에 있던 「계정과 저장소 연결은 수업 전에…」 문장이 1번 칸으로 이관됐다. -->
+<section class="slide w3-plugslide" data-slide="V5-14" data-shape="mapping">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span><div class="s-team"></div>
+  </header>
+  <div class="s-full fill">
+    <h2 class="s-title">GitHub도 붙여 쓰는 도구입니다</h2>
+    <p class="s-lead">앞에서 본 층 그대로입니다 — <span class="hl-mint-mark">GitHub는 그중 하나</span>입니다.</p>
+    <!-- 사전 점검 7항 판정: ①정보모양=containment(계층 안 자리) ②역인덱스 확인
+         ③레이아웃=top-down / element=축소 계층 밴드 ④병렬 3행(순서 약함)
+         ⑤강조=리드에 mark 1개(결론) ⑥직전 V5-04는 3열 상태카드 — 여기는 상하 2단이라 다름
+         ⑦이미지=NO_IMAGE(도해로 충분)
+         ⚠️ V5-02의 2단 블록을 **축소해 되불러** GitHub가 커넥터 자리에 들어감을 보인다.
+            같은 그림을 다시 쓰는 것이 이 장의 목적이다(「앞에서 본 층 그대로」). -->
+    <div class="w3-plugmap viz-containment" role="img"
+         aria-label="담는 단위인 플러그인 안에 Skill과 GitHub 커넥터가 들어 있고, 그 아래 잇는 규격으로 MCP가 있다">
+      <span class="w3-pm-lab">담는 단위</span>
+      <span class="w3-pm-box"><b>플러그인</b><span class="w3-pm-chip">Skill</span><span class="w3-pm-chip is-on">GitHub 커넥터</span></span>
+      <span class="w3-pm-lab">잇는 규격</span>
+      <span class="w3-pm-box is-proto"><b>MCP</b></span>
+    </div>
+    <div class="w3-plug3 viz-flow-v">
+      <div class="w3-pg">
+        <span class="w3-pg-n">1</span>
+        <div class="w3-pg-b">
+          <b>무엇이 붙어 있나</b>
+          <span class="desc">Codex에 <strong>GitHub가 이미 연결돼 있습니다.</strong> 계정과 저장소 연결은 수업 전에 끝나 있어, 오늘은 붙어 있는 것을 확인만 합니다.</span>
+        </div>
+      </div>
+      <div class="w3-pg">
+        <span class="w3-pg-n">2</span>
+        <div class="w3-pg-b">
+          <b><code>[@github]</code> 를 붙이면</b>
+          <span class="desc">요청 앞에 붙여 <strong>「이건 GitHub 일이야」</strong>라고 말해 주는 것입니다.</span>
+        </div>
+      </div>
+      <div class="w3-pg is-warn">
+        <span class="w3-pg-n">3</span>
+        <div class="w3-pg-b">
+          <b>연결과 허락은 다릅니다</b>
+          <span class="desc">붙었다고 다 되는 것이 아닙니다. <strong>읽기만 할지, 올려도 되는지</strong>는 앞 장에서 본 대로 따로 정합니다.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- V5-05 GitHub — 저장소와 커밋 — concept -->
 <section class="slide" data-slide="V5-05" data-shape="concept">
   <header class="s-head">
@@ -314,10 +369,17 @@
            GitHub를 처음 꺼내는 장이라 여기가 제 자리다. 개념KB 필수 진술 [C-GitHub저장소]
            「연결·인증을 사전 조건으로 전제하며 연결 방법 자체는 다루지 않는다」의 화면 근거이므로
            지우지 마라 — 지우면 그 진술이 발표자 노트에만 남는다. -->
-      <p class="w3-pre">계정과 저장소 연결은 <strong>수업 전에 이미 끝나 있습니다.</strong> 오늘은 확인만 합니다.</p>
+      <!-- 2026-08-09 사용자 지시로 삭제: 「계정과 저장소 연결은 수업 전에 이미 끝나 있습니다.
+           오늘은 확인만 합니다.」 → 앞 장 V5-14의 1번 칸으로 이관했다.
+           ⚠️ 그 문장은 개념KB 필수 진술 [C-GitHub저장소]의 화면 근거다 — 여기서 지웠다고
+              덱에서 사라진 것이 아니다. V5-14에서 지우지 마라. -->
       <p class="w3-def"><strong>GitHub</strong> — 내 프로젝트를 인터넷에 보관하고 변경 이력을 남기는 서비스</p>
-      <p class="w3-def"><strong>저장소</strong> — 내 프로젝트가 통째로 올라가는 자리</p>
-      <p class="w3-def"><strong>커밋</strong> — 무엇을 왜 바꿨는지 적어 남기는 기록 한 건</p>
+      <!-- 2026-08-09: 영어 병기는 **각 용어가 처음 정의되는 이 자리에만** 붙인다(사용자 확정).
+           학생이 GitHub 웹 화면·Codex 응답에서 repository·commit·Push·Pull을 만났을 때
+           한글 용어와 이어지게 하는 것이 목적이다. 이후 장에서는 한글만 쓴다 —
+           ⚠️ V5-06 제목에 있던 「커밋(commit)」은 여기가 첫 정의라 이쪽으로 옮겼다. -->
+      <p class="w3-def"><strong>저장소(repository)</strong> — 내 프로젝트가 통째로 올라가는 자리</p>
+      <p class="w3-def"><strong>커밋(commit)</strong> — 무엇을 왜 바꿨는지 적어 남기는 기록 한 건</p>
       <p class="s-body">사진첩과 같습니다 — 저장소가 앨범이고, 커밋은 날짜와 설명이 붙은 사진 한 장입니다.</p>
     </div>
     <figure class="w3-deffig-fig viz-flow-v" role="img"
@@ -343,6 +405,58 @@
   </div>
 </section>
 
+<!-- ═══ 2026-08-09 신설 (사용자 지시) ═══════════════════════════════════════
+     「저장소」가 한 곳뿐인 것처럼 설명돼 있어서, 뒤따르는 세 장의 근거가 화면에 없었다 —
+     왜 커밋만으로는 GitHub에 안 보이는지(V5-06) · 왜 올리기 전에 고르는지 ·
+     왜 V5-11이 「보냈다는 말이지 도착했다는 말이 아니다」라고 하는지.
+     사전 점검 7항 판정: ①정보모양=comparison(두 자리 대비) ②역인덱스 확인
+       ③레이아웃=중앙 도해 / element=좌우 대비 + 왕복 화살표 ④병렬(좌우 동시 존재)
+       ⑤강조=캡션에 mark 1개(결론) ⑥직전 V5-05는 정의 2단(w3-deffig) — 여기는 중앙 도해
+       ⑦이미지=NO_IMAGE(관계 도해라 SVG로 충분 · 실제 캡처 대상 아님)
+     ⚠️ Pull은 별도 장을 만들지 않는다 — 각자 혼자 쓰는 저장소라 가져올 것이 없어
+        실습이 공허해진다(사용자 확정). 개념만 캡션 한 줄로 남긴다. -->
+<section class="slide w3-repo2slide" data-slide="V5-15" data-shape="comparison">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span><div class="s-team"></div>
+  </header>
+  <div class="s-full w3-stage">
+    <h2 class="s-title">저장소는 두 곳에 있습니다</h2>
+    <p class="w3-def">같은 이름이지만 <strong>자리가 다릅니다.</strong></p>
+    <figure class="w3-repo2 viz-flow-h" role="img"
+            aria-label="왼쪽 내 컴퓨터 저장소에 커밋 세 개가 있고 오른쪽 GitHub 저장소에는 두 개만 있다. 위쪽 화살표는 올리기, 아래쪽 화살표는 가져오기다">
+      <svg viewBox="0 0 1000 300" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <rect x="20" y="46" width="340" height="208" rx="18" fill="var(--blue-soft)" stroke="var(--blue)" stroke-width="2"/>
+        <text x="190" y="86" text-anchor="middle" font-size="24" font-weight="800" fill="var(--ink)">내 컴퓨터</text>
+        <text x="190" y="116" text-anchor="middle" font-size="20" font-weight="700" fill="var(--gray-700)">지금 열어 둔 프로젝트 폴더</text>
+        <rect x="56" y="146" width="268" height="34" rx="9" fill="var(--white)" stroke="var(--blue-line-strong)" stroke-width="2"/>
+        <text x="190" y="170" text-anchor="middle" font-size="19" font-weight="700" fill="var(--gray-700)">커밋 ①</text>
+        <rect x="56" y="186" width="268" height="34" rx="9" fill="var(--white)" stroke="var(--blue-line-strong)" stroke-width="2"/>
+        <text x="190" y="210" text-anchor="middle" font-size="19" font-weight="700" fill="var(--gray-700)">커밋 ②</text>
+        <rect x="56" y="226" width="268" height="34" rx="9" fill="var(--mint-soft)" stroke="var(--mint-deep)" stroke-width="2"/>
+        <text x="190" y="250" text-anchor="middle" font-size="19" font-weight="800" fill="var(--on-mint)">커밋 ③ — 아직 여기만</text>
+        <path d="M376 118 L616 118 M600 108 L618 118 L600 128" fill="none" stroke="var(--mint-deep)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        <text x="496" y="102" text-anchor="middle" font-size="21" font-weight="800" fill="var(--mint-deep)">올리기 (Push)</text>
+        <path d="M616 196 L376 196 M392 186 L374 196 L392 206" fill="none" stroke="var(--blue)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        <text x="496" y="228" text-anchor="middle" font-size="21" font-weight="800" fill="var(--blue)">가져오기 (Pull)</text>
+        <rect x="632" y="46" width="340" height="208" rx="18" fill="var(--surface)" stroke="var(--blue-line-strong)" stroke-width="2"/>
+        <text x="802" y="86" text-anchor="middle" font-size="24" font-weight="800" fill="var(--ink)">GitHub</text>
+        <text x="802" y="116" text-anchor="middle" font-size="20" font-weight="700" fill="var(--gray-700)">인터넷에 있는 저장소</text>
+        <rect x="668" y="146" width="268" height="34" rx="9" fill="var(--white)" stroke="var(--blue-line-strong)" stroke-width="2"/>
+        <text x="802" y="170" text-anchor="middle" font-size="19" font-weight="700" fill="var(--gray-700)">커밋 ①</text>
+        <rect x="668" y="186" width="268" height="34" rx="9" fill="var(--white)" stroke="var(--blue-line-strong)" stroke-width="2"/>
+        <text x="802" y="210" text-anchor="middle" font-size="19" font-weight="700" fill="var(--gray-700)">커밋 ②</text>
+        <rect x="668" y="226" width="268" height="34" rx="9" fill="none" stroke="var(--blue-line-strong)" stroke-width="2" stroke-dasharray="7 6"/>
+        <text x="802" y="250" text-anchor="middle" font-size="19" font-weight="700" fill="var(--gray-400)">아직 없습니다</text>
+      </svg>
+    </figure>
+    <!-- 2026-08-09: Pull 설명이 화살표 라벨 하나뿐이라 「왜 필요한가」가 없었다(사용자 지적).
+         전용 장을 만들지 않고 이 캡션 안에서 한 문장으로 채운다 — 오늘 실습이 없는 개념이라
+         장을 쓰는 것은 과하고, 설명조차 없는 것은 부족하다는 판단(사용자 확정). -->
+    <p class="w3-stage-cap">커밋은 <span class="hl-mint-mark">왼쪽에서 만들어집니다</span> — 올려야 오른쪽에 보입니다. 오늘은 혼자 쓰니 가져올 것이 없지만, 다른 곳에서도 고치거나 팀으로 쓰면 <strong>먼저 가져온 뒤에 시작해야 섞이지 않습니다.</strong></p>
+  </div>
+</section>
+
 <!-- V5-06 커밋은 「무엇을 올릴지 고르는 것」부터입니다 — flow -->
 <section class="slide" data-slide="V5-06" data-shape="flow">
   <header class="s-head">
@@ -350,8 +464,9 @@
     <span class="s-line"></span><div class="s-team"></div>
   </header>
   <div class="s-full w3-stage">
-    <!-- 커밋(commit) 영어 병기는 덱 전체에서 이 한 곳뿐이다(사용자 지시). 다른 장에 늘리지 마라. -->
-    <h2 class="s-title">커밋(commit)은 「무엇을 올릴지 고르는 것」부터입니다</h2>
+    <!-- 2026-08-09: 「커밋(commit)」 병기를 **첫 정의 자리인 V5-05로 옮겼다**(사용자 확정).
+         여기는 커밋이 두 번째로 나오는 곳이라 병기를 반복하지 않는다. -->
+    <h2 class="s-title">커밋은 「무엇을 올릴지 고르는 것」부터입니다</h2>
     <p class="w3-def">바뀐 것을 <strong>다 올리지 않습니다. 고를 수 있습니다.</strong></p>
     <figure class="w3-stage-fig viz-flow-h" role="img"
             aria-label="바뀐 파일 확인, 올릴 것 고르기, 커밋해서 올리기 세 단계 중 첫 칸이 강조된 흐름">
@@ -388,7 +503,7 @@
     </div>
     <div class="w3-prompt">
       <span class="w3-prompt-tag">이렇게 말하세요</span>
-      <p>"지금 이 프로젝트에서 어떤 파일이 바뀌었는지 목록으로 보여 줘. <strong>아직 커밋하거나 올리지는 마.</strong>"</p>
+      <p>"<code>[@github]</code> 지금 이 프로젝트에서 어떤 파일이 바뀌었는지 목록으로 보여 줘. <strong>아직 커밋하거나 올리지는 마.</strong> 필요한 게 없으면 설치하거나 바꾸지 말고 설명만 해 줘."</p>
     </div>
     <!-- 2026-08-09 사용자 지시로 완성 기준 삭제 -->
   </div>
@@ -401,7 +516,8 @@
     <span class="s-line"></span><div class="s-team"></div>
   </header>
   <div class="s-full fill">
-    <p class="s-eyebrow">오늘 두 번째 안전 점검</p>
+    <!-- 2026-08-09 사용자 지시로 eyebrow 삭제(「오늘 두 번째 안전 점검」).
+         PART 6의 「세 번째」와 함께 뺐다 — 제목이 이미 뜻을 말한다. 다시 붙이지 마라. -->
     <h2 class="s-title">올리기 전에 다시 확인합니다</h2>
     <p class="s-lead">PART 1에서 걸러 냈어도 <strong>작업 중에 다시 들어옵니다.</strong> AI가 예시로 넣은 값일 수도 있습니다.</p>
     <div class="w3-exclude viz-matrix">
@@ -460,7 +576,7 @@
     </div>
     <div class="w3-prompt">
       <span class="w3-prompt-tag">이렇게 말하세요</span>
-      <p>"지금 확인한 파일만 골라서, 아까 만든 문장으로 커밋하고 GitHub에 올려 줘. <strong>올리기 전에 무엇을 올릴지 먼저 보여 주고, 내가 확인하면 진행해.</strong>"</p>
+      <p>"<code>[@github]</code> 지금 확인한 파일만 골라서, 아까 만든 문장으로 커밋하고 GitHub에 올려 줘. <strong>올리기 전에 무엇을 올릴지 먼저 보여 주고, 내가 확인하면 진행해.</strong>"</p>
     </div>
     <!-- 2026-08-09 사용자 지시로 완성 기준 삭제 -->
   </div>
