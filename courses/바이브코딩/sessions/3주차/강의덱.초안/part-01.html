@@ -12,7 +12,7 @@
 <section class="slide roadmap" data-slide="M1" data-shape="flow">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
+    <span class="s-line"></span><div class="s-team"></div>
   </header>
   <div class="s-full">
     <h2 class="s-title">PART 1은 이렇게 배웁니다</h2>
@@ -41,8 +41,8 @@
       <span class="rm-arrow" aria-hidden="true">→</span>
       <div class="rm-step">
         <span class="rm-n">4</span>
-        <b>첫 수정 연습</b>
-        <span class="desc">마우스 오버 효과를 하나 넣습니다.</span>
+        <b>첫 움직임 넣기</b>
+        <span class="desc">정적이던 화면에 작은 움직임을 더합니다.</span>
         <span class="rm-out">움직이는 버튼 하나</span>
       </div>
       <span class="rm-arrow" aria-hidden="true">→</span>
@@ -60,7 +60,7 @@
 <section class="slide" data-slide="V1-01" data-shape="concept">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
+    <span class="s-line"></span><div class="s-team"></div>
   </header>
   <div class="s-full w3-deffig">
     <div class="w3-deffig-text">
@@ -69,6 +69,9 @@
       <p class="s-body">맡기기 전에 <strong>목표 · 읽을 자료 · 권한 · 완료 조건</strong>을 정해 두고, 끝나면 확인하는 작업 틀입니다.</p>
       <p class="s-body">모두가 합의한 표준 용어는 아니고 <strong>이 수업에서 쓰는 이름</strong>입니다.</p>
       <div class="callout blue">등산할 때 몸에 매는 안전벨트와 같습니다 — 떨어지는 걸 막는 게 아니라, <strong>떨어져도 되돌아올 수 있게</strong> 미리 묶어 두는 것.</div>
+      <figure class="asset-slot asset-slot--spot w3-deffig-illus" data-image-purpose="mnemonic" data-asset-kind="paper-cut-v1" data-image-state="ready">
+        <img src="자료/images/s81_harness-horse-metaphor-v1-transparent.png" alt="고삐로 말을 다루듯 하네스로 AI에게 일을 맡기는 비유 그림">
+      </figure>
     </div>
     <div class="w3-deffig-box viz-flow-v">
       <div class="w3-hn"><span class="w3-hn-n">1</span><b>목표</b><span class="desc">무엇을 끝내려는가</span></div>
@@ -80,6 +83,33 @@
   </div>
 </section>
 
+<!-- V1-10 AGENTS.md는 조언이지 자물쇠가 아닙니다 — contrast -->
+<section class="slide w3-vs-2col" data-slide="V1-10" data-shape="contrast">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span><div class="s-team"></div>
+  </header>
+  <div class="s-full fill">
+    <h2 class="s-title"><code>AGENTS.md</code>는 조언이지 자물쇠가 아닙니다</h2>
+    <p class="s-lead"><code>AGENTS.md</code>는 에이전트가 <strong>먼저 읽는 안내문</strong>입니다.</p>
+    <div class="w3-two viz-matrix">
+      <div class="w3-two-col is-can">
+        <h3>규칙이 해 주는 것</h3>
+        <p>무엇을 먼저 읽을지 알려 줍니다.</p>
+        <p>어떤 기준으로 판단할지 알려 줍니다.</p>
+        <p><strong>방향을 줍니다.</strong></p>
+      </div>
+      <div class="w3-two-col is-cant">
+        <h3>규칙이 못 하는 것</h3>
+        <p>어기지 못하게 <strong>막지는 못합니다.</strong></p>
+        <p>그래서 <strong>권한과 확인</strong>이 늘 함께 붙습니다.</p>
+        <p>결과를 보증하는 건 확인입니다.</p>
+      </div>
+    </div>
+    <div class="callout blue hug-center">도서관 「정숙」 안내문과 같습니다 — 방향은 주지만, 조용하게 만드는 건 결국 사서입니다.</div>
+  </div>
+</section>
+
 <!-- V1-02 담당에게 맡기기 전 준비 — sequence(준비 게이트)
      ⚠️ 2026-08-08 재설계. 이전 판은 「하네스의 앞 두 칸」이라는 제목으로 동심원
         도해를 썼는데, 이 장이 실제로 말하는 것은 하네스 5칸의 부분집합이 아니라
@@ -88,7 +118,7 @@
 <section class="slide" data-slide="V1-02" data-shape="sequence">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
+    <span class="s-line"></span><div class="s-team"></div>
   </header>
   <div class="s-full w3-cont">
     <h2 class="s-title">고치기 전에 해 둘 두 가지</h2>
@@ -134,7 +164,7 @@
 <section class="slide w3-vs-screen" data-slide="V1-03" data-shape="contrast">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
+    <span class="s-line"></span><div class="s-team"></div>
   </header>
   <div class="s-full fill">
     <h2 class="s-title">"파일이 있다"와 "작동한다"는 다릅니다</h2>
@@ -162,42 +192,14 @@
   </div>
 </section>
 
-<!-- V1-04 실습① — screen-operation -->
-<section class="slide w3-practice" data-slide="V1-04" data-shape="screen-operation">
-  <header class="s-head">
-    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
-  </header>
-  <div class="s-full fill">
-    <div class="w3-pr-hd">
-      <p class="s-eyebrow">실습 ①</p>
-      <h2 class="s-title">MVP 실행 확인</h2>
-      <p class="w3-crit"><span class="w3-crit-k">완성 기준</span>지금이 <strong>"정상"</strong>이라는 증거가 손에 있음</p>
-    </div>
-    <div class="eval-steps viz-flow-v">
-      <div class="work-step"><span class="n">1</span><span class="desc"><code>index.html</code>을 열고 <strong>대표 흐름을 끝까지</strong> 한 번 실행합니다.</span></div>
-      <div class="work-step"><span class="n">2</span><span class="desc">중간에 멈추지 말고 결과 화면이 나올 때까지 갑니다.</span></div>
-      <div class="work-step"><span class="n">3</span><span class="desc">정상 화면을 <strong>캡처하거나 메모</strong>로 남깁니다 — 오늘 뭔가 깨지면 이게 비교 기준이 됩니다.</span></div>
-    </div>
-    <div class="w3-ask terminal-dark" aria-label="AI에게 그대로 입력하는 요청문">
-      <div class="terminal-bar"><span></span><span></span><span></span><b>이렇게 말하세요</b></div>
-      <div class="w3-ask-body">
-        <span class="w3-ask-pfx" aria-hidden="true">&gt;_</span>
-        <p>지금 이 프로젝트가 실제로 작동하는지, <code>index.html</code>을 열어서 대표 흐름을 처음부터 끝까지 확인해 줘. <strong>고치지는 말고 결과만 알려 줘.</strong></p>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- V1-05 백업 — concept -->
 <section class="slide" data-slide="V1-05" data-shape="concept">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
+    <span class="s-line"></span><div class="s-team"></div>
   </header>
   <div class="s-full w3-deffig">
     <div class="w3-deffig-text">
-      <p class="s-eyebrow">용어</p>
       <h2 class="s-title">백업</h2>
       <p class="s-body">지금 상태를 <strong>그대로 복제해 따로 두는 것</strong>입니다.</p>
       <p class="s-body">오늘은 여러 담당이 서로 다른 파일을 건드립니다. 한 곳이 잘못돼도 <strong>통째로 되돌아올 수 있어야</strong> 합니다.</p>
@@ -206,24 +208,24 @@
     <div class="w3-deffig-box viz-flow-v">
       <div class="w3-bk"><b>내 프로젝트</b><span class="desc">지금 상태 — 원본</span></div>
       <div class="w3-bk-arrow"><span class="ar" aria-hidden="true">⤷</span>복제</div>
-      <div class="w3-bk is-keep"><b>백업_2026-08-08</b><span class="desc">복제본 — 손대지 않습니다</span></div>
+      <div class="w3-bk is-keep"><b>백업_2026-08-09</b><span class="desc">복제본 — 손대지 않습니다</span></div>
       <div class="w3-bk-arrow is-stay"><span class="ar" aria-hidden="true">↳</span>원본에서 계속</div>
       <div class="w3-bk is-work"><b>내 프로젝트</b><span class="desc">여기서 계속 작업합니다</span></div>
     </div>
   </div>
 </section>
 
-<!-- V1-06 실습② — screen-operation -->
+<!-- V1-06 실습① — screen-operation -->
 <section class="slide w3-practice" data-slide="V1-06" data-shape="screen-operation">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
+    <span class="s-line"></span><div class="s-team"></div>
   </header>
   <div class="s-full fill">
     <div class="w3-pr-hd">
-      <p class="s-eyebrow">실습 ②</p>
+      <p class="s-eyebrow">실습 ①</p>
       <h2 class="s-title">백업 만들기</h2>
-      <p class="w3-crit"><span class="w3-crit-k">완성 기준</span>백업본과 작업본이 <strong>이름만 봐도 구분됨</strong></p>
+      <!-- 2026-08-09 사용자 지시로 완성 기준 삭제 -->
     </div>
     <div class="eval-steps viz-flow-v">
       <div class="work-step"><span class="n">1</span><span class="desc">프로젝트 폴더를 <strong>통째로 복제</strong>합니다.</span></div>
@@ -234,7 +236,7 @@
       <div class="terminal-bar"><span></span><span></span><span></span><b>이렇게 말하세요</b></div>
       <div class="w3-ask-body">
         <span class="w3-ask-pfx" aria-hidden="true">&gt;_</span>
-        <p>지금 폴더 상태를 그대로 복제해서 <code>백업_2026-08-07</code> 폴더로 남겨 줘. <strong>원본은 그대로 두고</strong> 작업은 지금 폴더에서 계속할게.</p>
+        <p>지금 폴더 상태를 그대로 복제해서 상위 폴더인 <code>VibeCoding</code> 폴더에 <code>백업_2026-08-09</code> 폴더로 남겨 줘. 이후 <strong>작업은 원본 폴더에서</strong> 계속할게.</p>
       </div>
     </div>
   </div>
@@ -244,14 +246,15 @@
 <section class="slide w3-leadsplit" data-slide="V1-07" data-shape="concept">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
+    <span class="s-line"></span><div class="s-team"></div>
   </header>
   <div class="s-full">
     <div class="w3-ls-text">
-      <h2 class="s-title">이제 처음으로 코드를 만집니다</h2>
+      <h2 class="s-title">화면에 생기를 더합니다</h2>
       <p class="s-body">백업이 끝났으니 이제 <strong>안전하게</strong> 고칠 수 있습니다.</p>
       <p class="s-body">첫 수정은 가볍게 — 같은 화면도 작은 움직임 하나로 인상이 달라집니다.</p>
-      <div class="w3-termgrp">
+      <div class="w3-termgrp is-example">
+        <p class="w3-ex-lead">예를 들면</p>
         <div class="w3-term">마우스 오버 효과</div>
         <p class="s-body">마우스를 올렸을 때만 잠깐 반응하는 변화입니다. 기능을 바꾸는 게 아니라 <strong>살아 있는 느낌</strong>을 더하는 일입니다.</p>
       </div>
@@ -284,7 +287,7 @@
 <section class="slide" data-slide="V1-08" data-shape="classification">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
+    <span class="s-line"></span><div class="s-team"></div>
   </header>
   <div class="s-full fill">
     <h2 class="s-title">참고할 움직임 세 가지</h2>
@@ -327,20 +330,20 @@
   </div>
 </section>
 
-<!-- V1-09 실습③ — screen-operation -->
+<!-- V1-09 실습② — screen-operation -->
 <section class="slide w3-practice" data-slide="V1-09" data-shape="screen-operation">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
+    <span class="s-line"></span><div class="s-team"></div>
   </header>
   <div class="s-full fill">
     <div class="w3-pr-hd">
-      <p class="s-eyebrow">실습 ③</p>
+      <p class="s-eyebrow">실습 ②</p>
       <h2 class="s-title">내 화면에 움직임 하나 넣기</h2>
-      <p class="w3-crit"><span class="w3-crit-k">완성 기준</span>마우스를 올리면 움직임이 보이고, <strong>나머지는 그대로</strong>임</p>
+      <!-- 2026-08-09 사용자 지시로 완성 기준 삭제 -->
     </div>
     <div class="eval-steps viz-flow-v">
-      <div class="work-step"><span class="n">1</span><span class="desc">세 가지 중 <strong>하나만</strong> 고릅니다.</span></div>
+      <div class="work-step"><span class="n">1</span><span class="desc">원하는 움직임 <strong>하나</strong>를 고릅니다.</span></div>
       <div class="work-step"><span class="n">2</span><span class="desc">내 페이지의 버튼이나 카드에 그 효과를 넣습니다.</span></div>
       <div class="work-step"><span class="n">3</span><span class="desc">다른 기능과 배치는 <strong>그대로 둡니다.</strong></span></div>
     </div>
@@ -354,38 +357,11 @@
   </div>
 </section>
 
-<!-- V1-10 AGENTS.md는 조언이지 자물쇠가 아닙니다 — contrast -->
-<section class="slide w3-vs-2col" data-slide="V1-10" data-shape="contrast">
-  <header class="s-head">
-    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
-  </header>
-  <div class="s-full fill">
-    <h2 class="s-title"><code>AGENTS.md</code>는 조언이지 자물쇠가 아닙니다</h2>
-    <p class="s-lead"><code>AGENTS.md</code>는 에이전트가 <strong>먼저 읽는 안내문</strong>입니다.</p>
-    <div class="w3-two viz-matrix">
-      <div class="w3-two-col is-can">
-        <h3>규칙이 해 주는 것</h3>
-        <p>무엇을 먼저 읽을지 알려 줍니다.</p>
-        <p>어떤 기준으로 판단할지 알려 줍니다.</p>
-        <p><strong>방향을 줍니다.</strong></p>
-      </div>
-      <div class="w3-two-col is-cant">
-        <h3>규칙이 못 하는 것</h3>
-        <p>어기지 못하게 <strong>막지는 못합니다.</strong></p>
-        <p>그래서 <strong>권한과 확인</strong>이 늘 함께 붙습니다.</p>
-        <p>결과를 보증하는 건 확인입니다.</p>
-      </div>
-    </div>
-    <div class="callout blue hug-center">도서관 「정숙」 안내문과 같습니다 — 방향은 주지만, 조용하게 만드는 건 결국 사서입니다.</div>
-  </div>
-</section>
-
 <!-- V1-11 밖에 나가면 안 되는 파일부터 걸러 둡니다 — checklist -->
 <section class="slide" data-slide="V1-11" data-shape="checklist">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
+    <span class="s-line"></span><div class="s-team"></div>
   </header>
   <div class="s-full fill">
     <div class="w3-hd">
@@ -408,7 +384,7 @@
 <section class="slide" data-slide="V1-12" data-shape="declaration">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
+    <span class="s-line"></span><div class="s-team"></div>
   </header>
   <div class="s-full w3-decl">
     <h2 class="s-title">이제 담당을 나눌 준비가 됐습니다</h2>

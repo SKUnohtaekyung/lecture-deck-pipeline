@@ -228,8 +228,8 @@
     /* 명시도 주의: 킷은 `.s03-slide .an-intro`(0,2,0)로 21px를 건다 — 같은 형태로 올린다 */
     .s03-slide .an-intro{font-size:var(--fs-body)}
     .concept-recap .concept-lead{font-size:var(--fs-body)}
-    /* S02는 밴드가 짧아 하단이 154px 비었다. 세로 간격을 균등하게 늘려 채운다. */
-    .s02-slide .s-body-wrap{bottom:54px;display:flex;flex-direction:column;justify-content:space-evenly}
+    /* S02는 밴드가 짧다. 상단으로 모아 올린다(space-evenly는 중앙·하단으로 밀려 보인다). */
+    .s02-slide .s-body-wrap{top:120px;bottom:54px;display:flex;flex-direction:column;justify-content:flex-start;gap:20px}
 
     /* ===== 3주차 PART 1 신규 구도 (G1 결정표 등재분) =====
        토큰만 사용(R-COLOR-01) · 흰 fill + --line 단독 보더 금지(R-COLOR-04)
@@ -245,6 +245,11 @@
        도해를 넣는 칸에는 예외 없이 min-width:0을 함께 준다. */
     .w3-deffig > *{min-width:0}
     .w3-deffig-text{display:flex;flex-direction:column;gap:12px;min-height:0;min-width:0}
+    /* V1-01: 좌측 본문 여백에 하네스 비유 그림을 작게. 우측 흐름 박스는 손대지 않는다.
+       asset-slot 기본이 position:absolute(우상단)라 좌측 칼럼 흐름으로 되돌린다. */
+    .w3-deffig-illus.asset-slot{position:relative;inset:auto;z-index:auto;overflow:visible;
+      margin-top:auto;align-self:center;width:auto;height:auto;max-width:170px;max-height:110px}
+    .w3-deffig-illus.asset-slot>img{width:auto;height:auto;max-width:170px;max-height:110px;opacity:.96}
     .w3-deffig-text .s-title{margin:0 0 2px}
     .w3-deffig-text .s-body{margin:0;font-size:22px;line-height:1.62;color:var(--gray-700)}
     .w3-deffig-box{display:flex;flex-direction:column;justify-content:space-evenly;gap:10px;
@@ -458,6 +463,9 @@
     [data-slide="V1-07"] .w3-ls-visual{justify-content:center;gap:10px}
     .w3-termgrp{display:flex;flex-direction:column;align-items:flex-start;gap:8px}
     .w3-termgrp .w3-term{margin-top:0}
+    /* V1-07: 「마우스 오버 효과」는 정의가 아니라 예시임을 시각적으로 구분한다. */
+    .w3-termgrp.is-example{margin-top:6px;padding-left:16px;border-left:3px solid var(--blue-line)}
+    .w3-ex-lead{font-size:19px;font-weight:800;color:var(--blue);margin:0}
     .w3-hoverfig{margin:0;width:100%;flex:1 1 auto;min-height:0;position:relative}
     .w3-hoverfig svg{position:absolute;inset:0;width:100%;height:100%}
 
@@ -524,6 +532,62 @@
     .w3-stage > .w3-stage-cap{margin:14px 0 0;text-align:center;
       font-size:var(--fs-body);line-height:1.5;color:var(--gray-700)}
     .w3-stage > .w3-stage-cap strong{color:var(--ink)}
+
+    /* ═══ 2026-08-09 · V2-02 · V2-04 좌측 칼럼 하단 여백 (사용자 지시) ═══════
+       「글이 다 위로 올라가서 아래 여백이 너무 높다」 — 우측 도해는 세로로 길고
+       좌측 텍스트는 상단 정렬이라 하단이 비어 있었다. 두 가지를 함께 한다:
+         ① 칼럼 gap을 12→16px로 열어 글 덩어리를 조금 내린다(제목 위치는 유지 —
+            사용자가 「대주제 위치는 괜찮다」고 확인했다)
+         ② 요리 비유 한 줄을 칼럼 **맨 아래**(margin-top:auto)에 붙여 빈 세로를
+            여백이 아니라 정보로 채운다 — MEMORY 「박스를 늘려 채우지 마라」
+       ⚠️ 박스가 아니라 좌측 스트립이다. PART 2에서 2026-08-08에 걷어낸 하단
+          콜아웃을 다시 만들지 않기 위해서다(같은 판정). 23p(V2-03)는 같은 비유를
+          도해 캡션(.w3-stage-cap)으로 다는데 중앙 도해 아래라 자리가 다르다 —
+          형태 차이는 의도된 것이다. */
+    /* ⚠️ 2026-08-09 2차 정정 — ①의 「gap을 벌린다」는 **틀린 처방이었다.**
+       문장 사이를 균등하게 벌리자 붙어 있어야 할 정의·본문까지 갈라졌다
+       (사용자 지적: 「간격만 넓히면 다야? 붙일 건 붙여야지」).
+       올바른 방법: **gap은 원래대로 조이고(12px 기본) 빈 세로를 두 곳에만 몰아준다** —
+       `.w3-def`와 마지막 요소에 `margin-top:auto`를 걸면 auto가 남는 공간을 균등 분배해
+       「제목 / (빈칸) / 정의+본문 한 덩어리 / (빈칸) / 마지막 줄」이 된다.
+       덩어리는 붙어 있고 그 덩어리가 화면 중앙으로 내려온다. */
+    /* ⚠️ `.w3-deffig`의 기본 `align-items:start`는 텍스트 칼럼을 **내용 높이**로 만든다.
+       그러면 칼럼 바닥 = 마지막 요소 바닥이라 `margin-top:auto`가 흡수할 여유가 0이고,
+       「칼럼 바닥과의 간격 0px」이라는 측정이 **참이면서 무의미해진다**(실측으로 잡았다 —
+       칼럼이 457에서 끝나고 도해는 666까지 가서 209px가 비어 있었다).
+       stretch로 칼럼을 도해와 같은 높이(534px)로 만든 뒤에야 auto가 일한다. */
+    .deck .slide[data-slide="V2-02"] .w3-deffig,
+    .deck .slide[data-slide="V2-04"] .w3-deffig,
+    .deck .slide[data-slide="V5-12"] .w3-deffig{align-items:stretch}
+    /* 정의부터 본문 끝까지는 **한 덩어리로 붙어 있어야 한다.** auto는 여기 하나와
+       마지막 요소 하나, 두 곳에만 건다 — 그래야 남는 세로가 덩어리 위아래로만 간다. */
+    .deck .slide[data-slide="V2-02"] .w3-deffig-text > .w3-def,
+    .deck .slide[data-slide="V2-04"] .w3-deffig-text > .w3-def,
+    .deck .slide[data-slide="V5-12"] .w3-deffig-text > .w3-def{margin-top:auto}
+    /* V5-12는 비유 줄이 없어 마지막이 본문이다. 아래쪽 auto를 본문 끝에 건다. */
+    .deck .slide[data-slide="V5-12"] .w3-deffig-text > .s-body:last-of-type{margin-bottom:auto}
+    .w3-deffig-text > .w3-analogy{margin:auto 0 0;padding:2px 0 2px 16px;
+      border-left:4px solid var(--mint);
+      font-size:var(--fs-body);line-height:1.5;color:var(--gray-700)}
+    .w3-deffig-text > .w3-analogy strong{font-weight:800;color:var(--mint-deep)}
+    /* 사전 조건 한 줄 — V5-05. 2026-08-09에 M5 리드에서 내려왔다.
+       정의(.w3-def) 앞에 놓이는 전제 문장이라 박스를 두르지 않는다. */
+    /* ===== 마무리 THANK YOU — 2026-08-09 신설(사용자 지시) =====
+       킷 `.closing`(다크 --cover-bg)을 배경으로 쓰고 안쪽만 이 주차가 짠다.
+       ⚠️ 여기 쓰는 토큰은 전부 kit/styles에 **실재를 확인**했다
+          (--cover-bg · --white · --on-dark-muted · --on-dark-caption).
+          미정의 토큰을 쓰면 배경·글자가 조용히 사라진다(3주차 초기 사고). */
+    .closing .w3-thx{position:absolute;left:64px;right:64px;top:118px;bottom:54px;
+      display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px}
+    .w3-thx-ko{margin:0;font-size:var(--fs-lead);font-weight:700;color:var(--on-dark-muted);
+      letter-spacing:.01em}
+    /* 덱에서 가장 큰 볼드 타이포그래피 — 표지 히어로(74px)보다 크게 잡는다.
+       32px 이상은 자간 광학 보정을 동반한다(audit_typography의 tracking 검사). */
+    .w3-thx-en{margin:0;font-size:96px;line-height:1.05;font-weight:800;color:var(--white);
+      letter-spacing:-.02em}
+    .w3-thx-sub{margin:0;font-size:var(--fs-body);line-height:1.5;color:var(--on-dark-caption)}
+    .w3-deffig-text > .w3-pre{margin:6px 0 0;font-size:var(--fs-body);line-height:1.45;color:var(--gray-700)}
+    .w3-deffig-text > .w3-pre strong{font-weight:800;color:var(--ink)}
 
     /* V2-01 — 콜아웃이 빠진 만큼 두 칸이 세로를 받게 한다.
        안 주면 space-evenly가 남은 높이를 «칸 사이 빈 공간»으로 흘린다. */
@@ -611,6 +675,75 @@
     .w3-zone-item b{display:block;font-size:22px;font-weight:800;color:var(--ink)}
     .w3-zone-item span{display:block;margin-top:2px;font-size:20px;line-height:1.45;color:var(--gray-700)}
 
+    /* ── 2026-08-09 신설 3장 (V3-11~13) · 실습 ④ 뒤 「생긴 파일」 설명 ──────────
+       ⚠️ 트리에 등폭 글꼴을 쓰지 않는다. 들여쓰기는 padding-left가 만들고,
+          한글 태그가 같은 줄에 섞이는데 등폭이면 한글이 깨져 보인다. */
+
+    /* 좌우 폴더 트리 대비 — V3-11. 왼쪽(전)이 짧고 오른쪽(후)이 긴 것 자체가 메시지다. */
+    /* ⚠️ 세로 예산: 오른쪽 칸이 12줄이라 처음 값(li padding 3 · margin-top 14 · col padding 16)은
+       마지막 줄이 694px로 **바닥선 666을 28px 넘었다**(렌더 감사가 잡았다).
+       글자 크기는 그대로 두고 줄 간격·바깥 여백만 조여 맞췄다. 줄을 더 늘리려면
+       먼저 이 예산을 다시 재라 — 12줄이 상한에 가깝다. */
+    /* 2026-08-09: 왼쪽(실습 전)이 5줄, 오른쪽(실습 후)이 12줄이라 start 정렬에서는
+       왼쪽 칸이 위에 붙어 아래가 크게 비었다(사용자 지적). center로 바꿔 짧은 칸을
+       긴 칸 높이의 가운데에 맞춘다 — 가장 높은 오른쪽 칸이 행 높이를 정하므로
+       오른쪽 배치는 그대로다. */
+    .w3-tree2{display:grid;grid-template-columns:1fr 44px 1.3fr;align-items:center;
+      gap:0 18px;flex:1 1 auto;min-height:0;margin-top:8px}
+    .w3-tree2 > *{min-width:0}
+    /* 하단 패딩만 11px인 이유: 글줄은 655px로 여유가 있는데 **배경 박스**가 668px까지
+       내려가 바닥선 666을 2px 넘었다. 감사기는 자기 텍스트 없는 래퍼를 빼고 재서 안 잡지만,
+       666은 불변 규칙이라 패딩으로 맞췄다(육안 차이 없음). */
+    .w3-tr-col{background:var(--blue-soft);border-radius:var(--r-lg);padding:13px 20px 11px}
+    .w3-tr-col.is-after{background:var(--mint-soft)}
+    .w3-tr-col > h3{margin:0 0 8px;font-size:var(--fs-box-title);font-weight:800;color:var(--ink)}
+    .w3-tr-arrow{align-self:center;text-align:center;font-size:30px;font-weight:800;color:var(--blue)}
+    .w3-tr{list-style:none;margin:0;padding:0}
+    .w3-tr li{font-size:21px;line-height:1.28;color:var(--gray-700);padding:2px 0;
+      display:flex;align-items:baseline;gap:8px}
+    .w3-tr li.is-root{font-weight:800;color:var(--ink)}
+    .w3-tr li.d1{padding-left:18px}
+    .w3-tr li.d2{padding-left:36px}
+    .w3-tr li.d3{padding-left:54px}
+    .w3-tr li.is-new{color:var(--mint-deep);font-weight:800}
+    .w3-tr li.is-grew{color:var(--ink);font-weight:800}
+    .w3-tr li em{font-style:normal;font-size:18px;font-weight:700;color:var(--gray-700)}
+    .w3-tr-tag{font-size:18px;font-weight:800;color:var(--mint-deep);
+      background:var(--white);border-radius:var(--r-pill);padding:1px 10px;white-space:nowrap}
+
+    /* 파일 → 하는 일 → 비유 3행 — V3-12 */
+    .w3-role3{display:flex;flex-direction:column;gap:14px;flex:1 1 auto;min-height:0;
+      justify-content:center;margin-top:16px}
+    .w3-rl{display:grid;grid-template-columns:300px 36px 1fr 158px;align-items:center;gap:16px;
+      background:var(--blue-soft);border-radius:var(--r-lg);padding:16px 20px}
+    .w3-rl > *{min-width:0}
+    .w3-rl-f{font-family:var(--font-mono);font-size:21px;font-weight:800;color:var(--blue)}
+    .w3-rl-arrow{text-align:center;font-size:24px;font-weight:800;color:var(--blue)}
+    .w3-rl-d{font-size:var(--fs-body);line-height:1.4;color:var(--gray-700)}
+    .w3-rl-d strong{font-weight:800;color:var(--ink)}
+    /* 비유 칩 — 민트 fill 위에는 --on-mint(짙은 글자)다. 흰 글자 금지(R-COLOR-02). */
+    .w3-rl-a{justify-self:end;background:var(--mint);color:var(--on-mint);border-radius:var(--r-pill);
+      padding:5px 16px;font-size:20px;font-weight:800;white-space:nowrap}
+
+    /* 용어 한 줄 + ✗/✓ 대비 — V3-13 */
+    .w3-t2{display:flex;flex-direction:column;gap:20px;flex:1 1 auto;min-height:0;
+      justify-content:center;margin-top:18px}
+    .w3-t2-def{background:var(--blue-soft);border-radius:var(--r-lg);padding:20px 24px}
+    .w3-t2-def > b{display:block;font-size:var(--fs-box-title);font-weight:800;color:var(--ink);margin-bottom:6px}
+    .w3-t2-def p{margin:0;font-size:var(--fs-body);line-height:1.5;color:var(--gray-700)}
+    .w3-t2-def p + p{margin-top:8px}
+    .w3-t2-cmp{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+    .w3-t2-cell{border-radius:var(--r-lg);padding:18px 20px;display:flex;flex-direction:column;gap:6px}
+    .w3-t2-cell.is-x{background:var(--coral-soft);box-shadow:inset 0 0 0 2px var(--coral-line)}
+    .w3-t2-cell.is-o{background:var(--mint-soft);box-shadow:inset 0 0 0 2px var(--mint-line)}
+    .w3-t2-mark{font-size:26px;font-weight:800;line-height:1}
+    .w3-t2-cell.is-x .w3-t2-mark{color:var(--coral-deep)}
+    .w3-t2-cell.is-o .w3-t2-mark{color:var(--mint-deep)}
+    .w3-t2-cell code{font-family:var(--font-mono);font-size:22px;font-weight:800;color:var(--ink)}
+    /* ⚠️ 이 .desc는 「박스 안 보조 캡션」이 아니라 초안 본문 문구라 22px 하한 대상이다.
+       shell ② 블록의 .desc(20/500)를 (0,2,0)으로 이긴다. */
+    .w3-t2-cell .desc{font-size:var(--fs-body);line-height:1.45;color:var(--gray-700)}
+
     /* ===== 3주차 PART 4 신규 구도 (G1 결정표 등재분) ===== */
 
     /* 검토 요청 3칸 — V4-02 (③만 경고색: 가장 자주 빠뜨리는 칸) */
@@ -675,38 +808,89 @@
     .w3-as-fig svg{position:absolute;inset:0;width:100%;height:100%}
 
     /* 두 시안 나란히 렌더 — V4-05 */
-    .w3-shots{display:grid;grid-template-columns:1fr 1fr;gap:28px;flex:1 1 auto;min-height:0}
-    .w3-shot{display:flex;flex-direction:column;gap:10px;min-width:0}
+    /* ⚠️ `grid-template-rows:minmax(0,1fr)`와 `.w3-shot{min-height:0}`이 **둘 다** 필요하다.
+       격자 행 기본값은 auto(=min-content)라 부모에 `flex:1 1 auto;min-height:0`이 있어도
+       행이 줄지 않는다. 2026-08-09에 시안 캡션을 더하자 이 두 줄이 없어서 목업이
+       하단 콜아웃 위로 밀고 들어가 겹침 2건이 났다(렌더 감사가 잡았다). */
+    .w3-shots{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:minmax(0,1fr);
+      gap:28px;flex:1 1 auto;min-height:0}
+    .w3-shot{display:flex;flex-direction:column;gap:10px;min-width:0;min-height:0}
     .w3-shot-head{display:flex;align-items:baseline;gap:12px}
     .w3-shot-head b{font-size:var(--fs-box-title);font-weight:800;color:var(--ink)}
     .w3-shot-head span{font-size:20px;color:var(--gray-700)}
     .w3-shot .w3-mock{flex:1 1 auto;min-height:0}
+    /* ⚠️ 2026-08-09 대비 수정(사용자 지적: 「파란 배경에 HTML 담당 글씨가 안 보인다」).
+       원인은 명시도다 — `.w3-own-chip`이 `color:var(--own-on)`(파란 칩 위 흰 글자)를
+       선언하는데 바로 위 `.w3-shot-head b`(0,1,1)가 `.w3-own-chip`(0,1,0)을 이겨
+       칩 글자가 `--ink`(짙은 남색)로 덮여 파랑 위 파랑이 됐다.
+       (0,2,0)으로 올려 칩 자신의 대비 규약을 되살린다 — R-COLOR-02. */
+    .w3-shot-head b.w3-own-chip{color:var(--own-on)}
 
-    /* 화면 QA 6항목 × 3상태 — V4-11 */
-    .w3-qa6{width:100%;border-collapse:collapse}
-    .w3-qa6 th,.w3-qa6 td{border:1px solid var(--blue-line-strong);padding:9px 14px;
-      font-size:21px;line-height:1.35;vertical-align:middle}
-    .w3-qa6 th{background:var(--blue-soft);color:var(--blue);font-weight:800;text-align:center}
-    .w3-qa6 th:first-child{text-align:left}
-    .w3-qa6 td:first-child{font-weight:800;color:var(--ink)}
-    .w3-qa6 td:not(:first-child){text-align:center;color:var(--gray-400);
-      font-weight:800;background:var(--surface);width:118px}
+    /* 42p 목업 — 「어디가 다른가」를 직접 짚는 표식과 골격 차이용.
+       표식은 민트(일반 강조)다. 코랄은 이 덱에서 주의·경고라 오답으로 읽힌다. */
+    /* ⚠️ 세로 예산: `.w3-shots` 행이 353px이고 머리(41)+캡션(31)+gap을 빼면 목업 몫은
+       약 252px다. 처음 짠 값(hero padding 14 · row padding 7 · body padding 16)은
+       필요 높이가 293px이라 41px이 `.w3-mock{overflow:hidden}`에 **조용히 잘렸다.**
+       폰트를 줄이는 대신 내부 여백만 조여 맞췄다 — 글자 크기는 그대로다. */
+    .w3-mock-hero{display:flex;align-items:center;justify-content:space-between;gap:12px;
+      background:var(--blue-soft);border-radius:var(--r-md);padding:9px 14px}
+    .w3-mock-hero b{font-size:30px;font-weight:800;color:var(--ink);line-height:1.1}
+    .w3-mock-row{font-size:19px;line-height:1.35;color:var(--gray-700);
+      border-bottom:1px solid var(--line);padding:5px 2px}
+    .w3-shot .w3-mock-body{padding:11px 14px;gap:5px}
+    .w3-mock-row:last-child{border-bottom:0}
+    .w3-mock-badge{display:inline-block;background:var(--mint);color:var(--on-mint);
+      border-radius:var(--r-pill);padding:1px 10px;font-size:17px;font-weight:800}
+    .is-marked{outline:2px dashed var(--mint-deep);outline-offset:3px}
+    .w3-mock-here{display:inline-block;background:var(--mint);color:var(--on-mint);
+      border-radius:var(--r-pill);padding:2px 10px;font-size:16px;font-weight:800;
+      letter-spacing:.02em;white-space:nowrap}
+    .w3-mock-bar .w3-mock-here{margin-left:8px}
+    /* 시안별 한 줄 — 「오늘 5개를 어디에 놓았나」. 박스가 아니라 캡션이다. */
+    .w3-shot-cap{margin:10px 0 0;font-size:var(--fs-body);line-height:1.4;color:var(--gray-700)}
+    .w3-shot-cap strong{font-weight:800;color:var(--ink)}
+
+    /* 33·35p — 완성 기준 띠를 뺀 자리로 검정 프롬프트를 내린다(2026-08-09 사용자 지시).
+       `.s-full.fill`이 flex column이므로 auto 여백이 남는 세로를 전부 위로 밀어
+       프롬프트가 바닥 쪽에 붙는다. 폰트·박스 크기는 건드리지 않는다. */
+    [data-slide="V3-04"] .w3-prompt,
+    [data-slide="V3-08"] .w3-prompt{margin-top:auto}
+
+    /* 참고 예시 한 줄 — V4-10.
+       2026-08-09: 삭제된 V4-11「화면 QA 6항목」(표 + 통과/실패/해당없음 체크칸)의
+       여섯 항목을 여기로 흡수했다. 삭제 사유가 내용이 아니라 «규정처럼 읽힌 표 형태»였으므로
+       ⚠️ 박스·표·체크칸으로 되돌리지 마라 — 본문 한 줄로 둔다. */
+    .w3-practice .w3-eg{margin:10px 0 0;font-size:var(--fs-body);line-height:1.45;color:var(--gray-700)}
+    .w3-practice .w3-eg strong{font-weight:800;color:var(--ink)}
 
     /* ===== 3주차 PART 5·6 신규 구도 (G1 결정표 등재분) ===== */
 
-    /* 계층 밴드 — V5-02. ⚠️ 초안이 「나란한 카드 4개로 그리지 말 것」을 명시했다.
-       플러그인이 나머지를 담는 **포함 관계**가 요지이므로 세로로 겹쳐 담는다. */
-    .w3-layers{display:flex;flex-direction:column;gap:0;flex:1 1 auto;min-height:0;
-      justify-content:center}
-    .w3-layer{border-radius:var(--r-lg);padding:16px 22px;display:grid;
-      grid-template-columns:210px 1fr;align-items:center;column-gap:20px}
-    .w3-layer b{font-size:var(--fs-box-title);font-weight:800;color:var(--ink)}
-    .w3-layer span{font-size:var(--fs-body);line-height:1.45;color:var(--gray-700)}
-    .w3-layer.l1{background:var(--blue-soft);box-shadow:inset 0 0 0 2px var(--blue)}
-    .w3-layer.l2{background:var(--white);margin:10px 26px 0;box-shadow:inset 0 0 0 2px var(--blue-line-strong)}
-    .w3-layer.l3{background:var(--white);margin:10px 26px 0;box-shadow:inset 0 0 0 2px var(--blue-line-strong)}
-    .w3-layer.l4{background:var(--mint-soft);margin:10px 52px 0;box-shadow:inset 0 0 0 2px var(--mint-line)}
-    .w3-layer.l4 b{color:var(--on-mint)}
+    /* 2층 구도 — V5-02. 2026-08-09에 옛 4단 밴드(.w3-layers/.l1~.l4)를 걷어내고 대체했다.
+       옛 구도의 문제 3가지: ① 들여쓰기가 「플러그인 > Skill > 커넥터 > MCP」라는
+       **없는 3단 중첩**을 그렸다 ② 가장 아래·가장 좁은 MCP가 가장 사소해 보였다
+       ③ 「담는 단위(플러그인)」와 「잇는 규격(MCP)」이라는 다른 범주가 한 줄로 섞였다.
+       그래서 두 블록을 **같은 크기·같은 무게**로 두고, 플러그인이 담는 것(Skill·커넥터)만
+       그 안의 칩으로 내렸다. 초안의 「플러그인이 나머지를 담는다」는 bridge 한 줄로 살렸다.
+       ⚠️ 두 블록의 대등함을 깨지 마라 — 그게 이 재편의 목적이다. 세로가 넘치면 padding·gap을 조인다. */
+    .w3-two-layer{display:flex;flex-direction:column;flex:1 1 auto;min-height:0;justify-content:center}
+    .w3-tl-block{border-radius:var(--r-lg);padding:18px 22px}
+    .w3-tl-block.is-pack{background:var(--blue-soft);box-shadow:inset 0 0 0 2px var(--blue)}
+    .w3-tl-block.is-proto{background:var(--mint-soft);box-shadow:inset 0 0 0 2px var(--mint-deep)}
+    .w3-tl-tag{display:inline-block;font-size:var(--fs-eyebrow);font-weight:800;margin-bottom:8px}
+    .w3-tl-block.is-pack .w3-tl-tag{color:var(--blue)}
+    .w3-tl-block.is-proto .w3-tl-tag{color:var(--mint-deep)}
+    .w3-tl-main{display:grid;grid-template-columns:210px 1fr;align-items:center;column-gap:20px}
+    .w3-tl-main b{font-size:var(--fs-box-title);font-weight:800;color:var(--ink)}
+    .w3-tl-main span{font-size:var(--fs-body);line-height:1.45;color:var(--gray-700)}
+    .w3-tl-chips{display:flex;gap:12px;margin:12px 0 0}
+    /* ⚠️ 칩 글자를 20px로 낮추지 마라 — Skill·커넥터 설명은 「박스 안 보조 캡션」이 아니라
+       초안 5-2행의 **본문 문구 그 자체**라 22px 하한 대상이다. */
+    .w3-tl-chip{flex:1;background:var(--white);border-radius:var(--r-md);
+      box-shadow:inset 0 0 0 2px var(--blue-line-strong);padding:10px 14px;
+      font-size:var(--fs-body);line-height:1.4;color:var(--gray-700)}
+    .w3-tl-chip b{display:block;font-size:var(--fs-body);font-weight:800;color:var(--ink);margin-bottom:2px}
+    .w3-tl-bridge{margin:0;padding:10px 0;text-align:center;font-size:var(--fs-body);line-height:1.4;color:var(--gray-700)}
+    .w3-tl-bridge strong{font-weight:800;color:var(--blue)}
 
     /* 상태 3단 — V5-04 (연결됨 / 승인 대기 / 범위 초과) */
     .w3-states{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:14px;
@@ -889,7 +1073,7 @@
       <div class="cover-title">
         <h1 class="ko">에이전트 팀과 함께,<br>오늘 <span class="hl">세상에 내놓습니다</span></h1>
       </div>
-      <div class="cover-terminal"><span class="pfx">&gt;_</span><span class="q">담당을 나눠서 검토하고, 내가 판정할게</span><span class="cur" aria-hidden="true"></span></div><!-- ✏️ 예: "첫 웹페이지 만들어줘" -->
+      <div class="cover-terminal"><span class="pfx">&gt;_</span><span class="q">담당을 나눠 검토하게 하고, 배포까지 진행합니다</span><span class="cur" aria-hidden="true"></span></div><!-- ✏️ 예: "첫 웹페이지 만들어줘" -->
       <div class="cover-presenter">바이브코딩 3주 아카데미</div>
     </section>
 
@@ -920,7 +1104,7 @@
             </div>
           </div>
         </div>
-        <p class="s-lead">공개할지 정하는 것도, 공개한 뒤 책임지는 것도 <strong>사람</strong>입니다.</p>
+        <p class="s-lead">공개할지 정하는 것도, 공개한 뒤 책임지는 것도 <span class="hl-mint-text">사람</span>입니다.</p>
       </div>
     </section>
 
@@ -1010,7 +1194,7 @@
         <span class="an-spark" aria-hidden="true"></span>
         <h2 class="an-title">오늘 배우게 될 것</h2>
         <div class="an-bar"></div>
-        <p class="an-intro">여섯 정거장, <span class="hl">실습 15개</span>입니다<br>정거장마다 손에 남는 결과가 하나씩 생깁니다</p>
+        <p class="an-intro">여섯 구간을 지납니다<br>구간마다 손에 남는 결과가 하나씩 생깁니다</p>
       </div>
       <div class="an-right">
         <div class="an-item"><div class="an-num">1</div><div class="an-body"><div class="an-h">시작 상태 보호와 하네스</div><div class="an-d">실행 확인 · 백업 · 공개 금지 파일</div></div></div>
@@ -1018,7 +1202,7 @@
         <div class="an-item"><div class="an-num">3</div><div class="an-body"><div class="an-h">담당 나누기와 팀 규칙</div><div class="an-d">HTML · CSS · JS · QA</div></div></div>
         <div class="an-item"><div class="an-num">4</div><div class="an-body"><div class="an-h">병렬 검토 · 결과 판정 · 구현</div><div class="an-d">엇갈린 결과를 근거로 정합니다</div></div></div>
         <div class="an-item"><div class="an-num">5</div><div class="an-body"><div class="an-h">플러그인 · MCP · GitHub 기록</div><div class="an-d">저장소 · 커밋 · 안전 점검</div></div></div>
-        <div class="an-item"><div class="an-num">6</div><div class="an-body"><div class="an-h">공개와 공유 범위</div><div class="an-d">공유 범위 · URL 자가 점검</div></div></div>
+        <div class="an-item"><div class="an-num">6</div><div class="an-body"><div class="an-h">배포와 공유 범위</div><div class="an-d">공유 범위 · URL 자가 점검</div></div></div>
       </div>
     </section>
 
@@ -1036,7 +1220,7 @@
 <section class="slide roadmap" data-slide="M1" data-shape="flow">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
+    <span class="s-line"></span><div class="s-team"></div>
   </header>
   <div class="s-full">
     <h2 class="s-title">PART 1은 이렇게 배웁니다</h2>
@@ -1065,8 +1249,8 @@
       <span class="rm-arrow" aria-hidden="true">→</span>
       <div class="rm-step">
         <span class="rm-n">4</span>
-        <b>첫 수정 연습</b>
-        <span class="desc">마우스 오버 효과를 하나 넣습니다.</span>
+        <b>첫 움직임 넣기</b>
+        <span class="desc">정적이던 화면에 작은 움직임을 더합니다.</span>
         <span class="rm-out">움직이는 버튼 하나</span>
       </div>
       <span class="rm-arrow" aria-hidden="true">→</span>
@@ -1084,7 +1268,7 @@
 <section class="slide" data-slide="V1-01" data-shape="concept">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
+    <span class="s-line"></span><div class="s-team"></div>
   </header>
   <div class="s-full w3-deffig">
     <div class="w3-deffig-text">
@@ -1093,6 +1277,9 @@
       <p class="s-body">맡기기 전에 <strong>목표 · 읽을 자료 · 권한 · 완료 조건</strong>을 정해 두고, 끝나면 확인하는 작업 틀입니다.</p>
       <p class="s-body">모두가 합의한 표준 용어는 아니고 <strong>이 수업에서 쓰는 이름</strong>입니다.</p>
       <div class="callout blue">등산할 때 몸에 매는 안전벨트와 같습니다 — 떨어지는 걸 막는 게 아니라, <strong>떨어져도 되돌아올 수 있게</strong> 미리 묶어 두는 것.</div>
+      <figure class="asset-slot asset-slot--spot w3-deffig-illus" data-image-purpose="mnemonic" data-asset-kind="paper-cut-v1" data-image-state="ready">
+        <img src="자료/images/s81_harness-horse-metaphor-v1-transparent.png" alt="고삐로 말을 다루듯 하네스로 AI에게 일을 맡기는 비유 그림">
+      </figure>
     </div>
     <div class="w3-deffig-box viz-flow-v">
       <div class="w3-hn"><span class="w3-hn-n">1</span><b>목표</b><span class="desc">무엇을 끝내려는가</span></div>
@@ -1104,6 +1291,33 @@
   </div>
 </section>
 
+<!-- V1-10 AGENTS.md는 조언이지 자물쇠가 아닙니다 — contrast -->
+<section class="slide w3-vs-2col" data-slide="V1-10" data-shape="contrast">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span><div class="s-team"></div>
+  </header>
+  <div class="s-full fill">
+    <h2 class="s-title"><code>AGENTS.md</code>는 조언이지 자물쇠가 아닙니다</h2>
+    <p class="s-lead"><code>AGENTS.md</code>는 에이전트가 <strong>먼저 읽는 안내문</strong>입니다.</p>
+    <div class="w3-two viz-matrix">
+      <div class="w3-two-col is-can">
+        <h3>규칙이 해 주는 것</h3>
+        <p>무엇을 먼저 읽을지 알려 줍니다.</p>
+        <p>어떤 기준으로 판단할지 알려 줍니다.</p>
+        <p><strong>방향을 줍니다.</strong></p>
+      </div>
+      <div class="w3-two-col is-cant">
+        <h3>규칙이 못 하는 것</h3>
+        <p>어기지 못하게 <strong>막지는 못합니다.</strong></p>
+        <p>그래서 <strong>권한과 확인</strong>이 늘 함께 붙습니다.</p>
+        <p>결과를 보증하는 건 확인입니다.</p>
+      </div>
+    </div>
+    <div class="callout blue hug-center">도서관 「정숙」 안내문과 같습니다 — 방향은 주지만, 조용하게 만드는 건 결국 사서입니다.</div>
+  </div>
+</section>
+
 <!-- V1-02 담당에게 맡기기 전 준비 — sequence(준비 게이트)
      ⚠️ 2026-08-08 재설계. 이전 판은 「하네스의 앞 두 칸」이라는 제목으로 동심원
         도해를 썼는데, 이 장이 실제로 말하는 것은 하네스 5칸의 부분집합이 아니라
@@ -1112,7 +1326,7 @@
 <section class="slide" data-slide="V1-02" data-shape="sequence">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
+    <span class="s-line"></span><div class="s-team"></div>
   </header>
   <div class="s-full w3-cont">
     <h2 class="s-title">고치기 전에 해 둘 두 가지</h2>
@@ -1158,7 +1372,7 @@
 <section class="slide w3-vs-screen" data-slide="V1-03" data-shape="contrast">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
+    <span class="s-line"></span><div class="s-team"></div>
   </header>
   <div class="s-full fill">
     <h2 class="s-title">"파일이 있다"와 "작동한다"는 다릅니다</h2>
@@ -1186,42 +1400,14 @@
   </div>
 </section>
 
-<!-- V1-04 실습① — screen-operation -->
-<section class="slide w3-practice" data-slide="V1-04" data-shape="screen-operation">
-  <header class="s-head">
-    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
-  </header>
-  <div class="s-full fill">
-    <div class="w3-pr-hd">
-      <p class="s-eyebrow">실습 ①</p>
-      <h2 class="s-title">MVP 실행 확인</h2>
-      <p class="w3-crit"><span class="w3-crit-k">완성 기준</span>지금이 <strong>"정상"</strong>이라는 증거가 손에 있음</p>
-    </div>
-    <div class="eval-steps viz-flow-v">
-      <div class="work-step"><span class="n">1</span><span class="desc"><code>index.html</code>을 열고 <strong>대표 흐름을 끝까지</strong> 한 번 실행합니다.</span></div>
-      <div class="work-step"><span class="n">2</span><span class="desc">중간에 멈추지 말고 결과 화면이 나올 때까지 갑니다.</span></div>
-      <div class="work-step"><span class="n">3</span><span class="desc">정상 화면을 <strong>캡처하거나 메모</strong>로 남깁니다 — 오늘 뭔가 깨지면 이게 비교 기준이 됩니다.</span></div>
-    </div>
-    <div class="w3-ask terminal-dark" aria-label="AI에게 그대로 입력하는 요청문">
-      <div class="terminal-bar"><span></span><span></span><span></span><b>이렇게 말하세요</b></div>
-      <div class="w3-ask-body">
-        <span class="w3-ask-pfx" aria-hidden="true">&gt;_</span>
-        <p>지금 이 프로젝트가 실제로 작동하는지, <code>index.html</code>을 열어서 대표 흐름을 처음부터 끝까지 확인해 줘. <strong>고치지는 말고 결과만 알려 줘.</strong></p>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- V1-05 백업 — concept -->
 <section class="slide" data-slide="V1-05" data-shape="concept">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
+    <span class="s-line"></span><div class="s-team"></div>
   </header>
   <div class="s-full w3-deffig">
     <div class="w3-deffig-text">
-      <p class="s-eyebrow">용어</p>
       <h2 class="s-title">백업</h2>
       <p class="s-body">지금 상태를 <strong>그대로 복제해 따로 두는 것</strong>입니다.</p>
       <p class="s-body">오늘은 여러 담당이 서로 다른 파일을 건드립니다. 한 곳이 잘못돼도 <strong>통째로 되돌아올 수 있어야</strong> 합니다.</p>
@@ -1230,24 +1416,24 @@
     <div class="w3-deffig-box viz-flow-v">
       <div class="w3-bk"><b>내 프로젝트</b><span class="desc">지금 상태 — 원본</span></div>
       <div class="w3-bk-arrow"><span class="ar" aria-hidden="true">⤷</span>복제</div>
-      <div class="w3-bk is-keep"><b>백업_2026-08-08</b><span class="desc">복제본 — 손대지 않습니다</span></div>
+      <div class="w3-bk is-keep"><b>백업_2026-08-09</b><span class="desc">복제본 — 손대지 않습니다</span></div>
       <div class="w3-bk-arrow is-stay"><span class="ar" aria-hidden="true">↳</span>원본에서 계속</div>
       <div class="w3-bk is-work"><b>내 프로젝트</b><span class="desc">여기서 계속 작업합니다</span></div>
     </div>
   </div>
 </section>
 
-<!-- V1-06 실습② — screen-operation -->
+<!-- V1-06 실습① — screen-operation -->
 <section class="slide w3-practice" data-slide="V1-06" data-shape="screen-operation">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
+    <span class="s-line"></span><div class="s-team"></div>
   </header>
   <div class="s-full fill">
     <div class="w3-pr-hd">
-      <p class="s-eyebrow">실습 ②</p>
+      <p class="s-eyebrow">실습 ①</p>
       <h2 class="s-title">백업 만들기</h2>
-      <p class="w3-crit"><span class="w3-crit-k">완성 기준</span>백업본과 작업본이 <strong>이름만 봐도 구분됨</strong></p>
+      <!-- 2026-08-09 사용자 지시로 완성 기준 삭제 -->
     </div>
     <div class="eval-steps viz-flow-v">
       <div class="work-step"><span class="n">1</span><span class="desc">프로젝트 폴더를 <strong>통째로 복제</strong>합니다.</span></div>
@@ -1258,7 +1444,7 @@
       <div class="terminal-bar"><span></span><span></span><span></span><b>이렇게 말하세요</b></div>
       <div class="w3-ask-body">
         <span class="w3-ask-pfx" aria-hidden="true">&gt;_</span>
-        <p>지금 폴더 상태를 그대로 복제해서 <code>백업_2026-08-07</code> 폴더로 남겨 줘. <strong>원본은 그대로 두고</strong> 작업은 지금 폴더에서 계속할게.</p>
+        <p>지금 폴더 상태를 그대로 복제해서 상위 폴더인 <code>VibeCoding</code> 폴더에 <code>백업_2026-08-09</code> 폴더로 남겨 줘. 이후 <strong>작업은 원본 폴더에서</strong> 계속할게.</p>
       </div>
     </div>
   </div>
@@ -1268,14 +1454,15 @@
 <section class="slide w3-leadsplit" data-slide="V1-07" data-shape="concept">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
+    <span class="s-line"></span><div class="s-team"></div>
   </header>
   <div class="s-full">
     <div class="w3-ls-text">
-      <h2 class="s-title">이제 처음으로 코드를 만집니다</h2>
+      <h2 class="s-title">화면에 생기를 더합니다</h2>
       <p class="s-body">백업이 끝났으니 이제 <strong>안전하게</strong> 고칠 수 있습니다.</p>
       <p class="s-body">첫 수정은 가볍게 — 같은 화면도 작은 움직임 하나로 인상이 달라집니다.</p>
-      <div class="w3-termgrp">
+      <div class="w3-termgrp is-example">
+        <p class="w3-ex-lead">예를 들면</p>
         <div class="w3-term">마우스 오버 효과</div>
         <p class="s-body">마우스를 올렸을 때만 잠깐 반응하는 변화입니다. 기능을 바꾸는 게 아니라 <strong>살아 있는 느낌</strong>을 더하는 일입니다.</p>
       </div>
@@ -1308,7 +1495,7 @@
 <section class="slide" data-slide="V1-08" data-shape="classification">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
+    <span class="s-line"></span><div class="s-team"></div>
   </header>
   <div class="s-full fill">
     <h2 class="s-title">참고할 움직임 세 가지</h2>
@@ -1351,20 +1538,20 @@
   </div>
 </section>
 
-<!-- V1-09 실습③ — screen-operation -->
+<!-- V1-09 실습② — screen-operation -->
 <section class="slide w3-practice" data-slide="V1-09" data-shape="screen-operation">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
+    <span class="s-line"></span><div class="s-team"></div>
   </header>
   <div class="s-full fill">
     <div class="w3-pr-hd">
-      <p class="s-eyebrow">실습 ③</p>
+      <p class="s-eyebrow">실습 ②</p>
       <h2 class="s-title">내 화면에 움직임 하나 넣기</h2>
-      <p class="w3-crit"><span class="w3-crit-k">완성 기준</span>마우스를 올리면 움직임이 보이고, <strong>나머지는 그대로</strong>임</p>
+      <!-- 2026-08-09 사용자 지시로 완성 기준 삭제 -->
     </div>
     <div class="eval-steps viz-flow-v">
-      <div class="work-step"><span class="n">1</span><span class="desc">세 가지 중 <strong>하나만</strong> 고릅니다.</span></div>
+      <div class="work-step"><span class="n">1</span><span class="desc">원하는 움직임 <strong>하나</strong>를 고릅니다.</span></div>
       <div class="work-step"><span class="n">2</span><span class="desc">내 페이지의 버튼이나 카드에 그 효과를 넣습니다.</span></div>
       <div class="work-step"><span class="n">3</span><span class="desc">다른 기능과 배치는 <strong>그대로 둡니다.</strong></span></div>
     </div>
@@ -1378,38 +1565,11 @@
   </div>
 </section>
 
-<!-- V1-10 AGENTS.md는 조언이지 자물쇠가 아닙니다 — contrast -->
-<section class="slide w3-vs-2col" data-slide="V1-10" data-shape="contrast">
-  <header class="s-head">
-    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
-  </header>
-  <div class="s-full fill">
-    <h2 class="s-title"><code>AGENTS.md</code>는 조언이지 자물쇠가 아닙니다</h2>
-    <p class="s-lead"><code>AGENTS.md</code>는 에이전트가 <strong>먼저 읽는 안내문</strong>입니다.</p>
-    <div class="w3-two viz-matrix">
-      <div class="w3-two-col is-can">
-        <h3>규칙이 해 주는 것</h3>
-        <p>무엇을 먼저 읽을지 알려 줍니다.</p>
-        <p>어떤 기준으로 판단할지 알려 줍니다.</p>
-        <p><strong>방향을 줍니다.</strong></p>
-      </div>
-      <div class="w3-two-col is-cant">
-        <h3>규칙이 못 하는 것</h3>
-        <p>어기지 못하게 <strong>막지는 못합니다.</strong></p>
-        <p>그래서 <strong>권한과 확인</strong>이 늘 함께 붙습니다.</p>
-        <p>결과를 보증하는 건 확인입니다.</p>
-      </div>
-    </div>
-    <div class="callout blue hug-center">도서관 「정숙」 안내문과 같습니다 — 방향은 주지만, 조용하게 만드는 건 결국 사서입니다.</div>
-  </div>
-</section>
-
 <!-- V1-11 밖에 나가면 안 되는 파일부터 걸러 둡니다 — checklist -->
 <section class="slide" data-slide="V1-11" data-shape="checklist">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
+    <span class="s-line"></span><div class="s-team"></div>
   </header>
   <div class="s-full fill">
     <div class="w3-hd">
@@ -1432,7 +1592,7 @@
 <section class="slide" data-slide="V1-12" data-shape="declaration">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
+    <span class="s-line"></span><div class="s-team"></div>
   </header>
   <div class="s-full w3-decl">
     <h2 class="s-title">이제 담당을 나눌 준비가 됐습니다</h2>
@@ -1464,11 +1624,13 @@
 <section class="slide roadmap" data-slide="M2" data-shape="flow">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
+    <span class="s-line"></span><div class="s-team"></div>
   </header>
   <div class="s-full">
     <h2 class="s-title">PART 2는 이렇게 배웁니다</h2>
-    <p class="rm-lead">이번 파트는 <strong>개념만</strong> 합니다. 실습은 PART 3부터입니다.</p>
+    <!-- 2026-08-09 사용자 지시: 수강생에게 필요 없는 진행 메타(개념만 한다/실습은 언제부터)를
+         빼고 PART 2를 한 문장으로 요약했다. -->
+    <p class="rm-lead">같은 일을 맡기는 방식이 <strong>셋</strong> 있습니다 — 언제 나누는 게 이득인지까지 봅니다.</p>
     <div class="rm-track is-5 viz-flow-h">
       <div class="rm-step">
         <span class="rm-n">1</span>
@@ -1494,7 +1656,7 @@
       <div class="rm-step">
         <span class="rm-n">4</span>
         <b>오케스트레이터</b>
-        <span class="desc">전체를 아는 자리를 확인합니다.</span>
+        <span class="desc">전체를 아는 자리는 누구인지 확인합니다.</span>
         <span class="rm-out">지휘자는 나</span>
       </div>
       <span class="rm-arrow" aria-hidden="true">→</span>
@@ -1512,7 +1674,7 @@
 <section class="slide w3-vs-2col" data-slide="V2-01" data-shape="contrast">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
+    <span class="s-line"></span><div class="s-team"></div>
   </header>
   <div class="s-full fill">
     <!-- 2026-08-08: 회사 비유를 하단 callout에서 리드로 올렸다. 이 문장은 「비교를
@@ -1577,15 +1739,17 @@
 <section class="slide" data-slide="V2-02" data-shape="concept">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
+    <span class="s-line"></span><div class="s-team"></div>
   </header>
   <div class="s-full w3-deffig">
     <div class="w3-deffig-text">
-      <p class="s-eyebrow">용어</p>
       <h2 class="s-title">싱글 에이전트</h2>
       <p class="w3-def">하나의 에이전트가 계획 · 실행 · 보고를 혼자 다 하는 방식</p>
       <p class="s-body"><strong>지금까지 여러분이 써 온 방식</strong>입니다. 새로 배우는 게 아니라 이름을 붙이는 겁니다.</p>
       <p class="s-body">한 번 요청하면 한 결과가 돌아옵니다. 작은 수정 하나에는 이게 가장 빠릅니다.</p>
+      <!-- 2026-08-09 사용자 지시: 좌측 칼럼 하단이 비어 있어 요리 비유 한 줄로 채운다.
+           22p(싱글) · 23p(서브 · 도해 캡션) · 24p(멀티)가 같은 비유로 이어지는 한 세트다. -->
+      <p class="w3-analogy">주방에 요리사가 한 명 — 장보기부터 담기까지 <strong>혼자 다 합니다.</strong></p>
     </div>
     <figure class="w3-deffig-fig viz-flow-v" role="img"
             aria-label="세로 직선 흐름: 요청 하나가 에이전트 하나로 들어가고, 결과 하나가 나온다">
@@ -1609,7 +1773,7 @@
 <section class="slide" data-slide="V2-03" data-shape="concept">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
+    <span class="s-line"></span><div class="s-team"></div>
   </header>
   <div class="s-full w3-stage">
     <h2 class="s-title">서브에이전트</h2>
@@ -1640,15 +1804,17 @@
 <section class="slide" data-slide="V2-04" data-shape="concept">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
+    <span class="s-line"></span><div class="s-team"></div>
   </header>
   <div class="s-full w3-deffig">
     <div class="w3-deffig-text">
-      <p class="s-eyebrow">용어</p>
       <h2 class="s-title">멀티에이전트</h2>
       <p class="w3-def">하나의 프로젝트를 여러 전문 역할로 나눠, 각자 담당 구역을 살펴보게 하는 방식</p>
       <p class="s-body">여러 결과가 <strong>동시에</strong> 돌아오고, 그걸 모아 <strong>사람이 판정</strong>합니다.</p>
       <p class="s-body">중요한 건 <strong>개수가 아닙니다.</strong> 일이 정말 <strong>독립적으로 나뉘는가</strong>입니다.</p>
+      <!-- 2026-08-09 사용자 지시: 22p와 짝. 서브(23p)가 「요리는 여전히 내가」였던 것을
+           여기서는 「담당이 넷 · 판정은 셰프」로 받아 세 장의 비유가 이어진다. -->
+      <p class="w3-analogy">주방에 담당이 넷 — 각자 자기 파트를 맡고, <strong>낼지 말지는 셰프가 정합니다.</strong></p>
     </div>
     <figure class="w3-deffig-fig viz-flow-v" role="img"
             aria-label="한 프로젝트가 HTML·CSS·JS·QA 네 담당으로 동시에 갈라지고, 네 결과가 다시 사람의 판정으로 모인다">
@@ -1688,7 +1854,7 @@
 <section class="slide w3-tri" data-slide="V2-05" data-shape="comparison">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
+    <span class="s-line"></span><div class="s-team"></div>
   </header>
   <div class="s-full fill">
     <h2 class="s-title">셋을 나란히 보면</h2>
@@ -1724,7 +1890,7 @@
 <section class="slide" data-slide="V2-06" data-shape="structure">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
+    <span class="s-line"></span><div class="s-team"></div>
   </header>
   <div class="s-full w3-stage">
     <h2 class="s-title">오케스트레이터</h2>
@@ -1748,14 +1914,17 @@
         <rect x="716" y="192" width="188" height="86" rx="16" fill="var(--surface)" stroke="var(--blue-line-strong)" stroke-width="2"/>
         <text x="810" y="228" text-anchor="middle" font-size="22" font-weight="800" fill="var(--ink)">QA 담당</text>
         <text x="810" y="256" text-anchor="middle" font-size="19" font-weight="700" fill="var(--gray-700)">자기 악보만</text>
-        <text x="946" y="150" text-anchor="end" font-size="20" font-weight="800" fill="var(--gray-700)">담당끼리는 연결선이 없습니다</text>
+        <!-- 2026-08-09 사용자 지시: 우측 상단에 있던 도해 라벨 한 줄을 삭제했다.
+             바로 위 .w3-def가 「옆 담당이 뭘 하는지 모릅니다」로 같은 말을 이미 한다.
+             figure의 aria-label에 남은 같은 서술은 화면 문구가 아니라 도해를 볼 수 없는
+             사람을 위한 접근성 서술이므로 그대로 둔다 — 지우면 그 정보가 사라진다. -->
       </svg>
     </figure>
     <!-- PART 2에서 하단 박스를 유지하는 유일한 장이다. 앞의 두 문장과 달리 이 문장은
          도해를 설명하는 것이 아니라 «오늘 그 자리는 여러분» 이라고 청중을 직접 지목하는
          핵심 결론이라 독립된 자리가 필요하다(사용자 지시).
          줄바꿈은 사용자 지정이다 — 구 경계에서 끊고 세 줄 모두 중앙 정렬한다. -->
-    <div class="callout blue hug-center w3-close">오케스트라에서 연주자는 자기 악보만 보고, 전체 악보를 보는 건 지휘자뿐입니다.<br>오늘 그 자리는<br><strong>여러분</strong>입니다.</div>
+    <div class="callout blue hug-center w3-close">오케스트라에서 연주자는 자기 악보만 보고, 전체 악보를 보는 건 지휘자뿐입니다.<br>오늘 그 자리는 <strong>여러분</strong>입니다.</div>
   </div>
 </section>
 
@@ -1763,7 +1932,7 @@
 <section class="slide" data-slide="V2-07" data-shape="numeric">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
+    <span class="s-line"></span><div class="s-team"></div>
   </header>
   <div class="s-full w3-chartsplit">
     <div class="w3-cs-text">
@@ -1783,7 +1952,7 @@
         </div>
         <div class="cc-axis"><span>싱글</span><span>멀티 최소</span><span>멀티 최대</span></div>
       </div>
-      <p class="w3-cs-note">같은 일을 시켰을 때 쓰는 분량입니다. 나누는 순간부터 <strong>이만큼을 더 씁니다.</strong></p>
+      <p class="w3-cs-note">같은 일을 시켰을 때 쓰는 분량입니다. 나누는 순간부터 <strong>싱글보다 최소 3배, 많게는 10배를 더 씁니다.</strong></p>
     </div>
   </div>
 </section>
@@ -1804,7 +1973,7 @@
 <section class="slide roadmap" data-slide="M3" data-shape="flow">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
+    <span class="s-line"></span><div class="s-team"></div>
   </header>
   <div class="s-full">
     <h2 class="s-title">PART 3은 이렇게 배웁니다</h2>
@@ -1812,7 +1981,7 @@
     <div class="rm-track is-5 viz-flow-h">
       <div class="rm-step">
         <span class="rm-n">1</span>
-        <b>왜 파일로 나누나</b>
+        <b>무엇으로 나누나</b>
         <span class="desc">우리가 가진 건 파일뿐입니다.</span>
         <span class="rm-out">나누는 기준</span>
       </div>
@@ -1826,23 +1995,27 @@
       <span class="rm-arrow" aria-hidden="true">→</span>
       <div class="rm-step">
         <span class="rm-n">3</span>
-        <b>내 파일에 담당 붙이기</b>
-        <span class="desc">실습 ④ — 직접 배정합니다.</span>
-        <span class="rm-out">담당 배정표</span>
-      </div>
-      <span class="rm-arrow" aria-hidden="true">→</span>
-      <div class="rm-step">
-        <span class="rm-n">4</span>
-        <b>고치는 사람은 한 명</b>
+        <b>쓰는 담당은 하나</b>
         <span class="desc">같은 파일을 둘이 안 만집니다.</span>
         <span class="rm-out">충돌을 막는 약속</span>
       </div>
       <span class="rm-arrow" aria-hidden="true">→</span>
+      <!-- 2026-08-09: 실습 ④ 뒤에 「생긴 파일 살펴보기」 3장을 붙이면서 로드맵에 자리가
+           필요했다. 템플릿이 6스텝 이상을 금지하므로(1280px에서 칸당 140px로 판독 붕괴)
+           옛 4·5(「내 파일에 담당 붙이기」·「팀 규칙 적어 두기」)를 한 칸으로 묶었다 —
+           M2·M3에 이미 쓴 방식이라 일관된다. 내용은 뒤따르는 본문 슬라이드가 온전히 다룬다. -->
+      <div class="rm-step">
+        <span class="rm-n">4</span>
+        <b>담당 배정하고 팀 규칙 적기</b>
+        <span class="desc">직접 정하고, 파일에 적어 둡니다.</span>
+        <span class="rm-out">담당 배정표와 규칙</span>
+      </div>
+      <span class="rm-arrow" aria-hidden="true">→</span>
       <div class="rm-step is-goal">
         <span class="rm-n">5</span>
-        <b>팀 규칙 적어 두기</b>
-        <span class="desc">실습 ⑤ — 규칙을 팀용으로.</span>
-        <span class="rm-out">규칙이 적힌 파일</span>
+        <b>생긴 파일 살펴보기</b>
+        <span class="desc">새로 생긴 것이 무엇인지 확인합니다.</span>
+        <span class="rm-out">낯설지 않은 폴더</span>
       </div>
     </div>
   </div>
@@ -1852,10 +2025,10 @@
 <section class="slide w3-vs-2col" data-slide="V3-01" data-shape="contrast">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
+    <span class="s-line"></span><div class="s-team"></div>
   </header>
   <div class="s-full fill">
-    <h2 class="s-title">우리 프로젝트는 조금 다릅니다</h2>
+    <h2 class="s-title">프로젝트마다 나누는 기준은 다릅니다</h2>
     <div class="w3-two viz-matrix">
       <div class="w3-two-col is-cant">
         <h3>보통 팀은 이렇게 나눕니다</h3>
@@ -1889,7 +2062,7 @@
             <rect x="4" y="68" width="216" height="48" rx="10" fill="var(--white)" stroke="var(--blue-line-strong)" stroke-width="2"/>
             <text x="112" y="99" text-anchor="middle" font-size="20" font-weight="800" fill="var(--ink)">script.js</text>
             <rect x="240" y="68" width="216" height="48" rx="10" fill="var(--white)" stroke="var(--blue-line-strong)" stroke-width="2"/>
-            <text x="348" y="99" text-anchor="middle" font-size="20" font-weight="800" fill="var(--ink)">화면</text>
+            <text x="348" y="99" text-anchor="middle" font-size="18" font-weight="800" fill="var(--ink)">QA(검증)</text>
           </svg>
         </figure>
         <p>기준은 <strong>파일</strong>입니다.</p>
@@ -1903,7 +2076,7 @@
 <section class="slide w3-mapslide" data-slide="V3-02" data-shape="mapping">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
+    <span class="s-line"></span><div class="s-team"></div>
   </header>
   <div class="s-full fill">
     <h2 class="s-title">HTML · CSS · JS · QA 담당</h2>
@@ -1925,9 +2098,9 @@
         <span class="w3-map-role"><b class="w3-own-chip">JS 담당</b><span class="desc">동작을 봅니다</span></span>
       </div>
       <div class="w3-map-row w3-own-qa">
-        <span class="w3-map-file">화면</span>
+        <span class="w3-map-file">화면 전체</span>
         <span class="w3-map-arrow" aria-hidden="true">→</span>
-        <span class="w3-map-role"><b class="w3-own-chip">QA 담당</b><span class="desc">파일이 아니라 화면을 검증합니다</span></span>
+        <span class="w3-map-role"><b class="w3-own-chip">QA 담당</b><span class="desc">파일이 아니라 화면 전체를 검증합니다</span></span>
       </div>
     </div>
     <div class="callout blue hug-center">경계가 파일이라 <strong>겹칠 수가 없습니다.</strong> 이게 오늘 사고를 막아 줍니다.</div>
@@ -1935,39 +2108,18 @@
 </section>
 
 
-<!-- V3-04 실습④ — screen-operation -->
-<section class="slide w3-practice" data-slide="V3-04" data-shape="screen-operation">
-  <header class="s-head">
-    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
-  </header>
-  <div class="s-full fill">
-    <p class="s-eyebrow">실습 ④</p>
-    <h2 class="s-title">내 프로젝트에 담당 배정하기</h2>
-    <div class="eval-steps viz-flow-v">
-      <div class="work-step"><span class="n">1</span><span class="desc">내 프로젝트를 HTML · CSS · JS · QA <strong>네 담당</strong>으로 나눕니다.</span></div>
-      <div class="work-step"><span class="n">2</span><span class="desc">각 담당이 <strong>어느 파일</strong>을 맡을지 한 줄씩 적습니다.</span></div>
-      <div class="work-step"><span class="n">3</span><span class="desc">파일이 3개뿐이어도 괜찮습니다 — QA 담당은 파일 대신 <strong>화면</strong>을 맡습니다.</span></div>
-    </div>
-    <div class="w3-prompt">
-      <span class="w3-prompt-tag">이렇게 말하세요</span>
-      <p>"내 프로젝트를 HTML(구조) · CSS(스타일) · JS(동작) · QA(검증) 네 담당으로 나눈다면 각각 어떤 파일을 맡으면 좋을지 제안해 줘. <strong>파일은 아직 고치지 마.</strong>"</p>
-    </div>
-    <div class="callout blue hug-center w3-goal">완성 기준 — 파일마다 <strong>담당이 하나씩</strong> 정해짐</div>
-  </div>
-</section>
-
-
-<!-- V3-06 단일 작성자 — contrast -->
+<!-- V3-06 단일 작성자 — contrast
+     2026-08-09: 실습③(V3-04) **앞**으로 옮겼다(사용자 지시). 「쓰는 담당은 하나」
+     규칙을 먼저 알아야 실습③에서 담당을 배정할 수 있다 — M3 로드맵 3·4단계도
+     같은 이유로 스왑했다. -->
 <section class="slide w3-vs-2col" data-slide="V3-06" data-shape="contrast">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
+    <span class="s-line"></span><div class="s-team"></div>
   </header>
   <div class="s-full fill">
-    <p class="s-eyebrow">용어</p>
-    <h2 class="s-title">단일 작성자</h2>
-    <p class="w3-def">같은 수정 단계에서 <strong>한 파일을 쓰는 역할은 한 명뿐</strong>이라는 규칙</p>
+    <h2 class="s-title">한 파일은 한 담당만 씁니다</h2>
+    <p class="w3-def">같은 수정 단계에서 <strong>한 파일을 쓰는 담당은 하나뿐</strong>이라는 규칙</p>
     <div class="w3-two viz-matrix">
       <div class="w3-two-col is-cant">
         <h3>둘이 동시에 고치면</h3>
@@ -1986,7 +2138,7 @@
         <p>서로의 결과를 <strong>덮어씁니다.</strong></p>
       </div>
       <div class="w3-two-col is-can">
-        <h3>쓰는 건 한 명입니다</h3>
+        <h3>쓰는 건 한 담당입니다</h3>
         <figure class="w3-two-fig" role="img" aria-label="같은 파일에 한 손만 얹혀 있고 나머지는 읽기만 하는 그림">
           <svg viewBox="0 0 460 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <rect x="150" y="46" width="160" height="60" rx="12" fill="var(--white)" stroke="var(--blue)" stroke-width="3"/>
@@ -1994,7 +2146,7 @@
             <circle cx="96" cy="30" r="22" fill="var(--blue)"/>
             <text x="96" y="38" text-anchor="middle" font-size="19" font-weight="800" fill="var(--white)">A</text>
             <path d="M114 44 L172 62" stroke="var(--blue)" stroke-width="3" stroke-linecap="round"/>
-            <text x="230" y="30" text-anchor="middle" font-size="21" font-weight="800" fill="var(--blue)">쓰기 한 명</text>
+            <text x="230" y="30" text-anchor="middle" font-size="21" font-weight="800" fill="var(--blue)">쓰기 한 담당</text>
             <circle cx="364" cy="30" r="22" fill="var(--surface)" stroke="var(--blue-line-strong)" stroke-width="2"/>
             <text x="364" y="38" text-anchor="middle" font-size="19" font-weight="800" fill="var(--gray-700)">B</text>
             <path d="M346 44 L288 62" stroke="var(--blue-line-strong)" stroke-width="3" stroke-linecap="round" stroke-dasharray="5 5"/>
@@ -2007,11 +2159,34 @@
   </div>
 </section>
 
+<!-- V3-04 실습③ — screen-operation -->
+<section class="slide w3-practice" data-slide="V3-04" data-shape="screen-operation">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span><div class="s-team"></div>
+  </header>
+  <div class="s-full fill">
+    <p class="s-eyebrow">실습 ③</p>
+    <h2 class="s-title">내 프로젝트에 담당 배정하기</h2>
+    <div class="eval-steps viz-flow-v">
+      <div class="work-step"><span class="n">1</span><span class="desc">내 프로젝트를 HTML · CSS · JS · QA <strong>네 담당</strong>으로 나눕니다.</span></div>
+      <div class="work-step"><span class="n">2</span><span class="desc">각 담당이 <strong>어느 파일</strong>을 맡을지 한 줄씩 적습니다.</span></div>
+      <div class="work-step"><span class="n">3</span><span class="desc">파일이 3개뿐이어도 괜찮습니다 — QA 담당은 파일 대신 <strong>화면</strong>을 맡습니다.</span></div>
+    </div>
+    <div class="w3-prompt">
+      <span class="w3-prompt-tag">이렇게 말하세요</span>
+      <p>"내 프로젝트를 HTML(구조) · CSS(스타일) · JS(동작) · QA(검증) 네 담당으로 나눈다면 각각 어떤 파일을 맡으면 좋을지 제안해 줘. <strong>파일은 아직 고치지 마.</strong>"</p>
+    </div>
+    <!-- 2026-08-09 사용자 지시로 완성 기준 삭제 -->
+  </div>
+</section>
+
+
 <!-- V3-07 팀 규칙을 다시 쓰는 이유 — flow -->
 <section class="slide" data-slide="V3-07" data-shape="flow">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
+    <span class="s-line"></span><div class="s-team"></div>
   </header>
   <div class="s-full w3-stage">
     <h2 class="s-title">팀 규칙을 다시 쓰는 이유</h2>
@@ -2041,14 +2216,14 @@
   </div>
 </section>
 
-<!-- V3-08 실습⑤ — screen-operation -->
+<!-- V3-08 실습④ — screen-operation -->
 <section class="slide w3-practice" data-slide="V3-08" data-shape="screen-operation">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
+    <span class="s-line"></span><div class="s-team"></div>
   </header>
   <div class="s-full fill">
-    <p class="s-eyebrow">실습 ⑤</p>
+    <p class="s-eyebrow">실습 ④</p>
     <h2 class="s-title"><code>AGENTS.md</code>에 팀 규칙 추가</h2>
     <div class="eval-steps viz-flow-v">
       <div class="work-step"><span class="n">1</span><span class="desc">기존 <code>AGENTS.md</code>에 세 가지를 더합니다 — <strong>담당 파일 표</strong>.</span></div>
@@ -2059,37 +2234,165 @@
       <span class="w3-prompt-tag">이렇게 말하세요</span>
       <p>"지금부터 여러 담당이 이 프로젝트를 나눠서 볼 거야. AGENTS.md에 담당 파일 표, 남의 파일은 수정하지 않는다는 규칙, 완료 전에 확인할 항목을 추가해 줘. <strong>기존 내용은 지우지 마.</strong>"</p>
     </div>
-    <div class="callout blue hug-center w3-goal">완성 기준 — <strong>세 항목이 파일에 실제로 적혀 있음</strong></div>
+    <!-- 2026-08-09 사용자 지시로 완성 기준 삭제 -->
   </div>
 </section>
 <!-- V3-10 팀 구성 프롬프트 — screen-operation
-     사용자 제공 실사용 프롬프트를 사람 이름(수진·민호·지훈·도윤) 대신
-     이 과정의 담당 이름(HTML·CSS·JS·QA)으로 옮겨 적었다. 학생이 그대로
-     복사해 쓰는 문장이라 줄을 줄이거나 요약하지 않는다. -->
+     ⚠️ 2026-08-09: 사용자 제공 **원문 그대로**로 되돌렸다(사용자 확정).
+        · 사람 이름(짱구·철수·훈이·맹구) — 초안 「용어 원칙: 사람 이름은 쓰지
+          않는다」를 **이 한 장에 한정해** 의도적으로 어긴다. 학생이 그대로
+          복사해 실행하는 문장이라 원문을 손대지 않는 쪽을 택했다.
+        · 「QA 엔지니어」도 덱 표준 「QA 담당」과 다르지만 원문 유지가 확정이다.
+        줄을 줄이거나 요약하지 않는다. 문구를 다듬지도 않는다. -->
 <section class="slide" data-slide="V3-10" data-shape="screen-operation">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
+    <span class="s-line"></span><div class="s-team"></div>
   </header>
   <div class="s-full fill">
-    <p class="s-eyebrow">실습 ⑤ — 그대로 복사해 쓰세요</p>
+    <p class="s-eyebrow">실습 ④ — 그대로 복사해 쓰세요</p>
     <h2 class="s-title">팀 구성 프롬프트</h2>
     <div class="w3-bigprompt">
       <span class="w3-bp-tag">이렇게 말하세요</span>
       <div class="w3-bp-col">
-        <p>이 프로젝트에 <strong>AI 개발팀</strong>을 구성해 줘.</p>
-        <p>다음 네 개의 전문 서브에이전트를 만들어.</p>
-        <p><span class="w3-bp-num">1.</span> <strong>HTML 담당</strong> — 화면 구조 · index.html</p>
-        <p><span class="w3-bp-num">2.</span> <strong>CSS 담당</strong> — 스타일 · style.css</p>
-        <p><span class="w3-bp-num">3.</span> <strong>JS 담당</strong> — 동작 · script.js</p>
-        <p><span class="w3-bp-num">4.</span> <strong>QA 담당</strong> — 검증 · 화면 전체</p>
+        <p>이 프로젝트에 <strong>AI 개발팀</strong>을 구성해줘.</p>
+        <p>다음 네 명의 전문 <strong>서브에이전트</strong>를 만들어.</p>
+        <p><span class="w3-bp-num">1.</span> <strong>짱구</strong> — HTML 담당</p>
+        <p><span class="w3-bp-num">2.</span> <strong>철수</strong> — CSS 담당</p>
+        <p><span class="w3-bp-num">3.</span> <strong>훈이</strong> — JS 담당</p>
+        <p><span class="w3-bp-num">4.</span> <strong>맹구</strong> — QA 엔지니어</p>
       </div>
       <div class="w3-bp-col">
-        <p>각 담당은 자신의 이름과 역할을 인식해야 한다. 역할을 질문받으면 <strong>"나는 OO 담당이야."</strong>라고 답해야 한다.</p>
-        <p>각 담당은 <strong>자기 파일에만</strong> 집중하고, 메인은 요청에 따라 적절한 담당에게 작업을 위임한다.</p>
-        <p>이 구성이 이후 작업에도 유지되도록 필요한 <strong>Codex 설정 파일과 AGENTS.md</strong>를 생성해 줘.</p>
-        <p>초보자가 추가로 수정하지 않아도 <strong>바로 사용할 수 있도록</strong> 완성해 줘.</p>
-        <p>마지막에 <strong>생성한 파일과 각 담당의 호출 방법</strong>을 설명해 줘.</p>
+        <p>각 에이전트는 자신의 이름과 역할을 인식해야 한다. 이름이나 역할을 질문받으면 <strong>“나는 [역할] [이름]이야.”</strong>라고 답해야 한다.</p>
+        <p>각 에이전트는 자신의 담당 영역에 집중하고, 메인 에이전트는 요청에 따라 적절한 에이전트에게 작업을 위임한다.</p>
+        <p>이 구성이 이후 작업에도 유지되도록 필요한 <strong>Codex 설정 파일과 AGENTS.md</strong>를 생성해줘.</p>
+        <p>초보자가 추가로 수정하지 않아도 <strong>바로 사용할 수 있도록</strong> 완성하고, 생성한 파일과 <strong>각 에이전트의 호출 방법</strong>을 마지막에 설명해줘.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 2026-08-09 신설 3장 (사용자 지시) ═══════════════════════════════════
+     실습 ④를 돌리면 학생 폴더에 `.codex` 묶음과 toml 파일들이 **갑자기** 생긴다.
+     그때 「이게 다 뭐지」가 그대로 방치되던 자리라, 실습 바로 뒤에서 답해 준다.
+     ⚠️ 초안은 「Custom Agent TOML 파일 실습」을 **의도적으로 뺐다**(실제 유효 구조가
+        HANDS-ON VALIDATION REQUIRED 미해소). 여기서 하는 것은 **toml을 쓰게 하는 실습이
+        아니라 생긴 것을 알아보게 하는 설명**이라 그 결정과 충돌하지 않는다.
+        다만 경로를 화면에 확정 표기했으므로 **강의 전 실제 생성 결과 확인이 필요하다**
+        (발표자 노트 맨 앞에 명시). 다르면 V3-11 트리를 고치거나 강사 화면으로 대체한다.
+     ID는 V3-11~13이다 — 삭제된 V3-03·V3-05·V3-09는 재사용하지 않는다(R-SLIDE-ID-01). -->
+
+<!-- V3-11 실습 ④ 뒤, 폴더에 생긴 것 — containment(before/after) -->
+<section class="slide w3-treeslide" data-slide="V3-11" data-shape="containment">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span><div class="s-team"></div>
+  </header>
+  <div class="s-full fill">
+    <!-- ⚠️ 제목에 「실습」을 넣지 마라. `verify_deck_quality`가 «제목에 실습이 있으면
+         실습 슬라이드»로 분류해(R-QC-17) 단계 요소가 없는 이 설명 장을 「실습 완결성 미달」로
+         잡는다. 렌더 감사도 kind를 「실습」으로 찍는다. 첫 판(「실습 ④ 뒤, 폴더에 생긴 것」)이
+         실제로 그렇게 걸렸다 — 검사기가 옳고 제목이 틀렸던 경우다.
+         시점은 이 장이 실습 바로 뒤에 온다는 배치가 이미 말해 준다. -->
+    <h2 class="s-title">팀을 만들면 폴더에 생기는 것</h2>
+    <!-- 이 장의 일은 «안심»이다. 초보자가 가장 먼저 겁내는 것이 「내 코드가 어떻게 됐지」라
+         왼쪽 네 줄이 오른쪽에 그대로 있다는 것을 눈으로 보여 주는 것이 핵심이다. -->
+    <p class="s-lead">내 파일은 그대로입니다. <strong>AI 팀 설정만 옆에 생겼습니다.</strong></p>
+    <div class="w3-tree2 viz-containment">
+      <div class="w3-tr-col">
+        <h3>실습 전</h3>
+        <ul class="w3-tr">
+          <li class="is-root">내 프로젝트</li>
+          <li class="d1">index.html</li>
+          <li class="d1">style.css</li>
+          <li class="d1">script.js</li>
+          <li class="d1">AGENTS.md</li>
+        </ul>
+      </div>
+      <span class="w3-tr-arrow" aria-hidden="true">→</span>
+      <div class="w3-tr-col is-after">
+        <h3>실습 후</h3>
+        <ul class="w3-tr">
+          <li class="is-root">내 프로젝트</li>
+          <li class="d1">index.html</li>
+          <li class="d1">style.css</li>
+          <li class="d1">script.js</li>
+          <li class="d1 is-grew">AGENTS.md <span class="w3-tr-tag">내용이 늘었습니다</span></li>
+          <li class="d1 is-new">.codex <span class="w3-tr-tag">새로 생겼습니다</span></li>
+          <li class="d2 is-new">config.toml</li>
+          <li class="d2 is-new">agents</li>
+          <li class="d3 is-new">janggu.toml <em>짱구 · HTML</em></li>
+          <li class="d3 is-new">cheolsu.toml <em>철수 · CSS</em></li>
+          <li class="d3 is-new">hooni.toml <em>훈이 · JS</em></li>
+          <li class="d3 is-new">maenggu.toml <em>맹구 · QA</em></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- V3-12 새로 생긴 것들이 하는 일 — mapping(파일 → 역할 → 비유) -->
+<section class="slide w3-roleslide" data-slide="V3-12" data-shape="mapping">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span><div class="s-team"></div>
+  </header>
+  <div class="s-full fill">
+    <h2 class="s-title">새로 생긴 것들이 하는 일</h2>
+    <p class="s-lead">이름은 낯설지만, <strong>이미 배운 것에 파일 이름만 붙은 것</strong>입니다.</p>
+    <div class="w3-role3 viz-matrix">
+      <div class="w3-rl">
+        <code class="w3-rl-f">AGENTS.md</code>
+        <span class="w3-rl-arrow" aria-hidden="true">→</span>
+        <span class="w3-rl-d">팀 전체가 읽는 <strong>협업 규칙</strong></span>
+        <!-- 2026-08-09: 「사규」는 입문자에게 어려운 말이라 교체(사용자 지적).
+             9p(V1-10)가 AGENTS.md를 「에이전트가 먼저 읽는 안내문」으로 이미 소개했으므로
+             그 말과 이어지는 「팀 안내서」로 맞췄다 — 조직도·직무기술서와 같은 회사 문서 계열도 유지된다. -->
+        <span class="w3-rl-a">팀 안내서</span>
+      </div>
+      <div class="w3-rl">
+        <code class="w3-rl-f">.codex/config.toml</code>
+        <span class="w3-rl-arrow" aria-hidden="true">→</span>
+        <span class="w3-rl-d"><strong>누가 이 팀에 있는지</strong> 연결</span>
+        <span class="w3-rl-a">조직도</span>
+      </div>
+      <div class="w3-rl">
+        <code class="w3-rl-f">.codex/agents/*.toml</code>
+        <span class="w3-rl-arrow" aria-hidden="true">→</span>
+        <span class="w3-rl-d"><strong>담당 한 명의</strong> 역할과 범위</span>
+        <span class="w3-rl-a">직무기술서</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- V3-13 TOML과 .codex — definition + contrast -->
+<section class="slide w3-t2slide" data-slide="V3-13" data-shape="definition">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span><div class="s-team"></div>
+  </header>
+  <div class="s-full fill">
+    <h2 class="s-title">TOML과 <code>.codex</code>, 두 가지만</h2>
+    <div class="w3-t2">
+      <div class="w3-t2-def">
+        <b>TOML</b>
+        <p>설정값을 사람이 읽기 쉽게 적어 두는 <strong>파일 형식</strong>입니다.</p>
+        <p class="w3-t2-note">문법은 배우지 않습니다. AI 담당에게 주는 <strong>설정표</strong>라고만 알면 됩니다.</p>
+      </div>
+      <!-- 실제로 가장 많이 헷갈리는 지점이라 ✗/✓ 대비로 못 박는다.
+           첨부 자료가 따로 한 절을 할애한 오해다. -->
+      <div class="w3-t2-cmp">
+        <div class="w3-t2-cell is-x">
+          <span class="w3-t2-mark">✗</span>
+          <code>내 프로젝트.codex</code>
+          <span class="desc">새 프로젝트가 하나 더 생긴 것이 아닙니다.</span>
+        </div>
+        <div class="w3-t2-cell is-o">
+          <span class="w3-t2-mark">✓</span>
+          <code>내 프로젝트\.codex</code>
+          <span class="desc">내 폴더 <strong>안에</strong> 생긴 설정 폴더입니다.</span>
+        </div>
       </div>
     </div>
   </div>
@@ -2113,11 +2416,13 @@
 <section class="slide roadmap" data-slide="M4" data-shape="flow">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
+    <span class="s-line"></span><div class="s-team"></div>
   </header>
   <div class="s-full">
     <h2 class="s-title">PART 4는 이렇게 배웁니다</h2>
-    <p class="rm-lead"><strong>순서는 지난주와 똑같습니다</strong> — 사람만 늘었습니다. 오늘 실습이 가장 많은 구간이라 손이 바빠집니다.</p>
+    <!-- 2026-08-09: 「지난주와 똑같습니다」는 수강생이 무엇과 비교하는지 알 수 없는 말이라
+         순서를 화면에 직접 적었다(사용자 지시). -->
+    <p class="rm-lead">요청 → 검토 → 판정 → 구현 → 확인. <strong>순서는 그대로고, 검토하는 담당만 여럿</strong>입니다.</p>
     <div class="rm-track is-5 viz-flow-h">
       <div class="rm-step">
         <span class="rm-n">1</span>
@@ -2129,28 +2434,28 @@
       <div class="rm-step">
         <span class="rm-n">2</span>
         <b>담당별 병렬 검토</b>
-        <span class="desc">실습 ⑥ — 셋에게 따로.</span>
+        <span class="desc">세 담당에게 따로 검토를 맡깁니다.</span>
         <span class="rm-out">서로 다른 제안</span>
       </div>
       <span class="rm-arrow" aria-hidden="true">→</span>
       <div class="rm-step">
         <span class="rm-n">3</span>
         <b>충돌과 판정</b>
-        <span class="desc">실습 ⑦ — 근거로 고릅니다.</span>
+        <span class="desc">엇갈린 제안을 근거로 판정합니다.</span>
         <span class="rm-out">판정표</span>
       </div>
       <span class="rm-arrow" aria-hidden="true">→</span>
       <div class="rm-step">
         <span class="rm-n">4</span>
         <b>단일 작성자가 구현</b>
-        <span class="desc">실습 ⑧ — 한 명만 고칩니다.</span>
+        <span class="desc">정해진 한 명만 파일을 고칩니다.</span>
         <span class="rm-out">반영된 개선</span>
       </div>
       <span class="rm-arrow" aria-hidden="true">→</span>
       <div class="rm-step is-goal">
         <span class="rm-n">5</span>
         <b>독립 QA와 화면 확인</b>
-        <span class="desc">실습 ⑨ — 안 고친 담당이.</span>
+        <span class="desc">고치지 않은 담당이 화면을 확인합니다.</span>
         <span class="rm-out">통과 기록</span>
       </div>
     </div>
@@ -2162,7 +2467,7 @@
 <section class="slide w3-req3slide" data-slide="V4-02" data-shape="classification">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
+    <span class="s-line"></span><div class="s-team"></div>
   </header>
   <div class="s-full fill">
     <h2 class="s-title">검토 요청에 넣을 것 셋</h2>
@@ -2184,18 +2489,20 @@
         <p><strong>가장 자주 빠뜨리는 칸입니다.</strong> 이걸 빠뜨리면 검토만 시켰는데 파일이 바뀌어 있습니다.</p>
       </div>
     </div>
-    <div class="callout blue hug-center">셋 중 하나라도 비면 그 자리는 <strong>에이전트가 알아서 채웁니다.</strong></div>
+    <!-- 2026-08-09 삭제(사용자 지시): 「셋 중 하나라도 비면 그 자리는 에이전트가 알아서
+         채웁니다」. 위 세 카드가 각각 「안 적으면 폴더 전체를 훑는다 / 아무거나 말한다 /
+         파일이 바뀌어 있다」로 **이미 구체적으로** 말하고 있어, 하단 한 줄은 그것을
+         추상적으로 한 번 더 말한 중복이었다. 다시 붙이지 마라. -->
   </div>
 </section>
 
-<!-- V4-03 실습⑥ — screen-operation -->
+<!-- V4-03 실습⑤ — screen-operation -->
 <section class="slide w3-practice" data-slide="V4-03" data-shape="screen-operation">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
+    <span class="s-line"></span><div class="s-team"></div>
   </header>
   <div class="s-full fill">
-    <p class="s-eyebrow">실습 ⑥</p>
     <h2 class="s-title">담당별 병렬 검토 요청</h2>
     <div class="eval-steps viz-flow-v">
       <div class="work-step"><span class="n">1</span><span class="desc">담당 파일마다 <strong>따로</strong> 요청합니다 — 요청창을 <strong>담당 수만큼</strong> 나눠서 엽니다.</span></div>
@@ -2206,7 +2513,7 @@
       <span class="w3-prompt-tag">이렇게 말하세요</span>
       <p>"지금 이 프로젝트에서 HTML 담당(화면 뼈대)만 맡아 줘. <code>index.html</code>만 읽고 개선하면 좋을 점 세 개를 근거와 함께 제안해 줘. <strong>파일은 고치지 마.</strong>" — CSS · JS 담당도 같은 형식으로 반복합니다.</p>
     </div>
-    <div class="callout blue hug-center w3-goal">완성 기준 — 담당별로 <strong>서로 다른 제안</strong>이 손에 있음</div>
+    <!-- 2026-08-09 사용자 지시로 완성 기준 삭제(덱 전체 14장 일괄). 되살리지 마라. -->
   </div>
 </section>
 
@@ -2214,7 +2521,7 @@
 <section class="slide w3-screen-zones" data-slide="V4-04" data-shape="mapping">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
+    <span class="s-line"></span><div class="s-team"></div>
   </header>
   <div class="s-full fill">
     <h2 class="s-title">세 담당은 서로 다른 것을 봅니다</h2>
@@ -2241,32 +2548,44 @@
 <section class="slide w3-shotslide" data-slide="V4-05" data-shape="comparison">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
+    <span class="s-line"></span><div class="s-team"></div>
   </header>
   <div class="s-full fill">
-    <p class="s-eyebrow">강사 예시</p>
     <h2 class="s-title">결과 충돌</h2>
     <p class="w3-def">담당마다 다른 결론을 낸 상태 — 각자 다른 곳을 봤으니 <strong>당연한 일</strong>입니다.</p>
+    <!-- 2026-08-09 재작성(사용자 지시): 두 시안이 뭐가 다른지 한눈에 안 들어왔다.
+         옛 판은 양쪽 다 「점선 구역 2개」로 그려서 골격이 거의 같았고, 차이가
+         작은 배지 하나에만 있었다. 고친 방식은 셋이다:
+           ① 골격 자체를 다르게 — 왼쪽은 맨 위에 큰 블록, 오른쪽은 제목 줄 안 배지
+           ② 다른 자리에 「여기」 표식을 직접 찍어 시선을 그 지점으로 보낸다
+           ③ 시안마다 「오늘 5개를 어디에 놓았나」를 한 줄로 못 박는다
+         표식은 민트다 — 코랄은 이 덱에서 «주의·경고»라 오답으로 읽힌다(R-COLOR-05). -->
     <div class="w3-shots viz-matrix">
       <div class="w3-shot">
         <div class="w3-shot-head w3-own-html"><b class="w3-own-chip">HTML 담당</b><span>목록 맨 위에 큰 글씨로</span></div>
-        <div class="w3-mock" role="img" aria-label="오늘 5개를 목록 맨 위에 큰 글씨로 표시한 시안">
+        <div class="w3-mock" role="img" aria-label="화면 맨 위에 「오늘 5개」를 큰 블록으로 놓고 그 아래 기록 목록이 이어지는 시안">
           <div class="w3-mock-bar">활동 기록 도구</div>
           <div class="w3-mock-body">
-            <div class="w3-mock-zone w3-own-html"><b>오늘 5개</b></div>
-            <div class="w3-mock-zone w3-own-qa"><b>기록 목록</b></div>
+            <div class="w3-mock-hero is-marked"><b>오늘 5개</b><span class="w3-mock-here">여기</span></div>
+            <div class="w3-mock-row">산책 · 오전 7:20</div>
+            <div class="w3-mock-row">독서 · 오전 9:05</div>
+            <div class="w3-mock-row">회의 · 오후 2:30</div>
           </div>
         </div>
+        <p class="w3-shot-cap">오늘 5개를 <strong>목록 맨 위</strong>에</p>
       </div>
       <div class="w3-shot">
         <div class="w3-shot-head w3-own-css"><b class="w3-own-chip">CSS 담당</b><span>제목 옆에 작은 배지로</span></div>
-        <div class="w3-mock" role="img" aria-label="오늘 5개를 제목 옆 작은 배지로 표시한 시안">
-          <div class="w3-mock-bar">활동 기록 도구 <span class="w3-own-chip w3-own-css">5</span></div>
+        <div class="w3-mock" role="img" aria-label="제목 줄 오른쪽에 작은 숫자 배지 5만 붙이고 아래는 기록 목록만 이어지는 시안">
+          <div class="w3-mock-bar">활동 기록 도구 <b class="w3-mock-badge is-marked">5</b><span class="w3-mock-here">여기</span></div>
           <div class="w3-mock-body">
-            <div class="w3-mock-zone w3-own-qa"><b>기록 목록</b></div>
-            <div class="w3-mock-zone w3-own-qa"><b>기록 목록</b></div>
+            <div class="w3-mock-row">산책 · 오전 7:20</div>
+            <div class="w3-mock-row">독서 · 오전 9:05</div>
+            <div class="w3-mock-row">회의 · 오후 2:30</div>
+            <div class="w3-mock-row">정리 · 오후 6:40</div>
           </div>
         </div>
+        <p class="w3-shot-cap">오늘 5개를 <strong>제목 옆</strong>에</p>
       </div>
     </div>
     <div class="callout blue hug-center"><strong>둘 다 맞는 말입니다.</strong> 그래서 정해야 합니다.</div>
@@ -2277,7 +2596,7 @@
 <section class="slide w3-verdictslide" data-slide="V4-06" data-shape="classification">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
+    <span class="s-line"></span><div class="s-team"></div>
   </header>
   <div class="s-full fill">
     <h2 class="s-title">다수결이 아니라 근거로 판정합니다</h2>
@@ -2295,14 +2614,13 @@
   </div>
 </section>
 
-<!-- V4-07 실습⑦ — screen-operation (판정표) -->
+<!-- V4-07 실습⑥ — screen-operation (판정표) -->
 <section class="slide w3-practice w3-vtableslide" data-slide="V4-07" data-shape="screen-operation">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
+    <span class="s-line"></span><div class="s-team"></div>
   </header>
   <div class="s-full fill">
-    <p class="s-eyebrow">실습 ⑦</p>
     <h2 class="s-title">결과 비교하고 판정하기</h2>
     <div class="w3-vt-body">
       <div class="eval-steps viz-flow-v">
@@ -2319,18 +2637,17 @@
         </tbody>
       </table>
     </div>
-    <div class="callout blue hug-center w3-goal">완성 기준 — 오늘 고칠 제안이 <strong>하나로 좁혀짐</strong></div>
+    <!-- 2026-08-09 사용자 지시로 완성 기준 삭제(덱 전체 14장 일괄). 되살리지 마라. -->
   </div>
 </section>
 
-<!-- V4-08 실습⑧ — screen-operation -->
+<!-- V4-08 실습⑦ — screen-operation -->
 <section class="slide w3-practice" data-slide="V4-08" data-shape="screen-operation">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
+    <span class="s-line"></span><div class="s-team"></div>
   </header>
   <div class="s-full fill">
-    <p class="s-eyebrow">실습 ⑧</p>
     <h2 class="s-title">승인된 개선 구현</h2>
     <div class="eval-steps viz-flow-v">
       <div class="work-step"><span class="n">1</span><span class="desc">채택한 제안 <strong>하나만</strong> 담당 파일에 반영합니다.</span></div>
@@ -2341,7 +2658,7 @@
       <span class="w3-prompt-tag">이렇게 말하세요</span>
       <p>"<strong>[승인된 개선]</strong>을 <strong>[담당 파일]</strong>에만 반영해 줘. 다른 파일과 기존 기능은 건드리지 말고, 끝나면 무엇을 바꿨는지 알려 줘."</p>
     </div>
-    <div class="callout blue hug-center w3-goal">완성 기준 — <strong>기존 흐름과 새 흐름이 모두 작동</strong></div>
+    <!-- 2026-08-09 사용자 지시로 완성 기준 삭제(덱 전체 14장 일괄). 되살리지 마라. -->
   </div>
 </section>
 
@@ -2349,12 +2666,11 @@
 <section class="slide w3-anchorsplit" data-slide="V4-09" data-shape="concept">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
+    <span class="s-line"></span><div class="s-team"></div>
   </header>
   <div class="s-full">
     <div class="w3-as-text">
-      <p class="s-eyebrow">용어 둘</p>
-      <h2 class="s-title">독립 QA와 회귀</h2>
+        <h2 class="s-title">독립 QA와 회귀</h2>
       <p class="w3-def"><strong>독립 QA</strong> — 구현에 참여하지 않은 담당이 하는 확인</p>
       <p class="w3-def"><strong>회귀</strong> — 잘 되던 기존 기능이 다시 깨지는 것</p>
       <p class="s-body">고친 사람은 <strong>"될 것"이라고 생각하면서</strong> 보기 때문에 같은 곳을 계속 놓칩니다.</p>
@@ -2373,61 +2689,48 @@
         <text x="300" y="158" font-size="21" font-weight="800" fill="var(--gray-400)">= 회귀가 숨는 자리</text>
         <rect x="10" y="228" width="540" height="180" rx="18" fill="var(--mint-soft)" stroke="var(--mint-line)" stroke-width="2"/>
         <text x="40" y="268" font-size="23" font-weight="800" fill="var(--mint-deep)">QA 담당 — 처음 보는 시선</text>
-        <rect x="40" y="288" width="480" height="46" rx="10" fill="var(--white)" stroke="var(--mint-deep)" stroke-width="2"/>
+        <!-- 2026-08-09(사용자 지시): 「둘 다 봅니다」가 두 상자 **사이 빈 틈**에 떠 있어
+             멀리서 보면 어디에 걸리는 말인지 알 수 없었다. 위쪽 빨간 블록이 이미
+             «상자 + 오른쪽 라벨» 구조이므로 아래 블록도 같은 구조로 맞췄다 —
+             상자를 220px로 좁히고 라벨을 상자마다 오른쪽(x=286)에 붙였다.
+             위아래 골격이 같아져 「고친 담당은 새 기능만 / QA는 둘 다」 대비가 바로 읽힌다. -->
+        <rect x="40" y="288" width="220" height="46" rx="10" fill="var(--white)" stroke="var(--mint-deep)" stroke-width="2"/>
         <text x="150" y="318" text-anchor="middle" font-size="20" font-weight="800" fill="var(--ink)">새 기능</text>
-        <rect x="40" y="344" width="480" height="46" rx="10" fill="var(--white)" stroke="var(--mint-deep)" stroke-width="2"/>
+        <text x="286" y="318" font-size="21" font-weight="800" fill="var(--mint-deep)">봅니다</text>
+        <rect x="40" y="344" width="220" height="46" rx="10" fill="var(--white)" stroke="var(--mint-deep)" stroke-width="2"/>
         <text x="150" y="374" text-anchor="middle" font-size="20" font-weight="800" fill="var(--ink)">기존 기능</text>
-        <text x="300" y="346" font-size="21" font-weight="800" fill="var(--mint-deep)">둘 다 봅니다</text>
+        <text x="286" y="374" font-size="21" font-weight="800" fill="var(--mint-deep)">여기도 봅니다</text>
       </svg>
     </figure>
   </div>
 </section>
 
-<!-- V4-10 실습⑨ — screen-operation -->
+<!-- V4-10 독립 QA 실행 — screen-operation
+     2026-08-09 사용자 지시: PART 4는 실습 번호를 붙이지 않는다(eyebrow 삭제).
+     같은 지시로 삭제된 V4-11「화면 QA 6항목」의 여섯 항목을 여기 .w3-eg 한 줄로 흡수했다.
+     ⚠️ 표·체크칸으로 되돌리지 마라 — 「무조건 확인해야 하는 규정」처럼 읽힌 것이 삭제 사유다.
+        어조는 「예를 들면 … 골라 봅니다」(참고 예시)를 유지한다. -->
 <section class="slide w3-practice" data-slide="V4-10" data-shape="screen-operation">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
+    <span class="s-line"></span><div class="s-team"></div>
   </header>
   <div class="s-full fill">
-    <p class="s-eyebrow">실습 ⑨</p>
     <h2 class="s-title">독립 QA 실행</h2>
     <div class="eval-steps viz-flow-v">
       <div class="work-step"><span class="n">1</span><span class="desc">QA 담당에게 <strong>수정은 시키지 않고</strong> 확인만 시킵니다.</span></div>
       <div class="work-step"><span class="n">2</span><span class="desc">대표 흐름을 <strong>정상값 · 다른 값 · 빈 값</strong> 세 가지로 실행합니다.</span></div>
       <div class="work-step"><span class="n">3</span><span class="desc">각 항목을 <strong>통과 / 실패</strong>로 받아 적습니다.</span></div>
     </div>
+    <p class="w3-eg">예를 들면 — 기존 흐름 · 새 흐름 · 다른 값 · 오류 상황 · 좁은 화면 · 글자 크기. <strong>내 프로젝트에 있는 것만</strong> 골라 봅니다.</p>
     <div class="w3-prompt">
       <span class="w3-prompt-tag">이렇게 말하세요</span>
       <p>"이번엔 <strong>수정하지 말고 검증만</strong> 해줘. 대표 흐름을 정상값 · 다른 값 · 빈 값으로 각각 실행해서 결과를 통과/실패로 알려 줘."</p>
     </div>
-    <div class="callout blue hug-center w3-goal">완성 기준 — 기존 흐름과 새 흐름이 <strong>셋 다 통과</strong></div>
+    <!-- 2026-08-09 사용자 지시로 완성 기준 삭제(덱 전체 14장 일괄). 되살리지 마라. -->
   </div>
 </section>
 
-<!-- V4-11 화면 QA 6항목 — checklist -->
-<section class="slide w3-qaslide" data-slide="V4-11" data-shape="checklist">
-  <header class="s-head">
-    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
-  </header>
-  <div class="s-full fill">
-    <h2 class="s-title">화면 QA 6항목</h2>
-    <p class="s-lead">담당이 "통과"라고 해도 <strong>화면을 직접 보는 것</strong>이 마지막 확인입니다.</p>
-    <table class="w3-qa6 viz-matrix">
-      <thead><tr><th>확인할 것</th><th>통과</th><th>실패</th><th>해당 없음</th></tr></thead>
-      <tbody>
-        <tr><td>기존 흐름</td><td>☐</td><td>☐</td><td>☐</td></tr>
-        <tr><td>새 흐름</td><td>☐</td><td>☐</td><td>☐</td></tr>
-        <tr><td>다른 값</td><td>☐</td><td>☐</td><td>☐</td></tr>
-        <tr><td>오류 상황</td><td>☐</td><td>☐</td><td>☐</td></tr>
-        <tr><td>좁은 화면</td><td>☐</td><td>☐</td><td>☐</td></tr>
-        <tr><td>글자 크기</td><td>☐</td><td>☐</td><td>☐</td></tr>
-      </tbody>
-    </table>
-    <div class="callout blue hug-center">「해당 없음」은 그 기능이 없다는 뜻이지, <strong>확인을 건너뛰었다는 뜻이 아닙니다.</strong></div>
-  </div>
-</section>
 
 <!-- ============ PART 5 전환 ============
      ⚠️ 도형·도트·PART n/N은 shell의 hydratePartDivider()가 자동 생성한다. 빈 훅으로 둔다. -->
@@ -2443,15 +2746,19 @@
 <section class="slide roadmap" data-slide="M5" data-shape="flow">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
+    <span class="s-line"></span><div class="s-team"></div>
   </header>
   <div class="s-full">
     <h2 class="s-title">PART 5는 이렇게 배웁니다</h2>
-    <p class="rm-lead">GitHub 계정과 저장소 연결은 <strong>수업 전에 이미 끝나 있습니다.</strong> 오늘은 확인만 합니다.</p>
+    <!-- 2026-08-09 사용자 지시: 옛 리드는 GitHub 사전 조건을 말해 주객이 뒤집혀 있었다.
+         이 PART의 주인공은 플러그인·MCP이고 GitHub는 그 사용 예시다.
+         빠진 사전 조건 문장은 버리지 않고 V5-05(GitHub 장)로 내렸다 — 개념KB 필수 진술
+         [C-GitHub저장소]가 「연결·인증을 사전 조건으로 전제한다」를 요구하므로 화면에 남아야 한다. -->
+    <p class="rm-lead">외부 도구를 붙이는 방법을 먼저 보고, <strong>GitHub로 실제로 붙여 봅니다.</strong></p>
     <div class="rm-track is-5 viz-flow-h">
       <div class="rm-step">
         <span class="rm-n">1</span>
-        <b>왜 바깥 도구를 붙이나</b>
+        <b>왜 외부 도구를 붙이나</b>
         <span class="desc">폴더 밖을 볼 수 있게 됩니다.</span>
         <span class="rm-out">넓어진 범위</span>
       </div>
@@ -2466,21 +2773,21 @@
       <div class="rm-step">
         <span class="rm-n">3</span>
         <b>MCP와 프로토콜</b>
-        <span class="desc">어디부터가 바깥인지 봅니다.</span>
+        <span class="desc">어디부터가 외부인지 봅니다.</span>
         <span class="rm-out">연결과 승인</span>
       </div>
       <span class="rm-arrow" aria-hidden="true">→</span>
       <div class="rm-step">
         <span class="rm-n">4</span>
         <b>저장소와 커밋</b>
-        <span class="desc">실습 ⑩⑪ — 고르고 적습니다.</span>
+        <span class="desc">담을 것을 고르고 한 문장으로 적습니다.</span>
         <span class="rm-out">커밋 한 문장</span>
       </div>
       <span class="rm-arrow" aria-hidden="true">→</span>
       <div class="rm-step is-goal">
         <span class="rm-n">5</span>
         <b>GitHub에 올리기</b>
-        <span class="desc">실습 ⑫ — 웹에서 확인합니다.</span>
+        <span class="desc">올린 결과를 웹에서 확인합니다.</span>
         <span class="rm-out">도착한 커밋</span>
       </div>
     </div>
@@ -2491,17 +2798,20 @@
 <section class="slide" data-slide="V5-01" data-shape="containment">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
+    <span class="s-line"></span><div class="s-team"></div>
   </header>
   <div class="s-full w3-cont">
     <h2 class="s-title">지금까지는 내 폴더 안에서만</h2>
-    <p class="s-lead">지금까지 에이전트는 <strong>내 폴더 밖을 몰랐습니다.</strong></p>
+    <!-- 2026-08-09 사용자 지시: 옛 리드 「내 폴더 밖을 몰랐습니다」는 제목과 같은 말이라
+         한 화면에서 두 번 말하고 있었다. 「그래서 무엇이 안 됐나」를 리드로 올리고,
+         아래 칸 1은 「지금 할 수 있는 일」로 바꿔 중복을 없앴다. -->
+    <p class="s-lead">외부 서비스에 있는 자료를 <strong>읽지도, 거기에 남기지도</strong> 못했습니다.</p>
     <div class="w3-cont-body">
       <figure class="w3-conc viz-containment" role="img"
-              aria-label="동심 포함도: 안쪽 원은 에이전트가 아는 내 폴더, 바깥 링은 아직 모르는 바깥 서비스">
+              aria-label="동심 포함도: 안쪽 원은 에이전트가 아는 내 폴더, 바깥 링은 아직 모르는 외부 서비스">
         <svg viewBox="0 0 392 392" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <circle cx="196" cy="196" r="188" fill="var(--surface)" stroke="var(--blue-line)" stroke-width="2" stroke-dasharray="8 7"/>
-          <text x="196" y="50" text-anchor="middle" font-size="21" font-weight="800" fill="var(--gray-700)">바깥 서비스</text>
+          <text x="196" y="50" text-anchor="middle" font-size="21" font-weight="800" fill="var(--gray-700)">외부 서비스</text>
           <text x="196" y="80" text-anchor="middle" font-size="26" font-weight="800" fill="var(--gray-400)">?</text>
           <circle cx="196" cy="200" r="118" fill="var(--blue)"/>
           <text x="196" y="182" text-anchor="middle" font-size="19" font-weight="700" fill="var(--white)" opacity=".82">에이전트가 아는 곳</text>
@@ -2515,7 +2825,7 @@
         <div class="w3-gate-cell">
           <span class="w3-hn-n">1</span>
           <b>지금</b>
-          <span class="desc">바깥 자료를 <strong>읽지도, 남기지도</strong> 못했습니다.</span>
+          <span class="desc">내 폴더 안의 파일만 <strong>보고 고칩니다.</strong></span>
         </div>
         <div class="w3-gate-cell">
           <span class="w3-hn-n">2</span>
@@ -2532,16 +2842,34 @@
 <section class="slide w3-layerslide" data-slide="V5-02" data-shape="containment">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
+    <span class="s-line"></span><div class="s-team"></div>
   </header>
   <div class="s-full fill">
     <h2 class="s-title">플러그인 · Skill · 커넥터 · MCP</h2>
     <p class="s-lead">넷은 <strong>경쟁하는 제품이 아니라 서로 다른 층</strong>입니다.</p>
-    <div class="w3-layers viz-column">
-      <div class="w3-layer l1"><b>플러그인</b><span>여러 기능을 묶어 한 번에 설치하는 꾸러미 — 안에 아래 것들을 담고 있을 수 있습니다</span></div>
-      <div class="w3-layer l2"><b>Skill</b><span>반복 절차를 적어 둔 것</span></div>
-      <div class="w3-layer l3"><b>커넥터</b><span>특정 서비스에 로그인해 이어 주는 부분</span></div>
-      <div class="w3-layer l4"><b>MCP</b><span>AI와 바깥 도구를 잇는 공통 연결 규격</span></div>
+    <!-- 2026-08-09 재편(사용자 지시). 옛 판은 4층을 폭이 줄어드는 밴드로 쌓았는데 세 가지가 틀렸다:
+           ① 들여쓰기가 3단계(0/26/52px)라 「플러그인 ⊃ Skill·커넥터 ⊃ MCP」로 읽혔다.
+              초안이 말한 포함 관계는 **한 겹**이고 MCP는 커넥터 안에 있는 것이 아니다.
+           ② MCP가 가장 좁고 가장 아래라 제일 사소해 보였다 — 바로 다음 세 장이 전부 MCP다.
+           ③ 플러그인·Skill·커넥터는 「묶고 배포하는 단위」, MCP는 「연결 규격」이라 범주가 다른데
+              한 스택에 쌓으니 같은 종류로 보였다.
+         → 두 블록(담는 단위 / 잇는 규격)을 **같은 크기·같은 무게**로 두고 Skill·커넥터는
+           플러그인 안의 칩으로 내렸다. 초안의 「플러그인 하나가 안에 나머지를 담고 있을 수
+           있습니다」는 두 블록 사이 bridge 한 줄로 살렸다 — 네 용어와 초안 문장이 모두 남는다. -->
+    <div class="w3-two-layer viz-containment">
+      <div class="w3-tl-block is-pack">
+        <span class="w3-tl-tag">담는 단위</span>
+        <div class="w3-tl-main"><b>플러그인</b><span>여러 기능을 묶어 한 번에 설치하는 꾸러미</span></div>
+        <div class="w3-tl-chips">
+          <span class="w3-tl-chip"><b>Skill</b> 반복 절차를 적어 둔 것</span>
+          <span class="w3-tl-chip"><b>커넥터</b> 특정 서비스에 로그인해 이어 주는 부분</span>
+        </div>
+      </div>
+      <p class="w3-tl-bridge">플러그인이 <strong>MCP까지 함께 담아</strong> 오기도 합니다</p>
+      <div class="w3-tl-block is-proto">
+        <span class="w3-tl-tag">잇는 규격</span>
+        <div class="w3-tl-main"><b>MCP</b><span>AI와 외부 도구를 잇는 공통 연결 규격</span></div>
+      </div>
     </div>
     <div class="callout blue hug-center">공구세트 안에 드라이버도 있고 콘센트 어댑터도 있는 것과 같습니다.</div>
   </div>
@@ -2550,13 +2878,12 @@
 <section class="slide" data-slide="V5-12" data-shape="concept">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
+    <span class="s-line"></span><div class="s-team"></div>
   </header>
   <div class="s-full w3-deffig">
     <div class="w3-deffig-text">
-      <p class="s-eyebrow">용어</p>
       <h2 class="s-title">MCP</h2>
-      <p class="w3-def">AI와 바깥 도구를 잇는 <strong>공통 연결 규격</strong></p>
+      <p class="w3-def">AI와 외부 도구를 잇는 <strong>공통 연결 규격</strong></p>
       <p class="s-body">도구마다 연결 방법이 다르면, 도구 수만큼 따로 배우고 따로 만들어야 합니다.</p>
       <p class="s-body">연결 방식을 <strong>하나로 정해 두면</strong> 한 번 배운 방법으로 여러 도구를 붙일 수 있습니다.</p>
       <p class="s-body">콘센트 규격이 같으면 어느 가전이든 꽂히는 것과 같습니다.</p>
@@ -2596,7 +2923,7 @@
 <section class="slide" data-slide="V5-13" data-shape="concept">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
+    <span class="s-line"></span><div class="s-team"></div>
   </header>
   <div class="s-full w3-stage">
     <h2 class="s-title">프로토콜</h2>
@@ -2638,25 +2965,29 @@
 <section class="slide" data-slide="V5-03" data-shape="flow">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
+    <span class="s-line"></span><div class="s-team"></div>
   </header>
   <div class="s-full w3-stage">
     <h2 class="s-title">MCP의 세 자리</h2>
-    <p class="w3-def">이름을 외울 필요는 없습니다. <strong>어디까지가 내 쪽이고 어디부터가 바깥인지</strong>만 보면 됩니다.</p>
+    <p class="w3-def">이름을 외울 필요는 없습니다. <strong>어디까지가 내 쪽이고 어디부터가 외부인지</strong>만 보면 됩니다.</p>
     <figure class="w3-stage-fig viz-flow-h" role="img"
             aria-label="호스트에서 클라이언트를 거쳐 서버로 이어지고, 서버가 도구·자료·요청서 세 갈래를 내주는 흐름">
       <svg viewBox="0 0 1000 320" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
         <rect x="14" y="112" width="196" height="96" rx="16" fill="var(--blue)"/>
         <text x="112" y="152" text-anchor="middle" font-size="24" font-weight="800" fill="var(--white)">Host</text>
-        <text x="112" y="182" text-anchor="middle" font-size="19" font-weight="700" fill="var(--white)" opacity=".86">내가 쓰는 앱</text>
+        <text x="112" y="182" text-anchor="middle" font-size="19" font-weight="700" fill="var(--white)" opacity=".86">Codex</text>
         <path d="M224 160 L282 160 M268 150 L284 160 L268 170" fill="none" stroke="var(--blue)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
         <rect x="296" y="112" width="196" height="96" rx="16" fill="var(--blue-soft)" stroke="var(--blue)" stroke-width="2"/>
         <text x="394" y="152" text-anchor="middle" font-size="24" font-weight="800" fill="var(--ink)">Client</text>
-        <text x="394" y="182" text-anchor="middle" font-size="19" font-weight="700" fill="var(--gray-700)">연결을 관리</text>
+        <text x="394" y="182" text-anchor="middle" font-size="19" font-weight="700" fill="var(--gray-700)">Codex 안의 연결 담당</text>
         <path d="M506 160 L564 160 M550 150 L566 160 L550 170" fill="none" stroke="var(--blue)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
         <rect x="578" y="112" width="196" height="96" rx="16" fill="var(--surface)" stroke="var(--blue-line-strong)" stroke-width="2"/>
         <text x="676" y="152" text-anchor="middle" font-size="24" font-weight="800" fill="var(--ink)">Server</text>
-        <text x="676" y="182" text-anchor="middle" font-size="19" font-weight="700" fill="var(--gray-700)">바깥 서비스</text>
+        <!-- 2026-08-09 사용자 지시: Server 부제에서 브랜드명을 빼고 일반명사로 바꿨다.
+             이 시점(54p)에 GitHub는 아직 안 배웠다(56p가 첫 등장) — 강의 범위 밖 제품명을
+             화면에 올리지 않고 일반명사로 둔다. 폭: 한글 8자×19 + 가운뎃점·공백 ≈ 166px,
+             상자 내부 196px(x 578~774)에 들어간다. -->
+        <text x="676" y="182" text-anchor="middle" font-size="19" font-weight="700" fill="var(--gray-700)">지도·달력 서비스</text>
         <path d="M788 160 L820 160 M820 62 L820 258 M820 62 L852 62 M820 160 L852 160 M820 258 L852 258" fill="none" stroke="var(--mint-deep)" stroke-width="2.5" stroke-linecap="round"/>
         <rect x="856" y="36" width="132" height="52" rx="12" fill="var(--mint-soft)" stroke="var(--mint-line)" stroke-width="2"/>
         <text x="922" y="60" text-anchor="middle" font-size="20" font-weight="800" fill="var(--on-mint)">Tools</text>
@@ -2668,7 +2999,7 @@
         <text x="922" y="256" text-anchor="middle" font-size="20" font-weight="800" fill="var(--on-mint)">Prompts</text>
         <text x="922" y="275" text-anchor="middle" font-size="16" font-weight="700" fill="var(--mint-deep)">정해진 요청서</text>
         <text x="290" y="296" text-anchor="middle" font-size="21" font-weight="800" fill="var(--blue)">여기까지가 내 쪽</text>
-        <text x="676" y="296" text-anchor="middle" font-size="21" font-weight="800" fill="var(--gray-700)">여기부터 바깥</text>
+        <text x="676" y="296" text-anchor="middle" font-size="21" font-weight="800" fill="var(--gray-700)">여기부터 외부</text>
       </svg>
     </figure>
     <div class="callout blue hug-center">전기에 비유하면 Host는 가전, Client는 플러그, Server는 발전소입니다.</div>
@@ -2679,7 +3010,7 @@
 <section class="slide w3-stateslide" data-slide="V5-04" data-shape="flow">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
+    <span class="s-line"></span><div class="s-team"></div>
   </header>
   <div class="s-full fill">
     <h2 class="s-title">연결했다고 다 허락한 건 아닙니다</h2>
@@ -2708,12 +3039,16 @@
 <section class="slide" data-slide="V5-05" data-shape="concept">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
+    <span class="s-line"></span><div class="s-team"></div>
   </header>
   <div class="s-full w3-deffig">
     <div class="w3-deffig-text">
-      <p class="s-eyebrow">용어 셋</p>
       <h2 class="s-title">GitHub — 저장소와 커밋</h2>
+      <!-- 2026-08-09: M5 리드에 있던 사전 조건 문장을 여기로 내렸다(사용자 지시).
+           GitHub를 처음 꺼내는 장이라 여기가 제 자리다. 개념KB 필수 진술 [C-GitHub저장소]
+           「연결·인증을 사전 조건으로 전제하며 연결 방법 자체는 다루지 않는다」의 화면 근거이므로
+           지우지 마라 — 지우면 그 진술이 발표자 노트에만 남는다. -->
+      <p class="w3-pre">계정과 저장소 연결은 <strong>수업 전에 이미 끝나 있습니다.</strong> 오늘은 확인만 합니다.</p>
       <p class="w3-def"><strong>GitHub</strong> — 내 프로젝트를 인터넷에 보관하고 변경 이력을 남기는 서비스</p>
       <p class="w3-def"><strong>저장소</strong> — 내 프로젝트가 통째로 올라가는 자리</p>
       <p class="w3-def"><strong>커밋</strong> — 무엇을 왜 바꿨는지 적어 남기는 기록 한 건</p>
@@ -2746,10 +3081,11 @@
 <section class="slide" data-slide="V5-06" data-shape="flow">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
+    <span class="s-line"></span><div class="s-team"></div>
   </header>
   <div class="s-full w3-stage">
-    <h2 class="s-title">커밋은 「무엇을 올릴지 고르는 것」부터입니다</h2>
+    <!-- 커밋(commit) 영어 병기는 덱 전체에서 이 한 곳뿐이다(사용자 지시). 다른 장에 늘리지 마라. -->
+    <h2 class="s-title">커밋(commit)은 「무엇을 올릴지 고르는 것」부터입니다</h2>
     <p class="w3-def">바뀐 것을 <strong>다 올리지 않습니다. 고를 수 있습니다.</strong></p>
     <figure class="w3-stage-fig viz-flow-h" role="img"
             aria-label="바뀐 파일 확인, 올릴 것 고르기, 커밋해서 올리기 세 단계 중 첫 칸이 강조된 흐름">
@@ -2770,14 +3106,14 @@
   </div>
 </section>
 
-<!-- V5-07 실습⑩ — screen-operation -->
+<!-- V5-07 실습⑤ — screen-operation -->
 <section class="slide w3-practice" data-slide="V5-07" data-shape="screen-operation">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
+    <span class="s-line"></span><div class="s-team"></div>
   </header>
   <div class="s-full fill">
-    <p class="s-eyebrow">실습 ⑩</p>
+    <p class="s-eyebrow">실습 ⑤</p>
     <h2 class="s-title">저장소 연결과 변경 파일 확인</h2>
     <div class="eval-steps viz-flow-v">
       <div class="work-step"><span class="n">1</span><span class="desc">GitHub 저장소 <strong>연결이 살아 있는지</strong> 먼저 확인합니다.</span></div>
@@ -2788,7 +3124,7 @@
       <span class="w3-prompt-tag">이렇게 말하세요</span>
       <p>"지금 이 프로젝트에서 어떤 파일이 바뀌었는지 목록으로 보여 줘. <strong>아직 커밋하거나 올리지는 마.</strong>"</p>
     </div>
-    <div class="callout blue hug-center w3-goal">완성 기준 — 올릴 후보 파일 목록을 <strong>눈으로 확인함</strong></div>
+    <!-- 2026-08-09 사용자 지시로 완성 기준 삭제 -->
   </div>
 </section>
 
@@ -2796,7 +3132,7 @@
 <section class="slide w3-excludeslide" data-slide="V5-08" data-shape="checklist">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
+    <span class="s-line"></span><div class="s-team"></div>
   </header>
   <div class="s-full fill">
     <p class="s-eyebrow">오늘 두 번째 안전 점검</p>
@@ -2813,14 +3149,14 @@
   </div>
 </section>
 
-<!-- V5-09 실습⑪ — comparison -->
+<!-- V5-09 실습⑥ — comparison -->
 <section class="slide w3-practice w3-msgslide" data-slide="V5-09" data-shape="comparison">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
+    <span class="s-line"></span><div class="s-team"></div>
   </header>
   <div class="s-full fill">
-    <p class="s-eyebrow">실습 ⑪</p>
+    <p class="s-eyebrow">실습 ⑥</p>
     <h2 class="s-title">커밋 메시지 한 문장 쓰기</h2>
     <div class="w3-msgcompare viz-matrix">
       <div class="w3-msg-bad">
@@ -2838,18 +3174,18 @@
       <div class="work-step"><span class="n">1</span><span class="desc">PART 4에서 구현한 개선을 <strong>그런 한 문장</strong>으로 적습니다.</span></div>
       <div class="work-step"><span class="n">2</span><span class="desc">3개월 뒤의 나를 독자로 두고 씁니다.</span></div>
     </div>
-    <div class="callout blue hug-center w3-goal">완성 기준 — <strong>3개월 뒤에 봐도 이해되는 문장 하나</strong></div>
+    <!-- 2026-08-09 사용자 지시로 완성 기준 삭제 -->
   </div>
 </section>
 
-<!-- V5-10 실습⑫ — screen-operation -->
+<!-- V5-10 실습⑦ — screen-operation -->
 <section class="slide w3-practice" data-slide="V5-10" data-shape="screen-operation">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
+    <span class="s-line"></span><div class="s-team"></div>
   </header>
   <div class="s-full fill">
-    <p class="s-eyebrow">실습 ⑫</p>
+    <p class="s-eyebrow">실습 ⑦</p>
     <h2 class="s-title">커밋하고 GitHub에 올리기</h2>
     <div class="eval-steps viz-flow-v">
       <div class="work-step"><span class="n">1</span><span class="desc"><strong>확인한 파일만</strong> 골라 커밋하고, GitHub에 올립니다.</span></div>
@@ -2860,7 +3196,7 @@
       <span class="w3-prompt-tag">이렇게 말하세요</span>
       <p>"지금 확인한 파일만 골라서, 아까 만든 문장으로 커밋하고 GitHub에 올려 줘. <strong>올리기 전에 무엇을 올릴지 먼저 보여 주고, 내가 확인하면 진행해.</strong>"</p>
     </div>
-    <div class="callout blue hug-center w3-goal">완성 기준 — 저장소에 <strong>오늘 만든 커밋이 도착함</strong></div>
+    <!-- 2026-08-09 사용자 지시로 완성 기준 삭제 -->
   </div>
 </section>
 
@@ -2868,7 +3204,7 @@
 <section class="slide w3-vs-2col" data-slide="V5-11" data-shape="contrast">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
+    <span class="s-line"></span><div class="s-team"></div>
   </header>
   <div class="s-full fill">
     <h2 class="s-title">"완료했습니다"보다 GitHub 화면</h2>
@@ -2913,8 +3249,12 @@
   <svg class="dv-hero" viewBox="0 0 1280 720" fill="none" aria-hidden="true"></svg>
   <div class="pd-dots" aria-hidden="true"></div>
   <p class="pd-eyebrow">PART</p>
-  <h2 class="pd-title">공개와 공유 범위</h2>
-  <p class="pd-sub">세상에 내놓습니다.</p>
+  <!-- 2026-08-09 사용자 지시: 제목 「공개와 공유 범위」 → 「배포와 공유 범위」, 부제 확장.
+       폭 실측 — .pd-title 56px·max-width 1080px: 한글 7자 ≈ 392px(1줄).
+                 .pd-sub 21px·width 920px: 한글 22자 462px + 문장부호·공백 ≈ 521px(1줄).
+       ⚠️ 본문 슬라이드는 여전히 「공개」를 쓴다 — 사용자가 이 제목만 지시했다. -->
+  <h2 class="pd-title">배포와 공유 범위</h2>
+  <p class="pd-sub">주소를 만들고, 열리는지 확인하고, 세상에 내놓습니다.</p>
 </section>
 
 <!-- ============ PART 6 로드맵 ============
@@ -2923,11 +3263,13 @@
 <section class="slide roadmap" data-slide="M6" data-shape="flow">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
+    <span class="s-line"></span><div class="s-team"></div>
   </header>
   <div class="s-full">
     <h2 class="s-title">PART 6은 이렇게 배웁니다</h2>
-    <p class="rm-lead">②와 ③은 <strong>다른 단계</strong>입니다. 만들었다고 공개된 게 아닙니다.</p>
+    <!-- 2026-08-09 사용자 지시: 옛 리드의 「②와 ③」은 로드맵 칸 번호를 가리키는 메타 표현이라
+         수강생에게 뜻이 통하지 않았다. 같은 내용을 칸 번호 없이 말한다. -->
+    <p class="rm-lead"><strong>만들었다고 열리는 것이 아닙니다</strong> — 주소를 만들고, 열어 보고, 고쳐서 다시 내놓습니다.</p>
     <div class="rm-track is-5 viz-flow-h">
       <div class="rm-step">
         <span class="rm-n">1</span>
@@ -2946,14 +3288,14 @@
       <div class="rm-step">
         <span class="rm-n">3</span>
         <b>공유 범위 바꾸기</b>
-        <span class="desc">실습 ⑬ — 여기가 진짜 공개.</span>
+        <span class="desc">공유 범위를 바꿔 실제로 공개합니다.</span>
         <span class="rm-out">열리는 주소</span>
       </div>
       <span class="rm-arrow" aria-hidden="true">→</span>
       <div class="rm-step">
         <span class="rm-n">4</span>
         <b>점검하고 한 건 고치기</b>
-        <span class="desc">실습 ⑭⑮ — 낯선 눈으로.</span>
+        <span class="desc">낯선 눈으로 점검하고 한 건 고칩니다.</span>
         <span class="rm-out">고쳐진 공개본</span>
       </div>
       <span class="rm-arrow" aria-hidden="true">→</span>
@@ -2971,7 +3313,7 @@
 <section class="slide w3-vs-2col" data-slide="V6-01" data-shape="contrast">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
+    <span class="s-line"></span><div class="s-team"></div>
   </header>
   <div class="s-full fill">
     <h2 class="s-title">저장소에 있는 것과, 열리는 것은 다릅니다</h2>
@@ -3014,7 +3356,7 @@
 <section class="slide w3-excludeslide" data-slide="V6-02" data-shape="checklist">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
+    <span class="s-line"></span><div class="s-team"></div>
   </header>
   <div class="s-full fill">
     <p class="s-eyebrow">오늘 세 번째 안전 점검</p>
@@ -3037,7 +3379,7 @@
 <section class="slide" data-slide="V6-03" data-shape="screen-operation">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
+    <span class="s-line"></span><div class="s-team"></div>
   </header>
   <div class="s-full fill">
     <h2 class="s-title">사이트 만들기</h2>
@@ -3065,16 +3407,16 @@
   </div>
 </section>
 
-<!-- V6-04 실습 ⑬ — screen-operation
+<!-- V6-04 실습 ⑧ — screen-operation
      2026-08-08 사용자 제공 실화면으로 재작성. 「공유 → 관리 → 인터넷 사용자
      누구나 → 게시」 절차가 확인되어 결정요청 D16이 해소됐다. -->
 <section class="slide w3-practice" data-slide="V6-04" data-shape="screen-operation">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
+    <span class="s-line"></span><div class="s-team"></div>
   </header>
   <div class="s-full fill">
-    <p class="s-eyebrow">실습 ⑬</p>
+    <p class="s-eyebrow">실습 ⑧</p>
     <h2 class="s-title">공유 범위 바꾸고 URL 확인</h2>
     <div class="w3-vt-body">
       <div class="eval-steps viz-flow-v">
@@ -3090,7 +3432,7 @@
         <div class="w3-modal-act"><span class="ghost">취소</span><span class="go">게시</span></div>
       </div>
     </div>
-    <div class="callout blue hug-center w3-goal">완성 기준 — <strong>로그인하지 않은 상태에서도</strong> 내 프로젝트가 열림</div>
+    <!-- 2026-08-09 사용자 지시로 완성 기준 삭제 -->
   </div>
 </section>
 
@@ -3098,7 +3440,7 @@
 <section class="slide w3-branchslide" data-slide="V6-05" data-shape="flow">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
+    <span class="s-line"></span><div class="s-team"></div>
   </header>
   <div class="s-full fill">
     <h2 class="s-title">공개가 안 되면</h2>
@@ -3125,7 +3467,7 @@
 <section class="slide w3-quadslide" data-slide="V6-06" data-shape="classification">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
+    <span class="s-line"></span><div class="s-team"></div>
   </header>
   <div class="s-full fill">
     <h2 class="s-title">공개된 화면은 내 컴퓨터와 다를 수 있습니다</h2>
@@ -3140,21 +3482,21 @@
   </div>
 </section>
 
-<!-- V6-07 실습⑭ — screen-operation -->
+<!-- V6-07 실습⑨ — screen-operation -->
 <section class="slide w3-practice" data-slide="V6-07" data-shape="screen-operation">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
+    <span class="s-line"></span><div class="s-team"></div>
   </header>
   <div class="s-full fill">
-    <p class="s-eyebrow">실습 ⑭ · 5분</p>
+    <p class="s-eyebrow">실습 ⑨ · 5분</p>
     <h2 class="s-title">공개 URL 자가 점검</h2>
     <div class="eval-steps viz-flow-v">
       <div class="work-step"><span class="n">1</span><span class="desc">내 공개 URL을 <strong>로그인하지 않은 창</strong>에서 엽니다.</span></div>
       <div class="work-step"><span class="n">2</span><span class="desc"><strong>첫 화면 · 대표 흐름 · 좁은 화면 · 새로고침</strong>을 차례로 확인합니다.</span></div>
       <div class="work-step"><span class="n">3</span><span class="desc">이상한 곳을 찾으면 <strong>한 가지만</strong> 적어 둡니다.</span></div>
     </div>
-    <div class="callout blue hug-center w3-goal">완성 기준 — 고칠 것 <strong>한 건이 문장으로</strong> 적힘</div>
+    <!-- 2026-08-09 사용자 지시로 완성 기준 삭제 -->
   </div>
 </section>
 
@@ -3162,7 +3504,7 @@
 <section class="slide w3-goldensplit" data-slide="V6-08" data-shape="flow">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
+    <span class="s-line"></span><div class="s-team"></div>
   </header>
   <div class="s-full">
     <div class="w3-gs-text">
@@ -3197,14 +3539,14 @@
   </div>
 </section>
 
-<!-- V6-09 실습⑮ — screen-operation -->
+<!-- V6-09 실습⑩ — screen-operation -->
 <section class="slide w3-practice" data-slide="V6-09" data-shape="screen-operation">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
+    <span class="s-line"></span><div class="s-team"></div>
   </header>
   <div class="s-full fill">
-    <p class="s-eyebrow">실습 ⑮ · 마지막</p>
+    <p class="s-eyebrow">실습 ⑩ · 마지막</p>
     <h2 class="s-title">한 건 고치고 다시 공개</h2>
     <div class="eval-steps viz-flow-v">
       <div class="work-step"><span class="n">1</span><span class="desc">고른 한 건을 반영합니다. <strong>다른 기능은 그대로</strong> 둡니다.</span></div>
@@ -3215,7 +3557,7 @@
       <span class="w3-prompt-tag">이렇게 말하세요</span>
       <p>"공개 URL에서 확인한 이 문제만 고쳐 줘: <strong>[문제]</strong>. 다른 기능은 그대로 두고, 반영되면 다시 공개해 줘."</p>
     </div>
-    <div class="callout blue hug-center w3-goal">완성 기준 — 공개 URL에서 <strong>변경이 실제로 보임</strong></div>
+    <!-- 2026-08-09 사용자 지시로 완성 기준 삭제 -->
   </div>
 </section>
 
@@ -3223,7 +3565,7 @@
 <section class="slide" data-slide="V6-10" data-shape="flow">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
+    <span class="s-line"></span><div class="s-team"></div>
   </header>
   <div class="s-full w3-stage">
     <h2 class="s-title">3주 회고</h2>
@@ -3259,8 +3601,12 @@
     <section class="slide concept-recap" data-slide="END">
       <header class="s-head">
         <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-        <span class="s-line"></span><div class="s-team">팀명<br>부제</div>
+        <span class="s-line"></span>
       </header>
+      <!-- 2026-08-09: 킷 자리표시자 <div class="s-team">팀명/부제</div>를 지웠다.
+           고정 슬라이드라 JS가 .s-part로 바꾸지 않아 「팀명 / 부제」가 글자 그대로
+           화면에 떠 있었다(사용자 지적). 본문 슬라이드의 훅은 비워서 유지한다 —
+           거기선 JS가 PART n/N으로 채운다. -->
       <div class="concept-panel">
         <div class="concept-top">
           <p class="s-eyebrow">3주 회고</p>
@@ -3276,7 +3622,22 @@
           <div class="concept-card"><h3>기록했습니다</h3><p>무엇을 왜 바꿨는지 커밋에 남겼습니다</p></div>
           <div class="concept-card"><h3>공개했습니다</h3><p>로그인 없이 열리는 것을 확인했습니다</p></div>
         </div>
-        <div class="concept-bottom">검증된 것만 완료로 봅니다.<small>3주간 고생하셨습니다 &#183; THANK YOU</small></div>
+        <div class="concept-bottom">검증된 것만 완료로 봅니다.</div>
+      </div>
+    </section>
+
+    <!-- ============ 마무리 · THANK YOU (2026-08-09 신설 · 사용자 지시)
+         회고(END)에 붙어 있던 「3주간 고생하셨습니다 · THANK YOU」를 떼어 **전용 한 장**으로
+         독립시켰다 — 진짜 마지막 장이라 그렇게 닫는 게 맞다는 판단(사용자 확정).
+         킷 `.closing`(다크)을 쓴다. 이 클래스는 스타터 JS가 페이지 번호 주입에서
+         제외하므로 표지처럼 번호가 붙지 않는다.
+         ⚠️ MEMORY 「마지막 THANK YOU는 덱에서 가장 큰 볼드 타이포그래피여야 한다」 —
+            다른 어떤 제목도 이 크기를 넘지 않게 유지한다(현재 최대는 표지 74px). -->
+    <section class="slide closing" data-slide="THX">
+      <div class="w3-thx">
+        <p class="w3-thx-ko">3주간 고생하셨습니다</p>
+        <h2 class="w3-thx-en">THANK YOU</h2>
+        <p class="w3-thx-sub">이제 여러분의 결과물은 세상에 열려 있습니다.</p>
       </div>
     </section>
 

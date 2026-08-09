@@ -14,11 +14,13 @@
 <section class="slide roadmap" data-slide="M4" data-shape="flow">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
+    <span class="s-line"></span><div class="s-team"></div>
   </header>
   <div class="s-full">
     <h2 class="s-title">PART 4는 이렇게 배웁니다</h2>
-    <p class="rm-lead"><strong>순서는 지난주와 똑같습니다</strong> — 사람만 늘었습니다. 오늘 실습이 가장 많은 구간이라 손이 바빠집니다.</p>
+    <!-- 2026-08-09: 「지난주와 똑같습니다」는 수강생이 무엇과 비교하는지 알 수 없는 말이라
+         순서를 화면에 직접 적었다(사용자 지시). -->
+    <p class="rm-lead">요청 → 검토 → 판정 → 구현 → 확인. <strong>순서는 그대로고, 검토하는 담당만 여럿</strong>입니다.</p>
     <div class="rm-track is-5 viz-flow-h">
       <div class="rm-step">
         <span class="rm-n">1</span>
@@ -30,28 +32,28 @@
       <div class="rm-step">
         <span class="rm-n">2</span>
         <b>담당별 병렬 검토</b>
-        <span class="desc">실습 ⑥ — 셋에게 따로.</span>
+        <span class="desc">세 담당에게 따로 검토를 맡깁니다.</span>
         <span class="rm-out">서로 다른 제안</span>
       </div>
       <span class="rm-arrow" aria-hidden="true">→</span>
       <div class="rm-step">
         <span class="rm-n">3</span>
         <b>충돌과 판정</b>
-        <span class="desc">실습 ⑦ — 근거로 고릅니다.</span>
+        <span class="desc">엇갈린 제안을 근거로 판정합니다.</span>
         <span class="rm-out">판정표</span>
       </div>
       <span class="rm-arrow" aria-hidden="true">→</span>
       <div class="rm-step">
         <span class="rm-n">4</span>
         <b>단일 작성자가 구현</b>
-        <span class="desc">실습 ⑧ — 한 명만 고칩니다.</span>
+        <span class="desc">정해진 한 명만 파일을 고칩니다.</span>
         <span class="rm-out">반영된 개선</span>
       </div>
       <span class="rm-arrow" aria-hidden="true">→</span>
       <div class="rm-step is-goal">
         <span class="rm-n">5</span>
         <b>독립 QA와 화면 확인</b>
-        <span class="desc">실습 ⑨ — 안 고친 담당이.</span>
+        <span class="desc">고치지 않은 담당이 화면을 확인합니다.</span>
         <span class="rm-out">통과 기록</span>
       </div>
     </div>
@@ -63,7 +65,7 @@
 <section class="slide w3-req3slide" data-slide="V4-02" data-shape="classification">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
+    <span class="s-line"></span><div class="s-team"></div>
   </header>
   <div class="s-full fill">
     <h2 class="s-title">검토 요청에 넣을 것 셋</h2>
@@ -85,18 +87,20 @@
         <p><strong>가장 자주 빠뜨리는 칸입니다.</strong> 이걸 빠뜨리면 검토만 시켰는데 파일이 바뀌어 있습니다.</p>
       </div>
     </div>
-    <div class="callout blue hug-center">셋 중 하나라도 비면 그 자리는 <strong>에이전트가 알아서 채웁니다.</strong></div>
+    <!-- 2026-08-09 삭제(사용자 지시): 「셋 중 하나라도 비면 그 자리는 에이전트가 알아서
+         채웁니다」. 위 세 카드가 각각 「안 적으면 폴더 전체를 훑는다 / 아무거나 말한다 /
+         파일이 바뀌어 있다」로 **이미 구체적으로** 말하고 있어, 하단 한 줄은 그것을
+         추상적으로 한 번 더 말한 중복이었다. 다시 붙이지 마라. -->
   </div>
 </section>
 
-<!-- V4-03 실습⑥ — screen-operation -->
+<!-- V4-03 실습⑤ — screen-operation -->
 <section class="slide w3-practice" data-slide="V4-03" data-shape="screen-operation">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
+    <span class="s-line"></span><div class="s-team"></div>
   </header>
   <div class="s-full fill">
-    <p class="s-eyebrow">실습 ⑥</p>
     <h2 class="s-title">담당별 병렬 검토 요청</h2>
     <div class="eval-steps viz-flow-v">
       <div class="work-step"><span class="n">1</span><span class="desc">담당 파일마다 <strong>따로</strong> 요청합니다 — 요청창을 <strong>담당 수만큼</strong> 나눠서 엽니다.</span></div>
@@ -107,7 +111,7 @@
       <span class="w3-prompt-tag">이렇게 말하세요</span>
       <p>"지금 이 프로젝트에서 HTML 담당(화면 뼈대)만 맡아 줘. <code>index.html</code>만 읽고 개선하면 좋을 점 세 개를 근거와 함께 제안해 줘. <strong>파일은 고치지 마.</strong>" — CSS · JS 담당도 같은 형식으로 반복합니다.</p>
     </div>
-    <div class="callout blue hug-center w3-goal">완성 기준 — 담당별로 <strong>서로 다른 제안</strong>이 손에 있음</div>
+    <!-- 2026-08-09 사용자 지시로 완성 기준 삭제(덱 전체 14장 일괄). 되살리지 마라. -->
   </div>
 </section>
 
@@ -115,7 +119,7 @@
 <section class="slide w3-screen-zones" data-slide="V4-04" data-shape="mapping">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
+    <span class="s-line"></span><div class="s-team"></div>
   </header>
   <div class="s-full fill">
     <h2 class="s-title">세 담당은 서로 다른 것을 봅니다</h2>
@@ -142,32 +146,44 @@
 <section class="slide w3-shotslide" data-slide="V4-05" data-shape="comparison">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
+    <span class="s-line"></span><div class="s-team"></div>
   </header>
   <div class="s-full fill">
-    <p class="s-eyebrow">강사 예시</p>
     <h2 class="s-title">결과 충돌</h2>
     <p class="w3-def">담당마다 다른 결론을 낸 상태 — 각자 다른 곳을 봤으니 <strong>당연한 일</strong>입니다.</p>
+    <!-- 2026-08-09 재작성(사용자 지시): 두 시안이 뭐가 다른지 한눈에 안 들어왔다.
+         옛 판은 양쪽 다 「점선 구역 2개」로 그려서 골격이 거의 같았고, 차이가
+         작은 배지 하나에만 있었다. 고친 방식은 셋이다:
+           ① 골격 자체를 다르게 — 왼쪽은 맨 위에 큰 블록, 오른쪽은 제목 줄 안 배지
+           ② 다른 자리에 「여기」 표식을 직접 찍어 시선을 그 지점으로 보낸다
+           ③ 시안마다 「오늘 5개를 어디에 놓았나」를 한 줄로 못 박는다
+         표식은 민트다 — 코랄은 이 덱에서 «주의·경고»라 오답으로 읽힌다(R-COLOR-05). -->
     <div class="w3-shots viz-matrix">
       <div class="w3-shot">
         <div class="w3-shot-head w3-own-html"><b class="w3-own-chip">HTML 담당</b><span>목록 맨 위에 큰 글씨로</span></div>
-        <div class="w3-mock" role="img" aria-label="오늘 5개를 목록 맨 위에 큰 글씨로 표시한 시안">
+        <div class="w3-mock" role="img" aria-label="화면 맨 위에 「오늘 5개」를 큰 블록으로 놓고 그 아래 기록 목록이 이어지는 시안">
           <div class="w3-mock-bar">활동 기록 도구</div>
           <div class="w3-mock-body">
-            <div class="w3-mock-zone w3-own-html"><b>오늘 5개</b></div>
-            <div class="w3-mock-zone w3-own-qa"><b>기록 목록</b></div>
+            <div class="w3-mock-hero is-marked"><b>오늘 5개</b><span class="w3-mock-here">여기</span></div>
+            <div class="w3-mock-row">산책 · 오전 7:20</div>
+            <div class="w3-mock-row">독서 · 오전 9:05</div>
+            <div class="w3-mock-row">회의 · 오후 2:30</div>
           </div>
         </div>
+        <p class="w3-shot-cap">오늘 5개를 <strong>목록 맨 위</strong>에</p>
       </div>
       <div class="w3-shot">
         <div class="w3-shot-head w3-own-css"><b class="w3-own-chip">CSS 담당</b><span>제목 옆에 작은 배지로</span></div>
-        <div class="w3-mock" role="img" aria-label="오늘 5개를 제목 옆 작은 배지로 표시한 시안">
-          <div class="w3-mock-bar">활동 기록 도구 <span class="w3-own-chip w3-own-css">5</span></div>
+        <div class="w3-mock" role="img" aria-label="제목 줄 오른쪽에 작은 숫자 배지 5만 붙이고 아래는 기록 목록만 이어지는 시안">
+          <div class="w3-mock-bar">활동 기록 도구 <b class="w3-mock-badge is-marked">5</b><span class="w3-mock-here">여기</span></div>
           <div class="w3-mock-body">
-            <div class="w3-mock-zone w3-own-qa"><b>기록 목록</b></div>
-            <div class="w3-mock-zone w3-own-qa"><b>기록 목록</b></div>
+            <div class="w3-mock-row">산책 · 오전 7:20</div>
+            <div class="w3-mock-row">독서 · 오전 9:05</div>
+            <div class="w3-mock-row">회의 · 오후 2:30</div>
+            <div class="w3-mock-row">정리 · 오후 6:40</div>
           </div>
         </div>
+        <p class="w3-shot-cap">오늘 5개를 <strong>제목 옆</strong>에</p>
       </div>
     </div>
     <div class="callout blue hug-center"><strong>둘 다 맞는 말입니다.</strong> 그래서 정해야 합니다.</div>
@@ -178,7 +194,7 @@
 <section class="slide w3-verdictslide" data-slide="V4-06" data-shape="classification">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
+    <span class="s-line"></span><div class="s-team"></div>
   </header>
   <div class="s-full fill">
     <h2 class="s-title">다수결이 아니라 근거로 판정합니다</h2>
@@ -196,14 +212,13 @@
   </div>
 </section>
 
-<!-- V4-07 실습⑦ — screen-operation (판정표) -->
+<!-- V4-07 실습⑥ — screen-operation (판정표) -->
 <section class="slide w3-practice w3-vtableslide" data-slide="V4-07" data-shape="screen-operation">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
+    <span class="s-line"></span><div class="s-team"></div>
   </header>
   <div class="s-full fill">
-    <p class="s-eyebrow">실습 ⑦</p>
     <h2 class="s-title">결과 비교하고 판정하기</h2>
     <div class="w3-vt-body">
       <div class="eval-steps viz-flow-v">
@@ -220,18 +235,17 @@
         </tbody>
       </table>
     </div>
-    <div class="callout blue hug-center w3-goal">완성 기준 — 오늘 고칠 제안이 <strong>하나로 좁혀짐</strong></div>
+    <!-- 2026-08-09 사용자 지시로 완성 기준 삭제(덱 전체 14장 일괄). 되살리지 마라. -->
   </div>
 </section>
 
-<!-- V4-08 실습⑧ — screen-operation -->
+<!-- V4-08 실습⑦ — screen-operation -->
 <section class="slide w3-practice" data-slide="V4-08" data-shape="screen-operation">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
+    <span class="s-line"></span><div class="s-team"></div>
   </header>
   <div class="s-full fill">
-    <p class="s-eyebrow">실습 ⑧</p>
     <h2 class="s-title">승인된 개선 구현</h2>
     <div class="eval-steps viz-flow-v">
       <div class="work-step"><span class="n">1</span><span class="desc">채택한 제안 <strong>하나만</strong> 담당 파일에 반영합니다.</span></div>
@@ -242,7 +256,7 @@
       <span class="w3-prompt-tag">이렇게 말하세요</span>
       <p>"<strong>[승인된 개선]</strong>을 <strong>[담당 파일]</strong>에만 반영해 줘. 다른 파일과 기존 기능은 건드리지 말고, 끝나면 무엇을 바꿨는지 알려 줘."</p>
     </div>
-    <div class="callout blue hug-center w3-goal">완성 기준 — <strong>기존 흐름과 새 흐름이 모두 작동</strong></div>
+    <!-- 2026-08-09 사용자 지시로 완성 기준 삭제(덱 전체 14장 일괄). 되살리지 마라. -->
   </div>
 </section>
 
@@ -250,12 +264,11 @@
 <section class="slide w3-anchorsplit" data-slide="V4-09" data-shape="concept">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
+    <span class="s-line"></span><div class="s-team"></div>
   </header>
   <div class="s-full">
     <div class="w3-as-text">
-      <p class="s-eyebrow">용어 둘</p>
-      <h2 class="s-title">독립 QA와 회귀</h2>
+        <h2 class="s-title">독립 QA와 회귀</h2>
       <p class="w3-def"><strong>독립 QA</strong> — 구현에 참여하지 않은 담당이 하는 확인</p>
       <p class="w3-def"><strong>회귀</strong> — 잘 되던 기존 기능이 다시 깨지는 것</p>
       <p class="s-body">고친 사람은 <strong>"될 것"이라고 생각하면서</strong> 보기 때문에 같은 곳을 계속 놓칩니다.</p>
@@ -274,58 +287,45 @@
         <text x="300" y="158" font-size="21" font-weight="800" fill="var(--gray-400)">= 회귀가 숨는 자리</text>
         <rect x="10" y="228" width="540" height="180" rx="18" fill="var(--mint-soft)" stroke="var(--mint-line)" stroke-width="2"/>
         <text x="40" y="268" font-size="23" font-weight="800" fill="var(--mint-deep)">QA 담당 — 처음 보는 시선</text>
-        <rect x="40" y="288" width="480" height="46" rx="10" fill="var(--white)" stroke="var(--mint-deep)" stroke-width="2"/>
+        <!-- 2026-08-09(사용자 지시): 「둘 다 봅니다」가 두 상자 **사이 빈 틈**에 떠 있어
+             멀리서 보면 어디에 걸리는 말인지 알 수 없었다. 위쪽 빨간 블록이 이미
+             «상자 + 오른쪽 라벨» 구조이므로 아래 블록도 같은 구조로 맞췄다 —
+             상자를 220px로 좁히고 라벨을 상자마다 오른쪽(x=286)에 붙였다.
+             위아래 골격이 같아져 「고친 담당은 새 기능만 / QA는 둘 다」 대비가 바로 읽힌다. -->
+        <rect x="40" y="288" width="220" height="46" rx="10" fill="var(--white)" stroke="var(--mint-deep)" stroke-width="2"/>
         <text x="150" y="318" text-anchor="middle" font-size="20" font-weight="800" fill="var(--ink)">새 기능</text>
-        <rect x="40" y="344" width="480" height="46" rx="10" fill="var(--white)" stroke="var(--mint-deep)" stroke-width="2"/>
+        <text x="286" y="318" font-size="21" font-weight="800" fill="var(--mint-deep)">봅니다</text>
+        <rect x="40" y="344" width="220" height="46" rx="10" fill="var(--white)" stroke="var(--mint-deep)" stroke-width="2"/>
         <text x="150" y="374" text-anchor="middle" font-size="20" font-weight="800" fill="var(--ink)">기존 기능</text>
-        <text x="300" y="346" font-size="21" font-weight="800" fill="var(--mint-deep)">둘 다 봅니다</text>
+        <text x="286" y="374" font-size="21" font-weight="800" fill="var(--mint-deep)">여기도 봅니다</text>
       </svg>
     </figure>
   </div>
 </section>
 
-<!-- V4-10 실습⑨ — screen-operation -->
+<!-- V4-10 독립 QA 실행 — screen-operation
+     2026-08-09 사용자 지시: PART 4는 실습 번호를 붙이지 않는다(eyebrow 삭제).
+     같은 지시로 삭제된 V4-11「화면 QA 6항목」의 여섯 항목을 여기 .w3-eg 한 줄로 흡수했다.
+     ⚠️ 표·체크칸으로 되돌리지 마라 — 「무조건 확인해야 하는 규정」처럼 읽힌 것이 삭제 사유다.
+        어조는 「예를 들면 … 골라 봅니다」(참고 예시)를 유지한다. -->
 <section class="slide w3-practice" data-slide="V4-10" data-shape="screen-operation">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
+    <span class="s-line"></span><div class="s-team"></div>
   </header>
   <div class="s-full fill">
-    <p class="s-eyebrow">실습 ⑨</p>
     <h2 class="s-title">독립 QA 실행</h2>
     <div class="eval-steps viz-flow-v">
       <div class="work-step"><span class="n">1</span><span class="desc">QA 담당에게 <strong>수정은 시키지 않고</strong> 확인만 시킵니다.</span></div>
       <div class="work-step"><span class="n">2</span><span class="desc">대표 흐름을 <strong>정상값 · 다른 값 · 빈 값</strong> 세 가지로 실행합니다.</span></div>
       <div class="work-step"><span class="n">3</span><span class="desc">각 항목을 <strong>통과 / 실패</strong>로 받아 적습니다.</span></div>
     </div>
+    <p class="w3-eg">예를 들면 — 기존 흐름 · 새 흐름 · 다른 값 · 오류 상황 · 좁은 화면 · 글자 크기. <strong>내 프로젝트에 있는 것만</strong> 골라 봅니다.</p>
     <div class="w3-prompt">
       <span class="w3-prompt-tag">이렇게 말하세요</span>
       <p>"이번엔 <strong>수정하지 말고 검증만</strong> 해줘. 대표 흐름을 정상값 · 다른 값 · 빈 값으로 각각 실행해서 결과를 통과/실패로 알려 줘."</p>
     </div>
-    <div class="callout blue hug-center w3-goal">완성 기준 — 기존 흐름과 새 흐름이 <strong>셋 다 통과</strong></div>
+    <!-- 2026-08-09 사용자 지시로 완성 기준 삭제(덱 전체 14장 일괄). 되살리지 마라. -->
   </div>
 </section>
 
-<!-- V4-11 화면 QA 6항목 — checklist -->
-<section class="slide w3-qaslide" data-slide="V4-11" data-shape="checklist">
-  <header class="s-head">
-    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span>
-  </header>
-  <div class="s-full fill">
-    <h2 class="s-title">화면 QA 6항목</h2>
-    <p class="s-lead">담당이 "통과"라고 해도 <strong>화면을 직접 보는 것</strong>이 마지막 확인입니다.</p>
-    <table class="w3-qa6 viz-matrix">
-      <thead><tr><th>확인할 것</th><th>통과</th><th>실패</th><th>해당 없음</th></tr></thead>
-      <tbody>
-        <tr><td>기존 흐름</td><td>☐</td><td>☐</td><td>☐</td></tr>
-        <tr><td>새 흐름</td><td>☐</td><td>☐</td><td>☐</td></tr>
-        <tr><td>다른 값</td><td>☐</td><td>☐</td><td>☐</td></tr>
-        <tr><td>오류 상황</td><td>☐</td><td>☐</td><td>☐</td></tr>
-        <tr><td>좁은 화면</td><td>☐</td><td>☐</td><td>☐</td></tr>
-        <tr><td>글자 크기</td><td>☐</td><td>☐</td><td>☐</td></tr>
-      </tbody>
-    </table>
-    <div class="callout blue hug-center">「해당 없음」은 그 기능이 없다는 뜻이지, <strong>확인을 건너뛰었다는 뜻이 아닙니다.</strong></div>
-  </div>
-</section>

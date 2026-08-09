@@ -228,8 +228,8 @@
     /* 명시도 주의: 킷은 `.s03-slide .an-intro`(0,2,0)로 21px를 건다 — 같은 형태로 올린다 */
     .s03-slide .an-intro{font-size:var(--fs-body)}
     .concept-recap .concept-lead{font-size:var(--fs-body)}
-    /* S02는 밴드가 짧아 하단이 154px 비었다. 세로 간격을 균등하게 늘려 채운다. */
-    .s02-slide .s-body-wrap{bottom:54px;display:flex;flex-direction:column;justify-content:space-evenly}
+    /* S02는 밴드가 짧다. 상단으로 모아 올린다(space-evenly는 중앙·하단으로 밀려 보인다). */
+    .s02-slide .s-body-wrap{top:120px;bottom:54px;display:flex;flex-direction:column;justify-content:flex-start;gap:20px}
 
     /* ===== 3주차 PART 1 신규 구도 (G1 결정표 등재분) =====
        토큰만 사용(R-COLOR-01) · 흰 fill + --line 단독 보더 금지(R-COLOR-04)
@@ -245,6 +245,11 @@
        도해를 넣는 칸에는 예외 없이 min-width:0을 함께 준다. */
     .w3-deffig > *{min-width:0}
     .w3-deffig-text{display:flex;flex-direction:column;gap:12px;min-height:0;min-width:0}
+    /* V1-01: 좌측 본문 여백에 하네스 비유 그림을 작게. 우측 흐름 박스는 손대지 않는다.
+       asset-slot 기본이 position:absolute(우상단)라 좌측 칼럼 흐름으로 되돌린다. */
+    .w3-deffig-illus.asset-slot{position:relative;inset:auto;z-index:auto;overflow:visible;
+      margin-top:auto;align-self:center;width:auto;height:auto;max-width:170px;max-height:110px}
+    .w3-deffig-illus.asset-slot>img{width:auto;height:auto;max-width:170px;max-height:110px;opacity:.96}
     .w3-deffig-text .s-title{margin:0 0 2px}
     .w3-deffig-text .s-body{margin:0;font-size:22px;line-height:1.62;color:var(--gray-700)}
     .w3-deffig-box{display:flex;flex-direction:column;justify-content:space-evenly;gap:10px;
@@ -458,6 +463,9 @@
     [data-slide="V1-07"] .w3-ls-visual{justify-content:center;gap:10px}
     .w3-termgrp{display:flex;flex-direction:column;align-items:flex-start;gap:8px}
     .w3-termgrp .w3-term{margin-top:0}
+    /* V1-07: 「마우스 오버 효과」는 정의가 아니라 예시임을 시각적으로 구분한다. */
+    .w3-termgrp.is-example{margin-top:6px;padding-left:16px;border-left:3px solid var(--blue-line)}
+    .w3-ex-lead{font-size:19px;font-weight:800;color:var(--blue);margin:0}
     .w3-hoverfig{margin:0;width:100%;flex:1 1 auto;min-height:0;position:relative}
     .w3-hoverfig svg{position:absolute;inset:0;width:100%;height:100%}
 
@@ -524,6 +532,62 @@
     .w3-stage > .w3-stage-cap{margin:14px 0 0;text-align:center;
       font-size:var(--fs-body);line-height:1.5;color:var(--gray-700)}
     .w3-stage > .w3-stage-cap strong{color:var(--ink)}
+
+    /* ═══ 2026-08-09 · V2-02 · V2-04 좌측 칼럼 하단 여백 (사용자 지시) ═══════
+       「글이 다 위로 올라가서 아래 여백이 너무 높다」 — 우측 도해는 세로로 길고
+       좌측 텍스트는 상단 정렬이라 하단이 비어 있었다. 두 가지를 함께 한다:
+         ① 칼럼 gap을 12→16px로 열어 글 덩어리를 조금 내린다(제목 위치는 유지 —
+            사용자가 「대주제 위치는 괜찮다」고 확인했다)
+         ② 요리 비유 한 줄을 칼럼 **맨 아래**(margin-top:auto)에 붙여 빈 세로를
+            여백이 아니라 정보로 채운다 — MEMORY 「박스를 늘려 채우지 마라」
+       ⚠️ 박스가 아니라 좌측 스트립이다. PART 2에서 2026-08-08에 걷어낸 하단
+          콜아웃을 다시 만들지 않기 위해서다(같은 판정). 23p(V2-03)는 같은 비유를
+          도해 캡션(.w3-stage-cap)으로 다는데 중앙 도해 아래라 자리가 다르다 —
+          형태 차이는 의도된 것이다. */
+    /* ⚠️ 2026-08-09 2차 정정 — ①의 「gap을 벌린다」는 **틀린 처방이었다.**
+       문장 사이를 균등하게 벌리자 붙어 있어야 할 정의·본문까지 갈라졌다
+       (사용자 지적: 「간격만 넓히면 다야? 붙일 건 붙여야지」).
+       올바른 방법: **gap은 원래대로 조이고(12px 기본) 빈 세로를 두 곳에만 몰아준다** —
+       `.w3-def`와 마지막 요소에 `margin-top:auto`를 걸면 auto가 남는 공간을 균등 분배해
+       「제목 / (빈칸) / 정의+본문 한 덩어리 / (빈칸) / 마지막 줄」이 된다.
+       덩어리는 붙어 있고 그 덩어리가 화면 중앙으로 내려온다. */
+    /* ⚠️ `.w3-deffig`의 기본 `align-items:start`는 텍스트 칼럼을 **내용 높이**로 만든다.
+       그러면 칼럼 바닥 = 마지막 요소 바닥이라 `margin-top:auto`가 흡수할 여유가 0이고,
+       「칼럼 바닥과의 간격 0px」이라는 측정이 **참이면서 무의미해진다**(실측으로 잡았다 —
+       칼럼이 457에서 끝나고 도해는 666까지 가서 209px가 비어 있었다).
+       stretch로 칼럼을 도해와 같은 높이(534px)로 만든 뒤에야 auto가 일한다. */
+    .deck .slide[data-slide="V2-02"] .w3-deffig,
+    .deck .slide[data-slide="V2-04"] .w3-deffig,
+    .deck .slide[data-slide="V5-12"] .w3-deffig{align-items:stretch}
+    /* 정의부터 본문 끝까지는 **한 덩어리로 붙어 있어야 한다.** auto는 여기 하나와
+       마지막 요소 하나, 두 곳에만 건다 — 그래야 남는 세로가 덩어리 위아래로만 간다. */
+    .deck .slide[data-slide="V2-02"] .w3-deffig-text > .w3-def,
+    .deck .slide[data-slide="V2-04"] .w3-deffig-text > .w3-def,
+    .deck .slide[data-slide="V5-12"] .w3-deffig-text > .w3-def{margin-top:auto}
+    /* V5-12는 비유 줄이 없어 마지막이 본문이다. 아래쪽 auto를 본문 끝에 건다. */
+    .deck .slide[data-slide="V5-12"] .w3-deffig-text > .s-body:last-of-type{margin-bottom:auto}
+    .w3-deffig-text > .w3-analogy{margin:auto 0 0;padding:2px 0 2px 16px;
+      border-left:4px solid var(--mint);
+      font-size:var(--fs-body);line-height:1.5;color:var(--gray-700)}
+    .w3-deffig-text > .w3-analogy strong{font-weight:800;color:var(--mint-deep)}
+    /* 사전 조건 한 줄 — V5-05. 2026-08-09에 M5 리드에서 내려왔다.
+       정의(.w3-def) 앞에 놓이는 전제 문장이라 박스를 두르지 않는다. */
+    /* ===== 마무리 THANK YOU — 2026-08-09 신설(사용자 지시) =====
+       킷 `.closing`(다크 --cover-bg)을 배경으로 쓰고 안쪽만 이 주차가 짠다.
+       ⚠️ 여기 쓰는 토큰은 전부 kit/styles에 **실재를 확인**했다
+          (--cover-bg · --white · --on-dark-muted · --on-dark-caption).
+          미정의 토큰을 쓰면 배경·글자가 조용히 사라진다(3주차 초기 사고). */
+    .closing .w3-thx{position:absolute;left:64px;right:64px;top:118px;bottom:54px;
+      display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px}
+    .w3-thx-ko{margin:0;font-size:var(--fs-lead);font-weight:700;color:var(--on-dark-muted);
+      letter-spacing:.01em}
+    /* 덱에서 가장 큰 볼드 타이포그래피 — 표지 히어로(74px)보다 크게 잡는다.
+       32px 이상은 자간 광학 보정을 동반한다(audit_typography의 tracking 검사). */
+    .w3-thx-en{margin:0;font-size:96px;line-height:1.05;font-weight:800;color:var(--white);
+      letter-spacing:-.02em}
+    .w3-thx-sub{margin:0;font-size:var(--fs-body);line-height:1.5;color:var(--on-dark-caption)}
+    .w3-deffig-text > .w3-pre{margin:6px 0 0;font-size:var(--fs-body);line-height:1.45;color:var(--gray-700)}
+    .w3-deffig-text > .w3-pre strong{font-weight:800;color:var(--ink)}
 
     /* V2-01 — 콜아웃이 빠진 만큼 두 칸이 세로를 받게 한다.
        안 주면 space-evenly가 남은 높이를 «칸 사이 빈 공간»으로 흘린다. */
@@ -611,6 +675,75 @@
     .w3-zone-item b{display:block;font-size:22px;font-weight:800;color:var(--ink)}
     .w3-zone-item span{display:block;margin-top:2px;font-size:20px;line-height:1.45;color:var(--gray-700)}
 
+    /* ── 2026-08-09 신설 3장 (V3-11~13) · 실습 ④ 뒤 「생긴 파일」 설명 ──────────
+       ⚠️ 트리에 등폭 글꼴을 쓰지 않는다. 들여쓰기는 padding-left가 만들고,
+          한글 태그가 같은 줄에 섞이는데 등폭이면 한글이 깨져 보인다. */
+
+    /* 좌우 폴더 트리 대비 — V3-11. 왼쪽(전)이 짧고 오른쪽(후)이 긴 것 자체가 메시지다. */
+    /* ⚠️ 세로 예산: 오른쪽 칸이 12줄이라 처음 값(li padding 3 · margin-top 14 · col padding 16)은
+       마지막 줄이 694px로 **바닥선 666을 28px 넘었다**(렌더 감사가 잡았다).
+       글자 크기는 그대로 두고 줄 간격·바깥 여백만 조여 맞췄다. 줄을 더 늘리려면
+       먼저 이 예산을 다시 재라 — 12줄이 상한에 가깝다. */
+    /* 2026-08-09: 왼쪽(실습 전)이 5줄, 오른쪽(실습 후)이 12줄이라 start 정렬에서는
+       왼쪽 칸이 위에 붙어 아래가 크게 비었다(사용자 지적). center로 바꿔 짧은 칸을
+       긴 칸 높이의 가운데에 맞춘다 — 가장 높은 오른쪽 칸이 행 높이를 정하므로
+       오른쪽 배치는 그대로다. */
+    .w3-tree2{display:grid;grid-template-columns:1fr 44px 1.3fr;align-items:center;
+      gap:0 18px;flex:1 1 auto;min-height:0;margin-top:8px}
+    .w3-tree2 > *{min-width:0}
+    /* 하단 패딩만 11px인 이유: 글줄은 655px로 여유가 있는데 **배경 박스**가 668px까지
+       내려가 바닥선 666을 2px 넘었다. 감사기는 자기 텍스트 없는 래퍼를 빼고 재서 안 잡지만,
+       666은 불변 규칙이라 패딩으로 맞췄다(육안 차이 없음). */
+    .w3-tr-col{background:var(--blue-soft);border-radius:var(--r-lg);padding:13px 20px 11px}
+    .w3-tr-col.is-after{background:var(--mint-soft)}
+    .w3-tr-col > h3{margin:0 0 8px;font-size:var(--fs-box-title);font-weight:800;color:var(--ink)}
+    .w3-tr-arrow{align-self:center;text-align:center;font-size:30px;font-weight:800;color:var(--blue)}
+    .w3-tr{list-style:none;margin:0;padding:0}
+    .w3-tr li{font-size:21px;line-height:1.28;color:var(--gray-700);padding:2px 0;
+      display:flex;align-items:baseline;gap:8px}
+    .w3-tr li.is-root{font-weight:800;color:var(--ink)}
+    .w3-tr li.d1{padding-left:18px}
+    .w3-tr li.d2{padding-left:36px}
+    .w3-tr li.d3{padding-left:54px}
+    .w3-tr li.is-new{color:var(--mint-deep);font-weight:800}
+    .w3-tr li.is-grew{color:var(--ink);font-weight:800}
+    .w3-tr li em{font-style:normal;font-size:18px;font-weight:700;color:var(--gray-700)}
+    .w3-tr-tag{font-size:18px;font-weight:800;color:var(--mint-deep);
+      background:var(--white);border-radius:var(--r-pill);padding:1px 10px;white-space:nowrap}
+
+    /* 파일 → 하는 일 → 비유 3행 — V3-12 */
+    .w3-role3{display:flex;flex-direction:column;gap:14px;flex:1 1 auto;min-height:0;
+      justify-content:center;margin-top:16px}
+    .w3-rl{display:grid;grid-template-columns:300px 36px 1fr 158px;align-items:center;gap:16px;
+      background:var(--blue-soft);border-radius:var(--r-lg);padding:16px 20px}
+    .w3-rl > *{min-width:0}
+    .w3-rl-f{font-family:var(--font-mono);font-size:21px;font-weight:800;color:var(--blue)}
+    .w3-rl-arrow{text-align:center;font-size:24px;font-weight:800;color:var(--blue)}
+    .w3-rl-d{font-size:var(--fs-body);line-height:1.4;color:var(--gray-700)}
+    .w3-rl-d strong{font-weight:800;color:var(--ink)}
+    /* 비유 칩 — 민트 fill 위에는 --on-mint(짙은 글자)다. 흰 글자 금지(R-COLOR-02). */
+    .w3-rl-a{justify-self:end;background:var(--mint);color:var(--on-mint);border-radius:var(--r-pill);
+      padding:5px 16px;font-size:20px;font-weight:800;white-space:nowrap}
+
+    /* 용어 한 줄 + ✗/✓ 대비 — V3-13 */
+    .w3-t2{display:flex;flex-direction:column;gap:20px;flex:1 1 auto;min-height:0;
+      justify-content:center;margin-top:18px}
+    .w3-t2-def{background:var(--blue-soft);border-radius:var(--r-lg);padding:20px 24px}
+    .w3-t2-def > b{display:block;font-size:var(--fs-box-title);font-weight:800;color:var(--ink);margin-bottom:6px}
+    .w3-t2-def p{margin:0;font-size:var(--fs-body);line-height:1.5;color:var(--gray-700)}
+    .w3-t2-def p + p{margin-top:8px}
+    .w3-t2-cmp{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+    .w3-t2-cell{border-radius:var(--r-lg);padding:18px 20px;display:flex;flex-direction:column;gap:6px}
+    .w3-t2-cell.is-x{background:var(--coral-soft);box-shadow:inset 0 0 0 2px var(--coral-line)}
+    .w3-t2-cell.is-o{background:var(--mint-soft);box-shadow:inset 0 0 0 2px var(--mint-line)}
+    .w3-t2-mark{font-size:26px;font-weight:800;line-height:1}
+    .w3-t2-cell.is-x .w3-t2-mark{color:var(--coral-deep)}
+    .w3-t2-cell.is-o .w3-t2-mark{color:var(--mint-deep)}
+    .w3-t2-cell code{font-family:var(--font-mono);font-size:22px;font-weight:800;color:var(--ink)}
+    /* ⚠️ 이 .desc는 「박스 안 보조 캡션」이 아니라 초안 본문 문구라 22px 하한 대상이다.
+       shell ② 블록의 .desc(20/500)를 (0,2,0)으로 이긴다. */
+    .w3-t2-cell .desc{font-size:var(--fs-body);line-height:1.45;color:var(--gray-700)}
+
     /* ===== 3주차 PART 4 신규 구도 (G1 결정표 등재분) ===== */
 
     /* 검토 요청 3칸 — V4-02 (③만 경고색: 가장 자주 빠뜨리는 칸) */
@@ -675,38 +808,89 @@
     .w3-as-fig svg{position:absolute;inset:0;width:100%;height:100%}
 
     /* 두 시안 나란히 렌더 — V4-05 */
-    .w3-shots{display:grid;grid-template-columns:1fr 1fr;gap:28px;flex:1 1 auto;min-height:0}
-    .w3-shot{display:flex;flex-direction:column;gap:10px;min-width:0}
+    /* ⚠️ `grid-template-rows:minmax(0,1fr)`와 `.w3-shot{min-height:0}`이 **둘 다** 필요하다.
+       격자 행 기본값은 auto(=min-content)라 부모에 `flex:1 1 auto;min-height:0`이 있어도
+       행이 줄지 않는다. 2026-08-09에 시안 캡션을 더하자 이 두 줄이 없어서 목업이
+       하단 콜아웃 위로 밀고 들어가 겹침 2건이 났다(렌더 감사가 잡았다). */
+    .w3-shots{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:minmax(0,1fr);
+      gap:28px;flex:1 1 auto;min-height:0}
+    .w3-shot{display:flex;flex-direction:column;gap:10px;min-width:0;min-height:0}
     .w3-shot-head{display:flex;align-items:baseline;gap:12px}
     .w3-shot-head b{font-size:var(--fs-box-title);font-weight:800;color:var(--ink)}
     .w3-shot-head span{font-size:20px;color:var(--gray-700)}
     .w3-shot .w3-mock{flex:1 1 auto;min-height:0}
+    /* ⚠️ 2026-08-09 대비 수정(사용자 지적: 「파란 배경에 HTML 담당 글씨가 안 보인다」).
+       원인은 명시도다 — `.w3-own-chip`이 `color:var(--own-on)`(파란 칩 위 흰 글자)를
+       선언하는데 바로 위 `.w3-shot-head b`(0,1,1)가 `.w3-own-chip`(0,1,0)을 이겨
+       칩 글자가 `--ink`(짙은 남색)로 덮여 파랑 위 파랑이 됐다.
+       (0,2,0)으로 올려 칩 자신의 대비 규약을 되살린다 — R-COLOR-02. */
+    .w3-shot-head b.w3-own-chip{color:var(--own-on)}
 
-    /* 화면 QA 6항목 × 3상태 — V4-11 */
-    .w3-qa6{width:100%;border-collapse:collapse}
-    .w3-qa6 th,.w3-qa6 td{border:1px solid var(--blue-line-strong);padding:9px 14px;
-      font-size:21px;line-height:1.35;vertical-align:middle}
-    .w3-qa6 th{background:var(--blue-soft);color:var(--blue);font-weight:800;text-align:center}
-    .w3-qa6 th:first-child{text-align:left}
-    .w3-qa6 td:first-child{font-weight:800;color:var(--ink)}
-    .w3-qa6 td:not(:first-child){text-align:center;color:var(--gray-400);
-      font-weight:800;background:var(--surface);width:118px}
+    /* 42p 목업 — 「어디가 다른가」를 직접 짚는 표식과 골격 차이용.
+       표식은 민트(일반 강조)다. 코랄은 이 덱에서 주의·경고라 오답으로 읽힌다. */
+    /* ⚠️ 세로 예산: `.w3-shots` 행이 353px이고 머리(41)+캡션(31)+gap을 빼면 목업 몫은
+       약 252px다. 처음 짠 값(hero padding 14 · row padding 7 · body padding 16)은
+       필요 높이가 293px이라 41px이 `.w3-mock{overflow:hidden}`에 **조용히 잘렸다.**
+       폰트를 줄이는 대신 내부 여백만 조여 맞췄다 — 글자 크기는 그대로다. */
+    .w3-mock-hero{display:flex;align-items:center;justify-content:space-between;gap:12px;
+      background:var(--blue-soft);border-radius:var(--r-md);padding:9px 14px}
+    .w3-mock-hero b{font-size:30px;font-weight:800;color:var(--ink);line-height:1.1}
+    .w3-mock-row{font-size:19px;line-height:1.35;color:var(--gray-700);
+      border-bottom:1px solid var(--line);padding:5px 2px}
+    .w3-shot .w3-mock-body{padding:11px 14px;gap:5px}
+    .w3-mock-row:last-child{border-bottom:0}
+    .w3-mock-badge{display:inline-block;background:var(--mint);color:var(--on-mint);
+      border-radius:var(--r-pill);padding:1px 10px;font-size:17px;font-weight:800}
+    .is-marked{outline:2px dashed var(--mint-deep);outline-offset:3px}
+    .w3-mock-here{display:inline-block;background:var(--mint);color:var(--on-mint);
+      border-radius:var(--r-pill);padding:2px 10px;font-size:16px;font-weight:800;
+      letter-spacing:.02em;white-space:nowrap}
+    .w3-mock-bar .w3-mock-here{margin-left:8px}
+    /* 시안별 한 줄 — 「오늘 5개를 어디에 놓았나」. 박스가 아니라 캡션이다. */
+    .w3-shot-cap{margin:10px 0 0;font-size:var(--fs-body);line-height:1.4;color:var(--gray-700)}
+    .w3-shot-cap strong{font-weight:800;color:var(--ink)}
+
+    /* 33·35p — 완성 기준 띠를 뺀 자리로 검정 프롬프트를 내린다(2026-08-09 사용자 지시).
+       `.s-full.fill`이 flex column이므로 auto 여백이 남는 세로를 전부 위로 밀어
+       프롬프트가 바닥 쪽에 붙는다. 폰트·박스 크기는 건드리지 않는다. */
+    [data-slide="V3-04"] .w3-prompt,
+    [data-slide="V3-08"] .w3-prompt{margin-top:auto}
+
+    /* 참고 예시 한 줄 — V4-10.
+       2026-08-09: 삭제된 V4-11「화면 QA 6항목」(표 + 통과/실패/해당없음 체크칸)의
+       여섯 항목을 여기로 흡수했다. 삭제 사유가 내용이 아니라 «규정처럼 읽힌 표 형태»였으므로
+       ⚠️ 박스·표·체크칸으로 되돌리지 마라 — 본문 한 줄로 둔다. */
+    .w3-practice .w3-eg{margin:10px 0 0;font-size:var(--fs-body);line-height:1.45;color:var(--gray-700)}
+    .w3-practice .w3-eg strong{font-weight:800;color:var(--ink)}
 
     /* ===== 3주차 PART 5·6 신규 구도 (G1 결정표 등재분) ===== */
 
-    /* 계층 밴드 — V5-02. ⚠️ 초안이 「나란한 카드 4개로 그리지 말 것」을 명시했다.
-       플러그인이 나머지를 담는 **포함 관계**가 요지이므로 세로로 겹쳐 담는다. */
-    .w3-layers{display:flex;flex-direction:column;gap:0;flex:1 1 auto;min-height:0;
-      justify-content:center}
-    .w3-layer{border-radius:var(--r-lg);padding:16px 22px;display:grid;
-      grid-template-columns:210px 1fr;align-items:center;column-gap:20px}
-    .w3-layer b{font-size:var(--fs-box-title);font-weight:800;color:var(--ink)}
-    .w3-layer span{font-size:var(--fs-body);line-height:1.45;color:var(--gray-700)}
-    .w3-layer.l1{background:var(--blue-soft);box-shadow:inset 0 0 0 2px var(--blue)}
-    .w3-layer.l2{background:var(--white);margin:10px 26px 0;box-shadow:inset 0 0 0 2px var(--blue-line-strong)}
-    .w3-layer.l3{background:var(--white);margin:10px 26px 0;box-shadow:inset 0 0 0 2px var(--blue-line-strong)}
-    .w3-layer.l4{background:var(--mint-soft);margin:10px 52px 0;box-shadow:inset 0 0 0 2px var(--mint-line)}
-    .w3-layer.l4 b{color:var(--on-mint)}
+    /* 2층 구도 — V5-02. 2026-08-09에 옛 4단 밴드(.w3-layers/.l1~.l4)를 걷어내고 대체했다.
+       옛 구도의 문제 3가지: ① 들여쓰기가 「플러그인 > Skill > 커넥터 > MCP」라는
+       **없는 3단 중첩**을 그렸다 ② 가장 아래·가장 좁은 MCP가 가장 사소해 보였다
+       ③ 「담는 단위(플러그인)」와 「잇는 규격(MCP)」이라는 다른 범주가 한 줄로 섞였다.
+       그래서 두 블록을 **같은 크기·같은 무게**로 두고, 플러그인이 담는 것(Skill·커넥터)만
+       그 안의 칩으로 내렸다. 초안의 「플러그인이 나머지를 담는다」는 bridge 한 줄로 살렸다.
+       ⚠️ 두 블록의 대등함을 깨지 마라 — 그게 이 재편의 목적이다. 세로가 넘치면 padding·gap을 조인다. */
+    .w3-two-layer{display:flex;flex-direction:column;flex:1 1 auto;min-height:0;justify-content:center}
+    .w3-tl-block{border-radius:var(--r-lg);padding:18px 22px}
+    .w3-tl-block.is-pack{background:var(--blue-soft);box-shadow:inset 0 0 0 2px var(--blue)}
+    .w3-tl-block.is-proto{background:var(--mint-soft);box-shadow:inset 0 0 0 2px var(--mint-deep)}
+    .w3-tl-tag{display:inline-block;font-size:var(--fs-eyebrow);font-weight:800;margin-bottom:8px}
+    .w3-tl-block.is-pack .w3-tl-tag{color:var(--blue)}
+    .w3-tl-block.is-proto .w3-tl-tag{color:var(--mint-deep)}
+    .w3-tl-main{display:grid;grid-template-columns:210px 1fr;align-items:center;column-gap:20px}
+    .w3-tl-main b{font-size:var(--fs-box-title);font-weight:800;color:var(--ink)}
+    .w3-tl-main span{font-size:var(--fs-body);line-height:1.45;color:var(--gray-700)}
+    .w3-tl-chips{display:flex;gap:12px;margin:12px 0 0}
+    /* ⚠️ 칩 글자를 20px로 낮추지 마라 — Skill·커넥터 설명은 「박스 안 보조 캡션」이 아니라
+       초안 5-2행의 **본문 문구 그 자체**라 22px 하한 대상이다. */
+    .w3-tl-chip{flex:1;background:var(--white);border-radius:var(--r-md);
+      box-shadow:inset 0 0 0 2px var(--blue-line-strong);padding:10px 14px;
+      font-size:var(--fs-body);line-height:1.4;color:var(--gray-700)}
+    .w3-tl-chip b{display:block;font-size:var(--fs-body);font-weight:800;color:var(--ink);margin-bottom:2px}
+    .w3-tl-bridge{margin:0;padding:10px 0;text-align:center;font-size:var(--fs-body);line-height:1.4;color:var(--gray-700)}
+    .w3-tl-bridge strong{font-weight:800;color:var(--blue)}
 
     /* 상태 3단 — V5-04 (연결됨 / 승인 대기 / 범위 초과) */
     .w3-states{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:14px;
@@ -889,7 +1073,7 @@
       <div class="cover-title">
         <h1 class="ko">에이전트 팀과 함께,<br>오늘 <span class="hl">세상에 내놓습니다</span></h1>
       </div>
-      <div class="cover-terminal"><span class="pfx">&gt;_</span><span class="q">담당을 나눠서 검토하고, 내가 판정할게</span><span class="cur" aria-hidden="true"></span></div><!-- ✏️ 예: "첫 웹페이지 만들어줘" -->
+      <div class="cover-terminal"><span class="pfx">&gt;_</span><span class="q">담당을 나눠 검토하게 하고, 배포까지 진행합니다</span><span class="cur" aria-hidden="true"></span></div><!-- ✏️ 예: "첫 웹페이지 만들어줘" -->
       <div class="cover-presenter">바이브코딩 3주 아카데미</div>
     </section>
 
@@ -920,7 +1104,7 @@
             </div>
           </div>
         </div>
-        <p class="s-lead">공개할지 정하는 것도, 공개한 뒤 책임지는 것도 <strong>사람</strong>입니다.</p>
+        <p class="s-lead">공개할지 정하는 것도, 공개한 뒤 책임지는 것도 <span class="hl-mint-text">사람</span>입니다.</p>
       </div>
     </section>
 
@@ -1010,7 +1194,7 @@
         <span class="an-spark" aria-hidden="true"></span>
         <h2 class="an-title">오늘 배우게 될 것</h2>
         <div class="an-bar"></div>
-        <p class="an-intro">여섯 정거장, <span class="hl">실습 15개</span>입니다<br>정거장마다 손에 남는 결과가 하나씩 생깁니다</p>
+        <p class="an-intro">여섯 구간을 지납니다<br>구간마다 손에 남는 결과가 하나씩 생깁니다</p>
       </div>
       <div class="an-right">
         <div class="an-item"><div class="an-num">1</div><div class="an-body"><div class="an-h">시작 상태 보호와 하네스</div><div class="an-d">실행 확인 · 백업 · 공개 금지 파일</div></div></div>
@@ -1018,7 +1202,7 @@
         <div class="an-item"><div class="an-num">3</div><div class="an-body"><div class="an-h">담당 나누기와 팀 규칙</div><div class="an-d">HTML · CSS · JS · QA</div></div></div>
         <div class="an-item"><div class="an-num">4</div><div class="an-body"><div class="an-h">병렬 검토 · 결과 판정 · 구현</div><div class="an-d">엇갈린 결과를 근거로 정합니다</div></div></div>
         <div class="an-item"><div class="an-num">5</div><div class="an-body"><div class="an-h">플러그인 · MCP · GitHub 기록</div><div class="an-d">저장소 · 커밋 · 안전 점검</div></div></div>
-        <div class="an-item"><div class="an-num">6</div><div class="an-body"><div class="an-h">공개와 공유 범위</div><div class="an-d">공유 범위 · URL 자가 점검</div></div></div>
+        <div class="an-item"><div class="an-num">6</div><div class="an-body"><div class="an-h">배포와 공유 범위</div><div class="an-d">공유 범위 · URL 자가 점검</div></div></div>
       </div>
     </section>
 
@@ -1031,8 +1215,12 @@
     <section class="slide concept-recap" data-slide="END">
       <header class="s-head">
         <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-        <span class="s-line"></span><div class="s-team">팀명<br>부제</div>
+        <span class="s-line"></span>
       </header>
+      <!-- 2026-08-09: 킷 자리표시자 <div class="s-team">팀명/부제</div>를 지웠다.
+           고정 슬라이드라 JS가 .s-part로 바꾸지 않아 「팀명 / 부제」가 글자 그대로
+           화면에 떠 있었다(사용자 지적). 본문 슬라이드의 훅은 비워서 유지한다 —
+           거기선 JS가 PART n/N으로 채운다. -->
       <div class="concept-panel">
         <div class="concept-top">
           <p class="s-eyebrow">3주 회고</p>
@@ -1048,7 +1236,22 @@
           <div class="concept-card"><h3>기록했습니다</h3><p>무엇을 왜 바꿨는지 커밋에 남겼습니다</p></div>
           <div class="concept-card"><h3>공개했습니다</h3><p>로그인 없이 열리는 것을 확인했습니다</p></div>
         </div>
-        <div class="concept-bottom">검증된 것만 완료로 봅니다.<small>3주간 고생하셨습니다 &#183; THANK YOU</small></div>
+        <div class="concept-bottom">검증된 것만 완료로 봅니다.</div>
+      </div>
+    </section>
+
+    <!-- ============ 마무리 · THANK YOU (2026-08-09 신설 · 사용자 지시)
+         회고(END)에 붙어 있던 「3주간 고생하셨습니다 · THANK YOU」를 떼어 **전용 한 장**으로
+         독립시켰다 — 진짜 마지막 장이라 그렇게 닫는 게 맞다는 판단(사용자 확정).
+         킷 `.closing`(다크)을 쓴다. 이 클래스는 스타터 JS가 페이지 번호 주입에서
+         제외하므로 표지처럼 번호가 붙지 않는다.
+         ⚠️ MEMORY 「마지막 THANK YOU는 덱에서 가장 큰 볼드 타이포그래피여야 한다」 —
+            다른 어떤 제목도 이 크기를 넘지 않게 유지한다(현재 최대는 표지 74px). -->
+    <section class="slide closing" data-slide="THX">
+      <div class="w3-thx">
+        <p class="w3-thx-ko">3주간 고생하셨습니다</p>
+        <h2 class="w3-thx-en">THANK YOU</h2>
+        <p class="w3-thx-sub">이제 여러분의 결과물은 세상에 열려 있습니다.</p>
       </div>
     </section>
 
