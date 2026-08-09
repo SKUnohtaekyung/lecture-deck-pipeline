@@ -558,7 +558,17 @@
        stretch로 칼럼을 도해와 같은 높이(534px)로 만든 뒤에야 auto가 일한다. */
     .deck .slide[data-slide="V2-02"] .w3-deffig,
     .deck .slide[data-slide="V2-04"] .w3-deffig,
+    .deck .slide[data-slide="V5-05"] .w3-deffig,
     .deck .slide[data-slide="V5-12"] .w3-deffig{align-items:stretch}
+    /* V5-05(60p) — 용어 세 줄이 위에 몰리고 아래가 비었다(사용자 지적).
+       같은 원리로 「제목 / 빈칸 / 용어 3줄 덩어리 / 빈칸 / 사진첩 비유」가 되게 한다.
+       용어 줄끼리는 붙어 있어야 하므로 auto는 첫 정의와 마지막 비유 두 곳에만 건다. */
+    .deck .slide[data-slide="V5-05"] .w3-deffig-text > .w3-def:first-of-type{margin-top:auto}
+    .deck .slide[data-slide="V5-05"] .w3-deffig-text > .s-body:last-of-type{margin-top:auto}
+
+    /* 약자 풀네임 — 제목 옆 보조. 제목(38px)보다 작게 두어 위계를 지킨다. */
+    .s-title > .w3-abbr{font-size:var(--fs-lead);font-weight:700;color:var(--gray-700);
+      letter-spacing:0;white-space:nowrap}
     /* 정의부터 본문 끝까지는 **한 덩어리로 붙어 있어야 한다.** auto는 여기 하나와
        마지막 요소 하나, 두 곳에만 건다 — 그래야 남는 세로가 덩어리 위아래로만 간다. */
     .deck .slide[data-slide="V2-02"] .w3-deffig-text > .w3-def,
@@ -897,19 +907,8 @@
        사이에 다리가 없었고, 「저장소」가 한 곳뿐인 것처럼 설명돼 뒤 세 장의 근거가
        화면에 없었다. 두 장이 각각 그 구멍을 메운다. */
 
-    /* V5-14 — V5-02의 2단 블록을 **축소해 되부르는** 밴드. GitHub 칩만 민트로 켠다.
-       ⚠️ 같은 그림을 다시 쓰는 것이 목적이다(「앞에서 본 층 그대로」). 새 도해로 바꾸지 마라. */
-    .w3-plugmap{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;margin:14px 0 0;
-      background:var(--blue-soft);border-radius:var(--r-lg);padding:14px 18px}
-    .w3-pm-lab{font-size:var(--fs-eyebrow);font-weight:800;color:var(--blue);white-space:nowrap}
-    .w3-pm-box{display:flex;align-items:center;gap:10px;background:var(--white);
-      border-radius:var(--r-md);box-shadow:inset 0 0 0 2px var(--blue);padding:8px 14px}
-    .w3-pm-box > b{font-size:var(--fs-body);font-weight:800;color:var(--ink)}
-    .w3-pm-box.is-proto{box-shadow:inset 0 0 0 2px var(--mint-deep)}
-    .w3-pm-chip{background:var(--surface);border-radius:var(--r-pill);padding:3px 12px;
-      font-size:20px;font-weight:700;color:var(--gray-700);white-space:nowrap}
-    /* 민트 fill 위에는 --on-mint(짙은 글자)다. 흰 글자 금지(R-COLOR-02). */
-    .w3-pm-chip.is-on{background:var(--mint);color:var(--on-mint);font-weight:800}
+    /* .w3-plugmap / .w3-pm-* 는 2026-08-09에 죽었다 — V5-14의 계층 밴드를 사용자 지시로
+       걷어내면서 shard 사용 0건이 됐다. 선언을 지운다(죽은 CSS 누적 방지). */
 
     /* V5-14 본문 3행 */
     .w3-plug3{display:flex;flex-direction:column;gap:12px;flex:1 1 auto;min-height:0;
@@ -2939,7 +2938,9 @@
   </header>
   <div class="s-full w3-deffig">
     <div class="w3-deffig-text">
-      <h2 class="s-title">MCP</h2>
+      <!-- 2026-08-09 사용자 지시: 약자를 제목 옆에서 바로 풀어 준다.
+           다음 장(V5-13)이 「MCP의 P가 이 P입니다」로 프로토콜을 받으므로 여기서 풀어 두면 이어진다. -->
+      <h2 class="s-title">MCP <span class="w3-abbr">Model Context Protocol</span></h2>
       <p class="w3-def">AI와 외부 도구를 잇는 <strong>공통 연결 규격</strong></p>
       <p class="s-body">도구마다 연결 방법이 다르면, 도구 수만큼 따로 배우고 따로 만들어야 합니다.</p>
       <p class="s-body">연결 방식을 <strong>하나로 정해 두면</strong> 한 번 배운 방법으로 여러 도구를 붙일 수 있습니다.</p>
@@ -3114,13 +3115,11 @@
          ⑦이미지=NO_IMAGE(도해로 충분)
          ⚠️ V5-02의 2단 블록을 **축소해 되불러** GitHub가 커넥터 자리에 들어감을 보인다.
             같은 그림을 다시 쓰는 것이 이 장의 목적이다(「앞에서 본 층 그대로」). -->
-    <div class="w3-plugmap viz-containment" role="img"
-         aria-label="담는 단위인 플러그인 안에 Skill과 GitHub 커넥터가 들어 있고, 그 아래 잇는 규격으로 MCP가 있다">
-      <span class="w3-pm-lab">담는 단위</span>
-      <span class="w3-pm-box"><b>플러그인</b><span class="w3-pm-chip">Skill</span><span class="w3-pm-chip is-on">GitHub 커넥터</span></span>
-      <span class="w3-pm-lab">잇는 규격</span>
-      <span class="w3-pm-box is-proto"><b>MCP</b></span>
-    </div>
+    <!-- 2026-08-09 사용자 지시로 계층 밴드(.w3-plugmap) 삭제.
+         V5-02의 2단 구도를 축소해 되부르던 줄인데, 바로 앞 장들에서 이미 다룬 내용이라
+         이 장에서는 덜어 냈다. 되살리지 마라 — 살리려면 사용자에게 먼저 확인한다.
+         ⚠️ 이 장은 이제 텍스트 3행뿐이다(렌더 감사 기준으로는 삭제 전에도
+            boxHeavyNoVisual에 이미 잡혀 있었으므로 지표 변화는 없다). -->
     <div class="w3-plug3 viz-flow-v">
       <div class="w3-pg">
         <span class="w3-pg-n">1</span>
@@ -3244,7 +3243,11 @@
     <!-- 2026-08-09: Pull 설명이 화살표 라벨 하나뿐이라 「왜 필요한가」가 없었다(사용자 지적).
          전용 장을 만들지 않고 이 캡션 안에서 한 문장으로 채운다 — 오늘 실습이 없는 개념이라
          장을 쓰는 것은 과하고, 설명조차 없는 것은 부족하다는 판단(사용자 확정). -->
-    <p class="w3-stage-cap">커밋은 <span class="hl-mint-mark">왼쪽에서 만들어집니다</span> — 올려야 오른쪽에 보입니다. 오늘은 혼자 쓰니 가져올 것이 없지만, 다른 곳에서도 고치거나 팀으로 쓰면 <strong>먼저 가져온 뒤에 시작해야 섞이지 않습니다.</strong></p>
+    <!-- ⚠️ 2026-08-09 정정: 옛 문장은 「커밋은 왼쪽에서 만들어집니다 — 올려야 오른쪽에
+         보입니다」였다. 「왼쪽/오른쪽」은 **이 도해 안의 자리**일 뿐이라 문장만 떼어 놓으면
+         아무 뜻이 없다(사용자 지적). 가리키는 대상의 **실제 이름**으로 쓴다.
+         도해 위치를 말해야 하는 곳은 aria-label 하나뿐이다 — 거기는 그대로 둔다. -->
+    <p class="w3-stage-cap">커밋은 <span class="hl-mint-mark">내 컴퓨터에서 만들어집니다</span> — 올려야 GitHub에 보입니다. 오늘은 혼자 쓰니 가져올 것이 없지만, 다른 곳에서도 고치거나 팀으로 쓰면 <strong>먼저 가져온 뒤에 시작해야 섞이지 않습니다.</strong></p>
   </div>
 </section>
 
