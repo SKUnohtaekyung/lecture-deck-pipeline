@@ -148,6 +148,10 @@
 
 ## 미해결
 
+### ⏸ 시스템 분석·개선 계획 — 실행 미착수 (2026-08-16)
+
+요청 소실 기제 분석 완료(기제 6종 · 워커 25기). 정본은 `plans/system-improvement/{ANALYSIS,PLAN}.md` — 개선안 P1~P7이 있고 배치1은 P1(보존 게이트)+P6(예산 감사기 수리). **어느 것도 실행되지 않았다 — 착수는 배치별 개별 승인 후.** 워커 원장 41파일은 `plans/system-improvement/자료/`(README가 읽는 순서 안내). 인용 전 ANALYSIS §0 신뢰 한계(«미해결 17%는 하한» 등)를 먼저 볼 것.
+
 ### ⏸ 지침 생태계 리팩터링 — Codex 강제 패리티가 절반만 됐다 (2026-08-05)
 
 브랜치 `refactor/instruction-ecosystem`(커밋 6개 · `39659ea`→`00c5f82`). **main 미병합.** 계획·보고 정본은 `plans/instruction-refactor/{PLAN,FINAL_REPORT}.md` — 상세는 거기 있고 여기엔 상태만 둔다.
