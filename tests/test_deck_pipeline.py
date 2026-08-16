@@ -351,5 +351,132 @@ class VerifyKitExemptTests(unittest.TestCase):
         self.assertEqual(verify_kit.EXEMPT, set())
 
 
+_MAP_DECK_A = (
+    "<html><body>"
+    '<section class="slide cover" data-slide="COVER"><h2 class="s-title">표지 제목</h2></section>'
+    '<section class="slide" data-slide="X1"><h2 class="s-title">첫 본문</h2></section>'
+    '<section class="slide" data-slide="X2"><h2 class="s-title">둘째 본문</h2></section>'
+    "</body></html>"
+)
+# 재구성 후: 새 슬라이드가 X1 앞에 끼어 쪽번호가 밀린다
+_MAP_DECK_B = (
+    "<html><body>"
+    '<section class="slide cover" data-slide="COVER"><h2 class="s-title">표지 제목</h2></section>'
+    '<section class="slide" data-slide="NEW"><h2 class="s-title">끼어든 장</h2></section>'
+    '<section class="slide" data-slide="X1"><h2 class="s-title">첫 본문</h2></section>'
+    '<section class="slide" data-slide="X2"><h2 class="s-title">둘째 본문</h2></section>'
+    "</body></html>"
+)
+
+
+class MapSlidePagesTests(unittest.TestCase):
+    """P3(배치3 · 2026-08-17): 쪽↔ID 매핑 왕복 — 재구성으로 쪽이 밀려도 ID는 안정 좌표다."""
+
+    def _mapping(self, html):
+        from scripts.map_slide_pages import build_mapping
+        with tempfile.NamedTemporaryFile("w", suffix=".html", encoding="utf-8", delete=False) as f:
+            f.write(html)
+            path = f.name
+        try:
+            return build_mapping(path)
+        finally:
+            Path(path).unlink(missing_ok=True)
+
+    def test_roundtrip_pages_shift_but_ids_stay(self):
+        rows_a, sha_a, n_a = self._mapping(_MAP_DECK_A)
+        rows_b, sha_b, n_b = self._mapping(_MAP_DECK_B)
+        self.assertEqual((n_a, n_b), (3, 4))
+        page_a = {sid: page for page, sid, _t, _s in rows_a}
+        page_b = {sid: page for page, sid, _t, _s in rows_b}
+        # 쪽번호는 밀렸다(재구성마다 깨지는 좌표) — X1: 2쪽 → 3쪽
+        self.assertEqual(page_a["X1"], 2)
+        self.assertEqual(page_b["X1"], 3)
+        # ID는 그대로다(안정 좌표) — 스냅샷을 남기면 옛 쪽번호도 번역 가능하다
+        self.assertLessEqual(set(page_a) - {"NEW"}, set(page_b))
+        # 덱이 바뀌면 sha가 갈려 스냅샷 파일명이 충돌하지 않는다
+        self.assertNotEqual(sha_a, sha_b)
+
+    def test_pageno_definition_matches_deck_js(self):
+        """쪽번호 = 전체 배열 인덱스+1 (표시 제외 클래스도 자리는 차지 — MEMORY 규칙)."""
+        rows, _sha, _n = self._mapping(_MAP_DECK_A)
+        pages = [page for page, _sid, _t, _s in rows]
+        self.assertEqual(pages, [1, 2, 3])
+        cover = rows[0]
+        self.assertEqual(cover[1], "COVER")
+        self.assertFalse(cover[3], "cover는 «표시 없음»으로 주석돼야 한다")
+        self.assertTrue(rows[1][3])
+
+    def test_title_extraction(self):
+        rows, _sha, _n = self._mapping(_MAP_DECK_A)
+        self.assertEqual(rows[1][2], "첫 본문")
+
+
+class RenderNumericVerdictTests(unittest.TestCase):
+    """P4(배치3 · 2026-08-17): 렌더 수치 판정 — 고의 위반이 실제로 FAIL하는지 증명.
+
+    임계값 없는 결함형 6종(waiver 베이스라인 초과만 FAIL)과 렌더 WARN 계수의 계약을 고정한다.
+    """
+
+    TYPO_OK = {"fontFloor": {"count": 0}, "tracking": {"count": 0},
+               "nearMissAnchors": {"dominantClashTotal": 0}}
+    ZEROS = {"below": 0, "off": 0, "lap": 0, "wb": 0, "ovf": 0, "slots": 0}
+
+    def _verdict(self, totals, typo=None, kv=None):
+        from scripts.run_deck_checks import numeric_verdicts
+        # ⚠️ `typo or …`로 쓰면 빈 dict(계수 실패 픽스처)가 기본값으로 치환된다 — None 판별로.
+        return numeric_verdicts(totals, self.TYPO_OK if typo is None else typo, kv or {})
+
+    def test_all_zero_passes_with_zero_warn(self):
+        steps, warn, waivers = self._verdict(dict(self.ZEROS))
+        self.assertTrue(all(ok for _n, ok, _m in steps))
+        self.assertEqual(warn, 0)
+        self.assertEqual(waivers, [])
+
+    def test_defect_over_baseline_fails(self):
+        steps, _warn, _w = self._verdict(dict(self.ZEROS, lap=2))
+        lap = [s for s in steps if s[0] == "렌더 결함 정보요소겹침"]
+        self.assertTrue(lap and lap[0][1] is False, "waiver 없는 겹침 2건은 FAIL이어야 한다")
+
+    def test_valid_waiver_demotes_and_counts_as_warn(self):
+        kv = {"render_lap": {"count": 2, "reason": "선재 결함 등재", "date": "2026-08-17"}}
+        steps, warn, waivers = self._verdict(dict(self.ZEROS, lap=2), kv=kv)
+        lap = [s for s in steps if s[0] == "렌더 결함 정보요소겹침"]
+        self.assertTrue(lap and lap[0][1] is True)
+        self.assertEqual(warn, 1, "강등은 침묵이 아니라 렌더 WARN 1로 세어져야 한다")
+        self.assertTrue(any("render_lap" in w for w in waivers))
+
+    def test_waiver_over_baseline_still_fails(self):
+        kv = {"render_lap": {"count": 2, "reason": "선재 결함 등재", "date": "2026-08-17"}}
+        steps, _warn, _w = self._verdict(dict(self.ZEROS, lap=3), kv=kv)
+        lap = [s for s in steps if s[0] == "렌더 결함 정보요소겹침"]
+        self.assertTrue(lap and lap[0][1] is False, "waiver count 초과(증가)는 FAIL이어야 한다")
+
+    def test_reasonless_waiver_does_not_work(self):
+        kv = {"render_lap": {"count": 2}}
+        steps, _warn, _w = self._verdict(dict(self.ZEROS, lap=2), kv=kv)
+        lap = [s for s in steps if s[0] == "렌더 결함 정보요소겹침"]
+        self.assertTrue(lap and lap[0][1] is False, "무사유 waiver는 작동하지 않아야 한다(P1 규약)")
+
+    def test_missing_total_is_counting_failure_not_zero(self):
+        totals = dict(self.ZEROS)
+        del totals["wb"]
+        steps, _warn, _w = self._verdict(totals)
+        wb = [s for s in steps if s[0] == "렌더 결함 어절중간잘림"]
+        self.assertTrue(wb and wb[0][1] is False, "수치 누락은 0이 아니라 계수 실패다(눈먼 0 방지)")
+
+    def test_missing_typo_metrics_fails_ratchet_input(self):
+        steps, warn, _w = self._verdict(dict(self.ZEROS), typo={})
+        self.assertIsNone(warn, "타이포 수치가 없으면 렌더 WARN은 None(계수 실패)이어야 한다")
+        count = [s for s in steps if s[0] == "렌더 WARN 계수"]
+        self.assertTrue(count and count[0][1] is False)
+
+    def test_warn_sum_includes_typo_and_demotions(self):
+        typo = {"fontFloor": {"count": 3}, "tracking": {"count": 2},
+                "nearMissAnchors": {"dominantClashTotal": 1}}
+        kv = {"render_below": {"count": 1, "reason": "등재", "date": "2026-08-17"}}
+        _steps, warn, _w = self._verdict(dict(self.ZEROS, below=1), typo=typo, kv=kv)
+        self.assertEqual(warn, 3 + 2 + 1 + 1)
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -43,8 +43,11 @@
 - 파일이 **덱보다 낡으면** 실패한다(덱 고치고 재측정 안 한 경우)
 - 감사기가 낸 **INVALID**를 통과로 세지 않는다(--scale=0 등 측정 무효)
 - 증거의 **장수와 덱의 장수가 다르면** 실패한다(다른 덱을 잰 경우)
-- 다만 **수치 자체로는 FAIL시키지 않는다.** 신설 검사는 WARN으로 시작해
-  기준선을 쌓는다 — 러너가 강제하는 것은 «측정을 실제로 했는가»다.
+- **수치도 판정한다(P4 · 배치3 2026-08-17).** 결함형 6종(바닥선초과·이탈·겹침·
+  어절잘림·오버플로·빈슬롯)은 계약 waiver `render_<지표>` 베이스라인(없으면 0)
+  초과 시 FAIL. 타이포·정렬류는 «렌더 WARN»으로 세어 warn_baseline.render 래칫이
+  조용한 증가만 막는다(FAIL 승격은 오탐률 실측 후 — WARN 시작 규율). 밀도 계열은
+  계속 사람검토다(R-DENS-03). 규약 정본: sessions/README.md 「주차 구조 계약」.
 
 종료코드
 --------
@@ -83,6 +86,62 @@ from verify_contract_waivers import waiver_entry_valid
 EVIDENCE = "deck-audit.json"
 _SUMMARY_RE = re.compile(r"요약: FAIL (\d+) · WARN (\d+)")
 
+# ── P4(배치3 · 2026-08-17) 렌더 수치 판정 ────────────────────────────────────
+#   «측정을 했는가»(P1까지의 계약)에 «측정값이 계약 안인가»를 더한다.
+#   임계값은 이 러너에 없다 — 결함 판정(바닥선 666 · 안전영역 등)은
+#   audit_render.js(BODY_* 상수)가 집행하고, 그 선언 정본은
+#   kit/guide/한장-참조표.md다(tests/test_declared_vs_enforced.py가 쌍을 고정).
+#   러너는 «판정된 결함의 개수»만 소비한다.
+RENDER_DEFECT_KEYS = (("below", "바닥선초과"), ("off", "슬라이드이탈"),
+                      ("lap", "정보요소겹침"), ("wb", "어절중간잘림"),
+                      ("ovf", "오버플로"), ("slots", "빈이미지슬롯"))
+
+
+def numeric_verdicts(totals: dict, typo: dict, kv: dict):
+    """(steps, warn_render, waivers) — 순수 함수로 분리해 픽스처 테스트를 가능하게 한다.
+
+    결함형 6종: 실측 > 계약 waiver `render_<지표>`(count·reason·date)의 count
+    베이스라인(없으면 0)이면 FAIL — P1 waiver 규약과 같은 «증가만 FAIL» 계약.
+    타이포·정렬류(폰트하한·자간·정렬충돌)는 FAIL이 아니라 «렌더 WARN»으로 세고,
+    래칫(warn_baseline.render)이 조용한 증가만 막는다(WARN 시작 — 오탐률 실측 후 승격).
+    """
+    steps: list[tuple[str, bool, str]] = []
+    waivers: list[str] = []
+    demoted = 0
+    for key, label in RENDER_DEFECT_KEYS:
+        n = totals.get(key)
+        name = f"렌더 결함 {label}"
+        if not isinstance(n, int):
+            steps.append((name, False, f"수치 없음(totals.{key}) — 계수 실패(눈먼 0 방지)"))
+            continue
+        entry = kv.get(f"render_{key}")
+        baseline = 0
+        if entry is not None and waiver_entry_valid(entry) and isinstance(entry.get("count"), int):
+            baseline = entry["count"]
+            waivers.append(f"render_{key}(count {baseline} · {entry.get('date')})")
+        if n > baseline:
+            steps.append((name, False,
+                          f"{n}건 > 베이스라인 {baseline} — 화면을 고쳐 재측정하거나 "
+                          f"계약 waiver 'render_{key}'의 count를 사유와 함께 갱신하라"))
+        elif n:
+            steps.append((name, True, f"{n}건 ≤ waiver {baseline} — 등재 강등(렌더 WARN으로 센다)"))
+            demoted += 1
+        elif baseline:
+            steps.append((name, True, f"0건 ≤ waiver {baseline} — 개선됨: waiver를 내리거나 삭제 가능"))
+    ff = (typo.get("fontFloor") or {}).get("count")
+    tr = (typo.get("tracking") or {}).get("count")
+    cl = (typo.get("nearMissAnchors") or {}).get("dominantClashTotal")
+    if all(isinstance(v, int) for v in (ff, tr, cl)):
+        warn_render: int | None = ff + tr + cl + demoted
+        steps.append(("렌더 WARN 계수", True,
+                      f"폰트하한위반 {ff} · 자간보정누락 {tr} · 정렬지배값충돌 {cl} · "
+                      f"waiver 강등 {demoted} → 렌더 WARN {warn_render}"))
+    else:
+        warn_render = None
+        steps.append(("렌더 WARN 계수", False,
+                      "타이포 수치 누락(fontFloor/tracking/dominantClashTotal) — 계수 실패(눈먼 0 방지)"))
+    return steps, warn_render, waivers
+
 
 def _week_num(week: str) -> str:
     """`2` 와 `2주차` 를 모두 받는다 — 저장소 안에서 두 표기가 섞여 쓰인다."""
@@ -120,6 +179,9 @@ class Runner:
         #   계약 warn_baseline 대비 증가하면 그 자체를 FAIL로 잡는다.
         self.warn_struct: int | None = 0     # verify_deck·verify_notes (None=계수 실패)
         self.warn_quality = 0                # verify_deck_quality (러너 강제 밖 — 표시만)
+        # P4(배치3): 렌더 WARN(타이포·정렬 + waiver 강등분) — warn_baseline.render 래칫 대상
+        self.warn_render: int | None = 0
+        self._render_measured = False        # 증거가 유효해 수치 판정까지 간 경우에만 래칫
         self.waivers_applied: list[str] = []
         self._last_out = ""
 
@@ -379,10 +441,18 @@ class Runner:
                   f"python scripts/compare_baseline_panel.py {self.num}")
         self.steps.append(("렌더·타이포 감사", True, line1 + " / " + line2 + " / " + line3))
 
-        # ⚠️ 여기서 임계로 FAIL시키지 않는다. 신설 검사는 WARN으로 시작하고 기준선을
-        #    먼저 쌓는다(§0-1: 요청을 금지 규칙으로 바꾸지 않는다). 러너가 강제하는
-        #    것은 «측정을 실제로 했는가»이지 «수치가 0인가»가 아니다.
-        return True
+        # ── P4(배치3 · 2026-08-17) 렌더 수치 판정 ──
+        # 종전의 «수치 자체로는 FAIL시키지 않는다»는 이 지점에서 폐기됐다(ANALYSIS
+        # §2-기제3·5 — 수치는 산출되는데 게이트가 안 쓰는 상태가 기제3의 한 사례였다).
+        # WARN 시작 규율은 타이포·정렬류에만 남고, 결함형 6종은 waiver 없으면 0이 계약이다.
+        # 밀도(density) 계열은 계속 판정하지 않는다 — 저밀도가 의도인지는 사람이 가른다(R-DENS-03).
+        v_steps, warn_render, v_waivers = numeric_verdicts(
+            r, t, self._contract().get("known_violations") or {})
+        self.steps.extend(v_steps)
+        self.waivers_applied.extend(v_waivers)
+        self.warn_render = warn_render
+        self._render_measured = True
+        return all(ok for _n, ok, _m in v_steps)
 
     def report(self, ran_static: bool, ran_render: bool) -> int:
         """⚠️ 이 함수의 성공 메시지를 «항상 같은 문자열»로 두지 마라.
@@ -421,6 +491,30 @@ class Runner:
                 if self.warn_struct < base:
                     note += f" — 개선됨: 베이스라인을 {self.warn_struct}로 낮춰 등재 가능"
                 self.steps.append(("구조 WARN 래칫", True, note))
+        # ── 렌더 WARN 래칫(P4) — 증거가 유효해 수치 판정까지 간 경우에만 ──
+        #    (증거 부재·무효면 그 단계가 이미 FAIL이라 래칫으로 겹쳐 잡지 않는다)
+        if ran_render and self._render_measured:
+            wbm = self._contract().get("warn_baseline") or {}
+            base_r = wbm.get("render")
+            wr = "계수실패" if self.warn_render is None else self.warn_render
+            print(f"경고 — 렌더 WARN {wr}"
+                  + (f" (베이스라인 {base_r} · {wbm.get('date')})" if isinstance(base_r, int)
+                     else " (베이스라인 미등재)"))
+            if self.warn_render is None:
+                self.steps.append(("렌더 WARN 래칫", False, "계수 실패 — 위 «렌더 WARN 계수» 단계 참조"))
+            elif not isinstance(base_r, int):
+                self.steps.append(("렌더 WARN 래칫", False,
+                                   f"계약에 warn_baseline.render 미등재 — 실측 {self.warn_render}을 "
+                                   f"warn_baseline에 \"render\": N으로 등재하라(date 갱신 포함)"))
+            elif self.warn_render > base_r:
+                self.steps.append(("렌더 WARN 래칫", False,
+                                   f"렌더 WARN 증가 {base_r} → {self.warn_render} — 원인을 없애거나 "
+                                   f"베이스라인을 사유와 함께 갱신하라(조용한 증가 금지)"))
+            else:
+                note = f"렌더 WARN {self.warn_render} ≤ 베이스라인 {base_r}"
+                if self.warn_render < base_r:
+                    note += f" — 개선됨: 베이스라인을 {self.warn_render}로 낮춰 등재 가능"
+                self.steps.append(("렌더 WARN 래칫", True, note))
         failed = 0
         for name, ok, note in self.steps:
             mark = "PASS" if ok else "FAIL"

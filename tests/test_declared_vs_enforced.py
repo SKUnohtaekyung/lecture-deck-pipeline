@@ -200,5 +200,32 @@ class PositiveFixtureTests(unittest.TestCase):
         self.assertEqual(V.parse_declared_tokens("표가 없는 문서"), {})
 
 
+class ReferenceSheetVsAuditConstantsTests(unittest.TestCase):
+    """P4(배치3 · 2026-08-17): 선언(한장-참조표) ↔ 집행(audit_render.js BODY_*) 상수 고정.
+
+    러너(run_deck_checks)는 렌더 임계값을 복제하지 않는다 — 판정은 audit_render.js의
+    BODY_* 상수가 집행하고, 선언 정본은 kit/guide/한장-참조표.md다. 이 테스트가
+    두 정본의 4쌍을 고정한다. **파싱 실패는 «불일치 0»이 아니라 실패다**(눈먼 0 방지).
+    """
+
+    def test_body_constants_match_reference_sheet(self):
+        import re
+        ref = (REPO_ROOT / "kit" / "guide" / "한장-참조표.md").read_text(encoding="utf-8")
+        js = (REPO_ROOT / "scripts" / "audit_render.js").read_text(encoding="utf-8")
+        pairs = [
+            ("바닥선 ↔ BODY_BOT", r"\|\s*\*\*바닥선\*\*\s*\|\s*\*\*(\d+)\*\*", r"BODY_BOT\s*=\s*(\d+)"),
+            ("텍스트 좌변 ↔ BODY_L", r"텍스트 좌변\s*\|\s*\*\*(\d+)\*\*", r"BODY_L\s*=\s*(\d+)"),
+            ("텍스트 우변 ↔ BODY_R", r"텍스트 우변\s*\|\s*\*\*(\d+)\*\*", r"BODY_R\s*=\s*(\d+)"),
+            ("제목 상단(기본) ↔ BODY_TOP", r"제목 상단\s*\|\s*\*\*(\d+)\*\*", r"BODY_TOP\s*=\s*(\d+)"),
+        ]
+        for name, ref_re, js_re in pairs:
+            rm = re.search(ref_re, ref)
+            jm = re.search(js_re, js)
+            self.assertIsNotNone(rm, f"{name}: 참조표에서 선언값을 못 찾음 — 표 서식이 바뀌었으면 정규식을 함께 고쳐라")
+            self.assertIsNotNone(jm, f"{name}: audit_render.js에서 집행값을 못 찾음")
+            self.assertEqual(int(rm.group(1)), int(jm.group(1)),
+                             f"{name}: 선언 {rm.group(1)} ≠ 집행 {jm.group(1)} — 정본을 고쳤으면 집행부를 같은 커밋에서 고쳐라")
+
+
 if __name__ == "__main__":
     unittest.main()

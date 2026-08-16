@@ -74,6 +74,21 @@ cp "입력양식/콘텐츠초안템플릿.md" "courses/바이브코딩/sessions/
 
 1주차는 2026-07-26 정리로 이 규약에 맞췄다(중간 산출물 9건 + 미사용 스크린샷 10건을 `_dev/설계기록/탐색-아카이브/1주차/`로 이관).
 
+### `개정이력/` — 수정요청 접수 규약 (P3 · 배치3 2026-08-17)
+
+수정요청·회의 지시의 원문과 그 실행 계획이 사는 폴더다. **쪽번호는 재구성마다 밀리는
+좌표라, 접수 시점에 쪽↔ID 매핑을 함께 고정하지 않으면 이후 추적이 전부 어긋난다**
+(`plans/system-improvement/ANALYSIS.md` §2-기제4 — 같은 「46p」가 시점별로 세 슬라이드를
+가리켰다).
+
+- **요청 원문을 저장할 때 매핑 스냅샷을 동반한다**: `python scripts/map_slide_pages.py <주차>`
+  → `개정이력/쪽ID매핑_<덱sha8>.md` (같은 덱이면 멱등 — 기존 파일을 그대로 쓴다).
+- 접수 문서는 `입력양식/수정요청접수템플릿.md`를 복사해 채운다 — 쪽번호를 ID로 번역한
+  항목 표가 본체다. 특정 불가는 `(소재불명)`으로 적고 되묻는다(추측 금지).
+- **이후 처리·보고·검증·커밋 메시지는 ID로만 지칭한다.** 쪽번호 병기는 자유, 단독 사용은
+  금지다. 사용자는 계속 쪽번호로 말해도 된다 — 번역은 접수가 한다.
+- 요청 원문은 읽기 전용이다(1차 문서 수정 금지 관례 유지 — 충돌은 새 문서에 기록).
+
 ## 주차 구조 계약 (`deck.contract.json`)
 
 덱의 슬라이드 수·divider 수·도입 순서·시퀀스 같은 **주차별 구조 값은 검증 스크립트에 하드코딩하지 않고 계약 파일로 외부화한다.**
@@ -94,7 +109,9 @@ cp "입력양식/콘텐츠초안템플릿.md" "courses/바이브코딩/sessions/
 - 모든 `known_violations` 항목은 `reason`(비어 있지 않은 사유) + `date`(YYYY-MM-DD)가 필수다. **무사유 waiver는 아예 작동하지 않고**(강등 없이 FAIL 유지), pre-commit(`verify_contract_waivers.py`)이 커밋을 차단한다. 스키마 정본은 `scripts/verify_contract_waivers.py`.
 - 슬라이드 단위 검사(coverage·must_keep)의 waiver는 `slides` 목록을 명시해야 하며 **목록 밖 미래 위반은 그대로 FAIL이다**(포괄 waiver 금지).
 - 건수 단위 검사(`title_survival_baseline`·`draft_sync_baseline`·`notes_pn_mismatch`)의 waiver는 `count` 상한을 명시하며, `run_deck_checks.py`가 실측과 비교해 **증가만 FAIL**한다.
+- **렌더 결함 판정 (P4 · 배치3 2026-08-17)** — `run_deck_checks.py`가 렌더 증거(`deck-audit.json`)의 결함 카운트 6종(`below` 바닥선초과 · `off` 슬라이드이탈 · `lap` 정보요소겹침 · `wb` 어절중간잘림 · `ovf` 오버플로 · `slots` 빈이미지슬롯)을 판정한다: 실측 > 계약 waiver `render_<지표>`(count·reason·date)의 베이스라인(없으면 0)이면 **FAIL**. 임계값(666 등)은 러너에 없다 — 집행은 `audit_render.js`(BODY_* 상수), 선언 정본은 `kit/guide/한장-참조표.md`이며 회귀 테스트가 두 쌍을 고정한다.
 - **구조 WARN 래칫** — `run_deck_checks.py`가 정적 게이트의 구조 WARN 총계(waiver 강등분 포함)를 요약 최상단에 노출하고, 계약 `warn_baseline.static_gates` 대비 증가하면 FAIL이다. 세어지지 않는 WARN은 침묵과 같다. (`verify_deck_quality`의 품질 WARN은 설계상 WARN 기본 게이트라 래칫 밖이며, 총계는 같은 줄에 함께 표시된다 — `--strict` 승격은 그 게이트의 소관.)
+- **렌더 WARN 래칫 (P4)** — 타이포·정렬류(폰트하한위반·자간보정누락·정렬 지배값충돌)와 렌더 waiver 강등분은 «렌더 WARN»으로 세고, 계약 `warn_baseline.render` 대비 **증가만 FAIL**한다(FAIL 승격은 오탐률 실측 후 별도 판단 — WARN 시작 규율).
 
 ## 1주차 (동결 해제 · 규약 정합)
 
