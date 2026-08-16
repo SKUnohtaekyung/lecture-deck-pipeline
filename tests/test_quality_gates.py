@@ -594,5 +594,122 @@ class RQC12AdvisoryOnlyTests(unittest.TestCase):
             Path(path).unlink(missing_ok=True)
 
 
+class CopyStyleRuleTests(unittest.TestCase):
+    """P2 배치2(2026-08-17) 문체 규칙 — 고의 위반 픽스처로 WARN이 실제로 나는지 증명한다.
+
+    3층 정의 정본은 kit/guide/문체-원칙.md. 임계(허용 건수)는 과목 프로필 §3-G가 정본이며
+    키가 없으면 판정 대신 [사람검토] 표본으로 강등된다(이 저장소에는 키가 있어 WARN 경로).
+    """
+
+    def _run(self, *slides):
+        path = _write_tmp_html(_wrap_slides(*slides))
+        try:
+            return vdq.run_checks(path)
+        finally:
+            Path(path).unlink(missing_ok=True)
+
+    def test_profile_keys_are_wired(self):
+        # 프로필 §3-G 키가 사라지면 아래 WARN 단정이 전부 무의미해진다 — 배선부터 확인.
+        for rid in ("R-COPY-01", "R-COPY-02", "R-COPY-03"):
+            self.assertTrue(vdq._COPY_GATE_FROM_PROFILE.get(rid),
+                            f"{rid} 임계가 프로필 §3-G에서 오지 않았다")
+
+    def test_r_copy_01_flags_dash_and_slash_joins(self):
+        results, _adv, meta, _rec = self._run(
+            '<section class="slide" data-slide="X1"><div class="s-full">'
+            '<p>먼저 문장을 끝냅니다 — 그리고 부연을 붙입니다.</p>'
+            '<p>규칙을 지킵니다 / 예외는 따로 적습니다</p>'
+            '</div></section>')
+        self.assertEqual(meta["n_dash_join"], 2)
+        self.assertIn("WARN", _levels(results, "R-COPY-01"))
+
+    def test_r_copy_01_allows_label_and_leadin_dashes(self):
+        # 원문 명시 예외: 대비·등가·사전식 라벨. 머리 대시(리드인)도 잇기가 아니다.
+        results, _adv, meta, _rec = self._run(
+            '<section class="slide" data-slide="X1"><div class="s-full">'
+            '<p>순서 — 입력, 실행, 결과</p>'
+            '<p>— 핵심 기능 하나만 작동하는 첫 버전</p>'
+            '<p>지금 상태 — 원본</p>'
+            '</div></section>')
+        self.assertEqual(meta["n_dash_join"], 0)
+        self.assertIn("PASS", _levels(results, "R-COPY-01"))
+
+    def test_r_copy_01_mid_phrase_dash_is_advisory_not_warn(self):
+        # «구 — 부연»은 ②층 밖(라벨과 기계로 안 갈림) — WARN이 아니라 사람검토 표본.
+        results, adv, meta, _rec = self._run(
+            '<section class="slide" data-slide="X1"><div class="s-full">'
+            '<p>전체 순서와 역할표를 아는 지휘자 — 각 담당은 자기 일만 압니다</p>'
+            '</div></section>')
+        self.assertEqual(meta["n_dash_join"], 0)
+        self.assertEqual(meta["n_dash_mid"], 1)
+        self.assertIn("PASS", _levels(results, "R-COPY-01"))
+        self.assertTrue(any(r == "R-COPY-01" for r, _m in adv))
+
+    def test_r_copy_02_flags_self_reference(self):
+        results, _adv, meta, _rec = self._run(
+            '<section class="slide" data-slide="X1"><div class="s-full">'
+            '<p>우리 수업에서는 이것을 A라고 부릅니다.</p></div></section>')
+        self.assertEqual(meta["n_self_ref"], 1)
+        self.assertIn("WARN", _levels(results, "R-COPY-02"))
+
+    def test_r_copy_02_ignores_closing_greeting(self):
+        # «오늘 수업은 성공»류 마무리 인사는 관용구가 아니다(실측 오탐 사례 — ③층 잔여).
+        _results, _adv, meta, _rec = self._run(
+            '<section class="slide" data-slide="X1"><div class="s-full">'
+            '<p>여기까지 되면 오늘 수업은 성공입니다.</p></div></section>')
+        self.assertEqual(meta["n_self_ref"], 0)
+
+    def test_r_copy_03_flags_verbal_step_title_but_not_desc_or_slide_title(self):
+        results, _adv, meta, _rec = self._run(
+            '<section class="slide" data-slide="X1">'
+            '<h2 class="s-title">슬라이드 제목은 서술형이어도 잡지 않습니다</h2>'
+            '<div class="s-full"><div class="pr-steps">'
+            '<div class="work-step"><b>참고 서비스 1개를 고릅니다.</b>'
+            '<span class="desc">보조 설명은 합니다체를 유지합니다.</span></div>'
+            '</div></div></section>')
+        self.assertEqual(meta["n_step_title_verbal"], 1,
+                         "work-step 제목 1건만 — .s-title·desc가 세이면 폐기 이력(방향 역전)과 겹친다")
+        self.assertIn("WARN", _levels(results, "R-COPY-03"))
+
+    def test_r_copy_03_noun_form_step_title_passes(self):
+        results, _adv, meta, _rec = self._run(
+            '<section class="slide" data-slide="X1"><div class="s-full">'
+            '<div class="work-step"><b>참고 서비스 1개 고르기</b></div>'
+            '</div></section>')
+        self.assertEqual(meta["n_step_title_verbal"], 0)
+        self.assertIn("PASS", _levels(results, "R-COPY-03"))
+
+    def test_r_copy_03_steps_wrapper_banner_is_not_a_step_title(self):
+        # 복수형 래퍼(steps-full·pr-steps)는 개별 스텝이 아니다 — 주제 배너 오탐 수정 회귀.
+        _results, _adv, meta, _rec = self._run(
+            '<section class="slide" data-slide="X1"><div class="s-full steps-full">'
+            '<p class="topic"><b>여행 앱을 만들 겁니다</b></p>'
+            '</div></section>')
+        self.assertEqual(meta["n_step_title_verbal"], 0)
+
+    def test_r_copy_04_and_r_deco_01_are_advisory_only(self):
+        results, adv, meta, _rec = self._run(
+            '<section class="slide" data-slide="X1"><div class="s-full">'
+            '<div class="card"><p>'
+            + ("이 카드는 문장으로 길게 설명합니다. " * 3)
+            + '그리고 두 번째 문장도 문장으로 끝나게 됩니다.</p></div>'
+            '<div class="card"><svg viewBox="0 0 10 10"><rect width="10" height="10"/></svg></div>'
+            '</div></section>')
+        self.assertGreaterEqual(meta["n_card_prose"], 1)
+        self.assertEqual(meta["n_deco_svg"], 1)
+        self.assertEqual(_levels(results, "R-COPY-04"), [], "R-COPY-04는 판정 없음(advisory 전용)")
+        self.assertEqual(_levels(results, "R-DECO-01"), [], "R-DECO-01은 판정 없음(advisory 전용)")
+        self.assertTrue(any(r == "R-COPY-04" for r, _m in adv))
+        self.assertTrue(any(r == "R-DECO-01" for r, _m in adv))
+
+    def test_r_deco_01_allows_logo_divider_and_viz(self):
+        _results, _adv, meta, _rec = self._run(
+            '<section class="slide" data-slide="X1">'
+            '<header class="s-head"><svg class="s-logo" viewBox="0 0 96 96"><circle r="9"/></svg></header>'
+            '<div class="s-full"><figure class="viz-flow-h"><svg viewBox="0 0 10 10"><rect/></svg></figure>'
+            '<p>본문 설명 문장입니다.</p></div></section>')
+        self.assertEqual(meta["n_deco_svg"], 0)
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -112,6 +112,34 @@ THRESH_META01_COUNT = 0  # 명백한 결함형 — 내부 작업 라벨이 학�
 # 정적 신호로 승격한다.
 THRESH_QC18_EMPTY_SLOT_COUNT = 0   # 빈 이미지 슬롯은 연파랑 점선 상자로 학생 화면에 노출된다.
 THRESH_QC19_BARE_TEXT_COUNT = 0    # 격자 컨테이너의 맨 텍스트는 익명 아이템이 돼 좁은 칸에 갇힌다.
+
+# ── 문체 규칙 R-COPY-01~03 (P2 배치2, 2026-08-17) ──────────────────────────────
+# 취지·기계 정의·잔여의 3층 정본은 kit/guide/문체-원칙.md — 여기 복제하지 않는다.
+# 임계값(허용 건수)은 과목 프로필 §3-G가 정본이다. 문체 임계는 과목 취향일 수 있어
+# 스크립트에 두지 않는다(과목 격리 — verify_draft_quality.py의 프로필 게이트와 같은 규율).
+# 아래 0은 «프로필 키가 있을 수 없는 상황의 기본값»일 뿐이며, 키가 없으면 WARN 판정
+# 대신 [사람검토] 표본만 낸다 — 조용히 기본값을 쓰지 않는다.
+THRESH_COPY01_DASH_JOIN = 0
+THRESH_COPY02_SELF_REF = 0
+THRESH_COPY03_STEP_TITLE = 0
+_COPY_GATE_FROM_PROFILE = {}
+
+
+def _load_profile_gates():
+    global THRESH_COPY01_DASH_JOIN, THRESH_COPY02_SELF_REF, THRESH_COPY03_STEP_TITLE
+    try:
+        import _course_paths as _cp
+    except Exception:
+        return
+    v, ok = _cp.gate_num("덱_대시잇기_상한", THRESH_COPY01_DASH_JOIN, cast=int)
+    THRESH_COPY01_DASH_JOIN = v; _COPY_GATE_FROM_PROFILE["R-COPY-01"] = ok
+    v, ok = _cp.gate_num("덱_수업자기지칭_상한", THRESH_COPY02_SELF_REF, cast=int)
+    THRESH_COPY02_SELF_REF = v; _COPY_GATE_FROM_PROFILE["R-COPY-02"] = ok
+    v, ok = _cp.gate_num("덱_스텝제목_서술형_상한", THRESH_COPY03_STEP_TITLE, cast=int)
+    THRESH_COPY03_STEP_TITLE = v; _COPY_GATE_FROM_PROFILE["R-COPY-03"] = ok
+
+
+_load_profile_gates()
                           # 1주차 0건 · 2주차 3건(2026-07-31 실측).
 
 # ── 상시 FAIL 규칙 (2026-08-03 승격 · --strict 없이도 exit 1) ──────────────
@@ -151,6 +179,10 @@ THRESH_DERIVATION = """\
   R-QC-16 박스 기반 슬라이드 비율 > 0.10(임계)        1주차 0.056 · 2주차 0.226
   R-QC-17 실습 완결성 미달률 > 0(임계)                2주차 0.167(단계 1개짜리 실습 존재)
   R-META-01 메타 표기 잔존 건수 > 0(임계)             1주차 0건 · 2주차 3건(2026-07-31 실측)
+  R-COPY-01~03 문체 규칙(2026-08-17 P2) — 임계는 과목 프로필 §3-G(결함형 상한 0 — 분포 도출이
+    아니라 사용자 원문의 «전역 금지»가 근거). 3층 정의 정본: kit/guide/문체-원칙.md.
+    도입 시점 실측(가시 텍스트): 대시 잇기 2주차 0건·3주차 14건(재발) · 자기지칭 2주차 1·3주차 2
+  R-COPY-04(카드 줄글)·R-DECO-01(장식 svg) — [사람검토] 표본만(재발 실질 0 · 의미/장식 기계 판별 불가)
 """
 
 CIRCLED = "①②③④⑤⑥⑦⑧⑨⑩"
@@ -403,6 +435,75 @@ def _is_truthy_marker(el, attr_name):
         return False
     val = (el.attrs.get(attr_name) or "").strip().lower()
     return val in _TRUTHY_VALUES
+
+
+# ============================================================================
+# 문체 규칙(R-COPY·R-DECO) 검출기 — 3층 정의의 ②층만 구현한다.
+# ①취지·③잔여(기계가 못 잡는 것의 명시)는 kit/guide/문체-원칙.md가 정본이다.
+# ============================================================================
+
+# 인라인 강조 태그는 이어 붙이고(문장 중간의 <b>가 문장을 끊지 않게), 블록 태그·<br>은
+# 시각적 줄 경계로 남긴다. <br>을 경계로 두는 이유: 줄이 바뀐 뒤의 대시는 사전식 나열
+# (허용)일 가능성이 높아, 잇기 판정은 같은 시각적 줄 안에서만 한다(경계 잇기는 ③잔여).
+# ⚠️ <span>은 잇지 않는다 — 이 덱들에서 span은 인라인 강조가 아니라 CSS로 블록화된
+#   라벨·배지에 널리 쓰여, 이어 붙이면 시각적으로 딴 줄인 라벨 두 개가 한 문장으로
+#   합쳐진다(실측: 라벨쌍이 «…다 — …» 위장 잇기로 오탐).
+_INLINE_TAG_RE = re.compile(r"</?(?:b|strong|em|i|u|code|mark|small|sub|sup|abbr)\b[^>]*>", re.I)
+
+
+def _visible_lines(html_text, start, end):
+    frag = html_text[start:end]
+    frag = re.sub(r"<(script|style)\b[^>]*>.*?</\1\s*>", "", frag, flags=re.S | re.I)
+    frag = _INLINE_TAG_RE.sub("", frag)
+    frag = re.sub(r"<[^>]+>", "\n", frag)
+    import html as _h
+    lines = []
+    for ln in _h.unescape(frag).split("\n"):
+        ln = re.sub(r"\s+", " ", ln).strip()
+        if ln:
+            lines.append(ln)
+    return lines
+
+
+# 완결어미(…다/…요/…죠 + 닫는 부호) — 원문이 금지한 것은 «완결 문장 + 잇기»다.
+_SENT_TAIL = r"[가-힣](?:다|요|죠)[.!?…」』\"'”’)]*"
+_SENT_FINAL_RE = re.compile(_SENT_TAIL + r"$")
+_DASH_CHAR_RE = re.compile(r"[—–―]")
+_MIN_BEFORE_JOIN = 8    # «중요 — 핵심»류 짧은 라벨('요'로 끝남)을 완결 문장으로 오인하지 않기 위한 하한
+_MIN_BEFORE_MID = 15    # «구 — 부연» 후보로 볼 앞부분 최소 길이(그 미만은 사전식 라벨로 본다)
+# R-COPY-02: 원문 등재 표현 + 실측 근접 변형. «오늘 수업은 성공»류 마무리 인사는 일부러
+# 안 잡는다(과잉 패턴의 실측 오탐 — 문체-원칙.md ③층).
+_SELF_REF_RE = re.compile(r"우리 수업|이 수업(?:에서)?[이은는]?\s?쓰는|이 수업에서는|이번에서는|우리 강의")
+# R-COPY-04(advisory): 카드 안 줄글 근사 — 종결어미 2회 이상
+_PROSE_ENDINGS_RE = re.compile(r"(?:습니다|입니다|합니다|됩니다|한다|된다)[.!?…]?")
+# R-DECO-01(advisory): svg 허용 위치 — 브랜드 로고(s-head)·간지/표지·viz 도해·terminal UI
+_DECO_ALLOW_RE = re.compile(r"s-head|s-logo|part-divider|cover|viz-|chart|terminal")
+
+
+def _snippet(line, pos, radius=26):
+    s = max(0, pos - radius)
+    e = min(len(line), pos + radius)
+    return ("…" if s else "") + line[s:e] + ("…" if e < len(line) else "")
+
+
+def scan_dash_joins(lines):
+    """(잇기 확정, 구—부연 후보) — 잇기 확정: 완결어미 뒤 대시/슬래시 + 후속 텍스트."""
+    joins, mids = [], []
+    for ln in lines:
+        for m in _DASH_CHAR_RE.finditer(ln):
+            before = ln[:m.start()].rstrip()
+            after = ln[m.end():].lstrip()
+            if not before or not after:
+                continue  # 편측(리드인·머리 대시) — 허용
+            if _SENT_FINAL_RE.search(before) and len(before) >= _MIN_BEFORE_JOIN:
+                joins.append(_snippet(ln, m.start()))
+            elif len(before) >= _MIN_BEFORE_MID:
+                mids.append(_snippet(ln, m.start()))
+        for m in re.finditer(r"\s/\s", ln):
+            before = ln[:m.start()].rstrip()
+            if ln[m.end():].strip() and _SENT_FINAL_RE.search(before) and len(before) >= _MIN_BEFORE_JOIN:
+                joins.append(_snippet(ln, m.start()))
+    return joins, mids
 
 
 # ============================================================================
@@ -725,6 +826,178 @@ def run_checks(deck_path):
                      f"(임계 {THRESH_QC19_BARE_TEXT_COUNT}건 — work-step·rm-step·wk-node·pr-done)"
                      f"{' — ' + ', '.join(uniq19[:10]) if uniq19 else ''}"))
 
+    # ══ 문체 규칙(P2 배치2) — 정본 kit/guide/문체-원칙.md · 임계는 과목 프로필 §3-G ══
+    # 프로필 키가 없으면 판정하지 않고 [사람검토] 표본으로 강등한다(다른 과목 값을 빌려
+    # 쓰지 않기 위함 — 강등 사실은 감사추적에 남긴다).
+
+    # ── R-COPY-01: 완결 문장 뒤 —·/ 이어붙이기 ──
+    dash_joins = []   # (sid, 표본) — ②층 확정 검출
+    dash_mids = []    # (sid, 표본) — «구 — 부연» 후보(③층 잔여 — 항상 사람검토)
+    self_refs = []    # (sid, 매치, 표본)
+    for r in records:
+        el = slide_els[r["idx"]]
+        lines = _visible_lines(html_text, el.inner_start, el.inner_end)
+        joins, mids = scan_dash_joins(lines)
+        dash_joins.extend((r["sid"], s) for s in joins)
+        dash_mids.extend((r["sid"], s) for s in mids)
+        for ln in lines:
+            for m in _SELF_REF_RE.finditer(ln):
+                self_refs.append((r["sid"], m.group(0), _snippet(ln, m.start())))
+
+    def _copy_detail(hits, n=6):
+        shown = ", ".join(f"{sid}«{sn}»" for sid, sn in hits[:n])
+        more = f" 외 {len(hits) - n}건" if len(hits) > n else ""
+        return (" — " + shown + more) if hits else ""
+
+    if _COPY_GATE_FROM_PROFILE.get("R-COPY-01"):
+        level_c1 = "WARN" if len(dash_joins) > THRESH_COPY01_DASH_JOIN else "PASS"
+        results.append(("R-COPY-01", level_c1,
+                         f"완결 문장 뒤 —·/ 이어붙이기 {len(dash_joins)}건"
+                         f"(임계 {THRESH_COPY01_DASH_JOIN}건 — 프로필 §3-G)"
+                         + _copy_detail(dash_joins)))
+    else:
+        advisories.append(("R-COPY-01",
+                            f"프로필 §3-G에 덱_대시잇기_상한 없음 — 판정 강등(표본만). "
+                            f"검출 {len(dash_joins)}건" + _copy_detail(dash_joins)))
+        audit_lines.append("[감사추적] 프로필 임계 없음 — R-COPY-01 판정 강등(사람검토)")
+    if dash_mids:
+        advisories.append(("R-COPY-01",
+                            f"«구 — 부연» 후보 {len(dash_mids)}건(기계 판정 밖 — ③층 잔여, 사람검토)"
+                            + _copy_detail(dash_mids)))
+
+    # ── R-COPY-02: 수업 자기지칭 관용구 ──
+    self_ref_hits = [(sid, sn) for sid, _g, sn in self_refs]
+    if _COPY_GATE_FROM_PROFILE.get("R-COPY-02"):
+        level_c2 = "WARN" if len(self_ref_hits) > THRESH_COPY02_SELF_REF else "PASS"
+        results.append(("R-COPY-02", level_c2,
+                         f"수업 자기지칭 관용구 {len(self_ref_hits)}건"
+                         f"(임계 {THRESH_COPY02_SELF_REF}건 — 프로필 §3-G)"
+                         + _copy_detail(self_ref_hits)))
+    else:
+        advisories.append(("R-COPY-02",
+                            f"프로필 §3-G에 덱_수업자기지칭_상한 없음 — 판정 강등(표본만). "
+                            f"검출 {len(self_ref_hits)}건" + _copy_detail(self_ref_hits)))
+        audit_lines.append("[감사추적] 프로필 임계 없음 — R-COPY-02 판정 강등(사람검토)")
+
+    # ── R-COPY-03: 스텝·카드 제목 서술형 ──
+    # ⚠️ 슬라이드 제목(.s-title·h2)은 검사하지 않는다 — 「제목 서술형 검출」은 2026-07-31
+    # 방향 역전으로 폐기됐다(MEMORY 「콘텐츠·학생 화면」). 이 검사는 요소 범위가 다르다
+    # (스텝 컨테이너 안 제목 b/strong + 본문 h3/h4 한정 — 경계 명시는 문체-원칙.md ③층).
+    step_title_hits = []
+    _seen03 = set()
+    for el in elements:
+        if el.name not in ("b", "strong", "h3", "h4"):
+            continue
+        sid = None
+        slide_cls = ""
+        for r in records:
+            sec = slide_els[r["idx"]]
+            if sec.inner_start <= el.start < sec.inner_end:
+                sid, slide_cls = r["sid"], r["cls"]
+                break
+        if sid is None:
+            continue
+        if {"cover", "part-divider", "closing"} & set(slide_cls.split()):
+            continue
+        has_step, blocked = False, False
+        p = el
+        while p is not None:
+            cls_l = (p.attrs.get("class") or "").lower()
+            # 단수 «step» 세그먼트만 스텝 컨테이너로 본다(work-step·c23-step·rm-step …).
+            # 복수형·래퍼(pr-steps·eval-steps·steps-full)는 개별 스텝이 아니라 영역이라
+            # 그 안의 배너·리드문까지 스텝 제목으로 오인한다(실측 오탐: 주제 배너 b).
+            if p is not el and any(seg == "step" for tok in cls_l.split() for seg in tok.split("-")):
+                has_step = True
+            if "desc" in cls_l or "terminal" in cls_l or "s-head" in cls_l or p.name == "header":
+                blocked = True
+            if p.name == "section" and "slide" in cls_l.split():
+                break
+            p = parent_map.get(p)
+        if blocked:
+            continue
+        if el.name in ("b", "strong") and not has_step:
+            continue
+        text = re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", html_text[el.inner_start:el.inner_end])).strip()
+        import html as _h
+        text = _h.unescape(text)
+        if len(text) < 4 or not _SENT_FINAL_RE.search(text):
+            continue
+        key = (sid, text)
+        if key in _seen03:
+            continue
+        _seen03.add(key)
+        step_title_hits.append((sid, text[:40]))
+    if _COPY_GATE_FROM_PROFILE.get("R-COPY-03"):
+        level_c3 = "WARN" if len(step_title_hits) > THRESH_COPY03_STEP_TITLE else "PASS"
+        results.append(("R-COPY-03", level_c3,
+                         f"스텝·카드 제목 서술형 {len(step_title_hits)}건"
+                         f"(임계 {THRESH_COPY03_STEP_TITLE}건 — 프로필 §3-G · 슬라이드 제목 제외)"
+                         + _copy_detail(step_title_hits)))
+    else:
+        advisories.append(("R-COPY-03",
+                            f"프로필 §3-G에 덱_스텝제목_서술형_상한 없음 — 판정 강등(표본만). "
+                            f"검출 {len(step_title_hits)}건" + _copy_detail(step_title_hits)))
+        audit_lines.append("[감사추적] 프로필 임계 없음 — R-COPY-03 판정 강등(사람검토)")
+
+    # ── R-COPY-04(사람검토): 카드류 컨테이너 안 줄글 — 재발 실질 0이라 판정 없이 표본만 ──
+    card_prose_hits = []
+    _seen04 = set()
+    for el in elements:
+        cls_str04 = el.attrs.get("class") or ""
+        if not _CONTAINER_CLASS_RE.search(cls_str04) or _DECORATIVE_OR_JS_POPULATED_RE.search(cls_str04):
+            continue
+        sid = None
+        for r in records:
+            sec = slide_els[r["idx"]]
+            if sec.inner_start <= el.start < sec.inner_end:
+                sid = r["sid"]
+                break
+        if sid is None:
+            continue
+        for ln in _visible_lines(html_text, el.inner_start, el.inner_end):
+            if len(ln) >= 70 and len(_PROSE_ENDINGS_RE.findall(ln)) >= 2 and (sid, ln) not in _seen04:
+                _seen04.add((sid, ln))
+                card_prose_hits.append((sid, ln[:50]))
+    advisories.append(("R-COPY-04",
+                        f"카드 안 줄글 후보(한 줄 ≥70자·종결어미 ≥2회) {len(card_prose_hits)}건 — "
+                        f"판정 없음(사람검토·정본 문체-원칙.md)" + _copy_detail(card_prose_hits, 4)))
+
+    # ── R-DECO-01(사람검토): 허용 위치 밖 <svg> — 의미/장식은 기계로 갈리지 않아 표본만 ──
+    deco_hits = []
+    for el in elements:
+        if el.name != "svg":
+            continue
+        sid = None
+        for r in records:
+            sec = slide_els[r["idx"]]
+            if sec.inner_start <= el.start < sec.inner_end:
+                sid = r["sid"]
+                break
+        if sid is None:
+            continue
+        allowed = False
+        nearest_cls = "(무클래스)"
+        p = el
+        chain_first = None
+        while p is not None:
+            cls_l = (p.attrs.get("class") or "")
+            if cls_l and chain_first is None and p is not el:
+                chain_first = cls_l.split()[0]
+            if _DECO_ALLOW_RE.search(cls_l) or p.name == "header":
+                allowed = True
+                break
+            if p.name == "section" and "slide" in cls_l.split():
+                break
+            p = parent_map.get(p)
+        if not allowed:
+            deco_hits.append((sid, chain_first or nearest_cls))
+    advisories.append(("R-DECO-01",
+                        f"허용 위치(로고·간지·viz·terminal) 밖 svg {len(deco_hits)}개 — "
+                        f"판정 없음(사람검토·정본 문체-원칙.md)"
+                        + (" — " + ", ".join(f"{sid}({cls})" for sid, cls in deco_hits[:8])
+                           + (f" 외 {len(deco_hits) - 8}건" if len(deco_hits) > 8 else "")
+                           if deco_hits else "")))
+
     # ── R-QC-12: 용어 최초 등장 정의 누락률 ──
     concept_kb_path = None
     m_path = re.search(r"(courses/[^/]+/sessions/[^/]+)/", str(deck_path).replace("\\", "/"))
@@ -809,6 +1082,21 @@ def run_checks(deck_path):
         "n_near_empty_total": total_near_empty,
         "n_practice_incomplete": len(incomplete),
         "n_practice": len(practice),
+        # 문체 규칙(P2) 원시 카운트 — 회귀 테스트가 메시지 문자열을 되읽지 않게 노출
+        "n_dash_join": len(dash_joins),
+        "n_dash_mid": len(dash_mids),
+        "n_self_ref": len(self_ref_hits),
+        "n_step_title_verbal": len(step_title_hits),
+        "n_card_prose": len(card_prose_hits),
+        "n_deco_svg": len(deco_hits),
+        "copy_gate_from_profile": dict(_COPY_GATE_FROM_PROFILE),
+        # 전체 검출 목록 — 오탐 분류(드라이런)·회귀 대조용. 표시 메시지는 6건 절단이라 별도 보존.
+        "dash_join_hits": dash_joins,
+        "dash_mid_hits": dash_mids,
+        "self_ref_hit_list": self_ref_hits,
+        "step_title_hit_list": step_title_hits,
+        "card_prose_hit_list": card_prose_hits,
+        "deco_svg_hit_list": deco_hits,
         # A1(2026-07-27) 감사 추적 — R-QC-01/02 밀도 하한에서 빠진 슬라이드는 어떤 사유로든
         # 침묵 처리하지 않는다. 개수와 slide id를 그대로 노출한다.
         "n_intentional_minimal": len(intentional_minimal_slides),
@@ -970,6 +1258,11 @@ def main():
                 "R-QC-17_incomplete_practice_ratio": THRESH_QC17_INCOMPLETE_PRACTICE_RATIO,
                 "R-META-01_count": THRESH_META01_COUNT,
                 # R-QC-05·R-QC-12는 임계값이 없다(사람검토로 강등 — 위 THRESH_QC05/QC12 주석 참고).
+                # 문체 규칙 임계는 과목 프로필 §3-G가 정본 — 아래는 이번 실행에 적용된 값.
+                "R-COPY-01_dash_join_max": THRESH_COPY01_DASH_JOIN,
+                "R-COPY-02_self_ref_max": THRESH_COPY02_SELF_REF,
+                "R-COPY-03_step_title_max": THRESH_COPY03_STEP_TITLE,
+                "copy_gate_from_profile": dict(_COPY_GATE_FROM_PROFILE),
             },
         }
         Path(a.json).write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
