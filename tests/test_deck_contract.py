@@ -51,12 +51,34 @@ def _build(tmp: Path, *, part01: Path | None = None, manifest: Path | None = Non
 
 def _verify(deck: Path, parts: int = 2) -> str:
     """verify_deck 을 서브프로세스로 돌려 출력을 돌려준다(기존 테스트 관례)."""
+    return _verify_rc(deck, parts)[0]
+
+
+def _verify_rc(deck: Path, parts: int = 2) -> tuple[str, int]:
+    """출력 + 종료코드 — P1 검사는 exit 1까지 확인해야 한다(눈먼 0 방지)."""
     proc = subprocess.run(
         [sys.executable, str(REPO / "scripts" / "verify_deck.py"), str(deck),
          "--parts", str(parts)],
         capture_output=True, text=True, encoding="utf-8", cwd=str(REPO),
     )
-    return (proc.stdout or "") + (proc.stderr or "")
+    return (proc.stdout or "") + (proc.stderr or ""), proc.returncode
+
+
+def _build_mutated(tmp: Path, mutate=None, draft_append: str | None = None) -> Path:
+    """픽스처를 복사한 뒤 계약(JSON)·초안을 변형해 조립한다 — P1 고의 불일치용."""
+    week = tmp / "9주차"
+    shutil.copytree(FIXTURE, week)
+    if mutate is not None:
+        cpath = week / "deck.contract.json"
+        data = json.loads(cpath.read_text(encoding="utf-8"))
+        mutate(data)
+        cpath.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+    if draft_append:
+        draft = week / "9주차_초안.md"
+        draft.write_text(draft.read_text(encoding="utf-8") + draft_append, encoding="utf-8")
+    ok, errors, _log = assemble(week / "강의덱.초안")
+    assert ok, f"픽스처 조립 실패: {errors}"
+    return week / "강의덱.html"
 
 
 def _lines(out: str, kind: str) -> list[str]:
@@ -97,7 +119,10 @@ class ContractLookupTests(unittest.TestCase):
             self.assertIsNotNone(found)
             self.assertEqual(found.parent.name, "_contracts")
             self.assertEqual(found.name, "9주차.deck.contract.json")
-            self.assertEqual(found, contract_path.resolve())
+            # Windows tempdir는 8.3 단축 경로(NOHTAE~1)로 올 수 있어 문자열 비교가
+            # 환경 의존으로 깨진다(2026-08-17 실측 — 변경 전 커밋에서도 동일 실패).
+            # 같은 파일인지는 양쪽을 canonicalize해 비교한다.
+            self.assertEqual(found.resolve(), contract_path.resolve())
 
     def test_missing_contract_returns_none(self):
         with tempfile.TemporaryDirectory() as td:
@@ -156,6 +181,135 @@ class BrokenVariantTests(unittest.TestCase):
         warns = [ln for ln in _lines(out, "WARN") if "고아" in ln]
         self.assertTrue(warns, f"고아 항목을 WARN으로 잡지 못했다:\n{out}")
         self.assertIn("W9", warns[0])
+
+
+class PreservationGateTests(unittest.TestCase):
+    """P1 보존 게이트(2026-08-17): 공동화 금지 · 양방향 완전성 · 절대사수 · waiver 스키마.
+
+    각 고의 불일치가 실제로 exit 1을 내는지(검사가 도는지)부터 증명한다 —
+    근거: plans/system-improvement/ANALYSIS.md §2-기제3 (V1-04 무검사 소실).
+    """
+
+    def test_healthy_fixture_passes_preservation_gate(self):
+        with tempfile.TemporaryDirectory() as td:
+            out, rc = _verify_rc(_build(Path(td)))
+        self.assertEqual(rc, 0, f"정상 픽스처가 FAIL했다:\n{out}")
+        self.assertFalse([ln for ln in _lines(out, "FAIL")], f"\n{out}")
+        self.assertIn("계약 공동화 없음", out)
+
+    def test_hollow_sequences_fails(self):
+        with tempfile.TemporaryDirectory() as td:
+            out, rc = _verify_rc(_build_mutated(
+                Path(td), lambda d: d["decks"]["강의덱"].update(sequences={})))
+        self.assertEqual(rc, 1)
+        self.assertTrue([ln for ln in _lines(out, "FAIL") if "계약 공동화" in ln], f"\n{out}")
+
+    def test_missing_slides_key_fails(self):
+        with tempfile.TemporaryDirectory() as td:
+            out, rc = _verify_rc(_build_mutated(
+                Path(td), lambda d: d["decks"]["강의덱"].pop("slides")))
+        self.assertEqual(rc, 1)
+        self.assertTrue([ln for ln in _lines(out, "FAIL")
+                         if "계약 공동화" in ln and "slides 키 부재" in ln], f"\n{out}")
+
+    def test_contract_only_id_fails(self):
+        with tempfile.TemporaryDirectory() as td:
+            out, rc = _verify_rc(_build_mutated(
+                Path(td), lambda d: d["decks"]["강의덱"]["sequences"]["PART2"].append("W9")))
+        self.assertEqual(rc, 1)
+        fails = [ln for ln in _lines(out, "FAIL") if "계약에 있는데 덱에 없음" in ln]
+        self.assertTrue(fails, f"소실 방향을 FAIL로 잡지 못했다:\n{out}")
+        self.assertIn("W9", fails[0])
+
+    def test_deck_only_id_fails(self):
+        with tempfile.TemporaryDirectory() as td:
+            out, rc = _verify_rc(_build_mutated(
+                Path(td), lambda d: d["decks"]["강의덱"]["sequences"]["PART2"].remove("W6")))
+        self.assertEqual(rc, 1)
+        fails = [ln for ln in _lines(out, "FAIL") if "덱에 있는데 계약에 없음" in ln]
+        self.assertTrue(fails, f"무단 추가 방향을 FAIL로 잡지 못했다:\n{out}")
+        self.assertIn("W6", fails[0])
+
+    def test_valid_waiver_demotes_to_warn(self):
+        def mutate(d):
+            d["decks"]["강의덱"]["sequences"] = {}
+            d["known_violations"]["contract_hollow"] = {
+                "reason": "테스트 베이스라인", "date": "2026-08-17"}
+        with tempfile.TemporaryDirectory() as td:
+            out, rc = _verify_rc(_build_mutated(Path(td), mutate))
+        self.assertEqual(rc, 0, f"유효 waiver가 강등되지 않았다:\n{out}")
+        self.assertTrue([ln for ln in _lines(out, "WARN")
+                         if "waiver 'contract_hollow' 적용" in ln], f"\n{out}")
+
+    def test_waiver_without_date_is_not_honored(self):
+        def mutate(d):
+            d["decks"]["강의덱"]["sequences"] = {}
+            d["known_violations"]["contract_hollow"] = {"reason": "사유만 있고 일자 없음"}
+        with tempfile.TemporaryDirectory() as td:
+            out, rc = _verify_rc(_build_mutated(Path(td), mutate))
+        self.assertEqual(rc, 1, f"무일자 waiver가 강등돼 버렸다(무사유 탈출구):\n{out}")
+        self.assertTrue([ln for ln in _lines(out, "WARN") if "무효 waiver" in ln], f"\n{out}")
+
+    def test_waiver_scope_does_not_cover_future_ids(self):
+        # 포괄 waiver 금지 — slides 목록 밖 위반은 waiver가 있어도 FAIL이어야 한다.
+        def mutate(d):
+            seq = d["decks"]["강의덱"]["sequences"]["PART2"]
+            seq.remove("W5")
+            seq.remove("W6")
+            d["known_violations"]["coverage_deck_only"] = {
+                "slides": ["W5"], "reason": "W5만 등재", "date": "2026-08-17"}
+        with tempfile.TemporaryDirectory() as td:
+            out, rc = _verify_rc(_build_mutated(Path(td), mutate))
+        self.assertEqual(rc, 1)
+        self.assertTrue([ln for ln in _lines(out, "FAIL")
+                         if "덮지 않는 ID" in ln and "W6" in ln], f"\n{out}")
+
+    def test_must_keep_missing_fails_and_waiver_demotes(self):
+        with tempfile.TemporaryDirectory() as td:
+            out, rc = _verify_rc(_build_mutated(
+                Path(td), lambda d: d["decks"]["강의덱"].update(must_keep={"W9": "테스트"})))
+        self.assertEqual(rc, 1)
+        self.assertTrue([ln for ln in _lines(out, "FAIL") if "절대사수 ID 소실" in ln], f"\n{out}")
+
+        def mutate(d):
+            d["decks"]["강의덱"]["must_keep"] = {"W9": "테스트"}
+            d["known_violations"]["must_keep_missing"] = {
+                "slides": ["W9"], "reason": "소실 이력 등재", "date": "2026-08-17"}
+        with tempfile.TemporaryDirectory() as td:
+            out, rc = _verify_rc(_build_mutated(Path(td), mutate))
+        self.assertEqual(rc, 0, f"\n{out}")
+
+    def test_draft_marker_requires_must_keep_migration(self):
+        with tempfile.TemporaryDirectory() as td:
+            out, rc = _verify_rc(_build_mutated(
+                Path(td), draft_append="\n> **절대 사수** — 1-1(테스트)\n"))
+        self.assertEqual(rc, 1)
+        self.assertTrue([ln for ln in _lines(out, "FAIL")
+                         if "must_keep" in ln and "이관하라" in ln], f"\n{out}")
+
+
+class WaiverLintTests(unittest.TestCase):
+    """scripts/verify_contract_waivers.py — 무사유 waiver 거부 스키마의 정본."""
+
+    def _lint(self, kv) -> list[str]:
+        from scripts.verify_contract_waivers import lint_contract
+        with tempfile.TemporaryDirectory() as td:
+            p = Path(td) / "deck.contract.json"
+            p.write_text(json.dumps({"known_violations": kv}, ensure_ascii=False),
+                         encoding="utf-8")
+            return lint_contract(str(p))
+
+    def test_valid_entry_passes(self):
+        self.assertEqual(self._lint({"k": {"reason": "사유", "date": "2026-08-17"}}), [])
+
+    def test_missing_date_fails(self):
+        self.assertTrue(self._lint({"k": {"reason": "사유"}}))
+
+    def test_empty_reason_fails(self):
+        self.assertTrue(self._lint({"k": {"reason": " ", "date": "2026-08-17"}}))
+
+    def test_bad_date_format_fails(self):
+        self.assertTrue(self._lint({"k": {"reason": "사유", "date": "26-08-17"}}))
 
 
 class DraftPrefixTests(unittest.TestCase):

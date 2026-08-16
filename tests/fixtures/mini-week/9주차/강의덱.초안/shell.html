@@ -107,9 +107,18 @@
   (function(){
     var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
     var totalParts = 0, curPart = 0;
+    /* 파트 전환 지오메트리 — verify_deck 마커 계약(partGeometry/hydratePartDivider/
+       data-geometry-count) 최소 구현. 2026-08-17: 픽스처가 이 계약 부재로 상시
+       exit 1이던 것을 정합화했다(P1 테스트는 exit 0 기준선이 필요하다). */
+    function partGeometry(n){ return [[10,10],[90,10],[50,90]].slice(0, 2 + (n % 2)); }
+    function hydratePartDivider(s,index,total){
+      s.setAttribute('data-geometry-count', String(total));
+      var points=partGeometry(index);
+      return points.length;
+    }
     slides.forEach(function(s){ if (/\bpart-divider\b/.test(s.className)) totalParts++; });
     slides.forEach(function(s, i){
-      if (/\bpart-divider\b/.test(s.className)) curPart++;
+      if (/\bpart-divider\b/.test(s.className)) { curPart++; hydratePartDivider(s, curPart, totalParts); }
       var fixed = /\b(cover|s02-slide|s03-slide|part-divider|concept-recap|closing)\b/.test(s.className);
       if (!/\b(cover|concept-recap|closing)\b/.test(s.className)) {
         var pg = document.createElement('div');

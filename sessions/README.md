@@ -79,9 +79,22 @@ cp "입력양식/콘텐츠초안템플릿.md" "courses/바이브코딩/sessions/
 덱의 슬라이드 수·divider 수·도입 순서·시퀀스 같은 **주차별 구조 값은 검증 스크립트에 하드코딩하지 않고 계약 파일로 외부화한다.**
 
 - 원칙적 위치: `courses/<과목>/sessions/N주차/deck.contract.json` (덱과 같은 폴더)
-- **동결된 주차**는 그 폴더를 건드리지 않기 위해 `sessions/_contracts/<폴더명>.deck.contract.json`에 둔다.
-- `verify_deck.py` 탐색 순서: **① 덱과 같은 폴더 → ② `sessions/_contracts/` → ③ 없으면 WARN**("주차 구조 계약 없음 — 구조 미검증"). 계약이 없다고 FAIL시키지 않는다.
+- **동결된 주차**는 그 폴더를 건드리지 않기 위해 `sessions/_contracts/<폴더명>.deck.contract.json`에 둔다. 단, 계약 파일 자체는 산출물이 아니라 **검증 메타데이터**라 동결 대상이 아니다(2026-08-17 사용자 결정 — waiver 등재·정합 목적의 편집은 허용, 산출물 수정은 불가).
+- `verify_deck.py` 탐색 순서: **① 덱과 같은 폴더 → ② `sessions/_contracts/` → ③ 없으면 WARN**("주차 구조 계약 없음 — 구조 미검증"). 계약이 없다고 FAIL시키지 않는다. 신규 주차는 `sessions/_template/deck.contract.json` 골격을 복사해 시작한다.
 - 기존에 알려진 위반은 계약의 `known_violations`에 사유와 함께 등재한다. 등재된 항목은 그 주차에서 WARN으로 강등되지만, **다른 주차에서는 그대로 FAIL로 작동한다.**
+
+**보존 게이트 (배치1 P1 · 2026-08-17 — 근거 `plans/system-improvement/ANALYSIS.md` §2-기제3):** `verify_deck.py`가 정본 덱(`강의덱`)에 다음을 강제한다. 배포·발표본은 장수 검사 + 발표자노트 회귀 + `build_release` 바이트 동일성이 이미 묶으므로 대상이 아니다.
+
+1. **공동화 금지** — `slides`·`sequences`를 비우거나 키를 빼는 것 자체가 FAIL이다(3주차 V1-04 소실의 직접 기제).
+2. **양방향 완전성** — `intro ∪ sequences` 선언 집합과 덱 `data-slide` 집합이 정확히 일치해야 한다. «계약에 있는데 덱에 없음(소실)»과 «덱에 있는데 계약에 없음(무단 추가)» 둘 다 FAIL.
+3. **절대사수** — 초안에 「절대 사수」 표지가 있으면 `must_keep`으로 ID 이관이 강제되고, 이관된 ID의 부재는 FAIL이다.
+
+**waiver 규약 (탈출구는 숨기지 않는다 — 기록에 남고 세어져야 한다):**
+
+- 모든 `known_violations` 항목은 `reason`(비어 있지 않은 사유) + `date`(YYYY-MM-DD)가 필수다. **무사유 waiver는 아예 작동하지 않고**(강등 없이 FAIL 유지), pre-commit(`verify_contract_waivers.py`)이 커밋을 차단한다. 스키마 정본은 `scripts/verify_contract_waivers.py`.
+- 슬라이드 단위 검사(coverage·must_keep)의 waiver는 `slides` 목록을 명시해야 하며 **목록 밖 미래 위반은 그대로 FAIL이다**(포괄 waiver 금지).
+- 건수 단위 검사(`title_survival_baseline`·`draft_sync_baseline`·`notes_pn_mismatch`)의 waiver는 `count` 상한을 명시하며, `run_deck_checks.py`가 실측과 비교해 **증가만 FAIL**한다.
+- **구조 WARN 래칫** — `run_deck_checks.py`가 정적 게이트의 구조 WARN 총계(waiver 강등분 포함)를 요약 최상단에 노출하고, 계약 `warn_baseline.static_gates` 대비 증가하면 FAIL이다. 세어지지 않는 WARN은 침묵과 같다. (`verify_deck_quality`의 품질 WARN은 설계상 WARN 기본 게이트라 래칫 밖이며, 총계는 같은 줄에 함께 표시된다 — `--strict` 승격은 그 게이트의 소관.)
 
 ## 1주차 (동결 해제 · 규약 정합)
 

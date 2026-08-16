@@ -38,6 +38,13 @@ from html.parser import HTMLParser
 import html as _html_stdlib
 import os
 
+# ── P1(2026-08-17) waiver 스키마 정본 — 무사유 waiver는 강등하지 않는다 ───────
+# 스키마 로직은 verify_contract_waivers.py 한 벌이다(여기 복제하지 않는다).
+try:
+    from verify_contract_waivers import waiver_entry_valid
+except ImportError:                     # 패키지로 import될 때(tests)
+    from scripts.verify_contract_waivers import waiver_entry_valid
+
 # ── 주차 계약이 등재한 구도 family (2026-07-29 P5) ───────────────────────────
 # 주차 종속 family(`w2-*` 등)는 범용 스크립트가 아니라 그 주차의 deck.contract.json에
 # 산다. main()이 계약을 읽어 _CONTRACT_FAMILIES를 채우고, family 판정이 이를 먼저 본다.
@@ -1016,6 +1023,25 @@ def image_contract_checks(html, deck_path, *, release=False, manifest_path=None,
 #   ③ 없으면 None(호출부가 WARN 1건만 남기고 구조 검사를 건너뛴다 — FAIL 금지).
 # ============================================================================
 
+def _read_week_draft(week_dir):
+    """주차 폴더의 콘텐츠 초안 텍스트(없으면 빈 문자열). 경로 해석은
+    verify_session_docs.resolve_draft를 재사용한다(중복 구현 금지)."""
+    m = re.match(r'(\d+)주차$', week_dir.name)
+    if not m:
+        return ''
+    try:
+        try:
+            import verify_session_docs as _vsd
+        except ImportError:
+            from scripts import verify_session_docs as _vsd
+        draft_path = Path(_vsd.resolve_draft(Path(week_dir), m.group(1)))
+        if draft_path.exists():
+            return draft_path.read_text(encoding='utf-8', errors='replace')
+    except Exception:
+        pass
+    return ''
+
+
 def find_deck_contract(deck_path):
     deck_file = Path(deck_path).resolve()
     sibling = deck_file.parent / 'deck.contract.json'
@@ -1174,6 +1200,17 @@ def main():
             chk(False, "", f"주차 구조 계약 읽기 실패({contract_path.name}): {exc} — 구조 미검증", warn=True)
         if contract_data is not None:
             known_violations = contract_data.get('known_violations') or {}
+            # P1(2026-08-17): 사유(reason)·일자(date) 없는 waiver는 인정하지 않는다 —
+            # 강등이 조용히 상시화되는 것을 막는다(ANALYSIS §2-기제3). 무효 항목은
+            # 목록에서 제거해 아래 모든 소비처에서 «waiver 없음»으로 작동하게 한다.
+            _invalid_waivers = sorted(k for k, v in known_violations.items()
+                                      if not waiver_entry_valid(v))
+            if _invalid_waivers:
+                chk(False, "",
+                    f"무효 waiver(사유·일자 누락) {_invalid_waivers} — 강등 없이 FAIL "
+                    f"유지(스키마: scripts/verify_contract_waivers.py)", warn=True)
+                known_violations = {k: v for k, v in known_violations.items()
+                                    if k not in set(_invalid_waivers)}
             _nfam = _load_contract_families(contract_data)
             if _nfam == 0:
                 chk(False, "", "주차 계약에 layout_families 없음 — 그 주차 전용 구도가 "
@@ -1263,6 +1300,89 @@ def main():
                     chk(last_slide is not None and closing_expected in decoded_text(last_text),
                         f"마지막 슬라이드 '{closing_expected}' 유지",
                         f"마지막 슬라이드({slide_ids[-1] if slide_ids else '없음'})에 '{closing_expected}' 없음")
+
+                # ── P1 보존 게이트(2026-08-17): 공동화 금지 · 양방향 완전성 · 절대사수 ──
+                #   정본 덱(강의덱)에만 적용한다 — 배포·발표본은 장수 검사 + 발표자노트
+                #   회귀 + build_release 바이트 동일성이 이미 묶는다(규약 정본:
+                #   sessions/README.md 「주차 구조 계약」).
+                if deck_file.stem == '강의덱':
+                    def _waiver(key):
+                        entry = known_violations.get(key)
+                        return entry if entry and waiver_entry_valid(entry) else None
+
+                    def chk_waivable(cond, ok, bad, key, violating_ids=None):
+                        """유효 waiver가 있을 때만 FAIL→WARN 강등. violating_ids가 있으면
+                        waiver의 slides 목록이 위반 ID를 전부 덮어야 한다(포괄 waiver 금지 —
+                        목록 밖 미래 위반은 그대로 FAIL)."""
+                        if cond:
+                            chk(True, ok, bad)
+                            return
+                        entry = _waiver(key)
+                        if entry is None:
+                            chk(False, ok, bad + f" — 끄려면 waiver '{key}'(사유·일자 필수)")
+                            return
+                        if violating_ids is not None:
+                            uncovered = sorted(set(violating_ids) - set(entry.get('slides') or []))
+                            if uncovered:
+                                chk(False, ok, bad + f" — waiver '{key}'가 덮지 않는 ID {uncovered}")
+                                return
+                        results.append(("WARN",
+                                        f"{bad} — waiver '{key}' 적용"
+                                        f"({entry.get('date')}: {entry.get('reason')})"))
+
+                    deck_set = set(i for i in slide_ids if i)
+
+                    # ① 공동화 금지 — sequences/slides를 비우는 것 자체가 위반이다.
+                    #   3주차 사고의 직접 기제: 계약을 «키만 비우면 검사가 꺼지는» 상태로
+                    #   두었고, 그 사이 절대사수 V1-04가 기록 없이 소실됐다
+                    #   (plans/system-improvement/ANALYSIS.md §2-기제3).
+                    hollow = []
+                    if 'slides' not in deck_contract:
+                        hollow.append("slides 키 부재")
+                    if not deck_contract.get('sequences'):
+                        hollow.append("sequences 부재/공동화")
+                    chk_waivable(not hollow,
+                                 "계약 공동화 없음 — slides·sequences 선언됨",
+                                 f"계약 공동화: {' · '.join(hollow)}",
+                                 key='contract_hollow')
+
+                    # ② 양방향 완전성 — 계약 선언 집합(intro ∪ sequences) ↔ 덱 data-slide.
+                    #   공동화 상태면 전 덱이 «계약 밖»으로 나와 소음이 되므로 ①에 맡긴다.
+                    if deck_contract.get('sequences'):
+                        declared = set(deck_contract.get('intro') or [])
+                        for _seq in (deck_contract['sequences'] or {}).values():
+                            declared.update(_seq or [])
+                        contract_only = sorted(declared - deck_set)
+                        deck_only = [i for i in slide_ids if i and i not in declared]
+                        chk_waivable(not contract_only,
+                                     f"계약 선언 {len(declared)}개 ID 전부 덱에 실재",
+                                     f"계약에 있는데 덱에 없음(소실): {contract_only}",
+                                     key='coverage_contract_only', violating_ids=contract_only)
+                        chk_waivable(not deck_only,
+                                     f"덱 {len(deck_set)}개 ID 전부 계약이 선언",
+                                     f"덱에 있는데 계약에 없음(무단 추가): {deck_only}",
+                                     key='coverage_deck_only', violating_ids=deck_only)
+
+                    # ③ 절대사수 — 초안의 「절대 사수」 목록은 계약 must_keep으로 이관돼야
+                    #   하고, 이관된 ID는 덱에 실재해야 한다. 필드를 자발 등재로 두면
+                    #   안 채우는 순간 게이트가 영영 돌지 않는다(숨은 탈출구 금지).
+                    must_keep = deck_contract.get('must_keep') or {}
+                    mk_ids = sorted(must_keep)
+                    if mk_ids:
+                        mk_missing = sorted(set(mk_ids) - deck_set)
+                        chk_waivable(not mk_missing,
+                                     f"절대사수 {len(mk_ids)}건 전부 덱에 실재",
+                                     f"절대사수 ID 소실: {mk_missing}",
+                                     key='must_keep_missing', violating_ids=mk_missing)
+                    _draft_text = _read_week_draft(deck_file.parent)
+                    if ('절대 사수' in _draft_text) or ('절대사수' in _draft_text):
+                        chk_waivable(bool(mk_ids),
+                                     "초안 「절대 사수」 목록이 계약 must_keep으로 이관됨",
+                                     "초안에 「절대 사수」 표지가 있는데 계약 must_keep이 "
+                                     "비었다 — 목록을 data-slide ID로 이관하라",
+                                     key='must_keep_pending')
+                    elif not mk_ids:
+                        chk(True, "절대사수: 초안에 「절대 사수」 표지 없음 — must_keep 검사 대상 아님", "")
 
     for key, marker in FIXED.items():
         found = any(marker in classes(el.attrs) for el in slide_els)

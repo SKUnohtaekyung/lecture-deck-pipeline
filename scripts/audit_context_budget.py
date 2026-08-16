@@ -35,6 +35,7 @@
     python scripts/audit_context_budget.py <session-id>
     python scripts/audit_context_budget.py <session-id> --json
     python scripts/audit_context_budget.py --list        # 세션 목록(최근순)
+    python scripts/audit_context_budget.py --list --project-dir <경로>  # 다른 프로젝트 지정
 
 종료코드: 0 위반 없음 / 1 위반 있음 / 2 입력 오류
 표준 라이브러리만 사용한다(훅·git 훅에서 호출될 수 있다).
@@ -42,10 +43,31 @@
 import io
 import json
 import os
+import re
 import sys
 
-PROJECT_KEY = "C--Users-miso-Desktop-template"
-DEFAULT_DIR = os.path.join(os.path.expanduser("~"), ".claude", "projects", PROJECT_KEY)
+# ── 프로젝트 세션 폴더 유도 (배치1 P6 · 2026-08-17) ─────────────────────────
+# 종전에는 PROJECT_KEY가 타인 환경("C--Users-miso-Desktop-template")으로
+# 하드코딩돼 이 저장소에서 상시 미작동했다(ANALYSIS §4 — 기제3의 한 사례).
+# Claude Code는 세션 로그를 ~/.claude/projects/<키>/ 아래 두고, 키는 프로젝트
+# 절대경로의 영숫자 외 문자를 전부 '-'로 치환한 것이다. 실측 근거: 이 저장소
+# C:\Users\Noh TaeKyung\Desktop\lecture-deck-pipeline
+# → C--Users-Noh-TaeKyung-Desktop-lecture-deck-pipeline (실재 폴더 확인).
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+REPO_ROOT = os.path.dirname(HERE)
+
+
+def derive_project_key(path):
+    """프로젝트 절대경로 → Claude Code 세션 폴더명."""
+    return re.sub(r"[^A-Za-z0-9]", "-", path)
+
+
+def sessions_dir(project_dir=None):
+    """세션 로그 폴더. 기본은 이 저장소 루트에서 유도한다."""
+    target = os.path.abspath(project_dir or REPO_ROOT)
+    return os.path.join(os.path.expanduser("~"), ".claude", "projects",
+                        derive_project_key(target))
 
 T1_CACHE_CREATE = 50_000
 T2_AVG_CONTEXT = 200_000
@@ -171,19 +193,32 @@ def content_sources(path):
 
 def main():
     argv = sys.argv[1:]
+    project_dir = None
+    if "--project-dir" in argv:
+        i = argv.index("--project-dir")
+        if i + 1 >= len(argv):
+            out("--project-dir 뒤에 경로가 필요하다")
+            return 2
+        project_dir = argv[i + 1]
+        del argv[i:i + 2]
+    base_dir = sessions_dir(project_dir)
+    if not os.path.isdir(base_dir):
+        out("세션 폴더가 없다: %s" % base_dir)
+        out("(프로젝트 경로가 다르면 --project-dir <경로>로 지정)")
+        return 2
     if "--list" in argv:
-        files = [f for f in os.listdir(DEFAULT_DIR) if f.endswith(".jsonl")]
-        files.sort(key=lambda f: os.path.getmtime(os.path.join(DEFAULT_DIR, f)), reverse=True)
+        files = [f for f in os.listdir(base_dir) if f.endswith(".jsonl")]
+        files.sort(key=lambda f: os.path.getmtime(os.path.join(base_dir, f)), reverse=True)
         for f in files[:20]:
-            size = os.path.getsize(os.path.join(DEFAULT_DIR, f)) / 1e6
+            size = os.path.getsize(os.path.join(base_dir, f)) / 1e6
             out("%7.1fMB  %s" % (size, f[:-6]))
         return 0
     sids = [a for a in argv if not a.startswith("--")]
     if not sids:
         out("사용법: python scripts/audit_context_budget.py <session-id> [--json]")
-        out("        python scripts/audit_context_budget.py --list")
+        out("        python scripts/audit_context_budget.py --list [--project-dir <경로>]")
         return 2
-    path = os.path.join(DEFAULT_DIR, sids[0] + ".jsonl")
+    path = os.path.join(base_dir, sids[0] + ".jsonl")
     if not os.path.isfile(path):
         out("세션 로그를 찾을 수 없다: %s" % path)
         return 2

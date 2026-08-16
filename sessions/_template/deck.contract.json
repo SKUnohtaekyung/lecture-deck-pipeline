@@ -1,0 +1,22 @@
+{
+  "week": "N주차",
+  "frozen": false,
+  "_readme": "새 주차 구조 계약 골격(배치1 P1 · 2026-08-17). 규약 정본은 sessions/README.md 「주차 구조 계약」. 조립 단계에서 값을 채운다 — 빈 채로 두면 verify_deck 보존 게이트(공동화 금지·양방향 완전성·절대사수)가 FAIL을 낸다. 이것은 결함이 아니라 강제 장치다: 검사를 끄려면 known_violations에 reason(사유)+date(YYYY-MM-DD)를 담은 waiver를 등재해야 하고, 무사유 waiver는 작동하지 않으며 pre-commit이 커밋을 차단한다.",
+  "decks": {
+    "강의덱": {
+      "slides": 0,
+      "dividers": 0,
+      "intro": [],
+      "sequences": {},
+      "must_keep": {},
+      "note": "slides·dividers·intro·sequences는 결정표/초안 기준으로 채운다. sequences는 intro를 제외한 전 슬라이드를 PART별로 선언한다(도합 = 덱 전체 data-slide 집합). must_keep은 초안의 「절대 사수」 목록을 data-slide ID로 이관한다 — 초안에 표지가 있는데 비어 있으면 FAIL이다."
+    }
+  },
+  "known_violations": {},
+  "warn_baseline": {
+    "static_gates": 0,
+    "date": "2026-08-17",
+    "note": "run_deck_checks 구조 WARN 래칫 기준선. 신규 주차는 0에서 시작한다 — 구조 WARN이 생기면 원인을 없애거나, 없앨 수 없는 사유를 적고 이 값을 올린다(조용한 증가는 FAIL)."
+  },
+  "layout_families": {}
+}

@@ -281,6 +281,26 @@ def check_notes(root, staged):
     return Result(name, worst_status, detail)
 
 
+def check_contract_waivers(root, staged):
+    """deck.contract.json staged → verify_contract_waivers.py (무사유 waiver 거부 · P1)."""
+    name = "계약 waiver 스키마 (verify_contract_waivers)"
+    hit = any(p.endswith("deck.contract.json") for p in staged)
+    if not hit:
+        return Result(name, "SKIP", "staged 안에 deck.contract.json 변경 없음")
+
+    rel = "scripts/verify_contract_waivers.py"
+    try:
+        code, stdout, stderr = run_script(root, rel)
+    except ScriptMissing:
+        return Result(name, "WARN", "%s 없음 — 이 검사를 건너뜀" % rel)
+    except Exception as e:
+        return Result(name, "ERROR", "%s 실행 중 예외: %s" % (rel, e))
+    if code != 0:
+        return Result(name, "FAIL", "무사유·무일자 waiver는 커밋할 수 없다(exit %d)\n%s"
+                      % (code, _tail(stdout + stderr)))
+    return Result(name, "PASS", "waiver 스키마(사유·일자) 전건 유효")
+
+
 def check_tmp_litter(root, staged):
     """항상 실행 — tmp/ 밖 미추적 잡파일 스캔. 차단 아님, 경고만."""
     name = "저장소 잡파일 스캔 (tmp/ 밖 미추적 파일)"
@@ -316,7 +336,8 @@ def main():
         out("종료코드: 0")
         return 0
 
-    checks = [check_kit, check_skill, check_css, check_deck_generated, check_notes, check_tmp_litter]
+    checks = [check_kit, check_skill, check_css, check_deck_generated, check_notes,
+              check_contract_waivers, check_tmp_litter]
     results = []
     for check in checks:
         try:

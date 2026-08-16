@@ -77,7 +77,11 @@ try:
 except Exception:                                # pragma: no cover - 경로 헬퍼가 없으면 폴백
     _course_paths = None
 
+from verify_deck import find_deck_contract
+from verify_contract_waivers import waiver_entry_valid
+
 EVIDENCE = "deck-audit.json"
+_SUMMARY_RE = re.compile(r"요약: FAIL (\d+) · WARN (\d+)")
 
 
 def _week_num(week: str) -> str:
@@ -111,6 +115,23 @@ class Runner:
         self.notes = os.path.join(self.session, "강의덱_발표자노트.html")
         self.verify_dir = os.path.join(ROOT, "sessions", "_verify", self.week)
         self.steps: list[tuple[str, bool, str]] = []
+        # ── P1(2026-08-17) 구조 WARN 래칫 — «세어지지 않는 WARN은 침묵과 같다» ──
+        #   waiver 강등분을 포함한 구조 WARN 총계를 요약 최상단에 노출하고,
+        #   계약 warn_baseline 대비 증가하면 그 자체를 FAIL로 잡는다.
+        self.warn_struct: int | None = 0     # verify_deck·verify_notes (None=계수 실패)
+        self.warn_quality = 0                # verify_deck_quality (러너 강제 밖 — 표시만)
+        self.waivers_applied: list[str] = []
+        self._last_out = ""
+
+    def _contract(self) -> dict:
+        path = find_deck_contract(self.deck)
+        if path is None:
+            return {}
+        try:
+            with open(path, encoding="utf-8") as fh:
+                return json.load(fh)
+        except Exception:
+            return {}
 
     # ── 단계 실행 ────────────────────────────────────────────────────
     def _py(self, name: str, script: str, *args: str, allow_warn: bool = True) -> bool:
@@ -124,8 +145,26 @@ class Runner:
         if proc.stderr and proc.returncode != 0:
             print("  [stderr] " + (proc.stderr or "").strip().splitlines()[-1])
         ok = proc.returncode == 0
+        self._last_out = proc.stdout or ""
         self.steps.append((name, ok, "" if ok else f"exit {proc.returncode}"))
         return ok
+
+    def _count_summary_warns(self, gate_label: str, bucket: str) -> None:
+        """직전 _py 출력의 «요약: FAIL n · WARN n» 줄에서 WARN을 센다.
+        줄이 없으면 계수 실패를 FAIL로 남긴다 — 조용한 0은 눈먼 0이다."""
+        m = _SUMMARY_RE.search(self._last_out)
+        if not m:
+            self.steps.append((f"{gate_label} WARN 계수", False,
+                               "«요약:» 줄을 찾지 못해 WARN을 세지 못했다"))
+            if bucket == "struct":
+                self.warn_struct = None
+            return
+        n = int(m.group(2))
+        if bucket == "struct":
+            if self.warn_struct is not None:
+                self.warn_struct += n
+        else:
+            self.warn_quality += n
 
     def assemble(self) -> bool:
         if not os.path.isdir(self.shard):
@@ -139,12 +178,78 @@ class Runner:
         if parts:
             args += ["--parts", parts]
         ok &= self._py("정적 게이트 (verify_deck)", "verify_deck.py", *args)
+        self._count_summary_warns("verify_deck", "struct")
         ok &= self._py("내용 품질 (verify_deck_quality)", "verify_deck_quality.py", _rel(self.deck))
+        self._count_summary_warns("verify_deck_quality", "quality")
+        kv = self._contract().get("known_violations") or {}
         if os.path.exists(self.notes):
-            ok &= self._py("발표자 노트 (verify_notes)", "verify_notes.py",
-                           _rel(self.deck), _rel(self.notes))
+            name = "발표자 노트 (verify_notes)"
+            ok_notes = self._py(name, "verify_notes.py", _rel(self.deck), _rel(self.notes))
+            if self.warn_struct is not None:
+                self.warn_struct += len(re.findall(r"(?m)^\[WARN\]", self._last_out))
+            if not ok_notes:
+                # notes_pn_mismatch waiver 소비 — 등재만 되고 소비처가 없어 verify_notes가
+                # 상시 FAIL하던 것을 러너 count 래칫으로 잇는다(P1 · 2026-08-17).
+                # 실측 MISMATCH가 waiver count 이하일 때만 강등하고, 초과분은 FAIL이다.
+                m = re.search(r"--- MISMATCH=(\d+)", self._last_out)
+                entry = kv.get("notes_pn_mismatch")
+                if (m and entry is not None and waiver_entry_valid(entry)
+                        and isinstance(entry.get("count"), int)
+                        and int(m.group(1)) <= entry["count"]):
+                    self.steps[-1] = (name, True,
+                                      f"MISMATCH {m.group(1)}건 ≤ waiver notes_pn_mismatch "
+                                      f"count {entry['count']}({entry.get('date')}) — 등재 강등")
+                    self.waivers_applied.append(
+                        f"notes_pn_mismatch(count {entry['count']} · {entry.get('date')})")
+                    if self.warn_struct is not None:
+                        self.warn_struct += 1   # 강등도 WARN으로 센다 — 침묵 금지
+                else:
+                    ok = False
         else:
             self.steps.append(("발표자 노트", True, "노트 없음 — 건너뜀"))
+        ok &= self._draft_gates(kv)
+        return ok
+
+    # ── P1(2026-08-17) 초안 생존·동기화 게이트 편입 ──────────────────────
+    #   기제3(게이트 OFF 기본값)의 두 사례를 러너로 끌어온다. 판정은 러너가
+    #   한다: 실측 건수를 계약 waiver의 count 베이스라인과 비교해 «증가»만
+    #   FAIL한다(waiver 없으면 베이스라인 0 = 1건이라도 FAIL). 스크립트의
+    #   --strict는 단독 실행·테스트용으로 남는다.
+    def _draft_gates(self, kv: dict) -> bool:
+        ok = True
+        for label, script, wkey, count_re in (
+            ("초안 제목 생존 (check_title_survival)", "check_title_survival.py",
+             "title_survival_baseline", r"제목 강등 (\d+)건"),
+            ("초안-덱 동기화 (report_draft_sync)", "report_draft_sync.py",
+             "draft_sync_baseline", r"초안에만=(\d+) 덱에만=(\d+)"),
+        ):
+            self._py(label, script, self.num)
+            out = self._last_out
+            # 입력없음(초안·덱 부재) — 판정 불가를 명시하고 넘어간다
+            if ("[입력없음]" in out) or ("파일 없음" in out):
+                self.steps[-1] = (label, True, "초안/덱 없음 — 건너뜀(판정 아님)")
+                continue
+            m = re.search(count_re, out)
+            if not m:
+                self.steps[-1] = (label, False, "건수 줄을 찾지 못했다 — 계수 실패(눈먼 0 방지)")
+                ok = False
+                continue
+            n = sum(int(g) for g in m.groups())
+            entry = kv.get(wkey)
+            baseline = 0
+            if entry is not None and waiver_entry_valid(entry) and isinstance(entry.get("count"), int):
+                baseline = entry["count"]
+                self.waivers_applied.append(f"{wkey}(count {baseline} · {entry.get('date')})")
+            if n > baseline:
+                self.steps[-1] = (label, False,
+                                  f"드리프트 {n}건 > 베이스라인 {baseline} — 소유권을 판정해 "
+                                  f"맞추거나 계약 waiver '{wkey}'의 count를 사유와 함께 갱신하라")
+                ok = False
+            else:
+                note = f"드리프트 {n}건 ≤ 베이스라인 {baseline}"
+                if n < baseline:
+                    note += f" — 개선됨: 베이스라인을 {n}으로 낮춰 등재 가능"
+                self.steps[-1] = (label, True, note)
         return ok
 
     # ── 렌더 증거 판정 (이 러너의 존재 이유) ──────────────────────────
@@ -288,6 +393,34 @@ class Runner:
         print("\n" + "=" * 68)
         print(f"러너 요약 — {self.week}")
         print("=" * 68)
+        # ── 구조 WARN 래칫(P1) — 최상단 노출. 세어지지 않는 WARN은 침묵과 같다 ──
+        if ran_static:
+            wb = self._contract().get("warn_baseline") or {}
+            base = wb.get("static_gates")
+            ws = "계수실패" if self.warn_struct is None else self.warn_struct
+            print(f"경고 — 구조 WARN {ws}"
+                  + (f" (베이스라인 {base} · {wb.get('date')})" if isinstance(base, int)
+                     else " (베이스라인 미등재)")
+                  + f" · 품질 WARN {self.warn_quality}"
+                    "(러너 강제 밖 — verify_deck_quality --strict로 승격 가능)")
+            if self.waivers_applied:
+                print("waiver 적용 " + str(len(self.waivers_applied)) + "건: "
+                      + " · ".join(self.waivers_applied))
+            if self.warn_struct is None:
+                self.steps.append(("구조 WARN 래칫", False, "WARN 계수 실패 — 위 계수 단계 참조"))
+            elif not isinstance(base, int):
+                self.steps.append(("구조 WARN 래칫", False,
+                                   f"계약에 warn_baseline 미등재 — 실측 {self.warn_struct}을 "
+                                   f"{{\"static_gates\": N, \"date\": \"YYYY-MM-DD\"}}로 등재하라"))
+            elif self.warn_struct > base:
+                self.steps.append(("구조 WARN 래칫", False,
+                                   f"구조 WARN 증가 {base} → {self.warn_struct} — 원인을 없애거나 "
+                                   f"베이스라인을 사유와 함께 갱신하라(조용한 증가 금지)"))
+            else:
+                note = f"구조 WARN {self.warn_struct} ≤ 베이스라인 {base}"
+                if self.warn_struct < base:
+                    note += f" — 개선됨: 베이스라인을 {self.warn_struct}로 낮춰 등재 가능"
+                self.steps.append(("구조 WARN 래칫", True, note))
         failed = 0
         for name, ok, note in self.steps:
             mark = "PASS" if ok else "FAIL"

@@ -16,7 +16,13 @@ SlideParser를 재사용한다(같은 이유).
 
 사용:
   python scripts/report_draft_sync.py <주차N>
-종료코드: 항상 0(판정 없음 — 항상 성공 종료).
+  python scripts/report_draft_sync.py <주차N> --strict   # 초안에만/덱에만 행이 있으면 exit 1
+종료코드:
+  기본   — 항상 0(판정 없음 — 소유권 판단은 사람).
+  --strict — «초안에만»·«덱에만» 행이 1건이라도 있으면 1 (P1 · 2026-08-17:
+  기본 상시-0이 기제3(게이트 OFF 기본값)의 한 사례로 확정돼 러너 편입용 판정
+  모드를 신설했다. 제목불일치는 check_title_survival이 정규화해 판정하므로
+  여기서는 세지 않는다 — 존재/부재만 본다).
 """
 import argparse
 import difflib
@@ -136,6 +142,8 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("week", help="주차 번호 (예: 2)")
     ap.add_argument("--root", default=None, help="저장소 루트 재정의(자체 테스트용)")
+    ap.add_argument("--strict", action="store_true",
+                    help="초안에만/덱에만 행이 있으면 exit 1")
     args = ap.parse_args()
 
     root = Path(args.root) if args.root else Path(__file__).resolve().parent.parent
@@ -173,6 +181,15 @@ def main():
         f"--- 일치={counts['일치']} 제목불일치={counts['제목불일치']} "
         f"초안에만={counts['초안에만']} 덱에만={counts['덱에만']} ---"
     )
+    if args.strict:
+        drift = counts["초안에만"] + counts["덱에만"]
+        if drift:
+            print(f"RESULT | FAIL | --strict: 초안에만/덱에만 {drift}건 — "
+                  f"소유권을 판정해 초안 또는 덱을 맞추거나, 주차 계약에 "
+                  f"draft_sync_baseline waiver(사유·일자)를 등재하라")
+            sys.exit(1)
+        print("RESULT | PASS | --strict: 초안에만/덱에만 0건")
+        sys.exit(0)
     print("RESULT | 판정 없음(사람이 소유권 확인) — 항상 exit 0")
     sys.exit(0)
 

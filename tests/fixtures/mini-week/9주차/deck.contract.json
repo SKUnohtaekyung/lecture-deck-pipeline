@@ -1,12 +1,18 @@
 {
   "week": "9주차",
   "frozen": false,
-  "_note": "1주차 과적합 방지용 미니 픽스처의 구조 계약. 덱과 같은 폴더에 두어 verify_deck 계약 탐색 ①단계(동폴더 인식)를 검증한다. intro 규칙은 두지 않는다(고정 슬라이드 최소 구성).",
+  "_note": "1주차 과적합 방지용 미니 픽스처의 구조 계약. 덱과 같은 폴더에 두어 verify_deck 계약 탐색 ①단계(동폴더 인식)를 검증한다. intro 규칙은 두지 않는다(고정 슬라이드 최소 구성). 2026-08-17 P1: 보존 게이트(공동화 금지·양방향 완전성)를 통과하도록 sequences가 전 슬라이드를 선언한다 — 이 계약 자체가 새 검사의 PASS 경로 픽스처다.",
   "decks": {
     "강의덱": {
       "slides": 12,
       "dividers": 2,
-      "dark_terminal_slides": ["W1"]
+      "dark_terminal_slides": ["W1"],
+      "sequences": {
+        "OPEN": ["S01", "S02", "S03"],
+        "PART1": ["P1", "W1", "W2", "W3"],
+        "PART2": ["P2", "W4", "W5", "W6"],
+        "CLOSING": ["END"]
+      }
     }
   },
   "known_violations": {}
