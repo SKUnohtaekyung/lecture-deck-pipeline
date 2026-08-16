@@ -1,0 +1,630 @@
+<!-- ============ PART 5 전환 ============
+     ⚠️ 도형·도트·PART n/N은 shell의 hydratePartDivider()가 자동 생성한다. 빈 훅으로 둔다. -->
+<section class="slide part-divider" data-slide="P5">
+  <svg class="dv-hero" viewBox="0 0 1280 720" fill="none" aria-hidden="true"></svg>
+  <div class="pd-dots" aria-hidden="true"></div>
+  <p class="pd-eyebrow">PART</p>
+  <h2 class="pd-title">플러그인 · MCP · GitHub 기록</h2>
+  <p class="pd-sub">도구를 붙이고, 기록을 남깁니다.</p>
+</section>
+
+<!-- ============ PART 5 로드맵 ============ -->
+<section class="slide roadmap" data-slide="M5" data-shape="flow">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span><div class="s-team"></div>
+  </header>
+  <div class="s-full">
+    <h2 class="s-title">PART 5는 이렇게 배웁니다</h2>
+    <!-- 2026-08-09 사용자 지시: 옛 리드는 GitHub 사전 조건을 말해 주객이 뒤집혀 있었다.
+         이 PART의 주인공은 플러그인·MCP이고 GitHub는 그 사용 예시다.
+         빠진 사전 조건 문장은 버리지 않고 V5-05(GitHub 장)로 내렸다 — 개념KB 필수 진술
+         [C-GitHub저장소]가 「연결·인증을 사전 조건으로 전제한다」를 요구하므로 화면에 남아야 한다. -->
+    <p class="rm-lead">외부 도구를 붙이는 방법을 먼저 보고, <strong>GitHub로 실제로 붙여 봅니다.</strong></p>
+    <div class="rm-track is-5 viz-flow-h">
+      <div class="rm-step">
+        <span class="rm-n">1</span>
+        <b>왜 외부 도구를 붙이나</b>
+        <span class="desc">폴더 밖을 볼 수 있게 됩니다.</span>
+        <span class="rm-out">넓어진 범위</span>
+      </div>
+      <span class="rm-arrow" aria-hidden="true">→</span>
+      <div class="rm-step">
+        <span class="rm-n">2</span>
+        <b>네 이름 구분하기</b>
+        <span class="desc">무엇이 무엇을 담고 있나.</span>
+        <span class="rm-out">넷의 관계</span>
+      </div>
+      <span class="rm-arrow" aria-hidden="true">→</span>
+      <div class="rm-step">
+        <span class="rm-n">3</span>
+        <b>MCP와 프로토콜</b>
+        <span class="desc">어디부터가 외부인지 봅니다.</span>
+        <span class="rm-out">연결과 승인</span>
+      </div>
+      <span class="rm-arrow" aria-hidden="true">→</span>
+      <div class="rm-step">
+        <span class="rm-n">4</span>
+        <b>저장소와 커밋</b>
+        <span class="desc">담을 것을 고르고 한 문장으로 적습니다.</span>
+        <span class="rm-out">커밋 한 문장</span>
+      </div>
+      <span class="rm-arrow" aria-hidden="true">→</span>
+      <div class="rm-step is-goal">
+        <span class="rm-n">5</span>
+        <b>GitHub에 올리기</b>
+        <span class="desc">올린 결과를 웹에서 확인합니다.</span>
+        <span class="rm-out">도착한 커밋</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- V5-01 지금까지는 내 폴더 안에서만 — containment -->
+<section class="slide" data-slide="V5-01" data-shape="containment">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span><div class="s-team"></div>
+  </header>
+  <div class="s-full w3-cont">
+    <h2 class="s-title">지금까지는 내 폴더 안에서만</h2>
+    <!-- 2026-08-09 사용자 지시: 옛 리드 「내 폴더 밖을 몰랐습니다」는 제목과 같은 말이라
+         한 화면에서 두 번 말하고 있었다. 「그래서 무엇이 안 됐나」를 리드로 올리고,
+         아래 칸 1은 「지금 할 수 있는 일」로 바꿔 중복을 없앴다. -->
+    <p class="s-lead">외부 서비스에 있는 자료를 <strong>읽지도, 거기에 남기지도</strong> 못했습니다.</p>
+    <div class="w3-cont-body">
+      <figure class="w3-conc viz-containment" role="img"
+              aria-label="동심 포함도: 안쪽 원은 에이전트가 아는 내 폴더, 바깥 링은 아직 모르는 외부 서비스">
+        <svg viewBox="0 0 392 392" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <circle cx="196" cy="196" r="188" fill="var(--surface)" stroke="var(--blue-line)" stroke-width="2" stroke-dasharray="8 7"/>
+          <text x="196" y="50" text-anchor="middle" font-size="21" font-weight="800" fill="var(--gray-700)">외부 서비스</text>
+          <text x="196" y="80" text-anchor="middle" font-size="26" font-weight="800" fill="var(--gray-400)">?</text>
+          <circle cx="196" cy="200" r="118" fill="var(--blue)"/>
+          <text x="196" y="182" text-anchor="middle" font-size="19" font-weight="700" fill="var(--white)" opacity=".82">에이전트가 아는 곳</text>
+          <text x="196" y="220" text-anchor="middle" font-size="23" font-weight="800" fill="var(--white)">내 폴더</text>
+          <text x="196" y="256" text-anchor="middle" font-size="26" font-weight="800" fill="var(--white)">✓</text>
+          <text x="88" y="332" text-anchor="middle" font-size="20" font-weight="700" fill="var(--gray-700)">GitHub ?</text>
+          <text x="300" y="332" text-anchor="middle" font-size="20" font-weight="700" fill="var(--gray-700)">문서 서비스 ?</text>
+        </svg>
+      </figure>
+      <div class="w3-cont-side">
+        <div class="w3-gate-cell">
+          <span class="w3-hn-n">1</span>
+          <b>지금</b>
+          <span class="desc">내 폴더 안의 파일만 <strong>보고 고칩니다.</strong></span>
+        </div>
+        <div class="w3-gate-cell">
+          <span class="w3-hn-n">2</span>
+          <b>도구를 붙이면</b>
+          <span class="desc"><strong>할 수 있는 일의 범위</strong>가 넓어집니다.</span>
+        </div>
+      </div>
+    </div>
+    <div class="callout blue hug-center">스마트폰에 앱을 깔면 새 일을 하게 되는 것과 같습니다. <strong>본체는 그대로입니다.</strong></div>
+  </div>
+</section>
+
+<!-- V5-02 플러그인 · Skill · 커넥터 · MCP — containment -->
+<section class="slide w3-layerslide" data-slide="V5-02" data-shape="containment">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span><div class="s-team"></div>
+  </header>
+  <div class="s-full fill">
+    <h2 class="s-title">플러그인 · Skill · 커넥터 · MCP</h2>
+    <p class="s-lead">넷은 <strong>경쟁하는 제품이 아니라 서로 다른 층</strong>입니다.</p>
+    <!-- 2026-08-09 재편(사용자 지시). 옛 판은 4층을 폭이 줄어드는 밴드로 쌓았는데 세 가지가 틀렸다:
+           ① 들여쓰기가 3단계(0/26/52px)라 「플러그인 ⊃ Skill·커넥터 ⊃ MCP」로 읽혔다.
+              초안이 말한 포함 관계는 **한 겹**이고 MCP는 커넥터 안에 있는 것이 아니다.
+           ② MCP가 가장 좁고 가장 아래라 제일 사소해 보였다 — 바로 다음 세 장이 전부 MCP다.
+           ③ 플러그인·Skill·커넥터는 「묶고 배포하는 단위」, MCP는 「연결 규격」이라 범주가 다른데
+              한 스택에 쌓으니 같은 종류로 보였다.
+         → 두 블록(담는 단위 / 잇는 규격)을 **같은 크기·같은 무게**로 두고 Skill·커넥터는
+           플러그인 안의 칩으로 내렸다. 초안의 「플러그인 하나가 안에 나머지를 담고 있을 수
+           있습니다」는 두 블록 사이 bridge 한 줄로 살렸다 — 네 용어와 초안 문장이 모두 남는다. -->
+    <div class="w3-two-layer viz-containment">
+      <div class="w3-tl-block is-pack">
+        <span class="w3-tl-tag">담는 단위</span>
+        <div class="w3-tl-main"><b>플러그인</b><span>여러 기능을 묶어 한 번에 설치하는 꾸러미</span></div>
+        <div class="w3-tl-chips">
+          <span class="w3-tl-chip"><b>Skill</b> 반복 절차를 적어 둔 것</span>
+          <span class="w3-tl-chip"><b>커넥터</b> 특정 서비스에 로그인해 이어 주는 부분</span>
+        </div>
+      </div>
+      <p class="w3-tl-bridge">플러그인이 <strong>MCP까지 함께 담아</strong> 오기도 합니다</p>
+      <div class="w3-tl-block is-proto">
+        <span class="w3-tl-tag">잇는 규격</span>
+        <div class="w3-tl-main"><b>MCP</b><span>AI와 외부 도구를 잇는 공통 연결 규격</span></div>
+      </div>
+    </div>
+    <div class="callout blue hug-center">공구세트 안에 드라이버도 있고 콘센트 어댑터도 있는 것과 같습니다.</div>
+  </div>
+</section>
+<!-- V5-12 MCP — concept -->
+<section class="slide" data-slide="V5-12" data-shape="concept">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span><div class="s-team"></div>
+  </header>
+  <div class="s-full w3-deffig">
+    <div class="w3-deffig-text">
+      <!-- 2026-08-09 사용자 지시: 약자를 제목 옆에서 바로 풀어 준다.
+           다음 장(V5-13)이 「MCP의 P가 이 P입니다」로 프로토콜을 받으므로 여기서 풀어 두면 이어진다. -->
+      <h2 class="s-title">MCP <span class="w3-abbr">Model Context Protocol</span></h2>
+      <p class="w3-def">AI와 외부 도구를 잇는 <strong>공통 연결 규격</strong></p>
+      <p class="s-body">도구마다 연결 방법이 다르면, 도구 수만큼 따로 배우고 따로 만들어야 합니다.</p>
+      <p class="s-body">연결 방식을 <strong>하나로 정해 두면</strong> 한 번 배운 방법으로 여러 도구를 붙일 수 있습니다.</p>
+      <p class="s-body">콘센트 규격이 같으면 어느 가전이든 꽂히는 것과 같습니다.</p>
+    </div>
+    <figure class="w3-deffig-fig viz-matrix" role="img"
+            aria-label="규격이 없으면 앱과 도구가 서로 얽힌 선으로 이어지고, 공통 규격을 두면 가운데 한 줄로 정리되는 대비">
+      <svg viewBox="0 0 400 420" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <rect x="6" y="6" width="388" height="192" rx="16" fill="var(--coral-soft)" stroke="var(--coral-line)" stroke-width="2"/>
+        <text x="200" y="36" text-anchor="middle" font-size="21" font-weight="800" fill="var(--coral-deep)">규격이 없으면</text>
+        <circle cx="70" cy="76" r="20" fill="var(--white)" stroke="var(--coral)" stroke-width="2"/>
+        <circle cx="70" cy="140" r="20" fill="var(--white)" stroke="var(--coral)" stroke-width="2"/>
+        <circle cx="330" cy="66" r="18" fill="var(--white)" stroke="var(--coral)" stroke-width="2"/>
+        <circle cx="330" cy="112" r="18" fill="var(--white)" stroke="var(--coral)" stroke-width="2"/>
+        <circle cx="330" cy="158" r="18" fill="var(--white)" stroke="var(--coral)" stroke-width="2"/>
+        <path d="M90 76 L312 66 M90 76 L312 112 M90 76 L312 158 M90 140 L312 66 M90 140 L312 112 M90 140 L312 158"
+              stroke="var(--coral)" stroke-width="1.8" opacity=".7"/>
+        <text x="200" y="186" text-anchor="middle" font-size="19" font-weight="700" fill="var(--coral-deep)">연결마다 따로 배우고 따로 만든다</text>
+        <rect x="6" y="216" width="388" height="198" rx="16" fill="var(--blue-soft)" stroke="var(--blue)" stroke-width="2"/>
+        <text x="200" y="246" text-anchor="middle" font-size="21" font-weight="800" fill="var(--blue)">공통 규격을 두면</text>
+        <circle cx="70" cy="286" r="20" fill="var(--white)" stroke="var(--blue)" stroke-width="2"/>
+        <circle cx="70" cy="348" r="20" fill="var(--white)" stroke="var(--blue)" stroke-width="2"/>
+        <rect x="160" y="288" width="80" height="58" rx="12" fill="var(--blue)"/>
+        <text x="200" y="324" text-anchor="middle" font-size="21" font-weight="800" fill="var(--white)">MCP</text>
+        <circle cx="330" cy="276" r="18" fill="var(--white)" stroke="var(--blue)" stroke-width="2"/>
+        <circle cx="330" cy="322" r="18" fill="var(--white)" stroke="var(--blue)" stroke-width="2"/>
+        <circle cx="330" cy="368" r="18" fill="var(--white)" stroke="var(--blue)" stroke-width="2"/>
+        <path d="M90 286 L158 305 M90 348 L158 330 M242 305 L312 276 M242 317 L312 322 M242 329 L312 368"
+              stroke="var(--blue)" stroke-width="2.5"/>
+        <text x="200" y="402" text-anchor="middle" font-size="19" font-weight="700" fill="var(--blue)">한 번 배운 방법으로 여러 도구를</text>
+      </svg>
+    </figure>
+  </div>
+</section>
+<!-- V5-13 프로토콜 — concept
+     MCP의 P가 무엇인지 풀어 주는 장. 봉투 그림은 「자리를 미리 정해 둔 약속」의
+     가장 익숙한 예다 — 직접 그렸다(외부 이미지 사용 안 함). -->
+<section class="slide" data-slide="V5-13" data-shape="concept">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span><div class="s-team"></div>
+  </header>
+  <div class="s-full w3-stage">
+    <h2 class="s-title">프로토콜</h2>
+    <p class="w3-def">서로 다른 둘이 <strong>오해 없이 주고받기 위해 미리 맞춰 둔 약속</strong> — MCP의 <strong>P</strong>가 이 P입니다.</p>
+    <figure class="w3-stage-fig viz-matrix" role="img"
+            aria-label="우편 봉투 그림: 보내는 사람은 좌측 상단, 받는 사람은 우측 하단, 우표는 우측 상단, 우편번호는 각 주소 아래에 자리가 정해져 있다">
+      <svg viewBox="0 0 1000 330" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <rect x="150" y="16" width="700" height="272" rx="10" fill="var(--white)" stroke="var(--gray-400)" stroke-width="2.5"/>
+        <rect x="742" y="36" width="86" height="104" rx="6" fill="var(--surface)" stroke="var(--blue)" stroke-width="2.5"/>
+        <text x="785" y="82" text-anchor="middle" font-size="19" font-weight="800" fill="var(--blue)">우</text>
+        <text x="785" y="108" text-anchor="middle" font-size="19" font-weight="800" fill="var(--blue)">표</text>
+        <text x="785" y="164" text-anchor="middle" font-size="18" font-weight="800" fill="var(--blue)">우측 상단</text>
+        <text x="182" y="62" font-size="21" font-weight="800" fill="var(--mint-deep)">보내는 사람</text>
+        <text x="182" y="94" font-size="20" font-weight="700" fill="var(--ink)">서울시 종로구 …</text>
+        <rect x="182" y="112" width="150" height="34" rx="7" fill="var(--surface)" stroke="var(--line)" stroke-width="2"/>
+        <text x="257" y="136" text-anchor="middle" font-size="19" font-weight="800" fill="var(--gray-700)">우편번호</text>
+        <text x="182" y="172" font-size="18" font-weight="800" fill="var(--mint-deep)">좌측 상단</text>
+        <text x="420" y="212" font-size="21" font-weight="800" fill="var(--coral-deep)">받는 사람</text>
+        <text x="420" y="244" font-size="20" font-weight="700" fill="var(--ink)">서울시 광진구 …</text>
+        <rect x="600" y="222" width="150" height="34" rx="7" fill="var(--surface)" stroke="var(--line)" stroke-width="2"/>
+        <text x="675" y="246" text-anchor="middle" font-size="19" font-weight="800" fill="var(--gray-700)">우편번호</text>
+        <text x="420" y="276" font-size="18" font-weight="800" fill="var(--coral-deep)">우측 하단</text>
+        <text x="14" y="96" font-size="20" font-weight="800" fill="var(--gray-700)">보내는 쪽</text>
+        <path d="M18 112 L18 150 M10 142 L18 152 L26 142" fill="none" stroke="var(--gray-400)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <text x="14" y="180" font-size="19" font-weight="700" fill="var(--gray-700)">자리를</text>
+        <text x="14" y="204" font-size="19" font-weight="700" fill="var(--gray-700)">지켜 적는다</text>
+        <text x="880" y="200" font-size="20" font-weight="800" fill="var(--gray-700)">받는 쪽</text>
+        <text x="880" y="230" font-size="19" font-weight="700" fill="var(--gray-700)">같은 자리에서</text>
+        <text x="880" y="254" font-size="19" font-weight="700" fill="var(--gray-700)">읽는다</text>
+      </svg>
+    </figure>
+    <div class="callout blue hug-center">봉투에 주소를 아무 데나 적으면 우체국이 못 읽습니다. <strong>자리를 미리 정해 둔 것</strong>이 프로토콜입니다.</div>
+  </div>
+</section>
+
+
+
+<!-- V5-03 MCP의 세 자리 — flow -->
+<section class="slide" data-slide="V5-03" data-shape="flow">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span><div class="s-team"></div>
+  </header>
+  <div class="s-full w3-stage">
+    <h2 class="s-title">MCP의 세 자리</h2>
+    <p class="w3-def">이름을 외울 필요는 없습니다. <strong>어디까지가 내 쪽이고 어디부터가 외부인지</strong>만 보면 됩니다.</p>
+    <figure class="w3-stage-fig viz-flow-h" role="img"
+            aria-label="호스트에서 클라이언트를 거쳐 서버로 이어지고, 서버가 도구·자료·요청서 세 갈래를 내주는 흐름">
+      <svg viewBox="0 0 1000 320" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <rect x="14" y="112" width="196" height="96" rx="16" fill="var(--blue)"/>
+        <text x="112" y="152" text-anchor="middle" font-size="24" font-weight="800" fill="var(--white)">Host</text>
+        <text x="112" y="182" text-anchor="middle" font-size="19" font-weight="700" fill="var(--white)" opacity=".86">Codex</text>
+        <path d="M224 160 L282 160 M268 150 L284 160 L268 170" fill="none" stroke="var(--blue)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        <rect x="296" y="112" width="196" height="96" rx="16" fill="var(--blue-soft)" stroke="var(--blue)" stroke-width="2"/>
+        <text x="394" y="152" text-anchor="middle" font-size="24" font-weight="800" fill="var(--ink)">Client</text>
+        <text x="394" y="182" text-anchor="middle" font-size="19" font-weight="700" fill="var(--gray-700)">Codex 안의 연결 담당</text>
+        <path d="M506 160 L564 160 M550 150 L566 160 L550 170" fill="none" stroke="var(--blue)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        <rect x="578" y="112" width="196" height="96" rx="16" fill="var(--surface)" stroke="var(--blue-line-strong)" stroke-width="2"/>
+        <text x="676" y="152" text-anchor="middle" font-size="24" font-weight="800" fill="var(--ink)">Server</text>
+        <!-- 2026-08-09 사용자 지시: Server 부제에서 브랜드명을 빼고 일반명사로 바꿨다.
+             이 시점(54p)에 GitHub는 아직 안 배웠다(56p가 첫 등장) — 강의 범위 밖 제품명을
+             화면에 올리지 않고 일반명사로 둔다. 폭: 한글 8자×19 + 가운뎃점·공백 ≈ 166px,
+             상자 내부 196px(x 578~774)에 들어간다. -->
+        <text x="676" y="182" text-anchor="middle" font-size="19" font-weight="700" fill="var(--gray-700)">지도·달력 서비스</text>
+        <path d="M788 160 L820 160 M820 62 L820 258 M820 62 L852 62 M820 160 L852 160 M820 258 L852 258" fill="none" stroke="var(--mint-deep)" stroke-width="2.5" stroke-linecap="round"/>
+        <rect x="856" y="36" width="132" height="52" rx="12" fill="var(--mint-soft)" stroke="var(--mint-line)" stroke-width="2"/>
+        <text x="922" y="60" text-anchor="middle" font-size="20" font-weight="800" fill="var(--on-mint)">Tools</text>
+        <text x="922" y="79" text-anchor="middle" font-size="16" font-weight="700" fill="var(--mint-deep)">실행할 수 있는 것</text>
+        <rect x="856" y="134" width="132" height="52" rx="12" fill="var(--mint-soft)" stroke="var(--mint-line)" stroke-width="2"/>
+        <text x="922" y="158" text-anchor="middle" font-size="20" font-weight="800" fill="var(--on-mint)">Resources</text>
+        <text x="922" y="177" text-anchor="middle" font-size="16" font-weight="700" fill="var(--mint-deep)">읽을 자료</text>
+        <rect x="856" y="232" width="132" height="52" rx="12" fill="var(--mint-soft)" stroke="var(--mint-line)" stroke-width="2"/>
+        <text x="922" y="256" text-anchor="middle" font-size="20" font-weight="800" fill="var(--on-mint)">Prompts</text>
+        <text x="922" y="275" text-anchor="middle" font-size="16" font-weight="700" fill="var(--mint-deep)">정해진 요청서</text>
+        <text x="290" y="296" text-anchor="middle" font-size="21" font-weight="800" fill="var(--blue)">여기까지가 내 쪽</text>
+        <text x="676" y="296" text-anchor="middle" font-size="21" font-weight="800" fill="var(--gray-700)">여기부터 외부</text>
+      </svg>
+    </figure>
+    <div class="callout blue hug-center">전기에 비유하면 Host는 가전, Client는 플러그, Server는 발전소입니다.</div>
+  </div>
+</section>
+
+<!-- V5-04 연결했다고 다 허락한 건 아닙니다 — flow -->
+<section class="slide w3-stateslide" data-slide="V5-04" data-shape="flow">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span><div class="s-team"></div>
+  </header>
+  <div class="s-full fill">
+    <h2 class="s-title">연결했다고 다 허락한 건 아닙니다</h2>
+    <p class="s-lead">도구를 연결하면 AI는 <strong>손을 하나 더 갖게 됩니다.</strong> 그 손이 읽기만 할지, 바꿔도 되는지는 따로 정하는 일입니다.</p>
+    <div class="w3-states viz-flow-h">
+      <div class="w3-state">
+        <b>연결됨</b>
+        <p>도구가 붙었습니다. 아직 <strong>아무것도 허락하지 않은</strong> 상태입니다.</p>
+      </div>
+      <span class="w3-state-arrow" aria-hidden="true">→</span>
+      <div class="w3-state is-wait">
+        <b>승인 대기</b>
+        <p>무엇을 하는 도구인지 <strong>알고 나서</strong> 허락합니다.</p>
+      </div>
+      <span class="w3-state-arrow" aria-hidden="true">→</span>
+      <div class="w3-state is-over">
+        <b>승인 범위 초과</b>
+        <p>허락한 것보다 더 하려 하면 <strong>거기서 멈춰야</strong> 합니다.</p>
+      </div>
+    </div>
+    <div class="callout blue hug-center"><strong>연결과 승인은 다른 단계입니다.</strong> 택배 기사에게 문 앞까지 열어 준 것이지, 현관 비밀번호를 준 게 아닙니다.</div>
+  </div>
+</section>
+
+<!-- ═══ 2026-08-09 신설 (사용자 지시) ═══════════════════════════════════════
+     PART 5 간지가 「플러그인 · MCP · GitHub 기록」이고 M5 리드가 「외부 도구를 붙이는
+     방법을 먼저 보고, GitHub로 실제로 붙여 봅니다」인데, 정작 V5-02(계층) 다음이 곧장
+     V5-05(GitHub 용어)라 **「GitHub가 그 플러그인 중 하나」라는 연결 고리가 없었다.**
+     ⚠️ 연결 「방법」(계정 만들기·로그인·승인 절차)은 화면에 올리지 않는다 —
+        개념KB 필수 진술 [C-GitHub저장소]가 «연결·인증은 사전 조건이며 연결 방법 자체는
+        다루지 않는다»고 못박는다. 여기서는 「무엇이 붙어 있나」만 다룬다.
+        V5-05에 있던 「계정과 저장소 연결은 수업 전에…」 문장이 1번 칸으로 이관됐다. -->
+<section class="slide w3-plugslide" data-slide="V5-14" data-shape="mapping">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span><div class="s-team"></div>
+  </header>
+  <div class="s-full fill">
+    <h2 class="s-title">GitHub도 붙여 쓰는 도구입니다</h2>
+    <p class="s-lead">앞에서 본 층 그대로입니다 — <span class="hl-mint-mark">GitHub는 그중 하나</span>입니다.</p>
+    <!-- 사전 점검 7항 판정: ①정보모양=containment(계층 안 자리) ②역인덱스 확인
+         ③레이아웃=top-down / element=축소 계층 밴드 ④병렬 3행(순서 약함)
+         ⑤강조=리드에 mark 1개(결론) ⑥직전 V5-04는 3열 상태카드 — 여기는 상하 2단이라 다름
+         ⑦이미지=NO_IMAGE(도해로 충분)
+         ⚠️ V5-02의 2단 블록을 **축소해 되불러** GitHub가 커넥터 자리에 들어감을 보인다.
+            같은 그림을 다시 쓰는 것이 이 장의 목적이다(「앞에서 본 층 그대로」). -->
+    <!-- 2026-08-09 사용자 지시로 계층 밴드(.w3-plugmap) 삭제.
+         V5-02의 2단 구도를 축소해 되부르던 줄인데, 바로 앞 장들에서 이미 다룬 내용이라
+         이 장에서는 덜어 냈다. 되살리지 마라 — 살리려면 사용자에게 먼저 확인한다.
+         ⚠️ 이 장은 이제 텍스트 3행뿐이다(렌더 감사 기준으로는 삭제 전에도
+            boxHeavyNoVisual에 이미 잡혀 있었으므로 지표 변화는 없다). -->
+    <div class="w3-plug3 viz-flow-v">
+      <div class="w3-pg">
+        <span class="w3-pg-n">1</span>
+        <div class="w3-pg-b">
+          <b>무엇이 붙어 있나</b>
+          <span class="desc">Codex에 <strong>GitHub가 이미 연결돼 있습니다.</strong> 계정과 저장소 연결은 수업 전에 끝나 있어, 오늘은 붙어 있는 것을 확인만 합니다.</span>
+        </div>
+      </div>
+      <div class="w3-pg">
+        <span class="w3-pg-n">2</span>
+        <div class="w3-pg-b">
+          <b><code>[@github]</code> 를 붙이면</b>
+          <span class="desc">요청 앞에 붙여 <strong>「이건 GitHub 일이야」</strong>라고 말해 주는 것입니다.</span>
+        </div>
+      </div>
+      <div class="w3-pg is-warn">
+        <span class="w3-pg-n">3</span>
+        <div class="w3-pg-b">
+          <b>연결과 허락은 다릅니다</b>
+          <span class="desc">붙었다고 다 되는 것이 아닙니다. <strong>읽기만 할지, 올려도 되는지</strong>는 앞 장에서 본 대로 따로 정합니다.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- V5-05 GitHub — 저장소와 커밋 — concept -->
+<section class="slide" data-slide="V5-05" data-shape="concept">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span><div class="s-team"></div>
+  </header>
+  <div class="s-full w3-deffig">
+    <div class="w3-deffig-text">
+      <h2 class="s-title">GitHub — 저장소와 커밋</h2>
+      <!-- 2026-08-09: M5 리드에 있던 사전 조건 문장을 여기로 내렸다(사용자 지시).
+           GitHub를 처음 꺼내는 장이라 여기가 제 자리다. 개념KB 필수 진술 [C-GitHub저장소]
+           「연결·인증을 사전 조건으로 전제하며 연결 방법 자체는 다루지 않는다」의 화면 근거이므로
+           지우지 마라 — 지우면 그 진술이 발표자 노트에만 남는다. -->
+      <!-- 2026-08-09 사용자 지시로 삭제: 「계정과 저장소 연결은 수업 전에 이미 끝나 있습니다.
+           오늘은 확인만 합니다.」 → 앞 장 V5-14의 1번 칸으로 이관했다.
+           ⚠️ 그 문장은 개념KB 필수 진술 [C-GitHub저장소]의 화면 근거다 — 여기서 지웠다고
+              덱에서 사라진 것이 아니다. V5-14에서 지우지 마라. -->
+      <p class="w3-def"><strong>GitHub</strong> — 내 프로젝트를 인터넷에 보관하고 변경 이력을 남기는 서비스</p>
+      <!-- 2026-08-09: 영어 병기는 **각 용어가 처음 정의되는 이 자리에만** 붙인다(사용자 확정).
+           학생이 GitHub 웹 화면·Codex 응답에서 repository·commit·Push·Pull을 만났을 때
+           한글 용어와 이어지게 하는 것이 목적이다. 이후 장에서는 한글만 쓴다 —
+           ⚠️ V5-06 제목에 있던 「커밋(commit)」은 여기가 첫 정의라 이쪽으로 옮겼다. -->
+      <p class="w3-def"><strong>저장소(repository)</strong> — 내 프로젝트가 통째로 올라가는 자리</p>
+      <p class="w3-def"><strong>커밋(commit)</strong> — 무엇을 왜 바꿨는지 적어 남기는 기록 한 건</p>
+      <p class="s-body">사진첩과 같습니다 — 저장소가 앨범이고, 커밋은 날짜와 설명이 붙은 사진 한 장입니다.</p>
+    </div>
+    <figure class="w3-deffig-fig viz-flow-v" role="img"
+            aria-label="저장소라는 상자 안에 커밋이 시간순으로 쌓여 있는 타임라인">
+      <svg viewBox="0 0 400 420" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <rect x="8" y="8" width="384" height="404" rx="20" fill="var(--blue-soft)" stroke="var(--blue)" stroke-width="2"/>
+        <text x="200" y="46" text-anchor="middle" font-size="22" font-weight="800" fill="var(--blue)">저장소 = 앨범</text>
+        <path d="M62 80 L62 384" stroke="var(--blue-line-strong)" stroke-width="3" stroke-linecap="round"/>
+        <circle cx="62" cy="110" r="12" fill="var(--blue)"/>
+        <rect x="92" y="86" width="284" height="50" rx="11" fill="var(--white)" stroke="var(--blue-line-strong)" stroke-width="2"/>
+        <text x="110" y="118" font-size="20" font-weight="800" fill="var(--ink)">첫 화면 만들기</text>
+        <circle cx="62" cy="196" r="12" fill="var(--blue)"/>
+        <rect x="92" y="172" width="284" height="50" rx="11" fill="var(--white)" stroke="var(--blue-line-strong)" stroke-width="2"/>
+        <text x="110" y="204" font-size="20" font-weight="800" fill="var(--ink)">기록 추가 기능 넣기</text>
+        <circle cx="62" cy="282" r="12" fill="var(--blue)"/>
+        <rect x="92" y="258" width="284" height="50" rx="11" fill="var(--white)" stroke="var(--blue-line-strong)" stroke-width="2"/>
+        <text x="110" y="290" font-size="20" font-weight="800" fill="var(--ink)">삭제 후 화면 고치기</text>
+        <circle cx="62" cy="360" r="14" fill="var(--mint)"/>
+        <rect x="92" y="334" width="284" height="52" rx="11" fill="var(--mint-soft)" stroke="var(--mint-line)" stroke-width="2"/>
+        <text x="110" y="366" font-size="20" font-weight="800" fill="var(--on-mint)">오늘 만들 커밋</text>
+      </svg>
+    </figure>
+  </div>
+</section>
+
+<!-- ═══ 2026-08-09 신설 (사용자 지시) ═══════════════════════════════════════
+     「저장소」가 한 곳뿐인 것처럼 설명돼 있어서, 뒤따르는 세 장의 근거가 화면에 없었다 —
+     왜 커밋만으로는 GitHub에 안 보이는지(V5-06) · 왜 올리기 전에 고르는지 ·
+     왜 V5-11이 「보냈다는 말이지 도착했다는 말이 아니다」라고 하는지.
+     사전 점검 7항 판정: ①정보모양=comparison(두 자리 대비) ②역인덱스 확인
+       ③레이아웃=중앙 도해 / element=좌우 대비 + 왕복 화살표 ④병렬(좌우 동시 존재)
+       ⑤강조=캡션에 mark 1개(결론) ⑥직전 V5-05는 정의 2단(w3-deffig) — 여기는 중앙 도해
+       ⑦이미지=NO_IMAGE(관계 도해라 SVG로 충분 · 실제 캡처 대상 아님)
+     ⚠️ Pull은 별도 장을 만들지 않는다 — 각자 혼자 쓰는 저장소라 가져올 것이 없어
+        실습이 공허해진다(사용자 확정). 개념만 캡션 한 줄로 남긴다. -->
+<section class="slide w3-repo2slide" data-slide="V5-15" data-shape="comparison">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span><div class="s-team"></div>
+  </header>
+  <div class="s-full w3-stage">
+    <h2 class="s-title">저장소는 두 곳에 있습니다</h2>
+    <p class="w3-def">같은 이름이지만 <strong>자리가 다릅니다.</strong></p>
+    <figure class="w3-repo2 viz-flow-h" role="img"
+            aria-label="왼쪽 내 컴퓨터 저장소에 커밋 세 개가 있고 오른쪽 GitHub 저장소에는 두 개만 있다. 위쪽 화살표는 올리기, 아래쪽 화살표는 가져오기다">
+      <svg viewBox="0 0 1000 300" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <rect x="20" y="46" width="340" height="208" rx="18" fill="var(--blue-soft)" stroke="var(--blue)" stroke-width="2"/>
+        <text x="190" y="86" text-anchor="middle" font-size="24" font-weight="800" fill="var(--ink)">내 컴퓨터</text>
+        <text x="190" y="116" text-anchor="middle" font-size="20" font-weight="700" fill="var(--gray-700)">지금 열어 둔 프로젝트 폴더</text>
+        <rect x="56" y="146" width="268" height="34" rx="9" fill="var(--white)" stroke="var(--blue-line-strong)" stroke-width="2"/>
+        <text x="190" y="170" text-anchor="middle" font-size="19" font-weight="700" fill="var(--gray-700)">커밋 ①</text>
+        <rect x="56" y="186" width="268" height="34" rx="9" fill="var(--white)" stroke="var(--blue-line-strong)" stroke-width="2"/>
+        <text x="190" y="210" text-anchor="middle" font-size="19" font-weight="700" fill="var(--gray-700)">커밋 ②</text>
+        <rect x="56" y="226" width="268" height="34" rx="9" fill="var(--mint-soft)" stroke="var(--mint-deep)" stroke-width="2"/>
+        <text x="190" y="250" text-anchor="middle" font-size="19" font-weight="800" fill="var(--on-mint)">커밋 ③ — 아직 여기만</text>
+        <path d="M376 118 L616 118 M600 108 L618 118 L600 128" fill="none" stroke="var(--mint-deep)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        <text x="496" y="102" text-anchor="middle" font-size="21" font-weight="800" fill="var(--mint-deep)">올리기 (Push)</text>
+        <path d="M616 196 L376 196 M392 186 L374 196 L392 206" fill="none" stroke="var(--blue)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        <text x="496" y="228" text-anchor="middle" font-size="21" font-weight="800" fill="var(--blue)">가져오기 (Pull)</text>
+        <rect x="632" y="46" width="340" height="208" rx="18" fill="var(--surface)" stroke="var(--blue-line-strong)" stroke-width="2"/>
+        <text x="802" y="86" text-anchor="middle" font-size="24" font-weight="800" fill="var(--ink)">GitHub</text>
+        <text x="802" y="116" text-anchor="middle" font-size="20" font-weight="700" fill="var(--gray-700)">인터넷에 있는 저장소</text>
+        <rect x="668" y="146" width="268" height="34" rx="9" fill="var(--white)" stroke="var(--blue-line-strong)" stroke-width="2"/>
+        <text x="802" y="170" text-anchor="middle" font-size="19" font-weight="700" fill="var(--gray-700)">커밋 ①</text>
+        <rect x="668" y="186" width="268" height="34" rx="9" fill="var(--white)" stroke="var(--blue-line-strong)" stroke-width="2"/>
+        <text x="802" y="210" text-anchor="middle" font-size="19" font-weight="700" fill="var(--gray-700)">커밋 ②</text>
+        <rect x="668" y="226" width="268" height="34" rx="9" fill="none" stroke="var(--blue-line-strong)" stroke-width="2" stroke-dasharray="7 6"/>
+        <text x="802" y="250" text-anchor="middle" font-size="19" font-weight="700" fill="var(--gray-400)">아직 없습니다</text>
+      </svg>
+    </figure>
+    <!-- 2026-08-09: Pull 설명이 화살표 라벨 하나뿐이라 「왜 필요한가」가 없었다(사용자 지적).
+         전용 장을 만들지 않고 이 캡션 안에서 한 문장으로 채운다 — 오늘 실습이 없는 개념이라
+         장을 쓰는 것은 과하고, 설명조차 없는 것은 부족하다는 판단(사용자 확정). -->
+    <!-- ⚠️ 2026-08-09 정정: 옛 문장은 「커밋은 왼쪽에서 만들어집니다 — 올려야 오른쪽에
+         보입니다」였다. 「왼쪽/오른쪽」은 **이 도해 안의 자리**일 뿐이라 문장만 떼어 놓으면
+         아무 뜻이 없다(사용자 지적). 가리키는 대상의 **실제 이름**으로 쓴다.
+         도해 위치를 말해야 하는 곳은 aria-label 하나뿐이다 — 거기는 그대로 둔다. -->
+    <p class="w3-stage-cap">커밋은 <span class="hl-mint-mark">내 컴퓨터에서 만들어집니다</span> — 올려야 GitHub에 보입니다. 오늘은 혼자 쓰니 가져올 것이 없지만, 다른 곳에서도 고치거나 팀으로 쓰면 <strong>먼저 가져온 뒤에 시작해야 섞이지 않습니다.</strong></p>
+  </div>
+</section>
+
+<!-- V5-06 커밋은 「무엇을 올릴지 고르는 것」부터입니다 — flow -->
+<section class="slide" data-slide="V5-06" data-shape="flow">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span><div class="s-team"></div>
+  </header>
+  <div class="s-full w3-stage">
+    <!-- 2026-08-09: 「커밋(commit)」 병기를 **첫 정의 자리인 V5-05로 옮겼다**(사용자 확정).
+         여기는 커밋이 두 번째로 나오는 곳이라 병기를 반복하지 않는다. -->
+    <h2 class="s-title">커밋은 「무엇을 올릴지 고르는 것」부터입니다</h2>
+    <p class="w3-def">바뀐 것을 <strong>다 올리지 않습니다. 고를 수 있습니다.</strong></p>
+    <figure class="w3-stage-fig viz-flow-h" role="img"
+            aria-label="바뀐 파일 확인, 올릴 것 고르기, 커밋해서 올리기 세 단계 중 첫 칸이 강조된 흐름">
+      <svg viewBox="0 0 1000 300" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <rect x="14" y="70" width="280" height="140" rx="18" fill="var(--blue)"/>
+        <text x="154" y="126" text-anchor="middle" font-size="24" font-weight="800" fill="var(--white)">바뀐 파일 확인</text>
+        <text x="154" y="162" text-anchor="middle" font-size="20" font-weight="700" fill="var(--white)" opacity=".86">여기를 건너뛰지 마세요</text>
+        <path d="M308 140 L370 140 M356 130 L372 140 L356 150" fill="none" stroke="var(--blue)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <rect x="386" y="70" width="266" height="140" rx="18" fill="var(--surface)" stroke="var(--blue-line-strong)" stroke-width="2"/>
+        <text x="519" y="148" text-anchor="middle" font-size="24" font-weight="800" fill="var(--ink)">올릴 것 고르기</text>
+        <path d="M666 140 L728 140 M714 130 L730 140 L714 150" fill="none" stroke="var(--blue)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <rect x="744" y="70" width="242" height="140" rx="18" fill="var(--mint-soft)" stroke="var(--mint-line)" stroke-width="2"/>
+        <text x="865" y="148" text-anchor="middle" font-size="23" font-weight="800" fill="var(--on-mint)">커밋해서 올리기</text>
+        <text x="500" y="266" text-anchor="middle" font-size="22" font-weight="800" fill="var(--coral-deep)">첫 칸을 건너뛰고 전부 담으면 올리면 안 되는 파일까지 딸려 갑니다</text>
+      </svg>
+    </figure>
+    <div class="callout blue hug-center">장바구니에 다 쓸어 담고 계산하는 것과 <strong>하나씩 고르는 것</strong>의 차이입니다.</div>
+  </div>
+</section>
+
+<!-- V5-07 실습⑤ — screen-operation -->
+<section class="slide w3-practice" data-slide="V5-07" data-shape="screen-operation">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span><div class="s-team"></div>
+  </header>
+  <div class="s-full fill">
+    <p class="s-eyebrow">실습 ⑤</p>
+    <h2 class="s-title">저장소 연결과 변경 파일 확인</h2>
+    <div class="eval-steps viz-flow-v">
+      <div class="work-step"><span class="n">1</span><span class="desc">GitHub 저장소 <strong>연결이 살아 있는지</strong> 먼저 확인합니다.</span></div>
+      <div class="work-step"><span class="n">2</span><span class="desc">오늘 바뀐 파일 목록을 <strong>아직 올리지 말고</strong> 눈으로 봅니다.</span></div>
+      <div class="work-step"><span class="n">3</span><span class="desc">목록이 예상보다 길면 — <strong>내가 모르는 변경</strong>이 섞였다는 뜻입니다.</span></div>
+    </div>
+    <div class="w3-prompt">
+      <span class="w3-prompt-tag">이렇게 말하세요</span>
+      <p>"<code>[@github]</code> 지금 이 프로젝트에서 어떤 파일이 바뀌었는지 목록으로 보여 줘. <strong>아직 커밋하거나 올리지는 마.</strong> 필요한 게 없으면 설치하거나 바꾸지 말고 설명만 해 줘."</p>
+    </div>
+    <!-- 2026-08-09 사용자 지시로 완성 기준 삭제 -->
+  </div>
+</section>
+
+<!-- V5-08 올리기 전에 다시 확인합니다 — checklist -->
+<section class="slide w3-excludeslide" data-slide="V5-08" data-shape="checklist">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span><div class="s-team"></div>
+  </header>
+  <div class="s-full fill">
+    <!-- 2026-08-09 사용자 지시로 eyebrow 삭제(「오늘 두 번째 안전 점검」).
+         PART 6의 「세 번째」와 함께 뺐다 — 제목이 이미 뜻을 말한다. 다시 붙이지 마라. -->
+    <h2 class="s-title">올리기 전에 다시 확인합니다</h2>
+    <p class="s-lead">PART 1에서 걸러 냈어도 <strong>작업 중에 다시 들어옵니다.</strong> AI가 예시로 넣은 값일 수도 있습니다.</p>
+    <div class="w3-exclude viz-matrix">
+      <div class="w3-ex"><b>비밀번호</b><span>있으면 제외</span></div>
+      <div class="w3-ex"><b>API 키</b><span>있으면 제외</span></div>
+      <div class="w3-ex"><b>개인 연락처</b><span>있으면 제외</span></div>
+      <div class="w3-ex"><b>남의 자료</b><span>있으면 제외</span></div>
+      <div class="w3-ex"><b>내 컴퓨터 경로</b><span>있으면 제외</span></div>
+    </div>
+    <div class="callout blue hug-center">하나라도 있으면 <strong>그 파일은 빼고</strong> 올립니다. 한 번 올라간 커밋은 나중에 지워도 <strong>흔적이 남습니다.</strong></div>
+  </div>
+</section>
+
+<!-- V5-09 실습⑥ — comparison -->
+<section class="slide w3-practice w3-msgslide" data-slide="V5-09" data-shape="comparison">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span><div class="s-team"></div>
+  </header>
+  <div class="s-full fill">
+    <p class="s-eyebrow">실습 ⑥</p>
+    <h2 class="s-title">커밋 메시지 한 문장 쓰기</h2>
+    <div class="w3-msgcompare viz-matrix">
+      <div class="w3-msg-bad">
+        <span>✗ 수정함</span>
+        <span>✗ 완료</span>
+        <span>✗ ㅇㅇ</span>
+      </div>
+      <span class="w3-msg-arrow" aria-hidden="true">→</span>
+      <div class="w3-msg-good">
+        <b>✓ 빈 검색어일 때 안내 문구 표시</b>
+        <span>차이는 하나입니다 — <strong>무엇을 왜 바꿨는지</strong>가 문장에 있는가.</span>
+      </div>
+    </div>
+    <div class="eval-steps viz-flow-v">
+      <div class="work-step"><span class="n">1</span><span class="desc">PART 4에서 구현한 개선을 <strong>그런 한 문장</strong>으로 적습니다.</span></div>
+      <div class="work-step"><span class="n">2</span><span class="desc">3개월 뒤의 나를 독자로 두고 씁니다.</span></div>
+    </div>
+    <!-- 2026-08-09 사용자 지시로 완성 기준 삭제 -->
+  </div>
+</section>
+
+<!-- V5-10 실습⑦ — screen-operation -->
+<section class="slide w3-practice" data-slide="V5-10" data-shape="screen-operation">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span><div class="s-team"></div>
+  </header>
+  <div class="s-full fill">
+    <p class="s-eyebrow">실습 ⑦</p>
+    <h2 class="s-title">커밋하고 GitHub에 올리기</h2>
+    <div class="eval-steps viz-flow-v">
+      <div class="work-step"><span class="n">1</span><span class="desc"><strong>확인한 파일만</strong> 골라 커밋하고, GitHub에 올립니다.</span></div>
+      <div class="work-step"><span class="n">2</span><span class="desc">올리기 <strong>전에</strong> 무엇을 올리는지 한 번 더 보여 달라고 합니다.</span></div>
+      <div class="work-step"><span class="n">3</span><span class="desc">확인한 다음에 진행합니다 — <strong>이 순서를 지키면 사고가 안 납니다.</strong></span></div>
+    </div>
+    <div class="w3-prompt">
+      <span class="w3-prompt-tag">이렇게 말하세요</span>
+      <p>"<code>[@github]</code> 지금 확인한 파일만 골라서, 아까 만든 문장으로 커밋하고 GitHub에 올려 줘. <strong>올리기 전에 무엇을 올릴지 먼저 보여 주고, 내가 확인하면 진행해.</strong>"</p>
+    </div>
+    <!-- 2026-08-09 사용자 지시로 완성 기준 삭제 -->
+  </div>
+</section>
+
+<!-- V5-11 "완료했습니다"보다 GitHub 화면 — contrast -->
+<section class="slide w3-vs-2col" data-slide="V5-11" data-shape="contrast">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span><div class="s-team"></div>
+  </header>
+  <div class="s-full fill">
+    <h2 class="s-title">"완료했습니다"보다 GitHub 화면</h2>
+    <div class="w3-two viz-matrix">
+      <div class="w3-two-col is-cant">
+        <h3>에이전트의 답변</h3>
+        <figure class="w3-two-fig" role="img" aria-label="에이전트가 올렸습니다라고 답한 말풍선">
+          <svg viewBox="0 0 460 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect x="20" y="20" width="420" height="66" rx="16" fill="var(--white)" stroke="var(--coral-line)" stroke-width="2"/>
+            <text x="230" y="60" text-anchor="middle" font-size="22" font-weight="800" fill="var(--ink)">"GitHub에 올렸습니다"</text>
+            <path d="M60 86 L60 108 L88 86" fill="var(--white)" stroke="var(--coral-line)" stroke-width="2"/>
+          </svg>
+        </figure>
+        <p>그건 <strong>보냈다는 말</strong>입니다. 도착했다는 말이 아닙니다.</p>
+      </div>
+      <div class="w3-two-col is-can">
+        <h3>GitHub 웹 화면 ✓</h3>
+        <figure class="w3-two-fig" role="img" aria-label="GitHub 커밋 목록에 오늘 만든 커밋이 맨 위에 보이는 화면">
+          <svg viewBox="0 0 460 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect x="10" y="6" width="440" height="108" rx="12" fill="var(--white)" stroke="var(--blue)" stroke-width="2"/>
+            <rect x="10" y="6" width="440" height="26" rx="12" fill="var(--surface)"/>
+            <text x="26" y="25" font-size="16" font-weight="800" fill="var(--gray-700)">커밋 목록</text>
+            <rect x="24" y="40" width="412" height="30" rx="8" fill="var(--mint-soft)"/>
+            <circle cx="42" cy="55" r="7" fill="var(--mint)"/>
+            <text x="60" y="61" font-size="17" font-weight="800" fill="var(--on-mint)">빈 검색어일 때 안내 문구 표시</text>
+            <text x="392" y="61" font-size="15" font-weight="700" fill="var(--mint-deep)">방금</text>
+            <rect x="24" y="76" width="412" height="26" rx="8" fill="var(--surface)"/>
+            <circle cx="42" cy="89" r="6" fill="var(--gray-400)"/>
+            <text x="60" y="95" font-size="16" font-weight="700" fill="var(--gray-700)">기록 추가 기능 넣기</text>
+          </svg>
+        </figure>
+        <p><strong>최신 커밋이 실제로 보여야</strong> 끝난 겁니다.</p>
+      </div>
+    </div>
+    <div class="callout blue hug-center">완료 보고는 증거가 아닙니다. <strong>증거는 화면입니다.</strong></div>
+  </div>
+</section>
