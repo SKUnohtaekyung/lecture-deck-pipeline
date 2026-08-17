@@ -10,6 +10,12 @@ import subprocess
 import sys
 from pathlib import Path
 
+# cp949 콘솔에서 FAIL 메시지(—·« 등)를 찍다 UnicodeEncodeError로 죽지 않게 —
+# 검사기가 실패를 보고하다 크래시하면 사유가 traceback에 묻힌다(2026-08-17 실측:
+# hooksPath FAIL 메시지 출력이 이 크래시로 가려졌다). 형제 스크립트와 동일한 가드.
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+
 
 ROOT = Path(__file__).resolve().parents[1]
 

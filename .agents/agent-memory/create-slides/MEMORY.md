@@ -157,13 +157,6 @@
 - **새 과목 착수 시점으로 이관 3건**: ① P7 구현 — 권고 (B) 과목 오버라이드(테마) 층 정식화, `P7-판정.md`가 정본이고 `plans/theme-ui-expansion/REQUIREMENTS.md` §8에 선행조건 등재됨 ② 렌더·품질 WARN의 FAIL 승격 판단(분해 결과가 입력) ③ P3 접수 절차 실사용 검증.
 - 선재 유지 2건: w1·w3 배포본 `verify_deck` FAIL 1(kit 유래 `.s-body` 셀렉터 — 인라인 기준선) · `sessions/README.md` 「1주차 (동결 해제…)」 절과 AGENTS 동결 기록의 역사 서술 모순(사용자 확인 필요).
 
-### ⏸ 하네스 발동 케이스 R9~R12가 미채점 (2026-08-17)
-
-`evals/team-skills-eval.json`에 하네스 routing 4건을 신설했다(R9·R10 = 명시 호출 발동 / R11·R12 = 하네스 개념을 공유하지만 스킬을 지목하지 않는 보통명사 근접 오답). **아직 한 번도 돌리지 않았다.**
-
-- 채점이 수동인데 **중첩 `claude -p`가 부모 세션과 인증 컨텍스트를 공유하지 않는다**(`Not logged in`). 대화형 세션에서 사람이 4건을 새 세션에 제시해 발동 스킬을 관찰해야 한다.
-- 그때까지 2026-08-17 하네스 확장(자유도 축·조건부 의무)의 **description 변경은 검증되지 않은 상태**다.
-
 ### ⏸ 지침 생태계 리팩터링 — Codex 강제 패리티가 절반만 됐다 (2026-08-05)
 
 브랜치 `refactor/instruction-ecosystem`(커밋 6개 · `39659ea`→`00c5f82`). **main 미병합.** 계획·보고 정본은 `plans/instruction-refactor/{PLAN,FINAL_REPORT}.md` — 상세는 거기 있고 여기엔 상태만 둔다.
