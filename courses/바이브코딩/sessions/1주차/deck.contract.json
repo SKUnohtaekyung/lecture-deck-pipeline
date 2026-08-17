@@ -30,6 +30,21 @@
     }
   },
   "known_violations": {
+    "render_below": {
+      "count": 25,
+      "reason": "동결(2026-07-26 합격선) 이전 제작 관행의 확정 등재(D-1 무수정·D-2 전건 waiver, 2026-08-17 실측 분해): ① kit 고정 컴포넌트 유래 4건 — pd-sub@679 ×3(P1·P3·P7)·cover-presenter@674(S01), MEMORY 「킷 결함」에 «1주차도 같은 값이라 기존 관행»으로 등재된 그 값 ② 전환 장 전면 대형 문구 P@720 ×3(S01B·S3ASK·S3DO) ③ 이미지·슬롯 하단 침범 ~10건(S00·S01A·11·14·15·21) ④ 텍스트 하단 침범 8건(07·S10C·31·S39×3·S42 등). count 초과(신규 초과)는 FAIL.",
+      "date": "2026-08-17"
+    },
+    "render_lap": {
+      "count": 1,
+      "reason": "S00 도입 장 IMG×.ko 텍스트 겹침 1건(2026-08-17 렌더 실측) — 동결 이전 제작분, D-1로 미수정 확정. count 초과(신규 겹침)는 FAIL.",
+      "date": "2026-08-17"
+    },
+    "render_ovf": {
+      "count": 2,
+      "reason": "스크롤 오버플로 2건 — 슬라이드 14(드라이브 캡처 슬롯 IMG@683)·32(자기소개 프롬프트 장). 동결 이전 제작분, D-1로 미수정 확정. count 초과는 FAIL.",
+      "date": "2026-08-17"
+    },
     "draft_sync_baseline": {
       "count": 22,
       "reason": "동결 주차 베이스라인(배치1 P1) — 초안-덱 드리프트(초안에만 5 · 덱에만 17)의 착수 시점 고정. 1주차는 동결이라 소유권 판정·정렬을 소급하지 않는다. count 초과(드리프트 증가)는 FAIL이다.",
@@ -84,7 +99,9 @@
   },
   "warn_baseline": {
     "static_gates": 8,
+    "render": 79,
+    "quality": 7,
     "date": "2026-08-17",
-    "note": "run_deck_checks 구조 WARN 래칫 기준선(배치1 P1 실측) — verify_deck WARN 7(전부 known_violations 강등분) + notes_pn_mismatch 강등 1. 증가는 FAIL."
+    "note": "구조 8(배치1 실측: verify_deck 강등 7 + notes 강등 1) · 렌더 79(배치4 2026-08-17 실측 분해: 폰트하한 57 = 결과물 축소재현·데모 내부 텍스트 27(S05A 포트폴리오 15·S39A 완성예시 9·PAL1~3 팔레트 3 — 본문 아님) + kit 기본값 근소미달 20~21px 18 + 본문성 실위반 12(S10B@17 6 등) · 자간 16(fl-arrow·표지 대형 타이포 등) · 정렬충돌 3 · render waiver 강등 3) · 품질 7(스텝제목 서술형 20건 — §0-3 지시(2026-08-02) 이전 제작 관성(ANALYSIS §1.4) · 대시잇기 1(S3SY) · svg 후보 2(PAL3 모션 데모)). 증가는 FAIL."
   }
 }

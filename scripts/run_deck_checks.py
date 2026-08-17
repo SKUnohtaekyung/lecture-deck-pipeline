@@ -178,7 +178,10 @@ class Runner:
         #   waiver 강등분을 포함한 구조 WARN 총계를 요약 최상단에 노출하고,
         #   계약 warn_baseline 대비 증가하면 그 자체를 FAIL로 잡는다.
         self.warn_struct: int | None = 0     # verify_deck·verify_notes (None=계수 실패)
-        self.warn_quality = 0                # verify_deck_quality (러너 강제 밖 — 표시만)
+        # 배치4(2026-08-17): 품질 WARN도 래칫 대상 — 게이트 임계·강등은 여전히
+        # verify_deck_quality 소관(WARN 기본·프로필 §3-G)이고, 러너는 «총계의 조용한
+        # 증가»만 막는다(D-2: 기존은 봐주고 신규만 잡는다).
+        self.warn_quality = 0                # verify_deck_quality (warn_baseline.quality 래칫)
         # P4(배치3): 렌더 WARN(타이포·정렬 + waiver 강등분) — warn_baseline.render 래칫 대상
         self.warn_render: int | None = 0
         self._render_measured = False        # 증거가 유효해 수치 판정까지 간 경우에만 래칫
@@ -284,6 +287,10 @@ class Runner:
              "title_survival_baseline", r"제목 강등 (\d+)건"),
             ("초안-덱 동기화 (report_draft_sync)", "report_draft_sync.py",
              "draft_sync_baseline", r"초안에만=(\d+) 덱에만=(\d+)"),
+            # P5(배치4 · 2026-08-17): 보고·결정표 신선도 — 기제6(보고 노후화) 차단.
+            # 출구 두 개(재조립 후 식별자 갱신 / 시점 스냅샷 선언)는 스크립트 docstring 참조.
+            ("보고 신선도 (verify_report_freshness)", "verify_report_freshness.py",
+             "report_freshness_baseline", r"신선도 위반 (\d+)건"),
         ):
             self._py(label, script, self.num)
             out = self._last_out
@@ -468,11 +475,13 @@ class Runner:
             wb = self._contract().get("warn_baseline") or {}
             base = wb.get("static_gates")
             ws = "계수실패" if self.warn_struct is None else self.warn_struct
+            base_q = wb.get("quality")
             print(f"경고 — 구조 WARN {ws}"
                   + (f" (베이스라인 {base} · {wb.get('date')})" if isinstance(base, int)
                      else " (베이스라인 미등재)")
                   + f" · 품질 WARN {self.warn_quality}"
-                    "(러너 강제 밖 — verify_deck_quality --strict로 승격 가능)")
+                  + (f" (베이스라인 {base_q})" if isinstance(base_q, int)
+                     else " (베이스라인 미등재)"))
             if self.waivers_applied:
                 print("waiver 적용 " + str(len(self.waivers_applied)) + "건: "
                       + " · ".join(self.waivers_applied))
@@ -491,6 +500,22 @@ class Runner:
                 if self.warn_struct < base:
                     note += f" — 개선됨: 베이스라인을 {self.warn_struct}로 낮춰 등재 가능"
                 self.steps.append(("구조 WARN 래칫", True, note))
+            # ── 품질 WARN 래칫(배치4 · 2026-08-17) — D-2 «기존은 봐주고 신규만 잡는다» ──
+            #    규칙 임계(프로필 §3-G 상한 0)는 불변이다: 새 과목은 처음부터 임계 0으로
+            #    시작하고, 이 래칫은 이 주차 총계의 조용한 증가만 막는다.
+            if not isinstance(base_q, int):
+                self.steps.append(("품질 WARN 래칫", False,
+                                   f"계약에 warn_baseline.quality 미등재 — 실측 {self.warn_quality}을 "
+                                   f"사유(분해)와 함께 등재하라"))
+            elif self.warn_quality > base_q:
+                self.steps.append(("품질 WARN 래칫", False,
+                                   f"품질 WARN 증가 {base_q} → {self.warn_quality} — 원인을 없애거나 "
+                                   f"베이스라인을 사유와 함께 갱신하라(조용한 증가 금지)"))
+            else:
+                note_q = f"품질 WARN {self.warn_quality} ≤ 베이스라인 {base_q}"
+                if self.warn_quality < base_q:
+                    note_q += f" — 개선됨: 베이스라인을 {self.warn_quality}로 낮춰 등재 가능"
+                self.steps.append(("품질 WARN 래칫", True, note_q))
         # ── 렌더 WARN 래칫(P4) — 증거가 유효해 수치 판정까지 간 경우에만 ──
         #    (증거 부재·무효면 그 단계가 이미 FAIL이라 래칫으로 겹쳐 잡지 않는다)
         if ran_render and self._render_measured:

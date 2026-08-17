@@ -110,8 +110,10 @@ cp "입력양식/콘텐츠초안템플릿.md" "courses/바이브코딩/sessions/
 - 슬라이드 단위 검사(coverage·must_keep)의 waiver는 `slides` 목록을 명시해야 하며 **목록 밖 미래 위반은 그대로 FAIL이다**(포괄 waiver 금지).
 - 건수 단위 검사(`title_survival_baseline`·`draft_sync_baseline`·`notes_pn_mismatch`)의 waiver는 `count` 상한을 명시하며, `run_deck_checks.py`가 실측과 비교해 **증가만 FAIL**한다.
 - **렌더 결함 판정 (P4 · 배치3 2026-08-17)** — `run_deck_checks.py`가 렌더 증거(`deck-audit.json`)의 결함 카운트 6종(`below` 바닥선초과 · `off` 슬라이드이탈 · `lap` 정보요소겹침 · `wb` 어절중간잘림 · `ovf` 오버플로 · `slots` 빈이미지슬롯)을 판정한다: 실측 > 계약 waiver `render_<지표>`(count·reason·date)의 베이스라인(없으면 0)이면 **FAIL**. 임계값(666 등)은 러너에 없다 — 집행은 `audit_render.js`(BODY_* 상수), 선언 정본은 `kit/guide/한장-참조표.md`이며 회귀 테스트가 두 쌍을 고정한다.
-- **구조 WARN 래칫** — `run_deck_checks.py`가 정적 게이트의 구조 WARN 총계(waiver 강등분 포함)를 요약 최상단에 노출하고, 계약 `warn_baseline.static_gates` 대비 증가하면 FAIL이다. 세어지지 않는 WARN은 침묵과 같다. (`verify_deck_quality`의 품질 WARN은 설계상 WARN 기본 게이트라 래칫 밖이며, 총계는 같은 줄에 함께 표시된다 — `--strict` 승격은 그 게이트의 소관.)
+- **구조 WARN 래칫** — `run_deck_checks.py`가 정적 게이트의 구조 WARN 총계(waiver 강등분 포함)를 요약 최상단에 노출하고, 계약 `warn_baseline.static_gates` 대비 증가하면 FAIL이다. 세어지지 않는 WARN은 침묵과 같다.
+- **품질 WARN 래칫 (배치4 · 2026-08-17)** — `verify_deck_quality`의 품질 WARN 총계도 계약 `warn_baseline.quality` 대비 **증가만 FAIL**한다(D-2: 기존은 봐주고 신규만 잡는다). 규칙 임계(프로필 §3-G 상한 0)는 불변이다 — 새 과목은 처음부터 임계 0으로 시작하고, 베이스라인 사유(분해)는 계약 note에 적는다. `--strict` 승격은 여전히 그 게이트의 소관.
 - **렌더 WARN 래칫 (P4)** — 타이포·정렬류(폰트하한위반·자간보정누락·정렬 지배값충돌)와 렌더 waiver 강등분은 «렌더 WARN»으로 세고, 계약 `warn_baseline.render` 대비 **증가만 FAIL**한다(FAIL 승격은 오탐률 실측 후 별도 판단 — WARN 시작 규율).
+- **보고 신선도 (P5 · 배치4 2026-08-17)** — 보고·결정표(`조립_보고.md`·`*결정표*.md`)는 머리(상단 3KB)에 **기준 덱 식별자**(«**N장** · sha256 \`앞8자\`» — 쪽ID매핑 스냅샷과 같은 형식)를 적거나, 시점 기록이면 **`[시점 스냅샷 YYYY-MM-DD]`**를 선언한다. `verify_report_freshness.py`가 현행 덱과 대조해 미기재·낡음을 세고, 러너가 계약 waiver `report_freshness_baseline`(count) 대비 **증가만 FAIL**한다. 출구는 «재조립 후 갱신»과 «스냅샷 선언» 둘뿐이다 — 전면 재작성을 강요하지 않는다(문서 값 낮추기가 아니라 지위 명시).
 
 ## 1주차 (동결 해제 · 규약 정합)
 

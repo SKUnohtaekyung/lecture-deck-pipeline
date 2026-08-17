@@ -106,11 +106,13 @@ def lint_contract(path: str):
             problems.append(
                 "warn_baseline: {static_gates: 정수, date: YYYY-MM-DD} 형식이어야 함 — "
                 f"현재 {wb!r}")
-        # 렌더 WARN 래칫 기준선(P4 · 배치3) — 선택 키이나, 있으면 정수여야 한다.
+        # 렌더·품질 WARN 래칫 기준선(P4 배치3 · 배치4) — 선택 키이나, 있으면 정수여야 한다.
         # 형식이 깨진 채 두면 러너가 «미등재»로 읽어 FAIL하므로 여기서 먼저 잡는다.
-        elif "render" in wb and not isinstance(wb.get("render"), int):
-            problems.append(
-                f"warn_baseline.render: 정수여야 함(렌더 WARN 래칫 기준선) — 현재 {wb.get('render')!r}")
+        else:
+            for opt_key, label in (("render", "렌더"), ("quality", "품질")):
+                if opt_key in wb and not isinstance(wb.get(opt_key), int):
+                    problems.append(
+                        f"warn_baseline.{opt_key}: 정수여야 함({label} WARN 래칫 기준선) — 현재 {wb.get(opt_key)!r}")
     return problems
 
 

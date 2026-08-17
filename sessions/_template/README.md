@@ -15,6 +15,7 @@ cp "입력양식/콘텐츠초안템플릿.md" "sessions/N주차/초안.md"
 3. [ ] `자료/이미지-에셋.json`에 슬라이드별 네 상태 판정과 재사용·생성 상태를 기록한다. `prompt_only`면 `자료/이미지-프롬프트.md`도 채운다.
 4. [ ] 스킬에 "N주차 덱 만들어줘" 요청 → 정보 모양 판단·레이아웃·조립(SKILL.md 워크플로). 편집본은 `강의덱.초안/`에 **파트별 조각**(`shell.html` 고정슬롯 + PART마다 `part-NN.html`)으로 둔다. PART 매핑은 스킬이 확인받는다.
 5. [ ] 미리보기: `python scripts/assemble_deck.py sessions/N주차/강의덱.초안 --watch` → 브라우저로 `강의덱.html`을 열고 대화하며 조각을 수정(저장 시 통합본 자동 갱신).
+   - 조립 보고(`조립_보고.md`)를 쓰면 **머리에 기준 덱 식별자**(«**N장** · sha256 \`앞8자\`»)를 적는다. 재조립하면 갱신하고, 시점 기록으로 남길 문서는 `[시점 스냅샷 YYYY-MM-DD]`를 선언한다 — `verify_report_freshness.py`가 낡음·미기재를 잡는다(규약: [`../README.md`](../README.md) 「주차 구조 계약」).
 6. [ ] `python scripts/verify_deck.py sessions/N주차/강의덱.html --parts <파트수>` 통과(FAIL 0). 로컬 서버로 오버플로·콘솔 육안 — `.hint-reveal`은 닫힘+강제로 연 상태 둘 다.
 7. [ ] 최종본: `python scripts/build_release.py sessions/N주차/강의덱.초안` → `강의덱_배포.html`(단일 자립본, 폰트 임베드). **자립성 강제 게이트를 통과해야 완성**. unresolved 설명·기억 슬롯이 있으면 먼저 실제 에셋을 준비한다.
 

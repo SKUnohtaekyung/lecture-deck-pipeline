@@ -478,5 +478,70 @@ class RenderNumericVerdictTests(unittest.TestCase):
         self.assertEqual(warn, 3 + 2 + 1 + 1)
 
 
+class ReportFreshnessTests(unittest.TestCase):
+    """P5(배치4 · 2026-08-17): 보고 신선도 — 고의 낡음이 실제로 잡히는지 먼저 증명."""
+
+    def test_check_report_verdicts(self):
+        from scripts.verify_report_freshness import check_report
+        self.assertEqual(check_report("- 기준 덱: `x` · **81장** · sha256 `deadbeef`", 81, "deadbeef")[0], "ok")
+        self.assertEqual(check_report("- 기준 덱: `x` · **77장** · sha256 `deadbeef`", 81, "deadbeef")[0], "stale")
+        self.assertEqual(check_report("- 기준 덱: `x` · **81장** · sha256 `00000000`", 81, "deadbeef")[0], "stale")
+        self.assertEqual(check_report("# 조립 보고\n식별자 없음", 81, "deadbeef")[0], "missing")
+        self.assertEqual(check_report("# 보고\n[시점 스냅샷 2026-08-17]", 81, "deadbeef")[0], "ok")
+
+    def test_strict_exits_1_on_stale_and_0_on_snapshot_declaration(self):
+        import subprocess
+        with tempfile.TemporaryDirectory() as tmp:
+            (Path(tmp) / "강의덱.html").write_text(
+                '<section class="slide" data-slide="A">x</section>', encoding="utf-8")
+            rpt = Path(tmp) / "조립_보고.md"
+            rpt.write_text("# 보고 — 식별자 없음(고의 위반)", encoding="utf-8")
+            repo_root = Path(__file__).resolve().parent.parent
+            cmd = [sys.executable, str(repo_root / "scripts" / "verify_report_freshness.py"),
+                   "--session", tmp, "--strict"]
+            proc = subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8", errors="replace")
+            self.assertEqual(proc.returncode, 1, proc.stdout)
+            rpt.write_text("# 보고\n[시점 스냅샷 2026-08-17]\n", encoding="utf-8")
+            proc = subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8", errors="replace")
+            self.assertEqual(proc.returncode, 0, proc.stdout)
+
+
+class QualityRatchetTests(unittest.TestCase):
+    """배치4(2026-08-17): 품질 WARN 래칫 — 고의 증가가 FAIL하는지 증명.
+
+    규칙 임계(프로필 §3-G)는 불변이고, 래칫은 «총계의 조용한 증가»만 막는다(D-2).
+    """
+
+    def _report(self, quality, contract):
+        import contextlib
+        import io as _io
+        from scripts.run_deck_checks import Runner
+        r = Runner("2주차")
+        r.steps = []
+        r.warn_struct = 0
+        r.warn_quality = quality
+        r._contract = lambda: contract
+        buf = _io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            code = r.report(ran_static=True, ran_render=False)
+        return code, buf.getvalue()
+
+    def test_increase_over_baseline_fails(self):
+        code, out = self._report(1, {"warn_baseline": {"static_gates": 0, "quality": 0, "date": "2026-08-17"}})
+        self.assertEqual(code, 1)
+        self.assertIn("품질 WARN 증가", out)
+
+    def test_within_baseline_passes(self):
+        # 부분 실행(렌더 생략)이라 exit 3(불완전)이 정상 — FAIL(1)이 아니면 래칫 통과다.
+        code, out = self._report(0, {"warn_baseline": {"static_gates": 0, "quality": 0, "date": "2026-08-17"}})
+        self.assertEqual(code, 3)
+        self.assertIn("품질 WARN 래칫", out)
+
+    def test_missing_baseline_fails_with_guidance(self):
+        code, out = self._report(0, {"warn_baseline": {"static_gates": 0, "date": "2026-08-17"}})
+        self.assertEqual(code, 1)
+        self.assertIn("warn_baseline.quality 미등재", out)
+
+
 if __name__ == "__main__":
     unittest.main()
