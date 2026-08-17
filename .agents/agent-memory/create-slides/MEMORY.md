@@ -167,6 +167,14 @@
 - 1주차 렌더 증거(`sessions/_verify/1주차/deck-audit.json`) 부재 — 러너 전체 실행은 설계대로 FAIL(동결 덱의 브라우저 측정 필요).
 - `sessions/README.md` 「1주차 (동결 해제…)」 절이 AGENTS.md의 동결 기록과 모순 — 역사 서술 정리는 사용자 확인 필요(동결의 정의 자체는 AGENTS.md에 못박음: 산출물만 동결, 계약은 검증 메타데이터).
 
+### ⏸ 하네스만 발동 eval이 0건 — 검사기가 죽은 스킬은 허용하고 산 스킬은 막는다 (2026-08-17)
+
+`skills/하네스/`는 팀 스킬 중 유일하게 `evals/team-skills-eval.json` routing 케이스가 **0건**이다. 그래서 description을 고쳐도 발동/비발동을 회귀로 확인할 수 없다 — 2026-08-17 하네스 확장(자유도 축·조건부 의무 편입)에서 실제로 **이 저장소의 유일한 무검증 변경**이 됐다.
+
+- **그냥 추가할 수 없다.** `scripts/verify_skill_setup.py:180`의 `allowed_targets = {"리서치","콘텐츠","검토","create-slides",None}`에 하네스가 없어, routing에 하네스 케이스를 넣으면 exit 1이다. **eval과 검사기가 짝 파일이다** — 고칠 때 같은 커밋에 넣는다.
+- 같은 줄에 **2026-08-03 폐기된 「콘텐츠」가 아직 허용 집합에 남아 있다.** 검사기가 죽은 스킬은 허용하고 살아 있는 하네스는 막는 상태다.
+- 수동 스모크로 대체하려 했으나 **미실행** — 중첩 `claude -p`가 부모 세션과 인증 컨텍스트를 공유하지 않는다(`Not logged in`). 대화형 세션에서 사람이 돌려야 한다.
+
 ### ⏸ 지침 생태계 리팩터링 — Codex 강제 패리티가 절반만 됐다 (2026-08-05)
 
 브랜치 `refactor/instruction-ecosystem`(커밋 6개 · `39659ea`→`00c5f82`). **main 미병합.** 계획·보고 정본은 `plans/instruction-refactor/{PLAN,FINAL_REPORT}.md` — 상세는 거기 있고 여기엔 상태만 둔다.
