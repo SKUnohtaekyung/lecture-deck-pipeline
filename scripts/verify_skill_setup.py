@@ -177,7 +177,10 @@ def verify_team_skills(check: Check) -> None:
         )
 
     evals_path = ROOT / "evals" / "team-skills-eval.json"
-    allowed_targets = {"리서치", "콘텐츠", "검토", "create-slides", None}
+    # TEAM_SKILLS에서 유도한다 — 두 벌을 손으로 관리하면 어긋난다. 2026-08-17 실측:
+    # 하네스는 TEAM_SKILLS에 있는데 이 집합에 없어 routing 등재가 막혀 있었고,
+    # 2026-08-03에 폐기된 「콘텐츠」는 반대로 남아 있었다(죽은 스킬 허용 · 산 스킬 차단).
+    allowed_targets = set(TEAM_SKILLS) | {"create-slides", None}
     evals_ok = False
     if evals_path.is_file():
         try:
