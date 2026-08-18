@@ -1,0 +1,1745 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>create-slides 작업 파이프라인 전도</title>
+<style>
+:root{
+  --bg:#f7f7f5; --surface:#ffffff; --surface-2:#f0efec; --line:#e0dfda; --line-strong:#c9c7c0;
+  --ink:#1c1b19; --ink-2:#4a4842; --ink-3:#77746c;
+  --accent:#0f766e; --accent-soft:#d8f0ec; --accent-ink:#0b5049;
+  --warn:#a15c00; --warn-soft:#fdf0dc;
+  --fail:#a32b2b; --fail-soft:#fbe4e4;
+  --pass:#2f6b34; --pass-soft:#e2f2e3;
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI","Malgun Gothic","Apple SD Gothic Neo","Noto Sans KR",sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#141413; --surface:#1c1c1a; --surface-2:#232320; --line:#33322e; --line-strong:#4a4844;
+    --ink:#eceae4; --ink-2:#bfbcb4; --ink-3:#918d84;
+    --accent:#5ec5b6; --accent-soft:#123833; --accent-ink:#8fded2;
+    --warn:#e0a860; --warn-soft:#3a2c14;
+    --fail:#e58a8a; --fail-soft:#3b1e1e;
+    --pass:#8fd095; --pass-soft:#1c2f1e;
+  }
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.75;-webkit-font-smoothing:antialiased}
+.wrap{display:grid;grid-template-columns:280px minmax(0,1fr);gap:0;max-width:1560px;margin:0 auto}
+
+/* ── nav ───────────────────────────── */
+nav{position:sticky;top:0;align-self:start;height:100vh;overflow-y:auto;padding:28px 18px 60px;border-right:1px solid var(--line);background:var(--surface)}
+nav .brand{font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin-bottom:4px}
+nav .sub{font-size:12px;color:var(--ink-3);margin-bottom:22px;line-height:1.5}
+nav ol{list-style:none;margin:0;padding:0;counter-reset:sec}
+nav ol li{counter-increment:sec}
+nav ol a{display:block;padding:6px 10px;border-radius:6px;color:var(--ink-2);text-decoration:none;font-size:13.5px;line-height:1.45}
+nav ol a::before{content:counter(sec) ". ";color:var(--ink-3);font-variant-numeric:tabular-nums}
+nav ol a:hover{background:var(--surface-2);color:var(--ink)}
+nav .navnote{margin-top:24px;padding:10px 12px;border-radius:8px;background:var(--surface-2);font-size:12px;color:var(--ink-3);line-height:1.6}
+
+/* ── main ──────────────────────────── */
+main{padding:52px 46px 120px;min-width:0}
+header.top{margin-bottom:44px;padding-bottom:28px;border-bottom:2px solid var(--line-strong)}
+header.top h1{margin:0 0 10px;font-size:34px;line-height:1.25;letter-spacing:-.01em}
+header.top p.lede{margin:0;font-size:16px;color:var(--ink-2);max-width:70ch}
+header.top .meta{margin-top:18px;display:flex;flex-wrap:wrap;gap:8px}
+.chip{display:inline-block;padding:3px 10px;border-radius:99px;font-size:12px;background:var(--surface-2);border:1px solid var(--line);color:var(--ink-2)}
+.chip.acc{background:var(--accent-soft);border-color:transparent;color:var(--accent-ink);font-weight:600}
+
+section{margin:0 0 56px;scroll-margin-top:20px}
+h2{font-size:24px;margin:0 0 6px;letter-spacing:-.01em;padding-top:8px}
+h2 .num{display:inline-block;min-width:1.7em;color:var(--accent);font-variant-numeric:tabular-nums}
+h2+.dek{margin:0 0 22px;color:var(--ink-3);font-size:14.5px;max-width:76ch}
+h3{font-size:18px;margin:32px 0 10px}
+h4{font-size:15px;margin:22px 0 8px;color:var(--ink-2)}
+p{margin:0 0 12px;max-width:82ch}
+ul,ol{margin:0 0 14px;padding-left:22px;max-width:82ch}
+li{margin:5px 0}
+code{font-family:var(--mono);font-size:.875em;background:var(--surface-2);border:1px solid var(--line);border-radius:4px;padding:1px 5px;word-break:break-word}
+a{color:var(--accent-ink)}
+strong{font-weight:700}
+hr{border:0;border-top:1px solid var(--line);margin:34px 0}
+
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:20px 22px;margin:0 0 18px}
+.card>*:last-child{margin-bottom:0}
+.card h4:first-child{margin-top:0}
+
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+
+.tablewrap{overflow-x:auto;margin:0 0 18px;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:14px;min-width:520px}
+th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.6}
+th{background:var(--surface-2);font-weight:700;font-size:13px;white-space:nowrap;color:var(--ink-2)}
+tr:last-child td{border-bottom:0}
+td code{white-space:nowrap}
+
+pre{margin:0 0 16px;padding:14px 16px;background:var(--surface-2);border:1px solid var(--line);border-radius:10px;overflow-x:auto;font-family:var(--mono);font-size:13px;line-height:1.65;color:var(--ink)}
+pre .c{color:var(--ink-3)}
+
+.callout{border-left:4px solid var(--line-strong);background:var(--surface);padding:14px 18px;border-radius:0 10px 10px 0;margin:0 0 18px;font-size:14.5px}
+.callout>*:last-child{margin-bottom:0}
+.callout.warn{border-color:var(--warn);background:var(--warn-soft)}
+.callout.fail{border-color:var(--fail);background:var(--fail-soft)}
+.callout.acc{border-color:var(--accent);background:var(--accent-soft)}
+.callout .lab{display:block;font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;margin-bottom:5px;opacity:.85}
+
+.tag{display:inline-block;padding:1px 8px;border-radius:5px;font-size:11.5px;font-weight:700;letter-spacing:.02em;white-space:nowrap}
+.tag.fail{background:var(--fail-soft);color:var(--fail)}
+.tag.warn{background:var(--warn-soft);color:var(--warn)}
+.tag.pass{background:var(--pass-soft);color:var(--pass)}
+.tag.acc{background:var(--accent-soft);color:var(--accent-ink)}
+
+/* ── figures / inline svg ──────────── */
+figure.fig{margin:6px 0 22px;padding:18px 20px 14px;background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow-x:auto}
+figure.fig svg{display:block;width:100%;min-width:560px;height:auto;color:var(--ink)}
+figure.fig figcaption{margin-top:14px;padding-top:12px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-3);line-height:1.65;min-width:560px}
+figure.fig figcaption b{color:var(--ink-2)}
+
+.sv-stage{fill:var(--accent-soft);stroke:var(--accent);stroke-width:1.8}
+.sv-art{fill:var(--surface-2);stroke:var(--line-strong);stroke-width:1.4}
+.sv-in{fill:none;stroke:var(--line-strong);stroke-width:1.4;stroke-dasharray:6 5}
+.sv-gen{fill:var(--warn-soft);stroke:var(--warn);stroke-width:1.6}
+.sv-bad{fill:var(--fail-soft);stroke:var(--fail);stroke-width:1.6}
+.sv-ok{fill:var(--pass-soft);stroke:var(--pass);stroke-width:1.6}
+.sv-plain{fill:var(--surface);stroke:var(--line-strong);stroke-width:1.4}
+.sv-band{fill:var(--surface-2);stroke:var(--line-strong);stroke-width:1.4;stroke-dasharray:7 5}
+
+.sv-l{stroke:var(--ink-3);stroke-width:1.7;fill:none}
+.sv-l-acc{stroke:var(--accent);stroke-width:2;fill:none}
+.sv-l-fail{stroke:var(--fail);stroke-width:2;fill:none}
+.sv-d{stroke:var(--ink-3);stroke-width:1.5;fill:none;stroke-dasharray:5 4}
+.sv-grid{stroke:var(--line);stroke-width:1;fill:none}
+
+text{font-family:inherit}
+.sv-h{fill:var(--ink);font-size:15px;font-weight:700}
+.sv-t{fill:var(--ink);font-size:12.5px}
+.sv-m{fill:var(--ink-2);font-size:10.5px}
+.sv-xs{fill:var(--ink-3);font-size:10px}
+.sv-acc{fill:var(--accent-ink);font-size:11px;font-weight:700}
+.sv-fail-t{fill:var(--fail);font-size:11px;font-weight:700}
+.sv-warn-t{fill:var(--warn);font-size:11px;font-weight:700}
+.sv-pass-t{fill:var(--pass);font-size:11px;font-weight:700}
+.sv-num{fill:var(--accent-ink);font-size:13px;font-weight:700}
+
+.check{list-style:none;padding-left:0;font-family:var(--mono);font-size:13.5px}
+.check li{padding-left:26px;position:relative;margin:7px 0;line-height:1.6}
+.check li::before{content:"□";position:absolute;left:4px;color:var(--accent);font-size:15px}
+
+ol.steps{list-style:none;padding-left:0;counter-reset:st}
+ol.steps>li{counter-increment:st;position:relative;padding-left:44px;margin:0 0 18px}
+ol.steps>li::before{content:counter(st);position:absolute;left:0;top:1px;width:28px;height:28px;border-radius:8px;background:var(--accent-soft);color:var(--accent-ink);font-weight:700;font-size:14px;display:grid;place-items:center;font-variant-numeric:tabular-nums}
+ol.steps>li .t{font-weight:700;font-size:15.5px;display:block;margin-bottom:2px}
+ol.steps>li .d{font-size:14px;color:var(--ink-2);line-height:1.7}
+
+.kbd{font-family:var(--mono);font-size:12px;border:1px solid var(--line-strong);border-bottom-width:2px;border-radius:5px;padding:1px 6px;background:var(--surface)}
+
+footer{border-top:1px solid var(--line);padding-top:22px;color:var(--ink-3);font-size:13px}
+
+@media (max-width:960px){
+  .wrap{grid-template-columns:1fr}
+  nav{position:static;height:auto;border-right:0;border-bottom:1px solid var(--line);padding:20px}
+  nav ol{display:flex;flex-wrap:wrap;gap:4px}
+  nav ol a{font-size:12.5px;padding:4px 8px;background:var(--surface-2)}
+  main{padding:32px 20px 80px}
+  header.top h1{font-size:26px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<nav>
+  <div class="brand">create-slides</div>
+  <div class="sub">강의 제작 파이프라인 전도<br>저장소: <code style="font-size:11px">Desktop/template</code></div>
+  <ol>
+    <li><a href="#s1">저장소와 5층 구조</a></li>
+    <li><a href="#s2">파이프라인 전체 지도</a></li>
+    <li><a href="#s3">착수 전 — 필수 읽기 순서</a></li>
+    <li><a href="#s4">① /리서치</a></li>
+    <li><a href="#s5">② /create-slides</a></li>
+    <li><a href="#s6">③ /검토</a></li>
+    <li><a href="#s7">횡단 /하네스</a></li>
+    <li><a href="#s8">기계 강제 계층 (훅·git)</a></li>
+    <li><a href="#s9">검증 명령 전량</a></li>
+    <li><a href="#s10">산출물·폴더 지도</a></li>
+    <li><a href="#s11">사고 이력 — 규칙의 근거</a></li>
+    <li><a href="#s12">컨텍스트 예산 규율</a></li>
+    <li><a href="#s13">완료의 정의</a></li>
+  </ol>
+  <div class="navnote">이 문서는 <code>AGENTS.md</code>·루트 <code>SKILL.md</code>·<code>skills/*/SKILL.md</code>·<code>references/</code>를 읽어 조립한 <strong>파생 지도</strong>다. 값이 어긋나면 언제나 각 정본이 이긴다.</div>
+</nav>
+
+<main>
+
+<header class="top">
+  <h1>강의 제작 작업 파이프라인 — 전 구간 전도</h1>
+  <p class="lede">커리큘럼에서 배포 가능한 1280×720 HTML 웹덱까지, 이 저장소가 규정한 모든 단계·게이트·산출물·검증 명령·강제 장치를 한 장에 모았다. 각 항목 끝의 파일 경로가 그 규칙의 <strong>정본</strong>이다.</p>
+  <div class="meta">
+    <span class="chip acc">파이프라인 3스킬 + 횡단 1</span>
+    <span class="chip">게이트 A·G1·G2 + 검증 12종</span>
+    <span class="chip">기계 강제: PreToolUse 4 · PostToolUse 1 · pre-commit 5</span>
+    <span class="chip">회귀 9모듈 207개</span>
+  </div>
+</header>
+
+<!-- ══════════════ 1 ══════════════ -->
+<section id="s1">
+  <h2><span class="num">1</span>저장소와 5층 구조</h2>
+  <p class="dek">이 저장소는 <strong>강의 덱을 만드는 스킬을 개발·보관</strong>하는 프로젝트다. 루트가 플랫폼 공통 정본이고, <code>.agents/</code>·<code>.claude/</code>는 그 정본을 로드만 하는 얇은 어댑터다.</p>
+
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>층</th><th>무엇</th><th>배포</th><th>규약 정본</th></tr></thead>
+      <tbody>
+        <tr><td><strong>① 포터블 스킬</strong></td><td>루트 <code>SKILL.md</code> · <code>kit/</code> · <code>references/</code> · <code>scripts/</code> · <code>입력양식/</code> · <code>outputs/</code> · <code>데모_제작규칙.html</code></td><td><span class="tag acc">대상</span></td><td>루트 <code>SKILL.md</code></td></tr>
+        <tr><td><strong>② 개발자료</strong></td><td><code>_dev/설계기록/</code> — 빌드·결정 기록 · <code>탐색-아카이브/</code> 미채택본 · <code>품질감사-2026-07/</code> 임계값 도출 근거</td><td>제외</td><td>그 폴더 README</td></tr>
+        <tr><td><strong>③ 플랫폼 어댑터</strong></td><td><code>.agents/skills/</code>(Codex) · <code>.claude/skills/</code>(Claude) — 규칙을 복제하지 않고 정본만 로드</td><td>제외</td><td><code>.agents/README.md</code></td></tr>
+        <tr><td><strong>④ 주차별 작업물</strong></td><td><code>courses/&lt;과목&gt;/sessions/N주차/</code> — <code>N주차_초안.md</code> · <code>강의덱.html</code> · <code>강의덱_발표자노트.html</code> · <code>자료/</code></td><td>제외</td><td><code>sessions/README.md</code></td></tr>
+        <tr><td><strong>⑤ 팀 워크플로 스킬</strong></td><td><code>skills/</code> — 역할 2종(리서치·검토) + 횡단 프로토콜(하네스)</td><td>제외</td><td><code>skills/README.md</code></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="grid2">
+    <div class="card">
+      <h4>누적 규칙의 단일 정본</h4>
+      <p>규칙·버그·현재 상태 정본은 <code>.agents/agent-memory/create-slides/MEMORY.md</code> <strong>하나</strong>이며 Codex·Claude가 함께 읽는다(<code>.claude/agent-memory/</code>는 포인터). 작업을 시작할 때 <code>## 미해결</code> 절은 <strong>무조건</strong> 읽고, 끝낼 때 해결된 항목은 <strong>삭제</strong>한다.</p>
+    </div>
+    <div class="card">
+      <h4>과목 격리</h4>
+      <p>강의명·대상·관통 문장·회차 구조·장수/밀도 기준선·브랜드는 전부 <code>courses/&lt;과목&gt;/profile.md</code>에 있다. <strong>스킬 본문에는 과목 고유 값을 두지 않는다.</strong> 검사는 <code>verify_subject_isolation.py</code>. 한 과목의 실측치를 다른 과목 규칙으로 물려주지 않으며, 기준선 없는 새 과목은 FAIL이 아니라 <span class="tag warn">WARN</span>으로 시작한다.</p>
+    </div>
+  </div>
+
+  <div class="callout warn">
+    <span class="lab">폐기된 것 / 살아 있는 것</span>
+    <code>/콘텐츠</code> 스킬과 <code>_dev/강의자료/</code>는 폐기됐다(실행 이력 0 · 집필은 create-slides가 흡수). <strong>다만 사람이 초안을 써서 넘기는 경로와 스키마는 그대로 살아 있다</strong> — <code>입력양식/콘텐츠초안템플릿.md</code> · <code>references/콘텐츠초안-입력형식.md</code>. 다음 단계는 파일의 <em>작성 주체</em>가 아니라 <em>내용·스키마</em>로 입력을 인식한다.
+  </div>
+</section>
+
+<!-- ══════════════ 2 ══════════════ -->
+<section id="s2">
+  <h2><span class="num">2</span>파이프라인 전체 지도</h2>
+  <p class="dek">5인 팀 역할 중 일부를 스킬로 옮긴 구조다. 화살표는 산출물의 흐름이고, <code>/하네스</code>만 화살표 위가 아니라 <strong>어느 단계에나 얹히는 실행 방식</strong>이다.</p>
+
+  <figure class="fig">
+    <svg viewBox="0 0 1160 348" role="img" aria-label="커리큘럼에서 시작해 리서치·create-slides·검토 세 스킬을 거치며 자료 5파일과 덱 산출물을 넘기는 파이프라인. 검토는 읽기 전용이고, 하네스는 어느 단계에나 얹히는 실행 방식이다.">
+      <defs>
+        <marker id="a1-arw" viewBox="0 0 10 8" refX="9" refY="4" markerWidth="8" markerHeight="7" orient="auto"><path d="M0,0 L10,4 L0,8 Z" fill="var(--ink-3)"/></marker>
+        <marker id="a1-arwd" viewBox="0 0 10 8" refX="9" refY="4" markerWidth="8" markerHeight="7" orient="auto"><path d="M0,0 L10,4 L0,8 Z" fill="var(--ink-3)"/></marker>
+      </defs>
+
+      <!-- 검토 대상 회귀 아크 -->
+      <text class="sv-xs" x="770" y="14" text-anchor="middle">검토 대상 — 읽기만 하고 고치지 않는다</text>
+      <path class="sv-d" d="M468,46 L468,24 L1073,24 L1073,44" marker-end="url(#a1-arwd)"/>
+
+      <!-- 화살표 + 동사 -->
+      <path class="sv-l" d="M160,104 L190,104" marker-end="url(#a1-arw)"/>
+      <text class="sv-xs" x="178" y="98" text-anchor="middle">읽음</text>
+      <path class="sv-l" d="M354,104 L384,104" marker-end="url(#a1-arw)"/>
+      <text class="sv-xs" x="372" y="98" text-anchor="middle">씀</text>
+      <path class="sv-l" d="M546,104 L576,104" marker-end="url(#a1-arw)"/>
+      <text class="sv-xs" x="564" y="98" text-anchor="middle">읽음</text>
+      <path class="sv-l" d="M768,104 L798,104" marker-end="url(#a1-arw)"/>
+      <text class="sv-xs" x="786" y="98" text-anchor="middle">씀</text>
+      <path class="sv-l" d="M960,104 L990,104" marker-end="url(#a1-arw)"/>
+      <text class="sv-xs" x="978" y="98" text-anchor="middle">읽음</text>
+
+      <!-- A1 커리큘럼 -->
+      <rect class="sv-in" x="8" y="48" width="148" height="112" rx="10"/>
+      <text class="sv-xs" x="82" y="70" text-anchor="middle">[승민] 총괄 · 스킬 없음</text>
+      <text class="sv-h" x="82" y="96" text-anchor="middle" font-size="14">커리큘럼</text>
+      <text class="sv-m" x="82" y="120" text-anchor="middle">커리큘럼_기준안.md</text>
+      <text class="sv-m" x="82" y="137" text-anchor="middle">+ N주차_강의안설계</text>
+      <text class="sv-xs" x="82" y="153" text-anchor="middle">(없는 주차 있음)</text>
+
+      <!-- S1 리서치 -->
+      <rect class="sv-stage" x="200" y="48" width="154" height="112" rx="10"/>
+      <text class="sv-xs" x="277" y="70" text-anchor="middle">[해서] · 명시 호출</text>
+      <text class="sv-h" x="277" y="97" text-anchor="middle">/리서치</text>
+      <text class="sv-m" x="277" y="121" text-anchor="middle">★게이트A 범위 승인</text>
+      <text class="sv-m" x="277" y="138" text-anchor="middle">→ 워크플로 8단계</text>
+      <text class="sv-acc" x="277" y="154" text-anchor="middle">하드게이트 G1~G9</text>
+
+      <!-- A2 자료 -->
+      <rect class="sv-art" x="388" y="48" width="158" height="112" rx="10"/>
+      <text class="sv-xs" x="467" y="70" text-anchor="middle">…/N주차/자료/</text>
+      <text class="sv-h" x="467" y="96" text-anchor="middle" font-size="14">자료 5파일</text>
+      <text class="sv-m" x="467" y="120" text-anchor="middle">개념KB = 사실 정본</text>
+      <text class="sv-m" x="467" y="137" text-anchor="middle">청크 + ID · RAG</text>
+      <text class="sv-fail-t" x="467" y="153" text-anchor="middle">통독 금지 · 선택 회수</text>
+
+      <!-- S2 create-slides -->
+      <rect class="sv-stage" x="576" y="48" width="192" height="112" rx="10"/>
+      <text class="sv-xs" x="672" y="70" text-anchor="middle">[혜린·태경] · 자동 발동</text>
+      <text class="sv-h" x="672" y="97" text-anchor="middle">/create-slides</text>
+      <text class="sv-m" x="672" y="121" text-anchor="middle">집필 + 조립 = 하나의 실행</text>
+      <text class="sv-m" x="672" y="138" text-anchor="middle">10단계 · 절대 금지 10항</text>
+      <text class="sv-acc" x="672" y="154" text-anchor="middle">G1 조립 전 · G2 조립 후</text>
+
+      <!-- A3 덱 -->
+      <rect class="sv-art" x="802" y="48" width="158" height="112" rx="10"/>
+      <text class="sv-xs" x="881" y="70" text-anchor="middle">…/N주차/</text>
+      <text class="sv-h" x="881" y="96" text-anchor="middle" font-size="14">덱 산출물</text>
+      <text class="sv-m" x="881" y="120" text-anchor="middle">강의덱.html · _배포</text>
+      <text class="sv-m" x="881" y="137" text-anchor="middle">_발표자노트 · (_발표)</text>
+      <text class="sv-fail-t" x="881" y="153" text-anchor="middle">정본은 shard다</text>
+
+      <!-- S3 검토 -->
+      <rect class="sv-stage" x="994" y="48" width="158" height="112" rx="10"/>
+      <text class="sv-xs" x="1073" y="70" text-anchor="middle">[준형] · 명시 호출</text>
+      <text class="sv-h" x="1073" y="97" text-anchor="middle">/검토</text>
+      <text class="sv-m" x="1073" y="121" text-anchor="middle">7단계 + 4축 판단 검토</text>
+      <text class="sv-m" x="1073" y="138" text-anchor="middle">FAIL·WARN·PASS + 담당</text>
+      <text class="sv-acc" x="1073" y="154" text-anchor="middle">읽기 전용 절대</text>
+
+      <!-- 분기 / 출력 -->
+      <path class="sv-l" d="M672,162 L672,190" marker-end="url(#a1-arw)"/>
+      <rect class="sv-plain" x="576" y="194" width="92" height="54" rx="8"/>
+      <text class="sv-acc" x="622" y="214" text-anchor="middle">ⓐ 초안 있음</text>
+      <text class="sv-xs" x="622" y="231" text-anchor="middle">사람이 쓴 초안을</text>
+      <text class="sv-xs" x="622" y="243" text-anchor="middle">그대로 존중</text>
+      <rect class="sv-plain" x="676" y="194" width="92" height="54" rx="8"/>
+      <text class="sv-acc" x="722" y="214" text-anchor="middle">ⓑ 초안 없음</text>
+      <text class="sv-xs" x="722" y="231" text-anchor="middle">집필까지 수행</text>
+      <text class="sv-xs" x="722" y="243" text-anchor="middle">+ 집필노트 필수</text>
+
+      <path class="sv-l" d="M1073,162 L1073,190" marker-end="url(#a1-arw)"/>
+      <rect class="sv-art" x="994" y="194" width="158" height="54" rx="8"/>
+      <text class="sv-t" x="1073" y="216" text-anchor="middle" font-size="12">검토보고_YYYY-MM-DD.md</text>
+      <text class="sv-xs" x="1073" y="234" text-anchor="middle">쓰는 파일은 이것 1개뿐</text>
+
+      <!-- 하네스 밴드 -->
+      <rect class="sv-band" x="8" y="274" width="1144" height="60" rx="10"/>
+      <text class="sv-h" x="30" y="299" font-size="13">/하네스</text>
+      <text class="sv-m" x="94" y="299">— 화살표 위의 단계가 아니다. 어느 단계에서든 <tspan font-weight="700">다파일·독립구간·대규모</tspan>면 적용하는 <tspan font-weight="700">실행 방식</tspan>.</text>
+      <text class="sv-xs" x="94" y="319">메인(Opus) = 결정·위임·게이트, 파일 편집 안 함 &#160;·&#160; 워커(Sonnet) = 모든 실제 편집, allowlist 안에서만 &#160;·&#160; 의심스러우면 한 단계 낮춘다</text>
+    </svg>
+    <figcaption><b>읽는 화살표와 쓰는 화살표가 번갈아 나온다</b> — 각 스킬은 앞 단계의 <em>파일</em>을 읽고 다음 단계가 읽을 <em>파일</em>을 쓴다. 그래서 사람이 손으로 쓴 산출물과 스킬이 쓴 산출물이 같은 스키마면 완전히 호환된다. <b>검토만 되돌아오는 화살표가 없다</b> — 대상 파일을 고치는 순간 결함이 원본에서 온 것인지 검증자가 만든 것인지 추적할 수 없어진다.</figcaption>
+  </figure>
+
+  <h3>계약 표 — 무엇을 읽고 무엇을 쓰는가</h3>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>스킬</th><th>입력 (읽는 것)</th><th>출력 (파일 · 위치)</th><th>소비자</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><code>/리서치</code></td>
+          <td>커리큘럼 기준안(상위) · 주차 강의안설계(상세) · 사용자 브리프</td>
+          <td>기본 5파일 → <code>…/N주차/자료/</code><br>선택 2종은 요청 시만</td>
+          <td><code>/create-slides</code></td>
+        </tr>
+        <tr>
+          <td><code>/create-slides</code></td>
+          <td><strong>ⓐ</strong> <code>N주차_초안.md</code>(정본) + 초안 행의 <code>&lt;!-- refs: C-… --&gt;</code>를 따라 <strong>개념KB 해당 청크만 grep 회수</strong><br><strong>ⓑ</strong> 초안이 없으면 자료 5파일에서 직접 회수해 집필까지<br>⚠️ 어느 쪽이든 <strong>개념KB 통째 읽기 금지</strong> — 서두 「청크 인덱스」 표에서 선택 회수</td>
+          <td><code>강의덱.html</code> · <code>강의덱_발표자노트.html</code> · ⓑ면 집필노트 추가</td>
+          <td><code>/검토</code> · 수강생</td>
+        </tr>
+        <tr>
+          <td><code>/검토</code></td>
+          <td>지정 대상(<code>자료</code>|<code>초안</code>|<code>덱</code>|<code>전체</code>) + 각 스키마 정본</td>
+          <td>검토보고 1개 (읽기 전용)</td>
+          <td>각 담당 단계</td>
+        </tr>
+        <tr>
+          <td><code>/하네스</code></td>
+          <td>작업 규모(다파일·독립구간·대규모 여부)</td>
+          <td>없음 — 작업 실행 방식 자체</td>
+          <td>파이프라인 전 단계</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>호출 규약 — 명시 호출 전용</h3>
+  <p>팀 스킬 2종(<code>/리서치</code>·<code>/검토</code>)은 <strong>명시 호출로만</strong> 발동한다. <code>/create-slides</code>만 자동 발동을 유지한다.</p>
+  <div class="grid3">
+    <div class="card"><h4>(a) 직접 호출</h4><p><code>/리서치</code> <code>/검토</code> 또는 <code>$리서치</code> 형태</p></div>
+    <div class="card"><h4>(b) 스킬 지목 자연어</h4><p>“<strong>리서치 스킬</strong>로 2주차 조사해줘”처럼 스킬임을 지목</p></div>
+    <div class="card"><h4>(c) 스킬 체이닝</h4><p>오케스트레이터가 파이프라인 지시에서 <strong>이름으로 지목</strong></p></div>
+  </div>
+  <div class="callout fail">
+    <span class="lab">비발동 확정</span>
+    보통명사 단독 사용은 발동하지 않는다 — “덱 검토해줘”, “자료 조사 좀 해줘”, “이 초안 다듬어줘”는 일반 요청이지 스킬 호출이 아니다.<br>
+    ⚠️ 이 규약은 기계적 강제가 아니라 description 계약 + 회귀 eval에 의한 <strong>관례적 보증(honor-system)</strong>이다. 기계 차단(<code>disable-model-invocation</code>)은 (c)항 체이닝까지 죽여서 채택하지 않았다.
+  </div>
+</section>
+
+<!-- ══════════════ 3 ══════════════ -->
+<section id="s3">
+  <h2><span class="num">3</span>착수 전 — 필수 읽기 순서</h2>
+  <p class="dek">순서가 규정돼 있다. 건너뛰면 스키마가 다른 산출물이 나와 다음 담당자가 다시 물어보게 된다.</p>
+
+  <ol class="steps">
+    <li><span class="t"><code>.agents/agent-memory/create-slides/MEMORY.md</code> — <code>## 미해결</code></span><span class="d"><strong>무조건.</strong> 나머지 절(누적 규칙·하드윈 버그·색 시스템)은 덱 조립·규칙 변경 작업일 때. 작업을 끝내기 전에 같은 파일을 다시 확인해 해결된 항목을 <strong>삭제</strong>한다.</span></li>
+    <li><span class="t"><code>skills/README.md</code></span><span class="d">팀 스킬을 <strong>호출할 때</strong> — 계약표·파이프라인 지도·명시 호출 규약.</span></li>
+    <li><span class="t">커리큘럼</span><span class="d"><code>courses/&lt;과목&gt;/커리큘럼_기준안.md</code>(전 주차 상위 기준) + 있으면 <code>…/N주차/N주차_강의안설계.md</code>(주차 상세). <strong>해당 주차 파일을 열거나 쓰기 전에 그 주차 것만</strong> 읽는다. 상세가 없는 주차는 개요에서 역산하고 그것이 ‘제안’임을 밝힌다.</span></li>
+    <li><span class="t">루트 <code>SKILL.md</code></span><span class="d">덱 조립·리뷰 작업일 때. 그 안의 read-path를 순서대로 따른다.</span></li>
+    <li><span class="t"><code>references/검증-명령-지도.md</code></span><span class="d">덱·kit 작업의 실행·검증 명령과 사고 이력. <strong>상시 로드되지 않는다</strong> — 덱 작업을 시작할 때 연다.</span></li>
+    <li><span class="t"><code>sessions/README.md</code></span><span class="d">새 주차 폴더를 만들 때.</span></li>
+    <li><span class="t"><code>_dev/설계기록/구조-및-빌드-기록.md</code></span><span class="d">배경이 필요할 때.</span></li>
+  </ol>
+
+  <h3>새 주차 시작 (루트에서)</h3>
+<pre><span class="c"># 골격 복사</span>
+cp -r sessions/_template "courses/바이브코딩/sessions/3주차"
+<span class="c"># 빈 공식 템플릿을 초안으로</span>
+cp "입력양식/콘텐츠초안템플릿.md" "courses/바이브코딩/sessions/3주차/3주차_초안.md"
+<span class="c"># → 3주차_초안.md 를 채운 뒤 "3주차 덱 만들어줘" 라고 요청</span></pre>
+
+  <div class="callout warn">
+    <span class="lab">서브에이전트에는 규칙이 상속되지 않는다</span>
+    Claude Code의 built-in <code>Explore</code>·<code>Plan</code>은 속도를 위해 <strong><code>CLAUDE.md</code>와 부모 세션 Git 상태를 로드하지 않는다</strong>(공식 동작). 그 워커가 지켜야 할 제약(특히 <strong>「임시 파일은 저장소 안 <code>tmp/</code>에만」</strong>)은 <strong>위임 프롬프트에 직접 적어 보낸다.</strong> 2026-07-30에 워커 4개가 전부 시스템 임시 폴더에 썼다. 다른 서브에이전트는 프로젝트 memory를 로드한다.
+  </div>
+</section>
+
+<!-- ══════════════ 4 ══════════════ -->
+<section id="s4">
+  <h2><span class="num">4</span>① <code>/리서치</code> — 콘텐츠 조사·실습 설계 검증</h2>
+  <p class="dek">정본 <code>skills/리서치/SKILL.md</code> · 산출물 규격 정본 <code>skills/리서치/references/chunk-schema.md</code>.</p>
+
+  <h3>§0. 하드 게이트 9종 (협상 불가)</h3>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>ID</th><th>이름</th><th>내용</th></tr></thead>
+      <tbody>
+        <tr><td><strong>G1</strong></td><td>공신력 3등급</td><td><strong>1급</strong> 제품 공식 문서·공식 블로그·릴리스 노트 → 단독 채택 가능 · <strong>2급</strong> 주요 언론·학술 → 단독 채택 가능 · <strong>3급</strong> 실무 블로그·영상·커뮤니티 → <strong>사실 주장</strong>은 1~2급 교차검증 없이 단독 채택 금지(단 관점 B·C·D에서는 <strong>적극 수집 의무</strong> — <code>[경험 진술]</code> 표기 + 화자 귀속 문형) · <strong>금지</strong> 익명 포럼 단독·출처 불명 AI 생성물 → 탈락 로그</td></tr>
+        <tr><td><strong>G2</strong></td><td>신선도</td><td>조사 시점 기준 <strong>5개월 이내</strong>. 초과는 전부 <code>[예외승인]</code> 태그 + <strong>사유</strong> 필수(사유 없는 태그는 FAIL)</td></tr>
+        <tr><td><strong>G3</strong></td><td>출처</td><td>URL + 확인 날짜(YYYY-MM-DD), <strong>링크를 실제로 연다.</strong> 제품·구조 사실에는 원문 짧은 인용(verbatim)을 남겨 압축 왜곡을 대조 가능하게</td></tr>
+        <tr><td><strong>G4</strong></td><td>물량·커버리지</td><td>커버리지 매트릭스(교시 × 조사 항목) <strong>빈칸 0</strong></td></tr>
+        <tr><td><strong>G5</strong></td><td>확정사항 불변</td><td>기존 <code>[총괄 확정]</code>을 바꾸지 않는다. 대안은 전부 <strong>결정요청사항</strong>으로만 올린다</td></tr>
+        <tr><td><strong>G6</strong></td><td>자기투사 금지</td><td>“AI/제품이 ~한다/못 한다” 클레임은 <strong>능력(capability)</strong>인지 <strong>범위(scope)</strong>인지 구분. 세션·도구 제약을 제품 사실로 확대하지 않는다</td></tr>
+        <tr><td><strong>G7</strong></td><td>매트릭스 자기감사 금지</td><td>자기 매트릭스 빈칸 검사로 끝내지 말고 <strong>커리큘럼 원문을 다시 훑어</strong> 개념·용어명 새 목록을 뽑아 청크 목록과 1:1 대조</td></tr>
+        <tr><td><strong>G8</strong></td><td>관점 커버리지</td><td>아래 4축 · 공식 정의만 모으면 수업이 사전 낭독이 된다</td></tr>
+        <tr><td><strong>G9</strong></td><td>인접 개념</td><td>커리큘럼 밖이라도 학생이 배운 직후 바로 묻는 것 — <strong>전제</strong>(‘파일’ 앞의 ‘확장자·경로’) · <strong>후속·파생</strong>(‘토큰’ 다음의 ‘컨텍스트 창 크기·요금’) · <strong>혼동</strong>(‘메모리’ vs ‘컨텍스트’). <strong>게이트A 승인분만</strong> <code>범위:인접</code> 얕은 청크로</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>G1 — 3급 출처는 「피하는 것」이 아니라 「용도가 갈리는 것」이다</h4>
+  <figure class="fig">
+    <svg viewBox="0 0 1000 300" role="img" aria-label="공신력 4등급표. 1급 공식문서와 2급 언론·학술은 단독 채택 가능, 3급 실무 블로그는 사실 주장에는 단독 채택 금지지만 관점 B·C·D에서는 적극 수집 의무, 금지 등급은 탈락 로그로 보낸다.">
+      <text class="sv-xs" x="16" y="24">등급</text>
+      <text class="sv-xs" x="106" y="24">정의</text>
+      <text class="sv-xs" x="620" y="24">단독 채택 가능한가</text>
+
+      <!-- 1급 -->
+      <rect class="sv-ok" x="16" y="34" width="72" height="40" rx="7"/>
+      <text class="sv-pass-t" x="52" y="59" text-anchor="middle" font-size="13">1급</text>
+      <text class="sv-t" x="106" y="59">제품 공식 문서 · 공식 블로그 · 릴리스 노트</text>
+      <rect x="620" y="38" width="360" height="32" rx="6" fill="var(--pass-soft)" stroke="var(--pass)" stroke-width="1.4"/>
+      <text class="sv-pass-t" x="800" y="59" text-anchor="middle">단독 채택 가능</text>
+
+      <!-- 2급 -->
+      <rect class="sv-ok" x="16" y="82" width="72" height="40" rx="7"/>
+      <text class="sv-pass-t" x="52" y="107" text-anchor="middle" font-size="13">2급</text>
+      <text class="sv-t" x="106" y="107">주요 언론 · 학술 자료</text>
+      <rect x="620" y="86" width="360" height="32" rx="6" fill="var(--pass-soft)" stroke="var(--pass)" stroke-width="1.4"/>
+      <text class="sv-pass-t" x="800" y="107" text-anchor="middle">단독 채택 가능</text>
+
+      <!-- 3급 -->
+      <rect class="sv-gen" x="16" y="130" width="72" height="58" rx="7"/>
+      <text class="sv-warn-t" x="52" y="156" text-anchor="middle" font-size="13">3급</text>
+      <text class="sv-xs" x="52" y="172" text-anchor="middle">용도 분기</text>
+      <text class="sv-t" x="106" y="153">실무 블로그 · 영상 · 커뮤니티 리뷰 · 후기</text>
+      <text class="sv-m" x="106" y="173">같은 출처가 무엇에 쓰이느냐로 판정이 뒤집힌다</text>
+      <rect x="620" y="130" width="176" height="58" rx="6" fill="var(--fail-soft)" stroke="var(--fail)" stroke-width="1.4"/>
+      <text class="sv-fail-t" x="708" y="150" text-anchor="middle">사실 주장에는 ✗</text>
+      <text class="sv-xs" x="708" y="166" text-anchor="middle">제품 동작·수치·능력은</text>
+      <text class="sv-xs" x="708" y="179" text-anchor="middle">1~2급 교차검증 없이 금지</text>
+      <rect x="804" y="130" width="176" height="58" rx="6" fill="var(--pass-soft)" stroke="var(--pass)" stroke-width="1.4"/>
+      <text class="sv-pass-t" x="892" y="150" text-anchor="middle">관점 B·C·D에는 ✓</text>
+      <text class="sv-xs" x="892" y="166" text-anchor="middle">회피 대상이 아니라</text>
+      <text class="sv-xs" x="892" y="179" text-anchor="middle">적극 수집 <tspan font-weight="700">의무</tspan></text>
+
+      <!-- 금지 -->
+      <rect class="sv-bad" x="16" y="196" width="72" height="40" rx="7"/>
+      <text class="sv-fail-t" x="52" y="221" text-anchor="middle" font-size="13">금지</text>
+      <text class="sv-t" x="106" y="221">익명 포럼 단독 자료 · 출처 불명 AI 생성물</text>
+      <rect x="620" y="200" width="360" height="32" rx="6" fill="var(--fail-soft)" stroke="var(--fail)" stroke-width="1.4"/>
+      <text class="sv-fail-t" x="800" y="221" text-anchor="middle">채택 금지 — 사유와 함께 탈락 로그에</text>
+
+      <path class="sv-d" d="M892,192 L892,248 L500,248 L500,258"/>
+      <text class="sv-xs" x="500" y="276" text-anchor="middle">“○○팀은 이렇게 쓴다”류 경험 진술은 <tspan font-weight="700">그 진술 자체의 1차 자료</tspan>다 — <tspan font-weight="700">[경험 진술]</tspan> 표기 + 화자 귀속 문형으로 채택한다</text>
+      <text class="sv-xs" x="500" y="292" text-anchor="middle">단, 그 진술 안에 섞인 <tspan font-weight="700">제품 사실 단정</tspan>은 여전히 1~2급 확인 대상이다</text>
+    </svg>
+    <figcaption><b>3급을 한 덩어리로 「보조 자료」 취급하면 넓이가 죽는다.</b> 실측 전례 — “3급 보조 전용”이라는 서술이 실무·대안·반론 수집을 억제해 출처 26개가 전부 공식 문서였다. 그래서 G8 관점 게이트가 신설됐다. 다만 <b>경험 진술 안에 섞인 제품 사실 단정</b>은 여전히 1~2급 확인 대상이다.</figcaption>
+  </figure>
+
+  <h4>G8 관점 4축 — 공식 정의만 모으면 수업이 사전 낭독이 된다</h4>
+  <figure class="fig">
+    <svg viewBox="0 0 1000 400" role="img" aria-label="관점 4축 사분면. A 공식 정의는 필수지만 그것만으로는 부족하고, B 실무 사례·C 대안 비교·D 한계 반론 중 P0는 2개 이상, P1은 1개 이상을 채워야 하며 주차 바닥선은 대안 3개·한계 3개·사례 1개다.">
+      <!-- A -->
+      <rect class="sv-gen" x="16" y="28" width="472" height="128" rx="10"/>
+      <circle cx="46" cy="58" r="15" fill="var(--warn)"/>
+      <text x="46" y="63" text-anchor="middle" font-size="14" font-weight="700" fill="var(--warn-soft)">A</text>
+      <text class="sv-h" x="72" y="63">공식 정의 · 스펙</text>
+      <text class="sv-m" x="72" y="86">정확한 정의, 공식 동작·제공 범위</text>
+      <text class="sv-xs" x="72" y="104">주 출처 <tspan font-weight="700">1급</tspan> &#160;·&#160; 쿼리: “&lt;개념&gt; 공식 문서” · official docs</text>
+      <text class="sv-warn-t" x="72" y="128">⚠ 여기만 채우면 커버리지 빈칸은 0이어도</text>
+      <text class="sv-warn-t" x="72" y="144">&#160;&#160;&#160;수업이 사전 낭독이 된다 — A는 바닥이지 목표가 아니다</text>
+
+      <!-- B -->
+      <rect class="sv-art" x="512" y="28" width="472" height="128" rx="10"/>
+      <circle cx="542" cy="58" r="15" fill="var(--accent)"/>
+      <text x="542" y="63" text-anchor="middle" font-size="14" font-weight="700" fill="var(--accent-soft)">B</text>
+      <text class="sv-h" x="568" y="63">실무 사례 · 워크플로</text>
+      <text class="sv-m" x="568" y="86">실제로 누가 어떤 상황에서 어떻게 쓰는가, 현장 후기</text>
+      <text class="sv-xs" x="568" y="104">주 출처 <tspan font-weight="700">1~3급</tspan>(경험 진술 포함)</text>
+      <text class="sv-xs" x="568" y="122">쿼리: “&lt;개념&gt; 사용 후기/워크플로” · in practice</text>
+      <text class="sv-acc" x="568" y="144">청크 필드 → 사례(실무)</text>
+
+      <!-- C -->
+      <rect class="sv-art" x="16" y="172" width="472" height="128" rx="10"/>
+      <circle cx="46" cy="202" r="15" fill="var(--accent)"/>
+      <text x="46" y="207" text-anchor="middle" font-size="14" font-weight="700" fill="var(--accent-soft)">C</text>
+      <text class="sv-h" x="72" y="207">대안 · 경쟁 비교</text>
+      <text class="sv-m" x="72" y="230">제품 대 제품, 접근법 대 접근법 대조</text>
+      <text class="sv-xs" x="72" y="248">주 출처 <tspan font-weight="700">1~3급</tspan></text>
+      <text class="sv-xs" x="72" y="266">쿼리: “&lt;개념&gt; vs &lt;대안&gt;” · alternatives comparison</text>
+      <text class="sv-acc" x="72" y="288">청크 필드 → 대안·비교</text>
+
+      <!-- D -->
+      <rect class="sv-art" x="512" y="172" width="472" height="128" rx="10"/>
+      <circle cx="542" cy="202" r="15" fill="var(--accent)"/>
+      <text x="542" y="207" text-anchor="middle" font-size="14" font-weight="700" fill="var(--accent-soft)">D</text>
+      <text class="sv-h" x="568" y="207">한계 · 반론 · 논쟁</text>
+      <text class="sv-m" x="568" y="230">한계, 실패 사례, 비판, “언제 부적합한가”</text>
+      <text class="sv-xs" x="568" y="248">주 출처 <tspan font-weight="700">1~3급</tspan></text>
+      <text class="sv-xs" x="568" y="266">쿼리: “&lt;개념&gt; 한계/문제점” · limitations · when not to use</text>
+      <text class="sv-acc" x="568" y="288">청크 필드 → 한계·반론</text>
+
+      <!-- 최소치 밴드 -->
+      <rect class="sv-band" x="16" y="318" width="968" height="66" rx="10"/>
+      <text class="sv-h" x="36" y="342" font-size="13">최소치</text>
+      <text class="sv-m" x="98" y="342"><tspan font-weight="700">P0</tspan> 청크 = B·C·D 중 <tspan font-weight="700">2개 이상</tspan> &#160;·&#160; <tspan font-weight="700">P1</tspan> 청크 = <tspan font-weight="700">1개 이상</tspan> &#160;·&#160; 못 채운 곳은 <tspan font-weight="700">[관점 미확보: 사유]</tspan> 표기 (표기 없이 비면 FAIL)</text>
+      <text class="sv-h" x="36" y="370" font-size="13">바닥선</text>
+      <text class="sv-m" x="98" y="370">주차 전체 — <tspan font-weight="700">대안·비교 ≥3</tspan> &#160;·&#160; <tspan font-weight="700">한계·반론 ≥3</tspan> &#160;·&#160; <tspan font-weight="700">유형:사례 ≥1</tspan> &#160;|&#160; 출처 편중 — 최다 도메인 &gt;40% 또는 3급·[경험 진술] 0건이면 사유 필수</text>
+    </svg>
+    <figcaption><b>인접 청크(<code>범위:인접</code>)는 이 검사의 모수에서 빠진다</b> — B·C·D 3필드가 애초에 면제라서, 비었다고 FAIL로 잡으면 오탐이다. P0/P1 판정도 바닥선 집계도 <b>코어 청크만으로</b> 센다.</figcaption>
+  </figure>
+
+  <h3>§0.5 실행 예산 — 비상 중단선 (워커 1명 기준 · 정책 예산 아님)</h3>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>지표</th><th>중단선</th><th>근거</th></tr></thead>
+      <tbody>
+        <tr><td>agentic turn</td><td><strong>89</strong></td><td>2주차 워커 19개 분포의 historical max</td></tr>
+        <tr><td>WebSearch</td><td><strong>16</strong></td><td>〃</td></tr>
+        <tr><td>WebFetch</td><td><strong>18</strong></td><td>〃 — G8 P0 하한(관점 3개 → 최소 3회)을 크게 웃돌아 품질을 막지 않는다</td></tr>
+        <tr><td>처리 토큰</td><td><strong>9,778,017</strong></td><td>〃</td></tr>
+        <tr><td>동일 canonical URL 재호출</td><td><strong>1</strong></td><td>초과는 같은 원문을 다시 여는 폭주 신호</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>상태 태그 — 셋을 뭉뚱그리지 마라</h4>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>태그</th><th>언제</th><th>결정요청 등재</th></tr></thead>
+      <tbody>
+        <tr><td><code>[확인불가]</code></td><td>접근 실패로 원문을 못 열었다 (403/429는 삭제가 아니라 차단)</td><td>필수</td></tr>
+        <tr><td><code>[예산소진: 사유]</code></td><td>상한에 도달해 조사를 멈췄다</td><td>필수</td></tr>
+        <tr><td><code>[관점 미확보: 사유]</code></td><td>G8 최소치를 못 채웠다</td><td>필수</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>완료 보고에는 <strong>각각의 건수</strong>를 적는다 — 합산하지 않는다. G7 재대조에서 <strong>범위 밖</strong> 개념이 나오면 자동 확장하지 말고 결정요청으로 올린다.</p>
+
+  <h3>워크플로 8단계</h3>
+  <ol class="steps">
+    <li><span class="t">입력 파악</span><span class="d">주차(N)를 확정하고 read-path(주차 강의안설계 §6·§11·§14·§15 → <code>skills/README.md</code> → <code>sessions/README.md</code> → 커리큘럼 기준안 → 기존 <code>자료/</code>)를 순서대로 읽는다. 기존 개념KB가 있으면 <strong>전문 통독 금지 · 「청크 인덱스」 표만</strong>.</span></li>
+    <li><span class="t">★ 게이트A — 조사 범위 확인 <span class="tag acc">승인 지점</span></span><span class="d">①교시 목록 ②교시별 핵심 질문 ③실습 후보 ④결정요청 후보 ⑤<strong>인접 개념 후보</strong>(<code>본 개념 | 인접 개념 | 종류 | 왜 필요한가</code> 4열, 커리큘럼 밖임을 명시)를 표로 제시하고 <strong>확인을 받은 뒤에만</strong> 조사를 시작한다. 상세안이 없는 주차는 개요에서 역산해 <strong>‘제안’임을 명시</strong>한다.</span></li>
+    <li><span class="t">조사 계획</span><span class="d">합의 범위를 <strong>교시 × 조사 항목 × 관점(A/B/C/D)</strong> 매트릭스로 쪼갠다. 각 행에 청크 슬러그(<code>C-…</code>)와 우선순위(P0/P1/P2)를 미리 배정. 승인된 인접 개념은 <code>범위=인접</code> 행으로 넣되 <strong>관점 열은 비운다</strong>(A만 조사).</span></li>
+    <li><span class="t">심층 조사 — 병렬이 기본</span><span class="d">deep-research 가용성을 먼저 확인. 있으면 정제된 질문 + 이 스킬의 제약(등급·5개월·URL+날짜·4관점)을 args에 명시하고 반환물을 <strong>§0 게이트로 다시 필터링</strong>. 없으면 내장 폴백(웹검색 팬아웃 → WebFetch 원문 확인 → 동일 게이트). 항목이 여럿이면 <strong>Workflow/다중 서브에이전트 병렬</strong>, 순차 폴백이면 사유를 완료 보고에.</span></li>
+    <li><span class="t">실습 검증</span><span class="d">실습 후보마다 파일4 <strong>13항목 스키마</strong>를 채우고 주차 강의안설계 §11로 판정(처음 보는 사람이 지시문만으로 시작 가능한가, 5~7분 안에 복구되는가). 직접 재현 못 한 항목은 추측하지 말고 <code>[미검증]</code>.</span></li>
+    <li><span class="t">게이트 필터 · 수업 문장화 · G7 재대조</span><span class="d">채택분을 <strong>대상 수강생이 한 번에 읽고 이해할 문장</strong>으로. 단순화가 부정확으로 넘어가지 않게 압축본을 원문 인용과 대조. 청크 최소깊이(비유≥2·워크드예시≥1·흔한오해→교정≥2·verbatim≥1)와 G8 최소치 충족. 확정 전 <strong>G7 재대조</strong>.</span></li>
+    <li><span class="t">산출</span><span class="d">기본 5파일을 <code>…/N주차/자료/</code>에. 각 파일 서두에 메타 헤더. <strong>중간 산출물 수명 규칙</strong>: 장문 심층리서치·워커 수확본·<code>_v1</code>류 구버전·임시 커버리지 표는 5파일에 흡수 후 <code>자료/</code>에 남기지 않는다(보존은 <code>_dev/설계기록/탐색-아카이브/N주차/</code>). <strong>증분 기록은 개념KB 서두 「변경 이력」 한 곳에만.</strong></span></li>
+    <li><span class="t">자기검증 → 완료 보고</span><span class="d">체크리스트 통과 후 보고: 산출 목록·인벤토리 종착 상태 · 커버리지 빈칸 수 · <strong>G8 관점 분포</strong>(구간별 B/C/D 충족표, 채택 출처 도메인 상위 3개 비중) · <strong>G9 인접</strong>(채택 수·코어 대비 비율·<strong>기각 후보 목록</strong>) · 결정요청 수 · 예외승인·탈락 로그 · 병렬/순차 여부 · <strong>실행 예산 실측치와 중단선 도달 여부</strong>(<code>right-censored</code>) · 다음 단계 안내.</span></li>
+  </ol>
+
+  <h3>워커 규율 (4단계 팬아웃 시)</h3>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>규칙</th><th>내용</th></tr></thead>
+      <tbody>
+        <tr><td><strong>단일 라이터</strong></td><td><code>자료/</code>에 쓰는 주체는 <strong>리드 하나뿐</strong>. 워커는 <strong>파일을 쓰지 않는다</strong> — 기본 5파일도, 임시 파일도. 결과는 오직 반환값으로만 온다</td></tr>
+        <tr><td><strong><code>S-###</code> 할당</strong></td><td>워커는 URL·서지 정보만 반환하고 ID를 스스로 붙이지 않는다. 최종 할당·중복 병합은 리드</td></tr>
+        <tr><td><strong>반환에 담는 것</strong></td><td>청크 본문(템플릿 그대로) · 레지스트리 행 · 관점 충족 여부(A/B/C/D) · 상태 태그 · 예산 사용량</td></tr>
+        <tr><td><strong>반환에 담지 않는 것</strong></td><td>산문 요약·서론·“조사했습니다” 류 보고문 · 프롬프트 되풀이 · 원문 장문 전재(verbatim은 <strong>핵심 한 문장</strong>) · 이미 반환한 내용의 재게시</td></tr>
+        <tr><td><strong>크기</strong></td><td>청크 1개당 반환 <strong>수천 자 규모</strong>를 넘기지 않는다</td></tr>
+        <tr><td><strong>리드 컨텍스트</strong></td><td>개념KB·결과.md 전문을 매 턴 재독하지 않는다. 상태 파악은 <strong>청크 인덱스 표 + verify 출력</strong>으로. 완료 보고에 리드의 파일 재독 횟수를 적는다</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="callout warn">
+    <span class="lab">강제 수준의 비대칭</span>
+    Claude Code에서는 워커에 <code>Write</code>·<code>Edit</code> 도구가 <strong>애초에 없어</strong> 파일 쓰기가 구조적으로 막힌다(<code>.claude/agents/research-worker.md</code> — tools 화이트리스트 · <code>model: sonnet</code> · <code>maxTurns</code>). 반면 <strong>반환 크기·내용 규칙은 자연어 수준</strong>이며 리드가 병합 시점에 확인한다. 실행 후 감사: <code>python scripts/analyze_agent_usage.py --tool-audit --session &lt;세션ID&gt;</code> (0 통과 / 3 위반).
+  </div>
+</section>
+
+<!-- ══════════════ 5 ══════════════ -->
+<section id="s5">
+  <h2><span class="num">5</span>② <code>/create-slides</code> — 집필 + 조립</h2>
+  <p class="dek">정본 루트 <code>SKILL.md</code>. 단계별 상세는 <code>references/phases/0N</code>을 <strong>그 단계에서만</strong> 읽는다 — 전부 미리 읽지 않는다.</p>
+
+  <h3>① 입력 계약 — 3가지 진입</h3>
+  <div class="grid3">
+    <div class="card"><h4>ⓐ 채워진 콘텐츠 초안</h4><p>공식 입력 — 교시별 <code>#·슬라이드 제목·본문 문구·비유·멘트</code> 4열 표 + 아이콘 범례. 스키마 정본 <code>입력양식/콘텐츠초안템플릿.md</code>.</p></div>
+    <div class="card"><h4>ⓑ 브리프·원자료만</h4><p>폼 없이 자료만 → <strong>슬라이드 계획을 먼저 초안</strong>하고 확인. <strong>집필노트를 함께 산출해야 한다(R-TRACE-01).</strong></p></div>
+    <div class="card"><h4>ⓒ 한 장만·기존 덱에 추가</h4><p>스캐폴딩 생략하고 <strong>2~5단계만</strong> 수행.</p></div>
+  </div>
+
+  <div class="callout fail">
+    <span class="lab">R-TRACE-01 — ⓑ 경로의 근거 추적 의무</span>
+    refs 주석·출처 추적표·게이트A는 전부 <strong>초안 산출물에 붙어 있어서</strong>, 초안 없이 진입하는 ⓑ에서는 근거 추적이 <strong>구조적으로 0</strong>이었다(2026-07-28 4구간 9장 실측: refs 0건·집필노트 없음·개념KB <code>PPT 소재</code> 63건 미회수). 그래서 ⓑ면 <code>자료/N주차_콘텐츠_집필노트.md</code>를 함께 산출한다 — <strong>표 2개</strong>:
+    <ul>
+      <li><strong>출처 추적표</strong> — <code>슬라이드# | 슬라이드 제목 | 판단 | 근거(파일·항목) | [C-슬러그] | 비고</code></li>
+      <li><strong>재료 처분표</strong> — <code>재료 | 출처 청크 | 등급 | 처분 | 사유 | 실현 위치(슬라이드#)</code>. 등급은 <strong>필수</strong>(청크 <code>필수 진술:</code> · 처분은 사용/대체만 · <strong>보류 불가</strong>) · <strong>제안</strong>(<code>PPT 소재:</code> · 사용/대체/보류 모두 가능 · 대체·보류는 사유 필수) · <strong>일반</strong>(올릴 수 있었으나 안 올림 · 보류+사유)</li>
+    </ul>
+  </div>
+
+  <h4>판단 5분류 (R-JUDGE-01) — 자유도가 높다고 검증이 느슨해지는 게 아니다</h4>
+  <figure class="fig">
+    <svg viewBox="0 0 1000 400" role="img" aria-label="판단 5분류를 자유도와 검증 강도 두 축에 배치한 산점도. F는 자유도 0에 검증 최대, D2는 자유도가 높은데도 검증은 F와 같은 최대여서 근거 필수 구역에 함께 놓인다. D1과 S는 기록만, E·V는 기록도 불필요.">
+      <!-- 근거 필수 구역 밴드 -->
+      <rect x="164" y="70" width="792" height="60" rx="8" fill="var(--fail-soft)" stroke="var(--fail)" stroke-width="1.2" stroke-dasharray="6 5"/>
+      <text class="sv-fail-t" x="946" y="88" text-anchor="end">근거 없이는 화면에 올릴 수 없는 구역</text>
+
+      <!-- 축 -->
+      <path class="sv-l" d="M164,350 L164,44" marker-end="url(#jd-arw)"/>
+      <path class="sv-l" d="M164,350 L960,350" marker-end="url(#jd-arw)"/>
+      <defs><marker id="jd-arw" viewBox="0 0 10 8" refX="9" refY="4" markerWidth="8" markerHeight="7" orient="auto"><path d="M0,0 L10,4 L0,8 Z" fill="var(--ink-3)"/></marker></defs>
+      <text class="sv-xs" x="164" y="34" text-anchor="middle">검증 강도</text>
+      <text class="sv-xs" x="560" y="378" text-anchor="middle">자유도 &#8594;</text>
+      <text class="sv-xs" x="180" y="368">없음</text>
+      <text class="sv-xs" x="952" y="368" text-anchor="end">완전 자유</text>
+
+      <!-- 수준 가이드 -->
+      <path class="sv-grid" d="M164,100 L956,100" stroke-dasharray="4 4"/>
+      <path class="sv-grid" d="M164,225 L956,225" stroke-dasharray="4 4"/>
+      <path class="sv-grid" d="M164,300 L956,300" stroke-dasharray="4 4"/>
+      <text class="sv-xs" x="152" y="96" text-anchor="end">근거 필수 —</text>
+      <text class="sv-xs" x="152" y="110" text-anchor="end">F와 같은 강도</text>
+      <text class="sv-xs" x="152" y="222" text-anchor="end">기록만 필요</text>
+      <text class="sv-xs" x="152" y="236" text-anchor="end">(도출 근거 불필요)</text>
+      <text class="sv-xs" x="152" y="304" text-anchor="end">기록도 불필요</text>
+
+      <!-- F -->
+      <rect class="sv-plain" x="178" y="30" width="172" height="38" rx="8"/>
+      <text class="sv-h" x="192" y="48" font-size="13">F — 사실</text>
+      <text class="sv-xs" x="192" y="62">정의·수치·제품 동작·인용</text>
+      <path class="sv-grid" d="M215,68 L215,90"/>
+      <circle cx="215" cy="100" r="9" fill="var(--accent)"/>
+      <text class="sv-acc" x="215" y="128" text-anchor="middle">추적표 + [C-슬러그]/[S-###]</text>
+
+      <!-- D2 -->
+      <rect x="678" y="30" width="240" height="38" rx="8" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2"/>
+      <text class="sv-h" x="692" y="48" font-size="13">D2 — 신규 명제</text>
+      <text class="sv-xs" x="692" y="62">분류 기준 · 축 설계 · 인과 도출</text>
+      <path class="sv-grid" d="M790,68 L790,88"/>
+      <circle cx="790" cy="100" r="11" fill="var(--accent)" stroke="var(--fail)" stroke-width="3"/>
+      <text class="sv-acc" x="790" y="128" text-anchor="middle">추적표 <tspan font-weight="700">별도 행</tspan> + 비고에 도출 근거 한 줄</text>
+
+      <!-- D1 -->
+      <circle cx="560" cy="225" r="9" fill="var(--accent)"/>
+      <path class="sv-grid" d="M560,234 L560,252"/>
+      <rect class="sv-plain" x="466" y="252" width="188" height="38" rx="8"/>
+      <text class="sv-h" x="480" y="270" font-size="13">D1 — 재배열</text>
+      <text class="sv-xs" x="480" y="284">묶음·순서 바꾸기 · 추적표 행</text>
+
+      <!-- S -->
+      <circle cx="700" cy="225" r="9" fill="var(--accent)"/>
+      <path class="sv-grid" d="M700,234 L700,252"/>
+      <rect class="sv-plain" x="666" y="252" width="196" height="38" rx="8"/>
+      <text class="sv-h" x="680" y="270" font-size="13">S — 선택·생략</text>
+      <text class="sv-xs" x="680" y="284"><tspan font-weight="700">재료 처분표에만</tspan> (추적표 중복 금지)</text>
+
+      <!-- E·V -->
+      <circle cx="905" cy="300" r="9" fill="var(--accent)"/>
+      <path class="sv-grid" d="M896,300 L878,300"/>
+      <rect class="sv-plain" x="668" y="300" width="210" height="38" rx="8"/>
+      <text class="sv-h" x="682" y="318" font-size="13">E·V — 표현·시각</text>
+      <text class="sv-xs" x="682" y="332">문장·비유·예시·강조·배치</text>
+    </svg>
+    <figcaption><b>D2 하나만 대각선을 거스른다.</b> 나머지는 “자유로울수록 검증이 가벼워진다”는 직선 위에 놓이는데, D2는 자유도가 D1·S만큼 높으면서도 <b>원 사실에 없던 새 주장</b>이라 F와 같은 강도로 검증된다. 그래서 D2만 추적표에 <b>별도 행</b>을 쓴다 — <b>D2를 D1이나 E·V로 적어 대각선 위로 끌어내리는 것</b>이 이 표의 실패 모드이며, 도출 근거를 못 적으면 그 행은 D2가 아니라 무근거 주장이다.</figcaption>
+  </figure>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>부호</th><th>무엇</th><th>자유도</th><th>기록 위치</th></tr></thead>
+      <tbody>
+        <tr><td><strong>F</strong></td><td>사실 — 정의·수치·제품 동작·인용</td><td>없음</td><td>추적표 슬라이드 행 + <code>[C-슬러그]</code>/<code>[S-###]</code> <strong>필수</strong></td></tr>
+        <tr><td><strong>S</strong></td><td>선택·생략 — 무엇을 뺐는가</td><td>높음</td><td><strong>재료 처분표에만</strong> (추적표에 중복하지 않는다)</td></tr>
+        <tr><td><strong>D1</strong></td><td>재배열 — 여러 사실의 묶음·순서 바꾸기</td><td>높음</td><td>추적표 슬라이드 행</td></tr>
+        <tr><td><strong>D2</strong></td><td>신규 명제 — 분류 기준·축 설계·인과 도출</td><td>원 사실에 없던 새 주장</td><td><strong>추적표 별도 행 + 비고에 도출 근거 한 줄</strong>. F와 같은 강도로 검증</td></tr>
+        <tr><td><strong>E·V</strong></td><td>표현·시각 — 문장·비유·예시·강조·배치</td><td>완전 자유</td><td>근거 불필요</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p><strong>D2를 D1이나 E·V로 적지 않는다</strong> — 도출 근거를 못 적으면 그 행은 D2가 아니라 무근거 주장이다.</p>
+
+  <h4>KB 회수 — 2등급 필드 (R-KB-01)</h4>
+  <div class="grid2">
+    <div class="card"><h4><code>PPT 소재:</code> — 기본 참조 의무 + 대체 자유</h4><p><strong>회수는 필수</strong>, 읽은 뒤 정보 모양 판단에 따라 자유롭게 대체(R-LAYOUT-02 우선 · 대체 사유만 남긴다). <strong>미회수는 위반</strong> — 2026-07-29 A/B 실험에서 회수하지 않은 판이 놓친 6건이 전부 «회수해야만 나오는 연출»이었다.</p></div>
+    <div class="card"><h4><code>필수 진술:</code> — 내용 보존 의무</h4><p>표현·배치는 바꿔도 <strong>뜻이 화면에 남아야 한다</strong>. 빠지면 그 슬라이드는 미완성이다.</p></div>
+  </div>
+
+  <h3>② 출력 계약</h3>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>산출물</th><th>만드는 법</th><th>성격</th></tr></thead>
+      <tbody>
+        <tr><td><strong>정본은 조각</strong> <code>강의덱.초안/</code></td><td><code>shell.html</code>(head·고정 슬라이드·<code>&lt;!-- ::PARTS:: --&gt;</code> 마커·JS) + PART마다 <code>part-NN.html</code></td><td>대화형 수정 대상</td></tr>
+        <tr><td><code>강의덱.html</code></td><td><code>python scripts/assemble_deck.py …/강의덱.초안</code> (<code>--watch</code>로 자동 재조립)</td><td><strong>생성물</strong> — 직접 편집 금지</td></tr>
+        <tr><td><code>강의덱_배포.html</code></td><td><code>python scripts/build_release.py …/강의덱.초안</code></td><td>단일 자립(오프라인)</td></tr>
+        <tr><td><code>강의덱_발표자노트.html</code></td><td>초안에 <code>💬</code>/<code>👀</code>/<code>🗣</code>가 하나라도 있으면 자동 산출</td><td>강사용</td></tr>
+        <tr><td><code>강의덱_발표.html</code></td><td><code>python scripts/inject_presenter.py …</code> — <strong>10단계 · 명시 요청 전용</strong></td><td>발표 런타임 주입본</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <figure class="fig">
+    <svg viewBox="0 0 1060 352" role="img" aria-label="빌드 그래프. 정본인 강의덱.초안 폴더의 shell.html과 part 조각을 assemble_deck.py가 합쳐 강의덱.html을 덮어쓰고, build_release.py가 배포본을, inject_presenter.py가 선택적으로 발표본을 만든다. 생성물을 직접 편집하면 다음 조립 때 유실된다.">
+      <defs><marker id="bd-arw" viewBox="0 0 10 8" refX="9" refY="4" markerWidth="8" markerHeight="7" orient="auto"><path d="M0,0 L10,4 L0,8 Z" fill="var(--ink-3)"/></marker>
+      <marker id="bd-arwf" viewBox="0 0 10 8" refX="9" refY="4" markerWidth="8" markerHeight="7" orient="auto"><path d="M0,0 L10,4 L0,8 Z" fill="var(--fail)"/></marker></defs>
+
+      <!-- 직접 편집 경고 -->
+      <rect class="sv-bad" x="306" y="18" width="176" height="38" rx="8"/>
+      <text class="sv-fail-t" x="394" y="42" text-anchor="middle">사람이 여기를 직접 편집</text>
+      <path class="sv-l-fail" d="M394,58 L394,104" marker-end="url(#bd-arwf)" stroke-dasharray="5 4"/>
+      <path class="sv-l-fail" d="M382,73 L406,89 M406,73 L382,89"/>
+      <text class="sv-fail-t" x="500" y="34">다음 조립 때 유실된다 — 생성물에만 있는 슬라이드는 <tspan font-weight="700">조립 즉시</tspan> 사라진다</text>
+      <text class="sv-xs" x="500" y="50">2026-07-24 실제 사고 &#160;·&#160; 지금은 PreToolUse <tspan font-weight="700">generated-guard</tspan>(관측) + <tspan font-weight="700">.githooks/pre-commit</tspan>(차단)이 검출한다</text>
+      <text class="sv-xs" x="500" y="66">긴급하면 <tspan font-weight="700">DECK_EMERGENCY_EDIT=1</tspan>로 빠져나가되, 같은 내용을 shard에도 반영한다</text>
+
+      <!-- 정본 폴더 -->
+      <rect class="sv-stage" x="16" y="96" width="184" height="150" rx="10"/>
+      <text class="sv-acc" x="30" y="118">★ 정본 — 여기를 고친다</text>
+      <text class="sv-h" x="30" y="137" font-size="13">강의덱.초안/</text>
+      <rect class="sv-plain" x="30" y="148" width="156" height="28" rx="6"/>
+      <text class="sv-m" x="40" y="160">shell.html</text>
+      <text class="sv-xs" x="40" y="172">head · 고정 슬라이드 · JS</text>
+      <rect class="sv-plain" x="30" y="180" width="156" height="24" rx="6"/>
+      <text class="sv-m" x="40" y="196">part-01.html</text>
+      <rect class="sv-plain" x="30" y="208" width="156" height="24" rx="6"/>
+      <text class="sv-m" x="40" y="224">part-NN.html</text>
+      <text class="sv-xs" x="30" y="242">파트 수 = divider 수 (R-PART-01)</text>
+
+      <!-- 생성물 3종 -->
+      <path class="sv-l" d="M206,158 L298,158" marker-end="url(#bd-arw)"/>
+      <text class="sv-xs" x="250" y="146" text-anchor="middle" font-size="9.5">assemble_deck.py</text>
+      <text class="sv-fail-t" x="250" y="176" text-anchor="middle">덮어씀</text>
+      <rect class="sv-gen" x="306" y="112" width="176" height="84" rx="10"/>
+      <text class="sv-warn-t" x="394" y="134" text-anchor="middle">생성물</text>
+      <text class="sv-h" x="394" y="156" text-anchor="middle" font-size="13">강의덱.html</text>
+      <text class="sv-xs" x="394" y="176" text-anchor="middle">조립 미리보기 · 외부링크 CSS</text>
+      <text class="sv-xs" x="394" y="189" text-anchor="middle">CSS 경로 ../../../../ (4단계)</text>
+
+      <path class="sv-l" d="M486,158 L552,158" marker-end="url(#bd-arw)"/>
+      <text class="sv-xs" x="519" y="146" text-anchor="middle" font-size="9.5">build_release.py</text>
+      <text class="sv-xs" x="519" y="176" text-anchor="middle">fail-closed</text>
+      <rect class="sv-gen" x="560" y="112" width="176" height="84" rx="10"/>
+      <text class="sv-warn-t" x="648" y="134" text-anchor="middle">생성물</text>
+      <text class="sv-h" x="648" y="156" text-anchor="middle" font-size="13">강의덱_배포.html</text>
+      <text class="sv-xs" x="648" y="176" text-anchor="middle">CSS·이미지·폰트 전부 인라인</text>
+      <text class="sv-xs" x="648" y="189" text-anchor="middle">오프라인 자립 · 이 파일만 주면 됨</text>
+
+      <path class="sv-d" d="M740,158 L826,158" marker-end="url(#bd-arw)"/>
+      <text class="sv-xs" x="785" y="146" text-anchor="middle" font-size="9.5">inject_presenter.py</text>
+      <text class="sv-xs" x="785" y="176" text-anchor="middle">선택</text>
+      <rect class="sv-in" x="834" y="112" width="196" height="84" rx="10"/>
+      <text class="sv-xs" x="932" y="134" text-anchor="middle">10단계 · 명시 요청 전용</text>
+      <text class="sv-h" x="932" y="156" text-anchor="middle" font-size="13">강의덱_발표.html</text>
+      <text class="sv-xs" x="932" y="176" text-anchor="middle">하단 네비 + 발표자 창 런타임</text>
+      <text class="sv-xs" x="932" y="189" text-anchor="middle">입력은 <tspan font-weight="700">배포본</tspan> — 조각 재생성 아님</text>
+
+      <!-- 초안 → 폴더 / 노트 -->
+      <rect class="sv-art" x="16" y="282" width="214" height="54" rx="10"/>
+      <text class="sv-h" x="30" y="304" font-size="13">N주차_초안.md</text>
+      <text class="sv-xs" x="30" y="322">4열 표 + 아이콘 범례 (ⓐ 경로의 정본)</text>
+      <path class="sv-l" d="M108,278 L108,252" marker-end="url(#bd-arw)"/>
+      <text class="sv-xs" x="118" y="270">조립 입력</text>
+      <path class="sv-l" d="M234,309 L552,309" marker-end="url(#bd-arw)"/>
+      <text class="sv-xs" x="393" y="300" text-anchor="middle">💬 👀 🗣 가 하나라도 있으면</text>
+      <text class="sv-xs" x="393" y="326" text-anchor="middle">아이콘은 학생 덱에서 제거하고 노트에만 (R-ICON-01)</text>
+      <rect class="sv-art" x="560" y="282" width="230" height="54" rx="10"/>
+      <text class="sv-h" x="574" y="304" font-size="13">강의덱_발표자노트.html</text>
+      <text class="sv-xs" x="574" y="322">pn-no가 덱 페이지 번호와 일치해야 함</text>
+    </svg>
+    <figcaption><b>화살표가 한 방향뿐이라는 것이 이 그림의 요점이다.</b> 생성물에서 정본으로 되돌아오는 경로는 없다 — 그래서 <code>강의덱.html</code>을 고치면 그 변경은 어디에도 남지 않는다. 이미 어긋났다면 shard를 하나씩 맞추지 말고 <b>완성된 덱을 파트 경계로 잘라 shard를 재생성</b>한 뒤, 조립 결과를 조립 전 사본과 diff한다(조립 전에 반드시 사본을 떠둔다). <code>build_release.py</code> 한 커맨드가 곧 <b>조립 → verify_deck → inline_deck --offline → verify_distributable</b>이다.</figcaption>
+  </figure>
+
+  <div class="callout warn">
+    <span class="lab">CSS 상대경로 — 4단계</span>
+    kit CSS 링크는 <code>../../../../kit/styles/…</code> (생성물 <code>강의덱.html</code> 위치에서 저장소 루트까지 <strong>4단계</strong>). ⚠️ 2단계(<code>../../</code>)는 2026-07 폴더 이동 이전의 낡은 값이고, 지금 쓰면 CSS가 404인데 <strong>정적 검증은 전부 PASS한다</strong> — 브라우저에서만 드러난다.
+  </div>
+
+  <h3>③ 정본 우선순위</h3>
+<pre>현재 사용자 지시 → 채워진 콘텐츠 초안 → 원본 자료 → 과목 프로필 → 이 스킬의 판단 규칙</pre>
+  <p>디자인 정본 4파일: <code>kit/guide/디자인시스템.md</code>(R-COLOR-01~05·R-EMPH-01·R-TERM-01) · <code>kit/guide/토큰-치트시트.md</code>(R-TYPE-01~03) · <code>kit/guide/정보모양-taxonomy.md</code> · <code>kit/guide/카탈로그-규격.md</code>(R-LAYOUT-03). 교육 원칙은 <code>kit/guide/교육원칙-요약.md</code>.</p>
+
+  <h3>③-B 통합 실행과 승인 게이트 (R-EXEC-01)</h3>
+  <p>집필과 조립은 <strong>하나의 실행 단위</strong>다. 정보 모양·구조 재구성은 화면을 알아야 판단할 수 있고, 문장은 그 구조에 맞물려 결정된다 — 둘을 갈라 왕복하면 판단이 끊긴다.</p>
+
+  <h4>소유권은 없애지 않는다 — 작성 주체로 분기 (R-OWN-03)</h4>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>작성 주체 (초안 메타 <code>&gt; 작성:</code> / <code>&gt; 작성 주체:</code>)</th><th>문장 수정 권한</th><th>조건</th></tr></thead>
+      <tbody>
+        <tr><td><strong>사람</strong> (또는 <strong>필드 없음</strong>)</td><td><span class="tag fail">불가</span> R-OWN-01 그대로</td><td>고칠 곳은 고치지 말고 <strong>보고</strong>한다(R-OWN-02)</td></tr>
+        <tr><td><strong>스킬</strong> (create-slides ⓑ 진입)</td><td><span class="tag warn">같은 실행 안에서만</span></td><td>수정할 때마다 <strong>변경 사유를 판단 기록에</strong>(R-JUDGE-01)</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p><strong>필드가 없으면 사람으로 간주</strong>한다(보수적 기본값). <strong>“같은 실행 안에서만”이 핵심</strong> — 다음 세션이 지난 실행의 산출물을 자기 것으로 여겨 고치면 소유권 경계가 사실상 사라진다.</p>
+
+  <h4>승인 게이트 2개 (고정)</h4>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th></th><th>시점</th><th>제출물</th><th>통과</th></tr></thead>
+      <tbody>
+        <tr><td><strong>G1</strong></td><td><strong>조립 전</strong></td><td>골격(장수·핵심 한마디) + <strong>정보 모양</strong> + <strong>시각 후보</strong>(레이아웃·element) + <strong>슬라이드 결정표</strong></td><td>아래 분기</td></tr>
+        <tr><td><strong>G2</strong></td><td><strong>조립 후</strong></td><td>렌더 결과(헤드리스 Chrome 실측 + 캡처)</td><td>사용자 확인</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="callout acc">
+    <span class="lab">3원 충돌의 해소</span>
+    <strong>G1의 제출은 언제나 필수다. 대기 여부만 갈린다.</strong> 자율 실행 권한이 명확하면 제출 후 <strong>바로 진행</strong>하고, 권한이 없거나 결과를 바꾸는 모호한 선택이 있으면 <strong>답을 기다린다</strong>. 어느 쪽이든 결정표는 남는다.
+  </div>
+
+  <h3>④ 절대 금지 10항</h3>
+  <p><strong>충돌 시 우선순위</strong>: 겹침·화면 이탈·잘림 0 &gt; 이미지 확대·장식·밀도·레이아웃 취향. 1280×720 안에서 제목·본문·캡션·이미지·페이지 번호가 <strong>모두</strong> 보여야 한다.</p>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>#</th><th>금지</th><th>규칙 ID</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>raw <code>#hex</code>·navy·그라데이션 — <strong>토큰만</strong> 쓴다</td><td>R-COLOR-01</td></tr>
+        <tr><td>2</td><td>민트·코랄 fill 위 <strong>흰 글자</strong> — <code>--on-mint</code>/<code>--on-coral</code>. 예외는 <code>.hl-mint-mark</code> 하나뿐</td><td>R-COLOR-02</td></tr>
+        <tr><td>3</td><td><strong>흰색-온-흰색</strong> 표면 — 흰 fill + <code>--line</code> 단독 보더는 verify FAIL</td><td>R-COLOR-04</td></tr>
+        <tr><td>4</td><td>본문 <strong>22px 미만</strong> — 예외는 주차 계약에 등재해야 유효</td><td>R-TYPE-01</td></tr>
+        <tr><td>5</td><td>콘텐츠 <strong>하단 666px 침범</strong> — 폰트를 줄여 해결하지 않는다</td><td>R-TYPE-03</td></tr>
+        <tr><td>6</td><td><strong>초안 제목·본문 임의 재작성</strong>. 콘텐츠 계층 문제는 고치지 말고 <strong>파일로</strong> 보고(<code>…/N주차/조립_보고.md</code>) — 대화로만 보고하면 세션이 끝날 때 사라진다</td><td>R-OWN-01·02</td></tr>
+        <tr><td>7</td><td><strong>아이콘 누출</strong> — <code>💬</code>·<code>👀</code>·<code>🗣</code>은 학생 덱에서 제거하고 발표자 노트에만. <code>.hint-reveal</code>·<code>강사 힌트</code>·<code>막힐 때만 보기</code>·<code>완성 예시 보기</code>·이모지 문자는 verify FAIL</td><td>R-ICON-01</td></tr>
+        <tr><td>8</td><td><strong>생성물 직접 편집</strong> — <code>강의덱.html</code>·<code>강의덱_배포.html</code>은 생성물. 조각을 고쳐 재조립</td><td>—</td></tr>
+        <tr><td>9</td><td><code>overflow:hidden</code>으로 <strong>은폐</strong> — <code>getBoundingClientRect()</code>로 실측. 이미지 확대와 겹침이 충돌하면 <strong>언제나 겹침 0</strong></td><td>R-IMG-04</td></tr>
+        <tr><td>10</td><td><strong>정적 PASS만으로 완료 선언</strong> — 브라우저 전수 측정 전에는 “완성”이 아니다. 레이아웃도 같은 원칙: 모든 레이아웃·element는 <strong>동급</strong>이고 정보 모양이 고른다(no-default). <strong>“좌 글/우 시각”은 기본값이 아니다</strong> · split은 <strong>희소하게 · 연속 금지</strong></td><td>R-VERIFY-01 · R-LAYOUT-02</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <figure class="fig">
+    <svg viewBox="0 0 1160 540" role="img" aria-label="1280×720 슬라이드 캔버스 도해. 상단 헤더 밴드, 본문 안전 영역, 그리고 666px부터 720px까지의 하단 크롬 영역이 표시돼 있다. 콘텐츠는 666px 선을 넘을 수 없다.">
+      <defs>
+        <pattern id="sa-hatch" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="9" stroke="var(--fail)" stroke-width="1.6" opacity="0.4"/></pattern>
+      </defs>
+
+      <!-- 가로 눈금 -->
+      <path class="sv-grid" d="M90,20 L90,34 M884,20 L884,34 M90,27 L884,27"/>
+      <text class="sv-xs" x="96" y="16">0</text>
+      <text class="sv-xs" x="878" y="16" text-anchor="end">1280 px</text>
+
+      <!-- 세로 눈금 -->
+      <path class="sv-grid" d="M60,40 L60,486 M52,40 L68,40 M52,453 L68,453 M52,486 L68,486"/>
+      <text class="sv-xs" x="46" y="44" text-anchor="end">0</text>
+      <text class="sv-fail-t" x="46" y="457" text-anchor="end">666</text>
+      <text class="sv-xs" x="46" y="490" text-anchor="end">720</text>
+
+      <!-- 슬라이드 캔버스 -->
+      <rect x="90" y="40" width="794" height="446" rx="6" fill="var(--surface)" stroke="var(--ink-3)" stroke-width="2"/>
+
+      <!-- 헤더 -->
+      <rect x="90" y="40" width="794" height="58" fill="var(--surface-2)"/>
+      <text class="sv-xs" x="108" y="62">PART 2 / 6 &#160;&#160;●●○○○○ &#160;<tspan fill="var(--ink-3)">← divider DOM 순서로 자동 생성 (R-PART-02)</tspan></text>
+      <text class="sv-h" x="108" y="86">슬라이드 제목</text>
+
+      <!-- 본문 좌 -->
+      <rect x="114" y="116" width="360" height="130" rx="6" fill="var(--surface-2)" stroke="var(--line)" stroke-width="1"/>
+      <rect x="130" y="136" width="300" height="10" rx="3" fill="var(--ink-3)" opacity=".45"/>
+      <rect x="130" y="158" width="328" height="10" rx="3" fill="var(--ink-3)" opacity=".45"/>
+      <rect x="130" y="180" width="250" height="10" rx="3" fill="var(--ink-3)" opacity=".45"/>
+      <circle cx="140" cy="216" r="11" fill="var(--accent)"/><text x="140" y="220" text-anchor="middle" font-size="11" font-weight="700" fill="var(--accent-soft)">2</text>
+      <text class="sv-xs" x="158" y="220">본문 텍스트 — 22px 하한</text>
+
+      <!-- 본문 우: 시각 element -->
+      <rect x="494" y="116" width="376" height="130" rx="6" fill="var(--surface-2)" stroke="var(--line)" stroke-width="1"/>
+      <rect x="520" y="196" width="46" height="34" rx="4" fill="var(--accent)" opacity=".8"/>
+      <rect x="580" y="166" width="46" height="64" rx="4" fill="var(--accent)" opacity=".8"/>
+      <rect x="640" y="146" width="46" height="84" rx="4" fill="var(--accent)" opacity=".8"/>
+      <circle cx="800" cy="150" r="11" fill="var(--accent)"/><text x="800" y="154" text-anchor="middle" font-size="11" font-weight="700" fill="var(--accent-soft)">4</text>
+      <text class="sv-xs" x="784" y="182" text-anchor="end">시각 element</text>
+
+      <!-- 하단 카드 3 -->
+      <rect x="114" y="262" width="246" height="168" rx="6" fill="var(--surface-2)" stroke="var(--line)" stroke-width="1"/>
+      <rect x="368" y="262" width="246" height="168" rx="6" fill="var(--surface-2)" stroke="var(--line)" stroke-width="1"/>
+      <rect x="622" y="262" width="248" height="168" rx="6" fill="var(--surface-2)" stroke="var(--line)" stroke-width="1"/>
+      <circle cx="491" cy="346" r="11" fill="var(--accent)"/><text x="491" y="350" text-anchor="middle" font-size="11" font-weight="700" fill="var(--accent-soft)">3</text>
+
+      <!-- 666 금지 밴드 -->
+      <rect x="90" y="453" width="794" height="33" fill="var(--fail-soft)"/>
+      <rect x="90" y="453" width="794" height="33" fill="url(#sa-hatch)"/>
+      <path d="M90,453 L884,453" stroke="var(--fail)" stroke-width="2.5" stroke-dasharray="8 5"/>
+      <circle cx="150" cy="470" r="11" fill="var(--fail)"/><text x="150" y="474" text-anchor="middle" font-size="11" font-weight="700" fill="var(--fail-soft)">1</text>
+      <text class="sv-fail-t" x="172" y="474">콘텐츠 침범 금지 — 하단 크롬(페이지네이션) 영역</text>
+      <text class="sv-xs" x="866" y="474" text-anchor="end">12 / 79</text>
+
+      <!-- 주석 열 -->
+      <circle cx="916" cy="60" r="11" fill="var(--fail)"/><text x="916" y="64" text-anchor="middle" font-size="11" font-weight="700" fill="var(--fail-soft)">1</text>
+      <text class="sv-m" x="936" y="56" font-weight="700">R-TYPE-03</text>
+      <text class="sv-xs" x="936" y="74">콘텐츠 하단 <tspan font-weight="700">666px</tspan> 침범 금지.</text>
+      <text class="sv-xs" x="936" y="89"><tspan font-weight="700">폰트를 줄여 해결하지 않는다.</tspan></text>
+
+      <circle cx="916" cy="130" r="11" fill="var(--accent)"/><text x="916" y="134" text-anchor="middle" font-size="11" font-weight="700" fill="var(--accent-soft)">2</text>
+      <text class="sv-m" x="936" y="126" font-weight="700">R-TYPE-01</text>
+      <text class="sv-xs" x="936" y="144">본문 <tspan font-weight="700">22px 미만 금지</tspan>. 예외는</text>
+      <text class="sv-xs" x="936" y="159">주차 계약에 등재해야 유효.</text>
+
+      <circle cx="916" cy="200" r="11" fill="var(--accent)"/><text x="916" y="204" text-anchor="middle" font-size="11" font-weight="700" fill="var(--accent-soft)">3</text>
+      <text class="sv-m" x="936" y="196" font-weight="700">R-DENS-01</text>
+      <text class="sv-xs" x="936" y="214">슬라이드당 정보 단위 <tspan font-weight="700">3~6개</tspan>.</text>
+      <text class="sv-xs" x="936" y="229">장수를 시간예산으로 역산하지</text>
+      <text class="sv-xs" x="936" y="244">않는다(2주차 저밀도 사고).</text>
+
+      <circle cx="916" cy="285" r="11" fill="var(--accent)"/><text x="916" y="289" text-anchor="middle" font-size="11" font-weight="700" fill="var(--accent-soft)">4</text>
+      <text class="sv-m" x="936" y="281" font-weight="700">R-LAYOUT-02 · R-QC-08</text>
+      <text class="sv-xs" x="936" y="299">레이아웃과 element는 <tspan font-weight="700">따로</tspan> 고르고</text>
+      <text class="sv-xs" x="936" y="314">정보 모양이 정한다. split은 희소하게,</text>
+      <text class="sv-xs" x="936" y="329">연속 금지. 시각자료 보유 ≥ 0.55.</text>
+
+      <rect class="sv-bad" x="904" y="352" width="246" height="124" rx="9"/>
+      <text class="sv-fail-t" x="920" y="374">충돌 시 우선순위</text>
+      <text class="sv-xs" x="920" y="394"><tspan font-weight="700">겹침 · 화면 이탈 · 잘림 0</tspan></text>
+      <text class="sv-xs" x="920" y="409">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;▼ 이보다 먼저다</text>
+      <text class="sv-xs" x="920" y="426">이미지 확대 · 장식 · 밀도 · 취향</text>
+      <text class="sv-xs" x="920" y="450"><tspan font-weight="700">overflow:hidden</tspan>으로 가려서</text>
+      <text class="sv-xs" x="920" y="465">통과시키지 않는다 — 실측한다.</text>
+    </svg>
+    <figcaption><b>1280×720 안에서 제목·본문·캡션·이미지·페이지 번호가 「모두」 보여야 한다.</b> 이 캔버스는 <code>getBoundingClientRect()</code> 실측의 기준면이기도 하다 — 브라우저 창을 1280×720보다 작게 열면 덱 JS가 <code>--scale</code>을 0으로 계산해 전 장이 0으로 측정되고, 그 상태의 「결함 0」을 통과로 오판한 사고가 있었다(2026-08-03). 지금은 감사기가 fail-closed assert로 막고 <code>{ INVALID:[…] }</code>를 돌려준다.</figcaption>
+  </figure>
+
+  <h3>★ 조립 착수 전 사전 점검 7항 (건너뛰기 금지)</h3>
+  <div class="callout warn">
+    <span class="lab">왜 여기 있나</span>
+    2026-07-28 4구간 표본 작업에서 2·3단계를 통째로 건너뛰고 4단계 조립로 직행해, 사용자 지적 6건 중 5건이 발생했다. <strong>지적받은 규칙은 전부 이미 문서에 있었다</strong> — 없어서가 아니라 안 열어서였다. (이 7항은 Claude Code에서 <code>PreToolUse checklist</code> 훅이 <strong>자동 주입</strong>한다.)
+  </div>
+  <div class="card">
+    <ul class="check">
+      <li>1. 정보 모양을 <strong>12 정준 모양</strong> 중 하나로 적었는가 &nbsp;<span style="color:var(--ink-3)">(2단계 · 미기재면 3단계 진입 금지)</span></li>
+      <li>2. 역인덱스를 실제로 열었는가 — <strong>layouts + charts 둘 다</strong> &nbsp;<span style="color:var(--ink-3)">(R-LAYOUT-01b)</span></li>
+      <li>3. 레이아웃과 element를 <strong>따로</strong> 골랐는가 &nbsp;<span style="color:var(--ink-3)">(R-LAYOUT-02a · 레이아웃 ≠ element)</span></li>
+      <li>4. 형태를 <strong>순서 판별</strong>로 정했는가 — 산문/병렬 &nbsp;<span style="color:var(--ink-3)">(R-FORM-01)</span></li>
+      <li>5. 강조 3종을 <strong>의미로</strong> 배정했는가 — 결론·근거·핵심어 &nbsp;<span style="color:var(--ink-3)">(R-EMPH-01·02)</span></li>
+      <li>6. 직전 슬라이드와 <strong>구도·마무리가 다른가</strong> &nbsp;<span style="color:var(--ink-3)">(R-DEC-01)</span></li>
+      <li>7. <strong>이미지 4상태</strong>를 판정했는가 &nbsp;<span style="color:var(--ink-3)">(이미지 판정 게이트)</span></li>
+    </ul>
+    <p style="margin-top:12px"><strong>하나라도 비면 3단계로 넘어가지 않는다.</strong> 특히 2번은 “원리만 알면 만들 수 있다”는 판단으로 가장 자주 건너뛰는 항목이다 — 그 결과가 8장 전부 박스·차트 0장이었다.</p>
+  </div>
+
+  <h3>⑤ 10단계 게이트 지도</h3>
+  <figure class="fig">
+    <svg viewBox="0 0 1160 264" role="img" aria-label="create-slides 10단계 타임라인. 1~3 판단, 4~7 제작, 8~9 검증과 배포, 10은 분리된 선택 단계다. 2와 3 사이에 사전 점검 7항, 3과 4 사이에 승인 게이트 G1, 8단계에 G2가 놓인다.">
+      <defs><marker id="st-arw" viewBox="0 0 10 8" refX="9" refY="4" markerWidth="7" markerHeight="6" orient="auto"><path d="M0,0 L10,4 L0,8 Z" fill="var(--accent)"/></marker></defs>
+
+      <!-- 게이트 플래그 -->
+      <rect class="sv-gen" x="142" y="72" width="150" height="38" rx="8"/>
+      <text class="sv-warn-t" x="217" y="90" text-anchor="middle">★ 사전 점검 7항</text>
+      <text class="sv-xs" x="217" y="104" text-anchor="middle">하나라도 비면 3단계 금지</text>
+      <path class="sv-grid" d="M217,110 L217,122" stroke="var(--warn)" stroke-width="1.5"/>
+
+      <rect x="250" y="20" width="146" height="40" rx="8" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2"/>
+      <text class="sv-acc" x="323" y="38" text-anchor="middle" font-size="12.5">G1 — 조립 전</text>
+      <text class="sv-xs" x="323" y="53" text-anchor="middle">결정표 제출은 무조건</text>
+      <path class="sv-grid" d="M323,60 L323,122" stroke="var(--accent)" stroke-width="1.5"/>
+
+      <rect x="586" y="20" width="200" height="40" rx="8" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2"/>
+      <text class="sv-acc" x="686" y="38" text-anchor="middle" font-size="12.5">G2 — 조립 후</text>
+      <text class="sv-xs" x="686" y="53" text-anchor="middle">헤드리스 실측 + 캡처를 사용자가 확인</text>
+      <path class="sv-grid" d="M686,60 L686,122" stroke="var(--accent)" stroke-width="1.5"/>
+
+      <!-- 진행선 -->
+      <path class="sv-l-acc" d="M60,142 L892,142"/>
+      <path class="sv-l-acc" d="M912,142 L1040,142" stroke-dasharray="6 5" marker-end="url(#st-arw)"/>
+      <text class="sv-xs" x="976" y="132" text-anchor="middle">자동 실행 안 함</text>
+
+      <!-- 단계 -->
+      <g>
+        <circle cx="60" cy="142" r="20" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2"/><text class="sv-num" x="60" y="147" text-anchor="middle">1</text>
+        <text class="sv-m" x="60" y="188" text-anchor="middle">입력 분석</text><text class="sv-xs" x="60" y="203" text-anchor="middle">3진입 · 소유권</text>
+        <circle cx="164" cy="142" r="20" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2"/><text class="sv-num" x="164" y="147" text-anchor="middle">2</text>
+        <text class="sv-m" x="164" y="188" text-anchor="middle">슬라이드 맵</text><text class="sv-xs" x="164" y="203" text-anchor="middle">정보 모양 12</text>
+        <circle cx="268" cy="142" r="20" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2"/><text class="sv-num" x="268" y="147" text-anchor="middle">3</text>
+        <text class="sv-m" x="268" y="188" text-anchor="middle">레이아웃 선택</text><text class="sv-xs" x="268" y="203" text-anchor="middle">결정표 완성</text>
+        <circle cx="372" cy="142" r="20" fill="var(--surface-2)" stroke="var(--line-strong)" stroke-width="2"/><text class="sv-num" x="372" y="147" text-anchor="middle" fill="var(--ink-2)">4</text>
+        <text class="sv-m" x="372" y="188" text-anchor="middle">조립</text><text class="sv-xs" x="372" y="203" text-anchor="middle">안전영역 · 밀도</text>
+        <circle cx="476" cy="142" r="20" fill="var(--surface-2)" stroke="var(--line-strong)" stroke-width="2"/><text class="sv-num" x="476" y="147" text-anchor="middle" fill="var(--ink-2)">5</text>
+        <text class="sv-m" x="476" y="188" text-anchor="middle">시각화</text><text class="sv-xs" x="476" y="203" text-anchor="middle">element 선택</text>
+        <circle cx="580" cy="142" r="20" fill="var(--surface-2)" stroke="var(--line-strong)" stroke-width="2"/><text class="sv-num" x="580" y="147" text-anchor="middle" fill="var(--ink-2)">6</text>
+        <text class="sv-m" x="580" y="188" text-anchor="middle">이미지</text><text class="sv-xs" x="580" y="203" text-anchor="middle">4상태 판정</text>
+        <circle cx="684" cy="142" r="20" fill="var(--surface-2)" stroke="var(--line-strong)" stroke-width="2"/><text class="sv-num" x="684" y="147" text-anchor="middle" fill="var(--ink-2)">7</text>
+        <text class="sv-m" x="684" y="188" text-anchor="middle">발표자 노트</text><text class="sv-xs" x="684" y="203" text-anchor="middle">pn-no 정합</text>
+        <circle cx="788" cy="142" r="20" fill="var(--warn-soft)" stroke="var(--warn)" stroke-width="2"/><text class="sv-num" x="788" y="147" text-anchor="middle" fill="var(--warn)">8</text>
+        <text class="sv-m" x="788" y="188" text-anchor="middle">검증</text><text class="sv-xs" x="788" y="203" text-anchor="middle">정적 → 브라우저</text>
+        <circle cx="892" cy="142" r="20" fill="var(--warn-soft)" stroke="var(--warn)" stroke-width="2"/><text class="sv-num" x="892" y="147" text-anchor="middle" fill="var(--warn)">9</text>
+        <text class="sv-m" x="892" y="188" text-anchor="middle">배포</text><text class="sv-xs" x="892" y="203" text-anchor="middle">fail-closed</text>
+        <circle cx="1060" cy="142" r="20" fill="none" stroke="var(--line-strong)" stroke-width="2" stroke-dasharray="5 4"/><text class="sv-num" x="1060" y="147" text-anchor="middle" fill="var(--ink-2)">10</text>
+        <text class="sv-m" x="1060" y="188" text-anchor="middle">발표본</text><text class="sv-xs" x="1060" y="203" text-anchor="middle">명시 요청 전용</text>
+      </g>
+
+      <!-- 그룹 브래킷 -->
+      <path class="sv-grid" d="M40,224 L288,224"/><text class="sv-xs" x="164" y="242" text-anchor="middle">판단 — 여기서 화면이 결정된다</text>
+      <path class="sv-grid" d="M352,224 L704,224"/><text class="sv-xs" x="528" y="242" text-anchor="middle">제작</text>
+      <path class="sv-grid" d="M768,224 L912,224"/><text class="sv-xs" x="840" y="242" text-anchor="middle">검증 · 배포</text>
+      <path class="sv-grid" d="M1030,224 L1090,224"/><text class="sv-xs" x="1060" y="242" text-anchor="middle">선택</text>
+    </svg>
+    <figcaption><b>2·3단계가 통째로 건너뛰어진 것이 2026-07-28 사고였다</b> — 판단 구간을 건너뛰고 4단계로 직행해 지적 6건 중 5건이 발생했고, 그 규칙들은 전부 이미 문서에 있었다. 그래서 사전 점검 7항이 <b>훅으로 자동 주입</b>된다. <b>10단계만 진행선에서 떨어져 있다</b> — 일반 조립 경로(<code>assemble_deck</code>·<code>build_release</code>·<code>inline_deck</code>)에는 발표자 코드 경로가 아예 없어, “자동 삽입 없음”이 플래그 기본값이 아니라 <b>구조로</b> 보장된다.</figcaption>
+  </figure>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>단계</th><th>하는 일</th><th>읽을 문서</th><th>통과 조건</th></tr></thead>
+      <tbody>
+        <tr><td><strong>1</strong> 입력 분석</td><td>3진입 판별 · 아이콘 라우팅 · PART 매핑 · 조건부 KB 회수</td><td><code>phases/01-입력분석.md</code> · <code>references/콘텐츠초안-입력형식.md</code></td><td>슬라이드 목록과 <strong>소유권 경계</strong>가 확정됨</td></tr>
+        <tr><td><strong>2</strong> 슬라이드 맵</td><td><strong>정보 모양 분류(핵심 판단 게이트)</strong> — 12 정준 모양 · 사전 점검 7항</td><td><code>phases/02-슬라이드맵.md</code> · <code>kit/guide/정보모양-taxonomy.md</code></td><td>모든 슬라이드에 정보 모양이 붙음</td></tr>
+        <tr><td><strong>3</strong> 레이아웃 선택</td><td>역인덱스 후보 → <strong>레이아웃과 element를 따로</strong> 선택 → 결정표</td><td><code>phases/03-레이아웃선택.md</code> · <code>kit/layouts/by-shape.md</code></td><td>결정표 완성 · 직전과 같은 패밀리 아님 · <strong>G1 제출 완료</strong></td></tr>
+        <tr><td><strong>4</strong> 조립</td><td>스타터 기반 마크업 · 엔진 hook · 텍스트/박스 규칙 · 밀도</td><td><code>phases/04-조립.md</code> · <code>references/조립-리듬-불변요소.md</code></td><td><strong>파트 수 = divider 수</strong> · 안전영역 준수</td></tr>
+        <tr><td><strong>5</strong> 시각화</td><td>카탈로그 코어·변형 · 독립 구도 · 환류 · D3 정책</td><td><code>phases/05-시각화.md</code> · <code>kit/charts/by-shape.md</code></td><td>정보 모양에 맞는 수단 선택됨</td></tr>
+        <tr><td><strong>6</strong> 이미지</td><td>4상태 판정 → 재사용 검색 → 모드 → 생성/프롬프트</td><td><code>phases/06-이미지.md</code> · <code>references/이미지-디렉션-프롬프트.md</code></td><td>판정·Asset ID가 <code>자료/이미지-에셋.json</code>에 기록됨</td></tr>
+        <tr><td><strong>7</strong> 발표자 노트</td><td>멘트 라우팅 · 번호 정합 · 전후 스냅샷(R-NOTE-02)</td><td><code>phases/07-발표자노트.md</code></td><td><code>pn-no</code>가 덱 페이지 번호와 일치</td></tr>
+        <tr><td><strong>8</strong> 검증</td><td>정적 스크립트 → <strong>브라우저 전수 측정</strong> → 지적의 규칙층 승격(R-FEEDBACK-01)</td><td><code>phases/08-검증.md</code></td><td>⑥의 게이트 전부 통과</td></tr>
+        <tr><td><strong>9</strong> 배포</td><td>단일 자립 파일 빌드</td><td><code>phases/09-배포.md</code></td><td><strong>fail-closed</strong> 게이트 통과</td></tr>
+        <tr><td><strong>10</strong> 발표본 <span class="tag warn">선택·명시 요청 전용</span></td><td>완성된 <strong>배포본</strong>에 발표 런타임 주입 → <code>강의덱_발표.html</code></td><td><code>phases/10-발표자모드.md</code></td><td>주입·전용 검증기 종료코드 0 · <strong>슬라이드 불변</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="callout acc">
+    <span class="lab">10단계는 자동 실행하지 않는다</span>
+    일반 조립 경로(<code>assemble_deck</code>·<code>build_release</code>·<code>inline_deck</code>)에는 발표자 코드 경로가 <strong>아예 없어</strong>, “자동 삽입 없음”이 플래그 기본값이 아니라 <strong>구조로</strong> 보장된다.
+  </div>
+
+  <h4>이미지 판정 게이트 (순서 고정)</h4>
+<pre>정보 모양·시각 element 결정 → 이미지 목적 판정 → 중앙 레지스트리 재사용 검색
+→ generate/transform 수 산출 → <span class="c">필요할 때만</span> IMAGE_MODE 확인</pre>
+  <p>판정 4종: <code>NO_IMAGE</code> | <code>IMAGE_EXPLANATORY</code> | <code>IMAGE_MNEMONIC</code> | <code>IMAGE_DECORATIVE_OPTIONAL</code>. 모드 2분기: <code>generate_now</code> | <code>prompt_only</code>. <strong>신규 생성·변형이 0장이거나 자율 실행 권한이 명확하면 묻지 않는다.</strong> 세부 계약 정본은 <code>references/이미지-디렉션-프롬프트.md</code>.</p>
+
+  <h4>파트 계약</h4>
+  <p>모든 파트는 <code>part-divider</code> 슬라이드로 시작한다(<strong>PART 1 포함</strong>). <strong>파트 수 = divider 수.</strong> 스타터 JS가 divider의 DOM 순서를 읽어 진행 도트·<code>PART n / N</code>·지오메트릭 큐브를 자동 생성하므로, 파트 SVG·도트·분모를 조각 파일에 <strong>하드코딩하지 않는다</strong>(R-PART-01·02).</p>
+
+  <h3>⑥ 필수 검증 게이트</h3>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>게이트</th><th>명령·수단</th><th>성격</th></tr></thead>
+      <tbody>
+        <tr><td>정적 검증</td><td><code>python scripts/verify_deck.py &lt;덱&gt;.html --parts N</code></td><td><span class="tag fail">FAIL 0 필수</span></td></tr>
+        <tr><td>주차 구조 계약</td><td><code>…/N주차/deck.contract.json</code> → <code>sessions/_contracts/</code> → 없으면 WARN</td><td>계약 부재는 <span class="tag warn">WARN</span>(중단 아님)</td></tr>
+        <tr><td>발표자 노트 정합</td><td><code>python scripts/verify_notes.py &lt;덱&gt; &lt;노트&gt;</code></td><td>불일치 목록 확인</td></tr>
+        <tr><td>이미지 배선</td><td>manifest <code>ready</code> + 설명·기억 판정 자산이 덱에 배선됐는가</td><td><span class="tag fail">FAIL</span>(계약 등재분은 WARN)</td></tr>
+        <tr><td><strong>브라우저 실측</strong></td><td>로컬 http 서버 + <code>scripts/measure_render.js</code> — 전 슬라이드 순회</td><td><strong>정적 PASS의 대체가 아니다</strong></td></tr>
+        <tr><td>킷 계약</td><td><code>python scripts/verify_kit.py</code> — 카탈로그·<code>patterns.css</code>를 건드렸으면</td><td><span class="tag fail">FAIL 0</span></td></tr>
+        <tr><td>배포 자립성</td><td><code>build_release.py</code>의 <code>verify_distributable</code></td><td><strong>fail-closed</strong> — 외부 <code>href=http</code> 0 · 모든 <code>src</code>/<code>url()</code> <code>data:</code> · 임베드 <code>@font-face</code> 존재 · unresolved 슬롯 0</td></tr>
+        <tr><td><strong>필수 진술 잔존</strong></td><td><code>python scripts/verify_required_statements.py &lt;주차&gt;</code></td><td>개념KB <code>필수 진술:</code>이 덱 <strong>화면</strong>에 남았는가. 기본 WARN · <code>--strict</code>로 FAIL. <strong>인접 청크는 검사 제외</strong></td></tr>
+        <tr><td><strong>판단 기록 정합</strong></td><td><code>python scripts/verify_judgement_log.py &lt;주차&gt;</code></td><td>D2 근거 없음 · 처분값 없음 · «필수» 보류를 <span class="tag fail">FAIL</span>. 집필노트 부재는 SKIP</td></tr>
+        <tr><td>내용 품질</td><td>초안 <code>verify_draft_quality.py &lt;주차&gt;</code> · 덱 <code>verify_deck_quality.py &lt;덱&gt;.html --strict</code></td><td><strong>출하 전에는 <code>--strict</code></strong>. R-QC-08(시각자료 비율 ≥0.55)·R-QC-15(하단 결론 콜아웃 ≤0.12)·R-QC-16(박스 기반 ≤0.10)·R-QC-17(실습 완결성)·R-META-01(메타 표기 0). <strong>기본 모드는 WARN·exit 0이라 그대로 두면 결함이 있는 채로 출하된다</strong> — 2주차가 그렇게 나갔다</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="callout fail">
+    <span class="lab">임계값을 깎지 마라</span>
+    <strong>밀도 하한은 슬라이드당 정보 단위 3~6개</strong>(R-DENS-01) — 장수를 <strong>시간예산으로 역산하지 않는다</strong>(2주차 저밀도 사고 원인). <strong>임계는 「합격한 이전 덱을 통과시키는 값」이 아니라 「그 덱을 넘어서는 값」으로 잡는다.</strong> 이전 판은 1주차 하위 분위수(p10·p15)에서 도출돼 1주차보다 못한 덱도 통과시켰다 — R-QC-08 임계 0.35는 1주차 실측 0.500보다 낮았다.
+  </div>
+
+  <h3>⑦ 중단 조건</h3>
+  <ul>
+    <li>주차 구조 계약 파일이 없다 → <span class="tag warn">WARN</span>으로 보고하고 구조 검증 없이 진행(중단 아님).</li>
+    <li>검증 FAIL이 재작업 후에도 남는다 → 진행하지 말고 <strong>원인과 선택지를 보고</strong>한다.</li>
+    <li>초안 문장과 회수한 KB 청크가 충돌한다 → <strong>덱이 고치지 말고 보고</strong>한다(소유권 경계).</li>
+    <li>이미지 생성이 교정 1회·알파 재시도 1회를 넘긴다 → 설명·기억 이미지는 중단·보고, 장식 이미지는 반려 기록 후 생략.</li>
+    <li>사용자 지시와 엔진·브랜드·접근성 계약이 충돌한다 → <strong>계약을 지키고</strong> 충돌 사실을 보고한다.</li>
+  </ul>
+</section>
+
+<!-- ══════════════ 6 ══════════════ -->
+<section id="s6">
+  <h2><span class="num">6</span>③ <code>/검토</code> — 횡단 검토 (읽기 전용)</h2>
+  <p class="dek">정본 <code>skills/검토/SKILL.md</code>. 호출: <code>/검토 [N주차] [자료|초안|덱|전체]</code> — 주차 인자가 없으면 <strong>질문하고 멈춘다</strong>(최신 주차를 임의 추정하지 않는다). 대상 기본값은 <code>전체</code>이되 <strong>실제로 존재하는 산출물만</strong> 검토하고 나머지는 <code>SKIP</code>+사유로 명기한다.</p>
+
+  <h3>§0. 불변 규칙</h3>
+  <div class="grid3">
+    <div class="card"><h4>1. 읽기 전용 절대</h4><p>쓰는 파일은 검토 보고서 <strong>1개뿐</strong>. 검토 대상은 <strong>절대 수정·정리·이동·삭제하지 않는다</strong> — 검증자가 산출물을 건드리면 결함이 원본에서 왔는지 검증자가 만든 건지 추적할 수 없다. 예외: <code>verify_deck.py</code>는 표준출력만 내는 읽기 전용이라 실행 허용.</p></div>
+    <div class="card"><h4>2. 발견 3요소 필수</h4><p>① <strong>심각도</strong> <span class="tag fail">FAIL</span>/<span class="tag warn">WARN</span>/<span class="tag pass">PASS</span> ② <strong>근거</strong> — 파일 경로:행 번호 또는 URL(근거 없는 지적 금지) ③ <strong>수정 담당 단계</strong> — 리서치 / 덱(집필 포함) / 총괄.</p></div>
+    <div class="card"><h4>3. 명시 호출 전용</h4><p>3항 정의 정본은 <code>skills/README.md</code>. “이 덱 검토해줘”류 보통명사 단독 요청은 발동하지 않는다.</p></div>
+  </div>
+
+  <h3>워크플로 7단계</h3>
+  <ol class="steps">
+    <li><span class="t">인자 해석 + 인벤토리</span><span class="d"><strong>베이스라인 기록</strong>: 시작 즉시 <code>git status --porcelain</code>을 찍어 둔다 — 이 저장소는 상시 다수 파일이 M 상태라, 스냅샷 없이는 “검토 대상 파일 변경 0건”을 판정할 수 없다. <code>자료/</code>에 중간 산출물이 남아 있으면 인벤토리에 적어 3단계로 넘기되 <strong>직접 옮기거나 지우지 않는다</strong>.</span></li>
+    <li><span class="t">규격 정본 read-path (대상별로 필요한 것만)</span><span class="d"><strong>자료</strong>: 리서치 §0·산출물 규격 + 강의안설계의 <code>#### C. 리서치·검증 요청</code>·<code>[총괄 확정]</code> 절만 grep + 커리큘럼 §4.1·§6·§11 해당 열 · <strong>개념KB 통독 금지</strong>(청크 인덱스 → <strong>위험 가중 표본</strong>만 grep) / <strong>초안</strong>: 콘텐츠초안템플릿 + 입력형식 + 자료 산출물 / <strong>덱</strong>: 루트 <code>SKILL.md</code> §0·8단계 + 초안.md — <strong>리서치 SKILL·자료·커리큘럼은 읽지 않는다</strong>. 총량이 크면 <code>/하네스</code>로 대상별 워커 분할.</span></li>
+    <li><span class="t">자료 검토</span><span class="d">5개월 룰 전수 · <strong>링크 생존 표본 ≥30%</strong>(무작위 아님 — <strong>위험 가중</strong>: 제품·UI·신선도 임박·플랫폼 의존 우선 · FAIL 1건이면 전수로 확대 · 403/429는 <code>[확인불가]</code>로 구분 · 10개 초과면 병렬 · 상한 대략 10분, 미완료는 명기) · 개념KB 청크ID 체계·<code>[S-000]</code> 단독(전사 신호) · 출처레지스트리 6열·죽은 출처 ID · 공신력 등급 · 커버리지 · <strong>G8 관점</strong>(인접 청크는 <strong>모수에서 제외</strong>) · <strong>G9 인접</strong>(<code>범위:인접</code> 표기·얕은 최소깊이·<strong>코어 대비 50% 상한</strong>·게이트A 승인 대조) · <strong>중복 서술</strong>(결과.md가 재서술 대신 <code>[C-슬러그]</code> 포인터인가 · verbatim 전문은 레지스트리 한 곳 · 증분 기록은 「변경 이력」 한 곳 · 잔존 중간 산출물 0) · 수업 문장화 · <code>[총괄 확정]</code> 무단 변경.</span></li>
+    <li><span class="t">초안 검토</span><span class="d">형식 린트(4열 표·아이콘 문법·“0. 덱 기본 정보”·고정 슬라이드 신호) · <strong>사실 대조</strong>(자료에 근거 없는 사실 주장 = FAIL) · <strong>인용 충실성</strong>(출처 ID가 있어도 서술이 원문과 다르면 FAIL) · <strong>개념 정확성 R-ACC-01</strong>(별개 개념을 합치면 FAIL · 비유가 정의를 대체하거나 한계 표시 없으면 WARN) · <strong>자기투사</strong>(능력 vs 범위) · 대상 적합성 · 수용량 위험(WARN) · 소유권·관례 · 결정요청 반영. <strong>+ 아래 4축 판단 검토.</strong></span></li>
+    <li><span class="t">덱 검토</span><span class="d"><code>verify_deck.py --parts N</code> 실행(<code>--manifest</code>·<code>--registry</code>를 안 넘기면 <strong>이미지 계약이 통째로 미검증으로 통과</strong> · <code>--release</code>는 <strong>배포 직전에만</strong>) · <strong>초안↔덱 diff</strong>(무단 재작성 = FAIL) · 아이콘 라우팅 · <strong>한 화면 한 단계</strong>(한 장에 조작 단계 2개 이상 = FAIL — 단계와 지점은 다르다) · <strong>매체</strong>(조작 안내에 GIF·동영상 = FAIL, 정적 캡처만) · 대상 표현 · <strong>화면 단독 완결성</strong>(핵심이 전부 노트에만 있으면 FAIL).</span></li>
+    <li><span class="t">교차 일관성</span><span class="d">자료엔 있는데 초안에 없는 것 · 초안엔 있는데 덱에 없는 슬라이드 · 집필노트 추적표 정합 · <strong>개념KB↔초안 인용 대조</strong> · <strong>인접 청크 본문 누출</strong>(<code>범위:인접</code>이 본문에 올라갔으면 FAIL — 정상은 <code>🗣</code>·발표자 노트 경유) · <strong>죽은 포인터</strong>(<code>&lt;!-- refs: C-… --&gt;</code>가 실제 청크로 해소되는가) · <strong>재료 실현 대조</strong>(처분표 없음 = FAIL · “사용”인데 덱에 없음 = FAIL · <code>PPT 소재</code>는 <strong>처분표에 아예 없으면 «미회수» FAIL</strong> · <code>필수 진술</code>은 <strong>보류 자체가 FAIL</strong>).</span></li>
+    <li><span class="t">보고서 산출</span><span class="d"><code>…/N주차/검토보고_YYYY-MM-DD.md</code> 작성. 완료 응답에 담당 단계별 액션 요약 포함.</span></li>
+  </ol>
+
+  <h3>4축 판단 검토 (R-REVIEW-01) — 통합 실행 보완</h3>
+  <p>집필과 조립이 하나의 실행 단위로 묶이면서 단계 간 상호검토가 약해졌다. 그 몫을 이 4축이 받는다 — <strong>집필 주체가 스스로 못 보는 것만</strong> 본다.</p>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>축</th><th>무엇을 보나</th><th>판정</th></tr></thead>
+      <tbody>
+        <tr><td><strong>① 무근거 사실</strong></td><td>판단 <code>F</code> 행이 <code>[C-슬러그]</code>·<code>[S-###]</code>로 해소되는가</td><td>미해소 = <span class="tag fail">FAIL</span></td></tr>
+        <tr><td><strong>② 생략 누락</strong></td><td>「재료 처분표」의 보류 행 대 회수 청크. <strong>필수 진술이 보류돼 있으면</strong> 그 자체로 위반</td><td>필수 보류 = <span class="tag fail">FAIL</span> · 보류 행이 <strong>하나도 없으면</strong> 표본 대조 후 <span class="tag warn">WARN</span></td></tr>
+        <tr><td><strong>③ D2 근거</strong></td><td><code>D2</code> 별도 행마다 도출 근거가 있는가</td><td>근거 없음 = <span class="tag fail">FAIL</span>(무근거 주장)</td></tr>
+        <tr><td><strong>④ 재구성 왜곡</strong></td><td>시각 재구성이 원 사실의 뜻을 바꿨는가 — 축·사분면·흐름도로 옮기며 <strong>원문에 없던 인과·순위·배타성</strong>이 생기지 않았는가</td><td>왜곡 = <span class="tag fail">FAIL</span>, 수정 담당 = 집필</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="callout acc">
+    <span class="lab">②가 이 4축의 존재 이유다</span>
+    나머지 셋은 “쓴 것”을 검사하지만 <strong>②만 “뺀 것”을 검사</strong>한다. 2026-07-28에 <code>[C-하네스구성요소]</code>의 유보가 화면에서 사라졌고 어느 게이트도 잡지 못했다.<br>
+    <strong>④는 ①과 다르다</strong> — 인용은 정확한데 <strong>구조가 뜻을 바꾸는</strong> 경우가 있다. 병렬 항목을 단계 흐름도로 그리면 원문에 없던 순서가 생기고, 두 축으로 가르면 원문에 없던 배타성이 생긴다. <strong>출처 ID로는 절대 안 잡힌다.</strong><br>
+    이 4축은 <strong>판단 기록(집필노트)이 있어야 성립</strong>한다 — 없으면 “검토 불가”로 보고하고 FAIL 판정하지 않는다(기록 부재는 덱 담당의 R-QD-05 소관).
+  </div>
+
+  <h3>보고서 규격 — 4부 구조</h3>
+  <ol>
+    <li><strong>요약 표</strong> — 대상별(자료/초안/덱) FAIL·WARN·PASS 개수.</li>
+    <li><strong>발견 상세</strong> — 심각도 순. 항목마다 §0의 3요소 전부 기재.</li>
+    <li><strong>종합 판정</strong> — 아래 4택 중 하나 + 근거 한 문장.</li>
+    <li><strong>재검토 조건</strong> — <code>조건부 통과</code>·<code>재작업</code>일 때 무엇이 고쳐지면 통과인지 구체적으로.</li>
+  </ol>
+  <figure class="fig">
+    <svg viewBox="0 0 1000 416" role="img" aria-label="검토 종합 판정 결정 트리. FAIL이 0이면 SKIP 유무로 통과와 부분 통과가 갈리고, FAIL이 있으면 구조 계약 위반 또는 같은 유형 3건 이상 또는 2개 이상 대상 여부로 재작업과 조건부 통과가 갈린다.">
+      <defs><marker id="rv-arw" viewBox="0 0 10 8" refX="9" refY="4" markerWidth="8" markerHeight="7" orient="auto"><path d="M0,0 L10,4 L0,8 Z" fill="var(--ink-3)"/></marker></defs>
+
+      <rect class="sv-art" x="400" y="14" width="200" height="40" rx="9"/>
+      <text class="sv-t" x="500" y="39" text-anchor="middle">검토 7단계 완료</text>
+      <path class="sv-l" d="M500,54 L500,74" marker-end="url(#rv-arw)"/>
+
+      <rect class="sv-stage" x="350" y="80" width="300" height="46" rx="9"/>
+      <text class="sv-t" x="500" y="109" text-anchor="middle">① 발견에 <tspan font-weight="700">FAIL이 0건</tspan>인가?</text>
+
+      <path class="sv-l" d="M350,103 L215,103 L215,152" marker-end="url(#rv-arw)"/>
+      <text class="sv-pass-t" x="284" y="96" text-anchor="middle">예</text>
+      <path class="sv-l" d="M650,103 L790,103 L790,152" marker-end="url(#rv-arw)"/>
+      <text class="sv-fail-t" x="722" y="96" text-anchor="middle">아니오</text>
+
+      <rect class="sv-stage" x="60" y="158" width="310" height="46" rx="9"/>
+      <text class="sv-t" x="215" y="187" text-anchor="middle">② <tspan font-weight="700">SKIP</tspan>(파일 없음)이 하나라도 있나?</text>
+
+      <rect class="sv-stage" x="600" y="158" width="380" height="66" rx="9"/>
+      <text class="sv-t" x="790" y="182" text-anchor="middle">③ 구조 계약 위반 · 같은 유형 FAIL <tspan font-weight="700">≥3건</tspan> ·</text>
+      <text class="sv-t" x="790" y="202" text-anchor="middle"><tspan font-weight="700">2개 이상 대상</tspan>에 걸침 — 하나라도 해당?</text>
+      <text class="sv-xs" x="790" y="218" text-anchor="middle">구조 계약 = 형식 체계 · 콘텐츠 소유권 체계 · 파이프라인 순서</text>
+
+      <path class="sv-l" d="M115,204 L115,292" marker-end="url(#rv-arw)"/>
+      <text class="sv-xs" x="128" y="252">아니오</text>
+      <path class="sv-l" d="M310,204 L310,292" marker-end="url(#rv-arw)"/>
+      <text class="sv-xs" x="323" y="252">예</text>
+      <path class="sv-l" d="M690,224 L690,292" marker-end="url(#rv-arw)"/>
+      <text class="sv-xs" x="703" y="262">아니오</text>
+      <path class="sv-l" d="M890,224 L890,292" marker-end="url(#rv-arw)"/>
+      <text class="sv-xs" x="903" y="262">예</text>
+
+      <rect class="sv-ok" x="30" y="296" width="170" height="60" rx="9"/>
+      <text class="sv-pass-t" x="115" y="320" text-anchor="middle" font-size="13">통과</text>
+      <text class="sv-xs" x="115" y="338" text-anchor="middle">대상 전부 존재 ·</text>
+      <text class="sv-xs" x="115" y="350" text-anchor="middle">전부 검토함 · FAIL 0</text>
+
+      <rect class="sv-gen" x="215" y="296" width="190" height="60" rx="9"/>
+      <text class="sv-warn-t" x="310" y="320" text-anchor="middle" font-size="13">부분 통과(N개 미산출)</text>
+      <text class="sv-xs" x="310" y="338" text-anchor="middle">검사할 게 없었다를</text>
+      <text class="sv-xs" x="310" y="350" text-anchor="middle">건전하다로 읽지 않기 위함</text>
+
+      <rect class="sv-gen" x="600" y="296" width="180" height="60" rx="9"/>
+      <text class="sv-warn-t" x="690" y="320" text-anchor="middle" font-size="13">조건부 통과</text>
+      <text class="sv-xs" x="690" y="338" text-anchor="middle">같은 유형 ≤2건 ·</text>
+      <text class="sv-xs" x="690" y="350" text-anchor="middle">1개 대상 국한 · 계약 건전</text>
+
+      <rect class="sv-bad" x="800" y="296" width="180" height="60" rx="9"/>
+      <text class="sv-fail-t" x="890" y="320" text-anchor="middle" font-size="13">재작업</text>
+      <text class="sv-xs" x="890" y="338" text-anchor="middle">무엇이 고쳐지면 통과인지</text>
+      <text class="sv-xs" x="890" y="350" text-anchor="middle">재검토 조건에 구체적으로</text>
+
+      <path class="sv-d" d="M30,378 L980,378" stroke="var(--warn)"/>
+      <text class="sv-warn-t" x="500" y="400" text-anchor="middle">SKIP이 하나라도 있으면 「통과」를 쓰지 않는다 &#160;·&#160; 조건부 통과·재작업이면 <tspan font-weight="700">재검토 조건</tspan>을 반드시 적는다</text>
+    </svg>
+    <figcaption><b>이 트리는 검토자 간 재량 편차를 막으려고 있다.</b> “대체로 괜찮다”는 판정이 사람마다 다른 뜻이 되면 다음 담당자가 무엇을 해야 하는지 알 수 없다. 판정마다 <b>수정 담당 단계</b>(리서치 / 덱(집필 포함) / 총괄)가 붙어야 액션이 된다.</figcaption>
+  </figure>
+
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>판정</th><th>기준 (검토자 간 재량 편차 방지)</th></tr></thead>
+      <tbody>
+        <tr><td><span class="tag pass">통과</span></td><td>검토 대상 <strong>전부가 실제로 존재</strong>해 검토를 수행했고, FAIL 0</td></tr>
+        <tr><td><span class="tag warn">부분 통과(N개 대상 미산출)</span></td><td>하나 이상이 SKIP(파일 없음)이고 검토한 대상에서 FAIL 0. <strong>SKIP이 하나라도 있으면 「통과」를 쓰지 않는다</strong> — “검사할 게 없었다”를 “파이프라인이 건전하다”로 오독시키지 않기 위함</td></tr>
+        <tr><td><span class="tag warn">조건부 통과</span></td><td>FAIL이 있으나 같은 유형 <strong>2건 이하</strong>·<strong>1개 대상에 국한</strong>이고 구조 계약 자체는 건전 — FAIL 해소를 재검토 조건으로 명시</td></tr>
+        <tr><td><span class="tag fail">재작업</span></td><td>구조 계약 위반이 있거나, 같은 유형 FAIL <strong>3건 이상</strong>이거나 <strong>2개 이상 대상</strong>에 걸쳐 반복</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ══════════════ 7 ══════════════ -->
+<section id="s7">
+  <h2><span class="num">7</span>횡단 <code>/하네스</code> — 오케스트레이션 프로토콜</h2>
+  <p class="dek">정본 <code>skills/하네스/SKILL.md</code>. <strong>품질·컨텍스트 보존 도구이며 비용 절감 도구가 아니다.</strong></p>
+
+  <figure class="fig">
+    <svg viewBox="0 0 940 320" role="img" aria-label="하네스 비용 구성 차트. 전체 비용의 72퍼센트가 Opus 메인 창의 캐시 읽기이고 28퍼센트만이 Sonnet 워커 전체다. 두 번째 막대는 워커 11명 합계가 메인 1개의 1.8퍼센트에 불과함을 보여준다.">
+      <text class="sv-m" x="40" y="26" font-weight="700">비용은 어디로 갔나 — 2026-07-18 실측</text>
+
+      <!-- 스택 바 -->
+      <rect x="40" y="42" width="619" height="52" rx="4" fill="var(--accent)"/>
+      <rect x="663" y="42" width="237" height="52" rx="4" fill="var(--ink-3)"/>
+      <text x="60" y="66" font-size="19" font-weight="700" fill="var(--accent-soft)">72%</text>
+      <text x="60" y="84" font-size="11.5" fill="var(--accent-soft)">Opus 캐시 읽기 — 뚱뚱한 메인 창을 매 턴 다시 읽는 값</text>
+      <text x="683" y="66" font-size="17" font-weight="700" fill="var(--surface)">28%</text>
+      <text x="683" y="84" font-size="11.5" fill="var(--surface)">Sonnet 워커 전체</text>
+      <text class="sv-xs" x="40" y="112">낭비의 주범은 워커가 아니라 <tspan font-weight="700">메인이다.</tspan> 그래서 하네스는 비용 절감 도구가 아니라 품질·컨텍스트 보존 도구다.</text>
+
+      <!-- 1.8% 슬라이버 -->
+      <text class="sv-m" x="40" y="148" font-weight="700">워커 11명 합계 대 메인 1개 — 2026-08-06 실측</text>
+      <rect x="40" y="162" width="860" height="30" rx="4" fill="var(--surface-2)" stroke="var(--line-strong)" stroke-width="1"/>
+      <rect x="40" y="162" width="15" height="30" rx="4" fill="var(--accent)"/>
+      <path class="sv-grid" d="M48,192 L48,206 L112,206" stroke="var(--accent)" stroke-width="1.4"/>
+      <text class="sv-acc" x="120" y="210">워커 11명 전체 = <tspan font-size="13">1.8%</tspan></text>
+      <text class="sv-xs" x="884" y="182" text-anchor="end">메인 1개가 쓴 토큰 = 100%</text>
+      <text class="sv-xs" x="40" y="234"><tspan font-weight="700">위임은 싸고 직접 읽기는 비싸다.</tspan> 메인이 한 파일에서 300줄 넘게 읽어야 하면 그건 워커 일이다 — 3천 자 이내 반환을 요구한다.</text>
+
+      <!-- 스탯 타일 -->
+      <rect class="sv-plain" x="40" y="252" width="278" height="56" rx="9"/>
+      <text x="56" y="280" font-size="20" font-weight="700" fill="var(--fail)">69%</text>
+      <text class="sv-xs" x="56" y="298">150k 컨텍스트를 넘긴 채 돈 실행 비율</text>
+
+      <rect class="sv-plain" x="331" y="252" width="278" height="56" rx="9"/>
+      <text x="347" y="280" font-size="20" font-weight="700" fill="var(--fail)">132.1k</text>
+      <text class="sv-xs" x="347" y="298">중단된 워커 1개가 태운 토큰 — 읽기만 하다</text>
+
+      <rect class="sv-plain" x="622" y="252" width="278" height="56" rx="9"/>
+      <text x="638" y="280" font-size="20" font-weight="700" fill="var(--warn)">×2.05</text>
+      <text class="sv-xs" x="638" y="298">2026-08-06 이전 토큰 수치의 과대 보고 배수</text>
+    </svg>
+    <figcaption><b>⚠️ 원 수치 55.2M은 중복 계수된 값이다</b> — 계측기가 응답 1건을 콘텐츠 블록마다 세면서 같은 <code>usage</code>를 복사했다. 실제는 약 절반이고, 지금은 <code>message.id</code>로 중복제거한다. <b>72 대 28이라는 결론은 바뀌지 않는다</b> — 두 값이 같은 배수로 부풀었기 때문이다. 그전에 기록된 토큰 수치를 읽을 때는 약 2배로 나눠 읽어라.</figcaption>
+  </figure>
+
+  <h3>§1. 발동 조건 + 스케일 사다리</h3>
+  <p><strong>발동</strong>: 다파일 동시 변경 · 독립 구간이 큰 작업 · 대규모(스킬·계약 재설계, 40장+ 덱, 여러 파일에 걸친 규칙 변경).<br>
+  <strong>미발동(solo)</strong>: 단일 파일 편집 · 사소한 수정 · 조회·질문 · <strong>문서 정밀 편집처럼 판단이 무겁고 토큰이 가벼운 일</strong>.</p>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>규모</th><th>판정</th><th>워커</th><th>게이트</th><th>리뷰어</th></tr></thead>
+      <tbody>
+        <tr><td><strong>소형</strong></td><td>1~2 파일 · 기계적</td><td><strong>solo</strong>(워커 0)</td><td><code>verify_*</code> 종료코드</td><td>없음</td></tr>
+        <tr><td><strong>중형</strong></td><td>3~6 파일 · 1 도메인</td><td>1~3개(파일 disjoint)</td><td>종료코드 + 산출 요약</td><td>없음</td></tr>
+        <tr><td><strong>대형</strong></td><td>계약·스키마 변경 · 다도메인</td><td>웨이브 + 단일 라이터 직렬화</td><td>종료코드 + <strong>계약 지점만</strong> 재독</td><td>필요시 <strong>1회</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p><strong>규모를 과대평가해 풀세트로 도는 것이 낭비의 주범이다. 의심스러우면 한 단계 낮춰라.</strong></p>
+
+  <h3>§2. 역할 계약 (하네스가 걸린 동안에만)</h3>
+  <div class="grid2">
+    <div class="card"><h4>메인 (Opus, 1개)</h4><p>전역 결정표 확정 · wave 분해 · 위임 · <strong>게이트(반려/통과)</strong> · 통합 · 회귀. <strong>파일을 직접 편집하지 않는다.</strong></p></div>
+    <div class="card"><h4>워커 (Sonnet, N개)</h4><p>모든 실제 편집. 자기 allowlist 안에서만 작업하고, 밖의 변경은 <strong>되돌리지 않고 보고</strong>한다.</p></div>
+  </div>
+  <p style="color:var(--ink-3);font-size:14px">소형(solo)에서는 이 분리를 적용하지 않는다 — 메인이 직접 편집한다.</p>
+
+  <h3>§3. 게이트 기준 6종</h3>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>기준</th><th>내용</th><th>기계 신호로 판정 가능?</th></tr></thead>
+      <tbody>
+        <tr><td><strong>정합</strong></td><td>스키마·형식 정본 준수</td><td>✅ <code>verify_*</code> 종료코드</td></tr>
+        <tr><td><strong>정적검증</strong></td><td>회귀 스위트 통과</td><td>✅ 종료코드</td></tr>
+        <tr><td><strong>스코프</strong></td><td>allowlist 준수 · 변경 귀속</td><td>✅ <code>git status --short</code></td></tr>
+        <tr><td><strong>근거</strong></td><td>사실이 출처에 매핑(무근거 0)</td><td>⚠️ 부분 — 워커 보고 요약으로</td></tr>
+        <tr><td><strong>깊이</strong></td><td>해당 스킬의 최소 깊이 충족</td><td>⚠️ 전용 검증기 있으면 ✅</td></tr>
+        <tr><td><strong>소유권</strong></td><td>콘텐츠 소유권 · 확정사항 불변</td><td>❌ 계약 지점만 표적 재독</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p><strong>원칙: ✅는 종료코드로만 본다. ❌·⚠️만 사람(메인)이 본다.</strong> 전부 재독하면 하네스의 컨텍스트 이득이 사라진다. 하나라도 FAIL이면 <strong>반려 + 재위임</strong>.</p>
+
+  <h3>§4. 워커 규율 + 프롬프트 템플릿</h3>
+  <ul>
+    <li><strong>allowlist</strong> — 워커마다 편집 허용 파일 명시. “이 파일만, 삭제 금지, 다른 파일 변경 금지.”</li>
+    <li><strong>단일 라이터</strong> — 같은 파일을 두 워커가 건드리지 않게 wave를 나눈다. 특히 공유 파일(<code>MEMORY.md</code>·<code>README.md</code>·검증 스크립트·eval)은 한 워커만.</li>
+    <li><strong>짝 파일 주의</strong> — 검증기의 마커와 본문처럼 짝으로 묶인 파일은 <strong>같은 워커가</strong> 함께 고친다(따로 고치면 중간 상태가 FAIL).</li>
+    <li><strong>wave별 귀속 확인</strong> — wave가 끝날 때마다 <code>git status --short</code>.</li>
+    <li><strong>결정표 핸드오프</strong> — 워커에게 전체 컨텍스트를 주지 말고 <strong>잠긴 결정표 + 담당 원문</strong>만.</li>
+    <li><strong>보고 형식</strong> — <strong>10줄 이내</strong>. 장문 보고서는 메인 창을 키운다.</li>
+    <li><strong>메인 창 규율</strong> — 완료 통지마다 상태 메시지를 쓰지 않는다 · 컨텍스트 150k 초과면 세션 분리(인계는 <code>MEMORY.md</code>).</li>
+  </ul>
+<pre>너는 Sonnet 실행 워커다. 저장소 루트: &lt;경로&gt;
+
+## 편집 허용 파일 (allowlist — 이것만. 삭제·다른 파일 변경 금지)
+- &lt;파일1&gt; / &lt;파일2&gt;
+
+## 잠긴 결정 (변경 금지)
+&lt;메인이 확정한 스키마·규칙·형식&gt;
+
+## 작업
+&lt;구체 지시 — 무엇을 어디에&gt;
+
+## 완료 후
+1. &lt;verify 명령&gt; 실행 → 종료코드 보고
+2. `git status --short`로 allowlist 밖 변경 없는지 확인(밖의 변경은 되돌리지 말고 보고)
+3. **10줄 이내**로 보고: 변경 요약 · 검증 결과 · 막힌 점</pre>
+
+  <h3>§5. 도구 순서</h3>
+<pre>계획(plan) → Agent(model:"sonnet") 팬아웃(파일 disjoint wave)
+→ 스킬을 바꿨으면 /skill-creator 감사 → 사람 확인용 HTML 산출(리서치·콘텐츠)
+→ 회귀 → MEMORY 기록</pre>
+
+  <h3>§6. 안티패턴 (실측 전례 — 반복 금지)</h3>
+  <ol>
+    <li><strong>메인이 큰 파일을 직접 읽음</strong> — 한 번 읽으면 이후 모든 턴에 실린다.
+      <ul>
+        <li><strong>판정선</strong>: 메인이 한 파일에서 <strong>300줄 넘게</strong> 읽어야 하면 그건 워커 일이다. 「무엇을 판단하려는지」를 주고 <strong>표·수치·인용으로 3천 자 이내</strong> 반환 요구.</li>
+        <li><strong>예외</strong>: 사용자가 「전문을 읽으라」고 지시한 문서 · 지금 편집할 파일 · 300줄 미만. 예외를 쓰면 <strong>보고에 적는다</strong>.</li>
+        <li><strong>실측</strong>: 워커 11명 전체가 메인의 <strong>1.8%</strong>밖에 쓰지 않는다 — 위임은 싸고 직접 읽기는 비싸다.</li>
+      </ul>
+    </li>
+    <li><strong>계약만 바꾸고 집행기를 안 고침</strong> — 스키마·규칙을 바꾸면 그것을 강제하는 <strong>검증 스크립트·eval·정본 템플릿</strong>도 같은 변경 범위에. (전례: <code>verify_session_docs</code>의 8항목 강제 / <code>verify_skill_setup</code>의 신선도 마커)</li>
+    <li><strong>서브에이전트가 스코프 밖을 삭제</strong> — 실제로 세션 디렉터리가 통째로 삭제된 전례가 있다. allowlist + wave별 <code>git status</code>로 예방.</li>
+    <li><strong>동일 파일 동시 편집</strong> — 짝으로 묶인 파일(마커↔본문)을 나눠 맡으면 중간 상태가 FAIL.</li>
+    <li><strong>게이트 없이 워커 보고를 그대로 수용</strong> — 워커는 자기 작업을 낙관 보고한다. 기계 신호로 확인.</li>
+    <li><strong>판단 무겁고 토큰 가벼운 일에 풀세트 하네스</strong> — 문서 정밀 편집에 워커 10개를 돌리면 오버헤드가 이득을 완전히 잡아먹는다. <strong>solo로 하라.</strong></li>
+  </ol>
+
+  <h3>§7. 종료 시</h3>
+  <p>전체 회귀 스위트 실행 → 종료코드 확인 → <code>MEMORY.md</code>에 결정·교훈 기록(상태 정본은 <code>## 미해결</code> 하나).</p>
+</section>
+
+<!-- ══════════════ 8 ══════════════ -->
+<section id="s8">
+  <h2><span class="num">8</span>기계 강제 계층 — 훅과 git</h2>
+  <p class="dek"><strong>자연어는 설명, 설정은 강제, git은 최종 증거.</strong> 아래는 문서가 아니라 코드가 막는 것들이다. 「규칙 파일에 적었으니 지켜지겠지」로 넘기지 마라 — 2026-07-28에 규칙 파일에 다 있던 7항 점검이 통째로 건너뛰어졌고, 그래서 이 층이 생겼다.</p>
+
+  <figure class="fig">
+    <svg viewBox="0 0 1000 330" role="img" aria-label="강제 3계층 도해. 가장 넓고 약한 자연어 층이 설명하고, 훅 층이 주입하고 경고하며, 가장 좁고 강한 git pre-commit 층이 차단한다. 세 층 모두를 우회하는 탈출구가 오른쪽에 통로로 표시돼 있다.">
+      <defs><marker id="en-arw" viewBox="0 0 10 8" refX="9" refY="4" markerWidth="9" markerHeight="8" orient="auto"><path d="M0,0 L10,4 L0,8 Z" fill="var(--fail)"/></marker></defs>
+
+      <!-- 1층 자연어 -->
+      <rect class="sv-in" x="30" y="34" width="750" height="70" rx="10"/>
+      <rect x="30" y="34" width="8" height="70" rx="4" fill="var(--line-strong)"/>
+      <text class="sv-xs" x="54" y="54">1층 · 가장 넓고 가장 약하다</text>
+      <text class="sv-h" x="54" y="76" font-size="14">자연어 — <tspan font-weight="400" font-size="12.5">AGENTS.md · CLAUDE.md · 루트 SKILL.md · skills/*/SKILL.md · MEMORY.md</tspan></text>
+      <text class="sv-m" x="54" y="95">설명한다. <tspan font-weight="700">안 열면 존재하지 않는 것과 같다</tspan> — 2026-07-28에 규칙 파일에 다 있던 7항이 통째로 건너뛰어졌다.</text>
+
+      <!-- 2층 훅 -->
+      <rect class="sv-gen" x="30" y="120" width="750" height="82" rx="10"/>
+      <rect x="30" y="120" width="8" height="82" rx="4" fill="var(--warn)"/>
+      <text class="sv-xs" x="54" y="140">2층 · 세션 안에서 실시간</text>
+      <text class="sv-h" x="54" y="162" font-size="14">훅 — <tspan font-weight="400" font-size="12.5">.claude/settings.json 배선 · 검사 로직은 scripts/hook_slide_guard.py <tspan font-weight="700">한 벌</tspan></tspan></text>
+      <text class="sv-m" x="54" y="181"><tspan font-weight="700">주입</tspan>: PreToolUse <tspan font-weight="700">checklist</tspan>(사전 점검 7항) · <tspan font-weight="700">course</tspan>(과목 지침) &#160;|&#160; <tspan font-weight="700">검사</tspan>: PostToolUse <tspan font-weight="700">css-lint</tspan>(R-QC-14)</text>
+      <text class="sv-warn-t" x="54" y="196">관측(아직 차단 안 함): generated-guard · tmp-guard — 오탐률이 0에 수렴할 때 --enforce로 승격</text>
+
+      <!-- 3층 git -->
+      <rect class="sv-bad" x="30" y="218" width="750" height="82" rx="10"/>
+      <rect x="30" y="218" width="8" height="82" rx="4" fill="var(--fail)"/>
+      <text class="sv-xs" x="54" y="238">3층 · 가장 좁고 가장 강하다 · 최종 증거</text>
+      <text class="sv-h" x="54" y="260" font-size="14">git pre-commit — <tspan font-weight="400" font-size="12.5">python scripts/install_hooks.py (core.hooksPath=.githooks)</tspan></text>
+      <text class="sv-m" x="54" y="279"><tspan font-weight="700">차단</tspan>: CSS 회귀 · 생성물 직접 편집(shard 동반 확인) · kit 정합 · 선언↔집행 · 스킬 어댑터 정합 · 발표자노트 회귀</text>
+      <text class="sv-xs" x="54" y="294">Codex 세션에서 지금 작동하는 강제는 <tspan font-weight="700">이 층뿐</tspan>이다 — 「동등」이 아니라 「지연된 동등」(Gate 0 이후 채운다)</text>
+
+      <!-- 탈출 통로 -->
+      <path class="sv-l-fail" d="M812,26 L812,306" stroke-dasharray="7 5" marker-end="url(#en-arw)"/>
+      <text class="sv-fail-t" x="830" y="44">탈출구 — 숨기지 않는다</text>
+      <text class="sv-xs" x="830" y="66">git commit <tspan font-weight="700">--no-verify</tspan></text>
+      <text class="sv-xs" x="830" y="84"><tspan font-weight="700">SKIP_DECK_GATES=1</tspan></text>
+      <text class="sv-xs" x="830" y="102"><tspan font-weight="700">DECK_EMERGENCY_EDIT=1</tspan></text>
+      <text class="sv-m" x="830" y="132">목표는 <tspan font-weight="700">방탄</tspan>이 아니라</text>
+      <text class="sv-m" x="830" y="148"><tspan font-weight="700">잊어버림 방지</tspan>다.</text>
+      <text class="sv-xs" x="830" y="176">세 층 전부를 우회할 수 있다는</text>
+      <text class="sv-xs" x="830" y="191">사실을 문서에 적어 둔다 —</text>
+      <text class="sv-xs" x="830" y="206">숨긴 탈출구가 더 위험하다.</text>
+      <text class="sv-fail-t" x="830" y="236">빠져나갔으면</text>
+      <text class="sv-fail-t" x="830" y="252">같은 내용을 shard·정본에</text>
+      <text class="sv-fail-t" x="830" y="268">반드시 반영한다.</text>
+    </svg>
+    <figcaption><b>「규칙 파일에 적었으니 지켜지겠지」로 넘기지 마라.</b> 자연어는 설명, 설정은 강제, git은 최종 증거다 — 세 층은 서로를 대체하지 않는다. <b>「관측」은 아직 경고만 낸다는 뜻</b>이고, 차단으로 승격하려면 먼저 오탐률을 재야 한다. 검사 범위를 넓힐 때 오탐률을 함께 재는 것은 이 프로젝트의 규율이다(2026-08-03: 겹침 검사 깊이만 풀었더니 잡힌 7건이 전부 오탐이었다).</figcaption>
+  </figure>
+
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>규칙</th><th>Claude Code</th><th>Codex</th><th>git (공통)</th></tr></thead>
+      <tbody>
+        <tr><td>슬라이드 사전 점검 7항 주입</td><td>PreToolUse <code>checklist</code></td><td>Gate 0 미완</td><td>—</td></tr>
+        <tr><td>과목 지침 주입</td><td>PreToolUse <code>course</code></td><td>Gate 0 미완</td><td>—</td></tr>
+        <tr><td>R-QC-14 CSS 회귀</td><td>PostToolUse <code>css-lint</code></td><td>Gate 0 미완</td><td><strong>pre-commit 차단</strong></td></tr>
+        <tr><td>생성물(<code>강의덱.html</code>) 직접 편집</td><td>PreToolUse <code>generated-guard</code> <span class="tag warn">관측</span></td><td>Gate 0 미완</td><td><strong>pre-commit 차단</strong>(shard 동반 확인)</td></tr>
+        <tr><td>저장소 밖 쓰기</td><td>PreToolUse <code>tmp-guard</code> <span class="tag warn">관측</span></td><td>Gate 0 미완</td><td>—</td></tr>
+        <tr><td>kit 정합 · 선언↔집행</td><td>—</td><td>—</td><td><strong>pre-commit 차단</strong></td></tr>
+        <tr><td>스킬 어댑터 정합</td><td>—</td><td>—</td><td><strong>pre-commit 차단</strong></td></tr>
+        <tr><td>발표자노트 회귀</td><td>—</td><td>—</td><td><strong>pre-commit 차단</strong></td></tr>
+        <tr><td>리서치 워커 도구·모델</td><td><code>.claude/agents/*.md</code>(tools·model·maxTurns)</td><td><code>.codex/agents/*.toml</code>(<code>sandbox_mode="read-only"</code>)</td><td>—</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="grid2">
+    <div class="card">
+      <h4>훅 배선과 검사 로직</h4>
+      <p>배선은 <code>.claude/settings.json</code>(PreToolUse <code>checklist</code>·<code>course</code>·<code>generated-guard</code>·<code>tmp-guard</code> / PostToolUse <code>css-lint</code> · 매처는 <code>Write|Edit</code> · 타임아웃 15초)이고, <strong>검사 로직은 전부 <code>scripts/hook_slide_guard.py</code> 한 벌</strong>이다. 플랫폼별로 복제하지 않는다.</p>
+      <p style="margin-bottom:0">훅에서 호출되는 코드는 <strong>표준 라이브러리만</strong> 쓴다 — 훅은 어떤 인터프리터가 잡힐지 보장할 수 없다.</p>
+    </div>
+    <div class="card">
+      <h4>「관측」의 뜻과 승격 조건</h4>
+      <p><span class="tag warn">관측</span>은 아직 차단하지 않고 <strong>경고만</strong> 낸다는 뜻이다. <strong>오탐률을 먼저 재고 0에 수렴할 때</strong> <code>--enforce</code>로 승격한다 — 검사 범위를 넓힐 때 오탐률을 함께 재는 것은 이 프로젝트의 규율이다.</p>
+      <p style="margin-bottom:0">설치: <code>python scripts/install_hooks.py</code> (<code>core.hooksPath=.githooks</code> · <code>--check</code>로 확인만). 상세 <code>.githooks/README.md</code>.</p>
+    </div>
+  </div>
+
+  <div class="callout warn">
+    <span class="lab">탈출구를 숨기지 않는다</span>
+    <code>git commit --no-verify</code> · <code>SKIP_DECK_GATES=1</code> · <code>DECK_EMERGENCY_EDIT=1</code>. <strong>목표는 방탄이 아니라 잊어버림 방지다.</strong> 빠져나갔으면 같은 내용을 shard·정본에 반영한다.<br>
+    <strong>Codex 열은 Gate 0(훅 능력 실측) 이후 채운다.</strong> 그전까지 Codex 세션의 강제는 git 층뿐이다 — 「동등」이 아니라 <strong>「지연된 동등」</strong>이다. 진행 상황은 <code>plans/instruction-refactor/</code>.
+  </div>
+</section>
+
+<!-- ══════════════ 9 ══════════════ -->
+<section id="s9">
+  <h2><span class="num">9</span>검증 명령 전량</h2>
+  <p class="dek">정본 <code>references/검증-명령-지도.md</code>. ⚠️ <strong>Windows 기준 <code>python</code>을 쓴다.</strong> 이 저장소에 <code>.venv</code>는 <strong>없다</strong> — 시스템 인터프리터에 <code>fontTools</code>·<code>Pillow</code>·<code>brotli</code>가 설치돼 있어 회귀 207개가 통과한다.</p>
+
+  <h3>1. 조립과 배포</h3>
+<pre>python scripts/assemble_deck.py courses/&lt;과목&gt;/sessions/N주차/강의덱.초안   <span class="c"># shard → 강의덱.html 재생성(덮어씀)</span>
+python scripts/inline_deck.py &lt;덱&gt;.html --offline                        <span class="c"># base64 단일파일 배포본</span>
+python scripts/build_release.py courses/&lt;과목&gt;/sessions/N주차/강의덱.초안  <span class="c"># 조립→verify_deck→inline→verify_distributable</span>
+python -m http.server                                                   <span class="c"># file:// 금지, 로컬 HTTP로 검증</span></pre>
+  <div class="callout fail">
+    <span class="lab">강의덱.html은 생성물이다</span>
+    정본은 <code>강의덱.초안/</code>의 <code>shell.html</code> + <code>part-NN.html</code>이고 <code>assemble_deck.py</code>가 이를 합쳐 덱을 <strong>덮어쓴다</strong>. 덱을 직접 고치면 다음 조립 때 유실되고, 생성물에만 있는 슬라이드는 조립 즉시 사라진다.<br>
+    생성물과 shard가 어긋났다면 shard를 하나씩 맞추지 말고, <strong>완성된 <code>강의덱.html</code>을 파트 경계로 잘라 shard를 재생성</strong>한 뒤 조립 결과를 조립 전 사본과 diff해 검증한다. <strong>조립 전에는 반드시 현재 덱 사본을 떠둔다.</strong>
+  </div>
+
+  <h3>2. 덱 검증 (정적)</h3>
+<pre>python scripts/verify_deck.py &lt;덱&gt;.html --parts N   <span class="c"># N = part-divider 수(슬라이드 총수 아님 — 1·2주차 모두 6)</span>
+python scripts/verify_deck_quality.py &lt;덱&gt;.html     <span class="c"># 저밀도·근-빈 컨테이너·시각자료 비율·부록 강등</span>
+python scripts/verify_draft_quality.py &lt;주차&gt;       <span class="c"># .md 초안 단계: 저밀도·노트과다·교시당 장수·필수 산출물</span>
+python scripts/check_title_survival.py &lt;주차&gt;       <span class="c"># 초안 제목이 덱 화면에 살아남았는가(참고)</span>
+python scripts/verify_notes.py &lt;덱&gt; &lt;노트&gt; --snapshot|--baseline   <span class="c"># 노트 회귀 (R-NOTE-02)</span></pre>
+  <h4>★ 러너 — 조립 이후 검사를 한 명령으로 잇는다</h4>
+<pre>python scripts/run_deck_checks.py &lt;주차&gt;                    <span class="c"># 정적 게이트 + 노트 + 렌더 증거 판정</span>
+python scripts/run_deck_checks.py &lt;주차&gt; --assemble --parts N</pre>
+  <p><strong>덱을 고쳤으면 이걸 돌려라.</strong> 렌더 증거가 없거나·덱보다 낡았거나·INVALID면 <strong>종료코드 1</strong>이다. 「필수」를 사람 기억에 맡기지 않기 위한 장치다.</p>
+
+  <h3>3. 브라우저 렌더 감사 (필수 — 종료코드가 못 보는 것을 잡는다)</h3>
+<pre>python -m http.server 8799</pre>
+  <p>브라우저에서 덱을 열고 콘솔에서:</p>
+<pre>await (await fetch('/scripts/audit_all.js')).text().then(eval)</pre>
+  <p>출력 JSON을 <code>sessions/_verify/&lt;주차&gt;/deck-audit.json</code>으로 저장하면 <code>run_deck_checks.py</code>가 그것을 증거로 판정한다(없으면 통과시키지 않는다).</p>
+  <div class="callout warn">
+    <span class="lab">창을 1280×720 이상으로 열어라</span>
+    작으면 덱 JS가 <code>--scale</code>을 0으로 계산해 전 장이 0으로 나오고, 그 상태의 「결함 0」을 통과로 오판한 사고가 있다(2026-08-03 재현). 이제 두 감사기가 <strong>fail-closed assert</strong>로 막고 <code>{ INVALID:[...] }</code>를 돌려준다.
+  </div>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>감사기</th><th>검출</th></tr></thead>
+      <tbody>
+        <tr><td><code>audit_render.js</code></td><td>잉크 점유율 · 바닥선(666) 초과 · 슬라이드(720) 이탈 · 요소 겹침 · 단어 중간 줄바꿈 · 박스면적÷글자수 · 빈 asset-slot · 껍데기 컨테이너</td></tr>
+        <tr><td><code>audit_typography.js</code></td><td>역할별 폰트 하한 · 자간 광학 보정 누락(≥32px) · 행간 <code>normal</code> 잔존 · 근-미스 앵커(지배값 ±1~5px)</td></tr>
+        <tr><td><code>audit_all.js</code></td><td>위 둘을 함께 돌려 러너용 압축 증거 생성</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>4. 스킬·킷·계약 검증</h3>
+<pre>python scripts/verify_skill_setup.py                 <span class="c"># 어댑터 정합·메모리 포인터 규약·훅 설치 상태</span>
+python scripts/verify_kit.py
+python scripts/verify_subject_isolation.py           <span class="c"># 스킬 본문에 과목 고유 값이 남아 있으면 FAIL</span>
+python scripts/verify_declared_vs_enforced.py        <span class="c"># 선언(정본표) ↔ kit 실효값 불일치(유형⑤)</span>
+python scripts/verify_declared_vs_enforced.py --list <span class="c"># 등재된 알려진 불일치까지 전부</span>
+python scripts/install_hooks.py                      <span class="c"># git 훅 설치 · --check로 확인만</span></pre>
+
+  <h3>5. 파이프라인 문서 게이트</h3>
+<pre>python scripts/verify_session_docs.py &lt;주차&gt; --target 자료   <span class="c"># 기본 5파일 스키마·출처ID·[C-슬러그] 해소</span>
+python scripts/verify_research_chunks.py &lt;주차&gt;              <span class="c"># 개념KB 청크 깊이·G8 관점·인덱스 일치</span>
+python scripts/verify_required_statements.py &lt;주차&gt;          <span class="c"># 개념KB 필수 진술이 덱 화면에 남았는가(기본 WARN)</span>
+python scripts/verify_judgement_log.py &lt;주차&gt;                <span class="c"># 집필노트 판단 기록 정합</span>
+python scripts/analyze_agent_usage.py --tool-audit --session &lt;세션ID&gt;  <span class="c"># 리서치 워커 도구·모델 감사(0 통과 / 3 위반)</span>
+python scripts/analyze_agent_usage.py --session &lt;세션ID&gt;              <span class="c"># 실행량·토큰·비용 총량</span>
+python scripts/audit_context_budget.py &lt;세션ID&gt;                       <span class="c"># 컨텍스트 예산 판정(T1~T4·TS·T6 · 위반 시 1)</span>
+python scripts/audit_context_budget.py --list                         <span class="c"># 세션 목록(최근순)</span></pre>
+  <div class="callout warn">
+    <span class="lab">과거 토큰 수치는 2배로 읽어라</span>
+    <code>analyze_agent_usage.py</code>는 2026-08-06까지 <strong>2.05배 과대 보고</strong>했다. 트랜스크립트가 응답 1건을 콘텐츠 블록마다 별도 레코드로 쓰면서 같은 <code>usage</code>를 복사하는데, 레코드를 세고 있었다. 지금은 <code>message.id</code>로 중복제거한다(회귀 <code>tests.test_analyze_agent_usage.TestDuplicateUsageRecords</code>).<br>
+    이 스크립트는 <code>~/.claude/projects/</code>의 세션 트랜스크립트를 읽으므로 <strong>Claude Code 전용</strong>이다.
+  </div>
+
+  <h3>6. 회귀 테스트 — 9모듈 207개</h3>
+<pre>python -m unittest tests.test_deck_pipeline tests.test_image_pipeline \
+  tests.test_quality_gates tests.test_deck_contract tests.test_declared_vs_enforced \
+  tests.test_rule_pointers tests.test_typography_rules tests.test_analyze_agent_usage \
+  tests.test_audit_context_budget</pre>
+  <p><strong>일부만 돌리면 나머지 게이트는 검증되지 않는다.</strong> <code>discover</code>는 <code>tests/</code>에 <code>__init__.py</code>가 없어 동작하지 않으므로 모듈을 명시한다.</p>
+
+  <h3>7. 배포·이미지</h3>
+<pre>python scripts/verify_distributable.py &lt;덱&gt;.html    <span class="c"># 배포본 폰트 임베드</span>
+python scripts/verify_image_assets.py &lt;images&gt;      <span class="c"># 이미지 에셋 규격·레지스트리 대조</span>
+python scripts/verify_presenter_deck.py --source &lt;덱&gt; --presenter &lt;주입본&gt;   <span class="c"># inject_presenter.py 산출물 정합</span></pre>
+
+  <h3>8. 잡다한 실무 주의</h3>
+  <ul>
+    <li>브라우저는 <code>deck.css</code>를 캐시하므로 변경 확인 때 링크의 <code>href</code>에 <code>?v=</code>를 붙인다.</li>
+    <li><code>file://</code>로 검증하지 말고 <strong>로컬 HTTP 서버</strong>를 사용한다.</li>
+    <li>스크린샷보다 <strong>JS 측정</strong>(<code>scrollHeight</code>, computed style)을 우선한다.</li>
+    <li><code>.hint-reveal</code>은 <strong>닫힘과 강제 열림 상태를 모두</strong> 검사한다.</li>
+    <li>카탈로그나 루트 <code>SKILL.md</code>를 바꾸면 <code>evals/evals.json</code>·<code>evals/trigger-eval.json</code>으로 회귀 확인(팀 스킬은 <code>evals/team-skills-eval.json</code>).</li>
+  </ul>
+</section>
+
+<!-- ══════════════ 10 ══════════════ -->
+<section id="s10">
+  <h2><span class="num">10</span>산출물·폴더 지도</h2>
+
+  <h3>주차 폴더 구조</h3>
+<pre>courses/&lt;과목&gt;/sessions/N주차/
+  N주차_초안.md            <span class="c">채워진 콘텐츠 초안 — 접두어가 정본. 무접두어 `초안.md`는 폴백(INFO)</span>
+  N주차_강의안설계.md       <span class="c">(있으면) 주차 상세 — 사람 작성 입력</span>
+  deck.contract.json      <span class="c">(선택) 주차 구조 계약</span>
+  강의덱.초안/             <span class="c">★정본 조각 — shell.html + part-NN.html (+ order.txt 선택)</span>
+  강의덱.html             <span class="c">생성물 — 조립 미리보기(외부링크 CSS)</span>
+  강의덱_배포.html         <span class="c">배포 단일본(CSS·이미지·폰트 전부 인라인 — 오프라인 자립)</span>
+  강의덱_발표자노트.html    <span class="c">멘트 💬/👀/🗣가 있을 때만</span>
+  강의덱_발표.html          <span class="c">(선택·명시 요청) 하단 네비 + 발표자 창 런타임 주입본</span>
+  조립_보고.md             <span class="c">계층 문제·보류·대체 사유 (R-OWN-02 — 대화가 아니라 파일로)</span>
+  검토보고_YYYY-MM-DD.md   <span class="c">/검토 산출 (주차 폴더 직하)</span>
+  실습예제/                <span class="c">(선택) 리서치가 실습 검증에 쓴 실행 가능한 프로젝트 원본</span>
+  자료/                    <span class="c">리서치 5파일 + 이미지 계열 + 사람이 쓴 문서</span>
+    N주차_콘텐츠리서치_결과.md   <span class="c">구간 인덱스층 — 사실 재서술 금지, [C-슬러그] 포인터</span>
+    N주차_개념KB.md             <span class="c">★사실 정본 — 청크+ID RAG · 통째 읽기 금지</span>
+    N주차_출처레지스트리.md      <span class="c">출처·verbatim 원문 정본 (6열: ID|URL|확인일|공신력|구간|접근)</span>
+    N주차_실습안_검증결과.md
+    N주차_결정요청사항.md
+    N주차_콘텐츠_집필노트.md     <span class="c">(ⓑ 진입 시) 출처 추적표 + 재료 처분표</span>
+    이미지-에셋.json            <span class="c">슬라이드 이미지 판정·상태 정본</span>
+    이미지-프롬프트.md · images/</pre>
+
+  <h3>주차 구조 계약 (<code>deck.contract.json</code>)</h3>
+  <p>덱의 슬라이드 수·divider 수·도입 순서·시퀀스 같은 주차별 구조 값은 검증 스크립트에 하드코딩하지 않고 계약 파일로 외부화한다.</p>
+  <ul>
+    <li>원칙적 위치: <code>courses/&lt;과목&gt;/sessions/N주차/deck.contract.json</code>(덱과 같은 폴더). <strong>동결된 주차</strong>는 그 폴더를 건드리지 않기 위해 <code>sessions/_contracts/&lt;폴더명&gt;.deck.contract.json</code>.</li>
+    <li><code>verify_deck.py</code> 탐색 순서: ① 덱과 같은 폴더 → ② <code>sessions/_contracts/</code> → ③ 없으면 <span class="tag warn">WARN</span>. <strong>계약이 없다고 FAIL시키지 않는다.</strong></li>
+    <li>기존에 알려진 위반은 <code>known_violations</code>에 사유와 함께 등재한다. 등재분은 <strong>그 주차에서만</strong> WARN으로 강등되고 <strong>다른 주차에서는 그대로 FAIL</strong>로 작동한다.</li>
+  </ul>
+
+  <h3><code>자료/</code>의 종착 상태 (중간 산출물 수명)</h3>
+  <p><code>자료/</code>에 남는 것은 <strong>기본 5파일 + (요청 시) 선택 산출물 + 사람이 직접 쓴 문서 + 이미지 계열</strong>뿐이다. 장문 심층리서치·워커 수확본·구버전(<code>_v1</code>·<code>_v2</code>)·임시 커버리지 표는 5파일에 흡수한 뒤 남기지 않는다 — 보존 가치가 있으면 <code>_dev/설계기록/탐색-아카이브/N주차/</code>로, 없으면 삭제. <strong>세대별 산출물이 쌓이면 같은 사실이 여러 파일에 중복 저장돼 하류가 어느 것이 정본인지 판단할 수 없게 된다.</strong></p>
+
+  <h3>킷 구조 (자립 — 외부 import 0)</h3>
+<pre>kit/guide/       정보모양-taxonomy.md · 카탈로그-규격.md · 토큰-치트시트.md · 디자인시스템.md · 교육원칙-요약.md
+kit/layouts/     by-shape.md(역인덱스) · families/*.md(8파일 50항목) · catalog.html(코드 코어 12)
+kit/charts/      by-shape.md · charts-*.md · diagrams-*.md · elements-code.md(총 21~23) · catalog.html(코어 8)
+kit/styles/      deck.css · legibility.css · patterns.css        kit/images/ · kit/screenshots/ · kit/fonts/
+kit/starter/     deck-template.html · presenter-notes-template.html · logo.svg
+references/      phases/01~10 · 조립-리듬-불변요소.md · 이미지-디렉션-프롬프트.md
+                 이미지-스크린샷-배포.md · 콘텐츠초안-입력형식.md · 검증-명령-지도.md</pre>
+
+  <h3>불변 규칙의 정본 지도</h3>
+  <div class="callout fail">
+    <span class="lab">값을 복제하지 마라</span>
+    <strong>요약본이 정본과 어긋나는 것이 이 프로젝트의 반복 사고였다.</strong> 정본을 직접 열어라. 어긋나면 정본을 따르고, 정본을 고쳤으면 <strong>집행부(kit CSS·verify 스크립트)도 고쳤는지</strong> 확인한다(<code>verify_declared_vs_enforced.py</code>). <strong>불일치를 없애려고 문서 쪽 값을 낮추지 마라</strong> — 규칙을 현실에 맞춰 깎는 것이다.
+  </div>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>영역</th><th>정본</th><th>규칙 ID</th></tr></thead>
+      <tbody>
+        <tr><td>색·폼</td><td><code>kit/guide/디자인시스템.md</code> (배경 <code>_dev/설계기록/색시스템-v2-명세.md</code>)</td><td>R-COLOR-01~05 · R-EMPH-01 · R-TERM-01</td></tr>
+        <tr><td>타이포·토큰·계산식</td><td><code>kit/guide/토큰-치트시트.md</code></td><td>R-TYPE-01~03</td></tr>
+        <tr><td>레이아웃 선택 순서</td><td>루트 <code>SKILL.md</code></td><td>R-LAYOUT-01·02</td></tr>
+        <tr><td>정보 모양 판단축</td><td><code>kit/guide/정보모양-taxonomy.md</code></td><td>—</td></tr>
+        <tr><td>크기·간격·자리</td><td><code>kit/guide/한장-참조표.md</code></td><td>—</td></tr>
+        <tr><td>카탈로그 규칙</td><td><code>kit/guide/카탈로그-규격.md</code></td><td>R-LAYOUT-03</td></tr>
+        <tr><td>조립 리듬(배지+텍스트 정렬 등)</td><td><code>references/조립-리듬-불변요소.md</code></td><td>—</td></tr>
+        <tr><td>누적 규칙·반복 버그</td><td><code>.agents/agent-memory/create-slides/MEMORY.md</code></td><td>—</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ══════════════ 11 ══════════════ -->
+<section id="s11">
+  <h2><span class="num">11</span>사고 이력 — 왜 이 게이트들이 있는가</h2>
+  <p class="dek">이 절은 <strong>규칙의 근거</strong>다. 값이 아니라 이유를 담으므로 과목이 바뀌어도 유지된다.</p>
+
+  <figure class="fig">
+    <svg viewBox="0 0 1160 336" role="img" aria-label="2026년 7월 24일부터 8월 6일까지의 사고 타임라인. 각 사고가 어떤 게이트를 만들었는지 짝지어 표시한다.">
+      <defs><marker id="tl-arw" viewBox="0 0 10 8" refX="9" refY="4" markerWidth="7" markerHeight="6" orient="auto"><path d="M0,0 L10,4 L0,8 Z" fill="var(--ink-3)"/></marker></defs>
+
+      <path class="sv-l" d="M24,200 L1136,200" marker-end="url(#tl-arw)"/>
+      <text class="sv-xs" x="24" y="220">2026-07</text>
+      <text class="sv-xs" x="1120" y="220" text-anchor="end">2026-08</text>
+
+      <!-- e1 up -->
+      <rect class="sv-bad" x="12" y="84" width="200" height="98" rx="9"/>
+      <text class="sv-fail-t" x="26" y="104">07-24</text>
+      <text class="sv-xs" x="26" y="122">강의덱.html을 직접 편집 →</text>
+      <text class="sv-xs" x="26" y="136">다음 조립 때 유실</text>
+      <text class="sv-acc" x="26" y="158">→ generated-guard(관측)</text>
+      <text class="sv-acc" x="26" y="175">&#160;&#160;&#160;+ pre-commit 차단</text>
+      <path class="sv-grid" d="M110,182 L110,194"/><circle cx="110" cy="200" r="6" fill="var(--fail)"/>
+
+      <!-- e2 down -->
+      <circle cx="250" cy="200" r="6" fill="var(--fail)"/><path class="sv-grid" d="M250,206 L250,218"/>
+      <rect class="sv-bad" x="145" y="218" width="210" height="102" rx="9"/>
+      <text class="sv-fail-t" x="159" y="236">07-28</text>
+      <text class="sv-xs" x="159" y="254">2·3단계를 통째로 건너뜀 —</text>
+      <text class="sv-xs" x="159" y="268">지적 6건 중 5건 · 규칙은 전부</text>
+      <text class="sv-xs" x="159" y="282">이미 문서에 있었다</text>
+      <text class="sv-acc" x="159" y="302">→ checklist 훅 주입</text>
+      <text class="sv-acc" x="159" y="315">→ 검토 4축 ② 「뺀 것」 검사</text>
+
+      <!-- e3 up -->
+      <rect class="sv-bad" x="290" y="84" width="200" height="98" rx="9"/>
+      <text class="sv-fail-t" x="304" y="104">07-29</text>
+      <text class="sv-xs" x="304" y="122">ⓑ 진입의 근거 추적이 0 —</text>
+      <text class="sv-xs" x="304" y="136">refs 0건 · 소재 63건 미회수</text>
+      <text class="sv-acc" x="304" y="158">→ R-TRACE-01 집필노트</text>
+      <text class="sv-acc" x="304" y="175">→ R-JUDGE-01 판단 5분류</text>
+      <path class="sv-grid" d="M390,182 L390,194"/><circle cx="390" cy="200" r="6" fill="var(--fail)"/>
+
+      <!-- e4 down -->
+      <circle cx="520" cy="200" r="6" fill="var(--fail)"/><path class="sv-grid" d="M520,206 L520,218"/>
+      <rect class="sv-bad" x="415" y="218" width="210" height="96" rx="9"/>
+      <text class="sv-fail-t" x="429" y="236">07-30</text>
+      <text class="sv-xs" x="429" y="254">워커 4개가 전부 시스템</text>
+      <text class="sv-xs" x="429" y="268">임시 폴더에 씀</text>
+      <text class="sv-acc" x="429" y="290">→ tmp-guard(관측)</text>
+      <text class="sv-acc" x="429" y="307">→ 위임 프롬프트 명시 의무</text>
+
+      <!-- e5 up -->
+      <rect class="sv-bad" x="580" y="72" width="200" height="110" rx="9"/>
+      <text class="sv-fail-t" x="594" y="90">07-31</text>
+      <text class="sv-xs" x="594" y="108">정적 FAIL 0인데 화면엔</text>
+      <text class="sv-xs" x="594" y="122">줄바꿈 250 · 22px 미만 242 ·</text>
+      <text class="sv-xs" x="594" y="136">빈 슬롯 24 · 시각자료 42→15</text>
+      <text class="sv-acc" x="594" y="158">→ 브라우저 전수 측정 필수</text>
+      <text class="sv-acc" x="594" y="175">→ R-QC-08 임계 재도출 · 조립_보고</text>
+      <path class="sv-grid" d="M680,182 L680,194"/><circle cx="680" cy="200" r="6" fill="var(--fail)"/>
+
+      <!-- e6 down -->
+      <circle cx="860" cy="200" r="6" fill="var(--fail)"/><path class="sv-grid" d="M860,206 L860,218"/>
+      <rect class="sv-bad" x="755" y="218" width="210" height="102" rx="9"/>
+      <text class="sv-fail-t" x="769" y="236">08-03</text>
+      <text class="sv-xs" x="769" y="254">창이 작아 --scale=0 → 「결함 0」을</text>
+      <text class="sv-xs" x="769" y="268">통과로 오판 · 검출기가 img·figure를</text>
+      <text class="sv-xs" x="769" y="282">바닥선 검사에서 통째로 제외</text>
+      <text class="sv-acc" x="769" y="302">→ fail-closed assert · INVALID</text>
+      <text class="sv-acc" x="769" y="315">→ 범위 넓힐 땐 오탐률 동시 측정</text>
+
+      <!-- e7 up -->
+      <rect class="sv-bad" x="940" y="84" width="200" height="98" rx="9"/>
+      <text class="sv-fail-t" x="954" y="104">08-06</text>
+      <text class="sv-xs" x="954" y="122">토큰을 2.05배 과대 보고 —</text>
+      <text class="sv-xs" x="954" y="136">레코드 중복 계수</text>
+      <text class="sv-acc" x="954" y="158">→ message.id 중복제거 + 회귀</text>
+      <text class="sv-acc" x="954" y="175">→ 「300줄 넘으면 워커」 판정선</text>
+      <path class="sv-grid" d="M1040,182 L1040,194"/><circle cx="1040" cy="200" r="6" fill="var(--fail)"/>
+
+      <rect class="sv-band" x="12" y="14" width="1128" height="40" rx="9"/>
+      <text class="sv-m" x="32" y="39">붉은 상자 = <tspan font-weight="700">실제로 일어난 일</tspan> &#160;·&#160; 초록/청록 화살표 = <tspan font-weight="700">그래서 생긴 게이트</tspan>. 13일 동안 7건 — 이 문서의 게이트는 대부분 사후에 만들어졌다.</text>
+    </svg>
+    <figcaption><b>게이트는 설계가 아니라 흉터다.</b> 어느 항목도 “있으면 좋겠다”로 생기지 않았다 — 전부 통과했는데 결과가 틀렸던 실행이 먼저 있었다. 그래서 임계를 낮추거나 검사를 생략하는 제안을 받으면, 그 게이트를 만든 사고가 무엇이었는지부터 확인한다. <b>같은 지적이 2회 이상이면 슬라이드 문제가 아니라 규칙 문제다</b>(R-FEEDBACK-01) — 다만 승격 실패율이 실측 11건 중 2건이었으므로, 「고쳤다」로 끝내지 말고 <b>등재 위치</b>를 적어야 다음 주차가 상속한다.</figcaption>
+  </figure>
+
+  <div class="card">
+    <h4>11.1 종료코드가 통과했다고 화면이 멀쩡한 것이 아니다 <span style="font-weight:400;color:var(--ink-3)">(2026-07-31)</span></h4>
+    <p><code>verify_deck</code>·<code>verify_deck_quality</code>가 FAIL 0으로 통과한 덱에서 실제로는 <strong>단어 중간 줄바꿈 250건</strong>, 한 문장이 48px 칸에 갇힌 사례 13건, <strong>22px 하한 미만 242건</strong>, 슬라이드 밖으로 480px 밀려난 요소, <strong>빈 이미지 슬롯 24개</strong>가 화면에 있었다. <strong>조립 후에는 반드시 브라우저에서 전수 측정한다.</strong> 정적 검사로 승격할 수 있었던 것은 <code>R-QC-18</code>(빈 슬롯)·<code>R-QC-19</code>(격자 안 맨 텍스트)로 넣었다.</p>
+  </div>
+
+  <div class="card">
+    <h4>11.2 검출기의 「0」이 눈먼 범위 안의 0일 수 있다 <span style="font-weight:400;color:var(--ink-3)">(2026-08-03)</span></h4>
+    <p><code>audit_render.js</code>가 ① <code>hasOwnText</code> 조건 때문에 <code>&lt;img&gt;</code>·<code>&lt;figure&gt;</code>·<code>&lt;svg&gt;</code>를 바닥선·이탈 검사에서 <strong>통째로 빼고</strong> ② 겹침을 <code>.s-full</code> 2단계까지만 봐서 최소 17장은 아예 검사하지 않았다. 둘 다 고친 뒤 재측정하니 1주차 바닥선 초과가 <strong>17 → 25건</strong>으로 늘었다(전부 이미지 계열).</p>
+    <p style="margin-bottom:0"><strong>검사 범위를 넓힐 때는 오탐률을 함께 재라.</strong> 겹침 검사를 깊이만 풀었더니 2주차에서 잡힌 7건이 전부 오탐이어서(인라인 요소의 합집합 상자) 인라인 제외 + 절대배치 분리로 좁혀야 했다 — 이 원칙 때문에 <code>generated-guard</code>·<code>tmp-guard</code>도 <strong>관측 모드로 먼저</strong> 돌린 뒤 차단으로 승격한다.</p>
+  </div>
+
+  <div class="card">
+    <h4>11.3 장을 지우거나 옮기면 6종이 딸려 온다</h4>
+    <p>노트 밀림 · divider 번호 단조성 · family 오판 · 목차 세로 예산 · 실습 번호 · 이미지 매니페스트. 정본 <code>references/phases/04-조립.md</code> <code>R-MOVE-01</code>. 노트를 건드리는 작업은 <code>verify_notes.py --snapshot</code>/<code>--baseline</code>으로 감싼다(<code>R-NOTE-02</code>). <strong>2026-08-03 실측: 1·2주차 노트가 둘 다 FAIL 상태였고 아무도 안 돌리고 있었다</strong> — 그래서 지금은 <code>.githooks/pre-commit</code>이 노트 변경을 잡는다.</p>
+  </div>
+
+  <div class="card">
+    <h4>11.4 규칙 문서를 고쳤으면 집행부도 고쳤는지 확인한다 (유형⑤)</h4>
+    <p>「정본표에 값을 적었다」와 「kit CSS가 그 값을 낸다」는 다른 일이다. 실측: 정본표가 선언한 값 중 <strong>8건이 kit에서 실현되지 않고</strong> 각 주차 shell 오버라이드에만 있었다 — kit을 직접 쓰거나 다른 과목에 배포하면 원상복귀하는 상태다. 못 고치는 사정이 있으면 <strong>사유와 함께 등재</strong>하고, 등재 없는 새 불일치는 FAIL이다.</p>
+  </div>
+
+  <div class="card">
+    <h4>11.5 수정 라운드를 마칠 때 규칙층 승격을 판정한다 (R-FEEDBACK-01)</h4>
+    <p>같은 지적이 <strong>2회 이상</strong>이면 슬라이드 문제가 아니라 <strong>규칙 문제</strong>다. <strong>등재 위치를 반드시 적는다</strong> — 「고쳤다」로 끝내면 그 주차 shell에만 남아 다음 주차가 상속하지 못한다. 승격 전에 기존 지표와 충돌하는지 함께 본다.</p>
+    <p style="margin-bottom:0"><strong>실측된 실패율</strong>: 사용자가 준 §0 전역 규칙 11건 중 스킬층으로 올라간 것은 <strong>2건뿐</strong>이었다. 환류 규칙이 문장으로만 있고 집행 절차가 없어서다.</p>
+  </div>
+
+  <div class="card">
+    <h4>11.6 그 밖에 실제로 일어난 일들</h4>
+    <ul style="margin-bottom:0">
+      <li><strong>2026-07-24</strong> — <code>강의덱.html</code>을 직접 편집해 다음 assemble 때 유실. → <code>generated-guard</code> + pre-commit.</li>
+      <li><strong>2026-07-28</strong> — 사전 점검 7항이 통째로 건너뛰어져 지적 6건 중 5건 발생. 규칙은 전부 문서에 있었다. → 훅 주입 계층 신설. 같은 날 <code>[C-하네스구성요소]</code>의 유보 문장 1건이 화면에서 사라졌는데 어느 게이트도 못 잡음 → 4축 ②.</li>
+      <li><strong>2026-07-29</strong> — ⓑ 경로 근거 추적이 구조적으로 0(refs 0건·집필노트 없음·<code>PPT 소재</code> 63건 미회수) → R-TRACE-01 + 집필노트 의무화. A/B 실험에서 KB 미회수 판이 놓친 6건이 전부 «회수해야만 나오는 연출» → 미회수는 위반.</li>
+      <li><strong>2026-07-30</strong> — 워커 4개가 전부 시스템 임시 폴더에 씀 → 서브에이전트 프롬프트에 <code>tmp/</code> 제약 명시 의무.</li>
+      <li><strong>2026-07-31</strong> — 2주차 저밀도 사고(장수를 시간예산으로 역산). 청크 인용은 있었으나 <strong>시각자료 42→15개로 감소</strong>. 조립 보고를 대화로만 해서 세션 종료와 함께 사라짐 → <code>조립_보고.md</code> 파일 의무화.</li>
+      <li><strong>2026-08-03</strong> — 창을 작게 열어 <code>--scale</code>이 0이 된 상태의 「결함 0」을 통과로 오판 → 감사기 fail-closed assert.</li>
+      <li><strong>1주차</strong> — 중간 산출물 수명 규칙이 없어 세대별 산출물이 누적, 같은 사실이 5개 파일에 중복 저장 → 종착 상태 규약.</li>
+      <li><strong>세션 디렉터리 통째 삭제</strong> — 서브에이전트가 스코프 밖을 지운 전례 → allowlist + wave별 <code>git status</code>.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ══════════════ 12 ══════════════ -->
+<section id="s12">
+  <h2><span class="num">12</span>컨텍스트 예산 규율</h2>
+  <p class="dek"><strong>창에 넣은 것은 이후 모든 호출에 다시 청구된다</strong>(비용의 70% 이상). 하는 일을 줄이는 규칙이 아니라 <strong>같은 일을 더 적은 토큰으로 하는 규칙</strong>이다. 실측 근거는 <code>_dev/설계기록/토큰감사-2026-08-06.md</code>.</p>
+  <div class="grid2">
+    <div class="card"><h4>Bash 출력을 통째로 받지 않는다</h4><p>종료코드만 필요하면 <code>&gt;/dev/null 2&gt;&amp;1; echo $?</code>, 목록·로그는 <code>| tail -N</code>, 검사기는 판정 줄만 <code>| grep -E "RESULT|FAIL"</code>.</p></div>
+    <div class="card"><h4>한 파일에서 300줄 넘게 읽어야 하면 워커에게</h4><p>「무엇을 판단하려는지」를 주고 <strong>3천 자 이내</strong> 반환을 요구한다. 예외는 사용자가 전문 정독을 지시한 문서와 지금 편집할 파일이며, <strong>예외를 쓰면 보고에 적는다</strong>.</p></div>
+    <div class="card"><h4>결정을 담지 않는 턴을 만들지 않는다</h4><p>「대기 중」류 상태만 담은 응답 대신 다음 작업을 진행한다. <strong>줄이는 대상은 「내용 없는 말」이지 「보고」가 아니다</strong> — 판정·근거·수치·다음 행동은 그대로 낸다.</p></div>
+    <div class="card"><h4>긴 중단 뒤에는 새 세션으로</h4><p>캐시 TTL(1시간) 만료 후 재개하면 창 전량이 <strong>12.5배 단가</strong>로 재생성된다. 창이 250k를 넘으면 같은 이유로 분리하고, 인계는 <code>MEMORY.md</code> <code>## 미해결</code> + <code>plans/&lt;주제&gt;/</code>로.</p></div>
+  </div>
+  <p>검사: <code>python scripts/audit_context_budget.py &lt;세션ID&gt;</code> (T1~T4·TS·T6 · 위반 시 종료코드 1 · <code>--list</code>로 목록). <code>TS</code>는 「창을 채운 것」에서 <code>도구결과: Read</code>가 <strong>30%</strong>를 넘으면 잡힌다.</p>
+
+  <h3>공통 작업 방식</h3>
+  <ul>
+    <li>텍스트·파일 탐색은 <code>rg</code>/<code>rg --files</code>를 우선한다. Windows에서는 <code>python</code>을 쓴다.</li>
+    <li><strong>임시·중간 파일은 저장소 안 <code>tmp/</code>에만</strong> 만든다. 시스템 임시 폴더(<code>%TEMP%</code>·<code>AppData</code>·플랫폼 스크래치패드)에 두지 않는다(<code>tmp/</code>는 이미 <code>.gitignore</code>). 작업 종료 시 <strong>밖에 남은 파일이 0개인지 세어 확인</strong>한다 — <strong>옮기는 것은 정리가 아니다</strong>.</li>
+    <li>구현 요청은 수정 후 정적 검증과 가능한 범위의 브라우저 측정을 수행한다.</li>
+    <li>웹 리서치가 필요한 사실은 검색 후 <strong>원문 출처를 확인</strong>한다. 외부 쓰기·게시·전송은 사용자 요청 범위를 넘겨 실행하지 않는다.</li>
+    <li>git으로 관리한다(기본 브랜치 <code>main</code>). 의미 있는 변경은 verify 통과 후 커밋해 <strong>복구 지점</strong>을 만든다. 대규모 정리·대량 갱신은 먼저 영향 범위를 확인한다.</li>
+  </ul>
+</section>
+
+<!-- ══════════════ 13 ══════════════ -->
+<section id="s13">
+  <h2><span class="num">13</span>완료의 정의</h2>
+  <p class="dek">이 5항을 전부 충족해야 「완료」다. 정본 <code>AGENTS.md</code>.</p>
+  <ol class="steps">
+    <li><span class="t">요청한 결과가 구현됐다.</span></li>
+    <li><span class="t">관련 검증을 실행했고 <strong>종료코드를 확인</strong>했다.</span></li>
+    <li><span class="t"><code>git status --short</code>에 <strong>요청 범위 밖 변경이 없다</strong>.</span></li>
+    <li><span class="t">보존 조건(동결 산출물·기존 계약)을 확인했다.</span></li>
+    <li><span class="t">보고에 <strong>실행한 명령과 실제 결과</strong>, 그리고 <strong>실행하지 못한 검증과 그 이유</strong>를 적었다.</span></li>
+  </ol>
+  <div class="callout fail">
+    <span class="lab">보고의 정직성</span>
+    확인하지 않은 명령·경로·결과를 <strong>사실처럼 쓰지 않는다</strong>. 통과하지 않은 것을 통과로 보고하지 않는다. 기존 사용자 변경을 보존하고, 무관한 파일을 되돌리거나 정리하지 않는다.
+  </div>
+  <div class="callout acc">
+    <span class="lab">넘어가기 쉬운 세 가지</span>
+    ⚠️ <strong>종료코드가 통과했다고 화면이 멀쩡한 것이 아니다</strong> — 조립 후에는 브라우저에서 전수 측정한다.<br>
+    ⚠️ <strong>회귀는 9모듈을 다 돌린다</strong> — 일부만 돌리면 나머지 게이트가 검증되지 않는다.<br>
+    ⚠️ <strong>덱을 고쳤으면 <code>run_deck_checks.py &lt;주차&gt;</code>를 돌린다</strong> — 렌더 증거가 없거나 낡았으면 exit 1이다.
+  </div>
+</section>
+
+<footer>
+  <p><strong>create-slides 작업 파이프라인 전도</strong> — 저장소 루트 <code>작업파이프라인.html</code>. 출처: <code>AGENTS.md</code> · <code>CLAUDE.md</code> · 루트 <code>SKILL.md</code> · <code>skills/README.md</code> · <code>skills/{리서치,검토,하네스}/SKILL.md</code> · <code>sessions/README.md</code> · <code>references/검증-명령-지도.md</code> · <code>references/phases/01~10</code> · <code>.claude/settings.json</code>.</p>
+  <p>이 문서는 <strong>파생 지도</strong>이며 정본이 아니다. 값이 어긋나면 각 정본이 이긴다. 규칙을 바꿨으면 이 파일도 함께 갱신할지 판단한다.</p>
+</footer>
+
+</main>
+</div>
+</body>
+</html>
