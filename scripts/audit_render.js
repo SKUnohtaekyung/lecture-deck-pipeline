@@ -40,6 +40,24 @@
   if (document.fonts && document.fonts.check('16px Pretendard') !== true) {
     _invalid.push('Pretendard 미로드 — 줄바꿈·폭 측정이 재현되지 않는다');
   }
+  /* ⚠️ 이미지 로딩 assert (2026-08-18 신설 — 반복측정으로 규명).
+     폰트는 막으면서 이미지는 안 막고 있었다. 이미지가 아직 안 그려지면 상자가
+     찌그러져 **바닥선 초과·오버플로가 실제보다 적게 나온다** — 실측: 1주차에서
+     `below` 25→23, `ovf` 1→0. 즉 틀리는 방향이 「덱이 더 멀쩡해 보이는」 쪽이고,
+     그 상태의 수치가 래칫을 통과해 버린다. 이 저장소의 과거 실패가 전부 그
+     방향이었다(지도 §8.1·§8.2).
+     naturalWidth === 0 은 «로드는 끝났는데 깨진» 경우다 — complete만 보면 통과한다. */
+  var _imgs = [].slice.call(document.images || []);
+  var _pending = _imgs.filter(function (im) { return !im.complete; }).length;
+  var _brokenImg = _imgs.filter(function (im) { return im.complete && im.naturalWidth === 0; }).length;
+  if (_pending) {
+    _invalid.push('이미지 ' + _pending + '/' + _imgs.length + '개 미로드 — '
+      + '바닥선·오버플로가 실제보다 적게 나온다. onload 를 기다린 뒤 다시 재라');
+  }
+  if (_brokenImg) {
+    _invalid.push('이미지 ' + _brokenImg + '/' + _imgs.length + '개 깨짐(naturalWidth=0) — '
+      + '경로를 고친 뒤 다시 재라');
+  }
   if (_invalid.length) return JSON.stringify({ INVALID: _invalid });
 
   /* 그래픽 요소 판정 — 아래 「바닥선·이탈」 검사가 이미지를 통째로 놓치던

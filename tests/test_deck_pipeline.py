@@ -478,6 +478,62 @@ class RenderNumericVerdictTests(unittest.TestCase):
         self.assertEqual(warn, 3 + 2 + 1 + 1)
 
 
+class RenderAuditFailClosedTests(unittest.TestCase):
+    """감사기의 fail-closed assert가 «안 그려진 화면»을 통과시키지 않는지 고정한다.
+
+    2026-08-18 반복측정으로 규명된 결함: `audit_render.js`가 **폰트는** 막으면서
+    **이미지는** 막지 않았다. 이미지가 아직 로드되지 않은 상태로 재면 상자가
+    찌그러져 결함이 **실제보다 적게** 나온다 — 1주차 실측 `below` 25→23,
+    `ovf` 1→0. 틀리는 방향이 「덱이 더 멀쩡해 보이는」 쪽이라 그 수치가 래칫을
+    조용히 통과한다(지도 §8.1·§8.2가 기록한 이 저장소의 반복 실패 형태).
+
+    ⚠️ 여기서 검증하는 것은 **선언의 존재**다. 실제 발화는 브라우저에서만
+    재현되며 2026-08-18에 실측 확인했다(이미지 38/39 미로드 → INVALID 반환,
+    로딩 완료 후 재측정은 정상 측정치와 완전 동일). 헤드리스는 DEC-03으로
+    도입하지 않으므로 여기서는 가드가 지워지는 것을 막는 데 집중한다.
+    """
+
+    AUDIT_RENDER = Path(__file__).resolve().parent.parent / "scripts" / "audit_render.js"
+    AUDIT_ALL = Path(__file__).resolve().parent.parent / "scripts" / "audit_all.js"
+
+    def test_image_readiness_is_asserted_before_measuring(self):
+        src = self.AUDIT_RENDER.read_text(encoding="utf-8")
+        self.assertIn("document.images", src,
+                      "이미지 로드 상태를 보지 않는다 — 미로드 화면을 «결함 없음»으로 통과시킨다")
+        self.assertIn("naturalWidth === 0", src,
+                      "complete만 보면 «로드는 끝났는데 깨진» 이미지를 놓친다")
+        # 검사가 assert 블록 안(=INVALID로 이어지는 자리)에 있어야 의미가 있다
+        head = src.split("if (_invalid.length) return", 1)[0]
+        self.assertIn("document.images", head,
+                      "이미지 검사가 fail-closed assert 블록 밖에 있다 — 측정을 막지 못한다")
+
+    def test_font_assert_still_present(self):
+        """이미지 가드를 넣다가 기존 폰트 가드를 밀어내지 않았는지."""
+        src = self.AUDIT_RENDER.read_text(encoding="utf-8")
+        self.assertIn("fonts.check('16px Pretendard')", src)
+
+    def test_evidence_records_measurement_environment(self):
+        """증거에 환경이 없으면 «덱이 바뀐 것»과 «환경이 바뀐 것»을 구분할 수 없다.
+
+        2026-08-17 측정과 2026-08-18 재측정의 `ovf`가 2→1로 달랐는데 원인을
+        규명할 수 없었던 이유가 정확히 이것이다.
+        """
+        src = self.AUDIT_ALL.read_text(encoding="utf-8")
+        for key in ("devicePixelRatio", "innerWidth", "userAgent"):
+            self.assertIn(key, src, f"증거에 {key}가 기록되지 않는다")
+
+    def test_stored_evidence_carries_env_block(self):
+        root = Path(__file__).resolve().parent.parent
+        for week in ("1주차", "2주차", "3주차"):
+            f = root / "sessions" / "_verify" / week / "deck-audit.json"
+            if not f.exists():
+                continue
+            env = json.loads(f.read_text(encoding="utf-8")).get("env")
+            self.assertIsNotNone(env, f"{week} 증거에 env 블록이 없다 — 재측정하라")
+            for key in ("dpr", "viewport", "ua", "images"):
+                self.assertIn(key, env, f"{week} env에 {key}가 없다")
+
+
 class ReportFreshnessTests(unittest.TestCase):
     """P5(배치4 · 2026-08-17): 보고 신선도 — 고의 낡음이 실제로 잡히는지 먼저 증명."""
 

@@ -183,7 +183,7 @@ footer{border-top:1px solid var(--line);padding-top:22px;color:var(--ink-3);font
     <span class="chip acc">파이프라인 3스킬 + 횡단 1</span>
     <span class="chip">게이트 A·G1·G2 + 검증 12종</span>
     <span class="chip">기계 강제: PreToolUse 4 · PostToolUse 1 · pre-commit 5</span>
-    <span class="chip">회귀 10모듈 215개</span>
+    <span class="chip">회귀 10모듈 219개</span>
   </div>
 </header>
 
@@ -1404,7 +1404,7 @@ cp "입력양식/콘텐츠초안템플릿.md" "courses/바이브코딩/sessions/
 <!-- ══════════════ 9 ══════════════ -->
 <section id="s9">
   <h2><span class="num">9</span>검증 명령 전량</h2>
-  <p class="dek">정본 <code>references/검증-명령-지도.md</code>. ⚠️ <strong>Windows 기준 <code>python</code>을 쓴다.</strong> 이 저장소에 <code>.venv</code>는 <strong>없다</strong> — 시스템 인터프리터에 <code>fontTools</code>·<code>Pillow</code>·<code>brotli</code>가 설치돼 있어 회귀 215개가 통과한다.</p>
+  <p class="dek">정본 <code>references/검증-명령-지도.md</code>. ⚠️ <strong>Windows 기준 <code>python</code>을 쓴다.</strong> 이 저장소에 <code>.venv</code>는 <strong>없다</strong> — 시스템 인터프리터에 <code>fontTools</code>·<code>Pillow</code>·<code>brotli</code>가 설치돼 있어 회귀 219개가 통과한다.</p>
 
   <h3>1. 조립과 배포</h3>
 <pre>python scripts/assemble_deck.py courses/&lt;과목&gt;/sessions/N주차/강의덱.초안   <span class="c"># shard → 강의덱.html 재생성(덮어씀)</span>
@@ -1471,7 +1471,7 @@ python scripts/audit_context_budget.py --list                         <span clas
     이 스크립트는 <code>~/.claude/projects/</code>의 세션 트랜스크립트를 읽으므로 <strong>Claude Code 전용</strong>이다.
   </div>
 
-  <h3>6. 회귀 테스트 — 10모듈 215개</h3>
+  <h3>6. 회귀 테스트 — 10모듈 219개</h3>
 <pre>python -m unittest tests.test_deck_pipeline tests.test_image_pipeline \
   tests.test_quality_gates tests.test_deck_contract tests.test_declared_vs_enforced \
   tests.test_rule_pointers tests.test_typography_rules tests.test_analyze_agent_usage \

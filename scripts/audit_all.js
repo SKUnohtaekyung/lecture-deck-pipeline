@@ -152,6 +152,20 @@
        사람이 파일만 열어도 대상이 무엇인지 알 수 있게 함께 적는다 */
     url: location.pathname,
     slideCount: slides.length,
+    /* ⚠️ 측정 환경 (2026-08-18 신설 — 반복측정으로 필요성이 드러났다).
+       2026-08-17 측정과 2026-08-18 재측정의 `ovf`가 2→1로 달랐는데, 증거에 환경이
+       없어 「덱이 바뀐 것」인지 「환경이 바뀐 것」인지 **판별할 수단이 없었다.**
+       반복측정 결과 같은 환경 안에서는 완전히 결정적이다(같은 로드 5회 · 새 로드
+       3회 · 뷰포트 1440/1600 — 11개 지표 전부 동일). 따라서 수치가 달라졌다면
+       ① 덱이 바뀌었거나 ② 환경이 바뀐 것이고, 이 블록이 그 둘을 가른다.
+       래칫은 «환경이 같을 때»만 의미가 있다 — git diff에서 이 블록이 함께 바뀌면
+       그 증가·감소를 덱의 변화로 읽지 마라. */
+    env: {
+      dpr: window.devicePixelRatio,
+      viewport: [window.innerWidth, window.innerHeight],
+      ua: navigator.userAgent,
+      images: (document.images || []).length
+    },
     render: { totals: agg, offenders: offenders, density: density },
     /* 장별 원자료 — 기준판 비교 도구(compare_baseline_panel.py)가 읽는다.
        ⚠️ 객체가 아니라 **배열 행**으로 싣는다. 110장을 객체로 담으면 증거가
