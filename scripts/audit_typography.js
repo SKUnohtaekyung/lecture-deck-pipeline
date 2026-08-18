@@ -51,6 +51,19 @@
   /* 배지 티어를 허용하는 상한(§5-4: 용도가 잠긴 라벨 전용) */
   rules.BADGE_MAX_CHARS = 20;
 
+  /* 「코드·터미널」 티어(하한 제외)로 보는 조상 컨테이너 셀렉터.
+     ⚠️ run() 안에 숨겨 두면 픽스처로 검증할 수 없어 조용히 낡는다 — 그래서 선언을
+        rules로 올린다(선언↔집행 규율).
+     `.terminal-bar`는 2026-08-18 재판정에서 추가했다: 2주차 C3-N3의 터미널 창
+     제목줄(`b < div.terminal-bar < div.w2-prompt.terminal-dark`)이 «Codex ·
+     내-프로젝트 · 실습 ⑥ 화면 만들기»라는 **명사 브레드크럼**인데, 28자라
+     BOX_DESC_MAX_CHARS를 넘고 한글 낱말이 2개 이상이라 looksLikeProse가 참을
+     내 narrative(22px 하한)로 샜다. R-TYPE-01은 「코드·터미널 — 하한 적용 제외」를
+     이미 규정하고 있고 `.terminal-bar`는 kit 정의 셀렉터(patterns.css)다 —
+     집행부가 정본을 못 따라간 경우이므로 집행부를 고친다(유형⑤ 방향). */
+  rules.CODE_CONTAINERS = ['pre', 'code', '.terminal-copy', '.terminal-bar',
+    '.viz-code', '.code-chart', '.code-diagram'];
+
   /* ⚠️ 「긴 문자열 = 서술문」이 아니다(실측으로 확인).
      1주차에 그대로 걸면 `C:\VibeCoding\about-me\index.html`(33자·경로)와
      `LET'S MAKE SOMETHING MEANINGFUL`(32자·장식 태그라인)이 「8~14px 서술문」으로
@@ -216,9 +229,7 @@
         || e.closest('.slide-num') || e.classList.contains('slide-num'));
     }
     function inCode(e) {
-      return !!(e.closest('pre') || e.closest('code') || e.tagName === 'CODE' || e.tagName === 'PRE'
-        || e.closest('.terminal-copy') || e.closest('.viz-code') || e.closest('.code-chart')
-        || e.closest('.code-diagram'));
+      return rules.CODE_CONTAINERS.some(function (sel) { return !!e.closest(sel); });
     }
     function ownText(e) {
       var s = '';

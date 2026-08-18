@@ -204,6 +204,29 @@ def is_target(path):
     return any(h in p for h in TARGET_HINTS)
 
 
+def is_persistent_agent_memory(abs_path):
+    """`<home>/.claude/projects/<프로젝트키>/memory/` 아래인가.
+
+    ⚠️ 오탐 판정 (2026-08-18). 관측 모드가 2026-08-17 세션에서 이 디렉터리 쓰기를
+    `would-block`으로 잡았다. **오탐이다** — 이 규칙이 막으려는 해악은
+    TMP_GUARD_REASON이 스스로 밝히듯 「세션이 끝난 뒤 회수할 수 없다」인데,
+    에이전트 메모리 디렉터리는 정반대로 **세션마다 다시 읽히도록 시스템이 지정한
+    영속 저장소**다. 임시 폴더가 아니므로 규칙의 사정거리 밖이다.
+
+    ⚠️ 홈 디렉터리를 통째로 여는 것이 아니다 — `.claude/projects/<키>/memory/`
+    **아래만** 통과시킨다. `~/.claude/` 다른 곳이나 `~/` 직하는 그대로 걸린다.
+    (오탐을 없애려고 검사 범위를 넓게 깎으면 검출기가 눈이 머는 쪽으로 망가진다 —
+     `references/검증-명령-지도.md` §8.2.)
+    """
+    home = os.path.abspath(os.path.expanduser("~")).replace("\\", "/").rstrip("/")
+    base = (home + "/.claude/projects").lower()
+    norm = os.path.normpath(abs_path).replace("\\", "/")
+    if not norm.lower().startswith(base + "/"):
+        return False
+    rest = norm[len(base) + 1:].split("/")
+    return len(rest) >= 2 and rest[1] == "memory"
+
+
 def get_repo_root():
     return os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -387,6 +410,14 @@ def mode_tmp_guard(path, host, enforce):
     except ValueError:
         common = None
     if common == repo_root:
+        return
+    # 저장소 밖이지만 «시스템 지정 영속 경로»면 통과 — 오탐 장부에 allow로 남긴다.
+    # 「걸지 않았다」를 조용히 넘기지 않기 위해서다: 승격(--enforce) 판단은
+    # would-block과 allow의 비율로 하며, allow가 기록되지 않으면 분모가 사라진다.
+    if is_persistent_agent_memory(abs_path):
+        log_observation("tmp-guard", path, "allow",
+                        "에이전트 영속 메모리(<home>/.claude/projects/<키>/memory/) — "
+                        "2026-08-18 오탐 확정")
         return
     reason = TMP_GUARD_REASON.format(path=path)
     if enforce:

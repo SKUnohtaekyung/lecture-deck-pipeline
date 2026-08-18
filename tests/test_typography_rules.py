@@ -189,6 +189,37 @@ class TypographyRuleTests(unittest.TestCase):
         v = _run_rules([{"fn": "violatesFloor", "args": [cases[0][1]]}])[0]
         self.assertTrue(v["violates"], "10px 안내문이 22px 하한 위반으로 잡혀야 한다")
 
+    def test_code_container_selectors_are_declared_not_buried(self):
+        """결함: 「무엇을 코드·터미널로 볼 것인가」가 run() 안 지역 함수에만 있어
+        픽스처로 검증할 수 없었다. 2026-08-18 A-0 재판정에서 그 대가가 드러났다 —
+        2주차 C3-N3의 터미널 창 **제목줄**(`div.terminal-bar`)이 코드 티어에서
+        빠져 있어 「Codex · 내-프로젝트 · 실습 ⑥ 화면 만들기」라는 명사
+        브레드크럼이 28자·한글 4낱말이라는 이유로 narrative(22px 하한)로 샜다.
+        R-TYPE-01은 「코드·터미널 — 하한 적용 제외」를 이미 규정하고 있었으므로
+        정본이 아니라 집행부가 뒤처진 경우다(유형⑤)."""
+        out = _run_rules([{"fn": "roleOf", "args": [
+            {"chars": 28, "lines": 1, "inCode": True, "inTable": False, "fontSize": 16,
+             "text": "Codex · 내-프로젝트 · 실습 ⑥ 화면 만들기"}]}])
+        self.assertEqual(out[0], "code", "터미널 크롬은 코드 티어여야 한다")
+
+        script = (
+            "const {rules} = require(" + json.dumps(str(DETECTOR)) + "); "
+            "process.stdout.write(JSON.stringify(rules.CODE_CONTAINERS || null));"
+        )
+        proc = subprocess.run([NODE, "-e", script], capture_output=True, text=True,
+                              encoding="utf-8")
+        self.assertEqual(proc.returncode, 0, proc.stderr)
+        sels = json.loads(proc.stdout)
+        self.assertIsNotNone(sels, "CODE_CONTAINERS가 rules로 노출돼야 픽스처가 검증할 수 있다")
+        for must in ("pre", "code", ".terminal-copy", ".terminal-bar",
+                     ".viz-code", ".code-chart", ".code-diagram"):
+            self.assertIn(must, sels, f"코드 컨테이너 선언에서 {must}가 빠졌다")
+
+        # 집행부가 선언을 실제로 쓰는지 — 목록만 있고 inCode가 옛 하드코딩이면 무의미하다.
+        src = DETECTOR.read_text(encoding="utf-8")
+        self.assertIn("rules.CODE_CONTAINERS.some", src,
+                      "inCode()가 CODE_CONTAINERS를 쓰지 않는다 — 선언과 집행이 갈라졌다")
+
 
 class RunnerContractTests(unittest.TestCase):
     """`scripts/run_deck_checks.py`의 fail-closed 계약 회귀 테스트.

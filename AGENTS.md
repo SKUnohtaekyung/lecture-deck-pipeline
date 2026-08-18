@@ -57,11 +57,11 @@
 
 | 규칙 | Claude Code | Codex | git(공통) |
 |---|---|---|---|
-| 슬라이드 사전 점검 7항 주입 | PreToolUse `checklist` | Gate 0 미완 | — |
-| 과목 지침 주입 | PreToolUse `course` | Gate 0 미완 | — |
-| R-QC-14 CSS 회귀 | PostToolUse `css-lint` | Gate 0 미완 | **pre-commit 차단** |
-| 생성물(`강의덱.html`) 직접 편집 | PreToolUse `generated-guard` **(관측)** | Gate 0 미완 | **pre-commit 차단**(shard 동반 확인) |
-| 저장소 밖 쓰기 | PreToolUse `tmp-guard` **(관측)** | Gate 0 미완 | — |
+| 슬라이드 사전 점검 7항 주입 | PreToolUse `checklist` | **경로 키 없음 — 이식 불가**(어댑터 필요) | — |
+| 과목 지침 주입 | PreToolUse `course` | **경로 키 없음 — 이식 불가**(어댑터 필요) | — |
+| R-QC-14 CSS 회귀 | PostToolUse `css-lint` | **경로 키 없음 — 이식 불가**(어댑터 필요) | **pre-commit 차단** |
+| 생성물(`강의덱.html`) 직접 편집 | PreToolUse `generated-guard` **(관측)** | **경로 키 없음 — 이식 불가**(`apply_patch` 헤더 파싱 필요) | **pre-commit 차단**(shard 동반 확인) |
+| 저장소 밖 쓰기 | PreToolUse `tmp-guard` **(관측)** | **경로 키 없음 — 이식 불가**(셸 문자열 파싱 필요) | — |
 | kit 정합 · 선언↔집행 | — | — | **pre-commit 차단** |
 | 스킬 어댑터 정합 | — | — | **pre-commit 차단** |
 | 발표자노트 회귀 | — | — | **pre-commit 차단** |
@@ -70,7 +70,7 @@
 - **(관측)** 은 아직 차단하지 않고 경고만 낸다는 뜻이다. 오탐률을 먼저 재고 0에 수렴할 때 `--enforce`로 승격한다 — 검사 범위를 넓힐 때 오탐률을 함께 재는 것은 이 프로젝트의 규율이다.
 - 설치: `python scripts/install_hooks.py` (`core.hooksPath=.githooks`). 상세는 `.githooks/README.md`.
 - 탈출구를 숨기지 않는다: `git commit --no-verify` · `SKIP_DECK_GATES=1` · `DECK_EMERGENCY_EDIT=1`. 목표는 방탄이 아니라 잊어버림 방지다. 빠져나갔으면 같은 내용을 shard·정본에 반영한다.
-- **Codex 열은 Gate 0(훅 능력 실측) 이후 채운다.** 그전까지 Codex 세션의 강제는 git 층뿐이다 — 「동등」이 아니라 「지연된 동등」이다. 진행 상황은 `plans/instruction-refactor/`.
+- **Codex 열은 Gate 0 실측(2026-08-18)으로 채웠다.** 훅 자체는 발화한다(`SessionStart`·`PreToolUse`·`PostToolUse` 실측 확인). 막는 것은 배선이 아니라 **페이로드 스키마**다 — Codex의 `PreToolUse`에는 Claude Code의 `tool_input.file_path`에 대응하는 **파일 경로 키가 없고**, 경로가 `Bash`의 셸 문자열이나 `apply_patch`의 패치 헤더 **안에 문자열로 묻혀 있다.** 그래서 경로 기반 훅 4종은 파싱 어댑터 없이는 이식되지 않는다. 그때까지 Codex 세션의 강제는 **git 층뿐**이다 — 「동등」이 아니라 **「구조적 비대칭」**이다(종전 서술 「지연된 동등」은 실측으로 폐기). 실측 상세는 `MEMORY.md` 「지침 생태계 리팩터링」, 계획은 `plans/instruction-refactor/`.
 
 ## 플랫폼별 Skill 호출
 
@@ -106,7 +106,7 @@
 
 ## 실행과 검증
 
-**명령 전체와 사고 이력은 `references/검증-명령-지도.md`가 정본이다.** 여기에 복제하지 않는다 — 덱·kit 작업을 시작하기 전에 그 파일을 연다. (조립 §1 · 덱 검증과 러너 §2 · 브라우저 렌더 감사 §3 · 스킬·킷 §4 · 파이프라인 문서 §5 · 회귀 8모듈 §6 · 배포·이미지 §7 · 사고 이력 §8)
+**명령 전체와 사고 이력은 `references/검증-명령-지도.md`가 정본이다.** 여기에 복제하지 않는다 — 덱·kit 작업을 시작하기 전에 그 파일을 연다. (조립 §1 · 덱 검증과 러너 §2 · 브라우저 렌더 감사 §3 · 스킬·킷 §4 · 파이프라인 문서 §5 · 회귀 10모듈 §6 · 배포·이미지 §7 · 사고 이력 §8)
 
 넘어가기 쉬운 세 가지만 여기 남긴다:
 

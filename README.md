@@ -56,7 +56,7 @@ lecture-deck-pipeline/
 ├── outputs/                     레이아웃 아틀라스 산출물
 ├── scripts/                     검증 · 조립 · 배포 도구 11종
 ├── evals/                       회귀 평가 시나리오(JSON) + 이미지 계약 검증기
-├── tests/                       파이프라인·게이트 회귀 테스트(unittest 8모듈 155개 + fixtures 3종)
+├── tests/                       파이프라인·게이트 회귀 테스트(unittest 10모듈 215개 + fixtures 3종)
 │
 ├── skills/                      팀 워크플로 스킬 정본: 리서치 · 콘텐츠 · 검토 · 하네스
 ├── sessions/                    주차별 산출물(N주차/N주차_초안.md(레거시 초안.md 폴백 인식) · 강의덱.html · 자료/)
@@ -150,10 +150,10 @@ python scripts/verify_skill_setup.py
 폰트 서브셋 임베드에 `fontTools`·`Pillow`가 필요합니다. 의존 정본은 [`requirements-dev.txt`](requirements-dev.txt)이며, Windows 로컬에서는 보통 `.venv\Scripts\python.exe`로 설치·실행합니다.
 
 ```powershell
-python -m unittest tests.test_deck_pipeline tests.test_image_pipeline tests.test_quality_gates tests.test_deck_contract tests.test_declared_vs_enforced tests.test_rule_pointers tests.test_typography_rules tests.test_analyze_agent_usage
+python -m unittest tests.test_deck_pipeline tests.test_image_pipeline tests.test_quality_gates tests.test_deck_contract tests.test_declared_vs_enforced tests.test_rule_pointers tests.test_typography_rules tests.test_analyze_agent_usage tests.test_audit_context_budget tests.test_hook_guards
 ```
 
-8개 모듈 155개 테스트가 전부 돕니다. `tests/`에 `__init__.py`가 없어 `unittest discover`는 동작하지 않으므로 모듈을 명시합니다.
+10개 모듈 215개 테스트가 전부 돕니다(2026-08-18 실측 `Ran 215 tests … OK`). `tests/`에 `__init__.py`가 없어 `unittest discover`는 동작하지 않으므로 모듈을 명시합니다.
 
 ---
 

@@ -183,7 +183,7 @@ footer{border-top:1px solid var(--line);padding-top:22px;color:var(--ink-3);font
     <span class="chip acc">파이프라인 3스킬 + 횡단 1</span>
     <span class="chip">게이트 A·G1·G2 + 검증 12종</span>
     <span class="chip">기계 강제: PreToolUse 4 · PostToolUse 1 · pre-commit 5</span>
-    <span class="chip">회귀 9모듈 207개</span>
+    <span class="chip">회귀 10모듈 215개</span>
   </div>
 </header>
 
@@ -1344,7 +1344,7 @@ cp "입력양식/콘텐츠초안템플릿.md" "courses/바이브코딩/sessions/
       <text class="sv-xs" x="54" y="238">3층 · 가장 좁고 가장 강하다 · 최종 증거</text>
       <text class="sv-h" x="54" y="260" font-size="14">git pre-commit — <tspan font-weight="400" font-size="12.5">python scripts/install_hooks.py (core.hooksPath=.githooks)</tspan></text>
       <text class="sv-m" x="54" y="279"><tspan font-weight="700">차단</tspan>: CSS 회귀 · 생성물 직접 편집(shard 동반 확인) · kit 정합 · 선언↔집행 · 스킬 어댑터 정합 · 발표자노트 회귀</text>
-      <text class="sv-xs" x="54" y="294">Codex 세션에서 지금 작동하는 강제는 <tspan font-weight="700">이 층뿐</tspan>이다 — 「동등」이 아니라 「지연된 동등」(Gate 0 이후 채운다)</text>
+      <text class="sv-xs" x="54" y="294">Codex 세션에서 지금 작동하는 강제는 <tspan font-weight="700">이 층뿐</tspan>이다 — Gate 0 실측(2026-08-18) 결과 「동등」이 아니라 「구조적 비대칭」이다</text>
 
       <!-- 탈출 통로 -->
       <path class="sv-l-fail" d="M812,26 L812,306" stroke-dasharray="7 5" marker-end="url(#en-arw)"/>
@@ -1368,11 +1368,11 @@ cp "입력양식/콘텐츠초안템플릿.md" "courses/바이브코딩/sessions/
     <table>
       <thead><tr><th>규칙</th><th>Claude Code</th><th>Codex</th><th>git (공통)</th></tr></thead>
       <tbody>
-        <tr><td>슬라이드 사전 점검 7항 주입</td><td>PreToolUse <code>checklist</code></td><td>Gate 0 미완</td><td>—</td></tr>
-        <tr><td>과목 지침 주입</td><td>PreToolUse <code>course</code></td><td>Gate 0 미완</td><td>—</td></tr>
-        <tr><td>R-QC-14 CSS 회귀</td><td>PostToolUse <code>css-lint</code></td><td>Gate 0 미완</td><td><strong>pre-commit 차단</strong></td></tr>
-        <tr><td>생성물(<code>강의덱.html</code>) 직접 편집</td><td>PreToolUse <code>generated-guard</code> <span class="tag warn">관측</span></td><td>Gate 0 미완</td><td><strong>pre-commit 차단</strong>(shard 동반 확인)</td></tr>
-        <tr><td>저장소 밖 쓰기</td><td>PreToolUse <code>tmp-guard</code> <span class="tag warn">관측</span></td><td>Gate 0 미완</td><td>—</td></tr>
+        <tr><td>슬라이드 사전 점검 7항 주입</td><td>PreToolUse <code>checklist</code></td><td>경로 키 없음 — 이식 불가</td><td>—</td></tr>
+        <tr><td>과목 지침 주입</td><td>PreToolUse <code>course</code></td><td>경로 키 없음 — 이식 불가</td><td>—</td></tr>
+        <tr><td>R-QC-14 CSS 회귀</td><td>PostToolUse <code>css-lint</code></td><td>경로 키 없음 — 이식 불가</td><td><strong>pre-commit 차단</strong></td></tr>
+        <tr><td>생성물(<code>강의덱.html</code>) 직접 편집</td><td>PreToolUse <code>generated-guard</code> <span class="tag warn">관측</span></td><td>경로 키 없음 — 이식 불가</td><td><strong>pre-commit 차단</strong>(shard 동반 확인)</td></tr>
+        <tr><td>저장소 밖 쓰기</td><td>PreToolUse <code>tmp-guard</code> <span class="tag warn">관측</span></td><td>경로 키 없음 — 이식 불가</td><td>—</td></tr>
         <tr><td>kit 정합 · 선언↔집행</td><td>—</td><td>—</td><td><strong>pre-commit 차단</strong></td></tr>
         <tr><td>스킬 어댑터 정합</td><td>—</td><td>—</td><td><strong>pre-commit 차단</strong></td></tr>
         <tr><td>발표자노트 회귀</td><td>—</td><td>—</td><td><strong>pre-commit 차단</strong></td></tr>
@@ -1397,14 +1397,14 @@ cp "입력양식/콘텐츠초안템플릿.md" "courses/바이브코딩/sessions/
   <div class="callout warn">
     <span class="lab">탈출구를 숨기지 않는다</span>
     <code>git commit --no-verify</code> · <code>SKIP_DECK_GATES=1</code> · <code>DECK_EMERGENCY_EDIT=1</code>. <strong>목표는 방탄이 아니라 잊어버림 방지다.</strong> 빠져나갔으면 같은 내용을 shard·정본에 반영한다.<br>
-    <strong>Codex 열은 Gate 0(훅 능력 실측) 이후 채운다.</strong> 그전까지 Codex 세션의 강제는 git 층뿐이다 — 「동등」이 아니라 <strong>「지연된 동등」</strong>이다. 진행 상황은 <code>plans/instruction-refactor/</code>.
+    <strong>Codex 열은 Gate 0 실측(2026-08-18)으로 채웠다 — 훅은 발화하나 PreToolUse 페이로드에 파일 경로 키가 없다(경로가 Bash 셸 문자열·apply_patch 헤더 안에 묻혀 있다). 파싱 어댑터 없이는 경로 기반 훅 4종이 이식되지 않는다.</strong> 그전까지 Codex 세션의 강제는 git 층뿐이다 — 「동등」이 아니라 <strong>「구조적 비대칭」</strong>이다. 진행 상황은 <code>plans/instruction-refactor/</code>.
   </div>
 </section>
 
 <!-- ══════════════ 9 ══════════════ -->
 <section id="s9">
   <h2><span class="num">9</span>검증 명령 전량</h2>
-  <p class="dek">정본 <code>references/검증-명령-지도.md</code>. ⚠️ <strong>Windows 기준 <code>python</code>을 쓴다.</strong> 이 저장소에 <code>.venv</code>는 <strong>없다</strong> — 시스템 인터프리터에 <code>fontTools</code>·<code>Pillow</code>·<code>brotli</code>가 설치돼 있어 회귀 207개가 통과한다.</p>
+  <p class="dek">정본 <code>references/검증-명령-지도.md</code>. ⚠️ <strong>Windows 기준 <code>python</code>을 쓴다.</strong> 이 저장소에 <code>.venv</code>는 <strong>없다</strong> — 시스템 인터프리터에 <code>fontTools</code>·<code>Pillow</code>·<code>brotli</code>가 설치돼 있어 회귀 215개가 통과한다.</p>
 
   <h3>1. 조립과 배포</h3>
 <pre>python scripts/assemble_deck.py courses/&lt;과목&gt;/sessions/N주차/강의덱.초안   <span class="c"># shard → 강의덱.html 재생성(덮어씀)</span>
@@ -1471,7 +1471,7 @@ python scripts/audit_context_budget.py --list                         <span clas
     이 스크립트는 <code>~/.claude/projects/</code>의 세션 트랜스크립트를 읽으므로 <strong>Claude Code 전용</strong>이다.
   </div>
 
-  <h3>6. 회귀 테스트 — 9모듈 207개</h3>
+  <h3>6. 회귀 테스트 — 10모듈 215개</h3>
 <pre>python -m unittest tests.test_deck_pipeline tests.test_image_pipeline \
   tests.test_quality_gates tests.test_deck_contract tests.test_declared_vs_enforced \
   tests.test_rule_pointers tests.test_typography_rules tests.test_analyze_agent_usage \
@@ -1729,7 +1729,7 @@ references/      phases/01~10 · 조립-리듬-불변요소.md · 이미지-디�
   <div class="callout acc">
     <span class="lab">넘어가기 쉬운 세 가지</span>
     ⚠️ <strong>종료코드가 통과했다고 화면이 멀쩡한 것이 아니다</strong> — 조립 후에는 브라우저에서 전수 측정한다.<br>
-    ⚠️ <strong>회귀는 9모듈을 다 돌린다</strong> — 일부만 돌리면 나머지 게이트가 검증되지 않는다.<br>
+    ⚠️ <strong>회귀는 10모듈을 다 돌린다</strong> — 일부만 돌리면 나머지 게이트가 검증되지 않는다.<br>
     ⚠️ <strong>덱을 고쳤으면 <code>run_deck_checks.py &lt;주차&gt;</code>를 돌린다</strong> — 렌더 증거가 없거나 낡았으면 exit 1이다.
   </div>
 </section>
