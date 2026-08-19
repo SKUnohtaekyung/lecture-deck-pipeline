@@ -113,6 +113,22 @@ def lint_contract(path: str):
                 if opt_key in wb and not isinstance(wb.get(opt_key), int):
                     problems.append(
                         f"warn_baseline.{opt_key}: 정수여야 함({label} WARN 래칫 기준선) — 현재 {wb.get(opt_key)!r}")
+
+    # 품질 게이트 강등(2026-08-18 신설) — `verify_deck_quality.py`의 상시 FAIL 규칙을
+    # 그 주차만 WARN으로 내리는 열쇠다. **무사유 강등이 들어오면 게이트가 무력해지므로**
+    # 다른 waiver와 같은 규약(reason·date)을 여기서 강제한다.
+    qw = data.get("quality_waivers")
+    if qw is not None:
+        if not isinstance(qw, dict):
+            problems.append("quality_waivers가 객체가 아님")
+        else:
+            for rid, entry in qw.items():
+                if not isinstance(entry, dict):
+                    problems.append(f"quality_waivers '{rid}': 객체가 아님(사유·일자를 담을 수 없음)")
+                elif not waiver_entry_valid(entry):
+                    problems.append(
+                        f"quality_waivers '{rid}': reason(비어 있지 않은 사유)·date(YYYY-MM-DD) 필수 — "
+                        f"현재 reason={entry.get('reason')!r} date={entry.get('date')!r}")
     return problems
 
 

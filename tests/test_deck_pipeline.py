@@ -23,6 +23,7 @@ from scripts.font_embed import (
     subset_woff2,
 )
 from scripts.inline_deck import bundle
+from scripts.run_deck_checks import RENDER_DEFECT_KEYS
 from scripts.verify_distributable import self_containment_violations
 from scripts import verify_kit
 
@@ -419,7 +420,11 @@ class RenderNumericVerdictTests(unittest.TestCase):
 
     TYPO_OK = {"fontFloor": {"count": 0}, "tracking": {"count": 0},
                "nearMissAnchors": {"dominantClashTotal": 0}}
-    ZEROS = {"below": 0, "off": 0, "lap": 0, "wb": 0, "ovf": 0, "slots": 0}
+    # ⚠️ 키를 손으로 나열하지 않는다 — 검출기가 늘 때마다 이 픽스처가 낡아
+    # 「전부 0이면 통과」가 실패한다(2026-08-18에 실제로 겪었다: 신설 6종이 빠져
+    # 계수 실패로 잡혔다). 누락 키의 fail-closed는 아래
+    # `test_missing_total_is_counting_failure_not_zero`가 키 하나를 지워 따로 지킨다.
+    ZEROS = {k: 0 for k, _label in RENDER_DEFECT_KEYS}
 
     def _verdict(self, totals, typo=None, kv=None):
         from scripts.run_deck_checks import numeric_verdicts

@@ -173,9 +173,72 @@ class DeckQualityGateTests(unittest.TestCase):
         특히 R-QC-17(실측이 비율형처럼 움직인다)·R-QC-19(1주차 1건 잔존)·
         비율형 6종(방향 역전·사용자 지시 충돌)은 들어오면 안 된다.
         늘리려면 두 주차에 먼저 돌려 FAIL 건수를 산출하고 이 테스트를 함께 고쳐라.
+
+        **R-QC-08 추가(2026-08-18)** — 위 「비율형은 들어오면 안 된다」의 근거는
+        ① R-QC-05의 방향 역전 ② R-QC-01에 대한 사용자의 손대지 말라는 지시였고,
+        둘 다 R-QC-08에는 해당하지 않는다. 선행조건대로 실측하고 올렸다:
+        방향은 1주차 50.0% < 2주차 68.2% < 3주차 96.0%로 역전이 없고,
+        승격 시 FAIL은 1주차 1건뿐(2·3주차 0) — 그 1건은 동결 주차라 계약 waiver로 강등.
         """
         from scripts.verify_deck_quality import ALWAYS_FAIL
-        self.assertEqual(ALWAYS_FAIL, {"R-QC-18", "R-META-01"})
+        self.assertEqual(ALWAYS_FAIL, {"R-QC-18", "R-META-01", "R-QC-08"})
+
+
+class QualityWaiverTests(unittest.TestCase):
+    """계약 `quality_waivers` — 상시 FAIL을 그 주차만 WARN으로 내리는 강등 경로.
+
+    R-QC-08 승격(2026-08-18)과 함께 들어왔다. 동결 주차처럼 «지금 고칠 수 없는 기존
+    상태»를 사유와 함께 봐주되(D-2 「기존은 봐주고 신규만 잡는다」), **무사유 강등이
+    통과하면 게이트가 통째로 무력해진다.** 그래서 렌더 waiver(P1 규약)와 같은 조건을
+    걸었고, 그 셋이 실제로 무는지 여기서 실증한다.
+
+    냉동 스냅샷은 R-QC-08이 25.0%(8/32)로 걸리므로 강등 실증에 그대로 쓴다.
+    ⚠️ 이 덱은 R-META-01에도 걸려 종료코드는 어느 쪽이든 1이다 — **판정은 종료코드가
+    아니라 R-QC-08 줄의 등급으로** 한다(종료코드로 보면 강등을 검증하지 못한다).
+    """
+
+    def _run(self, waiver, *extra):
+        import json
+        import shutil
+        import subprocess
+        import sys
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            deck = Path(tmp) / "강의덱.html"
+            shutil.copy(W2_FROZEN_DECK, deck)
+            if waiver is not None:
+                (Path(tmp) / "deck.contract.json").write_text(
+                    json.dumps({"quality_waivers": {"R-QC-08": waiver}}, ensure_ascii=False),
+                    encoding="utf-8")
+            proc = subprocess.run(
+                [sys.executable, str(REPO_ROOT / "scripts" / "verify_deck_quality.py"),
+                 str(deck), *extra],
+                capture_output=True, text=True, encoding="utf-8", errors="replace")
+        lines = [l for l in proc.stdout.splitlines() if "R-QC-08:" in l]
+        self.assertTrue(lines, f"R-QC-08 판정 줄이 없다\n{proc.stdout[-800:]}")
+        return lines[0]
+
+    VALID = {"reason": "동결 주차라 이미지를 더할 수 없다", "date": "2026-08-18"}
+
+    def test_no_contract_fails(self):
+        """계약이 없는 덱(신규 주차·픽스처)은 강등 통로가 없어 그대로 FAIL한다."""
+        self.assertIn("[FAIL]", self._run(None))
+
+    def test_valid_waiver_demotes_to_warn_and_shows_reason(self):
+        line = self._run(self.VALID)
+        self.assertIn("[WARN]", line)
+        self.assertIn("계약 waiver 강등", line)
+        self.assertIn("2026-08-18", line, "강등 사유·일자가 화면에 남아야 침묵이 아니다")
+
+    def test_reasonless_waiver_does_not_work(self):
+        self.assertIn("[FAIL]", self._run({"date": "2026-08-18"}))
+
+    def test_bad_date_waiver_does_not_work(self):
+        self.assertIn("[FAIL]", self._run({"reason": "사유는 있다", "date": "어제"}))
+
+    def test_strict_ignores_waiver(self):
+        """`--strict`는 «봐주지 말고 다 보여 달라»는 요청이다 — 강등을 무시해야 한다."""
+        self.assertIn("[FAIL]", self._run(self.VALID, "--strict"))
 
 
 class IntentionalMinimalExemptionTests(unittest.TestCase):

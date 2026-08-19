@@ -41,14 +41,16 @@
 
   var slides = Array.isArray(render) ? render : [];
   var agg = { below: 0, off: 0, lap: 0, lapAbs: 0, wb: 0, ovf: 0, slots: 0,
-    hollow: 0, hollowBadge: 0, sparse: 0 };
+    hollow: 0, hollowBadge: 0, sparse: 0,
+    /* 2026-08-18 신설 — 상자 채움(방향 있는 3지표 + 폭)과 가려짐 */
+    occl: 0, stretchX: 0, stretchY: 0, wideEmpty: 0, lowFill: 0, ragged: 0 };
   var offenders = [];
   /* ⚠️ 밀도 지표를 압축본에 반드시 싣는다(2026-08-03 신설).
      종전 압축본은 broken 계열과 hollow만 실어, 러너가 읽는 증거에
      **저밀도를 판정할 수치가 하나도 없었다.** audit_render.js는 ink·sparse·
      deadBottom·deadRight를 이미 재고 있었는데 러너까지 오지 않았다 —
      「재는데 아무도 안 보는」 상태였다. */
-  var inks = [], deadZones = [], sparseSlides = [];
+  var inks = [], deadZones = [], sparseSlides = [], boxFillSlides = [];
   slides.forEach(function (s) {
     var b = (s && s.broken) || {};
     agg.below += b.below || 0;
@@ -57,6 +59,13 @@
     agg.lapAbs += b.lapAbs || 0;
     agg.wb += b.wb || 0;
     agg.ovf += b.ovf || 0;
+    agg.occl += b.occl || 0;
+    var bf = (s && s.boxFill) || {};
+    agg.stretchX += bf.stretchX || 0;
+    agg.stretchY += bf.stretchY || 0;
+    agg.wideEmpty += bf.wideEmpty || 0;
+    agg.lowFill += bf.lowFill || 0;
+    agg.ragged += bf.ragged || 0;
     agg.hollow += (s && s.hollow) || 0;
     agg.hollowBadge += (s && s.hollowBadge) || 0;
     agg.sparse += ((s && s.sparse) || []).length;
@@ -71,12 +80,19 @@
         worst: s.sparse.slice().sort(function (x, y) { return y.p - x.p; })[0] });
     }
 
-    if ((b.below || 0) + (b.off || 0) + (b.lap || 0) + (b.wb || 0) + ((s.emptySlots || []).length)) {
+    if ((b.below || 0) + (b.off || 0) + (b.lap || 0) + (b.wb || 0) + (b.occl || 0)
+        + ((s.emptySlots || []).length)) {
       offenders.push({
         id: s.id, below: b.below || 0, off: b.off || 0, lap: b.lap || 0,
-        wb: b.wb || 0, slots: (s.emptySlots || []).length,
-        d: (b.d || []).filter(Boolean).slice(0, 3)
+        occl: b.occl || 0, wb: b.wb || 0, slots: (s.emptySlots || []).length,
+        d: (b.d || []).filter(Boolean).slice(0, 3).concat((s.occlD || []).slice(0, 2))
       });
+    }
+    /* 상자 채움 — 어느 장이 어느 방향으로 늘어났는지 사람이 바로 보게 남긴다 */
+    if (bf.stretchX || bf.stretchY || bf.wideEmpty || bf.lowFill || bf.ragged) {
+      boxFillSlides.push({ id: s.id, wide: bf.wideEmpty || 0, x: bf.stretchX || 0,
+        y: bf.stretchY || 0, f: bf.lowFill || 0, rag: bf.ragged || 0,
+        d: (bf.d || []).slice(0, 4) });
     }
   });
   inks.sort(function (a, b) { return a - b; });
@@ -130,7 +146,10 @@
       .map(function (s) { return [s.id, s.hollow]; }).slice(0, 20),
     thinnest: thinnest,
     deadZones: deadZones.slice(0, 20),
-    sparseSlides: sparseSlides.slice(0, 20)
+    sparseSlides: sparseSlides.slice(0, 20),
+    /* ★ 상자 채움 — 밀도 계열과 달리 **방향**이 있어 무엇을 줄여야 할지 바로 나온다.
+       wide=폭을 다 쓰고 비었다 · x=가로 늘림 · y=세로 늘림 · f=채움률 미달 */
+    boxFillSlides: boxFillSlides.slice(0, 20)
   };
 
   var nmTotal = 0, clashTotal = 0, nmByAxis = {};

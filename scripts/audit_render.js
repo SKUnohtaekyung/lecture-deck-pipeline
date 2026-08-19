@@ -9,6 +9,46 @@
   var GX = W / CELL, GY = H / CELL;              // 80 x 45
   var BODY_TOP = 118, BODY_BOT = 666, BODY_L = 64, BODY_R = 1216;
 
+  /* ── 상자 채움·가려짐 임계 (2026-08-18 신설) ─────────────────────────────
+     선언 정본은 `kit/guide/한장-참조표.md` 「상자 채움」 절이고 여기는 집행부다.
+     두 값이 갈라지면 `tests/test_declared_vs_enforced.py`가 잡는다.
+
+     왜 신설했나 — 기존 `sparse`(면적÷글자수) 하나로는 부족하다:
+       ① `!hasGfx` 조건 때문에 **그래픽이 든 상자를 통째로 제외**한다. 아이콘 하나에
+          짧은 제목만 든 대형 카드가 원리적으로 검사 밖이었다.
+       ② 숫자가 하나라 **«가로로 늘어났다»와 «세로로 늘어났다»를 구분하지 못한다.**
+          둘은 고치는 방법이 다른데 같은 신호로 뭉개지면 사람이 봐도 무엇을 줄일지 모른다.
+     ⚠️ 이 값들은 «설계 의도»로 정했고 기존 덱에 맞춰 깎지 않았다. 기존 덱이 위반하면
+        그건 계약 waiver로 등재할 사실이지 임계를 낮출 이유가 아니다. */
+  var BOXFILL_DEAD_X = 35;      /* % · 상자 안쪽 우측 죽은 공간 — 가로 늘림 */
+  var BOXFILL_DEAD_Y = 40;      /* % · 상자 안쪽 하단 죽은 공간 — 세로 늘림 */
+  var BOXFILL_MIN_FILL = 30;    /* % · 잉크 경계상자 ÷ 상자 안쪽 면적 */
+  var BOXFILL_WIDE = 95;        /* % · 본문 안전영역 폭 대비 «가로를 다 쓴» 기준 */
+  var BOXFILL_WIDE_DEAD = 25;   /* % · 가로를 다 쓴 상자에는 더 엄한 우측 여백을 적용 */
+  /* ⚠️ 아래 둘은 픽스처 실측으로 «반드시 필요»가 확인된 오탐 차단 조건이다(2026-08-18).
+     · MIN_W 없이 재면 3열 격자의 작은 카드(폭 32%)가 우측여백 39%로 잡힌다 —
+       그건 «가로로 늘어난 행»이 아니라 그냥 카드다. 여기서 잡는 병은 «행이 컨테이너
+       끝까지 늘어났는데 글은 왼쪽에만»이므로 애초에 넓어야 성립한다.
+     · ALIGNED 없이 재면 **중앙 정렬**이 전부 잡힌다. 가운데 놓인 글은 좌우 여백이
+       같이 크다 — 그건 늘림이 아니라 정렬이다. «한쪽만 비었을 때»만 늘림이다. */
+  var BOXFILL_MIN_W = 40;       /* % · 이 폭 미만은 «행»이 아니라 «카드» — 가로 늘림 대상 아님 */
+  var BOXFILL_ALIGNED = 15;     /* % · 반대쪽 여백이 이보다 작아야 «한쪽으로 몰렸다» */
+  var BOXFILL_MIN_H = 60;       /* px · 이 높이 미만은 세로로 «늘어날» 여지가 없다(한 줄 행) */
+  /* 코드·터미널·창 크롬 — 가로 늘림 판정에서 뺀다.
+     빼는 이유는 취향이 아니라 **폭을 내용에 맞출 수 없다는 성질**이다: 코드는 줄바꿈
+     위치가 의미를 갖고, 터미널·창 제목줄은 자기가 감싼 창이 폭을 정한다(라벨은 왼쪽에
+     붙는 것이 정상이다).
+     ⚠️ 2026-08-18 1주차 현물 실측으로 2종을 추가했다 — `.terminal-bar`만 있고
+     `.cover-terminal`(표지 터미널 mock · dX41)·`.tree-window-bar`(파일탐색기 제목줄
+     「파일 탐색기」 · dX79 f4)가 빠져 **둘 다 오탐으로 잡혔다.** 선언(참조표 「상자 채움」)은
+     이미 이들을 제외로 규정하고 있었으므로 규칙이 아니라 집행부가 뒤처진 것이다(유형⑤ —
+     `audit_typography.js`의 `.terminal-bar` 누락과 같은 사고). **새 창·터미널 mock을
+     만들면 여기에 등재하라 — 안 하면 신규 주차가 첫날 FAIL한다.** */
+  var CODE_BOX = ['pre', 'code', '.terminal-copy', '.terminal-bar', '.terminal-dark',
+    '.viz-code', '.code-chart', '.code-diagram',
+    '.cover-terminal', '.tree-window-bar'];
+  var OCCLUSION_COVERED = 60;   /* % · 글자가 다른 요소에 가려진 비율 */
+
   var slides = [].slice.call(document.querySelectorAll('.slide'));
   var out = [];
 
@@ -115,7 +155,7 @@
 
     /* 3) 테두리/채움이 있는 상자 — 윤곽만 잉크로 인정(면 전체를 채운 것으로 치지 않는다)
      *    + 박스 대비 정보량: 글자 1자가 차지하는 면적(px²/자). 클수록 "큰 상자에 내용 조금". */
-    var boxes = 0, hollow = [], hollowBadge = [], sparse = [];
+    var boxes = 0, hollow = [], hollowBadge = [], sparse = [], boxList = [];
     [].slice.call(sl.querySelectorAll('*')).forEach(function (e) {
       if (e.closest('.s-head') || e.classList.contains('asset-slot')) return;
       var cs = getComputedStyle(e);
@@ -128,6 +168,7 @@
       /* 같은 자리 중첩 상자는 바깥 것만 센다 */
       var pbox = e.parentElement && e.parentElement.closest('*');
       boxes++;
+      boxList.push(e);          /* 3c) 채움 분석용 — 잎 상자만 따로 골라 쓴다 */
       /* 윤곽 4변만 마킹 */
       mark({ left: r.left, top: r.top, right: r.right, bottom: r.top + 2, width: r.width, height: 2 });
       mark({ left: r.left, top: r.bottom - 2, right: r.right, bottom: r.bottom, width: r.width, height: 2 });
@@ -163,6 +204,209 @@
         }
       }
     });
+
+    /* 3c) 상자 채움 — 「상자는 큰데 잉크는 한쪽에만」을 **방향과 함께** 잡는다.
+       측정 단위는 «잎 상자»(안에 다른 상자가 없는 최소 상자)다. 그릇 상자까지 세면
+       같은 빈 공간이 중복 계수된다.
+       잉크 = 실제 글자 줄 상자 + 그래픽의 합집합 경계상자. 그래픽을 잉크로 치므로
+       «아이콘 하나 + 짧은 제목»인 대형 카드도 정상 판정된다(sparse가 못 하던 것). */
+    var boxFill = { stretchX: [], stretchY: [], wideEmpty: [], lowFill: [] };
+    var boxRagged = [];
+    (function () {
+      var measured = [];
+      /* 잎 상자만 남긴다 — 다른 상자를 품고 있으면 «그릇»이다 */
+      var leaves = boxList.filter(function (e) {
+        return !boxList.some(function (o) { return o !== e && e.contains(o); });
+      });
+      leaves.forEach(function (e) {
+        var r = e.getBoundingClientRect();
+        var wl = r.width / K, hl = r.height / K;
+        /* 배지·칩·표 셀은 대상이 아니다 — «글자가 적은 것이 정상»인 요소다(3의 판정과 동일) */
+        if (wl < 160 || hl < 48) return;
+        if (e.tagName === 'TH' || e.tagName === 'TD' || e.closest('table')) return;
+        /* ⚠️ 원형·pill은 제외한다 — 판단이 아니라 기하다. 원은 자기 경계상자의 π/4(78%)
+           까지만 차지하고 글자는 거기서 더 안쪽에 놓이므로 **채움률이 구조적으로 낮다.**
+           이걸 결함으로 세면 «원을 쓰지 마라»가 되어 버린다. 기존 `hollowBadge`가 쓰는
+           것과 같은 판정식이다(3의 isBadge). */
+        var brRaw = getComputedStyle(e).borderTopLeftRadius || '0';
+        var brTL = parseFloat(brRaw) || 0;
+        /* ⚠️ `border-radius:50%`는 computed 값이 «50%» 문자열로 나온다 — px로만 읽으면
+           원이 원으로 안 잡힌다(2026-08-18 실측: 2주차 vc-ring이 이 구멍으로 샜다). */
+        if (brRaw.indexOf('%') >= 0 ? brTL >= 50 : brTL >= Math.min(wl, hl) / 2 - 0.5) return;
+        /* 코드·터미널 블록은 가로 판정 대상이 아니다 — 판단이 아니라 성질이다.
+           코드는 **줄바꿈 위치가 의미를 가져서** 상자 폭을 내용에 맞춰 줄일 수 없다.
+           좁히라고 시키면 명령어가 접혀 오히려 읽기 어려워진다. 세로·채움률은 그대로 본다. */
+        var isCode = CODE_BOX.some(function (sel) { return !!e.closest(sel); })
+          || !!e.querySelector('pre,code');
+
+        /* 잉크 경계상자 */
+        var L = Infinity, T = Infinity, R = -Infinity, B = -Infinity, found = false, chars = 0;
+        var tw = document.createTreeWalker(e, NodeFilter.SHOW_TEXT, null), tn2;
+        while ((tn2 = tw.nextNode())) {
+          if (!tn2.textContent.trim()) continue;
+          chars += tn2.textContent.trim().length;
+          var rg2 = document.createRange(); rg2.selectNodeContents(tn2);
+          var rcs = rg2.getClientRects();
+          for (var z = 0; z < rcs.length; z++) {
+            var q = rcs[z];
+            if (q.width < 1 || q.height < 1) continue;
+            L = Math.min(L, q.left); T = Math.min(T, q.top);
+            R = Math.max(R, q.right); B = Math.max(B, q.bottom); found = true;
+          }
+        }
+        [].slice.call(e.querySelectorAll('img,svg,canvas,video')).forEach(function (g) {
+          var q = g.getBoundingClientRect();
+          if (q.width < 6 || q.height < 6) return;
+          L = Math.min(L, q.left); T = Math.min(T, q.top);
+          R = Math.max(R, q.right); B = Math.max(B, q.bottom); found = true;
+        });
+        if (!found || chars < 2) return;   /* 빈 상자는 hollow 소관 */
+
+        var cs3 = getComputedStyle(e);
+        var padL = parseFloat(cs3.paddingLeft) || 0, padR = parseFloat(cs3.paddingRight) || 0;
+        var padT = parseFloat(cs3.paddingTop) || 0, padB = parseFloat(cs3.paddingBottom) || 0;
+        var innerW = (r.width - padL - padR) / K, innerH = (r.height - padT - padB) / K;
+        if (innerW < 200) return;      /* 세로 가드를 여기 두지 마라 — 한 줄 행(innerH≈21)이
+                                          바로 이 검출기의 주 대상이다(픽스처 실측). */
+
+        /* 네 방향 여백을 다 잰다 — «한쪽만 비었는가»를 봐야 정렬과 늘림이 갈린다 */
+        var deadL = (L - (r.left + padL)) / K / innerW * 100;
+        var deadX = ((r.right - padR) - R) / K / innerW * 100;
+        var deadT = (T - (r.top + padT)) / K / innerH * 100;
+        var deadY = ((r.bottom - padB) - B) / K / innerH * 100;
+        var fill = ((R - L) / K * ((B - T) / K)) / (innerW * innerH) * 100;
+        var widePct = (r.width / K) / (BODY_R - BODY_L) * 100;
+        /* 그룹 키 — 같은 부모 아래 같은 «형태»면 한 벌이다(격자의 한 줄, 카드 세트) */
+        var key = (e.parentElement ? (e.parentElement.className || e.parentElement.tagName) : '?')
+          .toString().slice(0, 20) + '>' + e.tagName
+          + '.' + (e.className || '').toString().split(/\s+/)[0];
+        measured.push({ e: e, key: key, r: r, isCode: isCode,
+          deadL: deadL, deadX: deadX, deadT: deadT, deadY: deadY,
+          fill: fill, widePct: widePct, innerH: innerH,
+          cls: (e.className || e.tagName).toString().slice(0, 28) });
+      });
+
+      /* ── 그룹 단위 판정 ──────────────────────────────────────────────
+         ⚠️ **개별 상자로 판정하면 안 된다.** 나란한 카드 3장은 글 양이 달라도
+         **높이가 같아야** 한 벌로 읽힌다 — 짧은 카드는 «정렬을 지키느라» 비는 것이지
+         결함이 아니다. 상자마다 잡으면 검출기가 «이것만 줄여라»를 시켜 격자를
+         깨뜨린다(2026-08-18 사용자 지적으로 재설계).
+         그래서 한 벌 안에서는 **가장 잘 쓴 상자**를 그 벌의 성적으로 본다:
+           · 가로 — 그 벌의 **최소** 우측 여백(누구도 오른쪽을 안 썼는가)
+           · 세로 — 그 벌의 **최소** 하단 여백
+           · 채움 — 그 벌의 **최대** 채움률
+         한 장이라도 제대로 쓰고 있으면 그 벌의 크기는 «그 내용이 요구한 크기»이고,
+         나머지가 비는 것은 정렬의 대가다. 위반은 상자 N건이 아니라 **벌 1건**으로 센다 —
+         고쳐야 할 단위가 벌이기 때문이다. */
+      var groups = {};
+      measured.forEach(function (m) { (groups[m.key] = groups[m.key] || []).push(m); });
+      Object.keys(groups).forEach(function (k) {
+        var g = groups[k];
+        var minDeadX = Math.min.apply(null, g.map(function (m) { return m.deadX; }));
+        var minDeadY = Math.min.apply(null, g.map(function (m) { return m.deadY; }));
+        var maxFill = Math.max.apply(null, g.map(function (m) { return m.fill; }));
+        var maxWide = Math.max.apply(null, g.map(function (m) { return m.widePct; }));
+        var maxInnerH = Math.max.apply(null, g.map(function (m) { return m.innerH; }));
+        var leftAligned = g.every(function (m) { return m.deadL < BOXFILL_ALIGNED; });
+        var topAligned = g.every(function (m) { return m.deadT < BOXFILL_ALIGNED + 5; });
+        var tag = g[0].cls + (g.length > 1 ? '×' + g.length : '')
+          + '@' + Math.round(maxWide) + 'w/' + Math.round(minDeadX) + 'x/' + Math.round(minDeadY) + 'y';
+
+        var anyCode = g.some(function (m) { return m.isCode; });
+        if (maxWide >= BOXFILL_MIN_W && leftAligned && !anyCode) {
+          if (maxWide >= BOXFILL_WIDE && minDeadX > BOXFILL_WIDE_DEAD) boxFill.wideEmpty.push(tag);
+          else if (minDeadX > BOXFILL_DEAD_X) boxFill.stretchX.push(tag);
+        }
+        if (maxInnerH >= BOXFILL_MIN_H && topAligned && minDeadY > BOXFILL_DEAD_Y) {
+          boxFill.stretchY.push(tag);
+        }
+        if (maxInnerH >= BOXFILL_MIN_H && maxFill < BOXFILL_MIN_FILL) {
+          boxFill.lowFill.push(tag + '/' + Math.round(maxFill) + 'f');
+        }
+
+        /* ── 짝 검출기: 정렬 파괴 ─────────────────────────────────────
+           위 판정을 «상자를 줄여라»로만 읽으면 격자가 들쭉날쭉해진다. 그 반대 결함을
+           같은 자리에서 함께 잡아 두 규칙이 서로를 붙든다.
+           같은 줄에 나란한(상단 ±8px) 한 벌의 **높이가 6px 넘게 다르면** 결함이다 —
+           6px은 반올림·서브픽셀로 생길 수 없는 차이다. */
+        if (g.length >= 2) {
+          var sameRow = g.filter(function (m) { return Math.abs(m.r.top - g[0].r.top) <= 8 * K; });
+          if (sameRow.length >= 2) {
+            var hs = sameRow.map(function (m) { return m.r.height / K; });
+            var spread = Math.max.apply(null, hs) - Math.min.apply(null, hs);
+            if (spread > 6) {
+              boxRagged.push(g[0].cls + '×' + sameRow.length + '@높이차' + Math.round(spread) + 'px');
+            }
+          }
+        }
+      });
+    })();
+
+    /* 3d) 가려짐 — 「글자가 화면에서 실제로 보이는가」.
+       종전에는 절대배치가 낀 겹침을 전부 `lapAbs`(참고치)로 내렸다. 그 판단의 근거는
+       실측이었지만(2주차 7건 전부 «그림 위 라벨» 오탐), **의도된 오버레이와 «문장이
+       통째로 가려진 사고»를 가르지 않고 통째로 내린 것**이 문제였다.
+       여기서는 기하가 아니라 **화면 합성 결과**로 판정한다 — 글자 줄 위의 점을 찍어
+       `elementFromPoint`가 그 글자를 돌려주는지 본다. 라벨은 그림을 조금 덮지만
+       사고는 문장을 통째로 덮으므로 이 신호로 갈린다. */
+    var occluded = [];
+    (function () {
+      var covers = [].slice.call(sl.querySelectorAll('*')).filter(function (e) {
+        if (e.closest('.s-head')) return false;
+        var q = e.getBoundingClientRect();
+        if (q.width < 40 || q.height < 24) return false;
+        if (isGraphic(e)) return true;
+        var c = getComputedStyle(e).backgroundColor;
+        var m = /rgba?\(([^)]+)\)/.exec(c);
+        if (!m) return false;
+        var parts = m[1].split(',');
+        return parts.length < 4 || parseFloat(parts[3]) >= 0.9;   /* 불투명한 배경만 */
+      });
+      if (!covers.length) return;
+
+      [].slice.call(sl.querySelectorAll('*')).forEach(function (e) {
+        if (e.closest('.s-head') || e.classList.contains('s-pageno') || e.closest('.s-pageno')) return;
+        var own = '';
+        for (var c2 = 0; c2 < e.childNodes.length; c2++) {
+          if (e.childNodes[c2].nodeType === 3) own += e.childNodes[c2].textContent;
+        }
+        if (own.trim().length < 4) return;
+        var er = e.getBoundingClientRect();
+        if (er.width < 40 || er.height < 12) return;
+
+        /* 기하 예비필터 — 겹치는 불투명 후보가 없으면 점을 찍지 않는다(비용) */
+        var hit = covers.some(function (cv) {
+          if (cv === e || cv.contains(e) || e.contains(cv)) return false;
+          var cr = cv.getBoundingClientRect();
+          var ix = Math.max(0, Math.min(er.right, cr.right) - Math.max(er.left, cr.left));
+          var iy = Math.max(0, Math.min(er.bottom, cr.bottom) - Math.max(er.top, cr.top));
+          return ix * iy > 0.3 * (er.width * er.height);
+        });
+        if (!hit) return;
+
+        /* 확인 — 글자 줄 위에 점을 찍어 실제로 무엇이 보이는지 본다 */
+        var rg3 = document.createRange(); rg3.selectNodeContents(e);
+        var lines = rg3.getClientRects();
+        var vis = 0, tot = 0;
+        for (var li = 0; li < lines.length; li++) {
+          var ln = lines[li];
+          if (ln.width < 4 || ln.height < 4) continue;
+          for (var sx = 1; sx <= 5; sx++) {
+            var px = ln.left + ln.width * (sx / 6), py = ln.top + ln.height / 2;
+            var top = document.elementFromPoint(px, py);
+            if (!top) continue;                      /* 뷰포트 밖 — 판정하지 않는다 */
+            tot++;
+            if (top === e || e.contains(top) || top.contains(e)) vis++;
+          }
+        }
+        if (tot < 4) return;                          /* 표본이 적으면 판정하지 않는다 */
+        var coveredPct = (1 - vis / tot) * 100;
+        if (coveredPct > OCCLUSION_COVERED) {
+          occluded.push((e.className || e.tagName).toString().slice(0, 28)
+            + ':' + Math.round(coveredPct) + '%가려짐');
+        }
+      });
+    })();
 
     /* 3b) 화면 깨짐 — 넘침 · 본문바닥 초과 · 요소 겹침 · 단어 중간 줄바꿈 */
     var broken = { overflow: [], belowFloor: [], overlap: [], overlapAbs: [], wordBreak: [] };
@@ -369,9 +613,21 @@
         off: broken.offSlide || 0,          /* 슬라이드(720px) 밖으로 나간 요소 — 최악 등급 */
         lap: broken.overlap.length,          /* 흐름 블록끼리 겹침 — 판정 대상 */
         lapAbs: broken.overlapAbs.length,    /* 절대배치가 낀 겹침 — 참고치(의도된 오버레이 다수) */
+        /* 가려짐 — lapAbs 중 «화면 합성 결과 글자가 실제로 안 보이는» 것만 판정 대상으로 승격 */
+        occl: occluded.length,
         wb: broken.wordBreak.length,
         d: broken.belowFloor.concat(broken.overlap).slice(0, 3).concat(broken.wordBreak.slice(0, 2))
       },
+      /* 상자 채움 — 방향이 있는 3지표(가로 늘림 · 세로 늘림 · 채움률) + 폭 임계 */
+      boxFill: {
+        stretchX: boxFill.stretchX.length, stretchY: boxFill.stretchY.length,
+        wideEmpty: boxFill.wideEmpty.length, lowFill: boxFill.lowFill.length,
+        /* 짝 검출기 — 「줄여라」가 격자를 깨는 쪽으로 가지 않게 붙든다 */
+        ragged: boxRagged.length,
+        d: boxFill.wideEmpty.concat(boxFill.stretchX).concat(boxFill.stretchY)
+             .concat(boxFill.lowFill).concat(boxRagged).slice(0, 5)
+      },
+      occlD: occluded.slice(0, 3),
       emptySlots: emptySlots
     });
   }

@@ -226,6 +226,37 @@ class ReferenceSheetVsAuditConstantsTests(unittest.TestCase):
             self.assertEqual(int(rm.group(1)), int(jm.group(1)),
                              f"{name}: 선언 {rm.group(1)} ≠ 집행 {jm.group(1)} — 정본을 고쳤으면 집행부를 같은 커밋에서 고쳐라")
 
+    def test_boxfill_constants_match_reference_sheet(self):
+        """R-BOXFILL-01(2026-08-18 신설) 선언 ↔ 집행 6쌍.
+
+        새 임계를 코드에만 두면 «규칙이 있는 것처럼 보이는데 어디에도 안 적힌» 상태가
+        된다 — 이 저장소가 반복해서 값을 치른 형태다(지도 §8.4 유형⑤).
+        """
+        import re
+        ref = (REPO_ROOT / "kit" / "guide" / "한장-참조표.md").read_text(encoding="utf-8")
+        js = (REPO_ROOT / "scripts" / "audit_render.js").read_text(encoding="utf-8")
+        pairs = [
+            ("우측 죽은 공간 ↔ BOXFILL_DEAD_X",
+             r"우측 죽은 공간 상한\s*\|\s*\*\*(\d+)\*\*", r"BOXFILL_DEAD_X\s*=\s*(\d+)"),
+            ("하단 죽은 공간 ↔ BOXFILL_DEAD_Y",
+             r"하단 죽은 공간 상한\s*\|\s*\*\*(\d+)\*\*", r"BOXFILL_DEAD_Y\s*=\s*(\d+)"),
+            ("채움률 하한 ↔ BOXFILL_MIN_FILL",
+             r"채움률 하한\s*\|\s*\*\*(\d+)\*\*", r"BOXFILL_MIN_FILL\s*=\s*(\d+)"),
+            ("가로 꽉 채움 ↔ BOXFILL_WIDE",
+             r"가로 꽉 채움 기준\s*\|\s*\*\*(\d+)\*\*", r"BOXFILL_WIDE\s*=\s*(\d+)"),
+            ("꽉 채운 상자 우측 여백 ↔ BOXFILL_WIDE_DEAD",
+             r"꽉 채운 상자의 우측 여백 상한\s*\|\s*\*\*(\d+)\*\*", r"BOXFILL_WIDE_DEAD\s*=\s*(\d+)"),
+            ("가려짐 ↔ OCCLUSION_COVERED",
+             r"가려짐 상한\s*\|\s*\*\*(\d+)\*\*", r"OCCLUSION_COVERED\s*=\s*(\d+)"),
+        ]
+        for name, ref_re, js_re in pairs:
+            rm = re.search(ref_re, ref)
+            jm = re.search(js_re, js)
+            self.assertIsNotNone(rm, f"{name}: 참조표에서 선언값을 못 찾음")
+            self.assertIsNotNone(jm, f"{name}: audit_render.js에서 집행값을 못 찾음")
+            self.assertEqual(int(rm.group(1)), int(jm.group(1)),
+                             f"{name}: 선언 {rm.group(1)} ≠ 집행 {jm.group(1)}")
+
 
 if __name__ == "__main__":
     unittest.main()

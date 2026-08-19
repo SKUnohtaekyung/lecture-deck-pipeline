@@ -162,7 +162,47 @@ _load_profile_gates()
 #   · 비율형 6종(R-QC-01·02·03·05·08·15·16) — 방향 역전이 확인됐거나 사용자 지시와
 #     충돌한다. 특히 R-QC-01은 아래 주석에 「손대지 말라는 지시」가 남아 있다.
 # 추가 전에는 반드시 두 주차에 먼저 돌려 FAIL 건수를 산출하라.
-ALWAYS_FAIL = {"R-QC-18", "R-META-01"}
+#
+# ── R-QC-08 승격 (2026-08-18) — 위 «비율형 6종» 주의를 실측으로 한정했다 ──────
+# 그 주의는 두 사유의 묶음이었다: ① R-QC-05의 **방향 역전** ② R-QC-01에 대한
+# **사용자의 「손대지 말라」 지시**. 둘 다 R-QC-08에는 해당하지 않는다.
+#   · 방향 검증(3개 주차 실측): 1주차 50.0%(18/36) < 2주차 68.2%(45/66) < 3주차 96.0%(48/50).
+#     **덱이 성숙할수록 오르는 올바른 방향**이고 역전이 없다.
+#   · 승격 시 FAIL 산출(주의가 요구한 선행조건): 1주차 1건뿐 · 2·3주차 0건.
+#     그 1건은 동결 주차이므로 D-2대로 계약 waiver로 강등한다.
+# 왜 올리나: 「이미지 없이 글상자만으로 덱을 만든다」가 이 저장소의 반복 결함이고,
+# WARN으로는 신규 주차를 막지 못한다(exit 0). 규칙 임계(55%)는 **그대로**다 —
+# 바뀐 것은 «경고»에서 «차단»으로의 심각도뿐이다.
+ALWAYS_FAIL = {"R-QC-18", "R-META-01", "R-QC-08"}
+
+_WAIVER_DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
+
+
+def load_quality_waivers(deck_path):
+    """주차 계약의 `quality_waivers` — 상시 FAIL 규칙을 그 주차만 WARN으로 강등한다.
+
+    ⚠️ **강등이지 임계 완화가 아니다.** 규칙 임계는 손대지 않고, 이 주차의 기존 상태만
+    사유·일자와 함께 봐준다(D-2 「기존은 봐주고 신규만 잡는다」). 계약이 없는 덱
+    (픽스처·임시 산출물)은 waiver가 없으므로 그대로 FAIL한다 — 그게 신규 주차의 조건이다.
+
+    사유나 일자가 없는 waiver는 **무시한다.** 무사유 강등을 허용하면 「등재만 하면
+    통과」가 되어 게이트가 무력해진다(pre-commit `verify_contract_waivers.py`가 같은 규약).
+    """
+    try:
+        p = os.path.join(os.path.dirname(os.path.abspath(deck_path)), "deck.contract.json")
+        with open(p, encoding="utf-8") as fh:
+            raw = json.load(fh).get("quality_waivers") or {}
+    except Exception:
+        return {}
+    out = {}
+    for rid, ent in raw.items():
+        if not isinstance(ent, dict):
+            continue
+        reason = str(ent.get("reason") or "").strip()
+        date = str(ent.get("date") or "")
+        if reason and _WAIVER_DATE_RE.match(date):
+            out[rid] = {"reason": reason, "date": date}
+    return out
 THRESH_DERIVATION = """\
 [임계값 도출 근거 — _dev/설계기록/품질감사-2026-07/deck_quality_metrics.json 기준, 개념설명 슬라이드만]
   R-QC-01 본문 글자수 < 76자(W1_FINAL p10)          flag률: W1 11.6%(5/43) · W2 62.2%(23/37)      [목표 충족: W1<=15%, W2>=55%]
@@ -1213,11 +1253,16 @@ def main():
     for line in audit_lines:
         print(line)
 
+    waivers = load_quality_waivers(a.deck)
     effective = []
     for rule_id, level, msg in results:
         eff = level
         if level == "WARN" and (a.strict or rule_id in ALWAYS_FAIL):
-            eff = "FAIL"
+            wv = waivers.get(rule_id)
+            if wv and not a.strict:
+                msg += f" — 계약 waiver 강등({wv['date']}: {wv['reason']})"
+            else:
+                eff = "FAIL"
         effective.append((rule_id, eff, msg))
         mark = {"PASS": "✓", "WARN": "△", "FAIL": "✗"}[eff]
         print(f"[{eff}] {mark} {rule_id}: {msg}")
