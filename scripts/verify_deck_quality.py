@@ -407,7 +407,8 @@ _FOOT_RE = re.compile(r"(?:^|\s)(?:[\w-]*-foot)(?:\s|$)")
 #   이것을 콜아웃으로 세면 R-QC-15(하단 결론 콜아웃 «보유율 > 0.12»면 플래그)가 «장마다 1개»로
 #   부풀어 100% 오탐이 난다 — `_FOOT_RE`의 `[\w-]*-foot`가 `s-foot`까지 삼키기 때문이다.
 #   2026-08-23 실측: kit 덱 3개는 `s-foot`을 **0회** 쓰고 진짜 콜아웃만 쓴다(compare-foot·rm-foot·
-#   c14-foot 등). 파이프라인 밖에서 만든 덱(`강의덱_실험.html`)만 `s-foot`을 75회 = 장당 1개 썼다.
+#   c14-foot 등). 파이프라인 밖에서 만든 덱만 `s-foot`을 75회 = 장당 1개 썼다(2026-08-19 `강의덱_실험.html` —
+#   그 덱은 2026-08-23 사용자 결정으로 삭제됐다. 재현 픽스처는 tests/test_quality_gates.py에 있다).
 #   즉 지금까지 안 드러난 것은 결함이 없어서가 아니라 kit이 그 이름을 안 써서다.
 _STRUCT_BAND_RE = re.compile(r"(?:^|\s)s-(?:foot|pageno|part|team)(?:\s|$)")
 _NOTE_RE = re.compile(r"(?:^|\s)(?:[\w-]*-note)(?:\s|$)")
