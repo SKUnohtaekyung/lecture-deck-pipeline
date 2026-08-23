@@ -260,5 +260,49 @@ class RunnerContractTests(unittest.TestCase):
         self.assertEqual(r.report(ran_static=True, ran_render=False), 1)
 
 
+class SessionFontFloorScanTests(unittest.TestCase):
+    """정적 폰트 하한 린트(`verify_deck.scan_session_font_floor`)의 «판정 범위»를 고정한다.
+
+    2026-08-23 신설. 이 린트는 셀렉터에 `.s-body`/`.s-lead` 문자열이 있을 때만 판정하는데,
+    실측해 보니 **저장소의 덱 4개 전부에서 판정 건수가 0**이었다(미판정 32·360·51·50).
+    즉 「PASS」가 «위반 없음»이 아니라 «아무것도 안 봄»을 뜻하고 있었다 — 미탐(false negative)이다.
+    범위를 이름 없이 넓히면 배지·캡션·페이지번호까지 잡혀 오탐이 쏟아지므로 넓히지 않는다.
+    대신 **못 본 개수를 세어 돌려주고**, 호출부가 그 수를 판정 문구에 찍는다.
+    이 테스트가 그 계약(판정분과 미판정분이 «둘 다» 반환된다)을 고정한다.
+    """
+
+    @classmethod
+    def setUpClass(cls):
+        import sys
+        if str(REPO_ROOT) not in sys.path:
+            sys.path.insert(0, str(REPO_ROOT))
+        from scripts import verify_deck as vd
+        cls.vd = vd
+
+    def test_kit_body_selector_is_judged(self):
+        judged, unjudged = self.vd.scan_session_font_floor(".dl-row .s-body { font-size: 20px; }")
+        self.assertEqual(judged, [".dl-row .s-body"])
+        self.assertEqual(unjudged, [])
+
+    def test_non_kit_body_selector_is_counted_as_unjudged_not_silently_passed(self):
+        """이름이 다른 본문 클래스는 «통과»가 아니라 «미판정»으로 세어야 한다."""
+        judged, unjudged = self.vd.scan_session_font_floor(
+            ".card p { font-size: 15.5px; } .para { font-size: 17px; }")
+        self.assertEqual(judged, [])
+        self.assertEqual(sorted(unjudged), [".card p", ".para"])
+
+    def test_at_or_above_floor_is_ignored_by_both_buckets(self):
+        judged, unjudged = self.vd.scan_session_font_floor(
+            ".s-body { font-size: 22px; } .card p { font-size: 24px; }")
+        self.assertEqual(judged, [])
+        self.assertEqual(unjudged, [])
+
+    def test_comma_group_splits_into_both_buckets(self):
+        judged, unjudged = self.vd.scan_session_font_floor(
+            ".s-lead, .mini { font-size: 18px; }")
+        self.assertEqual(judged, [".s-lead"])
+        self.assertEqual(unjudged, [".mini"])
+
+
 if __name__ == "__main__":
     unittest.main()

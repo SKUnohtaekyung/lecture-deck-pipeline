@@ -1094,6 +1094,38 @@ def _selector_matches_known(selector, known_selectors):
     return False
 
 
+BODY_FONT_FLOOR_PX = 22
+# 정적으로 「본문」이라고 단정할 수 있는 셀렉터 표지. kit이 본문에 쓰는 클래스는 이 둘뿐이다.
+BODY_FONT_FLOOR_MARKERS = ('.s-body', '.s-lead')
+
+
+def scan_session_font_floor(session_css, floor_px=BODY_FONT_FLOOR_PX):
+    """세션 CSS의 `font-size < floor_px` 선언을 (판정가능, 정적판정불가)로 가른다.
+
+    ⚠️ **이 검사는 셀렉터 «이름»에만 의존하므로 판정 범위가 원리적으로 좁다.**
+    본문인지 여부는 렌더된 글자로만 가릴 수 있고, 그 집행 정본은 브라우저 감사
+    (`audit_typography.js` fontFloor)이며 러너가 렌더 WARN 래칫으로 붙든다.
+
+    2026-08-23 실측 — 이 게이트는 그때까지 «아무것도 보지 않고» PASS를 찍고 있었다:
+        1주차 판정 0 / 미판정 32 · 2주차 0 / 360 · 3주차 0 / 51 ·
+        파이프라인 밖 덱 0 / 50 (본문 15~21px가 50건인데 전량 미판정)
+    판정 대상을 이름 없이 넓히면 배지·캡션·페이지번호까지 잡혀 오탐이 쏟아지므로
+    (실측 50건의 대부분이 그런 것들이다) **넓히지 않고, 못 본 개수를 밝힌다.**
+    """
+    judged, unjudged = [], []
+    for sel_group, decls, _body, _at in iter_rules(session_css):
+        fs = (decls.get('font-size') or '').strip()
+        m = re.match(r'(\d+(?:\.\d+)?)px', fs)
+        if not m or float(m.group(1)) >= floor_px:
+            continue
+        for sel in sel_group.split(','):
+            sel = sel.strip()
+            if not sel:
+                continue
+            (judged if any(k in sel for k in BODY_FONT_FLOOR_MARKERS) else unjudged).append(sel)
+    return list(dict.fromkeys(judged)), list(dict.fromkeys(unjudged))
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("deck"); ap.add_argument("--parts", type=int, default=None)
@@ -1704,22 +1736,21 @@ def main():
         #   [kit] 검사가 별도로 다루므로 여기서는 제외한다. known_violations.body_font_below_22에
         #   등재된 셀렉터(토큰 부분일치)는 FAIL이 아니라 WARN으로 강등한다.
         _session_css = _strip_css_comments(session_linked_css(html, a.deck, tags)) + "\n" + bundle.deck_inline
-        _font_below_22 = []
-        for _sel_group, _decls, _body, _at in iter_rules(_session_css):
-            _fs = (_decls.get('font-size') or '').strip()
-            _fs_m = re.match(r'(\d+(?:\.\d+)?)px', _fs)
-            if not _fs_m or float(_fs_m.group(1)) >= 22:
-                continue
-            for _sel in _sel_group.split(','):
-                _sel = _sel.strip()
-                if '.s-body' in _sel or '.s-lead' in _sel:
-                    _font_below_22.append(_sel)
-        _font_below_22 = list(dict.fromkeys(_font_below_22))
+        _font_below_22, _font_unjudged = scan_session_font_floor(_session_css)
         _known_font_selectors = (known_violations.get('body_font_below_22') or {}).get('selectors') or []
         _fail_font_sels = [s for s in _font_below_22 if not _selector_matches_known(s, _known_font_selectors)]
         _warn_font_sels = [s for s in _font_below_22 if _selector_matches_known(s, _known_font_selectors)]
+        # ⚠️ 이 검사는 «셀렉터 이름»에 의존하므로 판정 범위가 좁다. PASS 문구에 «무엇을 못 봤는지»를
+        #   반드시 함께 찍는다 — 조용한 0건 판정이 「다 봤다」로 읽히는 것이 이 저장소의 반복 실패다.
+        #   2026-08-23 실측: 1·2·3주차 덱과 파이프라인 밖 덱 모두 **판정 0건**이었고(미판정 32·360·51·50건),
+        #   즉 이 게이트는 지금까지 «아무것도 보지 않고» PASS를 찍어 왔다. 본문 여부는 이름이 아니라
+        #   렌더된 글자로만 가릴 수 있으므로 **집행 정본은 브라우저 감사(`audit_typography.js` fontFloor)**이며
+        #   러너가 그 수치를 렌더 WARN 래칫으로 붙든다. 여기서 판정 대상을 이름 없이 넓히면 배지·캡션·
+        #   페이지번호까지 잡혀 오탐이 쏟아진다(실측 50건 중 대부분이 그런 것들이다) — 그래서 넓히지 않는다.
         chk(not _fail_font_sels,
-            "세션 CSS .s-body/.s-lead 폰트 22px 이상 유지",
+            f"세션 CSS 본문 폰트 22px 하한 — 판정 {len(_font_below_22)}건"
+            f"(.s-body/.s-lead 셀렉터 한정) · 정적판정불가 {len(_font_unjudged)}건, "
+            f"집행 정본은 브라우저 감사(audit_typography.js)",
             f"세션 CSS .s-body/.s-lead 폰트 22px 미만: {_fail_font_sels}")
         if _warn_font_sels:
             chk(False, "", f"세션 CSS .s-body/.s-lead 폰트 22px 미만(known): {_warn_font_sels}", warn=True)

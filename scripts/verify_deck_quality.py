@@ -401,6 +401,15 @@ def count_explanatory_visuals(html_text, start, end, tags):
 _BOX_CLASS_RE = re.compile(r"(?:^|[\s_])(?:[\w-]*card[\w-]*|[\w-]*callout[\w-]*|[\w-]*-band|[\w-]*-box|[\w-]*-node|[\w-]*-col)(?:$|[\s])")
 _FOOT_CALLOUT_RE = re.compile(r"(?:^|\s)(?:[\w-]*callout[\w-]*)(?:\s|$)")
 _FOOT_RE = re.compile(r"(?:^|\s)(?:[\w-]*-foot)(?:\s|$)")
+# ── kit 구조 클래스는 「결론 콜아웃」이 아니다 (2026-08-23 신설) ──
+#   `s-` 는 kit이 예약한 구조 접두(s-title·s-body·s-lead·s-full·s-pageno·s-part·s-team)이고,
+#   그중 슬라이드 바닥에 오는 띠(`s-foot`·`s-pageno`)는 페이지번호·파트 표시용이지 결론 문장이 아니다.
+#   이것을 콜아웃으로 세면 R-QC-15(하단 결론 콜아웃 «보유율 > 0.12»면 플래그)가 «장마다 1개»로
+#   부풀어 100% 오탐이 난다 — `_FOOT_RE`의 `[\w-]*-foot`가 `s-foot`까지 삼키기 때문이다.
+#   2026-08-23 실측: kit 덱 3개는 `s-foot`을 **0회** 쓰고 진짜 콜아웃만 쓴다(compare-foot·rm-foot·
+#   c14-foot 등). 파이프라인 밖에서 만든 덱(`강의덱_실험.html`)만 `s-foot`을 75회 = 장당 1개 썼다.
+#   즉 지금까지 안 드러난 것은 결함이 없어서가 아니라 kit이 그 이름을 안 써서다.
+_STRUCT_BAND_RE = re.compile(r"(?:^|\s)s-(?:foot|pageno|part|team)(?:\s|$)")
 _NOTE_RE = re.compile(r"(?:^|\s)(?:[\w-]*-note)(?:\s|$)")
 
 
@@ -436,6 +445,9 @@ def has_conclusion_callout(last_child):
         return False
     cls_str = last_child.attrs.get("class") or ""
     name = last_child.name
+    # 페이지번호·파트 띠는 구조물이지 결론이 아니다 — 이름이 `-foot`로 끝난다는 이유로 세면 안 된다.
+    if _STRUCT_BAND_RE.search(cls_str):
+        return False
     if name == "p" and _FOOT_CALLOUT_RE.search(cls_str):
         return True
     if _FOOT_RE.search(cls_str):

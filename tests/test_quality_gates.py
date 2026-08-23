@@ -440,6 +440,38 @@ class NewMetricRQC15Tests(unittest.TestCase):
         finally:
             Path(path).unlink(missing_ok=True)
 
+    # ── 2026-08-23 신설: `-foot`로 끝난다는 이유로 구조 띠를 콜아웃으로 세지 않는다 ──
+    #   `_FOOT_RE`(`[\w-]*-foot`)가 kit 구조 클래스 `s-foot`(페이지번호 띠)까지 삼켜
+    #   보유율이 «장마다 1개»로 부풀던 오탐. 파이프라인 밖 덱에서 100%(61/61)가 나왔다.
+    def test_page_number_band_is_not_a_conclusion_callout(self):
+        html = _wrap_slides(
+            '<section class="slide" data-slide="X1"><div class="s-full">'
+            '<p>본문 설명 문장입니다.</p>'
+            '<div class="s-foot"><span>12 / 75</span></div>'
+            '</div></section>'
+        )
+        path = _write_tmp_html(html)
+        try:
+            results, _adv, _meta, _records = vdq.run_checks(path)
+            self.assertIn("PASS", _levels(results, "R-QC-15"))
+        finally:
+            Path(path).unlink(missing_ok=True)
+
+    def test_real_foot_callout_still_counts(self):
+        """구조 띠만 빼고, 진짜 결론 콜아웃(`compare-foot` 등)은 그대로 세야 한다."""
+        html = _wrap_slides(
+            '<section class="slide" data-slide="X1"><div class="s-full">'
+            '<p>본문 설명 문장입니다.</p>'
+            '<div class="compare-foot">그래서 결론은 이렇습니다.</div>'
+            '</div></section>'
+        )
+        path = _write_tmp_html(html)
+        try:
+            results, _adv, _meta, _records = vdq.run_checks(path)
+            self.assertIn("WARN", _levels(results, "R-QC-15"))
+        finally:
+            Path(path).unlink(missing_ok=True)
+
 
 class NewMetricRQC16Tests(unittest.TestCase):
     """R-QC-16 박스 기반 슬라이드 비율(임계 0.10, 박스 컨테이너 4개 이상)."""
