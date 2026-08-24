@@ -1,0 +1,106 @@
+# -*- coding: utf-8 -*-
+"""테마 계약 회귀 — 선언(`kit/themes/<이름>/tokens.css`) ↔ 집행(`kit/styles/deck.css`).
+
+왜 이 파일이 필요한가
+--------------------
+2026-08-24(plans/gate-input-hardening P2)에 테마 축을 신설하면서 현행 99토큰을
+`kit/themes/default/tokens.css`에 **등재**했다. 사용자 확정 제약이 「1·2·3주차
+산출물·컬러 키트·디자인은 값 하나도 바꾸지 않는다」라 «이동»이 아니라 «복제»다.
+
+값이 두 곳에 있으면 어긋나는 것이 이 저장소의 반복 사고다(지도 §8.4 유형⑤:
+정본표가 선언한 값 8건이 kit에서 실현되지 않고 각 주차 shell 오버라이드에만
+있었다). 그래서 복제를 허용하는 대신 **드리프트를 회귀로 고정**한다 — 한쪽만
+고치면 여기서 즉시 깨진다.
+
+이것은 파이프라인 게이트가 아니라 회귀다. P2의 계약은 「선언만, 집행 변화 없음」
+이므로 검사기 거동은 건드리지 않았다.
+
+실행: python -m unittest tests.test_theme_contract
+"""
+from __future__ import annotations
+
+import io
+import re
+import unittest
+from pathlib import Path
+
+REPO = Path(__file__).resolve().parent.parent
+DECK_CSS = REPO / "kit" / "styles" / "deck.css"
+THEMES_DIR = REPO / "kit" / "themes"
+DEFAULT_THEME = THEMES_DIR / "default" / "tokens.css"
+
+# G1(2026-08-24 사용자 확정): 테마가 바꿀 수 있는 것은 토큰 «값»뿐이다.
+# 구조 셸 어휘는 전 테마 공통 고정 — 브라우저 감사기 2종의 fail-closed와
+# 제외 앵커가 이 이름들 위에 서 있다(plans/gate-input-hardening F3).
+FROZEN_SHELL_CLASSES = ("slide", "s-head", "s-pageno", "s-title", "asset-slot", "slide-num")
+
+
+def _root_tokens(text: str) -> dict:
+    """`:root { … }`의 `--토큰: 값;`을 순서를 보존해 읽는다."""
+    m = re.search(r":root\s*\{(.*?\n)\}", text, re.S)
+    if not m:
+        return {}
+    out = {}
+    for name, value in re.findall(r"(--[a-z0-9-]+)\s*:\s*([^;]+);", m.group(1)):
+        out[name] = re.sub(r"\s+", " ", value).strip()
+    return out
+
+
+class DefaultThemeMirrorsKitTests(unittest.TestCase):
+    """default 테마 선언이 집행부(deck.css :root)와 한 글자도 다르지 않아야 한다."""
+
+    def setUp(self):
+        self.enforced = _root_tokens(io.open(DECK_CSS, encoding="utf-8").read())
+        self.declared = _root_tokens(io.open(DEFAULT_THEME, encoding="utf-8").read())
+
+    def test_theme_file_exists_and_is_not_empty(self):
+        self.assertTrue(DEFAULT_THEME.is_file(), f"없음: {DEFAULT_THEME}")
+        self.assertTrue(self.declared, "테마 파일에서 :root 토큰을 하나도 읽지 못했다")
+
+    def test_token_names_match_exactly(self):
+        self.assertEqual(sorted(self.declared), sorted(self.enforced),
+                         "테마 선언과 deck.css :root의 토큰 «집합»이 다르다")
+
+    def test_token_values_match_exactly(self):
+        diff = {k: (self.enforced[k], self.declared[k])
+                for k in self.enforced
+                if k in self.declared and self.enforced[k] != self.declared[k]}
+        self.assertEqual(diff, {}, f"토큰 «값»이 어긋났다(집행, 선언): {diff}")
+
+    def test_token_count_is_the_registered_99(self):
+        """계수를 고정한다 — 토큰이 늘거나 줄면 테마 계약 문서도 함께 갱신해야 한다."""
+        self.assertEqual(len(self.enforced), 99,
+                         "deck.css :root 토큰 수가 99가 아니다 — "
+                         "kit/guide/테마-계약.md의 계수와 이 테스트를 함께 갱신하라")
+
+
+class ThemeContractDocTests(unittest.TestCase):
+    """계약 문서가 실재하고, 동결 어휘를 실제로 등재하고 있는가."""
+
+    CONTRACT = REPO / "kit" / "guide" / "테마-계약.md"
+
+    def test_contract_doc_exists(self):
+        self.assertTrue(self.CONTRACT.is_file(), f"없음: {self.CONTRACT}")
+
+    def test_every_frozen_shell_class_is_listed(self):
+        text = io.open(self.CONTRACT, encoding="utf-8").read()
+        missing = [c for c in FROZEN_SHELL_CLASSES if c not in text]
+        self.assertEqual(missing, [],
+                         f"동결 어휘가 계약 문서에 없다: {missing} — "
+                         "브라우저 감사기의 fail-closed가 이 이름들 위에 서 있다")
+
+    def test_frozen_shell_classes_are_actually_used_by_the_auditors(self):
+        """문서가 «실재하지 않는 이름»을 동결하고 있지 않은지 역방향으로 확인한다.
+
+        선언이 집행과 무관해지는 것이 이 저장소의 유형⑤ 사고다 — 동결 목록이
+        감사기가 실제로 보는 이름인지 확인한다."""
+        auditors = "\n".join(
+            io.open(REPO / "scripts" / name, encoding="utf-8").read()
+            for name in ("audit_render.js", "audit_typography.js"))
+        orphan = [c for c in FROZEN_SHELL_CLASSES if c not in auditors]
+        self.assertEqual(orphan, [],
+                         f"감사기가 쓰지 않는 이름을 동결하고 있다: {orphan}")
+
+
+if __name__ == "__main__":
+    unittest.main()
