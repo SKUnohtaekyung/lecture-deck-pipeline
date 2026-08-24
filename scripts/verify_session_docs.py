@@ -95,6 +95,16 @@ ALLOWLIST = {
     "검토": ["sessions/*주차/검토보고_*.md", "courses/*/sessions/*주차/검토보고_*.md"],
 }
 
+# ── 0판정 가드(신설) ─────────────────────────────────────────────────────────
+# 「개념KB:참조해소」는 `used_chunks`(수집된 [C-슬러그] 참조)가 비면 검사 자체를
+# 건너뛰던 구조라, CHUNK_REF 정규식의 슬러그 접두("C-")가 실제 표기와 어긋나면
+# used_chunks=0이 되고 이 검사 항목이 결과에서 통째로 생략됐다(PASS도 SKIP도 아닌
+# 무판정 — 아무도 못 본다). 원문이 실재하는데 0건이면 미판정(WARN)으로 표면화하고,
+# 원문 자체가 없어 정당하게 0인 경우(SKIP)와 구분한다. 태그 문자열로 두 경우를
+# 기계적으로 셀 수 있게 한다("판정 N건 · 미판정 M건" 요약 출력용).
+_GATE_TAG = "[0판정가드:미판정]"
+_GUARDED_CHECKS = ("개념KB:참조해소",)
+
 results = []  # (check, status, detail)
 
 
@@ -510,6 +520,11 @@ def main():
     reg_ids, used_refs = set(), set()
     used_chunks = set()
     kb_text = read(files["kb"])
+    # 0판정 가드용: 참조를 실제로 긁어낸 원문을 별도로 쥔다 — 아래 반복문의 지역변수
+    # `txt`는 루프가 끝나면 마지막 값(practice/decision)으로 덮여 result.md 본문을
+    # 잃고, `dtxt`도 자기 if-블록 밖에서는 정의돼 있지 않아 재사용할 수 없다.
+    result_text = None
+    draft_text = None
 
     if args.target in ("자료", "all"):
         for key, chk in (("result", check_research_result), ("practice", check_practice), ("decision", check_decision)):
@@ -519,6 +534,7 @@ def main():
             else:
                 chk(txt)
                 if key == "result":
+                    result_text = txt
                     used_refs |= {m.group(1) for m in SRC_REF.finditer(txt)}
                     used_chunks |= collect_chunk_refs(txt)
         # 개념KB는 기본 5파일 중 사실 정본 — 존재만 강제하고, 청크 내부 깊이·G8 관점은
@@ -546,6 +562,7 @@ def main():
         if dtxt is None:
             add(f"파일:{files['draft'].name}", "SKIP" if args.target == "all" else "FAIL", "파일 없음")
         else:
+            draft_text = dtxt
             check_draft(dtxt)
             check_draft_slide_numbers(dtxt)
             used_refs |= {m.group(1) for m in SRC_REF.finditer(dtxt)}
@@ -571,6 +588,20 @@ def main():
                 f"개념KB에 없는 청크 슬러그 {len(dead)}개: " + ", ".join(dead))
         else:
             add("개념KB:참조해소", "PASS", f"참조 {len(used_chunks)}개 전부 해소")
+    else:
+        # 0판정 가드(신설) — 이전에는 `used_chunks`가 비면 이 elif가 그냥 통과되어
+        # "개념KB:참조해소" 검사 항목 자체가 results에 추가되지 않았다(PASS도 SKIP도
+        # 아닌 무판정). CHUNK_REF(`\[C-[^\]\s]+\]`)의 슬러그 접두가 실제 문서 표기와
+        # 어긋나면 이 값이 조용히 0이 될 수 있다 — 원문이 실재하면 미판정(WARN)으로
+        # 표면화하고, 원문 자체가 없어 정당하게 0인 경우만 SKIP으로 구분한다.
+        scanned = [t for t in (result_text, draft_text) if t]
+        if scanned:
+            add("개념KB:참조해소", "WARN",
+                f"{_GATE_TAG} [C-슬러그] 청크 포인터 참조 0건 — 이번 실행이 스캔한 원문 {len(scanned)}개"
+                f"(결과.md/초안.md)는 있고 개념KB도 있는데 포인터가 하나도 안 잡혔다. CHUNK_REF 표기 "
+                f"규약이 바뀌었을 수 있다(계수 실패 의심 — 눈먼 0 방지). 정말 미사용인지 사람이 확인하라")
+        else:
+            add("개념KB:참조해소", "SKIP", "결과.md·초안.md 원문 없음 — 참조 대상 자체가 없어 정당한 0건")
 
     check_capability_claims(root, args.week)
 
@@ -589,6 +620,10 @@ def main():
             line += f" — {detail}"
         print(line)
     print(f"--- FAIL={n['FAIL']} WARN={n['WARN']} PASS={n['PASS']} SKIP={n['SKIP']} ---")
+    guarded = [r for r in results if r[0] in _GUARDED_CHECKS]
+    n_unjudged = sum(1 for r in guarded if _GATE_TAG in r[2])
+    n_judged = len(guarded) - n_unjudged
+    print(f"0판정가드 | 판정 {n_judged}건 · 미판정 {n_unjudged}건")
     result = "FAIL" if n["FAIL"] else "PASS"
     print(f"RESULT | {result}")
     sys.exit(1 if n["FAIL"] else 0)

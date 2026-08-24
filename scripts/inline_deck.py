@@ -204,16 +204,44 @@ class Bundler:
         return html
 
     def validate_slots(self, html: str) -> None:
+        """Find every ``<figure class="asset-slot">`` and enforce the image-slot contract.
+
+        0-verdict guard (miss-detection hardening, plans/gate-input-hardening/PLAN.md P1,
+        item ``inline_deck.py:209-216``): if the ``asset-slot`` class name ever drifts
+        (renamed, typo'd), the ``continue`` below fires for every ``<figure>`` and this
+        function silently judges nothing — a zero that looks identical to "this deck has
+        no image slots" even though slots exist. ``data-image-purpose``/``data-image-state``
+        are an independent secondary signal for slot intent: a repo-wide scan of every
+        ``<figure>`` in this codebase (460 elements, 2026-08-24) found zero cases where
+        either attribute appears without the ``asset-slot`` class also present. So a
+        ``<figure>`` carrying one of those attributes but missing the class is not a
+        legitimate "nothing to judge" case — it is evidence the class-based match went
+        blind, and is reported as an error instead of being swallowed by ``continue``.
+        """
+        judged = 0
+        blind_spot: list[str] = []
         for match in re.finditer(r"<figure\b([^>]*)>(.*?)</figure>", html, re.I | re.S):
             attributes, body = match.group(1), match.group(2)
-            if not re.search(r"\basset-slot\b", _attribute(attributes, "class")):
-                continue
             purpose = _attribute(attributes, "data-image-purpose")
             state = _attribute(attributes, "data-image-state")
+            if not re.search(r"\basset-slot\b", _attribute(attributes, "class")):
+                if purpose or state:
+                    blind_spot.append(purpose or state)
+                continue
+            judged += 1
             if purpose in {"explanatory", "mnemonic"} and (state == "expected" or not re.search(r"<img\b", body, re.I)):
                 self.errors.append(f"unresolved required {purpose} image slot")
             if state == "expected" and re.search(r"<img\b[^>]*\bsrc=", body, re.I):
                 self.errors.append("expected image slot must not contain an img src")
+        if blind_spot:
+            self.errors.append(
+                f"image-slot validation blind spot: {len(blind_spot)} figure(s) carry "
+                f"data-image-purpose/data-image-state ({', '.join(blind_spot[:5])}"
+                f"{', ...' if len(blind_spot) > 5 else ''}) but no 'asset-slot' class — "
+                f"the class name may have drifted, so required/forbidden-image checks "
+                f"({judged} figure(s) judged) are silently skipping them"
+            )
+        self.log.append(f"image slots judged: {judged}")
 
     def postcheck(self, html: str) -> None:
         # No fetchable reference may survive an offline build.

@@ -60,15 +60,29 @@ def rec(rule, level, msg):
 
 
 def tables(text):
-    """(섹션 제목, 헤더셀, 데이터행목록) 목록. 마크다운 표를 섹션과 함께 뽑는다."""
+    """(섹션 제목, 헤더셀, 데이터행목록, 상위 헤딩 breadcrumb) 목록. 마크다운 표를
+    섹션과 함께 뽑는다. 앞 3개는 종전과 완전히 같다(check_tracking·check_disposition
+    계약 불변). 4번째 breadcrumb는 0판정 가드 전용 추가 필드 — 이 표를 감싸는
+    모든 상위 헤딩을 레벨 순으로 ' / '로 이어붙인 문자열이다. 표가 소제목
+    (예: `### 4구간`) 바로 아래 있으면 section은 그 소제목뿐이지만, breadcrumb는
+    그 위 절(`## 1. 출처 추적표`)까지 포함한다 — 절 제목은 헤더 어휘보다 훨씬 안
+    바뀌므로(2주차 실측: 표 헤더 「판단」은 5곳, 절 제목 「출처 추적표」는 1곳뿐이라
+    바뀔 표면이 좁다) 헤더 라우팅이 실패했을 때 마지막으로 기댈 근거가 된다."""
     out, section = [], ""
     header, rows = None, []
+    stack = []  # [(level:int, text:str)] — 현재 열려 있는 헤딩 경로
+    breadcrumb = ""
     for line in text.splitlines():
-        h = re.match(r"^#{1,6}\s+(.*)$", line)
+        h = re.match(r"^(#{1,6})\s+(.*)$", line)
         if h:
             if header:
-                out.append((section, header, rows))
-            section, header, rows = h.group(1).strip(), None, []
+                out.append((section, header, rows, breadcrumb))
+            section, header, rows = h.group(2).strip(), None, []
+            level = len(h.group(1))
+            while stack and stack[-1][0] >= level:
+                stack.pop()
+            stack.append((level, section))
+            breadcrumb = " / ".join(t for _, t in stack)
             continue
         s = line.strip()
         if not s.startswith("|"):
@@ -83,7 +97,7 @@ def tables(text):
         else:
             rows.append(cells)
     if header:
-        out.append((section, header, rows))
+        out.append((section, header, rows, breadcrumb))
     return out
 
 
@@ -200,15 +214,42 @@ def main():
     print("집필노트: %s" % os.path.relpath(note))
     print("-" * 74)
 
+    # ── 0판정 가드(2026-08-24) ──────────────────────────────────────────
+    # 아래 라우팅은 헤더 어휘("판단"/"처분"/"등급")로만 표를 찾는다. 어휘가
+    # 바뀌면 check_tracking/check_disposition이 아예 호출되지 않는데, 그 표가
+    # 있었다는 사실 자체가 사라진 채 "표를 못 찾았다" WARN만 남는다 — 이 WARN은
+    # "원래 표가 없는 문서"와 "표는 있는데 헤더 어휘가 바뀐 문서"를 구분하지
+    # 못한 채 둘 다 exit 0으로 통과시킨다. 절 제목(section)은 헤더보다 훨씬
+    # 안 바뀐다 — 「출처 추적표」·「재료 처분표」는 이 파일의 docstring·주석이
+    # 반복해 쓰는 고유명사다. 헤더 라우팅에 실패한 표라도 절 제목에 그 낱말이
+    # 있으면 "표가 있는데 못 읽었다"로 승격한다(FAIL — nf에 반영돼 기존 exit
+    # 코드 규약을 그대로 재사용한다. 새 심각도 체계를 만들지 않는다).
+    TRACKING_HINTS = ("추적", "출처")
+    DISPOSITION_HINTS = ("처분", "재료")
+
     seen_tracking = seen_disp = False
-    for section, header, rows in tables(text):
+    judged_tables = 0
+    unmatched = []  # [(section, breadcrumb, kind, header)] — 상위 절 힌트는 있으나 헤더 라우팅 실패
+    for section, header, rows, breadcrumb in tables(text):
         joined = " ".join(header)
         if "판단" in joined or "사실/창작" in joined:
             seen_tracking = True
+            judged_tables += 1
             check_tracking(section, header, rows)
         elif "처분" in joined or "등급" in joined:
             seen_disp = True
+            judged_tables += 1
             check_disposition(section, header, rows)
+        elif any(h in breadcrumb for h in TRACKING_HINTS):
+            unmatched.append((section, breadcrumb, "출처 추적표", header))
+        elif any(h in breadcrumb for h in DISPOSITION_HINTS):
+            unmatched.append((section, breadcrumb, "재료 처분표", header))
+
+    for section, breadcrumb, kind, header in unmatched:
+        rec("R-JUDGE-01", "FAIL",
+            "「%s」 절의 표가 %s로 보이나(상위 절 「%s」 기준) 헤더 어휘(판단/사실창작 "
+            "또는 처분/등급)를 찾지 못해 판독하지 못했습니다 — 계수 실패(눈먼 0 방지). "
+            "헤더: %s" % (section, kind, breadcrumb, " | ".join(header)))
 
     if not seen_tracking:
         rec("R-JUDGE-01", "WARN", "출처 추적표를 찾지 못했습니다(판단 열 기준)")
@@ -224,6 +265,7 @@ def main():
     np_ = sum(1 for _, l, _ in RESULTS if l == "PASS")
     print("-" * 74)
     print("요약: FAIL %d · WARN %d · PASS %d" % (nf, nw, np_))
+    print("판정 %d건 · 미판정 %d건" % (judged_tables, len(unmatched)))
     return 1 if nf else 0
 
 

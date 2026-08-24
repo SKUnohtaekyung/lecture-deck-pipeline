@@ -83,6 +83,50 @@ def self_containment_violations(html: str, *, require_font: bool = True) -> list
     return violations
 
 
+def unresolved_scan_gaps(html: str) -> list[str]:
+    """0판정 가드(신설·진단 전용) — ``self_containment_violations``의 판정에는 관여하지
+    않는다. 위 위반 스캔의 4번 항목은 ``class`` 속성에 ``asset-slot``이 있는 ``<figure>``만
+    본다. 그 클래스명이 바뀌면 그 figure는 조용히 스캔 대상에서 빠져, 실제로는 미해결
+    슬롯이 있어도 위반 0건(=PASS)으로 보인다(미탐).
+
+    「정말 계약과 무관한 장식용 figure」와 「계약 참여 의도가 있는데 클래스명만 어긋난
+    figure」를 자동으로 확실히 가를 수는 없다 — 그래서 위반으로 단정하지 않고, 이미지
+    계약의 속성 어휘(``data-image-purpose``/``data-image-state``)가 붙어 있는데도
+    ``asset-slot`` 클래스가 없는 figure만 진단으로 표면화한다. 그 속성이 붙어 있다는
+    것 자체가 "이 figure는 이미지 슬롯 계약에 참여할 의도였다"는 신호이기 때문이다.
+    """
+    gaps: list[str] = []
+    for match in re.finditer(rf"<figure\b([^>]*)>(.*?)</figure>", html, re.I | re.S):
+        attributes = match.group(1)
+        cls = _attr(attributes, "class")
+        if "asset-slot" in cls:
+            continue
+        purpose = _attr(attributes, "data-image-purpose")
+        state = _attr(attributes, "data-image-state")
+        if purpose or state:
+            gaps.append(
+                f'class="{cls}"에 asset-slot 없음 — data-image-purpose={purpose or "(없음)"} '
+                f'data-image-state={state or "(없음)"}는 있어 계약 참여 의도로 보이나 스캔에서 빠짐'
+            )
+    return gaps
+
+
+def figure_scan_summary(html: str) -> tuple[int, int]:
+    """(판정, 미판정) figure 수 — "판정 N건 · 미판정 M건" 출력용.
+
+    판정 = ``asset-slot`` 클래스로 실제 위반 스캔에 들어간 figure 수.
+    미판정 = :func:`unresolved_scan_gaps`가 표면화한, 스캔에서 빠진 figure 수.
+    둘 다 아닌 figure(클래스도 없고 이미지계약 속성 신호도 없는 순수 장식용)는 애초에
+    이 계약과 무관하므로 어느 쪽에도 세지 않는다.
+    """
+    judged = 0
+    for match in re.finditer(r"<figure\b([^>]*)>", html, re.I):
+        if "asset-slot" in _attr(match.group(1), "class"):
+            judged += 1
+    unjudged = len(unresolved_scan_gaps(html))
+    return judged, unjudged
+
+
 def verify_file(path: Path, *, require_font: bool = True) -> list[str]:
     if not path.is_file():
         return [f"file is missing: {path}"]
@@ -98,7 +142,29 @@ def main() -> int:
     parser.add_argument("deck", type=Path, help="built distributable HTML")
     parser.add_argument("--no-require-font", action="store_true", help="skip the embedded @font-face requirement")
     args = parser.parse_args()
-    violations = verify_file(args.deck, require_font=not args.no_require_font)
+
+    if not args.deck.is_file():
+        violations = [f"file is missing: {args.deck}"]
+        html = None
+    else:
+        try:
+            html = args.deck.read_text(encoding="utf-8")
+        except (OSError, UnicodeError) as exc:
+            violations = [f"cannot read file: {exc}"]
+            html = None
+        else:
+            violations = self_containment_violations(html, require_font=not args.no_require_font)
+
+    if html is not None:
+        # 0판정 가드(신설·진단 전용, 위반 판정에는 관여하지 않는다) — unresolved_scan_gaps 참고.
+        judged, unjudged = figure_scan_summary(html)
+        gaps = unresolved_scan_gaps(html)
+        print(f"0판정가드 | 판정 {judged}건 · 미판정 {unjudged}건")
+        for gap in gaps[:20]:
+            print(f"[WARN] 0판정가드: {gap}")
+        if len(gaps) > 20:
+            print(f"[WARN] 0판정가드: 외 {len(gaps) - 20}건 생략")
+
     if violations:
         for violation in violations:
             print(f"[FAIL] {violation}")

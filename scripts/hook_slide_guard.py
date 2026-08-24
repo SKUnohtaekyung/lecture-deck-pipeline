@@ -96,6 +96,17 @@ def emit_block(reason, host):
 # 슬라이드 작업으로 간주할 경로 조각 (checklist·css-lint 단일경로 모드에서만 사용)
 TARGET_HINTS = ("samples_v3", "강의덱.초안", "강의덱.html")
 
+# 0판정 가드 전용 — TARGET_HINTS를 넓히지 않는다(그러면 checklist·css-lint의 실제
+# 판정 범위가 바뀐다: "가드를 더하는 것"이 아니라 "판정을 바꾸는 것"이 되므로 금지).
+# 대신 더 넓고 독립적인 후보 신호로 "TARGET_HINTS는 놓쳤지만 강의덱류로 보이는
+# 경로"만 관측 로그에 남긴다. 실측(2026-08-24): "강의덱.html"은 그 8글자 뒤에
+# 바로 ".html"이 와야 걸리는 부분문자열이라, 저장소에 실재하는
+# `강의덱_발표자노트.html`·`강의덱_발표.html`·`강의덱_배포.html`(조립 산출물이며
+# GENERATED_DECK_RE는 `_발표자노트`까지 이미 인식한다)는 세 힌트 중 어느 것과도
+# 매치하지 않아 checklist·css-lint가 지금도 조용히 건너뛴다 — 차단 승격 없이
+# 그 사실만 드러낸다.
+CANDIDATE_HINT = "강의덱"
+
 # R-QC-14: 후손 선택자에 display:block — 문장 안 강조(.hl-mint-text 등)까지
 # 블록이 되어 줄이 끊긴다. `> b` / `> span`으로 좁혀야 한다.
 BAD_BLOCK = re.compile(r"^\.[A-Za-z0-9_-]+ +(b|span)\s*\{[^}]*display\s*:\s*block", re.M)
@@ -204,6 +215,17 @@ def is_target(path):
     return any(h in p for h in TARGET_HINTS)
 
 
+def is_candidate_but_unmatched(path):
+    """TARGET_HINTS는 못 잡았지만 CANDIDATE_HINT로는 강의덱류로 보이는 경로.
+
+    0판정 가드 — TARGET_HINTS 3종이 전부 미스면 is_target()이 조용히 False를 반환해
+    checklist·css-lint가 아무 로그 없이 return한다(미탐: 검사 대상 계수가 0인데
+    입력은 존재하는 경우). 이 함수가 True를 반환해도 checklist·css-lint의 판정은
+    바뀌지 않는다 — 호출부는 여전히 건너뛰고, 그 사실을 log_observation으로만
+    남긴다(차단 승격은 이 작업의 범위가 아니다)."""
+    return not is_target(path) and CANDIDATE_HINT in path.replace("\\", "/")
+
+
 def is_persistent_agent_memory(abs_path):
     """`<home>/.claude/projects/<프로젝트키>/memory/` 아래인가.
 
@@ -255,9 +277,13 @@ def log_observation(mode, path, verdict, reason=""):
 
 
 def mode_checklist(path):
-    if not is_target(path):
-        return
     if not path.lower().endswith((".html", ".css")):
+        return
+    if not is_target(path):
+        if is_candidate_but_unmatched(path):
+            log_observation("checklist", path, "unmatched-candidate",
+                            "TARGET_HINTS 미매치지만 '%s' 포함 — 사전 점검 7항 주입이 "
+                            "스킵됐다(0판정 가드)" % CANDIDATE_HINT)
         return
     emit_context(CHECKLIST)
 
@@ -283,6 +309,10 @@ def mode_css_lint(path, host):
     if not path.lower().endswith(".css"):
         return
     if not is_target(path):
+        if is_candidate_but_unmatched(path):
+            log_observation("css-lint", path, "unmatched-candidate",
+                            "TARGET_HINTS 미매치지만 '%s' 포함 — R-QC-14 린트가 "
+                            "스킵됐다(0판정 가드)" % CANDIDATE_HINT)
         return
     hits = scan_css_violations(path)
     if not hits:

@@ -51,6 +51,10 @@ _SLIDES_RE = re.compile(r"\*\*(\d+)장\*\*")
 _SHA_RE = re.compile(r"sha256\s*`([0-9a-f]{8})`")
 
 
+def _rel(path: str) -> str:
+    return os.path.relpath(path, ROOT).replace(os.sep, "/")
+
+
 def deck_meta(deck_path: str):
     """(장수, sha8) — 현행 덱의 대조 기준."""
     with open(deck_path, "rb") as fh:
@@ -85,6 +89,46 @@ def find_reports(session: str):
     return out
 
 
+# ── 0판정 가드(2026-08-24) ───────────────────────────────────────────────
+# find_reports()는 파일명 관례(조립_보고.md·*결정표*.md)를 하드코딩한다. 다른
+# 명명이면 reports=[]가 되고, 그동안은 이것과 "이 세션엔 보고류가 정말 하나도
+# 없다"를 구분하지 못한 채 똑같이 "위반 0건"으로 통과시켰다. find_missed()는
+# 파일명과 무관하게 check_report()가 신뢰하는 것과 같은 식별자 신호(머리
+# HEAD_CHARS 안의 «**N장**»+sha256 또는 [시점 스냅샷 ...])를 직접 찾는다 —
+# "이 문서는 신선도 추적 대상으로 설계됐다"는 저자 의도 신호이므로 파일명이
+# 달라도 잡힌다. 탐색 범위는 find_reports()와 똑같은 두 위치(세션 루트·
+# 개정이력)로 맞춘다 — 범위를 넓히면(예: 자료/) 판정 대상 자체가 달라져
+# "판정 기준을 손대지 않는다"는 잠긴 결정을 어기게 된다.
+def looks_like_report_text(text: str) -> bool:
+    head = text[:HEAD_CHARS]
+    return bool(_SNAPSHOT_RE.search(head) or (_SLIDES_RE.search(head) and _SHA_RE.search(head)))
+
+
+def find_candidates(session: str):
+    """find_reports()와 같은 두 디렉터리에서 `*.md`를 전부 훑는다(파일명 무관)."""
+    out = []
+    for d in (session, os.path.join(session, "개정이력")):
+        if os.path.isdir(d):
+            out.extend(sorted(glob.glob(os.path.join(d, "*.md"))))
+    return out
+
+
+def find_missed(session: str, reports: list) -> list:
+    """식별자 신호는 있지만 find_reports()의 파일명 관례에 안 걸린 문서 — 미판정 후보."""
+    known = set(os.path.normcase(os.path.abspath(p)) for p in reports)
+    missed = []
+    for path in find_candidates(session):
+        if os.path.normcase(os.path.abspath(path)) in known:
+            continue
+        try:
+            text = open(path, encoding="utf-8").read()
+        except (OSError, UnicodeDecodeError):
+            continue
+        if looks_like_report_text(text):
+            missed.append(path)
+    return missed
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("week", nargs="?", help="주차 (예: 3주차)")
@@ -108,8 +152,19 @@ def main() -> int:
 
     deck = os.path.join(session, "강의덱.html")
     reports = find_reports(session)
+    missed = find_missed(session, reports)
     if not reports:
+        if missed:
+            print(f"[미판정] 신선도 식별자(«**N장**»+sha256 또는 [시점 스냅샷 ...])를 가진 "
+                  f"문서 {len(missed)}건을 찾았으나 명명 관례(조립_보고.md·*결정표*.md)와 "
+                  f"달라 자동 판정 대상에서 빠졌다 — «정말 보고류가 없음»과는 다르다:")
+            for p in missed:
+                print(f"  - {_rel(p)}")
+            print(f"판정 0건 · 미판정 {len(missed)}건")
+            print("신선도 위반 0건(판정 대상 0건 — 위 미판정 문서는 이 수치에 포함되지 않았다)")
+            return 1 if a.strict else 0
         print("[입력없음] 보고류 문서 0건(조립_보고.md·*결정표*) — 판정 대상 없음")
+        print("판정 0건 · 미판정 0건")
         print("신선도 위반 0건")
         return 0
     if not os.path.exists(deck):
@@ -132,8 +187,13 @@ def main() -> int:
         if verdict != "ok":
             bad += 1
         print(f"[{mark}] {rel} — {detail}")
-    print(f"\n신선도 위반 {bad}건 (출구: 재조립 후 식별자 갱신 또는 [시점 스냅샷 YYYY-MM-DD] 선언 — 규약 sessions/README.md)")
-    return 1 if (a.strict and bad) else 0
+    if missed:
+        print(f"\n[미판정] 명명 관례 밖이라 위 판정에서 빠진 신선도 식별자 문서 {len(missed)}건:")
+        for p in missed:
+            print(f"  - {_rel(p)}")
+    print(f"\n판정 {len(reports)}건 · 미판정 {len(missed)}건")
+    print(f"신선도 위반 {bad}건 (출구: 재조립 후 식별자 갱신 또는 [시점 스냅샷 YYYY-MM-DD] 선언 — 규약 sessions/README.md)")
+    return 1 if (a.strict and (bad or missed)) else 0
 
 
 if __name__ == "__main__":

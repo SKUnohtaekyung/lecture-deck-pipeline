@@ -347,6 +347,23 @@ def main():
     notes_parser.close()
     entries = notes_parser.entries
     print(f"notes entries: {len(entries)}개")
+
+    # ── 0판정 가드(2026-08-24) ──────────────────────────────────────────
+    # entries는 pn-slide-head/pn-no/pn-slide-title 클래스명에 의존해 모은다.
+    # 그 클래스명이 통째로 바뀌면 entries가 조용히 빈 리스트가 되고, 아래
+    # 계산은 전부 0/0으로 맞아떨어져 "불일치 없음"과 구분되지 않는 가짜 PASS를
+    # 낸다(2026-08-24 실측). <h2> 태그는 pn-slide-title과 무관하게 남는(태그
+    # 이름 자체는 클래스명이 아니다) 독립 신호이고, 실측으로도 거의 1:1 대응한다
+    # (1주차 51 vs entries 52 · 2주차 112 vs 113 · 3주차 78 vs 79 — 각각 -1은
+    # 문서 자체의 대표 제목 h2 하나). entries가 0인데 <h2>는 있다면 "노트가
+    # 원래 비어 있다"가 아니라 "구조를 못 읽었다"로 본다 — run_deck_checks.py의
+    # "계수 실패(눈먼 0 방지)"와 같은 사고방식(AGENTS.md 참조).
+    h2_count = len(re.findall(r"<h2\b", notes_html, re.I))
+    unjudged = (not entries) and h2_count > 0
+    if unjudged:
+        print(f"UNJUDGED | pn-slide-head/pn-no/pn-slide-title 항목이 0개인데 노트 문서 안에 "
+              f"<h2> 태그가 {h2_count}개 있다 — 슬라이드 제목으로 보이는 내용이 있는데도 "
+              f"하나도 못 찾았다는 뜻이다. pn-* 클래스명이 바뀌었는지 확인하라(가짜 PASS 방지).")
     print()
 
     mismatches = []
@@ -472,10 +489,16 @@ def main():
         print()
 
     print(f"--- MISMATCH={len(mismatches)} OK={ok}/{len(parsed_entries)} ---")
+    print(f"판정 {len(parsed_entries)}건 · 미판정 {h2_count if unjudged else 0}건")
     total_fail = len(mismatches) + len(regression_fails)
-    result = "FAIL(불일치 있음)" if total_fail else "PASS(불일치 없음)"
+    if unjudged:
+        result = "FAIL(미판정 — entries 0건인데 노트에 <h2> 있음. pn-* 클래스명을 확인하라)"
+    elif total_fail:
+        result = "FAIL(불일치 있음)"
+    else:
+        result = "PASS(불일치 없음)"
     print(f"RESULT | {result}")
-    sys.exit(1 if total_fail else 0)
+    sys.exit(1 if (total_fail or unjudged) else 0)
 
 
 if __name__ == "__main__":

@@ -274,6 +274,16 @@ def resolve_draft(sess_dir, wk):
 
 
 # ============================================================================
+# 0판정 가드(신설) — R-QD-04는 `_SECTION_NUM_RE`("(\d+)교시" 또는 "PART \d+")가 헤더와
+# 하나도 안 맞으면 `section_row_counts`가 비고, 그 빈 상태가 "모든 회차가 규약 범위 안
+# (0개 구간)"이라는 PASS 문구로 조용히 통과했다(예: "PART-01"처럼 하이픈으로 붙이면
+# `PART\s*(\d+)`가 못 잡는다). 콘텐츠성 ## 헤더는 있는데 번호 인식만 실패한 경우를
+# PASS가 아니라 미판정(WARN)으로 표면화한다.
+# ============================================================================
+GATE_TAG = "[0판정가드:미판정]"
+
+
+# ============================================================================
 # 검사
 # ============================================================================
 
@@ -292,6 +302,7 @@ def run_checks(root, wk):
     all_rows = []
     all_shape_issues = []
     section_row_counts = {}  # 교시/PART 라벨 -> 행 수(고정/실습 제외 없이 전체 카운트)
+    content_section_headers = []  # 0판정 가드용 — "0."/"읽고 시작해"를 뺀 콘텐츠성 ## 헤더 전부
     for header, body in sections:
         # "0. 덱 기본 정보"(+ 중첩된 "### 파트/PART 구조" 메타 표)는 슬라이드 콘텐츠가 아니라
         # 덱 메타데이터다 — `항목|값`·`파트|묶는 교시|제목|한 줄 설명` 표가 우연히 4열이라
@@ -302,6 +313,7 @@ def run_checks(root, wk):
             # 아이콘 범례 서두(§0-1) — 3열 표(표기|뜻|처리) 등 콘텐츠 4열 계약과 무관한 안내 표를
             # 담을 수 있다. R-QD-06(표 형태 계약) 오탐을 막기 위해 콘텐츠 섹션에서 제외한다.
             continue
+        content_section_headers.append(header)
         rows, shape_issues = _parse_rows(body)
         all_shape_issues.extend(f"{header}: {line}" for line in shape_issues)
         m = _SECTION_NUM_RE.search(header)
@@ -426,6 +438,17 @@ def run_checks(root, wk):
             results.append(("R-QD-04", "FAIL",
                              f"회차당 장수 규약({_lo}~{_hi}) 이탈 {len(deviations)}건({detail})인데 "
                              f"집필노트({note_path})가 없어 사유 기록 자체를 확인할 수 없음"))
+    elif not section_row_counts and content_section_headers:
+        # 0판정 가드(신설) — 위 THRESH 절 참고. _SECTION_NUM_RE가 헤더와 하나도 안 맞아
+        # section_row_counts가 통째로 비었는데, 콘텐츠성 ## 헤더는 실재한다(내용이 아예
+        # 없는 게 아니라 번호 인식만 실패). "0개 구간 PASS"로 조용히 통과시키지 않는다.
+        detail = ", ".join(content_section_headers[:8])
+        more = f" 외 {len(content_section_headers) - 8}건" if len(content_section_headers) > 8 else ""
+        results.append(("R-QD-04", "WARN",
+                         f"{GATE_TAG} 교시/PART 단위 인식 0건 — 콘텐츠성 ## 헤더는 "
+                         f"{len(content_section_headers)}개 있다: {detail}{more}. _SECTION_NUM_RE"
+                         f'("(\\d+)교시" 또는 "PART \\d+")와 다른 표기(예: 하이픈 결합 "PART-01")를 '
+                         f"썼을 수 있다(계수 실패 의심 — 눈먼 0 방지). 사람이 확인하라"))
     else:
         results.append(("R-QD-04", "PASS", f"모든 회차가 규약({_lo}~{_hi}장) 범위 안 ({len(section_row_counts)}개 구간)"))
 
@@ -496,6 +519,11 @@ def main():
     print("\n-- 사람검토(자동화 불가, 판정 없음) --")
     for rule_id, msg in advisories:
         print(f"[사람검토] · {rule_id}: {msg}")
+
+    gate_msgs = [m for rid, _lvl, m in results if rid == "R-QD-04"]
+    gate_unjudged = sum(1 for m in gate_msgs if GATE_TAG in m)
+    gate_judged = len(gate_msgs) - gate_unjudged
+    print(f"\n0판정가드 | 판정 {gate_judged}건 · 미판정 {gate_unjudged}건")
 
     fails = sum(1 for _r, lvl, _m in effective if lvl == "FAIL")
     warns = sum(1 for _r, lvl, _m in effective if lvl == "WARN")
