@@ -38,13 +38,24 @@ import argparse
 if hasattr(sys.stdout, "reconfigure"):          # Windows cp949에서 한글이 죽지 않게
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
-try:                                             # 신경로 courses/<과목>/profile.md 우선, 구경로 폴백
-    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-    import _course_paths
-    _p = _course_paths.profile_path()
-    DEFAULT_PROFILE = os.path.relpath(_p, _course_paths._repo_root()) if _p else "courses/<과목>/profile.md"
-except Exception:
-    DEFAULT_PROFILE = "sessions/과목프로필.md"
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+
+
+def discover_profiles():
+    """검사할 과목 프로필 **전부**. 과목이 N개면 N개를 돌려준다.
+
+    ⚠️ 2026-08-24 이전에는 `profile_path()` 하나만 봤고, 과목이 2개가 되면 그것이
+    None을 주는 바람에 존재하지 않는 플레이스홀더 경로 → `SKIP` → **exit 0**이었다.
+    다과목을 지키라고 만든 게이트가 다과목이 되는 바로 그 순간 스스로 꺼진 것이다.
+    (`plans/gate-input-hardening/PLAN.md` F4)"""
+    try:
+        import _course_paths
+        root = _course_paths._repo_root()
+        return [os.path.relpath(p, root).replace(os.sep, "/")
+                for p in _course_paths.profile_paths(root)]
+    except Exception as exc:                     # 모듈 자체가 못 읽히면 조용히 넘기지 않는다
+        print("FAIL  과목 경로 해석기를 읽을 수 없습니다: %s" % exc)
+        return None
 
 # 스킬 본문 — 여기서 발견되면 FAIL
 SCAN_FAIL = [
@@ -126,19 +137,37 @@ def scan(files, literals):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--profile", default=DEFAULT_PROFILE)
+    ap.add_argument("--profile", default=None,
+                    help="한 과목만 검사한다. 생략하면 courses/ 아래 과목 전부.")
     args = ap.parse_args()
 
-    literals = read_profile_literals(args.profile)
-    if literals is None:
-        print("SKIP  과목 프로필이 없습니다: %s" % args.profile)
-        print("      기준선을 요구하는 게이트는 WARN으로 내려갑니다"
-              " (입력양식/과목프로필템플릿.md 참고).")
-        return 0
-    if not literals:
-        print("FAIL  프로필에 「## 8. 격리 검사용 리터럴」 절이 없거나 비었습니다: %s"
-              % args.profile)
+    profiles = [args.profile] if args.profile else discover_profiles()
+    if profiles is None:
         return 2
+    if not profiles:
+        # 종전에는 SKIP + exit 0이었다 — 「입력이 없다」를 「통과」로 보고하는 형태다.
+        print("FAIL  검사할 과목 프로필이 하나도 없습니다 (courses/*/profile.md · sessions/과목프로필.md).")
+        print("      입력이 없는 검사는 통과가 아니라 미판정입니다"
+              " — 입력양식/과목프로필템플릿.md로 프로필을 만드세요.")
+        return 2
+
+    literals, per_course = [], []
+    for prof in profiles:
+        lits = read_profile_literals(prof)
+        if lits is None:
+            print("FAIL  과목 프로필을 읽을 수 없습니다: %s" % prof)
+            return 2
+        if not lits:
+            print("FAIL  프로필에 「## 8. 격리 검사용 리터럴」 절이 없거나 비었습니다: %s"
+                  % prof)
+            return 2
+        per_course.append((prof, len(lits)))
+        for lit in lits:
+            if lit not in literals:
+                literals.append(lit)
+
+    print("검사 과목 %d개: %s"
+          % (len(per_course), ", ".join("%s(리터럴 %d)" % (p, n) for p, n in per_course)))
 
     fail_files = expand(SCAN_FAIL)
     warn_files = expand(SCAN_WARN)

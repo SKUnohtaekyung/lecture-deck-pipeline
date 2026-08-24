@@ -1,0 +1,178 @@
+# -*- coding: utf-8 -*-
+"""과목 경로 해석기(`scripts/_course_paths.py`)의 다과목 거동 회귀 테스트.
+
+왜 이 파일이 필요한가
+--------------------
+2026-08-24 실측(`plans/gate-input-hardening/PLAN.md` F4): 이 모듈은 다과목 상황에
+대해 **서로 다른 전제 셋**을 갖고 있었고, 그 전제들이 전부 «검사가 꺼진 것»을
+PASS처럼 보이게 만들었다.
+
+  - `profile_path`·`guide_path` — 모호하면 `None`. 호출부가 그것을 「없음(정상)」으로
+    소비해 게이트가 **조용히 꺼졌다**. `verify_subject_isolation.py`가 그 경로로
+    과목 2개가 되는 순간 SKIP → **exit 0**으로 자멸했다.
+  - `session_dir`·`contracts_dir` — 가드가 **아예 없어** 정렬순 첫 매치를 조용히 채택.
+    결과는 「검사 안 됨」이 아니라 **「다른 과목을 검사하고 PASS」**여서 침묵보다 나쁘다.
+  - `sessions_roots` — 전부 반환(유일하게 다과목 안전).
+
+이 저장소의 규율은 「오탐만 재면 반쪽이다 — 미탐도 함께 잰다」이고, 미탐은 PASS로
+위장해 아무도 발견하지 못한다. 그래서 **모호하면 시끄럽게 죽는다**를 계약으로 고정한다.
+
+무엇을 테스트하나
+----------------
+- 과목 1개일 때 **종전과 완전히 같은 경로**를 준다(before/after 불변 — 이 계획의 통과 조건).
+- 과목 2개일 때 각 API가 **조용한 오답 대신 예외**를 낸다.
+- 명시 지정(인자·환경변수)이 모호성을 해소한다.
+- 전수 순회 API(`profile_paths`)가 과목 수만큼 돌려준다.
+
+실행: python -m unittest tests.test_course_paths
+"""
+from __future__ import annotations
+
+import io
+import os
+import sys
+import unittest
+from pathlib import Path
+
+REPO_ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(REPO_ROOT / "scripts"))
+
+import _course_paths as cp  # noqa: E402
+
+
+def _mkcourse(root: Path, name: str, *, profile=True, guide=True, weeks=()) -> Path:
+    d = root / "courses" / name
+    (d / "sessions").mkdir(parents=True, exist_ok=True)
+    if profile:
+        with io.open(d / "profile.md", "w", encoding="utf-8") as fh:
+            fh.write("# %s\n" % name)
+    if guide:
+        with io.open(d / "슬라이드지침.md", "w", encoding="utf-8") as fh:
+            fh.write("# %s 지침\n" % name)
+    for w in weeks:
+        (d / "sessions" / ("%s주차" % w)).mkdir(parents=True, exist_ok=True)
+    return d
+
+
+class SingleCourseUnchangedTests(unittest.TestCase):
+    """과목 1개 — 종전 동작이 그대로여야 한다(이 계획의 하드 통과 조건)."""
+
+    def setUp(self):
+        import tempfile
+        self.tmp = tempfile.TemporaryDirectory()
+        self.root = Path(self.tmp.name)
+        _mkcourse(self.root, "가과목", weeks=(1, 3))
+
+    def tearDown(self):
+        self.tmp.cleanup()
+
+    def test_profile_and_guide_resolve(self):
+        self.assertTrue(cp.profile_path(str(self.root)).endswith("profile.md"))
+        self.assertTrue(cp.guide_path(str(self.root)).endswith("슬라이드지침.md"))
+
+    def test_session_dir_points_into_the_course(self):
+        got = cp.session_dir(3, str(self.root)).replace(os.sep, "/")
+        self.assertTrue(got.endswith("courses/가과목/sessions/3주차"), got)
+
+    def test_missing_week_falls_back_to_legacy_path_string(self):
+        """없는 주차는 예외가 아니라 «구경로 문자열» — 호출부가 «없음» 메시지에 쓴다."""
+        got = cp.session_dir(9, str(self.root)).replace(os.sep, "/")
+        self.assertTrue(got.endswith("sessions/9주차"), got)
+
+    def test_guide_absent_is_none_not_error(self):
+        """「파일이 없다」와 「어느 과목인지 모른다」는 다른 사건이다."""
+        os.remove(self.root / "courses" / "가과목" / "슬라이드지침.md")
+        self.assertIsNone(cp.guide_path(str(self.root)))
+
+
+class AmbiguousCourseIsLoudTests(unittest.TestCase):
+    """과목 2개 — 조용한 오답(None·첫 매치) 대신 예외."""
+
+    def setUp(self):
+        import tempfile
+        self.tmp = tempfile.TemporaryDirectory()
+        self.root = Path(self.tmp.name)
+        _mkcourse(self.root, "가과목", weeks=(1, 3))
+        _mkcourse(self.root, "나과목", weeks=(1, 3))
+        self._saved = os.environ.pop(cp.COURSE_ENV, None)
+
+    def tearDown(self):
+        if self._saved is not None:
+            os.environ[cp.COURSE_ENV] = self._saved
+        else:
+            os.environ.pop(cp.COURSE_ENV, None)
+        self.tmp.cleanup()
+
+    def test_profile_path_raises_instead_of_returning_none(self):
+        with self.assertRaises(cp.AmbiguousCourseError):
+            cp.profile_path(str(self.root))
+
+    def test_guide_path_raises(self):
+        with self.assertRaises(cp.AmbiguousCourseError):
+            cp.guide_path(str(self.root))
+
+    def test_session_dir_raises_instead_of_silently_picking_first(self):
+        """가장 위험한 미탐 — 종전에는 «남의 과목 3주차»를 조용히 돌려주고 PASS를 냈다."""
+        with self.assertRaises(cp.AmbiguousCourseError):
+            cp.session_dir(3, str(self.root))
+
+    def test_contracts_dir_raises(self):
+        with self.assertRaises(cp.AmbiguousCourseError):
+            cp.contracts_dir(str(self.root))
+
+    def test_profile_gates_propagates_rather_than_returning_empty(self):
+        """빈 dict를 주면 호출부가 FAIL을 WARN으로 낮춘다 — 그것도 조용한 무력화다."""
+        with self.assertRaises(cp.AmbiguousCourseError):
+            cp.profile_gates(str(self.root))
+
+    def test_sessions_roots_still_returns_all(self):
+        """전수 순회 API는 모호하지 않다 — 예외 대상이 아니다."""
+        roots = cp.sessions_roots(str(self.root))
+        self.assertEqual(len(roots), 2, roots)
+
+    def test_explicit_course_argument_resolves(self):
+        got = cp.session_dir(3, str(self.root), course="나과목").replace(os.sep, "/")
+        self.assertTrue(got.endswith("courses/나과목/sessions/3주차"), got)
+
+    def test_env_var_resolves(self):
+        os.environ[cp.COURSE_ENV] = "가과목"
+        got = cp.session_dir(3, str(self.root)).replace(os.sep, "/")
+        self.assertTrue(got.endswith("courses/가과목/sessions/3주차"), got)
+
+    def test_unknown_course_name_raises(self):
+        with self.assertRaises(cp.AmbiguousCourseError):
+            cp.profile_path(str(self.root), course="없는과목")
+
+    def test_profile_paths_returns_every_course(self):
+        got = cp.profile_paths(str(self.root))
+        self.assertEqual(len(got), 2, got)
+
+
+class SubjectIsolationSurvivesMultiCourseTests(unittest.TestCase):
+    """`verify_subject_isolation.py`가 다과목에서 자멸하지 않는가 (F4 최상급 사례)."""
+
+    def test_discover_profiles_uses_the_all_courses_api(self):
+        import verify_subject_isolation as vsi
+        found = vsi.discover_profiles()
+        self.assertIsNotNone(found)
+        self.assertTrue(found, "실제 저장소에서 프로필을 하나도 못 찾았다")
+
+    def test_no_profile_is_failure_not_silent_pass(self):
+        """입력이 없는 검사는 통과가 아니라 미판정 — 종전에는 SKIP + exit 0이었다."""
+        import verify_subject_isolation as vsi
+        saved = vsi.discover_profiles
+        try:
+            vsi.discover_profiles = lambda: []
+            saved_argv = sys.argv[:]
+            sys.argv = ["verify_subject_isolation.py"]
+            try:
+                rc = vsi.main()
+            finally:
+                sys.argv = saved_argv
+            self.assertEqual(rc, 2, "프로필 0개인데 통과로 보고했다")
+        finally:
+            vsi.discover_profiles = saved
+
+
+if __name__ == "__main__":
+    unittest.main()

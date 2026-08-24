@@ -218,7 +218,10 @@ class Runner:
         for line in tail:
             print("  " + line)
         if proc.stderr and proc.returncode != 0:
-            print("  [stderr] " + (proc.stderr or "").strip().splitlines()[-1])
+            # 마지막 1줄만 보이면 예외 «헤드라인»이 잘린다 — 다줄 메시지를 쓰는 예외
+            # (`_course_paths.AmbiguousCourseError`)에서 정작 원인 줄이 사라졌다.
+            for line in (proc.stderr or "").strip().splitlines()[-3:]:
+                print("  [stderr] " + line)
         ok = proc.returncode == 0
         self._last_out = proc.stdout or ""
         self.steps.append((name, ok, "" if ok else f"exit {proc.returncode}"))

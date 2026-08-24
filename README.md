@@ -150,7 +150,7 @@ python scripts/verify_skill_setup.py
 폰트 서브셋 임베드에 `fontTools`·`Pillow`가 필요합니다. 의존 정본은 [`requirements-dev.txt`](requirements-dev.txt)이며, Windows 로컬에서는 보통 `.venv\Scripts\python.exe`로 설치·실행합니다.
 
 ```powershell
-python -m unittest tests.test_deck_pipeline tests.test_image_pipeline tests.test_quality_gates tests.test_deck_contract tests.test_declared_vs_enforced tests.test_rule_pointers tests.test_typography_rules tests.test_analyze_agent_usage tests.test_audit_context_budget tests.test_hook_guards
+python -m unittest tests.test_deck_pipeline tests.test_image_pipeline tests.test_quality_gates tests.test_deck_contract tests.test_declared_vs_enforced tests.test_rule_pointers tests.test_typography_rules tests.test_analyze_agent_usage tests.test_audit_context_budget tests.test_hook_guards tests.test_course_paths
 ```
 
 10개 모듈 219개 테스트가 전부 돕니다(2026-08-18 실측 `Ran 219 tests … OK`). `tests/`에 `__init__.py`가 없어 `unittest discover`는 동작하지 않으므로 모듈을 명시합니다.

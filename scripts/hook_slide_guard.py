@@ -340,14 +340,25 @@ def mode_course(path):
         return
     if not p.lower().endswith((".html", ".md", ".css")):
         return
+    # 편집 대상 경로에서 과목을 먼저 유도한다 — `courses/<과목>/...`
+    m_course = re.search(r"(?:^|/)courses/([^/]+)/", p)
+    course = m_course.group(1) if m_course else None
     try:
         here = os.path.dirname(os.path.abspath(__file__))
         if here not in sys.path:
             sys.path.insert(0, here)
         import _course_paths
-        guide = _course_paths.guide_path()
-        prof = _course_paths.profile_path()
-    except Exception:
+        guide = _course_paths.guide_path(course=course)
+        prof = _course_paths.profile_path(course=course)
+    except Exception as exc:
+        # ⚠️ 종전에는 여기서 조용히 return했다. 과목이 둘 이상이 되면 지침 주입이
+        # **아무 신호 없이** 꺼지고, 훅이 「원래 조용한 것」과 구분되지 않는다.
+        # 훅은 사용자 도구 호출을 깨뜨리면 안 되므로 차단하지는 않되, 흔적은 남긴다.
+        try:
+            log_observation("course", path, "no-guide",
+                            "과목 지침 주입 실패(과목 유도=%s): %s" % (course, exc))
+        except Exception:
+            pass
         return
     if not guide:
         return
