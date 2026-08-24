@@ -12,6 +12,7 @@
 from __future__ import annotations
 
 import json
+import re
 import shutil
 import subprocess
 import sys
@@ -286,6 +287,41 @@ class PreservationGateTests(unittest.TestCase):
         self.assertEqual(rc, 1)
         self.assertTrue([ln for ln in _lines(out, "FAIL")
                          if "must_keep" in ln and "이관하라" in ln], f"\n{out}")
+
+
+class UnjudgedContractKeyTests(unittest.TestCase):
+    """계약 키가 없으면 해당 검사가 **한 줄도 내지 않고 사라지던** 문제.
+
+    실측(2026-08-24 · plans/gate-input-hardening F4): 3주차는 `dark_terminal_slides`가,
+    1주차는 `must_keep`이 계약에 없어 관련 검사가 조용히 생략됐다. WARN조차 아니어서
+    화면에서 「위반 0건」과 「아무것도 안 봄」이 구분되지 않았다. 지금은 «미판정»으로
+    센다 — 단, **판정 계수(FAIL/WARN/PASS)는 건드리지 않는다**(러너 래칫 불변).
+    """
+
+    def test_missing_key_is_listed_as_unjudged(self):
+        with tempfile.TemporaryDirectory() as td:
+            deck = _build_mutated(Path(td), mutate=lambda d: (d["decks"]["강의덱"]
+                                                              .pop("dividers", None)))
+            out, _rc = _verify_rc(deck)
+        self.assertIn("미판정", out)
+        self.assertIn("dividers", out)
+
+    def test_unjudged_does_not_change_verdict_counts(self):
+        """미판정이 늘어도 요약 줄의 FAIL/WARN/PASS 계수는 그대로여야 한다."""
+        with tempfile.TemporaryDirectory() as td:
+            base, _ = _verify_rc(_build_mutated(Path(td) / "a"))
+        with tempfile.TemporaryDirectory() as td:
+            mut, _ = _verify_rc(_build_mutated(Path(td) / "b",
+                                               mutate=lambda d: (d["decks"]["강의덱"]
+                                                                 .pop("dividers", None))))
+        pat = re.compile(r"요약: FAIL (\d+) · WARN (\d+) · PASS (\d+)")
+        mb, mm = pat.search(base), pat.search(mut)
+        self.assertIsNotNone(mb)
+        self.assertIsNotNone(mm)
+        # dividers 검사 1건이 사라졌으므로 PASS가 1 줄어드는 것은 정상이다.
+        # 확인하려는 것은 «미판정 줄이 계수 채널을 오염시키지 않는가»다.
+        self.assertEqual(mb.group(1), mm.group(1), "미판정 때문에 FAIL 계수가 바뀌었다")
+        self.assertEqual(mb.group(2), mm.group(2), "미판정 때문에 WARN 계수가 바뀌었다")
 
 
 class WaiverLintTests(unittest.TestCase):

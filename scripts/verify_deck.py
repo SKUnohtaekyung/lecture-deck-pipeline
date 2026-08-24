@@ -1144,6 +1144,11 @@ def main():
     elements_by_start = {el.start: el for el in elements}
 
     results = []  # (level, msg)  level in PASS/WARN/FAIL
+    # 「입력이 없어 판정하지 않은 것」 — PASS/WARN/FAIL 어디에도 들어가지 않는다.
+    # 계약에 키가 없으면 해당 검사는 **한 줄도 출력하지 않고 사라졌다**(WARN조차 아니다).
+    # 그래서 「위반 0건」과 「아무것도 안 봄」이 화면에서 구분되지 않았다.
+    # 판정 계수를 바꾸지 않으려고 별도 채널로 둔다(요약 줄 불변 = 러너 래칫 불변).
+    unjudged = []  # (대상, 사유)
     def chk(cond, ok, bad, warn=False):
         results.append(("PASS" if cond else ("WARN" if warn else "FAIL"), ok if cond else bad))
 
@@ -1256,6 +1261,13 @@ def main():
                     warn=True)
             else:
                 slide_ids = [el.attrs.get('data-slide') or '' for el in ordered_slides]
+
+                # 이 검사기가 계약에서 소비하는 키 전량. 없는 키의 검사는 조용히
+                # 생략되므로, 무엇을 «보지 않았는지» 계수로 남긴다(눈먼 0 방지).
+                for _k in ('slides', 'dividers', 'intro', 'sequences',
+                           'dark_terminal_slides', 'closing_text', 'must_keep'):
+                    if _k not in deck_contract:
+                        unjudged.append((f"계약 키 '{_k}'", "계약에 없어 관련 검사 미수행"))
 
                 if 'slides' in deck_contract:
                     expected_n = deck_contract['slides']
@@ -1934,6 +1946,12 @@ def main():
     fails = sum(1 for l, _ in results if l == "FAIL")
     warns = sum(1 for l, _ in results if l == "WARN")
     print(f"\n요약: FAIL {fails} · WARN {warns} · PASS {len(results)-fails-warns}")
+    # ⚠️ 미판정은 판정 계수에 넣지 않는다 — 「위반 0건」과 「아무것도 안 봄」을
+    #    가르되, 요약 줄을 바꾸면 러너 래칫이 흔들린다.
+    if unjudged:
+        print(f"미판정 {len(unjudged)}건 (입력 부재로 판정하지 않음 — 통과가 아니다):")
+        for what, why in unjudged:
+            print(f"  · {what} — {why}")
     print("※ 오버플로·콘솔에러·가독성(computed)은 브라우저 측정 필요: "
           "python -m http.server 후 슬라이드별 scrollWidth/Height ≤ client, 콘솔 에러 0 확인.")
     sys.exit(1 if fails else 0)

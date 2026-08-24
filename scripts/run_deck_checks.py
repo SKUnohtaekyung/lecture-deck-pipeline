@@ -191,7 +191,7 @@ class Runner:
         # 배치4(2026-08-17): 품질 WARN도 래칫 대상 — 게이트 임계·강등은 여전히
         # verify_deck_quality 소관(WARN 기본·프로필 §3-G)이고, 러너는 «총계의 조용한
         # 증가»만 막는다(D-2: 기존은 봐주고 신규만 잡는다).
-        self.warn_quality = 0                # verify_deck_quality (warn_baseline.quality 래칫)
+        self.warn_quality: int | None = 0     # verify_deck_quality (None=계수 실패)
         # P4(배치3): 렌더 WARN(타이포·정렬 + waiver 강등분) — warn_baseline.render 래칫 대상
         self.warn_render: int | None = 0
         self._render_measured = False        # 증거가 유효해 수치 판정까지 간 경우에만 래칫
@@ -234,14 +234,20 @@ class Runner:
         if not m:
             self.steps.append((f"{gate_label} WARN 계수", False,
                                "«요약:» 줄을 찾지 못해 WARN을 세지 못했다"))
+            # ⚠️ 종전에는 struct 버킷만 None으로 표시했다. quality는 그냥 증가하지 않아
+            # **0인 채로 남았고**, 래칫이 그것을 「개선됨 — 베이스라인을 0으로 낮춰 등재
+            # 가능」으로 읽었다. 즉 **검사기가 죽으면 베이스라인을 낮추라고 권고**했다.
+            # 계수 실패와 진짜 0은 다른 사건이므로 양쪽 버킷을 대칭으로 표시한다.
             if bucket == "struct":
                 self.warn_struct = None
+            else:
+                self.warn_quality = None
             return
         n = int(m.group(2))
         if bucket == "struct":
             if self.warn_struct is not None:
                 self.warn_struct += n
-        else:
+        elif self.warn_quality is not None:
             self.warn_quality += n
 
     def assemble(self) -> bool:
@@ -388,6 +394,14 @@ class Runner:
                 # (실측: 110장 덱이 111로 세어졌다). 섹션 태그의 slide 낱말만 센다.
                 deck_slides = len(re.findall(
                     r'<section[^>]*\bclass="[^"]*\bslide\b', fh.read(), re.I))
+        # ⚠️ 종전 조건은 `if deck_slides and n_slides`였다 — 정규식이 한 장도 못 세면
+        # `deck_slides == 0`이 **falsy**라 장수 대조가 통째로 건너뛰어졌다. 「0장을 셌다」는
+        # 「덱이 없다」와 다른 사건이고, 전자는 **검사가 눈이 먼 상태**다(눈먼 0 방지).
+        if deck_slides == 0:
+            self.steps.append(("렌더·타이포 감사", False,
+                               "덱에서 슬라이드를 한 장도 세지 못했다 — 계수 실패(눈먼 0 방지). "
+                               "`<section class=\"slide…\">` 마크업이 바뀌었는지 확인하라"))
+            return False
         if deck_slides and n_slides and abs(deck_slides - n_slides) > 0:
             self.steps.append(("렌더·타이포 감사", False,
                                f"장수 불일치 — 덱 {deck_slides}장 vs 증거 {n_slides}장. 다른 덱을 쟀거나 낡았다"))
@@ -492,7 +506,8 @@ class Runner:
             print(f"경고 — 구조 WARN {ws}"
                   + (f" (베이스라인 {base} · {wb.get('date')})" if isinstance(base, int)
                      else " (베이스라인 미등재)")
-                  + f" · 품질 WARN {self.warn_quality}"
+                  + " · 품질 WARN %s" % ("계수실패" if self.warn_quality is None
+                                        else self.warn_quality)
                   + (f" (베이스라인 {base_q})" if isinstance(base_q, int)
                      else " (베이스라인 미등재)"))
             if self.waivers_applied:
@@ -516,7 +531,11 @@ class Runner:
             # ── 품질 WARN 래칫(배치4 · 2026-08-17) — D-2 «기존은 봐주고 신규만 잡는다» ──
             #    규칙 임계(프로필 §3-G 상한 0)는 불변이다: 새 과목은 처음부터 임계 0으로
             #    시작하고, 이 래칫은 이 주차 총계의 조용한 증가만 막는다.
-            if not isinstance(base_q, int):
+            if self.warn_quality is None:
+                self.steps.append(("품질 WARN 래칫", False,
+                                   "품질 WARN 계수 실패 — 위 계수 단계 참조(눈먼 0 방지). "
+                                   "검사기가 죽은 0을 «개선»으로 읽지 않는다"))
+            elif not isinstance(base_q, int):
                 self.steps.append(("품질 WARN 래칫", False,
                                    f"계약에 warn_baseline.quality 미등재 — 실측 {self.warn_quality}을 "
                                    f"사유(분해)와 함께 등재하라"))

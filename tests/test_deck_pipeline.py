@@ -603,6 +603,82 @@ class QualityRatchetTests(unittest.TestCase):
         self.assertEqual(code, 1)
         self.assertIn("warn_baseline.quality 미등재", out)
 
+    # ── 2026-08-24 (plans/gate-input-hardening P1) — 눈먼 0 방지 ────────────
+    def test_count_failure_is_not_reported_as_improvement(self):
+        """검사기가 죽어 WARN을 세지 못한 0은 «개선»이 아니다.
+
+        실측(2026-08-24): 과목이 2개가 되어 `verify_deck_quality`가 예외로 죽자
+        warn_quality가 0으로 남았고, 래칫이 「품질 WARN 0 ≤ 베이스라인 5 — 개선됨:
+        베이스라인을 0으로 낮춰 등재 가능」을 냈다. **크래시가 베이스라인을 낮추라는
+        권고를 만든 것이다.** struct 버킷에는 있던 None 경로가 quality에만 없었다."""
+        code, out = self._report(None, {"warn_baseline": {"static_gates": 0, "quality": 5,
+                                                          "date": "2026-08-17"}})
+        self.assertEqual(code, 1, out)
+        self.assertIn("품질 WARN 계수 실패", out)
+        self.assertNotIn("개선됨", out)
+        self.assertIn("계수실패", out)          # 최상단 요약 줄에도 노출
+
+    def test_summary_line_absence_marks_quality_count_failed(self):
+        """«요약:» 줄을 못 찾으면 quality 버킷도 None으로 표시된다(struct와 대칭)."""
+        from scripts.run_deck_checks import Runner
+        r = Runner("2주차")
+        r.steps = []
+        r._last_out = "여기에는 요약 줄이 없다"
+        r._count_summary_warns("내용 품질", "quality")
+        self.assertIsNone(r.warn_quality)
+
+
+class BlindSlideCountTests(unittest.TestCase):
+    """덱에서 슬라이드를 «0장» 셌을 때 장수 대조가 통째로 건너뛰어지던 문제.
+
+    종전 조건이 `if deck_slides and n_slides`라 `deck_slides == 0`이 falsy로 걸러졌다.
+    「0장을 셌다」와 「덱이 없다」는 다른 사건이고, 전자는 검사가 눈이 먼 상태다.
+    (plans/gate-input-hardening P1 · 2026-08-24)
+    """
+
+    def _runner_with_deck(self, html, evidence):
+        import json
+        import os
+        import tempfile
+        from scripts.run_deck_checks import Runner
+        td = tempfile.TemporaryDirectory()
+        self.addCleanup(td.cleanup)
+        deck = os.path.join(td.name, "강의덱.html")
+        with open(deck, "w", encoding="utf-8") as fh:
+            fh.write(html)
+        vdir = os.path.join(td.name, "_verify")
+        os.makedirs(vdir, exist_ok=True)
+        with open(os.path.join(vdir, "deck-audit.json"), "w", encoding="utf-8") as fh:
+            json.dump(evidence, fh)
+        r = Runner("2주차")
+        r.steps = []
+        r.deck = deck
+        r.verify_dir = vdir
+        return r
+
+    def _evidence(self, slide_count):
+        return {"schema": "deck-audit/1", "slideCount": slide_count,
+                "render": {"totals": {}}, "typography": {}}
+
+    _MSG = "슬라이드를 한 장도 세지 못했다"
+
+    def test_zero_slides_counted_is_a_failure_not_a_skip(self):
+        r = self._runner_with_deck("<html><body>슬라이드 마크업이 없다</body></html>",
+                                   self._evidence(80))
+        ok = r.render_evidence()
+        self.assertFalse(ok)
+        self.assertTrue(any(self._MSG in (s[2] or "") for s in r.steps), r.steps)
+
+    def test_matching_slide_count_still_proceeds(self):
+        """오탐 방지 — 정상 덱은 **이 가드에** 걸리지 않는다.
+
+        (증거 스텁이 최소라 다른 «눈먼 0» 가드는 정상적으로 발화한다. 그것은
+        이 테스트의 대상이 아니므로 단언을 이 가드의 메시지로 좁힌다.)"""
+        html = "".join('<section class="slide">x</section>' for _ in range(3))
+        r = self._runner_with_deck(html, self._evidence(3))
+        r.render_evidence()
+        self.assertFalse(any(self._MSG in (s[2] or "") for s in r.steps), r.steps)
+
 
 if __name__ == "__main__":
     unittest.main()
