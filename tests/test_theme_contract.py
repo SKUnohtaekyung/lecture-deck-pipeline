@@ -74,6 +74,27 @@ class DefaultThemeMirrorsKitTests(unittest.TestCase):
                          "kit/guide/테마-계약.md의 계수와 이 테스트를 함께 갱신하라")
 
 
+class EveryThemeIsCompleteTests(unittest.TestCase):
+    """테마가 늘어나도 «토큰 이름 집합»은 같아야 한다.
+
+    값은 테마마다 다른 것이 정상이지만(그게 테마다), **이름이 빠지면** 그 토큰을
+    쓰는 구도가 폴백 없이 깨지거나 브라우저 기본값으로 조용히 내려간다. 이름
+    완전성만 전 테마 공통 계약으로 고정한다(값 일치는 default에만 요구).
+    """
+
+    def test_all_themes_declare_the_same_token_names(self):
+        enforced = set(_root_tokens(io.open(DECK_CSS, encoding="utf-8").read()))
+        themes = sorted(p for p in THEMES_DIR.glob("*/tokens.css"))
+        self.assertTrue(themes, "kit/themes/ 아래에 테마가 하나도 없다")
+        for path in themes:
+            with self.subTest(theme=path.parent.name):
+                declared = set(_root_tokens(io.open(path, encoding="utf-8").read()))
+                self.assertEqual(declared, enforced,
+                                 f"테마 '{path.parent.name}'의 토큰 이름 집합이 다르다 "
+                                 f"(빠짐 {sorted(enforced - declared)} · "
+                                 f"군더더기 {sorted(declared - enforced)})")
+
+
 class ThemeContractDocTests(unittest.TestCase):
     """계약 문서가 실재하고, 동결 어휘를 실제로 등재하고 있는가."""
 

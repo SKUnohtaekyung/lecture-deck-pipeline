@@ -285,6 +285,82 @@ def local_linked_css(html_text, deck_path, tags=None):
     return "\n".join(chunks)
 
 
+_THEME_ROW_RE = re.compile(r'^\|\s*테마\s*\|\s*`?([A-Za-z0-9_-]+)`?\s*\|', re.M)
+
+
+def load_active_theme(script_dir):
+    """활성 테마의 토큰 선언을 읽는다. → (테마명, {토큰: 값}, 사유)
+
+    경로: 과목 프로필 §5의 `| 테마 | <이름> |` → `kit/themes/<이름>/tokens.css`.
+    프로필이 없거나 행이 없으면 `default`로 떨어진다(현행 유일 테마).
+
+    **읽지 못하면 조용히 통과시키지 않는다** — 호출부가 «값 대조»를 미판정으로
+    센다. 기대값을 못 읽었는데 PASS를 내는 것이 바로 이 계획이 없애려는 형태다.
+    """
+    repo = os.path.dirname(script_dir)
+    name, why = "default", ""
+    try:
+        sys.path.insert(0, script_dir)
+        import _course_paths
+        prof = _course_paths.profile_path()
+        if prof:
+            m = _THEME_ROW_RE.search(open(prof, encoding='utf-8').read())
+            if m:
+                name = m.group(1)
+            else:
+                why = "프로필 §5에 「테마」 행이 없어 default로 가정"
+        else:
+            why = "과목 프로필을 찾지 못해 default로 가정"
+    except Exception as exc:                       # 과목 모호(다과목) 등 — 삼키지 않고 사유로 남긴다
+        why = f"과목 해석 실패({exc.__class__.__name__}) — default로 가정"
+    path = os.path.join(repo, "kit", "themes", name, "tokens.css")
+    try:
+        text = open(path, encoding='utf-8').read()
+    except OSError:
+        return name, {}, (why + " / " if why else "") + f"테마 파일 없음: kit/themes/{name}/tokens.css"
+    m = re.search(r':root\s*\{(.*?\n)\}', text, re.S)
+    if not m:
+        return name, {}, f"kit/themes/{name}/tokens.css 에 :root 블록이 없다"
+    tokens = {k: re.sub(r'\s+', ' ', v).strip()
+              for k, v in re.findall(r'(--[a-z0-9-]+)\s*:\s*([^;]+);', m.group(1))}
+    return name, tokens, why
+
+
+def linked_kit_css(html_text, deck_path, basenames, tags=None):
+    """덱이 **실제로 링크한** kit 계열 CSS를 {basename: 본문}으로 돌려준다.
+
+    ⚠️ 왜 이 함수가 생겼나 (2026-08-24 · plans/gate-input-hardening F1)
+    종전에는 `[kit]` 검사 12개가 **스크립트 위치 기준 고정 경로**(`scripts/../kit/styles/*`)로
+    저장소의 정본 kit을 읽었다. 덱이 어떤 스타일시트를 링크했는지와 무관했다. 실측:
+    색 토큰을 전면 교체한 덱이 「[kit] 토큰 값 정확 PASS」로 통과했다 — 검사가 **덱이
+    아니라 저장소를 검사**하고 있었고, 그래서 테마가 바뀌어도 아무 신호가 없었다.
+    같은 파일 안에 이미 «링크를 따라가는» 올바른 구현이 있었다(`session_linked_css`).
+    """
+    if tags is None:
+        tags, _ = parse_document(html_text)
+    found = {}
+    base = Path(deck_path).resolve().parent
+    for tag in tags:
+        if tag.name != 'link':
+            continue
+        href = tag.attrs.get('href')
+        if not href:
+            continue
+        clean = href.split("?", 1)[0].split("#", 1)[0]
+        if not clean or re.match(r'^(?:https?:|data:|//)', clean, re.I):
+            continue
+        try:
+            css_path = (base / unquote(clean)).resolve()
+        except (OSError, ValueError):
+            continue
+        if css_path.name in basenames and css_path.is_file():
+            try:
+                found[css_path.name] = css_path.read_text(encoding='utf-8')
+            except OSError:
+                pass
+    return found
+
+
 def collect_css(html_text, deck_path, tags=None, elements=None):
     """덱에 실제로 적용되는 CSS(인라인 <style> + 로컬 링크 CSS)를 CssBundle로 반환.
     CSS 주석은 반환 전에 제거한다(검사 오탐 원인 제거)."""
@@ -1761,7 +1837,8 @@ def main():
         #   페이지번호까지 잡혀 오탐이 쏟아진다(실측 50건 중 대부분이 그런 것들이다) — 그래서 넓히지 않는다.
         chk(not _fail_font_sels,
             f"세션 CSS 본문 폰트 22px 하한 — 판정 {len(_font_below_22)}건"
-            f"(.s-body/.s-lead 셀렉터 한정) · 정적판정불가 {len(_font_unjudged)}건, "
+            f"(.s-body/.s-lead 셀렉터 한정 — 어휘 정본 kit/guide/테마-계약.md §2) · "
+            f"정적판정불가 {len(_font_unjudged)}건, "
             f"집행 정본은 브라우저 감사(audit_typography.js)",
             f"세션 CSS .s-body/.s-lead 폰트 22px 미만: {_fail_font_sels}")
         if _warn_font_sels:
@@ -1773,26 +1850,18 @@ def main():
     chk(inject_ok, "진행·페이지 자동주입(s-pageno+s-part) 존재",
         "s-pageno/s-part 자동주입 스크립트 없음 — 페이지번호·파트도트 누락 위험", warn=True)
 
-    # ── [kit] 공유 kit CSS(deck.css · patterns.css · legibility.css) 무결성:
-    #     스크립트 위치 기준 해석(cwd·덱경로 무관) — 덱이 아니라 저장소 kit을 검사한다. ──
+    # ── [kit] 이 덱이 **실제로 링크한** kit CSS의 무결성 ─────────────────────
+    #     2026-08-24(P3)까지는 스크립트 위치 기준 고정 경로로 «저장소» kit을 읽었다.
+    #     그래서 덱이 다른 스타일시트를 링크해도(=테마가 달라도) 저장소 쪽이 통과하면
+    #     PASS였다 — 검사가 덱이 아니라 저장소를 검사하고 있었다(F1).
+    #     지금은 덱의 <link>를 따라간다. 링크가 없으면 «미판정»으로 센다(눈먼 0 방지).
     _here = os.path.dirname(os.path.abspath(__file__))
-    def _read_css(*parts):
-        p = os.path.join(_here, *parts)
-        try:
-            return open(p, encoding='utf-8').read()
-        except OSError:
-            return None
-    kit_files = {
-        'deck.css': ('..', 'kit', 'styles', 'deck.css'),
-        'patterns.css': ('..', 'kit', 'styles', 'patterns.css'),
-        'legibility.css': ('..', 'kit', 'styles', 'legibility.css'),
-    }
-    kit_sources = {}
-    for label, rel_parts in kit_files.items():
-        file_text = _read_css(*rel_parts)
-        kit_sources[label] = file_text
-        if file_text is None:
-            results.append(("WARN", f"[kit] {label} 읽기 실패 — 관련 검사 생략"))
+    kit_sources = linked_kit_css(html, a.deck, KIT_CSS_BASENAMES, tags=tags)
+    for label in sorted(KIT_CSS_BASENAMES):
+        if kit_sources.get(label) is None:
+            kit_sources[label] = None
+            unjudged.append((f"[kit] {label}",
+                             "덱이 이 스타일시트를 링크하지 않았다 — 관련 검사 미수행"))
     deckcss = kit_sources['deck.css']
     patterns = kit_sources['patterns.css']
     legibility = kit_sources['legibility.css']
@@ -1826,12 +1895,27 @@ def main():
         # (3) :root 토큰 값 정확성(부분문자열 매칭 · 공백정규화 · hex 대소문자 무시)
         rootm = re.search(r':root\s*\{(.*?)\}', deckcss, re.S)
         root_norm = re.sub(r'\s+', '', rootm.group(1)).lower() if rootm else ''
-        need_tokens = ['--blue:#1D4ED8', '--mint:#14B8A6', '--coral:#F97360', '--red:#DC2626',
-                       '--mint-deep:#0F766E', '--coral-deep:#C2452F',
-                       '--on-mint', '--on-coral', '--r-lg:20px', '--font-mono', '--mint-line']
+        # 기대값은 **활성 테마 선언**에서 읽는다(2026-08-24 P3). 종전에는 바이브코딩
+        # 팔레트 hex 6개가 이 줄에 하드코딩돼 있어서, 링크 추종으로 고치는 순간
+        # 두 번째 테마가 **무조건 FAIL**하는 구조였다 — 버그(고정 경로)가 버그
+        # (하드코딩 기대값)를 가리고 있었다. 테마 선언 정본은 kit/themes/<이름>/tokens.css.
+        _theme_name, _theme_tokens, _theme_note = load_active_theme(_here)
+        _value_keys = ['--blue', '--mint', '--coral', '--red', '--mint-deep', '--coral-deep']
+        _presence_keys = ['--on-mint', '--on-coral', '--r-lg', '--font-mono', '--mint-line']
+        if _theme_tokens:
+            need_tokens = [f'{k}:{_theme_tokens[k]}' for k in _value_keys if k in _theme_tokens]
+            need_tokens += [k for k in _presence_keys]
+            _src = f"테마 '{_theme_name}'"
+        else:
+            # 테마 선언을 못 읽으면 «값 대조»는 미판정이고, 존재 검사만 남긴다.
+            need_tokens = list(_presence_keys)
+            _src = "존재만(테마 선언 미해석)"
+            unjudged.append(("[kit] 토큰 «값» 대조",
+                             f"활성 테마 선언을 읽지 못했다 — {_theme_note}"))
         miss_tokens = [t for t in need_tokens if re.sub(r'\s+', '', t).lower() not in root_norm]
-        chk(not miss_tokens, f"[kit] 토큰 값 정확(deck.css :root, {len(need_tokens)}개 확인)",
-            f"[kit] 토큰 누락/값변경: {miss_tokens}")
+        chk(not miss_tokens,
+            f"[kit] 토큰 값 정확(deck.css :root, {len(need_tokens)}개 확인 · {_src})",
+            f"[kit] 토큰 누락/값변경: {miss_tokens} — 링크된 CSS가 {_src} 선언과 다르다")
         # (3b) 헤더 선과 민트 강조 프리미티브는 공용 CSS 계약을 지킨다.
         def css_block(selector):
             m = re.search(r'(?:^|[}\n;,{])\s*' + selector + r'\s*\{([^}]*)\}', deckcss)

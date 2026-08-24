@@ -65,6 +65,9 @@ SCAN_FAIL = [
     "kit/layouts/by-shape.md",
     "kit/charts/by-shape.md",
     "references/phases/*.md",
+    # 테마는 과목 사이를 옮겨 다니는 공유 자산이다(과목:테마 = N:1) — 과목 고유 값이
+    # 섞이면 그 테마를 쓰는 다른 과목이 남의 값을 물려받는다. 2026-08-24 P3.
+    "kit/themes/*/tokens.css",
 ]
 # 예시·서식 문서 — 발견돼도 WARN (예시에 과목명이 있는 것은 교육상 유용할 수 있다)
 SCAN_WARN = [
