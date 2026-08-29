@@ -1,0 +1,146 @@
+/* ============================================================================
+   테마 «likelionSKU» — 토큰 값 선언
+   ----------------------------------------------------------------------------
+   이 파일은 **선언원**이다. 지금 덱을 그리는 것은 여전히 `kit/styles/deck.css`의
+   `:root`이고(집행부), 이 파일은 「이 테마가 어떤 값이어야 하는가」를 기계 판독
+   가능한 형태로 등재한다. 구조·규약은 `kit/themes/default/tokens.css`와 같다.
+
+   무엇이 default와 다른가 — 색 토큰 17개의 «값»뿐
+   ----------------------------------------------------------------------------
+   테마가 바꿀 수 있는 것은 토큰의 «값»뿐이다(테마 계약 §1). 클래스 어휘·구조 셸
+   이름은 전 테마 공통 고정이다 — 정본 `kit/guide/테마-계약.md`.
+
+   토큰 99개 = 색 49 · 비색 50. 이 테마는 **색 49개 중 17개의 값만** 코발트 팔레트로
+   바꾸고, **나머지 32개 색과 비색 50개는 default 값을 그대로 유지**한다(계획 결정 1 —
+   A안). 크기·행간·간격을 건드리지 않으므로 R-TYPE-01 역할별 하한은 default와 동일하게
+   충족된다(등재 관문 ㉡). 값의 근거·매핑표는 `plans/likelionSKU-theme/PLAN.md` §3-A.
+
+   ◇ 파생 4건의 확정 (2026-08-29 · 근거는 PLAN.md §3-A 「◇ 확정 기록」)
+   ----------------------------------------------------------------------------
+   1. --on-coral      #5C1C12 → #391106  **변경**. coral이 바뀌어 기존 값의 대비가
+                      4.69 → 3.64(WCAG AA 4.5 미달)로 내려간다. 테마가 스스로 하한
+                      미달을 생산하면 그 테마의 모든 덱이 첫날부터 FAIL한다(계약 §4㉡).
+                      새 coral을 같은 색상으로 어둡게 내려 4.72로 복원했다.
+   2. --paper         #F4F8FB **유지**. 원본에 라이트 표지 배경 대응값이 없다
+                      (원본 표지는 다크) → 「없으면 유지」 원칙.
+   3. --blue-line-strong  #CDDBFF **유지**. 재파생이 아니라 원본 실존값이었다.
+   4. --blue-overlay  rgba(238,242,255,.92) **유지**. 역시 원본 실존값이며, 이 테마에서는
+                      --blue-soft(#EEF2FF)와 성분이 정확히 일치해 내부 정합까지 맞는다.
+
+   그림자 4종은 계약 계수상 «비색»이라 default를 유지한다(완료 기준 2 「색 49개만 값
+   변경」). 원본이 그림자를 코발트로 틴트한다는 관측은 PLAN.md §11에 기록만 해 뒀다.
+   ============================================================================ */
+
+:root {
+
+  --sw:1280px; --sh:720px;
+
+  /* ── 브랜드 3색 ── */
+  --blue:#3060C3;         /* 구조·주강조 — 코발트(화면 UI용). 이미지 프롬프트용 코발트는
+                             별개 값이다(courses/likelionSKU/이미지규약-clay-v2.md) */
+  --mint:#14B8A6;         /* 행동·성공·안전 (fill) — 원본에 fill용 녹색 실존값 없음, 유지 */
+  --coral:#F84818;        /* 주의·경고 (fill) — 원본 오렌지 */
+  --red:#D80000;          /* 오류·위험 */
+
+  /* 밝은 배경용 딥 톤 · fill 위 글자 */
+  --mint-deep:#0F766E;    --on-mint:#083B36;
+  --coral-deep:#B9471E;   --on-coral:#391106;
+
+  /* ── 깊이·보조 (로열족) ── */
+  --navy:#233B66;         /* 깊이·다크 층 */
+  --periwinkle:#92ADF1;   /* 비강조 막대·보조 */
+  --ice:#8EC3FF;          /* 헤더 라인·표지 타이틀 — 이 테마에서는 현역 보조색이다 */
+  --electric:#2F6BF8;     /* 표지 일렉트릭 — 이 테마에서는 현역 보조색이다 */
+
+  /* ── 중립 ── */
+  --white:#FFFFFF; --black:#000000; --ink:#141821;
+  --gray-700:#4F4F4F;     /* legibility에서 #3A3D45로 상향 */
+  --gray-400:#9A9A9A;     /* legibility에서 #6B7280로 상향 */
+  --surface:#F3F5F8;      /* 카드/패널 */
+  --line:#E5E8F0;         /* 구분선 */
+  --th:#F2F5FB;           /* 표 헤더 배경 */
+  --surface-alt:#FBFCFF; --surface-row:#FCFDFF; --surface-recap:#F8FBFF;
+  --blue-line:#DCE4FF; --blue-line-strong:#CDDBFF;
+  --blue-panel:#F5F8FF; --blue-panel-alt:#F4F8FF; --blue-panel-strong:#EAF0FF;
+  --coral-line:#FFD9C7; --red-line:#FFD0CC; --mint-line:#C9EBE6;
+  --on-dark-muted:#D6DBE2; --on-dark-caption:#9AA2AE; --on-blue-muted:#DCE9FF;
+  --blue-overlay:rgba(238,242,255,.92);
+  --glass-white:rgba(255,255,255,.26);
+  --glass-thick:rgba(232,235,240,.76);
+  --glass-control:rgba(255,255,255,.22);
+  --glass-control-hover:rgba(255,255,255,.44);
+  --glass-line:rgba(255,255,255,.62);
+  --glass-highlight:rgba(255,255,255,.88);
+  --glass-lowlight:rgba(20,24,33,.12);
+  --glass-shadow:rgba(20,24,33,.30);
+
+  /* ── 소프트 틴트 (콜아웃) ── */
+  --blue-soft:#EEF2FF;  --mint-soft:#E8F7F5;
+  --coral-soft:#FFF1EA; --red-soft:#FFF1F0;
+
+  /* ── 표지·클로징 ── */
+  --cover-bg:#1A1A1A;      /* (옵션) 다크 클로징 전용 — 표지는 라이트 구도 공통 */
+  --paper:#F4F8FB;         /* 브랜드-화이트 · 표지 배경. ◇2 확정: 원본 대응값 없음 → 유지 */
+
+  /* ── 라운드 (소프트 벤토) ── */
+  --r-lg:20px; --r-md:14px; --r-sm:10px; --r-pill:999px;
+
+  /* ── 섀도우 — default 유지(비색) ── */
+  --shadow-sm:0 6px 16px rgba(20,24,33,.05);
+  --shadow-md:0 10px 30px rgba(29,78,216,.07);
+  --shadow-lg:0 16px 40px rgba(29,78,216,.10);
+  --shadow-blue:0 10px 26px rgba(29,78,216,.30);
+
+  /* ── 코드 폰트 ── */
+  --font-mono:"JetBrains Mono","D2Coding",ui-monospace,SFMono-Regular,Menlo,monospace;
+
+  /* ── 폰트 스케일(R-TYPE-02) — 전량 default 유지 ── */
+  --fs-14:14px;
+  --fs-17:17px;
+  --fs-19:19px;
+  --fs-22:22px;
+  --fs-24:24px;
+  --fs-27:27px;
+  --fs-32:32px;
+  --fs-40:40px;
+  --fs-52:52px;
+  --fs-64:64px;
+
+  /* ═══ 역할 티어 (R-TYPE-01) — 전량 default 유지 ══════════════════════════
+     ⚠️ 각 토큰의 «용도 제한»은 여기 복제하지 않는다. 정본은
+        `kit/guide/토큰-치트시트.md`이고 default 테마 파일에 배경 주석이 있다.
+        특히 --fs-badge는 용도가 잠긴 토큰이다(라벨 자리 전용 · 1줄 20자 이내). */
+  --fs-cover:74px;
+  --fs-part:56px;
+  --fs-display-lg:64px;
+  --fs-display:52px;
+  --fs-title:38px;
+  --fs-box-title:26px;
+  --fs-lead:23px;
+  --fs-body:22px;         /* 본문 — 하한. 하회 금지 */
+  --fs-box-desc:20px;
+  --fs-eyebrow:19px;
+  --fs-table:17px;        /* 표 — 하한 */
+  --fs-caption:14px;
+  --fs-badge:13px;
+
+  /* ═══ 행간 대역 — 전량 default 유지 ══════════════════════════════════════ */
+  --lh-badge:1.0;
+  --lh-display:1.15;
+  --lh-title:1.22;
+  --lh-box-title:1.25;
+  --lh-caption:1.4;
+  --lh-lead:1.45;
+  --lh-box-desc:1.5;
+  --lh-body:1.78;
+
+  /* ═══ 간격 스케일 — 전량 default 유지 (기준 단위 4px) ════════════════════ */
+  --sp-4:4px;
+  --sp-8:8px;
+  --sp-12:12px;
+  --sp-16:16px;
+  --sp-18:18px;
+  --sp-24:24px;
+  --sp-32:32px;
+  --sp-48:48px;
+}
