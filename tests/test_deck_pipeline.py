@@ -636,6 +636,17 @@ class BlindSlideCountTests(unittest.TestCase):
     (plans/gate-input-hardening P1 · 2026-08-24)
     """
 
+    def setUp(self):
+        # 다과목 저장소(2026-08-29 likelionSKU 등재)에서는 «어느 과목의 2주차인가»를
+        # 명시해야 한다. Runner가 계약을 조회할 때 resolve_course()가 과목을 특정하지
+        # 못하면 AmbiguousCourseError로 죽는다 — 의도된 fail-loud이므로 삼키지 않고
+        # 호출부인 이 테스트가 과목을 밝힌다. 이 픽스처가 뜻하는 2주차는 바이브코딩이다.
+        import os
+        from unittest import mock
+        patcher = mock.patch.dict(os.environ, {"CREATE_SLIDES_COURSE": "바이브코딩"})
+        patcher.start()
+        self.addCleanup(patcher.stop)
+
     def _runner_with_deck(self, html, evidence):
         import json
         import os

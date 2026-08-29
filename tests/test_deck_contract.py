@@ -12,6 +12,7 @@
 from __future__ import annotations
 
 import json
+import os
 import re
 import shutil
 import subprocess
@@ -88,6 +89,16 @@ def _lines(out: str, kind: str) -> list[str]:
 
 class ContractLookupTests(unittest.TestCase):
     """계약 3단 탐색: ① 동폴더 → ② sessions/_contracts → ③ 없으면 WARN."""
+
+    def setUp(self):
+        # ②단(`sessions/_contracts` 조회)은 과목을 특정해야 경로가 나온다. 과목이 2개가
+        # 된 뒤(2026-08-29 likelionSKU 등재) 미지정 호출은 AmbiguousCourseError로 죽는다 —
+        # 조용히 첫 과목을 고르면 남의 과목 계약을 보고 판정하기 때문이다(의도된 fail-loud).
+        # 예외를 삼키는 대신 호출부인 이 테스트가 과목을 밝힌다. 하위 subprocess
+        # (`_verify`)도 os.environ을 상속하므로 이 한 곳으로 충분하다.
+        patcher = mock.patch.dict(os.environ, {"CREATE_SLIDES_COURSE": "바이브코딩"})
+        patcher.start()
+        self.addCleanup(patcher.stop)
 
     def test_sibling_contract_is_found_first(self):
         found = find_deck_contract(FIXTURE / "강의덱.html")

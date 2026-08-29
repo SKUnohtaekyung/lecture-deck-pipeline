@@ -17,15 +17,42 @@ from scripts import verify_draft_quality as vdrq
 REPO_ROOT = Path(__file__).resolve().parent.parent
 FIXTURES = Path(__file__).resolve().parent / "fixtures" / "quality_gates"
 
+# ── 다과목 저장소에서의 과목 명시 (2026-08-29 · likelionSKU 테마 등재) ──────────
+# 이 모듈의 단정은 **바이브코딩 프로필 §3-G 임계**를 기준으로 쓰였다. 과목이 2개가
+# 되면 `resolve_course()`는 조용히 하나를 고르지 않고 `AmbiguousCourseError`를 던진다
+# (의도된 fail-loud — 조용히 첫 과목을 고르면 남의 과목 임계로 판정하고 PASS를 낸다).
+# 그래서 «어느 과목의 기준으로 재는가»를 여기서 명시한다. 예외를 삼키는 방향으로는
+# 고치지 않는다.
+import os as _os
+_COURSE = "바이브코딩"
+_PREV_COURSE = None
+
+
+def setUpModule():
+    global _PREV_COURSE
+    _PREV_COURSE = _os.environ.get("CREATE_SLIDES_COURSE")
+    _os.environ["CREATE_SLIDES_COURSE"] = _COURSE
+
+
+def tearDownModule():
+    if _PREV_COURSE is None:
+        _os.environ.pop("CREATE_SLIDES_COURSE", None)
+    else:
+        _os.environ["CREATE_SLIDES_COURSE"] = _PREV_COURSE
+
+
 # ── 과목 아키텍처 경로 폴백 (2026-07-29 P4.5) ─────────────────────────────
 # 1주차 산출물이 courses/<과목>/sessions/로 이동했다. 하드코딩하면 파일을 못 찾아
 # setUpClass가 **조용히 skip**한다 — 회귀가 통과로 보이는 최악의 형태라 해석기를 쓴다.
 import sys as _sys
 _sys.path.insert(0, str(REPO_ROOT / "scripts"))
+# ⚠️ 과목을 **명시**한다(2026-08-29). 과목이 2개가 된 뒤 미지정 호출은
+#    AmbiguousCourseError이고, 이 줄은 «모듈 최상위»라 setUpModule보다 먼저 돈다 —
+#    즉 환경변수로는 늦는다. 여기서 가리키는 1주차는 바이브코딩의 동결 산출물이다.
 try:
     import _course_paths as _cp
     def _w(n):
-        return Path(_cp.session_dir(n, str(REPO_ROOT)))
+        return Path(_cp.session_dir(n, str(REPO_ROOT), course=_COURSE))
 except Exception:
     def _w(n):
         return REPO_ROOT / "sessions" / (str(n) + "주차")
@@ -319,7 +346,11 @@ class DraftQualityGateTests(unittest.TestCase):
         draft_path = FIXTURES / "sessions" / "2주차" / "2주차_초안.md"
         if not draft_path.is_file():
             raise unittest.SkipTest(f"2주차 냉동 초안 스냅샷 없음: {draft_path}")
-        cls.results, cls.advisories = vdrq.run_checks(W2_FROZEN_ROOT, "2")
+        # ⚠️ 이 클래스만 «합성 루트»(FIXTURES)에서 돈다 — 그 루트에는 courses/ 자체가
+        #    없다(구경로 폴백 세계). 임계는 실저장소 프로필에서, 초안은 이 합성 루트에서
+        #    온다 — 두 출처가 갈리는 유일한 클래스다. `resolve_course`가 후보 0개인
+        #    루트에서 과목명을 무시하고 None을 주므로(2026-08-29 정정) 그대로 돈다.
+        cls.results, cls.advisories = vdrq.run_checks(W2_FROZEN_ROOT, "2", course=_COURSE)
 
     def test_flags_low_char_density(self):
         self.assertIn("WARN", _levels(self.results, "R-QD-01"))
@@ -376,7 +407,7 @@ class DraftQualityGateW1BaselineTests(unittest.TestCase):
         draft_path = _w(1) / "1주차_초안.md"
         if not draft_path.is_file():
             raise unittest.SkipTest(f"1주차 초안 없음: {draft_path}")
-        cls.results, cls.advisories = vdrq.run_checks(REPO_ROOT, "1")
+        cls.results, cls.advisories = vdrq.run_checks(REPO_ROOT, "1", course=_COURSE)
 
     def test_required_artifacts_present(self):
         self.assertNotIn("FAIL", _levels(self.results, "R-QD-05"))
@@ -705,6 +736,10 @@ class CopyStyleRuleTests(unittest.TestCase):
 
     def test_profile_keys_are_wired(self):
         # 프로필 §3-G 키가 사라지면 아래 WARN 단정이 전부 무의미해진다 — 배선부터 확인.
+        # 임계 적재는 2026-08-29부터 import가 아니라 run_checks() 진입 시점이다(다과목
+        # 저장소에서 import가 AmbiguousCourseError로 죽던 문제). 이 테스트는 «배선»을
+        # 보는 것이므로 적재를 직접 촉발해 과목까지 못박는다.
+        vdq._load_profile_gates(course=_COURSE)
         for rid in ("R-COPY-01", "R-COPY-02", "R-COPY-03"):
             self.assertTrue(vdq._COPY_GATE_FROM_PROFILE.get(rid),
                             f"{rid} 임계가 프로필 §3-G에서 오지 않았다")
