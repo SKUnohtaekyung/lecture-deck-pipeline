@@ -290,7 +290,7 @@ exit 1
   `deck.css:283` `VIBECODING`), 결과는 여전히 **PASS · exit 0**.
   **누출을 지운 것이 아니라 «보이게» 만든 것이 이 절의 성과다.**
 
-### ⑥ `kit/styles/deck.css`의 선행 R-QC-14 위반 11건 — 사용자 지시로 같은 날 해소
+### ⑥ 선행 R-QC-14 위반 **14건** — 사용자 지시로 같은 날 해소 (deck.css 11 + patterns.css 3)
 
 ④의 조직명 주석을 고치려고 `kit/styles/deck.css`를 스테이징하자 pre-commit이 막았다:
 
@@ -346,6 +346,19 @@ R-QC-14가 원래 막으려던 바로 그 중첩)는 전부 **`getBoundingClient
 → 11건 해소 후 `kit/styles/deck.css`가 lint 통과(exit 0)하면서, ④에서 미뤘던 **조직명·과목명
 주석 2건도 함께 정리**했다. 그 결과 공용 kit의 과목 리터럴이 **0**이 되어
 `KNOWN_KIT_LEAKS`도 비웠다(WARN 58 → 56).
+
+#### ★ 검사 범위를 넓히니 3건이 더 나왔다 — `patterns.css`
+
+`deck.css`를 고친 뒤 **kit CSS 전체**에 린트를 돌리니 `kit/styles/patterns.css`에 3건이
+더 있었다(`.cyc-node b` 47 · `.vt-leaf b` 85 · `.vt-leaf span` 86). pre-commit은
+**스테이징된 `.css`만** 보므로 이 파일을 건드리지 않는 한 영영 드러나지 않는다.
+**「한 파일을 고쳤다」와 「규칙을 지켰다」는 다르다.**
+
+DOM 실측 결과 셋 다 실사용이 **전부 직계**라 단순 `>` 좁히기로 충분했다:
+2주차(동결) `vt-leaf b` 8/8 · `vt-leaf span` 4/4 · charts 카탈로그 `cyc-node` 4/4 · `vt-leaf` 3/3.
+수정 후 동결 덱 3개 렌더 재측정 — **again before/after 완전 동일**.
+
+최종: `ls kit/styles/*.css | hook_slide_guard --mode css-lint --stdin-paths` → **exit 0**.
 
 ## 범위 밖 발견 (고치지 않고 기록만)
 
