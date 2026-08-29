@@ -40,6 +40,10 @@
 
   /* ── 브랜드 3색 (v2) ── */
   --blue:#1D4ED8;         /* 구조·주강조 */
+  --blue-rgb:29,78,216;   /* --blue의 채널값. rgba()는 var()로 색을 못 받으므로 채널을
+                             따로 둔다 — 컴포넌트가 rgba(<브랜드파랑>,α)를 직접 박으면
+                             그 자리는 테마가 바뀌어도 안 바뀐다(2026-08-29 실측 11곳).
+                             ⚠️ --blue와 «같은 색»이어야 한다(회귀가 쌍을 고정한다). */
   --mint:#14B8A6;         /* 행동·성공·안전 (fill) */
   --coral:#F97360;        /* 주의·경고 (fill) */
   --red:#DC2626;          /* 오류·위험 */
@@ -462,7 +466,7 @@ table.t tr:nth-child(even) td{ background:var(--surface-row); }
 .shot-frame img{ display:block; width:100%; height:auto; object-fit:contain; }
 .shot-badge{ position:absolute; width:42px; height:42px; border-radius:50%;
   background:var(--blue); color:var(--white); font-weight:800; font-size:22px;
-  display:grid; place-items:center; box-shadow:0 8px 18px color-mix(in srgb, var(--blue) 40%, transparent); }
+  display:grid; place-items:center; box-shadow:0 8px 18px rgba(var(--blue-rgb),.4); }
 .shot-hl{ position:absolute; border:3px solid var(--blue); border-radius:8px; pointer-events:none; }
 .shot-caption,.shot-cap{ margin:10px 0 0; font-size:22px; line-height:1.55;
   color:var(--gray-700); font-weight:700; }
@@ -478,7 +482,7 @@ table.t tr:nth-child(even) td{ background:var(--surface-row); }
   color:var(--ink); margin-bottom:12px; }
 .shot-row:last-child{ margin-bottom:0; }
 .shot-row.on{ border-color:var(--blue); background:var(--blue-soft); color:var(--blue);
-  box-shadow:0 0 0 3px color-mix(in srgb, var(--blue) 16%, transparent); }
+  box-shadow:0 0 0 3px rgba(var(--blue-rgb),.16); }
 .shot-badge.b1{ top:28px; }.shot-badge.b2{ top:98px; }.shot-badge.b3{ top:168px; }
 
 /* ===================================================================
@@ -795,7 +799,7 @@ table.t tr:nth-child(even) td{ background:var(--surface-row); }
 .venn-outer-label{ position:absolute; top:-18px; left:50%; transform:translateX(-50%);
   display:inline-flex; white-space:nowrap; background:var(--blue); color:var(--white);
   font-weight:800; font-size:17px; border-radius:999px; padding:7px 18px;
-  box-shadow:0 8px 18px color-mix(in srgb, var(--blue) 35%, transparent); }
+  box-shadow:0 8px 18px rgba(var(--blue-rgb),.35); }
 .venn-tag{ position:absolute; transform:translate(-50%,-50%); display:inline-flex; align-items:center;
   background:var(--white); border:1px solid var(--blue-line-strong); color:var(--gray-700); font-weight:700;
   font-size:15px; border-radius:999px; padding:7px 15px; white-space:nowrap; }
@@ -807,7 +811,7 @@ table.t tr:nth-child(even) td{ background:var(--surface-row); }
 .venn-inner{ position:absolute; left:240px; top:240px; transform:translate(-50%,-50%);
   width:195px; height:195px; border-radius:50%; background:var(--blue);
   display:flex; flex-direction:column; align-items:center; justify-content:center;
-  text-align:center; box-shadow:0 14px 32px color-mix(in srgb, var(--blue) 40%, transparent); }
+  text-align:center; box-shadow:0 14px 32px rgba(var(--blue-rgb),.4); }
 .venn-inner-label{ color:var(--white); font-weight:800; font-size:24px; }
 .venn-inner-sub{ color:var(--on-blue-muted); font-weight:700; font-size:13px; margin-top:5px; }
 
@@ -1039,7 +1043,7 @@ table.t tr:nth-child(even) td{ background:var(--surface-row); }
 .concept-flow{ display:flex; align-items:center; gap:10px; width:100%; margin:0; }
 .concept-flow span{ flex:1; text-align:center; border-radius:999px; padding:12px 10px;
   background:var(--blue-overlay); border:1px solid var(--blue-line); color:var(--blue);
-  font-size:16px; font-weight:800; box-shadow:0 8px 18px color-mix(in srgb, var(--blue) 6%, transparent); }
+  font-size:16px; font-weight:800; box-shadow:0 8px 18px rgba(var(--blue-rgb),.06); }
 .concept-flow b{ flex:0 0 auto; color:var(--gray-400); font-size:20px; font-weight:800; }
 /* 카드 그리드 — auto-fit+minmax가 카드 수(N)에 맞춰 열을 자동 재분배(3~5장 한 줄, 코드 수정 불필요) */
 .concept-cards{ width:100%; display:grid; grid-template-columns:repeat(auto-fit, minmax(230px, 1fr)); gap:16px; }

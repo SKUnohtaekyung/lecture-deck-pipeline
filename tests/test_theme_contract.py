@@ -71,11 +71,45 @@ class DefaultThemeMirrorsKitTests(unittest.TestCase):
                 if k in self.declared and self.enforced[k] != self.declared[k]}
         self.assertEqual(diff, {}, f"토큰 «값»이 어긋났다(집행, 선언): {diff}")
 
-    def test_token_count_is_the_registered_99(self):
+    def test_token_count_is_the_registered_100(self):
         """계수를 고정한다 — 토큰이 늘거나 줄면 테마 계약 문서도 함께 갱신해야 한다."""
-        self.assertEqual(len(self.enforced), 99,
-                         "deck.css :root 토큰 수가 99가 아니다 — "
+        self.assertEqual(len(self.enforced), 100,
+                         "deck.css :root 토큰 수가 100가 아니다 — "
                          "kit/guide/테마-계약.md의 계수와 이 테스트를 함께 갱신하라")
+
+
+class BlueChannelMirrorsBlueTests(unittest.TestCase):
+    """`--blue-rgb`는 `--blue`와 «같은 색»이어야 한다 — 한 색이 두 토큰에 산다(2026-08-29).
+
+    왜 두 토큰인가: `rgba()`는 색을 `var()`로 받지 못한다. 그래서 컴포넌트가
+    `rgba(<브랜드파랑>,α)`를 쓰려면 **채널값**이 따로 필요하다. 그것이 없어서 kit
+    컴포넌트 11곳이 `rgba(29,78,216,α)`를 직접 박고 있었고, 테마를 바꿔도 그 자리만
+    default 파랑으로 남았다(적대적 검증 실측).
+
+    ⚠️ 한 색이 두 곳에 사는 순간 어긋난다 — 그게 이 저장소의 반복 사고다.
+       그래서 «둘이 같은 색인가»를 회귀로 못박는다. 새 테마는 반드시 둘 다 바꿔야 한다.
+    """
+
+    def test_every_theme_keeps_the_two_in_sync(self):
+        themes = sorted(p for p in THEMES_DIR.glob("*/tokens.css"))
+        self.assertTrue(themes, "kit/themes/ 아래에 테마가 하나도 없다")
+        judged = 0
+        for path in themes:
+            declared = _root_tokens(io.open(path, encoding="utf-8").read())
+            with self.subTest(theme=path.parent.name):
+                hexv = declared.get("--blue", "")
+                chan = declared.get("--blue-rgb", "")
+                self.assertRegex(hexv, r"^#[0-9A-Fa-f]{6}$", "--blue 형식이 hex가 아니다")
+                m = re.match(r"^\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*$", chan)
+                self.assertTrue(m, "--blue-rgb 형식이 'R,G,B'가 아니다: %r" % chan)
+                want = tuple(int(hexv[k:k + 2], 16) for k in (1, 3, 5))
+                got = tuple(int(g) for g in m.groups())
+                self.assertEqual(got, want,
+                                 "테마 '%s': --blue-rgb %s 가 --blue %s (%s)와 다른 색이다"
+                                 % (path.parent.name, chan, hexv, ",".join(map(str, want))))
+                judged += 1
+        self.assertEqual(judged, len(themes), "판정 %d건 · 테마 %d개 — 미판정이 섞였다"
+                         % (judged, len(themes)))
 
 
 class EveryThemeIsCompleteTests(unittest.TestCase):

@@ -166,7 +166,7 @@ P0~P3 구현·검증·커밋 완료(`8856fa5` `5e014b9` `1bd9129` `c733758` `12c
 어휘를 바꾼 덱이 이제 `.s-line` 계약 위반으로 FAIL해서 조용히 통과할 수 없다.
 
 **신설된 계약** — `kit/guide/테마-계약.md`(테마가 바꾸는 것은 토큰 «값»뿐 · 셸 어휘 6종 동결 · 신규 테마 등재
-조건 2종) · `kit/themes/default/tokens.css`(99토큰 선언) · 회귀 **12모듈 266건**(2026-08-29 다과목 회귀 5건 신설).
+조건 2종) · `kit/themes/default/tokens.css`(100토큰 선언 — 2026-08-29 개정) · 회귀 **12모듈 266건**(2026-08-29 다과목 회귀 5건 신설).
 
 ### ✅ 두 번째 테마 `likelionSKU` 등재 완료 — 관문 2종 통과 (2026-08-29)
 
@@ -174,7 +174,7 @@ P0~P3 구현·검증·커밋 완료(`8856fa5` `5e014b9` `1bd9129` `c733758` `12c
 D-2가 말하는 **「검증된 테마」**다. 계획·실측 정본은 `plans/likelionSKU-theme/{PLAN,RESULTS}.md`,
 브랜치 `feat/likelionsku-theme`(**main 병합·push는 사용자 승인 대기**).
 
-- **테마**: `kit/themes/likelionSKU/tokens.css` — 99토큰 · 이름 집합과 **선언 순서까지** default와 동일 ·
+- **테마**: `kit/themes/likelionSKU/tokens.css` — 100토큰 · 이름 집합이 default와 동일 ·
   **색 17개만** 값 교체 · 비색 변경 0(완료 기준 「색 49개만」 충족). **과목**: `courses/likelionSKU/`
   (`profile.md` + `이미지규약-clay-v2.md`). 원본 `likelionSKU/`는 `/likelionSKU/`로 gitignore(루트 앵커).
 - **㉠ 뮤테이션**: 정상본 PASS ∧ 변형 **4/4 검출 · 미탐 0**. ⚠️ **검출층을 구분해 적어라** —
@@ -203,6 +203,22 @@ D-2가 말하는 **「검증된 테마」**다. 계획·실측 정본은 `plans/
 - **default 테마 덱은 이 줄을 넣지 않는다** → 동결 산출물 렌더 무변경(D-1).
 - 검사기가 링크된 테마 선언을 기대값에 함께 넣는다(`verify_deck.linked_theme_tokens`).
   테마 링크 **없음**·**틀린 테마**·**2개 링크**는 전부 FAIL. 회귀 `ThemeStylesheetLinkTests` 5건.
+
+### ⚠️ 토큰 계약 개정 — 99 → 100 (`--blue-rgb` 신설 · 2026-08-29)
+
+`rgba()`는 색을 `var()`로 받지 못한다. 그래서 컴포넌트가 `rgba(<브랜드파랑>,α)`를 쓰려면
+**채널값 토큰**이 따로 필요하다. 없어서 kit 컴포넌트 **11곳**이 default 파랑을 직접 박고
+있었고 테마를 바꿔도 그 자리만 안 바뀌었다.
+
+```css
+box-shadow:0 14px 32px rgba(var(--blue-rgb),.4);   /* ✓ 색만 테마에서 파생 */
+```
+
+- 계수: **색 50 · 비색 50 = 100**. `kit/styles/deck.css` · `kit/themes/*/tokens.css` 3곳 모두.
+- ⚠️ **한 색이 두 토큰에 산다** — `--blue`와 `--blue-rgb`는 반드시 **같은 색**이어야 하고,
+  `BlueChannelMirrorsBlueTests`가 전 테마에 대해 그 쌍을 회귀로 못박는다. 새 테마는 둘 다 바꾼다.
+- 실측: default 채널에서 계산값이 `rgba(29, 78, 216, 0.4)`로 **원본과 바이트 동일**(동결 무영향),
+  테마 채널에서 `rgba(48, 96, 195, 0.4)`. `rgba(var(--x),α)`는 전 브라우저 지원이라 호환 조건 없음.
 
 ### ⚠️ 새 테마를 만들 때 색 시스템에서 놓치기 쉬운 세 자리 (2026-08-29 실측)
 

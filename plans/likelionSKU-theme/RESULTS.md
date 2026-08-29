@@ -360,6 +360,29 @@ DOM 실측 결과 셋 다 실사용이 **전부 직계**라 단순 `>` 좁히기
 
 최종: `ls kit/styles/*.css | hook_slide_guard --mode css-lint --stdin-paths` → **exit 0**.
 
+## 토큰 계약 개정 — 99 → 100 (사용자 확정 2026-08-29)
+
+적대적 검증에서 kit 컴포넌트 **11곳**이 `rgba(29,78,216,α)`(= default `--blue`)를 직접
+박고 있어 테마를 바꿔도 안 바뀌는 것이 드러났다. `rgba()`는 색을 `var()`로 못 받으므로
+채널값 토큰이 필요하다 — **`--blue-rgb` 신설**(색 49 → 50 · 총 99 → 100).
+
+| 갱신한 곳 | 내용 |
+|---|---|
+| `kit/styles/deck.css` `:root` | `--blue-rgb:29,78,216` 추가(집행부) |
+| `kit/themes/default/tokens.css` | 동일(default 테마는 집행부와 바이트 일치 계약) |
+| `kit/themes/likelionSKU/tokens.css` | `--blue-rgb:48,96,195` |
+| 컴포넌트 11곳 | `rgba(29,78,216,α)` → `rgba(var(--blue-rgb),α)` |
+| `kit/guide/테마-계약.md` §1·§6 | 계수 개정 + 파생 규약 |
+| `tests/test_theme_contract.py` | 계수 100 + **`BlueChannelMirrorsBlueTests`** 신설 |
+
+⚠️ **한 색이 두 토큰에 산다.** 어긋나면 그게 이 저장소의 반복 사고이므로, 「`--blue-rgb`가
+`--blue`와 같은 색인가」를 전 테마에 대해 회귀로 못박았다(뮤테이션 확인: 채널을 default로
+되돌리면 `--blue-rgb 29,78,216 가 --blue #3060C3 (48,96,195)와 다른 색이다`로 FAIL).
+
+**렌더 실측**: default 채널에서 `rgba(29, 78, 216, 0.4)` — 원본 리터럴과 **바이트 동일**
+(동결 산출물 무영향) · 테마 채널에서 `rgba(48, 96, 195, 0.4)`. `rgba(var(--x),α)`는
+전 브라우저가 지원해 `color-mix` 후보에 있던 호환 조건이 사라졌다.
+
 ## 범위 밖 발견 (고치지 않고 기록만)
 
 - `kit/styles/deck.css:2` 헤더 주석에 `SKU LIKELION` 문자열이 **이미 존재한다**(그 kit이 원본
