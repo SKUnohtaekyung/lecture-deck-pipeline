@@ -16,7 +16,7 @@
 
 | 대상 | `verify_deck.py` | `verify_deck_quality.py` | 검출 |
 |---|---|---|---|
-| **정상본(대조군)** | **exit 0** · 요약: FAIL 0 · WARN 2 · PASS 44 | **exit 0** · 요약: FAIL 0 · WARN 1 · PASS 9 | — (대조군) |
+| **정상본(대조군)** | **exit 0** · 요약: FAIL 0 · WARN 2 · PASS 45 | **exit 0** · 요약: FAIL 0 · WARN 1 · PASS 9 | — (대조군) |
 | **V1** 본문 폰트 하한 미달 | **exit 1** · FAIL 0→1 | exit 0 | ✅ |
 | **V2** 원고 아이콘 누출 | **exit 1** · FAIL 0→1 | exit 0 | ✅ |
 | **V3** 내부 작업 라벨 누출 | exit 0 · WARN 2→3 | **exit 1** · FAIL 0→1 | ✅ |
@@ -138,13 +138,13 @@ $ python -m unittest tests.test_deck_pipeline tests.test_image_pipeline tests.te
     tests.test_deck_contract tests.test_declared_vs_enforced tests.test_rule_pointers \
     tests.test_typography_rules tests.test_analyze_agent_usage tests.test_audit_context_budget \
     tests.test_hook_guards tests.test_course_paths tests.test_theme_contract
-Ran 266 tests in 29.374s
+Ran 275 tests in 30.810s
 OK
 exit 0
 ```
 
 **건수 정정**: `references/검증-명령-지도.md` §6의 「219건」은 낡았다. 내 변경 «전» 실측이
-**261건**(MEMORY 기재와 일치)이고, 이번에 신설한 회귀 5건을 더해 **266건**이다.
+**261건**(MEMORY 기재와 일치)이고, 이번에 신설한 회귀 14건을 더해 **275건**이다.
 지도 수정은 이번 범위 밖이라 하지 않았다.
 
 ### 기존 과목(바이브코딩) 무영향 — 러너 3주차 전부 exit 0 · 래칫 전부 불변
@@ -192,6 +192,143 @@ $ CREATE_SLIDES_COURSE=바이브코딩    → 테마: default     | 토큰 99 | 
 **회귀 5건 신설** — 이 두 구멍에 회귀가 0개였다:
 `NamedCourseAgainstCourselessRootTests` 4건(0개 루트 완화 + 오타 보호 쌍 고정) ·
 `GateModulesImportWithoutACourseTests` 1건(과목 미지정 import가 죽지 않는다).
+
+## 재검토 — 로고·색의 «시스템화» 감사 (2026-08-29 2차)
+
+색 49개 매핑 자체는 재대조에서 빈틈이 없었다(아래 ①). 구멍은 **매핑이 아니라 그 바깥**에 있었다.
+
+### ① 색 49토큰 전수 재대조 — 매핑 결함 0
+
+원본 `덱_템플릿킷/styles/deck.css`의 hex·rgba를 전수 추출해 우리 49개와 1:1 대조했다.
+「default 값 그대로 + 원본에 그 값 없음」은 **11개**였고 **전부 이미 문서화된 결정**이다:
+`--mint`·`--on-mint`(원본에 fill용 녹색 없음 — 「없으면 유지」) · `--glass-*` 8개(브랜드
+무관 중립층) · `--paper`(원본에 라이트 표지 없음 · ◇2). **새로 발견한 누락 매핑은 0건.**
+
+### ② ★ 그림자가 «다른 테마의» 브랜드 파랑을 품고 있었다 — 고쳤다
+
+`--shadow-md/lg/blue`의 값은 `rgba(29,78,216,α)`인데 **29,78,216 = #1D4ED8 = default의
+`--blue`**다. likelionSKU의 `--blue`는 #3060C3(48,96,195)이므로, 이 테마의 덱이
+**자기 팔레트에 없는 파랑으로 그림자를 드리우고 있었다.** 원본도 자기 코발트로 틴트한다
+(원본 deck.css에서 `rgba(48,96,195,…)` 5종 실측) — 즉 두 디자인 시스템 다 그림자를
+브랜드 색으로 틴트하는데 우리 테마만 남의 색을 물려받고 있었다.
+
+→ **색상 성분만** 이 테마의 `--blue`로 옮겼다. 투명도·오프셋·블러는 default 그대로라
+그림자의 «무게» 체계는 불변이고, 중립 그림자(`--shadow-sm`, 잉크 기반)는 손대지 않았다.
+
+⚠️ **이 변경은 완료 기준 2의 「색 49개만 값 변경」을 문자 그대로는 벗어난다**(값 변경
+17 → 20). 그림자를 «비색»으로 센 것은 계약의 분류이고, 결정 1의 취지는 **크기·행간·간격**
+(폰트 스케일 A안)이었다. 값 안에 브랜드 색을 품은 토큰을 색 아닌 것으로 취급하면 테마가
+원리적으로 완성될 수 없어 분류 쪽이 틀렸다고 판단했다 — 되돌리려면 이 커밋 하나만 되돌리면 된다.
+계약 §6에 이 함정을 명시했다.
+
+### ③ ★★ 등재한 테마로 «정상적인 주차 덱을 만들 수 없었다» — 집행 이관으로 해소
+
+가장 큰 구멍이다. 실제 주차 덱과 동일하게 정본 kit을 링크한 likelionSKU 덱을 만들어 재 보니:
+
+```
+$ CREATE_SLIDES_COURSE=likelionSKU python scripts/verify_deck.py <정본 kit 링크 덱> --parts 1
+[FAIL] ✗ [kit] 토큰 누락/값변경: ['--blue:#3060C3', '--coral:#F84818', '--red:#D80000',
+        '--coral-deep:#B9471E'] — 링크된 CSS가 테마 'likelionSKU' 선언과 다르다
+exit 1
+```
+
+테마 파일은 «선언»이고 집행은 `kit/styles/deck.css`였으므로, 통과시키는 유일한 길이
+**kit CSS를 통째로 복사해 `:root`만 바꾼 사본**을 두는 것이었다(1차 실측 때 내가 실제로
+그렇게 했다). 그건 드리프트 보장 장치다 — 즉 **테마 축은 선언만 되고 시스템화되지 않았다.**
+
+→ 테마 파일을 **링크 대상**으로 승격했다(`verify_deck.linked_theme_tokens` 신설).
+덱은 kit 3종 다음에 `kit/themes/<이름>/tokens.css`를 링크하고 캐스케이드가 `:root`를 덮는다.
+
+| 구성 | 결과 |
+|---|---|
+| 정본 kit + **올바른** 테마 링크 | **exit 0** · `[kit] 토큰 값 정확(… 테마 'likelionSKU')` PASS |
+| 정본 kit + 테마 링크 **없음**(과목은 likelionSKU) | **exit 1** — 실제로 default로 렌더되므로 옳다 |
+| 정본 kit + **다른** 테마 링크 | **exit 1** |
+| 테마 파일 **2개** 링크 | **FAIL** — 파일 순서에 값이 의존하므로 막는다 |
+| default 테마 덱(링크 없음) | 종전과 **완전 동일** — 동결 산출물 무영향(D-1) |
+
+**렌더 실측(1440×900)**: `deck.css`(default 값) + 테마 링크만으로 브라우저 계산값이
+`--blue:#3060C3` · `--coral:#F84818` · `--shadow-blue:rgba(48,96,195,.30)` ·
+`--fs-body:22px`(비색 불변). 시험 덱에서 kit CSS 사본을 **삭제**하고 정본 링크로 전환한 뒤
+뮤테이션 매트릭스를 재실행해 동일한 4/4 검출을 확인했다.
+
+### ④ ★ 로고·파비콘 — 덱 «안»은 이미 옳았고, 새 덱으로 상속되는 자산이 틀렸다
+
+- **옳았던 것**: 스타터 본문의 인라인 로고는 이미 `var(--mint)`·`var(--blue)`·`var(--ink)`를
+  쓴다 → 테마를 자동으로 따른다. 색 시스템 준수.
+- **틀렸던 것 1 — 파비콘**: `<link rel="icon">`의 data-URI에 `%2314B8A6`·`%231D4ED8`
+  (default 팔레트)가 박혀 있었다. 파비콘은 브라우저 크롬이 읽는 외부 리소스라 **CSS 커스텀
+  속성이 닿지 않는 유일한 색 자리**다. → 기본값을 **중립 잉크**로 바꾸고 ✏️ 저작 슬롯으로
+  표시했다(특정 테마 색을 박아 두면 다른 테마의 덱이 남의 팔레트를 달고 다닌다).
+- **틀렸던 것 2 — `kit/starter/logo.svg`**: 하드코딩 hex 3개 + `aria-label="VIBECODING"`.
+  → `var(--토큰, 폴백)` 형태로 바꿔 인라인 사용 시 테마를 따르게 하고 라벨을 중립화했다.
+- **틀렸던 것 3 — 워드마크**: 스타터에 `VIBECODING`이 5곳(제목 1 · `.s-brand` 4). 공용
+  kit이 한 과목의 브랜드를 달고 있었다. → `{{브랜드}}` 자리표시자로 교체.
+- **틀렸지만 이번에 고치지 «않은» 것 — `kit/styles/deck.css`의 조직명**: 헤더 주석이
+  「SKU LIKELION 강의덱 — 디자인 시스템…」이고 `.s-brand` 주석에 `VIBECODING`이 1건 있다.
+  두 과목이 함께 쓰는 kit이 한 조직명을 달고 있는 것은 맞다. **고치려 했으나 되돌렸다** —
+  사유는 아래 ⑥. 대신 ⑤의 스캔 확장으로 **이 두 줄이 이제 WARN으로 지목된다**(종전에는
+  아무도 보지 않았다). 조용히 지우는 것보다 **게이트가 계속 지목하게 두는 편**이 낫다.
+
+### ⑤ ★★ 그리고 이 넷을 **게이트가 하나도 보지 않고 있었다** — 미탐 해소
+
+`verify_subject_isolation.py`의 스캔 범위는 «문서(.md) + 테마 선언»뿐이었다. 그래서
+**새 덱으로 그대로 상속되는 자산**(복사되는 스타터 · 링크되는 공용 CSS)은 사각지대였고,
+공용 kit에 한 과목의 브랜드가 **31곳** 있는 동안 게이트는 내내 **PASS**였다.
+오탐은 시끄러워서 발견되지만 미탐은 PASS로 위장한다 — 이 저장소가 반복해서 당한 형태다.
+
+→ `SCAN_WARN`에 `kit/starter/*`·`kit/styles/*.css` 편입. 편입 기준은 **「그 파일의 내용이
+새 과목의 덱으로 상속되는가」**다 — 카탈로그(열람용)·CHANGELOG(변경 이력)는 상속되지 않으므로
+일부러 뺐다(범위를 넓히는 것이 목적이 아니라 상속 경로를 덮는 것이 목적이다).
+
+- 스캔 대상 파일 **8 → 14개**. 신설 시점 실측 **오탐 0 · 미탐 0**(위 ④에서 리터럴을
+  전량 제거한 뒤라 신규 WARN 0건). 규율대로 **WARN으로 시작**한다.
+- **부수 효과**: `SKU LIKELION`을 프로필 §8에 **등재했다**(리터럴 8 → 9). 1차 때는
+  「등재하면 상시 FAIL이니 제외」였다. 그런데 그 문자열이 있는 `kit/styles/deck.css`는
+  **FAIL 대상이 아니라 WARN 대상**이므로 등재해도 차단되지 않는다 — 「제외」의 전제부터
+  틀렸던 것이다. 등재 후 실측: **WARN 56 → 58**(`deck.css:2` `SKU LIKELION` ·
+  `deck.css:283` `VIBECODING`), 결과는 여전히 **PASS · exit 0**.
+  **누출을 지운 것이 아니라 «보이게» 만든 것이 이 절의 성과다.**
+
+### ⑥ 분리한 것 — `kit/styles/deck.css`의 선행 R-QC-14 위반 11건 (이번 범위 밖)
+
+위 ④의 조직명 주석을 고치려고 `kit/styles/deck.css`를 스테이징하자 pre-commit이 막았다:
+
+```
+[FAIL] CSS lint (R-QC-14 · hook_slide_guard --mode css-lint)
+R-QC-14 위반 — display:block이 후손 b/span 선택자에 걸린 CSS가 있습니다.
+  729 .note b · 843/844 .actor-card · 863/864 .flow-step · 872/874 .work-step
+  946/947 .risk-card · 1000/1001 .pricing-method     (11건)
+```
+
+**내 변경이 만든 것이 아니다** — HEAD 판본을 같은 방식으로 린트해도 **동일한 11건 · exit 1**이다
+(내 diff는 주석 2줄뿐). 이 훅은 `.css`가 **스테이징될 때만** 발화하는데 이 파일이 오래
+스테이징된 적이 없어 잠복해 있었다.
+
+⚠️ **부수 발견 — `--path` 모드는 이 파일을 조용히 건너뛴다.** 같은 파일을
+`--mode css-lint --path kit/styles/deck.css`로 돌리면 **exit 0**이 나온다(대상 힌트에 안 걸려
+조기 반환). 즉 그 0은 「위반 없음」이 아니라 **「아무것도 안 봄」**이다 — 이 저장소가
+반복해서 당한 눈먼 0의 또 한 사례다. 실제 판정은 `--stdin-paths`만 한다.
+
+**고치지 않고 되돌린 이유**: 선택자를 `.foo > b`로 좁히는 것은 색·로고 범위 밖이고,
+**동결 덱 3개가 링크하는 레이아웃 CSS의 기하를 바꿀 수 있다**(D-1). 이번 변경 묶음을
+그 위험과 얽히게 하지 않으려고 분리했다. 별건으로 다룰 항목이다.
+
+### 재검토 후 검증 (전 게이트)
+
+```
+회귀 12모듈                     Ran 275 tests · OK · exit 0   (261 → 266 → 275, 신설 14건)
+run_deck_checks 1·2·3주차        전부 exit 0 · WARN 래칫 전부 불변
+                                 구조 8/2/1 · 품질 7/8/5 · 렌더 83/198/9
+verify_declared_vs_enforced.py   RESULT | PASS | 새 불일치 0 · exit 0
+verify_subject_isolation.py      결과: PASS — 과목 고유 값 0건 · exit 0 (리터럴 18종 · 대상 14파일 · WARN 58)
+verify_kit.py                    exit 0
+뮤테이션 매트릭스(정본 경로 재실행)  정상본 PASS ∧ 변형 4/4 검출 · 미탐 0
+```
+
+**신설 회귀 9건** — `ThemeStylesheetLinkTests` 5(테마 링크 해석·themes/ 밖 동명 파일 무시·
+원격 무시·2개 링크 보고) · `IsolationScanCoversInheritedKitAssetsTests` 4(상속 자산 스캔 포함·
+열람용 제외·심은 리터럴 실검출·공용 kit 무누출).
 
 ## 범위 밖 발견 (고치지 않고 기록만)
 

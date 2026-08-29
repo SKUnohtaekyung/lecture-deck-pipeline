@@ -361,6 +361,50 @@ def linked_kit_css(html_text, deck_path, basenames, tags=None):
     return found
 
 
+def linked_theme_tokens(html_text, deck_path, tags=None):
+    """덱이 링크한 `kit/themes/<이름>/tokens.css`를 (테마명, 본문) 목록으로 돌려준다.
+
+    ⚠️ 왜 필요한가 (2026-08-29 · likelionSKU 등재 실측)
+    테마 파일은 «선언»이고 집행은 `kit/styles/deck.css`였다. 그래서 두 번째 테마를
+    등재하고 나니 **그 테마로는 정상적인 주차 덱을 만들 수 없었다** — 실제 주차 덱처럼
+    정본 kit을 링크하면 `deck.css :root`가 default 팔레트라 「[kit] 토큰 값 정확」이
+    FAIL했다(실측: `--blue:#3060C3` 외 4건 누락). 통과시키는 유일한 방법이 kit CSS를
+    통째로 복사해 `:root`만 바꾼 사본을 두는 것이었는데, 그건 드리프트 보장 장치다.
+
+    그래서 테마 파일을 **링크 대상**으로 승격한다. 덱은 `deck.css`(베이스) 다음에
+    `kit/themes/<이름>/tokens.css`를 링크하고, CSS 캐스케이드가 `:root`를 덮는다.
+    - default 테마 덱은 아무것도 더 링크하지 않는다 → **기존 산출물 렌더 무변경**(D-1).
+    - 검사기는 «링크된 테마»의 선언을 팔레트 기대값으로 함께 본다(아래 호출부).
+    - 과목이 지정한 테마와 **다른** 테마를 링크하면 여전히 FAIL한다(값이 안 맞으니까).
+    """
+    if tags is None:
+        tags, _ = parse_document(html_text)
+    out = []
+    base = Path(deck_path).resolve().parent
+    for tag in tags:
+        if tag.name != 'link':
+            continue
+        href = tag.attrs.get('href')
+        if not href:
+            continue
+        clean = href.split("?", 1)[0].split("#", 1)[0]
+        if not clean or re.match(r'^(?:https?:|data:|//)', clean, re.I):
+            continue
+        try:
+            css_path = (base / unquote(clean)).resolve()
+        except (OSError, ValueError):
+            continue
+        if css_path.name != 'tokens.css' or not css_path.is_file():
+            continue
+        if css_path.parent.parent.name != 'themes':
+            continue
+        try:
+            out.append((css_path.parent.name, css_path.read_text(encoding='utf-8')))
+        except OSError:
+            pass
+    return out
+
+
 def collect_css(html_text, deck_path, tags=None, elements=None):
     """덱에 실제로 적용되는 CSS(인라인 <style> + 로컬 링크 CSS)를 CssBundle로 반환.
     CSS 주석은 반환 전에 제거한다(검사 오탐 원인 제거)."""
@@ -1894,7 +1938,21 @@ def main():
     if deckcss is not None:
         # (3) :root 토큰 값 정확성(부분문자열 매칭 · 공백정규화 · hex 대소문자 무시)
         rootm = re.search(r':root\s*\{(.*?)\}', deckcss, re.S)
-        root_norm = re.sub(r'\s+', '', rootm.group(1)).lower() if rootm else ''
+        root_src = rootm.group(1) if rootm else ''
+        # 덱이 «테마 파일»을 함께 링크했으면 그 :root도 기대값 원천에 포함한다.
+        # CSS 캐스케이드에서 뒤에 링크된 테마가 deck.css :root를 덮으므로, 화면에
+        # 실제로 적용되는 값은 테마 쪽이다. 검사기가 이것을 못 보면 「정상적으로
+        # 테마를 적용한 덱」이 FAIL한다(2026-08-29 실측 — 그래서 이 줄이 있다).
+        _linked_themes = linked_theme_tokens(html, a.deck, tags=tags)
+        chk(len(_linked_themes) <= 1,
+            f"[kit] 테마 스타일시트 링크 {len(_linked_themes)}개(0 또는 1)",
+            f"[kit] 테마 파일을 {len(_linked_themes)}개 링크했다 {[n for n, _ in _linked_themes]} — "
+            f"어느 값이 이기는지 파일 순서에 의존하게 된다. 하나만 링크하라")
+        for _tname, _tcss in _linked_themes:
+            _tm = re.search(r':root\s*\{(.*?)\}', _tcss, re.S)
+            if _tm:
+                root_src += chr(10) + _tm.group(1)
+        root_norm = re.sub(r'\s+', '', root_src).lower()
         # 기대값은 **활성 테마 선언**에서 읽는다(2026-08-24 P3). 종전에는 바이브코딩
         # 팔레트 hex 6개가 이 줄에 하드코딩돼 있어서, 링크 추종으로 고치는 순간
         # 두 번째 테마가 **무조건 FAIL**하는 구조였다 — 버그(고정 경로)가 버그

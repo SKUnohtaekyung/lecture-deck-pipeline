@@ -220,6 +220,82 @@ class GateModulesImportWithoutACourseTests(unittest.TestCase):
         self.assertIn("OK", proc.stdout or "")
 
 
+class IsolationScanCoversInheritedKitAssetsTests(unittest.TestCase):
+    """새 덱으로 «상속»되는 kit 자산이 격리 스캔 범위 안에 있는가 (2026-08-29 신설).
+
+    미탐이었다. 종전 스캔 범위는 문서(.md)와 테마 선언뿐이라, **복사돼 새 덱이 되는
+    스타터**와 **모든 덱에 링크되는 공용 CSS**는 아무도 보지 않았다. 실측 결과 공용
+    kit에 한 과목의 브랜드가 31곳 있었는데 게이트는 내내 PASS였다 — 오탐은 시끄러워서
+    발견되지만 미탐은 PASS로 위장한다.
+
+    편입 기준은 «그 파일의 내용이 새 과목의 덱으로 상속되는가»다. 아틀라스(열람용)와
+    CHANGELOG(변경 이력)는 상속되지 않으므로 일부러 뺐다 — 범위를 넓히는 것이 목적이
+    아니라 «상속 경로»를 덮는 것이 목적이다.
+    """
+
+    def setUp(self):
+        import importlib
+        import sys as _s
+        repo = Path(__file__).resolve().parent.parent
+        _s.path.insert(0, str(repo / "scripts"))
+        self.vsi = importlib.import_module("verify_subject_isolation")
+        self.repo = repo
+
+    def test_starter_and_shared_styles_are_scanned(self):
+        covered = set(self.vsi.expand(self.vsi.SCAN_FAIL) + self.vsi.expand(self.vsi.SCAN_WARN))
+        for path in ("kit/starter/deck-template.html", "kit/starter/logo.svg",
+                     "kit/styles/deck.css"):
+            self.assertIn(path, covered,
+                          "상속되는 kit 자산이 스캔 범위 밖이다 — 미탐 구간: %s" % path)
+
+    def test_reference_only_assets_stay_out_of_scope(self):
+        """열람용 아틀라스·변경 이력까지 끌어들이면 예시·이력이 전부 잡혀 소음이 된다."""
+        covered = set(self.vsi.expand(self.vsi.SCAN_FAIL) + self.vsi.expand(self.vsi.SCAN_WARN))
+        for path in ("kit/layouts/catalog.html", "kit/CHANGELOG.md"):
+            self.assertNotIn(path, covered, path)
+
+    def test_scan_actually_flags_a_planted_literal(self):
+        """범위에 넣는 것과 «실제로 잡는 것»은 다르다 — 심어서 확인한다."""
+        import tempfile
+        with tempfile.TemporaryDirectory() as td:
+            f = Path(td) / "deck-template.html"
+            f.write_text("<title>강의덱 — 어떤과목브랜드</title>", encoding="utf-8")
+            hits, _rounds = self.vsi.scan([str(f)], ["어떤과목브랜드"])
+            self.assertEqual(len(hits), 1, hits)
+
+    #: 공용 kit에 «알려진» 과목 리터럴 — (파일, 리터럴). 새 누출은 이 목록에 없으므로 실패한다.
+    #
+    # 왜 0이 아니라 목록인가: `kit/styles/deck.css`의 두 줄(파일 헤더의 조직명 ·
+    # `.s-brand` 트래킹 근거 주석)은 **고치려다 되돌렸다**. 그 파일을 스테이징하면
+    # pre-commit이 **선행 R-QC-14 위반 11건**으로 막는데(내 변경과 무관 · HEAD도 동일),
+    # 선택자를 좁히는 것은 동결 덱이 링크하는 레이아웃 CSS의 기하를 바꿀 수 있어
+    # 색·로고 작업과 얽히게 하지 않았다. 상세는 `plans/likelionSKU-theme/RESULTS.md` 재검토 ⑥.
+    #
+    # ⚠️ 「아직 못 고쳤다」를 **0으로 반올림하지 않는다.** 목록으로 고정해 두면
+    #    ① 남은 누출이 계속 보이고 ② 새 누출은 즉시 실패한다. 고치면 목록에서 지운다.
+    KNOWN_KIT_LEAKS = {
+        ("kit/styles/deck.css", "SKU LIKELION"),
+        ("kit/styles/deck.css", "VIBECODING"),
+    }
+
+    def test_shared_kit_has_no_unknown_course_literal(self):
+        """상속 경로의 누출은 «알려진 것»뿐이어야 한다 — 새 누출은 실패한다."""
+        lits = []
+        for prof in self.vsi.discover_profiles() or []:
+            lits.extend(self.vsi.read_profile_literals(prof) or [])
+        inherited = [p for p in self.vsi.expand(self.vsi.SCAN_WARN)
+                     if p.startswith("kit/")]
+        self.assertTrue(inherited, "상속 자산 스캔 대상이 비었다 — 범위 설정 오류")
+        hits, _rounds = self.vsi.scan(inherited, lits)
+        found = {(path, lit) for path, _ln, lit, _ctx in hits}
+        new_leaks = found - self.KNOWN_KIT_LEAKS
+        self.assertEqual(new_leaks, set(),
+                         "공용 kit에 새 과목 리터럴이 새어 들어왔다: %s" % (sorted(new_leaks),))
+        fixed = self.KNOWN_KIT_LEAKS - found
+        self.assertEqual(fixed, set(),
+                         "누출이 해소됐다 — KNOWN_KIT_LEAKS에서 지워라: %s" % (sorted(fixed),))
+
+
 class SubjectIsolationSurvivesMultiCourseTests(unittest.TestCase):
     """`verify_subject_isolation.py`가 다과목에서 자멸하지 않는가 (F4 최상급 사례)."""
 

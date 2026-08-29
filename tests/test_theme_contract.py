@@ -21,11 +21,15 @@ from __future__ import annotations
 
 import io
 import re
+import sys
 import unittest
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
 DECK_CSS = REPO / "kit" / "styles" / "deck.css"
+sys.path.insert(0, str(REPO / "scripts"))
+import verify_deck  # noqa: E402
+
 THEMES_DIR = REPO / "kit" / "themes"
 DEFAULT_THEME = THEMES_DIR / "default" / "tokens.css"
 
@@ -93,6 +97,74 @@ class EveryThemeIsCompleteTests(unittest.TestCase):
                                  f"테마 '{path.parent.name}'의 토큰 이름 집합이 다르다 "
                                  f"(빠짐 {sorted(enforced - declared)} · "
                                  f"군더더기 {sorted(declared - enforced)})")
+
+
+class ThemeStylesheetLinkTests(unittest.TestCase):
+    """테마 파일이 «링크 대상»으로 승격된 뒤의 거동을 고정한다(2026-08-29).
+
+    왜 이 테스트가 생겼나 — 두 번째 테마를 등재하고 나서야 드러난 구멍이다.
+    테마 파일은 «선언»이고 집행은 `kit/styles/deck.css`였다. 그래서 등재된 테마로
+    **정상적인 주차 덱을 만들 수 없었다**: 실제 주차 덱처럼 정본 kit을 링크하면
+    `deck.css :root`가 default 팔레트라 「[kit] 토큰 값 정확」이 FAIL했다(실측
+    `--blue:#3060C3` 외 4건). 통과시키는 유일한 길이 kit CSS 전체를 복사해 `:root`만
+    바꾼 사본을 두는 것이었는데, 그건 드리프트 보장 장치다.
+
+    이제 덱은 `deck.css` 다음에 `kit/themes/<이름>/tokens.css`를 링크하고 캐스케이드가
+    `:root`를 덮는다. default 테마 덱은 아무것도 더 링크하지 않으므로 **기존 동결
+    산출물의 렌더는 바뀌지 않는다**(D-1).
+    """
+
+    def _deck(self, root, links):
+        tags = "".join('<link rel="stylesheet" href="%s">' % h for h in links)
+        deck = root / "강의덱.html"
+        deck.write_text("<html><head>" + tags + "</head><body></body></html>",
+                        encoding="utf-8")
+        return deck
+
+    def setUp(self):
+        import tempfile
+        self.tmp = tempfile.TemporaryDirectory()
+        self.root = Path(self.tmp.name)
+        (self.root / "kit" / "themes" / "코발트").mkdir(parents=True)
+        (self.root / "kit" / "themes" / "코발트" / "tokens.css").write_text(
+            ":root{ --blue:#3060C3; }", encoding="utf-8")
+        (self.root / "kit" / "styles").mkdir(parents=True)
+        (self.root / "kit" / "styles" / "tokens.css").write_text(
+            ":root{ --blue:#000000; }", encoding="utf-8")   # themes/ 밖 동명 파일
+        self.addCleanup(self.tmp.cleanup)
+
+    def test_linked_theme_is_found_with_its_name(self):
+        deck = self._deck(self.root, ["kit/themes/코발트/tokens.css"])
+        got = verify_deck.linked_theme_tokens(deck.read_text(encoding="utf-8"), str(deck))
+        self.assertEqual([n for n, _ in got], ["코발트"])
+        self.assertIn("#3060C3", got[0][1])
+
+    def test_no_theme_link_returns_empty(self):
+        """default 테마 덱 — 아무것도 더 링크하지 않는다. 종전 거동 그대로여야 한다."""
+        deck = self._deck(self.root, ["kit/styles/deck.css"])
+        self.assertEqual(
+            verify_deck.linked_theme_tokens(deck.read_text(encoding="utf-8"), str(deck)), [])
+
+    def test_tokens_css_outside_themes_dir_is_not_a_theme(self):
+        """`themes/` 밖의 동명 파일을 테마로 오인하면 엉뚱한 팔레트가 기대값이 된다."""
+        deck = self._deck(self.root, ["kit/styles/tokens.css"])
+        self.assertEqual(
+            verify_deck.linked_theme_tokens(deck.read_text(encoding="utf-8"), str(deck)), [])
+
+    def test_remote_stylesheet_is_ignored(self):
+        deck = self._deck(self.root, ["https://cdn.example/themes/x/tokens.css"])
+        self.assertEqual(
+            verify_deck.linked_theme_tokens(deck.read_text(encoding="utf-8"), str(deck)), [])
+
+    def test_two_theme_links_are_reported_so_the_gate_can_fail(self):
+        """둘을 링크하면 어느 값이 이기는지 파일 순서에 의존한다 — 게이트가 막아야 한다."""
+        (self.root / "kit" / "themes" / "다른").mkdir(parents=True)
+        (self.root / "kit" / "themes" / "다른" / "tokens.css").write_text(
+            ":root{ --blue:#111111; }", encoding="utf-8")
+        deck = self._deck(self.root, ["kit/themes/코발트/tokens.css",
+                                      "kit/themes/다른/tokens.css"])
+        got = verify_deck.linked_theme_tokens(deck.read_text(encoding="utf-8"), str(deck))
+        self.assertEqual(len(got), 2, got)
 
 
 class ThemeContractDocTests(unittest.TestCase):

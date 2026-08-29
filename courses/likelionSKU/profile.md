@@ -60,6 +60,9 @@
 | 스타터 경로 | `kit/starter/deck-template.html` · `kit/starter/presenter-notes-template.html` — 이 저장소의 공용 스타터(과목 전용 스타터는 아직 없음) |
 | 테마 | `likelionSKU` |
 
+> **적용**: 덱이 kit CSS 3종을 링크한 **다음에** `kit/themes/likelionSKU/tokens.css`를
+> 링크한다(캐스케이드가 `:root`를 덮는다). 규약 정본 `kit/guide/테마-계약.md` §6.
+>
 > **테마는 포인터만 적는다.** 값(색·타이포 토큰)의 정본은 `kit/themes/likelionSKU/tokens.css`이고,
 > 무엇이 테마마다 바뀌고 무엇이 전 테마 공통으로 고정되는지는 `kit/guide/테마-계약.md`가 정본이다.
 > 과목과 테마는 N:1이다(`kit/guide/테마-계약.md` §3, G2). 이 문서 작성 시점에 `kit/themes/likelionSKU/tokens.css`는
@@ -94,12 +97,13 @@
 - 비즈니스 비전공
 - 26~33장
 - 30~31장
+- SKU LIKELION
 
 ### 검사에서 제외한 것과 사유
 
 | 대상 | 사유 |
 |---|---|
-| `SKU LIKELION`(워드마크 전체 문자열) | **등재하지 않음.** `rg -F "SKU LIKELION" SKILL.md kit/ references/phases/ skills/` → `kit/styles/deck.css`에 1건 이미 존재("SKU LIKELION 강의덱 — 디자인 시스템 + 레이아웃 모듈"). 이 kit 파일 헤더 주석은 **이 저장소의 공용 레이아웃 CSS가 원래 `BM_수익모델_강의덱.html`에서 추출됐다는 이력 기록**이며, 새 과목 값 누출이 아니다. 등재하면 항상 FAIL하므로 워드마크는 §5에만 값으로 남기고 §8에는 올리지 않는다 |
+| `SKU LIKELION`(워드마크 전체 문자열) | **2026-08-29 등재로 전환.** 최초에는 `kit/styles/deck.css` 헤더 주석에 1건 있어 「등재하면 상시 FAIL」이라 제외했었다. **그 전제가 틀렸다** — 그 파일은 `SCAN_FAIL`이 아니라 `SCAN_WARN` 대상이라 등재해도 차단되지 않는다. 등재 후 실측 WARN 56 → 58(`deck.css:2`·`deck.css:283`)이고 결과는 PASS·exit 0. 워드마크는 이제 **게이트가 지목한다** — 스킬 본문(FAIL 대상)에 새어 들어가면 즉시 막힌다. 공용 kit의 그 두 줄은 별건으로 정리한다(선행 R-QC-14 위반과 얽혀 있어 분리했다 — `plans/likelionSKU-theme/RESULTS.md` 재검토 ⑥) |
 | `린캔버스` | **등재하지 않음.** 같은 `rg` 방식으로 `kit/styles/deck.css`에 2건 존재(`.canvas-fill` 설명 주석, `.lean-slide` 도형 주석 "린캔버스 9칸"). `SKU LIKELION`과 같은 이유(공용 kit이 원본에서 추출된 이력) — 등재 시 항상 FAIL |
 | `LIKELION` · `SKU`(단독 토큰) | **등재하지 않음.** 위 두 항목과 같은 줄에서 검출되는 데다, 단독으로는 너무 일반적인 토큰이라 무관한 문맥과 충돌할 위험이 크다 |
 | `likelionSKU`(과목 폴더명) | **의도적 제외(작업 지시).** 테마 폴더명 `kit/themes/likelionSKU/`와 동일 문자열이라 "모든 출현이 운영 파라미터" 조건을 채우지 못한다. 등재하면 `tokens.css` 헤더·테마 계약 문서의 테마명 표기가 전부 FAIL로 오탐한다 |

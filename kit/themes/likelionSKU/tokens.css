@@ -85,11 +85,18 @@
   /* ── 라운드 (소프트 벤토) ── */
   --r-lg:20px; --r-md:14px; --r-sm:10px; --r-pill:999px;
 
-  /* ── 섀도우 — default 유지(비색) ── */
+  /* ── 섀도우 (블루 틴트) ──
+     ⚠️ 그림자는 계약 계수상 «비색»이지만 **값 안에 브랜드 색을 품는다.** default의
+        rgba(29,78,216,…)는 default `--blue`(#1D4ED8)이므로, 그대로 두면 이 테마의
+        덱이 **자기 팔레트에 없는 파랑으로 그림자를 드리운다.** 색상만 이 테마의
+        `--blue`(#3060C3 = rgb(48,96,195))로 옮겼다 — 원본도 같은 값으로 틴트한다
+        (원본 deck.css에서 rgba(48,96,195,…) 5종 실측). **투명도·오프셋·블러는
+        default 그대로**라 그림자의 «무게» 체계는 바뀌지 않는다.
+        중립 그림자(--shadow-sm)는 잉크 기반이라 손대지 않았다. */
   --shadow-sm:0 6px 16px rgba(20,24,33,.05);
-  --shadow-md:0 10px 30px rgba(29,78,216,.07);
-  --shadow-lg:0 16px 40px rgba(29,78,216,.10);
-  --shadow-blue:0 10px 26px rgba(29,78,216,.30);
+  --shadow-md:0 10px 30px rgba(48,96,195,.07);
+  --shadow-lg:0 16px 40px rgba(48,96,195,.10);
+  --shadow-blue:0 10px 26px rgba(48,96,195,.30);
 
   /* ── 코드 폰트 ── */
   --font-mono:"JetBrains Mono","D2Coding",ui-monospace,SFMono-Regular,Menlo,monospace;
