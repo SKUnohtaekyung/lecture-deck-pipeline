@@ -167,6 +167,76 @@ class ThemeStylesheetLinkTests(unittest.TestCase):
         self.assertEqual(len(got), 2, got)
 
 
+class EveryThemeMeetsTypeFloorsTests(unittest.TestCase):
+    """등재 조건 ㉡(토큰 값 ↔ R-TYPE-01 역할별 하한)을 **회귀로** 고정한다(2026-08-29 신설).
+
+    왜 필요한가 — 종전에 ㉡은 «등재 시점에 사람이 한 번 돌리는 절차»였다(계약 §4㉡).
+    절차는 잊히고, 잊히면 계약 §4㉡이 경고한 바로 그 일이 일어난다:
+    **테마가 스스로 하한 미달을 생산하면 그 테마로 만든 모든 덱이 첫날부터 FAIL한다.**
+    `EveryThemeIsCompleteTests`는 토큰 «이름»만 보므로 값이 22 → 14로 떨어져도 통과한다.
+
+    하한의 정본은 **집행부**(`scripts/audit_typography.js`의 `TIERS`)에서 읽는다 —
+    여기 숫자를 복제하면 그 복제본이 정본과 어긋나는 것이 이 저장소의 반복 사고다.
+    """
+
+    #: 하한을 «직접» 지는 역할 토큰 → audit_typography.js TIERS의 티어 이름
+    FLOOR_BEARING = {
+        "--fs-body": "narrative",
+        "--fs-lead": "narrative",
+        "--fs-box-desc": "boxDesc",
+        "--fs-table": "table",
+        "--fs-caption": "label",
+        "--fs-eyebrow": "label",
+        "--fs-badge": "badge",
+    }
+    #: 본문보다 커야 하는 디스플레이 계열 — 본문 하한(narrative) 아래로 내려가면 안 된다
+    ABOVE_BODY = ("--fs-cover", "--fs-part", "--fs-display-lg", "--fs-display",
+                  "--fs-title", "--fs-box-title")
+
+    @classmethod
+    def setUpClass(cls):
+        js = io.open(REPO / "scripts" / "audit_typography.js", encoding="utf-8").read()
+        m = re.search(r"rules\.TIERS\s*=\s*\{(.*?)\};", js, re.S)
+        assert m, "audit_typography.js에서 TIERS 블록을 찾지 못했다 — 집행 정본 위치가 바뀌었나?"
+        cls.floors = {k: int(v) for k, v in
+                      re.findall(r"(\w+)\s*:\s*\{\s*floor:\s*(\d+)", m.group(1))}
+        assert cls.floors, "TIERS를 파싱하지 못했다"
+
+    def test_floors_were_read_from_the_enforcer(self):
+        """하한을 못 읽었는데 통과하면 «아무것도 안 본» PASS다 — 눈먼 0 방지."""
+        for tier in ("narrative", "boxDesc", "table", "label", "badge"):
+            self.assertIn(tier, self.floors, "집행부에서 %s 티어를 못 읽었다" % tier)
+
+    def test_every_theme_meets_every_role_floor(self):
+        themes = sorted(p for p in THEMES_DIR.glob("*/tokens.css"))
+        self.assertTrue(themes, "kit/themes/ 아래에 테마가 하나도 없다")
+        judged = 0
+        for path in themes:
+            declared = _root_tokens(io.open(path, encoding="utf-8").read())
+            with self.subTest(theme=path.parent.name):
+                for token, tier in self.FLOOR_BEARING.items():
+                    self.assertIn(token, declared, token)
+                    px = int(re.match(r"(\d+)", declared[token]).group(1))
+                    judged += 1
+                    self.assertGreaterEqual(
+                        px, self.floors[tier],
+                        "테마 '%s'의 %s = %dpx 가 %s 하한 %dpx 미만이다 — "
+                        "이 테마로 만든 모든 덱이 첫날부터 FAIL한다(계약 §4㉡)"
+                        % (path.parent.name, token, px, tier, self.floors[tier]))
+                for token in self.ABOVE_BODY:
+                    self.assertIn(token, declared, token)
+                    px = int(re.match(r"(\d+)", declared[token]).group(1))
+                    judged += 1
+                    self.assertGreaterEqual(
+                        px, self.floors["narrative"],
+                        "테마 '%s'의 %s = %dpx 가 본문 하한 %dpx 미만이다"
+                        % (path.parent.name, token, px, self.floors["narrative"]))
+        # 「대상 계수 0」은 통과가 아니라 미판정이다(AGENTS 2026-08-24 집행).
+        expect = len(themes) * (len(self.FLOOR_BEARING) + len(self.ABOVE_BODY))
+        self.assertEqual(judged, expect,
+                         "판정 %d건 · 기대 %d건 — 미판정이 섞였다" % (judged, expect))
+
+
 class ThemeContractDocTests(unittest.TestCase):
     """계약 문서가 실재하고, 동결 어휘를 실제로 등재하고 있는가."""
 
