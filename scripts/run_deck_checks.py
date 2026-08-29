@@ -159,12 +159,19 @@ def _week_num(week: str) -> str:
 
 
 def _session_dir(week_num: str) -> str:
-    if _course_paths is not None:
-        try:
-            return _course_paths.session_dir(week_num, ROOT)
-        except Exception:
-            pass
-    return os.path.join(ROOT, "courses", "바이브코딩", "sessions", f"{week_num}주차")
+    """N주차 폴더. **모호하면 조용히 고르지 않는다.**
+
+    ⚠️ 2026-08-29 정정 — 종전에는 `except Exception: pass` 뒤에 «바이브코딩» 하드코딩
+       폴백이 있었다. 그런데 `_course_paths.session_dir()`은 구경로 세계(=`courses/`가
+       없는 구조)를 **스스로** 폴백 처리하므로, 여기까지 예외가 올라오는 경우는 사실상
+       «과목이 둘 이상인데 지정되지 않음» 하나뿐이다. 즉 그 폴백은 구경로 지원이 아니라
+       **남의 과목 주차를 조용히 채점하는 경로**였다(적대적 검증 실측: 경고 한 줄 없이
+       `courses/바이브코딩/sessions/1주차`를 골라 통과).
+       저장소의 다른 게이트는 같은 상황에서 전부 시끄럽게 죽는다 — 여기만 관대할 이유가 없다.
+    """
+    if _course_paths is None:                 # 해석기 자체를 못 읽은 경우만 구경로로 간다
+        return os.path.join(ROOT, "sessions", f"{week_num}주차")
+    return _course_paths.session_dir(week_num, ROOT)
 
 
 def _rel(p: str) -> str:

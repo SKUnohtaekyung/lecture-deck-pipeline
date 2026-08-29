@@ -237,6 +237,111 @@ class EveryThemeMeetsTypeFloorsTests(unittest.TestCase):
                          "판정 %d건 · 기대 %d건 — 미판정이 섞였다" % (judged, expect))
 
 
+class PaletteGateResistsBypassTests(unittest.TestCase):
+    """팔레트 검사가 «파일 텍스트»가 아니라 «적용되는 CSS»를 보는지 고정한다(2026-08-29).
+
+    적대적 검증에서 **화면은 틀린 색인데 게이트는 PASS**인 덱을 6가지로 만들 수 있었다.
+    전부 같은 뿌리였다 — 검사가 링크된 `deck.css`의 «텍스트»에서 기대문자열을 substring
+    으로 찾았기 때문이다. 아래가 그 6가지를 각각 고정한다. 하나라도 통과하면 미탐이다.
+    """
+
+    def _build(self, root, head_extra="", theme_value="#3060C3"):
+        (root / "kit" / "styles").mkdir(parents=True, exist_ok=True)
+        (root / "kit" / "styles" / "deck.css").write_text(
+            ":root{ --blue:#1D4ED8; --mint:#14B8A6; }", encoding="utf-8")
+        (root / "kit" / "themes" / "cobalt").mkdir(parents=True, exist_ok=True)
+        (root / "kit" / "themes" / "cobalt" / "tokens.css").write_text(
+            ":root{ --blue:%s; --mint:#14B8A6; }" % theme_value, encoding="utf-8")
+        deck = root / "강의덱.html"
+        deck.write_text("<html><head>" + head_extra + "</head><body></body></html>",
+                        encoding="utf-8")
+        return deck
+
+    def setUp(self):
+        import tempfile
+        self.tmp = tempfile.TemporaryDirectory()
+        self.root = Path(self.tmp.name)
+        self.addCleanup(self.tmp.cleanup)
+        self.KIT = '<link rel="stylesheet" href="kit/styles/deck.css">'
+        self.THEME = '<link rel="stylesheet" href="kit/themes/cobalt/tokens.css">'
+
+    def _eff(self, deck):
+        eff, offenders, skipped = verify_deck.effective_palette(
+            deck.read_text(encoding="utf-8"), str(deck), {"--blue", "--mint"})
+        return eff, offenders, skipped
+
+    def test_correct_order_gives_the_theme_value(self):
+        """대조군 — 올바른 덱은 테마 값이 이겨야 한다(오탐 방지)."""
+        deck = self._build(self.root, self.KIT + self.THEME)
+        eff, offenders, _ = self._eff(deck)
+        self.assertEqual(eff.get("--blue"), "#3060C3")
+        self.assertEqual(offenders, [])
+
+    def test_reversed_link_order_yields_the_default_value(self):
+        """★ 테마를 먼저 링크하면 화면은 default다 — 검사도 그렇게 봐야 한다."""
+        deck = self._build(self.root, self.THEME + self.KIT)
+        eff, _o, _s = self._eff(deck)
+        self.assertEqual(eff.get("--blue"), "#1D4ED8",
+                         "링크 순서를 무시하면 «화면은 default인데 PASS»가 된다")
+
+    def test_inline_style_root_override_is_seen(self):
+        """덱 인라인 <style>의 :root 재정의를 못 보면 무엇이든 덮어쓸 수 있다."""
+        deck = self._build(self.root,
+                           self.KIT + self.THEME + "<style>:root{--blue:#FF00FF}</style>")
+        eff, _o, _s = self._eff(deck)
+        self.assertEqual(eff.get("--blue"), "#FF00FF")
+
+    def test_non_root_selector_is_reported_as_offender(self):
+        """.deck{--blue:…}는 하위 전체를 바꾸는데 documentElement의 computed 값은 정상이라
+        수동 점검조차 속는다 — 그래서 «:root 밖 선언» 자체를 위반으로 본다."""
+        deck = self._build(self.root,
+                           self.KIT + self.THEME + "<style>.deck{--blue:#00FF00}</style>")
+        _e, offenders, _s = self._eff(deck)
+        self.assertTrue(any(tok == "--blue" for _sel, tok in offenders), offenders)
+
+    def test_comment_cannot_forge_the_expected_value(self):
+        """주석에 기대값을 넣어 substring 매칭을 속이던 우회."""
+        (self.root / "kit" / "themes" / "fake").mkdir(parents=True)
+        (self.root / "kit" / "themes" / "fake" / "tokens.css").write_text(
+            ":root{ /* --blue:#3060C3 */ --blue:#000000; --mint:#14B8A6; }", encoding="utf-8")
+        deck = self._build(
+            self.root,
+            self.KIT + '<link rel="stylesheet" href="kit/themes/fake/tokens.css">')
+        eff, _o, _s = self._eff(deck)
+        self.assertEqual(eff.get("--blue"), "#000000",
+                         "주석을 제거하지 않으면 가짜 테마가 통과한다")
+
+    def test_disabled_and_print_only_links_do_not_count(self):
+        """링크는 있는데 화면에 적용되지 않는 경우 — 값은 반영되지 않고 사유가 남아야 한다."""
+        for extra in ('<link rel="stylesheet" href="kit/themes/cobalt/tokens.css" disabled>',
+                      '<link rel="stylesheet" href="kit/themes/cobalt/tokens.css" media="print">'):
+            with self.subTest(extra=extra):
+                deck = self._build(self.root, self.KIT + extra)
+                eff, _o, skipped = self._eff(deck)
+                self.assertEqual(eff.get("--blue"), "#1D4ED8")
+                self.assertTrue(skipped, "건너뛴 사유가 기록되지 않으면 조용한 통과다")
+
+
+class UnresolvedThemeIsUnjudgedTests(unittest.TestCase):
+    """활성 테마를 특정하지 못하면 «미판정»이어야 한다 — default로 가정하면 항등식 PASS다.
+
+    종전에는 과목이 모호하거나 프로필 §5 표기가 흔들리면 조용히 `default`로 떨어졌다.
+    `kit/themes/default/tokens.css`는 항상 읽히므로 토큰 dict가 비지 않고, 호출부는
+    dict가 빌 때만 미판정을 기록한다 — 그래서 **해석 실패가 어디에도 안 남은 채**
+    deck.css(default 하드코딩)와 default 테마를 대조하는 항등식이 됐다.
+    적대적 검증에서 두 경로로 독립 재현됐다.
+    """
+
+    def test_ambiguous_course_returns_empty_tokens_not_default(self):
+        import os
+        from unittest import mock
+        with mock.patch.dict(os.environ, {"CREATE_SLIDES_COURSE": "존재하지않는과목"}):
+            name, tokens, why = verify_deck.load_active_theme(str(REPO / "scripts"))
+        self.assertEqual(tokens, {}, "해석 실패인데 토큰을 돌려주면 항등식 PASS가 된다")
+        self.assertEqual(name, "")
+        self.assertIn("특정할 수 없다", why)
+
+
 class ThemeContractDocTests(unittest.TestCase):
     """계약 문서가 실재하고, 동결 어휘를 실제로 등재하고 있는가."""
 
