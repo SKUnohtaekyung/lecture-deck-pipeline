@@ -265,18 +265,14 @@ class IsolationScanCoversInheritedKitAssetsTests(unittest.TestCase):
 
     #: 공용 kit에 «알려진» 과목 리터럴 — (파일, 리터럴). 새 누출은 이 목록에 없으므로 실패한다.
     #
-    # 왜 0이 아니라 목록인가: `kit/styles/deck.css`의 두 줄(파일 헤더의 조직명 ·
-    # `.s-brand` 트래킹 근거 주석)은 **고치려다 되돌렸다**. 그 파일을 스테이징하면
-    # pre-commit이 **선행 R-QC-14 위반 11건**으로 막는데(내 변경과 무관 · HEAD도 동일),
-    # 선택자를 좁히는 것은 동결 덱이 링크하는 레이아웃 CSS의 기하를 바꿀 수 있어
-    # 색·로고 작업과 얽히게 하지 않았다. 상세는 `plans/likelionSKU-theme/RESULTS.md` 재검토 ⑥.
+    # 2026-08-29 현재 **비어 있다.** 한때 `kit/styles/deck.css`의 두 줄(파일 헤더의 조직명 ·
+    # `.s-brand` 트래킹 근거 주석)이 있었고, 그것을 고치려면 같은 파일의 **선행 R-QC-14
+    # 위반 11건**을 먼저 풀어야 했다(pre-commit이 `.css` 스테이징 시 막는다). 같은 날 그
+    # 11건을 직계 선택자로 좁혀 해소한 뒤 주석도 정리해 0이 됐다.
     #
-    # ⚠️ 「아직 못 고쳤다」를 **0으로 반올림하지 않는다.** 목록으로 고정해 두면
-    #    ① 남은 누출이 계속 보이고 ② 새 누출은 즉시 실패한다. 고치면 목록에서 지운다.
-    KNOWN_KIT_LEAKS = {
-        ("kit/styles/deck.css", "SKU LIKELION"),
-        ("kit/styles/deck.css", "VIBECODING"),
-    }
+    # ⚠️ 「아직 못 고쳤다」를 **0으로 반올림하지 않는다.** 목록으로 두면 ① 남은 누출이
+    #    계속 보이고 ② 새 누출은 즉시 실패하며 ③ 고쳤는데 목록에 남아 있으면 그것도 실패한다.
+    KNOWN_KIT_LEAKS = set()
 
     def test_shared_kit_has_no_unknown_course_literal(self):
         """상속 경로의 누출은 «알려진 것»뿐이어야 한다 — 새 누출은 실패한다."""

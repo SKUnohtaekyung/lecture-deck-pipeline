@@ -1,5 +1,5 @@
 /* =====================================================================
-   SKU LIKELION 강의덱 — 디자인 시스템 + 레이아웃 모듈 (재사용 템플릿)
+   강의덱 kit — 디자인 시스템 + 레이아웃 모듈 (전 과목·전 테마 공통 재사용 템플릿)
    ---------------------------------------------------------------------
    원본: BM_수익모델_강의덱.html 에서 추출.
    핵심 변경: 원본의 슬라이드 번호 스코핑 [data-slide="Sxx"] 을
@@ -280,7 +280,7 @@ body{ font-family:"Pretendard","Pretendard Variable",-apple-system,"Apple SD Got
 .s-head{ position:absolute; top:34px; left:56px; right:56px; height:40px;
   display:flex; align-items:center; gap:14px; }
 .s-logo{ width:40px; height:40px; object-fit:contain; flex:0 0 auto; }
-.s-brand{ font-weight:800; font-size:30px; color:var(--black); letter-spacing:.02em; }  /* 영문 대문자 브랜드(VIBECODING) 트래킹 — 한글 시절 -.01em에서 상향 */
+.s-brand{ font-weight:800; font-size:30px; color:var(--black); letter-spacing:.02em; }  /* 영문 대문자 워드마크 트래킹 — 한글 시절 -.01em에서 상향 */
 .s-line{ flex:1; height:2px; background:var(--blue); margin:0 18px; border-radius:0; }
 .s-team{ font-size:16px; line-height:1.35; color:var(--ink); text-align:right;
   white-space:nowrap; font-weight:500; }
@@ -726,7 +726,7 @@ table.t tr:nth-child(even) td{ background:var(--surface-row); }
 .note-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-top:18px; }
 .note{ border:1px solid var(--blue-line); border-radius:18px; background:var(--blue-soft);
   padding:18px 18px 16px; box-shadow:0 8px 18px rgba(20,24,33,.045); }
-.note b{ display:block; margin-bottom:8px; color:var(--ink); font-size:18px; font-weight:800; }
+.note > b{ display:block; margin-bottom:8px; color:var(--ink); font-size:18px; font-weight:800; }
 .note p{ margin:0; color:var(--gray-700); font-size:15px; line-height:1.5; word-break:keep-all; }
 .note strong{ color:var(--coral-deep); font-weight:800; }
 /* 표 아래 태그 행(선택) */
@@ -840,8 +840,8 @@ table.t tr:nth-child(even) td{ background:var(--surface-row); }
 .actor-pair{ display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:18px 0 16px; }
 .actor-card{ border:1px solid var(--blue-line); border-radius:18px; background:var(--blue-soft);
   padding:20px 20px 18px; }
-.actor-card b{ display:block; color:var(--blue); font-size:24px; margin-bottom:8px; }
-.actor-card span{ display:block; color:var(--gray-700); font-size:17px; line-height:1.48; }
+.actor-card > b{ display:block; color:var(--blue); font-size:24px; margin-bottom:8px; }
+.actor-card > span{ display:block; color:var(--gray-700); font-size:17px; line-height:1.48; }
 .actor-rule{ margin:0 0 14px; font-size:20px; line-height:1.6; color:var(--gray-700); }
 .actor-rule strong{ color:var(--blue); font-weight:800; }
 .actor-slide .callout{ font-size:19px; padding:20px 22px; }
@@ -860,8 +860,8 @@ table.t tr:nth-child(even) td{ background:var(--surface-row); }
   padding:22px 24px; box-shadow:0 8px 18px rgba(20,24,33,.045); }
 .flow-step .n{ display:inline-grid; place-items:center; width:30px; height:30px;
   border-radius:50%; background:var(--blue); color:var(--white); font-size:14px; font-weight:800; margin-bottom:9px; }
-.flow-step b{ display:block; margin-bottom:6px; color:var(--ink); font-size:19px; font-weight:800; }
-.flow-step span{ display:block; color:var(--gray-700); font-size:15.5px; line-height:1.5; }
+.flow-step > b{ display:block; margin-bottom:6px; color:var(--ink); font-size:19px; font-weight:800; }
+.flow-step > span{ display:block; color:var(--gray-700); font-size:15.5px; line-height:1.5; }
 .flow-visual{ position:absolute; right:-2px; bottom:22px; width:650px; z-index:1; }
 /* 세로 1열 스텝(워크숍 지시) */
 .work-steps{ display:flex; flex-direction:column; gap:10px; margin:14px 0; }
@@ -869,9 +869,11 @@ table.t tr:nth-child(even) td{ background:var(--surface-row); }
   border:1px solid var(--mint-line); border-radius:var(--r-md); background:var(--mint-soft); padding:11px 16px; }
 .work-step .n{ width:42px; height:42px; border-radius:50%; display:grid; place-items:center;
   background:var(--mint); color:var(--on-mint); font-weight:800; }
-.work-step b{ display:block; font-size:18px; color:var(--ink); margin-bottom:3px; }
+.work-step > b,
+.work-step > div > b{ display:block; font-size:18px; color:var(--ink); margin-bottom:3px; }
 .work-step b:last-child{ margin-bottom:0; }
-.work-step span{ display:block; font-size:15px; line-height:1.45; color:var(--gray-700); }
+.work-step > span,
+.work-step > div > span{ display:block; font-size:15px; line-height:1.45; color:var(--gray-700); }
 
 /* ===================================================================
    [도형] 2열 비교 (.compare-slide) — 좌우 패널(한쪽 강조) + 하단 결론
@@ -943,8 +945,8 @@ table.t tr:nth-child(even) td{ background:var(--surface-row); }
   background:var(--blue-soft); color:var(--blue); font-size:14px; font-weight:800; }
 .risk-card.warn{ border-color:var(--coral-line); }
 .risk-card.warn .label{ background:var(--coral-soft); color:var(--coral-deep); }
-.risk-card b{ display:block; font-size:19px; color:var(--ink); margin-bottom:4px; }
-.risk-card span{ display:block; font-size:15px; line-height:1.45; color:var(--gray-700); }
+.risk-card > b{ display:block; font-size:19px; color:var(--ink); margin-bottom:4px; }
+.risk-card > span{ display:block; font-size:15px; line-height:1.45; color:var(--gray-700); }
 .risk-arrow{ text-align:center; color:var(--gray-400); font-size:18px; font-weight:800; margin:2px 0; }
 .risk-visual img{ width:430px; display:block; }
 
@@ -997,8 +999,8 @@ table.t tr:nth-child(even) td{ background:var(--surface-row); }
    =================================================================== */
 .pricing-methods{ display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:14px 0; }
 .pricing-method{ background:var(--blue-soft); border:1px solid var(--blue-line); border-radius:14px; padding:14px 16px; }
-.pricing-method b{ display:block; font-size:17px; color:var(--blue); margin-bottom:6px; }
-.pricing-method span{ display:block; font-size:14px; line-height:1.55; color:var(--gray-700); }
+.pricing-method > b{ display:block; font-size:17px; color:var(--blue); margin-bottom:6px; }
+.pricing-method > span{ display:block; font-size:14px; line-height:1.55; color:var(--gray-700); }
 .price-detail{ bottom:54px; display:flex; flex-direction:column; }
 .price-detail .s-title{ margin-bottom:18px; }
 .price-method-grid{ flex:1 1 auto; display:grid; grid-template-columns:1fr 1fr; gap:22px; align-content:center; }
