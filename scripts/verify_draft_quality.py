@@ -96,7 +96,16 @@ THRESH_QD07_ADJACENT_JACCARD = 0.25   # 인접 행 3-gram 자카드 유사도. W
 _GATE_FROM_PROFILE = {}
 
 
-def _load_profile_gates():
+def _load_profile_gates(course=None):
+    """과목 프로필 §2·§3에서 초안 임계를 읽어 모듈 전역에 싣는다.
+
+    ⚠️ **import 시점에 부르지 않는다**(2026-08-29). `verify_deck_quality._load_profile_gates`와
+    같은 사유다 — 이 값들은 과목 종속인데 import는 어느 과목인지 모르는 시점이고,
+    과목이 2개가 되는 순간 **모듈 import 자체가 `AmbiguousCourseError`로 죽었다**.
+    호출 시점을 `run_checks()` 진입으로 옮겨, 그때 호출부가 과목을 밝히게 한다
+    (`course=` 인자 또는 `CREATE_SLIDES_COURSE`).
+
+    ⚠️ 모호하면 삼키지 않는다 — 그 예외가 「남의 과목 임계로 판정」을 막는 장치다."""
     global THRESH_QD01_CHARS, THRESH_QD03_RATIO, THRESH_QD07_ADJACENT_JACCARD
     try:
         import os as _os, sys as _sys
@@ -106,18 +115,15 @@ def _load_profile_gates():
         import _course_paths as _cp
     except Exception:
         return
-    v, ok = _cp.gate_num('초안_본문_글자수_하한', THRESH_QD01_CHARS, cast=int)
+    v, ok = _cp.gate_num('초안_본문_글자수_하한', THRESH_QD01_CHARS, cast=int, course=course)
     THRESH_QD01_CHARS = v; _GATE_FROM_PROFILE['R-QD-01'] = ok
-    v, ok = _cp.gate_num('초안_노트본문_비율_상한', THRESH_QD03_RATIO, cast=float)
+    v, ok = _cp.gate_num('초안_노트본문_비율_상한', THRESH_QD03_RATIO, cast=float, course=course)
     THRESH_QD03_RATIO = v; _GATE_FROM_PROFILE['R-QD-03'] = ok
-    v, ok = _cp.gate_num('초안_인접행_유사도_상한', THRESH_QD07_ADJACENT_JACCARD, cast=float)
+    v, ok = _cp.gate_num('초안_인접행_유사도_상한', THRESH_QD07_ADJACENT_JACCARD, cast=float, course=course)
     THRESH_QD07_ADJACENT_JACCARD = v; _GATE_FROM_PROFILE['R-QD-07'] = ok
-    rng, ok = _cp.gate_range('회차당_장수_범위', (8, 11))
+    rng, ok = _cp.gate_range('회차당_장수_범위', (8, 11), course=course)
     _GATE_FROM_PROFILE['range'] = rng
     _GATE_FROM_PROFILE['R-QD-04'] = ok
-
-
-_load_profile_gates()
 # ─────────────────────────────────────────────────────────────────────────────
 THRESH_DERIVATION = """\
 [임계값 도출 근거 — sessions/1주차/1주차_초안.md(W1_FINAL) vs sessions/2주차/2주차_초안.md(W2_CURRENT), "0.덱 기본 정보"/(표지)/(간지)/(마무리)/실습 행 제외]
@@ -287,7 +293,8 @@ GATE_TAG = "[0판정가드:미판정]"
 # 검사
 # ============================================================================
 
-def run_checks(root, wk):
+def run_checks(root, wk, course=None):
+    _load_profile_gates(course)
     results = []  # (rule_id, level, message)
     advisories = []  # (rule_id, message) — 사람검토 전용, PASS/WARN/FAIL 판정 없음
     sess = _session_dir(root, wk)

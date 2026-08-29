@@ -1,5 +1,5 @@
 /* =====================================================================
-   SKU LIKELION 강의덱 — 디자인 시스템 + 레이아웃 모듈 (재사용 템플릿)
+   강의덱 kit — 디자인 시스템 + 레이아웃 모듈 (전 과목·전 테마 공통 재사용 템플릿)
    ---------------------------------------------------------------------
    원본: BM_수익모델_강의덱.html 에서 추출.
    핵심 변경: 원본의 슬라이드 번호 스코핑 [data-slide="Sxx"] 을
@@ -40,6 +40,10 @@
 
   /* ── 브랜드 3색 (v2) ── */
   --blue:#1D4ED8;         /* 구조·주강조 */
+  --blue-rgb:29,78,216;   /* --blue의 채널값. rgba()는 var()로 색을 못 받으므로 채널을
+                             따로 둔다 — 컴포넌트가 rgba(<브랜드파랑>,α)를 직접 박으면
+                             그 자리는 테마가 바뀌어도 안 바뀐다(2026-08-29 실측 11곳).
+                             ⚠️ --blue와 «같은 색»이어야 한다(회귀가 쌍을 고정한다). */
   --mint:#14B8A6;         /* 행동·성공·안전 (fill) */
   --coral:#F97360;        /* 주의·경고 (fill) */
   --red:#DC2626;          /* 오류·위험 */
@@ -280,7 +284,7 @@ body{ font-family:"Pretendard","Pretendard Variable",-apple-system,"Apple SD Got
 .s-head{ position:absolute; top:34px; left:56px; right:56px; height:40px;
   display:flex; align-items:center; gap:14px; }
 .s-logo{ width:40px; height:40px; object-fit:contain; flex:0 0 auto; }
-.s-brand{ font-weight:800; font-size:30px; color:var(--black); letter-spacing:.02em; }  /* 영문 대문자 브랜드(VIBECODING) 트래킹 — 한글 시절 -.01em에서 상향 */
+.s-brand{ font-weight:800; font-size:30px; color:var(--black); letter-spacing:.02em; }  /* 영문 대문자 워드마크 트래킹 — 한글 시절 -.01em에서 상향 */
 .s-line{ flex:1; height:2px; background:var(--blue); margin:0 18px; border-radius:0; }
 .s-team{ font-size:16px; line-height:1.35; color:var(--ink); text-align:right;
   white-space:nowrap; font-weight:500; }
@@ -462,7 +466,7 @@ table.t tr:nth-child(even) td{ background:var(--surface-row); }
 .shot-frame img{ display:block; width:100%; height:auto; object-fit:contain; }
 .shot-badge{ position:absolute; width:42px; height:42px; border-radius:50%;
   background:var(--blue); color:var(--white); font-weight:800; font-size:22px;
-  display:grid; place-items:center; box-shadow:0 8px 18px rgba(29,78,216,.4); }
+  display:grid; place-items:center; box-shadow:0 8px 18px rgba(var(--blue-rgb),.4); }
 .shot-hl{ position:absolute; border:3px solid var(--blue); border-radius:8px; pointer-events:none; }
 .shot-caption,.shot-cap{ margin:10px 0 0; font-size:22px; line-height:1.55;
   color:var(--gray-700); font-weight:700; }
@@ -478,7 +482,7 @@ table.t tr:nth-child(even) td{ background:var(--surface-row); }
   color:var(--ink); margin-bottom:12px; }
 .shot-row:last-child{ margin-bottom:0; }
 .shot-row.on{ border-color:var(--blue); background:var(--blue-soft); color:var(--blue);
-  box-shadow:0 0 0 3px rgba(29,78,216,.16); }
+  box-shadow:0 0 0 3px rgba(var(--blue-rgb),.16); }
 .shot-badge.b1{ top:28px; }.shot-badge.b2{ top:98px; }.shot-badge.b3{ top:168px; }
 
 /* ===================================================================
@@ -726,7 +730,7 @@ table.t tr:nth-child(even) td{ background:var(--surface-row); }
 .note-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-top:18px; }
 .note{ border:1px solid var(--blue-line); border-radius:18px; background:var(--blue-soft);
   padding:18px 18px 16px; box-shadow:0 8px 18px rgba(20,24,33,.045); }
-.note b{ display:block; margin-bottom:8px; color:var(--ink); font-size:18px; font-weight:800; }
+.note > b{ display:block; margin-bottom:8px; color:var(--ink); font-size:18px; font-weight:800; }
 .note p{ margin:0; color:var(--gray-700); font-size:15px; line-height:1.5; word-break:keep-all; }
 .note strong{ color:var(--coral-deep); font-weight:800; }
 /* 표 아래 태그 행(선택) */
@@ -795,7 +799,7 @@ table.t tr:nth-child(even) td{ background:var(--surface-row); }
 .venn-outer-label{ position:absolute; top:-18px; left:50%; transform:translateX(-50%);
   display:inline-flex; white-space:nowrap; background:var(--blue); color:var(--white);
   font-weight:800; font-size:17px; border-radius:999px; padding:7px 18px;
-  box-shadow:0 8px 18px rgba(29,78,216,.35); }
+  box-shadow:0 8px 18px rgba(var(--blue-rgb),.35); }
 .venn-tag{ position:absolute; transform:translate(-50%,-50%); display:inline-flex; align-items:center;
   background:var(--white); border:1px solid var(--blue-line-strong); color:var(--gray-700); font-weight:700;
   font-size:15px; border-radius:999px; padding:7px 15px; white-space:nowrap; }
@@ -807,7 +811,7 @@ table.t tr:nth-child(even) td{ background:var(--surface-row); }
 .venn-inner{ position:absolute; left:240px; top:240px; transform:translate(-50%,-50%);
   width:195px; height:195px; border-radius:50%; background:var(--blue);
   display:flex; flex-direction:column; align-items:center; justify-content:center;
-  text-align:center; box-shadow:0 14px 32px rgba(29,78,216,.4); }
+  text-align:center; box-shadow:0 14px 32px rgba(var(--blue-rgb),.4); }
 .venn-inner-label{ color:var(--white); font-weight:800; font-size:24px; }
 .venn-inner-sub{ color:var(--on-blue-muted); font-weight:700; font-size:13px; margin-top:5px; }
 
@@ -840,8 +844,8 @@ table.t tr:nth-child(even) td{ background:var(--surface-row); }
 .actor-pair{ display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:18px 0 16px; }
 .actor-card{ border:1px solid var(--blue-line); border-radius:18px; background:var(--blue-soft);
   padding:20px 20px 18px; }
-.actor-card b{ display:block; color:var(--blue); font-size:24px; margin-bottom:8px; }
-.actor-card span{ display:block; color:var(--gray-700); font-size:17px; line-height:1.48; }
+.actor-card > b{ display:block; color:var(--blue); font-size:24px; margin-bottom:8px; }
+.actor-card > span{ display:block; color:var(--gray-700); font-size:17px; line-height:1.48; }
 .actor-rule{ margin:0 0 14px; font-size:20px; line-height:1.6; color:var(--gray-700); }
 .actor-rule strong{ color:var(--blue); font-weight:800; }
 .actor-slide .callout{ font-size:19px; padding:20px 22px; }
@@ -860,8 +864,8 @@ table.t tr:nth-child(even) td{ background:var(--surface-row); }
   padding:22px 24px; box-shadow:0 8px 18px rgba(20,24,33,.045); }
 .flow-step .n{ display:inline-grid; place-items:center; width:30px; height:30px;
   border-radius:50%; background:var(--blue); color:var(--white); font-size:14px; font-weight:800; margin-bottom:9px; }
-.flow-step b{ display:block; margin-bottom:6px; color:var(--ink); font-size:19px; font-weight:800; }
-.flow-step span{ display:block; color:var(--gray-700); font-size:15.5px; line-height:1.5; }
+.flow-step > b{ display:block; margin-bottom:6px; color:var(--ink); font-size:19px; font-weight:800; }
+.flow-step > span{ display:block; color:var(--gray-700); font-size:15.5px; line-height:1.5; }
 .flow-visual{ position:absolute; right:-2px; bottom:22px; width:650px; z-index:1; }
 /* 세로 1열 스텝(워크숍 지시) */
 .work-steps{ display:flex; flex-direction:column; gap:10px; margin:14px 0; }
@@ -869,9 +873,11 @@ table.t tr:nth-child(even) td{ background:var(--surface-row); }
   border:1px solid var(--mint-line); border-radius:var(--r-md); background:var(--mint-soft); padding:11px 16px; }
 .work-step .n{ width:42px; height:42px; border-radius:50%; display:grid; place-items:center;
   background:var(--mint); color:var(--on-mint); font-weight:800; }
-.work-step b{ display:block; font-size:18px; color:var(--ink); margin-bottom:3px; }
+.work-step > b,
+.work-step > div > b{ display:block; font-size:18px; color:var(--ink); margin-bottom:3px; }
 .work-step b:last-child{ margin-bottom:0; }
-.work-step span{ display:block; font-size:15px; line-height:1.45; color:var(--gray-700); }
+.work-step > span,
+.work-step > div > span{ display:block; font-size:15px; line-height:1.45; color:var(--gray-700); }
 
 /* ===================================================================
    [도형] 2열 비교 (.compare-slide) — 좌우 패널(한쪽 강조) + 하단 결론
@@ -943,8 +949,8 @@ table.t tr:nth-child(even) td{ background:var(--surface-row); }
   background:var(--blue-soft); color:var(--blue); font-size:14px; font-weight:800; }
 .risk-card.warn{ border-color:var(--coral-line); }
 .risk-card.warn .label{ background:var(--coral-soft); color:var(--coral-deep); }
-.risk-card b{ display:block; font-size:19px; color:var(--ink); margin-bottom:4px; }
-.risk-card span{ display:block; font-size:15px; line-height:1.45; color:var(--gray-700); }
+.risk-card > b{ display:block; font-size:19px; color:var(--ink); margin-bottom:4px; }
+.risk-card > span{ display:block; font-size:15px; line-height:1.45; color:var(--gray-700); }
 .risk-arrow{ text-align:center; color:var(--gray-400); font-size:18px; font-weight:800; margin:2px 0; }
 .risk-visual img{ width:430px; display:block; }
 
@@ -997,8 +1003,8 @@ table.t tr:nth-child(even) td{ background:var(--surface-row); }
    =================================================================== */
 .pricing-methods{ display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:14px 0; }
 .pricing-method{ background:var(--blue-soft); border:1px solid var(--blue-line); border-radius:14px; padding:14px 16px; }
-.pricing-method b{ display:block; font-size:17px; color:var(--blue); margin-bottom:6px; }
-.pricing-method span{ display:block; font-size:14px; line-height:1.55; color:var(--gray-700); }
+.pricing-method > b{ display:block; font-size:17px; color:var(--blue); margin-bottom:6px; }
+.pricing-method > span{ display:block; font-size:14px; line-height:1.55; color:var(--gray-700); }
 .price-detail{ bottom:54px; display:flex; flex-direction:column; }
 .price-detail .s-title{ margin-bottom:18px; }
 .price-method-grid{ flex:1 1 auto; display:grid; grid-template-columns:1fr 1fr; gap:22px; align-content:center; }
@@ -1037,7 +1043,7 @@ table.t tr:nth-child(even) td{ background:var(--surface-row); }
 .concept-flow{ display:flex; align-items:center; gap:10px; width:100%; margin:0; }
 .concept-flow span{ flex:1; text-align:center; border-radius:999px; padding:12px 10px;
   background:var(--blue-overlay); border:1px solid var(--blue-line); color:var(--blue);
-  font-size:16px; font-weight:800; box-shadow:0 8px 18px rgba(29,78,216,.06); }
+  font-size:16px; font-weight:800; box-shadow:0 8px 18px rgba(var(--blue-rgb),.06); }
 .concept-flow b{ flex:0 0 auto; color:var(--gray-400); font-size:20px; font-weight:800; }
 /* 카드 그리드 — auto-fit+minmax가 카드 수(N)에 맞춰 열을 자동 재분배(3~5장 한 줄, 코드 수정 불필요) */
 .concept-cards{ width:100%; display:grid; grid-template-columns:repeat(auto-fit, minmax(230px, 1fr)); gap:16px; }

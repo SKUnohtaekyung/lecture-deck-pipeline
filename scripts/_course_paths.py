@@ -75,6 +75,16 @@ def resolve_course(course=None, root=None):
     root = root or _repo_root()
     dirs = course_dirs(root)
     want = course or os.environ.get(COURSE_ENV) or None
+    if not dirs:
+        # courses/ 자체가 없는 구조 — 구경로 폴백 세계.
+        #
+        # ⚠️ `want`가 지정돼 있어도 여기서는 죽이지 않는다(2026-08-29 정정). 이 예외의
+        #    목적은 «오귀속 방지»인데, 고를 후보가 **0개**면 남의 과목을 고를 수가 없다.
+        #    종전에는 명시/환경변수가 있으면 후보 0개에서도 던졌고, 그 결과 구경로
+        #    합성 픽스처를 읽는 호출이 전역 CREATE_SLIDES_COURSE 하나 때문에 전부
+        #    깨졌다(실측: `verify_draft_quality`의 냉동 스냅샷 테스트).
+        #    후보가 1개 이상인데 이름이 안 맞으면 **여전히 던진다**(오타 보호는 유지).
+        return None
     if want:
         want = os.path.basename(str(want).replace("\\", "/").rstrip("/"))
         hit = [d for d in dirs if os.path.basename(d) == want]
@@ -82,9 +92,7 @@ def resolve_course(course=None, root=None):
             return hit[0]
         raise AmbiguousCourseError(
             "과목 '%s'을 courses/ 에서 찾을 수 없다. 후보: %s"
-            % (want, [os.path.basename(d) for d in dirs] or "(없음)"))
-    if not dirs:
-        return None                       # courses/ 없는 구조 — 구경로 폴백 세계
+            % (want, [os.path.basename(d) for d in dirs]))
     if len(dirs) == 1:
         return dirs[0]
     raise AmbiguousCourseError(

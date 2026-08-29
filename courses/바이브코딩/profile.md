@@ -102,7 +102,7 @@
 | 스타터 경로 | `kit/starter/deck-template.html` · `kit/starter/presenter-notes-template.html` |
 | 테마 | `default` |
 
-> **테마는 포인터만 둔다.** 값(색·타이포 토큰 99개)의 정본은 `kit/themes/default/tokens.css`이고,
+> **테마는 포인터만 둔다.** 값(색·타이포 토큰 100개)의 정본은 `kit/themes/default/tokens.css`이고,
 > 무엇이 테마마다 바뀌고 무엇이 전 테마 공통으로 고정되는지는 `kit/guide/테마-계약.md`가 정본이다.
 > 과목 전용 테마여도 `kit/themes/`에 둔다(2026-08-24 G2 확정) — 과목과 테마는 N:1이다.
 

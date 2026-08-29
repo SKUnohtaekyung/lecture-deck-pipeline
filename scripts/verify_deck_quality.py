@@ -125,21 +125,32 @@ THRESH_COPY03_STEP_TITLE = 0
 _COPY_GATE_FROM_PROFILE = {}
 
 
-def _load_profile_gates():
+def _load_profile_gates(course=None):
+    """과목 프로필 §3-G에서 문체 임계를 읽어 모듈 전역에 싣는다.
+
+    ⚠️ **import 시점에 부르지 않는다**(2026-08-29). 이 값들은 «과목 종속»인데
+    import는 어느 과목인지 모르는 시점이다. 과목이 1개일 때는 `resolve_course()`가
+    그 하나를 조용히 골라 줘서 문제가 드러나지 않았지만, 과목이 2개가 되는 순간
+    **모듈 import 자체가 `AmbiguousCourseError`로 죽었다** — `verify_deck_quality`를
+    import하는 것만으로 테스트 모듈 전체가 무너졌다(likelionSKU 등재 실측).
+
+    그래서 «언제 부르는가»를 import에서 **`run_checks()` 진입 시점**으로 옮긴다.
+    그때는 호출부가 과목을 명시할 수 있다(`course=` 인자 또는 `CREATE_SLIDES_COURSE`).
+
+    ⚠️ **모호하면 삼키지 않는다.** `AmbiguousCourseError`를 잡아 기본값으로 넘어가면
+    남의 과목 임계로 판정하거나 임계 없이 통과시키게 된다 — 그 예외가 바로 미탐
+    방지 장치다. 예외는 호출부까지 올라가고, 메시지가 지정 방법을 알려준다."""
     global THRESH_COPY01_DASH_JOIN, THRESH_COPY02_SELF_REF, THRESH_COPY03_STEP_TITLE
     try:
         import _course_paths as _cp
     except Exception:
         return
-    v, ok = _cp.gate_num("덱_대시잇기_상한", THRESH_COPY01_DASH_JOIN, cast=int)
+    v, ok = _cp.gate_num("덱_대시잇기_상한", THRESH_COPY01_DASH_JOIN, cast=int, course=course)
     THRESH_COPY01_DASH_JOIN = v; _COPY_GATE_FROM_PROFILE["R-COPY-01"] = ok
-    v, ok = _cp.gate_num("덱_수업자기지칭_상한", THRESH_COPY02_SELF_REF, cast=int)
+    v, ok = _cp.gate_num("덱_수업자기지칭_상한", THRESH_COPY02_SELF_REF, cast=int, course=course)
     THRESH_COPY02_SELF_REF = v; _COPY_GATE_FROM_PROFILE["R-COPY-02"] = ok
-    v, ok = _cp.gate_num("덱_스텝제목_서술형_상한", THRESH_COPY03_STEP_TITLE, cast=int)
+    v, ok = _cp.gate_num("덱_스텝제목_서술형_상한", THRESH_COPY03_STEP_TITLE, cast=int, course=course)
     THRESH_COPY03_STEP_TITLE = v; _COPY_GATE_FROM_PROFILE["R-COPY-03"] = ok
-
-
-_load_profile_gates()
                           # 1주차 0건 · 2주차 3건(2026-07-31 실측).
 
 # ── 상시 FAIL 규칙 (2026-08-03 승격 · --strict 없이도 exit 1) ──────────────
@@ -563,8 +574,13 @@ def scan_dash_joins(lines):
 # 메인 검증
 # ============================================================================
 
-def run_checks(deck_path):
-    """(results, meta) — results는 (rule_id, level, message) 튜플 목록."""
+def run_checks(deck_path, course=None):
+    """(results, meta) — results는 (rule_id, level, message) 튜플 목록.
+
+    `course`는 과목 프로필 §3-G 임계를 어느 과목에서 읽을지다. 생략하면
+    `CREATE_SLIDES_COURSE` → 과목이 정확히 1개일 때 그것 순으로 해석되고,
+    특정할 수 없으면 `AmbiguousCourseError`가 올라온다(삼키지 않는다)."""
+    _load_profile_gates(course)
     html_raw = Path(deck_path).read_text(encoding="utf-8")
     html_text = re.sub(r"<!--.*?-->", "", html_raw, flags=re.S)
     tags, elements = parse_document(html_text)

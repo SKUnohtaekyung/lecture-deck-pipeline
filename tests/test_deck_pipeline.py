@@ -168,6 +168,29 @@ class DistributableGateTests(unittest.TestCase):
     def test_clean_bundle_has_no_violations(self):
         self.assertEqual(self_containment_violations(self.CLEAN), [])
 
+    def test_un_inlined_local_stylesheet_is_a_violation(self):
+        """로컬 <link rel=stylesheet>가 남은 «반쪽 번들»은 자립본이 아니다(2026-08-29).
+
+        종전에는 REMOTE 정규식만 봐서 원격 링크만 잡았다. 그래서 kit CSS와 테마 링크가
+        그대로 남은 24KB 파일이 「self-contained」로 **PASS**했다(적대적 검증 실측 —
+        정상 배포본은 3MB다). 그 파일을 열면 스타일이 통째로 빠진 채 렌더된다.
+        """
+        half = ('<html><head><style>@font-face{font-family:Pretendard;'
+                'src:url(data:font/woff2;base64,AAAA) format("woff2")}</style>'
+                '<link rel="stylesheet" href="../../kit/styles/deck.css">'
+                '</head><body></body></html>')
+        hits = self_containment_violations(half)
+        self.assertTrue(any("un-inlined stylesheet" in v for v in hits), hits)
+
+    def test_data_uri_icon_link_is_not_a_violation(self):
+        """실제 배포본에 남는 <link>는 rel=icon(data:)뿐이다 — 오탐이면 배포가 막힌다."""
+        ok = ('<html><head><style>@font-face{font-family:Pretendard;'
+              'src:url(data:font/woff2;base64,AAAA) format("woff2")}</style>'
+              '<link rel="icon" href="data:image/svg+xml,<svg/>">'
+              '</head><body></body></html>')
+        self.assertEqual(
+            [v for v in self_containment_violations(ok) if "stylesheet" in v], [])
+
     def test_each_violation_class_is_detected(self):
         self.assertTrue(any("external" in v for v in self_containment_violations('<link rel="stylesheet" href="https://x/y.css">')))
         self.assertTrue(any("non-data" in v for v in self_containment_violations('<img src="a.png">', require_font=False)))
@@ -573,6 +596,16 @@ class QualityRatchetTests(unittest.TestCase):
     규칙 임계(프로필 §3-G)는 불변이고, 래칫은 «총계의 조용한 증가»만 막는다(D-2).
     """
 
+    def setUp(self):
+        # 다과목 저장소에서는 «어느 과목의 2주차인가»를 밝혀야 한다. 러너는 2026-08-29부터
+        # 모호하면 조용히 바이브코딩으로 떨어지지 않고 시끄럽게 죽는다(의도된 fail-loud) —
+        # 그 폴백이 실은 «남의 과목 주차를 채점하는 경로»였다. 이 픽스처의 2주차는 바이브코딩이다.
+        import os
+        from unittest import mock
+        patcher = mock.patch.dict(os.environ, {"CREATE_SLIDES_COURSE": "바이브코딩"})
+        patcher.start()
+        self.addCleanup(patcher.stop)
+
     def _report(self, quality, contract):
         import contextlib
         import io as _io
@@ -635,6 +668,17 @@ class BlindSlideCountTests(unittest.TestCase):
     「0장을 셌다」와 「덱이 없다」는 다른 사건이고, 전자는 검사가 눈이 먼 상태다.
     (plans/gate-input-hardening P1 · 2026-08-24)
     """
+
+    def setUp(self):
+        # 다과목 저장소(2026-08-29 likelionSKU 등재)에서는 «어느 과목의 2주차인가»를
+        # 명시해야 한다. Runner가 계약을 조회할 때 resolve_course()가 과목을 특정하지
+        # 못하면 AmbiguousCourseError로 죽는다 — 의도된 fail-loud이므로 삼키지 않고
+        # 호출부인 이 테스트가 과목을 밝힌다. 이 픽스처가 뜻하는 2주차는 바이브코딩이다.
+        import os
+        from unittest import mock
+        patcher = mock.patch.dict(os.environ, {"CREATE_SLIDES_COURSE": "바이브코딩"})
+        patcher.start()
+        self.addCleanup(patcher.stop)
 
     def _runner_with_deck(self, html, evidence):
         import json

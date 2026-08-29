@@ -148,6 +148,150 @@ class AmbiguousCourseIsLoudTests(unittest.TestCase):
         self.assertEqual(len(got), 2, got)
 
 
+class NamedCourseAgainstCourselessRootTests(unittest.TestCase):
+    """`courses/` 자체가 없는 루트(구경로 폴백 세계)에서는 과목명을 무시하고 None을 준다.
+
+    2026-08-29 정정. 종전에는 인자·환경변수로 과목이 «지정돼 있기만 하면» 후보가
+    0개여도 `AmbiguousCourseError`를 던졌다. 그런데 이 예외의 목적은 **오귀속 방지**이고,
+    고를 후보가 0개면 남의 과목을 고를 수가 없다 — 막을 사고가 없는 자리에서 죽은 것이다.
+
+    실제 피해: 구경로 합성 픽스처를 읽는 호출(`verify_draft_quality`의 냉동 스냅샷
+    테스트)이 **전역 `CREATE_SLIDES_COURSE` 하나 때문에** 통째로 깨졌다. 반대로 후보가
+    1개 이상인데 이름이 안 맞는 경우(오타)는 **여전히 던진다** — 아래가 그 쌍을 고정한다.
+    """
+
+    def setUp(self):
+        import tempfile
+        self.tmp = tempfile.TemporaryDirectory()
+        self.root = Path(self.tmp.name)
+        (self.root / "sessions" / "1주차").mkdir(parents=True)   # 구경로만 있는 루트
+        self._saved = os.environ.pop(cp.COURSE_ENV, None)
+
+    def tearDown(self):
+        if self._saved is not None:
+            os.environ[cp.COURSE_ENV] = self._saved
+        else:
+            os.environ.pop(cp.COURSE_ENV, None)
+        self.tmp.cleanup()
+
+    def test_explicit_course_is_ignored_when_there_are_no_courses(self):
+        self.assertIsNone(cp.resolve_course("아무과목", str(self.root)))
+
+    def test_env_course_is_ignored_when_there_are_no_courses(self):
+        os.environ[cp.COURSE_ENV] = "아무과목"
+        self.assertIsNone(cp.resolve_course(None, str(self.root)))
+
+    def test_session_dir_falls_back_to_legacy_path(self):
+        got = cp.session_dir(1, str(self.root), course="아무과목").replace(os.sep, "/")
+        self.assertTrue(got.endswith("sessions/1주차"), got)
+        self.assertNotIn("courses/", got)
+
+    def test_typo_guard_survives_when_courses_exist(self):
+        """후보가 있는데 이름이 안 맞으면 여전히 죽는다 — 완화가 여기까지 번지면 안 된다."""
+        _mkcourse(self.root, "가과목", weeks=(1,))
+        with self.assertRaises(cp.AmbiguousCourseError):
+            cp.resolve_course("없는과목", str(self.root))
+
+
+class GateModulesImportWithoutACourseTests(unittest.TestCase):
+    """과목 종속 임계를 **import 시점에** 읽으면 다과목 저장소에서 모듈이 죽는다.
+
+    2026-08-29 실측: `verify_deck_quality`·`verify_draft_quality`가 모듈 최상위에서
+    `_load_profile_gates()`를 불렀고, 과목이 2개가 되는 순간 **import만으로**
+    `AmbiguousCourseError`가 터져 `tests.test_quality_gates` 전체(53건)가 무너졌다.
+    적재 시점을 `run_checks()` 진입으로 옮겼고, 이 테스트가 그 자리를 고정한다.
+    """
+
+    def test_import_does_not_require_a_course(self):
+        import importlib
+        import subprocess
+        import sys as _sys
+        repo = Path(__file__).resolve().parent.parent
+        env = dict(os.environ)
+        env.pop(cp.COURSE_ENV, None)          # 과목을 «지정하지 않은» 상태를 강제한다
+        env["PYTHONIOENCODING"] = "utf-8"
+        code = ("import sys; sys.path.insert(0, r'%s');"
+                " import verify_deck_quality, verify_draft_quality; print('OK')"
+                % (repo / "scripts"))
+        proc = subprocess.run([_sys.executable, "-c", code], capture_output=True,
+                              text=True, encoding="utf-8", cwd=str(repo), env=env)
+        self.assertEqual(proc.returncode, 0,
+                         "과목 미지정 import가 죽었다: %s" % (proc.stderr or ""))
+        self.assertIn("OK", proc.stdout or "")
+
+
+class IsolationScanCoversInheritedKitAssetsTests(unittest.TestCase):
+    """새 덱으로 «상속»되는 kit 자산이 격리 스캔 범위 안에 있는가 (2026-08-29 신설).
+
+    미탐이었다. 종전 스캔 범위는 문서(.md)와 테마 선언뿐이라, **복사돼 새 덱이 되는
+    스타터**와 **모든 덱에 링크되는 공용 CSS**는 아무도 보지 않았다. 실측 결과 공용
+    kit에 한 과목의 브랜드가 31곳 있었는데 게이트는 내내 PASS였다 — 오탐은 시끄러워서
+    발견되지만 미탐은 PASS로 위장한다.
+
+    편입 기준은 «그 파일의 내용이 새 과목의 덱으로 상속되는가»다. 아틀라스(열람용)와
+    CHANGELOG(변경 이력)는 상속되지 않으므로 일부러 뺐다 — 범위를 넓히는 것이 목적이
+    아니라 «상속 경로»를 덮는 것이 목적이다.
+    """
+
+    def setUp(self):
+        import importlib
+        import sys as _s
+        repo = Path(__file__).resolve().parent.parent
+        _s.path.insert(0, str(repo / "scripts"))
+        self.vsi = importlib.import_module("verify_subject_isolation")
+        self.repo = repo
+
+    def test_starter_and_shared_styles_are_scanned(self):
+        covered = set(self.vsi.expand(self.vsi.SCAN_FAIL) + self.vsi.expand(self.vsi.SCAN_WARN))
+        for path in ("kit/starter/deck-template.html", "kit/starter/logo.svg",
+                     "kit/styles/deck.css"):
+            self.assertIn(path, covered,
+                          "상속되는 kit 자산이 스캔 범위 밖이다 — 미탐 구간: %s" % path)
+
+    def test_reference_only_assets_stay_out_of_scope(self):
+        """열람용 아틀라스·변경 이력까지 끌어들이면 예시·이력이 전부 잡혀 소음이 된다."""
+        covered = set(self.vsi.expand(self.vsi.SCAN_FAIL) + self.vsi.expand(self.vsi.SCAN_WARN))
+        for path in ("kit/layouts/catalog.html", "kit/CHANGELOG.md"):
+            self.assertNotIn(path, covered, path)
+
+    def test_scan_actually_flags_a_planted_literal(self):
+        """범위에 넣는 것과 «실제로 잡는 것»은 다르다 — 심어서 확인한다."""
+        import tempfile
+        with tempfile.TemporaryDirectory() as td:
+            f = Path(td) / "deck-template.html"
+            f.write_text("<title>강의덱 — 어떤과목브랜드</title>", encoding="utf-8")
+            hits, _rounds = self.vsi.scan([str(f)], ["어떤과목브랜드"])
+            self.assertEqual(len(hits), 1, hits)
+
+    #: 공용 kit에 «알려진» 과목 리터럴 — (파일, 리터럴). 새 누출은 이 목록에 없으므로 실패한다.
+    #
+    # 2026-08-29 현재 **비어 있다.** 한때 `kit/styles/deck.css`의 두 줄(파일 헤더의 조직명 ·
+    # `.s-brand` 트래킹 근거 주석)이 있었고, 그것을 고치려면 같은 파일의 **선행 R-QC-14
+    # 위반 11건**을 먼저 풀어야 했다(pre-commit이 `.css` 스테이징 시 막는다). 같은 날 그
+    # 11건을 직계 선택자로 좁혀 해소한 뒤 주석도 정리해 0이 됐다.
+    #
+    # ⚠️ 「아직 못 고쳤다」를 **0으로 반올림하지 않는다.** 목록으로 두면 ① 남은 누출이
+    #    계속 보이고 ② 새 누출은 즉시 실패하며 ③ 고쳤는데 목록에 남아 있으면 그것도 실패한다.
+    KNOWN_KIT_LEAKS = set()
+
+    def test_shared_kit_has_no_unknown_course_literal(self):
+        """상속 경로의 누출은 «알려진 것»뿐이어야 한다 — 새 누출은 실패한다."""
+        lits = []
+        for prof in self.vsi.discover_profiles() or []:
+            lits.extend(self.vsi.read_profile_literals(prof) or [])
+        inherited = [p for p in self.vsi.expand(self.vsi.SCAN_WARN)
+                     if p.startswith("kit/")]
+        self.assertTrue(inherited, "상속 자산 스캔 대상이 비었다 — 범위 설정 오류")
+        hits, _rounds = self.vsi.scan(inherited, lits)
+        found = {(path, lit) for path, _ln, lit, _ctx in hits}
+        new_leaks = found - self.KNOWN_KIT_LEAKS
+        self.assertEqual(new_leaks, set(),
+                         "공용 kit에 새 과목 리터럴이 새어 들어왔다: %s" % (sorted(new_leaks),))
+        fixed = self.KNOWN_KIT_LEAKS - found
+        self.assertEqual(fixed, set(),
+                         "누출이 해소됐다 — KNOWN_KIT_LEAKS에서 지워라: %s" % (sorted(fixed),))
+
+
 class SubjectIsolationSurvivesMultiCourseTests(unittest.TestCase):
     """`verify_subject_isolation.py`가 다과목에서 자멸하지 않는가 (F4 최상급 사례)."""
 

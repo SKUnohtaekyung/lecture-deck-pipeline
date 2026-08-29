@@ -49,6 +49,19 @@ def self_containment_violations(html: str, *, require_font: bool = True) -> list
         if REMOTE.match(url.strip()):
             violations.append(f"external url(): {url.strip()[:80]}")
 
+    # 1b) 스타일시트는 «전부 인라인»돼 있어야 한다 — 로컬 상대경로 <link>가 남으면
+    #     그 파일 없이는 스타일이 통째로 빠진 채 열린다. 종전에는 REMOTE 정규식만 봐서
+    #     **로컬 링크가 그대로 남은 반쪽 번들이 「self-contained」로 통과**했다
+    #     (2026-08-29 적대적 검증 실측: kit 3종 + 테마 링크가 남은 24KB 파일이 PASS).
+    #     실제 배포본에 남는 <link>는 rel="icon"(data: URI)뿐이다.
+    for tag in re.findall(r"<link[^>]*>", html, re.I):
+        rel = (_attr(tag, "rel") or "").lower()
+        if "stylesheet" not in rel:
+            continue
+        href = _attr(tag, "href") or ""
+        if href and not href.startswith(("data:", "#")):
+            violations.append(f"un-inlined stylesheet link: {href[:80]}")
+
     # 2) Every media reference must already be inlined (data:) or an in-page anchor.
     for tag in re.findall(r"<(?:img|source|video|audio)\b[^>]*>", html, re.I):
         for attribute in ("src", "poster"):

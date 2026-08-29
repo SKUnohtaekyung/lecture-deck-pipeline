@@ -231,6 +231,17 @@ class RunnerContractTests(unittest.TestCase):
     가려진다 — 그래서 단위 테스트로 고정한다.
     """
 
+    def setUp(self):
+        # 다과목 저장소에서는 러너가 «어느 과목인가»를 요구한다(2026-08-29). 종전에는
+        # 모호하면 조용히 바이브코딩으로 떨어졌는데, 그 폴백이 실은 남의 과목 주차를
+        # 채점하는 경로였다. 이 계약 테스트가 보는 것은 fail-closed 거동이므로 과목은
+        # 아무거나 «명시»되기만 하면 된다 — 실재하는 바이브코딩을 쓴다.
+        import os
+        from unittest import mock
+        patcher = mock.patch.dict(os.environ, {"CREATE_SLIDES_COURSE": "바이브코딩"})
+        patcher.start()
+        self.addCleanup(patcher.stop)
+
     def _runner(self):
         import importlib.util
         spec = importlib.util.spec_from_file_location(

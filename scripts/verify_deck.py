@@ -308,11 +308,21 @@ def load_active_theme(script_dir):
             if m:
                 name = m.group(1)
             else:
-                why = "프로필 §5에 「테마」 행이 없어 default로 가정"
+                # 프로필은 찾았는데 「테마」 행을 못 읽었다 — 표기가 흔들렸거나 빠졌다.
+                # 이 역시 조용히 default로 떨어지면 항등식 PASS가 된다.
+                return "", {}, ("과목 프로필 %s 의 §5에서 「| 테마 | <이름> |」 행을 읽지 못했다"
+                                % os.path.basename(os.path.dirname(prof)))
         else:
-            why = "과목 프로필을 찾지 못해 default로 가정"
-    except Exception as exc:                       # 과목 모호(다과목) 등 — 삼키지 않고 사유로 남긴다
-        why = f"과목 해석 실패({exc.__class__.__name__}) — default로 가정"
+            why = "과목 프로필을 찾지 못해 default로 가정(구경로 폴백 세계)"
+    except Exception as exc:
+        # ⚠️ 2026-08-29 정정 — 종전에는 여기서 `default로 가정`하고 넘어갔다. 그런데
+        #    `kit/themes/default/tokens.css`는 «항상» 읽히므로 토큰 dict가 비지 않고,
+        #    호출부는 dict가 빌 때만 미판정을 기록한다. 그래서 **과목을 해석하지 못한
+        #    사실이 어디에도 출력되지 않은 채** deck.css(= default 하드코딩)와 default
+        #    테마를 대조하는 «항등식»이 돼 검사가 항상 PASS로 공전했다.
+        #    적대적 검증에서 두 경로로 독립 재현됐다(프로필 §5 표기 흔들기 / 과목 미지정).
+        #    이제 이름을 비워 돌려주고, 호출부가 «미판정»으로 세게 한다 — 눈먼 PASS 금지.
+        return "", {}, f"과목 해석 실패({exc.__class__.__name__}) — 활성 테마를 특정할 수 없다"
     path = os.path.join(repo, "kit", "themes", name, "tokens.css")
     try:
         text = open(path, encoding='utf-8').read()
@@ -359,6 +369,135 @@ def linked_kit_css(html_text, deck_path, basenames, tags=None):
             except OSError:
                 pass
     return found
+
+
+def linked_theme_tokens(html_text, deck_path, tags=None):
+    """덱이 링크한 `kit/themes/<이름>/tokens.css`를 (테마명, 본문) 목록으로 돌려준다.
+
+    ⚠️ 왜 필요한가 (2026-08-29 · likelionSKU 등재 실측)
+    테마 파일은 «선언»이고 집행은 `kit/styles/deck.css`였다. 그래서 두 번째 테마를
+    등재하고 나니 **그 테마로는 정상적인 주차 덱을 만들 수 없었다** — 실제 주차 덱처럼
+    정본 kit을 링크하면 `deck.css :root`가 default 팔레트라 「[kit] 토큰 값 정확」이
+    FAIL했다(실측: `--blue:#3060C3` 외 4건 누락). 통과시키는 유일한 방법이 kit CSS를
+    통째로 복사해 `:root`만 바꾼 사본을 두는 것이었는데, 그건 드리프트 보장 장치다.
+
+    그래서 테마 파일을 **링크 대상**으로 승격한다. 덱은 `deck.css`(베이스) 다음에
+    `kit/themes/<이름>/tokens.css`를 링크하고, CSS 캐스케이드가 `:root`를 덮는다.
+    - default 테마 덱은 아무것도 더 링크하지 않는다 → **기존 산출물 렌더 무변경**(D-1).
+    - 검사기는 «링크된 테마»의 선언을 팔레트 기대값으로 함께 본다(아래 호출부).
+    - 과목이 지정한 테마와 **다른** 테마를 링크하면 여전히 FAIL한다(값이 안 맞으니까).
+    """
+    if tags is None:
+        tags, _ = parse_document(html_text)
+    out = []
+    base = Path(deck_path).resolve().parent
+    for tag in tags:
+        if tag.name != 'link':
+            continue
+        href = tag.attrs.get('href')
+        if not href:
+            continue
+        clean = href.split("?", 1)[0].split("#", 1)[0]
+        if not clean or re.match(r'^(?:https?:|data:|//)', clean, re.I):
+            continue
+        try:
+            css_path = (base / unquote(clean)).resolve()
+        except (OSError, ValueError):
+            continue
+        if css_path.name != 'tokens.css' or not css_path.is_file():
+            continue
+        if css_path.parent.parent.name != 'themes':
+            continue
+        try:
+            out.append((css_path.parent.name, css_path.read_text(encoding='utf-8')))
+        except OSError:
+            pass
+    return out
+
+
+_CUSTOM_PROP_RE = re.compile(r"(--[A-Za-z0-9_-]+)\s*:\s*([^;}]+)")
+_SELECTOR_BLOCK_RE = re.compile(r"([^{}]+)\{([^{}]*)\}", re.S)
+
+
+def effective_palette(html_text, deck_path, token_names, tags=None, elements=None):
+    """덱에 **실제로 적용되는** CSS를 «문서 순서대로» 모아 팔레트 토큰의 최종 값을 돌려준다.
+
+    → (effective: {토큰: 값}, offenders: [(셀렉터, 토큰)], skipped: [사유])
+
+    ⚠️ 왜 이 함수가 생겼나 (2026-08-29 · 적대적 검증에서 우회 6건)
+    종전 검사는 «링크된 deck.css 파일의 텍스트»에서 `기대문자열 in root_norm`을
+    찾았다. 그래서 **화면은 틀린 색인데 게이트는 PASS**인 덱을 6가지 방법으로 만들 수
+    있었다 — 실측으로 전부 재현했다:
+      ① `.deck{--blue:…}` 등 `:root` 아닌 셀렉터로 재정의 (하위 전체가 바뀌는데
+         `document.documentElement`의 computed 값은 정상이라 수동 점검도 속는다)
+      ② 가짜 테마 파일 + **주석**에 기대값 삽입 (raw substring 매칭이라 주석을 못 가른다)
+      ③ 테마 링크를 `deck.css`보다 **먼저** 두기 (캐스케이드는 나중이 이기는데
+         검사기는 HTML 순서를 무시하고 고정 순서로 이어 붙였다)
+      ④ 덱 인라인 `<style>`에서 `:root` 재정의 (검사가 링크 파일만 봤다)
+      ⑤ `media="print"` · `disabled` 링크 (검사가 `href`만 보고 속성을 무시했다)
+    그래서 «파일»이 아니라 «적용되는 것»을 본다: link/style을 **문서 위치 순서로**
+    훑고, 주석을 제거하고, 화면에 적용되지 않는 링크는 건너뛴다.
+
+    셀렉터별 특정성까지 흉내 내지는 않는다 — 대신 **팔레트 토큰이 `:root` 밖에서
+    선언되면 그 자체를 위반으로 보고**한다(offenders). 테마 값의 출처는 `:root` 하나여야
+    한다는 것이 계약이고, 그렇게 두면 「나중이 이긴다」로 충분히 해석된다.
+    """
+    if tags is None or elements is None:
+        tags, elements = parse_document(html_text)
+    chunks, skipped = [], []
+    style_spans = {el.start: (el.inner_start, el.inner_end)
+                   for el in elements if el.name == 'style'}
+    ordered = []
+    for tag in tags:
+        if tag.name == 'link':
+            ordered.append((tag.start, 'link', tag))
+        elif tag.name == 'style' and tag.start in style_spans:
+            ordered.append((tag.start, 'style', style_spans[tag.start]))
+    for _pos, kind, payload in sorted(ordered, key=lambda t: t[0]):
+        if kind == 'style':
+            a, b = payload
+            chunks.append(html_text[a:b])
+            continue
+        attrs = payload.attrs
+        href = attrs.get('href')
+        if not href:
+            continue
+        rel = (attrs.get('rel') or '').lower()
+        if rel and 'stylesheet' not in rel:
+            continue
+        if 'disabled' in attrs:
+            skipped.append("disabled 링크: %s" % href)
+            continue
+        media = (attrs.get('media') or '').strip().lower()
+        if media and media not in ('all', 'screen') and 'screen' not in media:
+            skipped.append("화면에 적용되지 않는 media=%r: %s" % (media, href))
+            continue
+        clean = href.split("?", 1)[0].split("#", 1)[0]
+        if not clean or re.match(r'^(?:https?:|data:|//)', clean, re.I):
+            continue
+        try:
+            css_path = (Path(deck_path).resolve().parent / unquote(clean)).resolve()
+        except (OSError, ValueError):
+            continue
+        if css_path.is_file() and css_path.suffix.lower() == '.css':
+            try:
+                chunks.append(css_path.read_text(encoding='utf-8'))
+            except OSError:
+                pass
+    css = _strip_css_comments(chr(10).join(chunks))
+    effective, offenders = {}, []
+    for sel_raw, body in _SELECTOR_BLOCK_RE.findall(css):
+        sel = re.sub(r"\s+", " ", sel_raw).strip().lower()
+        if sel.startswith('@'):
+            continue
+        for name, value in _CUSTOM_PROP_RE.findall(body):
+            if name not in token_names:
+                continue
+            if sel == ':root':
+                effective[name] = re.sub(r"\s+", " ", value).strip()
+            else:
+                offenders.append((sel_raw.strip()[:60], name))
+    return effective, offenders, skipped
 
 
 def collect_css(html_text, deck_path, tags=None, elements=None):
@@ -1893,29 +2032,51 @@ def main():
 
     if deckcss is not None:
         # (3) :root 토큰 값 정확성(부분문자열 매칭 · 공백정규화 · hex 대소문자 무시)
-        rootm = re.search(r':root\s*\{(.*?)\}', deckcss, re.S)
-        root_norm = re.sub(r'\s+', '', rootm.group(1)).lower() if rootm else ''
-        # 기대값은 **활성 테마 선언**에서 읽는다(2026-08-24 P3). 종전에는 바이브코딩
-        # 팔레트 hex 6개가 이 줄에 하드코딩돼 있어서, 링크 추종으로 고치는 순간
-        # 두 번째 테마가 **무조건 FAIL**하는 구조였다 — 버그(고정 경로)가 버그
-        # (하드코딩 기대값)를 가리고 있었다. 테마 선언 정본은 kit/themes/<이름>/tokens.css.
+        # (3) 팔레트 토큰 정확성 — «파일 텍스트»가 아니라 «덱에 실제로 적용되는» CSS를 본다.
+        #     2026-08-29 적대적 검증에서 종전 방식(deck.css 텍스트에 기대문자열 substring)이
+        #     6가지로 우회됐다: :root 아닌 셀렉터 재정의 · 주석 위장 · 링크 순서 뒤집기 ·
+        #     인라인 <style> 재정의 · media="print" · disabled. 상세는 effective_palette 독스트링.
+        _linked_themes = linked_theme_tokens(html, a.deck, tags=tags)
+        chk(len(_linked_themes) <= 1,
+            f"[kit] 테마 스타일시트 링크 {len(_linked_themes)}개(0 또는 1)",
+            f"[kit] 테마 파일을 {len(_linked_themes)}개 링크했다 {[n for n, _ in _linked_themes]} — "
+            f"어느 값이 이기는지 파일 순서에 의존하게 된다. 하나만 링크하라")
         _theme_name, _theme_tokens, _theme_note = load_active_theme(_here)
         _value_keys = ['--blue', '--mint', '--coral', '--red', '--mint-deep', '--coral-deep']
         _presence_keys = ['--on-mint', '--on-coral', '--r-lg', '--font-mono', '--mint-line']
+        _eff, _offenders, _skipped = effective_palette(
+            html, a.deck, set(_value_keys) | set(_presence_keys), tags=tags)
+        # 팔레트 토큰의 출처는 :root 하나여야 한다. 밖에서 덮으면 화면만 바뀌고
+        # `document.documentElement`의 computed 값은 정상이라 수동 점검도 속는다.
+        chk(not _offenders,
+            f"[kit] 팔레트 토큰은 :root에서만 선언({len(_eff)}개 확인)",
+            f"[kit] :root 밖에서 팔레트 토큰을 재정의했다 {_offenders[:6]} — "
+            f"테마 값의 출처는 :root 하나여야 한다(kit/guide/테마-계약.md §6)")
+        for _why in _skipped:
+            unjudged.append(("[kit] 스타일시트 적용 여부", f"화면에 적용되지 않는 링크를 건너뛰었다 — {_why}"))
         if _theme_tokens:
-            need_tokens = [f'{k}:{_theme_tokens[k]}' for k in _value_keys if k in _theme_tokens]
-            need_tokens += [k for k in _presence_keys]
+            _bad = []
+            for _k in _value_keys:
+                _want = _theme_tokens.get(_k)
+                _got = _eff.get(_k)
+                if _want is None:
+                    continue
+                if _got is None:
+                    _bad.append(f"{_k}(선언 없음)")
+                elif re.sub(r'\s+', '', _got).lower() != re.sub(r'\s+', '', _want).lower():
+                    _bad.append(f"{_k}={_got}≠{_want}")
+            _bad += [f"{_k}(선언 없음)" for _k in _presence_keys if _k not in _eff]
             _src = f"테마 '{_theme_name}'"
+            _n = len(_value_keys) + len(_presence_keys)
         else:
-            # 테마 선언을 못 읽으면 «값 대조»는 미판정이고, 존재 검사만 남긴다.
-            need_tokens = list(_presence_keys)
+            _bad = [f"{_k}(선언 없음)" for _k in _presence_keys if _k not in _eff]
             _src = "존재만(테마 선언 미해석)"
+            _n = len(_presence_keys)
             unjudged.append(("[kit] 토큰 «값» 대조",
                              f"활성 테마 선언을 읽지 못했다 — {_theme_note}"))
-        miss_tokens = [t for t in need_tokens if re.sub(r'\s+', '', t).lower() not in root_norm]
-        chk(not miss_tokens,
-            f"[kit] 토큰 값 정확(deck.css :root, {len(need_tokens)}개 확인 · {_src})",
-            f"[kit] 토큰 누락/값변경: {miss_tokens} — 링크된 CSS가 {_src} 선언과 다르다")
+        chk(not _bad,
+            f"[kit] 토큰 값 정확(적용 CSS 유효값, {_n}개 확인 · {_src})",
+            f"[kit] 토큰 누락/값변경: {_bad} — 덱에 실제로 적용되는 CSS가 {_src} 선언과 다르다")
         # (3b) 헤더 선과 민트 강조 프리미티브는 공용 CSS 계약을 지킨다.
         def css_block(selector):
             m = re.search(r'(?:^|[}\n;,{])\s*' + selector + r'\s*\{([^}]*)\}', deckcss)
