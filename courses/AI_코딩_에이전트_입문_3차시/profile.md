@@ -55,7 +55,7 @@
 - Markdown
 - HTML · CSS · JavaScript
 - CSV
-- 선택 결과물: DOCX · PPTX
+- DOCX · PPTX(3차시 실습 결과물 — Agent가 직접 생성)
 
 ## 7. 규칙 소급 면제 등재
 
