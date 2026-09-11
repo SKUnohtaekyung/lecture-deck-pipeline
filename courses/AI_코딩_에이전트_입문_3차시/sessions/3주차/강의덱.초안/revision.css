@@ -319,3 +319,32 @@
 /* END 하단 문장 — kit 기본 14px은 서술문 하한(22px) 미달. 1차시 END와 같은 22px로 맞춘다(D-09 계보 정합). */
 .concept-recap .concept-bottom,
 .concept-recap .concept-bottom small{font-size:22px}
+
+/* ── BIZ-PROMPTS-01~02 업무 프롬프트 공유(마무리 2장 · 소개 전용) ──
+   분류 장은 두 수평 레일로 입력→결과를 보여 준다. 열 개를 카드 격자로 만들지 않아
+   "어떤 업무를 무엇으로 바꿀 수 있는가"라는 대응 관계가 먼저 읽힌다. */
+.biz-prompts-map .s-full,
+.biz-prompts-flow .s-full{display:flex;flex-direction:column}
+.biz-prompts-map .s-lead,
+.biz-prompts-flow .s-lead{margin:8px 0 0;font-size:var(--fs-body);line-height:1.45;color:var(--gray-700)}
+.bp-rails{flex:1 1 auto;min-height:0;margin-top:18px;display:flex;flex-direction:column;justify-content:space-evenly}
+.bp-row{display:grid;grid-template-columns:1fr 1fr;gap:var(--sp-32);border-top:1px solid var(--blue-line);padding:10px 0}
+.bp-row:last-child{border-bottom:1px solid var(--blue-line)}
+.bp-unit{min-width:0;display:grid;grid-template-columns:38px minmax(0,1fr) 28px minmax(0,1fr);gap:8px;align-items:center;font-size:var(--fs-body);line-height:1.35;color:var(--gray-700)}
+.bp-index{font-family:var(--font-mono);font-size:var(--fs-body);font-weight:800;color:var(--blue)}
+.bp-unit > b{font-size:28px;line-height:1;color:var(--blue);text-align:center}
+.bp-unit > strong{font-size:var(--fs-body);font-weight:800;color:var(--mint-deep)}
+
+/* 행동 흐름은 4개의 개별 카드가 아니라, 하나의 연결된 레일이다. */
+.bp-steps{flex:1 1 auto;min-height:0;list-style:none;margin:28px 0 22px;padding:0;display:grid;grid-template-columns:repeat(4,1fr);gap:var(--sp-18)}
+.bp-steps li{position:relative;min-width:0;padding:0 18px 0 50px;display:flex;flex-direction:column;justify-content:center;border-left:3px solid var(--blue-line-strong)}
+.bp-steps li:not(:last-child)::after{content:"→";position:absolute;right:-23px;top:50%;transform:translateY(-50%);z-index:1;font-size:28px;font-weight:800;line-height:1;color:var(--blue)}
+.bp-steps li > span{position:absolute;left:0;top:50%;transform:translateY(-50%);width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:var(--blue);color:var(--white);font-size:var(--fs-body);font-weight:800;line-height:1}
+.bp-steps li:nth-child(4){border-left-color:var(--mint-deep)}
+.bp-steps li:nth-child(4) > span{background:var(--mint);color:var(--on-mint)}
+.bp-steps strong{font-size:var(--fs-box-title);font-weight:800;line-height:var(--lh-box-title);color:var(--ink)}
+.bp-steps p{margin:8px 0 0;font-size:var(--fs-body);line-height:1.42;color:var(--gray-700)}
+.bp-resource{align-self:center;display:flex;align-items:center;justify-content:space-between;gap:var(--sp-24);width:min(940px,100%);padding:16px 22px;border-radius:var(--r-md);background:var(--mint-soft);box-shadow:inset 0 0 0 2px var(--mint-line);color:var(--ink);text-decoration:none}
+.bp-resource span{font-size:var(--fs-body);font-weight:700;line-height:1.4}
+.bp-resource strong{font-family:var(--font-mono);font-size:var(--fs-body);font-weight:800;line-height:1.4;color:var(--mint-deep);text-decoration:underline;text-underline-offset:4px}
+.bp-resource:focus-visible{outline:4px solid var(--blue);outline-offset:4px}

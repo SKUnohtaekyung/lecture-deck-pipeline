@@ -1,119 +1,393 @@
+<style data-part="03">
+/* ══ PART 3 · HTML 대시보드 — 한눈에 이해 (P3-2 · 2026-09-11 결과물 중심 재구성) ══════════
+   · 옮겨 온 구도(ag3-* · w3-* · roadmap · metric-strip)는 shell kit-additions · revision.css 규칙을 그대로 쓴다.
+   · 이 블록에는 새 구도(ag3v2-*)와 [data-slide] 국소 조정만 둔다. 색은 토큰만 · 그라데이션 없음.
+   · deck.contract.json layout_families 등재 대상: ag3v2-chartpick → mapping · ag3v2-catpair → compare2
+   · SVG 글자는 viewBox가 화면 폭과 거의 1:1이 되게 잡아 19px 이상으로 그린다. */
 
+/* N-16 — ⑦ 칸 이름(정제 기준 · 확인 필요)이 가장 길어 세 칸 폭을 1 : 1.4 : 1로 나눈다 */
+.deck .slide[data-slide="N-16"] .ag3-wf-three{grid-template-columns:1fr 1.4fr 1fr}
 
+/* M7-03 차트 고르기 — 질문 → 차트 모양 행 대응(L-td-mapping-rows 독립 구도) */
+.ag3v2-pick{flex:1 1 auto;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:10px}
+.ag3v2-pick-row{display:grid;grid-template-columns:400px 32px 168px 1fr;column-gap:var(--sp-16);align-items:center;
+  background:var(--blue-soft);border:1px solid var(--blue-line);border-radius:var(--r-md);padding:8px 18px}
+.ag3v2-pick-row > *{min-width:0}
+.ag3v2-pick-q{display:flex;align-items:center;gap:var(--sp-12)}
+.ag3v2-pick-kind{flex:0 0 auto;background:var(--blue);color:var(--white);border-radius:var(--r-pill);
+  padding:4px 14px;font-size:var(--fs-body);font-weight:800;line-height:1.3}
+.ag3v2-pick-text{font-size:var(--fs-body);font-weight:700;line-height:1.4;color:var(--ink)}
+.ag3v2-pick-arrow{font-size:26px;font-weight:800;line-height:1;color:var(--blue);text-align:center}
+.ag3v2-pick-fig{margin:0;display:flex;background:var(--white);border:1px solid var(--blue-line-strong);
+  border-radius:var(--r-sm);padding:4px 8px}
+.ag3v2-pick-fig svg{display:block;width:150px;height:44px}
+.ag3v2-pick-a{display:flex;flex-wrap:wrap;align-items:baseline;column-gap:var(--sp-12);row-gap:0}
+.ag3v2-pick-a > b{font-size:var(--fs-box-title);font-weight:800;line-height:var(--lh-box-title);color:var(--ink)}
+.ag3v2-pick-a > span{font-size:var(--fs-box-desc);font-weight:500;line-height:var(--lh-box-desc);color:var(--gray-700)}
+.ag3v2-pick-a > span.is-warn{font-weight:700;color:var(--coral-deep)}
+.ag3v2-mini-ax{fill:none;stroke:var(--gray-400);stroke-width:2}
+.ag3v2-mini-ln{fill:none;stroke:var(--blue);stroke-width:3;stroke-linejoin:round;stroke-linecap:round}
+.ag3v2-mini-bar{fill:var(--periwinkle)}
+.ag3v2-mini-bar.is-key{fill:var(--blue)}
+.ag3v2-mini-dot{fill:var(--blue)}
+.deck .slide[data-slide="M7-03"] .ag3v2-pick-note{margin:0;padding:12px 20px}
 
-<section class="slide part-divider" data-slide="P3">
+/* N-18 핵심 지표 다섯 + 원본 행의 행방(kit metric-strip 위 · N-17 병합) */
+.deck .slide[data-slide="N-18"] .s-full{justify-content:space-evenly;gap:var(--sp-12)}
+.deck .slide[data-slide="N-18"] .w3-hd .s-lead{font-size:var(--fs-lead);line-height:var(--lh-lead)}
+.ag3v2-kpi5{display:grid;grid-template-columns:1fr 1.65fr 1.1fr 1fr 1fr;gap:var(--sp-18);align-items:stretch}
+.ag3v2-kpi5 > .card{margin:0;min-width:0;padding:14px;display:flex;flex-direction:column;justify-content:center;gap:6px}
+.ag3v2-kpi5 > .card.is-key{box-shadow:inset 0 0 0 2px var(--blue)}
+.ag3v2-kpi5 .kpi-val{font-size:40px;line-height:1.1;white-space:nowrap}
+.ag3v2-kpi5 .kpi-val > small{margin-left:4px;font-size:var(--fs-body);font-weight:800;color:var(--gray-700)}
+.ag3v2-kpi5 .kpi-label{line-height:1.35}
+.ag3v2-kpi-sub{font-size:var(--fs-box-desc);font-weight:500;line-height:var(--lh-box-desc);color:var(--gray-700)}
+.deck .slide[data-slide="N-18"] .ag3-stack-bar{height:36px}
+
+/* N-20 상품군 — 총매출 가로 막대(왼쪽) ↔ 마진율 점(오른쪽) · 같은 행 순서로 맞댄 두 판 */
+.ag3v2-cp{flex:0 0 auto;display:grid;grid-template-columns:1.45fr 1fr;gap:var(--sp-24);align-items:stretch}
+.ag3v2-cp > *{min-width:0}
+.ag3v2-cp-panel{margin:0;display:flex;flex-direction:column;justify-content:flex-start;gap:5px;
+  background:var(--white);border:2px solid var(--blue-line-strong);border-radius:var(--r-lg);padding:10px 20px}
+.ag3v2-cp-panel.is-rate{border-color:var(--mint-line)}
+.ag3v2-cp-head,.ag3v2-cp-row{display:grid;grid-template-columns:140px 1fr;column-gap:var(--sp-16);align-items:center}
+.ag3v2-cp-panel.is-rate .ag3v2-cp-head,
+.ag3v2-cp-panel.is-rate .ag3v2-cp-row{grid-template-columns:1fr}
+.ag3v2-cp-head{height:28px}
+.ag3v2-cp-head > span{font-size:19px;font-weight:800;line-height:1.3;color:var(--gray-700)}
+.ag3v2-cp-row{height:40px}
+.ag3v2-cp-panel.is-rate .ag3-rate{margin-right:72px}
+.ag3v2-cp-foot{height:26px;margin-right:72px}
+.ag3v2-cp-foot .ag3-rate-label{height:26px}
+.deck .slide[data-slide="N-20"] .ag3-cat-fill{height:26px}
+.deck .slide[data-slide="N-20"] .ag3-legend{justify-content:center}
+
+/* N-24 실습④ — 요청문 셋을 한 터미널에 «확인한 뒤 다음 요청»으로 끊어 둔다 */
+.deck .slide[data-slide="N-24"] .ag3-pr-body .w3-ask-body{flex:0 0 auto}
+.deck .slide[data-slide="N-24"] .ag3-pr-body .w3-ask-body.is-next{padding-top:6px;padding-bottom:10px}
+.deck .slide[data-slide="N-24"] .terminal-dark .ag3v2-ask-next{margin:4px 18px 0;padding:10px 0 0;
+  border-top:2px dashed var(--on-dark-muted);font-size:20px;font-weight:800;line-height:1.3;color:var(--on-dark-muted)}
+
+/* V5-11 — 말풍선 · 확인 목록 SVG(viewBox 520 ≈ 칸 폭 521px) */
+.ag3v2-sv-bubble{fill:var(--white);stroke:var(--coral-line);stroke-width:2}
+.ag3v2-sv-say{fill:var(--ink);font-weight:800}
+.ag3v2-sv-base{fill:var(--white)}
+.ag3v2-sv-band{fill:var(--surface)}
+.ag3v2-sv-border{fill:none;stroke:var(--blue);stroke-width:2}
+.ag3v2-sv-cap{fill:var(--gray-700);font-weight:800}
+.ag3v2-sv-ok{fill:var(--mint-soft)}
+.ag3v2-sv-okdot{fill:var(--mint)}
+.ag3v2-sv-oktx{fill:var(--on-mint);font-weight:800}
+.ag3v2-sv-okmark{fill:var(--mint-deep);font-weight:800}
+.ag3v2-sv-wait{fill:var(--surface)}
+.ag3v2-sv-waitdot{fill:var(--gray-400)}
+.ag3v2-sv-waittx{fill:var(--gray-700);font-weight:700}
+</style>
+
+<section class="slide part-divider" data-slide="P5">
   <svg class="dv-hero" viewBox="0 0 1280 720" fill="none" aria-hidden="true"></svg>
   <div class="pd-dots" aria-hidden="true"></div>
   <p class="pd-eyebrow">PART</p>
-  <h2 class="pd-title">답할 수 있는 질문과 지표 정의</h2>
-  <p class="pd-sub">무엇을 물을 수 있는지부터 정합니다.</p>
+  <h2 class="pd-title">HTML 대시보드 — 한눈에 이해</h2>
+  <p class="pd-sub">훑어보는 사람이 한 화면에서 숫자를 이해하게 만듭니다.</p>
 </section>
 
 
-<section class="slide roadmap" data-slide="M3" data-shape="flow">
+<section class="slide roadmap" data-slide="M5" data-shape="flow">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
     <span class="s-line"></span><div class="s-team"></div>
   </header>
   <div class="s-full">
     <h2 class="s-title">PART 3은 이렇게 배웁니다</h2>
-    <p class="rm-lead">끝나면 <strong>무엇을 어떻게 세는지</strong>가 파일에 남습니다.</p>
+    <p class="rm-lead">무엇을 넣을지와 어떤 차트로 보일지를 먼저 정하고, <strong>파일 하나로 만듭니다.</strong></p>
     <div class="rm-track is-5 viz-flow-h">
       <div class="rm-step">
         <span class="rm-n">1</span>
-        <b>답할 수 있는 질문</b>
-        <span class="desc">열에 있는 것만 물을 수 있습니다.</span>
-        <span class="rm-out">물을 수 있는 목록</span>
+        <b>반드시 들어갈 여덟</b>
+        <span class="desc">필수 요소를 먼저 봅니다.</span>
+        <span class="rm-out">요소 목록</span>
       </div>
       <span class="rm-arrow" aria-hidden="true">→</span>
       <div class="rm-step">
         <span class="rm-n">2</span>
-        <b>답할 수 없는 질문</b>
-        <span class="desc">열에 없으면 숫자를 만들지 않습니다.</span>
-        <span class="rm-out">물을 수 없는 목록</span>
+        <b>차트 고르기</b>
+        <span class="desc">보여 줄 것에 맞춰 차트를 고릅니다.</span>
+        <span class="rm-out">차트 고르기 표</span>
       </div>
       <span class="rm-arrow" aria-hidden="true">→</span>
       <div class="rm-step">
         <span class="rm-n">3</span>
-        <b>지표는 계산식까지</b>
-        <span class="desc">이름만 적지 않고 식을 적습니다.</span>
-        <span class="rm-out">지표 계산식</span>
+        <b>숫자와 읽는 법</b>
+        <span class="desc">지표 · 월별 · 상품군 · 세 칸을 봅니다.</span>
+        <span class="rm-out">대시보드 설계</span>
       </div>
       <span class="rm-arrow" aria-hidden="true">→</span>
-
       <div class="rm-step">
         <span class="rm-n">4</span>
-        <b>대상 행과 단위</b>
-        <span class="desc">어느 행을 세는지 함께 적습니다.</span>
-        <span class="rm-out">대상 행 · 단위</span>
+        <b>실습③ 대시보드 만들기</b>
+        <span class="desc">파일 하나로 만들고 화면에서 확인합니다.</span>
+        <span class="rm-out">dashboard.html</span>
       </div>
       <span class="rm-arrow" aria-hidden="true">→</span>
       <div class="rm-step is-goal">
         <span class="rm-n">5</span>
-        <b>실습③ 지표정의.json</b>
-        <span class="desc">기준을 파일로 남깁니다.</span>
-        <span class="rm-out">지표정의.json</span>
+        <b>실습④ 한 번에 하나씩</b>
+        <span class="desc">자연어로 한 가지씩 고칩니다.</span>
+        <span class="rm-out">고친 대시보드</span>
       </div>
     </div>
   </div>
 </section>
 
-<!-- N-11 답할 수 있는 질문 / 없는 질문 — comparison (M6) -->
-<section class="slide ag3-qaslide" data-slide="N-11" data-shape="comparison">
+<!-- N-16 대시보드 필수 요소 여덟 — classification (screenshot · 와이어프레임 목업 · ⑥ 핵심 요약 추가) -->
+<section class="slide ag3-wireslide" data-slide="N-16" data-shape="classification">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
     <span class="s-line"></span><div class="s-team"></div>
   </header>
   <div class="s-full fill">
     <div class="w3-hd">
-      <h2 class="s-title">데이터에 있는 열로만 <span class="hl-mint-text">답할 수 있습니다</span></h2>
-      <p class="s-lead">질문을 먼저 <strong>답할 수 있는 것과 없는 것</strong>으로 가릅니다.</p>
+      <h2 class="s-title">대시보드에는 <span class="hl-mint-text">여덟 가지</span>가 반드시 들어갑니다</h2>
+      <p class="s-lead">한 화면에 <strong>숫자 → 차트 → 읽는 법</strong> 순서로 놓습니다.</p>
     </div>
-    <div class="ag3-qa">
-      <div>
-        <h3>✓ 답할 수 있는 질문</h3>
-        <ul>
-          <li>월별 매출은 어떻게 오르내렸나</li>
-          <li>어느 상품군의 매출이 크고 마진율이 높은가</li>
-          <li>배송은 며칠 걸리고 평점은 어떤가</li>
-          <li>중복 · 결측 · 이상값은 몇 건인가</li>
-        </ul>
-      </div>
-      <div class="is-no">
-        <h3>✗ 답할 수 없는 질문</h3>
-        <ul>
-          <li>전년 대비 성장률 · 한 해치 데이터뿐</li>
-          <li>실제 순이익 · 인건비·마케팅비 열이 없음</li>
-          <li>왜 취소됐나 · 취소 이유 열이 없음</li>
-          <li>배송이 늦어서 평점이 낮은가 · 인과는 알 수 없음</li>
-        </ul>
-      </div>
+    <div class="ag3-wire">
+      <figure class="ag3-wf viz-matrix" role="img" aria-label="dashboard.html 화면 구조도: 위에 원본 행과 분석 대상 행, 핵심 주문·매출 지표, 가운데 월별 매출, 상품군별 매출과 마진, 배송 기간과 평점, 아래 핵심 요약, 정제 기준과 확인이 필요한 데이터, 분석의 한계">
+        <div class="ag3-wf-bar">dashboard.html</div>
+        <div class="ag3-wf-body">
+          <div class="ag3-wf-z"><em>①</em><span>원본 행 · 분석 행</span></div>
+          <div class="ag3-wf-z"><em>②</em><span>핵심 주문·매출</span></div>
+          <div class="ag3-wf-z is-wide"><em>③</em><span>월별 매출</span></div>
+          <div class="ag3-wf-z"><em>④</em><span>상품군 매출·마진</span></div>
+          <div class="ag3-wf-z"><em>⑤</em><span>배송 기간 · 평점</span></div>
+          <div class="ag3-wf-three">
+            <div class="ag3-wf-z is-read"><em>⑥</em><span>핵심 요약</span></div>
+            <div class="ag3-wf-z is-read"><em>⑦</em><span>정제 기준 · 확인 필요</span></div>
+            <div class="ag3-wf-z is-read"><em>⑧</em><span>분석 한계</span></div>
+          </div>
+        </div>
+      </figure>
+      <ol class="ag3-eight">
+        <li><em>①</em><span>원본 행과 분석 대상 행</span></li>
+        <li><em>②</em><span>핵심 주문·매출 지표</span></li>
+        <li><em>③</em><span>월별 매출</span></li>
+        <li><em>④</em><span>상품군별 매출과 마진</span></li>
+        <li><em>⑤</em><span>배송 기간과 평점</span></li>
+        <li class="is-read"><em>⑥</em><span>핵심 요약</span></li>
+        <li class="is-read"><em>⑦</em><span>데이터 정제 기준과 확인이 필요한 데이터</span></li>
+        <li class="is-read"><em>⑧</em><span>분석의 한계</span></li>
+      </ol>
     </div>
-    <div class="callout orange hug-center">답할 수 없는 질문에는 <strong>숫자를 만들어 내지 않습니다.</strong></div>
   </div>
 </section>
 
-<!-- N-12 지표는 계산식까지 — mapping (M6 · 골격 = 원본 V3-02 w3-map 승계) -->
-<section class="slide w3-mapslide ag3-defslide" data-slide="N-12" data-shape="mapping">
+<!-- M7-03 보여 줄 것에 맞춰 차트를 고릅니다 — mapping (신규 · 질문 → 차트 모양 행 대응 + 미니 SVG 4) -->
+<section class="slide ag3v2-chartpick" data-slide="M7-03" data-shape="mapping">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
     <span class="s-line"></span><div class="s-team"></div>
   </header>
   <div class="s-full fill">
-    <h2 class="s-title">지표는 <span class="hl-mint-text">계산식</span>까지 적어야 지표입니다</h2>
-    <p class="s-lead">이름만 적으면 사람마다 다르게 셉니다. <strong>식 · 대상 행 · 단위</strong>를 함께 적습니다.</p>
-    <div class="w3-map ag3-defs viz-matrix" role="img" aria-label="지표 다섯 개와 계산식의 대응: 총매출, 상품군별 매출, 마진, 배송 기간, 평점">
-      <div class="w3-map-row"><span class="w3-map-file">총매출</span><span class="w3-map-arrow" aria-hidden="true">→</span><span class="w3-map-role"><b class="ag3-formula">수량 × 단가 − 할인액</b><span class="ag3-sub">Completed 주문 · 배송비 제외 · 원</span></span></div>
-      <div class="w3-map-row"><span class="w3-map-file">상품군별 매출</span><span class="w3-map-arrow" aria-hidden="true">→</span><span class="w3-map-role"><b class="ag3-formula">category별 총매출 합</b><span class="ag3-sub">비중은 전체 매출로 나눔 · %</span></span></div>
-      <div class="w3-map-row"><span class="w3-map-file">마진</span><span class="w3-map-arrow" aria-hidden="true">→</span><span class="w3-map-role"><b class="ag3-formula">총매출 − 수량 × 단위원가</b><span class="ag3-sub">상품 원가만 뺀 값 · 원</span></span></div>
-      <div class="w3-map-row"><span class="w3-map-file">배송 기간</span><span class="w3-map-arrow" aria-hidden="true">→</span><span class="w3-map-role"><b class="ag3-formula">delivery_days 합 ÷ 대상 행 수</b><span class="ag3-sub">값이 있고 보류가 아닌 행 · 일</span></span></div>
-      <div class="w3-map-row"><span class="w3-map-file">평점</span><span class="w3-map-arrow" aria-hidden="true">→</span><span class="w3-map-role"><b class="ag3-formula">rating 합 ÷ 응답한 행 수</b><span class="ag3-sub">무응답은 분모에서 제외 · 점</span></span></div>
+    <div class="w3-hd">
+      <h2 class="s-title">보여 줄 것에 맞춰 <span class="hl-mint-text">차트</span>를 고릅니다</h2>
+      <p class="s-lead">차트는 꾸미기가 아니라 <strong>질문에 답하는 모양</strong>입니다.</p>
+    </div>
+    <div class="ag3v2-pick viz-matrix">
+      <div class="ag3v2-pick-row">
+        <div class="ag3v2-pick-q"><span class="ag3v2-pick-kind">흐름</span><span class="ag3v2-pick-text">시간에 따라 어떻게 변했나</span></div>
+        <span class="ag3v2-pick-arrow" aria-hidden="true">→</span>
+        <figure class="ag3v2-pick-fig" role="img" aria-label="선 차트 모양 견본: 월별 매출 12개월의 오르내림을 선으로 이은 모양(값 표시 없음)">
+          <svg viewBox="0 0 150 44" aria-hidden="true"><path class="ag3v2-mini-ax" d="M4 3 V42 H147"/><polyline class="ag3v2-mini-ln" points="8,20.4 20.2,32.2 32.4,13 44.5,34.5 56.7,21.6 68.9,22.4 81.1,29.1 93.3,25.1 105.5,25 117.6,10 129.8,19.3 142,18.1"/></svg>
+        </figure>
+        <div class="ag3v2-pick-a"><b>선 또는 세로 막대</b><span>예: 월별 매출 12개월</span></div>
+      </div>
+      <div class="ag3v2-pick-row">
+        <div class="ag3v2-pick-q"><span class="ag3v2-pick-kind">비교</span><span class="ag3v2-pick-text">어느 쪽이 더 큰가</span></div>
+        <span class="ag3v2-pick-arrow" aria-hidden="true">→</span>
+        <figure class="ag3v2-pick-fig" role="img" aria-label="가로 막대 모양 견본: 상품군 6개의 매출을 큰 순서로 늘어놓은 막대(값 표시 없음)">
+          <svg viewBox="0 0 150 44" aria-hidden="true"><path class="ag3v2-mini-ax" d="M5 0 V44"/><rect class="ag3v2-mini-bar is-key" x="6" y="1.5" width="136" height="5"/><rect class="ag3v2-mini-bar" x="6" y="8.7" width="76.2" height="5"/><rect class="ag3v2-mini-bar" x="6" y="15.9" width="60.3" height="5"/><rect class="ag3v2-mini-bar" x="6" y="23.1" width="57.1" height="5"/><rect class="ag3v2-mini-bar" x="6" y="30.3" width="46.3" height="5"/><rect class="ag3v2-mini-bar" x="6" y="37.5" width="28.9" height="5"/></svg>
+        </figure>
+        <div class="ag3v2-pick-a"><b>가로 막대</b><span>예: 상품군 6개의 매출</span></div>
+      </div>
+      <div class="ag3v2-pick-row">
+        <div class="ag3v2-pick-q"><span class="ag3v2-pick-kind">분포</span><span class="ag3v2-pick-text">값이 어디에 몰려 있나</span></div>
+        <span class="ag3v2-pick-arrow" aria-hidden="true">→</span>
+        <figure class="ag3v2-pick-fig" role="img" aria-label="구간별 막대 모양 견본: 평점 점수별 응답 수가 높은 점수 쪽에 몰린 막대(값 표시 없음)">
+          <svg viewBox="0 0 150 44" aria-hidden="true"><path class="ag3v2-mini-ax" d="M4 42 H147"/><rect class="ag3v2-mini-bar" x="38" y="40.5" width="18" height="1.5"/><rect class="ag3v2-mini-bar" x="66" y="37.6" width="18" height="4.4"/><rect class="ag3v2-mini-bar" x="94" y="10.2" width="18" height="31.8"/><rect class="ag3v2-mini-bar is-key" x="122" y="4" width="18" height="38"/></svg>
+        </figure>
+        <div class="ag3v2-pick-a"><b>구간별 막대</b><span>예: 평점 점수별 응답 수</span></div>
+      </div>
+      <div class="ag3v2-pick-row">
+        <div class="ag3v2-pick-q"><span class="ag3v2-pick-kind">관계</span><span class="ag3v2-pick-text">두 값이 함께 움직이나</span></div>
+        <span class="ag3v2-pick-arrow" aria-hidden="true">→</span>
+        <figure class="ag3v2-pick-fig" role="img" aria-label="산점도 모양 견본: 두 값을 점으로 찍은 예시 모양(실제 데이터 아님)">
+          <svg viewBox="0 0 150 44" aria-hidden="true"><path class="ag3v2-mini-ax" d="M4 3 V42 H147"/><circle class="ag3v2-mini-dot" cx="18" cy="34" r="3.2"/><circle class="ag3v2-mini-dot" cx="31" cy="30" r="3.2"/><circle class="ag3v2-mini-dot" cx="44" cy="32" r="3.2"/><circle class="ag3v2-mini-dot" cx="57" cy="24" r="3.2"/><circle class="ag3v2-mini-dot" cx="71" cy="27" r="3.2"/><circle class="ag3v2-mini-dot" cx="85" cy="18" r="3.2"/><circle class="ag3v2-mini-dot" cx="99" cy="21" r="3.2"/><circle class="ag3v2-mini-dot" cx="113" cy="13" r="3.2"/><circle class="ag3v2-mini-dot" cx="127" cy="9" r="3.2"/><circle class="ag3v2-mini-dot" cx="139" cy="12" r="3.2"/></svg>
+        </figure>
+        <div class="ag3v2-pick-a"><b>산점도</b><span class="is-warn">함께 움직여도 원인은 아닙니다</span></div>
+      </div>
+    </div>
+    <div class="callout blue hug-center ag3v2-pick-note">한 차트에는 <span class="hl-mint-mark">질문 하나만</span> 담습니다.</div>
+  </div>
+</section>
+
+<!-- N-18 가장 중요한 숫자 — numeric (kit metric-strip · N-17 병합 · 필수 요소 ① ② ⑤ · KPI 5 + C-stacked-bar) -->
+<section class="slide metric-strip" data-slide="N-18" data-shape="numeric">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span><div class="s-team"></div>
+  </header>
+  <div class="s-full">
+    <div class="w3-hd">
+      <p class="s-eyebrow">필수 요소 ① ② ⑤</p>
+      <h2 class="s-title">가장 중요한 숫자는 <span class="hl-mint-mark">위에 크게</span> 둡니다</h2>
+      <p class="s-lead">원본 2,424행 중 2,203행(90.9%)을 분석했습니다. 제외 219행 중 181행은 틀린 값이 아니라 <strong>아직 매출이 아닌 취소·대기 주문</strong>입니다.</p>
+    </div>
+    <div class="ag3v2-kpi5">
+      <div class="card"><b class="kpi-val">2,203</b><span class="kpi-label">주문 수(건)</span><span class="ag3v2-kpi-sub">분석 대상 행과 같음</span></div>
+      <div class="card is-key"><b class="kpi-val key">205,274,700<small>원</small></b><span class="kpi-label">총매출(취소·대기 제외, 반품 미차감)</span></div>
+      <div class="card"><b class="kpi-val">93,180<small>원</small></b><span class="kpi-label">평균 주문금액</span></div>
+      <div class="card"><b class="kpi-val">3.45<small>일</small></b><span class="kpi-label">평균 배송 기간</span><span class="ag3v2-kpi-sub">분모 2,199행</span></div>
+      <div class="card"><b class="kpi-val">4.44<small>점</small></b><span class="kpi-label">평균 평점</span><span class="ag3v2-kpi-sub">분모 2,139행</span></div>
+    </div>
+    <figure class="ag3-stack viz-stacked" role="img" aria-label="원본 2,424행의 행방 누적 막대, 단위 행: 분석 대상 2,203행, 제외 219행, 보류 2행">
+      <div class="ag3-stack-bar"><svg class="ag3-seg is-a" style="width:90.88%" viewBox="0 0 10 10" preserveAspectRatio="none" aria-hidden="true"><rect width="10" height="10"/></svg><svg class="ag3-seg is-b" style="width:9.03%" viewBox="0 0 10 10" preserveAspectRatio="none" aria-hidden="true"><rect width="10" height="10"/></svg><svg class="ag3-seg is-c" style="width:0.08%" viewBox="0 0 10 10" preserveAspectRatio="none" aria-hidden="true"><rect width="10" height="10"/></svg></div>
+      <ul class="ag3-legend"><li><i></i>분석 대상 2,203행</li><li><i class="is-b"></i>제외 219행</li><li><i class="is-c"></i>보류 2행</li></ul>
+    </figure>
+    <p class="ag3-cap">보류 2행은 <strong>승인 전까지 확정 수치에 넣지 않습니다.</strong></p>
+  </div>
+</section>
+
+<!-- N-19 월별 매출 — numeric (필수 요소 ③ · C-line — 12개월은 C-column 상한 7 초과) -->
+<section class="slide ag3-monthslide" data-slide="N-19" data-shape="numeric">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span><div class="s-team"></div>
+  </header>
+  <div class="s-full fill">
+    <div class="w3-hd">
+      <p class="s-eyebrow">필수 요소 ③</p>
+      <h2 class="s-title">월별 매출은 <span class="hl-mint-text">2025-10</span>이 가장 높습니다</h2>
+      <p class="s-lead">12개월이 오르내릴 뿐 <strong>한 방향 추세는 보이지 않습니다.</strong></p>
+    </div>
+    <figure class="ag3-linechart ag3-month viz-line" role="img" aria-label="월별 총매출 꺾은선 그래프, 단위 원: 2025-01 17,611,700, 2025-02 14,835,800, 2025-03 19,362,500, 2025-04 14,302,250, 2025-05 17,334,250, 2025-06 17,141,600, 2025-07 15,563,450, 2025-08 16,510,600, 2025-09 16,530,850, 2025-10 20,064,500, 2025-11 17,863,150, 2025-12 18,154,050. 가장 높은 달은 2025-10">
+      <p class="ag3-unit">단위: 원 · 총매출(취소·대기 제외, 반품 미차감) · 주문일 기준</p>
+      <div class="ag3-lplot" style="height:220px">
+        <svg class="ag3-lsvg" viewBox="0 -100 100 100" preserveAspectRatio="none" aria-hidden="true"><polyline class="ag3-lseries" points="4.17,-70.22 12.50,-59.15 20.83,-77.20 29.17,-57.03 37.50,-69.11 45.83,-68.35 54.17,-62.05 62.50,-65.83 70.83,-65.91 79.17,-80.00 87.50,-71.22 95.83,-72.38"/></svg>
+        <span class="ag3-ldot" style="left:4.17%;bottom:70.22%"></span>
+        <span class="ag3-ldot" style="left:12.50%;bottom:59.15%"></span>
+        <span class="ag3-ldot" style="left:20.83%;bottom:77.20%"></span>
+        <span class="ag3-ldot" style="left:29.17%;bottom:57.03%"></span>
+        <span class="ag3-ldot" style="left:37.50%;bottom:69.11%"></span>
+        <span class="ag3-ldot" style="left:45.83%;bottom:68.35%"></span>
+        <span class="ag3-ldot" style="left:54.17%;bottom:62.05%"></span>
+        <span class="ag3-ldot" style="left:62.50%;bottom:65.83%"></span>
+        <span class="ag3-ldot" style="left:70.83%;bottom:65.91%"></span>
+        <span class="ag3-ldot is-key" style="left:79.17%;bottom:80.00%"></span>
+        <span class="ag3-ldot" style="left:87.50%;bottom:71.22%"></span>
+        <span class="ag3-ldot" style="left:95.83%;bottom:72.38%"></span>
+        <span class="ag3-lval is-key" style="left:79.17%;bottom:80.00%">20,064,500</span>
+        <span class="ag3-lval is-low" style="left:29.17%;bottom:57.03%">14,302,250</span>
+      </div>
+      <div class="ag3-axis ag3-laxis">
+        <span>2025-01</span>
+        <span>2025-02</span>
+        <span>2025-03</span>
+        <span>2025-04</span>
+        <span>2025-05</span>
+        <span>2025-06</span>
+        <span>2025-07</span>
+        <span>2025-08</span>
+        <span>2025-09</span>
+        <span>2025-10</span>
+        <span>2025-11</span>
+        <span>2025-12</span>
+      </div>
+      <ul class="ag3-legend"><li><i class="is-lline"></i>월별 총매출</li><li><i class="is-ldot"></i>가장 높은 달</li></ul>
+    </figure>
+    <p class="ag3-cap">한 해치뿐이라 <strong>계절 효과인지 우연인지</strong> 이 데이터로는 가를 수 없습니다.</p>
+  </div>
+</section>
+
+<!-- N-20 상품군 — comparison (필수 요소 ④ · 구도 변경: C-hbar 판 ↔ C-lollipop 판, 같은 행 순서) -->
+<section class="slide ag3v2-catpair" data-slide="N-20" data-shape="comparison">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span><div class="s-team"></div>
+  </header>
+  <div class="s-full fill">
+    <div class="w3-hd">
+      <p class="s-eyebrow">필수 요소 ④</p>
+      <h2 class="s-title">매출이 큰 상품군과 <span class="hl-mint-text">마진율이 높은 상품군</span>은 다릅니다</h2>
+    </div>
+    <div class="ag3v2-cp">
+      <figure class="ag3v2-cp-panel is-rev viz-catpair" role="img" aria-label="상품군 6개의 총매출 가로 막대, 단위 원: Electronics 68,964,650, Fashion 38,658,050, Food 30,586,750, Home 28,951,300, Pet 23,477,250, Beauty 14,636,700. 총매출이 가장 큰 상품군은 Electronics">
+        <div class="ag3v2-cp-head"><span>상품군</span><span>총매출 · 원</span></div>
+        <div class="ag3v2-cp-row"><span class="ag3-cat-name">Electronics</span><span class="ag3-cat-track"><svg class="ag3-cat-fill is-key" style="width:72.00%" viewBox="0 0 10 10" preserveAspectRatio="none" aria-hidden="true"><rect width="10" height="10"/></svg><span class="ag3-cat-num">68,964,650</span></span></div>
+        <div class="ag3v2-cp-row"><span class="ag3-cat-name">Fashion</span><span class="ag3-cat-track"><svg class="ag3-cat-fill" style="width:40.36%" viewBox="0 0 10 10" preserveAspectRatio="none" aria-hidden="true"><rect width="10" height="10"/></svg><span class="ag3-cat-num">38,658,050</span></span></div>
+        <div class="ag3v2-cp-row"><span class="ag3-cat-name">Food</span><span class="ag3-cat-track"><svg class="ag3-cat-fill" style="width:31.93%" viewBox="0 0 10 10" preserveAspectRatio="none" aria-hidden="true"><rect width="10" height="10"/></svg><span class="ag3-cat-num">30,586,750</span></span></div>
+        <div class="ag3v2-cp-row"><span class="ag3-cat-name">Home</span><span class="ag3-cat-track"><svg class="ag3-cat-fill" style="width:30.23%" viewBox="0 0 10 10" preserveAspectRatio="none" aria-hidden="true"><rect width="10" height="10"/></svg><span class="ag3-cat-num">28,951,300</span></span></div>
+        <div class="ag3v2-cp-row"><span class="ag3-cat-name">Pet</span><span class="ag3-cat-track"><svg class="ag3-cat-fill" style="width:24.51%" viewBox="0 0 10 10" preserveAspectRatio="none" aria-hidden="true"><rect width="10" height="10"/></svg><span class="ag3-cat-num">23,477,250</span></span></div>
+        <div class="ag3v2-cp-row"><span class="ag3-cat-name">Beauty</span><span class="ag3-cat-track"><svg class="ag3-cat-fill" style="width:15.28%" viewBox="0 0 10 10" preserveAspectRatio="none" aria-hidden="true"><rect width="10" height="10"/></svg><span class="ag3-cat-num">14,636,700</span></span></div>
+      </figure>
+      <figure class="ag3v2-cp-panel is-rate viz-catpair" role="img" aria-label="같은 행 순서의 마진율 점, 단위 %: Electronics 49.7%, Fashion 53.3%, Food 53.8%, Home 56.2%, Pet 55.2%, Beauty 59.0%, 점선은 전체 마진율 53.2%">
+        <div class="ag3v2-cp-head"><span>마진율 · %</span></div>
+        <div class="ag3v2-cp-row"><span class="ag3-rate"><span class="ag3-rate-ref" style="left:45.6%"></span><span class="ag3-rate-dot" style="left:26.1%"></span><span class="ag3-rate-num" style="left:26.1%">49.7%</span></span></div>
+        <div class="ag3v2-cp-row"><span class="ag3-rate"><span class="ag3-rate-ref" style="left:45.6%"></span><span class="ag3-rate-dot" style="left:46.1%"></span><span class="ag3-rate-num" style="left:46.1%">53.3%</span></span></div>
+        <div class="ag3v2-cp-row"><span class="ag3-rate"><span class="ag3-rate-ref" style="left:45.6%"></span><span class="ag3-rate-dot" style="left:48.9%"></span><span class="ag3-rate-num" style="left:48.9%">53.8%</span></span></div>
+        <div class="ag3v2-cp-row"><span class="ag3-rate"><span class="ag3-rate-ref" style="left:45.6%"></span><span class="ag3-rate-dot" style="left:62.2%"></span><span class="ag3-rate-num" style="left:62.2%">56.2%</span></span></div>
+        <div class="ag3v2-cp-row"><span class="ag3-rate"><span class="ag3-rate-ref" style="left:45.6%"></span><span class="ag3-rate-dot" style="left:56.7%"></span><span class="ag3-rate-num" style="left:56.7%">55.2%</span></span></div>
+        <div class="ag3v2-cp-row"><span class="ag3-rate"><span class="ag3-rate-ref" style="left:45.6%"></span><span class="ag3-rate-dot" style="left:77.8%"></span><span class="ag3-rate-num" style="left:77.8%">59.0%</span></span></div>
+        <div class="ag3v2-cp-foot"><span class="ag3-rate-label"><span style="left:45.6%">전체 53.2%</span></span></div>
+      </figure>
+    </div>
+    <ul class="ag3-legend"><li><i></i>총매출이 가장 큰 상품군</li><li><i class="is-d"></i>그 밖의 상품군</li><li><i class="is-dot"></i>마진율</li><li><i class="is-line"></i>전체 마진율</li></ul>
+    <p class="ag3-cap">마진율은 상품 원가만 뺀 값이라 <strong>실제 이익률이 아닙니다.</strong></p>
+  </div>
+</section>
+
+<!-- N-22 읽는 법 세 칸 — checklist (필수 요소 ⑥ 핵심 요약 · ⑦ 정제 기준과 확인 필요 · ⑧ 한계) -->
+<section class="slide ag3-threeslide" data-slide="N-22" data-shape="checklist">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span><div class="s-team"></div>
+  </header>
+  <div class="s-full fill">
+    <div class="w3-hd">
+      <p class="s-eyebrow">필수 요소 ⑥ ⑦ ⑧</p>
+      <h2 class="s-title">숫자 옆에 <span class="hl-mint-text">읽는 법 세 칸</span>을 남깁니다</h2>
+      <p class="s-lead">이 세 칸이 없으면 <strong>보는 사람이 숫자를 확정값으로 읽습니다.</strong></p>
+    </div>
+    <div class="ag3-three">
+      <div class="ag3-three-item">
+        <h3>⑥ 핵심 요약</h3>
+        <ul>
+          <li>매출 비중이 가장 큰 Electronics(33.6%)의 마진율이 가장 낮습니다(49.7%)</li>
+          <li>월별 매출은 오르내릴 뿐 한 방향 추세가 없습니다</li>
+        </ul>
+      </div>
+      <div class="ag3-three-item is-hold">
+        <h3>⑦ 정제 기준과 확인이 필요한 데이터</h3>
+        <ul>
+          <li>완전 중복 23행 · 수량 0 · 수량 50 이상 · 음수 배송일 제외</li>
+          <li>취소·대기 181행은 매출에서 제외</li>
+          <li>확인 필요 6행: <code>ORD00852</code> 두 행 · 배송 45일 4행</li>
+        </ul>
+      </div>
+      <div class="ag3-three-item is-limit">
+        <h3>⑧ 분석의 한계</h3>
+        <ul>
+          <li>마진은 실제 이익이 아님</li>
+          <li>한 해치뿐이라 전년 비교 불가</li>
+          <li>함께 움직여도 원인은 알 수 없음</li>
+          <li>모의 데이터라 현실 판단 근거가 아님</li>
+        </ul>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- N-13 실습③ 지표정의.json — screen-operation (M6 · 골격 = 원본 V3-08 실습 승계) -->
-<section class="slide w3-practice ag3-pr" data-slide="N-13" data-shape="screen-operation">
+<!-- N-23 실습③ 대시보드 만들기 — screen-operation (terminal · 복구본 경로 M-16) -->
+<section class="slide w3-practice ag3-pr" data-slide="N-23" data-shape="screen-operation">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
     <span class="s-line"></span><div class="s-team"></div>
@@ -121,23 +395,126 @@
   <div class="s-full fill">
     <div class="w3-pr-hd">
       <p class="s-eyebrow">실습 ③</p>
-      <h2 class="s-title">지표 정의를 파일로 남깁니다</h2>
+      <h2 class="s-title">파일 하나로 대시보드를 만듭니다</h2>
     </div>
     <div class="ag3-pr-body">
       <div class="w3-ask terminal-dark" aria-label="Agent에게 입력하는 요청문">
         <div class="terminal-bar"><span></span><span></span><span></span><b>이렇게 요청하세요</b></div>
         <div class="w3-ask-body">
           <span class="w3-ask-pfx" aria-hidden="true">&gt;_</span>
-          <p>매출 · 상품군 · 마진 · 배송 · 평점 지표를 <code>지표정의.json</code>에 정리해줘. 지표마다 <strong>계산식 · 대상 행 · 단위</strong>를 적고, <strong>아직 계산은 하지 마.</strong></p>
+          <p><code>분석대상.csv</code>로 <strong>파일 하나</strong>인 <code>dashboard.html</code>을 만들어줘. 핵심 지표, 월별 매출, 상품군별 매출과 마진, 배송 기간과 평점, 핵심 요약, 정제 기준과 한계를 넣고, <strong>원본 CSV는 고치지 마.</strong></p>
         </div>
       </div>
       <div class="eval-steps ag3-steps">
-          <div class="work-step"><span class="n">1</span><b>목적</b><span class="desc">중요한 기준은 대화가 아니라 파일에 남깁니다.</span></div>
-          <div class="work-step"><span class="n">2</span><b>입력</b><span class="desc">품질 진단 표 · 답할 수 있는 질문 목록</span></div>
-          <div class="work-step"><span class="n">3</span><b>출력</b><span class="desc">지표정의.json 파일을 만듭니다</span></div>
-          <div class="work-step is-check"><span class="n">4</span><b>검증 기준</b><span class="desc">확인: 지표마다 식 · 대상 행 · 단위가 있습니다.</span></div>
+          <div class="work-step"><span class="n">1</span><b>목적</b><span class="desc">훑어보는 사람이 한 화면에서 숫자를 이해하게 만듭니다.</span></div>
+          <div class="work-step"><span class="n">2</span><b>입력</b><span class="desc">분석대상.csv</span></div>
+          <div class="work-step"><span class="n">3</span><b>출력</b><span class="desc">3차시_실습 안의 dashboard.html 한 파일</span></div>
+          <div class="work-step is-check"><span class="n">4</span><b>검증 기준</b><span class="desc">확인: 필수 요소 8개가 화면에 있고, 더블클릭으로 열립니다.</span></div>
         </div>
     </div>
-    <p class="ag3-demo">완성본은 <code>실습예제/CSV/지표정의.json</code>입니다. 내 파일과 <strong>칸이 같은지</strong>만 비교합니다.</p>
+    <p class="ag3-demo">막히면 <code>3차시_실습/복구/dashboard.html</code>에서 <strong>이어 갑니다.</strong></p>
+  </div>
+</section>
+
+<!-- V5-11 «완료»보다 화면 — contrast (M-01 · PART 3으로 이동 · 원본 대조 → 화면 필수 요소 확인으로 텍스트 교체) -->
+<section class="slide w3-vs-2col" data-slide="V5-11" data-shape="contrast">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span><div class="s-team"></div>
+  </header>
+  <div class="s-full fill">
+    <h2 class="s-title">"완료했습니다"보다 <span class="hl-mint-text">내 눈으로 본 화면</span></h2>
+    <div class="w3-two viz-matrix">
+      <div class="w3-two-col is-cant">
+        <h3>에이전트의 답변</h3>
+        <figure class="w3-two-fig" role="img" aria-label="에이전트가 대시보드를 완성했습니다라고 답한 말풍선">
+          <svg viewBox="0 0 520 140" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect class="ag3v2-sv-bubble" x="20" y="16" width="480" height="80" rx="18"/>
+            <text class="ag3v2-sv-say" x="260" y="66" text-anchor="middle" font-size="24">"대시보드를 완성했습니다"</text>
+            <path class="ag3v2-sv-bubble" d="M70 95 L70 124 L106 95"/>
+          </svg>
+        </figure>
+        <p>그건 <strong>만들었다는 말</strong>입니다. 맞다는 말이 아닙니다.</p>
+      </div>
+      <div class="w3-two-col is-can">
+        <h3>화면에서 직접 확인 ✓</h3>
+        <figure class="w3-two-fig" role="img" aria-label="필수 요소 확인 목록: 원본 행과 분석 대상 행은 화면에 있어 확인, 분석의 한계 칸은 아직 찾는 중">
+          <svg viewBox="0 0 520 140" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect class="ag3v2-sv-base" x="8" y="4" width="504" height="132" rx="12"/>
+            <path class="ag3v2-sv-band" d="M8 36 V16 A12 12 0 0 1 20 4 H500 A12 12 0 0 1 512 16 V36 Z"/>
+            <rect class="ag3v2-sv-border" x="8" y="4" width="504" height="132" rx="12"/>
+            <text class="ag3v2-sv-cap" x="24" y="27" font-size="19">필수 요소 확인</text>
+            <rect class="ag3v2-sv-ok" x="20" y="44" width="480" height="40" rx="8"/>
+            <circle class="ag3v2-sv-okdot" cx="40" cy="64" r="8"/>
+            <text class="ag3v2-sv-oktx" x="58" y="71" font-size="19">원본 행과 분석 대상 행 — 화면에 있음</text>
+            <text class="ag3v2-sv-okmark" x="486" y="71" text-anchor="end" font-size="19">확인</text>
+            <rect class="ag3v2-sv-wait" x="20" y="92" width="480" height="36" rx="8"/>
+            <circle class="ag3v2-sv-waitdot" cx="40" cy="110" r="7"/>
+            <text class="ag3v2-sv-waittx" x="58" y="117" font-size="19">분석의 한계 칸 — 찾는 중</text>
+          </svg>
+        </figure>
+        <p><strong>필수 요소 8개가 화면에 보여야</strong> 끝난 겁니다.</p>
+      </div>
+    </div>
+    <div class="callout blue hug-center">완료 보고는 증거가 아닙니다. <strong>증거는 내가 열어 본 화면입니다.</strong></div>
+  </div>
+</section>
+
+<!-- N-33 막히면 복구본 — flow (steps · 복구본 경로 M-16) -->
+<section class="slide ag3-recovery" data-slide="N-33" data-shape="flow">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span><div class="s-team"></div>
+  </header>
+  <div class="s-full fill">
+    <div class="w3-hd">
+      <h2 class="s-title">막히면 <span class="hl-mint-text">복구본에서</span> 이어 갑니다</h2>
+      <p class="s-lead">되돌아갈 자리를 <strong>시작 전에 알아 두는 것</strong>도 실습 규칙입니다.</p>
+    </div>
+    <div class="eval-steps viz-flow-v">
+      <div class="work-step"><span class="n">1</span><b>복구본 열기</b><span class="desc">3차시_실습/복구/dashboard.html을 더블클릭해 엽니다.</span></div>
+      <div class="work-step"><span class="n">2</span><b>들어 있는 것 보기</b><span class="desc">핵심 지표 4개와 상품군 표 1개가 보입니다.</span></div>
+      <div class="work-step"><span class="n">3</span><b>하나씩 붙이기</b><span class="desc">월별 매출 막대 → 배송·평점 분포 → 필터 순서로 요청합니다.</span></div>
+    </div>
+    <div class="callout green hug-center">복구본은 <strong>계산을 돌리지 않아도</strong> 열립니다. 숫자는 <code>지표기준값.json</code>과 같습니다.</div>
+  </div>
+</section>
+
+<!-- N-24 실습④ 한 번에 하나씩 — screen-operation (terminal · V6-08 병합 · 요청문 3줄) -->
+<section class="slide w3-practice ag3-pr" data-slide="N-24" data-shape="screen-operation">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span><div class="s-team"></div>
+  </header>
+  <div class="s-full fill">
+    <div class="w3-pr-hd">
+      <p class="s-eyebrow">실습 ④</p>
+      <h2 class="s-title">한 번에 하나씩 자연어로 고칩니다</h2>
+    </div>
+    <div class="ag3-pr-body">
+      <div class="w3-ask terminal-dark" aria-label="Agent에게 한 번에 하나씩 입력하는 요청문 세 개">
+        <div class="terminal-bar"><span></span><span></span><span></span><b>이렇게 요청하세요</b></div>
+        <div class="w3-ask-body">
+          <span class="w3-ask-pfx" aria-hidden="true">&gt;_</span>
+          <p>월별 매출을 막대그래프로 바꿔줘. <strong>다른 부분은 그대로 둬.</strong></p>
+        </div>
+        <p class="ag3v2-ask-next">확인한 뒤 다음 요청</p>
+        <div class="w3-ask-body is-next">
+          <span class="w3-ask-pfx" aria-hidden="true">&gt;_</span>
+          <p>가장 중요한 KPI를 상단에 크게 보여줘.</p>
+        </div>
+        <div class="w3-ask-body is-next">
+          <span class="w3-ask-pfx" aria-hidden="true">&gt;_</span>
+          <p>상품군별 매출과 마진을 한눈에 비교할 수 있게 만들어줘.</p>
+        </div>
+      </div>
+      <div class="eval-steps ag3-steps">
+          <div class="work-step"><span class="n">1</span><b>목적</b><span class="desc">요청 하나에 바뀐 곳 하나를 확인합니다.</span></div>
+          <div class="work-step"><span class="n">2</span><b>입력</b><span class="desc">고칠 곳 한 가지</span></div>
+          <div class="work-step"><span class="n">3</span><b>출력</b><span class="desc">고친 dashboard.html</span></div>
+          <div class="work-step is-check"><span class="n">4</span><b>검증 기준</b><span class="desc">확인: 바뀐 곳은 한 곳이고, 나머지 숫자는 그대로입니다.</span></div>
+        </div>
+    </div>
+    <p class="ag3-demo">한꺼번에 고치면 <strong>무엇 때문에 달라졌는지</strong> 알 수 없습니다.</p>
   </div>
 </section>

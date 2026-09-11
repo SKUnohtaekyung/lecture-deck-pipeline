@@ -1008,6 +1008,99 @@
     [data-slide="V6-04"] .w3-pending b{font-size:22px}
     .w3-pending p{margin:0;font-size:var(--fs-body);line-height:1.5;color:var(--gray-700)}
 
+    /* ══════════════════════════════════════════════════════════════════
+       P3 재구성 (2026-09-11 · 결과물 중심 새 초안 · shell 담당 P3-0)
+       ══════════════════════════════════════════════════════════════════
+       범위: 오프닝 M7-01(신규) · END 흐름 칩 · 부록 A/B 헤더 표식 · 부록 A로 내려간 N-08 한 칸.
+       · 셀렉터는 `.deck .slide[data-slide="ID"]` 또는 `ag3v2-` 접두 클래스만 쓴다 — 다른 조각에 새지 않게.
+       · 위 기본 경화 5종과 기존 규칙은 그대로 둔다. revision.css는 쓰지 않는다(M-14).
+       · 계약 layout_families 등재 대상(P3-4 소관): `ag3v2-outslide` → grid.
+       ────────────────────────────────────────────────────────────────── */
+
+    /* ── M7-01 오늘 손에 남는 결과물 네 개 — L-gm-quad 변형 ────────────────
+       원본 CSV 한 칸(좌) → 결과물 네 칸(2×2). 칸마다 주인공은 SVG 파일 목업이다(M-07 · 실물 캡처 대신).
+       ⚠️ 원본 파일명 mock_ecommerce_orders.csv(25자)는 20px 등폭으로 약 300px다. 좌측 칸 안쪽 폭을
+          312px로 잡은 이유다 — 칸을 줄이면 파일명이 두 줄로 깨진다.
+       ⚠️ 결과물 칸 제목은 24px다. 2×2 칸의 글 칸이 약 243px라 26px이면 «Markdown 근거 문서»가
+          폭 한계에 닿는다(로드맵 .rm-track.is-5가 좁은 칸에서 제목만 24px로 내리는 것과 같은 처리).
+       ⚠️ 격자 행은 minmax(0,1fr)로 둔다 — auto 행은 내용 높이로 버텨 바닥선을 민다(.w3-shots 선례). */
+    .deck .slide[data-slide="M7-01"] .s-full{bottom:54px;display:flex;flex-direction:column;gap:var(--sp-18)}
+    .ag3v2-out{flex:1 1 auto;min-height:0;display:grid;grid-template-columns:340px 36px minmax(0,1fr);
+      grid-template-rows:minmax(0,1fr);column-gap:var(--sp-16);align-items:center}
+    .ag3v2-out > *{min-width:0}
+    .ag3v2-out-src{margin:0;display:flex;flex-direction:column;align-items:center;gap:var(--sp-12);
+      padding:18px 14px;border-radius:var(--r-lg);background:var(--surface);
+      box-shadow:inset 0 0 0 2px var(--blue-line-strong)}
+    .ag3v2-out-src > svg{display:block;width:100%;max-width:280px;height:auto}
+    .ag3v2-out-src code{font-family:var(--font-mono);font-size:20px;font-weight:800;line-height:1.3;
+      color:var(--ink);background:none;padding:0;white-space:nowrap}
+    .ag3v2-out-tags{display:flex;gap:var(--sp-8);margin:0}
+    .ag3v2-out-tag{border-radius:var(--r-pill);padding:3px 14px;font-size:19px;font-weight:800;line-height:1.35;
+      background:var(--white);color:var(--blue);box-shadow:inset 0 0 0 2px var(--blue-line-strong)}
+    /* 읽기만 = 원본 보존(안전) → 민트 틴트 + 짙은 글자(R-COLOR-02) */
+    .ag3v2-out-tag.is-lock{background:var(--mint-soft);color:var(--on-mint);box-shadow:inset 0 0 0 2px var(--mint-line)}
+    .ag3v2-out-arrow{align-self:center;justify-self:center;font-size:40px;font-weight:800;line-height:1;color:var(--blue)}
+    .ag3v2-out-grid{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:repeat(2,minmax(0,1fr));
+      gap:var(--sp-18);height:100%;min-height:0}
+    .ag3v2-out-card{display:grid;grid-template-columns:76px minmax(0,1fr);column-gap:var(--sp-12);align-items:center;
+      padding:14px 16px;border-radius:var(--r-lg);background:var(--blue-soft);box-shadow:inset 0 0 0 1px var(--blue-line)}
+    .ag3v2-out-card > svg{display:block;width:76px;height:92px}
+    .ag3v2-out-text{display:flex;flex-direction:column;gap:var(--sp-4);min-width:0}
+    .ag3v2-out-text code{font-family:var(--font-mono);font-size:20px;font-weight:800;line-height:1.3;
+      color:var(--blue);background:none;padding:0}
+    .ag3v2-out-text > b{font-size:24px;font-weight:800;line-height:var(--lh-box-title);color:var(--ink)}
+    /* 크기·굵기·행간은 ②의 .desc 티어(20/500)가 준다 — 여기서 다시 적지 않는다. */
+    .ag3v2-out-text > .desc{color:var(--gray-700)}
+    /* 마무리 = 아웃라인(G1). 흰 fill + 유색 보더(R-COLOR-04 ②) · 폭은 문장만큼(hug). */
+    .ag3v2-out-rule{align-self:center;margin:0;padding:10px 24px;border-radius:var(--r-md);
+      background:var(--white);border:2px solid var(--blue-line-strong);
+      font-size:var(--fs-body);font-weight:700;line-height:1.45;color:var(--ink)}
+
+    /* ── END 흐름 칩 — 셋째 칩이 26자 서술문이 됐다 ───────────────────────
+       audit_typography는 24자를 넘는 산문을 본문(22px 하한)으로 본다. kit 기본 16px이면
+       «3차시 · 근거로 결과물을 만들고 결정하는 사람»이 하한 위반이 된다. 세 칩을 함께 22px로
+       올려 위계를 맞추고, 긴 셋째 칩에 폭을 더 준다 — 칩이 두 줄로 접히지 않게.
+       kit `.concept-flow span`의 flex:1(basis 0)은 그대로 두고 grow 비율만 바꾼다. */
+    .deck .slide[data-slide="END"] .concept-flow span{font-size:var(--fs-body);line-height:1.3}
+    .deck .slide[data-slide="END"] .concept-flow span:nth-of-type(2){flex-grow:1.1}
+    .deck .slide[data-slide="END"] .concept-flow span:nth-of-type(3){flex-grow:1.6}
+
+    /* ── 부록 A · B 헤더 표식 ─────────────────────────────────────────────
+       엔진 JS(불변)는 소스 헤더 «3차시 / 부록 A|B»의 «부록»을 보고 .s-part «부록» 라벨로 바꾼다.
+       두 구획을 화면 헤더에서도 가르기 위해 라벨 뒤에 구획 이름을 붙인다(초안 절 제목 그대로).
+       ⚠️ 생성 콘텐츠라 G 메뉴의 «현재 슬라이드» 칸에는 «부록»만 나온다 — 소스에서는 헤더 문구와
+          구획 주석으로 가른다. 부록 장을 옮기거나 더하면 아래 ID 목록도 함께 고친다. */
+    .deck .slide[data-slide="V1-03"] .s-part .lbl::after,
+    .deck .slide[data-slide="N-03"] .s-part .lbl::after,
+    .deck .slide[data-slide="N-08"] .s-part .lbl::after,
+    .deck .slide[data-slide="N-09"] .s-part .lbl::after,
+    .deck .slide[data-slide="N-21"] .s-part .lbl::after,
+    .deck .slide[data-slide="V1-10"] .s-part .lbl::after,
+    .deck .slide[data-slide="N-12"] .s-part .lbl::after,
+    .deck .slide[data-slide="V3-06"] .s-part .lbl::after,
+    .deck .slide[data-slide="V4-09"] .s-part .lbl::after,
+    .deck .slide[data-slide="V4-02"] .s-part .lbl::after,
+    .deck .slide[data-slide="N-25"] .s-part .lbl::after,
+    .deck .slide[data-slide="V4-06"] .s-part .lbl::after,
+    .deck .slide[data-slide="V4-07"] .s-part .lbl::after{content:" A · 데이터 심화"}
+    .deck .slide[data-slide="S03"] .s-part .lbl::after,
+    .deck .slide[data-slide="V2-02"] .s-part .lbl::after,
+    .deck .slide[data-slide="V2-01"] .s-part .lbl::after,
+    .deck .slide[data-slide="V2-03"] .s-part .lbl::after,
+    .deck .slide[data-slide="V2-04"] .s-part .lbl::after,
+    .deck .slide[data-slide="V2-05"] .s-part .lbl::after,
+    .deck .slide[data-slide="V2-06"] .s-part .lbl::after,
+    .deck .slide[data-slide="V5-02"] .s-part .lbl::after,
+    .deck .slide[data-slide="V5-12"] .s-part .lbl::after,
+    .deck .slide[data-slide="V6-05"] .s-part .lbl::after,
+    .deck .slide[data-slide="V1-11"] .s-part .lbl::after{content:" B · 에이전트 확장"}
+
+    /* ── N-08(부록 A) — ② 칸의 빈칸 건수와 누적 막대를 뺐다(G1 «빈칸 건수 삭제») ──
+       남은 두 문장을 칸 제목 아래 남는 세로의 가운데로 모은다. auto는 첫 문장 위와 끝 문장 아래
+       두 곳에만 건다 — 칸 제목은 ① 칸 제목과 같은 높이에 남는다. */
+    .deck .slide[data-slide="N-08"] .ag3-layer.is-na > p:first-of-type{margin-top:auto}
+    .deck .slide[data-slide="N-08"] .ag3-layer.is-na > p:last-of-type{margin-bottom:auto}
+
     </style>
   <!--
     ┌── 새 덱 만드는 법 ─────────────────────────────────────────────┐
@@ -1060,7 +1153,7 @@
       <div class="cover-title">
         <h1 class="ko">데이터에서, 직접<br><span class="hl">확인한 결과물</span>까지</h1>
       </div>
-      <div class="cover-terminal"><span class="pfx">&gt;_</span><span class="q">CSV 하나로 대시보드와 문서를 만들고, 숫자는 원본과 대조합니다</span><span class="cur" aria-hidden="true"></span></div>
+      <div class="cover-terminal"><span class="pfx">&gt;_</span><span class="q">CSV 하나로 대시보드 · 발표자료 · 보고서까지 만듭니다</span><span class="cur" aria-hidden="true"></span></div>
       <div class="cover-presenter">AI 코딩 에이전트 입문</div>
     </section>
 
@@ -1074,7 +1167,7 @@
         <p class="s-eyebrow">3차시</p>
         <h2 class="s-title">오늘의 약속</h2>
         <div class="w3-vow viz-flow-h" role="img"
-             aria-label="1·2차시까지의 두 칸에 오늘 두 칸이 더 붙는다: AI가 작성하고, 사람이 검토하고, 사람이 원본을 지키고, 사람이 숫자를 대조한다">
+             aria-label="1·2차시까지의 두 칸에 3차시 두 칸이 더 붙는다: AI가 작성하고, 사람이 검토하고, 사람이 원본을 지키고, 사람이 화면에서 확인한다">
           <div class="w3-vow-band is-past">
             <span class="w3-vow-tag">1·2차시까지</span>
             <div class="w3-vow-cells">
@@ -1087,11 +1180,11 @@
             <span class="w3-vow-tag">3차시에 붙는 두 칸</span>
             <div class="w3-vow-cells">
               <span class="w3-vow-cell">사람이 원본을 지키고</span>
-              <span class="w3-vow-cell">사람이 숫자를 대조합니다</span>
+              <span class="w3-vow-cell">사람이 화면에서 확인합니다</span>
             </div>
           </div>
         </div>
-        <p class="s-lead">원본을 지키는 것도, 숫자가 맞는지 정하는 것도 <span class="hl-mint-text">사람</span>입니다.</p>
+        <p class="s-lead">원본을 지키는 것도, 결과물을 내보낼지 결정하는 것도 <span class="hl-mint-text">사람</span>입니다.</p>
       </div>
     </section>
 
@@ -1103,28 +1196,148 @@
       </header>
       <div class="s-full w3-stage">
         <h2 class="s-title">지난 차시에서 이번 차시로</h2>
-        <p class="w3-def">2차시에는 <strong>내가 정한 기준으로</strong> 자료를 모았습니다. 3차시에는 남이 준 데이터를 <strong>확인하고 · 정리하고 · 대조</strong>합니다.</p>
+        <p class="w3-def">2차시에는 <strong>내가 정한 기준으로</strong> 자료를 모았습니다. 3차시에는 남이 준 데이터 하나를 <strong>여러 결과물로</strong> 바꿉니다.</p>
         <figure class="w3-stage-fig viz-flow-h" role="img"
-                aria-label="2차시에 기준 파일로 뉴스를 모은 경험이, 오늘 남이 준 데이터를 확인·정리·대조하는 일을 거쳐, 숫자를 원본과 맞춘 결과물로 이어지는 흐름">
+                aria-label="2차시에 기준 파일로 뉴스를 모은 경험이, 오늘 받은 데이터를 확인하고 결과물로 바꾸는 일을 거쳐, 대시보드·문서·발표자료·보고서 네 결과물로 이어지는 흐름">
           <svg viewBox="0 0 1000 300" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <rect x="20" y="86" width="230" height="128" rx="18" fill="var(--surface)" stroke="var(--blue-line-strong)" stroke-width="2"/>
-            <text x="135" y="62" text-anchor="middle" font-size="21" font-weight="800" fill="var(--gray-700)">2차시 끝</text>
+            <rect x="20" y="80" width="230" height="140" rx="18" fill="var(--surface)" stroke="var(--blue-line-strong)" stroke-width="2"/>
+            <text x="135" y="60" text-anchor="middle" font-size="21" font-weight="800" fill="var(--gray-700)">2차시 끝</text>
             <text x="135" y="140" text-anchor="middle" font-size="23" font-weight="800" fill="var(--ink)">뉴스 조사 Agent</text>
             <text x="135" y="176" text-anchor="middle" font-size="20" font-weight="700" fill="var(--gray-700)">기준을 파일에 남김</text>
             <path d="M266 150 L330 150 M316 140 L332 150 L316 160" fill="none" stroke="var(--blue)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
-            <rect x="346" y="86" width="300" height="128" rx="18" fill="var(--blue-soft)" stroke="var(--blue)" stroke-width="2"/>
-            <text x="496" y="62" text-anchor="middle" font-size="21" font-weight="800" fill="var(--blue)">오늘 하는 일</text>
-            <text x="496" y="132" text-anchor="middle" font-size="22" font-weight="800" fill="var(--ink)">남이 준 데이터를</text>
-            <text x="496" y="168" text-anchor="middle" font-size="22" font-weight="800" fill="var(--ink)">확인 · 정리 · 대조하기</text>
+            <rect x="346" y="80" width="300" height="140" rx="18" fill="var(--blue-soft)" stroke="var(--blue)" stroke-width="2"/>
+            <text x="496" y="60" text-anchor="middle" font-size="21" font-weight="800" fill="var(--blue)">오늘 하는 일</text>
+            <text x="496" y="120" text-anchor="middle" font-size="22" font-weight="800" fill="var(--ink)">받은 데이터를</text>
+            <text x="496" y="154" text-anchor="middle" font-size="22" font-weight="800" fill="var(--ink)">확인하고</text>
+            <text x="496" y="188" text-anchor="middle" font-size="22" font-weight="800" fill="var(--ink)">결과물로 바꾸기</text>
             <path d="M662 150 L726 150 M712 140 L728 150 L712 160" fill="none" stroke="var(--mint-deep)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
-            <rect x="742" y="86" width="238" height="128" rx="18" fill="var(--mint-soft)" stroke="var(--mint-line)" stroke-width="2"/>
-            <text x="861" y="62" text-anchor="middle" font-size="21" font-weight="800" fill="var(--mint-deep)">3차시 끝</text>
-            <text x="861" y="140" text-anchor="middle" font-size="23" font-weight="800" fill="var(--on-mint)">근거가 있는 결과물</text>
-            <text x="861" y="176" text-anchor="middle" font-size="20" font-weight="700" fill="var(--mint-deep)">숫자를 원본과 맞춘 뒤</text>
+            <rect x="742" y="80" width="238" height="140" rx="18" fill="var(--mint-soft)" stroke="var(--mint-line)" stroke-width="2"/>
+            <text x="861" y="60" text-anchor="middle" font-size="21" font-weight="800" fill="var(--mint-deep)">3차시 끝</text>
+            <text x="861" y="116" text-anchor="middle" font-size="23" font-weight="800" fill="var(--on-mint)">결과물 네 개</text>
+            <rect x="757" y="134" width="100" height="32" rx="16" fill="var(--white)" stroke="var(--mint-line)" stroke-width="2"/>
+            <text x="807" y="157" text-anchor="middle" font-size="19" font-weight="800" fill="var(--mint-deep)">대시보드</text>
+            <rect x="865" y="134" width="100" height="32" rx="16" fill="var(--white)" stroke="var(--mint-line)" stroke-width="2"/>
+            <text x="915" y="157" text-anchor="middle" font-size="19" font-weight="800" fill="var(--mint-deep)">문서</text>
+            <rect x="757" y="174" width="100" height="32" rx="16" fill="var(--white)" stroke="var(--mint-line)" stroke-width="2"/>
+            <text x="807" y="197" text-anchor="middle" font-size="19" font-weight="800" fill="var(--mint-deep)">발표자료</text>
+            <rect x="865" y="174" width="100" height="32" rx="16" fill="var(--white)" stroke="var(--mint-line)" stroke-width="2"/>
+            <text x="915" y="197" text-anchor="middle" font-size="19" font-weight="800" fill="var(--mint-deep)">보고서</text>
             <text x="500" y="266" text-anchor="middle" font-size="22" font-weight="800" fill="var(--gray-700)">쓰는 데이터는 하나입니다 - mock_ecommerce_orders.csv</text>
           </svg>
         </figure>
         <div class="callout blue hug-center"><strong>새 데이터를 만들지 않습니다.</strong> 받은 CSV 한 파일로 끝까지 갑니다.</div>
+      </div>
+    </section>
+
+<!-- ============ 4 · 도입 — 오늘 손에 남는 결과물 네 개 (classification · M7-01 신규 · L-gm-quad 변형 → grid)
+     원본 CSV 한 칸 → 결과물 네 칸(2×2). 칸마다 SVG 파일 목업(M-07 · 실물 캡처 대신). 마무리 = 아웃라인(G1). ============ -->
+    <section class="slide ag3v2-outslide" data-slide="M7-01" data-shape="classification">
+      <header class="s-head">
+        <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+        <span class="s-line"></span>
+      </header>
+      <div class="s-full">
+        <div class="w3-hd">
+          <h2 class="s-title">오늘 손에 남는 결과물은 <span class="hl-mint-text">네 개</span>입니다</h2>
+          <p class="s-lead">3차시_실습 폴더의 CSV 한 파일에서 출발해 <strong>형식만 바꿔</strong> 네 번 만듭니다.</p>
+        </div>
+        <div class="ag3v2-out viz-flow-h">
+          <figure class="ag3v2-out-src">
+            <svg viewBox="0 0 280 150" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="원본 CSV 모형: 머리글 한 줄 아래로 데이터 행이 이어지는 표">
+              <rect x="2" y="2" width="276" height="146" rx="12" fill="var(--white)" stroke="var(--blue-line-strong)" stroke-width="2"/>
+              <rect x="16" y="16" width="248" height="22" rx="5" fill="var(--blue)"/>
+              <g fill="var(--surface)" stroke="var(--blue-line-strong)" stroke-width="1">
+                <rect x="16" y="48" width="56" height="14" rx="3"/><rect x="80" y="48" width="56" height="14" rx="3"/><rect x="144" y="48" width="56" height="14" rx="3"/><rect x="208" y="48" width="56" height="14" rx="3"/>
+                <rect x="16" y="70" width="56" height="14" rx="3"/><rect x="80" y="70" width="56" height="14" rx="3"/><rect x="144" y="70" width="56" height="14" rx="3"/><rect x="208" y="70" width="56" height="14" rx="3"/>
+                <rect x="16" y="92" width="56" height="14" rx="3"/><rect x="80" y="92" width="56" height="14" rx="3"/><rect x="144" y="92" width="56" height="14" rx="3"/><rect x="208" y="92" width="56" height="14" rx="3"/>
+                <rect x="16" y="114" width="56" height="14" rx="3"/><rect x="80" y="114" width="56" height="14" rx="3"/><rect x="144" y="114" width="56" height="14" rx="3"/><rect x="208" y="114" width="56" height="14" rx="3"/>
+              </g>
+              <path d="M16 138 H264" fill="none" stroke="var(--blue-line-strong)" stroke-width="2" stroke-dasharray="6 6"/>
+            </svg>
+            <code>mock_ecommerce_orders.csv</code>
+            <p class="ag3v2-out-tags"><span class="ag3v2-out-tag">원본</span><span class="ag3v2-out-tag is-lock">읽기만</span></p>
+          </figure>
+          <span class="ag3v2-out-arrow" aria-hidden="true">→</span>
+          <div class="ag3v2-out-grid">
+            <div class="ag3v2-out-card">
+              <svg viewBox="0 0 76 92" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="dashboard.html 모형: 핵심 숫자 칸 셋과 막대 차트가 한 화면에 있다">
+                <rect x="2" y="8" width="72" height="76" rx="8" fill="var(--white)" stroke="var(--blue)" stroke-width="2"/>
+                <path d="M2 22 H74" fill="none" stroke="var(--blue-line-strong)" stroke-width="2"/>
+                <circle cx="10" cy="15" r="2.5" fill="var(--coral)"/>
+                <circle cx="18" cy="15" r="2.5" fill="var(--mint)"/>
+                <circle cx="26" cy="15" r="2.5" fill="var(--periwinkle)"/>
+                <rect x="9" y="29" width="17" height="12" rx="3" fill="var(--blue-soft)" stroke="var(--blue)" stroke-width="1.5"/>
+                <rect x="30" y="29" width="17" height="12" rx="3" fill="var(--blue-soft)" stroke="var(--blue)" stroke-width="1.5"/>
+                <rect x="51" y="29" width="17" height="12" rx="3" fill="var(--blue-soft)" stroke="var(--blue)" stroke-width="1.5"/>
+                <rect x="12" y="62" width="8" height="14" fill="var(--periwinkle)"/>
+                <rect x="24" y="54" width="8" height="22" fill="var(--periwinkle)"/>
+                <rect x="36" y="58" width="8" height="18" fill="var(--periwinkle)"/>
+                <rect x="48" y="48" width="8" height="28" fill="var(--blue)"/>
+                <rect x="60" y="56" width="8" height="20" fill="var(--periwinkle)"/>
+                <path d="M9 77 H69" fill="none" stroke="var(--ink)" stroke-width="1.5"/>
+              </svg>
+              <div class="ag3v2-out-text">
+                <code>dashboard.html</code>
+                <b>HTML 대시보드</b>
+                <span class="desc">한눈에 이해</span>
+              </div>
+            </div>
+            <div class="ag3v2-out-card">
+              <svg viewBox="0 0 76 92" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="분석결과.md 모형: 제목 다섯 개 아래에 문장 줄이 이어지는 문서">
+                <rect x="6" y="2" width="64" height="88" rx="6" fill="var(--white)" stroke="var(--blue)" stroke-width="2"/>
+                <g fill="var(--blue)">
+                  <rect x="13" y="10" width="24" height="4.5" rx="1"/><rect x="13" y="26" width="24" height="4.5" rx="1"/><rect x="13" y="42" width="24" height="4.5" rx="1"/><rect x="13" y="58" width="24" height="4.5" rx="1"/><rect x="13" y="74" width="24" height="4.5" rx="1"/>
+                </g>
+                <g fill="var(--blue-line-strong)">
+                  <rect x="13" y="17.5" width="48" height="3" rx="1"/><rect x="13" y="33.5" width="40" height="3" rx="1"/><rect x="13" y="49.5" width="48" height="3" rx="1"/><rect x="13" y="65.5" width="36" height="3" rx="1"/><rect x="13" y="81.5" width="44" height="3" rx="1"/>
+                </g>
+              </svg>
+              <div class="ag3v2-out-text">
+                <code>분석결과.md</code>
+                <b>Markdown 근거 문서</b>
+                <span class="desc">숫자와 한계를 적은 문서</span>
+              </div>
+            </div>
+            <div class="ag3v2-out-card">
+              <svg viewBox="0 0 76 92" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="발표자료.pptx 모형: 차트가 든 슬라이드 한 장과 그 아래 발표자 노트 칸">
+                <rect x="2" y="8" width="72" height="44" rx="5" fill="var(--white)" stroke="var(--blue)" stroke-width="2"/>
+                <rect x="9" y="15" width="32" height="5" rx="1.5" fill="var(--ink)"/>
+                <rect x="12" y="36" width="7" height="10" fill="var(--periwinkle)"/>
+                <rect x="23" y="30" width="7" height="16" fill="var(--blue)"/>
+                <rect x="34" y="33" width="7" height="13" fill="var(--periwinkle)"/>
+                <rect x="48" y="28" width="19" height="18" rx="3" fill="var(--blue-soft)" stroke="var(--blue-line-strong)" stroke-width="1.5"/>
+                <rect x="2" y="60" width="72" height="26" rx="5" fill="var(--mint-soft)" stroke="var(--mint-deep)" stroke-width="1.5" stroke-dasharray="4 3"/>
+                <rect x="9" y="67" width="52" height="3" rx="1" fill="var(--mint-deep)"/>
+                <rect x="9" y="75" width="38" height="3" rx="1" fill="var(--mint-deep)"/>
+              </svg>
+              <div class="ag3v2-out-text">
+                <code>발표자료.pptx</code>
+                <b>PPTX 발표자료</b>
+                <span class="desc">발표자 노트까지</span>
+              </div>
+            </div>
+            <div class="ag3v2-out-card">
+              <svg viewBox="0 0 76 92" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="분석보고서.docx 모형: 표 하나와 차트 하나가 든 문서 한 쪽">
+                <rect x="8" y="2" width="60" height="88" rx="5" fill="var(--white)" stroke="var(--blue)" stroke-width="2"/>
+                <rect x="15" y="9" width="30" height="4.5" rx="1" fill="var(--ink)"/>
+                <rect x="15" y="18" width="46" height="3" rx="1" fill="var(--blue-line-strong)"/>
+                <rect x="15" y="24" width="40" height="3" rx="1" fill="var(--blue-line-strong)"/>
+                <rect x="15" y="32" width="46" height="21" fill="var(--blue-soft)" stroke="var(--blue)" stroke-width="1.2"/>
+                <path d="M15 39 H61 M15 46 H61 M30.3 32 V53 M45.6 32 V53" fill="none" stroke="var(--blue)" stroke-width="1"/>
+                <rect x="18" y="68" width="7" height="12" fill="var(--periwinkle)"/>
+                <rect x="29" y="62" width="7" height="18" fill="var(--blue)"/>
+                <rect x="40" y="65" width="7" height="15" fill="var(--periwinkle)"/>
+                <path d="M15 81 H61" fill="none" stroke="var(--ink)" stroke-width="1.2"/>
+              </svg>
+              <div class="ag3v2-out-text">
+                <code>분석보고서.docx</code>
+                <b>DOCX 보고서</b>
+                <span class="desc">표와 차트가 든 문서</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="ag3v2-out-rule">네 결과물의 총매출은 모두 <span class="hl-mint-mark">205,274,700원으로 같아야</span> 합니다.</p>
       </div>
     </section>
 
@@ -1144,12 +1357,12 @@
         <p class="an-intro">여섯 구간을 지납니다<br>구간마다 손에 남는 결과가 하나씩 생깁니다</p>
       </div>
       <div class="an-right">
-        <div class="an-item"><div class="an-num">1</div><div class="an-body"><div class="an-h">Agent가 다루는 파일과 CSV 구조</div><div class="an-d">파일 범위 · 2,424행 20열</div></div></div>
-        <div class="an-item"><div class="an-num">2</div><div class="an-body"><div class="an-h">중복 · 결측 · 이상값</div><div class="an-d">품질 진단 표 한 장</div></div></div>
-        <div class="an-item"><div class="an-num">3</div><div class="an-body"><div class="an-h">답할 수 있는 질문과 지표 정의</div><div class="an-d">지표정의.json</div></div></div>
-        <div class="an-item"><div class="an-num">4</div><div class="an-body"><div class="an-h">계획 검토 · 승인 · 원본 보존</div><div class="an-d">승인 지점과 원본 사본</div></div></div>
-        <div class="an-item"><div class="an-num">5</div><div class="an-body"><div class="an-h">HTML 데이터 대시보드</div><div class="an-d">dashboard.html</div></div></div>
-        <div class="an-item"><div class="an-num">6</div><div class="an-body"><div class="an-h">대조 · 정리 · 확장</div><div class="an-d">대조 결과와 분석결과.md</div></div></div>
+        <div class="an-item"><div class="an-num">1</div><div class="an-body"><div class="an-h">같은 데이터, 다른 결과물</div><div class="an-d">결과물 네 개와 독자</div></div></div>
+        <div class="an-item"><div class="an-num">2</div><div class="an-body"><div class="an-h">확인하고 승인받기</div><div class="an-d">확인표 · 분석대상.csv</div></div></div>
+        <div class="an-item"><div class="an-num">3</div><div class="an-body"><div class="an-h">HTML 대시보드</div><div class="an-d">dashboard.html</div></div></div>
+        <div class="an-item"><div class="an-num">4</div><div class="an-body"><div class="an-h">근거 문서 Markdown</div><div class="an-d">분석결과.md</div></div></div>
+        <div class="an-item"><div class="an-num">5</div><div class="an-body"><div class="an-h">PPTX 발표·브리핑</div><div class="an-d">발표자료.pptx · 발표자 노트</div></div></div>
+        <div class="an-item"><div class="an-num">6</div><div class="an-body"><div class="an-h">DOCX 보고서와 공유</div><div class="an-d">분석보고서.docx · 공유 전 점검</div></div></div>
       </div>
     </section>
 
@@ -1170,18 +1383,18 @@
           <p class="s-eyebrow">3차시 회고</p>
 
           <h2 class="s-title">배운 것을 <span class="hl">한 문장</span>으로 남기기</h2>
-          <p class="concept-lead">AI가 여럿이어도 <strong>채택은 사람이 하고, 완료는 증거로 결정합니다.</strong></p>
+          <p class="concept-lead">같은 근거로 여러 결과물을 만들어도, <strong>내보낼지는 사람이 확인하고 결정합니다.</strong></p>
         </div>
         <div class="concept-flow">
-          <span>1차시 · 요청하는 사람</span><b>&#8594;</b><span>2차시 · 기준을 정하는 사람</span><b>&#8594;</b><span>3차시 · 근거를 확인하고 결정하는 사람</span>
+          <span>1차시 · 요청하는 사람</span><b>&#8594;</b><span>2차시 · 기준을 정하는 사람</span><b>&#8594;</b><span>3차시 · 근거로 결과물을 만들고 결정하는 사람</span>
         </div>
         <div class="concept-cards">
           <div class="concept-card"><h3>확인했습니다</h3><p>구조와 품질을 먼저 봤습니다</p></div>
           <div class="concept-card"><h3>지켰습니다</h3><p>원본은 읽기만 했습니다</p></div>
-          <div class="concept-card"><h3>대조했습니다</h3><p>대시보드 숫자를 원본에서 다시 셌습니다</p></div>
-          <div class="concept-card"><h3>남겼습니다</h3><p>근거와 한계를 문서에 적었습니다</p></div>
+          <div class="concept-card"><h3>넓혔습니다</h3><p>같은 근거로 결과물 네 개를 만들었습니다</p></div>
+          <div class="concept-card"><h3>맞췄습니다</h3><p>네 결과물의 숫자가 같은지 확인했습니다</p></div>
         </div>
-        <div class="concept-bottom">검증된 것만 완료로 봅니다.<small>이 문장 하나만 가져가시면 오늘 수업은 성공입니다.</small></div>
+        <div class="concept-bottom">화면에서 확인한 것만 완료로 봅니다.<small>이 문장 하나만 가져가시면 오늘 수업은 성공입니다.</small></div>
       </div>
     </section>
 
@@ -1200,35 +1413,495 @@
       </div>
     </section>
 
-    <!-- ============ 부록 · PART 구획 밖(divider 없음 · 시간표 밖 · G 메뉴 점프) — 3차시 attempt-06 · D-08 ============ -->
-    <!-- V1-11 · 부록 · 원본 section 그대로(원본 part-01) -->
-<section class="slide" data-slide="V1-11" data-shape="checklist">
+    <!-- ============ 부록 · PART 구획 밖(divider 없음 · 시간표 밖 · G 메뉴 점프) — 3차시 attempt-06 · D-08 · P3 재구성에서 A/B 두 구획(M-05)
+         표식: 헤더 «3차시 / 부록 A|B»(엔진 JS가 «부록» 라벨로 바꾸고, kit-additions P3 블록이 A·B 구획 이름을 붙인다).
+         부록 A = 본편에서 내려간 데이터 심화 13장(백업 part 파일의 section · ID 유지) · 부록 B = 에이전트 확장 11장. ============ -->
+
+    <!-- ============ 부록 A · 데이터 심화 (13장 · 시간표 밖) ============ -->
+    <!-- V1-03 · 부록 A · 백업 part-02 section · 문구 변경 없음 -->
+<section class="slide w3-vs-screen" data-slide="V1-03" data-shape="contrast">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span><div class="s-team">3차시<br>부록</div>
+    <span class="s-line"></span><div class="s-team">3차시<br>부록 A</div>
+  </header>
+  <div class="s-full fill">
+    <h2 class="s-title">"열이 있다"와 "값이 맞다"는 다릅니다</h2>
+    <div class="cc-grid viz-matrix">
+      <div class="cc-side human">
+        <h3>열 목록으로 보면</h3>
+        <ul>
+          <li><code>order_id</code> 있음</li>
+          <li><code>quantity</code> 있음</li>
+          <li><code>rating</code> 있음</li>
+          <li>전부 그대로 있으니 괜찮아 보입니다.</li>
+        </ul>
+      </div>
+      <div class="cc-neq" aria-hidden="true">≠</div>
+      <div class="cc-side ai">
+        <h3>실제로 열어 보면</h3>
+        <ul>
+          <li>같은 주문이 두 번 들어 있을 수 있습니다.</li>
+          <li>비어 있거나 있을 수 없는 값이 섞여 있을 수 있습니다.</li>
+          <li><strong>목록으로는 알 수 없습니다.</strong></li>
+        </ul>
+      </div>
+    </div>
+    <div class="callout blue hug-center">나중에 발견하면 <strong>원인을 찾기 어렵습니다.</strong> 그래서 지금 확인하는 게 가장 좋습니다.</div>
+  </div>
+</section>
+
+    <!-- N-03 열 지도 · 부록 A · 백업 part-01 section · 문구 변경 없음 -->
+<section class="slide ag3-colslide" data-slide="N-03" data-shape="classification">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span><div class="s-team">3차시<br>부록 A</div>
   </header>
   <div class="s-full fill">
     <div class="w3-hd">
-      <h2 class="s-title">밖에 나가면 안 되는 파일부터 걸러 둡니다</h2>
-      <p class="s-lead">오늘 이 프로젝트는 <strong>커밋되고, 공개됩니다.</strong> 지금 미리 확인합니다.</p>
+      <h2 class="s-title">20개 열은 <span class="hl-mint-text">다섯 묶음</span>으로 나뉩니다</h2>
+      <p class="s-lead">열 이름은 <strong>파일에 적힌 그대로</strong> 읽고, 묶음 이름만 우리말로 붙입니다.</p>
     </div>
-    <div class="w3-danger viz-matrix">
-      <div class="w3-dg"><b>비밀번호</b><p>파일 안에 적어 둔 적 없나요?</p></div>
-      <div class="w3-dg"><b>API 키</b><p>연습하며 붙여 넣지 않았나요?</p></div>
-      <div class="w3-dg"><b>개인 연락처</b><p>전화번호·이메일이 예시로 남았나요?</p></div>
-      <div class="w3-dg"><b>남의 자료</b><p>가져다 쓴 이미지나 글이 있나요?</p></div>
-      <div class="w3-dg"><b>내 컴퓨터 경로</b><p>내 사용자 이름이 든 경로가 남았나요?</p></div>
-      <div class="w3-dg is-fix"><b>있으면 지금</b><p>빼거나 <strong>가짜 값으로 바꿉니다.</strong></p></div>
+    <div class="ag3-colmap viz-matrix" role="img" aria-label="열 20개를 주문, 고객, 상품, 금액, 배송과 평가 다섯 묶음으로 나눈 지도">
+      <div class="ag3-colrow"><b>주문<small>언제 · 어떤 상태</small></b><span class="ag3-chips"><code>order_id</code><code>order_date</code><code>order_status</code></span></div>
+      <div class="ag3-colrow"><b>고객<small>누가 · 어디서</small></b><span class="ag3-chips"><code>customer_id</code><code>customer_type</code><code>age_group</code><code>region</code></span></div>
+      <div class="ag3-colrow"><b>상품<small>무엇을 · 몇 개</small></b><span class="ag3-chips"><code>category</code><code>product_name</code><code>brand</code><code>quantity</code></span></div>
+      <div class="ag3-colrow"><b>금액<small>얼마에 · 어떻게</small></b><span class="ag3-chips"><code>unit_price_krw</code><code>cost_per_unit_krw</code><code>discount_rate</code><code>shipping_fee_krw</code><code>payment_method</code></span></div>
+      <div class="ag3-colrow"><b>배송·평가<small>받은 뒤</small></b><span class="ag3-chips"><code>delivery_days</code><code>rating</code><code>returned</code><code>return_reason</code></span></div>
     </div>
-    <div class="callout blue hug-center">한 번 나간 것은 지워도 흔적이 남습니다. <strong>초반에 안전 기준을 잘 정해 두어야</strong> 나중에 문제를 줄일 수 있습니다.</div>
   </div>
 </section>
+
+    <!-- N-08 결측은 두 층 · 부록 A · 백업 part-02 section · G1 «빈칸 건수 삭제»: ② 칸의 건수(2,320행·184행)와 취소·대기 누적 막대를 뺌 -->
+<section class="slide ag3-missslide" data-slide="N-08" data-shape="comparison">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span><div class="s-team">3차시<br>부록 A</div>
+  </header>
+  <div class="s-full fill">
+    <div class="w3-hd">
+      <h2 class="s-title">결측은 <span class="hl-mint-text">두 층</span>입니다</h2>
+      <p class="s-lead">빈칸마다 이유가 다릅니다. <strong>채우지 않고 이유부터 봅니다.</strong></p>
+    </div>
+    <div class="ag3-two">
+      <div class="ag3-layer">
+        <h3>① 답이 없는 칸 · 채우지 않음</h3>
+        <p><code>rating</code> 무응답 <strong>64행(2.9%)</strong>은 0점으로 세지 않습니다.</p>
+        <figure class="ag3-stack viz-stacked" role="img" aria-label="분석 대상 2,203행 중 평점이 있는 2,139행과 무응답 64행">
+          <div class="ag3-stack-bar"><svg class="ag3-seg is-a" style="width:97.09%" viewBox="0 0 10 10" preserveAspectRatio="none" aria-hidden="true"><rect width="10" height="10"/></svg><svg class="ag3-seg is-d" style="width:2.91%" viewBox="0 0 10 10" preserveAspectRatio="none" aria-hidden="true"><rect width="10" height="10"/></svg></div>
+          <ul class="ag3-legend"><li><i></i>평점 있음 2,139행 · 평균의 분모</li><li><i class="is-d"></i>무응답 64행</li></ul>
+        </figure>
+      </div>
+      <div class="ag3-layer is-na">
+        <h3>② 원래 없는 칸 · 해당 없음</h3>
+        <p><code>return_reason</code> 빈칸은 반품이 없는 행이라 <strong>비어 있는 게 정상</strong>입니다.</p>
+        <p><code>delivery_days</code> 빈칸은 배송이 시작되지 않은 <strong>취소·대기 주문</strong>입니다.</p>
+      </div>
+    </div>
+    <div class="callout blue hug-center">빈칸을 <strong>0이나 평균으로 채우면</strong> 측정하지 않은 값이 측정한 값처럼 보입니다.</div>
+  </div>
+</section>
+
+    <!-- N-09 이상값 · 부록 A · 백업 part-02 section · 문구 변경 없음 -->
+<section class="slide ag3-outslide" data-slide="N-09" data-shape="numeric">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span><div class="s-team">3차시<br>부록 A</div>
+  </header>
+  <div class="s-full fill">
+    <div class="w3-hd">
+      <h2 class="s-title">이상값은 <span class="hl-mint-text">빼는 것</span>과 <span class="hl-mint-text">보류하는 것</span>으로 나눕니다</h2>
+      <p class="s-lead">기준은 <strong>계산 결과를 보기 전에</strong> 정했습니다.</p>
+    </div>
+    <div class="ag3-outwrap">
+      <figure class="ag3-colchart viz-column" role="img" aria-label="이상값 플래그 건수 막대그래프, 단위 행: 수량 0 6행, 수량 50 이상 6행, 단가 999999 4행, 배송일 음수 4행은 제외, 배송일 30 이상 4행은 보류">
+        <p class="ag3-unit">단위: 행 · 원본 전체에서 센 건수</p>
+        <div class="ag3-plot" style="height:236px">
+          <div class="ag3-bar"><span class="ag3-val">6행</span><svg class="ag3-fill is-drop" style="height:190px" viewBox="0 0 10 10" preserveAspectRatio="none" aria-hidden="true"><rect width="10" height="10"/></svg></div>
+          <div class="ag3-bar"><span class="ag3-val">6행</span><svg class="ag3-fill is-drop" style="height:190px" viewBox="0 0 10 10" preserveAspectRatio="none" aria-hidden="true"><rect width="10" height="10"/></svg></div>
+          <div class="ag3-bar"><span class="ag3-val">4행</span><svg class="ag3-fill is-drop" style="height:127px" viewBox="0 0 10 10" preserveAspectRatio="none" aria-hidden="true"><rect width="10" height="10"/></svg></div>
+          <div class="ag3-bar"><span class="ag3-val">4행</span><svg class="ag3-fill is-drop" style="height:127px" viewBox="0 0 10 10" preserveAspectRatio="none" aria-hidden="true"><rect width="10" height="10"/></svg></div>
+          <div class="ag3-bar"><span class="ag3-val">4행</span><svg class="ag3-fill is-hold" style="height:127px" viewBox="0 0 10 10" preserveAspectRatio="none" aria-hidden="true"><rect width="10" height="10"/></svg></div>
+        </div>
+        <div class="ag3-axis"><span>수량 0</span><span>수량 50 이상</span><span>단가 999999</span><span>배송일 음수</span><span>배송일 30 이상</span></div>
+        <ul class="ag3-legend"><li><i class="is-b"></i>제외</li><li><i class="is-hold"></i>보류</li></ul>
+      </figure>
+      <div class="ag3-outnote">
+        <div><b>제외 · 있을 수 없는 값</b><p>수량 0, 음수 배송일처럼 주문으로 성립하지 않습니다.</p></div>
+        <div class="is-hold"><b>보류 · 확인이 필요한 값</b><p>배송 45일은 예약·해외배송이면 성립합니다. 매출에는 넣고 배송 평균에서만 뺍니다.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+    <!-- N-21 배송 기간과 평점 · 부록 A · 백업 part-05 section · eyebrow «필수 요소 ⑤» 삭제(초안 부록 행에 없음 — 본편 ⑤는 N-18이 맡음) -->
+<section class="slide ag3-delivslide" data-slide="N-21" data-shape="numeric">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span><div class="s-team">3차시<br>부록 A</div>
+  </header>
+  <div class="s-full fill">
+    <div class="w3-hd">
+      <h2 class="s-title">평균에는 <span class="hl-mint-text">분모</span>를 함께 적습니다</h2>
+    </div>
+    <div class="ag3-two ag3-dr">
+      <div class="ag3-layer">
+        <h3>배송 기간</h3>
+        <div class="ag3-big">3.45일<small>분모 2,199행</small></div>
+        <p>배송 45일 4행은 분모에서 뺐습니다.</p>
+        <figure class="ag3-linechart viz-line" role="img" aria-label="배송 기간 분포 꺾은선 그래프, 단위 건: 1일 378건, 2일 405건, 3일 413건, 4일 380건, 5일 413건, 6일 59건, 7일 52건, 8일 39건, 9일 60건">
+          <p class="ag3-unit">배송일별 주문 수 · 건</p>
+          <div class="ag3-lplot" style="height:100px">
+            <svg class="ag3-lsvg" viewBox="0 -100 100 100" preserveAspectRatio="none" aria-hidden="true"><polyline class="ag3-lseries" points="5.56,-78.71 16.67,-84.33 27.78,-86.00 38.89,-79.13 50.00,-86.00 61.11,-12.29 72.22,-10.83 83.33,-8.12 94.44,-12.49"/></svg>
+            <span class="ag3-ldot" style="left:5.56%;bottom:78.71%"></span>
+            <span class="ag3-ldot" style="left:16.67%;bottom:84.33%"></span>
+            <span class="ag3-ldot" style="left:27.78%;bottom:86.00%"></span>
+            <span class="ag3-ldot" style="left:38.89%;bottom:79.13%"></span>
+            <span class="ag3-ldot" style="left:50.00%;bottom:86.00%"></span>
+            <span class="ag3-ldot" style="left:61.11%;bottom:12.29%"></span>
+            <span class="ag3-ldot" style="left:72.22%;bottom:10.83%"></span>
+            <span class="ag3-ldot" style="left:83.33%;bottom:8.12%"></span>
+            <span class="ag3-ldot" style="left:94.44%;bottom:12.49%"></span>
+          </div>
+          <div class="ag3-axis ag3-laxis">
+            <span>1일</span>
+            <span>2일</span>
+            <span>3일</span>
+            <span>4일</span>
+            <span>5일</span>
+            <span>6일</span>
+            <span>7일</span>
+            <span>8일</span>
+            <span>9일</span>
+          </div>
+          <div class="ag3-axis ag3-laxis ag3-lcount">
+            <span>378</span>
+            <span>405</span>
+            <span>413</span>
+            <span>380</span>
+            <span>413</span>
+            <span>59</span>
+            <span>52</span>
+            <span>39</span>
+            <span>60</span>
+          </div>
+        </figure>
+      </div>
+      <div class="ag3-layer">
+        <h3>평점</h3>
+        <div class="ag3-big">4.44점<small>분모 2,139행</small></div>
+        <p>무응답 64행은 0점으로 세지 않았습니다.</p>
+        <figure class="ag3-colchart viz-column" role="img" aria-label="평점 분포, 단위 건: 1점 0건, 2점 14건, 3점 127건, 4점 910건, 5점 1,088건">
+          <p class="ag3-unit">점수별 응답 수 · 건</p>
+          <div class="ag3-plot" style="height:120px">
+            <div class="ag3-bar"><span class="ag3-val">0</span><svg class="ag3-fill" style="height:0px" viewBox="0 0 10 10" preserveAspectRatio="none" aria-hidden="true"><rect width="10" height="10"/></svg></div>
+            <div class="ag3-bar"><span class="ag3-val">14</span><svg class="ag3-fill" style="height:1px" viewBox="0 0 10 10" preserveAspectRatio="none" aria-hidden="true"><rect width="10" height="10"/></svg></div>
+            <div class="ag3-bar"><span class="ag3-val">127</span><svg class="ag3-fill" style="height:9px" viewBox="0 0 10 10" preserveAspectRatio="none" aria-hidden="true"><rect width="10" height="10"/></svg></div>
+            <div class="ag3-bar"><span class="ag3-val">910</span><svg class="ag3-fill" style="height:67px" viewBox="0 0 10 10" preserveAspectRatio="none" aria-hidden="true"><rect width="10" height="10"/></svg></div>
+            <div class="ag3-bar"><span class="ag3-val">1,088</span><svg class="ag3-fill" style="height:80px" viewBox="0 0 10 10" preserveAspectRatio="none" aria-hidden="true"><rect width="10" height="10"/></svg></div>
+          </div>
+          <div class="ag3-axis">
+            <span>1점</span>
+            <span>2점</span>
+            <span>3점</span>
+            <span>4점</span>
+            <span>5점</span>
+          </div>
+        </figure>
+      </div>
+    </div>
+  </div>
+</section>
+
+    <!-- V1-10 · 부록 A · 백업 part-04 section · 문구 변경 없음 -->
+<section class="slide w3-vs-2col" data-slide="V1-10" data-shape="contrast">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span><div class="s-team">3차시<br>부록 A</div>
+  </header>
+  <div class="s-full fill">
+    <h2 class="s-title">기준 파일은 조언이지 자물쇠가 아닙니다</h2>
+    <p class="s-lead"><code>분석계획.md</code>와 <code>정제기준.md</code>는 Agent가 <strong>먼저 읽는 안내문</strong>입니다.</p>
+    <div class="w3-two viz-matrix">
+      <div class="w3-two-col is-can">
+        <h3>규칙이 해 주는 것</h3>
+        <p>무엇을 먼저 읽을지 알려 줍니다.</p>
+        <p>어떤 기준으로 판단할지 알려 줍니다.</p>
+        <p><strong>방향을 줍니다.</strong></p>
+      </div>
+      <div class="w3-two-col is-cant">
+        <h3>규칙이 못 하는 것</h3>
+        <p>어기지 못하게 <strong>막지는 못합니다.</strong></p>
+        <p>그래서 <strong>권한과 확인</strong>이 늘 함께 붙습니다.</p>
+        <p>결과를 보증하는 건 확인입니다.</p>
+      </div>
+    </div>
+    <div class="callout blue hug-center">도서관 「정숙」 안내문과 같습니다 — 방향은 주지만, 조용하게 만드는 건 결국 사서입니다.</div>
+  </div>
+</section>
+
+    <!-- N-12 지표는 계산식까지 · 부록 A · 백업 part-03 section · 문구 변경 없음 -->
+<section class="slide w3-mapslide ag3-defslide" data-slide="N-12" data-shape="mapping">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span><div class="s-team">3차시<br>부록 A</div>
+  </header>
+  <div class="s-full fill">
+    <h2 class="s-title">지표는 <span class="hl-mint-text">계산식</span>까지 적어야 지표입니다</h2>
+    <p class="s-lead">이름만 적으면 사람마다 다르게 셉니다. <strong>식 · 대상 행 · 단위</strong>를 함께 적습니다.</p>
+    <div class="w3-map ag3-defs viz-matrix" role="img" aria-label="지표 다섯 개와 계산식의 대응: 총매출, 상품군별 매출, 마진, 배송 기간, 평점">
+      <div class="w3-map-row"><span class="w3-map-file">총매출</span><span class="w3-map-arrow" aria-hidden="true">→</span><span class="w3-map-role"><b class="ag3-formula">수량 × 단가 − 할인액</b><span class="ag3-sub">Completed 주문 · 배송비 제외 · 원</span></span></div>
+      <div class="w3-map-row"><span class="w3-map-file">상품군별 매출</span><span class="w3-map-arrow" aria-hidden="true">→</span><span class="w3-map-role"><b class="ag3-formula">category별 총매출 합</b><span class="ag3-sub">비중은 전체 매출로 나눔 · %</span></span></div>
+      <div class="w3-map-row"><span class="w3-map-file">마진</span><span class="w3-map-arrow" aria-hidden="true">→</span><span class="w3-map-role"><b class="ag3-formula">총매출 − 수량 × 단위원가</b><span class="ag3-sub">상품 원가만 뺀 값 · 원</span></span></div>
+      <div class="w3-map-row"><span class="w3-map-file">배송 기간</span><span class="w3-map-arrow" aria-hidden="true">→</span><span class="w3-map-role"><b class="ag3-formula">delivery_days 합 ÷ 대상 행 수</b><span class="ag3-sub">값이 있고 보류가 아닌 행 · 일</span></span></div>
+      <div class="w3-map-row"><span class="w3-map-file">평점</span><span class="w3-map-arrow" aria-hidden="true">→</span><span class="w3-map-role"><b class="ag3-formula">rating 합 ÷ 응답한 행 수</b><span class="ag3-sub">무응답은 분모에서 제외 · 점</span></span></div>
+    </div>
+  </div>
+</section>
+
+    <!-- V3-06 · 부록 A · 백업 part-04 section · 문구 변경 없음 -->
+<section class="slide w3-vs-2col" data-slide="V3-06" data-shape="contrast">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span><div class="s-team">3차시<br>부록 A</div>
+  </header>
+  <div class="s-full fill">
+    <h2 class="s-title">한 파일은 한 역할만 씁니다</h2>
+    <p class="w3-def">같은 수정 단계에서 <strong>한 파일을 쓰는 역할은 하나뿐</strong>이라는 규칙 — 원본 CSV는 그 «하나»도 없습니다</p>
+    <div class="w3-two viz-matrix">
+      <div class="w3-two-col is-cant">
+        <h3>둘이 동시에 고치면</h3>
+        <figure class="w3-two-fig" role="img" aria-label="같은 파일에 두 손이 얹혀 충돌하는 그림">
+          <svg viewBox="0 0 460 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect x="150" y="46" width="160" height="60" rx="12" fill="var(--white)" stroke="var(--coral)" stroke-width="3"/>
+            <text x="230" y="84" text-anchor="middle" font-size="21" font-weight="800" fill="var(--ink)">분석대상.csv</text>
+            <circle cx="96" cy="30" r="22" fill="var(--coral)"/>
+            <text x="96" y="38" text-anchor="middle" font-size="19" font-weight="800" fill="var(--on-coral)">A</text>
+            <circle cx="364" cy="30" r="22" fill="var(--coral)"/>
+            <text x="364" y="38" text-anchor="middle" font-size="19" font-weight="800" fill="var(--on-coral)">B</text>
+            <path d="M114 44 L172 62 M346 44 L288 62" stroke="var(--coral)" stroke-width="3" stroke-linecap="round"/>
+            <text x="230" y="30" text-anchor="middle" font-size="21" font-weight="800" fill="var(--coral-deep)">충돌</text>
+          </svg>
+        </figure>
+        <p>서로의 결과를 <strong>덮어씁니다.</strong></p>
+      </div>
+      <div class="w3-two-col is-can">
+        <h3>쓰는 건 한 역할입니다</h3>
+        <figure class="w3-two-fig" role="img" aria-label="같은 파일에 한 손만 얹혀 있고 나머지는 읽기만 하는 그림">
+          <svg viewBox="0 0 460 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect x="150" y="46" width="160" height="60" rx="12" fill="var(--white)" stroke="var(--blue)" stroke-width="3"/>
+            <text x="230" y="84" text-anchor="middle" font-size="21" font-weight="800" fill="var(--ink)">분석대상.csv</text>
+            <circle cx="96" cy="30" r="22" fill="var(--blue)"/>
+            <text x="96" y="38" text-anchor="middle" font-size="19" font-weight="800" fill="var(--white)">A</text>
+            <path d="M114 44 L172 62" stroke="var(--blue)" stroke-width="3" stroke-linecap="round"/>
+            <text x="230" y="30" text-anchor="middle" font-size="21" font-weight="800" fill="var(--blue)">쓰기 한 역할</text>
+            <circle cx="364" cy="30" r="22" fill="var(--surface)" stroke="var(--blue-line-strong)" stroke-width="2"/>
+            <text x="364" y="38" text-anchor="middle" font-size="19" font-weight="800" fill="var(--gray-700)">B</text>
+            <path d="M346 44 L288 62" stroke="var(--blue-line-strong)" stroke-width="3" stroke-linecap="round" stroke-dasharray="5 5"/>
+          </svg>
+        </figure>
+        <p><strong>읽는 건 여럿이 동시에</strong> 해도 됩니다.</p>
+      </div>
+    </div>
+    <div class="callout blue hug-center"><strong>검토 역할은 어떤 파일도 쓰지 않습니다.</strong></div>
+  </div>
+</section>
+
+    <!-- V4-09 · 부록 A · 백업 part-06 section · 문구 변경 없음 (split — 이웃 V3-06 compare2 · V4-02 grid) -->
+<section class="slide w3-anchorsplit" data-slide="V4-09" data-shape="concept">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span><div class="s-team">3차시<br>부록 A</div>
+  </header>
+  <div class="s-full">
+    <div class="w3-as-text">
+
+        <h2 class="s-title">고친 사람은 자기 실수를 못 봅니다</h2>
+      <p class="w3-def"><strong>독립 검토</strong> — 만드는 데 참여하지 않은 역할이 하는 확인</p>
+      <p class="w3-def"><strong>회귀</strong> — 잘 되던 기존 기능이 다시 깨지는 것</p>
+      <p class="s-body">고친 사람은 <strong>"될 것"이라고 생각하면서</strong> 보기 때문에 같은 곳을 계속 놓칩니다.</p>
+      <p class="s-body">그래서 검토 역할은 <strong>직접 고치지 않고</strong> 확인만 합니다. 자기 글 교정이 안 되는 이유와 같은 원리입니다.</p>
+    </div>
+    <figure class="w3-as-fig viz-matrix" role="img"
+            aria-label="만든 역할은 새 기능만 보고, 검토 역할은 기존 기능까지 처음 보는 눈으로 확인하는 대비 그림">
+      <svg viewBox="0 0 560 420" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <rect x="10" y="12" width="540" height="180" rx="18" fill="var(--coral-soft)" stroke="var(--coral-line)" stroke-width="2"/>
+        <text x="40" y="52" font-size="23" font-weight="800" fill="var(--coral-deep)">만든 역할 — 익숙한 시선</text>
+        <rect x="40" y="72" width="220" height="46" rx="10" fill="var(--white)" stroke="var(--coral)" stroke-width="2"/>
+        <text x="150" y="102" text-anchor="middle" font-size="20" font-weight="800" fill="var(--ink)">새 기능</text>
+        <text x="286" y="102" font-size="21" font-weight="800" fill="var(--coral-deep)">여기만 봅니다</text>
+        <rect x="40" y="128" width="480" height="46" rx="10" fill="var(--white)" stroke="var(--coral-line)" stroke-width="2"/>
+        <text x="150" y="158" text-anchor="middle" font-size="20" font-weight="800" fill="var(--gray-400)">기존 기능</text>
+        <text x="300" y="158" font-size="21" font-weight="800" fill="var(--gray-400)">= 회귀가 숨는 자리</text>
+        <rect x="10" y="228" width="540" height="180" rx="18" fill="var(--mint-soft)" stroke="var(--mint-line)" stroke-width="2"/>
+        <text x="40" y="268" font-size="23" font-weight="800" fill="var(--mint-deep)">검토 역할 — 처음 보는 시선</text>
+
+        <rect x="40" y="288" width="220" height="46" rx="10" fill="var(--white)" stroke="var(--mint-deep)" stroke-width="2"/>
+        <text x="150" y="318" text-anchor="middle" font-size="20" font-weight="800" fill="var(--ink)">새 기능</text>
+        <text x="286" y="318" font-size="21" font-weight="800" fill="var(--mint-deep)">봅니다</text>
+        <rect x="40" y="344" width="220" height="46" rx="10" fill="var(--white)" stroke="var(--mint-deep)" stroke-width="2"/>
+        <text x="150" y="374" text-anchor="middle" font-size="20" font-weight="800" fill="var(--ink)">기존 기능</text>
+        <text x="286" y="374" font-size="21" font-weight="800" fill="var(--mint-deep)">여기도 봅니다</text>
+      </svg>
+    </figure>
+  </div>
+</section>
+
+    <!-- V4-02 · 부록 A · 백업 part-06 section · 문구 변경 없음 -->
+<section class="slide w3-req3slide" data-slide="V4-02" data-shape="classification">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span><div class="s-team">3차시<br>부록 A</div>
+  </header>
+  <div class="s-full fill">
+    <h2 class="s-title">검토 요청에 넣을 것 셋</h2>
+    <p class="s-lead">검토 역할에 맡길 때 <strong>반드시 세 가지</strong>를 함께 줍니다.</p>
+    <div class="w3-req3 viz-column">
+      <div class="w3-req">
+        <span class="w3-req-n">1</span>
+        <b>어느 파일만</b>
+        <p>볼 파일을 원본 CSV와 dashboard.html 둘로 못 박습니다. 안 적으면 폴더 전체를 훑습니다.</p>
+      </div>
+      <div class="w3-req">
+        <span class="w3-req-n">2</span>
+        <b>무엇을 찾을지</b>
+        <p>찾을 대상을 정해 줍니다. 안 적으면 「좋아 보이는 것」을 아무거나 말합니다.</p>
+      </div>
+      <div class="w3-req is-warn">
+        <span class="w3-req-n">3</span>
+        <b>고치지 말 것</b>
+        <p><strong>가장 자주 빠뜨리는 칸입니다.</strong> 이걸 빠뜨리면 검토만 시켰는데 파일이 바뀌어 있습니다.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+    <!-- N-25 원본 비교 다섯 단계 · 부록 A(강사 선택) · 백업 part-06 section · 문구 변경 없음 -->
+<section class="slide ag3-verifyslide" data-slide="N-25" data-shape="flow">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span><div class="s-team">3차시<br>부록 A</div>
+  </header>
+  <div class="s-full fill">
+    <div class="w3-hd">
+      <h2 class="s-title">대시보드 숫자는 <span class="hl-mint-mark">원본 데이터와 비교합니다</span></h2>
+      <p class="s-lead">보기 좋게 만들어졌다고 <strong>완료가 아닙니다.</strong></p>
+    </div>
+    <div class="ag3-verify">
+      <ol class="ag3-five viz-flow-v" aria-label="원본 대조 다섯 단계">
+        <li><i class="ag3-step-n">1</i><span><strong>지표 하나</strong>를 고릅니다</span></li>
+        <li><i class="ag3-step-n">2</i><span>원본 CSV에서 <strong>직접 다시 셉니다</strong></span></li>
+        <li><i class="ag3-step-n">3</i><span>대시보드 숫자와 <strong>나란히 놓습니다</strong></span></li>
+        <li><i class="ag3-step-n">4</i><span><strong>일치 · 불일치 · 확인 불가</strong>로 판정합니다</span></li>
+        <li><i class="ag3-step-n">5</i><span>판정을 <strong>파일에 기록</strong>합니다</span></li>
+      </ol>
+      <div class="ag3-ex">
+        <h3>예 · 총매출</h3>
+        <div class="ag3-ex-row"><span>대시보드에 표시된 값 · 원</span><b>205,274,700</b></div>
+        <div class="ag3-ex-row"><span>원본만 읽고 다시 센 값 · 원</span><b>205,274,700</b></div>
+        <span class="ag3-verdict">판정 · 일치</span>
+        <p class="ag3-cap">다시 센 기록은 <code>검증결과.md</code>에 남아 있습니다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+    <!-- V4-06 · 부록 A · 백업 part-06 section · U-2 «오늘 반영합니다» → «반영합니다» -->
+<section class="slide w3-verdictslide" data-slide="V4-06" data-shape="classification">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span><div class="s-team">3차시<br>부록 A</div>
+  </header>
+  <div class="s-full fill">
+    <h2 class="s-title">다수결이 아니라 근거로 판정합니다</h2>
+
+    <div class="w3-nomajority">
+      <span class="mk" aria-hidden="true">✗</span>
+      <span><strong>"AI가 그렇게 말했으니까"는 근거가 아닙니다.</strong> 같은 AI가 비슷한 것을 보면 <strong>같이 틀리기도 합니다</strong> — 겹친다고 맞는 게 아닙니다.</span>
+    </div>
+    <div class="w3-verdict4 viz-column">
+      <div class="w3-vcard is-ok"><b>채택</b><p>근거를 확인했고 반영합니다.</p></div>
+      <div class="w3-vcard"><b>부분 채택</b><p>일부만 맞아 그 부분만 씁니다.</p></div>
+      <div class="w3-vcard"><b>기각</b><p>확인해 보니 근거가 틀렸습니다.</p></div>
+      <div class="w3-vcard is-unknown"><b>확인 불가</b><p>지금 화면으로는 판단할 수 없습니다.</p></div>
+    </div>
+    <div class="callout blue hug-center"><strong>실제 화면과 파일을 열어 보고</strong> 사람이 정합니다. 확인 불가도 결과입니다 — 모르는 것을 채택으로 밀어 넣지 않습니다.</div>
+  </div>
+</section>
+
+    <!-- V4-07 · 부록 A(강사 선택) · 백업 part-06 section · U-2 3단계 «오늘 반영할 것은 한 건» → «반영할 것은 한 번에 한 건» -->
+<section class="slide w3-practice w3-vtableslide" data-slide="V4-07" data-shape="screen-operation">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span><div class="s-team">3차시<br>부록 A</div>
+  </header>
+  <div class="s-full fill">
+    <h2 class="s-title">결과 비교하고 판정하기</h2>
+    <div class="w3-vt-body">
+      <div class="eval-steps viz-flow-v">
+        <div class="work-step"><span class="n">1</span><span class="desc">지표별 숫자를 <strong>한 표에</strong> 모읍니다 — 대시보드 숫자 / 원본에서 다시 센 값 / 판정.</span></div>
+        <div class="work-step"><span class="n">2</span><span class="desc">판정 칸에 채택 · 부분 채택 · 기각 · 확인 불가를 <strong>직접</strong> 씁니다.</span></div>
+        <div class="work-step"><span class="n">3</span><span class="desc">반영할 것은 <strong>한 번에 한 건</strong>입니다. 나머지는 기록만 남깁니다.</span></div>
+      </div>
+      <table class="w3-vtable viz-matrix">
+        <thead><tr><th>지표와 대시보드 숫자</th><th>원본에서 다시 센 값</th><th>판정</th></tr></thead>
+        <tbody>
+          <tr><td>지표 ① 총매출 — 대시보드 숫자</td><td>원본 CSV에서 직접 다시 센 값</td><td class="is-blank">직접 씁니다</td></tr>
+          <tr><td>지표 ② 주문 수 — 대시보드 숫자</td><td>원본 CSV에서 직접 다시 센 값</td><td class="is-blank">직접 씁니다</td></tr>
+          <tr><td>지표 ③ 평균 평점 — 대시보드 숫자</td><td>원본 CSV에서 직접 다시 센 값</td><td class="is-blank">직접 씁니다</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</section>
+
+    <!-- ============ 부록 B · 에이전트 확장 (11장 · 시간표 밖) ============ -->
+    <!-- S03 · 부록 B · 백업 part-06 section · U-2 제목 «오늘부터 "AI"는 한 명이 아닙니다» → «"AI"는 한 명이 아닐 수 있습니다» · «오늘» 칸 → «나눠 맡기면» · 콜아웃 «오늘 여러분의 자리» → «여러분의 자리» -->
+<section class="slide w3-vs-2col" data-slide="S03" data-shape="contrast">
+      <header class="s-head">
+        <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+        <span class="s-line"></span><div class="s-team">3차시<br>부록 B</div>
+      </header>
+      <div class="s-full fill">
+        <h2 class="s-title">"AI"는 한 명이 아닐 수 있습니다</h2>
+        <div class="w3-two viz-matrix">
+          <div class="w3-two-col is-can">
+            <h3>지금까지</h3>
+            <figure class="w3-two-fig" role="img" aria-label="대화창 하나만 있는 그림">
+              <svg viewBox="0 0 460 130" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <rect x="120" y="26" width="220" height="78" rx="14" fill="var(--white)" stroke="var(--blue-line-strong)" stroke-width="2"/>
+                <text x="230" y="72" text-anchor="middle" font-size="22" font-weight="800" fill="var(--ink)">대화창 하나</text>
+              </svg>
+            </figure>
+            <p>AI <strong>하나</strong>와 대화했습니다.</p>
+          </div>
+          <div class="w3-two-col is-can">
+            <h3>나눠 맡기면</h3>
+            <figure class="w3-two-fig" role="img" aria-label="정리 계산 제작 검토 네 가지 일을 각각 따로 맡긴 그림">
+              <svg viewBox="0 0 460 130" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <rect x="4" y="26" width="106" height="78" rx="12" fill="var(--blue)"/>
+                <text x="57" y="72" text-anchor="middle" font-size="20" font-weight="800" fill="var(--white)">정리</text>
+                <rect x="120" y="26" width="106" height="78" rx="12" fill="var(--mint)"/>
+                <text x="173" y="72" text-anchor="middle" font-size="20" font-weight="800" fill="var(--on-mint)">계산</text>
+                <rect x="236" y="26" width="106" height="78" rx="12" fill="var(--coral)"/>
+                <text x="289" y="72" text-anchor="middle" font-size="20" font-weight="800" fill="var(--on-coral)">제작</text>
+                <rect x="352" y="26" width="106" height="78" rx="12" fill="var(--periwinkle)"/>
+                <text x="405" y="72" text-anchor="middle" font-size="20" font-weight="800" fill="var(--ink)">검토</text>
+              </svg>
+            </figure>
+            <p><strong>네 가지 일</strong>을 나누고, 마지막 「검토」는 만든 쪽에 맡기지 않습니다.</p>
+          </div>
+        </div>
+        <div class="callout blue hug-center">만든 쪽과 검토한 쪽의 <strong>답이 갈립니다.</strong> 그건 고장이 아니라 정상입니다 — 갈렸을 때 누구 말을 들을지 정하는 사람, 그게 여러분의 자리입니다.</div>
+      </div>
+    </section>
 
     <!-- V2-02 · 부록 · 원본 section 그대로(원본 part-02) -->
 <section class="slide" data-slide="V2-02" data-shape="concept">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span><div class="s-team">3차시<br>부록</div>
+    <span class="s-line"></span><div class="s-team">3차시<br>부록 B</div>
   </header>
   <div class="s-full w3-deffig">
     <div class="w3-deffig-text">
@@ -1257,11 +1930,74 @@
   </div>
 </section>
 
+    <!-- V2-01 · 부록 B · 백업 part-06 section · 문구 변경 없음 -->
+<section class="slide w3-vs-2col" data-slide="V2-01" data-shape="contrast">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span><div class="s-team">3차시<br>부록 B</div>
+  </header>
+  <div class="s-full fill">
+
+    <div class="w3-hd">
+      <h2 class="s-title">왜 나눠서 시킬까요</h2>
+      <p class="s-lead">회사도 기획 · 디자인 · 개발 · 검수를 한 사람이 다 하지 않습니다.</p>
+    </div>
+    <div class="w3-two viz-matrix">
+      <div class="w3-two-col is-cant">
+        <h3>한 명이 처음부터 끝까지</h3>
+        <figure class="w3-two-fig" role="img"
+                aria-label="하나가 세 가지 일을 한꺼번에 보고, 그중 하나를 놓친 그림">
+          <svg viewBox="0 0 460 150" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <circle cx="60" cy="75" r="34" fill="var(--coral)"/>
+            <text x="60" y="85" text-anchor="middle" font-size="26" font-weight="800" fill="var(--on-coral)">1</text>
+            <path d="M98 75 L152 40 M98 75 L152 68 M98 75 L152 96 M98 75 L152 124" fill="none" stroke="var(--coral)" stroke-width="2" stroke-linecap="round" opacity=".55"/>
+            <rect x="158" y="22" width="124" height="36" rx="9" fill="var(--white)" stroke="var(--coral-line)" stroke-width="2"/>
+            <text x="220" y="46" text-anchor="middle" font-size="19" font-weight="800" fill="var(--ink)">정리</text>
+            <rect x="158" y="64" width="124" height="36" rx="9" fill="var(--white)" stroke="var(--coral-line)" stroke-width="2"/>
+            <text x="220" y="88" text-anchor="middle" font-size="19" font-weight="800" fill="var(--ink)">계산</text>
+            <rect x="158" y="106" width="124" height="36" rx="9" fill="var(--white)" stroke="var(--coral-line)" stroke-width="2" opacity=".45"/>
+            <text x="220" y="130" text-anchor="middle" font-size="19" font-weight="800" fill="var(--ink)" opacity=".45">제작</text>
+            <text x="300" y="130" font-size="19" font-weight="800" fill="var(--coral-deep)">여기서 샌다</text>
+          </svg>
+        </figure>
+        <p><strong>느리고, 놓치는 게 생깁니다.</strong></p>
+        <p>특히 자기가 방금 만든 것은 <strong>자기 눈에 안 보입니다.</strong></p>
+      </div>
+      <div class="w3-two-col is-can">
+        <h3>일을 나누면</h3>
+        <figure class="w3-two-fig" role="img"
+                aria-label="셋이 각자 자기 일 하나씩만 보는 그림">
+          <svg viewBox="0 0 460 150" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <circle cx="60" cy="40" r="20" fill="var(--blue)"/>
+            <text x="60" y="47" text-anchor="middle" font-size="18" font-weight="800" fill="var(--white)">A</text>
+            <path d="M84 40 L152 40" fill="none" stroke="var(--blue)" stroke-width="2.5" stroke-linecap="round"/>
+            <rect x="158" y="22" width="124" height="36" rx="9" fill="var(--white)" stroke="var(--blue-line-strong)" stroke-width="2"/>
+            <text x="220" y="46" text-anchor="middle" font-size="19" font-weight="800" fill="var(--ink)">정리</text>
+            <circle cx="60" cy="82" r="20" fill="var(--blue)"/>
+            <text x="60" y="89" text-anchor="middle" font-size="18" font-weight="800" fill="var(--white)">B</text>
+            <path d="M84 82 L152 82" fill="none" stroke="var(--blue)" stroke-width="2.5" stroke-linecap="round"/>
+            <rect x="158" y="64" width="124" height="36" rx="9" fill="var(--white)" stroke="var(--blue-line-strong)" stroke-width="2"/>
+            <text x="220" y="88" text-anchor="middle" font-size="19" font-weight="800" fill="var(--ink)">계산</text>
+            <circle cx="60" cy="124" r="20" fill="var(--blue)"/>
+            <text x="60" y="131" text-anchor="middle" font-size="18" font-weight="800" fill="var(--white)">C</text>
+            <path d="M84 124 L152 124" fill="none" stroke="var(--blue)" stroke-width="2.5" stroke-linecap="round"/>
+            <rect x="158" y="106" width="124" height="36" rx="9" fill="var(--white)" stroke="var(--blue-line-strong)" stroke-width="2"/>
+            <text x="220" y="130" text-anchor="middle" font-size="19" font-weight="800" fill="var(--ink)">제작</text>
+            <text x="300" y="130" font-size="19" font-weight="800" fill="var(--mint-deep)">끝까지 본다</text>
+          </svg>
+        </figure>
+        <p>각자 <strong>자기 구역만</strong> 봅니다.</p>
+        <p>보는 범위가 좁아지면 더 깊이 보입니다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
     <!-- V2-03 · 부록 · 원본 section 그대로(원본 part-02) -->
 <section class="slide" data-slide="V2-03" data-shape="concept">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span><div class="s-team">3차시<br>부록</div>
+    <span class="s-line"></span><div class="s-team">3차시<br>부록 B</div>
   </header>
   <div class="s-full w3-stage">
     <h2 class="s-title">서브에이전트</h2>
@@ -1290,7 +2026,7 @@
 <section class="slide" data-slide="V2-04" data-shape="concept">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span><div class="s-team">3차시<br>부록</div>
+    <span class="s-line"></span><div class="s-team">3차시<br>부록 B</div>
   </header>
   <div class="s-full w3-deffig">
     <div class="w3-deffig-text">
@@ -1332,7 +2068,7 @@
 <section class="slide w3-tri" data-slide="V2-05" data-shape="comparison">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span><div class="s-team">3차시<br>부록</div>
+    <span class="s-line"></span><div class="s-team">3차시<br>부록 B</div>
   </header>
   <div class="s-full fill">
     <h2 class="s-title">셋을 나란히 보면</h2>
@@ -1368,7 +2104,7 @@
 <section class="slide" data-slide="V2-06" data-shape="structure">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span><div class="s-team">3차시<br>부록</div>
+    <span class="s-line"></span><div class="s-team">3차시<br>부록 B</div>
   </header>
   <div class="s-full w3-stage">
     <h2 class="s-title">오케스트레이터</h2>
@@ -1396,7 +2132,7 @@
       </svg>
     </figure>
 
-    <div class="callout blue hug-center w3-close">오케스트라에서 연주자는 자기 악보만 보고, 전체 악보를 보는 건 지휘자뿐입니다.<br>오늘 그 자리는 <strong>여러분</strong>입니다.</div>
+    <div class="callout blue hug-center w3-close">오케스트라에서 연주자는 자기 악보만 보고, 전체 악보를 보는 건 지휘자뿐입니다.<br>여러 역할을 쓸 때 그 자리는 <strong>여러분</strong>입니다.</div>
   </div>
 </section>
 
@@ -1404,7 +2140,7 @@
 <section class="slide w3-layerslide" data-slide="V5-02" data-shape="containment">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span><div class="s-team">3차시<br>부록</div>
+    <span class="s-line"></span><div class="s-team">3차시<br>부록 B</div>
   </header>
   <div class="s-full fill">
     <h2 class="s-title">플러그인 · Skill · 커넥터 · MCP</h2>
@@ -1433,7 +2169,7 @@
 <section class="slide" data-slide="V5-12" data-shape="concept">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span><div class="s-team">3차시<br>부록</div>
+    <span class="s-line"></span><div class="s-team">3차시<br>부록 B</div>
   </header>
   <div class="s-full w3-deffig">
     <div class="w3-deffig-text">
@@ -1474,32 +2210,12 @@
   </div>
 </section>
 
-    <!-- V6-02 · 부록 · 원본 section 그대로(원본 part-06) -->
-<section class="slide w3-excludeslide" data-slide="V6-02" data-shape="checklist">
-  <header class="s-head">
-    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span><div class="s-team">3차시<br>부록</div>
-  </header>
-  <div class="s-full fill">
-
-    <h2 class="s-title">공개하면 되돌리기 어렵습니다</h2>
-    <p class="s-lead">공개하면 <strong>누구나</strong> 봅니다. 링크를 몰라도 검색으로 닿을 수 있습니다.</p>
-    <div class="w3-exclude viz-matrix">
-      <div class="w3-ex"><b>개인정보</b><span>화면에 남았나요?</span></div>
-      <div class="w3-ex"><b>남의 정보</b><span>화면에 남았나요?</span></div>
-      <div class="w3-ex"><b>미완성 안내문</b><span>화면에 남았나요?</span></div>
-      <div class="w3-ex"><b>테스트용 값</b><span>화면에 남았나요?</span></div>
-      <div class="w3-ex"><b>여기가 경계선</b><span>넘으면 회수 불가</span></div>
-    </div>
-    <div class="callout blue hug-center">지금이 <strong>마지막으로 되돌릴 수 있는 지점</strong>입니다 — 오늘 세 번 한 점검 중 이번이 제일 중요합니다.</div>
-  </div>
-</section>
-
-    <!-- V6-05 · 부록 · 원본 section 그대로(원본 part-06) -->
+    <!-- V6-02는 PART 6 «공유 전 점검»으로 복귀(part-06 담당) — shell에서 뺐다 -->
+    <!-- V6-05 · 부록 B · U-2 «그대로 다음 실습으로 갑니다» → «그 주소를 공유합니다» · «오늘의 목표» → «목표» -->
 <section class="slide w3-branchslide" data-slide="V6-05" data-shape="flow">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span><div class="s-team">3차시<br>부록</div>
+    <span class="s-line"></span><div class="s-team">3차시<br>부록 B</div>
   </header>
   <div class="s-full fill">
     <h2 class="s-title">공개가 안 되면</h2>
@@ -1507,7 +2223,7 @@
     <div class="w3-branch viz-flow-h">
       <div class="w3-br is-ok">
         <b>공개 성공</b>
-        <p>공개 URL이 로그인 없이 열립니다. 그대로 다음 실습으로 갑니다.</p>
+        <p>공개 URL이 로그인 없이 열립니다. 그 주소를 공유합니다.</p>
       </div>
       <div class="w3-br is-fallback">
         <b>폴백</b>
@@ -1518,7 +2234,30 @@
         <p><strong>어디까지 갔는지</strong>를 기록합니다. 안 된 것을 됐다고 적지 않습니다.</p>
       </div>
     </div>
-    <div class="callout blue hug-center">오늘의 목표는 "내 결과물이 밖에서 열린다"입니다. 방법이 막혀도 <strong>경험은 지킵니다.</strong></div>
+    <div class="callout blue hug-center">목표는 "내 결과물이 밖에서 열린다"입니다. 방법이 막혀도 <strong>경험은 지킵니다.</strong></div>
+  </div>
+</section>
+
+    <!-- V1-11 · 부록 B 끝(미등재 골격 V5-12와 붙지 않게 · 집필노트 §5-5) · U-2 리드 «오늘 이 프로젝트는 커밋되고, 공개됩니다» → «결과물을 밖으로 내보내기 전에 미리 확인합니다» -->
+<section class="slide" data-slide="V1-11" data-shape="checklist">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span><div class="s-team">3차시<br>부록 B</div>
+  </header>
+  <div class="s-full fill">
+    <div class="w3-hd">
+      <h2 class="s-title">밖에 나가면 안 되는 파일부터 걸러 둡니다</h2>
+      <p class="s-lead">결과물을 밖으로 내보내기 전에 <strong>미리 확인합니다.</strong></p>
+    </div>
+    <div class="w3-danger viz-matrix">
+      <div class="w3-dg"><b>비밀번호</b><p>파일 안에 적어 둔 적 없나요?</p></div>
+      <div class="w3-dg"><b>API 키</b><p>연습하며 붙여 넣지 않았나요?</p></div>
+      <div class="w3-dg"><b>개인 연락처</b><p>전화번호·이메일이 예시로 남았나요?</p></div>
+      <div class="w3-dg"><b>남의 자료</b><p>가져다 쓴 이미지나 글이 있나요?</p></div>
+      <div class="w3-dg"><b>내 컴퓨터 경로</b><p>내 사용자 이름이 든 경로가 남았나요?</p></div>
+      <div class="w3-dg is-fix"><b>있으면 지금</b><p>빼거나 <strong>가짜 값으로 바꿉니다.</strong></p></div>
+    </div>
+    <div class="callout blue hug-center">한 번 나간 것은 지워도 흔적이 남습니다. <strong>초반에 안전 기준을 잘 정해 두어야</strong> 나중에 문제를 줄일 수 있습니다.</div>
   </div>
 </section>
 

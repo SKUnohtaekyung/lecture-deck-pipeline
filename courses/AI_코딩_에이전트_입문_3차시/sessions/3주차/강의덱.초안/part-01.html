@@ -1,16 +1,59 @@
+<style data-part="01">
+/* ══ PART 1 · 같은 데이터, 다른 결과물 — 이 파트 전용 CSS (EXECUTION M-14) ══════════
+   · 셀렉터는 .deck .slide[data-slide="ID"] 스코프 또는 ag3v2- 접두 클래스만 쓴다.
+   · 색은 토큰만(raw hex·그라데이션 없음). SVG 색도 클래스로 토큰을 건다.
+   · 새 구도 클래스 → deck.contract.json layout_families 등재 대상:
+       ag3v2-rm3 → roadmap (M1 트랙) · ag3v2-readers → radial (M7-02)
+   · ag3v2-hd · ag3v2-outline은 part-02에도 같은 규칙이 있다 — 조각 순서가 바뀌어도
+     각 파트가 홀로 성립하게 두 파트에 둔다(값을 바꿀 때는 둘 다 고친다). */
 
+.ag3v2-hd{display:flex;flex-direction:column;gap:6px}
+.ag3v2-hd > .s-title,.ag3v2-hd > .s-lead{margin:0}
+/* 아웃라인 마무리 — 흰 면 + 유색 테두리(R-COLOR-04 ②) · 폭은 글자만큼(R-BOX-03) */
+.ag3v2-outline{margin:0;align-self:center;width:fit-content;max-width:860px;padding:12px 26px;
+  border-radius:var(--r-md);background:var(--white);box-shadow:inset 0 0 0 2px var(--blue);
+  font-size:var(--fs-body);font-weight:700;line-height:1.45;color:var(--ink)}
 
+/* ── M1 로드맵 3칸 — kit .rm-* 골격 그대로(재정의 없음) ──────────────────────
+   3칸이라 칸이 넓다. 설명문 한 칸이 25자를 넘어(«훑어보는 사람 · 듣는 사람 · 읽는
+   사람을 가릅니다.» 28자) 박스 설명 20px 대신 본문 22px로 올린다(R-TYPE-01 25자 한정). */
+.deck .slide[data-slide="M1"] .ag3v2-rm3 .rm-step{padding:24px 22px 20px}
+.deck .slide[data-slide="M1"] .ag3v2-rm3 .rm-step .desc{font-size:var(--fs-body);font-weight:500;line-height:1.45}
+
+/* ── M7-02 결과물과 독자 — 허브(분석결과.md) → 세 결과물 · 세 독자 ─────────────
+   SVG는 viewBox와 같은 1152×368px로 그려 SVG 글자 크기 = 화면 px다(축소 없음).
+   ⚠️ kit patterns.css가 .viz-radial을 900×360 고정으로 잡는다 — data-slide 스코프로 되돌린다. */
+.deck .slide[data-slide="M7-02"] .ag3v2-rd-fig.viz-radial{position:relative;flex:0 0 auto;
+  width:1152px;height:368px;margin:0}
+.deck .slide[data-slide="M7-02"] .ag3v2-rd-fig.viz-radial > svg{position:static;display:block;
+  width:1152px;height:368px}
+.ag3v2-rd-hub{fill:var(--blue)}
+.ag3v2-rd-fold{fill:var(--blue-line-strong)}
+.ag3v2-rd-hubt{fill:var(--white);font-size:28px;font-weight:800;font-family:var(--font-mono)}
+.ag3v2-rd-hubs{fill:var(--white);font-size:20px;font-weight:600}
+.ag3v2-rd-spoke{fill:none;stroke:var(--blue);stroke-width:3;stroke-linecap:round}
+.ag3v2-rd-head{fill:var(--blue)}
+.ag3v2-rd-card{fill:var(--blue-soft);stroke:var(--blue-line-strong);stroke-width:2}
+.ag3v2-rd-person{fill:var(--mint-deep)}
+.ag3v2-rd-who{fill:var(--mint-deep);font-size:22px;font-weight:800}
+.ag3v2-rd-file{fill:var(--blue);font-size:24px;font-weight:800;font-family:var(--font-mono)}
+.ag3v2-rd-desc{fill:var(--gray-700);font-size:20px;font-weight:500}
+.ag3v2-rd-mock{fill:var(--white);stroke:var(--blue);stroke-width:2;stroke-linejoin:round}
+.ag3v2-rd-mockline{fill:none;stroke:var(--blue);stroke-width:2}
+.ag3v2-rd-mocktext{fill:none;stroke:var(--periwinkle);stroke-width:3;stroke-linecap:round}
+.ag3v2-rd-mockfill{fill:var(--periwinkle)}
+.ag3v2-rd-mockkey{fill:var(--blue)}
+</style>
 
 <section class="slide part-divider" data-slide="P1">
   <svg class="dv-hero" viewBox="0 0 1280 720" fill="none" aria-hidden="true"></svg>
   <div class="pd-dots" aria-hidden="true"></div>
   <p class="pd-eyebrow">PART</p>
-
-  <h2 class="pd-title">Agent가 다루는 파일과 CSV 구조</h2>
-  <p class="pd-sub">코드만이 아닙니다. 오늘 다루는 것은 데이터입니다.</p>
+  <h2 class="pd-title">같은 데이터, 다른 결과물</h2>
+  <p class="pd-sub">코드만이 아닙니다. 데이터 하나가 여러 형식의 결과물이 됩니다.</p>
 </section>
 
-
+<!-- M1 PART 1 로드맵 — flow · roadmap 3칸(ag3v2-rm3) -->
 <section class="slide roadmap" data-slide="M1" data-shape="flow">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
@@ -18,47 +61,33 @@
   </header>
   <div class="s-full">
     <h2 class="s-title">PART 1은 이렇게 배웁니다</h2>
-    <p class="rm-lead"><strong>구조를 확인한 다음에야</strong> 값을 만집니다. 순서 자체가 오늘의 교훈입니다.</p>
-    <div class="rm-track is-5 viz-flow-h">
+    <p class="rm-lead">무엇을 만들지는 <strong>누가 볼지로</strong> 정합니다. 만들기 전에 권한 칸부터 확인합니다.</p>
+    <div class="rm-track ag3v2-rm3 viz-flow-h">
       <div class="rm-step">
         <span class="rm-n">1</span>
-        <b>하네스 복습</b>
-        <span class="desc">2차시에 배운 작업 틀을 다시 떠올립니다.</span>
-        <span class="rm-out">오늘 쓸 작업 틀</span>
+        <b>다루는 파일 넓히기</b>
+        <span class="desc">코드 밖 파일까지 범위를 넓힙니다.</span>
+        <span class="rm-out">파일 형식 지도</span>
       </div>
       <span class="rm-arrow" aria-hidden="true">→</span>
       <div class="rm-step">
         <span class="rm-n">2</span>
-        <b>다루는 파일 넓히기</b>
-        <span class="desc">코드 밖 파일까지 범위를 넓힙니다.</span>
-        <span class="rm-out">다룰 파일 목록</span>
-      </div>
-      <span class="rm-arrow" aria-hidden="true">→</span>
-      <div class="rm-step">
-        <span class="rm-n">3</span>
-        <b>오늘 쓰는 CSV</b>
-        <span class="desc">행 수와 기간을 먼저 봅니다.</span>
-        <span class="rm-out">2,424행 · 20열</span>
-      </div>
-      <span class="rm-arrow" aria-hidden="true">→</span>
-      <div class="rm-step">
-        <span class="rm-n">4</span>
-        <b>열 20개 나누기</b>
-        <span class="desc">열을 다섯 묶음으로 나눕니다.</span>
-        <span class="rm-out">열 묶음 지도</span>
+        <b>결과물마다 독자</b>
+        <span class="desc">훑어보는 사람 · 듣는 사람 · 읽는 사람을 가릅니다.</span>
+        <span class="rm-out">결과물과 독자</span>
       </div>
       <span class="rm-arrow" aria-hidden="true">→</span>
       <div class="rm-step is-goal">
-        <span class="rm-n">5</span>
-        <b>실습① 구조부터 확인</b>
-        <span class="desc">고치지 말고 설명만 받습니다.</span>
-        <span class="rm-out">구조 설명 한 장</span>
+        <span class="rm-n">3</span>
+        <b>하네스 복습</b>
+        <span class="desc">2차시에 배운 작업 틀을 다시 봅니다.</span>
+        <span class="rm-out">권한 칸</span>
       </div>
     </div>
   </div>
 </section>
 
-<!-- N-01 Coding Agent는 코드만 만들지 않습니다 — containment (M6 · 골격 = 원본 V5-01 w3-cont 승계) -->
+<!-- N-01 Coding Agent는 코드만 만들지 않습니다 — containment (골격 = 백업 N-01 · 초안 문구 반영) -->
 <section class="slide ag3-scope" data-slide="N-01" data-shape="containment">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
@@ -90,14 +119,85 @@
         <div class="w3-gate-cell">
           <span class="w3-hn-n">2</span>
           <b>파일로 넓히면</b>
-          <span class="desc">CSV를 읽고 문서로 옮깁니다.</span>
+          <span class="desc">CSV를 읽고 문서와 발표자료로 옮깁니다.</span>
         </div>
       </div>
     </div>
-    <div class="callout blue hug-center">오늘은 <strong>CSV 한 파일</strong>에서 대시보드와 분석 문서까지 만듭니다.</div>
+    <div class="callout blue hug-center">오늘은 <strong>CSV 한 파일</strong>에서 대시보드 · 문서 · 발표자료 · 보고서까지 만듭니다.</div>
   </div>
 </section>
 
+<!-- M7-02 같은 숫자라도 읽는 사람에 따라 모양이 달라집니다 — mapping · radial(허브-스포크 SVG) · 신규 -->
+<section class="slide ag3v2-readers" data-slide="M7-02" data-shape="mapping">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span><div class="s-team"></div>
+  </header>
+  <div class="s-full fill">
+    <div class="ag3v2-hd">
+      <h2 class="s-title">같은 숫자라도 <span class="hl-mint-mark">읽는 사람</span>에 따라 모양이 달라집니다</h2>
+      <p class="s-lead">무엇을 만들지는 누가 보는지로 정합니다.</p>
+    </div>
+    <figure class="ag3v2-rd-fig viz-radial" role="img"
+            aria-label="허브-스포크 도해: 가운데 위 분석결과.md는 세 결과물이 함께 쓰는 근거다. 선이 세 방향으로 뻗는다. 훑어보는 사람은 dashboard.html에서 한 화면에 핵심 숫자와 차트를 보고, 듣는 사람은 발표자료.pptx에서 한 장에 한 결론을 말로 따라가고, 읽는 사람은 분석보고서.docx에서 처음부터 끝까지 근거와 한계를 읽는다.">
+      <svg viewBox="0 0 1152 368" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <!-- 허브: 분석결과.md(문서 모양 · 접힌 모서리) -->
+        <path class="ag3v2-rd-hub" d="M394 0 H740 L776 36 V98 Q776 116 758 116 H394 Q376 116 376 98 V18 Q376 0 394 0 Z"/>
+        <path class="ag3v2-rd-fold" d="M740 0 V36 H776 Z"/>
+        <text class="ag3v2-rd-hubt" x="576" y="52" text-anchor="middle">분석결과.md</text>
+        <text class="ag3v2-rd-hubs" x="576" y="90" text-anchor="middle">세 결과물이 함께 쓰는 근거</text>
+
+        <!-- 스포크 3 -->
+        <path class="ag3v2-rd-spoke" d="M576 116 C576 168 184 146 184 184"/>
+        <polygon class="ag3v2-rd-head" points="176,182 192,182 184,194"/>
+        <path class="ag3v2-rd-spoke" d="M576 116 V184"/>
+        <polygon class="ag3v2-rd-head" points="568,182 584,182 576,194"/>
+        <path class="ag3v2-rd-spoke" d="M576 116 C576 168 968 146 968 184"/>
+        <polygon class="ag3v2-rd-head" points="960,182 976,182 968,194"/>
+
+        <!-- 1 훑어보는 사람 · dashboard.html -->
+        <rect class="ag3v2-rd-card" x="0" y="196" width="368" height="170" rx="18"/>
+        <circle class="ag3v2-rd-person" cx="32" cy="228" r="8"/>
+        <path class="ag3v2-rd-person" d="M18 254 Q18 240 32 240 Q46 240 46 254 Z"/>
+        <text class="ag3v2-rd-who" x="56" y="245">훑어보는 사람</text>
+        <text class="ag3v2-rd-file" x="22" y="288">dashboard.html</text>
+        <text class="ag3v2-rd-desc" x="22" y="320">한 화면에서 핵심 숫자와</text>
+        <text class="ag3v2-rd-desc" x="22" y="348">차트를 봅니다</text>
+        <rect class="ag3v2-rd-mock" x="262" y="216" width="84" height="58" rx="8"/>
+        <path class="ag3v2-rd-mockline" d="M262 230 H346"/>
+        <rect class="ag3v2-rd-mockfill" x="276" y="254" width="12" height="12"/>
+        <rect class="ag3v2-rd-mockfill" x="298" y="246" width="12" height="20"/>
+        <rect class="ag3v2-rd-mockkey" x="320" y="238" width="12" height="28"/>
+
+        <!-- 2 듣는 사람 · 발표자료.pptx -->
+        <rect class="ag3v2-rd-card" x="392" y="196" width="368" height="170" rx="18"/>
+        <circle class="ag3v2-rd-person" cx="424" cy="228" r="8"/>
+        <path class="ag3v2-rd-person" d="M410 254 Q410 240 424 240 Q438 240 438 254 Z"/>
+        <text class="ag3v2-rd-who" x="448" y="245">듣는 사람</text>
+        <text class="ag3v2-rd-file" x="414" y="288">발표자료.pptx</text>
+        <text class="ag3v2-rd-desc" x="414" y="320">한 장에 한 결론을</text>
+        <text class="ag3v2-rd-desc" x="414" y="348">말로 따라갑니다</text>
+        <rect class="ag3v2-rd-mock" x="654" y="222" width="84" height="48" rx="6"/>
+        <rect class="ag3v2-rd-mockkey" x="664" y="232" width="40" height="7" rx="2"/>
+        <rect class="ag3v2-rd-mockfill" x="664" y="247" width="64" height="5"/>
+        <rect class="ag3v2-rd-mockfill" x="664" y="257" width="44" height="5"/>
+
+        <!-- 3 읽는 사람 · 분석보고서.docx -->
+        <rect class="ag3v2-rd-card" x="784" y="196" width="368" height="170" rx="18"/>
+        <circle class="ag3v2-rd-person" cx="816" cy="228" r="8"/>
+        <path class="ag3v2-rd-person" d="M802 254 Q802 240 816 240 Q830 240 830 254 Z"/>
+        <text class="ag3v2-rd-who" x="840" y="245">읽는 사람</text>
+        <text class="ag3v2-rd-file" x="806" y="288">분석보고서.docx</text>
+        <text class="ag3v2-rd-desc" x="806" y="320">처음부터 끝까지</text>
+        <text class="ag3v2-rd-desc" x="806" y="348">근거와 한계를 읽습니다</text>
+        <path class="ag3v2-rd-mock" d="M1076 212 H1112 L1126 226 V274 H1076 Z"/>
+        <path class="ag3v2-rd-mockline" d="M1112 212 V226 H1126"/>
+        <path class="ag3v2-rd-mocktext" d="M1086 238 H1116 M1086 248 H1116 M1086 258 H1116 M1086 266 H1104"/>
+      </svg>
+    </figure>
+    <p class="ag3v2-outline">모양은 바뀌어도 <span class="hl-mint-text">숫자는 바뀌지 않습니다.</span></p>
+  </div>
+</section>
 
 <section class="slide" data-slide="V1-01" data-shape="concept">
   <header class="s-head">
@@ -122,92 +222,5 @@
       <div class="w3-hn"><span class="w3-hn-n">4</span><b>완료 조건</b><span class="desc">무엇을 보면 끝인가</span></div>
       <div class="w3-hn"><span class="w3-hn-n">5</span><b>사후 확인</b><span class="desc">끝난 뒤 무엇을 검사하는가</span></div>
     </div>
-  </div>
-</section>
-
-<!-- N-02 오늘 쓰는 파일 — numeric (M6) -->
-<section class="slide ag3-fileslide" data-slide="N-02" data-shape="numeric">
-  <header class="s-head">
-    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span><div class="s-team"></div>
-  </header>
-  <div class="s-full fill">
-    <div class="w3-hd">
-      <h2 class="s-title">오늘은 주문 데이터 한 파일로 시작합니다</h2>
-      <p class="s-lead"><code>mock_ecommerce_orders.csv</code> · 온라인 쇼핑몰 주문 기록을 흉내 낸 <strong>모의 데이터</strong>입니다.</p>
-    </div>
-    <div class="ag3-file">
-      <figure class="ag3-file-fig viz-matrix" role="img" aria-label="표 모양 그림: 맨 위 한 줄은 열 이름이 적힌 헤더이고, 그 아래로 열 20개와 데이터 2,424행이 이어진다">
-        <svg viewBox="0 0 560 340" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <text x="280" y="26" text-anchor="middle" font-size="20" font-weight="800" fill="var(--blue)">열 20개</text>
-          <rect x="40" y="40" width="480" height="260" rx="10" fill="var(--white)" stroke="var(--blue-line-strong)" stroke-width="2"/>
-          <rect x="40" y="40" width="480" height="36" rx="10" fill="var(--blue)"/>
-          <rect x="40" y="62" width="480" height="14" fill="var(--blue)"/>
-          <text x="280" y="64" text-anchor="middle" font-size="17" font-weight="800" fill="var(--white)">헤더 · 열 이름</text>
-          <path d="M64 76 V300 M88 76 V300 M112 76 V300 M136 76 V300 M160 76 V300 M184 76 V300 M208 76 V300 M232 76 V300 M256 76 V300 M280 76 V300 M304 76 V300 M328 76 V300 M352 76 V300 M376 76 V300 M400 76 V300 M424 76 V300 M448 76 V300 M472 76 V300 M496 76 V300" stroke="var(--blue-line)" stroke-width="1.5"/>
-          <path d="M40 104 H520 M40 132 H520 M40 160 H520 M40 244 H520 M40 272 H520" stroke="var(--blue-line)" stroke-width="1.5"/>
-          <rect x="190" y="178" width="180" height="48" rx="10" fill="var(--blue-soft)"/>
-          <text x="280" y="210" text-anchor="middle" font-size="20" font-weight="800" fill="var(--ink)">⋮ 행이 이어짐</text>
-          <text x="280" y="330" text-anchor="middle" font-size="20" font-weight="800" fill="var(--blue)">헤더를 뺀 데이터 2,424행</text>
-        </svg>
-      </figure>
-      <div class="ag3-file-kpis">
-        <div class="ag3-kpi"><span class="ag3-kpi-v">2,424</span><span class="ag3-kpi-l">행 · 헤더를 뺀 데이터</span></div>
-        <div class="ag3-kpi"><span class="ag3-kpi-v">20</span><span class="ag3-kpi-l">열 · 이름은 영문 그대로</span></div>
-        <div class="ag3-kpi"><span class="ag3-kpi-v">12개월</span><span class="ag3-kpi-l">2025-01-01 ~ 2025-12-30</span></div>
-      </div>
-    </div>
-    <p class="ag3-cap">행 하나가 주문 하나인지는 <strong>아직 모릅니다.</strong> 다음 파트에서 직접 셉니다.</p>
-  </div>
-</section>
-
-<!-- N-03 열 지도 — classification (M6) -->
-<section class="slide ag3-colslide" data-slide="N-03" data-shape="classification">
-  <header class="s-head">
-    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span><div class="s-team"></div>
-  </header>
-  <div class="s-full fill">
-    <div class="w3-hd">
-      <h2 class="s-title">20개 열은 <span class="hl-mint-text">다섯 묶음</span>으로 나뉩니다</h2>
-      <p class="s-lead">열 이름은 <strong>파일에 적힌 그대로</strong> 읽고, 묶음 이름만 우리말로 붙입니다.</p>
-    </div>
-    <div class="ag3-colmap viz-matrix" role="img" aria-label="열 20개를 주문, 고객, 상품, 금액, 배송과 평가 다섯 묶음으로 나눈 지도">
-      <div class="ag3-colrow"><b>주문<small>언제 · 어떤 상태</small></b><span class="ag3-chips"><code>order_id</code><code>order_date</code><code>order_status</code></span></div>
-      <div class="ag3-colrow"><b>고객<small>누가 · 어디서</small></b><span class="ag3-chips"><code>customer_id</code><code>customer_type</code><code>age_group</code><code>region</code></span></div>
-      <div class="ag3-colrow"><b>상품<small>무엇을 · 몇 개</small></b><span class="ag3-chips"><code>category</code><code>product_name</code><code>brand</code><code>quantity</code></span></div>
-      <div class="ag3-colrow"><b>금액<small>얼마에 · 어떻게</small></b><span class="ag3-chips"><code>unit_price_krw</code><code>cost_per_unit_krw</code><code>discount_rate</code><code>shipping_fee_krw</code><code>payment_method</code></span></div>
-      <div class="ag3-colrow"><b>배송·평가<small>받은 뒤</small></b><span class="ag3-chips"><code>delivery_days</code><code>rating</code><code>returned</code><code>return_reason</code></span></div>
-    </div>
-  </div>
-</section>
-
-<!-- N-04 실습① 구조부터 확인 — screen-operation (M6) -->
-<section class="slide w3-practice ag3-pr" data-slide="N-04" data-shape="screen-operation">
-  <header class="s-head">
-    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span><div class="s-team"></div>
-  </header>
-  <div class="s-full fill">
-    <div class="w3-pr-hd">
-      <p class="s-eyebrow">실습 ①</p>
-      <h2 class="s-title">구조부터 확인합니다</h2>
-    </div>
-    <div class="ag3-pr-body">
-      <div class="w3-ask terminal-dark" aria-label="Agent에게 입력하는 요청문">
-        <div class="terminal-bar"><span></span><span></span><span></span><b>이렇게 요청하세요</b></div>
-        <div class="w3-ask-body">
-          <span class="w3-ask-pfx" aria-hidden="true">&gt;_</span>
-          <p>이 CSV 파일의 구조와 주요 내용을 먼저 확인해줘. <strong>아직 데이터를 수정하지 말고</strong> 어떤 정보가 들어 있는지 설명해줘.</p>
-        </div>
-      </div>
-      <div class="eval-steps ag3-steps">
-          <div class="work-step"><span class="n">1</span><b>목적</b><span class="desc">고치기 전에 무엇이 들어 있는지 확인합니다.</span></div>
-          <div class="work-step"><span class="n">2</span><b>입력</b><span class="desc">mock_ecommerce_orders.csv 한 파일</span></div>
-          <div class="work-step"><span class="n">3</span><b>출력</b><span class="desc">열 이름 · 데이터 유형 · 행 수 설명</span></div>
-          <div class="work-step is-check"><span class="n">4</span><b>검증 기준</b><span class="desc">확인: 2,424행 · 20열이 설명에 그대로 나옵니다.</span></div>
-        </div>
-    </div>
-    <p class="ag3-demo">Antigravity에서 파일을 여는 위치는 <strong>강사 시연 화면</strong>으로 봅니다. 계정·권한에 따라 화면이 다를 수 있습니다.</p>
   </div>
 </section>
