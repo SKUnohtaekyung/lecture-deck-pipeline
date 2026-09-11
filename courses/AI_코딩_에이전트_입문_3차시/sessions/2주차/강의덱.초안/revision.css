@@ -381,27 +381,6 @@
     .hf-connector .hf-arrow{ font-size:34px; font-weight:800; color:var(--blue); line-height:1; }
     .hf-connector .hf-sub{ font-size:15px; font-weight:700; color:var(--blue); line-height:1.3; }
 
-    /* ── w2-stepwarn · 경고 선행 + 3요소 단계 (S3ITR+S3MAP 계열, C5-6) ── */
-    .w2-stepwarn .s-full{ bottom:54px; display:flex; flex-direction:column; }
-    .sw-warn{ flex:0 0 auto; display:flex; gap:16px; margin:12px 0 0; }
-    .sw-warncard{ flex:1 1 0; padding:10px 18px; border-radius:var(--r-lg);
-      background:var(--coral-soft); border:1px solid var(--coral-line); box-shadow:var(--shadow-sm); }
-    .sw-warncard .tag{ display:block; margin-bottom:3px; font-size:17px; font-weight:800; color:var(--coral-deep); }
-    .sw-warncard p{ margin:0; font-size:22px; line-height:1.3; color:var(--ink); }
-    .sw-steps{ flex:1 1 auto; display:flex; flex-direction:column; justify-content:center;
-      gap:8px; margin:12px 0 0; min-height:0; }
-    /* base .work-step는 grid-template-columns 2열(42px 1fr)만 정의해 3번째 자식
-       (설명 span)이 자동배치로 1열(번호 자리)에 끼여 극단으로 좁게 줄바꿈된다(실측
-       확인). 설명에 .desc 클래스를 별도로 줘서 셀렉터가 번호 배지(span.n)까지
-       덮어써 display:block으로 눌러 좌측 정렬시키는 사고(실측 확인: place-items:
-       center가 무력화돼 숫자가 원 밖 왼쪽으로 밀림)를 막는다. */
-    .sw-steps .work-step{ grid-template-columns:44px 1fr; grid-template-rows:auto auto;
-      gap:1px 14px; padding:7px 18px; }
-    .sw-steps .work-step .n{ grid-row:1 / span 2; grid-column:1; width:44px; height:44px; font-size:19px; }
-    .sw-steps .work-step b{ grid-column:2; grid-row:1; display:block; font-size:22px; line-height:1.2; margin-bottom:0; }
-    .sw-steps .work-step .desc{ grid-column:2; grid-row:2; display:block; font-size:22px; line-height:1.2; color:var(--gray-700); }
-    .sw-steps .vf-down{ align-self:center; margin:0; font-size:18px; }
-
     /* ── 공용 조정 ─────────────────────────────────────────────── */
     /* 중앙 구도에서 제목(cm-title) 아래 한 문장을 크게 세우는 리드 */
     .cm-statement{ font-size:30px; line-height:1.45; font-weight:700; color:var(--ink); margin:0 0 16px; }
@@ -2833,15 +2812,6 @@
 .slide[data-slide="C5-17"] .pr-steps .work-step .desc{
   font-size:20px; font-weight:500; line-height:1.4; }
 
-/* ── C5-15 핵심 기능은 한 단계씩: 이미지 슬롯 표준 img-slot-r로 복원(§2).
-   sw-warncard 제목(.tag)을 26px로 올려 설명(p, 기본 22px)과 크기를 구분한다(게이트4).
-   sw-steps의 work-step도 shell 기본(b·desc 둘 다 22px)이 위계를 없애 26/20으로 되돌린다. ── */
-.slide[data-slide="C5-15"] .sw-warncard .tag{ font-size:26px; font-weight:800; margin-bottom:4px; }
-.slide[data-slide="C5-15"] .sw-steps .work-step b{ font-size:26px; font-weight:800; }
-.slide[data-slide="C5-15"] .sw-steps .work-step .desc{ font-size:20px; font-weight:500; }
-/* 문장을 감싼 파란 컨테이너는 제거하고, 강조 문장만 남긴다. */
-.slide[data-slide="C5-15"] .callout{ background:transparent; border:0; box-shadow:none;
-  border-radius:0; padding:0; margin:12px 0 16px; }
 
 /* ── C5-16 실습⑨: 바닥선 666 회복(실측 742 — 큰 초과, 간격을 크게 조인다) ── */
 
@@ -3193,27 +3163,6 @@
 .slide[data-slide="C4-2"] .hn-ic{ flex:0 0 auto; width:30px; height:30px; }
 .slide[data-slide="C4-2"] .hn-fnote{ margin:8px 0 0; font-size:20px; line-height:1.4;
   color:var(--gray-700); text-align:center; word-break:keep-all; }
-
-/* ── 83p(C4-16): 하네스가 실제 일을 잇는 방식 — 판단→도구 실행→확인→다음
-   판단 4단계 + s83-agent-tools-workflow 이미지 (2026-08-03/04 하네스 시각
-   보강 동기화). 옛 3부품 카드(hn-parts)·용어 배경(hn-origin) 설계는
-   tv-* 구도로 전면 교체됐다 — 그 CSS는 함께 제거한다(대상 요소가 없다). ── */
-.slide[data-slide="C4-16"] .s-full{height:548px; bottom:54px; display:flex; flex-direction:column;}
-.slide[data-slide="C4-16"] .s-title{margin:0;}
-.slide[data-slide="C4-16"] .tv-lead{margin:8px 0 14px; font-size:23px; line-height:1.42; color:var(--gray-700); font-weight:600; word-break:keep-all;}
-.slide[data-slide="C4-16"] .tv-lead b{color:var(--blue);}
-.slide[data-slide="C4-16"] .tv-main{display:grid; grid-template-columns:548px minmax(0,1fr); gap:42px; align-items:center; flex:1 1 auto; min-height:0;}
-.slide[data-slide="C4-16"] .tv-figure{width:548px; height:300px; min-height:0; margin:0; display:flex; align-items:center; justify-content:center; overflow:visible;}
-.slide[data-slide="C4-16"] .tv-figure img{width:100%; height:100%; display:block; object-fit:contain;}
-.slide[data-slide="C4-16"] .tv-steps{min-width:0; display:flex; flex-direction:column; justify-content:center; align-self:stretch; padding:2px 0;}
-.slide[data-slide="C4-16"] .tv-step{display:grid; grid-template-columns:42px minmax(0,1fr); gap:12px; align-items:center; padding:11px 0; border-bottom:1px solid var(--line);}
-.slide[data-slide="C4-16"] .tv-step:last-child{border-bottom:0;}
-.slide[data-slide="C4-16"] .tv-step>span{color:var(--blue); font-size:25px; font-weight:850; line-height:1;}
-.slide[data-slide="C4-16"] .tv-step.is-harness>span,.slide[data-slide="C4-16"] .tv-step.is-harness b{color:var(--mint-deep);}
-.slide[data-slide="C4-16"] .tv-step b{display:block; color:var(--ink); font-size:23px; font-weight:800; line-height:1.2;}
-.slide[data-slide="C4-16"] .tv-step p{margin:3px 0 0; color:var(--gray-700); font-size:20px; font-weight:550; line-height:1.32; word-break:keep-all;}
-.slide[data-slide="C4-16"] .tv-tool-note{margin:10px 0 0; padding:9px 14px; border-left:4px solid var(--mint-deep); background:var(--mint-soft); color:var(--gray-700); font-size:21px; font-weight:600; line-height:1.35; word-break:keep-all;}
-.slide[data-slide="C4-16"] .tv-tool-note b{color:var(--mint-deep);}
 
 /* ── 82p(C4-2): 「하네스 엔지니어링이란?」 재정의 카드(같은 동기화) — 옛
    hn-top/hn-formula(반복 실행 시스템 정의·모델+하네스+도구 공식)는 화면에서
@@ -3719,3 +3668,130 @@
 .p6-check-row span{ padding:7px 12px; border-radius:var(--r-pill); background:var(--surface); border:1px solid var(--blue-line); color:var(--ink); font-size:19px; font-weight:800; }
 .p6-check-row span::before{ content:"✓ "; color:var(--mint-deep); }
 .slide[data-slide="THX"] .ty-wrap{ inset:0 0 54px 0; }
+
+/* ════ 2026-09-11 W2 · 2차시 prd.md 복원 — 신설·개편 4장(C3-2 · N-23 · C5-9 · N-24) ════
+   결정표 plans/2차시-prd-복원/G1-결정표.md. 전부 [data-slide] 스코프 · 색은 토큰만(그라데이션 0) ·
+   25자 넘는 서술문 22px / 24자 이하 짧은 설명 20px(audit_typography 역할 티어) · 줄 높이 전부 명시.
+   각 장 주석의 «세로 예산»은 바닥선 666 안에서 약 30px 이상 여유를 두고 계산한 값이다 —
+   치수를 바꾸면 그 합을 다시 본다(폰트를 줄여 맞추지 않는다). */
+
+/* ── C3-2 · PRD 대 prd.md (구도 n2-prdvs) ──
+   세로 예산: s-full 118 + 제목 46·12 + 정의 32 + 머리 10·139 + 표 10·(46×5 + 6×4) ≈ 621. */
+.slide[data-slide="C3-2"] .s-title{ margin:0 0 12px; }
+.slide[data-slide="C3-2"] .c32-def{ margin:0; font-size:22px; line-height:1.45; font-weight:500; color:var(--gray-700); }
+.slide[data-slide="C3-2"] .c32-def b{ color:var(--blue); font-weight:800; }
+.slide[data-slide="C3-2"] .c32-head,
+.slide[data-slide="C3-2"] .c32-row{ display:grid; grid-template-columns:minmax(0,1fr) 240px minmax(0,1fr); column-gap:12px; }
+.slide[data-slide="C3-2"] .c32-head{ align-items:end; margin:10px 0 0; }
+.slide[data-slide="C3-2"] .c32-h{ margin:0; padding:0 18px 8px; border-bottom:3px solid var(--blue); }
+.slide[data-slide="C3-2"] .c32-h.is-prd{ text-align:right; }
+.slide[data-slide="C3-2"] .c32-h.is-md{ border-bottom-color:var(--mint-deep); }
+.slide[data-slide="C3-2"] .c32-h b{ display:block; font-size:26px; line-height:1.3; font-weight:800; color:var(--blue); }
+.slide[data-slide="C3-2"] .c32-h.is-md b{ color:var(--mint-deep); }
+.slide[data-slide="C3-2"] .c32-h > span{ display:block; margin-top:2px; font-size:18px; line-height:1.35; font-weight:600; color:var(--gray-700); }
+/* 이미지: kit .asset-slot--support의 우측 절대배치를 풀고 가운데 칸에 흐름으로 둔다.
+   240×139 = 원본 PNG 1460×846 비율(1.726) — contain 레터박스 없음(R-IMG-04·04b). */
+.slide[data-slide="C3-2"] .c32-figure.asset-slot{ position:relative; top:auto; right:auto; bottom:auto; left:auto;
+  width:240px; height:139px; max-width:240px; max-height:139px; margin:0; }
+.slide[data-slide="C3-2"] .c32-figure img{ display:block; width:100%; height:100%; object-fit:contain; }
+.slide[data-slide="C3-2"] .c32-rows{ display:flex; flex-direction:column; gap:6px; margin:10px 0 0; }
+.slide[data-slide="C3-2"] .c32-k{ grid-column:2; grid-row:1; align-self:center; text-align:center;
+  font-size:20px; line-height:1.3; font-weight:800; color:var(--blue); }
+.slide[data-slide="C3-2"] .c32-val{ grid-row:1; display:block; padding:7px 18px; border-radius:var(--r-md);
+  font-size:22px; line-height:1.35; font-weight:600; color:var(--ink); }
+.slide[data-slide="C3-2"] .c32-val.is-prd{ grid-column:1; text-align:right; background:var(--blue-soft); border:1px solid var(--blue-line); }
+.slide[data-slide="C3-2"] .c32-val.is-md{ grid-column:3; background:var(--mint-soft); border:1px solid var(--mint-line); }
+
+/* ── N-23 · prd.md 예시 — 집중 타이머 (구도 n2-prdfile) ──
+   ⚠️ 괄호 SVG(viewBox 60×392)의 y값은 «줄 높이 28px × 14줄»과 «줄 시작 53px(테두리 1 + 바 44 + 목록 위 여백 8)»에 묶여 있다.
+   줄 수·줄 높이·바 높이를 바꾸면 part-04의 n23-brace 경로와 .n23-keys 행 높이를 함께 고친다.
+   세로 예산: 118 + 제목 46·14 + 파일(2 + 44 + 8 + 392 + 10) ≈ 634. */
+.slide[data-slide="N-23"] .s-title{ margin:0 0 14px; }
+.slide[data-slide="N-23"] .n23-map{ display:grid; grid-template-columns:780px 60px minmax(0,1fr); align-items:start; }
+/* 파일 뷰는 kit E-code 표면(.viz-code)을 쓰되 overflow:hidden을 풀어 넘침을 숨기지 않는다(절대 금지 9).
+   줄은 한 줄 고정(nowrap) — 넘치면 오른쪽 괄호 칸으로 보이게 삐져나와 렌더에서 드러난다. */
+.slide[data-slide="N-23"] .n23-file.viz-code{ overflow:visible; border:1px solid var(--blue-line-strong); }
+.slide[data-slide="N-23"] .n23-bar{ height:44px; display:flex; align-items:center; gap:8px; padding:0 16px;
+  background:var(--white); border-bottom:1px solid var(--blue-line); border-radius:var(--r-md) var(--r-md) 0 0; }
+.slide[data-slide="N-23"] .n23-dot{ flex:0 0 auto; width:10px; height:10px; border-radius:50%; background:var(--gray-400); }
+.slide[data-slide="N-23"] .n23-tab{ margin-left:8px; padding:2px 12px; border-radius:var(--r-sm); background:var(--blue-soft);
+  color:var(--blue); font-size:18px; line-height:1.3; font-weight:800; }
+.slide[data-slide="N-23"] .n23-src{ margin-left:auto; font-size:16px; line-height:1.3; font-weight:600; color:var(--gray-700); }
+.slide[data-slide="N-23"] .n23-lines{ list-style:none; margin:0; padding:8px 0 10px; }
+.slide[data-slide="N-23"] .n23-lines li{ height:28px; padding:0 12px 0 20px; font-size:19px; line-height:28px;
+  font-weight:500; color:var(--ink); white-space:nowrap; }
+.slide[data-slide="N-23"] .n23-lines li.is-title{ font-weight:800; }
+.slide[data-slide="N-23"] .n23-lines li.is-h{ background:var(--blue-soft); color:var(--blue); font-weight:800; }
+.slide[data-slide="N-23"] .n23-brace{ display:block; width:60px; height:392px; margin-top:53px; }
+.slide[data-slide="N-23"] .n23-wire{ fill:none; stroke:var(--blue); stroke-width:3; stroke-linecap:round; stroke-linejoin:round; }
+.slide[data-slide="N-23"] .n23-head{ fill:var(--blue); }
+.slide[data-slide="N-23"] .n23-side-h{ height:45px; margin:0 0 8px; display:flex; align-items:center;
+  font-size:18px; line-height:1.3; font-weight:800; color:var(--gray-700); }
+.slide[data-slide="N-23"] .n23-keys{ list-style:none; margin:28px 0 0; padding:0; display:grid;
+  grid-template-rows:56px 56px 56px 84px 112px; }
+.slide[data-slide="N-23"] .n23-key{ display:flex; align-items:center; gap:12px; }
+.slide[data-slide="N-23"] .n23-key b{ flex:0 0 auto; min-width:68px; padding:1px 12px; text-align:center;
+  border-radius:var(--r-pill); background:var(--blue); color:var(--white); font-size:22px; line-height:1.3; font-weight:800; }
+.slide[data-slide="N-23"] .n23-key span{ font-size:20px; line-height:1.35; font-weight:600; color:var(--gray-700); }
+
+/* ── C5-9 · 실습 ① design.md 만들고 화면에 두 가지 적용 (w2-practice 유지 · 분기-합류 흐름) ──
+   SVG x좌표(가운데 576 · 방법 A 중심 244 · 방법 B 중심 808)는 .c59-ways 440px·24px·640px 가운데 정렬과 묶여 있다.
+   세로 예산: 118 + 제목 46·12 + 1단계 ≈60 + 30 + 갈래 ≈121 + 30 + 2단계 ≈60 + 24 + 3단계 ≈122 ≈ 623. */
+.slide[data-slide="C5-9"] .s-title{ margin:0 0 12px; }
+.slide[data-slide="C5-9"] .c59-flow{ display:flex; flex-direction:column; align-items:stretch; }
+.slide[data-slide="C5-9"] .c59-step{ align-self:center; width:fit-content; max-width:980px; margin:0;
+  grid-template-columns:40px auto; gap:14px; padding:8px 20px; }
+.slide[data-slide="C5-9"] .c59-step .n{ width:40px; height:40px; font-size:19px; }
+.slide[data-slide="C5-9"] .c59-step > div{ display:flex; flex-wrap:wrap; align-items:baseline; column-gap:14px; row-gap:2px; }
+.slide[data-slide="C5-9"] .c59-step > div > b{ display:block; margin:0; font-size:26px; line-height:1.3; font-weight:800; color:var(--ink); }
+.slide[data-slide="C5-9"] .c59-step > div > .desc{ display:block; font-size:22px; line-height:1.45; font-weight:500; color:var(--gray-700); }
+.slide[data-slide="C5-9"] .c59-step.is-last > div{ display:block; }
+.slide[data-slide="C5-9"] .c59-step.is-last > div > .desc{ margin-top:2px; }
+.slide[data-slide="C5-9"] .c59-step b .c59-warn{ display:inline-block; margin-left:12px; padding:1px 10px; vertical-align:3px;
+  border-radius:var(--r-pill); background:var(--coral-soft); border:1px solid var(--coral-line);
+  color:var(--coral-deep); font-size:18px; line-height:1.35; font-weight:800; }
+.slide[data-slide="C5-9"] .c59-wire{ flex:0 0 auto; display:block; width:1152px; height:30px; }
+.slide[data-slide="C5-9"] .c59-wire.is-short{ height:24px; }
+.slide[data-slide="C5-9"] .c59-line{ fill:none; stroke:var(--blue); stroke-width:3; stroke-linecap:round; stroke-linejoin:round; }
+.slide[data-slide="C5-9"] .c59-head{ fill:var(--blue); }
+.slide[data-slide="C5-9"] .c59-ways{ display:grid; grid-template-columns:440px 640px; column-gap:24px; justify-content:center; }
+.slide[data-slide="C5-9"] .c59-way{ padding:12px 18px; border-radius:var(--r-md); background:var(--white); border:1px solid var(--blue-line-strong); }
+.slide[data-slide="C5-9"] .c59-tag{ display:flex; align-items:center; gap:10px; font-size:20px; line-height:1.35; font-weight:800; color:var(--blue); }
+.slide[data-slide="C5-9"] .c59-tag .c59-next{ padding:1px 10px; border-radius:var(--r-pill); background:var(--blue-soft);
+  font-size:16px; line-height:1.35; font-weight:800; color:var(--blue); }
+.slide[data-slide="C5-9"] .c59-way p{ margin:4px 0 0; font-size:22px; line-height:1.45; font-weight:500; color:var(--ink); }
+
+/* ── N-24 · design.md 초안 요청 (구도 n2-mdreq) — 흐름 도식이 주인공, 프롬프트는 아래 좌측 ──
+   정거장 색: 민트 = 내가 하는 일 · 블루 = 도구가 하는 일(번호 배지는 R-COLOR-03에 따라 블루).
+   세로 예산: 118 + eyebrow 33·14 + 제목 46·14 + 흐름 ≈120 + 16 + 아래 max(터미널 ≈230, 노트 ≈256) ≈ 617. */
+.slide[data-slide="N-24"] .s-eyebrow{ margin:0 0 14px; }
+.slide[data-slide="N-24"] .s-title{ margin:0 0 14px; }
+.slide[data-slide="N-24"] .n24-flow{ display:grid; align-items:stretch;
+  grid-template-columns:minmax(0,1fr) 56px minmax(0,1fr) 56px minmax(0,1fr) 56px minmax(0,1fr); }
+.slide[data-slide="N-24"] .n24-stop{ display:grid; grid-template-columns:auto minmax(0,1fr); align-content:center; align-items:center;
+  column-gap:10px; row-gap:6px; padding:12px 14px; border-radius:var(--r-md); }
+.slide[data-slide="N-24"] .n24-stop.is-me{ background:var(--mint-soft); border:1px solid var(--mint-line); }
+.slide[data-slide="N-24"] .n24-stop.is-tool{ background:var(--blue-soft); border:1px solid var(--blue-line); }
+.slide[data-slide="N-24"] .n24-no{ width:30px; height:30px; display:grid; place-items:center; border-radius:50%;
+  background:var(--blue); color:var(--white); font-size:17px; line-height:1; font-weight:800; }
+.slide[data-slide="N-24"] .n24-who{ font-size:16px; line-height:1.3; font-weight:800; color:var(--blue); }
+.slide[data-slide="N-24"] .n24-stop.is-me .n24-who{ color:var(--mint-deep); }
+.slide[data-slide="N-24"] .n24-stop > b{ grid-column:1 / -1; font-size:22px; line-height:1.3; font-weight:800; color:var(--ink); }
+.slide[data-slide="N-24"] .n24-wire{ align-self:center; display:block; width:56px; height:24px; }
+.slide[data-slide="N-24"] .n24-line{ fill:none; stroke:var(--blue); stroke-width:3; stroke-linecap:round; }
+.slide[data-slide="N-24"] .n24-head{ fill:var(--blue); }
+.slide[data-slide="N-24"] .n24-lower{ display:grid; grid-template-columns:minmax(0,1fr) 400px; column-gap:18px; align-items:start; margin:16px 0 0; }
+.slide[data-slide="N-24"] .n24-term{ margin:0; }
+.slide[data-slide="N-24"] .n24-notes{ display:flex; flex-direction:column; gap:10px; }
+.slide[data-slide="N-24"] .n24-notes .pw-note{ padding:8px 14px; }
+.slide[data-slide="N-24"] .n24-notes .pw-k{ font-size:16px; line-height:1.3; }
+.slide[data-slide="N-24"] .n24-notes .pw-note p{ margin:3px 0 0; font-size:20px; line-height:1.35; font-weight:600; color:var(--ink); }
+.slide[data-slide="N-24"] .n24-checks{ list-style:none; margin:3px 0 0; padding:0; display:flex; flex-direction:column; gap:2px; }
+.slide[data-slide="N-24"] .n24-checks li{ position:relative; padding-left:24px; font-size:20px; line-height:1.35; font-weight:600; color:var(--ink); }
+.slide[data-slide="N-24"] .n24-checks li::before{ content:"✓"; position:absolute; left:2px; top:0; color:var(--mint-deep); font-weight:800; }
+
+/* ── C6-S4 · 2026-09-11 W2 (W1 메모 반영): «어디에 넣을까» 패널에서 Skill 행이 빠져(U10) 행이 2개가 되자
+   왼쪽(3단)과 높이가 같은 패널의 아래가 비었다. 두 패널에 같은 규칙으로, 제목(h3) 아래 항목 묶음을
+   남는 높이의 가운데에 둔다(R-BOX-01a). 상자 크기·글자는 그대로 — 남는 높이가 없는 패널에는 효과가 없다. */
+.slide[data-slide="C6-S4"] .p6-panel > h3 + *{ margin-top:auto; }
+.slide[data-slide="C6-S4"] .p6-panel > :last-child{ margin-bottom:auto; }
