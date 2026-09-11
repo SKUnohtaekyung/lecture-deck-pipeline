@@ -552,14 +552,19 @@ class RenderAuditFailClosedTests(unittest.TestCase):
 
     def test_stored_evidence_carries_env_block(self):
         root = Path(__file__).resolve().parent.parent
-        for week in ("1주차", "2주차", "3주차"):
-            f = root / "sessions" / "_verify" / week / "deck-audit.json"
-            if not f.exists():
-                continue
+        # 증거 namespace가 과목별로 갈라진 뒤에도 **전 namespace**를 본다.
+        roots = [root / "sessions" / "_verify"]
+        roots += sorted((root / "courses").glob("*/sessions/_verify"))
+        found = [f for r in roots for f in sorted(r.glob("*주차/deck-audit.json"))]
+        # 「한 건도 안 봤다」와 「위반 0건」을 구분한다(눈먼 0 방지).
+        self.assertTrue(found, "검사한 증거 파일 0건 — 미판정이지 통과가 아니다")
+        for f in found:
+            # 라벨을 `week` 문자열로 두면 어느 과목인지 말하지 못한다.
+            label = f.relative_to(root).as_posix()
             env = json.loads(f.read_text(encoding="utf-8")).get("env")
-            self.assertIsNotNone(env, f"{week} 증거에 env 블록이 없다 — 재측정하라")
+            self.assertIsNotNone(env, f"{label} 증거에 env 블록이 없다 — 재측정하라")
             for key in ("dpr", "viewport", "ua", "images"):
-                self.assertIn(key, env, f"{week} env에 {key}가 없다")
+                self.assertIn(key, env, f"{label} env에 {key}가 없다")
 
 
 class ReportFreshnessTests(unittest.TestCase):
@@ -722,6 +727,490 @@ class BlindSlideCountTests(unittest.TestCase):
         r = self._runner_with_deck(html, self._evidence(3))
         r.render_evidence()
         self.assertFalse(any(self._MSG in (s[2] or "") for s in r.steps), r.steps)
+
+
+# ══ B03 — 렌더 증거 격리 회귀 (A2·A3·A9·A10 · 2026-09-09) ════════════════
+#
+# 이 블록의 시험 번호는 `courses/AI_코딩_에이전트_입문_3차시/제작관리/
+# 경로스키마호환성.md` §2 ⓐ 「검증(양성/음성)」의 통합 번호와 같다.
+
+import hashlib as _hashlib          # noqa: E402
+import os as _os                    # noqa: E402
+import subprocess as _subprocess    # noqa: E402
+
+REPO = Path(__file__).resolve().parent.parent
+
+
+def _repo_tempdir():
+    """픽스처는 **저장소 안 `tmp/`에만** 만든다(AGENTS.md). `tmp/`는 .gitignore 대상."""
+    base = REPO / "tmp" / "tests"
+    base.mkdir(parents=True, exist_ok=True)
+    return tempfile.TemporaryDirectory(dir=str(base))
+
+
+def _sha(path: Path) -> str:
+    return _hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def _audit(url: str, slide_count: int = 3) -> dict:
+    return {"schema": "deck-audit/1", "slideCount": slide_count, "url": url,
+            "render": {"totals": {}}, "typography": {}}
+
+
+class PresenterSidecarGuardTests(unittest.TestCase):
+    """A10 — 발표본 사이드카 fail-closed. 동결 사이드카 2파일의 **유일한** 사전 방지책.
+
+    `--output`은 `--force`로 지켜졌는데 `--meta`는 존재 검사조차 없었다. 정본 명령이
+    `--meta`를 과목과 무관하게 고정하고 있어서, 새 과목의 발표본을 「절차대로」 만드는
+    것이 곧 다른 과목의 감사 기록 소실이었다(R-T03 attempt-02 C-A).
+    """
+
+    def _cli(self, root: Path, deck_id: str, meta: Path, force=False, notes=True):
+        src = root / "강의덱_배포.html"
+        if not src.exists():
+            src.write_text(PRESENTER_DECK, encoding="utf-8")
+        out = root / ("강의덱_발표_%s.html" % deck_id)
+        argv = ["inject_presenter.py", str(src), "--deck-id", deck_id,
+                "--output", str(out), "--meta", str(meta)]
+        if notes:
+            n = root / "notes.html"
+            n.write_text(_notes(_note_block("02", "두 번째 장")), encoding="utf-8")
+            argv[2:2] = ["--notes", str(n)]
+        if force:
+            argv.append("--force")
+        with mock.patch.object(sys, "argv", argv):
+            rc = inject_presenter.main()
+        return rc, out
+
+    # 양성 3 — --meta가 없는 경로를 가리키면 종전대로 생성된다
+    def test_positive3_fresh_sidecar_path_still_writes(self):
+        with _repo_tempdir() as tmp:
+            root = Path(tmp)
+            meta = root / "새-사이드카.meta.json"
+            rc, out = self._cli(root, "ai-agent-week-1", meta)
+            self.assertEqual(rc, 0)
+            self.assertTrue(out.exists() and meta.exists())
+            self.assertEqual(json.loads(meta.read_text(encoding="utf-8"))["deckId"],
+                             "ai-agent-week-1")
+
+    # 양성 4 — 같은 deckId + --force 재주입은 종전대로 덮어쓴다
+    def test_positive4_same_deck_id_with_force_still_overwrites(self):
+        with _repo_tempdir() as tmp:
+            root = Path(tmp)
+            meta = root / "s.meta.json"
+            self.assertEqual(self._cli(root, "wk-a", meta)[0], 0)
+            rc, out = self._cli(root, "wk-a", meta, force=True)
+            self.assertEqual(rc, 0, "같은 덱의 재주입까지 막으면 기존 절차가 깨진다")
+            self.assertTrue(out.exists())
+
+    # 음성 9 — 남의 사이드카를 가리키면 exit 1 · 두 파일 쓰기 0 · --force로도 같다
+    def test_negative9_other_decks_sidecar_is_never_overwritten(self):
+        with _repo_tempdir() as tmp:
+            root = Path(tmp)
+            meta = root / "남의것.meta.json"
+            self.assertEqual(self._cli(root, "vibecoding-week-1", meta)[0], 0)
+            before_sha, before_mtime = _sha(meta), meta.stat().st_mtime_ns
+
+            for force in (False, True):
+                rc, out = self._cli(root, "ai-agent-week-1", meta, force=force)
+                self.assertEqual(rc, 1, f"force={force} 에서 열렸다")
+                self.assertFalse(out.exists(),
+                                 f"force={force}: 발표본 HTML이 쓰였다(반쯤 만들어진 상태)")
+                self.assertEqual(_sha(meta), before_sha, f"force={force}: 사이드카가 바뀌었다")
+                self.assertEqual(meta.stat().st_mtime_ns, before_mtime,
+                                 f"force={force}: 사이드카 mtime이 바뀌었다")
+
+    # 음성 10 — 같은 deckId여도 --force 없이는 거부(저장소 실제 주차에서는 --output이 먼저 막아 관측되지 않는 경계)
+    def test_negative10_existing_sidecar_without_force_is_refused(self):
+        with _repo_tempdir() as tmp:
+            root = Path(tmp)
+            meta = root / "s.meta.json"
+            self.assertEqual(self._cli(root, "wk-a", meta)[0], 0)
+            (root / "강의덱_발표_wk-a.html").unlink()      # --output 가드를 비켜 세운다
+            rc, out = self._cli(root, "wk-a", meta, force=False)
+            self.assertEqual(rc, 1)
+            self.assertFalse(out.exists())
+
+    def test_unreadable_deck_id_is_unjudged_not_safe(self):
+        """`deckId`를 못 읽으면 «안전»이 아니라 **미판정**이다(눈먼 0 방지)."""
+        with _repo_tempdir() as tmp:
+            root = Path(tmp)
+            meta = root / "깨진.meta.json"
+            meta.write_text("이건 JSON이 아니다{", encoding="utf-8")
+            self.assertEqual(self._cli(root, "wk-a", meta, force=False)[0], 1)
+            rc, _out = self._cli(root, "wk-a", meta, force=True)
+            self.assertEqual(rc, 0, "--force가 있으면 WARN과 함께 진행한다")
+
+
+class RunnerEvidenceOwnershipTests(unittest.TestCase):
+    """A2 · 음성 6 — 러너가 **남의 증거로 판정하지 않는다**.
+
+    출력만으로는 막지 못한다(사람이 읽어야 작동한다). 장수·신선도가 우연히 맞으면
+    거짓 PASS가 성립하므로, 이 시험은 **그 두 게이트를 일부러 통과시킨 상태**에서
+    소유 대조만으로 FAIL이 나는지를 본다(R-T03 C3).
+    """
+
+    def setUp(self):
+        patcher = mock.patch.dict(_os.environ, {"CREATE_SLIDES_COURSE": "바이브코딩"})
+        patcher.start()
+        self.addCleanup(patcher.stop)
+
+    def _runner(self, url):
+        from scripts.run_deck_checks import Runner
+        td = _repo_tempdir()
+        self.addCleanup(td.cleanup)
+        root = Path(td.name)
+        deck = root / "강의덱.html"
+        deck.write_text("".join('<section class="slide">x</section>' for _ in range(3)),
+                        encoding="utf-8")
+        vdir = root / "_verify"
+        vdir.mkdir()
+        ev = vdir / "deck-audit.json"
+        ev.write_text(json.dumps(_audit(url, 3), ensure_ascii=False), encoding="utf-8")
+        _os.utime(ev, None)                     # 덱보다 새롭게 — 신선도 게이트 통과
+        r = Runner("2주차")
+        r.steps = []
+        r.deck = str(deck)
+        r.verify_dir = str(vdir)
+        return r
+
+    def test_negative6_misattributed_evidence_fails_even_when_counts_match(self):
+        import contextlib
+        import io as _io
+        r = self._runner("http://localhost:8799/courses/AI_코딩_에이전트_입문_3차시/"
+                         "sessions/1주차/강의덱.html")
+        with contextlib.redirect_stdout(_io.StringIO()):
+            self.assertFalse(r.render_evidence())
+        msg = "".join(s[2] or "" for s in r.steps)
+        self.assertIn("바이브코딩", msg, msg)
+        self.assertIn("AI_코딩_에이전트_입문_3차시", msg, msg)
+
+    def test_own_evidence_does_not_trip_the_ownership_gate(self):
+        """오탐 방지 — 자기 과목 증거는 이 가드에 걸리지 않는다."""
+        import contextlib
+        import io as _io
+        r = self._runner("http://localhost:8799/courses/바이브코딩/sessions/2주차/강의덱.html")
+        with contextlib.redirect_stdout(_io.StringIO()):
+            r.render_evidence()
+        self.assertFalse(any("다른 과목의 것이다" in (s[2] or "") for s in r.steps), r.steps)
+
+    def test_namespace_line_is_always_printed(self):
+        """조용한 오귀속을 막는 최소 장치 — 어느 namespace를 봤는지 매번 찍는다."""
+        import contextlib
+        import io as _io
+        r = self._runner("http://localhost:8799/courses/바이브코딩/sessions/2주차/강의덱.html")
+        buf = _io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            r.render_evidence()
+        self.assertIn("=== 렌더 증거 경로 ===", buf.getvalue())
+
+
+class RunnerEvidenceAbsenceTests(unittest.TestCase):
+    """음성 3·4·5 — 「없음」·「빈 namespace」·「INVALID」가 통과로 새지 않는가.
+
+    namespace가 갈린 뒤 가장 그럴듯한 사고는 «새 폴더는 만들었는데 아직 안 쟀다»이고,
+    그때 러너가 조용히 남의 폴더를 대신 고르면 거짓 PASS가 된다.
+    """
+
+    def setUp(self):
+        patcher = mock.patch.dict(_os.environ, {"CREATE_SLIDES_COURSE": "바이브코딩"})
+        patcher.start()
+        self.addCleanup(patcher.stop)
+
+    def _run(self, make_vdir=True, payload=None, week="2주차", vname="_verify"):
+        import contextlib
+        import io as _io
+        from scripts.run_deck_checks import Runner
+        td = _repo_tempdir()
+        self.addCleanup(td.cleanup)
+        root = Path(td.name)
+        deck = root / "강의덱.html"
+        deck.write_text('<section class="slide">x</section>', encoding="utf-8")
+        vdir = root / vname
+        if make_vdir:
+            vdir.mkdir()
+        if payload is not None:
+            (vdir / "deck-audit.json").write_text(
+                json.dumps(payload, ensure_ascii=False), encoding="utf-8")
+        r = Runner(week)
+        r.steps = []
+        r.deck = str(deck)
+        r.verify_dir = str(vdir)
+        buf = _io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            ok = r.render_evidence()
+        return ok, r, buf.getvalue()
+
+    def test_negative3_missing_namespace_names_its_own_path(self):
+        """다른 과목 폴더를 대신 고르지 않는다 — 못 찾은 «그 경로»를 그대로 말한다."""
+        ok, r, out = self._run(make_vdir=False, vname="_verify-9주차")
+        self.assertFalse(ok)
+        self.assertIn("없음", r.steps[-1][2])
+        self.assertIn("_verify-9주차", r.steps[-1][2])
+
+    def test_negative4_empty_namespace_is_absence_not_zero_violations(self):
+        ok, r, out = self._run(make_vdir=True, payload=None)
+        self.assertFalse(ok)
+        self.assertIn("없음", r.steps[-1][2])
+
+    def test_negative5_invalid_measurement_is_not_a_pass(self):
+        ok, r, out = self._run(payload={"INVALID": ["scale=0"], "schema": "deck-audit/1"})
+        self.assertFalse(ok)
+        self.assertIn("INVALID", r.steps[-1][2])
+
+
+class ReceiveAuditDestructiveWriteTests(unittest.TestCase):
+    """A3 — 수신기의 파괴적 쓰기(`wb`) 앞에 선 fail-closed 게이트.
+
+    ⚠️ 실제 소켓을 열지 않는다. 가드는 `HTTPServer` 호출보다 **앞**에 있으므로
+       exit 2 경로는 서버 없이 그대로 재현되고, exit 0 경로만 저장 동작을 대역으로 세운다.
+    """
+
+    def _run(self, root: Path, week: str, course=None, payload=None):
+        import contextlib
+        import io as _io
+        from scripts import receive_audit as ra
+
+        out_holder = {}
+
+        class _FakeServer:
+            def __init__(self, addr, handler):
+                out_holder["bound"] = True
+
+            def handle_request(self):
+                # 브라우저가 POST한 셈 치고, 수신기가 정한 경로에 그대로 쓴다.
+                target = out_holder["path"]
+                Path(target).write_text(json.dumps(payload or _audit("x"), ensure_ascii=False),
+                                        encoding="utf-8")
+
+        _real_makedirs = _os.makedirs        # 패치 전 원본을 잡아 둔다(자기호출 방지)
+
+        def _fake_makedirs(path, exist_ok=False):
+            _real_makedirs(path, exist_ok=True)
+            out_holder["path"] = _os.path.join(path, "deck-audit.json")
+
+        env = {"CREATE_SLIDES_COURSE": course} if course else {}
+        ctx = mock.patch.dict(_os.environ, env) if course else \
+            mock.patch.dict(_os.environ, {}, clear=False)
+        buf = _io.StringIO()
+        with ctx, mock.patch.object(ra, "ROOT", str(root)), \
+                mock.patch.object(ra, "HTTPServer", _FakeServer), \
+                mock.patch.object(ra.os, "makedirs", _fake_makedirs), \
+                mock.patch.object(sys, "argv", ["receive_audit.py", week]), \
+                contextlib.redirect_stdout(buf):
+            if not course:
+                _os.environ.pop("CREATE_SLIDES_COURSE", None)
+            rc = ra.main()
+        return rc, buf.getvalue(), out_holder
+
+    @staticmethod
+    def _seed(root: Path, course: str, marker=False, weeks=()):
+        d = root / "courses" / course / "sessions"
+        d.mkdir(parents=True, exist_ok=True)
+        (root / "courses" / course / "profile.md").write_text("# %s\n" % course,
+                                                             encoding="utf-8")
+        if marker:
+            (d / "_verify").mkdir(exist_ok=True)
+        for w in weeks:
+            (d / ("%s주차" % w)).mkdir(exist_ok=True)
+
+    # 음성 2 — 남의 증거를 덮어쓰려 하면 exit 2 · 쓰기 0
+    def test_negative2_refuses_to_overwrite_another_courses_evidence(self):
+        with _repo_tempdir() as tmp:
+            root = Path(tmp)
+            self._seed(root, "가과목", weeks=(1,))
+            self._seed(root, "나과목", weeks=(1,))
+            legacy = root / "sessions" / "_verify" / "1주차"
+            legacy.mkdir(parents=True)
+            ev = legacy / "deck-audit.json"
+            ev.write_text(json.dumps(_audit("/courses/가과목/sessions/1주차/강의덱.html"),
+                                     ensure_ascii=False), encoding="utf-8")
+            before = _sha(ev)
+            rc, out, _h = self._run(root, "1주차", course="나과목")
+            self.assertEqual(rc, 2, out)
+            self.assertEqual(_sha(ev), before, "쓰기 0이어야 한다")
+            self.assertIn("가과목", out)
+            self.assertIn("나과목", out)
+
+    # 음성 1 — 마커를 잊은 새 과목도 같은 이유로 멈춘다(«마커 없음»이 아니라 «남의 증거»)
+    def test_negative1_missing_marker_stops_because_of_ownership_not_declaration(self):
+        with _repo_tempdir() as tmp:
+            root = Path(tmp)
+            self._seed(root, "기존과목", weeks=(1,))
+            self._seed(root, "새과목", marker=False, weeks=(1,))
+            legacy = root / "sessions" / "_verify" / "1주차"
+            legacy.mkdir(parents=True)
+            (legacy / "deck-audit.json").write_text(
+                json.dumps(_audit("/courses/기존과목/sessions/1주차/강의덱.html"),
+                           ensure_ascii=False), encoding="utf-8")
+            rc, out, _h = self._run(root, "1주차", course="새과목")
+            self.assertEqual(rc, 2, out)
+
+    # 시나리오 1 — 마커 없는 **기존 과목**은 종전 그대로 저장된다(불변)
+    def test_scenario1_existing_course_still_writes_to_the_legacy_root(self):
+        with _repo_tempdir() as tmp:
+            root = Path(tmp)
+            self._seed(root, "기존과목", weeks=(1,))
+            self._seed(root, "다른과목", weeks=(1,))
+            legacy = root / "sessions" / "_verify" / "1주차"
+            legacy.mkdir(parents=True)
+            (legacy / "deck-audit.json").write_text(
+                json.dumps(_audit("/courses/기존과목/sessions/1주차/강의덱.html"),
+                           ensure_ascii=False), encoding="utf-8")
+            rc, out, h = self._run(root, "1주차", course="기존과목")
+            self.assertEqual(rc, 0, out)
+            self.assertEqual(
+                _os.path.relpath(h["path"], str(root)).replace(_os.sep, "/"),
+                "sessions/_verify/1주차/deck-audit.json")
+
+    # 시나리오 4 · 양성 1 — 마커를 선언한 과목은 자기 namespace에 저장된다
+    def test_scenario4_marked_course_writes_into_its_own_namespace(self):
+        with _repo_tempdir() as tmp:
+            root = Path(tmp)
+            self._seed(root, "기존과목", weeks=(1,))
+            self._seed(root, "새과목", marker=True, weeks=(1,))
+            legacy = root / "sessions" / "_verify" / "1주차"
+            legacy.mkdir(parents=True)
+            ev = legacy / "deck-audit.json"
+            ev.write_text(json.dumps(_audit("/courses/기존과목/sessions/1주차/강의덱.html"),
+                                     ensure_ascii=False), encoding="utf-8")
+            before = _sha(ev)
+            rc, out, h = self._run(root, "1주차", course="새과목")
+            self.assertEqual(rc, 0, out)
+            self.assertEqual(
+                _os.path.relpath(h["path"], str(root)).replace(_os.sep, "/"),
+                "courses/새과목/sessions/_verify/1주차/deck-audit.json")
+            self.assertEqual(_sha(ev), before, "구경로 증거가 손상됐다")
+
+    # 음성 7 — 과목 미지정은 **종전대로 exit 0**, 경고 1줄만 는다(C2)
+    def test_negative7_unspecified_course_still_exits_zero_with_a_warning(self):
+        with _repo_tempdir() as tmp:
+            root = Path(tmp)
+            self._seed(root, "가과목", weeks=(1,))
+            self._seed(root, "나과목", weeks=(1,))
+            rc, out, h = self._run(root, "2주차")
+            self.assertEqual(rc, 0, out)
+            self.assertIn("[경고]", out)
+            self.assertEqual(
+                _os.path.relpath(h["path"], str(root)).replace(_os.sep, "/"),
+                "sessions/_verify/2주차/deck-audit.json")
+
+
+class CompareBaselineExitContractTests(unittest.TestCase):
+    """A4 — 「종료코드는 언제나 0」(docstring :14) 계약이 과목 미지정에서도 유지되는가."""
+
+    def test_negative7b_unspecified_course_does_not_traceback(self):
+        import contextlib
+        import io as _io
+        from scripts import compare_baseline_panel as cbp
+        with _repo_tempdir() as tmp:
+            root = Path(tmp)
+            for name in ("가과목", "나과목"):
+                (root / "courses" / name / "sessions").mkdir(parents=True)
+                (root / "courses" / name / "profile.md").write_text("#\n", encoding="utf-8")
+            buf = _io.StringIO()
+            saved = _os.environ.pop("CREATE_SLIDES_COURSE", None)
+            try:
+                with mock.patch.object(cbp, "ROOT", str(root)), \
+                        contextlib.redirect_stdout(buf):
+                    data, path = cbp.load("2")
+            finally:
+                if saved is not None:
+                    _os.environ["CREATE_SLIDES_COURSE"] = saved
+            self.assertIsNone(data)                       # 입력없음 — 트레이스백 0
+            self.assertIn("[경고]", buf.getvalue())
+            self.assertEqual(
+                _os.path.relpath(path, str(root)).replace(_os.sep, "/"),
+                "sessions/_verify/2주차/deck-audit.json")
+
+
+class FrozenEvidenceGateTests(unittest.TestCase):
+    """A9(+D10) — pre-commit 동결 해시 게이트. 음성 8 · worktree 루트."""
+
+    @staticmethod
+    def _gate():
+        sys.path.insert(0, str(REPO / ".githooks"))
+        import _gate                                     # noqa: WPS433
+        return _gate
+
+    def test_negative8_tampered_frozen_file_is_blocked(self):
+        g = self._gate()
+        with _repo_tempdir() as tmp:
+            root = Path(tmp)
+            for rel, want in g.FROZEN_EVIDENCE.items():
+                src = REPO / rel
+                dst = root / rel
+                dst.parent.mkdir(parents=True, exist_ok=True)
+                dst.write_bytes(src.read_bytes())
+            with mock.patch.object(g, "_commit_tree_root", lambda _f: str(root)), \
+                    mock.patch.object(g, "_blob_id", lambda *_a: "same"):
+                self.assertEqual(g.check_frozen_evidence(str(root), []).status, "PASS")
+                victim = sorted(g.FROZEN_EVIDENCE)[0]
+                p = root / victim
+                p.write_bytes(p.read_bytes() + b" ")     # 1바이트 훼손
+                r = g.check_frozen_evidence(str(root), [])
+                self.assertEqual(r.status, "FAIL")
+                self.assertIn(victim, r.detail)
+                p.write_bytes(p.read_bytes()[:-1])       # 되돌리면 다시 PASS
+                self.assertEqual(g.check_frozen_evidence(str(root), []).status, "PASS")
+
+    def test_missing_frozen_file_is_also_blocked(self):
+        g = self._gate()
+        with _repo_tempdir() as tmp:
+            root = Path(tmp)
+            with mock.patch.object(g, "_commit_tree_root", lambda _f: str(root)), \
+                    mock.patch.object(g, "_blob_id", lambda *_a: "same"):
+                r = g.check_frozen_evidence(str(root), [])
+            self.assertEqual(r.status, "FAIL")
+            self.assertIn("삭제/부재", r.detail)
+
+    def test_d10_root_comes_from_git_not_from_the_hook_file_location(self):
+        """D10 — worktree에서 커밋할 때 **메인 저장소 파일을 해싱하지 않는다**.
+
+        `.githooks/_gate.py`의 파일 위치로 루트를 잡으면, core.hooksPath가 메인을
+        가리키는 worktree 커밋에서 메인의 동결 파일을 검사하고 worktree 훼손을
+        통과시킨다(미탐). 그래서 루트는 `git rev-parse --show-toplevel`이 정한다.
+        """
+        g = self._gate()
+        bogus = str(REPO / "존재하지-않는-루트")
+        self.assertEqual(_os.path.normpath(g._commit_tree_root(bogus)),
+                         _os.path.normpath(str(REPO)))
+        # 넘겨받은 root가 틀려도 검사는 git이 답한 트리를 본다.
+        self.assertEqual(g.check_frozen_evidence(bogus, []).status, "PASS")
+
+    def test_check_is_registered_in_the_commit_gate(self):
+        """등록하지 않으면 함수만 있고 아무것도 막지 않는다."""
+        src = (REPO / ".githooks" / "_gate.py").read_text(encoding="utf-8")
+        self.assertIn("check_frozen_evidence, check_tmp_litter", src)
+
+    def test_frozen_table_matches_the_recorded_baseline(self):
+        """표의 값이 T00 실측 기록과 어긋나면 게이트가 **엉뚱한 것을 지킨다**."""
+        g = self._gate()
+        base = json.loads(
+            (REPO / "courses" / "AI_코딩_에이전트_입문_3차시" / "제작관리"
+             / "시작기준선.json").read_text(encoding="utf-8"))["files"]
+        for rel, want in g.FROZEN_EVIDENCE.items():
+            self.assertIn(rel, base, rel)
+            self.assertEqual(base[rel]["sha256"], want, rel)
+
+
+class EvidencePathAgreementTests(unittest.TestCase):
+    """B03 해제 증거 3 — 수신기가 쓴 곳과 러너가 읽는 곳이 **같은 문자열**인가."""
+
+    def test_receiver_and_runner_agree_on_the_namespace(self):
+        sys.path.insert(0, str(REPO / "scripts"))
+        import _course_paths as cp
+        with _repo_tempdir() as tmp:
+            root = Path(tmp)
+            d = root / "courses" / "새과목" / "sessions"
+            (d / "_verify").mkdir(parents=True)
+            (root / "courses" / "새과목" / "profile.md").write_text("#\n", encoding="utf-8")
+            (root / "courses" / "기존과목" / "sessions").mkdir(parents=True)
+            (root / "courses" / "기존과목" / "profile.md").write_text("#\n", encoding="utf-8")
+            receiver = cp.verify_dir_or_legacy("1주차", str(root), "새과목")[0]
+            runner = cp.verify_dir("1", str(root), "새과목")
+            self.assertEqual(receiver, runner)
+            self.assertTrue(cp.verify_is_course_local(str(root), "새과목"))
 
 
 if __name__ == "__main__":

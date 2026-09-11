@@ -438,6 +438,48 @@ def inject(html: str, *, deck_id: str, notes_html: str | None, source_name: str)
     return out, meta
 
 
+def _guard_meta_target(meta_path: Path, deck_id: str, force: bool) -> None:
+    """사이드카를 덮어쓰기 전의 fail-closed 게이트(B03 · 발표본 경로).
+
+    ⚠️ `--output`은 `:465~466`이 `--force`로 지키는데 `--meta`는 지키지 않았다.
+       정본 명령(`sessions/README.md:47` · `references/phases/10-발표자모드.md:41`)이
+       `--meta <증거루트>/N주차/…`를 **과목과 무관하게** 고정하므로, 새 과목의
+       발표본을 그 명령 그대로 만들면 다른 과목의 사이드카가 무음으로 소실된다.
+
+    소유 축이 `deckId`인 이유: 이 사이드카에는 `deck-audit.json`의 `url` 같은 **경로
+    필드가 없다**(2026-09-08 실측 — 최상위 키는 deckId·runtimeVersion·buildHash·
+    generatedFrom·slideCount·slideIds·slideHashes·imgCount·notes·injectedNodes·
+    warnings이고 `generatedFrom`은 `강의덱_배포.html` 파일명뿐이라 과목을 가르지
+    못한다). 그래서 `_course_paths.evidence_owner()`를 재사용할 수 없다. 반면
+    `deckId`는 필수 인자(`:450`)이고 `verify_presenter_deck.py:217`이 이미 **동일성
+    판정의 축**으로 쓰므로, 새 소유 층을 만들지 않고 기존 계약을 그대로 쓴다.
+    """
+    if not meta_path.exists():
+        return
+    try:
+        owner = json.loads(meta_path.read_text(encoding="utf-8")).get("deckId")
+    except Exception:
+        owner = None
+    if not isinstance(owner, str):
+        owner = None
+    if owner is not None and owner != deck_id:
+        # --force로도 열지 않는다. --force는 «내 이전 산출물을 덮는다»는 뜻이지
+        # «남의 감사 기록을 덮는다»는 뜻이 아니다.
+        raise InjectError(
+            f"사이드카가 다른 덱의 것입니다 — 기존 deckId «{owner}», 이번 실행 «{deck_id}»: {meta_path}\n"
+            f"       그대로 쓰면 그 덱의 감사 기록이 소실됩니다(복구 근거는 git뿐).\n"
+            f"       --meta 를 이 과목의 증거 namespace로 지정하십시오:\n"
+            f"         courses/<과목>/sessions/_verify/<N주차>/강의덱_발표.meta.json"
+        )
+    if not force:
+        raise InjectError(
+            f"사이드카 경로에 파일이 이미 있습니다(--force 없이는 덮어쓰지 않습니다): {meta_path}"
+        )
+    if owner is None:
+        print("[WARN] 기존 사이드카의 deckId를 읽을 수 없습니다 — **미판정**"
+              "(통과가 아니다). 내용을 확인했는지 확인하십시오: %s" % meta_path)
+
+
 def main() -> int:
     try:
         sys.stdout.reconfigure(encoding="utf-8")
@@ -464,6 +506,7 @@ def main() -> int:
             raise InjectError("출력 경로가 입력과 같습니다 — 원본 덮어쓰기는 금지입니다.")
         if out_path.exists() and not a.force:
             raise InjectError(f"출력 경로에 파일이 이미 있습니다(--force 없이는 덮어쓰지 않습니다): {out_path}")
+        _guard_meta_target(meta_path, a.deck_id, a.force)
 
         html = src.read_text(encoding="utf-8")
         notes_html = Path(a.notes).read_text(encoding="utf-8") if a.notes else None

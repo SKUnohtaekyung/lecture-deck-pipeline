@@ -7,6 +7,10 @@
 >
 > **이 폴더에 남은 것**은 과목과 무관한 스캐폴딩뿐이다 — `_template/`(새 주차 골격) · `_verify/` · `references/` · 이 README.
 >
+> **렌더 증거 루트(`<증거루트>`) 정의 — 정본.** 증거루트 = 그 과목이 `courses/<과목>/sessions/_verify/`를 선언했으면 그것, 아니면 `sessions/_verify/`. 라우팅은 «그 과목이 자기 증거 폴더를 만들어 두었는가»로만 갈린다(`scripts/_course_paths.py`의 `verify_root()`).
+>
+> ⚠️ **기존 과목은 `_verify` 마커를 만들지 마라** — 바이브코딩의 측정분은 구경로 `sessions/_verify/`에 있고 동결이라 옮길 수 없다. 마커를 만들면 러너가 빈 namespace를 읽어 **증거 없음 FAIL**이 된다.
+>
 > 경로 해석은 `scripts/_course_paths.py`가 담당하며 **구경로 `sessions/N주차`도 계속 인식한다.** 폴백을 없애지 마라 — 1주차(동결) 자료가 메타 헤더에서 구경로를 참조한다.
 
 한 주차(세션)의 **입력 초안·원본 자료·산출 덱·발표자 노트**를 한 폴더에 모은다.
@@ -44,7 +48,7 @@ cp "입력양식/콘텐츠초안템플릿.md" "courses/바이브코딩/sessions/
 - **입력**: `courses/<과목>/sessions/N주차/N주차_초안.md`를 콘텐츠 초안으로 읽는다(레거시 `초안.md` 폴백 인식). 원본 근거가 필요하면 `courses/<과목>/sessions/N주차/자료/` 참고.
 - **산출(2단계)**: 편집본(조각) → 배포본(단일 자립). 발표자 노트는 같은 폴더에 별도 산출.
   - **편집본** `강의덱.초안/`: 파트별 `shell.html`(head·고정 슬라이드·`<!-- ::PARTS:: -->` 마커·JS) + PART마다 `part-NN.html`. 대화하며 파트 단위로 고친다(조각이 대화형 수정에 빠르고 정확). 미리보기 통합본은 `python scripts/assemble_deck.py courses/<과목>/sessions/N주차/강의덱.초안`(`--watch`면 저장 시 자동 재조립) → `강의덱.html`(항상 최신). ⚠️ CSS는 `../../../../kit/styles/…` 상대경로(생성물 위치에서 저장소 루트까지 **4단계**). 2단계는 폴더 이동 전의 낡은 값이며, 틀려도 정적 검증은 PASS하고 브라우저에서만 404가 드러난다.
-  - **발표본** `강의덱_발표.html`(선택 · 명시 요청 전용): `python scripts/inject_presenter.py courses/<과목>/sessions/N주차/강의덱_배포.html --notes … --deck-id … --output courses/<과목>/sessions/N주차/강의덱_발표.html --meta sessions/_verify/N주차/강의덱_발표.meta.json`. 입력은 **완성된 배포본**이며 조각에서 재생성하지 않는다(동결 주차와 충돌하지 않는 이유). 사이드카는 전달물이 아니라 검증용이라 `sessions/_verify/N주차/`에 두고, 동결 폴더에는 전달물 1개만 추가한다. 절차·게이트 정본은 `references/phases/10-발표자모드.md`.
+  - **발표본** `강의덱_발표.html`(선택 · 명시 요청 전용): `python scripts/inject_presenter.py courses/<과목>/sessions/N주차/강의덱_배포.html --notes … --deck-id … --output courses/<과목>/sessions/N주차/강의덱_발표.html --meta <증거루트>/N주차/강의덱_발표.meta.json`. 입력은 **완성된 배포본**이며 조각에서 재생성하지 않는다(동결 주차와 충돌하지 않는 이유). 사이드카는 전달물이 아니라 검증용이라 `<증거루트>/N주차/`에 두고, 동결 폴더에는 전달물 1개만 추가한다. ⚠️ **`--meta`를 남의 주차로 향하게 하지 마라** — 다른 덱의 사이드카를 가리키면 주입기가 exit 1로 거부한다(`--force`로도 열리지 않는다). 절차·게이트 정본은 `references/phases/10-발표자모드.md`.
   - **배포본** `강의덱_배포.html`: `python scripts/build_release.py courses/<과목>/sessions/N주차/강의덱.초안` 한 커맨드 = 조립 → `verify_deck` → `inline_deck --offline`(CSS·이미지 인라인 + Pretendard 사용 글자 서브셋 `@font-face` 임베드) → `verify_distributable`(자립성 강제). 외부 의존이 하나라도 남으면 FAIL — 학생에게 이 파일 하나만 줘도 오프라인에서 다 보인다.
   - 조각 없이 단일 `강의덱.html`을 바로 편집하는 옛 방식도 유효하다(→ `inline_deck.py`로 배포). 단, 폰트 자립·자립성 강제는 `build_release.py` 경로에서 보장된다.
 - **이미지 계약**: `자료/이미지-에셋.json`은 [`../references/이미지-에셋-manifest.schema.json`](../references/이미지-에셋-manifest.schema.json)을 따르는 상태 정본이다. `NO_IMAGE | IMAGE_EXPLANATORY | IMAGE_MNEMONIC | IMAGE_DECORATIVE_OPTIONAL` 판정, 재사용 Asset ID, 예상 파일, 생성 방식, QA 결과를 기록한다. `prompt_only`의 expected 슬롯에는 실제 `<img>`를 만들지 않는다.

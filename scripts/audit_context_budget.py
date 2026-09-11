@@ -28,8 +28,17 @@
      된다(초안에서 실제로 그랬다). T6이 묻는 것은 «집계기가 그 함정을 처리하고
      있는가»이고, 답은 코드에 있으므로 정적으로 확인한다.
 
-  ※ T5(메인 대 워커)는 워커 사이드카 로그가 있어야 재므로 여기서 다루지 않는다.
-     `analyze_agent_usage.py`의 D절이 담당한다.
+  관측(종료코드 무관 · 2026-09-11 신설 — 오탐률을 잰 뒤 판정 승격 여부를 정한다)
+  T5 서브에이전트 비중      — 세션 폴더 `<id>/subagents/**.jsonl`을 load()와 같은 규칙으로 집계
+  T7 API 오류로 끝난 서브   — `isApiErrorMessage` 행(사용량 한도 429 등)이 있는 로그
+  T8 세션 중 모델 전환      — 모델이 바뀌면 프롬프트 캐시가 전량 재작성된다
+  (메인 대 워커 토큰 총량의 상세는 여전히 `analyze_agent_usage.py` D절이 담당한다.)
+
+  2026-09-11 계측 정정(`_dev/설계기록/토큰감사-2026-09-11.md` §1)
+  - 한 응답은 블록마다 한 행씩 기록된다. 종전 load()는 첫 행만 남기고 그 행에서만
+    tool_use를 찾아, 도구를 쓴 턴을 «무도구»로 셌다(T3 오탐 — 실제 16.0%를 94.7%로 보고).
+  - 서브에이전트 로그는 행마다 output_tokens가 누적 증가한다 → 행 중 최댓값을 쓴다.
+  - T2 평균 컨텍스트 = 신규 입력 + 캐시 생성 + 캐시 읽기(종전: 캐시 읽기만 → 과소).
 
 사용:
     python scripts/audit_context_budget.py <session-id>
@@ -97,13 +106,22 @@ def parse_ts(s):
         return None
 
 
-def load(path):
-    """usage를 가진 assistant 레코드를 message.id로 중복제거해 돌려준다.
+USAGE_KEYS = (("inp", "input_tokens"), ("cc", "cache_creation_input_tokens"),
+              ("cr", "cache_read_input_tokens"), ("out", "output_tokens"))
 
-    중복제거를 하지 않으면 같은 API 호출이 콘텐츠 블록 수만큼 계수된다
-    (실측 2.05배). 그 배수 자체가 T6 판정값이다.
+
+def load(path):
+    """usage를 가진 assistant 레코드를 message.id 단위의 «호출»로 합쳐 돌려준다.
+
+    트랜스크립트는 응답 1건을 콘텐츠 블록(thinking·text·tool_use)마다 한 행씩 쓴다.
+    - 행을 그대로 세면 같은 호출이 블록 수만큼 계수된다(2026-08-06 실측 2.05배).
+    - 첫 행만 남기면 뒤 행의 tool_use가 사라져 T3가 오탐된다(2026-09-11 실측:
+      실제 16.0%를 94.7%로 보고). 그래서 같은 id의 모든 행에서 tool_use를 모은다.
+    - 서브에이전트 로그는 행마다 output_tokens가 누적 증가한다. usage 각 필드는
+      행 중 최댓값을 쓴다(메인 로그처럼 행마다 값이 같으면 결과도 같다).
+    반환하는 dup은 «첫 행 이후의 반복 행 수»다.
     """
-    seen, calls, dup, bad = set(), [], 0, 0
+    by_id, calls, dup, bad = {}, [], 0, 0
     with io.open(path, encoding="utf-8", errors="replace") as fh:
         for line in fh:
             line = line.strip()
@@ -120,23 +138,73 @@ def load(path):
             usage = msg.get("usage")
             if not isinstance(usage, dict):
                 continue
-            mid = msg.get("id")
-            if mid is not None:
-                if mid in seen:
-                    dup += 1
-                    continue
-                seen.add(mid)
             tools = [b.get("name", "?") for b in (msg.get("content") or [])
                      if isinstance(b, dict) and b.get("type") == "tool_use"]
-            calls.append({
-                "inp": usage.get("input_tokens", 0) or 0,
-                "cc": usage.get("cache_creation_input_tokens", 0) or 0,
-                "cr": usage.get("cache_read_input_tokens", 0) or 0,
-                "out": usage.get("output_tokens", 0) or 0,
-                "tools": tools,
-                "ts": parse_ts(rec.get("timestamp")),
-            })
+            mid = msg.get("id")
+            if mid is not None and mid in by_id:
+                c = by_id[mid]
+                dup += 1
+                c["tools"].extend(tools)
+                for k, field in USAGE_KEYS:
+                    c[k] = max(c[k], usage.get(field, 0) or 0)
+                continue
+            c = {k: usage.get(field, 0) or 0 for k, field in USAGE_KEYS}
+            c.update({"tools": tools, "model": msg.get("model") or "?",
+                      "ts": parse_ts(rec.get("timestamp"))})
+            calls.append(c)
+            if mid is not None:
+                by_id[mid] = c
     return calls, dup, bad
+
+
+def call_cost(c):
+    return (c["inp"] * W_INPUT + c["cc"] * W_CACHE_CREATE
+            + c["cr"] * W_CACHE_READ + c["out"] * W_OUTPUT)
+
+
+def subagent_stats(base_dir, sid):
+    """관측 T5·T7 — 세션 폴더의 서브에이전트 로그를 load()와 같은 규칙으로 집계한다."""
+    root_dir = os.path.join(base_dir, sid, "subagents")
+    res = []
+    if not os.path.isdir(root_dir):
+        return res
+    for root, _dirs, files in os.walk(root_dir):
+        for f in sorted(files):
+            if not f.endswith(".jsonl"):
+                continue
+            p = os.path.join(root, f)
+            calls, _dup, _bad = load(p)
+            api_error = False
+            with io.open(p, encoding="utf-8", errors="replace") as fh:
+                for line in fh:
+                    if '"isApiErrorMessage"' not in line:
+                        continue
+                    try:
+                        if json.loads(line).get("isApiErrorMessage") is True:
+                            api_error = True
+                            break
+                    except Exception:
+                        continue
+            meta = {}
+            mp = p[:-len(".jsonl")] + ".meta.json"
+            if os.path.isfile(mp):
+                try:
+                    with io.open(mp, encoding="utf-8") as mh:
+                        meta = json.load(mh)
+                except Exception:
+                    meta = {}
+            res.append({"file": f, "calls": len(calls),
+                        "cost": sum(call_cost(c) for c in calls),
+                        "api_error": api_error,
+                        "type": meta.get("agentType", "?"),
+                        "desc": meta.get("description", "")})
+    return res
+
+
+def model_switches(calls):
+    """관측 T8 — 메인 호출 순서에서 모델이 바뀐 지점. 합성 오류 행('<synthetic>')은 뺀다."""
+    seq = [c.get("model") for c in calls if c.get("model") not in (None, "?", "<synthetic>")]
+    return [(x, y) for x, y in zip(seq, seq[1:]) if x != y]
 
 
 def content_sources(path):
@@ -228,10 +296,18 @@ def main():
         out("집계할 호출이 없다")
         return 2
     n = len(calls)
-    cost = lambda c: (c["inp"] * W_INPUT + c["cc"] * W_CACHE_CREATE
-                      + c["cr"] * W_CACHE_READ + c["out"] * W_OUTPUT)
+    cost = call_cost
     total_cost = sum(cost(c) for c in calls) or 1.0
-    avg_ctx = sum(c["cr"] for c in calls) / n
+    # T2 — 호출당 창 = 신규 입력 + 캐시 생성 + 캐시 읽기(2026-09-11 정정: 종전 캐시 읽기만 → 과소)
+    avg_ctx = sum(c["inp"] + c["cc"] + c["cr"] for c in calls) / n
+
+    # 관측 T5·T7·T8(종료코드 무관)
+    subs = subagent_stats(base_dir, sids[0])
+    sub_cost = sum(x["cost"] for x in subs)
+    sub_pct = sub_cost / (total_cost + sub_cost) * 100 if subs else 0.0
+    err_subs = [x for x in subs if x["api_error"]]
+    err_pct = sum(x["cost"] for x in err_subs) / sub_cost * 100 if sub_cost else 0.0
+    switches = model_switches(calls)
     no_tool = [c for c in calls if not c["tools"]]
     no_tool_cost = sum(cost(c) for c in no_tool) / total_cost * 100
     dup_ratio = (n + dup) / n
@@ -278,6 +354,10 @@ def main():
             "calls": n, "duplicate_records": dup, "dup_ratio": round(dup_ratio, 3),
             "avg_context": int(avg_ctx), "no_tool_cost_pct": round(no_tool_cost, 1),
             "t1_spikes": len(t1), "t4_gaps": len(gaps), "violations": viol,
+            "observe": {"subagents": len(subs), "subagent_cost_pct": round(sub_pct, 1),
+                        "api_error_subagents": len(err_subs),
+                        "api_error_cost_pct": round(err_pct, 1),
+                        "model_switches": len(switches)},
         }, ensure_ascii=False))
         return 1 if viol else 0
 
@@ -316,9 +396,19 @@ def main():
         "OK" if t6_ok else "위반 — 중복제거 없음. 이 배수만큼 과대 보고된다"))
     out("     (참고: 원시 로그의 중복 배수 %.2f는 정상이다 — 위반이 아니다)" % dup_ratio)
     out("")
+    out("[관측 · 종료코드 무관 — 오탐률을 잰 뒤 판정 승격을 결정한다]")
+    out("  T5 서브에이전트           : %d개 · 비용 %.1f%% (메인+서브 합 대비)" % (len(subs), sub_pct))
+    for x in sorted(subs, key=lambda y: -y["cost"])[:5]:
+        out("     - %5.1f%% · 호출 %3d · %s · %s" % (
+            x["cost"] / (total_cost + sub_cost) * 100, x["calls"], x["type"],
+            (x["desc"] or x["file"])[:40]))
+    out("  T7 API 오류로 끝난 서브   : %d개 · 서브 비용의 %.1f%%" % (len(err_subs), err_pct))
+    out("  T8 세션 중 모델 전환      : %d회%s" % (len(switches),
+        (" (" + ", ".join("%s→%s" % sw for sw in switches[:4]) + ")") if switches else ""))
+    out("")
     if viol:
         out("RESULT | FAIL | 위반 %s" % ", ".join(viol))
-        out("        조치는 `_dev/설계기록/토큰감사-2026-08-06.md` §4 (S1~S6)")
+        out("        조치는 `_dev/설계기록/토큰감사-2026-08-06.md` §4 (S1~S6) · `토큰감사-2026-09-11.md` §5")
     else:
         out("RESULT | PASS | 위반 없음")
     return 1 if viol else 0

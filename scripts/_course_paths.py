@@ -16,8 +16,10 @@
 1주차는 수정 금지(동결)다. 폴백을 지우면 그 참조가 영구히 깨진다.
 """
 import io
+import json
 import os
 import re
+from urllib.parse import unquote
 
 COURSES_DIR = "courses"
 LEGACY_SESSIONS = "sessions"
@@ -208,6 +210,107 @@ def session_dir(week, root=None, course=None):
     d = resolve_course(course, root)
     cands = [os.path.join(d, "sessions", "%s주차" % week)] if d else []
     return _first_existing(cands + [legacy]) or legacy
+
+
+VERIFY_DIRNAME = "_verify"
+
+
+def _week_dirname(week):
+    """`1` 과 `1주차` 를 모두 `1주차` 로 정규화한다(저장소에 두 표기가 섞여 있다)."""
+    w = str(week)
+    return w if w.endswith("주차") else "%s주차" % w
+
+
+def verify_root(root=None, course=None):
+    """렌더 증거 루트. → `courses/<과목>/sessions/_verify` 또는 구경로 `sessions/_verify`
+
+    ⚠️ **«과목이 있으면 신경로»가 아니다.** 그렇게 하면 구경로에 있는 기존 과목의
+       측정분이 «없음»이 되어 그 과목 러너가 전부 FAIL한다(그 증거는 불변이다).
+       반대로 «파일이 있으면 구경로»도 안 된다 — 구경로 N주차는 모든 과목에 대해
+       존재하므로 새 과목이 남의 증거를 **덮어쓴다**.
+       그래서 «그 과목이 자기 증거 폴더를 만들어 두었는가»로 라우팅을 가른다.
+       선언 = `courses/<과목>/sessions/_verify/` 디렉터리의 존재. 선언하지 않은
+       과목은 종전과 100% 동일한 경로를 쓴다.
+
+    ⚠️ **선언의 부재는 «위험»이 아니다.** 파괴 여부는 `evidence_owner()`가 판정한다
+       — 마커가 없다고 막으면 마커를 선언한 적 없는 기존 과목이 전부 멈춘다.
+    """
+    root = root or _repo_root()
+    legacy = os.path.join(root, LEGACY_SESSIONS, VERIFY_DIRNAME)
+    d = resolve_course(course, root)
+    if not d:
+        return legacy
+    own = os.path.join(d, "sessions", VERIFY_DIRNAME)
+    return own if os.path.isdir(own) else legacy
+
+
+def verify_dir(week, root=None, course=None):
+    """N주차 렌더 증거 폴더. 모호하면 `AmbiguousCourseError`(호출부가 정한다)."""
+    return os.path.join(verify_root(root, course), _week_dirname(week))
+
+
+def verify_dir_or_legacy(week, root=None, course=None):
+    """모호할 때 **예외 대신** (경로, 경고문)을 준다. → (경로, "" 또는 경고 한 줄)
+
+    ⚠️ 경고문이 비어 있지 않으면 호출부는 **반드시 출력한다.** 조용한 폴백은 이
+       모듈이 `AmbiguousCourseError`로 막으려던 바로 그 실패다.
+       그런데 `receive_audit`·`compare_baseline_panel`은 종전에 이 모듈을 아예
+       import하지 않아 **과목 미지정으로도 정상 동작**했다. 예외를 그대로 올리면
+       그 기존 동작이 깨진다(`compare_baseline_panel`은 «종료코드는 언제나 0»이
+       docstring에 적힌 계약이다 — :14). 그래서 시끄럽게 폴백한다.
+    """
+    root = root or _repo_root()
+    try:
+        return verify_dir(week, root, course), ""
+    except AmbiguousCourseError as exc:
+        legacy = os.path.join(root, LEGACY_SESSIONS, VERIFY_DIRNAME,
+                              _week_dirname(week))
+        return legacy, str(exc).splitlines()[0]
+
+
+def verify_is_course_local(root=None, course=None):
+    """이 과목이 자기 증거 namespace를 선언했는가. 호출부의 «시끄러운 안내»용."""
+    root = root or _repo_root()
+    d = resolve_course(course, root)
+    return bool(d) and os.path.isdir(
+        os.path.join(d, "sessions", VERIFY_DIRNAME))
+
+
+_OWNER_RE = re.compile(r"(?:^|/)%s/([^/]+)/" % COURSES_DIR)
+
+
+def evidence_owner(path):
+    """이미 저장된 `deck-audit.json`이 **어느 과목의 덱**을 잰 것인지 읽는다.
+
+    → 과목 폴더명 · 또는 None(파일 없음 · JSON 아님 · url 없음 · 구경로 덱)
+
+    소유를 새로 «선언»시키지 않는 이유: 증거 JSON은 이미 `url`에
+    `/courses/<과목>/sessions/N주차/강의덱.html`을 담고 있다(2026-09-08 실측 —
+    저장소의 증거 3건 전부). 선언 층을 만들면 선언을 잊은 과목이 생기고, 그
+    «미선언»을 위험으로 오해해 막는 순간 **기존 과목이 멈춘다**. 파일 자신에게
+    물어보면 그 층 자체가 필요 없다.
+
+    유도할 수 없으면 None을 준다 — 호출부는 None을 «안전»이 아니라 **«판정 불가»**로
+    다루고 그 사실을 출력해야 한다(눈먼 0 방지).
+
+    ⚠️ url은 **정규화해서** 본다(R-T03-03 비치명 7). 실제로 관측되는 세 변형:
+       ① 퍼센트 인코딩(`/courses/%EB%B0%94.../`) — 한글 과목명은 브라우저가 늘
+          이렇게 보낸다 ② 역슬래시(`file:///C:\\...\\courses\\<과목>\\...`) —
+          Windows에서 파일을 직접 연 경우 ③ 앞 슬래시가 없는 상대 url
+          (`courses/<과목>/sessions/...`) — 상대 경로로 서빙한 경우.
+       셋 중 하나라도 놓치면 소유가 **None**이 되고, None은 게이트를 **열어 준다**
+       (fail-open). 즉 정규화 누락은 곧 미탐이다.
+    """
+    try:
+        with io.open(path, encoding="utf-8") as fh:
+            url = json.load(fh).get("url")
+    except Exception:
+        return None
+    if not isinstance(url, str):
+        return None
+    m = _OWNER_RE.search(unquote(url).replace("\\", "/"))
+    return m.group(1) if m else None
+
 
 
 def contracts_dir(root=None, course=None):

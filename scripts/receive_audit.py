@@ -5,8 +5,9 @@
 왜
 --
 `audit_all.js` 출력(9KB+ 이스케이프 문자열)을 콘솔에서 손으로 옮겨 적으면 전사
-오류 위험이 있다. 이 수신기는 요청 1건을 받아 `sessions/_verify/<주차>/deck-audit.json`
-에 그대로 쓰고 즉시 종료한다(상시 서버 아님 · CORS 허용 헤더 포함 — 덱을 서빙하는
+오류 위험이 있다. 이 수신기는 요청 1건을 받아 `<증거루트>/<주차>/deck-audit.json`
+(증거루트 = 과목이 `courses/<과목>/sessions/_verify/`를 선언했으면 그것, 아니면
+`sessions/_verify/`)에 그대로 쓰고 즉시 종료한다(상시 서버 아님 · CORS 허용 헤더 포함 — 덱을 서빙하는
 8799 오리진에서 fetch로 보낼 수 있다). 절차 정본: references/검증-명령-지도.md §3.
 
 사용
@@ -29,18 +30,54 @@ if hasattr(sys.stdout, "reconfigure"):
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
+if HERE not in sys.path:
+    sys.path.insert(0, HERE)
+try:
+    import _course_paths
+except Exception:                                # 해석기를 못 읽으면 구경로
+    _course_paths = None
 
 
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("week", help="주차 (예: 1주차) — sessions/_verify/<주차>/deck-audit.json 에 저장")
+    ap.add_argument("week", help="주차 (예: 1주차) — <증거루트>/<주차>/deck-audit.json 에 저장 (증거루트는 과목별 · 실제 경로는 [대기]/[저장] 줄에 찍힌다)")
     ap.add_argument("--port", type=int, default=8798)
     a = ap.parse_args()
 
     week = a.week if a.week.endswith("주차") else f"{a.week}주차"
-    out_dir = os.path.join(ROOT, "sessions", "_verify", week)
-    os.makedirs(out_dir, exist_ok=True)
+    if _course_paths is None:
+        out_dir = os.path.join(ROOT, "sessions", "_verify", week)
+    else:
+        out_dir, warn = _course_paths.verify_dir_or_legacy(week, ROOT)
+        if warn:
+            # 과목 미지정 — 종전과 같은 구경로로 가되 **조용히 가지 않는다**.
+            print(f"[경고] 과목을 특정하지 못해 구경로로 진행한다: {warn}")
+            print(f"       권장: {_course_paths.COURSE_ENV}=<과목명> 을 지정하라")
     out_path = os.path.join(out_dir, "deck-audit.json")
+
+    # ⚠️ 이 스크립트는 **덮어쓴다**(아래 wb). 그래서 쓰기 전에 «덮어쓸 파일이
+    #    누구 것인가»를 묻는다. «마커를 선언했는가»가 아니라 **실소유**로 가른다 —
+    #    마커 부재를 위험으로 보면 마커를 선언한 적 없는 기존 과목이 전부 멈춘다.
+    if _course_paths is not None and os.path.exists(out_path):
+        try:
+            cur = _course_paths.resolve_course(None, ROOT)
+        except _course_paths.AmbiguousCourseError:
+            cur = None
+        cur_name = os.path.basename(cur) if cur else None
+        owner = _course_paths.evidence_owner(out_path)
+        if owner and cur_name and owner != cur_name:
+            print("[중단] 덮어쓰려는 증거는 «%s»의 덱을 잰 것이고, 이 실행은 «%s»다:\n"
+                  "         %s\n"
+                  "       그대로 쓰면 다른 과목의 측정분이 소실된다(복구 근거는 git뿐).\n"
+                  "       이 과목의 증거 namespace를 먼저 선언하라:\n"
+                  "         courses/%s/sessions/_verify/   (용도를 적은 README.md 1개)"
+                  % (owner, cur_name, os.path.relpath(out_path, ROOT), cur_name))
+            return 2
+        if owner is None:
+            print("[경고] 기존 증거의 소유 과목을 유도할 수 없다(url 없음) — "
+                  "덮어쓰기 전에 %s 를 직접 확인하라"
+                  % os.path.relpath(out_path, ROOT))
+    os.makedirs(out_dir, exist_ok=True)
 
     class H(BaseHTTPRequestHandler):
         def do_POST(self):

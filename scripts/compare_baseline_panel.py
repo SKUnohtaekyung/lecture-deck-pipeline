@@ -15,7 +15,8 @@
 
 무엇을 비교하나
 --------------
-`sessions/_verify/<주차>/deck-audit.json`의 `perSlide`(브라우저 실측)를 읽어
+`<증거루트>/<주차>/deck-audit.json`의 `perSlide`(브라우저 실측)를 읽어
+(증거루트 = 과목이 `courses/<과목>/sessions/_verify/`를 선언했으면 그것, 아니면 `sessions/_verify/`)
 장별 [박스 수 · 시각자료 유무 · 글자 수 · 잉크 점유율]을 기준판 값과 나란히 둔다.
 
 ⚠️ **박스 수의 「4」와 「5.5」를 섞지 마라** — 세는 정의가 다르다:
@@ -40,6 +41,12 @@ if hasattr(sys.stdout, "reconfigure"):
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
+if HERE not in sys.path:
+    sys.path.insert(0, HERE)
+try:
+    import _course_paths
+except Exception:                                # 해석기를 못 읽으면 구경로
+    _course_paths = None
 
 # ── 기준판 (2주차 5구간 C5-1~C5-6 · 2026-08-03 실측) ─────────────────────
 # 2주차는 이 6장을 먼저 확정하고 그 기준으로 나머지를 제작했다(사용자 확인).
@@ -64,7 +71,15 @@ def _week(w: str) -> str:
 
 
 def load(week: str):
-    path = os.path.join(ROOT, "sessions", "_verify", _week(week), "deck-audit.json")
+    if _course_paths is None:
+        path = os.path.join(ROOT, "sessions", "_verify", _week(week),
+                            "deck-audit.json")
+    else:
+        # ⚠️ 예외를 그대로 올리면 «종료코드는 언제나 0»(:14) 계약이 깨진다.
+        vdir, warn = _course_paths.verify_dir_or_legacy(week, ROOT)
+        if warn:
+            print(f"[경고] 과목을 특정하지 못해 구경로로 진행한다: {warn}")
+        path = os.path.join(vdir, "deck-audit.json")
     if not os.path.exists(path):
         print(f"[입력없음] 렌더 증거가 없다: {os.path.relpath(path, ROOT)}")
         print("  브라우저에서 만들어라:")

@@ -64,7 +64,9 @@ python scripts/analyze_agent_usage.py --tool-audit --session <세션ID>
 - 워커 로그를 **두 배치 방식 모두**에서 찾는다: 직접 `Agent` 호출은 `<세션>/subagents/agent-*.jsonl`,
   Workflow 팬아웃은 `<세션>/subagents/workflows/wf_*/agent-*.jsonl`.
   **직접 호출 경로는 기존 계측기가 보지 못하던 위치다.**
-- 종료코드 `0` 통과 / `3` 위반(허용목록 외 도구 **또는** 모델 불일치, Opus는 별도 표기).
+- 종료코드 `0` 통과 / `3` 위반(허용목록 외 도구 **또는** 모델 불일치, Opus는 별도 표기)
+  / `4` **미판정**(대상 워커 로그 0개 — 통과가 아니다. `--projects-dir`·`--session`을 먼저 확인하고
+  실제 `Agent` 호출 수와 대조한다. 2026-09-09 신설).
 
 ### 브레이크가 실제로 작동함을 확인 (positive control)
 

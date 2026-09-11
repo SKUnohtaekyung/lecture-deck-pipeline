@@ -23,6 +23,7 @@ staged blob(`git show :path`)이 아니다 — 부분적으로만 add한 파일�
 python 표준 라이브러리만 사용한다(이 저장소엔 .venv가 없어 훅은 시스템
 인터프리터로 돈다).
 """
+import hashlib
 import os
 import re
 import subprocess
@@ -317,6 +318,115 @@ def check_tmp_litter(root, staged):
     return Result(name, "WARN", detail)
 
 
+# 동결 렌더 증거 — 사용자 결정(2026-07-26 · 2026-08-17)으로 수정 금지인 산출물.
+# 값의 출처는 T00 실측 기록(courses/*/제작관리/시작기준선.json)이고, 여기 둔 것은
+# 그 사실의 **집행 복사본**이다. 경로에 과목명이 없어 과목 격리를 깨지 않는다.
+# 갱신 조건: 사용자가 동결을 해제하고 재측정을 승인했을 때만, 그 결정과 함께 바꾼다.
+# ⚠️ 값은 **워킹트리 바이트**의 sha256이다(git blob이 아니다). 이 저장소는
+#    core.autocrlf=true라 사이드카 2파일의 blob(LF)과 워킹트리(CRLF)가 다르다 —
+#    실측: 1주차 사이드카 blob 7,615B / 워킹트리 7,814B. 그래서 blob 바이트를 이
+#    표에 직접 대조하면 **오탐**이 난다. staged 쪽은 아래 _blob_id 두 개를 서로
+#    비교해 «스테이지 내용이 워킹트리와 다른가»만 묻는다.
+FROZEN_EVIDENCE = {
+    "sessions/_verify/1주차/deck-audit.json":
+        "3b8636bbe76344eef11f24a1de4f2d9c0f955441f2b87441ad0ad963f69de8de",
+    "sessions/_verify/1주차/강의덱_발표.meta.json":
+        "09fbdba699557a978836e8c1af8e293a7e1d4e87200573b404f1197b4cce61bc",
+    "sessions/_verify/2주차/deck-audit.json":
+        "1c4ffbe3ee5d3fe04bf73e468b84dfd50d756c58f4a2edb7db0df09de1bece8a",
+    "sessions/_verify/2주차/강의덱_발표.meta.json":
+        "4d59bed312fe405e4cdd3fbf06c5c728dac84a46c75113233a8118b13a91a4df",
+    "sessions/_verify/3주차/deck-audit.json":
+        "968e9d3fdf7add6657eea22537939329b95f57e10232d1036ebe07e40857861e",
+}
+
+
+def _sha256_file(path):
+    h = hashlib.sha256()
+    with open(path, "rb") as fh:
+        for chunk in iter(lambda: fh.read(65536), b""):
+            h.update(chunk)
+    return h.hexdigest()
+
+
+def _commit_tree_root(fallback):
+    """지금 **커밋 중인** 워킹트리의 루트. worktree 미탐을 닫는다(D10).
+
+    `repo_root()`는 `.githooks/_gate.py`의 **파일 위치**로 루트를 잡는다. 그런데
+    `core.hooksPath`가 메인 저장소의 `.githooks`를 가리키면(절대경로 설정·공유
+    config·linked worktree) worktree에서 커밋해도 훅 파일은 메인 것이라, 그 규칙
+    그대로면 **메인 저장소의 동결 파일을 해싱**하고 worktree 쪽 훼손을 통과시킨다.
+    그것은 오탐이 아니라 **미탐**이고, 미탐은 PASS로 위장해 아무도 발견하지 못한다.
+    커밋 대상 트리는 `git rev-parse --show-toplevel`이 정확히 답한다(훅 실행 시
+    cwd는 그 트리의 최상위다 — 그래서 cwd를 넘기지 않고 상속한다).
+    """
+    try:
+        r = subprocess.run(["git", "rev-parse", "--show-toplevel"],
+                           capture_output=True)
+        if r.returncode == 0:
+            top = (r.stdout or b"").decode("utf-8", errors="replace").strip()
+            if top and os.path.isdir(top):
+                return os.path.normpath(top)
+    except Exception:
+        pass
+    return fallback
+
+
+def _blob_id(root, args):
+    """git이 계산한 blob id 1개. 실패하면 None(«비교 불가»이지 «같음»이 아니다)."""
+    try:
+        r = subprocess.run(["git"] + args, cwd=root, capture_output=True)
+    except Exception:
+        return None
+    if r.returncode != 0:
+        return None
+    out = (r.stdout or b"").decode("utf-8", errors="replace").strip()
+    return out or None
+
+
+def check_frozen_evidence(root, staged):
+    """동결 렌더 증거 5파일이 바뀌었는지 — staged 여부와 무관하게 워킹트리를 본다.
+
+    staged만 보면 «덮어쓰고 add하지 않은» 상태를 놓친다. 그 상태로 다른 파일을
+    커밋하면 소실이 커밋 이력에 남지 않은 채 워킹트리에만 남는다. 반대로 워킹트리만
+    보면 «훼손분을 add해 두고 워킹트리는 되돌린» 경우를 놓친다 — 그래서 스테이지도
+    본다. 다만 스테이지는 sha256 표와 직접 대조하지 않는다(autocrlf 때문에 blob과
+    워킹트리 바이트가 달라 오탐이 난다 — 위 주석). 대신 «스테이지 blob id»와
+    «워킹트리를 그대로 blob으로 만들었을 때의 id»가 같은지만 묻는다.
+    """
+    name = "동결 렌더 증거 불변 (sessions/_verify)"
+    root = _commit_tree_root(root)
+    changed, missing, staged_bad, unjudged = [], [], [], []
+    for rel, want in sorted(FROZEN_EVIDENCE.items()):
+        full = os.path.join(root, rel.replace("/", os.sep))
+        if not os.path.isfile(full):
+            missing.append(rel)
+            continue
+        if _sha256_file(full) != want:
+            changed.append(rel)
+        idx = _blob_id(root, ["rev-parse", ":" + rel])
+        wt = _blob_id(root, ["hash-object", "--", rel])
+        if idx is None or wt is None:
+            unjudged.append(rel)          # 「같다」가 아니라 「못 봤다」
+        elif idx != wt:
+            staged_bad.append(rel)
+    if missing or changed or staged_bad:
+        detail = "동결 산출물이 바뀌었습니다(사용자 결정으로 수정 금지):\n"
+        detail += "".join("  - 삭제/부재: %s\n" % p for p in missing)
+        detail += "".join("  - 내용 변경: %s\n" % p for p in changed)
+        detail += "".join("  - 스테이지 내용이 워킹트리와 다름: %s\n" % p for p in staged_bad)
+        if unjudged:
+            detail += "".join("  - 스테이지 대조 미판정(blob id 조회 실패): %s\n" % p
+                              for p in unjudged)
+        detail += "검사 대상 트리: %s\n" % root
+        detail += ("git checkout -- <경로> 로 되돌리세요. 재측정이 정말 필요하면 "
+                   "사용자 결정을 먼저 받고 이 표의 sha256을 함께 갱신하세요.")
+        return Result(name, "FAIL", detail)
+    return Result(name, "PASS",
+                  "동결 증거 %d파일 sha256 일치 (판정 %d · 스테이지 대조 미판정 %d) — 트리 %s"
+                  % (len(FROZEN_EVIDENCE), len(FROZEN_EVIDENCE), len(unjudged), root))
+
+
 # ---------------------------------------------------------------------------
 # 메인
 # ---------------------------------------------------------------------------
@@ -337,7 +447,7 @@ def main():
         return 0
 
     checks = [check_kit, check_skill, check_css, check_deck_generated, check_notes,
-              check_contract_waivers, check_tmp_litter]
+              check_contract_waivers, check_frozen_evidence, check_tmp_litter]
     results = []
     for check in checks:
         try:

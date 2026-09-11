@@ -11,7 +11,8 @@
  *   2) 브라우저로 덱을 연다 — 창은 1280x720 이상(작으면 --scale이 0이 된다)
  *   3) 콘솔:
  *        await (await fetch('/scripts/audit_all.js')).text().then(eval)
- *      → 출력된 JSON을 sessions/_verify/<주차>/deck-audit.json 으로 저장
+ *      → 출력된 JSON을 <증거루트>/<주차>/deck-audit.json 으로 저장
+ *        (증거루트 = 과목이 courses/<과목>/sessions/_verify/ 를 선언했으면 그것, 아니면 sessions/_verify/)
  *   4) python scripts/run_deck_checks.py <주차> --parts N
  *
  * ⚠️ 두 감사기 중 하나라도 INVALID면 이 파일도 INVALID를 그대로 돌려준다.

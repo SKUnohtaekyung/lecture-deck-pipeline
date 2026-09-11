@@ -29,8 +29,10 @@ PASS처럼 보이게 만들었다.
 from __future__ import annotations
 
 import io
+import json
 import os
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -38,6 +40,17 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO_ROOT / "scripts"))
 
 import _course_paths as cp  # noqa: E402
+
+
+def _repo_tempdir():
+    """픽스처는 **저장소 안 `tmp/`에만** 만든다(AGENTS.md).
+
+    시스템 임시 폴더(`%TEMP%`·`AppData`·플랫폼 스크래치패드)에 쓰면 「작업 종료 시
+    저장소 밖에 남은 파일 0개」를 셀 수가 없다. `tmp/`는 이미 `.gitignore`에 있다.
+    """
+    base = REPO_ROOT / "tmp" / "tests"
+    base.mkdir(parents=True, exist_ok=True)
+    return tempfile.TemporaryDirectory(dir=str(base))
 
 
 def _mkcourse(root: Path, name: str, *, profile=True, guide=True, weeks=()) -> Path:
@@ -316,6 +329,113 @@ class SubjectIsolationSurvivesMultiCourseTests(unittest.TestCase):
             self.assertEqual(rc, 2, "프로필 0개인데 통과로 보고했다")
         finally:
             vsi.discover_profiles = saved
+
+
+class VerifyNamespaceRoutingTests(unittest.TestCase):
+    """B03 — 렌더 증거 namespace 라우팅(A1). 마커가 라우팅을, 소유가 파괴 방지를 가른다.
+
+    ⚠️ 이 7건이 잠그는 것은 «기존 과목이 멈추지 않는다»이다. v1 설계는 «마커를
+       선언하지 않았으면 위험»으로 봤고, 그러면 마커를 선언한 적 없는 기존 과목의
+       모든 실행이 막힌다(R-T03 C1). 아래 2·3번이 그 회귀를 고정한다.
+    """
+
+    def setUp(self):
+        self.tmp = _repo_tempdir()
+        self.root = Path(self.tmp.name)
+        self._saved = os.environ.pop(cp.COURSE_ENV, None)
+
+    def tearDown(self):
+        if self._saved is not None:
+            os.environ[cp.COURSE_ENV] = self._saved
+        else:
+            os.environ.pop(cp.COURSE_ENV, None)
+        self.tmp.cleanup()
+
+    def _rel(self, p):
+        return os.path.relpath(p, str(self.root)).replace(os.sep, "/")
+
+    # 1 (양성) 마커를 선언한 과목은 자기 namespace로 간다
+    def test_marker_routes_into_the_course(self):
+        d = _mkcourse(self.root, "가과목", weeks=(1,))
+        (d / "sessions" / cp.VERIFY_DIRNAME).mkdir(parents=True)
+        self.assertTrue(cp.verify_is_course_local(str(self.root), "가과목"))
+        self.assertEqual(
+            self._rel(cp.verify_dir(1, str(self.root), "가과목")),
+            "courses/가과목/sessions/_verify/1주차")
+
+    # 2 (음성) 마커가 없으면 구경로 — **기존 과목 보호**
+    def test_no_marker_stays_on_the_legacy_root(self):
+        _mkcourse(self.root, "가과목", weeks=(1,))
+        self.assertFalse(cp.verify_is_course_local(str(self.root), "가과목"))
+        self.assertEqual(
+            self._rel(cp.verify_dir(1, str(self.root), "가과목")),
+            "sessions/_verify/1주차")
+
+    # 3 (음성) courses/ 자체가 없는 루트 — 레거시 세계 불변
+    def test_courseless_root_stays_legacy(self):
+        (self.root / "sessions" / "1주차").mkdir(parents=True)
+        self.assertEqual(
+            self._rel(cp.verify_dir(1, str(self.root), "아무과목")),
+            "sessions/_verify/1주차")
+
+    # 4 (양성) `1`과 `1주차`가 같은 경로로 정규화된다
+    def test_week_spellings_normalize_to_one_path(self):
+        d = _mkcourse(self.root, "가과목", weeks=(1,))
+        (d / "sessions" / cp.VERIFY_DIRNAME).mkdir(parents=True)
+        a = cp.verify_dir(1, str(self.root), "가과목")
+        b = cp.verify_dir("1주차", str(self.root), "가과목")
+        self.assertEqual(a, b)
+
+    # 5 (양성) 증거는 자기 주인을 이미 안다 — 퍼센트 인코딩·역슬래시·상대 url 포함
+    def test_evidence_owner_reads_the_url(self):
+        p = self.root / "e.json"
+        cases = [
+            ("http://localhost:8799/courses/%EA%B0%80%EA%B3%BC%EB%AA%A9/sessions/1주차/강의덱.html",
+             "가과목"),                                   # 퍼센트 인코딩(브라우저 기본)
+            ("file:///C:/x/courses/나과목/sessions/1주차/강의덱.html", "나과목"),
+            ("courses/다과목/sessions/1주차/강의덱.html", "다과목"),   # 앞 슬래시 없는 상대 url
+            ("file:///C:\\x\\courses\\라과목\\sessions\\1주차\\강의덱.html", "라과목"),
+        ]
+        for url, want in cases:
+            with io.open(p, "w", encoding="utf-8") as fh:
+                json.dump({"url": url}, fh)
+            self.assertEqual(cp.evidence_owner(str(p)), want, url)
+
+    # 6 (음성) 유도할 수 없으면 None — «안전»이 아니라 **판정 불가**
+    def test_evidence_owner_is_none_when_undecidable(self):
+        p = self.root / "e.json"
+        for payload in ({"url": "http://localhost/sessions/1주차/강의덱.html"},
+                        {"slideCount": 3},
+                        {"url": 12}):
+            with io.open(p, "w", encoding="utf-8") as fh:
+                json.dump(payload, fh)
+            self.assertIsNone(cp.evidence_owner(str(p)), payload)
+        with io.open(p, "w", encoding="utf-8") as fh:
+            fh.write("이건 JSON이 아니다{")
+        self.assertIsNone(cp.evidence_owner(str(p)))
+        self.assertIsNone(cp.evidence_owner(str(self.root / "없는파일.json")))
+
+    # 7 (음성) 모호할 때 — verify_dir는 죽고, verify_dir_or_legacy는 시끄럽게 폴백
+    def test_ambiguity_raises_but_the_loud_fallback_survives(self):
+        _mkcourse(self.root, "가과목", weeks=(1,))
+        _mkcourse(self.root, "나과목", weeks=(1,))
+        with self.assertRaises(cp.AmbiguousCourseError):
+            cp.verify_dir(2, str(self.root))
+        path, warn = cp.verify_dir_or_legacy(2, str(self.root))
+        self.assertEqual(self._rel(path), "sessions/_verify/2주차")
+        self.assertTrue(warn.strip(), "조용한 폴백은 이 모듈이 막으려던 실패 그 자체다")
+
+    def test_typo_course_name_also_falls_back_loudly(self):
+        """§2.4-1 잔여 구간의 «오타» 변형이 **적어도 조용하지는 않다**는 것만 고정한다.
+
+        `resolve_course`는 오타와 모호성에 **같은 예외**를 쓰므로 여기서 둘을 가를 수
+        없다(예외 계약 변경은 이번 범위 밖 — A8과 같은 성격의 별건). 그래서 이 테스트가
+        단언하는 것은 «구분»이 아니라 «경고문에 그 오타 이름이 그대로 인용된다»이다.
+        """
+        _mkcourse(self.root, "가과목", weeks=(1,))
+        path, warn = cp.verify_dir_or_legacy(1, str(self.root), "가과목오타")
+        self.assertEqual(self._rel(path), "sessions/_verify/1주차")
+        self.assertIn("가과목오타", warn)
 
 
 if __name__ == "__main__":

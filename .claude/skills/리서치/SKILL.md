@@ -34,12 +34,21 @@ Agent(subagent_type: "research-worker", prompt: <청크 1개 분량 조사 지�
 
 모델·허용 도구·턴 상한은 `.claude/agents/research-worker.md` frontmatter에 고정돼 있으므로 호출부에서 다시 지정하지 않는다.
 
+**과정 전용 예외 (G00 승인 필요)**: 특정 과정이 다른 모델·effort를 요구하면, **호출부 인자로 덮지 말고**
+`.claude/agents/`에 그 과정 전용 워커 정의를 새로 만들어 `subagent_type`을 바꾼다. 새 정의는 이 표의
+`tools`·`maxTurns`를 그대로 복사하고 `model`·`effort`만 과정값으로 둔다. 승인 근거(누가·언제·어느 문서)는
+`courses/<과목>/제작관리/`에 남기고, 사후 감사에는 `--expect-model <그 과정의 실제 모델 ID>`를 준다.
+**승인 기록 없이 호출부 `model` 인자로 바꾸는 것은 여기서 금지한다** — 그렇게 하면 이 표의 「구조적」이
+거짓이 되고 감사 기대값도 함께 어긋난다.
+**내장 타입(`Explore`·`Plan`·`general-purpose`)은 이 예외의 수단이 아니다** — 정의 파일로 모델을 고정할 수
+없고, `model` 인자를 빠뜨리면 `general-purpose`는 메인 모델을 그대로 상속한다(2026-09-08 실측).
+
 ## 강제 수준을 혼동하지 마라
 
 | 항목 | 값 | 강제 수준 |
 |---|---|---|
 | 서브에이전트 타입 | `research-worker` | **구조적** — `.claude/agents/research-worker.md`의 `tools:` 목록이 `Read, Grep, Glob, WebSearch, WebFetch, ToolSearch`뿐이라 `Write`·`Edit`·`NotebookEdit`·`Agent`·`Bash`·`PowerShell`을 애초에 보유하지 않는다(중첩 차단 포함) |
-| 모델 | `sonnet` | **구조적** — agent frontmatter `model: sonnet`. 실측 해석값 `claude-sonnet-5`. `inherit` 금지 |
+| 모델 | `sonnet`(기본) | **구조적 — 단 «정의 파일 기준»이다.** agent frontmatter `model: sonnet`, 실측 해석값 `claude-sonnet-5`. `inherit` 금지. ⚠️ **호출부 `Agent(model:…)` 인자는 frontmatter를 이긴다**(2026-09-08 실측) — 그래서 위 「과정 전용 예외」는 호출부 재지정이 아니라 **새 정의 파일**을 요구한다 |
 | 허용 도구 | `Read` `Grep` `Glob` `WebSearch` `WebFetch` `ToolSearch`(전제 조건) | **구조적** — agent frontmatter `tools:`가 이 목록으로 고정한다 |
 | 불허 도구 | 위 목록 외 **전부** — `Bash`·`PowerShell`·브라우저 자동화·`Skill`·알림/스케줄/메시지 계열 포함 | **구조적** — frontmatter에 없는 도구는 애초에 호출 불가 |
 | 턴 상한 | `maxTurns: 30` | **✅ 구조적** — 2026-08-05 `.claude/agents/research-worker.md` 신설로 이 프로젝트가 이제껏 걸지 못했던 상한이 걸렸다 |
@@ -68,9 +77,15 @@ Phase 7 실측에서 워커 **3/3**이 그랬다. 허용 범위는 **그 둘의 
 python scripts/analyze_agent_usage.py --tool-audit --session <세션 ID>
 ```
 
+**과정 전용 예외가 승인된 과정에서는 기대 모델을 명시한다.** 예: `AI_코딩_에이전트_입문_3차시`는
+**`/리서치` 실행 세션 종료 시 `--expect-model claude-opus-5` 감사를 필수로 한다** — 기본값
+`claude-sonnet-5`를 그대로 쓰면 그 과정에서는 전건 오탐이 된다. **이 의무의 범위는 `/리서치` 실행
+세션이며**, 저장소의 다른 세션에는 적용되지 않는다.
+
 | 종료코드 | 의미 | 처리 |
 |---|---|---|
-| `0` | 허용목록 외 도구 0건 · 전 워커 `claude-sonnet-5` | 통과 |
-| `3` | 허용목록 외 도구 사용 **또는** 모델 불일치 | 해당 워커 산출물을 **채택하지 않는다.** Opus로 전환됐으면 계획상 **RED** |
+| `0` | 허용목록 외 도구 0건 · 전 워커가 **기대 모델**(`--expect-model` 기본값 `claude-sonnet-5`, 과정 전용 예외가 승인됐으면 그 과정의 모델 ID)과 일치 | 통과 |
+| `3` | 허용목록 외 도구 사용 **또는** 기대 모델 불일치 | 해당 워커 산출물을 **채택하지 않는다.** 승인 없이 Opus로 전환됐으면 계획상 **RED** |
+| `4` | 대상 워커 로그 0개 | **통과가 아니라 미판정이다.** `--projects-dir`·`--session`이 맞는지 먼저 확인하고, 실제 `Agent` 호출 수와 대조한다 |
 
 감사 결과(에이전트 수·모델·턴·도구 호출)는 정본 8단계 완료 보고의 「병렬/순차 실행 여부」 항목에 함께 적는다.

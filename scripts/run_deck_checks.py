@@ -36,7 +36,9 @@
     python -m http.server 8799
     # 브라우저로 덱을 열고(창 1280x720 이상) 콘솔에서:
     #   await (await fetch('/scripts/audit_all.js')).text().then(eval)
-    # 출력 JSON을 그대로 저장:  sessions/_verify/<주차>/deck-audit.json
+    # 출력 JSON을 그대로 저장:  <증거루트>/<주차>/deck-audit.json
+    #   (증거루트 = 과목이 courses/<과목>/sessions/_verify/ 를 선언했으면 그것,
+    #    아니면 sessions/_verify/ — 러너가 실행 때마다 실제 경로를 찍는다)
 
 증거가 「있다」로 끝나지 않게 하는 장치
 ------------------------------------
@@ -189,7 +191,12 @@ class Runner:
         self.deck = os.path.join(self.session, "강의덱.html")
         self.shard = os.path.join(self.session, "강의덱.초안")
         self.notes = os.path.join(self.session, "강의덱_발표자노트.html")
-        self.verify_dir = os.path.join(ROOT, "sessions", "_verify", self.week)
+        # 과목 인식 증거 경로(B03). 과목이 자기 `sessions/_verify/`를 선언했으면
+        # 그쪽, 아니면 구경로 — 기존 과목의 측정분은 구경로에 있고 불변이다.
+        if _course_paths is None:                 # 해석기를 못 읽은 경우만 구경로
+            self.verify_dir = os.path.join(ROOT, "sessions", "_verify", self.week)
+        else:
+            self.verify_dir = _course_paths.verify_dir(self.num, ROOT)
         self.steps: list[tuple[str, bool, str]] = []
         # ── P1(2026-08-17) 구조 WARN 래칫 — «세어지지 않는 WARN은 침묵과 같다» ──
         #   waiver 강등분을 포함한 구조 WARN 총계를 요약 최상단에 노출하고,
@@ -367,6 +374,42 @@ class Runner:
         return data, ""
 
     def render_evidence(self) -> bool:
+        # ── 증거 namespace 공개 + 소유 대조 ────────────────────────────────
+        # 조용히 남의 증거를 읽는 것이 이 게이트의 가장 위험한 실패 모드다
+        # (장수·신선도가 우연히 맞으면 **거짓 PASS**가 성립한다). 그래서
+        #   ① 어느 namespace를 봤는지 항상 출력하고
+        #   ② 증거의 url이 가리키는 과목과 지금 실행 중인 과목을 대조해
+        #      다르면 판정하지 않고 FAIL한다(출력만으로는 못 막는다).
+        local = (_course_paths is not None
+                 and _course_paths.verify_is_course_local(ROOT))
+        print(f"\n=== 렌더 증거 경로 ===\n  {_rel(self.verify_dir)}"
+              + ("  (과목 전용 namespace)" if local else "  (구경로 namespace)"))
+        if _course_paths is not None:
+            # 여기까지 왔다면 _session_dir()이 이미 과목을 특정했다(모호하면
+            # AmbiguousCourseError로 러너가 죽는다) — 그래서 cur는 항상 있다.
+            cur = _course_paths.resolve_course(None, ROOT)
+            cur_name = os.path.basename(cur) if cur else None
+            ev_path = os.path.join(self.verify_dir, EVIDENCE)
+            owner = _course_paths.evidence_owner(ev_path)
+            if owner is None:
+                # 「아직 안 쟀다」와 「쟀는데 주인을 못 읽겠다」는 다른 사건이다.
+                # 전자는 아래 _load_evidence가 «없음»으로 정확히 말해 주므로 여기서
+                # 겹쳐 말하지 않는다. 후자만 **미판정**으로 시끄럽게 남긴다.
+                if not os.path.exists(ev_path):
+                    print("  증거 파일 없음 — 첫 측정이면 정상(아래에서 안내한다)")
+                else:
+                    print("  소유 유도 불가(url 없음·레거시 덱) — **미판정**, 통과가 아니다")
+            elif cur_name and owner != cur_name:
+                msg = (f"증거가 다른 과목의 것이다 — 실행 과목 «{cur_name}», "
+                       f"증거가 잰 덱 «{owner}» "
+                       f"({_rel(ev_path)}). "
+                       f"이 과목의 증거 namespace를 선언하고 다시 측정하라: "
+                       f"courses/{cur_name}/sessions/_verify/")
+                self.steps.append(("렌더·타이포 감사", False, msg))
+                print("\n" + "\u2500" * 68)
+                print(msg)
+                print("\u2500" * 68)
+                return False
         data, err = self._load_evidence(EVIDENCE)
         if err:
             self.steps.append(("렌더·타이포 감사", False, err))

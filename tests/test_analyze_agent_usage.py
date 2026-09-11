@@ -231,6 +231,35 @@ class TestDuplicateUsageRecords(unittest.TestCase):
         self.assertEqual(num(out, r"메인\s+\d+\s+\d+\s+([\d,]+)"), 3626)
 
 
+class TestSplitBlockRows(unittest.TestCase):
+    """⑧-2 블록 분할 기록 (2026-09-11).
+
+    반복 행을 `continue`로 통째로 건너뛰면 뒤 행의 tool_use가 집계에서 빠진다 —
+    `--tool-audit`이 금지 도구를 놓친다(미탐). 서브에이전트 로그는 행마다
+    output_tokens가 누적 증가하므로 첫 행 값은 과소다.
+    fixture: `sess-split`(메인 3응답 · 분할 행) · `sess-split-audit`(워커 1개 ·
+    첫 행 text, 둘째 행 금지 도구 Bash).
+    """
+
+    def run_session(self, session, *extra):
+        cmd = [sys.executable, SCRIPT, "--projects-dir", FIX, "--session", session,
+               "--archive", "", "--no-baseline", *extra]
+        p = subprocess.run(cmd, capture_output=True, text=True,
+                           encoding="utf-8", errors="replace", cwd=ROOT)
+        return p.returncode, p.stdout
+
+    def test_output_tokens_use_row_maximum(self):
+        _, out = self.run_session("sess-split")
+        self.assertEqual(num(out, r"메인\s+\d+\s+(\d+)\s"), 3, "분할 행이 턴으로 계수됐다")
+        # (2+100+1000+40) + (1+0+2000+30) + (1+0+3000+25) — 종전 첫 행 출력이면 6,141
+        self.assertEqual(num(out, r"메인\s+\d+\s+\d+\s+([\d,]+)"), 6199)
+
+    def test_tool_audit_sees_tool_in_later_row(self):
+        rc, out = self.run_session("sess-split-audit", "--tool-audit")
+        self.assertEqual(rc, 3, "둘째 행의 금지 도구를 놓쳤다(종전 종료코드 0)\n" + out)
+        self.assertIn("Bash×1", out)
+
+
 class TestDeterminism(unittest.TestCase):
     """⑥ 동일 입력을 두 번 실행하면 동일 결과"""
 
@@ -369,6 +398,71 @@ class TestToolAudit(unittest.TestCase):
         _, out = self.audit()
         self.assertRegex(out, r"aCLEAN0001\s+direct\s+claude-sonnet-5\s+3")
         self.assertRegex(out, r"aBAD00002x\s+direct\s+claude-opus-4-8\s+2")
+
+
+class TestUnjudgedExitCode(unittest.TestCase):
+    """⑨ 「대상 계수 0」은 통과가 아니라 미판정이다 (AGENTS.md 「눈먼 0 방지」).
+
+    2026-09-08 실측: 정본 감사 명령이 낡은 기본 폴더를 봐서 워커 0개를 세고도
+    종료코드 0(통과)을 냈다. 미판정 전용 종료코드 4를 신설해 그 거짓 PASS를 없앤다.
+    같은 조건에서 기준선 대조 경로는 statistics.mean([])로 트레이스백했다.
+    """
+
+    def call(self, *args):
+        p = subprocess.run([sys.executable, SCRIPT, *args],
+                           capture_output=True, text=True,
+                           encoding="utf-8", errors="replace", cwd=ROOT)
+        return p.returncode, p.stdout, p.stderr
+
+    def test_tool_audit_zero_workers_is_unjudged(self):
+        """대상 워커 로그 0개 → 종료코드 4(미판정). 0(통과)도 3(위반)도 아니다."""
+        rc, out, _ = self.call("--tool-audit",
+                               "--projects-dir", FIX,
+                               "--session", "sess-NOPE-0worker")
+        self.assertEqual(rc, 4, "워커 0개인데 종료코드가 4(미판정)가 아니다")
+        self.assertIn("미판정", out)
+        self.assertNotIn("감사할 것이 없다", out)
+
+    def test_tool_audit_violation_still_exits_3(self):
+        """코드 4가 코드 3을 잠식하지 않는다(위반은 여전히 3)."""
+        rc, _, _ = self.call("--tool-audit",
+                             "--projects-dir", FIX, "--session", "sess-audit")
+        self.assertEqual(rc, 3, "위반 세션의 종료코드가 3이 아니다")
+
+    def test_baseline_zero_workers_does_not_traceback(self):
+        """메인 로그만 있고 워커가 0인 세션에서 기준선 대조가 죽지 않는다.
+
+        종전에는 section_baseline의 statistics.mean([])이 StatisticsError로
+        트레이스백했다(원본에도 있던 잠복 버그). 이제 미판정(4)으로 끝난다.
+        """
+        rc, out, err = self.call("--projects-dir", FIX,
+                                 "--session", SESSION,
+                                 "--workflows", "wf_none-000",
+                                 "--archive", "")
+        self.assertNotIn("Traceback", err, "0워커 기준선 대조가 트레이스백했다")
+        self.assertNotIn("StatisticsError", err)
+        self.assertEqual(rc, 4, "0워커 기준선 대조의 종료코드가 4(미판정)가 아니다")
+        self.assertIn("미판정", out)
+
+    def test_session_is_required(self):
+        """--session 없이 실행하면 조용히 다른 것을 보지 않고 입력 오류(2)로 끝난다."""
+        rc, out, _ = self.call("--tool-audit")
+        self.assertEqual(rc, 2, "--session 누락인데 종료코드가 2가 아니다")
+        self.assertIn("--session", out)
+
+    def test_default_projects_dir_points_at_this_repo(self):
+        """기본 세션 폴더는 이 저장소 루트에서 유도한다(낡은 하드코딩 금지)."""
+        import importlib
+        sys.path.insert(0, os.path.join(ROOT, "scripts"))
+        mod = importlib.import_module("analyze_agent_usage")
+        importlib.reload(mod)
+        self.assertEqual(os.path.basename(mod.DEFAULT_PROJECTS_DIR),
+                         mod.derive_project_key(ROOT))
+        self.assertNotIn("C--Users-miso-Desktop-template",
+                         os.path.basename(mod.DEFAULT_PROJECTS_DIR))
+        # 옛 값은 지우지 않고 LEGACY_*로 남긴다(2주차 아카이브가 그 폴더에 있다)
+        self.assertIn("C--Users-miso-Desktop-template", mod.LEGACY_PROJECTS_DIR)
+        self.assertEqual(mod.DEFAULT_WORKFLOWS, mod.LEGACY_WORKFLOWS)
 
 
 if __name__ == "__main__":

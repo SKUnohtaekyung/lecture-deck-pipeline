@@ -16,11 +16,22 @@ analyze_agent_usage.py — 에이전트 실행량·토큰·비용 계측기 (읽
    아래 「정의·전제」를 사람이 직접 감사해야 최종 신뢰가 성립한다.
 
 사용법
-  python scripts/analyze_agent_usage.py                 # 2주차 리서치 기본 대상 + 기준선 대조
-  python scripts/analyze_agent_usage.py --no-baseline   # 대조 없이 계측만
+  python scripts/analyze_agent_usage.py --session <id>                  # 세션 폴더는 저장소 루트에서 유도
+  python scripts/analyze_agent_usage.py --session <id> --no-baseline    # 대조 없이 계측만
   python scripts/analyze_agent_usage.py --session <id> --workflows wf_a,wf_b
-  python scripts/analyze_agent_usage.py --projects-dir <경로>
-  python scripts/analyze_agent_usage.py --archive <아카이브 JSON 경로>   # 캘리브레이션 구간만
+  python scripts/analyze_agent_usage.py --projects-dir <경로> --session <id>
+  python scripts/analyze_agent_usage.py --session <id> --archive <아카이브 JSON 경로>
+  * 2주차 리서치 아카이브는 **옛 세션 폴더**에 있다 - 폴더와 세션을 함께 지정한다:
+      --projects-dir "$HOME/.claude/projects/C--Users-miso-Desktop-template"
+      --session 23c53893-1fa0-4239-b7d3-e23df646cdcc
+
+종료코드 계약
+  0  판정했고 통과 (도구·모델 위반 없음 / 기준선 전 항목 일치)
+  1  집계 대상 없음 (세션에서 에이전트 로그를 하나도 찾지 못함)
+  2  기준선 불일치 · 또는 입력 오류(--session 누락)
+  3  판정했고 **위반 있음** (허용목록 외 도구 또는 기대 모델 불일치)
+  4  **미판정** — 셀 대상이 0이라 아무것도 판정하지 못했다(AGENTS.md 「눈먼 0 방지」).
+     통과가 아니다. --projects-dir·--session이 맞는지 먼저 확인한다.
 """
 
 from __future__ import annotations
@@ -32,6 +43,7 @@ import io
 import json
 import math
 import os
+import re
 import statistics
 import sys
 from urllib.parse import urlsplit, urlunsplit
@@ -98,19 +110,44 @@ COST_CAVEAT = (
 )
 
 # ─────────────────────────────────────────────────────────────────────────────
-# 기본 대상 — 2주차 리서치 실행
+# 세션 폴더 유도 — 저장소 루트에서 계산한다 (2026-09-08)
+#
+# 종전에는 "C--Users-miso-Desktop-template"(저장소가 옮겨오기 전 경로)로 하드코딩돼
+# 정본 감사 명령(`--tool-audit --session <ID>`)이 **다른 폴더**를 봤다. 옛 폴더가
+# 아직 존재해서 오류조차 나지 않고 "대상 워커 로그 없음 → 종료코드 0"이라는 거짓
+# PASS가 났다(2026-09-08 실측). audit_context_budget.py가 2026-08-17에 같은 결함을
+# 같은 방식으로 고쳤다(scripts/audit_context_budget.py:49~70).
 # ─────────────────────────────────────────────────────────────────────────────
 
-DEFAULT_PROJECTS_DIR = os.path.expanduser(
+_REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+
+def derive_project_key(path):
+    """프로젝트 절대경로 → Claude Code 세션 폴더명."""
+    return re.sub(r"[^A-Za-z0-9]", "-", path)
+
+
+DEFAULT_PROJECTS_DIR = os.path.join(
+    os.path.expanduser("~"), ".claude", "projects",
+    derive_project_key(_REPO_ROOT)
+)
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 2주차 리서치 아카이브 — 옛 세션 폴더에 남아 있는 **한 묶음**이다.
+# LEGACY_PROJECTS_DIR 없이 아래 값만 쓰면 새 폴더에서 아무것도 찾지 못한다.
+# ─────────────────────────────────────────────────────────────────────────────
+
+LEGACY_PROJECTS_DIR = os.path.expanduser(
     "~/.claude/projects/C--Users-miso-Desktop-template"
 )
-DEFAULT_SESSION = "23c53893-1fa0-4239-b7d3-e23df646cdcc"
-DEFAULT_WORKFLOWS = [
+LEGACY_SESSION = "23c53893-1fa0-4239-b7d3-e23df646cdcc"
+LEGACY_WORKFLOWS = [
     "wf_7ab0d31d-b8b",   # 1차 팬아웃 (리서치 워커 14 + 실습 구축 2)
     "wf_bc18c30a-630",   # R15 보강 (모델 전환 중 고아)
     "wf_e66bb006-0d1",   # R15 보강 (sonnet 재실행, 사용자 중단)
     "wf_5a31448a-a31",   # R15 보강 (최종 채택)
 ]
+DEFAULT_WORKFLOWS = LEGACY_WORKFLOWS
 DEFAULT_ARCHIVE = "_dev/설계기록/탐색-아카이브/2주차/wg2e6h3ua_1차팬아웃_원본결과.json"
 
 # 낭비로 분류하는 워크플로(산출물이 채택되지 않은 실행)
@@ -188,7 +225,7 @@ class AgentStat:
     __slots__ = ("label", "kind", "wf", "turns", "inp", "cc", "cr", "out",
                  "first_cc", "first_prompt", "first_cr", "tools", "models", "fetch_urls",
                  "queries", "returns", "bad_lines", "ctx_seq", "no_usage_msgs",
-                 "seen_msg_ids", "dup_usage_records")
+                 "seen_msg_ids", "dup_usage_records", "msg_out", "seen_tool_ids")
 
     def __init__(self, label, kind, wf=""):
         self.label = label
@@ -220,6 +257,11 @@ class AgentStat:
         # 330으로 보고). message.id는 API 응답 1건당 하나이므로 이것으로 중복을 막는다.
         self.seen_msg_ids = set()
         self.dup_usage_records = 0
+        # ⚠️ 블록 분할 기록 보정 (2026-09-11). 반복 행을 통째로 건너뛰면 뒤 행의 tool_use가
+        # 집계에서 빠진다(--tool-audit 미탐). 또 서브에이전트 로그는 행마다 output_tokens가
+        # 누적 증가하므로 첫 행 값은 과소다. id별로 반영한 출력 최댓값과 센 tool_use 블록 id를 둔다.
+        self.msg_out = {}
+        self.seen_tool_ids = set()
 
     @property
     def total(self):
@@ -270,18 +312,28 @@ def collect(path: str, label: str, kind: str, wf: str = "") -> AgentStat:
                 continue
 
             usage = msg.get("usage")
-            if usage:                                   # ← TURN_RULE
+            dup_row = False
+            if usage and msg.get("id") is not None and msg.get("id") in st.seen_msg_ids:
+                # 같은 API 응답의 반복 행(블록마다 1행). usage는 이미 셌으므로 출력만 누적
+                # 최댓값으로 보정하고, 아래 content(tool_use)는 계속 집계한다(2026-09-11 —
+                # 종전에는 `continue`로 행을 통째로 건너뛰어 뒤 행의 도구가 빠졌다).
+                dup_row = True
+                st.dup_usage_records += 1
+                now = usage.get("output_tokens", 0) or 0
+                prev = st.msg_out.get(msg.get("id"), 0)
+                if now > prev:
+                    st.out += now - prev
+                    st.msg_out[msg.get("id")] = now
+            if usage and not dup_row:                   # ← TURN_RULE
                 # 같은 API 응답이 콘텐츠 블록 수만큼 반복 기록된다. message.id로
-                # 첫 레코드만 집계한다. id가 없는 로그(구버전)는 중복 판정이
+                # usage는 첫 레코드에서만 센다(반복 행은 위 dup_row). id가 없는 로그(구버전)는 중복 판정이
                 # 불가능하므로 **집계에서 빼지 않고** 그대로 센다 —
                 # 조용한 누락을 만드느니 과대 계상 쪽이 안전하고, 그 사실은
                 # 이상 징후 절에 건수로 드러난다.
                 msg_id = msg.get("id")
                 if msg_id is not None:
-                    if msg_id in st.seen_msg_ids:
-                        st.dup_usage_records += 1
-                        continue
                     st.seen_msg_ids.add(msg_id)
+                    st.msg_out[msg_id] = usage.get("output_tokens", 0) or 0
                 st.turns += 1
                 missing = [k for k in ("input_tokens",
                                        "cache_creation_input_tokens",
@@ -306,7 +358,7 @@ def collect(path: str, label: str, kind: str, wf: str = "") -> AgentStat:
                 st.models[model] += 1
                 if model not in PRICE_TABLE:
                     UNKNOWN["models"][model] += 1
-            elif msg.get("role") == "assistant":
+            elif not dup_row and msg.get("role") == "assistant":
                 st.no_usage_msgs += 1
 
             content = msg.get("content")
@@ -314,6 +366,11 @@ def collect(path: str, label: str, kind: str, wf: str = "") -> AgentStat:
                 for blk in content:
                     if not (isinstance(blk, dict) and blk.get("type") == "tool_use"):
                         continue
+                    bid = blk.get("id")
+                    if bid is not None:
+                        if bid in st.seen_tool_ids:
+                            continue
+                        st.seen_tool_ids.add(bid)
                     name = blk.get("name")
                     st.tools[name] += 1
                     inputs = blk.get("input") or {}
@@ -490,6 +547,7 @@ def section_totals(stats):
 def section_cost_from_files(files, label):
     """파일을 다시 순회하며 모델별 토큰을 분해해 비용을 환산한다."""
     per = collections.defaultdict(lambda: collections.Counter())
+    seen = {}  # message.id → (모델, 반영한 출력)
     for path in files:
         with io.open(path, encoding="utf-8", errors="replace") as fh:
             for line in fh:
@@ -507,6 +565,18 @@ def section_cost_from_files(files, label):
                 if not u:
                     continue
                 k = msg.get("model") or "?"
+                mid = msg.get("id")
+                if mid is not None and mid in seen:
+                    # 같은 응답의 반복 행 — 종전에는 행마다 합산해 비용이 블록 수만큼
+                    # 부풀었다(2026-09-11). 출력만 누적 최댓값으로 보정한다.
+                    pk, pout = seen[mid]
+                    now = u.get("output_tokens", 0) or 0
+                    if now > pout:
+                        per[pk]["out"] += now - pout
+                        seen[mid] = (pk, now)
+                    continue
+                if mid is not None:
+                    seen[mid] = (k, u.get("output_tokens", 0) or 0)
                 per[k]["inp"] += u.get("input_tokens", 0) or 0
                 per[k]["cc"] += u.get("cache_creation_input_tokens", 0) or 0
                 per[k]["cr"] += u.get("cache_read_input_tokens", 0) or 0
@@ -826,6 +896,12 @@ def section_calibration(archive_path):
 
 def section_baseline(m, w, a, url, ret, stats, cost_main, cost_worker,
                      discarded_tokens):
+    """잠정 기준선과 대조한다.
+
+    반환값은 문자열 3종이다 — "match"(전 항목 일치 · 종료코드 0) ·
+    "mismatch"(불일치 · 종료코드 2) · "unjudged"(워커 0개라 대조 자체를 못 함 ·
+    종료코드 4). 종전에는 bool을 돌려줬고, 워커가 0이면 트레이스백했다.
+    """
     hr("J. 잠정 기준선 대조 (일치 → 승격 / 불일치 → 임의 채택 금지)")
     if CORRECTIONS:
         print("※ rev.2 대조에서 발견된 기준선 결함 4건이 rev.3으로 정정되어 있다:")
@@ -835,6 +911,20 @@ def section_baseline(m, w, a, url, ret, stats, cost_main, cost_worker,
         print()
     B = PROVISIONAL_BASELINE
     ws = [s for s in stats if s.kind == "worker"]
+
+    # 워커가 0이면 기준선 대조는 성립하지 않는다. 종전에는 아래 statistics.mean([])이
+    # StatisticsError로 **트레이스백**했다(원본에도 있던 잠복 버그 · 2026-09-08 재현).
+    # 「대조 결과 없음」은 통과도 불일치도 아니라 **미판정**이다(AGENTS.md 「눈먼 0 방지」).
+    if not ws:
+        print("판정: 미판정 — 워커 에이전트 0개라 기준선 대조를 수행하지 못했다.")
+        print(f"  판정 0건 · 미판정 {len(B)}항목(기준선 표 전량)")
+        print("  확인 ① --session이 워크플로 팬아웃을 쓴 세션인가"
+              " (직접 Agent 호출만 있는 세션은 워커가 0으로 나온다)")
+        print("  확인 ② --workflows 값이 그 세션의 실제 워크플로 ID인가"
+              f" (현재 기본값은 옛 세션의 {len(LEGACY_WORKFLOWS)}개다)")
+        print("  대조 없이 얻은 «불일치 0건»은 «아무것도 안 봄»이므로 통과로 세지 않는다.")
+        return "unjudged"
+
     turns = sorted(s.turns for s in ws) or [0]
 
     checks = [
@@ -903,7 +993,7 @@ def section_baseline(m, w, a, url, ret, stats, cost_main, cost_worker,
         print("    · 잠정 정정 후 일치   : 그 외 (계측기에 맞춰 기준선을 고침 = 순환)")
         print("    · 이 계측기는 기준선 작성자와 **같은 에이전트**가 만들었다")
         print("  → 최종 승격 조건: A절 정의를 사람이 감사 + 정정분의 별도 방법 재확인")
-        return True
+        return "match"
 
     print(f"판정: ❌ **독립 재현 실패** — 불일치 {len(fails)}건")
     for name, got, exp in fails:
@@ -913,7 +1003,7 @@ def section_baseline(m, w, a, url, ret, stats, cost_main, cost_worker,
     print("  2. 대조 5항목 점검 — ①파서 ②턴 정의 ③캐시 집계 ④로그 누락 ⑤가격표")
     print("  3. 원인 미해결 시 **Phase 2 이후 전면 중단**")
     print("  4. 기존 수치가 틀렸다면 계획 파일의 기준선을 먼저 정정하고 재승인 요청")
-    return False
+    return "mismatch"
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -934,6 +1024,7 @@ def section_baseline(m, w, a, url, ret, stats, cost_main, cost_worker,
 WORKER_TOOL_ALLOWLIST = ("WebSearch", "WebFetch", "Read", "Grep", "Glob", "ToolSearch")
 EXPECTED_WORKER_MODEL = "claude-sonnet-5"
 AUDIT_EXIT_VIOLATION = 3
+AUDIT_EXIT_UNJUDGED = 4   # 대상 계수 0 = 미판정 (AGENTS.md 「눈먼 0 방지」)
 DUP_URL_STOPLINE = 1   # §0.5 — 동일 canonical URL 재호출 상한
 
 
@@ -950,7 +1041,12 @@ def discover_worker_logs(pdir, session):
 
 
 def section_tool_audit(pdir, session, allow, expect_model):
-    """워커별 모델·턴·도구 사용을 감사한다. 위반이 있으면 True를 돌려준다."""
+    """워커별 모델·턴·도구 사용을 감사한다.
+
+    반환값은 문자열 3종이다 — "clean"(판정했고 위반 없음) ·
+    "violation"(판정했고 위반 있음) · "unjudged"(대상 워커 로그 0개 = 미판정).
+    종전에는 bool을 돌려줬다(위반이 있으면 True).
+    """
     hr("G. 워커 도구·모델 감사 (Phase 2 실행 통제)")
     print(f"허용 도구 : {', '.join(allow)}")
     print(f"기대 모델 : {expect_model}")
@@ -961,8 +1057,12 @@ def section_tool_audit(pdir, session, allow, expect_model):
     print(f"\n대상 로그 : 직접 Agent {len(direct)}개 · 워크플로 {len(wf)}개")
     files = [(f, "direct") for f in direct] + [(f, "workflow") for f in wf]
     if not files:
-        print("\n대상 워커 로그 없음 — 감사할 것이 없다.")
-        return False
+        print("\n판정 0건 · 미판정 1건(대상 워커 로그 0개) — 통과가 아니라 **미판정**이다.")
+        print(f"    확인 ① --projects-dir({pdir})가 이 저장소의 세션 폴더인가")
+        print(f"    확인 ② --session({session})이 실제 실행 세션인가")
+        print("    확인 ③ 그 세션에서 Agent를 실제로 호출했는가(0건이면 «입력 부재»)")
+        print("    ①②가 틀린 채 얻은 «위반 없음»은 «아무것도 안 봄»이다.")
+        return "unjudged"
 
     allow_set = set(allow)
     print("\n%-20s %-9s %-18s %5s %12s  %s"
@@ -1031,7 +1131,9 @@ def section_tool_audit(pdir, session, allow, expect_model):
     else:
         print("  ✅ 도구: 허용목록 외 호출 0건")
 
-    return bool(tool_violations or model_violations or dup_violations)
+    if tool_violations or model_violations or dup_violations:
+        return "violation"
+    return "clean"
 
 
 def main():
@@ -1039,12 +1141,14 @@ def main():
     ap = argparse.ArgumentParser(
         description="에이전트 실행량·토큰·비용 계측기 (읽기 전용)")
     ap.add_argument("--projects-dir", default=DEFAULT_PROJECTS_DIR)
-    ap.add_argument("--session", default=DEFAULT_SESSION)
+    ap.add_argument("--session", default=None,
+                    help="세션 ID(필수). 종전 기본값은 옛 폴더의 2주차 세션이었다")
     ap.add_argument("--workflows", default=",".join(DEFAULT_WORKFLOWS),
                     help="쉼표 구분. 'all'이면 세션 내 전 워크플로")
     ap.add_argument("--archive", default=DEFAULT_ARCHIVE)
     ap.add_argument("--no-baseline", action="store_true",
-                    help="잠정 기준선 대조 생략")
+                    help="잠정 기준선 대조 생략. 대조를 켠 채 워커가 0개면 "
+                         f"종료코드 {AUDIT_EXIT_UNJUDGED}(미판정)로 끝난다")
     ap.add_argument("--stoplines", action="store_true",
                     help="§7.4 비상 중단선 산정 절을 출력한다")
     ap.add_argument("--scope", choices=["all", "main", "worker"], default="all",
@@ -1052,20 +1156,30 @@ def main():
                          "main/worker 선택 시 기준선 대조는 자동 생략된다")
     ap.add_argument("--tool-audit", action="store_true",
                     help="워커 도구·모델 감사만 수행한다(Phase 2 실행 통제). "
-                         f"위반 시 종료코드 {AUDIT_EXIT_VIOLATION}")
+                         f"위반 시 종료코드 {AUDIT_EXIT_VIOLATION} · "
+                         f"대상 로그 0개(미판정)는 {AUDIT_EXIT_UNJUDGED}")
     ap.add_argument("--allow", default=",".join(WORKER_TOOL_ALLOWLIST),
                     help="--tool-audit 허용 도구 목록(쉼표 구분)")
     ap.add_argument("--expect-model", default=EXPECTED_WORKER_MODEL,
                     help="--tool-audit 기대 워커 모델 ID")
     args = ap.parse_args()
 
+    if not args.session:
+        print("--session <세션ID>가 필요하다.")
+        print("  이 저장소의 세션 목록: python scripts/audit_context_budget.py --list")
+        print("  2주차 리서치 아카이브(옛 폴더):")
+        print(f'    --projects-dir "{LEGACY_PROJECTS_DIR}" --session {LEGACY_SESSION}')
+        return 2
+
     pdir = os.path.expanduser(args.projects_dir)
 
     if args.tool_audit:
         allow = tuple(x.strip() for x in args.allow.split(",") if x.strip())
         section_definitions()
-        bad = section_tool_audit(pdir, args.session, allow, args.expect_model)
-        return AUDIT_EXIT_VIOLATION if bad else 0
+        verdict = section_tool_audit(pdir, args.session, allow, args.expect_model)
+        if verdict == "unjudged":
+            return AUDIT_EXIT_UNJUDGED
+        return AUDIT_EXIT_VIOLATION if verdict == "violation" else 0
     main_path = os.path.join(pdir, f"{args.session}.jsonl")
     if not os.path.exists(main_path):
         main_path = None
@@ -1134,9 +1248,11 @@ def main():
     section_calibration(args.archive)
 
     if not args.no_baseline:
-        ok = section_baseline(m, w, a, url, ret, stats, cost_main, cost_worker,
-                              discarded_tokens)
-        return 0 if ok else 2
+        verdict = section_baseline(m, w, a, url, ret, stats, cost_main,
+                                   cost_worker, discarded_tokens)
+        if verdict == "unjudged":
+            return AUDIT_EXIT_UNJUDGED
+        return 0 if verdict == "match" else 2
     return 0
 
 

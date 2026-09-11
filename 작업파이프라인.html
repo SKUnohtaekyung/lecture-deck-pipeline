@@ -579,7 +579,7 @@ cp "입력양식/콘텐츠초안템플릿.md" "courses/바이브코딩/sessions/
   </div>
   <div class="callout warn">
     <span class="lab">강제 수준의 비대칭</span>
-    Claude Code에서는 워커에 <code>Write</code>·<code>Edit</code> 도구가 <strong>애초에 없어</strong> 파일 쓰기가 구조적으로 막힌다(<code>.claude/agents/research-worker.md</code> — tools 화이트리스트 · <code>model: sonnet</code> · <code>maxTurns</code>). 반면 <strong>반환 크기·내용 규칙은 자연어 수준</strong>이며 리드가 병합 시점에 확인한다. 실행 후 감사: <code>python scripts/analyze_agent_usage.py --tool-audit --session &lt;세션ID&gt;</code> (0 통과 / 3 위반).
+    Claude Code에서는 워커에 <code>Write</code>·<code>Edit</code> 도구가 <strong>애초에 없어</strong> 파일 쓰기가 구조적으로 막힌다(<code>.claude/agents/research-worker.md</code> — tools 화이트리스트 · <code>model: sonnet</code> · <code>maxTurns</code>). 반면 <strong>반환 크기·내용 규칙은 자연어 수준</strong>이며 리드가 병합 시점에 확인한다. 실행 후 감사: <code>python scripts/analyze_agent_usage.py --tool-audit --session &lt;세션ID&gt;</code> (0 통과 / 3 위반 / 4 미판정).
   </div>
 </section>
 
@@ -1432,7 +1432,7 @@ python scripts/run_deck_checks.py &lt;주차&gt; --assemble --parts N</pre>
 <pre>python -m http.server 8799</pre>
   <p>브라우저에서 덱을 열고 콘솔에서:</p>
 <pre>await (await fetch('/scripts/audit_all.js')).text().then(eval)</pre>
-  <p>출력 JSON을 <code>sessions/_verify/&lt;주차&gt;/deck-audit.json</code>으로 저장하면 <code>run_deck_checks.py</code>가 그것을 증거로 판정한다(없으면 통과시키지 않는다).</p>
+  <p>출력 JSON을 <code>&lt;증거루트&gt;/&lt;주차&gt;/deck-audit.json</code>으로 저장하면 <code>run_deck_checks.py</code>가 그것을 증거로 판정한다(없으면 통과시키지 않는다). 증거루트 = 과목이 <code>courses/&lt;과목&gt;/sessions/_verify/</code>를 선언했으면 그것, 아니면 <code>sessions/_verify/</code>(정본 <code>sessions/README.md</code>). ⚠️ 기존 과목은 <code>_verify</code> 마커를 만들지 마라 — 만들면 러너가 증거 없음 FAIL을 낸다.</p>
   <div class="callout warn">
     <span class="lab">창을 1280×720 이상으로 열어라</span>
     작으면 덱 JS가 <code>--scale</code>을 0으로 계산해 전 장이 0으로 나오고, 그 상태의 「결함 0」을 통과로 오판한 사고가 있다(2026-08-03 재현). 이제 두 감사기가 <strong>fail-closed assert</strong>로 막고 <code>{ INVALID:[...] }</code>를 돌려준다.
@@ -1461,7 +1461,7 @@ python scripts/install_hooks.py                      <span class="c"># git 훅 �
 python scripts/verify_research_chunks.py &lt;주차&gt;              <span class="c"># 개념KB 청크 깊이·G8 관점·인덱스 일치</span>
 python scripts/verify_required_statements.py &lt;주차&gt;          <span class="c"># 개념KB 필수 진술이 덱 화면에 남았는가(기본 WARN)</span>
 python scripts/verify_judgement_log.py &lt;주차&gt;                <span class="c"># 집필노트 판단 기록 정합</span>
-python scripts/analyze_agent_usage.py --tool-audit --session &lt;세션ID&gt;  <span class="c"># 리서치 워커 도구·모델 감사(0 통과 / 3 위반)</span>
+python scripts/analyze_agent_usage.py --tool-audit --session &lt;세션ID&gt;  <span class="c"># 리서치 워커 도구·모델 감사(0 통과 / 3 위반 / 4 미판정)</span>
 python scripts/analyze_agent_usage.py --session &lt;세션ID&gt;              <span class="c"># 실행량·토큰·비용 총량</span>
 python scripts/audit_context_budget.py &lt;세션ID&gt;                       <span class="c"># 컨텍스트 예산 판정(T1~T4·TS·T6 · 위반 시 1)</span>
 python scripts/audit_context_budget.py --list                         <span class="c"># 세션 목록(최근순)</span></pre>
