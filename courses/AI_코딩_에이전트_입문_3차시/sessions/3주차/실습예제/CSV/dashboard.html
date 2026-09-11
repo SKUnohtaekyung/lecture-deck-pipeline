@@ -156,6 +156,13 @@ footer{margin-top:22px;font-size:12px;color:var(--gray-700);line-height:1.8;
   <div class="mini" id="minis"></div>
 </section>
 
+<!-- ── 핵심 요약 ──────────────────────────────────────────── -->
+<section>
+  <h2><span class="num">요약</span>핵심 요약</h2>
+  <p class="sub">위 원본·지표에서 바로 확인되는 사실만 적는다. 원인은 단정하지 않는다.</p>
+  <ul class="rules" id="summary-list"></ul>
+</section>
+
 <!-- ── 요소 3 ─────────────────────────────────────────────── -->
 <section>
   <h2><span class="num">요소 3</span>월별 매출</h2>
@@ -581,6 +588,18 @@ function renderStatic(){
     " · " + B.ORD["ORD-08_집계월수"] + "개월";
   document.getElementById("b-hold").textContent =
     "승인 필요 " + B.HOLD["HOLD-01_승인필요건수"] + "건";
+
+  var topCat = B.CAT["CAT-02_목록"][0];
+  document.getElementById("summary-list").innerHTML =
+    "<li>원본 " + comma(B.ROW["ROW-01_원본행수"]) + "행 중 분석 대상은 " +
+      comma(B.ROW["ROW-03_분석대상행수"]) + "건(" + B.ROW["ROW-06_채택비율_pct"] +
+      "%)이다. 기간은 " + B.ORD["ORD-06_기간시작"] + " ~ " + B.ORD["ORD-07_기간종료"] + "다.</li>" +
+    "<li>총매출은 " + comma(B.REV["REV-01_순매출_krw"]) + "원이고 마진율은 " +
+      B.MGN["MGN-03_마진율_pct"] + "%다(상품 원가만 반영 · 이익률이 아니다).</li>" +
+    "<li>매출 비중이 가장 큰 상품군은 " + topCat.category + "(매출 비중 " + topCat["매출비중_pct"] +
+      "%)이고, 그 마진율은 " + topCat["마진율_pct"] + "%다.</li>" +
+    "<li>이 데이터는 " + B.ORD["ORD-06_기간시작"].slice(0,4) +
+      "년 한 해치 모의(mock) 데이터이며 실제 거래 기록이 아니다.</li>";
 
   document.getElementById("flow").innerHTML =
     '<div class="step"><div class="k">원본 행 <span class="tag">ROW-01</span></div><div class="v">'+
