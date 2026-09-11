@@ -1,0 +1,321 @@
+/* ══════════════════════════════════════════════════════════════════
+   3차시 신규(M6) 구도 CSS — AI 코딩 에이전트 입문 · 3차시
+   ──────────────────────────────────────────────────────────────────
+   원본(바이브코딩 3주차) shell의 kit-additions는 그대로 두고, 이 차시에만
+   새로 생긴 구도(ag3-*)를 여기 모은다. shell.html이 patterns.css 뒤에 링크한다.
+   · 색은 토큰만 쓴다(raw hex·그라데이션 없음).
+   · 본문 문장 22px 하한 · 박스 제목 26/800 · 박스 설명 20/500(25자 이내).
+   · 차트 라벨은 kit 차트 규격 하한을 따른다(attempt-03): 막대 값 22px · 축 19~20px · 가로막대·점 값 19px.
+   · 모든 클래스는 deck.contract.json layout_families에 등재한다.
+   ══════════════════════════════════════════════════════════════════ */
+
+/* ── 공통: 머리 블록 · 캡션 ─────────────────────────────────────── */
+.ag3-cap{margin:0;font-size:var(--fs-body);line-height:1.5;color:var(--gray-700)}
+.ag3-cap strong{color:var(--ink);font-weight:800}
+.ag3-sub{font-size:var(--fs-body);line-height:1.45;color:var(--gray-700)}
+
+/* ── 실습 장(M6 실습 8장): 요청문 터미널 + 목적·입력·출력·검증 기준 ── */
+.ag3-pr-body{display:grid;grid-template-columns:1fr 1.1fr;gap:var(--sp-24);align-items:stretch}
+.ag3-pr-body > *{min-width:0}
+.ag3-pr-body .w3-ask{display:flex;flex-direction:column}
+.ag3-pr-body .w3-ask-body{flex:1 1 auto;align-content:center}
+/* 목적 · 입력 · 출력 · 검증 기준 네 줄 — kit L-vf-numbered-stack(.eval-steps/.work-step) 위에
+   라벨 칸만 하나 더 둔다. 격자 3열이라 b와 desc가 번호 칸으로 떨어지지 않는다(R-QC-19). */
+.ag3-pr-body .eval-steps{margin:0;gap:10px}
+.ag3-pr-body .eval-steps .work-step{grid-template-columns:46px 140px 1fr;column-gap:14px;padding:10px 16px}
+.ag3-pr-body .eval-steps .work-step.is-check{box-shadow:inset 0 0 0 2px var(--mint-deep)}
+.ag3-demo{margin:0;font-size:var(--fs-body);line-height:1.5;color:var(--gray-700)}
+.ag3-demo strong{color:var(--blue);font-weight:800}
+
+/* ── N-01 파일 범위 동심도 · w3-cont 골격 재사용 ─────────────────── */
+.ag3-scope .w3-cont-body{grid-template-columns:392px 1fr}
+
+/* ── N-02 파일 모양 ───────────────────────────────────────────── */
+.ag3-file{flex:1 1 auto;min-height:0;display:grid;grid-template-columns:1.25fr 1fr;gap:var(--sp-32);align-items:center}
+.ag3-file > *{min-width:0}
+.ag3-file-fig{margin:0;position:relative;height:100%;min-height:300px}
+.ag3-file-fig svg{position:absolute;inset:0;width:100%;height:100%}
+.ag3-file-kpis{display:flex;flex-direction:column;gap:var(--sp-16)}
+.ag3-kpi{display:grid;grid-template-columns:auto 1fr;align-items:baseline;column-gap:var(--sp-16);
+  border-bottom:2px solid var(--blue-line);padding:6px 0 12px}
+.ag3-kpi-v{font-size:52px;font-weight:800;line-height:1.1;color:var(--blue)}
+.ag3-kpi-l{font-size:var(--fs-body);line-height:1.4;font-weight:700;color:var(--ink)}
+
+/* ── N-03 열 지도 ─────────────────────────────────────────────── */
+.ag3-colmap{flex:1 1 auto;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:var(--sp-12)}
+.ag3-colrow{display:grid;grid-template-columns:190px 1fr;column-gap:var(--sp-18);align-items:center;
+  background:var(--blue-soft);border-radius:var(--r-md);padding:12px 18px}
+.ag3-colrow > b{font-size:var(--fs-box-title);font-weight:800;line-height:1.25;color:var(--ink)}
+.ag3-colrow > b > small{display:block;font-size:var(--fs-box-desc);font-weight:500;color:var(--gray-700);line-height:1.4}
+.ag3-chips{display:flex;flex-wrap:wrap;gap:8px 10px}
+.ag3-chips > code{background:var(--white);border:1px solid var(--blue-line-strong);border-radius:var(--r-sm);
+  padding:3px 10px;font-family:var(--font-mono);font-size:20px;font-weight:700;color:var(--ink)}
+
+/* ── N-05 세 가지 이름 ────────────────────────────────────────── */
+.ag3-trio{flex:1 1 auto;min-height:0;display:grid;grid-template-columns:repeat(3,1fr);gap:var(--sp-18);align-items:stretch}
+.ag3-trio-item{display:flex;flex-direction:column;gap:10px;background:var(--blue-soft);border-radius:var(--r-lg);padding:18px 20px}
+.ag3-trio-item > b{font-size:var(--fs-box-title);font-weight:800;color:var(--ink);line-height:1.25}
+.ag3-trio-item > p{margin:0;font-size:var(--fs-body);line-height:1.5;color:var(--gray-700)}
+.ag3-trio-key{align-self:flex-start;margin-top:auto;font-size:var(--fs-box-desc);font-weight:700;color:var(--blue)}
+.ag3-mini{margin:0 0 4px;display:flex;justify-content:center}
+.ag3-mini svg{width:100%;height:auto}
+
+/* ── N-07 중복 ────────────────────────────────────────────────── */
+.ag3-dup{flex:1 1 auto;min-height:0;display:grid;grid-template-columns:.9fr 1.1fr;gap:var(--sp-32);align-items:center}
+.ag3-dup > *{min-width:0}
+.ag3-count{display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center}
+.ag3-count-v{font-size:56px;font-weight:800;line-height:1.1;color:var(--ink)}
+.ag3-count-l{font-size:var(--fs-body);font-weight:700;color:var(--gray-700)}
+.ag3-count-neq{font-size:44px;font-weight:800;line-height:1;color:var(--blue)}
+.ag3-kinds{display:flex;flex-direction:column;gap:var(--sp-16)}
+.ag3-kind{border-radius:var(--r-lg);padding:16px 20px;background:var(--surface);display:flex;flex-direction:column;gap:6px}
+.ag3-kind.is-hold{background:var(--coral-soft)}
+.ag3-kind > b{font-size:var(--fs-box-title);font-weight:800;color:var(--ink);line-height:1.25}
+.ag3-kind > p{margin:0;font-size:var(--fs-body);line-height:1.45;color:var(--gray-700)}
+.ag3-kind > p strong{color:var(--ink)}
+.ag3-kind.is-hold > p strong{color:var(--coral-deep)}
+.ag3-conflict{margin:4px 0 0}
+.ag3-conflict table{width:100%;border-collapse:collapse;background:var(--white)}
+.ag3-conflict th,.ag3-conflict td{border:1px solid var(--coral-line);padding:6px 12px;font-size:20px;line-height:1.4;text-align:left}
+.ag3-conflict th{color:var(--coral-deep);font-weight:800}
+.ag3-conflict td code{font-size:20px}
+.ag3-conflict td.is-diff{color:var(--coral-deep);font-weight:800}
+
+/* ── N-08 결측 두 층 · N-21 배송·평점 두 칸 ───────────────────── */
+.ag3-two{flex:1 1 auto;min-height:0;display:grid;grid-template-columns:1fr 1fr;gap:var(--sp-24);align-items:stretch}
+.ag3-two > *{min-width:0}
+.ag3-layer{border-radius:var(--r-lg);padding:18px 22px;display:flex;flex-direction:column;gap:10px;background:var(--blue-soft)}
+.ag3-layer.is-na{background:var(--surface)}
+.ag3-layer > h3{margin:0;font-size:var(--fs-box-title);font-weight:800;line-height:1.25;color:var(--ink)}
+.ag3-layer > p{margin:0;font-size:var(--fs-body);line-height:1.45;color:var(--gray-700)}
+.ag3-layer > p strong{color:var(--ink)}
+.ag3-big{font-size:48px;font-weight:800;line-height:1.1;color:var(--blue)}
+.ag3-big small{font-size:var(--fs-body);font-weight:700;color:var(--gray-700);margin-left:8px}
+
+/* 누적 막대(가로) — attempt-02: 조각은 그림(svg rect)으로 그린다. 배경만 칠한 빈 span은
+   렌더 감사에서 「껍데기 상자」로 읽힌다(글자 없음 · 72px 초과). 색·폭·순서는 그대로다. */
+.ag3-stack{margin:0;display:flex;flex-direction:column;gap:8px}
+.ag3-stack-bar{display:flex;height:40px;border-radius:var(--r-sm);overflow:hidden;background:var(--white)}
+.ag3-seg{display:block;height:100%;min-width:6px;fill:var(--blue)}
+.ag3-seg.is-a{fill:var(--blue)}
+.ag3-seg.is-b{fill:var(--coral)}
+.ag3-seg.is-c{fill:var(--mint)}
+.ag3-seg.is-d{fill:var(--periwinkle)}
+.ag3-legend{display:flex;flex-wrap:wrap;gap:6px 18px;margin:0;padding:0;list-style:none}
+.ag3-legend > li{display:flex;align-items:center;gap:8px;font-size:20px;line-height:1.4;color:var(--ink)}
+.ag3-legend > li > i{flex:0 0 auto;width:16px;height:16px;border-radius:4px;background:var(--blue)}
+.ag3-legend > li > i.is-b{background:var(--coral)}
+.ag3-legend > li > i.is-c{background:var(--mint)}
+.ag3-legend > li > i.is-d{background:var(--periwinkle)}
+.ag3-legend > li > i.is-line{height:4px;border-radius:2px;background:var(--ink)}
+.ag3-legend > li > i.is-dot{border-radius:50%;background:var(--mint-deep)}
+.ag3-legend > li > i.is-hold{background:var(--white);box-shadow:inset 0 0 0 2px var(--blue)}
+
+/* ── 세로 막대 차트(N-09 · N-21 평점) ──────────────────────── */
+.ag3-colchart{margin:0;display:flex;flex-direction:column;gap:6px;min-height:0}
+/* attempt-03(kit charts-basic C-column capacity «값 라벨 ≥22px · 축 라벨 ≥19px»): 값 16 → 22px · 축 16 → 20px · 단위 16 → 20px */
+.ag3-unit{margin:0;font-size:20px;font-weight:700;color:var(--gray-700);line-height:1.3}
+.ag3-plot{display:flex;align-items:flex-end;justify-content:space-around;gap:6px;border-bottom:2px solid var(--ink);padding:0 4px}
+.ag3-bar{flex:1 1 0;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-end}
+.ag3-val{font-size:22px;font-weight:800;line-height:1.3;color:var(--ink);white-space:nowrap;margin-bottom:4px}
+/* 막대 몸통도 그림(svg rect)이다(attempt-02 · 누적 막대와 같은 이유). 둥근 윗모서리는 clip-path로 */
+.ag3-fill{display:block;width:72%;max-width:72px;fill:var(--periwinkle);clip-path:inset(0 round 8px 8px 0 0)}
+.ag3-fill.is-key{fill:var(--blue)}
+.ag3-fill.is-drop{fill:var(--coral)}
+.ag3-fill.is-hold{fill:var(--white);stroke:var(--blue);stroke-width:6px}
+.ag3-fill.is-hold rect{vector-effect:non-scaling-stroke}
+.ag3-axis{display:flex;justify-content:space-around;gap:6px;padding:0 4px;margin:0}
+.ag3-axis > span{flex:1 1 0;min-width:0;text-align:center;font-size:20px;font-weight:700;line-height:1.3;color:var(--ink)}
+.ag3-outwrap{flex:1 1 auto;min-height:0;display:grid;grid-template-columns:1.35fr 1fr;gap:var(--sp-32);align-items:center}
+.ag3-outwrap > *{min-width:0}
+/* N-09 축 이름은 6~8자라 한 칸(약 122px)에 20px면 넘친다 — kit 하한 19px(두 줄 접힘 허용 · 막대 영역 250 → 236px로 상쇄) */
+.ag3-outwrap .ag3-axis > span{font-size:19px}
+.ag3-outnote{display:flex;flex-direction:column;gap:var(--sp-16)}
+.ag3-outnote > div{border-radius:var(--r-md);padding:14px 18px;background:var(--coral-soft)}
+.ag3-outnote > div.is-hold{background:var(--blue-soft)}
+.ag3-outnote b{font-size:var(--fs-box-title);font-weight:800;line-height:1.25;color:var(--ink)}
+.ag3-outnote p{margin:6px 0 0;font-size:var(--fs-body);line-height:1.45;color:var(--gray-700)}
+.ag3-month{flex:1 1 auto;min-height:0;justify-content:center}
+
+/* ── 꺾은선(N-19 월별 12개월 · N-21 배송 9구간) — kit charts-basic C-line ─ */
+/* attempt-03: 12개월·9구간은 C-column 상한 7을 넘는다. 선은 svg polyline(좌표 0~100 · 굵기 고정),
+   점과 값 라벨은 HTML이라 글자 크기가 화면 px 그대로다. x = 칸 가운데((i+0.5)/n) → 간격 0인 축 칸과 맞물린다.
+   y는 0 기준(값/최댓값 비례) — 축 눈금 숫자를 새로 만들지 않으므로 확대 축은 오해를 부른다(kit C-line adaptation_note). */
+.ag3-linechart{margin:0;display:flex;flex-direction:column;gap:6px;min-height:0}
+.ag3-lplot{position:relative;border-bottom:2px solid var(--line)}
+.ag3-lsvg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.ag3-lseries{fill:none;stroke:var(--periwinkle);stroke-width:4px;stroke-linejoin:round;stroke-linecap:round;vector-effect:non-scaling-stroke}
+.ag3-ldot{position:absolute;width:12px;height:12px;margin:0 0 -6px -6px;border-radius:50%;background:var(--periwinkle);box-shadow:0 0 0 2px var(--white)}
+.ag3-ldot.is-key{width:18px;height:18px;margin:0 0 -9px -9px;background:var(--blue)}
+.ag3-lval{position:absolute;transform:translate(-50%,-14px);font-size:22px;font-weight:800;line-height:1.3;color:var(--ink);white-space:nowrap}
+.ag3-lval.is-key{color:var(--blue)}
+.ag3-lval.is-low{transform:translate(-50%,calc(100% + 14px))}
+.ag3-laxis{gap:0;padding:0}
+.ag3-lcount > span{font-size:22px;font-weight:800}
+.ag3-legend > li > i.is-lline{height:4px;border-radius:2px;background:var(--periwinkle)}
+.ag3-legend > li > i.is-ldot{border-radius:50%;background:var(--blue)}
+
+/* ── N-11 답할 수 있는 질문 / 없는 질문 ───────────────────────── */
+/* attempt-02: 두 칸 높이는 남은 공간이 아니라 긴 쪽 내용이 정한다(R-BOXFILL-01 세로 늘림) — 행을 가운데로 */
+.ag3-qa{flex:1 1 auto;min-height:0;display:grid;grid-template-columns:1fr 1fr;gap:var(--sp-24);align-items:stretch;align-content:center}
+.ag3-qa > div{border-radius:var(--r-lg);padding:18px 22px;background:var(--mint-soft)}
+.ag3-qa > div.is-no{background:var(--coral-soft)}
+.ag3-qa h3{margin:0 0 10px;font-size:var(--fs-box-title);font-weight:800;line-height:1.25;color:var(--mint-deep)}
+.ag3-qa .is-no h3{color:var(--coral-deep)}
+.ag3-qa ul{margin:0;padding:0 0 0 22px;display:flex;flex-direction:column;gap:8px}
+.ag3-qa li{font-size:var(--fs-body);line-height:1.45;color:var(--ink)}
+
+/* ── N-12 지표 정의 — w3-map 골격 재사용 ─────────────────────── */
+.ag3-defs .w3-map-row{--own:var(--blue);--own-soft:var(--blue-soft);grid-template-columns:190px 40px 1fr}
+.ag3-defs .w3-map-file{font-family:inherit;font-size:var(--fs-box-title)}
+.ag3-defs .w3-map-role{flex-wrap:wrap;align-items:baseline;gap:4px 16px}
+.ag3-defs{flex:1 1 auto;min-height:0;justify-content:center}
+.ag3-formula{font-family:var(--font-mono);font-size:21px;font-weight:800;color:var(--blue);line-height:1.35}
+
+/* ── N-14 확인→계획→승인→실행 ───────────────────────────────── */
+.ag3-approve{flex:1 1 auto;min-height:0;display:grid;grid-template-columns:1fr 1.05fr;gap:var(--sp-32);align-items:center}
+.ag3-approve > *{min-width:0}
+.ag3-gates{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px}
+.ag3-gate{display:grid;grid-template-columns:44px 1fr;column-gap:14px;align-items:center;
+  background:var(--blue-soft);border-radius:var(--r-md);padding:10px 16px}
+.ag3-gate.is-human{background:var(--mint-soft);box-shadow:inset 0 0 0 2px var(--mint-deep)}
+.ag3-gate-n{width:40px;height:40px;border-radius:50%;background:var(--blue);color:var(--white);
+  display:grid;place-items:center;font-size:20px;font-weight:800}
+.ag3-gate.is-human .ag3-gate-n{background:var(--mint);color:var(--on-mint)}
+.ag3-gate-t{display:flex;flex-direction:column;gap:0}
+.ag3-gate-t > b{font-size:var(--fs-box-title);font-weight:800;line-height:1.25;color:var(--ink)}
+.ag3-gate-t > span{font-size:var(--fs-box-desc);font-weight:500;line-height:1.45;color:var(--gray-700)}
+.ag3-gate-down{text-align:center;font-size:22px;font-weight:800;line-height:1;color:var(--blue)}
+.ag3-assume{background:var(--surface);border-radius:var(--r-lg);padding:18px 22px;box-shadow:inset 0 0 0 2px var(--blue-line-strong)}
+.ag3-assume > h3{margin:0 0 10px;font-size:var(--fs-box-title);font-weight:800;line-height:1.25;color:var(--ink)}
+.ag3-assume > ol{margin:0;padding:0 0 0 30px;display:flex;flex-direction:column;gap:6px}
+.ag3-assume li{font-size:var(--fs-body);line-height:1.4;color:var(--ink)}
+
+/* ── N-16 대시보드 구조도 ─────────────────────────────────────── */
+/* attempt-02(R-BOXFILL-01 가로 늘림): 구역 폭은 화면 배치를 흉내 내는 크기라 글자에 맞춰 줄일 수 없다.
+   구조도 칸을 1.3fr → 1fr로 좁혀 빈 폭을 줄이고, 구역 이름은 와이어프레임 관례대로 가운데에 둔다. */
+.ag3-wire{flex:1 1 auto;min-height:0;display:grid;grid-template-columns:1fr 1fr;gap:var(--sp-32);align-items:center}
+.ag3-wire > *{min-width:0}
+.ag3-wf{margin:0;border-radius:var(--r-md);background:var(--white);box-shadow:inset 0 0 0 2px var(--blue-line-strong);overflow:hidden}
+.ag3-wf-bar{background:var(--surface);padding:8px 14px;font-family:var(--font-mono);font-size:18px;font-weight:700;color:var(--gray-700)}
+.ag3-wf-body{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:12px}
+.ag3-wf-z{border-radius:var(--r-sm);background:var(--blue-soft);padding:10px 12px;font-size:18px;font-weight:700;line-height:1.35;color:var(--ink);min-height:54px;display:flex;align-items:center;justify-content:center;text-align:center;gap:8px}
+.ag3-wf-z.is-wide{grid-column:1 / -1;min-height:92px}
+.ag3-wf-z.is-read{background:var(--mint-soft)}
+.ag3-wf-z > em{font-style:normal;font-size:22px;font-weight:800;color:var(--blue)}
+.ag3-wf-z.is-read > em{color:var(--mint-deep)}
+.ag3-wf-three{grid-column:1 / -1;display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.ag3-eight{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.ag3-eight > li{font-size:var(--fs-body);line-height:1.4;color:var(--ink);display:flex;gap:10px;align-items:baseline}
+.ag3-eight > li > em{font-style:normal;font-weight:800;color:var(--blue)}
+.ag3-eight > li.is-read > em{color:var(--mint-deep)}
+
+/* ── N-17 원본 행 → 분석 대상 행 ─────────────────────────────── */
+.ag3-rows{flex:1 1 auto;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:var(--sp-18)}
+.ag3-rowkpis{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--sp-18)}
+.ag3-rowkpi{display:flex;flex-direction:column;gap:2px;border-top:4px solid var(--periwinkle);padding:8px 4px 0}
+.ag3-rowkpi.is-key{border-top-color:var(--blue)}
+.ag3-rowkpi > span{font-size:var(--fs-body);font-weight:700;color:var(--gray-700);line-height:1.4}
+.ag3-rowkpi > b{font-size:44px;font-weight:800;line-height:1.1;color:var(--ink)}
+.ag3-rowkpi.is-key > b{color:var(--blue)}
+.ag3-drops{margin:0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(3,1fr);gap:8px var(--sp-18)}
+.ag3-drops > li{font-size:var(--fs-body);line-height:1.4;color:var(--ink)}
+.ag3-drops > li strong{color:var(--coral-deep)}
+
+/* ── N-18 핵심 지표 띠 — kit metric-strip 위에 폭만 조정 ───────── */
+.metric-strip .ag3-kpi4{grid-template-columns:1.3fr 1.2fr 1fr 1fr}
+.metric-strip .ag3-kpi4 .kpi-val{font-size:44px}
+.metric-strip .ag3-kpi4 .kpi-delta{font-size:var(--fs-eyebrow)}
+
+/* ── N-20 상품군 매출 막대 + 마진율 점 ───────────────────────── */
+.ag3-cat{margin:0;flex:1 1 auto;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:8px}
+.ag3-cat-head,.ag3-cat-row{display:grid;grid-template-columns:150px 1.35fr 1fr;column-gap:var(--sp-18);align-items:center}
+/* attempt-03(kit C-hbar «값 라벨 ≥19px» · C-lollipop «점/값 ≥19px»): 머리 18 → 19px · 막대 값·마진율 값·전체선 라벨 16 → 19px.
+   마진율 칸(약 411px)에서 가장 오른쪽 «59.0%» 라벨이 칸 안에 들도록 점 위치 척도를 45~62 → 45~63%로 넓혔다(표시하지 않는 배치값). */
+.ag3-cat-head > span{font-size:19px;font-weight:800;color:var(--gray-700)}
+.ag3-cat-name{font-size:20px;font-weight:800;color:var(--ink)}
+.ag3-cat-track{display:flex;align-items:center;gap:10px;min-width:0}
+/* 가로 막대 몸통도 그림(svg rect)이다(attempt-02 · 누적 막대와 같은 이유) */
+.ag3-cat-fill{display:block;height:30px;flex:0 0 auto;fill:var(--periwinkle);clip-path:inset(0 round 0 6px 6px 0)}
+.ag3-cat-fill.is-key{fill:var(--blue)}
+.ag3-cat-num{font-size:19px;font-weight:800;color:var(--ink);white-space:nowrap}
+.ag3-rate{position:relative;height:36px;border-left:2px solid var(--line);border-right:2px solid var(--line)}
+.ag3-rate-ref{position:absolute;top:-6px;bottom:-6px;width:0;border-left:3px dashed var(--ink)}
+.ag3-rate-dot{position:absolute;top:50%;width:16px;height:16px;margin:-8px 0 0 -8px;border-radius:50%;background:var(--mint-deep)}
+.ag3-rate-num{position:absolute;top:50%;transform:translate(12px,-50%);font-size:19px;font-weight:800;color:var(--mint-deep);white-space:nowrap}
+.ag3-cat-foot{display:grid;grid-template-columns:150px 1.35fr 1fr;column-gap:var(--sp-18)}
+.ag3-rate-label{position:relative;height:26px}
+.ag3-rate-label > span{position:absolute;transform:translateX(-50%);font-size:19px;font-weight:800;color:var(--ink);white-space:nowrap}
+
+/* ── N-21 분포 미니 차트 ──────────────────────────────────────── */
+.ag3-dr .ag3-colchart,
+.ag3-dr .ag3-linechart{flex:1 1 auto;justify-content:flex-end}
+
+/* ── N-22 읽는 법 세 칸 ───────────────────────────────────────── */
+/* attempt-02: 세 칸 높이는 가장 긴 칸의 내용이 정한다(R-BOXFILL-01 세로 늘림) — 행을 가운데로 */
+.ag3-three{flex:1 1 auto;min-height:0;display:grid;grid-template-columns:repeat(3,1fr);gap:var(--sp-18);align-items:stretch;align-content:center}
+.ag3-three-item{border-radius:var(--r-lg);padding:18px 20px;background:var(--blue-soft);display:flex;flex-direction:column;gap:10px}
+.ag3-three-item.is-hold{background:var(--coral-soft)}
+.ag3-three-item.is-limit{background:var(--surface)}
+.ag3-three-item > h3{margin:0;font-size:var(--fs-box-title);font-weight:800;line-height:1.25;color:var(--ink)}
+.ag3-three-item > ul{margin:0;padding:0 0 0 22px;display:flex;flex-direction:column;gap:8px}
+.ag3-three-item li{font-size:var(--fs-body);line-height:1.45;color:var(--ink)}
+
+/* ── N-33 복구 3단계 ──────────────────────────────────────────── */
+.ag3-recovery .eval-steps .work-step{grid-template-columns:46px 250px 1fr;column-gap:var(--sp-16)}
+.ag3-recovery .eval-steps .work-step > b{font-size:var(--fs-box-title)}
+
+/* ── N-25 원본 대조 5단계 ─────────────────────────────────────── */
+.ag3-verify{flex:1 1 auto;min-height:0;display:grid;grid-template-columns:1.15fr 1fr;gap:var(--sp-32);align-items:center}
+.ag3-verify > *{min-width:0}
+.ag3-five{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.ag3-five > li{display:grid;grid-template-columns:40px 1fr;column-gap:14px;align-items:center;
+  background:var(--blue-soft);border-radius:var(--r-md);padding:8px 14px}
+.ag3-five > li > i{font-style:normal;width:36px;height:36px;border-radius:50%;background:var(--blue);color:var(--white);
+  display:grid;place-items:center;font-size:18px;font-weight:800}
+.ag3-five > li > span{font-size:var(--fs-body);line-height:1.4;color:var(--ink)}
+.ag3-five > li > span strong{font-weight:800}
+.ag3-ex{border-radius:var(--r-lg);padding:18px 22px;background:var(--surface);box-shadow:inset 0 0 0 2px var(--blue-line-strong);
+  display:flex;flex-direction:column;gap:10px}
+.ag3-ex > h3{margin:0;font-size:var(--fs-box-title);font-weight:800;line-height:1.25;color:var(--ink)}
+.ag3-ex-row{display:flex;flex-direction:column;gap:0;border-bottom:1px solid var(--line);padding-bottom:8px}
+.ag3-ex-row > span{font-size:var(--fs-box-desc);font-weight:500;color:var(--gray-700);line-height:1.4}
+.ag3-ex-row > b{font-size:36px;font-weight:800;line-height:1.15;color:var(--ink)}
+.ag3-verdict{align-self:flex-start;background:var(--mint);color:var(--on-mint);border-radius:var(--r-pill);
+  padding:4px 16px;font-size:var(--fs-body);font-weight:800}
+
+/* ── N-27 분석 문서 목업 ──────────────────────────────────────── */
+.ag3-md{margin:0;flex:1 1 auto;min-height:0;display:flex;flex-direction:column;border-radius:var(--r-md);
+  background:var(--white);box-shadow:inset 0 0 0 2px var(--blue-line-strong);overflow:hidden}
+.ag3-md-bar{background:var(--surface);padding:8px 16px;font-family:var(--font-mono);font-size:18px;font-weight:700;color:var(--gray-700)}
+.ag3-md-body{flex:1 1 auto;display:flex;flex-direction:column;justify-content:space-evenly;padding:6px 18px}
+.ag3-md-row{display:grid;grid-template-columns:300px 1fr;column-gap:var(--sp-18);align-items:center;
+  border-bottom:1px solid var(--line);padding:8px 0}
+.ag3-md-row:last-child{border-bottom:0}
+.ag3-md-row > code{font-family:var(--font-mono);font-size:21px;font-weight:800;color:var(--blue)}
+.ag3-md-row > span{font-size:var(--fs-body);line-height:1.45;color:var(--ink)}
+
+/* ── N-28 근거 없는 해석 ≠ 확인되는 문장 (kit cc-grid) ────────── */
+.ag3-claim .cc-side.is-bad{border-color:var(--coral-line);background:var(--coral-soft)}
+.ag3-claim .cc-side.is-bad h3{color:var(--coral-deep)}
+.ag3-claim .cc-side{display:flex;flex-direction:column;justify-content:center}
+
+/* ── N-30 네 가지 결과물 — w3-role3 골격 재사용 ───────────────── */
+.w3-rl.is-demo .w3-rl-a{background:var(--blue-soft);color:var(--blue);box-shadow:inset 0 0 0 2px var(--blue)}
+.ag3-out4 .w3-rl{grid-template-columns:220px 36px 1fr 170px}
+
+/* ── N-31 공유 범위 스펙트럼 ──────────────────────────────────── */
+.ag3-share{margin:0;flex:1 1 auto;min-height:0;position:relative}
+.ag3-share svg{position:absolute;inset:0;width:100%;height:100%}
+
+/* ══ attempt-02 렌더 실측 수정 (2026-09-11 · 증거 제작관리/렌더비교_3차시.md) ═══════════ */
+/* V5-04 세로 늘림 — 1단 본문(31→46자)·callout이 원본보다 길어 «원본 계승»이 아니라 새 결함으로 판정됐다.
+   세 단계 칸 높이는 가장 긴 칸의 내용이 정하고, 행은 가운데에 둔다. 문구·클래스·3단 구조는 그대로다. */
+.w3-stateslide[data-slide="V5-04"] .w3-states{align-content:center}
+/* N-19 단위 줄 — 38자 산문이라 16px 도해 라벨이 아니라 본문 하한(22px) 대상이다.
+   늘어난 줄 높이만큼 막대 영역을 230 → 222px로 줄였다. attempt-03: N-19가 꺾은선이 되어 선 영역은 220px
+   (최고월 점 80% 높이 + 22px 값 라벨이 영역 안에 든다 · m6 조각). */
+.ag3-month .ag3-unit{font-size:22px;line-height:1.3}
+/* END 하단 문장 — kit 기본 14px은 서술문 하한(22px) 미달. 1차시 END와 같은 22px로 맞춘다(D-09 계보 정합). */
+.concept-recap .concept-bottom,
+.concept-recap .concept-bottom small{font-size:22px}

@@ -1,0 +1,105 @@
+{
+  "week": "3주차",
+  "frozen": false,
+  "_readme": "AI 코딩 에이전트 입문 3차시 · 3차시(폴더명 3주차, 화면 표기 3차시) 구조 계약. 규약 정본은 sessions/README.md 「주차 구조 계약」. 값은 2026-09-11 조립 실측(강의덱.html의 data-slide 65개 · part-divider 6개)으로 채웠다. 원본 대응(원본ID → 새 슬라이드)은 제작관리/보존매트릭스_3차시.csv와 자료/3주차_콘텐츠_집필노트.md가 정본이다. 원본 바이브코딩 3주차의 data-slide 값을 그대로 쓰고, 신규(M6)는 매핑 ID(N-01~N-33, N-06 없음)를 쓴다.",
+  "decks": {
+    "강의덱": {
+      "slides": 65,
+      "dividers": 6,
+      "intro": ["S01", "S02", "N-32", "S05"],
+      "sequences": {
+        "PART1": ["P1", "M1", "N-01", "V1-01", "N-02", "N-03", "N-04"],
+        "PART2": ["P2", "M2", "N-05", "V1-03", "N-07", "N-08", "N-09", "N-10"],
+        "PART3": ["P3", "M3", "N-11", "N-12", "N-13"],
+        "PART4": ["P4", "M4", "V1-10", "V5-04", "N-14", "N-15", "V1-05", "V3-06", "V1-06"],
+        "PART5": ["P5", "M5", "N-16", "N-17", "N-18", "N-19", "N-20", "N-21", "N-22", "N-23", "N-33", "N-24"],
+        "PART6": ["P6", "M6", "S03", "V2-01", "V4-09", "V5-11", "N-25", "V4-02", "N-26", "V4-06", "V4-07", "V6-08", "N-27", "N-28", "N-29", "N-30", "V6-01", "N-31"],
+        "CLOSING": ["END", "THX"]
+      },
+      "must_keep": {
+        "S02": "핵심 메시지(제작브리프 §3 «AI가 작성하고, 사람이 검토하고, 사람이 결정한다»)의 실체 슬라이드 — 3차시에 붙는 두 칸(사람이 원본을 지키고 · 사람이 숫자를 대조합니다).",
+        "N-28": "강제 메시지 1 — AI가 자신 있게 말해도 사실이 아닐 수 있다. 원본에서 확인되는 문장만 쓴다.",
+        "V5-11": "강제 메시지 2 — AI의 «완료»는 완료 증거가 아니다. 증거는 원본에서 다시 센 대조 결과다.",
+        "N-13": "강제 메시지 3 — 중요한 기준은 대화가 아니라 파일에 남긴다(실습③ 지표정의.json).",
+        "V1-05": "강제 메시지 4 — 원본 데이터는 수정하지 않는다(원본 CSV → 분석대상.csv 파생).",
+        "V1-06": "강제 메시지 4의 실습 짝 — 실습⑤ 원본 CSV 보존하기.",
+        "V5-04": "강제 메시지 5 — 실행 전 계획과 권한을 확인한다(폴더를 열어 준 것 ≠ 바꿔도 된다고 허락한 것).",
+        "N-14": "강제 메시지 5 — 확인→계획→승인→실행과 승인할 가정(분석계획.md §9).",
+        "N-25": "강제 메시지 6 — 대시보드의 숫자는 원본 데이터와 비교한다(원본 대조 다섯 단계).",
+        "V4-07": "강제 메시지 6의 실습 — 지표별 대시보드 숫자와 원본에서 다시 센 값을 판정한다.",
+        "N-16": "커리큘럼 3차시 필수 대시보드 요소 8 전수(N-17~N-22가 하나씩 받는다).",
+        "N-33": "복구 안내 — 실습예제/CSV/복구/dashboard.html에서 이어 가는 법."
+      },
+      "closing_text": "THANK YOU"
+    }
+  },
+  "known_violations": {
+    "render_stretchX": {
+      "count": 1,
+      "slides": ["V1-10"],
+      "reason": "원본 3주차 덱과 동일 ID·동일 요소·동일 유형 · 증거 제작관리/렌더비교_3차시.md · 2026-09-11 실측. V1-10 w3-two-col is-can×2@49w/37x/3y — 원본 section 대조 결과 두 칸(h3 1 + p 3)의 항목 수·문구가 글자까지 같다(바뀐 것은 칸 밖 제목·s-lead뿐 · callout 원문 동일). 원본 계약 render_stretchX 6건 중 같은 항목. count 초과는 FAIL.",
+      "date": "2026-09-11"
+    },
+    "render_stretchY": {
+      "count": 1,
+      "slides": ["V4-06"],
+      "reason": "원본 3주차 덱과 동일 ID·동일 요소·동일 유형 · 증거 제작관리/렌더비교_3차시.md · 2026-09-11 실측. V4-06 w3-vcard is-ok×4@24w/0x/63y — 원본 section 대조 결과 판정 카드 4장(b·p)의 항목 수·문구가 같다(바뀐 것은 카드 밖 배너 전제 1문장 · callout 원문 동일). 같은 B 후보였던 V5-04는 1단 본문(31→46자)과 callout 문구가 늘어 모양이 달라 등재하지 않고 화면을 고쳤다(attempt-02). count 초과는 FAIL.",
+      "date": "2026-09-11"
+    }
+  },
+  "warn_baseline": {
+    "static_gates": 0,
+    "quality": 1,
+    "render": 24,
+    "date": "2026-09-11",
+    "note": "3차시 첫 기준선(오케스트레이터 재측정 2026-09-11) · 품질 1 = R-QC-19 V1-06·V4-07(원본 3주차 덱 동일 · 보존 슬라이드 .desc 안 strong) · 렌더 24 = 자간보정누락 22 + waiver 강등 2(render_stretchX V1-10 · render_stretchY V4-06) · 폰트하한 0 · 원본 재현 확인(CREATE_SLIDES_COURSE=AI_코딩_에이전트_입문_3차시 python scripts/verify_deck_quality.py courses/바이브코딩/sessions/3주차/강의덱.html 출력 R-QC-19 40건/14장 목록에 V1-06·V4-07 포함, 2026-09-11 재측정)."
+  },
+  "layout_families": {
+    "roadmap": "roadmap",
+    "w3-vow": "statement",
+    "w3-vs-2col": "compare2",
+    "w3-vs-screen": "compare2",
+    "w3-practice": "work-step",
+    "w3-deffig": "definition",
+    "w3-cont": "containment",
+    "w3-conc": "containment",
+    "w3-two": "compare2",
+    "w3-stage": "diagram",
+    "w3-mapslide": "mapping",
+    "w3-map": "mapping",
+    "w3-req3slide": "grid",
+    "w3-req3": "grid",
+    "w3-verdictslide": "grid",
+    "w3-verdict4": "grid",
+    "w3-vtableslide": "table",
+    "w3-vtable": "table",
+    "w3-anchorsplit": "split",
+    "w3-states": "steps",
+    "w3-stateslide": "steps",
+    "w3-goldensplit": "split",
+    "w3-thx": "centered",
+    "w3-roleslide": "mapping",
+    "w3-role3": "mapping",
+    "ag3-scope": "containment",
+    "ag3-fileslide": "metric",
+    "ag3-colslide": "grid",
+    "ag3-trioslide": "grid",
+    "ag3-dupslide": "metric",
+    "ag3-missslide": "compare2",
+    "ag3-outslide": "chart",
+    "ag3-qaslide": "compare2",
+    "ag3-approveslide": "flow",
+    "ag3-wireslide": "screenshot",
+    "ag3-rowsslide": "chart",
+    "ag3-monthslide": "chart",
+    "ag3-catslide": "chart",
+    "ag3-delivslide": "metric",
+    "ag3-threeslide": "checklist",
+    "ag3-recovery": "steps",
+    "ag3-verifyslide": "flow",
+    "ag3-mdslide": "code",
+    "ag3-claimslide": "compare2",
+    "ag3-shareslide": "diagram",
+    "_note": "① w3-* 25종은 원본 바이브코딩 3주차 계약의 등재를 이 덱에 실제로 쓰이는 것만 옮겼다(값 동일). ② ag3-* 20종은 3차시 신규(M6) 구도이며 CSS는 강의덱.초안/revision.css에 있다. 미등재면 전부 'full'로 뭉개져 「동일 구도 연속」 오탐이 난다. ③ 실습 장(w3-practice + terminal-dark)은 verify_deck이 terminal family로 먼저 판정한다."
+    }
+}

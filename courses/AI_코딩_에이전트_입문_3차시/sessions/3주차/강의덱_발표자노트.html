@@ -1,0 +1,986 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>발표자 노트 — AI 코딩 에이전트 입문 3차시</title>
+<!--
+  발표자 노트 스타터 — create-slides
+  ─────────────────────────────────────────────────────────────
+  메인 덱과 별개의 독립 문서다. 강사가 발표 중/전에 참고한다.
+  콘텐츠 초안의 💬(농담)·👀(시연 큐)·🗣(막힐 때 힌트)를 슬라이드 순서대로 모은다.
+  · 🗣는 여기선 "펼쳐진" 상태 — 강사는 안전망 예시를 미리 다 봐야 한다(수강생 화면과 반대).
+  · 1280×720 캔버스 제약 없음. 읽기·인쇄 친화 세로 문서.
+  · deck.css를 링크하지 않는다(슬라이드 display:none 규칙이 문서 레이아웃을 깨므로) — 팔레트만 아래 :root로 미러.
+  3차시 조립: BUILD3/notes_build.py가 덱 조립 순서로 .pn-slide 블록을 만든다(화면 번호 = pn-no).
+  멘트 없는 슬라이드는 목록에서 생략해도 된다(노트가 있는 슬라이드만 실어도 무방).
+-->
+<style>
+  :root{
+    --blue:#1D4ED8; --mint-deep:#0F766E; --coral-deep:#C2452F; --ink:#141821;
+    --gray-700:#4F4F4F; --gray-400:#9A9A9A; --white:#fff;
+    --surface:#F3F5F8; --line:#E5E8F0; --paper:#F4F8FB;
+    --blue-soft:#EEF3FE; --mint-soft:#E9F8F5; --coral-soft:#FEF0ED;
+    --r-lg:20px; --r-md:14px; --r-pill:999px;
+    --font-mono:"JetBrains Mono","D2Coding",ui-monospace,SFMono-Regular,Menlo,monospace;
+    --font:"Pretendard",system-ui,-apple-system,"Malgun Gothic",sans-serif;
+  }
+  *{ box-sizing:border-box; }
+  body{ margin:0; padding:32px 20px 64px; background:var(--paper); color:var(--ink);
+    font-family:var(--font); line-height:1.6; -webkit-font-smoothing:antialiased; }
+  .pn-wrap{ max-width:840px; margin:0 auto; }
+
+  /* 헤더 */
+  .pn-head{ border-bottom:2px solid var(--blue); padding-bottom:16px; margin-bottom:28px; }
+  .pn-kicker{ font-size:14px; font-weight:800; color:var(--blue); letter-spacing:.02em; }
+  .pn-title{ font-size:30px; font-weight:800; margin:6px 0 4px; }
+  .pn-note{ font-size:15px; color:var(--gray-700); margin:0; }
+  .pn-legend{ display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }
+  .pn-legend span{ font-size:13px; font-weight:700; border-radius:var(--r-pill); padding:4px 11px; border:1px solid var(--line); }
+  .lg-joke{ background:var(--blue-soft); color:var(--blue); }
+  .lg-demo{ background:var(--coral-soft); color:var(--coral-deep); }
+  .lg-hint{ background:var(--mint-soft); color:var(--mint-deep); }
+
+  /* 슬라이드 블록 */
+  .pn-slide{ border:1px solid var(--line); border-radius:var(--r-lg); background:var(--white);
+    padding:18px 20px; margin:0 0 16px; break-inside:avoid; }
+  .pn-slide-head{ display:flex; align-items:baseline; gap:12px; margin-bottom:10px; }
+  .pn-no{ flex:0 0 auto; font-size:14px; font-weight:800; color:var(--white); background:var(--blue);
+    border-radius:var(--r-pill); padding:3px 11px; }
+  .pn-slide-title{ font-size:19px; font-weight:800; margin:0; }
+
+  /* 멘트 항목 — 종류별 좌측 컬러 바 + 라벨 */
+  .pn-item{ border-left:4px solid var(--line); padding:8px 0 8px 14px; margin:8px 0; }
+  .pn-item .lbl{ display:inline-block; font-size:12px; font-weight:800; margin-bottom:3px; }
+  .pn-item p{ margin:0; font-size:16px; color:var(--gray-700); }
+  .pn-joke{ border-left-color:var(--blue); } .pn-joke .lbl{ color:var(--blue); }
+  .pn-demo{ border-left-color:var(--coral-deep); } .pn-demo .lbl{ color:var(--coral-deep); }
+  .pn-hint{ border-left-color:var(--mint-deep); background:var(--mint-soft);
+    border-radius:0 var(--r-md) var(--r-md) 0; }
+  .pn-hint .lbl{ color:var(--mint-deep); }
+  .pn-hint .prompt{ font-family:var(--font-mono); font-size:14.5px; color:var(--ink);
+    background:var(--white); border:1px solid var(--line); border-radius:var(--r-md);
+    padding:10px 12px; margin-top:4px; white-space:pre-wrap; }
+  .pn-hint .aside{ font-size:12.5px; color:var(--gray-400); margin-top:5px; }
+
+  @media print{
+    body{ background:var(--white); padding:0 8mm; }
+    .pn-slide{ box-shadow:none; }
+  }
+</style>
+</head>
+<body>
+<div class="pn-wrap">
+
+  <header class="pn-head">
+    <div class="pn-kicker">발표자 노트 · 3차시 · 데이터에서 다양한 결과물까지</div>
+    <h1 class="pn-title">AI 코딩 에이전트 입문 — 3차시 발표자 노트</h1>
+    <p class="pn-note">강사용 참고 문서입니다. 수강생 화면(덱)에는 <strong>💬 · 👀 · 🗣가 하나도 보이지 않습니다</strong>(이 차시는 접힌 힌트를 쓰지 않습니다). <strong>[선택 시연]</strong>은 계정·권한에 따라 달라지는 Antigravity 화면이라 강사 시연으로 보여 주는 자리입니다. 표지(1쪽)·회고(64쪽)·THANK YOU(65쪽)는 화면 번호가 없어 그 큐를 2쪽과 63쪽 노트에 접어 두었습니다.</p>
+    <div class="pn-legend">
+      <span class="lg-joke">💬 농담·애드리브</span>
+      <span class="lg-demo">👀 시연·관찰 큐</span>
+      <span class="lg-hint">🗣 막힐 때 힌트(수강생 화면엔 접힘)</span>
+    </div>
+  </header>
+
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">2</span>
+      <h2 class="pn-slide-title">오늘의 약속</h2>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰 큐</span>
+      <p>[표지 1쪽] 표지 한 줄을 읽고 넘어온다.</p>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>길게 설명하지 않는다. «왜 두 칸이 붙는지는 오늘 수업이 대답합니다.» (원본 재사용·조정)</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">3</span>
+      <h2 class="pn-slide-title">지난 차시에서 이번 차시로</h2>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰 큐</span>
+      <p>2차시에 만든 NEWS_AGENT.md를 떠올리게 한다. 그때는 기준을 내가 정했고, 오늘은 남이 준 데이터를 먼저 확인한다.</p>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>원본 CSV는 오늘 끝까지 읽기만 합니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">4</span>
+      <h2 class="pn-slide-title">오늘 배우게 될 것</h2>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>«지금 다 이해 안 돼도 됩니다. 정거장 이름만.» (원본 재사용)</p>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰 큐</span>
+      <p>앞 50분은 1~4구간, 휴식 뒤 50분은 5·6구간이다. 정리·질의 10분은 따로 둔다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">5</span>
+      <h2 class="pn-slide-title">Agent가 다루는 파일과 CSV 구조</h2>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>«오늘은 코드보다 데이터를 더 많이 만집니다.» (원본 재사용·조정)</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">6</span>
+      <h2 class="pn-slide-title">PART 1은 이렇게 배웁니다</h2>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰 큐</span>
+      <p>«아직 데이터는 고치지 않습니다. 구조만 봅니다.» (원본 재사용·조정)</p>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰 큐</span>
+      <p>로드맵 1번 «하네스 복습»은 다음 장이 아니라 8쪽에 나온다. 파일 범위를 먼저 넓히고 하네스로 돌아온다고 말해 둔다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">7</span>
+      <h2 class="pn-slide-title">Coding Agent는 코드만 만들지 않습니다</h2>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>코딩을 몰라도 Coding Agent를 쓸 일이 있다는 것이 오늘의 출발점이다.</p>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰 큐</span>
+      <p>HTML · CSV · Markdown · DOCX · PPTX · JSON을 소리 내어 짚는다(원문 3차시 주요 교육 내용 1).</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">8</span>
+      <h2 class="pn-slide-title">하네스</h2>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>«2차시에 쓴 틀을 그대로 씁니다. 오늘은 ‘권한’ 칸이 제일 중요합니다.» (원본 재사용·조정)</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">9</span>
+      <h2 class="pn-slide-title">오늘은 주문 데이터 한 파일로 시작합니다</h2>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰 큐</span>
+      <p>파일을 열어 행 수를 함께 확인한다. 헤더 한 줄은 빼고 센다.</p>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>모의 데이터라 숫자를 실제 시장 판단에 쓰지 않는다고 미리 말해 둔다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">10</span>
+      <h2 class="pn-slide-title">20개 열은 다섯 묶음으로 나뉩니다</h2>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰 큐</span>
+      <p>열 이름은 번역하지 않고 화면의 영문 그대로 부른다(D-10).</p>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>묶음 이름은 우리가 붙인 것이고 파일에는 없는 정보라는 점을 짚는다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">11</span>
+      <h2 class="pn-slide-title">구조부터 확인합니다</h2>
+    </div>
+    <div class="pn-item pn-hint">
+      <span class="lbl">🗣 학생에게 줄 프롬프트</span>
+      <div class="prompt">"이 CSV 파일의 구조와 주요 내용을 먼저 확인해줘. 아직 데이터를 수정하지 말고 어떤 정보가 들어 있는지 설명해줘."</div>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰 큐</span>
+      <p>[선택 시연] 화면·메뉴는 계정·권한에 따라 달라 강사 시연으로 보여 준다.</p>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>Agent가 벌써 고치겠다고 하면 멈추게 하는 연습을 여기서 한 번 한다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">12</span>
+      <h2 class="pn-slide-title">중복 · 결측 · 이상값</h2>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>«눈으로 보면 멀쩡한 표에도 숨은 게 있습니다.» (원본 재사용·조정)</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">13</span>
+      <h2 class="pn-slide-title">PART 2는 이렇게 배웁니다</h2>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰 큐</span>
+      <p>«손은 잠깐 쉬어도 됩니다. 눈으로 따라오세요.» (원본 재사용)</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">14</span>
+      <h2 class="pn-slide-title">깨끗해 보이는 표에도 셋이 숨어 있습니다</h2>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>셋에 이름을 붙이면 «몇 건인가»로 셀 수 있게 된다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">15</span>
+      <h2 class="pn-slide-title">&quot;열이 있다&quot;와 &quot;값이 맞다&quot;는 다릅니다</h2>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>«나중에 발견하면 원인 찾는 데 열 배 걸립니다.» (원본 재사용)</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">16</span>
+      <h2 class="pn-slide-title">행 수와 주문 수는 같지 않습니다</h2>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰 큐</span>
+      <p>ORD00852 두 행을 강사 화면에서 보여 준다. 첫 행을 고르면 매출이 0원, 뒤 행을 고르면 104,000원이 된다(분석계획.md §2).</p>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>«AI가 알아서 하나 골랐다»가 가장 위험한 순간입니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">17</span>
+      <h2 class="pn-slide-title">결측은 두 층입니다</h2>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>평점 무응답을 0점으로 넣으면 평균이 내려간다. 없는 불만을 만드는 셈이다(분석계획.md §3).</p>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰 큐</span>
+      <p>return_reason 빈칸은 반품이 없는 행이라 비어 있는 게 정상이라는 점을 짚는다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">18</span>
+      <h2 class="pn-slide-title">이상값은 빼는 것과 보류하는 것으로 나눕니다</h2>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰 큐</span>
+      <p>제외와 보류를 헷갈리지 않게 한다. 배송 45일은 «이상하지만 가능»이라 매출에는 남긴다.</p>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>여기 플래그 수와 37쪽의 제외 수가 다를 수 있다. 한 행은 먼저 걸린 기준 하나로만 센다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">19</span>
+      <h2 class="pn-slide-title">품질 진단을 표로 받습니다</h2>
+    </div>
+    <div class="pn-item pn-hint">
+      <span class="lbl">🗣 학생에게 줄 프롬프트</span>
+      <div class="prompt">"컬럼 구조, 데이터 유형, 데이터 개수, 중복값, 결측값, 이상값을 표로 정리해줘. 분석에 쓸 수 있는 항목도 적고, 아직 아무것도 고치지 마."</div>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰 큐</span>
+      <p>[선택 시연] 화면·메뉴는 계정·권한에 따라 달라 강사 시연으로 보여 준다. 파일을 바꾸려는 요청이 뜨면 승인하지 않는 장면을 보여 준다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">20</span>
+      <h2 class="pn-slide-title">답할 수 있는 질문과 지표 정의</h2>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>«셀 수 있게 됐으니, 무엇을 물을지 정합니다.» (원본 재사용·조정)</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">21</span>
+      <h2 class="pn-slide-title">PART 3은 이렇게 배웁니다</h2>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰 큐</span>
+      <p>이 파트의 실습은 하나(지표정의.json)다. (원본 재사용·조정)</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">22</span>
+      <h2 class="pn-slide-title">데이터에 있는 열로만 답할 수 있습니다</h2>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>«왜 팔렸나»는 이 데이터가 답할 수 없는 질문의 대표다.</p>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰 큐</span>
+      <p>분석계획.md §11 «답할 수 없다» 표를 강사 화면에 띄워 둔다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">23</span>
+      <h2 class="pn-slide-title">지표는 계산식까지 적어야 지표입니다</h2>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>«매출»이라고만 쓰면 사람마다 다르게 센다. 배송비를 넣는지, 반품을 빼는지부터 갈린다.</p>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰 큐</span>
+      <p>지표정의.json의 금액_식을 강사 화면으로 보여 준다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">24</span>
+      <h2 class="pn-slide-title">지표 정의를 파일로 남깁니다</h2>
+    </div>
+    <div class="pn-item pn-hint">
+      <span class="lbl">🗣 학생에게 줄 프롬프트</span>
+      <div class="prompt">"매출 · 상품군 · 마진 · 배송 · 평점 지표를 지표정의.json에 정리해줘. 지표마다 계산식 · 대상 행 · 단위를 적고, 아직 계산은 하지 마."</div>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰 큐</span>
+      <p>[선택 시연] 화면·메뉴는 계정·권한에 따라 달라 강사 시연으로 보여 준다. 파일이 생기는 위치도 작업공간 설정에 따라 다를 수 있다.</p>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>강제 메시지 3 — 중요한 기준은 대화가 아니라 파일에 남긴다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">25</span>
+      <h2 class="pn-slide-title">계획 검토 · 승인 · 원본 보존</h2>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>«이제 Agent에게 계획을 받아 봅니다.» (원본 재사용·조정)</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">26</span>
+      <h2 class="pn-slide-title">PART 4는 이렇게 배웁니다</h2>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰 큐</span>
+      <p>시간이 밀리면 여기서 조정한다고 미리 말해 둔다. (원본 재사용)</p>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>[안심 비트] 여기서 굳은 표정을 되돌린다. 천천히 읽어 준다. (원본 재사용)</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">27</span>
+      <h2 class="pn-slide-title">기준 파일은 조언이지 자물쇠가 아닙니다</h2>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>오해 차단용 슬라이드. 여기서 한 박자 쉬어 준다. (원본 재사용)</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">28</span>
+      <h2 class="pn-slide-title">연결했다고 다 허락한 건 아닙니다</h2>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>[안전] 여기서 한 박자 쉬어 준다. (원본 재사용)</p>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰 큐</span>
+      <p>세 번째 칸 «승인 범위 초과»는 경고색이다. 승인한 범위를 넘으면 멈춰야 한다는 뜻으로 읽어 준다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">29</span>
+      <h2 class="pn-slide-title">실행 전에 계획과 권한을 확인합니다</h2>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰 큐</span>
+      <p>분석계획.md §9 승인란을 강사 화면에 띄우고, 가정 하나를 골라 «다르게 정하면 숫자가 어떻게 바뀌나» 칸을 읽는다.</p>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>승인은 서명이다. 읽지 않고 서명하지 않는다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">30</span>
+      <h2 class="pn-slide-title">계획을 먼저 받고 승인 지점을 정합니다</h2>
+    </div>
+    <div class="pn-item pn-hint">
+      <span class="lbl">🗣 학생에게 줄 프롬프트</span>
+      <div class="prompt">"이 데이터를 정리하고 대시보드로 만들기 위한 작업 계획을 먼저 작성해줘. 분석계획.md와 정제기준.md로 나눠 쓰고, 내가 승인하기 전에는 다른 파일을 만들지 마."</div>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰 큐</span>
+      <p>[선택 시연] 화면·메뉴는 계정·권한에 따라 달라 강사 시연으로 보여 준다. 승인 창의 모양과 문구도 도구 설정에 따라 다르다.</p>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>계획서가 오기 전에 파일이 생기면 그 자체가 오늘의 교훈이다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">31</span>
+      <h2 class="pn-slide-title">원본과 파생</h2>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>«원본이 남아 있어야 언제든 다시 셀 수 있습니다.» (원본 재사용·조정)</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">32</span>
+      <h2 class="pn-slide-title">한 파일은 한 역할만 씁니다</h2>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>원본 CSV는 쓰는 역할이 아예 없다고 못 박는다. (원본 재사용·조정)</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">33</span>
+      <h2 class="pn-slide-title">원본 CSV 보존하기</h2>
+    </div>
+    <div class="pn-item pn-hint">
+      <span class="lbl">🗣 학생에게 줄 프롬프트</span>
+      <div class="prompt">"mock_ecommerce_orders.csv는 절대 수정하지 마. 사본을 분석대상.csv로 만들고, 정리는 사본에서만 해 줘. 끝나면 원본의 행 수와 파일 크기가 그대로인지 알려 줘."</div>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰 큐</span>
+      <p>가장 흔한 실수는 사본을 만들고도 원본에서 계속 정리하는 것. (원본 재사용·조정) [선택 시연] 화면·메뉴는 계정·권한에 따라 달라 강사 시연으로 보여 준다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">34</span>
+      <h2 class="pn-slide-title">HTML 데이터 대시보드</h2>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>«이제 숫자를 한 화면에 모읍니다.» (원본 재사용·조정)</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">35</span>
+      <h2 class="pn-slide-title">PART 5는 이렇게 배웁니다</h2>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰 큐</span>
+      <p>휴식 뒤 첫 장이다. 계산 결과가 없는 사람은 손 들게 해서 44쪽 복구본으로 안내한다. (원본 재사용·조정)</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">36</span>
+      <h2 class="pn-slide-title">대시보드에는 여덟 가지가 반드시 들어갑니다</h2>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰 큐</span>
+      <p>실습예제/CSV/dashboard.html을 강사 화면에서 열어 여덟 구역을 차례로 가리킨다. 상단 자기검증 배너도 보여 준다.</p>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>대시보드는 예쁜 화면이 아니라 숫자와 읽는 법이 함께 있는 화면이다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">37</span>
+      <h2 class="pn-slide-title">원본 2,424행 중 2,203행을 분석합니다</h2>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>제외 219행 중 181행은 틀린 값이 아니라 아직 매출이 아닌 주문이다(분석결과.md §1).</p>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰 큐</span>
+      <p>18쪽 플래그 수(수량 0은 6행)와 여기 배정 수(5행)가 다른 이유를 짧게 말한다. 한 행은 먼저 걸린 기준 하나로만 센다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">38</span>
+      <h2 class="pn-slide-title">가장 중요한 숫자는 위에 크게 둡니다</h2>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰 큐</span>
+      <p>dashboard.html 화면에도 같은 이름 «총매출(취소·대기 제외, 반품 미차감)»으로 같은 숫자가 나온다. 할인 후 · 배송비 제외 금액이다.</p>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>반품 금액은 빼지 않고 옆에 따로 둔다. 뺄지는 분석계획.md §9 승인 사항 ②다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">39</span>
+      <h2 class="pn-slide-title">월별 매출은 2025-10이 가장 높습니다</h2>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>점 하나가 높다고 «성수기»라고 부르지 않는다. 한 해치다.</p>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰 큐</span>
+      <p>대시보드의 월별 차트 값을 이 장과 나란히 대 본다. 대시보드는 막대로, 이 장은 흐름이 보이게 선으로 그렸을 뿐 값은 같다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">40</span>
+      <h2 class="pn-slide-title">매출이 큰 상품군과 마진율이 높은 상품군은 다릅니다</h2>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>Electronics는 매출이 크고 마진율은 낮다. Beauty는 반대다.</p>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰 큐</span>
+      <p>마진율은 상품 원가만 뺀 값이라 이익률이 아니라고 한 번 더 말한다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">41</span>
+      <h2 class="pn-slide-title">평균에는 분모를 함께 적습니다</h2>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>평균만 말하지 말고 분모를 같이 말한다.</p>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰 큐</span>
+      <p>배송 45일 4행을 넣으면 평균이 달라진다는 점만 짚는다. 값은 분석결과.md §5에 있다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">42</span>
+      <h2 class="pn-slide-title">숫자 옆에 읽는 법 세 칸을 남깁니다</h2>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>읽는 법 세 칸이 없으면 보는 사람이 숫자를 확정값으로 읽는다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">43</span>
+      <h2 class="pn-slide-title">파일 하나로 대시보드를 만듭니다</h2>
+    </div>
+    <div class="pn-item pn-hint">
+      <span class="lbl">🗣 학생에게 줄 프롬프트</span>
+      <div class="prompt">"분석대상.csv와 지표정의.json의 식만 써서 파일 하나인 dashboard.html로 대시보드를 만들어줘. 필수 요소 여덟 가지를 모두 넣고, 원본 CSV는 고치지 마."</div>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰 큐</span>
+      <p>[선택 시연] 화면·메뉴는 계정·권한에 따라 달라 강사 시연으로 보여 준다. 막히면 실습예제/CSV/복구/dashboard.html을 열어 이어 간다.</p>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>완성본과 똑같을 필요는 없다. 여덟 가지가 있는지만 본다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">44</span>
+      <h2 class="pn-slide-title">막히면 복구본에서 이어 갑니다</h2>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰 큐</span>
+      <p>복구본을 더블클릭해 여는 장면을 직접 보여 준다. 서버 없이 열린다.</p>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>되돌아갈 자리를 알면 실습이 덜 무섭다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">45</span>
+      <h2 class="pn-slide-title">자연어로 하나씩 고칩니다</h2>
+    </div>
+    <div class="pn-item pn-hint">
+      <span class="lbl">🗣 학생에게 줄 프롬프트</span>
+      <div class="prompt">"월별 매출을 꺾은선그래프로 바꿔줘. 다른 차트와 숫자는 그대로 둬."</div>
+      <p class="aside">다음 요청 예(확인 뒤 따로): 가장 중요한 KPI를 상단에 크게</p>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰 큐</span>
+      <p>[선택 시연] 화면·메뉴는 계정·권한에 따라 달라 강사 시연으로 보여 준다. 막히면 복구/dashboard.html에서 이어 간다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">46</span>
+      <h2 class="pn-slide-title">대조 · 정리 · 확장</h2>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>«만든 숫자가 맞는지, 만든 쪽이 아닌 눈으로 봅니다.» (원본 재사용·조정)</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">47</span>
+      <h2 class="pn-slide-title">PART 6은 이렇게 배웁니다</h2>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰 큐</span>
+      <p>남은 시간을 공유하고 시작한다. (원본 재사용)</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">48</span>
+      <h2 class="pn-slide-title">오늘부터 &quot;AI&quot;는 한 명이 아닙니다</h2>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>«사람도 큰일은 혼자 안 하죠.» 부담을 낮추는 톤으로. (원본 재사용)</p>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰 큐</span>
+      <p>네 칸 중 마지막 «검토»가 이 파트의 주인공이라고 짚는다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">49</span>
+      <h2 class="pn-slide-title">왜 나눠서 시킬까요</h2>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>«혼자 교정 보면 자기 오타는 절대 안 보이죠.» (원본 재사용)</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">50</span>
+      <h2 class="pn-slide-title">고친 사람은 자기 실수를 못 봅니다</h2>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>여기서 핵심 메시지 «AI가 작성하고, 사람이 검토하고, 사람이 결정한다»를 한 번 더 짚는다. (원본 재사용·조정)</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">51</span>
+      <h2 class="pn-slide-title">&quot;완료했습니다&quot;보다 원본 숫자</h2>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰 큐</span>
+      <p>강사가 검증결과.md(독립 검산)를 열어 총매출이 대시보드와 같은지 함께 확인한다. (원본 재사용·조정)</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">52</span>
+      <h2 class="pn-slide-title">대시보드 숫자는 원본 데이터와 비교합니다</h2>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰 큐</span>
+      <p>검증결과.md §3 표에서 총매출 한 줄을 짚는다. 원본만 읽고 다시 센 값이다.</p>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>«확인 불가»도 판정이다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">53</span>
+      <h2 class="pn-slide-title">검토 요청에 넣을 것 셋</h2>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>«가장 자주 빠뜨리는 게 세 번째입니다.» (원본 재사용)</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">54</span>
+      <h2 class="pn-slide-title">검토 역할로 숫자를 대조합니다</h2>
+    </div>
+    <div class="pn-item pn-hint">
+      <span class="lbl">🗣 학생에게 줄 프롬프트</span>
+      <div class="prompt">"지금부터는 기존 결과를 만든 Agent가 아니라 검토자의 관점에서 확인해줘. 원본 CSV와 대시보드에 표시된 숫자를 다시 비교하고, 파일은 고치지 마."</div>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰 큐</span>
+      <p>[선택 시연] 화면·메뉴는 계정·권한에 따라 달라 강사 시연으로 보여 준다. 검토 역할을 새 대화로 열지, 같은 대화에서 역할만 바꿀지도 도구 설정에 따라 다르다.</p>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>검토자는 파일을 고치지 않는다. 고치면 검토가 아니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">55</span>
+      <h2 class="pn-slide-title">다수결이 아니라 근거로 판정합니다</h2>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>«‘확인 불가’를 쓸 줄 아는 게 실력입니다.» (원본 재사용)</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">56</span>
+      <h2 class="pn-slide-title">결과 비교하고 판정하기</h2>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰 큐</span>
+      <p>강사가 대조표를 띄우고 총매출 · 주문 수 · 평균 평점을 한 줄씩 소리 내어 판정한다. AI의 말이 아니라 원본에서 다시 센 값이 기준이다. (원본 재사용·조정)</p>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>앞 대조 단계의 «일치 · 불일치 · 확인 불가»는 대시보드 숫자가 원본에서 다시 센 값과 맞는지 본 결과다. 이 장의 «채택 · 부분 채택 · 기각»은 그 결과를 근거로 검토 의견을 반영할지 사람이 정하는 다음 단계다(«확인 불가»는 두 단계에 모두 쓴다).</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">57</span>
+      <h2 class="pn-slide-title">한 번에 하나만 고칩니다</h2>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>«한 번에 하나씩»을 마지막으로 한 번 더. (원본 재사용)</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">58</span>
+      <h2 class="pn-slide-title">분석 문서는 다섯 칸으로 씁니다</h2>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰 큐</span>
+      <p>실습예제/CSV/분석결과.md를 열어 다섯 칸이 어떻게 채워졌는지 보여 준다.</p>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>«개선이 필요한 부분»에 «더 팔자» 같은 말을 쓰지 않는다. 데이터가 말하는 확인 과제를 쓴다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">59</span>
+      <h2 class="pn-slide-title">원본에서 확인할 수 있는 것만 씁니다</h2>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>AI는 그럴듯한 이유를 잘 붙인다. 이유가 원본에 없으면 쓰지 않는다(강제 메시지 1).</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">60</span>
+      <h2 class="pn-slide-title">검증된 숫자로 분석 문서를 씁니다</h2>
+    </div>
+    <div class="pn-item pn-hint">
+      <span class="lbl">🗣 학생에게 줄 프롬프트</span>
+      <div class="prompt">"검증된 결과만 사용해서 분석결과.md를 써줘. 핵심 요약 · 주요 지표 · 발견한 특징 · 개선이 필요한 부분 · 데이터의 한계로 나누고, 원본에서 확인할 수 있는 내용만 적어줘."</div>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰 큐</span>
+      <p>[선택 시연] 화면·메뉴는 계정·권한에 따라 달라 강사 시연으로 보여 준다. Markdown 미리보기 화면도 도구마다 다르다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">61</span>
+      <h2 class="pn-slide-title">하나의 근거로 네 가지 결과물을 만듭니다</h2>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰 큐</span>
+      <p>DOCX · PPTX는 강사 시연이며 학생 따라 하기 대상이 아니다. 만드는 도구와 조작은 원문에 없어 오늘 다루지 않는다(결정요청 D-03).</p>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>같은 숫자를 다른 모양으로 옮길 뿐, 새 숫자를 만들지 않는다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">62</span>
+      <h2 class="pn-slide-title">내 컴퓨터에 있는 것과, 열리는 것은 다릅니다</h2>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>내 폴더에 있는 파일과 남이 여는 주소는 다르다는 것만 짚고 다음 장으로 간다. (원본 재사용·조정)</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">63</span>
+      <h2 class="pn-slide-title">공유 범위가 넓을수록 되돌리기 어렵습니다</h2>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰 큐</span>
+      <p>정적 HTML 배포는 강사 시연으로만 보여 준다. 배포 방식은 과정 운영 결정에 따른다(결정요청 D-04).</p>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>공개는 되돌리기 어렵다. 공개 전에 개인정보 · 내부 숫자를 확인한다.</p>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰 큐</span>
+      <p>[마무리 64쪽 · 회고] 1·2·3차시 계보를 읽고, 하단 «이 문장 하나만 가져가시면 오늘 수업은 성공입니다»로 닫는다. [65쪽 THANK YOU] 그대로 질의 시간으로 넘어간다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">66</span>
+      <h2 class="pn-slide-title">밖에 나가면 안 되는 파일부터 걸러 둡니다</h2>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>[안전] 오늘 세 번 하는 점검의 첫 번째임을 예고.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">67</span>
+      <h2 class="pn-slide-title">싱글 에이전트</h2>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>"싱글이 나쁜 게 아닙니다. 오늘 배우는 건 '언제 나눌지'예요."</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">68</span>
+      <h2 class="pn-slide-title">서브에이전트</h2>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>"심부름을 시키는 거지, 주방을 넘기는 게 아닙니다."</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">69</span>
+      <h2 class="pn-slide-title">멀티에이전트</h2>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>"오늘 오후 내내 쓰는 방식이 이겁니다."</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">70</span>
+      <h2 class="pn-slide-title">셋을 나란히 보면</h2>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰 큐</span>
+      <p>"오늘 우리는 세 번째를 씁니다. 왜인지는 다음 장."</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">71</span>
+      <h2 class="pn-slide-title">오케스트레이터</h2>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>"여러분이 AI를 쓰는 게 아니라, 팀을 운영하는 겁니다."</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">72</span>
+      <h2 class="pn-slide-title">플러그인 · Skill · 커넥터 · MCP</h2>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>"공구세트 안에 드라이버도 있고 콘센트 어댑터도 있는 거죠."</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">73</span>
+      <h2 class="pn-slide-title">MCP Model Context Protocol</h2>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>"콘센트 규격이 같으니까 어느 나라 가전이든 꽂히죠. 그 규격 얘기입니다."</p>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰 큐</span>
+      <p>왼쪽 거미줄 그림을 먼저 짚고 «이게 규격 없을 때»라고만 합니다. 오른쪽으로 눈이 가면 설명이 끝납니다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">74</span>
+      <h2 class="pn-slide-title">공개하면 되돌리기 어렵습니다</h2>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>[안전] PART 1·5에서 두 번 했다는 걸 짚어 준다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">75</span>
+      <h2 class="pn-slide-title">공개가 안 되면</h2>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 농담·애드리브</span>
+      <p>[폴백] 이 장이 없으면 막힌 사람이 수업에서 이탈한다.</p>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>

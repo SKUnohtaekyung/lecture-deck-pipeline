@@ -1,0 +1,331 @@
+<!-- 2차시 PART 6 · AI 뉴스 조사 Agent — 2026-09-10 조립 담당.
+     원본 슬라이드는 courses/바이브코딩/sessions/2주차/강의덱.초안의 section을 그대로 복사하고
+     제작관리/보존매트릭스_2차시.csv 「변경내용」만 적용했다. N-** 는 새 커리큘럼 신규(M6)다. -->
+
+<section class="slide part-divider" data-slide="P6">
+  <svg class="dv-hero" viewBox="0 0 1280 720" fill="none" aria-hidden="true"></svg>
+  <div class="pd-dots" aria-hidden="true"></div>
+  <p class="pd-eyebrow">PART</p>
+  <h2 class="pd-title">AI 뉴스 조사 Agent</h2>
+  <p class="pd-desc">역할과 기준을 정해 반복되는 조사 업무를 맡긴다</p>
+</section>
+
+<section class="slide n2-stage n2-overview" data-slide="N-09" data-shape="flow">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span><div class="s-team">2차시<br>PART 6</div>
+  </header>
+  <div class="s-full">
+    <h2 class="s-title">오늘 만들 AI 뉴스 조사 Agent</h2>
+    <p class="n2-lead">참가자가 직접 뉴스 조사 업무를 Agent에게 맡깁니다. <b>역할과 기준을 파일로 정하고</b>, 결과는 <span class="hl-mint-underline">원문과 대조</span>합니다.</p>
+    <div class="n09-track viz-flow" role="img" aria-label="뉴스 조사 Agent 실습 일곱 단계와 오늘의 산출물: 역할과 선정 기준 정하기, NEWS_AGENT.md 작성, 최신 AI 뉴스 검색, 원문 확인과 중복 제외와 요약, 날짜별 Markdown 저장, 검증, 반복 실행 Schedule 강사 시연">
+      <div class="n09-line"><div class="n09-step"><div class="n09-head"><span class="n09-n">1</span><b>역할과 선정 기준 정하기</b></div><span class="desc">누구로, 무엇을 고르나</span></div><span class="n09-ar" aria-hidden="true">→</span><div class="n09-step"><div class="n09-head"><span class="n09-n">2</span><b>NEWS_AGENT.md 작성</b></div><span class="desc">기준을 파일에 적기</span></div><span class="n09-ar" aria-hidden="true">→</span><div class="n09-step"><div class="n09-head"><span class="n09-n">3</span><b>최신 AI 뉴스 검색</b></div><span class="desc">Agent에게 검색 맡기기</span></div><span class="n09-ar" aria-hidden="true">→</span><div class="n09-step"><div class="n09-head"><span class="n09-n">4</span><b>원문 확인 · 중복 제외 · 요약</b></div><span class="desc">기사 원문과 대조</span></div></div>
+      <div class="n09-line"><div class="n09-step"><div class="n09-head"><span class="n09-n">5</span><b>날짜별 Markdown 저장</b></div><span class="desc">날짜가 파일 이름</span></div><span class="n09-ar" aria-hidden="true">→</span><div class="n09-step is-check"><div class="n09-head"><span class="n09-n">6</span><b>날짜·제목·요약·출처 검증</b></div><span class="desc">실제 기사와 비교</span></div><span class="n09-ar" aria-hidden="true">→</span><div class="n09-step is-demo"><div class="n09-head"><span class="n09-n">7</span><b>반복 실행 Schedule</b></div><span class="desc">강사 시연으로 보기</span></div><span class="n09-ar" aria-hidden="true">→</span><div class="n09-step is-goal"><div class="n09-head"><b>오늘의 산출물</b></div><p class="n09-out"><code>NEWS_AGENT.md</code><br>날짜별 뉴스 Markdown<br>검증 기록</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-slide="C3-N4">
+      <header class="s-head">
+        <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+        <span class="s-line"></span><div class="s-team">2차시<br>PART 6</div>
+      </header>
+      <div class="s-full c3n4-full">
+        <h2 class="s-title">AGENTS.md란 무엇인가</h2>
+        <p class="s-body c3n4-lead">에이전트가 <b>작업을 시작하기 전 먼저 읽는</b> 규칙 파일입니다.</p>
+        <div class="c3n4-grid">
+          <div class="c3n4-card"><span class="c3n4-k">무엇을 담나</span>
+            <b>프로젝트에서 계속 지킬 공통 규칙</b>
+            <span class="subline">한 번만 쓰고 말 지시가 아니라, 매번 같이 적용될 약속만 적습니다.</span></div>
+          <div class="c3n4-card"><span class="c3n4-k">언제 읽히나</span>
+            <b>도구가 지원하면 부르지 않아도</b>
+            <span class="subline">자동 읽기 여부는 도구마다 다릅니다.</span></div>
+          <div class="c3n4-card"><span class="c3n4-k">어디에 만드나</span>
+            <b>프로젝트 루트에 직접 파일로</b>
+            <span class="subline">별도 도구나 설정 화면이 필요 없습니다.</span></div>
+          <div class="c3n4-card is-warn"><span class="c3n4-k">없으면</span>
+            <b>같은 이탈을 매번 반복합니다</b>
+            <span class="subline">새 대화를 열 때마다 같은 주의를 다시 말해야 합니다.</span></div>
+        </div>
+        <p class="c3n4-foot">AI의 기억이 아니라, <span class="hl-mint-mark">사람이 적어 둔 만큼만</span> 지키는 고정된 규칙입니다.
+          <span class="subline">하위 폴더에 규칙 파일을 또 두면 위쪽 규칙과 <b>합쳐지는 방식</b>도 도구마다 다를 수 있습니다.</span></p>
+      </div>
+    </section>
+
+<section class="slide" data-slide="C4-N2">
+      <header class="s-head">
+        <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+        <span class="s-line"></span><div class="s-team">2차시<br>PART 6</div>
+      </header>
+      <div class="s-full">
+        <h2 class="s-title">AGENTS.md에 무엇을 적나</h2>
+        <p class="ow-lead">프로젝트마다 다르지만, 보통 <strong>이 세 종류</strong>를 적습니다.</p>
+        <div class="c4n2-list">
+          <div class="c4n2-row"><span class="c4n2-k">지켜야 할 규칙</span><b>외부 라이브러리를 쓰지 않는다</b></div>
+          <div class="c4n2-row"><span class="c4n2-k">쓸 수 있는 자료</span><b>이 폴더의 prd.md를 먼저 읽어라</b></div>
+          <div class="c4n2-row"><span class="c4n2-k">반복 절차</span><b>수정할 때는 항상 이 순서로</b></div>
+        </div>
+        <p class="s-body c4n2-foot">한 문장이 한 줄입니다. 길게 설명하지 않고 <span class="hl-mint-underline">지킬 것만 짧게</span> 적습니다.</p>
+        <p class="callout c4n2-tip"><b>이 세 종류가 바로 다음 실습의 뼈대입니다.</b>
+          <span class="subline">내 폴더를 읽게 한 뒤 «이 규칙 형식대로 AGENTS.md를 채워 줘»라고 <b>에이전트에게 요청하는 것도 방법</b>입니다. 나온 초안에서 내가 고칠 줄만 고칩니다.</span></p>
+      </div>
+    </section>
+
+<section class="slide w2-practice" data-slide="N-10">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span><div class="s-team">2차시<br>PART 6</div>
+  </header>
+  <div class="s-full">
+    <h2 class="s-title">실습 ③ NEWS_AGENT.md 만들기</h2>
+    <div class="pr-steps">
+      <div class="work-step"><span class="n">1</span><div><b>역할과 선정 기준 정하기</b><span class="desc">몇 개를, 어떤 기준으로 고를지</span></div></div>
+      <div class="work-step"><span class="n">2</span><div><b>Agent에게 초안 요청</b><span class="desc">여섯 제목으로 초안 받기</span></div></div>
+      <div class="work-step"><span class="n">3</span><div><b>사람이 읽고 최소 1개 수정</b><span class="desc">내 판단이 담긴 문장으로</span></div></div>
+      <div class="work-step"><span class="n">4</span><div><b>프로젝트 폴더에 저장</b><span class="desc">파일이 실제로 생겼는지 열기</span></div></div>
+    </div>
+    <p class="n2-done"><b>완료 기준</b><span>NEWS_AGENT.md를 열었을 때 <span class="hl-mint-mark">여섯 제목 아래가 모두 채워져</span> 있습니다.</span></p>
+  </div>
+</section>
+
+<section class="slide" data-slide="N-11">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span><div class="s-team">2차시<br>PART 6</div>
+  </header>
+  <div class="s-full pw-full">
+    <p class="s-eyebrow">실습 ③ 예시 프롬프트</p>
+    <h2 class="s-title">NEWS_AGENT.md를 만들 때 이렇게 요청합니다</h2>
+    <div class="w2-prompt terminal-dark pw-term viz-prompt" aria-label="NEWS_AGENT.md를 만들 때 이렇게 요청합니다 예시 프롬프트">
+      <div class="terminal-bar"><span></span><span></span><span></span><b>Google Antigravity · NEWS_AGENT.md 초안</b></div>
+      <div class="terminal-body">
+        <span class="terminal-prompt">&gt;_</span>
+        <p class="terminal-copy">이 폴더에 NEWS_AGENT.md 초안을 써 주세요. <strong>아직 저장하지 마세요.</strong><br>
+        [내 기준] 조사 대상: <b class="fill">[예: 최근 24시간 동안 공개된 AI 관련 뉴스]</b><br>
+        · 뉴스 선정 기준: <b class="fill">[예: 중요도가 높은 뉴스 5개]</b><br>
+        · 제외할 정보: <b class="fill">[예: 중복 기사 · 확인되지 않은 정보]</b><br>
+        <br>
+        <strong>역할 · 조사 대상 · 뉴스 선정 기준 · 제외할 정보 · 출력 형식 · 검증 기준</strong> 여섯 제목으로 써 주세요.<br>
+        출력 형식에는 제목 · 핵심 내용 · 중요한 이유 · 출처를 넣어 주세요.<br>
+        제가 안 적은 기준은 만들지 말고, 모르는 것은 [확인 필요]로 남기세요.</p>
+        <span class="terminal-cursor" aria-hidden="true"></span>
+      </div>
+    </div>
+    <div class="pw-notes"><div class="pw-note"><span class="pw-k">이렇게 쓰는 이유</span><p>여섯 제목을 정해 주면 빠진 기준이 바로 보입니다.</p></div><div class="pw-note"><span class="pw-k">이 줄이 막는 것</span><p>«아직 저장하지 마세요»가 확인 전 저장을 막습니다.</p></div><div class="pw-note"><span class="pw-k">확인할 것</span><p>여섯 제목 아래가 모두 채워졌는지 봅니다.</p></div></div>
+  </div>
+</section>
+
+<section class="slide w2-practice" data-slide="N-12">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span><div class="s-team">2차시<br>PART 6</div>
+  </header>
+  <div class="s-full">
+    <h2 class="s-title">실습 ④ 최신 AI 뉴스 검색하고 원문 확인하기</h2>
+    <p class="n2-lead">계정·권한에 따라 웹 검색이 막히면 <b>강사 시연</b>을 함께 보고, 3단계 원문 확인은 직접 합니다.</p>
+    <div class="pr-steps">
+      <div class="work-step"><span class="n">1</span><div><b>Agent에게 검색 맡기기</b><span class="desc">NEWS_AGENT.md를 먼저 읽게</span></div></div>
+      <div class="work-step"><span class="n">2</span><div><b>주요 뉴스 선정 결과 받기</b><span class="desc">제목과 출처 링크를 함께</span></div></div>
+      <div class="work-step"><span class="n">3</span><div><b>원문을 직접 열어 보기</b><span class="desc">링크가 실제 기사로 열리는지</span></div></div>
+    </div>
+    <p class="n2-done"><b>완료 기준</b><span>뉴스마다 출처 링크가 있고, <span class="hl-mint-mark">링크가 실제 기사로 열립니다</span>.</span></p>
+  </div>
+</section>
+
+<section class="slide" data-slide="N-13">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span><div class="s-team">2차시<br>PART 6</div>
+  </header>
+  <div class="s-full pw-full">
+    <p class="s-eyebrow">실습 ④ 예시 프롬프트</p>
+    <h2 class="s-title">뉴스 검색을 맡길 때 이렇게 요청합니다</h2>
+    <div class="w2-prompt terminal-dark pw-term viz-prompt" aria-label="뉴스 검색을 맡길 때 이렇게 요청합니다 예시 프롬프트">
+      <div class="terminal-bar"><span></span><span></span><span></span><b>Google Antigravity · 최신 AI 뉴스 검색</b></div>
+      <div class="terminal-body">
+        <span class="terminal-prompt">&gt;_</span>
+        <p class="terminal-copy">이 폴더의 <strong>NEWS_AGENT.md를 먼저 읽고</strong> 그 기준대로 진행해줘.<br>
+        최근 24시간 동안 공개된 AI 관련 주요 뉴스를 찾아줘.<br>
+        중요도가 높은 뉴스 5개만 선정하고, 각 뉴스에 대해 제목, 핵심 내용, 중요한 이유, 출처를 정리해줘.<br>
+        중복 기사는 제외하고 <strong>확인되지 않은 정보는 작성하지 마.</strong><br>
+        결과는 날짜별 Markdown 파일로 저장해줘.</p>
+        <span class="terminal-cursor" aria-hidden="true"></span>
+      </div>
+    </div>
+    <div class="pw-notes"><div class="pw-note"><span class="pw-k">이렇게 쓰는 이유</span><p>기준 파일과 요청이 같은 방향을 가리킵니다.</p></div><div class="pw-note"><span class="pw-k">이 줄이 막는 것</span><p>«확인되지 않은 정보는 작성하지 마»가 지어낸 기사를 막습니다.</p></div><div class="pw-note"><span class="pw-k">확인할 것</span><p>뉴스마다 출처 링크가 실제로 열리는지 봅니다.</p></div></div>
+  </div>
+</section>
+
+<section class="slide w2-scope n2-stage" data-slide="N-14" data-shape="classification">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span><div class="s-team">2차시<br>PART 6</div>
+  </header>
+  <div class="s-full">
+    <h2 class="s-title">뉴스를 고르고 빼는 세 칸</h2>
+    <p class="n2-lead">검색 결과를 그대로 옮기지 않습니다. 원문을 확인한 뒤 <span class="hl-mint-underline">세 칸 중 하나</span>에 넣습니다.</p>
+    <div class="sc-grid">
+      <div class="sc-col is-in"><svg class="sc-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10" style="fill:var(--mint)"/><path d="M7.5 12.5l3 3 6-6.5" style="stroke:var(--on-mint)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg><h3>고를 것</h3><p>원문이 확인된 주요 뉴스.</p><p>제목·핵심 내용·중요한 이유·출처로 요약합니다.</p></div>
+      <div class="sc-col is-out"><svg class="sc-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10" style="fill:var(--coral)"/><path d="M8.5 8.5l7 7M15.5 8.5l-7 7" style="stroke:var(--on-coral)" stroke-width="2.4" stroke-linecap="round"/></svg><h3>뺄 것</h3><p>중복 기사 · 확인되지 않은 정보.</p><p>같은 소식을 다룬 기사는 하나만 남깁니다.</p></div>
+      <div class="sc-col is-later"><svg class="sc-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" style="stroke:var(--blue)" stroke-width="2"/><path d="M12 7v5l3.5 2" style="stroke:var(--blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg><h3>판단 보류</h3><p>원문을 찾지 못한 뉴스.</p><p>지우지 않고 [확인 필요]로 표시합니다.</p></div>
+    </div>
+    <p class="n14-format"><b>요약 한 줄 형식</b><code>제목 · 핵심 내용 · 중요한 이유 · 출처(원문 링크)</code></p>
+  </div>
+</section>
+
+<section class="slide n2-stage n2-files" data-slide="N-15" data-shape="structure">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span><div class="s-team">2차시<br>PART 6</div>
+  </header>
+  <div class="s-full">
+    <h2 class="s-title">결과는 날짜별 Markdown 파일로 저장합니다</h2>
+    <p class="n2-lead">날짜가 파일 이름이 되면 <b>오늘 결과와 다음 날 결과가 섞이지 않습니다</b>. 기준 파일은 <span class="hl-mint-text">한 곳에 그대로</span> 둡니다.</p>
+    <div class="n15-body">
+      <div class="n15-tree viz-folder" role="img" aria-label="프로젝트 폴더 news-agent 안에 기준 파일 NEWS_AGENT.md와 결과 폴더 news가 있고, news 안에 날짜 이름의 Markdown 파일이 날마다 하나씩 생기는 폴더 구조">
+        <p class="n15-item"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6.5A1.5 1.5 0 0 1 4.5 5H9l2 2h8.5A1.5 1.5 0 0 1 21 8.5v9a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 17.5z" style="fill:var(--blue)"/></svg><code>news-agent/</code><span class="desc">프로젝트 폴더</span></p>
+        <p class="n15-item lv1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h8l4 4v14H6z" style="fill:var(--white);stroke:var(--blue)" stroke-width="1.8" stroke-linejoin="round"/><path d="M14 3v4h4" style="fill:none;stroke:var(--blue)" stroke-width="1.8"/></svg><code>NEWS_AGENT.md</code><span class="desc">매번 먼저 읽는 기준</span></p>
+        <p class="n15-item lv1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6.5A1.5 1.5 0 0 1 4.5 5H9l2 2h8.5A1.5 1.5 0 0 1 21 8.5v9a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 17.5z" style="fill:var(--blue)"/></svg><code>news/</code><span class="desc">결과를 모으는 폴더</span></p>
+        <p class="n15-item lv2 is-new"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h8l4 4v14H6z" style="fill:var(--white);stroke:var(--mint-deep)" stroke-width="1.8" stroke-linejoin="round"/><path d="M14 3v4h4" style="fill:none;stroke:var(--mint-deep)" stroke-width="1.8"/></svg><code>2026-09-10.md</code><span class="desc">예: 오늘 결과</span></p>
+        <p class="n15-item lv2 is-new"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h8l4 4v14H6z" style="fill:var(--white);stroke:var(--mint-deep)" stroke-width="1.8" stroke-linejoin="round"/><path d="M14 3v4h4" style="fill:none;stroke:var(--mint-deep)" stroke-width="1.8"/></svg><code>2026-09-11.md</code><span class="desc">예: 다음 날 새 파일</span></p>
+      </div>
+      <div class="w2-prompt terminal-dark n15-md" aria-label="날짜별 뉴스 Markdown 파일 안의 형식">
+        <div class="terminal-bar"><span></span><span></span><span></span><b>news/2026-09-10.md</b></div>
+        <div class="terminal-body"><p class="terminal-copy"># 2026-09-10 AI 뉴스<br>
+          ## 1. <b class="fill">[기사 제목]</b><br>
+          - 핵심 내용: <b class="fill">[한두 문장]</b><br>
+          - 중요한 이유: <b class="fill">[한 문장]</b><br>
+          - 출처: <b class="fill">[매체 · 원문 링크]</b><br>
+          ## 2. …</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide w2-stepwarn has-img-r" data-slide="C5-15">
+      <header class="s-head">
+        <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+        <span class="s-line"></span><div class="s-team">2차시<br>PART 6</div>
+      </header>
+      <div class="s-full">
+        <h2 class="s-title">핵심 기능은 한 단계씩</h2>
+        <div class="sw-steps">
+          <div class="work-step"><span class="n">1</span><b>화면·입력·결과 영역 만들기</b><span class="desc">재료 손질처럼, 아직 동작 안 해도 자리부터 잡습니다.</span></div>
+          <div class="vf-down" aria-hidden="true">↓</div>
+          <div class="work-step"><span class="n">2</span><b>대표 입력 하나로 결과 나오게 하기</b><span class="desc">볶기처럼, 이 단계가 핵심 동작입니다.</span></div>
+          <div class="vf-down" aria-hidden="true">↓</div>
+          <div class="work-step"><span class="n">3</span><b>다른 값으로 다시 확인하기</b><span class="desc">간 맞추기처럼, 중간에 맛을 보며 확인합니다.</span></div>
+        </div>
+        <div class="sw-warn">
+          <div class="sw-warncard"><span class="tag">그냥 다 시키면</span><p>범위가 부풀고 Agent가 추측으로 채우는 부분이 늘어납니다.</p></div>
+          <div class="sw-warncard"><span class="tag">그 결과</span><p>어디서 틀렸는지 알기 어려워 고치는 데 더 오래 걸립니다.</p></div>
+        </div>
+      </div>
+      <!-- 이미지 슬롯 복원(2026-07-31 WAVE2 §2: 제작지시서 19장을 그대로 살린다).
+           직전에 임시로 넣었던 SVG 도식은 제거했다 — 이미지 제작지시 §4-17이 이 자리의 정본이다. -->
+      <figure class="asset-slot asset-slot--support img-slot-r" data-image-purpose="explanatory"
+        data-image-state="ready" data-expected-src="자료/images/s75_one-step-at-a-time-paper-cut-v1-transparent.png"
+        role="img" aria-label="위에서 아래로 이어지는 세 단계에서 화면 구조를 만들고, 한 입력을 실행해 결과를 낸 뒤, 다른 값으로 결과를 확인하는 흐름을 보여준다"><img src="자료/images/s75_one-step-at-a-time-paper-cut-v1-transparent.png?v=20260801v2" alt="위에서 아래로 이어지는 세 단계가 화면 구조·입력 실행·다른 값 확인의 순서를 보여준다"></figure>
+    </section>
+
+<section class="slide w2-practice" data-slide="N-16">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span><div class="s-team">2차시<br>PART 6</div>
+  </header>
+  <div class="s-full">
+    <h2 class="s-title">실습 ⑤ 뉴스 결과를 원문과 대조하기</h2>
+    <p class="n2-lead">Agent가 만든 결과와 <b>실제 기사 출처</b>를 비교합니다. <span class="hl-mint-underline">다섯 칸을 모두 확인해야</span> 끝입니다.</p>
+    <div class="n16-grid">
+      <div class="work-step"><span class="n">1</span><div><b>실제 존재하는 뉴스인가</b><span class="desc">출처 링크를 열어 기사 확인</span></div></div>
+      <div class="work-step"><span class="n">2</span><div><b>날짜가 맞는가</b><span class="desc">기사 날짜와 파일 날짜 비교</span></div></div>
+      <div class="work-step"><span class="n">3</span><div><b>제목이 과장되지 않았는가</b><span class="desc">원문 제목과 나란히 읽기</span></div></div>
+      <div class="work-step"><span class="n">4</span><div><b>요약 내용이 원문과 일치하는가</b><span class="desc">핵심 문장을 원문에서 찾기</span></div></div>
+      <div class="work-step"><span class="n">5</span><div><b>출처가 제대로 기록됐는가</b><span class="desc">매체 이름과 링크가 모두 있음</span></div></div>
+      <p class="n2-done n16-done"><b>완료 기준</b><span>다섯 칸을 모두 확인했고, 원문과 다른 항목은 <span class="hl-mint-mark">[확인 필요]로 고쳐</span> 두었습니다.</span></p>
+    </div>
+  </div>
+</section>
+
+<section class="slide compare-slide n2-evidence" data-slide="N-17" data-shape="contrast">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span><div class="s-team">2차시<br>PART 6</div>
+  </header>
+  <div class="s-full cc-full">
+    <h2 class="s-title">AI의 «완료»는 완료 증거가 아닙니다</h2>
+    <p class="s-body n17-lead">Agent가 «뉴스 5건 정리했습니다»라고 해도, 그것은 <b>확인이 아니라 보고</b>입니다.</p>
+    <div class="cc-grid">
+      <div class="cc-side n17-said">
+        <h3>Agent가 한 말</h3>
+        <p class="n17-bubble">완료했습니다. 뉴스 5건을 정리해 저장했습니다.</p>
+        <p class="n17-note">파일을 열어 보기 전까지는 사실인지 알 수 없습니다.</p>
+      </div>
+      <div class="cc-neq" aria-hidden="true">≠</div>
+      <div class="cc-side n17-seen">
+        <h3>내가 열어 확인한 것</h3>
+        <ul>
+          <li>파일이 <b>실제로 생성</b>됐는가</li>
+          <li>요구사항(<b>5건 · 출처</b>)이 반영됐는가</li>
+          <li><b>날짜와 내용</b>이 원문과 맞는가</li>
+          <li><b>출처가 실제로 존재</b>하는가</li>
+        </ul>
+        <p class="n17-note"><span class="hl-mint-mark">직접 연 것만 완료로 셉니다</span></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide w2-annex is-recovery" data-slide="A4R1">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span><div class="s-team">2차시<br>PART 6</div>
+  </header>
+      <div class="s-full steps-full">
+        <p class="s-eyebrow">복구 안내</p>
+        <h2 class="s-title">뉴스 조사가 막혔을 때</h2>
+        <div class="eval-steps">
+          <div class="work-step"><span class="n">1</span><b><span>검색 결과가 나오지 않을 때 — </span><strong>조사 대상·기간을 좁혀</strong><span> 다시 요청하기</span></b></div>
+          <div class="vf-down" aria-hidden="true">↓</div>
+          <div class="work-step"><span class="n">2</span><b><span>결과가 비었을 때 — 원문 링크를 </span><strong>직접 열어 확인</strong><span>하고, 못 찾으면 [확인 필요]로 남기기</span></b></div>
+        </div>
+        <div class="w2-prompt terminal-dark pr-prompt" aria-label="Google Antigravity · 뉴스 재검색 예시 프롬프트">
+          <div class="terminal-bar"><span></span><span></span><span></span><b>Google Antigravity · 뉴스 재검색</b></div>
+          <div class="terminal-body">
+            <span class="terminal-prompt">&gt;_</span>
+            <p class="terminal-copy">검색 결과가 나오지 않았습니다. 조사 대상을 «<b class="fill">[예: AI 모델 발표 뉴스]</b>», 기간을 «<b class="fill">[예: 최근 24시간]</b>»으로 좁혀 다시 찾아 주세요.<br>
+            각 뉴스에는 <strong>원문 링크</strong>를 함께 적고, 원문을 확인하지 못한 항목은 <strong>[확인 필요]</strong>로 남겨 주세요.</p>
+            <span class="terminal-cursor" aria-hidden="true"></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+<section class="slide n2-stage n2-sched" data-slide="N-19" data-shape="flow">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span><div class="s-team">2차시<br>PART 6</div>
+  </header>
+  <div class="s-full">
+    <h2 class="s-title">같은 조사를 정해진 시간에 반복 실행합니다</h2>
+    <p class="n2-lead">매번 직접 요청하지 않고 <b>정해진 시간에 반복 실행</b>하도록 설정하는 방법을 소개합니다.</p>
+    <div class="n19-body">
+      <div class="viz-cycle" role="img" aria-label="매일 오전 9시가 되면 최신 AI 뉴스 탐색, 뉴스 선정, 요약 및 검증, 날짜별 Markdown 저장이 차례로 실행되고 다음 날 같은 시간에 다시 시작되는 반복 흐름">
+        <svg viewBox="0 0 440 440" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs><marker id="n19-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" style="fill:var(--blue)"/></marker></defs><path class="cyc-wire" d="M271,79 A150,150 0 0 1 361,169" marker-end="url(#n19-arrow)"/><path class="cyc-wire" d="M361,271 A150,150 0 0 1 271,361" marker-end="url(#n19-arrow)"/><path class="cyc-wire" d="M169,361 A150,150 0 0 1 79,271" marker-end="url(#n19-arrow)"/><path class="cyc-wire" d="M79,169 A150,150 0 0 1 169,79" marker-end="url(#n19-arrow)"/></svg>
+        <div class="cyc-node" style="left:200px;top:55px;"><span class="cn">1</span><b>최신 AI<br>뉴스 탐색</b></div>
+        <div class="cyc-node" style="left:338px;top:200px;"><span class="cn">2</span><b>뉴스 선정</b></div>
+        <div class="cyc-node" style="left:200px;top:345px;"><span class="cn">3</span><b>요약 및<br>검증</b></div>
+        <div class="cyc-node" style="left:62px;top:200px;"><span class="cn">4</span><b>날짜별<br>저장</b></div>
+        <div class="cyc-center">매일<br>오전 9시</div>
+      </div>
+      <div class="n19-side">
+        <div class="n19-demo"><b>강사 시연 화면</b><p>반복 실행 설정은 계정·권한에 따라 다를 수 있어 강사가 화면으로 보여 줍니다.</p></div>
+        <div class="n19-vs">
+          <p><b>AI Chat</b>물어볼 때만 답합니다.</p>
+          <p><b>Agent</b>정해진 시간에 같은 일을 반복합니다.</p>
+        </div>
+        <p class="n19-keep">반복되어도 기준은 <span class="hl-mint-underline">NEWS_AGENT.md</span>에서 읽고, 결과는 <b>사람이 검증</b>합니다.</p>
+      </div>
+    </div>
+  </div>
+</section>

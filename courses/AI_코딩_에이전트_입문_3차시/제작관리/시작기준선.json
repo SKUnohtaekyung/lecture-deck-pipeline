@@ -1,0 +1,4272 @@
+{
+ "task": "T00",
+ "recorded_at": "2026-09-08T14:39:29.930141+09:00",
+ "session_id": "671720eb-7ad2-410d-b288-2f021c67b84e",
+ "root": "C:/Users/miso/Desktop/Project/template",
+ "commands": [
+  {
+   "cmd": "git rev-parse --show-toplevel",
+   "exit": 0,
+   "stdout": "C:/Users/miso/Desktop/Project/template",
+   "stderr": ""
+  },
+  {
+   "cmd": "git status --short --branch",
+   "exit": 0,
+   "stdout": "## main...origin/main\n?? \"courses/AI_\\354\\275\\224\\353\\224\\251_\\354\\227\\220\\354\\235\\264\\354\\240\\204\\355\\212\\270_\\354\\236\\205\\353\\254\\270_3\\354\\260\\250\\354\\213\\234/\"\n?? \"courses/\\353\\260\\224\\354\\235\\264\\353\\270\\214\\354\\275\\224\\353\\224\\251/AI_\\354\\275\\224\\353\\224\\251_\\354\\227\\220\\354\\235\\264\\354\\240\\204\\355\\212\\270_\\354\\236\\205\\353\\254\\270_4\\352\\260\\225_\\354\\273\\244\\353\\246\\254\\355\\201\\230\\353\\237\\274.html\"\n?? \"sessions/references/iPhone 16 - 1.png\"\n?? \"sessions/references/\\355\\230\\270\\355\\215\\274\\354\\212\\244.png\"",
+   "stderr": ""
+  },
+  {
+   "cmd": "git branch --show-current",
+   "exit": 0,
+   "stdout": "main",
+   "stderr": ""
+  },
+  {
+   "cmd": "git remote -v",
+   "exit": 0,
+   "stdout": "origin\thttps://github.com/SKUnohtaekyung/lecture-deck-pipeline.git (fetch)\norigin\thttps://github.com/SKUnohtaekyung/lecture-deck-pipeline.git (push)",
+   "stderr": ""
+  },
+  {
+   "cmd": "git rev-list --left-right --count HEAD...origin/main",
+   "exit": 0,
+   "stdout": "0\t0",
+   "stderr": ""
+  },
+  {
+   "cmd": "git -c core.quotepath=false status --short --branch --untracked-files=all",
+   "exit": 0,
+   "stdout": "## main...origin/main\n?? courses/AI_코딩_에이전트_입문_3차시/3차시_강의자료_제작계획.md\n?? courses/AI_코딩_에이전트_입문_3차시/README.md\n?? courses/AI_코딩_에이전트_입문_3차시/profile.md\n?? courses/AI_코딩_에이전트_입문_3차시/sessions/1주차/1주차_초안.md\n?? courses/AI_코딩_에이전트_입문_3차시/sessions/1주차/README.md\n?? courses/AI_코딩_에이전트_입문_3차시/sessions/1주차/deck.contract.json\n?? courses/AI_코딩_에이전트_입문_3차시/sessions/1주차/강의덱.초안/README.md\n?? courses/AI_코딩_에이전트_입문_3차시/sessions/1주차/강의덱.초안/part-01.html\n?? courses/AI_코딩_에이전트_입문_3차시/sessions/1주차/강의덱.초안/shell.html\n?? courses/AI_코딩_에이전트_입문_3차시/sessions/1주차/실습예제/README.md\n?? courses/AI_코딩_에이전트_입문_3차시/sessions/1주차/자료/개념KB.md\n?? courses/AI_코딩_에이전트_입문_3차시/sessions/1주차/자료/리서치_리뷰.html\n?? courses/AI_코딩_에이전트_입문_3차시/sessions/1주차/자료/이미지-에셋.json\n?? courses/AI_코딩_에이전트_입문_3차시/sessions/1주차/자료/이미지-프롬프트.md\n?? courses/AI_코딩_에이전트_입문_3차시/sessions/1주차/콘텐츠_리뷰.html\n?? courses/AI_코딩_에이전트_입문_3차시/sessions/2주차/2주차_초안.md\n?? courses/AI_코딩_에이전트_입문_3차시/sessions/2주차/README.md\n?? courses/AI_코딩_에이전트_입문_3차시/sessions/2주차/deck.contract.json\n?? courses/AI_코딩_에이전트_입문_3차시/sessions/2주차/강의덱.초안/README.md\n?? courses/AI_코딩_에이전트_입문_3차시/sessions/2주차/강의덱.초안/part-01.html\n?? courses/AI_코딩_에이전트_입문_3차시/sessions/2주차/강의덱.초안/shell.html\n?? courses/AI_코딩_에이전트_입문_3차시/sessions/2주차/실습예제/README.md\n?? courses/AI_코딩_에이전트_입문_3차시/sessions/2주차/자료/개념KB.md\n?? courses/AI_코딩_에이전트_입문_3차시/sessions/2주차/자료/리서치_리뷰.html\n?? courses/AI_코딩_에이전트_입문_3차시/sessions/2주차/자료/이미지-에셋.json\n?? courses/AI_코딩_에이전트_입문_3차시/sessions/2주차/자료/이미지-프롬프트.md\n?? courses/AI_코딩_에이전트_입문_3차시/sessions/2주차/콘텐츠_리뷰.html\n?? courses/AI_코딩_에이전트_입문_3차시/sessions/3주차/3주차_초안.md\n?? courses/AI_코딩_에이전트_입문_3차시/sessions/3주차/README.md\n?? courses/AI_코딩_에이전트_입문_3차시/sessions/3주차/deck.contract.json\n?? courses/AI_코딩_에이전트_입문_3차시/sessions/3주차/강의덱.초안/README.md\n?? courses/AI_코딩_에이전트_입문_3차시/sessions/3주차/강의덱.초안/part-01.html\n?? courses/AI_코딩_에이전트_입문_3차시/sessions/3주차/강의덱.초안/shell.html\n?? courses/AI_코딩_에이전트_입문_3차시/sessions/3주차/실습예제/README.md\n?? courses/AI_코딩_에이전트_입문_3차시/sessions/3주차/자료/개념KB.md\n?? courses/AI_코딩_에이전트_입문_3차시/sessions/3주차/자료/리서치_리뷰.html\n?? courses/AI_코딩_에이전트_입문_3차시/sessions/3주차/자료/이미지-에셋.json\n?? courses/AI_코딩_에이전트_입문_3차시/sessions/3주차/자료/이미지-프롬프트.md\n?? courses/AI_코딩_에이전트_입문_3차시/sessions/3주차/콘텐츠_리뷰.html\n?? courses/AI_코딩_에이전트_입문_3차시/sessions/README.md\n?? courses/AI_코딩_에이전트_입문_3차시/슬라이드지침.md\n?? courses/AI_코딩_에이전트_입문_3차시/자료/데이터/mock_ecommerce_orders.csv\n?? courses/AI_코딩_에이전트_입문_3차시/자료/원문/01_교육계획서_구조형_원문.txt\n?? courses/AI_코딩_에이전트_입문_3차시/자료/원문/02_교육계획서_목록형_원문.txt\n?? courses/AI_코딩_에이전트_입문_3차시/자료/자료목록.md\n?? courses/AI_코딩_에이전트_입문_3차시/커리큘럼_기준안.md\n?? courses/바이브코딩/AI_코딩_에이전트_입문_4강_커리큘럼.html\n?? \"sessions/references/iPhone 16 - 1.png\"\n?? sessions/references/호퍼스.png",
+   "stderr": ""
+  },
+  {
+   "cmd": "git diff --name-only",
+   "exit": 0,
+   "stdout": "",
+   "stderr": ""
+  },
+  {
+   "cmd": "git diff --cached --name-only",
+   "exit": 0,
+   "stdout": "",
+   "stderr": ""
+  },
+  {
+   "cmd": "git rev-parse HEAD",
+   "exit": 0,
+   "stdout": "ff48036288d7f6d4b79dade64f25031b39015f0c",
+   "stderr": ""
+  },
+  {
+   "cmd": "git worktree list",
+   "exit": 0,
+   "stdout": "C:/Users/miso/Desktop/Project/template                                                  ff48036 [main]\nC:/Users/miso/Desktop/template/.claude/worktrees/harness-skill-improvement-plan-2a5f81  65198a2 [claude/harness-skill-improvement-plan-2a5f81] prunable\nC:/Users/miso/Desktop/template/.claude/worktrees/research-skill-refactor-phase-2-8d3584 cf31688 [claude/determined-matsumoto-64e65b] prunable\nC:/Users/miso/Desktop/template/.claude/worktrees/week-1-content-addition-8e2d72         b887b83 (detached HEAD) prunable",
+   "stderr": ""
+  }
+ ],
+ "counts": {
+  "tracked": 790,
+  "untracked": 49,
+  "hashed": 839,
+  "missing_or_dir": []
+ },
+ "note": "제작관리/ 폴더는 이 기준선 직전에 T00이 생성했다. 이 JSON 자체는 기준선 파일 목록에 포함되지 않는다(계수 시점에 존재하지 않았음).",
+ "files": {
+  ".agents/README.md": {
+   "sha256": "565bd94869390122b7f5baedd517e97c9aa12980ede68a72e701f4c37825ce0e",
+   "size": 4078,
+   "git": "tracked"
+  },
+  ".agents/agent-memory/create-slides/MEMORY.md": {
+   "sha256": "67dc58118cbe36712e6fd3da5e09ddaeb8841117c32f3e8688a4913b73755164",
+   "size": 120498,
+   "git": "tracked"
+  },
+  ".agents/skills/_template/SKILL.md.template": {
+   "sha256": "a3aadd1cd35d2b7bca5d2c3fd60c21c660d60f947d44c905253e000a7ca39cad",
+   "size": 814,
+   "git": "tracked"
+  },
+  ".agents/skills/_template/references/example-reference.md": {
+   "sha256": "2de6769c640ff8c25365313877e7ddf2fa806ececdfbac41fcadcd30a83c00d8",
+   "size": 221,
+   "git": "tracked"
+  },
+  ".agents/skills/create-slides/SKILL.md": {
+   "sha256": "2c842000e434f5c608e0e26b7b1134d3b33e07d93c215446ac505e32b6592e35",
+   "size": 1930,
+   "git": "tracked"
+  },
+  ".agents/skills/create-slides/agents/openai.yaml": {
+   "sha256": "641d54e94470df34baea0463b8a3cddf9a5a128912a1d059a63b5f2b55f88eb8",
+   "size": 228,
+   "git": "tracked"
+  },
+  ".agents/skills/ui-ux-pro-max/SKILL.md": {
+   "sha256": "212570dddec082209069f986cb8b41d4b3b39a5dc1603768482494060b23cddd",
+   "size": 48601,
+   "git": "tracked"
+  },
+  ".agents/skills/ui-ux-pro-max/agents/openai.yaml": {
+   "sha256": "6a5ba96015d1d4d903ba900f9a5fa63aeaf2684bc7b2bc5ddf7069c6c65af53e",
+   "size": 214,
+   "git": "tracked"
+  },
+  ".agents/skills/ui-ux-pro-max/data/app-interface.csv": {
+   "sha256": "a276e55817958075a8dffeb5f5d7be16703b1611e9f0a3527525e1a44df25c46",
+   "size": 9773,
+   "git": "tracked"
+  },
+  ".agents/skills/ui-ux-pro-max/data/charts.csv": {
+   "sha256": "ebb565308115f955791b0431797a89d9b3587c25d5babb9428d10712c4924817",
+   "size": 19391,
+   "git": "tracked"
+  },
+  ".agents/skills/ui-ux-pro-max/data/colors.csv": {
+   "sha256": "69ee8c1147b269599d20ca418bdd6f32563a9aa2d962fb9a9b8dec66bf7b1ba4",
+   "size": 32432,
+   "git": "tracked"
+  },
+  ".agents/skills/ui-ux-pro-max/data/google-fonts.csv": {
+   "sha256": "2c03a3cd134d126bd9d6a7dc2a6360dc5272219ad6df3eb9315b031f806e1487",
+   "size": 745196,
+   "git": "tracked"
+  },
+  ".agents/skills/ui-ux-pro-max/data/icons.csv": {
+   "sha256": "9da693f818d43e2110e28d949905c85baad1650d383ae9e1568f58c766b0e016",
+   "size": 20742,
+   "git": "tracked"
+  },
+  ".agents/skills/ui-ux-pro-max/data/landing.csv": {
+   "sha256": "080cedbcd61ff8ec9520f33929baa76bee9589e783f83b2f8d824a466b6a46d7",
+   "size": 16720,
+   "git": "tracked"
+  },
+  ".agents/skills/ui-ux-pro-max/data/motion.csv": {
+   "sha256": "528be03324785eb568c9570f5d60fc1644d5bc7ce2cbdd21b648cb90ce74e76e",
+   "size": 10517,
+   "git": "tracked"
+  },
+  ".agents/skills/ui-ux-pro-max/data/products.csv": {
+   "sha256": "6ea44a7725d708a25f80626369eb011ec202809b5dfcc8ca7fce2402b5489cf1",
+   "size": 58168,
+   "git": "tracked"
+  },
+  ".agents/skills/ui-ux-pro-max/data/react-performance.csv": {
+   "sha256": "47c0a454cb73bf32378c55eb781dea4c44440ec6a1b52039119afc354315c17e",
+   "size": 14867,
+   "git": "tracked"
+  },
+  ".agents/skills/ui-ux-pro-max/data/stacks/angular.csv": {
+   "sha256": "0c37794e6b6e3d0e3a0bb90eb619608faaa5ce703afe34c27ef6e3c1ac583258",
+   "size": 18320,
+   "git": "tracked"
+  },
+  ".agents/skills/ui-ux-pro-max/data/stacks/astro.csv": {
+   "sha256": "ff7fa30b41464fbe907a99499a32b4395210ef57f3674bef628aeadf767f40a8",
+   "size": 11922,
+   "git": "tracked"
+  },
+  ".agents/skills/ui-ux-pro-max/data/stacks/flutter.csv": {
+   "sha256": "e470e6bc2bcd8562667cc764d1e1afb0be0a30ca4dc9ec12fa18b19d46f156bd",
+   "size": 10469,
+   "git": "tracked"
+  },
+  ".agents/skills/ui-ux-pro-max/data/stacks/html-tailwind.csv": {
+   "sha256": "1f004891dd189f6bc2a7717401e3100244326e7e2f3963a79bf7b2349d85e091",
+   "size": 11361,
+   "git": "tracked"
+  },
+  ".agents/skills/ui-ux-pro-max/data/stacks/jetpack-compose.csv": {
+   "sha256": "8e1995b93414e9d50f8d450bdd15853ff138ca3b8c9d6529cd3171729fa5fa7f",
+   "size": 8248,
+   "git": "tracked"
+  },
+  ".agents/skills/ui-ux-pro-max/data/stacks/laravel.csv": {
+   "sha256": "0f523354dec42df92fc570a408cd1128fd1efc879874ad9163ced4f2b179d2b1",
+   "size": 18429,
+   "git": "tracked"
+  },
+  ".agents/skills/ui-ux-pro-max/data/stacks/nextjs.csv": {
+   "sha256": "06a8e8c13bd44696c6ebb4cb6c4d8dea440e3de8cce77616512529ed29258f0c",
+   "size": 12546,
+   "git": "tracked"
+  },
+  ".agents/skills/ui-ux-pro-max/data/stacks/nuxt-ui.csv": {
+   "sha256": "c1f3c9e438ab89f806a0c2e0be4c37cb34d9370c16207353aa9c972d548f710e",
+   "size": 14061,
+   "git": "tracked"
+  },
+  ".agents/skills/ui-ux-pro-max/data/stacks/nuxtjs.csv": {
+   "sha256": "696ec6df0e5971cd8b69080ee6abea2e9748fb2de47acb2bcc748302684f2030",
+   "size": 16598,
+   "git": "tracked"
+  },
+  ".agents/skills/ui-ux-pro-max/data/stacks/react-native.csv": {
+   "sha256": "a08ca77fcf6b6d9531982dce465366296013bfcf12d2938ac72ad57cf0c4f085",
+   "size": 10035,
+   "git": "tracked"
+  },
+  ".agents/skills/ui-ux-pro-max/data/stacks/react.csv": {
+   "sha256": "b6e3eb0e4c9c01bd00ffb951d5ca224a19d488b4544c75436f48cf92ff12bf45",
+   "size": 13016,
+   "git": "tracked"
+  },
+  ".agents/skills/ui-ux-pro-max/data/stacks/shadcn.csv": {
+   "sha256": "0f9cc6fbfebea8026950c422808bb3aae239185bad770726b331f827f8e1a6de",
+   "size": 15982,
+   "git": "tracked"
+  },
+  ".agents/skills/ui-ux-pro-max/data/stacks/svelte.csv": {
+   "sha256": "bc8d158994a8bdf412830a9dd5e5a5534edd2f367a6e50e0ebd4d76f592dfa3f",
+   "size": 11063,
+   "git": "tracked"
+  },
+  ".agents/skills/ui-ux-pro-max/data/stacks/swiftui.csv": {
+   "sha256": "e87cb9eee208bb753bdab96d4a261c7f830c4317ee90ec098316b248fc32be85",
+   "size": 10872,
+   "git": "tracked"
+  },
+  ".agents/skills/ui-ux-pro-max/data/stacks/threejs.csv": {
+   "sha256": "c182b38b30fa11531796e018d9fa87d63a5a85bee35c1bfb9baf480df098d270",
+   "size": 44841,
+   "git": "tracked"
+  },
+  ".agents/skills/ui-ux-pro-max/data/stacks/vue.csv": {
+   "sha256": "9b793c3f4eec85f77a758c09322f2b62f3b3ca549bb713ccf0849ef885934395",
+   "size": 11056,
+   "git": "tracked"
+  },
+  ".agents/skills/ui-ux-pro-max/data/styles.csv": {
+   "sha256": "b3fabd4e47a91d330411e32c6c68748dc0ab5f67b02404e0c0d26eb517d61814",
+   "size": 142690,
+   "git": "tracked"
+  },
+  ".agents/skills/ui-ux-pro-max/data/typography.csv": {
+   "sha256": "a393558b7acc79193744954b93e8e878b2d7b0a4901e3433995b66a219935d3a",
+   "size": 49741,
+   "git": "tracked"
+  },
+  ".agents/skills/ui-ux-pro-max/data/ui-reasoning.csv": {
+   "sha256": "41976082ecae1100da937c949215dc6694393e03f3c2a7444dd92a9edb43cb11",
+   "size": 53070,
+   "git": "tracked"
+  },
+  ".agents/skills/ui-ux-pro-max/data/ux-guidelines.csv": {
+   "sha256": "1870ee048f2a2bdd60709f8f7adf7f3b6dcad560bc005c8b2915a8ac8639820d",
+   "size": 18766,
+   "git": "tracked"
+  },
+  ".agents/skills/ui-ux-pro-max/scripts/core.py": {
+   "sha256": "446cfd131beea574def281fd5def440d9eb6c09088feba12e9dce22bc61a03b8",
+   "size": 13505,
+   "git": "tracked"
+  },
+  ".agents/skills/ui-ux-pro-max/scripts/design_system.py": {
+   "sha256": "ffb0ca250edcf073938aa659756d53fe3ae33470e001557ea6ca58167d997e44",
+   "size": 59294,
+   "git": "tracked"
+  },
+  ".agents/skills/ui-ux-pro-max/scripts/search.py": {
+   "sha256": "057b4e74b9978b1d6cc22106a4f6c1a95c9880cbd6c83f2391a1b5ccb566b7c3",
+   "size": 6794,
+   "git": "tracked"
+  },
+  ".agents/skills/검토/SKILL.md": {
+   "sha256": "a57892eecd58274362d79455ad3b02cc83fe74dceec2cb8d840367d1d62a22b9",
+   "size": 1351,
+   "git": "tracked"
+  },
+  ".agents/skills/검토/agents/openai.yaml": {
+   "sha256": "59a4bf451b394933f407f26a8926ef634adb2914b6df3bda5f119a284a1be292",
+   "size": 345,
+   "git": "tracked"
+  },
+  ".agents/skills/리서치/SKILL.md": {
+   "sha256": "cb4cdbbcdfc8185a17f140b2aee562288e1062595ecb9887c84e8a77efe1335c",
+   "size": 2014,
+   "git": "tracked"
+  },
+  ".agents/skills/리서치/agents/openai.yaml": {
+   "sha256": "a0a741330535aa7afe8a5941d6fcfcf6e393c6a5d9f2c04b07528afffb8631fa",
+   "size": 280,
+   "git": "tracked"
+  },
+  ".agents/skills/하네스/SKILL.md": {
+   "sha256": "cd5181ad1c993e6817740dda87e882dcdf448067dd9a18c36ddbbb98f3f56dcc",
+   "size": 1514,
+   "git": "tracked"
+  },
+  ".agents/skills/하네스/agents/openai.yaml": {
+   "sha256": "ac7f00af4e97197b11fa8e6adf1d0307b36d2b5aeb97644fc9133deb27054790",
+   "size": 344,
+   "git": "tracked"
+  },
+  ".claude/agent-memory/create-slides/MEMORY.md": {
+   "sha256": "9d0c0e33b1527ef725dee72278d741c9127b275dc34f1ea820d5292b0e523481",
+   "size": 130,
+   "git": "tracked"
+  },
+  ".claude/agents/instruction-reviewer.md": {
+   "sha256": "cc6e00ad353ea2d65fbf7c5cd808f970c1f591ad562fe46c636a672f37eaad0a",
+   "size": 2218,
+   "git": "tracked"
+  },
+  ".claude/agents/research-worker.md": {
+   "sha256": "dfe317d881141ed49ee3f378b79a2c08972f83cda4898d1c2c15d651783d4ff1",
+   "size": 2424,
+   "git": "tracked"
+  },
+  ".claude/launch.json": {
+   "sha256": "969560dca66a0168e4a5418ad61c2ee21a83f94fb05244a2fd6c2ea668fbebdb",
+   "size": 865,
+   "git": "tracked"
+  },
+  ".claude/settings.json": {
+   "sha256": "dea20274665dbb260ce54ec199b5ce36566008dcc4f4240ceb87eeb58d85d80e",
+   "size": 1960,
+   "git": "tracked"
+  },
+  ".claude/skills/README.md": {
+   "sha256": "b1448ecb8bda13650e86dcd30f2976c10fe4e33866d913e74039ad573b94a994",
+   "size": 2778,
+   "git": "tracked"
+  },
+  ".claude/skills/_template/SKILL.md.template": {
+   "sha256": "ba4e4610f05804be4c849b8938327b2a816f6b333608a97cf060f817198f870f",
+   "size": 1433,
+   "git": "tracked"
+  },
+  ".claude/skills/_template/references/example-reference.md": {
+   "sha256": "6c0fe8b459620b48bad55fe95d0306e76e3ef138647e09b7051c77a1c9d9832e",
+   "size": 892,
+   "git": "tracked"
+  },
+  ".claude/skills/create-slides/SKILL.md": {
+   "sha256": "d6b550e16043b4502bdb32ef3fefceea14d4445fdf253f50bac6a2f0caad0c30",
+   "size": 2368,
+   "git": "tracked"
+  },
+  ".claude/skills/ui-ux-pro-max/SKILL.md": {
+   "sha256": "347038465eaa2a93cd899ebdf32be313b6c2e800d5b4452f9fdb552e0489e19e",
+   "size": 48601,
+   "git": "tracked"
+  },
+  ".claude/skills/ui-ux-pro-max/data/app-interface.csv": {
+   "sha256": "a276e55817958075a8dffeb5f5d7be16703b1611e9f0a3527525e1a44df25c46",
+   "size": 9773,
+   "git": "tracked"
+  },
+  ".claude/skills/ui-ux-pro-max/data/charts.csv": {
+   "sha256": "ebb565308115f955791b0431797a89d9b3587c25d5babb9428d10712c4924817",
+   "size": 19391,
+   "git": "tracked"
+  },
+  ".claude/skills/ui-ux-pro-max/data/colors.csv": {
+   "sha256": "69ee8c1147b269599d20ca418bdd6f32563a9aa2d962fb9a9b8dec66bf7b1ba4",
+   "size": 32432,
+   "git": "tracked"
+  },
+  ".claude/skills/ui-ux-pro-max/data/google-fonts.csv": {
+   "sha256": "2c03a3cd134d126bd9d6a7dc2a6360dc5272219ad6df3eb9315b031f806e1487",
+   "size": 745196,
+   "git": "tracked"
+  },
+  ".claude/skills/ui-ux-pro-max/data/icons.csv": {
+   "sha256": "9da693f818d43e2110e28d949905c85baad1650d383ae9e1568f58c766b0e016",
+   "size": 20742,
+   "git": "tracked"
+  },
+  ".claude/skills/ui-ux-pro-max/data/landing.csv": {
+   "sha256": "080cedbcd61ff8ec9520f33929baa76bee9589e783f83b2f8d824a466b6a46d7",
+   "size": 16720,
+   "git": "tracked"
+  },
+  ".claude/skills/ui-ux-pro-max/data/motion.csv": {
+   "sha256": "528be03324785eb568c9570f5d60fc1644d5bc7ce2cbdd21b648cb90ce74e76e",
+   "size": 10517,
+   "git": "tracked"
+  },
+  ".claude/skills/ui-ux-pro-max/data/products.csv": {
+   "sha256": "6ea44a7725d708a25f80626369eb011ec202809b5dfcc8ca7fce2402b5489cf1",
+   "size": 58168,
+   "git": "tracked"
+  },
+  ".claude/skills/ui-ux-pro-max/data/react-performance.csv": {
+   "sha256": "47c0a454cb73bf32378c55eb781dea4c44440ec6a1b52039119afc354315c17e",
+   "size": 14867,
+   "git": "tracked"
+  },
+  ".claude/skills/ui-ux-pro-max/data/stacks/angular.csv": {
+   "sha256": "0c37794e6b6e3d0e3a0bb90eb619608faaa5ce703afe34c27ef6e3c1ac583258",
+   "size": 18320,
+   "git": "tracked"
+  },
+  ".claude/skills/ui-ux-pro-max/data/stacks/astro.csv": {
+   "sha256": "ff7fa30b41464fbe907a99499a32b4395210ef57f3674bef628aeadf767f40a8",
+   "size": 11922,
+   "git": "tracked"
+  },
+  ".claude/skills/ui-ux-pro-max/data/stacks/flutter.csv": {
+   "sha256": "e470e6bc2bcd8562667cc764d1e1afb0be0a30ca4dc9ec12fa18b19d46f156bd",
+   "size": 10469,
+   "git": "tracked"
+  },
+  ".claude/skills/ui-ux-pro-max/data/stacks/html-tailwind.csv": {
+   "sha256": "1f004891dd189f6bc2a7717401e3100244326e7e2f3963a79bf7b2349d85e091",
+   "size": 11361,
+   "git": "tracked"
+  },
+  ".claude/skills/ui-ux-pro-max/data/stacks/jetpack-compose.csv": {
+   "sha256": "8e1995b93414e9d50f8d450bdd15853ff138ca3b8c9d6529cd3171729fa5fa7f",
+   "size": 8248,
+   "git": "tracked"
+  },
+  ".claude/skills/ui-ux-pro-max/data/stacks/laravel.csv": {
+   "sha256": "0f523354dec42df92fc570a408cd1128fd1efc879874ad9163ced4f2b179d2b1",
+   "size": 18429,
+   "git": "tracked"
+  },
+  ".claude/skills/ui-ux-pro-max/data/stacks/nextjs.csv": {
+   "sha256": "06a8e8c13bd44696c6ebb4cb6c4d8dea440e3de8cce77616512529ed29258f0c",
+   "size": 12546,
+   "git": "tracked"
+  },
+  ".claude/skills/ui-ux-pro-max/data/stacks/nuxt-ui.csv": {
+   "sha256": "c1f3c9e438ab89f806a0c2e0be4c37cb34d9370c16207353aa9c972d548f710e",
+   "size": 14061,
+   "git": "tracked"
+  },
+  ".claude/skills/ui-ux-pro-max/data/stacks/nuxtjs.csv": {
+   "sha256": "696ec6df0e5971cd8b69080ee6abea2e9748fb2de47acb2bcc748302684f2030",
+   "size": 16598,
+   "git": "tracked"
+  },
+  ".claude/skills/ui-ux-pro-max/data/stacks/react-native.csv": {
+   "sha256": "a08ca77fcf6b6d9531982dce465366296013bfcf12d2938ac72ad57cf0c4f085",
+   "size": 10035,
+   "git": "tracked"
+  },
+  ".claude/skills/ui-ux-pro-max/data/stacks/react.csv": {
+   "sha256": "b6e3eb0e4c9c01bd00ffb951d5ca224a19d488b4544c75436f48cf92ff12bf45",
+   "size": 13016,
+   "git": "tracked"
+  },
+  ".claude/skills/ui-ux-pro-max/data/stacks/shadcn.csv": {
+   "sha256": "0f9cc6fbfebea8026950c422808bb3aae239185bad770726b331f827f8e1a6de",
+   "size": 15982,
+   "git": "tracked"
+  },
+  ".claude/skills/ui-ux-pro-max/data/stacks/svelte.csv": {
+   "sha256": "bc8d158994a8bdf412830a9dd5e5a5534edd2f367a6e50e0ebd4d76f592dfa3f",
+   "size": 11063,
+   "git": "tracked"
+  },
+  ".claude/skills/ui-ux-pro-max/data/stacks/swiftui.csv": {
+   "sha256": "e87cb9eee208bb753bdab96d4a261c7f830c4317ee90ec098316b248fc32be85",
+   "size": 10872,
+   "git": "tracked"
+  },
+  ".claude/skills/ui-ux-pro-max/data/stacks/threejs.csv": {
+   "sha256": "c182b38b30fa11531796e018d9fa87d63a5a85bee35c1bfb9baf480df098d270",
+   "size": 44841,
+   "git": "tracked"
+  },
+  ".claude/skills/ui-ux-pro-max/data/stacks/vue.csv": {
+   "sha256": "9b793c3f4eec85f77a758c09322f2b62f3b3ca549bb713ccf0849ef885934395",
+   "size": 11056,
+   "git": "tracked"
+  },
+  ".claude/skills/ui-ux-pro-max/data/styles.csv": {
+   "sha256": "b3fabd4e47a91d330411e32c6c68748dc0ab5f67b02404e0c0d26eb517d61814",
+   "size": 142690,
+   "git": "tracked"
+  },
+  ".claude/skills/ui-ux-pro-max/data/typography.csv": {
+   "sha256": "a393558b7acc79193744954b93e8e878b2d7b0a4901e3433995b66a219935d3a",
+   "size": 49741,
+   "git": "tracked"
+  },
+  ".claude/skills/ui-ux-pro-max/data/ui-reasoning.csv": {
+   "sha256": "41976082ecae1100da937c949215dc6694393e03f3c2a7444dd92a9edb43cb11",
+   "size": 53070,
+   "git": "tracked"
+  },
+  ".claude/skills/ui-ux-pro-max/data/ux-guidelines.csv": {
+   "sha256": "1870ee048f2a2bdd60709f8f7adf7f3b6dcad560bc005c8b2915a8ac8639820d",
+   "size": 18766,
+   "git": "tracked"
+  },
+  ".claude/skills/ui-ux-pro-max/scripts/core.py": {
+   "sha256": "446cfd131beea574def281fd5def440d9eb6c09088feba12e9dce22bc61a03b8",
+   "size": 13505,
+   "git": "tracked"
+  },
+  ".claude/skills/ui-ux-pro-max/scripts/design_system.py": {
+   "sha256": "ffb0ca250edcf073938aa659756d53fe3ae33470e001557ea6ca58167d997e44",
+   "size": 59294,
+   "git": "tracked"
+  },
+  ".claude/skills/ui-ux-pro-max/scripts/search.py": {
+   "sha256": "db48b74b405e3e056ccea838e1e3df4e258bafe16e25749d4314964ae7d9791b",
+   "size": 6796,
+   "git": "tracked"
+  },
+  ".claude/skills/검토/SKILL.md": {
+   "sha256": "d58eb3e2696867436d86becfd68b51e82c9970f3787d0a57769099197bf1ba5c",
+   "size": 1516,
+   "git": "tracked"
+  },
+  ".claude/skills/리서치/SKILL.md": {
+   "sha256": "a54440d3ed8c3898466b1b79fffb0b8cdaefc909be3ebe7131bbac0bad17a3c2",
+   "size": 6943,
+   "git": "tracked"
+  },
+  ".claude/skills/하네스/SKILL.md": {
+   "sha256": "42b7accbf9cd78460432e9497db395e8e5af918419478f5558fe1d35410509a2",
+   "size": 1427,
+   "git": "tracked"
+  },
+  ".codex/agents/research-worker.toml": {
+   "sha256": "3ad5b19be675558ee3b40d120e2ce04d150c196f8a83a5c7fdd15e1d5c919bd4",
+   "size": 1399,
+   "git": "tracked"
+  },
+  ".codex/agents/reviewer.toml": {
+   "sha256": "7a852933e1cb6af496879a4f9aca2bcc9136d960167144e2a06297d4d58b3607",
+   "size": 1648,
+   "git": "tracked"
+  },
+  ".codex/hooks.json": {
+   "sha256": "27be4224062b3837d1af6376ffaa43336e6c4acbffb17e449bf37df8b36cdc05",
+   "size": 2155,
+   "git": "tracked"
+  },
+  ".codex/hooks/probe.py": {
+   "sha256": "836dc4482ea92689f5b9875600b187ff3069f7be3b086b5fbe3158b033b1fc56",
+   "size": 2424,
+   "git": "tracked"
+  },
+  ".githooks/README.md": {
+   "sha256": "48728e312a5af32a1617732e97e1c80e6e86dd435f2396ef7aeae83e9af1459a",
+   "size": 3516,
+   "git": "tracked"
+  },
+  ".githooks/_gate.py": {
+   "sha256": "8246811a4efbd25b7e0c31be5af15f12411cd0b08608ad5b47e39b4b5611c624",
+   "size": 15889,
+   "git": "tracked"
+  },
+  ".githooks/pre-commit": {
+   "sha256": "e090701555349a0087787c93ad90e735a76fd9107ddd0d6cd98da2a38e74e085",
+   "size": 554,
+   "git": "tracked"
+  },
+  ".gitignore": {
+   "sha256": "fff6af1317fc9de3cec2e8af32c46025d9d25c9799d63e7743b51db26f14f4f2",
+   "size": 1811,
+   "git": "tracked"
+  },
+  "AGENTS.md": {
+   "sha256": "34ed32da8fbbfc5b0e03ef95e17a9c5eda7f8c8e2e448272b09aa54ed04bdb86",
+   "size": 17367,
+   "git": "tracked"
+  },
+  "CLAUDE.md": {
+   "sha256": "513d1f9a967edbb8f335583b1cbf3527fbc93baa982f1e66dc054f9672da31e1",
+   "size": 1924,
+   "git": "tracked"
+  },
+  "README.md": {
+   "sha256": "ae6f9754b38cc68ddc81dbcd040a778cf3e57d76ff8a33f64c2f4002ba21ea37",
+   "size": 13482,
+   "git": "tracked"
+  },
+  "SKILL.md": {
+   "sha256": "27755ad1e195d331a5891f9b5eea9cd1c092ba98393fa6ae4670e635ee771925",
+   "size": 22507,
+   "git": "tracked"
+  },
+  "_dev/설계기록/HIGH-6종-스펙_2026-07-15.md": {
+   "sha256": "09b10d38e09a89bd0308e70950ba0d6c43d6101973db689a7f980b4e09608419",
+   "size": 68889,
+   "git": "tracked"
+  },
+  "_dev/설계기록/Phase2-워커실행통제-검증절차.md": {
+   "sha256": "e3644c4f841ef3fb8c72e23f32847f18700768bcbc1e983b336592a3979ec304",
+   "size": 8098,
+   "git": "tracked"
+  },
+  "_dev/설계기록/Phase7-smoke-test-기록.md": {
+   "sha256": "10e67450bbc55453f157aef0e9ddeefe3fd59f39f0a48c6d147275333ce7bd0f",
+   "size": 7221,
+   "git": "tracked"
+  },
+  "_dev/설계기록/Phase8-확대검증-판정.md": {
+   "sha256": "191112c42e08572c5d71d06f0048f05631e57832c160abf16845316dfa88ab60",
+   "size": 9081,
+   "git": "tracked"
+  },
+  "_dev/설계기록/구조-및-빌드-기록.md": {
+   "sha256": "1c747028940d0802436dab14162367edda1ecb52e0da3845ea4b1453b38d1684",
+   "size": 5730,
+   "git": "tracked"
+  },
+  "_dev/설계기록/덱-조건-전수목록_및_규칙누락감사.html": {
+   "sha256": "d58a7e321537e717a3439a9cc1fc992118e4b7e0b9e7a081fd0992687b2f07a5",
+   "size": 82617,
+   "git": "tracked"
+  },
+  "_dev/설계기록/색시스템-v2-명세.md": {
+   "sha256": "a8d9b4af794bdf42cb2a65d75f1c0eb4f0dbd06533863dae521f0682fc445a33",
+   "size": 19842,
+   "git": "tracked"
+  },
+  "_dev/설계기록/카탈로그-구조개편-설계안_2026-07-15.md": {
+   "sha256": "cecb326f9963f9ea9328584829dd57638851565524e16051a5226b74159054e9",
+   "size": 14916,
+   "git": "tracked"
+  },
+  "_dev/설계기록/탐색-아카이브/1주차/01_1주차_공식출처_기반_심층리서치.md": {
+   "sha256": "ec4fe3555989b0754c60e5ee4aabe3e010394a66416fc1760ef71eb87e0f75e0",
+   "size": 63926,
+   "git": "tracked"
+  },
+  "_dev/설계기록/탐색-아카이브/1주차/1주차_Terra_실행계획_요청.md": {
+   "sha256": "3a05f2104ab1ff7941a17c8940d5ffd614c5d1af40f3678105af6652b1e7539f",
+   "size": 4544,
+   "git": "tracked"
+  },
+  "_dev/설계기록/탐색-아카이브/1주차/1주차_Terra_인수인계.md": {
+   "sha256": "8815e128f87262196da04399203f845ef7ed6cdc180eb3c3778c05f9e693afae",
+   "size": 14511,
+   "git": "tracked"
+  },
+  "_dev/설계기록/탐색-아카이브/1주차/1주차_v2_개념커버리지.md": {
+   "sha256": "6ae6bcf796da9ce1c1ba549601318809b4831e872076b178433643183e3bbe17",
+   "size": 7359,
+   "git": "tracked"
+  },
+  "_dev/설계기록/탐색-아카이브/1주차/1주차_강의덱_v1대비_디자인수정_판단근거.md": {
+   "sha256": "d3afe0555d29eb448f35b275a491d2d334c00cb50865403cae6d64dac85a4f9e",
+   "size": 55630,
+   "git": "tracked"
+  },
+  "_dev/설계기록/탐색-아카이브/1주차/1주차_공식문서기반_심층리서치_v1.md": {
+   "sha256": "bf3b660473681ac724a647a10c15ac417269af3598480b57b4708de76e1471eb",
+   "size": 52984,
+   "git": "tracked"
+  },
+  "_dev/설계기록/탐색-아카이브/1주차/1주차_내용단계_집필스펙.md": {
+   "sha256": "4fde0d5ec080058863bb0c6a4200ebadf0a31388b3fabc33e52372667a44ad54",
+   "size": 24795,
+   "git": "tracked"
+  },
+  "_dev/설계기록/탐색-아카이브/1주차/1주차_덱_결정표.md": {
+   "sha256": "1d62899043138c762246fa206116eb3e820748afb5d59794738555908137bdf7",
+   "size": 23370,
+   "git": "tracked"
+  },
+  "_dev/설계기록/탐색-아카이브/1주차/1주차_슬라이드계획서_v2.md": {
+   "sha256": "e9423a117e44ee4f99a3aec6b71bf398178663f2a73ddc7e612d2ecd217836c5",
+   "size": 50469,
+   "git": "tracked"
+  },
+  "_dev/설계기록/탐색-아카이브/1주차/1주차_오프닝_TOP5.html": {
+   "sha256": "be427bdb8f9f004cff477c382a648355b32cb70f7742d50d72c7552ff58c36bc",
+   "size": 14253,
+   "git": "tracked"
+  },
+  "_dev/설계기록/탐색-아카이브/1주차/1주차_오프닝_레이아웃러프.html": {
+   "sha256": "e5d82c190bf85612919371e2ae72133d995f07123798048bac5f81fd1e3a77b4",
+   "size": 19011,
+   "git": "tracked"
+  },
+  "_dev/설계기록/탐색-아카이브/1주차/1주차_콘텐츠_결정표.md": {
+   "sha256": "3c37a016f1693f6cfc48044074d5dd751ca615d7966634ebed97055c7d4d96db",
+   "size": 13468,
+   "git": "tracked"
+  },
+  "_dev/설계기록/탐색-아카이브/1주차/screenshot-미사용/codex_existing-folder-menu.png": {
+   "sha256": "8bfa5dc4010d700784edc0f8a90bbbf610ddd7bee6c23666eec98837d57d4201",
+   "size": 84475,
+   "git": "tracked"
+  },
+  "_dev/설계기록/탐색-아카이브/1주차/screenshot-미사용/codex_file-menu.png": {
+   "sha256": "3bf2d4b14e8dfc5efa6310f91035c2d1d6e33fdc0de117837951f8da2d453c5a",
+   "size": 69047,
+   "git": "tracked"
+  },
+  "_dev/설계기록/탐색-아카이브/1주차/screenshot-미사용/codex_project-tree_intro-index.png": {
+   "sha256": "c931009df1c2f8de6460dff0e695e3771e384118df5e975cac2d51be395fa3e3",
+   "size": 88084,
+   "git": "tracked"
+  },
+  "_dev/설계기록/탐색-아카이브/1주차/screenshot-미사용/codex_select-project-root_vibecoding.png": {
+   "sha256": "8fe8ed12d01d3d553cdb94046550229b61393afe4774f6965029759bb4d0f5f5",
+   "size": 95046,
+   "git": "tracked"
+  },
+  "_dev/설계기록/탐색-아카이브/1주차/screenshot-미사용/codex_vibecoding-workspace-index.png": {
+   "sha256": "9c56affb50041ce36ec3f01e1173e27b6e647d8dccf9162fe8bf193de0132250",
+   "size": 119954,
+   "git": "tracked"
+  },
+  "_dev/설계기록/탐색-아카이브/1주차/screenshot-미사용/reference_capture-worklist.png": {
+   "sha256": "0af45c496f776ae854323f906346f7d04775d493271556e50eab3ecaa3879d73",
+   "size": 93374,
+   "git": "tracked"
+  },
+  "_dev/설계기록/탐색-아카이브/1주차/screenshot-미사용/win01_this-pc-c-drive.png": {
+   "sha256": "ab5ad88d7089703bad586291b4c223593d580950decc59027b24f0fd45215473",
+   "size": 81372,
+   "git": "tracked"
+  },
+  "_dev/설계기록/탐색-아카이브/1주차/screenshot-미사용/win03_new-folder-menu.png": {
+   "sha256": "d7278632563171e4688dbb4be97d2ccd8461f8d6427fb57da8353cbff53a4a63",
+   "size": 174796,
+   "git": "tracked"
+  },
+  "_dev/설계기록/탐색-아카이브/1주차/screenshot-미사용/win04_vibecoding-name-entry.png": {
+   "sha256": "258272446990a611103727f6924c5649bd020d2f369258a64121c6de1fddcb6e",
+   "size": 138772,
+   "git": "tracked"
+  },
+  "_dev/설계기록/탐색-아카이브/1주차/screenshot-미사용/win05_vibecoding-index-root.png": {
+   "sha256": "4764ce158c956807ee386438138674ad4ed48227c34b2e67b307c92ea5162557",
+   "size": 67866,
+   "git": "tracked"
+  },
+  "_dev/설계기록/탐색-아카이브/1주차/초안_미리보기.md": {
+   "sha256": "558a32693d2a7799867568abd56a06c040c0281f62f0bbf7e5cc8e9d0373ce67",
+   "size": 6344,
+   "git": "tracked"
+  },
+  "_dev/설계기록/탐색-아카이브/1주차_실습주제_후보조사.md": {
+   "sha256": "904818c465a0090556db3574ec33965ab41186439a960b4efa26670401b371bb",
+   "size": 20631,
+   "git": "tracked"
+  },
+  "_dev/설계기록/탐색-아카이브/2주차/2주차_조사매트릭스_원본.md": {
+   "sha256": "a5ad45959361771ba721b6a64b734083786bc3a9094e98af444bd82a16eac72f",
+   "size": 5137,
+   "git": "tracked"
+  },
+  "_dev/설계기록/탐색-아카이브/2주차/wf_7ab0d31d-b8b_journal.jsonl": {
+   "sha256": "6e2496e9a438e0c5ce4a1c7b6c3944d590fb45cc33853f133c7648effcc5e24c",
+   "size": 205629,
+   "git": "tracked"
+  },
+  "_dev/설계기록/탐색-아카이브/2주차/wg2e6h3ua_1차팬아웃_원본결과.json": {
+   "sha256": "57fcd8371247cf2b2b0a432faa488635d196c743b3f9482ee519ec787e76a28d",
+   "size": 265539,
+   "git": "tracked"
+  },
+  "_dev/설계기록/탐색-아카이브/2주차/재설계/2주차_전체재구성_실행계획.md": {
+   "sha256": "83a5e1d9f472685c6d94ea5408750b62c7742004d7364be81d2a426240139905",
+   "size": 30930,
+   "git": "tracked"
+  },
+  "_dev/설계기록/탐색-아카이브/2주차/재설계/4구간/index.html": {
+   "sha256": "c655067a6dc91a5c28c6d8ca00974b96940fa68f3cb6d8639958b13e2d4118e8",
+   "size": 2756,
+   "git": "tracked"
+  },
+  "_dev/설계기록/탐색-아카이브/2주차/재설계/4구간/s01-C-axis.html": {
+   "sha256": "24c2f7d80da559704f421670a724dbd5c84aa11ec82d91af7c60102b6dca60f5",
+   "size": 5972,
+   "git": "tracked"
+  },
+  "_dev/설계기록/탐색-아카이브/2주차/재설계/4구간/s02-D-harness.html": {
+   "sha256": "8425f5eba9046bc17bd2d6e15101405125bf02135ba0347be5cc7521c8357b34",
+   "size": 3741,
+   "git": "tracked"
+  },
+  "_dev/설계기록/탐색-아카이브/2주차/재설계/4구간/s03-E-guides.html": {
+   "sha256": "181dbce82e88e4e2b3ca578ce22b6f4e219571ff487677a759f1fdfb93023fc0",
+   "size": 3786,
+   "git": "tracked"
+  },
+  "_dev/설계기록/탐색-아카이브/2주차/재설계/4구간/s04-A3-figure.html": {
+   "sha256": "eb1b9dbd5ed4f275a516d9bf7d95d1abc1492a76c7091027ebe6e8c7b89683cf",
+   "size": 2929,
+   "git": "tracked"
+  },
+  "_dev/설계기록/탐색-아카이브/2주차/재설계/4구간/s05-A2-sort.html": {
+   "sha256": "15eae3bf263884cad6694a471f298dcc7d6bb8a2cb53a152f17bb2c98a859fbd",
+   "size": 3349,
+   "git": "tracked"
+  },
+  "_dev/설계기록/탐색-아카이브/2주차/재설계/4구간/s06-H-skill.html": {
+   "sha256": "1d6da8ea8931d7f3e7febcb472d2846a456cc125a98c4993d48c47e102174768",
+   "size": 2961,
+   "git": "tracked"
+  },
+  "_dev/설계기록/탐색-아카이브/2주차/재설계/4구간/s07-F-subagent.html": {
+   "sha256": "f36dc73561e01f28acebf26496daefb5f749e503932a7671cff8b5627b492995",
+   "size": 4530,
+   "git": "tracked"
+  },
+  "_dev/설계기록/탐색-아카이브/2주차/재설계/4구간/s08-B2-metric.html": {
+   "sha256": "fa077c5e56438a7c044207743a0847761760a27bdcf352372be82608c6e16519",
+   "size": 3589,
+   "git": "tracked"
+  },
+  "_dev/설계기록/탐색-아카이브/2주차/재설계/4구간/s09-G-build.html": {
+   "sha256": "b99f2dd879c4cc5a79ea6c4ac89edc8d03ead9b6f3b69d75bf8a94085e4eb824",
+   "size": 3040,
+   "git": "tracked"
+  },
+  "_dev/설계기록/탐색-아카이브/2주차/재설계/4구간/samples.css": {
+   "sha256": "3c66bfc6936a84f5b5d38573013cc668fb1bcc59028ecdd1b776d77424975c6d",
+   "size": 30447,
+   "git": "tracked"
+  },
+  "_dev/설계기록/탐색-아카이브/2주차/재설계/5구간/index.html": {
+   "sha256": "450341421cf59f6015e65ae30d291cce3a3d2114cf34df86bb3d6a658581920d",
+   "size": 2197,
+   "git": "tracked"
+  },
+  "_dev/설계기록/탐색-아카이브/2주차/재설계/5구간/s01-ia.html": {
+   "sha256": "13a019a59c006226439602ee69356b22ae6ce444d3b964df64afa6b8d80492c5",
+   "size": 3673,
+   "git": "tracked"
+  },
+  "_dev/설계기록/탐색-아카이브/2주차/재설계/5구간/s02-order.html": {
+   "sha256": "1140bd4b4be448295760730c1910cdcac98b011733eb2e379a4422d55c4a5ca5",
+   "size": 3609,
+   "git": "tracked"
+  },
+  "_dev/설계기록/탐색-아카이브/2주차/재설계/5구간/s03-copy.html": {
+   "sha256": "4625149fc9c91e12416c26ab1727c350d7a27e484bbf01cb40133d7a6e030f55",
+   "size": 2921,
+   "git": "tracked"
+  },
+  "_dev/설계기록/탐색-아카이브/2주차/재설계/5구간/s04-a11y.html": {
+   "sha256": "12734f3f6710c5a86b281b77ae882185bd76c434fb7b565bb96d3e9cfd5a2069",
+   "size": 3371,
+   "git": "tracked"
+  },
+  "_dev/설계기록/탐색-아카이브/2주차/재설계/5구간/s05-design.html": {
+   "sha256": "6c01d22dfb7ce0d8e5277c04020f8ddf5722140a7ee793682a9e52afe2dd0771",
+   "size": 2698,
+   "git": "tracked"
+  },
+  "_dev/설계기록/탐색-아카이브/2주차/재설계/5구간/s06-token.html": {
+   "sha256": "df517264552f09064641a06522cb39816b1494327240b3e3eeb12c616b30edf3",
+   "size": 4726,
+   "git": "tracked"
+  },
+  "_dev/설계기록/탐색-아카이브/2주차/재설계/5구간/samples.css": {
+   "sha256": "1a59e6065a5ca8820ba842fa7e4c19ebfc94f5ac96089964af951fff9b800355",
+   "size": 9950,
+   "git": "tracked"
+  },
+  "_dev/설계기록/탐색-아카이브/2주차/재설계/NEXT_SESSION_PROMPT.md": {
+   "sha256": "01735ab3a93dee39e540e939de8e6d2b4e7e6d52b74f07062f1b9a72732a190f",
+   "size": 7999,
+   "git": "tracked"
+  },
+  "_dev/설계기록/탐색-아카이브/2주차/재설계/README.md": {
+   "sha256": "ddacd2f7908bdda39bf183affbb4008a128e5b2d820faee5db45fd85500f49da",
+   "size": 5717,
+   "git": "tracked"
+  },
+  "_dev/설계기록/탐색-아카이브/2주차/청크원본/R1-기획개념.md": {
+   "sha256": "22e657a746f54b3b6f70b606999587de7a6c268b7e17447b0a218dd0d69eb063",
+   "size": 14539,
+   "git": "tracked"
+  },
+  "_dev/설계기록/탐색-아카이브/2주차/청크원본/R10-실행·제한.md": {
+   "sha256": "c216fb25dbeb441775ac3627e53a2344de5441f683c93446e396b4aff28349ec",
+   "size": 12663,
+   "git": "tracked"
+  },
+  "_dev/설계기록/탐색-아카이브/2주차/청크원본/R11-Skill·규칙.md": {
+   "sha256": "8defc315d7801fd5653eb5e33fbbe67335215c4d227a2c269f9be610edf7b744",
+   "size": 14121,
+   "git": "tracked"
+  },
+  "_dev/설계기록/탐색-아카이브/2주차/청크원본/R12-자체점검.md": {
+   "sha256": "36514ace834eb0299708726988fa78590d20796b5530c8c4da26c31eabef4b73",
+   "size": 12203,
+   "git": "tracked"
+  },
+  "_dev/설계기록/탐색-아카이브/2주차/청크원본/R13-보호·인수.md": {
+   "sha256": "be4b09e105da55dc8e5a961160b1a491030ee96bea7ce2d20b02418f0c477773",
+   "size": 8666,
+   "git": "tracked"
+  },
+  "_dev/설계기록/탐색-아카이브/2주차/청크원본/R14-Sites.md": {
+   "sha256": "7f52acbc72a8d4ff4803f9a64c7f912d3c2b145f4bbb679667becb9aa111320e",
+   "size": 6009,
+   "git": "tracked"
+  },
+  "_dev/설계기록/탐색-아카이브/2주차/청크원본/R15-보강.md": {
+   "sha256": "b25c83eac3fa9ac7ec20b30dce75332bcc69f09f75c8c421ca253453673180d5",
+   "size": 21246,
+   "git": "tracked"
+  },
+  "_dev/설계기록/탐색-아카이브/2주차/청크원본/R2-축소·안전.md": {
+   "sha256": "0f62264d353b0b3b7ca8f3a32e1cfec66480f2beedfa2246e37e55b07e656a17",
+   "size": 11139,
+   "git": "tracked"
+  },
+  "_dev/설계기록/탐색-아카이브/2주차/청크원본/R3-MVP개념.md": {
+   "sha256": "23dbc07e3ea6708d59ff18cb4afc5ce0438065de1b28fd0a96b4867e0c6054a1",
+   "size": 14062,
+   "git": "tracked"
+  },
+  "_dev/설계기록/탐색-아카이브/2주차/청크원본/R4-기능·흐름.md": {
+   "sha256": "c99e4aec02c7e782298ec990a294788d848737c856a41c74d42ed2e3b6560fdd",
+   "size": 18777,
+   "git": "tracked"
+  },
+  "_dev/설계기록/탐색-아카이브/2주차/청크원본/R5-PRD문서.md": {
+   "sha256": "15fd6400fe88226377486a6878b348bbf9f707308556c48ec7c9339af4f1f5c4",
+   "size": 13767,
+   "git": "tracked"
+  },
+  "_dev/설계기록/탐색-아카이브/2주차/청크원본/R6-마크다운·계획.md": {
+   "sha256": "d345ca584a1464d621df5e6558f121d81975826e675d24571cf9066934e82c4a",
+   "size": 16322,
+   "git": "tracked"
+  },
+  "_dev/설계기록/탐색-아카이브/2주차/청크원본/R7-화면기준.md": {
+   "sha256": "5a761e624143d97267de73da60c8a7b76b72da9bc08ff79b67081e18c601bca0",
+   "size": 15255,
+   "git": "tracked"
+  },
+  "_dev/설계기록/탐색-아카이브/2주차/청크원본/R8-디자인문서.md": {
+   "sha256": "4a1e6fede665634210e3a657108996b164e70158189eae2822bc239b0ad713ed",
+   "size": 11537,
+   "git": "tracked"
+  },
+  "_dev/설계기록/탐색-아카이브/2주차/청크원본/R9-분리파일.md": {
+   "sha256": "4e1ca80fc210b7ffcb776f834dd72e10e6e4af05446facc82c96c51977d1ab67",
+   "size": 11067,
+   "git": "tracked"
+  },
+  "_dev/설계기록/탐색-아카이브/디자인시스템_선택안.html": {
+   "sha256": "38e75eb81bf9b6234d5beb807e09e519fbdba60e4e3016c0d94fa1fdd20b5168",
+   "size": 43109,
+   "git": "tracked"
+  },
+  "_dev/설계기록/탐색-아카이브/표지_1주차_최종.html": {
+   "sha256": "14abb4e18841bde0373db3a965595f95473b66cccb1e9c18722b7876622b79fd",
+   "size": 3129,
+   "git": "tracked"
+  },
+  "_dev/설계기록/탐색-아카이브/표지_지오메트리_G1G8G9_10안.html": {
+   "sha256": "221ceaeca362f11f2f33593420213b7a978c7259d248f2f34eb6b1fddefeb1f4",
+   "size": 15671,
+   "git": "tracked"
+  },
+  "_dev/설계기록/토큰감사-2026-08-06.md": {
+   "sha256": "d02696be488b405c33a7b3196cec5fba71f758ba869166f3956965082aa02882",
+   "size": 12644,
+   "git": "tracked"
+  },
+  "_dev/설계기록/폐기된-슬라이드계획서템플릿.md": {
+   "sha256": "30cc9083cdf64bd2dbbbaa6d63f8f212b693242aa23f164b322053150ec36679",
+   "size": 7069,
+   "git": "tracked"
+  },
+  "_dev/설계기록/품질감사-2026-07/AB_compare.html": {
+   "sha256": "a279cfaee1e10fdfd227486048085998a92655919cfbcfef7d0f6e62580135cb",
+   "size": 3459,
+   "git": "tracked"
+  },
+  "_dev/설계기록/품질감사-2026-07/AGENT_DISPATCH_SPECS.md": {
+   "sha256": "b73bdffe05d2a19026a31c576e270b2f3f0cd5d11f05775bc9663fa074682a82",
+   "size": 13715,
+   "git": "tracked"
+  },
+  "_dev/설계기록/품질감사-2026-07/ARTIFACT_MANIFEST.md": {
+   "sha256": "296db98044cb7d80379676b8bc6629e36ae36032f521a40dd9e38a0c51d54347",
+   "size": 12164,
+   "git": "tracked"
+  },
+  "_dev/설계기록/품질감사-2026-07/FINAL_DECISION_PACKET.md": {
+   "sha256": "8e6ae9420744900227cdb9cb392deb92e293bf1f3b9986e39a6895cb7789bb09",
+   "size": 44934,
+   "git": "tracked"
+  },
+  "_dev/설계기록/품질감사-2026-07/P7_ab_criteria.md": {
+   "sha256": "c446d80aff70b48a70a2b04b6610cb02154c789d6fa56c609b5bf28ebb7aab3c",
+   "size": 14472,
+   "git": "tracked"
+  },
+  "_dev/설계기록/품질감사-2026-07/README.md": {
+   "sha256": "46cabb431442534b328a6df74b6c8895e9947ba36639b09d78fe59ea8572621c",
+   "size": 7049,
+   "git": "tracked"
+  },
+  "_dev/설계기록/품질감사-2026-07/SESSION_HANDOFF_2026-07-27.md": {
+   "sha256": "f54116707f8da7890f2ab53c45a9f5221912dd4bbc0e74d3aef6f2e55eb8eafd",
+   "size": 19763,
+   "git": "tracked"
+  },
+  "_dev/설계기록/품질감사-2026-07/WORKING_CONTEXT.md": {
+   "sha256": "d1870fa241c71b73795d98aaffa7ca3b11800bdafd2521d21c0ae3e794a1d8c1",
+   "size": 90838,
+   "git": "tracked"
+  },
+  "_dev/설계기록/품질감사-2026-07/agent_harness_research.md": {
+   "sha256": "5fd7ba17cd6f8c93178452a59c21508be802d097fe1805995b235608a0fe3435",
+   "size": 39094,
+   "git": "tracked"
+  },
+  "_dev/설계기록/품질감사-2026-07/ai_claim_ledger.md": {
+   "sha256": "c8379b96ace1ab6e86c8df7cd1ca3eb453abaddbce722b65ea709e41987def32",
+   "size": 9454,
+   "git": "tracked"
+  },
+  "_dev/설계기록/품질감사-2026-07/content_pipeline_audit.md": {
+   "sha256": "cbe4ced2376203109c70c4911352c6e31fd46193f06ef8aeb7461153af803f07",
+   "size": 37450,
+   "git": "tracked"
+  },
+  "_dev/설계기록/품질감사-2026-07/deck_quality_analysis.md": {
+   "sha256": "70768486868fb6988366ae8b1dbb7ca94968642061606b3779e3e74bc571fb87",
+   "size": 15649,
+   "git": "tracked"
+  },
+  "_dev/설계기록/품질감사-2026-07/deck_quality_metrics.json": {
+   "sha256": "9ce39023e719463aa76842513aaf710f198c133293cd2c94a981ec019cf1976a",
+   "size": 190335,
+   "git": "tracked"
+  },
+  "_dev/설계기록/품질감사-2026-07/history_baseline_report.md": {
+   "sha256": "aae16ff40cd367ba2a91f6a0cb666e084db092b99ba87206a263e34195cc6c42",
+   "size": 24220,
+   "git": "tracked"
+  },
+  "_dev/설계기록/품질감사-2026-07/implementation_plan.md": {
+   "sha256": "44c8848d8201b43463e6c0101ffb4ea81e0bdef2a89119685bcb5a883a15cc4b",
+   "size": 10502,
+   "git": "tracked"
+  },
+  "_dev/설계기록/품질감사-2026-07/module4_ai_work_system_blueprint.md": {
+   "sha256": "1f5af865cbf393ca8d61861e404d6c41eef91b3411e91e6bacba48dcb04bdcb9",
+   "size": 8038,
+   "git": "tracked"
+  },
+  "_dev/설계기록/품질감사-2026-07/module5_6_harness_validation_blueprint.md": {
+   "sha256": "1dcb535dcfbb346d26280d884bed11a2f5ae20a90c72932462f9c1e1c2aded96",
+   "size": 6523,
+   "git": "tracked"
+  },
+  "_dev/설계기록/품질감사-2026-07/new_concept_research.md": {
+   "sha256": "f68fa7c1b9eb2fcd6af5545660ca34be86667e4e4c0531ca5a169e570e70629c",
+   "size": 18773,
+   "git": "tracked"
+  },
+  "_dev/설계기록/품질감사-2026-07/phase1_evidence_map.md": {
+   "sha256": "29370508a8ddd31982c419701de6e1b3664868ed5e5f8ae4029891c30d8f90d5",
+   "size": 16603,
+   "git": "tracked"
+  },
+  "_dev/설계기록/품질감사-2026-07/pipeline_depth_contract_audit.md": {
+   "sha256": "947f61a75da5b66a2bb935e16dc0cc004afb3581d21a01ca8aa8129e84d2cec2",
+   "size": 8497,
+   "git": "tracked"
+  },
+  "_dev/설계기록/품질감사-2026-07/pipeline_refactor_plan.md": {
+   "sha256": "88b3119e54a3a0785bb858ebb4935413ef9e5a556fb1e26f7e64ef0b58a3ac4f",
+   "size": 25553,
+   "git": "tracked"
+  },
+  "_dev/설계기록/품질감사-2026-07/quality_reproduction_plan.md": {
+   "sha256": "4a075ef08e996d850c8d214f93e1812c90b5cccbd27585cd8a3abe0ab21309dd",
+   "size": 9407,
+   "git": "tracked"
+  },
+  "_dev/설계기록/품질감사-2026-07/reference_pedagogy_audit.md": {
+   "sha256": "58dc138f5cfd4001b380accde45406a4357469b6440d7def309f179a02653ec8",
+   "size": 24733,
+   "git": "tracked"
+  },
+  "_dev/설계기록/품질감사-2026-07/remediation_constraint_audit.md": {
+   "sha256": "f8d101808dbb9ee288a947d36c9d1e63768b3c48308c67c5161c9ec1420d59e7",
+   "size": 19554,
+   "git": "tracked"
+  },
+  "_dev/설계기록/품질감사-2026-07/root_cause_decision.md": {
+   "sha256": "f4132540db29ac22925bbf4a7b3b716c5712158e48afd1198cbfe634f2d30c0d",
+   "size": 14849,
+   "git": "tracked"
+  },
+  "_dev/설계기록/품질감사-2026-07/sample_before_after.md": {
+   "sha256": "fb713816eb0f0ede9e8afa67067a79fecc79bacaaea86fce3fdc3150002f5dcb",
+   "size": 9098,
+   "git": "tracked"
+  },
+  "_dev/설계기록/품질감사-2026-07/samples_v3/JUDGMENT.md": {
+   "sha256": "5d0475eb05a61ce3d9edf3db373ae1282575e53808e874e2eb70d9e0a419113c",
+   "size": 10378,
+   "git": "tracked"
+  },
+  "_dev/설계기록/품질감사-2026-07/samples_v3/compare.html": {
+   "sha256": "79dd4873d5a791c4cdc6cd96aa9c968c36d74a1e7ced14f6da08ef5215704a9c",
+   "size": 3985,
+   "git": "tracked"
+  },
+  "_dev/설계기록/품질감사-2026-07/samples_v3/overview.html": {
+   "sha256": "f2e1c9aa3fbf047d773a34b862e27f967067adcb469e6d6aede5a7624b7d140e",
+   "size": 3354,
+   "git": "tracked"
+  },
+  "_dev/설계기록/품질감사-2026-07/samples_v3/sample-A-enforce.html": {
+   "sha256": "bdae9b53c2baf15187d00a04ac7c2dd48aedfc4145f429bfa2e37c73663aa5c4",
+   "size": 4278,
+   "git": "tracked"
+  },
+  "_dev/설계기록/품질감사-2026-07/samples_v3/sample-A2-sort.html": {
+   "sha256": "dd6e2372c3fcae5e2b2def1c67181529f20e9073dfd70fb7c2be7760cef553dd",
+   "size": 3322,
+   "git": "tracked"
+  },
+  "_dev/설계기록/품질감사-2026-07/samples_v3/sample-A3-figure.html": {
+   "sha256": "a2ab46358e5632f28b9104e5959bf865c23b60810c61e7068ff371d3d917abbe",
+   "size": 2955,
+   "git": "tracked"
+  },
+  "_dev/설계기록/품질감사-2026-07/samples_v3/sample-B-verdict.html": {
+   "sha256": "3daaf97e324675b658b0ee9f2387715a3d8db76cbebc63dfcef4d661691259e9",
+   "size": 3543,
+   "git": "tracked"
+  },
+  "_dev/설계기록/품질감사-2026-07/samples_v3/sample-B2-metric.html": {
+   "sha256": "76e3aff1232a2de2300eab108dd80a9a12a32747d5b4cda15a74f5e98d206346",
+   "size": 3446,
+   "git": "tracked"
+  },
+  "_dev/설계기록/품질감사-2026-07/samples_v3/sample-C-axis.html": {
+   "sha256": "ecd5515e08868edf2addd342981b44d53bcd41b9589f12d1e319c8766cee0727",
+   "size": 6018,
+   "git": "tracked"
+  },
+  "_dev/설계기록/품질감사-2026-07/samples_v3/sample-D-harness.html": {
+   "sha256": "65006512676dcb08eb8426b2f2ef1019a0d22f6934e7d0a5854bc434e3ca07ca",
+   "size": 3714,
+   "git": "tracked"
+  },
+  "_dev/설계기록/품질감사-2026-07/samples_v3/sample-E-guides.html": {
+   "sha256": "80e4b5431d3f330d26530837d71a6fe88a3c8b888eb155e80ab252083e040686",
+   "size": 3625,
+   "git": "tracked"
+  },
+  "_dev/설계기록/품질감사-2026-07/samples_v3/sample-F-subagent.html": {
+   "sha256": "3f5a583635d1193bddcc11381fe8ef8d47553409a85e7f815a5667b51dfc74fa",
+   "size": 4503,
+   "git": "tracked"
+  },
+  "_dev/설계기록/품질감사-2026-07/samples_v3/sample-G-build.html": {
+   "sha256": "3daad926d1eed975512d113eb3990816bfc1ae9dcb4593117d9893b0fe423c3f",
+   "size": 3013,
+   "git": "tracked"
+  },
+  "_dev/설계기록/품질감사-2026-07/samples_v3/sample-H-skill.html": {
+   "sha256": "129e63b5fd997f42c02fd8f965b451802104a798c72680e9e1d374a367f1f911",
+   "size": 2989,
+   "git": "tracked"
+  },
+  "_dev/설계기록/품질감사-2026-07/samples_v3/samples.css": {
+   "sha256": "43d988070e5c6ad0c190d1eb4061e3f2dfc485a937a754fc8ff6f3b28a3c37f6",
+   "size": 30081,
+   "git": "tracked"
+  },
+  "_dev/설계기록/품질감사-2026-07/samples_v5A/DECISION.md": {
+   "sha256": "d4e1c3db7fcb5f7f56a798013594c21b7bd524599d6f730f834b4a9d8e2ce50f",
+   "size": 4142,
+   "git": "tracked"
+  },
+  "_dev/설계기록/품질감사-2026-07/samples_v5A/_measure.html": {
+   "sha256": "69001df4fab8dd17e24276cc51ef9f1798513c9cf190cc889fb453b9a6e45bf1",
+   "size": 2454,
+   "git": "tracked"
+  },
+  "_dev/설계기록/품질감사-2026-07/samples_v5A/overview.html": {
+   "sha256": "d86b7f62483cfc284aff7d1f9c6ec14de560f54568c312313a9c77982d52f6d1",
+   "size": 2292,
+   "git": "tracked"
+  },
+  "_dev/설계기록/품질감사-2026-07/samples_v5A/s1-ia.html": {
+   "sha256": "be667744410603e7f13e3c7b0539af4b813d1e378758649326f531d13d8aa0f2",
+   "size": 2646,
+   "git": "tracked"
+  },
+  "_dev/설계기록/품질감사-2026-07/samples_v5A/s2-order.html": {
+   "sha256": "74bce5f67c3ef60443c8d01c7ad519b1396a66a084a18bacc208e87c43fb46fe",
+   "size": 2561,
+   "git": "tracked"
+  },
+  "_dev/설계기록/품질감사-2026-07/samples_v5A/s3-copy.html": {
+   "sha256": "e6654b3e29a7e619cf28047b6fa61db6f76526873e306ae47c1458f14771757b",
+   "size": 2894,
+   "git": "tracked"
+  },
+  "_dev/설계기록/품질감사-2026-07/samples_v5A/s4-a11y.html": {
+   "sha256": "8307fa63b5bd7ded00171ec84f0f53df8c8ec69913c2cde8bf35bc3fff0bbd64",
+   "size": 2988,
+   "git": "tracked"
+  },
+  "_dev/설계기록/품질감사-2026-07/samples_v5A/s5-design.html": {
+   "sha256": "9a977d327b18bc55a863eca1072465c6ff641dd3a99c4a325be627a344416f47",
+   "size": 2660,
+   "git": "tracked"
+  },
+  "_dev/설계기록/품질감사-2026-07/samples_v5A/s6-token.html": {
+   "sha256": "07fa5612896080315d53b94257ba2425fe94828f5668507632e275997f6fba3d",
+   "size": 4285,
+   "git": "tracked"
+  },
+  "_dev/설계기록/품질감사-2026-07/samples_v5A/samples.css": {
+   "sha256": "20a07fffaba4bda02f10e9a75914aee2d504b8a8f64299224d2105bde365e498",
+   "size": 8608,
+   "git": "tracked"
+  },
+  "_dev/설계기록/품질감사-2026-07/samples_v5B/DECISION.md": {
+   "sha256": "70fe98cbd98ee5f3dda84e86eabd4c12d7aa4d981e55ad42cd6d61926b58cbf4",
+   "size": 4048,
+   "git": "tracked"
+  },
+  "_dev/설계기록/품질감사-2026-07/samples_v5B/_measure.html": {
+   "sha256": "772cd4bd6dc3452c6a8d7d044e3b6189693989b07f2b84107cbb5271675feed4",
+   "size": 2457,
+   "git": "tracked"
+  },
+  "_dev/설계기록/품질감사-2026-07/samples_v5B/overview.html": {
+   "sha256": "67e6b8c101ca91077261ff38caaefdd5a4977dac43636e6d67ebbe53ba125dd7",
+   "size": 2241,
+   "git": "tracked"
+  },
+  "_dev/설계기록/품질감사-2026-07/samples_v5B/s1-ia.html": {
+   "sha256": "46409ea3a8618924f903d814ed25033ad3163a34fd67746abbf17575cede1eea",
+   "size": 3646,
+   "git": "tracked"
+  },
+  "_dev/설계기록/품질감사-2026-07/samples_v5B/s2-order.html": {
+   "sha256": "25dd24a6c06310827900897149c860011ee4dfb90b00373eac2d34e00dfe97bf",
+   "size": 3582,
+   "git": "tracked"
+  },
+  "_dev/설계기록/품질감사-2026-07/samples_v5B/s3-copy.html": {
+   "sha256": "782daa16cc516182fc43d124803526b206527755a6d2210626311167fed8815c",
+   "size": 2484,
+   "git": "tracked"
+  },
+  "_dev/설계기록/품질감사-2026-07/samples_v5B/s4-a11y.html": {
+   "sha256": "261cc441fb6133bbf72fe3f61dd0919e3e7cba03d8ad443f1c5a7ef5125eca60",
+   "size": 3344,
+   "git": "tracked"
+  },
+  "_dev/설계기록/품질감사-2026-07/samples_v5B/s5-design.html": {
+   "sha256": "011e56561e02917623789b00af69d1cba999e24bd2ce03d186bae37e840983b7",
+   "size": 2671,
+   "git": "tracked"
+  },
+  "_dev/설계기록/품질감사-2026-07/samples_v5B/s6-token.html": {
+   "sha256": "6e197146403d3204bbfa285dbff282ce7cef4479b5095d962da99be54e128fa0",
+   "size": 4699,
+   "git": "tracked"
+  },
+  "_dev/설계기록/품질감사-2026-07/samples_v5B/samples.css": {
+   "sha256": "6032d5a69dbec252262e85320734d1ae285c524e138f5f38b21d1bbd4e26d85c",
+   "size": 8405,
+   "git": "tracked"
+  },
+  "_dev/설계기록/품질감사-2026-07/skill_pipeline_audit.md": {
+   "sha256": "17e41ee08bd992901c941b60e42ae39e33518cbdc2215fd50b0fde45a50a0647",
+   "size": 19404,
+   "git": "tracked"
+  },
+  "_dev/설계기록/품질감사-2026-07/skill_rules_research.md": {
+   "sha256": "1b3214b371756dd1b00e72953e246cac1cdd1b696f3a830ef966a3ea72e36245",
+   "size": 38104,
+   "git": "tracked"
+  },
+  "_dev/설계기록/품질감사-2026-07/slide_trace_report.md": {
+   "sha256": "230b871f748468e4ad6d6ff59f015051579c6732ee2d7afbd1105e9e7ed29fca",
+   "size": 24951,
+   "git": "tracked"
+  },
+  "_dev/설계기록/품질감사-2026-07/validation_gap_report.md": {
+   "sha256": "83fd915109d9edd492d11b1a4de221d9aa1aeb9c98d3beb747b1f0e2a110fa62",
+   "size": 18409,
+   "git": "tracked"
+  },
+  "_dev/설계기록/품질감사-2026-07/visual_system_revision_plan.md": {
+   "sha256": "cfe850111ff6ecbbcba862d0023302bda8a397a5d80ddfda68ac27defe90cdf5",
+   "size": 7894,
+   "git": "tracked"
+  },
+  "_dev/설계기록/품질감사-2026-07/week1_visual_benchmark.md": {
+   "sha256": "1e2b4403872862db14f137597782b929c86e32c41a109c4f9510345853a08a71",
+   "size": 24213,
+   "git": "tracked"
+  },
+  "_dev/설계기록/품질감사-2026-07/week2_concept_depth_map.md": {
+   "sha256": "6a56fc33028987651e28f87bf7e7ce2fb06ec4e135269ce3c4f9a53607231eac",
+   "size": 27700,
+   "git": "tracked"
+  },
+  "_dev/설계기록/품질감사-2026-07/week2_curriculum_options.md": {
+   "sha256": "c31b949a688114f50e850de2d6a7485364345e0a6e32ab4ddc38c2d6631f5f6f",
+   "size": 12265,
+   "git": "tracked"
+  },
+  "_dev/설계기록/품질감사-2026-07/week2_duplication_audit.md": {
+   "sha256": "9323e85c44c874bda5006b4339705360dbce7542829ce27dbfa57b22303669d0",
+   "size": 15045,
+   "git": "tracked"
+  },
+  "_dev/설계기록/품질감사-2026-07/week2_extension_plan.md": {
+   "sha256": "3c0a3503c1641d08e827caee63f4d5211cad2bab926765c172d655e8268312a0",
+   "size": 15114,
+   "git": "tracked"
+  },
+  "_dev/설계기록/품질감사-2026-07/week2_full_redesign_plan.md": {
+   "sha256": "1a82c00f1701b746fbb4f1eecfe7a499d7bf189b0f4e59a8d76cb374f6f733de",
+   "size": 23228,
+   "git": "tracked"
+  },
+  "_dev/설계기록/품질감사-2026-07/week2_integration_audit.md": {
+   "sha256": "179ad55e05e808a5c590d47b3141164272b450d8ea2d9719e33968311423ac08",
+   "size": 28064,
+   "git": "tracked"
+  },
+  "_dev/설계기록/품질감사-2026-07/week2_module_plan.md": {
+   "sha256": "a3954455bb994a6dd8da755b7cafe3c81098168909b5858db56c1a876536ba45",
+   "size": 27318,
+   "git": "tracked"
+  },
+  "_dev/설계기록/품질감사-2026-07/week2_remediation_plan.md": {
+   "sha256": "f7de2b0e4a5381d9b9697069108d5deac22a9f3d9b72451d2d9a54bf55591f4e",
+   "size": 49920,
+   "git": "tracked"
+  },
+  "_dev/설계기록/품질감사-2026-07/week2_revised_curriculum.md": {
+   "sha256": "56c4a22a9131a39eb250eabaa62a71f79934ed3b21c0861c9ebc5779a5abc09b",
+   "size": 8429,
+   "git": "tracked"
+  },
+  "_dev/설계기록/품질감사-2026-07/week2_sample_plan.md": {
+   "sha256": "a2886102c15f8f749c82ebc69165e59f1b2b228413d6a1519cfe6bd56b208c0c",
+   "size": 10316,
+   "git": "tracked"
+  },
+  "courses/likelionSKU/profile.md": {
+   "sha256": "54f4048a03ac9522c36a5d0d46811805bf9be5234dedb2a685ec80269a6cc153",
+   "size": 12882,
+   "git": "tracked"
+  },
+  "courses/likelionSKU/이미지규약-clay-v2.md": {
+   "sha256": "9682a554263331930c3d9fd93557c1999278625f4f429684a1b141ce868c2169",
+   "size": 14799,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/1주차_내용정리.md": {
+   "sha256": "dee7b1b2c6f16f6ebebbf795f6428da089456338d98836d73e822d4aa57d1112",
+   "size": 82308,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/2주차_내용정리.md": {
+   "sha256": "6b9b89582791c103be55db8de829562d41fddf61c53c29cd71425c40f06f630d",
+   "size": 128289,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/3주차_내용정리.md": {
+   "sha256": "bec4b1d2c8c3b8eef0be5aa4a1eb67595b0701e1b2c691c035c51dd313801191",
+   "size": 95713,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/profile.md": {
+   "sha256": "827d3bd987e87334bb87de713d6753b05745930821b0921c0899c0e01d9397b2",
+   "size": 13146,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/1주차_강의안설계.md": {
+   "sha256": "d678938a3de717ba50506307b7de3ea5ebdc91b0c5566fad6667c9a85945cb23",
+   "size": 64026,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/1주차_초안.md": {
+   "sha256": "197c5daa4d3e3323a03e00cc3e80ef9c346f6a189edaa092f61e1f96c9abf0a3",
+   "size": 36206,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/deck.contract.json": {
+   "sha256": "253a4545a295d3f867f0c5b36cbbe26b9bb863cc133782977316e888c10972c9",
+   "size": 12193,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/강의덱.html": {
+   "sha256": "3b509205dec1f2200903760e6cf7c726f01a176cf4a607250a1e6fe092e00b39",
+   "size": 182146,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/강의덱.초안/_보관/README_복구안내.md": {
+   "sha256": "a73095ee82c75418326bbaa4bd25f9441092485c8f8d825c9095cc9b60c8e74b",
+   "size": 685,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/강의덱.초안/_보관/shell_실습6주제_원본_2026-07-24.html": {
+   "sha256": "f8eb93929d6d76345d752c17845e01613e9071c5154e7247c2b1acadbe717bc1",
+   "size": 51972,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/강의덱.초안/part-01.html": {
+   "sha256": "ca30fdeba7d3a35ea23a49e3788375ac38cde716a75c7c9c334a869e16835bab",
+   "size": 45773,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/강의덱.초안/part-02.html": {
+   "sha256": "36ae5eabfd6e90ad62bdf7cc460f7504c65fc099c6cf48dc81a57456f22e3bad",
+   "size": 12919,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/강의덱.초안/part-03.html": {
+   "sha256": "3ceb7b9daa5b6fb23bc27fe76252105f011067820a83d9da5a1139d8bf946cd5",
+   "size": 38881,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/강의덱.초안/part-04.html": {
+   "sha256": "f8528cf7ca50f962f811de101b23bc8a8cb3330b3163605aab13bf99df028fe9",
+   "size": 24199,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/강의덱.초안/part-05.html": {
+   "sha256": "86a32dfe43645ae888e6f1d9e71bb1f9dbe28b0fa663cb56764827c728c3af43",
+   "size": 15746,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/강의덱.초안/revision.css": {
+   "sha256": "8a9c00ece9e21bf656b4228012be011b20740c6fb8ce89652781af5638cee72b",
+   "size": 119572,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/강의덱.초안/shell.html": {
+   "sha256": "4fbe490deedcbd867eff0799a69e1f36ff5ae812b8c035371b904c43ac74e043",
+   "size": 44638,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/강의덱_발표.html": {
+   "sha256": "5a4aa2b58643b040fe55f48442400afdbce9fcb066dca53dd95a2b4a569ecf2e",
+   "size": 59008238,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/강의덱_발표자노트.html": {
+   "sha256": "5bd0443cf048651033a92d88b8aadb65ae5c9675ee8a236d7d4025d700be90b1",
+   "size": 30691,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/강의덱_배포.html": {
+   "sha256": "53a88c5a9ac6331edb88af1d6afad9e225683db5d0d4023ce0037a942b383f15",
+   "size": 58899544,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/자료/1주차_개념KB.md": {
+   "sha256": "37fd2fdfd6378d279d706ea1522d7fa781503d37f80bff175047f8f1259c735e",
+   "size": 189444,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/자료/1주차_결정요청사항.md": {
+   "sha256": "695187611fc29c83c3806c84345a3a1651fe7ede54466e2ac96b445fe0d41e2e",
+   "size": 3578,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/자료/1주차_상세강의설계_및_콘텐츠실습검증_인수인계.md": {
+   "sha256": "953bd7364d8efd5ad1bccc3ac60f10f53e0eb2418fe1d99c04f9af7c9094a4f1",
+   "size": 63122,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/자료/1주차_실습안_검증결과.md": {
+   "sha256": "8d92f204d171ec770185e60c34fdbbf8d51b9a11029ce96e8740e9f41ccc5f58",
+   "size": 15067,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/자료/1주차_출처레지스트리.md": {
+   "sha256": "65e63dda3c88620d625dae32b3e2430d4e31b9a1157be66ad7caaf7ca4735231",
+   "size": 67207,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/자료/1주차_콘텐츠_리뷰.html": {
+   "sha256": "ec4c4dca7cccbd4afa0edb65c434b81622d9dc5e1a60b688b0953a00a31aebdf",
+   "size": 25622,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/자료/1주차_콘텐츠_집필노트.md": {
+   "sha256": "6cf9f48c47b4228c47255377663608f9de5b10fd2d9a83d972857f0f915e62d4",
+   "size": 8455,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/자료/1주차_콘텐츠리서치_결과.md": {
+   "sha256": "489965e34df3ddbb9c21b21e572d4beb31ca6fe9bbb7923ab60d3d12737de426",
+   "size": 37430,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/자료/images/s00_check-paper-cut-v1-transparent.png": {
+   "sha256": "e8998e71f806be785120d764290543eb772a65a0d8a828255e5ad10771191350",
+   "size": 1321942,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/자료/images/s00_light-paper-background.png": {
+   "sha256": "ec9d66e0e81488c8332dc41a733f7c667059f6b22b73690305d998f2c490a8aa",
+   "size": 2108605,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/자료/images/s00_pencil-paper-cut-v1-transparent.png": {
+   "sha256": "ed635a3700617f65a6c21e9db00a87e0dce26d6457f39eeedec55d25dae18c2e",
+   "size": 451507,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/자료/images/s00_project-folder-paper-cut-v1-transparent.png": {
+   "sha256": "d7bc9e6d546f05155aa14c77a55b7d4d1b1a249a5b09f2f5e6f178091480d8fa",
+   "size": 1028129,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/자료/images/s00_workbench-hero-paper-cut-v1-transparent.png": {
+   "sha256": "6e948dd8472b3cbe50df60bdf4d7f34051de42cdc62e101ec8edab25f1931d8f",
+   "size": 784093,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/자료/images/s01a_ai-one-sentence-era-paper-cut-v1-transparent.png": {
+   "sha256": "7faece707a48b046b9f69af73c82205bf8bfef4b9ad70e3c1a2f69bfebfba01d",
+   "size": 794627,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/자료/images/s02_arrival-three-actions-paper-cut-v1-transparent.png": {
+   "sha256": "f851b0fb09260aea0be0310928ad0c5f746259b1f3eb3c3a9a6d3881176ab4cd",
+   "size": 944536,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/자료/images/s05_week1_journey-paper-cut-v1-transparent.png": {
+   "sha256": "b4e768e6184b26889e7318862bb1c13fefd0cbe79309959ab2552f01fa47833e",
+   "size": 1729318,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/자료/images/s05_week2_journey-paper-cut-v1-transparent.png": {
+   "sha256": "680aff29caa3ffa2036b846d75582f795a7805b09e305761ca7138ba625864b8",
+   "size": 1860251,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/자료/images/s05_week3_journey-paper-cut-v1-transparent.png": {
+   "sha256": "642594c605859230b924198cd350a427e5830f51a0fec5c5c7eb9725f6944ed2",
+   "size": 1408800,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/자료/images/s05a-data-design-background-v1.png": {
+   "sha256": "7a720ba17a7e4dd5ca95fdf6e9d8b85d7a5be700dbfdfa74fc4c661ca7a51a04",
+   "size": 3466307,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/자료/images/s07_llm-agent-workshop-paper-cut-v1-transparent.png": {
+   "sha256": "b22029f075de5ac34026f0bbad090d00d12c80f63f78e1b754bbac1956c6d682",
+   "size": 974190,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/자료/images/s09_three-work-roles-paper-cut-v1-transparent.png": {
+   "sha256": "271a1f3b068ef0e26c813a8c538b9a97f81502f1313287810e3e4ce88709460e",
+   "size": 884153,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/자료/images/s10_backend-paper-cut-v1-transparent.png": {
+   "sha256": "747410da3f30847718d4ac3e7d5a2ecc5e690917d920d16e30b45e889ae6d3da",
+   "size": 1924994,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/자료/images/s10_design-paper-cut-v1-transparent.png": {
+   "sha256": "3a70e52e985d468a04bb6d4c7aacb06fb072de9b15a74567ec4331413787a826",
+   "size": 2219965,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/자료/images/s10_frontend-paper-cut-v1-transparent.png": {
+   "sha256": "662103f09a9e928ec34ca3bb2773af392f3c243a3dae85aa398a4ee9a3d0b40f",
+   "size": 1995416,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/자료/images/s10_improve-paper-cut-v1-transparent.png": {
+   "sha256": "aea9642de626425f697ef071fd08da3117804d1f4a410fcfe6743ab93477114b",
+   "size": 1389607,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/자료/images/s10_installed-app-paper-cut-v1-transparent.png": {
+   "sha256": "c11cf6263dd412d29cd4c6f08ccef069a7c6e9edcb0bb77352408288116f3cee",
+   "size": 2444872,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/자료/images/s10_plan-paper-cut-v1-transparent.png": {
+   "sha256": "83f0f6dcdc2d1026aab30c780a60a7d1e1897646fd0fa7adcbe6455a97251d6b",
+   "size": 2193739,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/자료/images/s10_publish-paper-cut-v1-transparent.png": {
+   "sha256": "592cab559b70b8e30959c3b05964b823535499ba70bc8eecdb9eccdb81323788",
+   "size": 2240612,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/자료/images/s10_qa-paper-cut-v1-transparent.png": {
+   "sha256": "d4c5d9c473d8503e3c4ca6d3d84149ea84e5525f2261d550a38cef02a4be7643",
+   "size": 2026291,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/자료/images/s10_qa-publish-improve-cycle-paper-cut-v1-transparent.png": {
+   "sha256": "d2eb06f6d9abe1c7390471aa0f918aa9da8e6cebb0a9c30f8b76835f32288e8d",
+   "size": 912956,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/자료/images/s10_qa-publish-improve-story-paper-cut-v2-transparent.png": {
+   "sha256": "4db04296f7398faff1aaeb8e9c9e192fd668f64d383dd9dc696d8712fdb0ef21",
+   "size": 1358856,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/자료/images/s10_webapp-paper-cut-v1-transparent.png": {
+   "sha256": "7a9b08d3ced28c40e161421291b7ab22f29c151d8a11a0ee3491df17ee62bc22",
+   "size": 2166551,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/자료/images/s10_webpage-paper-cut-v1-transparent.png": {
+   "sha256": "3faa987507a98e1f3de8a073f7779e80a688875b53e1366378d9be7909f9e162",
+   "size": 1811443,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/자료/images/s10_webpage-site-local-boundary-paper-cut-v1-chroma.png": {
+   "sha256": "2e3d43f50889c6d94a30b6916ea13cd51f47e8beca0b1450c4e8a07628de1dba",
+   "size": 1442835,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/자료/images/s10_webpage-site-local-boundary-paper-cut-v1-transparent.png": {
+   "sha256": "68a81b28dd1ffd0e22917ffd45de6b405cfbb45b9fea1429a4dbe7132c2f5431",
+   "size": 830362,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/자료/images/s10a_installed-v2.png": {
+   "sha256": "b568a475ab020722aa3e798399c058e6d8abb1ceecb26b3cf8be5928c945d167",
+   "size": 946579,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/자료/images/s10a_web-based-v2.png": {
+   "sha256": "da73485e0002ba851588bf7a1340fa5a4bdd089157a7fda49ba49600b784bcbd",
+   "size": 1052569,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/자료/images/s10b_webservice-seven-stage-infographic-paper-cut-v1-chroma.png": {
+   "sha256": "42d09b765143f023a0b312347f678a6c96ef3f20293af6a42b45eb6159f51172",
+   "size": 1428197,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/자료/images/s10b_webservice-seven-stage-infographic-paper-cut-v1-transparent.png": {
+   "sha256": "9bbe96a72090850481a91cb24771617acd07e2a378a6cd640e139721b81bc2fb",
+   "size": 837606,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/자료/images/s11_human-ai-prepare-paper-cut-v1-transparent.png": {
+   "sha256": "dd73ddcd99795590267d3f111ee21bb22f9e970d5609a44d2a5cbc4f057e3039",
+   "size": 963714,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/자료/images/s11_human-ai-prepare-paper-cut-v2-transparent.png": {
+   "sha256": "09a9ac87e36d00c544b06dff1adf3862568171f6dec3cd94466fc3c892dbf867",
+   "size": 857176,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/자료/images/s17_css-styling-paper-cut-v1-transparent.png": {
+   "sha256": "0ea0be9bc17fef68cc5d7769b4428f72a64b1e6f62b67efd71b3f304aa13674e",
+   "size": 1302690,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/자료/images/s17_folder-file-workspace-paper-cut-v1-transparent.png": {
+   "sha256": "4d19e811f8cffd50ab84ff6a0701dd53480ca22aab0618c20118d42cde98b8a2",
+   "size": 826306,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/자료/images/s17_html-structure-paper-cut-v1-transparent.png": {
+   "sha256": "d256fac07a61653789f30981aab395c54565d2e51200ff42cbc599e97d4cfa46",
+   "size": 1793492,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/자료/images/s17_javascript-interaction-paper-cut-v1-transparent.png": {
+   "sha256": "4e781c27d79d988c2656dac1d6c926ee92de2edcd00327d7819b5bb38f9e3bbb",
+   "size": 1558414,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/자료/images/s18_context-memory-workbench-paper-cut-v1-transparent.png": {
+   "sha256": "f47b0e4a21d2ab4d17e0b1b63904f07f181670fbadc1273d8b127f0a8fb10592",
+   "size": 983015,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/자료/images/s19_permission-four-checks-paper-cut-v1-transparent.png": {
+   "sha256": "f089bc5459f130de32e2a548de2aaae22dc5e919d9a58b4b77b273786bdb78f1",
+   "size": 837902,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/자료/images/s26_request-materials-work-order-paper-cut-v1-transparent.png": {
+   "sha256": "150bf548b21eebbfbba5703ce12a417b7307ab126e961f4d34ead8d0f50bbf5a",
+   "size": 1584631,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/자료/images/s27_human-ai-safe-profile-paper-cut-v1-transparent.png": {
+   "sha256": "59ddd8678bb4049b0d86274063e3278801422304afe8c44c9918f1b7229e25f7",
+   "size": 1230336,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/자료/images/s27_human-ai-safe-profile-paper-cut-v2-transparent.png": {
+   "sha256": "8b84f33f1c05f8a555416b9284b7c3a7b6442ebbd13a52d50da0e38549d3a6eb",
+   "size": 556033,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/자료/images/s29_specific-vague-work-order-paper-cut-v1-transparent.png": {
+   "sha256": "894e42c82d83a43be8da7e862b7cee761d214cbdd9aa206eaf6d47f1f8aaef8e",
+   "size": 1373021,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/자료/images/s30_three-technical-conditions-paper-cut-v1-transparent.png": {
+   "sha256": "bf7e914c99a1c1feb717a957b352d86108270642267872836e37c7150f6483b6",
+   "size": 1164935,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/자료/images/s40_human-ai-result-check-paper-cut-v1-transparent.png": {
+   "sha256": "9fd41fa3bc765f05caf917f8e7b1b0c95b8efc9c9e5ec803ec6d3bd0500ec98e",
+   "size": 1341216,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/자료/images/s40_human-ai-result-check-paper-cut-v2-transparent.png": {
+   "sha256": "6ef59fc411370bb3fb749c3f5c7b3e4fe8ef5459827faa39f63bef0e3781e735",
+   "size": 633162,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/자료/images/s41_html-css-js-roles-paper-cut-v1-transparent.png": {
+   "sha256": "44c5eb286cfdb78a19677e4cb3396bdc85887eaf6f4151a766296a14b0ac8546",
+   "size": 1286441,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/자료/images/s41_html-css-js-roles-paper-cut-v2-transparent.png": {
+   "sha256": "3558d3556f43ab27617f766b4a10a012b56fe1a5971d59bec18b6bccceef39fa",
+   "size": 1254409,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/자료/images/s42_one-file-three-files-paper-cut-v1-transparent.png": {
+   "sha256": "ad7379a18d9ceeb0bdedd11bc304b39581c8c0febf9fa27c05563657de596d11",
+   "size": 755604,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/자료/images/s44_keep-change-check-paper-cut-v1-transparent.png": {
+   "sha256": "9ece3269c3e5ce4db8420995bc6221f0064895c4a9e04c1a1e92be3b629fd37b",
+   "size": 614305,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/자료/images/s45_human-ai-one-change-paper-cut-v1-transparent.png": {
+   "sha256": "d3619cea15332c5841b0ac5a1d7ad00bf0e75eb4529b7e58de6beed654e4c03e",
+   "size": 935944,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/자료/images/s45_human-ai-one-change-paper-cut-v2-transparent.png": {
+   "sha256": "0ac0e586aa6705323d4b0054283d8a25dee944f72401517dc597c1bfe34caacf",
+   "size": 583525,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/자료/images/s46_one-change-protected-paper-cut-v1-transparent.png": {
+   "sha256": "900d94fa713ba56a74d4602f2223ee8c8abcb9587d7a97baa0da7e6b524fdf4d",
+   "size": 1123859,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/자료/images/s49_background-before-after-paper-cut-v1-transparent.png": {
+   "sha256": "8e77f34ccf373602ca282ddc184b9758b830482eb33e8b924e49d7e06ac9105f",
+   "size": 1330623,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/자료/images/s50_human-ai-free-change-paper-cut-v1-transparent.png": {
+   "sha256": "6fad3bab8ecc5530dd2a8704ef59784762aab15c21cc650bd2682deb9d8ff009",
+   "size": 1135860,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/자료/images/s50_human-ai-free-change-paper-cut-v2-transparent.png": {
+   "sha256": "4c54b94f98bc1df22c0b394474be69f6cfb8f1be9a8afbca0ba5d25467bdc9d7",
+   "size": 514360,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/자료/images/s52_issue-type-check-paper-cut-v1-transparent.png": {
+   "sha256": "4be1b903e18575ac9fff40572b6d3151d6641ecea98a65ebefa0ccf01f8718ec",
+   "size": 1241221,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/자료/images/s53_issue-branch-diagnosis-paper-cut-v1-transparent.png": {
+   "sha256": "55fb76611a7d4ef58994dda89f98de4549810c75f13e196f9312b31989030782",
+   "size": 1140905,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/자료/images/s56_human-ai-refresh-check-paper-cut-v1-transparent.png": {
+   "sha256": "31280981cf41999fc7a1ca3b37ae9cfface7f9e125a09738bb299c5cef019777",
+   "size": 828218,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/자료/images/s56_human-ai-refresh-check-paper-cut-v2-transparent.png": {
+   "sha256": "acc4795d9b0ce6d607b1849ae35c9b306ca83e5cd0f6c7830a3ca6a0e06a571b",
+   "size": 373415,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/자료/images/s60_final-three-checks-paper-cut-v1-transparent.png": {
+   "sha256": "663cbcc0a49667a4b8603451cf4e85526a7bed663fda0d10a548373c7f7d92b4",
+   "size": 1110440,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/자료/screenshot/codex_about-me-folder-created.png": {
+   "sha256": "8887ec03cc0edccb491d652d7e2f35aa59d5442a4be99577198b5080f15a8877",
+   "size": 72549,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/자료/screenshot/codex_select-project-root_about-me.png": {
+   "sha256": "b0b4cf520ab92beb2b8dcba428f28f85ac5113e6afd743786d306e539068255b",
+   "size": 54302,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/자료/screenshot/codex_use-existing-folder-menu.png": {
+   "sha256": "707e74a11cfe9d93f08d1fa88172947d7e2b3c2bba78d557cca9f5c3a09f0dba",
+   "size": 73070,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/자료/screenshot/win02_c-drive-open.png": {
+   "sha256": "41c6c0d166709771ff3e71cff37ca636ce07a7680ab8145c9e14a3252b9644c7",
+   "size": 137868,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/자료/screenshot/win_new-folder-context-menu.png": {
+   "sha256": "1db26ec77e4215e3ba9c395df662d9f34ae6ff8ecb2c6dfa5f53b30d237a0844",
+   "size": 106932,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/자료/이미지-에셋.json": {
+   "sha256": "31d072adf8b3c7b4b2f7fdb20a2417b18d1ff47b5f9750f2d7b5ad74b1d510a4",
+   "size": 55246,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/1주차/자료/이미지-프롬프트.md": {
+   "sha256": "4c715374c484af31d20a089842605d19c8357d4042062d61263c47e2a610bfd1",
+   "size": 26470,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/2주차_초안.md": {
+   "sha256": "7818f1a6141124779e83d2d80070326ae16f3da1f046c21526cd28a2dc642ace",
+   "size": 53411,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/deck.contract.json": {
+   "sha256": "5e4e955eefbbc5c249862eda5efd180bb87f5261124d742cacd70f2c043cc872",
+   "size": 20253,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/강의덱.html": {
+   "sha256": "4f403ead0676b73d55f067b66b39eb8b5c74e1af0d270c03797d2676b77848c9",
+   "size": 615225,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/강의덱.초안/README.md": {
+   "sha256": "9d944aa9e674c7b48d6b5f1b22326000e886fa4ca40c74a4fe68eeb02bb1b9d4",
+   "size": 4845,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/강의덱.초안/part-01.html": {
+   "sha256": "10aa539f74fed566aa9a8c8f99550a2c92c3b5019170f653048c8e317d3d5d55",
+   "size": 66961,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/강의덱.초안/part-02.html": {
+   "sha256": "59b61664af2244eee5cb6ada49694dee4f3952e9e6364edb0ed6e2f13ff0a8b1",
+   "size": 69786,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/강의덱.초안/part-03.html": {
+   "sha256": "a012a0cb6a54dd630e5b37d3617b2c29351aa720edb4df462c62f7628a0ed69a",
+   "size": 72772,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/강의덱.초안/part-04.html": {
+   "sha256": "9fac1faed0999fbb59ec68958b5f47ae09686f4157c732e7486491252ff2b76a",
+   "size": 89680,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/강의덱.초안/part-05.html": {
+   "sha256": "84ef978fd9793123dd98e2d0e6207187b7c331b67e97f28a50f5a0c933da8dea",
+   "size": 114460,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/강의덱.초안/part-06.html": {
+   "sha256": "e538266bd9ab8184946b700e423fa7bf2d1fcefb0366720bd7e66aafa65650dc",
+   "size": 31882,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/강의덱.초안/part-07.html": {
+   "sha256": "e8748b697fb864e45c98f0b043c631d6d50f70b1977f86356183fb88071811ff",
+   "size": 1399,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/강의덱.초안/part-08.html": {
+   "sha256": "2c335d295100f47bd6969130c207de901f1f3c2c18633be140c0ecf3ba1052bf",
+   "size": 2024,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/강의덱.초안/shell.html": {
+   "sha256": "09e7fa9f257e06617827095168fee78bfd94261b4f3896a30fa9783e5f768e50",
+   "size": 163954,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/강의덱_발표.html": {
+   "sha256": "eb0ef2c24218f0a576bd9f03f09c7924aecb1de2fb334284044441b5cccef4ac",
+   "size": 47720881,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/강의덱_발표자노트.html": {
+   "sha256": "4bab87b2b35f1272dabe42d844f994626476430f65dfc724551863d5fbe4d53c",
+   "size": 71386,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/강의덱_배포.html": {
+   "sha256": "9c127472ce036c4d03aadc7e7aca0e0778be2f69bd02ef3972ead01709b31c94",
+   "size": 47592735,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/개정이력/2주차_PART45_스왑_실행계획.md": {
+   "sha256": "33d0f5b8a91dec0c10a9d2d4605534e8b04d4187c6b2fdffa4fc4dc0e529cc6a",
+   "size": 35888,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/개정이력/2주차_수정요청.txt": {
+   "sha256": "da6ba26b0d1b72076ef0aae0be6a22860ffe26c61a9845c1346ade5e41b89ded",
+   "size": 53125,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/개정이력/2주차_수정요청_v2.txt": {
+   "sha256": "404ba6e976209e29c33190d6afe148feb7b72331fa067c6a4c8e79bd6f5b657c",
+   "size": 3842,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/개정이력/2주차_수정요청_v2_실행계획.md": {
+   "sha256": "0df74e3885aa0a9854856b227960fe9b886d9b2352104a1964d2472e77aa1f40",
+   "size": 19805,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/개정이력/2주차_슬라이드수정요청_1차.md": {
+   "sha256": "6698b425dfc8e6ed7ca51b1b2c1b426a19597fd6172f7d5b3afdff788c8f98ed",
+   "size": 92916,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/개정이력/2주차_슬라이드수정요청_2차.md": {
+   "sha256": "90b06658f39fe0ba3bcb1ad871d98e9d63aca6b118d4238b48da5ad987ecc9f1",
+   "size": 79245,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/개정이력/2주차_재설계안_v1.md": {
+   "sha256": "06bb9a661ff96ce6cdadaa0960e09593e5a3508988ba0fa90d489d12b62892b9",
+   "size": 25157,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/개정이력/2주차_최종결정본.html": {
+   "sha256": "9c5bb39e68a931f2bdaec3a502a227e2591f26b81fbf7c55c998b2130d89b246",
+   "size": 81646,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/개정이력/2주차_최종수정계획.md": {
+   "sha256": "9baeea09f872f667b68de8cb0f01f97c28acdb9ab3d23e1bdf680570744e76d9",
+   "size": 58875,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/개정이력/README.md": {
+   "sha256": "db1f0ee02157a8014b0c14af301dd3e7c2ffb0810ec8d13454f7e6e4179c8b9e",
+   "size": 5095,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/실습예제/mvp/anchor_활동기록/DESIGN.md": {
+   "sha256": "d9ff61b6e17e9d7b01750cee3835ce01159ab5e30a75816047e3ed9350e5109b",
+   "size": 987,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/실습예제/mvp/anchor_활동기록/index.html": {
+   "sha256": "82cd90ac0600de95e74ba6a424f4061a685e6aca58fa486a6cc28b38bc8b93d0",
+   "size": 942,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/실습예제/mvp/anchor_활동기록/prd.md": {
+   "sha256": "69078c5ea8cc10c0fd0cf066e504701c91d9c7bd6b87688738fa2c58c12f0ccd",
+   "size": 1172,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/실습예제/mvp/anchor_활동기록/script.js": {
+   "sha256": "29f83acc1cedc38d27b200caefd0b7932fa7434455ddecbd41d3bb093b6af96e",
+   "size": 1020,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/실습예제/mvp/anchor_활동기록/style.css": {
+   "sha256": "68fe1ef287eaf85cde751b15468e5472fb23ee295aa2b9e8d0d7ce084ffbaa76",
+   "size": 1465,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/실습예제/mvp/calc_가상예산/index.html": {
+   "sha256": "392dd2c1637da3ff7eb579c792c76c98dcc05247a795f055a751a93d90115d3c",
+   "size": 1353,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/실습예제/mvp/calc_가상예산/prd.md": {
+   "sha256": "082c76b2b66ec018f1bc159e582afa8af05f925713d3a29983fb8558ede524bd",
+   "size": 1311,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/실습예제/mvp/calc_가상예산/script.js": {
+   "sha256": "c14ed6150445957b2537c11982e017d5aa4e9c14f60999ae96a7e3d8d3cc3e13",
+   "size": 2005,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/실습예제/mvp/calc_가상예산/style.css": {
+   "sha256": "3f73d0d4026ed015695aec7edf1f9577441765270610f1c5881c04b565341442",
+   "size": 1539,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/실습예제/mvp/convert_단위변환/index.html": {
+   "sha256": "c24c6814727dd2cbe35f74f9cfbab16cf1af82bc37583cc21633d93f5d4d4a17",
+   "size": 919,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/실습예제/mvp/convert_단위변환/prd.md": {
+   "sha256": "9453288a17fdd026c60417ecfe841db1786578a366d7812c2f30e0801dc8650c",
+   "size": 975,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/실습예제/mvp/convert_단위변환/script.js": {
+   "sha256": "757f061c93dfc67b1c4a20704382c26a24d8797636808e0e0fdcd65d7945ec8f",
+   "size": 682,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/실습예제/mvp/convert_단위변환/style.css": {
+   "sha256": "ff77f8bb06b3a446b7877e5d7d801f79ce92ab4d28b49672595d3840e87978fe",
+   "size": 1208,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/실습예제/mvp/pick_선택추천/index.html": {
+   "sha256": "3ca2cbdf93e3c7c82d1cc40b6e8f8889c5673b40abd3682723a9a8092660c6b6",
+   "size": 1127,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/실습예제/mvp/pick_선택추천/prd.md": {
+   "sha256": "d9154349f937033866aa56ea5ec2678e45f13311371add25a2cde19c1cc0fa52",
+   "size": 1161,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/실습예제/mvp/pick_선택추천/script.js": {
+   "sha256": "e352c9638d821e2a26acee6fe0414d1e50a78b0fafecd13d37cf55ab78745c99",
+   "size": 2112,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/실습예제/mvp/pick_선택추천/style.css": {
+   "sha256": "6020df06855e8991e6c3f70485947ccdcc685fe70ca1f484bfe9a6ec07ccf1d6",
+   "size": 1418,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/실습예제/mvp/timer_집중타이머/index.html": {
+   "sha256": "6c231a41f6bdbac9ef832216649a5f53722f2b1b93f7b9d1a1c6b9dde8827bc0",
+   "size": 839,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/실습예제/mvp/timer_집중타이머/prd.md": {
+   "sha256": "210bb1037a7e504d0186a54bc3b2f563a1d6ac2d83a2930d0efb60faa5a60577",
+   "size": 1046,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/실습예제/mvp/timer_집중타이머/script.js": {
+   "sha256": "2469cf38f611102a86d839a875254e6d163ebfedfb6714d30bbb974ebc7f3390",
+   "size": 1401,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/실습예제/mvp/timer_집중타이머/style.css": {
+   "sha256": "b0cd74a3c071ad3d0bec0488acb1930394e17ee14b78a778cd8921175f17b273",
+   "size": 1372,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/실습예제/이탈재현/case_abspath/broken/index.html": {
+   "sha256": "e2d151bf14b57cdca289287fe368724125ae4b7ec89bfe0769d4362673d1459e",
+   "size": 1409,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/실습예제/이탈재현/case_abspath/broken/script.js": {
+   "sha256": "6a254f11c6d305d356ddd2eec9aa482dde5febca95223ecefab4cb62537c7289",
+   "size": 805,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/실습예제/이탈재현/case_abspath/broken/설명.md": {
+   "sha256": "d5d259202e5f867cd86a3f2570c9b5429794d80603ecc8eebc426cb074a40743",
+   "size": 2166,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/실습예제/이탈재현/case_abspath/fixed/assets/logo.svg": {
+   "sha256": "e7f69d2ab79e45f00e67a87094ef5dbd51faf7e0f24429e5d9fda98f6a6e1948",
+   "size": 323,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/실습예제/이탈재현/case_abspath/fixed/index.html": {
+   "sha256": "e7ad6ceadfcf7cb43827a734543bc030d3f9f837cd743884c07e4e997133a79c",
+   "size": 1018,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/실습예제/이탈재현/case_abspath/fixed/script.js": {
+   "sha256": "6a254f11c6d305d356ddd2eec9aa482dde5febca95223ecefab4cb62537c7289",
+   "size": 805,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/실습예제/이탈재현/case_abspath/fixed/style.css": {
+   "sha256": "ff98a94ce245c0a8aa2eee2e69bc3be9227bccc8926ea071d97d1c702ce2be56",
+   "size": 1099,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/실습예제/이탈재현/case_fetch/broken/data.json": {
+   "sha256": "4e8c841618640afa204f8c4556c8f66be9d9ab0e22905647258ce56dbd92ba7a",
+   "size": 64,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/실습예제/이탈재현/case_fetch/broken/index.html": {
+   "sha256": "a6551b35196f9c5d42faadc666cc697825acc7294084fa7d45d93e769455bded",
+   "size": 715,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/실습예제/이탈재현/case_fetch/broken/script.js": {
+   "sha256": "f9f4c2336503c9f52de686ca85c4c342061390359c1b17bfa555c1a82de3a36d",
+   "size": 1309,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/실습예제/이탈재현/case_fetch/broken/style.css": {
+   "sha256": "0acfe174999e240525f3af267917f28613c9cee07bb0787fe3254b3cb903f92e",
+   "size": 973,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/실습예제/이탈재현/case_fetch/broken/설명.md": {
+   "sha256": "d8ced306b71a26ece58ffdbe371f1bb03877f0fe3184765e2b40b4d333f0b286",
+   "size": 1811,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/실습예제/이탈재현/case_fetch/fixed/index.html": {
+   "sha256": "a6551b35196f9c5d42faadc666cc697825acc7294084fa7d45d93e769455bded",
+   "size": 715,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/실습예제/이탈재현/case_fetch/fixed/script.js": {
+   "sha256": "8ec83ecac6aa1e8c8a41ece68c0c8aec28fa1d1b6d55de17f99014f50936570c",
+   "size": 906,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/실습예제/이탈재현/case_fetch/fixed/style.css": {
+   "sha256": "0acfe174999e240525f3af267917f28613c9cee07bb0787fe3254b3cb903f92e",
+   "size": 973,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/실습예제/이탈재현/case_filename/broken/index.html": {
+   "sha256": "0b21851813e53eea40905ad1a4ece172e803f03a6c84b7f24256b424931a4ae4",
+   "size": 828,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/실습예제/이탈재현/case_filename/broken/script.js": {
+   "sha256": "6a254f11c6d305d356ddd2eec9aa482dde5febca95223ecefab4cb62537c7289",
+   "size": 805,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/실습예제/이탈재현/case_filename/broken/styles.css": {
+   "sha256": "7d72f8da6e5fbff4c22430950a9b786b86886e7eeda0fc2c2d593c1534bf8505",
+   "size": 1095,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/실습예제/이탈재현/case_filename/broken/설명.md": {
+   "sha256": "3c7b972e06b08fe534a6625a89581f1d3fcf5e2eeef82e3a1ebcf93a0a0b2504",
+   "size": 1697,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/실습예제/이탈재현/case_filename/fixed/index.html": {
+   "sha256": "24b9b582baa3385d1165671379239cc8e3dea12abfcf85df13e4a15199d74e30",
+   "size": 802,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/실습예제/이탈재현/case_filename/fixed/script.js": {
+   "sha256": "6a254f11c6d305d356ddd2eec9aa482dde5febca95223ecefab4cb62537c7289",
+   "size": 805,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/실습예제/이탈재현/case_filename/fixed/style.css": {
+   "sha256": "0acfe174999e240525f3af267917f28613c9cee07bb0787fe3254b3cb903f92e",
+   "size": 973,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/실습예제/이탈재현/case_module/broken/data.js": {
+   "sha256": "d3d76621e34436a815794c5af2271003e89fd8d5aa1c1f426d3d00e37d987c88",
+   "size": 252,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/실습예제/이탈재현/case_module/broken/index.html": {
+   "sha256": "8cc17c95c3c4cdda40117e1fcbb8dfe9236695e918c597ca8912d048522f279f",
+   "size": 838,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/실습예제/이탈재현/case_module/broken/script.js": {
+   "sha256": "22f2d14b4607ad9d345cf6ad7193f3fbdc116c5e571bbf3cc666d0afa5caf154",
+   "size": 1030,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/실습예제/이탈재현/case_module/broken/style.css": {
+   "sha256": "0acfe174999e240525f3af267917f28613c9cee07bb0787fe3254b3cb903f92e",
+   "size": 973,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/실습예제/이탈재현/case_module/broken/설명.md": {
+   "sha256": "6dc5971f05261b66c66b00683cb54bbe2afade970bfa6c6d7e8741cd6114f482",
+   "size": 1843,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/실습예제/이탈재현/case_module/fixed/index.html": {
+   "sha256": "33e75c4f8d72b703629b1b46fd2788fad51e57c54357ab5399b9027da808ca15",
+   "size": 791,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/실습예제/이탈재현/case_module/fixed/script.js": {
+   "sha256": "dfcc0ebe8f67aa99bb8277d48386480226e7af5deba1cbd59f440df3b45a0bf9",
+   "size": 896,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/실습예제/이탈재현/case_module/fixed/style.css": {
+   "sha256": "0acfe174999e240525f3af267917f28613c9cee07bb0787fe3254b3cb903f92e",
+   "size": 973,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/실습예제/이탈재현/case_subfolder/broken/pages/index.html": {
+   "sha256": "d0d0d8468ed90b060d8a0a55f3fed0b20e9f7ed7b5c999bd3eee774529c67793",
+   "size": 944,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/실습예제/이탈재현/case_subfolder/broken/pages/script.js": {
+   "sha256": "f68d2e8a2ed77f73bd0a412737c3a58d27fac9fc7775e9b83a091ac3eefe1ffb",
+   "size": 918,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/실습예제/이탈재현/case_subfolder/broken/pages/style.css": {
+   "sha256": "0acfe174999e240525f3af267917f28613c9cee07bb0787fe3254b3cb903f92e",
+   "size": 973,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/실습예제/이탈재현/case_subfolder/broken/설명.md": {
+   "sha256": "bc34d2649d6e8e9483cc8d1cf304766f7cdf9a18bb598b6fcc14d7a88def022f",
+   "size": 1952,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/실습예제/이탈재현/case_subfolder/fixed/index.html": {
+   "sha256": "ccc96a74445da889cd83f133f51c58e8185e063d1daff46204ac0033c6c57661",
+   "size": 830,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/실습예제/이탈재현/case_subfolder/fixed/script.js": {
+   "sha256": "6a254f11c6d305d356ddd2eec9aa482dde5febca95223ecefab4cb62537c7289",
+   "size": 805,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/실습예제/이탈재현/case_subfolder/fixed/style.css": {
+   "sha256": "0acfe174999e240525f3af267917f28613c9cee07bb0787fe3254b3cb903f92e",
+   "size": 973,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/자료/2주차_PHASE3_인수.md": {
+   "sha256": "4c80a0855eaede3f34f3d76dab0fa020b0abc05dc49dc5c8351fe2fb4c010834",
+   "size": 4882,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/자료/2주차_개념KB.md": {
+   "sha256": "42471acbc69f125397958fd13356a7743253acbb4c3ceeb129d4ff699c04d8ec",
+   "size": 309774,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/자료/2주차_결정요청사항.md": {
+   "sha256": "ad11f7cfc112323de2994e59b595bba24b01f791c3deaa8e39c3beca6578f600",
+   "size": 24554,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/자료/2주차_상세강의설계.md": {
+   "sha256": "0f1a4aa83e7abb2659905d214a85855c0288ed6976789b84f5d3a0ca149d33ed",
+   "size": 98657,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/자료/2주차_실습안_검증결과.md": {
+   "sha256": "e1c73dd1b79bd07a80873261f058ed1be5b22c01a84e4e7b91f9e5637a871916",
+   "size": 86592,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/자료/2주차_이미지-명세.md": {
+   "sha256": "0f2392ad4bb9b4a436e439ca3bada2fb35f1dd2b4a46e10aecb14d66a2efba01",
+   "size": 98943,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/자료/2주차_이미지-제작지시.md": {
+   "sha256": "b0962d43f1b6dd91580c0146372eb0b2f0d2dbe48ce8a32e8f5d4828a51b7bf3",
+   "size": 84578,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/자료/2주차_이미지-프롬프트.md": {
+   "sha256": "d4c5f8b36c1a5ab5f24a0ef6de17aaa313fc9745fb1e9c19c34d5aa6a00388c2",
+   "size": 5614,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/자료/2주차_출처레지스트리.md": {
+   "sha256": "a555f8f7f78ee4167abd7296918d818ae36176e90f332a3442f381f7a9008024",
+   "size": 128223,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/자료/2주차_콘텐츠_집필노트.md": {
+   "sha256": "1f850d3ee2b4099a13ca740b256ee60e170cd004de5f2140ac11b0d276966c5e",
+   "size": 14762,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/자료/2주차_콘텐츠리서치_결과.md": {
+   "sha256": "f340061dcacddae837a32eea79bd3c3e7822245203d6169376143acf4292879f",
+   "size": 28185,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/자료/images/image 34.png": {
+   "sha256": "ab381a7fe96e4e03c90685a5922f2c6bd8157bfb6f5ef7c3c135a6aa0a4db6af",
+   "size": 417158,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/자료/images/image 35.png": {
+   "sha256": "bfe581ecb003ff39b7d797d51d00051d69eeb938871be58e8399ad38dc0e86bc",
+   "size": 573948,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/자료/images/image 36.png": {
+   "sha256": "592a1c6b1ad848d1fbe674a2cdce0b4a00b0c9ff1d91b27cf792cbc054066674",
+   "size": 402523,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/자료/images/p6-p1-user-pain-paper-cut-v1-transparent.png": {
+   "sha256": "50892bf1612303a447c73a241f4902f81f233906d4c6c299766181c812e788a9",
+   "size": 1260452,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/자료/images/p6-p2-mvp-flow-paper-cut-v1-transparent.png": {
+   "sha256": "64311ab549498d48342b7888cf14740e6b46c0cd00d0d3b78a7610daade2bc1e",
+   "size": 410761,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/자료/images/p6-p3-doc-system-paper-cut-v1-transparent.png": {
+   "sha256": "cf081e5cd55330a8e43854c68340f5e0d7049bdef4bbbf2d038e642f78a78149",
+   "size": 680311,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/자료/images/p6-p4-harness-paper-cut-v1-transparent.png": {
+   "sha256": "59ee7fbd01fb59783a69bcd58eca33327528306c9702928b8cdc032ba0f51713",
+   "size": 1176761,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/자료/images/p6-p5-observe-design-paper-cut-v1-transparent.png": {
+   "sha256": "025fabee032c1c95ccfd966ebcfb53b14093dfe081791e72fa6a5c825e5c50c0",
+   "size": 856749,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/자료/images/p6-start-project-kit-paper-cut-v1-transparent.png": {
+   "sha256": "fac2eb316432b3760db871fdcbada864f6fb3ef57c37d639169037396e572438",
+   "size": 777363,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/자료/images/s02_ai-writes-human-decides-paper-cut-v1-transparent.png": {
+   "sha256": "01dcce679ed07b78b1465f99167ef0ad38e7599f1ef3a72620ef1a15a89733f9",
+   "size": 1013312,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/자료/images/s03_six-sessions-to-mvp-paper-cut-v1-transparent.png": {
+   "sha256": "38d1ca33fb58aa6d14095bd38d39dcc9f0807556e40ede981ccb2a23e5ece029",
+   "size": 598186,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/자료/images/s07_last-week-loop-paper-cut-v1-transparent.png": {
+   "sha256": "9366f5d9f68b1c69c7f14527b610d7345b5d449c87dcb43841577991dcfab331",
+   "size": 523463,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/자료/images/s07_this-week-decide-paper-cut-v1-transparent.png": {
+   "sha256": "bb6eceb1139185667d4b46bb5e2f7b814ec6bad5517a35aab99ae8c817835548",
+   "size": 365145,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/자료/images/s08_who-what-pain-paper-cut-v1-transparent.png": {
+   "sha256": "a62245781cf6e7bf5df2c1becbd253285c750bd9e4c5c3aca26b97258f2d0a55",
+   "size": 713071,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/자료/images/s09_persona-vs-hypothesis-paper-cut-v1-transparent.png": {
+   "sha256": "4290da2edbb1c43eeabed52cdff9456d0d588d73f637ce1d9b819360de1f0014",
+   "size": 663376,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/자료/images/s100-mvp-usable-flow-paper-cut-v1-transparent.png": {
+   "sha256": "af4a59cdc5debfbe6ddaebdf4e474d06c225b038c03b1ec77683210236657593",
+   "size": 826606,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/자료/images/s102-docs-to-first-screen-paper-cut-v1-transparent.png": {
+   "sha256": "5c132e46204600c9e50ae2c42270fc2decc4206c7ce2e1ee4b98f456b631bbff",
+   "size": 789672,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/자료/images/s104_reference-copied-paper-cut-v1-transparent.png": {
+   "sha256": "2d8eb17488ed717297dc5ac21400d234cb20186e08c0c0903289a991ef6bf41f",
+   "size": 810873,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/자료/images/s105-ai-work-system-paper-cut-v1-transparent.png": {
+   "sha256": "207475c3721e2faf32b645ef46e42a3308451b6ea397450233fb5acd9bf62e14",
+   "size": 1310948,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/자료/images/s106-evidence-to-storage-paper-cut-v1-transparent.png": {
+   "sha256": "de2e0baec059e2f000af6f2cbb0aeab9e53d10ff2d79a0ca18ad8e8a89bc2571",
+   "size": 965755,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/자료/images/s10_ai-empathy-boundary-paper-cut-v1-transparent.png": {
+   "sha256": "ac1c32b5106761c9c17f27bd3f8b5d47314dfd770d85e227ab48566a194f4d92",
+   "size": 584915,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/자료/images/s11_one-sentence-practice-paper-cut-v1-transparent.png": {
+   "sha256": "90ab7c62da3d01998a1a2c20829a05a2a31844801ccc053118c786322db23261",
+   "size": 871991,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/자료/images/s23_result-vs-function-paper-cut-v1-transparent.png": {
+   "sha256": "1da2f1a5e9247a11abf5a6ed85055dbbcdb40336fc4ee7b987c473d74cb91348",
+   "size": 1184276,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/자료/images/s24_mvp-skateboard-to-car-paper-cut-v1-transparent.png": {
+   "sha256": "e91d3d95822e83539e5fd773bb3f38f5b4e83de7c06fcea1f41625c33a3ccbb6",
+   "size": 1243475,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/자료/images/s27_scope-three-slots-paper-cut-v1-transparent.png": {
+   "sha256": "aaa08173a9db277b0006614165ed90602eb63f91113a177db21427b8cc8951d8",
+   "size": 657271,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/자료/images/s28_remove-one-feature-paper-cut-v1-transparent.png": {
+   "sha256": "1f3ff563bd471201ab527ce4243126e1cc500e6725e275fff2043730a528655f",
+   "size": 523855,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/자료/images/s34-completion-criteria-vs-test-paper-cut-v1-transparent.png": {
+   "sha256": "a3fbe647c2672e43028c761052c45bcd1c3027859b32b05fe2e8107c2f764ec5",
+   "size": 1164564,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/자료/images/s37_prd-concept-vs-prdmd-file-paper-cut-v1-transparent.png": {
+   "sha256": "c3659878b57a1d33d5ca0676162484bb87bca2e23c4a191d85a1783cd535f77d",
+   "size": 1164261,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/자료/images/s38_prd-missing-items-paper-cut-v1-transparent.png": {
+   "sha256": "96d11f61e1a88d55831429f9528c5444f833bce8991906d90f287372fcd8ea27",
+   "size": 949732,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/자료/images/s40_prd-practice-paper-cut-v1-transparent.png": {
+   "sha256": "396afdec4086f65721b87ad004b524713b46170aef37ef23258823f463ccc308",
+   "size": 1071304,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/자료/images/s46_harness-slot-filled-vs-empty-paper-cut-v1-transparent.png": {
+   "sha256": "4eafb5ddc8e3fbc50bb62cc43dfa5342150d7bd5c39bffdf8f74bed2bc4f2cf7",
+   "size": 1400227,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/자료/images/s55-ui-ux-iceberg-paper-cut-v1-transparent.png": {
+   "sha256": "04a47549d135a3aeb00af530f16abcd308b6786108581d5a2fe1afab4795781c",
+   "size": 932269,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/자료/images/s65_mobile-responsive-app-ui-v1.png": {
+   "sha256": "d04b53a03939ed74d049e5a65104879a31c395d9244eebd53a58b15b444a5497",
+   "size": 1268478,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/자료/images/s67_reference-observe-paper-cut-v1-transparent.png": {
+   "sha256": "b95388ae7dd6d5d1e9e03af52765b155b3df2b092f9d2e07379588b6c490e202",
+   "size": 932616,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/자료/images/s75_one-step-at-a-time-paper-cut-v1-transparent.png": {
+   "sha256": "44ca74b333cf52d0620e4eb3af137a8d83433fdc02393e9eafc60c72aabc7459",
+   "size": 1113998,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/자료/images/s80_harness-same-model-workbench-v1-transparent.png": {
+   "sha256": "1a7b89d130620ab996a207a7274ba7ff47be7e2385b0b7c5fdd1592214814dbe",
+   "size": 1044800,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/자료/images/s80_harness-workbench-left-v1-transparent.png": {
+   "sha256": "ceea4c52dcfff5f160e304c9c199bc9a4cf3712a6b084316874a0d65f78d7be7",
+   "size": 462898,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/자료/images/s80_harness-workbench-right-v1-transparent.png": {
+   "sha256": "8ae60cd31da3d4af5435a805d1bd36c3845392b9cda7bb974ecff249bb41c5b9",
+   "size": 570913,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/자료/images/s80_prepared-workbench-v2-transparent.png": {
+   "sha256": "8ea7449519cb7c2f1e5b9779ade82c138cb6e53c7375a73b8b49404633787cba",
+   "size": 1639938,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/자료/images/s80_prepared-workbench-v3-tight-transparent.png": {
+   "sha256": "54ad7ba42a32aae32d2a5d5f47166828df1d6bc5ef5da2b22f7f85c97f8f97e7",
+   "size": 1626990,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/자료/images/s80_unprepared-workbench-v2-transparent.png": {
+   "sha256": "e2646aef9e252cf35980c1aacc44ff923fbe9855a45672cc734f45f22b9b029c",
+   "size": 1374798,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/자료/images/s80_unprepared-workbench-v3-tight-transparent.png": {
+   "sha256": "1b0c93c0555be619f8352d3ca486f3d2fc742224983f289592d1a145e4b47ce2",
+   "size": 1351601,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/자료/images/s81_harness-horse-metaphor-v1-transparent.png": {
+   "sha256": "04e37831c0317741f38b4a60fcd20b27426d3a28f72ebad9cc2fc6868e19f294",
+   "size": 1329408,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/자료/images/s81_harness-mechanics-v1-transparent.png": {
+   "sha256": "00a511d2e7ae20135cfc5b99ad715bc8237c298facb18394d0bfde335c641397",
+   "size": 1848226,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/자료/images/s81_horse-bridle-bit-v1-transparent.png": {
+   "sha256": "069f3eb8345b7cb40135f021fb15ac12bb9f1246340c8848d49f238c72e26721",
+   "size": 1478014,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/자료/images/s83-agent-tools-workflow-v1-transparent.png": {
+   "sha256": "72129fa6c4bfa496b429c71bc653bc28c0cad288763498d22d1f3ab7bb770059",
+   "size": 1116129,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/자료/images/s98-user-pain-to-problem-paper-cut-v1-transparent.png": {
+   "sha256": "d1c6cd5c7c2c0b18f6202dc835dd0847e12dee547588edae48b5449f8e11b64a",
+   "size": 996063,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/자료/실측/2주차_앱조작_사람입력.md": {
+   "sha256": "77907cbe9fcb65540f0a4131358a232272bef77f27254cc1cf02e0a2ef214090",
+   "size": 6954,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/자료/이미지-에셋.json": {
+   "sha256": "769a2f5204e588b1f91391d06d806ab53923a5cea7d7f027bb1b770f6d3fa5d9",
+   "size": 57321,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/자료/하네스_엔지니어링_교육자료.md": {
+   "sha256": "054ac92094b4a2ac6e471cfd2f0c9eea56e863a0b56e701e5b9904346f2a819f",
+   "size": 63277,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/2주차/조립_보고.md": {
+   "sha256": "e14a493d937a72acdc9a7fbf44f1a06e9b5741aaf1dafc2c53f1855988a92efa",
+   "size": 23010,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/3주차/3주차_강사대본.md": {
+   "sha256": "4ba0194608a30be34d0ac44004ba796e71c718de38b5c18613f406801d90cdf3",
+   "size": 95012,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/3주차/3주차_초안.md": {
+   "sha256": "590fddc633502e548e15706a349b6b74dd16cae46809e96827df03847b6e3d63",
+   "size": 56943,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/3주차/deck.contract.json": {
+   "sha256": "ed86e0db86c5914c3428cdeec125af60788e2b5daaec2613f2886e82b5d0c744",
+   "size": 16614,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/3주차/favicon.ico": {
+   "sha256": "2eedd9fc80665e6ca25af046c1ba38b22acf4efde13e4848984e1c3ab84ba6ad",
+   "size": 390,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/3주차/favicon.svg": {
+   "sha256": "2eedd9fc80665e6ca25af046c1ba38b22acf4efde13e4848984e1c3ab84ba6ad",
+   "size": 390,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/3주차/강의덱.html": {
+   "sha256": "c189c94b351d7c9d6ae662f147a5275d336afad8f1447ce8aa449cd6da19e7eb",
+   "size": 315215,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/3주차/강의덱.초안/README.md": {
+   "sha256": "c7897d117dbc7435bd653630487a019359770222b105e27b9eaa0dba631db3d9",
+   "size": 2721,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/3주차/강의덱.초안/part-01.html": {
+   "sha256": "e3a0d6a5066445739d324a1f204650eb3de7ef603a2dde2f7eec7fc70d749771",
+   "size": 29889,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/3주차/강의덱.초안/part-02.html": {
+   "sha256": "0c20a94c0dd4e3c40b7c1366badd28e7967eaccf6cb573300c0e7d80ba5cd5b8",
+   "size": 28377,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/3주차/강의덱.초안/part-03.html": {
+   "sha256": "097e6ffc2daf42ffdf617191c9025b816cb2367112991659063ef4372c9168d1",
+   "size": 32563,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/3주차/강의덱.초안/part-04.html": {
+   "sha256": "974c05964e6ccb57380d11931cc18c6b59d77ee60fa59d1519090022b362b4cc",
+   "size": 26676,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/3주차/강의덱.초안/part-05.html": {
+   "sha256": "f437d0e4f01db29286051283c9b3f223c9b14c777584b7157320e807a376ed2a",
+   "size": 53464,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/3주차/강의덱.초안/part-06.html": {
+   "sha256": "696ce9795aafc706b56f08ceef3c93dddd677fc604b2e2fe03761f734a269d88",
+   "size": 28408,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/3주차/강의덱.초안/shell.html": {
+   "sha256": "f2a551753c95530dab791f6f497c64b0b053d00c0a26d6ce4e7d094e7b95b1a0",
+   "size": 115846,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/3주차/강의덱_발표.html": {
+   "sha256": "96e6bfed48ab13e50f47c74333ba341f7d2f15b15906e18e34d4195cfd0c5486",
+   "size": 5236130,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/3주차/강의덱_발표.meta.json": {
+   "sha256": "bbcb7b7e6f33f9da4fbb62586b9257544ea75cde97bc7fe32c97713bf362db20",
+   "size": 8282,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/3주차/강의덱_발표자노트.html": {
+   "sha256": "11386348dd23e56903b3d13a9f3c5cc891b41b9ec1f7178d6d501317913a6e54",
+   "size": 42681,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/3주차/강의덱_배포.html": {
+   "sha256": "b081ba58cddb1ff8a9e821938b860b109f8a787e2542035ec14cd8d6a85d5ca7",
+   "size": 5128052,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/3주차/자료/3주차_개념KB.md": {
+   "sha256": "d68df3459b836b1de989fdb92c8167c4c6b6b3dedabe0072032962004df08e92",
+   "size": 171503,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/3주차/자료/3주차_결정요청사항.md": {
+   "sha256": "62ced1ab1c31179c0519566694ef26c6dd505a389914a5ba7016dc1ba41270b0",
+   "size": 12388,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/3주차/자료/3주차_슬라이드_결정표.md": {
+   "sha256": "024d260b9ed741ac9dc758c904fa5d59e6bc656423d3092e0926bf8b9bb9b596",
+   "size": 19249,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/3주차/자료/3주차_실습안_검증결과.md": {
+   "sha256": "3ee85fa09afaf493ce23c45535b1766fb5054c5b11a4c7d2b8f83c3ed85803bf",
+   "size": 20390,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/3주차/자료/3주차_출처레지스트리.md": {
+   "sha256": "6f6aa3dffb70ec9925cb9ffde2827b4137809a7b4de10db6d183d3f4004ec9b9",
+   "size": 47315,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/3주차/자료/3주차_콘텐츠리서치_결과.md": {
+   "sha256": "a6de133e062cddaef93b869e7961bd66571392a297013add5f6895f23311b19b",
+   "size": 20822,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/3주차/자료/images/git-setup-p02-account-ready-annotated.png": {
+   "sha256": "017adac887014f189609f99a276c3283e0c24c009e36198f4b8cac34ce4d9f27",
+   "size": 40109,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/3주차/자료/images/github-practice-p10-upload-result-crop.png": {
+   "sha256": "79189d3cdcfac696441e1e3c0f0922754cf0b2884102a101f12930ce615c8be6",
+   "size": 48819,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/3주차/자료/images/s81_harness-horse-metaphor-v1-transparent.png": {
+   "sha256": "04e37831c0317741f38b4a60fcd20b27426d3a28f72ebad9cc2fc6868e19f294",
+   "size": 1329408,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/3주차/자료/images/w3-git-acp.png": {
+   "sha256": "7c1a4741a18e6816e5126d181c80fcc7453036807bd7971427942e30b59f2c63",
+   "size": 220035,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/3주차/자료/images/w3-git-config.png": {
+   "sha256": "cd992a906c003ffed090b829b035c8b0d415eee7752fda826ccc9fe087312796",
+   "size": 297863,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/3주차/자료/images/w3-git-flow4.png": {
+   "sha256": "f414d7642dd89ad3e7d30d71adaf7c075c7b1ff76c0bf6b71fcad0d58e63dbd1",
+   "size": 203160,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/3주차/자료/images/w3-git-remote.png": {
+   "sha256": "8b897fef3248922b240f3cd02033f83e4a9759ff389517fadf1ca758fa11e6cf",
+   "size": 172187,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/3주차/자료/실습예제/ai-team/.codex/agents/doyun.toml": {
+   "sha256": "659196a01a3b7207ee5f8a170965dc6f52e77fb9926fe1e5b9986f492d533242",
+   "size": 875,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/3주차/자료/실습예제/ai-team/.codex/agents/jihun.toml": {
+   "sha256": "5d7a95766129cfd5bc3f88e0f34c6134d6a22b559eaab84452e44444c40c660b",
+   "size": 937,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/3주차/자료/실습예제/ai-team/.codex/agents/minho.toml": {
+   "sha256": "1d33d8ca97fa06079822c45ca7badbde75827dfff03253cdf5b7fe2bd6ff7857",
+   "size": 1082,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/3주차/자료/실습예제/ai-team/.codex/agents/sujin.toml": {
+   "sha256": "7a400b332ffcc26ce26f8180b5dbf4d50d0ec1857aba2aae8ed373ffb87df1a1",
+   "size": 1032,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/3주차/자료/실습예제/ai-team/.codex/config.toml": {
+   "sha256": "892f1fe8b8ad0fa9efbc9671da7e8daf624b761168a86527eeb83bbb0f19d9a0",
+   "size": 66,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/3주차/자료/실습예제/ai-team/AGENTS.md": {
+   "sha256": "a529ac23861c95ccaa8da5d59b4dfa854d7b803de0e257b2fe5446f9b9663c1f",
+   "size": 2319,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/3주차/자료/실습예제/ai-team/README.md": {
+   "sha256": "942b7758068139e28796cb446085ed0fc2584360c55cf7a85b8ac5e305d60b28",
+   "size": 3406,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/3주차/자료/실습예제/ai-team/학생용_통합프롬프트.md": {
+   "sha256": "4cdcf278b868ab818f5cd5b9d1cffea71feea3ba78d881e0daa57fa075e91423",
+   "size": 3203,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/3주차/자료/이미지-에셋.json": {
+   "sha256": "c6f3f0f4fb2189a980b67f4d451d59181f55c13306e53c6f1b197e48e59f4717",
+   "size": 184,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/3주차/자료/이미지-프롬프트.md": {
+   "sha256": "7d28123c56d5ab9817472902c30f3cef4cf6ea8ec99341c2f2e440bb2d1cca12",
+   "size": 4416,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/sessions/3주차/조립_보고.md": {
+   "sha256": "f33cf0b65a9bcdbef038731eb73d96784edb6123f6592654d644d86e5780c314",
+   "size": 83726,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/슬라이드지침.md": {
+   "sha256": "241d66f05ff08397c09000bb329c93d68f077b738b44713bbe78c716447ac0a3",
+   "size": 7033,
+   "git": "tracked"
+  },
+  "courses/바이브코딩/커리큘럼_기준안.md": {
+   "sha256": "834c2b87bf5cfe4469dddc959f83d926b1b899e3875b20c94b76c7b77d579c1b",
+   "size": 34637,
+   "git": "tracked"
+  },
+  "evals/evals.json": {
+   "sha256": "ed95d7fc63cd70f6248c667322dfce8013ebd3418a8d03b92f0f8bbcdca27b33",
+   "size": 16451,
+   "git": "tracked"
+  },
+  "evals/image-contract-eval.json": {
+   "sha256": "7c026ebf4a72178edbb36baaaf209738a9ca42a4d12904614778958754599727",
+   "size": 6433,
+   "git": "tracked"
+  },
+  "evals/team-skills-eval.json": {
+   "sha256": "8f82ad20332b1d87d5c6813564c633258ec380768efb1d9b49ade52780b69e56",
+   "size": 13336,
+   "git": "tracked"
+  },
+  "evals/trigger-eval.json": {
+   "sha256": "13761350de349441a4c544cddca37544b8a739b41f4db1b08842dace9fb358bf",
+   "size": 2949,
+   "git": "tracked"
+  },
+  "evals/verify_image_contract.py": {
+   "sha256": "b6dcbb523b2325c44b3177b66e1a4509dea7ba7a763024080a756a8ce7dec2f7",
+   "size": 6115,
+   "git": "tracked"
+  },
+  "kit/CHANGELOG.md": {
+   "sha256": "f4d4b73e5b263f5f3b14a088dc0c017c8181cc2d6aa40d3a3ba587806ee49dd1",
+   "size": 15080,
+   "git": "tracked"
+  },
+  "kit/VERSION": {
+   "sha256": "cd442bc2a08f952577276d5bf3c6067317282cc403710c43475399f39ab201e9",
+   "size": 10,
+   "git": "tracked"
+  },
+  "kit/charts/README.md": {
+   "sha256": "9519f8198d26a25a306acd23fb9a6f4c1a47c9e350a2116b3a2b5a3a703acf58",
+   "size": 2911,
+   "git": "tracked"
+  },
+  "kit/charts/by-shape.md": {
+   "sha256": "e4107e4747eb664960b7015cabd38652b77b40924be6342f15091f5f97217667",
+   "size": 5273,
+   "git": "tracked"
+  },
+  "kit/charts/catalog.html": {
+   "sha256": "622b2c585524fd6e3691121d0104f29ab49da80cb337e2eaacf3eaef59b22d38",
+   "size": 28410,
+   "git": "tracked"
+  },
+  "kit/charts/charts-basic.md": {
+   "sha256": "52722d2900b3812579064e0b299c6bcbec478adb8bbc66dfed471b77549acda4",
+   "size": 19437,
+   "git": "tracked"
+  },
+  "kit/charts/charts-ratio.md": {
+   "sha256": "3ce2ce76ccee7888522bde04ad1fc0ce963cd2c24ac9433438479ac5164fde51",
+   "size": 22734,
+   "git": "tracked"
+  },
+  "kit/charts/diagrams-process.md": {
+   "sha256": "1a710cb455b38c8f81730295aa54a418b4de637c4dd7a14e0df901d562a95f09",
+   "size": 34448,
+   "git": "tracked"
+  },
+  "kit/charts/diagrams-relational.md": {
+   "sha256": "2e27ebdc51ea4d74af3db89dd1a38f1e060e93fbd60a739986d903668dde213f",
+   "size": 19016,
+   "git": "tracked"
+  },
+  "kit/charts/elements-code.md": {
+   "sha256": "74419f709fde5e29905958adaef861f6c33d1b3a6f86347b790d0ce6072dcd34",
+   "size": 12608,
+   "git": "tracked"
+  },
+  "kit/fonts/OFL.txt": {
+   "sha256": "82e9c8a4b203261f10ddba1296422d64914ff3d4b7bd8a12896d03f0f088d70a",
+   "size": 4816,
+   "git": "tracked"
+  },
+  "kit/fonts/PretendardVariable.woff2": {
+   "sha256": "9599f12fd42fc0bce1cd50b47a0c022e108d7aa64dd0d1bb0ed44f3282d900b4",
+   "size": 2057688,
+   "git": "tracked"
+  },
+  "kit/guide/교육원칙-요약.md": {
+   "sha256": "cb912376355ef6588152a717da0d623deb9098f53b093e7d4a8700882786b8e7",
+   "size": 4614,
+   "git": "tracked"
+  },
+  "kit/guide/디자인시스템.md": {
+   "sha256": "4bd46c7a2bea3d425c594fe8962da11efd4171c28c7906c01bad7bca303c5908",
+   "size": 13774,
+   "git": "tracked"
+  },
+  "kit/guide/문체-원칙.md": {
+   "sha256": "2bc628f7374af96dd62be48a9ae97f41256fb8c0da332bb171fc1d2b71f95647",
+   "size": 8843,
+   "git": "tracked"
+  },
+  "kit/guide/정보모양-taxonomy.md": {
+   "sha256": "8af8a0db40c37b79610dddf9b08f32cc37dd58665c05eef818c7d4f319ee94e5",
+   "size": 4654,
+   "git": "tracked"
+  },
+  "kit/guide/카탈로그-규격.md": {
+   "sha256": "2c820dc1e2d03b69a403632b62e875b5d2190941434ab975266b06951494b3dd",
+   "size": 14606,
+   "git": "tracked"
+  },
+  "kit/guide/테마-계약.md": {
+   "sha256": "6a197831e47267af4c7d2f498855c15d800aec829e20f84f0220a482727fd42d",
+   "size": 12655,
+   "git": "tracked"
+  },
+  "kit/guide/토큰-치트시트.md": {
+   "sha256": "cdb52940cdec93f503bb5ace07277e9fd119a05f361e34522bffd073eb26576d",
+   "size": 26677,
+   "git": "tracked"
+  },
+  "kit/guide/한장-참조표.md": {
+   "sha256": "1a22c90f46da9a9972a7130db60d8190137e6f6d4978280e41d5dfd46e4217c4",
+   "size": 8578,
+   "git": "tracked"
+  },
+  "kit/images/paper-cut-v1/designboard.png": {
+   "sha256": "7934cdf50d269322bba1a1a7eba2abf84ad8801c6af9fe9d8b02cc67e5af73d3",
+   "size": 1087728,
+   "git": "tracked"
+  },
+  "kit/images/paper-cut-v1/registry.json": {
+   "sha256": "a1f446d13c90079dda0114cb746fa712ad07726fae14d7dde597c09e2598deed",
+   "size": 553,
+   "git": "tracked"
+  },
+  "kit/images/registry.schema.json": {
+   "sha256": "a0f9fcc9ed1ad53d5b9cf8eebf5f1200bef8b0126c35cd90ec9d2363f5b7af63",
+   "size": 4556,
+   "git": "tracked"
+  },
+  "kit/layouts/README.md": {
+   "sha256": "73cd7825b656b170566698d37911a6451fd59b8c44492ad0b21f9f82acc319ca",
+   "size": 5013,
+   "git": "tracked"
+  },
+  "kit/layouts/by-shape.md": {
+   "sha256": "f9e856f230a469e7ce8f9e546daaccdebd147104aa92938ac692108370b964e7",
+   "size": 13247,
+   "git": "tracked"
+  },
+  "kit/layouts/catalog.html": {
+   "sha256": "1f2163a4b1ac1ac650b89b6743348bded8968314cc4862044f84175182dcfe67",
+   "size": 27183,
+   "git": "tracked"
+  },
+  "kit/layouts/families/centered.md": {
+   "sha256": "dda2cdb31c9ca61a71c6528ae0eec927c1689db7bf4c8230f60ae2fcf169b6ee",
+   "size": 19746,
+   "git": "tracked"
+  },
+  "kit/layouts/families/comparison-symmetric.md": {
+   "sha256": "8f3d62547062132f3af5f305b4ff13f38f853907ded4582c730ac436cb5f039c",
+   "size": 16757,
+   "git": "tracked"
+  },
+  "kit/layouts/families/diagram-centric.md": {
+   "sha256": "078c9d6a1b5cd48a12fbfb161e72e76aa3e96c08dfc22e9cfa91a8e15be9c11d",
+   "size": 17353,
+   "git": "tracked"
+  },
+  "kit/layouts/families/full-bleed.md": {
+   "sha256": "b50ff5358a47fbb878e0f0fc3bc1f9c1f0864ffd5c5cc779493a82a33f3c08f6",
+   "size": 19706,
+   "git": "tracked"
+  },
+  "kit/layouts/families/grid-mosaic.md": {
+   "sha256": "5e32ec546f20d56f0860e4550b21a4661c9913e3c6c07abc26df7d14a2b4b49b",
+   "size": 32685,
+   "git": "tracked"
+  },
+  "kit/layouts/families/split.md": {
+   "sha256": "ca83ec1c3989444e43c3c356438ed214b9da82eb1ef99af020554d277bc6dfa7",
+   "size": 14152,
+   "git": "tracked"
+  },
+  "kit/layouts/families/top-down.md": {
+   "sha256": "a25c0149ab91827ea12230e4b530da170c51a86e17dbf08228c3b910f49d20fa",
+   "size": 37071,
+   "git": "tracked"
+  },
+  "kit/layouts/families/vertical-flow.md": {
+   "sha256": "c5943b70ae111d7c15962cbf45cd9fc927236e501a69830338490a843313e1c2",
+   "size": 26837,
+   "git": "tracked"
+  },
+  "kit/runtime/presenter-runtime.js": {
+   "sha256": "58d5106a8157c3f0db65fdda42b30ca6c5dcd3eeeb304054a574d3b64fd89543",
+   "size": 72554,
+   "git": "tracked"
+  },
+  "kit/runtime/presenter-ui.css": {
+   "sha256": "d9cffb4334d0f3f9736d11e1ce07e71a4cc54851ef9ba83e3a3ba8db547b93dd",
+   "size": 19900,
+   "git": "tracked"
+  },
+  "kit/screenshots/주석스크린샷.md": {
+   "sha256": "fddad87aa101795abd27fbeb61c5172700e40c4e666de1f15cbad984fc0cd917",
+   "size": 4231,
+   "git": "tracked"
+  },
+  "kit/starter/deck-template.html": {
+   "sha256": "41a22e0872654fdad5b2ea0638a8e1862e1b69b090e4ba41b6d057a840a753d3",
+   "size": 29241,
+   "git": "tracked"
+  },
+  "kit/starter/logo.svg": {
+   "sha256": "8ddb2afba6728b13bdd31c87d5968cc9e03028ff518cf106f8de1ab0d08f9bf6",
+   "size": 912,
+   "git": "tracked"
+  },
+  "kit/starter/presenter-notes-template.html": {
+   "sha256": "313a45eeeece05e7d3c2a05cbd658f8dca262f67b3f1541b26abca8bdce5b982",
+   "size": 6581,
+   "git": "tracked"
+  },
+  "kit/styles/deck.css": {
+   "sha256": "a2d5e4f26af0a27673ab0139dd17932b7d97d18db6fb372916ee6e7e8dea8561",
+   "size": 79442,
+   "git": "tracked"
+  },
+  "kit/styles/legibility.css": {
+   "sha256": "706f11a38b8306680c11b35bb974b17ed7759963d7e4320df23a261f26dad66b",
+   "size": 2221,
+   "git": "tracked"
+  },
+  "kit/styles/patterns.css": {
+   "sha256": "bf681d8e75fc82342c239a0c4478e5c06677f409b305460da0db0a4b9f987295",
+   "size": 37130,
+   "git": "tracked"
+  },
+  "kit/themes/default/tokens.css": {
+   "sha256": "30f684425fa6dab5c3b77e16c24958dad96dd8c990e79247d09ba6927f8fba20",
+   "size": 11843,
+   "git": "tracked"
+  },
+  "kit/themes/likelionSKU/tokens.css": {
+   "sha256": "304fb544bcf8e038367c14d35c5dd18344056c0e6632d8a01b9d78059c42fbdf",
+   "size": 8768,
+   "git": "tracked"
+  },
+  "outputs/build_layout_atlas.mjs": {
+   "sha256": "78453b409daac3d18990dc7566aca6d3e65b1e26e6f7c10669f9a7de50759d67",
+   "size": 43988,
+   "git": "tracked"
+  },
+  "outputs/create-slides-layout-atlas.html": {
+   "sha256": "7e2808f48de784701bf4f892302f64ec2e7fb8b55ba90524bce1b5460e5e5bc1",
+   "size": 220774,
+   "git": "tracked"
+  },
+  "plans/create-slides-refactor/BASELINE_OUTPUTS.txt": {
+   "sha256": "1d87d3f01fb56008380548a31f3ca377764520e39bbba0d4e93404944e8efc1f",
+   "size": 10018,
+   "git": "tracked"
+  },
+  "plans/create-slides-refactor/BASELINE_REPORT.md": {
+   "sha256": "a97825eba5661b3a2f2ccd86e2bc5f3b6b30d4d54c42137f93524eb4cef228f8",
+   "size": 5902,
+   "git": "tracked"
+  },
+  "plans/create-slides-refactor/EXECUTION_STATE.md": {
+   "sha256": "13baf22d9192512666b8aa9db5dfff7850b21c693e8a1d712346e7ca935515d4",
+   "size": 17952,
+   "git": "tracked"
+  },
+  "plans/create-slides-refactor/FINAL_REPORT.md": {
+   "sha256": "e0cbf0cf07c12bdba684ecb94aa8cd3258548e369e2a1b8d49caf3085b54e651",
+   "size": 11055,
+   "git": "tracked"
+  },
+  "plans/create-slides-refactor/FOLLOWUP_PROMPTS.md": {
+   "sha256": "583736b668d40173fcce664f7b7cd00cceef893ffcbeb33c4593e05981a7d7b5",
+   "size": 24460,
+   "git": "tracked"
+  },
+  "plans/create-slides-refactor/MASTER_EXECUTION_PLAN.md": {
+   "sha256": "a263177767c3554eb3cdaf3f2d7c4204111604cf769d580a961b2703eb1d1975",
+   "size": 147351,
+   "git": "tracked"
+  },
+  "plans/create-slides-refactor/RULE_MIGRATION_MAP.md": {
+   "sha256": "c9af028367ce4896f2c73ad587434018cbacddc8dcaae31a85ae32e1800dae26",
+   "size": 31586,
+   "git": "tracked"
+  },
+  "plans/deck-quality-refactor/CHECKLIST.md": {
+   "sha256": "ef13b1e5f899ac9530fc3ecfc37fc1aea6301dc9eba2898b30bbd2c14cba1c5b",
+   "size": 51977,
+   "git": "tracked"
+  },
+  "plans/deck-quality-refactor/IMAGE_PLAN.md": {
+   "sha256": "40d6546ef8000fde1bd12916f04661a5a2763c4c6bb9920a65c11b155bd2fe1d",
+   "size": 17584,
+   "git": "tracked"
+  },
+  "plans/deck-quality-refactor/PLAN.md": {
+   "sha256": "31f2a6af930002144ccaaa61123c1d24042b4530ac377b834a53a9d1813d12dc",
+   "size": 54005,
+   "git": "tracked"
+  },
+  "plans/deck-quality-refactor/PROGRESS.md": {
+   "sha256": "a22b435387078c1e34c1ba60f129325488977309af42bdc6a5a197777d628a88",
+   "size": 36150,
+   "git": "tracked"
+  },
+  "plans/deck-quality-refactor/RENDER_AUDIT.md": {
+   "sha256": "d930fb09db165436921050f7d58b22e84fce94d0bccbf096a34e67dc34e04b1d",
+   "size": 14883,
+   "git": "tracked"
+  },
+  "plans/deck-quality-refactor/WAVE2.md": {
+   "sha256": "306634aa79831194d4fe92b20be4ef321e195ebb7f30f7c305d9a07ca9743408",
+   "size": 12812,
+   "git": "tracked"
+  },
+  "plans/gate-input-hardening/PLAN.md": {
+   "sha256": "ae52d74da0bd87497c9748de4674508fad316ce961e5df7151a5b126c006089f",
+   "size": 16946,
+   "git": "tracked"
+  },
+  "plans/gate-input-hardening/PROGRESS.md": {
+   "sha256": "d2c3bc4fd82b14d7fc70fa76aa495ec5931c38e8a93bb2a00c2dc98fef3b024c",
+   "size": 19110,
+   "git": "tracked"
+  },
+  "plans/instruction-refactor/FINAL_REPORT.md": {
+   "sha256": "5ace3d5f1a47c6c42b655402130baecbbe15b17b817528ef06bb9b97bdd9a5f4",
+   "size": 12761,
+   "git": "tracked"
+  },
+  "plans/instruction-refactor/PLAN.md": {
+   "sha256": "7ea83a701418a06a8e0a959a1e6d6f4e2f1a9e30b5e46f40d22786fe30c66e20",
+   "size": 63233,
+   "git": "tracked"
+  },
+  "plans/likelionSKU-theme/PLAN.md": {
+   "sha256": "ba9eef528d55363f79f4561f9b1bf710c45d185a4bc1aa3b493f0b6778230eac",
+   "size": 34641,
+   "git": "tracked"
+  },
+  "plans/likelionSKU-theme/PROMPT.md": {
+   "sha256": "0749d049fe2184bcd5c54466e207e82f4e2dbb1819019edfd291c3a0964d7b0b",
+   "size": 5701,
+   "git": "tracked"
+  },
+  "plans/likelionSKU-theme/RESULTS.md": {
+   "sha256": "4ca75ff263b1449bdfaf7b3729b90a86a6ff3ae24f831fc886bbbb9f093a7c12",
+   "size": 26539,
+   "git": "tracked"
+  },
+  "plans/presenter-system-final-plan.md": {
+   "sha256": "16518a7085f296dbf832e305645d36ac58be586f89251409017f3312c2939187",
+   "size": 67498,
+   "git": "tracked"
+  },
+  "plans/rule-gap-fix/PLAN.md": {
+   "sha256": "06fa09c53283655932057e5377bbb7c70de5beffe14949185ffa3c9ae1df4b85",
+   "size": 8965,
+   "git": "tracked"
+  },
+  "plans/system-improvement/ANALYSIS.md": {
+   "sha256": "0e8d35cffc7cef2f2219d12e9f9a9cc5b03550905dd2225f779640a4a9b0916b",
+   "size": 15081,
+   "git": "tracked"
+  },
+  "plans/system-improvement/P7-판정.md": {
+   "sha256": "bcf783615441aa32a0237cb4078d2a977287b508d3abdff594eb8e87799a23b1",
+   "size": 5201,
+   "git": "tracked"
+  },
+  "plans/system-improvement/PLAN.md": {
+   "sha256": "0da0b4ff7bed0ee3024a0257356c8ca20a8927fb11ffa4e127ef57735a44d1ab",
+   "size": 13302,
+   "git": "tracked"
+  },
+  "plans/system-improvement/자료/A1.md": {
+   "sha256": "4d4e21355093971064c58e3737591b8337eb0102bebae25a56197874bdecaee6",
+   "size": 46091,
+   "git": "tracked"
+  },
+  "plans/system-improvement/자료/A2.md": {
+   "sha256": "b65a20fe7820230dac48fb4b3b3a50e38fe44b8e90a8f3f7a451bc5e0a996ae0",
+   "size": 72243,
+   "git": "tracked"
+  },
+  "plans/system-improvement/자료/A3.md": {
+   "sha256": "faa494c4582e9041e3f39ab60c3645d914ed0ad6e5e4e4d3eec5c722ca53c97f",
+   "size": 47229,
+   "git": "tracked"
+  },
+  "plans/system-improvement/자료/A4.md": {
+   "sha256": "c40779516fa8f58feaf47395397bbc8d0bab39c06a2f3652044c102749c7ff40",
+   "size": 25345,
+   "git": "tracked"
+  },
+  "plans/system-improvement/자료/A5.md": {
+   "sha256": "8bf3a4594435216ab540ba663bc2fa7f4dad756f42fabf941d7bd551f53a8fed",
+   "size": 15273,
+   "git": "tracked"
+  },
+  "plans/system-improvement/자료/B_명제_2주차_batch1.md": {
+   "sha256": "1bdc1150102e924a7ed1bc302fb175a6069ce384487ca1e95a49c20863189ca6",
+   "size": 25029,
+   "git": "tracked"
+  },
+  "plans/system-improvement/자료/B_명제_2주차_batch2.md": {
+   "sha256": "86e1ffd07777251a384edf3b2d31253793a00bb5d5c9f04252150ea50e50b250",
+   "size": 26883,
+   "git": "tracked"
+  },
+  "plans/system-improvement/자료/B_명제_2주차_batch3.md": {
+   "sha256": "f58a58f6512c13862cd364302dca6227371a24511d1480fac8425ed6a88bf18e",
+   "size": 28197,
+   "git": "tracked"
+  },
+  "plans/system-improvement/자료/B_명제_전역.md": {
+   "sha256": "34986f75899146105d80a4bd515727f4be7fe04f673c27ab97bb25148cd09006",
+   "size": 20526,
+   "git": "tracked"
+  },
+  "plans/system-improvement/자료/B_원장.md": {
+   "sha256": "43440e360de63efc0e984ebb775f7b868778cabb011a6afd5e15ca5a9281d1d6",
+   "size": 139003,
+   "git": "tracked"
+  },
+  "plans/system-improvement/자료/C0_전역2주차.md": {
+   "sha256": "96ad22c7a0123fe164639056f5f20a96efb727301ef389135939d3ebdf5baf0d",
+   "size": 9021,
+   "git": "tracked"
+  },
+  "plans/system-improvement/자료/C1a_2주차.md": {
+   "sha256": "7a0a4ab5a88015ef819b2bc249acb7860cd4a95085e181598d8131b5b79178f7",
+   "size": 11450,
+   "git": "tracked"
+  },
+  "plans/system-improvement/자료/C1b_2주차.md": {
+   "sha256": "dab91bc7436a82d60c60544a7de3688512844317732a6221311d1423c9dcbe17",
+   "size": 11931,
+   "git": "tracked"
+  },
+  "plans/system-improvement/자료/C2a_2주차.md": {
+   "sha256": "db7fcd57b0b6a848dcc14d40ac4049a18036b15086a49da20393e61f8a048d19",
+   "size": 12618,
+   "git": "tracked"
+  },
+  "plans/system-improvement/자료/C2b_2주차.md": {
+   "sha256": "673c4b9343a1193712348cbfe6ab86562f55c1a5333ca26b02b7419073851613",
+   "size": 12716,
+   "git": "tracked"
+  },
+  "plans/system-improvement/자료/C3a_2주차.md": {
+   "sha256": "aef2104e1b9057ac93acf3e35e85829d03face462248edc1e93235a0e166a1ef",
+   "size": 11115,
+   "git": "tracked"
+  },
+  "plans/system-improvement/자료/C3b_2주차.md": {
+   "sha256": "ffe2386402e36e892e825586d22f9872ad0617fd0fdcb26a52b885a8a829e3d1",
+   "size": 7631,
+   "git": "tracked"
+  },
+  "plans/system-improvement/자료/C4_3주차.md": {
+   "sha256": "c729608f34a684f53850ffbf4fd32f43beb940ce0302a4a5237de123b3d207d6",
+   "size": 8670,
+   "git": "tracked"
+  },
+  "plans/system-improvement/자료/C5_1주차.md": {
+   "sha256": "b0a517a34bff8446414a71059a74c87e294f2df4f3ae5604132fa049c3f152dc",
+   "size": 4493,
+   "git": "tracked"
+  },
+  "plans/system-improvement/자료/C6.md": {
+   "sha256": "bd2e61fc8c9da1d52419d708be7634208e9c8578aaf712faefe71eb32a5657bb",
+   "size": 28198,
+   "git": "tracked"
+  },
+  "plans/system-improvement/자료/D_승격추적.md": {
+   "sha256": "b39f7b7f29adfaeaa533b8408660802c02b5e4eb34daf0c0ea43ea72edaa5a8a",
+   "size": 38871,
+   "git": "tracked"
+  },
+  "plans/system-improvement/자료/E1.md": {
+   "sha256": "2be84d91cd3f7ccb63d9d07e895c03f050dc36c2b742df3b505c04fe36a42373",
+   "size": 10626,
+   "git": "tracked"
+  },
+  "plans/system-improvement/자료/E2_검증기갭.md": {
+   "sha256": "37c259466d1904850b35fb6cfb4a57835a559ef789ba9cba63c4b3eae8f135b7",
+   "size": 8706,
+   "git": "tracked"
+  },
+  "plans/system-improvement/자료/F1.md": {
+   "sha256": "c39c3fa85e1174eeddafea878c0eb00b188396dd27451c8705ef2be27bf3050f",
+   "size": 6237,
+   "git": "tracked"
+  },
+  "plans/system-improvement/자료/F2_추출.md": {
+   "sha256": "f51f99027732dfa377bb90f8be40ba683b280326bcea1902a673f0823ae444ca",
+   "size": 16644,
+   "git": "tracked"
+  },
+  "plans/system-improvement/자료/F2_효율.md": {
+   "sha256": "f2bb75362b048bfb667c5bded5603400ff47b3651e1dc2854b65947ed7b1960a",
+   "size": 4709,
+   "git": "tracked"
+  },
+  "plans/system-improvement/자료/README.md": {
+   "sha256": "343e14d7380198176586dbf9b0254f2b013769d0492cd0027f65a306b64b63f7",
+   "size": 5133,
+   "git": "tracked"
+  },
+  "plans/system-improvement/자료/S1_input_대상소실.md": {
+   "sha256": "347ca6b459132d40db6a42f4fee7f66347f8278717bd9c7f2846a2a90097aa74",
+   "size": 7995,
+   "git": "tracked"
+  },
+  "plans/system-improvement/자료/S1_input_상위20.md": {
+   "sha256": "ca095d98dafaba53e55745b29b4ad6f885316ad43028f07ed1337c788aeea37a",
+   "size": 3833,
+   "git": "tracked"
+  },
+  "plans/system-improvement/자료/S1_input_유형분류.md": {
+   "sha256": "53149b753d201397d17732e9c3d5fbcff80613c4726b0040e79581e927e0925a",
+   "size": 21142,
+   "git": "tracked"
+  },
+  "plans/system-improvement/자료/S1_part1_유형분류.md": {
+   "sha256": "ca074884a87d6acfb350b8a258c5620e1f408b85231920df9690d4b5c1209ea3",
+   "size": 17720,
+   "git": "tracked"
+  },
+  "plans/system-improvement/자료/S1_part2_대상소실.md": {
+   "sha256": "19f4509d973bbbebfb072a346f5b63dd26b652ed84abcf23f571e6a73478e635",
+   "size": 10194,
+   "git": "tracked"
+  },
+  "plans/system-improvement/자료/S1_part3_상위20검증.md": {
+   "sha256": "c92afce1e2f853409008d6b1d5791de7345ecd5d261af0e9b0b739b8bd717c38",
+   "size": 7801,
+   "git": "tracked"
+  },
+  "plans/system-improvement/자료/mia_2주차_전체행.txt": {
+   "sha256": "c898160138c13c56d7fa28372f898bdab0599db9ff3b2f60bdba399d1b747642",
+   "size": 127012,
+   "git": "tracked"
+  },
+  "plans/system-improvement/자료/mia_bwonjang_rows.txt": {
+   "sha256": "0b271c05675a02e02551c94caaf108bb433e53ecf9240501b6ce94d092bbfea3",
+   "size": 16464,
+   "git": "tracked"
+  },
+  "plans/system-improvement/자료/mia_c파일_대상소실.txt": {
+   "sha256": "d4639c1064c23bdec5ce6337da44c518cac0b0f264d45aa166f289740b7f4016",
+   "size": 4197,
+   "git": "tracked"
+  },
+  "plans/system-improvement/자료/mia_c파일_미반영부분반영.txt": {
+   "sha256": "90c87c686f4672b0efd40df007a7ad746fa2e2c5ef2f724f6de02e81858c7400",
+   "size": 12860,
+   "git": "tracked"
+  },
+  "plans/system-improvement/자료/mia_debug.txt": {
+   "sha256": "1939e7745ffe6bf2439ba844ddf760305bc2b607530eff2d9e44b1ad18cfba99",
+   "size": 13,
+   "git": "tracked"
+  },
+  "plans/system-improvement/자료/mia_join.py": {
+   "sha256": "ca7207240b734f1d4d882e6215ce49b3416183c368ac39b1cca5ea94c0f4cb0a",
+   "size": 2606,
+   "git": "tracked"
+  },
+  "plans/system-improvement/자료/mia_대상소실_bwonjang.txt": {
+   "sha256": "c33e0f794806dd2b306f67cd642e78d000b5e07b1498accba127268b49178992",
+   "size": 7612,
+   "git": "tracked"
+  },
+  "plans/system-improvement/자료/mia_대상소실_c행.txt": {
+   "sha256": "2695d6fc82c80a44e3ffd5572c7665281b21ee9340d560212148a67152a7ec7f",
+   "size": 4414,
+   "git": "tracked"
+  },
+  "plans/system-improvement/자료/mia_대상소실_ids.txt": {
+   "sha256": "e8dee1b990bca03862c267e1c123521e3ed31d70aefe70be268b7fdbdbf4b6ab",
+   "size": 287,
+   "git": "tracked"
+  },
+  "plans/theme-ui-expansion/REQUIREMENTS.md": {
+   "sha256": "4fb227bd6f755d7f8c3c14b58146e627f4ac374f505a93bdcd8db30edbcdb60a",
+   "size": 8133,
+   "git": "tracked"
+  },
+  "plans/theme-ui-expansion/측정노트-2026-08-17.md": {
+   "sha256": "e21ba6374a460bd9bbc6ea181df7f573776fcc96004e6d54368380161950a8b1",
+   "size": 5945,
+   "git": "tracked"
+  },
+  "plans/typography-grid-system/F11-RULE-PROMOTION-MAP.md": {
+   "sha256": "58ca087487652e7e96e7f874742011e74d4c2f46a7dbd3773e64c86988489e7c",
+   "size": 7830,
+   "git": "tracked"
+  },
+  "plans/typography-grid-system/F12-GATE-TRIAGE.md": {
+   "sha256": "08345d4bde407dd4077fad56050621cc833a372cbe3a3b854c99691585dec748",
+   "size": 6998,
+   "git": "tracked"
+  },
+  "plans/typography-grid-system/FINDINGS.md": {
+   "sha256": "75a37ceb9498423a4db61a215a4eca851910dcd13c1c9a3f6e3d5eaa02522592",
+   "size": 8582,
+   "git": "tracked"
+  },
+  "plans/typography-grid-system/PLAN.md": {
+   "sha256": "6dc2b3e927be4eeff775aaf19018dba52171a12698b60a0fb453e5104592cf11",
+   "size": 92384,
+   "git": "tracked"
+  },
+  "plans/typography-grid-system/REVIEW-2026-08-03.md": {
+   "sha256": "f3afe913cbb0ed62d3ab5c188e5be10c0fec9263527a1b3cfeb6d144228625fc",
+   "size": 11009,
+   "git": "tracked"
+  },
+  "plans/typography-grid-system/S0-BASELINE.md": {
+   "sha256": "caa07778f49167f2d6e4930a456fc85dfe8ea249ff60dd9b4739e5aae73b1dfb",
+   "size": 18026,
+   "git": "tracked"
+  },
+  "plans/typography-grid-system/TYPE5-DECLARED-VS-ENFORCED.md": {
+   "sha256": "7f17969d54cbe48c53fff18442d0280db494779110fc53226bb3e7e794d5d4e1",
+   "size": 7104,
+   "git": "tracked"
+  },
+  "plans/typography-grid-system/measure_typo_baseline.js": {
+   "sha256": "262718482922975d72a9de06de235d4d4a69119a8b9c082e9a9724052646b2e0",
+   "size": 13686,
+   "git": "tracked"
+  },
+  "references/phases/01-입력분석.md": {
+   "sha256": "ff3128372a7ae4072696c2ace548c5da4c4cf0de79d6383366dc1d6882b3c475",
+   "size": 3899,
+   "git": "tracked"
+  },
+  "references/phases/02-슬라이드맵.md": {
+   "sha256": "3bdc5cf2d88db2a727c9633505b2cc7e8f9da6398f66c790f1150a721c2828ce",
+   "size": 4661,
+   "git": "tracked"
+  },
+  "references/phases/03-레이아웃선택.md": {
+   "sha256": "38ed6e9641407162c3fb897cea078b066f7895ad652bf6f11e71975486ba3f52",
+   "size": 13632,
+   "git": "tracked"
+  },
+  "references/phases/04-조립.md": {
+   "sha256": "2ef71f17cbde2a0e3c06adc8eab35fb0137067b07cf292de66b712928500ac5f",
+   "size": 20848,
+   "git": "tracked"
+  },
+  "references/phases/05-시각화.md": {
+   "sha256": "a1ff9805360adaf41fe779d7e6e1c9bd4cd9a296b5fa1fab9eb4eb1fcfff4f32",
+   "size": 3167,
+   "git": "tracked"
+  },
+  "references/phases/06-이미지.md": {
+   "sha256": "91e3f369a58fe9d367abcca77c2c488052759fb469c1936236904be62b5097f1",
+   "size": 6730,
+   "git": "tracked"
+  },
+  "references/phases/07-발표자노트.md": {
+   "sha256": "ce1f7fe358ee71b9506c13578620bedef620c600b3af81d9d67f9d35f13940c2",
+   "size": 3347,
+   "git": "tracked"
+  },
+  "references/phases/08-검증.md": {
+   "sha256": "97394f6cddfa7fad36de3a0d3bdf72dc125fdfa9da57cb3058085659d2d74e73",
+   "size": 8988,
+   "git": "tracked"
+  },
+  "references/phases/09-배포.md": {
+   "sha256": "399ac7d2d75d4f1bf91f6f96030e0aeff924369099db021bceddc524c93e0d66",
+   "size": 1424,
+   "git": "tracked"
+  },
+  "references/phases/10-발표자모드.md": {
+   "sha256": "94fda8d97a1084672d27dd24e27181f33c672e7036ba15864c5ea069fe57aae9",
+   "size": 5679,
+   "git": "tracked"
+  },
+  "references/검증-명령-지도.md": {
+   "sha256": "f8875cc4edb784fe159739e1ae46121b459836df5d1b83c3acc56b739c17f61d",
+   "size": 23267,
+   "git": "tracked"
+  },
+  "references/이미지-디렉션-프롬프트.md": {
+   "sha256": "a08939e91ae9e5cca00a93adc5aeea797f98d5872fe2349ef2fb3d5828e0d5ba",
+   "size": 16828,
+   "git": "tracked"
+  },
+  "references/이미지-스크린샷-배포.md": {
+   "sha256": "ca1e75be2e207e99a67bd36963e9a6d5b846f2a460106e2673828f3a53f91bb8",
+   "size": 3585,
+   "git": "tracked"
+  },
+  "references/이미지-에셋-manifest.schema.json": {
+   "sha256": "8682ade655f1678bf5dc953338555fb637d8a10dc9febc8a8af59b3a38a16b05",
+   "size": 6467,
+   "git": "tracked"
+  },
+  "references/조립-리듬-불변요소.md": {
+   "sha256": "30555d8e2f0334fbe4a9b96ef1f6e8c61cdcf605b8aa1804aeeff2f154843aa0",
+   "size": 12102,
+   "git": "tracked"
+  },
+  "references/콘텐츠초안-입력형식.md": {
+   "sha256": "8888a04a2e64e5e4ea73f0609a39527b0fa92fa44efb2c3cbb511217d64e75b4",
+   "size": 9434,
+   "git": "tracked"
+  },
+  "requirements-dev.txt": {
+   "sha256": "a7923c4b19f6111598309b79b5eb263a14f62fc20bf4e653d23c867f61eb6482",
+   "size": 341,
+   "git": "tracked"
+  },
+  "scripts/_course_paths.py": {
+   "sha256": "7875e13dd77e7ba9f557265eead9f5be5c31777ced728fdc97c65ebf477c32e0",
+   "size": 11594,
+   "git": "tracked"
+  },
+  "scripts/analyze_agent_usage.py": {
+   "sha256": "e6fb1a0f2e01f93e1a98a9247ed50efb96c50d6809458929b94e5033a642028b",
+   "size": 57728,
+   "git": "tracked"
+  },
+  "scripts/assemble_deck.py": {
+   "sha256": "dfd89ae87c6864b42703af1d591d66d87174d51dd3dba3f644a9a945da3853f5",
+   "size": 8859,
+   "git": "tracked"
+  },
+  "scripts/audit_all.js": {
+   "sha256": "575218242d465d0a7846f3e5199f16295a6165a87d1d17bc506e9015f91e5edb",
+   "size": 12283,
+   "git": "tracked"
+  },
+  "scripts/audit_context_budget.py": {
+   "sha256": "58b696a36ba5a2993e5bda3df0e5eab27e3800521800de826a36394b9c2bc34c",
+   "size": 15198,
+   "git": "tracked"
+  },
+  "scripts/audit_render.js": {
+   "sha256": "9583c7894517f40061e97f16137ac90d54bf8d53eff6486a590fe0fab0a7b4f4",
+   "size": 40150,
+   "git": "tracked"
+  },
+  "scripts/audit_typography.js": {
+   "sha256": "9ae0a96814f19dc7aeda045e911c646d87d5dc0dab141bf0781a9c918f617588",
+   "size": 19948,
+   "git": "tracked"
+  },
+  "scripts/build_release.py": {
+   "sha256": "8b7884e40d267a828c3fc988a34e9defcf1ff3f28e6a5d932ae2c9b2fb3c5f15",
+   "size": 6425,
+   "git": "tracked"
+  },
+  "scripts/check_title_survival.py": {
+   "sha256": "2db9580c31bd7b0b4759d0d5de211271ec5df12df15f8092de69b3cd0a393466",
+   "size": 15731,
+   "git": "tracked"
+  },
+  "scripts/compare_baseline_panel.py": {
+   "sha256": "b3c94ffd4bd79952636d0a588749dda364f018df87f305d61d5af907e9835e71",
+   "size": 8927,
+   "git": "tracked"
+  },
+  "scripts/font_embed.py": {
+   "sha256": "80861c76ccfd8bfc6c90251327c674e77937b64e07b0b23603a09620a95c0666",
+   "size": 3646,
+   "git": "tracked"
+  },
+  "scripts/hook_slide_guard.py": {
+   "sha256": "024abc0e3c16183fa9cc18196b02f874e97ad64a441e1f11ba8bccf97034d272",
+   "size": 23674,
+   "git": "tracked"
+  },
+  "scripts/inject_presenter.py": {
+   "sha256": "923da329d5ea8ff503b80eec2ad358d1af5aadc0476f8ac7e1ccf6ad30f274ac",
+   "size": 23423,
+   "git": "tracked"
+  },
+  "scripts/inline_deck.py": {
+   "sha256": "35630bc5a74bcfd7c383520739e599d26b859dfa6be9566e4218aad4b497e120",
+   "size": 16195,
+   "git": "tracked"
+  },
+  "scripts/install_hooks.py": {
+   "sha256": "f9b375848e1033f8ba7697d8acdd99e759ba53e512abab65901ebeca7a3630c1",
+   "size": 3866,
+   "git": "tracked"
+  },
+  "scripts/kb_extract.py": {
+   "sha256": "397bfcdfee00e3b0c15677a18e9c20e1873d3155642160d3da7b00fdc11f1448",
+   "size": 5435,
+   "git": "tracked"
+  },
+  "scripts/map_slide_pages.py": {
+   "sha256": "de7db79ff7d1a0c7df55f67ff77578c7fabf7cdfc873f0ebfa7b18b980d30057",
+   "size": 7508,
+   "git": "tracked"
+  },
+  "scripts/measure_render.js": {
+   "sha256": "c29a351720012ea03f1198fad9a8858bd34124def383ab8d151f9a86dfb0e4f1",
+   "size": 12789,
+   "git": "tracked"
+  },
+  "scripts/prepare_image_asset.py": {
+   "sha256": "0153be443d10fa1f0c5eab387f972671f41abfe505650b0552e6fa9bc02ba934",
+   "size": 10217,
+   "git": "tracked"
+  },
+  "scripts/receive_audit.py": {
+   "sha256": "14014784ee4e25e3bd85117612f15ce3280b8b8fb8f1d3191281904751640cfd",
+   "size": 3490,
+   "git": "tracked"
+  },
+  "scripts/report_draft_sync.py": {
+   "sha256": "2fcc7ee7282de94df44fcebaa0b145fbdc6d27074af14462ff46da6a2bee1282",
+   "size": 8389,
+   "git": "tracked"
+  },
+  "scripts/run_deck_checks.py": {
+   "sha256": "1423b2c13c0bbac7f8e9152141c7345994abef8cf0918aaf955224745b26907c",
+   "size": 40091,
+   "git": "tracked"
+  },
+  "scripts/verify_contract_waivers.py": {
+   "sha256": "d275eb251df56a9b71f2afc8e1dca50bd0e59d20aba273f45a868da0f9921903",
+   "size": 6814,
+   "git": "tracked"
+  },
+  "scripts/verify_deck.py": {
+   "sha256": "6f5b789adc38d85fea0f0ea71c6402f38b23f9d2591e77d85c0a5559e36a80b6",
+   "size": 126009,
+   "git": "tracked"
+  },
+  "scripts/verify_deck_quality.py": {
+   "sha256": "8272b9ceaca8698825bfb57e7f85af7c2b467b16f67d60494806f202fd7c76ff",
+   "size": 83577,
+   "git": "tracked"
+  },
+  "scripts/verify_declared_vs_enforced.py": {
+   "sha256": "72a74ea3d00ba02fedee2d0d9edaaa07a8422e9689350de1e80e6a428bb8676b",
+   "size": 21988,
+   "git": "tracked"
+  },
+  "scripts/verify_distributable.py": {
+   "sha256": "241224c1191ce8368aa136b8f5f389f4d6f94aafa1aca3a07f2640eb379873af",
+   "size": 9213,
+   "git": "tracked"
+  },
+  "scripts/verify_draft_quality.py": {
+   "sha256": "9a8decb747d528746901c134e2baee444f309b28182006790ff94ea6a8d9e16e",
+   "size": 32724,
+   "git": "tracked"
+  },
+  "scripts/verify_image_assets.py": {
+   "sha256": "bea39409bd71bad64a1f150e670d54a0ce05ba1acb2cfcbab52a1c394f3a9fbc",
+   "size": 14477,
+   "git": "tracked"
+  },
+  "scripts/verify_judgement_log.py": {
+   "sha256": "ca23f26e699e915a8b6327d7c41d3af6243af0b6c871ee3d79b689b6b577229a",
+   "size": 12835,
+   "git": "tracked"
+  },
+  "scripts/verify_kit.py": {
+   "sha256": "e29d9ad30e247bcb5c7520a28c7545fa7b0c166b99e334f61379eeecc0eb6b92",
+   "size": 7783,
+   "git": "tracked"
+  },
+  "scripts/verify_notes.py": {
+   "sha256": "881586bd45c01eb294f7378562f4d055abff635d12654187f78e46ace1b02f04",
+   "size": 23852,
+   "git": "tracked"
+  },
+  "scripts/verify_presenter_deck.py": {
+   "sha256": "8c1ebe69cdc839fe1a3b60a2b4c6305149e4a1396b34a403e12ad3eb0e5dc76c",
+   "size": 12543,
+   "git": "tracked"
+  },
+  "scripts/verify_report_freshness.py": {
+   "sha256": "1f8dffb7cc7a61bc3ea020a590c0c563ea9cac638920f61d24f4a9a4c328d58c",
+   "size": 9451,
+   "git": "tracked"
+  },
+  "scripts/verify_required_statements.py": {
+   "sha256": "4ffa12793b76367419695a7186f15ba17be15b7f8844778fffb75b67b61c7258",
+   "size": 11170,
+   "git": "tracked"
+  },
+  "scripts/verify_research_chunks.py": {
+   "sha256": "8bb5cbe061606f8d84d16f112c56f8a82480d3ec48e48a5f26e0d57aae80b80a",
+   "size": 26356,
+   "git": "tracked"
+  },
+  "scripts/verify_session_docs.py": {
+   "sha256": "943bd1620aa7e0d7a08f173faa143eeb5dd5f6479a5e68206946b1b980e58819",
+   "size": 29502,
+   "git": "tracked"
+  },
+  "scripts/verify_skill_setup.py": {
+   "sha256": "15925e3bdc3e61ef61afa926c674fd40cdc064bac40da1499742a8b56f4f3467",
+   "size": 22687,
+   "git": "tracked"
+  },
+  "scripts/verify_subject_isolation.py": {
+   "sha256": "0c0f5ff240159a087ba18099d5207a491837ef353d26ef7262ab0e4c6730c26c",
+   "size": 10076,
+   "git": "tracked"
+  },
+  "sessions/README.md": {
+   "sha256": "4158934699df24632f1b50ace1aa5d79417226b44f9518bd237c7733c8a0f842",
+   "size": 17393,
+   "git": "tracked"
+  },
+  "sessions/_template/README.md": {
+   "sha256": "d4773b55a50695a98c9c9efd0d4326ac70f888a448ecb4d0f20dcf543f671452",
+   "size": 3042,
+   "git": "tracked"
+  },
+  "sessions/_template/deck.contract.json": {
+   "sha256": "ded854e50e1c4a27497883f3145da737f6547dcf62e38e15ebabe5d3d2edc585",
+   "size": 1471,
+   "git": "tracked"
+  },
+  "sessions/_template/강의덱.초안/README.md": {
+   "sha256": "a81c9fc402c7d29773a5cea88bc3b76fae4ed20f92a50e8de8fdf466474305f9",
+   "size": 2708,
+   "git": "tracked"
+  },
+  "sessions/_template/강의덱.초안/part-01.html": {
+   "sha256": "99afcbdc08d3b979f99bad334993c753d8724feef8550616d099afc280aa87fe",
+   "size": 6197,
+   "git": "tracked"
+  },
+  "sessions/_template/강의덱.초안/shell.html": {
+   "sha256": "08c532e1c7513403a8cea1c80e83632346453f2360355d54322e47e0e1b318ea",
+   "size": 38378,
+   "git": "tracked"
+  },
+  "sessions/_template/자료/개념KB.md": {
+   "sha256": "b7a18a8dd38f11d80c3b3f2854c72a712b3db17c26079194513786fbbd20cb80",
+   "size": 8438,
+   "git": "tracked"
+  },
+  "sessions/_template/자료/리서치_리뷰.html": {
+   "sha256": "d7171f17d1afa46816afdd0fa4a33ce5103c9885a08f425c0272f2aed4b55b22",
+   "size": 29212,
+   "git": "tracked"
+  },
+  "sessions/_template/자료/이미지-에셋.json": {
+   "sha256": "15bd7595b34b564f6e5cb1c6ddb46991ad9d3d09b8871694aeeada18b841e2f7",
+   "size": 171,
+   "git": "tracked"
+  },
+  "sessions/_template/자료/이미지-프롬프트.md": {
+   "sha256": "8f198035aa4b4bcf66bf465fc7f3e9ce1d7eba9e3b96993eaa376889bef7b0e9",
+   "size": 961,
+   "git": "tracked"
+  },
+  "sessions/_template/콘텐츠_리뷰.html": {
+   "sha256": "e07d036ffad3b37abb97223118eaf8435632988e533691f2edb783b91f61399f",
+   "size": 22119,
+   "git": "tracked"
+  },
+  "sessions/_verify/1주차/deck-audit.json": {
+   "sha256": "3b8636bbe76344eef11f24a1de4f2d9c0f955441f2b87441ad0ad963f69de8de",
+   "size": 12204,
+   "git": "tracked"
+  },
+  "sessions/_verify/1주차/강의덱_발표.meta.json": {
+   "sha256": "09fbdba699557a978836e8c1af8e293a7e1d4e87200573b404f1197b4cce61bc",
+   "size": 7814,
+   "git": "tracked"
+  },
+  "sessions/_verify/2주차/deck-audit.json": {
+   "sha256": "1c4ffbe3ee5d3fe04bf73e468b84dfd50d756c58f4a2edb7db0df09de1bece8a",
+   "size": 12103,
+   "git": "tracked"
+  },
+  "sessions/_verify/2주차/강의덱_발표.meta.json": {
+   "sha256": "4d59bed312fe405e4cdd3fbf06c5c728dac84a46c75113233a8118b13a91a4df",
+   "size": 11173,
+   "git": "tracked"
+  },
+  "sessions/_verify/3주차/deck-audit.json": {
+   "sha256": "968e9d3fdf7add6657eea22537939329b95f57e10232d1036ebe07e40857861e",
+   "size": 8980,
+   "git": "tracked"
+  },
+  "sessions/references/PM_1.pdf": {
+   "sha256": "a63474f5ae3cf6de30ff99edb81a74b8c35b57af7bf27751facef0dc9898d90e",
+   "size": 19761712,
+   "git": "tracked"
+  },
+  "sessions/references/PM_2.pdf": {
+   "sha256": "2f930aceacb82b15688a23ce70d8d550a5c18e06daad09b052e690173d7e9c53",
+   "size": 22883259,
+   "git": "tracked"
+  },
+  "sessions/references/PM_3.pdf": {
+   "sha256": "52b28258467780d5401a7f2069623e45b629c820cc85436437fa36e9e671714e",
+   "size": 25173197,
+   "git": "tracked"
+  },
+  "sessions/references/PM_4.pdf": {
+   "sha256": "e924182086b701a13a7f86ec6f96b443d8b17305b0c8c4842667afa89f36e3ad",
+   "size": 11482165,
+   "git": "tracked"
+  },
+  "skills/README.md": {
+   "sha256": "40ae3f296fd6698a5202870951963b183155e7d6365cbd80a63a78f84308c1f5",
+   "size": 10082,
+   "git": "tracked"
+  },
+  "skills/검토/SKILL.md": {
+   "sha256": "ea07c6da92185debb9438e634b6c6363baec7fed63908c83f110e61246f65a9e",
+   "size": 34197,
+   "git": "tracked"
+  },
+  "skills/리서치/SKILL.md": {
+   "sha256": "21f35b2dda3eac8a69fad81f6bc2bce0a8256e7480a6ee85cabb8c77ea41f3ce",
+   "size": 45102,
+   "git": "tracked"
+  },
+  "skills/리서치/references/chunk-schema.md": {
+   "sha256": "77e93ae8ef12f952bc4dc37498d75fd79b2dbbb1b7d3fa33f82d99226fcfa17d",
+   "size": 15123,
+   "git": "tracked"
+  },
+  "skills/하네스/SKILL.md": {
+   "sha256": "bbab0757facefef5c43e2894819bfa312ba8a661f4df75d72c7f86766036cc1d",
+   "size": 19140,
+   "git": "tracked"
+  },
+  "skills/하네스/references/지시문-템플릿.md": {
+   "sha256": "445edbc17860d0a5959274743affc43161cf53a20e0ed553d67cc3e6c5e23f40",
+   "size": 3286,
+   "git": "tracked"
+  },
+  "tests/fixtures/mini-week/9주차/9주차_초안.md": {
+   "sha256": "7baed61d51885245d76d2f8d097553ea8ab9f541eae6d1efb1cc12493ac06248",
+   "size": 1070,
+   "git": "tracked"
+  },
+  "tests/fixtures/mini-week/9주차/deck.contract.json": {
+   "sha256": "1f7b53f70b9e06d42099eb029512e3198a331b22f4889d0e9c8a77cfebe9c786",
+   "size": 840,
+   "git": "tracked"
+  },
+  "tests/fixtures/mini-week/9주차/강의덱.초안/part-01.html": {
+   "sha256": "0679b81ea9cb1eaf1cfaf41e0ecfdce1935f4c716755ea280c6c9e688ea47709",
+   "size": 3802,
+   "git": "tracked"
+  },
+  "tests/fixtures/mini-week/9주차/강의덱.초안/part-02.html": {
+   "sha256": "cba665ea6b653c56afeda2ceab157e2407052ade4b7757d1b9d67a20bd2f4d89",
+   "size": 3923,
+   "git": "tracked"
+  },
+  "tests/fixtures/mini-week/9주차/강의덱.초안/shell.html": {
+   "sha256": "cc193d72a5f4f8824a6594fd4c4b5ef54e96fb504915805f7ec909362ca96e11",
+   "size": 10209,
+   "git": "tracked"
+  },
+  "tests/fixtures/mini-week/9주차/자료/이미지-에셋.json": {
+   "sha256": "77826d99a5eabf017cf8becd7c982a825fb053656edd801b68d5e63795b18e07",
+   "size": 455,
+   "git": "tracked"
+  },
+  "tests/fixtures/mini-week/9주차/초안.md": {
+   "sha256": "fcb0c740a96b02d5fe5b85dd1eb7eb6dd95d07a1c48834f33e1b216605873cdf",
+   "size": 283,
+   "git": "tracked"
+  },
+  "tests/fixtures/mini-week/broken/part-01.html": {
+   "sha256": "ab9cb762e7e2d9bf1e522fd34784cf5ca3216d5ee8635775822b3be85f8115f9",
+   "size": 4110,
+   "git": "tracked"
+  },
+  "tests/fixtures/mini-week/broken/unwired.json": {
+   "sha256": "57551ca567a1db05109f481e6a7438a8811d34c24d51c2348bc040a80a2e2109",
+   "size": 929,
+   "git": "tracked"
+  },
+  "tests/fixtures/quality_gates/sessions/2주차/2주차_초안.md": {
+   "sha256": "4143594237fb95693710b58f16081f4b8cc1ec474b99d6259ff7da3c9155b46d",
+   "size": 51143,
+   "git": "tracked"
+  },
+  "tests/fixtures/quality_gates/week2_frozen_강의덱.html": {
+   "sha256": "befb7f82467a443a384cb28a910e57f6d41c666b4605112a91ad6f246971aea6",
+   "size": 178486,
+   "git": "tracked"
+  },
+  "tests/fixtures/synthetic/sess-audit/subagents/agent-aBAD00002x.jsonl": {
+   "sha256": "1b09f651ae9139a585ebf4d686b5503f2b64edf26eeeefef99f7c20f3e03583f",
+   "size": 570,
+   "git": "tracked"
+  },
+  "tests/fixtures/synthetic/sess-audit/subagents/agent-aCLEAN0001.jsonl": {
+   "sha256": "1071ab2102f074e13f0adbacb886497e0112731799525551126bd7bdc5af5b59",
+   "size": 917,
+   "git": "tracked"
+  },
+  "tests/fixtures/synthetic/sess-dup.jsonl": {
+   "sha256": "12d857a6c0c7555e7b2c319c188f8bb2bced48bcb58e0e322d2f691c8c320964",
+   "size": 1337,
+   "git": "tracked"
+  },
+  "tests/fixtures/synthetic/sess-dup/subagents/agent-aDUP00001.jsonl": {
+   "sha256": "2399115872c7b2afc1682d9b5a8bbe6ebd95bac043c08f79a0cca1a7b35af398",
+   "size": 846,
+   "git": "tracked"
+  },
+  "tests/fixtures/synthetic/sess-test.jsonl": {
+   "sha256": "faa0d18ab4b27ace7e144aa7c70d1e95514d954d3fa50c150c6a37c4807dfb24",
+   "size": 392,
+   "git": "tracked"
+  },
+  "tests/fixtures/synthetic/sess-test/subagents/workflows/wf_test-001/agent-aWORKER01x.jsonl": {
+   "sha256": "43a7e2f4ee36fe7d2f430c47ac9c4cc2ed1e3193e833da70c9bb4cc32ce5de81",
+   "size": 1400,
+   "git": "tracked"
+  },
+  "tests/test_analyze_agent_usage.py": {
+   "sha256": "756a879458db6d6c708db2955894031880fe99d92730bf38735cc7b64b265dcf",
+   "size": 16234,
+   "git": "tracked"
+  },
+  "tests/test_audit_context_budget.py": {
+   "sha256": "ccde67766d7ada395dc93ca5a92b9cb6a975846274234f16d2227abc171bf7d9",
+   "size": 2624,
+   "git": "tracked"
+  },
+  "tests/test_course_paths.py": {
+   "sha256": "3ecd40392ff3f22c809df93b99e7a364fff197d34e57d8d04fe9010a7945763d",
+   "size": 16281,
+   "git": "tracked"
+  },
+  "tests/test_deck_contract.py": {
+   "sha256": "213f17fa1a54b1ffbeb31a67a39160de169f87728f99b2e96de9e4afb0a2f9a7",
+   "size": 19814,
+   "git": "tracked"
+  },
+  "tests/test_deck_pipeline.py": {
+   "sha256": "4d74327a9cb0b6d4f8284ca602c1016a481215c2e1def90398c044e2669167c1",
+   "size": 38860,
+   "git": "tracked"
+  },
+  "tests/test_declared_vs_enforced.py": {
+   "sha256": "105a0b3af4265f21e7306bdea0586e5dde1a55774199be1c0e227f621545e04a",
+   "size": 13965,
+   "git": "tracked"
+  },
+  "tests/test_hook_guards.py": {
+   "sha256": "340bcf37c645885716cdbdc2c3955bcda124b5fe13dff3974dd03b97164385da",
+   "size": 4904,
+   "git": "tracked"
+  },
+  "tests/test_image_pipeline.py": {
+   "sha256": "45be974a0507b3087473f64f8aafa7b0de0cdeb71b9dabd4363d5fdfb6160f2b",
+   "size": 15323,
+   "git": "tracked"
+  },
+  "tests/test_quality_gates.py": {
+   "sha256": "22a00e35897e87a34c343a308fe02d8d2be140866aed6114f28e420643d5e5f7",
+   "size": 45661,
+   "git": "tracked"
+  },
+  "tests/test_rule_pointers.py": {
+   "sha256": "bbf7d97628d2c24b566dca1560a64236d56ab0cf6170db31ec1350cfe9cc2e43",
+   "size": 7635,
+   "git": "tracked"
+  },
+  "tests/test_theme_contract.py": {
+   "sha256": "cfac04208832f80b4f6093a506045c109be9c4d41f4182c58f2586ad5e7e0d17",
+   "size": 23005,
+   "git": "tracked"
+  },
+  "tests/test_typography_rules.py": {
+   "sha256": "655c9ee23ce0d900360bd4c3fe415b3c8b7732a8b9326cea324dd205c3da9e4f",
+   "size": 19602,
+   "git": "tracked"
+  },
+  "데모_제작규칙.html": {
+   "sha256": "630d3d1c677e442eba5b5fd2b4818f53aa7fefc2c6919f671d816f893f8d836a",
+   "size": 46186,
+   "git": "tracked"
+  },
+  "입력양식/과목프로필템플릿.md": {
+   "sha256": "892cb51e4a55f9f6853e4c5ec04ec295fac18359c4e412d89cd491d20e5eed8d",
+   "size": 4890,
+   "git": "tracked"
+  },
+  "입력양식/수정요청접수템플릿.md": {
+   "sha256": "de3f5b64b9d8f4eb56ea18374f904fab3a0d5f2fffc1ac6449370994dcdd6c8a",
+   "size": 2682,
+   "git": "tracked"
+  },
+  "입력양식/콘텐츠초안템플릿.md": {
+   "sha256": "7f941cb3fac8b11519b47a514bd808f624d6e1e13af9feb1239bf242fd440034",
+   "size": 7853,
+   "git": "tracked"
+  },
+  "작업파이프라인.html": {
+   "sha256": "32bb727b240881db16cdc879f3a0c4250910327c6b8e84dfb0526a4d4e5787d6",
+   "size": 169610,
+   "git": "tracked"
+  },
+  "courses/AI_코딩_에이전트_입문_3차시/3차시_강의자료_제작계획.md": {
+   "sha256": "7bc46fdcddc77bdde3e02478d8e8f5728cd160fcea79350e03b4cf744d091523",
+   "size": 154786,
+   "git": "untracked"
+  },
+  "courses/AI_코딩_에이전트_입문_3차시/README.md": {
+   "sha256": "0e3a06482d14f1b127659bcf2d80772352b24e0a3d0faf0ed258e3028db77f87",
+   "size": 2521,
+   "git": "untracked"
+  },
+  "courses/AI_코딩_에이전트_입문_3차시/profile.md": {
+   "sha256": "5dc1d014b28298f32d104ad9ad92b47f0ae6b5056d0a08d33aa15f28a8ce4ccb",
+   "size": 2526,
+   "git": "untracked"
+  },
+  "courses/AI_코딩_에이전트_입문_3차시/sessions/1주차/1주차_초안.md": {
+   "sha256": "6dfb6607a53e0f3b06f434165a9ca0387332aeb4c48750888b4ab2c37f690678",
+   "size": 7823,
+   "git": "untracked"
+  },
+  "courses/AI_코딩_에이전트_입문_3차시/sessions/1주차/README.md": {
+   "sha256": "d4773b55a50695a98c9c9efd0d4326ac70f888a448ecb4d0f20dcf543f671452",
+   "size": 3042,
+   "git": "untracked"
+  },
+  "courses/AI_코딩_에이전트_입문_3차시/sessions/1주차/deck.contract.json": {
+   "sha256": "ded854e50e1c4a27497883f3145da737f6547dcf62e38e15ebabe5d3d2edc585",
+   "size": 1471,
+   "git": "untracked"
+  },
+  "courses/AI_코딩_에이전트_입문_3차시/sessions/1주차/강의덱.초안/README.md": {
+   "sha256": "a81c9fc402c7d29773a5cea88bc3b76fae4ed20f92a50e8de8fdf466474305f9",
+   "size": 2708,
+   "git": "untracked"
+  },
+  "courses/AI_코딩_에이전트_입문_3차시/sessions/1주차/강의덱.초안/part-01.html": {
+   "sha256": "99afcbdc08d3b979f99bad334993c753d8724feef8550616d099afc280aa87fe",
+   "size": 6197,
+   "git": "untracked"
+  },
+  "courses/AI_코딩_에이전트_입문_3차시/sessions/1주차/강의덱.초안/shell.html": {
+   "sha256": "08c532e1c7513403a8cea1c80e83632346453f2360355d54322e47e0e1b318ea",
+   "size": 38378,
+   "git": "untracked"
+  },
+  "courses/AI_코딩_에이전트_입문_3차시/sessions/1주차/실습예제/README.md": {
+   "sha256": "3e1c8c6a3c302550f189d59b3afb2026fdd2460f9cecfec465b108d44ea3cad8",
+   "size": 272,
+   "git": "untracked"
+  },
+  "courses/AI_코딩_에이전트_입문_3차시/sessions/1주차/자료/개념KB.md": {
+   "sha256": "b7a18a8dd38f11d80c3b3f2854c72a712b3db17c26079194513786fbbd20cb80",
+   "size": 8438,
+   "git": "untracked"
+  },
+  "courses/AI_코딩_에이전트_입문_3차시/sessions/1주차/자료/리서치_리뷰.html": {
+   "sha256": "d7171f17d1afa46816afdd0fa4a33ce5103c9885a08f425c0272f2aed4b55b22",
+   "size": 29212,
+   "git": "untracked"
+  },
+  "courses/AI_코딩_에이전트_입문_3차시/sessions/1주차/자료/이미지-에셋.json": {
+   "sha256": "15bd7595b34b564f6e5cb1c6ddb46991ad9d3d09b8871694aeeada18b841e2f7",
+   "size": 171,
+   "git": "untracked"
+  },
+  "courses/AI_코딩_에이전트_입문_3차시/sessions/1주차/자료/이미지-프롬프트.md": {
+   "sha256": "8f198035aa4b4bcf66bf465fc7f3e9ce1d7eba9e3b96993eaa376889bef7b0e9",
+   "size": 961,
+   "git": "untracked"
+  },
+  "courses/AI_코딩_에이전트_입문_3차시/sessions/1주차/콘텐츠_리뷰.html": {
+   "sha256": "e07d036ffad3b37abb97223118eaf8435632988e533691f2edb783b91f61399f",
+   "size": 22119,
+   "git": "untracked"
+  },
+  "courses/AI_코딩_에이전트_입문_3차시/sessions/2주차/2주차_초안.md": {
+   "sha256": "c2c92eb7abf551d69c897eb8f7f319609d96e80bb12a65778782def1cbc70556",
+   "size": 7838,
+   "git": "untracked"
+  },
+  "courses/AI_코딩_에이전트_입문_3차시/sessions/2주차/README.md": {
+   "sha256": "d4773b55a50695a98c9c9efd0d4326ac70f888a448ecb4d0f20dcf543f671452",
+   "size": 3042,
+   "git": "untracked"
+  },
+  "courses/AI_코딩_에이전트_입문_3차시/sessions/2주차/deck.contract.json": {
+   "sha256": "ded854e50e1c4a27497883f3145da737f6547dcf62e38e15ebabe5d3d2edc585",
+   "size": 1471,
+   "git": "untracked"
+  },
+  "courses/AI_코딩_에이전트_입문_3차시/sessions/2주차/강의덱.초안/README.md": {
+   "sha256": "a81c9fc402c7d29773a5cea88bc3b76fae4ed20f92a50e8de8fdf466474305f9",
+   "size": 2708,
+   "git": "untracked"
+  },
+  "courses/AI_코딩_에이전트_입문_3차시/sessions/2주차/강의덱.초안/part-01.html": {
+   "sha256": "99afcbdc08d3b979f99bad334993c753d8724feef8550616d099afc280aa87fe",
+   "size": 6197,
+   "git": "untracked"
+  },
+  "courses/AI_코딩_에이전트_입문_3차시/sessions/2주차/강의덱.초안/shell.html": {
+   "sha256": "08c532e1c7513403a8cea1c80e83632346453f2360355d54322e47e0e1b318ea",
+   "size": 38378,
+   "git": "untracked"
+  },
+  "courses/AI_코딩_에이전트_입문_3차시/sessions/2주차/실습예제/README.md": {
+   "sha256": "ccacbfa804476f7165694b0c86bfb5e5c2c9418b8057a2ba628720bf64a0e0d1",
+   "size": 277,
+   "git": "untracked"
+  },
+  "courses/AI_코딩_에이전트_입문_3차시/sessions/2주차/자료/개념KB.md": {
+   "sha256": "b7a18a8dd38f11d80c3b3f2854c72a712b3db17c26079194513786fbbd20cb80",
+   "size": 8438,
+   "git": "untracked"
+  },
+  "courses/AI_코딩_에이전트_입문_3차시/sessions/2주차/자료/리서치_리뷰.html": {
+   "sha256": "d7171f17d1afa46816afdd0fa4a33ce5103c9885a08f425c0272f2aed4b55b22",
+   "size": 29212,
+   "git": "untracked"
+  },
+  "courses/AI_코딩_에이전트_입문_3차시/sessions/2주차/자료/이미지-에셋.json": {
+   "sha256": "15bd7595b34b564f6e5cb1c6ddb46991ad9d3d09b8871694aeeada18b841e2f7",
+   "size": 171,
+   "git": "untracked"
+  },
+  "courses/AI_코딩_에이전트_입문_3차시/sessions/2주차/자료/이미지-프롬프트.md": {
+   "sha256": "8f198035aa4b4bcf66bf465fc7f3e9ce1d7eba9e3b96993eaa376889bef7b0e9",
+   "size": 961,
+   "git": "untracked"
+  },
+  "courses/AI_코딩_에이전트_입문_3차시/sessions/2주차/콘텐츠_리뷰.html": {
+   "sha256": "e07d036ffad3b37abb97223118eaf8435632988e533691f2edb783b91f61399f",
+   "size": 22119,
+   "git": "untracked"
+  },
+  "courses/AI_코딩_에이전트_입문_3차시/sessions/3주차/3주차_초안.md": {
+   "sha256": "71ae4745669728ad8de7a6012679f3d5ad31a36e8c41896f9386cb5eed3ea892",
+   "size": 7836,
+   "git": "untracked"
+  },
+  "courses/AI_코딩_에이전트_입문_3차시/sessions/3주차/README.md": {
+   "sha256": "d4773b55a50695a98c9c9efd0d4326ac70f888a448ecb4d0f20dcf543f671452",
+   "size": 3042,
+   "git": "untracked"
+  },
+  "courses/AI_코딩_에이전트_입문_3차시/sessions/3주차/deck.contract.json": {
+   "sha256": "ded854e50e1c4a27497883f3145da737f6547dcf62e38e15ebabe5d3d2edc585",
+   "size": 1471,
+   "git": "untracked"
+  },
+  "courses/AI_코딩_에이전트_입문_3차시/sessions/3주차/강의덱.초안/README.md": {
+   "sha256": "a81c9fc402c7d29773a5cea88bc3b76fae4ed20f92a50e8de8fdf466474305f9",
+   "size": 2708,
+   "git": "untracked"
+  },
+  "courses/AI_코딩_에이전트_입문_3차시/sessions/3주차/강의덱.초안/part-01.html": {
+   "sha256": "99afcbdc08d3b979f99bad334993c753d8724feef8550616d099afc280aa87fe",
+   "size": 6197,
+   "git": "untracked"
+  },
+  "courses/AI_코딩_에이전트_입문_3차시/sessions/3주차/강의덱.초안/shell.html": {
+   "sha256": "08c532e1c7513403a8cea1c80e83632346453f2360355d54322e47e0e1b318ea",
+   "size": 38378,
+   "git": "untracked"
+  },
+  "courses/AI_코딩_에이전트_입문_3차시/sessions/3주차/실습예제/README.md": {
+   "sha256": "97b2c842377c8dfcf1393ae817169911b8105852842d6ddbba4272c2b7ded3c9",
+   "size": 350,
+   "git": "untracked"
+  },
+  "courses/AI_코딩_에이전트_입문_3차시/sessions/3주차/자료/개념KB.md": {
+   "sha256": "b7a18a8dd38f11d80c3b3f2854c72a712b3db17c26079194513786fbbd20cb80",
+   "size": 8438,
+   "git": "untracked"
+  },
+  "courses/AI_코딩_에이전트_입문_3차시/sessions/3주차/자료/리서치_리뷰.html": {
+   "sha256": "d7171f17d1afa46816afdd0fa4a33ce5103c9885a08f425c0272f2aed4b55b22",
+   "size": 29212,
+   "git": "untracked"
+  },
+  "courses/AI_코딩_에이전트_입문_3차시/sessions/3주차/자료/이미지-에셋.json": {
+   "sha256": "15bd7595b34b564f6e5cb1c6ddb46991ad9d3d09b8871694aeeada18b841e2f7",
+   "size": 171,
+   "git": "untracked"
+  },
+  "courses/AI_코딩_에이전트_입문_3차시/sessions/3주차/자료/이미지-프롬프트.md": {
+   "sha256": "8f198035aa4b4bcf66bf465fc7f3e9ce1d7eba9e3b96993eaa376889bef7b0e9",
+   "size": 961,
+   "git": "untracked"
+  },
+  "courses/AI_코딩_에이전트_입문_3차시/sessions/3주차/콘텐츠_리뷰.html": {
+   "sha256": "e07d036ffad3b37abb97223118eaf8435632988e533691f2edb783b91f61399f",
+   "size": 22119,
+   "git": "untracked"
+  },
+  "courses/AI_코딩_에이전트_입문_3차시/sessions/README.md": {
+   "sha256": "217de2eaf50cbaf6da9a9ca1d11af46559fe4ce3c8096723aea55e5d713e13fc",
+   "size": 945,
+   "git": "untracked"
+  },
+  "courses/AI_코딩_에이전트_입문_3차시/슬라이드지침.md": {
+   "sha256": "eaa3a58c856be7385ff79943f444462ebe64d562b36dd5afee175e6c10d846f1",
+   "size": 1652,
+   "git": "untracked"
+  },
+  "courses/AI_코딩_에이전트_입문_3차시/자료/데이터/mock_ecommerce_orders.csv": {
+   "sha256": "3502d6b4bcc78d28b5797566a6dbe8da5fc85d00c066bb0a3fef709e537d5192",
+   "size": 305614,
+   "git": "untracked"
+  },
+  "courses/AI_코딩_에이전트_입문_3차시/자료/원문/01_교육계획서_구조형_원문.txt": {
+   "sha256": "0da9d8de48db9ac42e0388c3c451405c41661aaa84f6e3e2bf714d0404996396",
+   "size": 21998,
+   "git": "untracked"
+  },
+  "courses/AI_코딩_에이전트_입문_3차시/자료/원문/02_교육계획서_목록형_원문.txt": {
+   "sha256": "fee47b8ad0089cfc80480dfff20ddf95529a60d13bd89d4dc9f875b7608a31ca",
+   "size": 19695,
+   "git": "untracked"
+  },
+  "courses/AI_코딩_에이전트_입문_3차시/자료/자료목록.md": {
+   "sha256": "df18d34276364a5fa2ab519fa332bbaf7c77a19acec88ccc13eb413d965fd1e0",
+   "size": 1349,
+   "git": "untracked"
+  },
+  "courses/AI_코딩_에이전트_입문_3차시/커리큘럼_기준안.md": {
+   "sha256": "dccfc5336355772b1341d392ad788740554346bf8f013648c5dd76d938c0607d",
+   "size": 4034,
+   "git": "untracked"
+  },
+  "courses/바이브코딩/AI_코딩_에이전트_입문_4강_커리큘럼.html": {
+   "sha256": "a729dada45f4d59ec698c2a5f1d6f3c4cddd77d2241e8e0de5ecb6a153f7c4e0",
+   "size": 63622,
+   "git": "untracked"
+  },
+  "sessions/references/iPhone 16 - 1.png": {
+   "sha256": "9ab81da96257ddb3b4d150f0306e18e85ce8739eb9f32c92af97b2715c5fc3a6",
+   "size": 142103,
+   "git": "untracked"
+  },
+  "sessions/references/호퍼스.png": {
+   "sha256": "9ab81da96257ddb3b4d150f0306e18e85ce8739eb9f32c92af97b2715c5fc3a6",
+   "size": 142103,
+   "git": "untracked"
+  }
+ }
+}

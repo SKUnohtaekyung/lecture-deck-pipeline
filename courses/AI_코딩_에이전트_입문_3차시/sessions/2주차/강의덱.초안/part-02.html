@@ -1,0 +1,203 @@
+<!-- 2차시 PART 2 · Prompt — 2026-09-10 조립 담당.
+     원본 슬라이드는 courses/바이브코딩/sessions/2주차/강의덱.초안의 section을 그대로 복사하고
+     제작관리/보존매트릭스_2차시.csv 「변경내용」만 적용했다. N-** 는 새 커리큘럼 신규(M6)다. -->
+
+<section class="slide part-divider" data-slide="P2">
+      <svg class="dv-hero" viewBox="0 0 1280 720" fill="none" aria-hidden="true"></svg>
+      <div class="pd-dots" aria-hidden="true"></div>
+      <p class="pd-eyebrow">PART</p>
+      <h2 class="pd-title">Prompt</h2>
+      <p class="pd-desc">무엇을, 어디까지, 무엇이 되면 끝인가<br>목표·범위·조건·출력·완료 기준을 요청에 담는다</p>
+    </section>
+
+<section class="slide w2-ready" data-slide="C1-14">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span><div class="s-team">2차시<br>PART 2</div>
+  </header>
+  <div class="s-full">
+    <h2 class="s-title">일을 시키기 전에 준비하는 것</h2>
+    <p class="rd-lead">코드부터 쓰게 하지 말고, <strong>계획을 먼저 보여 달라고</strong> 합니다.</p>
+    <div class="rd-flow viz-flow">
+      <div class="rd-step">
+        <span class="rd-n">1</span>
+        <b>준비</b>
+        <span class="rd-desc">무엇을·어디에·기준·확인 네 가지를 미리 갖춥니다</span>
+      </div>
+      <span class="rd-arrow" aria-hidden="true">&#8594;</span>
+      <div class="rd-step">
+        <span class="rd-n">2</span>
+        <b>계획 확인</b>
+        <span class="rd-desc">AI가 낸 계획을 사람이 먼저 검토합니다</span>
+      </div>
+      <span class="rd-arrow" aria-hidden="true">&#8594;</span>
+      <div class="rd-step is-goal">
+        <span class="rd-n">3</span>
+        <b>시작</b>
+        <span class="rd-desc">검토를 마친 뒤에만 진행합니다</span>
+      </div>
+    </div>
+    <div class="rd-ready">
+      <div class="rd-item"><p>무엇을 만들지</p></div>
+      <div class="rd-item"><p>어디에 만들지</p></div>
+      <div class="rd-item"><p>무엇을 지켜야 하는지</p></div>
+      <div class="rd-item"><p>다 되면 무엇을 확인할지</p></div>
+    </div>
+    <p class="callout">그래서 계획을 먼저 보여 달라 하고, <span class="hl-mint-mark">사람이 확인한 뒤에</span> 시작합니다.</p>
+  </div>
+</section>
+
+<section class="slide n2-stage n2-parts" data-slide="N-03" data-shape="classification">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span><div class="s-team">2차시<br>PART 2</div>
+  </header>
+  <div class="s-full">
+    <h2 class="s-title">Prompt는 다섯 칸으로 설계합니다</h2>
+    <p class="n2-lead"><b>Prompt Engineering</b>은 AI에게 어떤 요청을 어떻게 전달할지 설계하는 방법입니다. 다섯 칸을 채우면 <span class="hl-mint-mark">AI가 추측할 빈칸이 줄어듭니다</span>.</p>
+    <div class="n03-strip viz-parts" role="img" aria-label="요청 하나를 이루는 다섯 요소: 목표, 범위, 조건, 출력, 완료 기준이 더해져 한 요청이 된다">
+      <div class="n03-slot"><span class="n03-no">1</span><b>목표</b><span class="desc">무엇을 얻고 싶은가</span><span class="desc n03-eg">AI 관련 주요 뉴스 찾기</span></div>
+      <span class="n03-join" aria-hidden="true">+</span>
+      <div class="n03-slot"><span class="n03-no">2</span><b>범위</b><span class="desc">어디까지 볼 것인가</span><span class="desc n03-eg">최근 24시간 · 5개만</span></div>
+      <span class="n03-join" aria-hidden="true">+</span>
+      <div class="n03-slot"><span class="n03-no">3</span><b>조건</b><span class="desc">무엇을 지켜야 하나</span><span class="desc n03-eg">중복 제외 · 확인 안 된 정보 금지</span></div>
+      <span class="n03-join" aria-hidden="true">+</span>
+      <div class="n03-slot"><span class="n03-no">4</span><b>출력</b><span class="desc">어떤 모양으로 받을까</span><span class="desc n03-eg">제목·핵심 내용·이유·출처</span></div>
+      <span class="n03-join" aria-hidden="true">+</span>
+      <div class="n03-slot is-end"><span class="n03-no">5</span><b>완료 기준</b><span class="desc">무엇이 되면 끝인가</span><span class="desc n03-eg">5건 모두 출처까지 채워짐</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide n2-stage n2-requests" data-slide="N-04" data-shape="comparison">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span><div class="s-team">2차시<br>PART 2</div>
+  </header>
+  <div class="s-full">
+    <h2 class="s-title">막연한 요청과 구조화된 요청</h2>
+    <div class="n04-bands">
+      <div class="n04-band is-vague">
+        <div class="n04-head"><b>막연한 요청</b><span class="desc">목표만 있고 나머지는 추측</span></div>
+        <div class="w2-prompt terminal-dark n04-term" aria-label="막연한 요청 예시">
+          <div class="terminal-bar"><span></span><span></span><span></span><b>막연한 요청</b></div>
+          <div class="terminal-body"><span class="terminal-prompt">&gt;_</span><p class="terminal-copy">AI 뉴스 찾아줘.</p></div>
+        </div>
+      </div>
+      <div class="n04-band is-clear">
+        <div class="n04-head"><b>구조화된 요청</b><span class="desc">줄마다 <span class="hl-mint-text">담긴 칸</span>이 보입니다</span></div>
+        <div class="w2-prompt terminal-dark n04-term" aria-label="구조화된 요청 예시와 줄마다 담긴 요소">
+          <div class="terminal-bar"><span></span><span></span><span></span><b>구조화된 요청</b></div>
+          <div class="terminal-body"><span class="terminal-prompt">&gt;_</span><p class="terminal-copy">
+            <span class="n04-line"><span>최근 24시간 동안 공개된 AI 관련 주요 뉴스를 찾아줘.</span><span class="n04-el">목표 · 범위</span></span>
+            <span class="n04-line"><span>중요도가 높은 뉴스 5개만 선정하고, 각 뉴스에 대해 제목, 핵심 내용, 중요한 이유, 출처를 정리해줘.</span><span class="n04-el">범위 · 출력</span></span>
+            <span class="n04-line"><span>중복 기사는 제외하고 확인되지 않은 정보는 작성하지 마.</span><span class="n04-el">조건</span></span>
+            <span class="n04-line"><span>결과는 날짜별 Markdown 파일로 저장해줘.</span><span class="n04-el">출력</span></span>
+          </p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide compare-slide" data-slide="C1-N3">
+      <header class="s-head">
+        <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+        <span class="s-line"></span><div class="s-team">2차시<br>PART 2</div>
+      </header>
+      <div class="s-full cc-full">
+        <h2 class="s-title">프롬프트를 먼저 만들고 작업을 시킵니다</h2>
+        <p class="s-body cn3-lead">AI에게 <b>일을 시키기</b> 전에, AI에게 <b>그 일을 시킬 문장</b>을 먼저 써 달라고 합니다.</p>
+        <div class="cc-grid">
+          <div class="cc-side">
+            <h3>바로 시키기</h3>
+            <ul>
+              <li><b>Agent 대화창에 바로 입력</b>
+                <span class="subline">"내 가설 세워줘"라고 그 자리에서 시킵니다.</span></li>
+            </ul>
+          </div>
+          <div class="cc-neq" aria-hidden="true">→</div>
+          <div class="cc-side">
+            <h3>프롬프트부터 받기</h3>
+            <ul>
+              <li><b>Agent에게 프롬프트를 써 달라고 요청</b>
+                <span class="subline">"이 가설을 세울 프롬프트를 작성해줘"</span></li>
+            </ul>
+          </div>
+        </div>
+        <p class="callout">한 번뿐인 질문은 바로 시키고, 반복해서 쓸 지시는 <span class="hl-mint-mark">프롬프트부터 받아 둡니다</span>.</p>
+      </div>
+    </section>
+
+<section class="slide has-img-r" data-slide="C3-3">
+      <header class="s-head">
+        <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+        <span class="s-line"></span><div class="s-team">2차시<br>PART 2</div>
+      </header>
+      <div class="dc-title">
+        <h2 class="s-title">각 항목이 왜 AI 결과를 바꾸나</h2>
+      </div>
+      <!-- 2026-08-02 수정요청 v2 8번 재설계.
+           ① 「화살표로 표시돼 직접 와닿지 않는다」 → 화살표(↓·→)를 걷어내고, 채워야 할 자리를
+              «점선 빈칸»으로 실제로 비워 보여 준다. 빈칸을 눈으로 보는 편이 화살표보다 직접적이다.
+           ② 45p가 말하는 다섯 항목 중 «흐름»이 빠져 네 짝뿐이었다 — 흐름 행을 채워 다섯을 맞춘다.
+           ③ 결과 문장을 블루 → 코랄(딥)로 바꿔 «좋지 않은 일»로 읽히게 한다.
+           ④ 우측 이미지를 좁혀 좌측 도식을 넓게 쓴다(right:500px → 372px). -->
+      <div class="dc-stage" style="right:372px;">
+        <p class="c33-lead">다섯 항목 가운데 하나라도 비워 두면, 그 자리를 <b>AI가 추측으로</b> 메웁니다.</p>
+        <ul class="c33-rows" role="list" aria-label="prd.md 다섯 항목을 비워 두었을 때 각각 벌어지는 일">
+          <li class="c33-row"><span class="c33-k">대상</span><span class="c33-blank" aria-hidden="true"></span><b class="c33-v">결과가 매번 흔들립니다</b></li>
+          <li class="c33-row"><span class="c33-k">핵심</span><span class="c33-blank" aria-hidden="true"></span><b class="c33-v">기능이 제멋대로 늘어납니다</b></li>
+          <li class="c33-row"><span class="c33-k">흐름</span><span class="c33-blank" aria-hidden="true"></span><b class="c33-v">화면 순서가 뒤죽박죽이 됩니다</b></li>
+          <li class="c33-row"><span class="c33-k">제외</span><span class="c33-blank" aria-hidden="true"></span><b class="c33-v">범위가 계속 커집니다</b></li>
+          <li class="c33-row"><span class="c33-k">완료</span><span class="c33-blank" aria-hidden="true"></span><b class="c33-v">끝을 아무도 모릅니다</b></li>
+        </ul>
+        <p class="s-body c33-foot">빈칸은 AI의 추측이 됩니다. <span class="hl-mint-mark">결과가 흔들립니다.</span></p>
+      </div>
+  <figure class="c3-3-figure asset-slot asset-slot--support img-slot-r"
+        data-image-purpose="explanatory" data-image-state="ready"
+        data-expected-src="자료/images/s38_prd-missing-items-paper-cut-v1-transparent.png"
+        role="img"
+        aria-label="prd.md 문서에서 항목이 하나씩 빠졌을 때 결과가 흔들리고 범위가 커지고 완료 기준이 불명확해지는 모습을 종이 오림 스타일로 보여주는 설명 이미지">
+        <img src="자료/images/s38_prd-missing-items-paper-cut-v1-transparent.png" alt="문서 항목 하나의 누락이 결과, 범위, 완료 기준을 함께 흔든다">
+      </figure>
+</section>
+
+<section class="slide compare-slide" data-slide="C2-10">
+      <header class="s-head">
+        <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+        <span class="s-line"></span><div class="s-team">2차시<br>PART 2</div>
+      </header>
+      <div class="s-full cc-full">
+        <h2 class="s-title">완료 기준과 테스트</h2>
+        <p class="s-body c210-lead"><b>완료 기준</b>은 «무엇이 보이면 끝인가»를 미리 적은 문장이고,
+          <b>테스트</b>는 그 문장이 실제 화면에서 나오는지 확인하는 행동입니다.</p>
+        <table class="t w2-tbl-inline c210-tbl">
+          <thead><tr><th>&nbsp;</th><th>완료 기준</th><th>테스트</th></tr></thead>
+          <tbody>
+            <tr><th>무엇인가</th>
+              <td>확인할 수 있는 장면을 적은 한 문장</td>
+              <td>그 장면이 나오는지 직접 해 보는 일</td></tr>
+            <tr><th>언제</th>
+              <td><span class="hl-mint-underline">만들기 전에 미리</span></td>
+              <td>화면을 만든 뒤에</td></tr>
+            <tr><th>예</th>
+              <td>"버튼을 누르면 목록에 그 줄이 보인다"</td>
+              <td>정상 입력 · 빈칸 · 엉뚟한 값으로 각각 눌러 본다</td></tr>
+            <tr><th>안 되면</th>
+              <td>기준을 고치는 게 아니라 그대로 둡니다</td>
+              <td><span class="hl-mint-mark">미완료로 보고</span> 원인을 다시 찾습니다</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <figure class="asset-slot asset-slot--support c210-figure" data-image-purpose="explanatory"
+        data-image-state="ready" data-expected-src="자료/images/s34-completion-criteria-vs-test-paper-cut-v1-transparent.png"
+        role="img" aria-label="미리 적은 완료 기준 카드가 여러 입력을 확인하는 테스트 화면으로 이어지고, 결과 패널의 체크로 충족 여부를 확인하는 관계"><img src="자료/images/s34-completion-criteria-vs-test-paper-cut-v1-transparent.png" alt="미리 정한 완료 기준 카드가 테스트 화면으로 이어져 결과 확인으로 충족 여부를 판별하는 흐름"></figure>
+    </section>
+
+<section class="slide" data-slide="C6-S2">
+  <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">2차시<br>PART 2</div></header>
+  <div class="s-full"><p class="p6-eyebrow">PART 2 · 바로 적용하기</p><h2 class="s-title">범위를 지키고, 끝나는 장면을 적습니다</h2><p class="p6-lead">“이번에 할 것”과 “끝난 것”을 정하면 기능이 늘어나는 것을 막을 수 있습니다.</p>
+    <div class="p6-grid3"><div class="p6-card"><span class="p6-symbol">1</span><h3>이번에 만들 것</h3><p>핵심 가치를 보여 주는 기능 하나만 남깁니다.</p><span class="p6-example">예: 할 일을 입력해 목록에 추가</span><i class="p6-arrow">→</i></div><div class="p6-card"><span class="p6-symbol">×</span><h3>이번엔 안 만들 것</h3><p>꾸미기·검색·알림은 나중 아이디어로 따로 둡니다.</p><span class="p6-example">기능을 버리는 것이 아니라 미룹니다.</span><i class="p6-arrow">→</i></div><div class="p6-card is-key"><span class="p6-symbol">✓</span><h3>완료 기준</h3><p>무엇을 누르면 무엇이 보이는지를 문장으로 적습니다.</p><span class="p6-example">버튼을 누르면 목록에 그 줄이 보인다.</span></div></div>
+  </div>
+</section>

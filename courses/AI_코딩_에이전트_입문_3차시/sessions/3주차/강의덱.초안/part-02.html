@@ -1,0 +1,291 @@
+
+
+
+<section class="slide part-divider" data-slide="P2">
+  <svg class="dv-hero" viewBox="0 0 1280 720" fill="none" aria-hidden="true"></svg>
+  <div class="pd-dots" aria-hidden="true"></div>
+  <p class="pd-eyebrow">PART</p>
+  <h2 class="pd-title">중복 · 결측 · 이상값</h2>
+  <p class="pd-sub">깨끗해 보이는 표에도 셋이 숨어 있습니다.</p>
+</section>
+
+
+<section class="slide roadmap" data-slide="M2" data-shape="flow">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span><div class="s-team"></div>
+  </header>
+  <div class="s-full">
+    <h2 class="s-title">PART 2는 이렇게 배웁니다</h2>
+
+    <p class="rm-lead">깨끗해 보이는 표에 숨은 것이 <strong>셋</strong> 있습니다 — 어떻게 세는지까지 봅니다.</p>
+    <div class="rm-track is-5 viz-flow-h">
+      <div class="rm-step">
+        <span class="rm-n">1</span>
+        <b>셋에 이름 붙이기</b>
+        <span class="desc">중복·결측·이상값을 구분합니다.</span>
+        <span class="rm-out">세 가지 이름</span>
+      </div>
+      <span class="rm-arrow" aria-hidden="true">→</span>
+      <div class="rm-step">
+        <span class="rm-n">2</span>
+        <b>「열이 있다」와 「값이 맞다」</b>
+        <span class="desc">열 목록과 실제 값을 가릅니다.</span>
+        <span class="rm-out">열어 봐야 하는 이유</span>
+      </div>
+      <span class="rm-arrow" aria-hidden="true">→</span>
+      <div class="rm-step">
+        <span class="rm-n">3</span>
+        <b>중복 세기</b>
+        <span class="desc">행 수와 주문 수를 견줍니다.</span>
+        <span class="rm-out">중복 두 종류</span>
+      </div>
+      <span class="rm-arrow" aria-hidden="true">→</span>
+      <div class="rm-step">
+        <span class="rm-n">4</span>
+        <b>결측과 이상값</b>
+        <span class="desc">빈칸과 있을 수 없는 값을 셉니다.</span>
+        <span class="rm-out">결측 두 층 · 이상값 표</span>
+      </div>
+      <span class="rm-arrow" aria-hidden="true">→</span>
+      <div class="rm-step is-goal">
+        <span class="rm-n">5</span>
+        <b>실습② 품질 진단 요청</b>
+        <span class="desc">고치지 말고 표로 받습니다.</span>
+        <span class="rm-out">품질 진단 표</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- N-05 셋에 이름 붙이기 — classification (M6) -->
+<section class="slide ag3-trioslide" data-slide="N-05" data-shape="classification">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span><div class="s-team"></div>
+  </header>
+  <div class="s-full fill">
+    <div class="w3-hd">
+      <h2 class="s-title">깨끗해 보이는 표에도 <span class="hl-mint-text">셋</span>이 숨어 있습니다</h2>
+      <p class="s-lead">세 가지에 이름을 붙여야 <strong>따로 셀 수 있습니다.</strong></p>
+    </div>
+    <div class="ag3-trio">
+      <div class="ag3-trio-item">
+        <figure class="ag3-mini viz-matrix" role="img" aria-label="표의 두 행이 같은 주문으로 겹친 그림">
+          <svg viewBox="0 0 300 116" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect x="10" y="6" width="280" height="24" rx="5" fill="var(--blue)"/>
+            <rect x="10" y="36" width="280" height="22" rx="5" fill="var(--blue-soft)"/>
+            <rect x="10" y="62" width="280" height="22" rx="5" fill="var(--coral-soft)" stroke="var(--coral)" stroke-width="2"/>
+            <rect x="10" y="88" width="280" height="22" rx="5" fill="var(--coral-soft)" stroke="var(--coral)" stroke-width="2"/>
+            <text x="150" y="79" text-anchor="middle" font-size="16" font-weight="800" fill="var(--coral-deep)">같은 주문</text>
+            <text x="150" y="105" text-anchor="middle" font-size="16" font-weight="800" fill="var(--coral-deep)">같은 주문</text>
+          </svg>
+        </figure>
+        <b>중복</b>
+        <p>같은 주문이 <strong>두 번</strong> 들어 있습니다.</p>
+        <span class="ag3-trio-key">살펴볼 열 · <code>order_id</code></span>
+      </div>
+      <div class="ag3-trio-item">
+        <figure class="ag3-mini viz-matrix" role="img" aria-label="표의 한 칸이 비어 있는 그림">
+          <svg viewBox="0 0 300 116" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect x="10" y="6" width="280" height="24" rx="5" fill="var(--blue)"/>
+            <rect x="10" y="36" width="280" height="22" rx="5" fill="var(--blue-soft)"/>
+            <rect x="10" y="62" width="186" height="22" rx="5" fill="var(--blue-soft)"/>
+            <rect x="202" y="62" width="88" height="22" rx="5" fill="var(--white)" stroke="var(--coral)" stroke-width="2" stroke-dasharray="6 5"/>
+            <rect x="10" y="88" width="280" height="22" rx="5" fill="var(--blue-soft)"/>
+            <text x="246" y="79" text-anchor="middle" font-size="16" font-weight="800" fill="var(--coral-deep)">빈칸</text>
+          </svg>
+        </figure>
+        <b>결측</b>
+        <p>있어야 할 칸이 <strong>비어 있습니다.</strong></p>
+        <span class="ag3-trio-key">살펴볼 열 · <code>rating</code></span>
+      </div>
+      <div class="ag3-trio-item">
+        <figure class="ag3-mini viz-matrix" role="img" aria-label="표의 한 칸에 있을 수 없는 값이 들어 있는 그림">
+          <svg viewBox="0 0 300 116" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect x="10" y="6" width="280" height="24" rx="5" fill="var(--blue)"/>
+            <rect x="10" y="36" width="280" height="22" rx="5" fill="var(--blue-soft)"/>
+            <rect x="10" y="62" width="280" height="22" rx="5" fill="var(--blue-soft)"/>
+            <rect x="10" y="88" width="160" height="22" rx="5" fill="var(--blue-soft)"/>
+            <rect x="176" y="88" width="114" height="22" rx="5" fill="var(--coral)"/>
+            <text x="233" y="105" text-anchor="middle" font-size="16" font-weight="800" fill="var(--on-coral)">있을 수 없음</text>
+          </svg>
+        </figure>
+        <b>이상값</b>
+        <p>있을 수 없는 값이 <strong>섞여 있습니다.</strong></p>
+        <span class="ag3-trio-key">살펴볼 열 · <code>quantity</code></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="slide w3-vs-screen" data-slide="V1-03" data-shape="contrast">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span><div class="s-team"></div>
+  </header>
+  <div class="s-full fill">
+    <h2 class="s-title">"열이 있다"와 "값이 맞다"는 다릅니다</h2>
+    <div class="cc-grid viz-matrix">
+      <div class="cc-side human">
+        <h3>열 목록으로 보면</h3>
+        <ul>
+          <li><code>order_id</code> 있음</li>
+          <li><code>quantity</code> 있음</li>
+          <li><code>rating</code> 있음</li>
+          <li>전부 그대로 있으니 괜찮아 보입니다.</li>
+        </ul>
+      </div>
+      <div class="cc-neq" aria-hidden="true">≠</div>
+      <div class="cc-side ai">
+        <h3>실제로 열어 보면</h3>
+        <ul>
+          <li>같은 주문이 두 번 들어 있을 수 있습니다.</li>
+          <li>비어 있거나 있을 수 없는 값이 섞여 있을 수 있습니다.</li>
+          <li><strong>목록으로는 알 수 없습니다.</strong></li>
+        </ul>
+      </div>
+    </div>
+    <div class="callout blue hug-center">나중에 발견하면 <strong>원인을 찾기 어렵습니다.</strong> 그래서 지금 확인하는 게 가장 좋습니다.</div>
+  </div>
+</section>
+
+<!-- N-07 중복 — numeric (M6) -->
+<section class="slide ag3-dupslide" data-slide="N-07" data-shape="numeric">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span><div class="s-team"></div>
+  </header>
+  <div class="s-full fill">
+    <div class="w3-hd">
+      <h2 class="s-title">행 수와 주문 수는 <span class="hl-mint-text">같지 않습니다</span></h2>
+      <p class="s-lead">중복을 처리하기 전까지 <strong>한 행 = 한 주문이 아닙니다.</strong></p>
+    </div>
+    <div class="ag3-dup">
+      <div class="ag3-count">
+        <span class="ag3-count-v">2,424</span>
+        <span class="ag3-count-l">원본 행</span>
+        <span class="ag3-count-neq" aria-hidden="true">≠</span>
+        <span class="ag3-count-v">2,400</span>
+        <span class="ag3-count-l">서로 다른 <code>order_id</code></span>
+      </div>
+      <div class="ag3-kinds">
+        <div class="ag3-kind">
+          <b>완전 중복</b>
+          <p>열 값이 전부 같습니다. 첫 행만 남기고 <strong>23행을 제외</strong>합니다.</p>
+        </div>
+        <div class="ag3-kind is-hold">
+          <b>값이 다른 중복</b>
+          <p>주문번호는 같은데 수량이 다릅니다. <strong>2행 모두 보류</strong>합니다.</p>
+          <figure class="ag3-conflict viz-matrix" role="img" aria-label="ORD00852 주문이 두 행에 있고 quantity만 0과 2로 다른 표">
+            <table>
+              <thead><tr><th>order_id</th><th>quantity</th><th>나머지 열</th></tr></thead>
+              <tbody>
+                <tr><td><code>ORD00852</code></td><td class="is-diff">0</td><td>같음</td></tr>
+                <tr><td><code>ORD00852</code></td><td class="is-diff">2</td><td>같음</td></tr>
+              </tbody>
+            </table>
+          </figure>
+        </div>
+      </div>
+    </div>
+    <div class="callout orange hug-center">어느 수량이 맞는지 <strong>AI가 알아서 고르게 두지 않습니다.</strong></div>
+  </div>
+</section>
+
+<!-- N-08 결측은 두 층 — comparison (M6) -->
+<section class="slide ag3-missslide" data-slide="N-08" data-shape="comparison">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span><div class="s-team"></div>
+  </header>
+  <div class="s-full fill">
+    <div class="w3-hd">
+      <h2 class="s-title">결측은 <span class="hl-mint-text">두 층</span>입니다</h2>
+      <p class="s-lead">빈칸마다 이유가 다릅니다. <strong>채우지 않고 이유부터 봅니다.</strong></p>
+    </div>
+    <div class="ag3-two">
+      <div class="ag3-layer">
+        <h3>① 답이 없는 칸 · 채우지 않음</h3>
+        <p><code>rating</code> 무응답 <strong>64행(2.9%)</strong>은 0점으로 세지 않습니다.</p>
+        <figure class="ag3-stack viz-stacked" role="img" aria-label="분석 대상 2,203행 중 평점이 있는 2,139행과 무응답 64행">
+          <div class="ag3-stack-bar"><svg class="ag3-seg is-a" style="width:97.09%" viewBox="0 0 10 10" preserveAspectRatio="none" aria-hidden="true"><rect width="10" height="10"/></svg><svg class="ag3-seg is-d" style="width:2.91%" viewBox="0 0 10 10" preserveAspectRatio="none" aria-hidden="true"><rect width="10" height="10"/></svg></div>
+          <ul class="ag3-legend"><li><i></i>평점 있음 2,139행 · 평균의 분모</li><li><i class="is-d"></i>무응답 64행</li></ul>
+        </figure>
+      </div>
+      <div class="ag3-layer is-na">
+        <h3>② 원래 없는 칸 · 해당 없음</h3>
+        <p><code>return_reason</code> 빈칸 <strong>2,320행</strong>은 <code>returned=No</code> 행 수와 같습니다.</p>
+        <p><code>delivery_days</code> 빈칸 <strong>184행</strong>은 배송이 시작되지 않은 주문입니다.</p>
+        <figure class="ag3-stack viz-stacked" role="img" aria-label="delivery_days 빈칸 184행은 취소 112행과 대기 72행으로 모두 설명된다">
+          <div class="ag3-stack-bar"><svg class="ag3-seg is-b" style="width:60.87%" viewBox="0 0 10 10" preserveAspectRatio="none" aria-hidden="true"><rect width="10" height="10"/></svg><svg class="ag3-seg is-c" style="width:39.13%" viewBox="0 0 10 10" preserveAspectRatio="none" aria-hidden="true"><rect width="10" height="10"/></svg></div>
+          <ul class="ag3-legend"><li><i class="is-b"></i>Cancelled 112행</li><li><i class="is-c"></i>Pending 72행</li></ul>
+        </figure>
+      </div>
+    </div>
+    <div class="callout blue hug-center">빈칸을 <strong>0이나 평균으로 채우면</strong> 측정하지 않은 값이 측정한 값처럼 보입니다.</div>
+  </div>
+</section>
+
+<!-- N-09 이상값 — numeric (M6) -->
+<section class="slide ag3-outslide" data-slide="N-09" data-shape="numeric">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span><div class="s-team"></div>
+  </header>
+  <div class="s-full fill">
+    <div class="w3-hd">
+      <h2 class="s-title">이상값은 <span class="hl-mint-text">빼는 것</span>과 <span class="hl-mint-text">보류하는 것</span>으로 나눕니다</h2>
+      <p class="s-lead">기준은 <strong>계산 결과를 보기 전에</strong> 정했습니다.</p>
+    </div>
+    <div class="ag3-outwrap">
+      <figure class="ag3-colchart viz-column" role="img" aria-label="이상값 플래그 건수 막대그래프, 단위 행: 수량 0 6행, 수량 50 이상 6행, 단가 999999 4행, 배송일 음수 4행은 제외, 배송일 30 이상 4행은 보류">
+        <p class="ag3-unit">단위: 행 · 원본 전체에서 센 건수</p>
+        <div class="ag3-plot" style="height:236px">
+          <div class="ag3-bar"><span class="ag3-val">6행</span><svg class="ag3-fill is-drop" style="height:190px" viewBox="0 0 10 10" preserveAspectRatio="none" aria-hidden="true"><rect width="10" height="10"/></svg></div>
+          <div class="ag3-bar"><span class="ag3-val">6행</span><svg class="ag3-fill is-drop" style="height:190px" viewBox="0 0 10 10" preserveAspectRatio="none" aria-hidden="true"><rect width="10" height="10"/></svg></div>
+          <div class="ag3-bar"><span class="ag3-val">4행</span><svg class="ag3-fill is-drop" style="height:127px" viewBox="0 0 10 10" preserveAspectRatio="none" aria-hidden="true"><rect width="10" height="10"/></svg></div>
+          <div class="ag3-bar"><span class="ag3-val">4행</span><svg class="ag3-fill is-drop" style="height:127px" viewBox="0 0 10 10" preserveAspectRatio="none" aria-hidden="true"><rect width="10" height="10"/></svg></div>
+          <div class="ag3-bar"><span class="ag3-val">4행</span><svg class="ag3-fill is-hold" style="height:127px" viewBox="0 0 10 10" preserveAspectRatio="none" aria-hidden="true"><rect width="10" height="10"/></svg></div>
+        </div>
+        <div class="ag3-axis"><span>수량 0</span><span>수량 50 이상</span><span>단가 999999</span><span>배송일 음수</span><span>배송일 30 이상</span></div>
+        <ul class="ag3-legend"><li><i class="is-b"></i>제외</li><li><i class="is-hold"></i>보류</li></ul>
+      </figure>
+      <div class="ag3-outnote">
+        <div><b>제외 · 있을 수 없는 값</b><p>수량 0, 음수 배송일처럼 주문으로 성립하지 않습니다.</p></div>
+        <div class="is-hold"><b>보류 · 확인이 필요한 값</b><p>배송 45일은 예약·해외배송이면 성립합니다. 매출에는 넣고 배송 평균에서만 뺍니다.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- N-10 실습② 품질 진단 요청 — screen-operation (M6) -->
+<section class="slide w3-practice ag3-pr" data-slide="N-10" data-shape="screen-operation">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span><div class="s-team"></div>
+  </header>
+  <div class="s-full fill">
+    <div class="w3-pr-hd">
+      <p class="s-eyebrow">실습 ②</p>
+      <h2 class="s-title">품질 진단을 표로 받습니다</h2>
+    </div>
+    <div class="ag3-pr-body">
+      <div class="w3-ask terminal-dark" aria-label="Agent에게 입력하는 요청문">
+        <div class="terminal-bar"><span></span><span></span><span></span><b>이렇게 요청하세요</b></div>
+        <div class="w3-ask-body">
+          <span class="w3-ask-pfx" aria-hidden="true">&gt;_</span>
+          <p>컬럼 구조, 데이터 유형, 데이터 개수, 중복값, 결측값, 이상값을 <strong>표로 정리해줘.</strong> 분석에 쓸 수 있는 항목도 적고, <strong>아직 아무것도 고치지 마.</strong></p>
+        </div>
+      </div>
+      <div class="eval-steps ag3-steps">
+          <div class="work-step"><span class="n">1</span><b>목적</b><span class="desc">무엇이 몇 건인지 고치기 전에 확인합니다.</span></div>
+          <div class="work-step"><span class="n">2</span><b>입력</b><span class="desc">원본 CSV · 실습 ①의 구조 설명</span></div>
+          <div class="work-step"><span class="n">3</span><b>출력</b><span class="desc">항목마다 건수가 적힌 품질 진단 표</span></div>
+          <div class="work-step is-check"><span class="n">4</span><b>검증 기준</b><span class="desc">확인: 중복 · 결측 · 이상값마다 건수가 있습니다.</span></div>
+        </div>
+    </div>
+    <p class="ag3-demo">Agent가 파일을 바꾸려 하면 <strong>승인하지 않고 멈춥니다.</strong> 승인 창의 모양은 강사 시연 화면으로 봅니다.</p>
+  </div>
+</section>

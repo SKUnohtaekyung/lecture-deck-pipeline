@@ -1,0 +1,252 @@
+<!-- 2차시 PART 4 · Markdown으로 기준을 파일에 — 2026-09-10 조립 담당.
+     원본 슬라이드는 courses/바이브코딩/sessions/2주차/강의덱.초안의 section을 그대로 복사하고
+     제작관리/보존매트릭스_2차시.csv 「변경내용」만 적용했다. N-** 는 새 커리큘럼 신규(M6)다. -->
+
+<section class="slide part-divider" data-slide="P4">
+      <svg class="dv-hero" viewBox="0 0 1280 720" fill="none" aria-hidden="true"></svg>
+      <div class="pd-dots" aria-hidden="true"></div>
+      <p class="pd-eyebrow">PART</p>
+      <h2 class="pd-title">Markdown으로 기준을 파일에</h2>
+      <p class="pd-desc">대화에 흘리지 않고, AI가 매번 읽을 기준 파일로 남긴다</p>
+    </section>
+
+<section class="slide" data-slide="C3-1">
+      <header class="s-head">
+        <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+        <span class="s-line"></span><div class="s-team">2차시<br>PART 4</div>
+      </header>
+      <div class="dc-title">
+        <h2 class="s-title">Markdown은 메모에 구조를 붙입니다</h2>
+      </div>
+      <div class="dc-stage c31-stage">
+        <div class="c31-doc">
+          <span class="def-term">Markdown이란</span>
+          <p class="c31-p">텍스트에 <span class="hl-mint-underline">약속된 기호</span>로 문서 구조를 표시하는 가벼운 문서 형식입니다.</p>
+          <p class="c31-p">일반 텍스트와 달리 특정 기호가 정해진 서식(제목·굵게·목록)으로 바뀝니다.</p>
+          <p class="md-leg-h">문서에 쓰인 기호 10개</p>
+          <!-- 2026-08-02 수정요청 v2 5번: 2열 격자 나열 → 표. 기호와 뜻이 행으로 맞춰져
+               «이 기호가 무엇이 되는지»를 한 줄씩 짚어 읽을 수 있다. 동시에 15·16px이던
+               글자를 표 하한 17px 위로 올린다. -->
+          <table class="t md-leg-tbl">
+            <thead><tr><th scope="col">기호</th><th scope="col">화면에서 되는 것</th></tr></thead>
+            <tbody>
+              <tr><td><code>#</code></td><td>제목(h1)</td></tr>
+              <tr><td><code>##</code></td><td>소제목(h2)</td></tr>
+              <tr><td><code>**굵게**</code></td><td>강조(bold)</td></tr>
+              <tr><td><code>-</code></td><td>목록(list)</td></tr>
+              <tr><td><code>- [ ]</code></td><td>할 일(미완료)</td></tr>
+              <tr><td><code>- [x]</code></td><td>할 일(완료)</td></tr>
+              <tr><td><code>&gt;</code></td><td>인용(quote)</td></tr>
+              <tr><td><code>---</code></td><td>구분선(hr)</td></tr>
+              <tr><td><code>[글](주소)</code></td><td>링크(link)</td></tr>
+              <tr><td><code>```</code></td><td>코드 블록</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="w2-editor viz-editor" role="img" aria-label="코드 편집기 화면. 왼쪽에 메모.md 원문 12줄이 있고, 오른쪽에 그 문서가 제목·목록·체크박스·인용·링크·코드로 렌더링된 모습이 나란히 보인다">
+          <div class="w2-ed-bar"><span></span><span></span><span></span>
+            <b class="w2-ed-tab">메모.md</b><b class="w2-ed-tab is-side">미리보기</b></div>
+          <div class="w2-ed-body">
+            <ol class="w2-ed-code">
+              <li><span class="ln"><span class="t-h"># 오늘의 기획 메모</span></span></li>
+              <li><span class="ln"><span class="t-h">## 핵심 아이디어</span></span></li>
+              <li><span class="ln"><span class="t-b">**퇴근길 직장인**</span>을 위한 하루 기록</span></li>
+              <li><span class="ln"><span class="t-l">-</span> 오늘 한 일을 한 줄로 남긴다</span></li>
+              <li><span class="ln"><span class="t-l">- [ ]</span> 첫 화면 스케치 그리기</span></li>
+              <li><span class="ln"><span class="t-l">- [x]</span> 페인포인트 정의하기</span></li>
+              <li><span class="ln"><span class="t-c">&gt; AI 초안은 사람이 다시 확인</span></span></li>
+              <li><span class="ln"><span class="t-c">---</span></span></li>
+              <li><span class="ln"><span class="t-l">[Antigravity 사용법](notes/antigravity.md)</span></span></li>
+              <li><span class="ln"><span class="t-c">```</span></span></li>
+              <li><span class="ln">console.log("완료했습니다")</span></li>
+              <li><span class="ln"><span class="t-c">```</span></span></li>
+            </ol>
+            <div class="w2-ed-preview md-rendered">
+              <p class="mdr-h1">오늘의 기획 메모</p>
+              <p class="mdr-h2">핵심 아이디어</p>
+              <p class="mdr-p"><b>퇴근길 직장인</b>을 위한 하루 기록</p>
+              <ul class="mdr-list"><li>오늘 한 일을 한 줄로 남긴다</li></ul>
+              <ul class="mdr-check">
+                <li class="is-todo"><span class="box" aria-hidden="true"></span>첫 화면 스케치 그리기</li>
+                <li class="is-done"><span class="box" aria-hidden="true">✓</span>페인포인트 정의하기</li>
+              </ul>
+              <blockquote class="mdr-quote">AI 초안은 사람이 다시 확인</blockquote>
+              <hr class="mdr-hr">
+              <p class="mdr-p"><a class="mdr-link" href="#" onclick="return false;">Antigravity 사용법</a></p>
+              <pre class="mdr-code">console.log("완료했습니다")</pre>
+            </div>
+          </div>
+        </div>
+      </div>
+</section>
+
+<section class="slide w2-owner" data-slide="C1-13">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span><div class="s-team">2차시<br>PART 4</div>
+  </header>
+  <div class="s-full">
+    <h2 class="s-title">어떤 문서가 무엇을 책임지나</h2>
+    <p class="ow-lead">세 문서는 각각 <strong>다른 질문에 답합니다.</strong>
+      <span class="subline">책임이 겹치면 나중에 어디를 고칠지 헷갈립니다.</span></p>
+    <div class="ow-grid">
+      <div class="ow-col">
+        <span class="ow-file">prd.md</span>
+        <p class="ow-q">무엇을 만드나</p>
+        <ul class="ow-keys">
+          <li>대상 · 핵심 · 흐름</li>
+          <li>제외 · 완료 기준</li>
+        </ul>
+        <p class="ow-ex">"이 앱은 무엇을 하나요?"</p>
+      </div>
+      <div class="ow-col">
+        <span class="ow-file">design.md</span>
+        <p class="ow-q">어떻게 보이나</p>
+        <ul class="ow-keys">
+          <li>색 · 간격 · 글자 크기</li>
+          <li>반복되는 화면 규칙</li>
+        </ul>
+        <p class="ow-ex">"버튼은 무슨 색인가요?"</p>
+      </div>
+      <div class="ow-col">
+        <span class="ow-file">AGENTS.md</span>
+        <p class="ow-q">어떻게 일하나</p>
+        <ul class="ow-keys">
+          <li>지켜야 할 규칙</li>
+          <li>파일 구조 · 확인 절차</li>
+        </ul>
+        <p class="ow-ex">"저장은 어디에 하나요?"</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-slide="C3-N2">
+      <header class="s-head">
+        <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+        <span class="s-line"></span><div class="s-team">2차시<br>PART 4</div>
+      </header>
+      <div class="s-full">
+        <h2 class="s-title">prd.md</h2>
+        <p class="ow-lead">prd.md는 우리가 실제로 쓰는 <strong>다섯 항목(대상·핵심·흐름·제외·완료)만 담은 파일</strong>입니다.
+          <span class="subline">길이가 아니라 <b>항목</b>이 기준입니다. 프로젝트가 커지면 같은 다섯 항목이어도 길어집니다.</span></p>
+        <div class="pmd-flow viz-flow">
+          <div class="pmd-node">
+            <span class="pmd-tag">작업 전</span>
+            <p class="pmd-txt">에이전트가 prd.md를 읽고 무엇을 만들지 파악합니다.<span class="subline">대상·핵심·흐름을 먼저 확인합니다.</span></p>
+          </div>
+          <span class="pmd-arrow" aria-hidden="true">→</span>
+          <div class="pmd-doc" role="img" aria-label="prd.md 문서 아이콘">
+            <svg viewBox="0 0 32 32" width="34" height="34" aria-hidden="true"><path d="M9 4h10l6 6v18H9V4z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M19 4v6h6" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M13 16h10M13 21h10M13 26h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            <b>prd.md</b>
+          </div>
+          <span class="pmd-arrow" aria-hidden="true">→</span>
+          <div class="pmd-node">
+            <span class="pmd-tag">작업 후</span>
+            <p class="pmd-txt">만든 결과를 prd.md 기준과 맞춰 봅니다.<span class="subline">제외·완료 항목까지 지켰는지 확인합니다.</span></p>
+          </div>
+        </div>
+        <p class="s-body">즉 prd.md는 <span class="hl-mint-underline">에이전트가 시작하기 전과 끝난 뒤 두 번 참고하는</span> 기준 문서입니다.</p>
+      </div>
+    </section>
+
+<section class="slide" data-slide="C3-N3">
+      <header class="s-head">
+        <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+        <span class="s-line"></span><div class="s-team">2차시<br>PART 4</div>
+      </header>
+      <div class="s-full c3n3-full">
+        <h2 class="s-title">prd.md를 어떻게 넘기나</h2>
+        <p class="s-body c3n3-lead">같은 문서라도 <b>넘기는 방식</b>에 따라 다음 대화에서 살아남는지가 갈립니다.</p>
+        <div class="c3n3-grid">
+          <div class="c3n3-way">
+            <span class="c3n3-k is-bad">방법 A</span>
+            <b>채팅창에 내용을 붙여넣기</b>
+            <span class="subline">그 대화에서만 유효합니다. 새 대화를 열면 다시 붙여넣어야 합니다.</span>
+          </div>
+          <div class="c3n3-way is-pick">
+            <span class="c3n3-k is-good">방법 B · 이 수업이 쓰는 방식</span>
+            <b>프로젝트 폴더에 파일로 두고 «읽어라»라고 시키기</b>
+            <span class="subline">파일이 폴더에 남아 다음 대화도 같은 기준을 읽습니다. 내가 열어 고칠 수도 있습니다.</span>
+          </div>
+        </div>
+        <div class="c3n3-body">
+          <div class="c3n3-tree viz-tree" role="img" aria-label="프로젝트 폴더 안에 prd.md가 index.html·style.css·script.js와 함께 놓여 있는 구조">
+            <div class="c3n3-folder">내-프로젝트<span class="c3n3-slash">/</span></div>
+            <ul class="c3n3-files">
+              <li class="is-doc"><b>prd.md</b><span>무엇을 만드나</span></li>
+              <li><b>index.html</b><span>뼈대</span></li>
+              <li><b>style.css</b><span>모양</span></li>
+              <li><b>script.js</b><span>동작</span></li>
+            </ul>
+          </div>
+          <div class="w2-prompt terminal-dark c3n3-prompt" aria-label="예시 프롬프트 — 프로젝트 폴더의 prd.md를 읽고 화면을 만들라고 요청한다">
+            <div class="terminal-bar"><span></span><span></span><span></span><b>Google Antigravity · 내-프로젝트</b></div>
+            <div class="terminal-body">
+              <span class="terminal-prompt">&gt;_</span>
+              <p class="terminal-copy">이 폴더의 <strong>prd.md를 먼저 읽고</strong> 시작해 주세요.<br>
+            거기 적힌 «핵심 기능»과 «흐름»대로 화면을 만들어 주세요.<br>
+            제가 꼭 넣고 싶은 것: <b class="fill">[화면에 꼭 보였으면 하는 것 하나]</b><br>
+            순수 HTML·CSS·JS만 쓰고, 설치·빌드·프레임워크는 쓰지 마세요.<br>
+            파일 구성은 스스로 정하되, 왜 그렇게 나눴는지 한 줄로 알려 주세요.<br>
+            다 만들면 «완료 기준»과 맞는지 스스로 대조해서 알려 주세요.</p>
+              <span class="terminal-cursor" aria-hidden="true"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+<section class="slide n2-stage n2-mdfile" data-slide="N-08" data-shape="classification">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span><div class="s-team">2차시<br>PART 4</div>
+  </header>
+  <div class="s-full">
+    <h2 class="s-title">NEWS_AGENT.md에 적는 여섯 가지</h2>
+    <p class="n2-lead">Agent가 매번 처음부터 설명받지 않고, <span class="hl-mint-underline">문서를 참고해 일관된 기준으로</span> 작업하게 합니다.</p>
+    <div class="n08-wrap">
+      <div class="n08-grid viz-md" role="img" aria-label="NEWS_AGENT.md의 여섯 제목과 예시, 각 제목이 답하는 질문: 역할, 조사 대상, 뉴스 선정 기준, 제외할 정보, 출력 형식, 검증 기준">
+        <p class="n08-bar"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h8l4 4v14H6z" style="fill:var(--ink);stroke:var(--white)" stroke-width="1.8" stroke-linejoin="round"/><path d="M14 3v4h4" style="fill:none;stroke:var(--white)" stroke-width="1.8"/></svg><code>NEWS_AGENT.md</code></p><span class="n08-bar-sp" aria-hidden="true"></span>
+        <p class="n08-md"><code>## 역할</code><span>AI 관련 주요 뉴스를 찾아 정리한다</span></p><span class="n08-ar" aria-hidden="true">→</span><p class="n08-q">누구로 일하나</p>
+        <p class="n08-md"><code>## 조사 대상</code><span>최근 24시간 동안 공개된 AI 뉴스</span></p><span class="n08-ar" aria-hidden="true">→</span><p class="n08-q">무엇을 찾나</p>
+        <p class="n08-md"><code>## 뉴스 선정 기준</code><span>중요도가 높은 뉴스 5개</span></p><span class="n08-ar" aria-hidden="true">→</span><p class="n08-q">무엇을 고르나</p>
+        <p class="n08-md"><code>## 제외할 정보</code><span>중복 기사 · 확인되지 않은 정보</span></p><span class="n08-ar" aria-hidden="true">→</span><p class="n08-q">무엇을 빼나</p>
+        <p class="n08-md"><code>## 출력 형식</code><span>제목 · 핵심 내용 · 중요한 이유 · 출처</span></p><span class="n08-ar" aria-hidden="true">→</span><p class="n08-q">어떤 모양으로 남기나</p>
+        <p class="n08-md is-last"><code>## 검증 기준</code><span>실제 존재 · 날짜 · 요약 일치 · 출처</span></p><span class="n08-ar" aria-hidden="true">→</span><p class="n08-q">무엇으로 확인하나</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide n2-stage n2-loop" data-slide="N-18" data-shape="flow">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span><div class="s-team">2차시<br>PART 4</div>
+  </header>
+  <div class="s-full">
+    <h2 class="s-title">중요한 기준은 대화가 아니라 파일에 남깁니다</h2>
+    <p class="n2-lead">대화에만 말한 기준은 창을 닫으면 사라지지만, 파일에 적은 기준은 <b>다음 실행에서 다시 읽힙니다</b>.</p>
+    <div class="n18-body">
+      <div class="n18-pair">
+        <div class="n18-row is-chat"><b>대화에만 말하면</b><p>새 대화를 열거나 대화가 길어지면 기준이 약해집니다. 매번 다시 설명해야 합니다.</p></div>
+        <div class="n18-row is-file"><b>파일에 적으면</b><p>실행할 때마다 처음부터 다시 읽힙니다. <span class="hl-mint-mark">나도 Agent도 같은 기준</span>을 봅니다.</p></div>
+      </div>
+      <div class="viz-cycle" role="img" aria-label="기준 파일을 읽고, 조사를 실행하고, 결과를 확인하고, 바뀐 기준을 파일에 고친 뒤 다시 읽는 순환">
+        <svg viewBox="0 0 440 440" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs><marker id="n18-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" style="fill:var(--blue)"/></marker></defs><path class="cyc-wire" d="M271,79 A150,150 0 0 1 361,169" marker-end="url(#n18-arrow)"/><path class="cyc-wire" d="M361,271 A150,150 0 0 1 271,361" marker-end="url(#n18-arrow)"/><path class="cyc-wire" d="M169,361 A150,150 0 0 1 79,271" marker-end="url(#n18-arrow)"/><path class="cyc-wire" d="M79,169 A150,150 0 0 1 169,79" marker-end="url(#n18-arrow)"/></svg>
+        <div class="cyc-node" style="left:200px;top:55px;"><span class="cn">1</span><b>기준 파일<br>읽기</b></div>
+        <div class="cyc-node" style="left:338px;top:200px;"><span class="cn">2</span><b>조사 실행</b></div>
+        <div class="cyc-node" style="left:200px;top:345px;"><span class="cn">3</span><b>결과 확인</b></div>
+        <div class="cyc-node" style="left:62px;top:200px;"><span class="cn">4</span><b>파일<br>고치기</b></div>
+        <div class="cyc-center">다음 실행도<br>같은 기준</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-slide="A3F3">
+  <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">2차시<br>PART 4</div></header>
+  <div class="s-full"><p class="p6-eyebrow">PART 4 · 바로 적용하기</p><h2 class="s-title">결정이 바뀌면 문서를 먼저 고칩니다</h2><p class="p6-lead">코드만 바꾸면 다음 AI 작업이 낡은 기준을 다시 읽습니다. <strong>문서부터 바꾸고 다시 확인</strong>합니다.</p>
+    <div class="p6-grid3"><div class="p6-card"><span class="p6-symbol">↺</span><h3>결정 변경</h3><p>대상·기능·제외 중 하나가 바뀌었다면 멈춥니다.</p><span class="p6-example">“알림은 이번에 빼자”</span><i class="p6-arrow">→</i></div><div class="p6-card"><span class="p6-symbol">✎</span><h3>prd.md 수정</h3><p>바뀐 결정을 문서의 해당 항목에 반영합니다.</p><span class="p6-example">제외 항목에 알림을 적기</span><i class="p6-arrow">→</i></div><div class="p6-card is-key"><span class="p6-symbol">✓</span><h3>다시 읽히고 열기</h3><p>AI가 바뀐 문서를 읽은 뒤, 화면에서 반영을 확인합니다.</p><span class="p6-example">“prd.md를 다시 읽고 적용해”</span></div></div>
+  </div>
+</section>

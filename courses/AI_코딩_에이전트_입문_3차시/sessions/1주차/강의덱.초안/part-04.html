@@ -1,0 +1,153 @@
+<section class="slide part-divider" data-slide="P4">
+  <svg class="dv-hero" viewBox="0 0 1280 720" fill="none" aria-hidden="true"></svg>
+  <div class="pd-dots" aria-hidden="true"></div>
+  <p class="pd-eyebrow">PART</p><h2 class="pd-title">첫 웹 결과물 만들기</h2><p class="pd-sub">무엇을 지시하고 무엇을 제공할지 정한 다음,<br>폴더를 열어 실제로 타자 게임을 만듭니다.</p>
+</section>
+<section class="slide eng-axis-slide eng-prompt" data-slide="S3PE">
+  <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 4<br>요청 설계</div></header>
+  <div class="s-full eng-layout">
+    <div class="eng-head"><h2 class="eng-title"><span class="eng-en">Prompt Engineering</span><span class="eng-ko">프롬프트 엔지니어링</span></h2><p class="eng-q">무엇을 <strong>지시</strong>할 것인가?</p></div>
+    <article class="eng-concept"><h3>주요 개념</h3><p>AI에게 전달하는 <strong>작업 · 목표 · 조건 · 출력형식</strong>을 명확하게 설계합니다.</p><figure class="eng-spot asset-slot" data-asset-kind="paper-cut-v1" data-image-purpose="mnemonic" data-image-role="spot" data-image-state="expected" data-expected-src="자료/images/s3pe_prompt-four-elements-v1.png"></figure></article>
+    <div class="eng-right">
+      <div class="eng-four">
+        <article><b>명확성</b><span>Clarity</span><p>원하는 결과를 구체적으로 설명할 것</p></article>
+        <article><b>역할</b><span>Persona</span><p>AI가 어떤 역할로 응답할지 지정할 것</p></article>
+        <article><b>조건</b><span>Constraints</span><p>핵심 조건을 구체적으로 제공할 것</p></article>
+        <article><b>출력형식</b><span>Format</span><p>형식 · 길이 · 스타일을 명시할 것</p></article>
+      </div>
+      <div class="eng-example">
+        <article class="eng-bad"><h4>이렇게 쓰면</h4><p>“타자 게임 만들어줘”</p></article>
+        <article class="eng-good"><h4>이렇게 씁니다</h4><ul><li>너는 웹 게임을 만드는 <b>제작자</b>야</li><li>브라우저에서 실행하는 <b>타자 게임</b>을 만들려고 해</li><li><b>index.html 한 파일</b>에 HTML·CSS·JavaScript를 같이 넣어</li><li><b>브라우저에서 바로 열리는</b> 한 파일로 만들어</li></ul></article>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="slide prompt-map" data-slide="M6-05">
+  <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 4<br>요청문 분해</div></header>
+  <div class="s-full">
+    <p class="s-eyebrow">요청문 분해</p>
+    <h2 class="s-title">목적·입력·출력·검증으로 <span class="hl-mint-text">나눠 적습니다</span></h2>
+    <div class="accent-bar"></div>
+    <p class="s-lead map-lead">오른쪽 칸은 <strong class="hl-blue-text">각자 채웁니다.</strong> 네 칸이 다 차면 그대로 요청문이 됩니다.</p>
+    <div class="map-rows" role="list" aria-label="요청문의 네 칸과 내가 채울 값의 대응">
+      <div class="map-row" role="listitem"><div class="pill map-left"><b>목적</b></div><span class="map-arrow" aria-hidden="true">→</span><div class="card surface map-right"><p class="s-body">브라우저에서 실행하는 타자 게임 만들기</p></div></div>
+      <div class="map-row" role="listitem"><div class="pill map-left"><b>입력</b></div><span class="map-arrow" aria-hidden="true">→</span><div class="card surface map-right"><p class="s-body">내가 메모한 단어 5~10개</p></div></div>
+      <div class="map-row" role="listitem"><div class="pill map-left"><b>출력</b></div><span class="map-arrow" aria-hidden="true">→</span><div class="card surface map-right"><p class="s-body">index.html 한 파일 · 추가 설치 없음</p></div></div>
+      <div class="map-row" role="listitem"><div class="pill map-left"><b>검증</b></div><span class="map-arrow" aria-hidden="true">→</span><div class="card surface map-right"><p class="s-body">단어가 보이고, 맞게 입력하면 점수가 오른다</p></div></div>
+    </div>
+  </div>
+</section>
+<section class="slide iterate-slide" data-slide="S3ITR">
+  <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 4<br>작업 방식</div></header>
+  <div class="s-full iterate-layout">
+    <p class="s-eyebrow">한 번에 끝내려 하지 않습니다</p><h2 class="s-title">첫 요청은 <span class="hl-blue-text">구체적으로</span>, 결과는 <span class="hl-mint-text">반복 수정</span></h2>
+    <div class="iterate-why">
+      <article class="iterate-warn"><b>너무 짧으면</b><p>방향부터 잘못 잡습니다.</p></article>
+      <article class="iterate-warn"><b>한 번에 완벽을 기대하면</b><p>현실적이지 않습니다.</p></article>
+    </div>
+    <div class="viz-flow-ph iterate-flow" role="img" aria-label="첫 요청 작성에서 결과물 실행, 문제 확인을 거쳐 작은 단위 반복 수정으로 이어지는 네 단계 흐름">
+      <div class="fl-node">목적과 필수 정보를 담은<br><b>첫 요청 작성</b></div>
+      <div class="fl-arrow" aria-hidden="true">→</div>
+      <div class="fl-node"><b>결과물 실행</b></div>
+      <div class="fl-arrow" aria-hidden="true">→</div>
+      <div class="fl-node"><b>문제 확인</b></div>
+      <div class="fl-arrow" aria-hidden="true">→</div>
+      <div class="fl-node key">작은 단위로<br><b>반복 수정</b></div>
+    </div>
+    <p class="iterate-note">큰 결과를 한 번에 믿고 받지 않고, <strong>확인할 수 있는 크기</strong>로 나눠 하나씩 봅니다.</p>
+  </div>
+</section>
+<section class="slide request-compare-slide" data-slide="29">
+  <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 4<br>요청 비교</div></header>
+  <div class="s-full request-compare-layout"><p class="s-eyebrow">확인할 수 있는 요청</p><h2 class="s-title">기준이 있으면 <span class="hl-mint-text">결과를 따져 볼 수 있습니다</span></h2>
+    <div class="request-compare-panels"><article class="card surface request-compare-panel specific-request"><h3>구체적인 요청</h3><p><strong class="hl-blue-text">단어 수·제한 시간·점수 규칙·글자 크기</strong>를 말합니다.</p><p><strong class="hl-blue-text">결과 범위·필요 내용·완료 기준</strong>이 보입니다.</p><p>요청하지 않은 기능(순위표·로그인)은 만들지 말라고 적습니다.</p></article><article class="card surface request-compare-panel vague-request"><h3>모호한 요청</h3><p>“예쁘게·깔끔하게·알아서”처럼 기준이 없습니다.</p><p>결과물 범위와 검수 방법이 없습니다.</p><p>사람마다 다른 해석이 생깁니다.</p></article></div>
+    <p class="request-compare-note">좋은 요청은 길어서가 아니라, <strong class="hl-mint-text">원하는 결과와 실제 결과를 비교할 수 있어서</strong> 좋습니다.</p>
+  </div>
+</section>
+<section class="slide required-conditions-slide" data-slide="30">
+  <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 4<br>필수 조건</div></header>
+  <div class="s-full required-conditions-layout"><p class="s-eyebrow">첫 결과물에서 반드시 지킬 것</p><h2 class="s-title">세 조건은 <span class="hl-coral-text">생략하지 않습니다</span></h2>
+    <div class="must-condition-rail"><article><span>01</span><h3>추가 설치 없음</h3><p>설치·빌드·서버·프레임워크 없이 시작합니다.</p></article><article><span>02</span><h3>HTML·CSS·JavaScript 한 파일</h3><p>프로젝트 폴더 바로 안의 <code>index.html</code>에 함께 씁니다.</p></article><article><span>03</span><h3>외부 라이브러리 없이</h3><p>게임 동작은 같은 파일 안의 JavaScript로만 만듭니다.</p></article></div>
+    <div class="must-banner"><strong>반드시 요청문에 포함</strong><span>“index.html 한 파일로 만들고, 브라우저에서 직접 열 수 있게 해 주세요.”</span></div>
+  </div>
+</section>
+<section class="slide project-folder-slide" data-slide="S34">
+  <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 4<br>프로젝트 폴더</div></header>
+  <div class="dc-title"><p class="s-eyebrow">프로젝트 폴더 만들기</p><h2 class="s-title"><span class="hl-mint-text">typing-game</span> 폴더를 만듭니다</h2></div>
+  <div class="project-folder-layout">
+    <div class="project-folder-copy"><p class="project-folder-lead"><code>C:\VibeCoding</code> 안에 새 폴더를 만듭니다.</p><p>폴더 이름은 <strong class="hl-blue-text">typing-game</strong>으로 적고, 다른 연습 파일과 섞이지 않게 합니다.</p><div class="path-confirm">확인할 주소 <code>C:\VibeCoding\typing-game\</code></div></div>
+    <div class="folder-tree-gui" role="img" data-viz="folder-tree-mock" aria-label="VibeCoding 폴더 안에 typing-game 프로젝트 폴더가 있는 구조"><div class="tree-window-bar"><span></span><span></span><span></span><b>파일 탐색기</b></div><div class="tree-breadcrumb">C: <i>›</i> VibeCoding</div><div class="tree-row root"><span class="tree-folder-icon"></span><b>VibeCoding</b></div><div class="tree-row active"><span class="tree-branch">└─</span><span class="tree-folder-icon"></span><b>typing-game</b><em>오늘 만들 프로젝트</em></div></div>
+  </div>
+</section>
+<section class="slide agent-open-slide" data-slide="S35">
+  <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 4<br>폴더 열기</div></header>
+  <div class="dc-title"><p class="s-eyebrow">Antigravity에서 프로젝트 폴더 선택</p><h2 class="s-title">만든 폴더를 <span class="hl-mint-mark">Antigravity로 엽니다</span></h2></div>
+  <div class="agent-open-layout">
+    <div class="agent-app-gui" role="img" data-viz="app-window-mock" aria-label="Google Antigravity에서 프로젝트 폴더를 여는 화면 — 실제 화면이 아닌 예시 목업"><div class="agent-app-bar"><span class="agent-app-mark">V</span><b>Google Antigravity</b><span class="window-dots">예시 화면</span></div><div class="agent-app-body"><aside><b>작업공간</b><span>최근 작업</span><span>설정</span></aside><main><div class="open-folder-icon">▰</div><strong>프로젝트 폴더 열기</strong><p>C:\VibeCoding\typing-game</p><button type="button" tabindex="-1">폴더 선택</button></main></div></div>
+    <div class="agent-open-copy"><div><strong>어디를 여나요?</strong><p><code>typing-game</code> 폴더 자체를 선택합니다.</p></div><div><strong>왜 확인하나요?</strong><p>Agent는 지금 연 폴더 안의 파일만 작업 대상으로 봅니다.</p></div><div class="agent-open-check"><strong>화면에서 볼 것</strong><p>현재 작업공간 이름이 <span class="hl-mint-text">typing-game</span>인지 확인합니다.</p></div></div>
+  </div>
+</section>
+<section class="slide workspace-breadcrumb-slide" data-slide="S36">
+  <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 4<br>작업 범위</div></header>
+  <div class="dc-title"><p class="s-eyebrow">요청하기 전 마지막 확인</p><h2 class="s-title">목표 경로와 현재 작업공간을 <span class="hl-mint-text">맞춥니다</span></h2></div>
+  <div class="workspace-compare">
+    <div class="workspace-path-label">목표 경로</div><div class="breadcrumb-track"><span>C:</span><i>›</i><span>VibeCoding</span><i>›</i><strong>typing-game</strong></div>
+    <div class="workspace-path-label">Antigravity 현재 폴더</div><div class="workspace-chip"><span class="tree-folder-icon"></span><strong>typing-game</strong><em>일치</em></div>
+    <div class="workspace-match-note"><span>✓</span><p><strong>두 이름이 같으면 시작합니다.</strong><br>다르면 실행 전에 올바른 폴더를 다시 엽니다.</p></div>
+  </div>
+</section>
+<section class="slide success-terminal-slide" data-slide="S28A">
+  <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 4<br>성공 기준</div></header>
+  <div class="dc-title"><p class="s-eyebrow">만들기 전에 성공 모습 쓰기</p><h2 class="s-title">첫 생성의 <span class="hl-mint-text">성공 기준</span>을 문장으로 만듭니다</h2></div>
+  <div class="terminal-explain-layout">
+    <div class="terminal-explain"><h3>성공 기준은 결과를 검수하는 약속입니다.</h3><p><strong class="hl-blue-text">무엇이 열리고</strong>, <strong class="hl-blue-text">어떤 내용이 보이며</strong>, <strong class="hl-mint-text">무엇을 확인하면 끝인지</strong>를 한 문장에 넣습니다.</p><ul><li>브라우저에서 게임이 열림</li><li>단어와 입력칸이 보임</li><li>글자가 잘리고 밀리지 않음</li></ul></div>
+    <div class="terminal-dark" aria-label="첫 생성 성공 기준을 적은 검정 터미널"><div class="terminal-bar"><span></span><span></span><span></span><b>Antigravity · success-criteria</b></div><div class="terminal-body"><span class="terminal-prompt">&gt;_</span><p class="terminal-copy">브라우저에서 <strong>index.html</strong>이 열리고,<br>단어와 입력칸이 보이며,<br>글자가 잘리거나 밀리지 않으면 첫 생성 성공입니다.</p><span class="terminal-cursor" aria-hidden="true"></span></div></div>
+  </div>
+</section>
+<section class="slide completion-check-slide" data-slide="31">
+  <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 4<br>완료 기준</div></header>
+  <div class="s-full completion-check-layout"><p class="s-eyebrow">완료된 화면에서 직접 확인</p><h2 class="s-title">화려함보다 <span class="hl-mint-text">필수 내용과 실행</span>을 먼저 봅니다</h2>
+    <div class="completion-screen" role="img" data-viz="browser-result-mock" aria-label="타자 게임의 네 가지 완료 기준을 보여 주는 브라우저 화면"><div class="completion-browser-bar"><span></span><span></span><span></span><small>index.html</small></div><div class="completion-browser-body"><div><b>단어 표시</b><small>메모한 단어가 화면에 나옵니다.</small></div><div><b>입력칸</b><small>글자를 칠 수 있습니다.</small></div><div><b>점수</b><small>맞으면 점수가 오릅니다.</small></div><div><b>깨짐 없음</b><small>글자가 잘리거나 밀리지 않습니다.</small></div></div></div>
+    <p class="completion-note">요청하지 않은 기능이 새로 만들어지지 않았는지도 함께 확인합니다.</p>
+  </div>
+</section>
+<section class="slide detailed-terminal-slide" data-slide="32">
+  <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 4<br>첫 제작 요청</div></header>
+  <div class="dc-title"><p class="s-eyebrow">조건까지 한 번에 전달</p><h2 class="s-title">첫 제작 요청을 <span class="hl-mint-text">완성</span>합니다</h2></div>
+  <div class="terminal-explain-layout detailed-prompt-layout">
+    <div class="terminal-explain"><h3>프롬프트에 네 가지를 모두 넣습니다.</h3><ol><li><b>목적</b> · 브라우저에서 실행하는 타자 게임 만들기</li><li><b>입력</b> · 내가 메모한 단어 5~10개</li><li><b>출력</b> · index.html 한 파일, 추가 설치 없음</li><li><b>검증</b> · 단어가 보이고 입력하면 점수가 오른다</li></ol><p>요청하지 않은 기능(순위표·로그인·서버 저장)은 만들지 말라고 분명히 적습니다.</p></div>
+    <div class="terminal-dark" aria-label="Antigravity에 입력할 상세 타자 게임 제작 요청"><div class="terminal-bar"><span></span><span></span><span></span><b>Antigravity · C:\VibeCoding\typing-game</b></div><div class="terminal-body"><span class="terminal-prompt">&gt;_</span><p class="terminal-copy">현재 프로젝트 폴더에 <strong>index.html 한 파일</strong>로<br>타자 게임을 만들어 주세요.<br><br>아래 단어 목록을 화면에 하나씩 띄우고,<br>입력칸에 맞게 치면 다음 단어로 넘어가게 해 주세요.<br>단어 목록: [내가 메모한 단어 5~10개]<br>HTML·CSS·JavaScript는 같은 파일에 작성해 주세요.<br>설치·빌드·서버·프레임워크는 사용하지 마세요.<br>브라우저에서 직접 열 수 있게 해 주세요.<br>요청하지 않은 기능(순위표·로그인·서버 저장)은 만들지 마세요.</p><span class="terminal-cursor" aria-hidden="true"></span></div></div>
+  </div>
+</section>
+<section class="slide agent-progress" data-slide="M6-06">
+  <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 4<br>작업 과정 관찰</div></header>
+  <div class="dc-title"><p class="s-eyebrow">요청을 보낸 뒤</p><h2 class="s-title">화면에서 <span class="hl-mint-mark">지나가는 다섯 단계</span></h2></div>
+  <div class="dc-stage">
+    <div class="viz-flow-ph agent-progress-flow" role="img" aria-label="HTML 파일 생성, CSS 적용, JavaScript 작성, 파일 수정, 결과 실행으로 이어지는 다섯 단계 흐름">
+      <div class="fl-node"><b>HTML 파일 생성</b></div>
+      <div class="fl-arrow" aria-hidden="true">→</div>
+      <div class="fl-node"><b>CSS 적용</b></div>
+      <div class="fl-arrow" aria-hidden="true">→</div>
+      <div class="fl-node key"><b>JavaScript 작성</b></div>
+      <div class="fl-arrow" aria-hidden="true">→</div>
+      <div class="fl-node"><b>파일 수정</b></div>
+      <div class="fl-arrow" aria-hidden="true">→</div>
+      <div class="fl-node"><b>결과 실행</b></div>
+    </div>
+    <p class="dc-cap">단계 이름을 외울 필요는 없습니다. <strong>어떤 파일이 만들어지고 고쳐지는지</strong>만 눈으로 따라갑니다.<br>중간에 멈추거나 오래 걸려도 창을 닫지 말고, 마지막 <strong>결과 실행</strong>까지 확인합니다.</p>
+  </div>
+</section>
+<section class="slide project-tree-slide" data-slide="S38">
+  <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 4<br>파일 확인</div></header>
+  <div class="dc-title"><p class="s-eyebrow">Agent가 만든 실제 결과물</p><h2 class="s-title">프로젝트 바로 안의 <span class="hl-mint-text">index.html</span>을 찾습니다</h2></div>
+  <div class="project-tree-layout">
+    <div class="project-tree-visual" role="img" data-viz="file-tree-mock" aria-label="typing-game 프로젝트 루트에 index.html이 있는 파일 트리"><div class="tree-window-bar"><span></span><span></span><span></span><b>EXPLORER</b></div><div class="code-tree-root">▾ typing-game</div><div class="code-tree-file active"><span class="html-badge">HTML</span><strong>index.html</strong><em>프로젝트 루트</em></div><div class="code-tree-empty">다른 파일 없이 한 파일로 시작</div></div>
+    <div class="project-tree-copy"><p><strong class="hl-blue-text">파일 이름</strong><br><code>index.html</code></p><p><strong class="hl-blue-text">파일 위치</strong><span class="path-line"><code>C:\VibeCoding\</code></span><span class="path-tail"><code>typing-game\</code> 바로 안</span></p><p><strong class="hl-blue-text">오늘의 기준</strong><br>이 파일 하나가 실제 결과물입니다.</p></div>
+  </div>
+</section>
+<section class="slide browser-result-slide" data-slide="S39">
+  <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 4<br>브라우저 확인</div></header>
+  <div class="dc-title"><p class="s-eyebrow">파일을 브라우저로 열기</p><h2 class="s-title">타자 게임이 <span class="hl-mint-mark">실제로 동작하는지</span> 확인합니다</h2></div>
+  <div class="browser-result-frame" role="img" aria-label="타자 게임이 열린 브라우저 예시"><div class="browser-chrome"><span></span><span></span><span></span><div class="browser-address">C:\VibeCoding\typing-game\index.html</div></div><div class="browser-result-body"><aside><div class="profile-orb">0</div><small>TYPING GAME</small></aside><main><p class="browser-kicker">TYPE THIS WORD</p><h3>화면 중앙 단어</h3><p>입력칸</p><div class="browser-tags"><span>남은 단어 5</span><span>점수 0</span><span>다시 시작</span></div></main></div></div>
+  <div class="browser-success-criteria"><span>✓ 파일이 열림</span><span>✓ 단어와 입력칸이 보임</span><span>✓ 글자와 배치가 깨지지 않음</span></div>
+</section>

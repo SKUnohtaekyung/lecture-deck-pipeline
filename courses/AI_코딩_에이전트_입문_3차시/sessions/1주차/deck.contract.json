@@ -1,0 +1,122 @@
+{
+  "week": "1주차",
+  "frozen": false,
+  "_readme": "AI 코딩 에이전트 입문 3차시 · 1차시(폴더명 1주차, 화면 표기 1차시) 구조 계약. 규약 정본은 sessions/README.md 「주차 구조 계약」. 값은 2026-09-10 조립 실측(강의덱.html의 data-slide 73개 · part-divider 5개)으로 채웠다. 원본 대응(원본ID → 새 슬라이드)은 제작관리/보존매트릭스_1차시.csv와 자료/1주차_콘텐츠_집필노트.md가 정본이다.",
+  "decks": {
+    "강의덱": {
+      "slides": 73,
+      "dividers": 5,
+      "intro": ["S00", "S01", "S01A", "S01B", "S01C"],
+      "sequences": {
+        "OPENING": ["S00", "S01", "S01A", "S01B", "S01C", "05", "S02", "S03"],
+        "PART1": ["P1", "A01", "06", "07", "08", "M6-01", "09", "S10C", "S10D", "S10B"],
+        "PART2": ["P2", "M6-02", "S3SY", "S3SYP", "M6-03", "S3HUM", "S3DO"],
+        "PART3": ["P3", "11", "M6-04", "12", "17", "14", "15", "20", "21", "23", "24", "S3PRV", "19"],
+        "PART4": ["P4", "S3PE", "M6-05", "S3ITR", "29", "30", "S34", "S35", "S36", "S28A", "31", "32", "M6-06", "S38", "S39"],
+        "PART5": ["P5", "S44", "S45", "S46", "S47", "S48", "S49", "S50", "S52", "S53", "S54", "S55", "S56", "S57"],
+        "CLOSING": ["S58", "S59", "M6-07", "S60", "S42", "S62"]
+      },
+      "must_keep": {
+        "M6-02": "강제 메시지 1 — AI가 자신 있게 말해도 사실이 아닐 수 있다(할루시네이션 사례 3막).",
+        "S3SY": "강제 메시지 1 보강 — 아첨(Sycophancy). 「잘 모르는 영역일수록 못 알아챈다」 결론과 arXiv:2310.13548 출처.",
+        "M6-07": "강제 메시지 2 — AI의 «완료»는 완료 증거가 아니다(«완성했습니다» ≠ «내가 확인한 것»).",
+        "24": "강제 메시지 2의 1차시 첫 등장 — 「Agent의 완료 보고가 아니라 실제 파일을 기준으로」 + 위치·존재·내용·유지 4점검.",
+        "S59": "강제 메시지 2의 재확인 — 「체크리스트는 AI의 자가평가가 아니라 사람이 실제 화면과 파일을 확인하는 순서」.",
+        "19": "강제 메시지 5 — 실행 전 계획과 권한 확인. 「모든 권한 허용·승인 건너뛰기는 끄기」·「비밀번호·API 키·개인정보는 입력하지 않기」.",
+        "S36": "강제 메시지 5 보강 — 실행 전 목표 경로와 현재 작업공간 대조 게이트.",
+        "S3HUM": "핵심 메시지(제작브리프 §3 «AI가 작성하고, 사람이 검토하고, 사람이 결정한다») — 「판단은 사람이, 실행은 AI가」. AI에게 넘기는 것은 판단이 아니라 실행.",
+        "07": "「허용된 권한과 폴더 범위 안에서만 움직인다」·「AI가 작성해도 최종 결정은 사람에게 있습니다」 두 문장.",
+        "S3PRV": "개인정보 3단 판단(입력 금지 / 검토 후 결정 / 목적에 따라 사용)과 「무조건 금지가 아닙니다」 결론.",
+        "S50": "「마지막 결정은 사람이 합니다」 결론과 「무엇을 확인했는지 기록합니다」."
+      },
+      "dark_terminal_slides": ["32", "S28A"],
+      "_dark_terminal_note": "S3SYP도 .terminal-dark를 쓰지만 본문이 .terminal-copy가 아니라 <ol class=\"syp-list\">라 white-copy 계약 형태가 다르다 — 원본(바이브코딩 1주차) 구조를 그대로 보존하므로 계약 목록에 넣지 않는다.",
+      "closing_text": "THANK YOU"
+    }
+  },
+  "known_violations": {
+    "render_below": {
+      "count": 26,
+      "slides": ["S00", "S01", "S01A", "S01B", "P1", "P4", "07", "S10C", "11", "12", "14", "S3DO", "31", "S39", "S42", "S58", "S59"],
+      "reason": "원본 정본 덱과 동일 ID·동일 유형 · 증거 `제작관리/렌더비교_1차시.md` · 2026-09-10 실측(attempt-03: P2는 부제 <br> 제거·한 줄화로 수정해 해소). 분해: S01 1(cover-presenter@674) · S01A 2 · S01B 1(전면 전환 P@720) · 디바이더 P1·P4 ← 원본 P1·P3(동일 pd-sub@679) · 07 2 · S10C 1 · 11 2 · 12 3 · 14 2 · S3DO 1(P@720) · 31 1 · S39 3 · S42 1 · S58 1(P@672 — 원본 대응 3건 중 캡처 2건은 attempt-02에서 자리표시로 바꿔 소거) · S59 2 = 25 · **+S00 1(IMG@697 표지 이미지 · 2026-09-11 BUILD1-CSSFIX 재측정 r6)** = 26. S00 근거: 조립 잔해 CSS 조각이 `.s00-hero`를 무효화해 이전 측정에서 사라져 보였고, 조각 삭제 뒤 원본과 같은 모습으로 재현됐다. 원본 worktree 재측정(IMG@697)·동결 증거·원본 계약 render_below ③항이 일치한다(`렌더비교_1차시.md` D절). 원본 계약 courses/바이브코딩/sessions/1주차/deck.contract.json render_below와 같은 계열이다. attempt-02 로컬 재측정(1280×720·scale 1)에서 슬라이드·건수 일치. count 초과는 FAIL.",
+      "date": "2026-09-10"
+    },
+    "render_lap": {
+      "count": 2,
+      "slides": ["S00", "S3PRV"],
+      "reason": "원본 정본 덱과 동일 ID·동일 유형 · 증거 `제작관리/렌더비교_1차시.md` · 2026-09-10 실측. S3PRV P×P 1건(무수정 복사 장). + S00 IMG×.ko 1건(2026-09-11 BUILD1-CSSFIX 재측정 r6 · 무효화됐던 `.s00-hero` 복원 뒤 재현 · 원본 worktree 재측정 `IMG×ko`·동결 증거·원본 계약 render_lap 사유 «S00 도입 장 IMG×.ko»와 일치 · D절). count 초과는 FAIL.",
+      "date": "2026-09-11"
+    },
+    "render_ovf": {
+      "count": 1,
+      "slides": ["14"],
+      "reason": "원본 정본 덱과 동일 ID·동일 유형 · 증거 `제작관리/렌더비교_1차시.md`(보강 증거 절 — 원본 계약 render_ovf가 슬라이드 14 드라이브 캡처 IMG@683을 적시) · 2026-09-10 실측. 렌더비교 문서의 «ovf 1건 슬라이드 미특정»을 attempt-02 로컬 재측정으로 14(task-shot drive-open-shot: scrollHeight 480 > clientHeight 460, 캡처가 틀보다 20px 큼)로 특정했다 — A 목록 밖 보존 슬라이드라 레이아웃을 바꾸지 않고 B로 재분류(오케스트레이터 확인 필요). count 초과는 FAIL.",
+      "date": "2026-09-10"
+    },
+    "render_slots": {
+      "count": 2,
+      "slides": ["S3PE", "S3PRV"],
+      "reason": "원본 정본 덱과 동일 ID·동일 유형 · 증거 `제작관리/렌더비교_1차시.md` · 2026-09-10 실측. prompt_only 예상 슬롯 2개(s3pe_prompt-four-elements-v1 · s3prv_information-risk-sorting-v1 — 원본에서도 생산된 적 없음). 같은 원인이 품질 R-QC-18 상시 FAIL로도 잡힌다(조립_보고 §0). count 초과는 FAIL.",
+      "date": "2026-09-10"
+    },
+    "render_occl": {
+      "count": 1,
+      "slides": ["S3PRV"],
+      "reason": "원본 정본 덱과 동일 ID·동일 유형 · 증거 `제작관리/렌더비교_1차시.md` · 2026-09-10 실측. S3PRV P 100% 가려짐 1건. ⚠️ attempt-02 로컬 headless 재측정에서는 S00 SPAN 가려짐 1건이 더 잡혔다 — 수정 전 기준선에서도 같아 측정 환경 차이로 보고, 오케스트레이터 환경 실측(1)으로 등재했다. count 초과는 FAIL.",
+      "date": "2026-09-10"
+    },
+    "render_wideEmpty": {
+      "count": 1,
+      "slides": ["S3PRV"],
+      "reason": "원본 정본 덱과 동일 ID·동일 유형 · 증거 `제작관리/렌더비교_1차시.md` · 2026-09-10 실측. S3PRV privacy-principle@100w/83x. count 초과는 FAIL.",
+      "date": "2026-09-10"
+    },
+    "render_stretchX": {
+      "count": 3,
+      "slides": ["S01A", "31", "S36"],
+      "reason": "원본 정본 덱과 동일 ID·동일 유형 · 증거 `제작관리/렌더비교_1차시.md` · 2026-09-10 실측. S01A intro-ai-note@43w/37x · 31 DIV×4@47w/56x(완성 화면 축소 재현 mock 내부) · S36 breadcrumb-track@71w/61x. count 초과는 FAIL.",
+      "date": "2026-09-10"
+    },
+    "render_stretchY": {
+      "count": 3,
+      "slides": ["S3PE", "S28A", "S42"],
+      "reason": "원본 정본 덱과 동일 ID·동일 유형 · 증거 `제작관리/렌더비교_1차시.md` · 2026-09-10 실측. S3PE eng-concept@26w/67y(빈 예상 슬롯 자리) · S28A terminal-dark@60w/62y · S42 cc-side×2@35w/46y. count 초과는 FAIL.",
+      "date": "2026-09-10"
+    },
+    "render_lowFill": {
+      "count": 6,
+      "slides": ["S10D", "S3PRV", "S28A", "31", "S36"],
+      "reason": "원본 정본 덱과 동일 ID·동일 유형 · 증거 `제작관리/렌더비교_1차시.md` · 2026-09-10 실측. S10D index-name-token 1 · S3PRV privacy-principle 1 · S28A terminal-dark 1 · 31 DIV×4 1 · S36 breadcrumb-track·workspace-path-label 2 = 6. count 초과는 FAIL.",
+      "date": "2026-09-10"
+    }
+  },
+  "quality_waivers": {
+    "R-QC-18": {
+      "reason": "빈 이미지 슬롯 2건(S3PE·S3PRV) — 원본 정본 덱(worktree 85장)과 동일 슬라이드·동일 결함(prompt_only 슬롯 · 원본에도 이미지 파일 없음) · 증거 제작관리/렌더비교_1차시.md B · 2026-09-10 실측",
+      "date": "2026-09-10"
+    }
+  },
+  "warn_baseline": {
+    "static_gates": 2,
+    "quality": 6,
+    "render": 61,
+    "date": "2026-09-10",
+    "note": "구조 WARN 2(verify_deck --parts 5 실측 2건): ① prompt_only expected slots 2건(development only — S3PE·S3PRV, 위 quality_waivers R-QC-18과 동일 원인) ② <br> 직전 어절 조사 종결 후보 4건(S3ITR: …담은<br>·…단위로<br> · 32: …파일로<br> · S57: …구조\">어디에서<br>). 품질 WARN 6 = verify_deck_quality 자체 WARN 5건(R-QC-02 설명 슬라이드 의미 블록 수<5개 1/41장 S50 4개 · R-QC-01 본문 글자수<76자(대리 신호) 1/41장 S01A 73자 · R-QC-16 박스 기반 설명 슬라이드(박스 4개↑) 비율 12.2% 5/41 — A01·M6-01·M6-05·S3ITR·M6-06 · R-QC-17 실습 완결성 미달(단계 요소<2개) 1/1장 20 · R-QC-19 격자 컨테이너 안 맨 텍스트 1건/1장 S56) + quality_waivers로 FAIL→WARN 강등된 R-QC-18 1건(위 quality_waivers 참고, S3PE·S3PRV) — 강등 등재 자체가 verify_deck_quality 출력의 WARN 집계를 1 올리므로(요약 줄 FAIL 0·WARN 6·PASS 5 실측 2026-09-10) baseline을 6으로 등재한다(5로 등재하면 강등 직후 래칫이 5→6 조용한 증가로 오탐 FAIL한다). 렌더 WARN 61 = 폰트하한위반 29 + 자간보정누락 20 + 정렬지배값충돌 3 + waiver 강등 9(known_violations 등재분 그대로 강등: render_below 26·render_lap 1·render_ovf 1·render_slots 2·render_occl 1·render_wideEmpty 1·render_stretchX 3·render_stretchY 3·render_lowFill 6 = 9건). 3차시 새 과정 첫 기준선(오케스트레이터 재측정 2026-09-10 · run_deck_checks 1주차 FAIL 4단계 해소 목적)."
+  },
+  "layout_families": {
+    "roadmap": "roadmap",
+    "agent-entry-layout": "gui",
+    "agent-gui": "gui",
+    "agent-app-gui": "gui",
+    "agent-open-layout": "gui",
+    "journey-track-grid": "grid",
+    "tiles-4x2": "grid",
+    "variance-grid": "compare",
+    "map-rows": "mapping",
+    "agent-progress-flow": "flow",
+    "demo-placeholder": "gui",
+    "lifecycle-stage-list": "flow",
+    "workspace-rings": "map",
+    "_note": "이 차시 전용 구도 등재. ① agent-* 4종은 원본의 codex-* 클래스를 M2(도구 명칭 치환)로 개명한 것이라 verify_deck에 하드코딩된 codex-* 목록에 더는 걸리지 않는다 — 여기서 같은 family(gui)로 되돌려 준다. ② journey-track-grid도 같은 이유(journey-week-grid 개명). ③ tiles-4x2·variance-grid·map-rows·agent-progress-flow·demo-placeholder는 M6 신규 7장과 캡처 자리표시가 쓰는 새 구도다. 미등재로 두면 전부 'full'로 뭉개져 「동일 구도 연속」 오탐이 난다. ④ roadmap은 이 덱이 쓰지 않지만 강의덱.초안/README.md가 «템플릿이 제공하는 .roadmap도 등재»를 지시해 넣었다(선례: 바이브코딩 3주차)."
+  }
+}

@@ -1,0 +1,805 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=1280">
+  <title>AI 코딩 에이전트 입문 2차시 · Coding Agent를 더 잘 사용하는 방법 — VIBECODING</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 96'><line x1='28.8' y1='28.7' x2='49' y2='70' stroke='%2314B8A6' stroke-width='18' stroke-linecap='round'/><line x1='70.9' y1='25.1' x2='49' y2='70' stroke='%231D4ED8' stroke-width='19' stroke-linecap='round'/><circle cx='49' cy='70' r='9.5' fill='%23141821'/></svg>">
+  <!-- 폰트: Pretendard (문서가 인정하는 유일한 외부 의존성) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+  <!-- ▼ 킷 상속: deck.css(베이스) → legibility.css(강의장 가독성) 순서 고정.
+       덱을 패키지 밖에 생성할 땐 이 두 파일을 옆에 복사하거나 <style>로 인라인(base64 단일파일 배포). -->
+  <!-- ⚠️ 경로는 «생성물 강의덱.html의 위치» 기준이다. 이 템플릿은 courses/<과목>/sessions/N주차/로
+       복사되므로 저장소 루트까지 4단계다. 2단계(../../)로 두면 CSS가 404인데 정적 검사는 전부
+       PASS하고 브라우저에서만 «전 슬라이드 동시 표시 + 로고 0×0»으로 드러난다(2026-07 실제 사고).
+       덱을 만들면 반드시 로컬 http로 열어 document.styleSheets.length를 확인할 것. -->
+  <link rel="stylesheet" href="../../../../kit/styles/deck.css">
+  <link rel="stylesheet" href="../../../../kit/styles/legibility.css">
+  <link rel="stylesheet" href="../../../../kit/styles/patterns.css"><!-- 코드 코어: 검증된 레이아웃/element CSS(재사용) -->
+  <style id="kit-additions">
+    /* 이 주차 전용 신규 구도의 CSS는 여기 둔다(그게 기본이다).
+       클래스는 반드시 이 주차 deck.contract.json의 layout_families에 등재할 것 —
+       미등재 구도는 전부 'full'로 뭉개져 「동일 구도 연속」 FAIL 오탐이 난다.
+       kit/styles/patterns.css 환류는 「서로 다른 과목에서 이미 2회 이상 쓰인」
+       형태만 검토 대상이다(2026-07-29 확정 · R-PROMO-01). 「앞으로 쓸 것 같다」는
+       예측으로 올리지 마라. 상세는 references/phases/05-시각화.md 환류 규칙. */
+
+    /* ══════════════════════════════════════════════════════════════════
+       기본 경화 5종 — 지우지 말 것 (2026-08-03 신설)
+       ══════════════════════════════════════════════════════════════════
+       왜 여기 있나: 지금까지 주차별 교정이 그 주차 shell에만 쌓이고 템플릿으로
+       돌아오는 경로가 없었다. 그래서 새 주차를 시작할 때마다 아래 5종이 전부
+       원상복귀했고, 사용자가 같은 지적을 반복했다(실측: 2주차가 얻어낸 교정 5종
+       중 템플릿에 반영된 것 0건).
+
+       값의 정본은 kit/guide/토큰-치트시트.md(R-TYPE-01·03)이고 여기는 집행부다.
+       규칙이 바뀌면 정본을 먼저 고치고 여기를 맞춘다 — 반대로 하지 않는다.
+       ⚠️ 이 블록의 셀렉터는 전부 kit에 실재하는 클래스만 겨냥한다. 없는 클래스를
+          적어 두면 「규칙이 있는 것처럼 보이는데 아무 일도 안 하는」 상태가 된다.
+       ────────────────────────────────────────────────────────────────── */
+
+    /* ① 본문 22px 하한 회복 (R-TYPE-01) ───────────────────────────────
+       kit의 .work-step은 b·span에만 크기를 걸어 두어, 클래스 없는 맨 텍스트와
+       <p>가 컨테이너 기본값 16px를 그대로 물려받는다. 컨테이너에 직접 건다.
+       (선례: 46장 242건 4,537자가 이 경로로 하한 미만이 됐다) */
+    .slide .work-step{ font-size:var(--fs-body); line-height:1.45; }
+    .slide .work-step p{ margin:0; font-size:var(--fs-body); line-height:1.45; }
+    /* ⚠️ line-height 1.45는 리터럴로 둔다. 값이 같은 토큰(`--lh-lead`)이 있지만
+          그건 「리드」 역할이라, 여기 쓰면 **값은 맞고 의미는 틀린** 배선이 된다.
+          토큰은 값이 같다고 쓰는 것이 아니라 역할이 같을 때 쓴다. */
+
+    /* ② 역할 위계 — 박스 제목 26/800 · 박스 설명 20/500 ────────────────
+       2026-07-31 사용자 결정: "제목과 설명 폰트 사이즈가 똑같다. 설명이 더
+       작아야지" · "전체적으로 다 볼드에 글씨 크기 똑같다. 폰트 시스템 쓰자" ·
+       "bold를 미디움 정도로 낮춰 써도 된다 — 본문이나 설명 글씨는".
+       R-TYPE-01의 「박스 제목」·「박스 안 설명문」 행이 이 규칙의 정본이다.
+
+       ⚠️ 명시도를 .deck .slide[data-slide]로 올려 둔 이유: 파트별로 작업하면
+          `.slide[data-slide="X"] .work-step b`(0,3,1) 같은 국소 규칙이 전역
+          규칙(0,2,1)을 이겨 한 덱 안에서 21·22·23·24·26px가 섞인다.
+          !important는 쓰지 않는다 — 정당한 개별 예외의 여지를 남긴다.
+
+       ⚠️ 이 주차가 새 박스 구도를 만들면 그 제목·설명 셀렉터를 아래 목록에
+          **추가**하라. 추가하지 않으면 그 구도만 위계 밖에 남는다.
+
+       ⚠️ 설명문 20px은 「박스 내부 보조 서술」 한정이다. 본문 문장
+          (.s-body·.s-lead)의 22px 하한은 그대로다. 그리고 20px 줄은 짧아야
+          한다 — 긴 문장을 20px로 내리면 가독성이 떨어진다(권장 25자 이내,
+          넘으면 문장을 나누거나 22px 본문으로 올린다).
+
+       ⚠️ `.cd-leaf > b`·`.cd-out`는 일부러 뺐다. kit의 실제 마크업이
+          `<b class="cd-out">`(= .cd-leaf의 직계 자식이자 같은 노드)이라 두
+          규칙이 **같은 노드**를 겨냥하고, 타입 셀렉터 한 칸 차이로 제목 규칙이
+          이겨 설명 규칙이 죽는다. 게다가 kit의 `.cd-out`(19px/800 블루)은
+          「박스 안 설명문」이 아니라 **결론 라벨**이다. R-TYPE-01이 `.cd-out`을
+          설명문 행에 적어 둔 것은 정정 대상이다(FINDINGS.md 참고). */
+    .deck .slide[data-slide] .work-step > b,
+    .deck .slide[data-slide] .card > h3,
+    .deck .slide[data-slide] .cc-side > h3{
+      font-size:var(--fs-box-title); font-weight:800; line-height:var(--lh-box-title); }
+    .deck .slide[data-slide] .desc{
+      font-size:var(--fs-box-desc); font-weight:500; line-height:var(--lh-box-desc); }
+
+    /* ③ 카드·박스 간 여백 — kit 기본 14px는 촘촘하다 ────────────────────
+       사용자 지시: "각 카드별 여백이 너무 적어" · "박스가 지금 너무 촘촘해". */
+    .slide .grid-2, .slide .grid-3{ gap:var(--sp-18); }
+
+    /* ④ 빈 이미지 슬롯을 학생 화면에 표시하지 않는다 ────────────────────
+       사용자 지시: "이미지를 넣을 공간에 박스로 영역을 표시해 놓는데 이거를
+       다 지워야 해." kit/styles/deck.css는 빈 슬롯에 점선 테두리 + 연파랑
+       배경 + "이미지 예정" 라벨을 그린다 — 그 표시만 끈다.
+       ⚠️ 슬롯 자체를 없애는 게 아니다. 좌표·크기·본문 인셋은 그대로 두고
+          (이미지 작업과 충돌 방지), verify_deck_quality의 R-QC-18(빈 슬롯
+          검출)도 계속 유효하다. 화면 노출만 막는 것이다. */
+    .deck .slide .asset-slot,
+    .deck .slide .asset-slot[data-image-state="expected"]{
+      border:0; background:none; box-shadow:none; }
+    .deck .slide .asset-slot[data-image-state="expected"]::before{ content:none; }
+
+    /* ⑤ 교시 로드맵(.roadmap) — 교시마다 같은 모양을 쓴다 ────────────────
+       사용자가 세 번 요청한 「교시 로드맵 템플릿 통일」이다. 통일되지 않으면
+       교시마다 스텝 수·아이콘·산출물 줄이 제각각이 된다(실측: 5장이 스텝
+       6·4·4·5·5 · 아이콘 클래스 2종 혼재 · 산출물 줄은 1장에만).
+
+       마크업 골격은 part-01.html의 data-slide="M1" 슬라이드에 있다 — 그것을
+       복사해 교시 수만큼 만든다.
+       금지: 장식 아이콘 SVG · 스텝 6개 이상 · .rm-* 클래스 재정의.
+       ⚠️ 로드맵은 「박스만 있고 시각자료가 없는 장」이 되기 쉽다(실측: 로드맵
+          5장이 장당 박스 12.6개로 기준판의 2.3배인데 시각자료 보유 0). 스텝을
+          늘리는 대신 이해를 돕는 시각자료를 함께 두는 쪽을 먼저 검토하라.
+       ⚠️ .roadmap을 이 주차 deck.contract.json의 layout_families에 등재할 것. */
+    .roadmap .s-full{ bottom:54px; display:flex; flex-direction:column; }
+    .roadmap .rm-lead{ margin:8px 0 0; font-size:var(--fs-body); font-weight:700;
+      color:var(--blue); line-height:1.4; }
+    .roadmap .rm-track{ flex:1 1 auto; min-height:0; display:flex;
+      align-items:stretch; gap:10px; margin:20px 0 0; }
+    .roadmap .rm-step{ flex:1 1 0; min-width:0; display:flex; flex-direction:column;
+      align-items:flex-start; justify-content:flex-start; gap:10px;
+      padding:22px 18px 18px; text-align:left;
+      border-radius:var(--r-lg); background:var(--blue-soft);
+      border:1px solid var(--blue-line); box-shadow:var(--shadow-md); }
+    .roadmap .rm-step .rm-n{ flex:0 0 auto; width:44px; height:44px; border-radius:50%;
+      background:var(--blue); color:var(--white); display:grid; place-items:center;
+      font-size:20px; font-weight:800; }
+    .roadmap .rm-step > b{ font-size:var(--fs-box-title); font-weight:800; color:var(--ink);
+      line-height:1.22; }
+    /* 크기·굵기·행간은 ②의 .desc 티어가 준다 — 여기서 다시 적지 않는다.
+       (다시 적으면 명시도가 낮아 조용히 무시되고, 「있는데 안 듣는 규칙」이 된다) */
+    .roadmap .rm-step .desc{ color:var(--gray-700); }
+    .roadmap .rm-step .rm-out{ display:block; width:100%; margin-top:auto;
+      padding-top:12px; border-top:1px solid var(--blue-line);
+      font-size:20px; font-weight:800; color:var(--blue); line-height:1.35; }
+    /* 마지막 스텝을 「이 교시의 도착점」으로 쓸 때만 .is-goal */
+    .roadmap .rm-step.is-goal{ background:var(--mint-soft); border-color:var(--mint-line); }
+    .roadmap .rm-step.is-goal > b{ color:var(--on-mint); }
+    .roadmap .rm-step.is-goal .rm-n{ background:var(--mint); color:var(--on-mint); }
+    .roadmap .rm-step.is-goal .rm-out{ color:var(--mint-deep); border-top-color:var(--mint-line); }
+    .roadmap .rm-arrow{ flex:0 0 auto; align-self:center; font-size:24px;
+      font-weight:800; color:var(--blue); }
+    /* 5스텝은 칸이 좁다 — 제목만 한 단계 내린다(설명·산출물은 유지). */
+    .roadmap .rm-track.is-5 .rm-step > b{ font-size:24px; }
+    .roadmap .rm-track.is-5 .rm-step{ padding:20px 14px 16px; }
+
+    /* 로드맵 시각자료 자리 — 있으면 트랙을 그만큼 좁힌다.
+       ⚠️ .asset-slot은 position:absolute라 그냥 두면 트랙 **위에 겹친다**.
+          `:has()`로 «슬롯이 있을 때만» 인셋을 준다 — 슬롯을 지우면 자동으로
+          전폭으로 돌아간다(작성자가 클래스를 따로 붙일 필요가 없다).
+       ⚠️ 슬롯을 안 쓸 거면 figure를 **삭제**한다. 남겨 두면 R-QC-18이 빈 슬롯으로
+          잡는다(그게 의도다 — 「채우기로 해 놓고 안 채운 자리」를 잡는 검사다). */
+    .roadmap .rm-visual{ top:150px; bottom:96px; height:auto; max-height:none; }
+    .roadmap .s-full:has(.rm-visual) .rm-track{ margin-right:412px; }
+    .roadmap .s-full:has(.rm-visual) .rm-lead{ max-width:760px; }
+
+    /* ══════════════════════════════════════════════════════════════════
+       2차시 신규(M6) 구도 — 2026-09-10 조립 담당
+       ══════════════════════════════════════════════════════════════════
+       원본(바이브코딩 2주차)에서 옮겨 온 구도 CSS는 강의덱.초안/revision.css에 있다(kit 불변).
+       아래는 새 커리큘럼에만 있는 N-01~N-22를 위한 것이다. 새 클래스는 전부 n2-/n0x- 접두이고
+       구도 클래스는 deck.contract.json의 layout_families에 등재했다.
+       글자 위계: 문장 22px(--fs-body) · 박스 제목 26px/800 · 박스 설명 .desc 20px(24자 이내) ·
+       코드·터미널 안은 코드 티어. revision.css가 이 블록 뒤에 로드되므로 겹치는 이름은 쓰지 않는다. */
+    .n2-stage .s-full{ bottom:54px; display:flex; flex-direction:column; min-height:0; }
+    .n2-lead{ margin:10px 0 0; font-size:var(--fs-body); line-height:1.5; font-weight:500; color:var(--gray-700); }
+    .n2-lead b{ color:var(--ink); font-weight:800; }
+    .n2-done{ display:flex; align-items:baseline; gap:14px; margin:14px 0 0; padding:12px 18px;
+      border-radius:var(--r-md); background:var(--mint-soft); border:1px solid var(--mint-line);
+      font-size:var(--fs-body); line-height:1.45; color:var(--ink); }
+    .n2-done > b{ flex:0 0 auto; color:var(--mint-deep); font-weight:800; }
+
+    /* N-03 · 요청 다섯 칸 */
+    .n03-strip{ flex:1 1 auto; min-height:0; display:flex; align-items:stretch; margin:22px 0 0; }
+    .n03-slot{ flex:1 1 0; min-width:0; display:flex; flex-direction:column; gap:10px; padding:20px 16px 18px;
+      border-radius:var(--r-lg); background:var(--blue-soft); border:1px solid var(--blue-line); }
+    .n03-join{ flex:0 0 30px; align-self:center; text-align:center; font-size:26px; font-weight:800; line-height:1; color:var(--blue); }
+    .n03-no{ width:36px; height:36px; display:grid; place-items:center; border-radius:50%; background:var(--blue);
+      color:var(--white); font-size:18px; font-weight:800; line-height:1; }
+    .n03-slot > b{ font-size:var(--fs-box-title); font-weight:800; line-height:var(--lh-box-title); color:var(--ink); }
+    .deck .slide[data-slide="N-03"] .n03-slot .desc{ color:var(--gray-700); }
+    .deck .slide[data-slide="N-03"] .n03-slot .n03-eg{ margin-top:auto; padding-top:12px; border-top:1px solid var(--blue-line);
+      color:var(--blue); font-weight:700; }
+    .deck .slide[data-slide="N-03"] .n03-slot.is-end{ background:var(--mint-soft); border-color:var(--mint-line); }
+    .deck .slide[data-slide="N-03"] .n03-slot.is-end .n03-eg{ border-top-color:var(--mint-line); color:var(--mint-deep); }
+
+    /* N-04 · 막연한 요청 ↔ 구조화된 요청(전·후 밴드) */
+    .n04-bands{ flex:1 1 auto; min-height:0; display:flex; flex-direction:column; justify-content:center; gap:var(--sp-18); margin:12px 0 0; }
+    .n04-head{ display:flex; align-items:baseline; gap:14px; margin:0 0 8px; }
+    .n04-head > b{ font-size:var(--fs-box-title); font-weight:800; line-height:var(--lh-box-title); }
+    .n04-band.is-vague .n04-head > b{ color:var(--coral-deep); }
+    .n04-band.is-clear .n04-head > b{ color:var(--mint-deep); }
+    .deck .slide[data-slide="N-04"] .n04-head .desc{ color:var(--gray-700); }
+    .deck .slide[data-slide="N-04"] .n04-term .terminal-copy{ font-size:18px; line-height:1.5; }
+    .n04-line{ display:flex; align-items:baseline; justify-content:space-between; gap:16px; }
+    .n04-el{ flex:0 0 auto; padding:0 10px; border-radius:var(--r-pill); border:1px solid var(--mint); color:var(--mint);
+      font-size:16px; font-weight:800; line-height:24px; white-space:nowrap; }
+    /* attempt-02(2026-09-11 렌더 실측 채움률 미달 · N-04): 막연한 요청 터미널이 본문 폭 100%에
+       한 줄(«AI 뉴스 찾아줘.»)만 있어 채움률 9%·우측 공백 84%였다. 상자 크기는 내용이 정한다
+       (R-BOXFILL-01) — 폭을 내용에 맞추고, 너무 작아 보이지 않게 하한만 둔다. 짧은 요청이 짧아
+       보이는 것이 아래 구조화된 요청과의 대비다.
+       attempt-02 이어받기: 하한 320px은 채움률 계산상 약 31%로 판정선(30%)에 붙는다(잉크 = 막대 글자
+       ~ 본문 글자 경계상자 약 143×66px · 상자 안쪽 320×96px). 260px로 낮춰 약 38%를 확보한다.
+       200px 미만으로 내리면 검출기가 판정 자체를 건너뛰므로(innerW<200) 그 아래로 내리지 않는다. */
+    .deck .slide[data-slide="N-04"] .n04-band.is-vague .n04-term{ width:fit-content; min-width:260px; max-width:100%; }
+
+    /* N-05 · Context 허브(kit D-radial) */
+    .deck .slide[data-slide="N-05"] .viz-radial{ margin:18px auto 0; flex:0 0 auto; }
+    .deck .slide[data-slide="N-05"] .rad-hub{ top:180px; }
+    .deck .slide[data-slide="N-05"] .rad-hub b{ font-size:22px; }
+    .deck .slide[data-slide="N-05"] .rad-hub small{ font-size:16px; }
+    .deck .slide[data-slide="N-05"] .rad-sat{ width:260px; }
+    .deck .slide[data-slide="N-05"] .rad-sat h3{ font-size:var(--fs-box-title); line-height:var(--lh-box-title); }
+
+    /* N-06 · 처음 조건이 약해지는 흐름 */
+    .deck .slide[data-slide="N-06"] .n06-src{ margin-top:2px; color:var(--ink); }
+    .n06-flow{ flex:1 1 auto; min-height:0; display:grid; grid-template-columns:minmax(0,1fr) 36px minmax(0,1fr) 36px minmax(0,1fr);
+      align-items:stretch; margin:18px 0 0; }
+    .n06-step{ display:flex; flex-direction:column; gap:10px; min-width:0; padding:18px 18px;
+      border-radius:var(--r-lg); background:var(--blue-soft); border:1px solid var(--blue-line); }
+    .n06-step.is-warn{ background:var(--coral-soft); border-color:var(--coral-line); }
+    .n06-step.is-fix{ background:var(--mint-soft); border-color:var(--mint-line); }
+    .n06-step > b{ font-size:var(--fs-box-title); font-weight:800; line-height:var(--lh-box-title); color:var(--ink); }
+    .n06-arrow{ align-self:center; text-align:center; font-size:28px; font-weight:800; color:var(--blue); }
+    .n06-chat{ display:flex; flex-direction:column; justify-content:center; gap:8px; flex:1 1 auto; }
+    .n06-msg{ margin:0; padding:7px 12px; border-radius:var(--r-md); background:var(--white); border:1px solid var(--blue-line-strong); }
+    .n06-msg.is-first{ opacity:.5; border-style:dashed; }
+    .n06-msg.is-lost{ border-color:var(--coral-line); }
+    .deck .slide[data-slide="N-06"] .n06-msg.is-lost .desc{ color:var(--coral-deep); font-weight:700; }
+    .n06-msg.is-keep{ border-color:var(--mint-line); }
+    .n06-file{ margin:0; display:flex; align-items:center; gap:10px; font-size:var(--fs-body); font-weight:800; color:var(--mint-deep); }
+    .n06-file svg{ flex:0 0 28px; width:28px; height:28px; }
+    .n06-file code{ font-family:var(--font-mono); }
+
+    /* N-07 · Graph 세 모양 */
+    .n07-row{ flex:1 1 auto; min-height:0; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:var(--sp-18); margin:18px 0 0; }
+    .n07-pane{ display:flex; flex-direction:column; gap:12px; min-width:0; padding:20px;
+      border-radius:var(--r-lg); background:var(--blue-panel); border:1px solid var(--blue-line-strong); }
+    .n07-pane > b{ font-size:var(--fs-box-title); font-weight:800; line-height:var(--lh-box-title); color:var(--ink); }
+    .deck .slide[data-slide="N-07"] .n07-pane .desc{ color:var(--gray-700); }
+    .n07-map{ flex:1 1 auto; display:flex; align-items:center; justify-content:center; min-height:0; }
+    .n07-pill{ display:inline-flex; align-items:center; justify-content:center; padding:6px 12px; border-radius:var(--r-pill);
+      background:var(--white); border:2px solid var(--blue); color:var(--ink); font-size:var(--fs-body); font-weight:700;
+      line-height:1.25; white-space:nowrap; }
+    .n07-pill.is-goal{ background:var(--mint-soft); border-color:var(--mint-deep); }
+    .n07-ar{ color:var(--blue); font-size:24px; font-weight:800; line-height:1; margin:0 6px; }
+    .n07-seq{ display:flex; align-items:center; }
+    .n07-branch{ display:grid; grid-template-columns:auto 30px auto; grid-template-rows:auto auto; align-items:center; column-gap:4px; row-gap:16px; }
+    .n07-branch .n07-src{ grid-column:1; grid-row:1 / span 2; }
+    .n07-branch .is-up{ grid-column:2; grid-row:1; margin:0; }
+    .n07-branch .is-dn{ grid-column:2; grid-row:2; margin:0; }
+    .n07-branch .n07-pill.is-goal{ grid-column:3; grid-row:1; }
+    .n07-branch .n07-pill:last-child{ grid-column:3; grid-row:2; }
+    .n07-roles{ display:flex; flex-direction:column; align-items:center; gap:4px; }
+
+    /* N-08 · NEWS_AGENT.md 여섯 제목 → 질문 */
+    .n08-wrap{ flex:1 1 auto; min-height:0; display:flex; align-items:center; margin:12px 0 0; }
+    .n08-grid{ width:100%; display:grid; grid-template-columns:minmax(0,1.4fr) 44px minmax(0,1fr); }
+    .n08-bar{ grid-column:1; margin:0; display:flex; align-items:center; gap:10px; padding:0 18px; min-height:42px;
+      border-radius:var(--r-lg) var(--r-lg) 0 0; background:var(--ink); color:var(--white); font-size:var(--fs-body); font-weight:800; }
+    .n08-bar svg{ width:24px; height:24px; }
+    .n08-bar code{ font-family:var(--font-mono); }
+    .n08-bar-sp{ grid-column:2 / span 2; }
+    .n08-md{ grid-column:1; margin:0; display:flex; align-items:baseline; gap:16px; padding:9px 18px; background:var(--surface);
+      border-left:1px solid var(--blue-line-strong); border-right:1px solid var(--blue-line-strong);
+      font-size:var(--fs-body); line-height:1.4; }
+    .n08-md.is-last{ border-bottom:1px solid var(--blue-line-strong); border-radius:0 0 var(--r-lg) var(--r-lg); }
+    .n08-md code{ flex:0 0 auto; font-family:var(--font-mono); font-weight:800; color:var(--blue); white-space:nowrap; }
+    .n08-md span{ color:var(--gray-700); }
+    .n08-ar{ grid-column:2; align-self:center; text-align:center; color:var(--blue); font-size:22px; font-weight:800; }
+    .n08-q{ grid-column:3; align-self:center; margin:0; font-size:var(--fs-body); font-weight:700; color:var(--ink); line-height:1.35; }
+
+    /* N-18 · 대화 ↔ 파일 + 순환(kit D-cycle 400px) */
+    .n18-body, .n19-body{ flex:1 1 auto; min-height:0; display:grid; grid-template-columns:minmax(0,1fr) 400px; gap:40px;
+      align-items:center; margin:10px 0 0; }
+    .n18-pair{ display:flex; flex-direction:column; gap:var(--sp-18); }
+    .n18-row{ display:flex; flex-direction:column; gap:8px; padding:18px 22px; border-radius:var(--r-lg); }
+    .n18-row.is-chat{ background:var(--coral-soft); border:1px solid var(--coral-line); }
+    .n18-row.is-file{ background:var(--mint-soft); border:1px solid var(--mint-line); }
+    .n18-row > b{ font-size:var(--fs-box-title); font-weight:800; line-height:var(--lh-box-title); }
+    .n18-row.is-chat > b{ color:var(--coral-deep); }
+    .n18-row.is-file > b{ color:var(--mint-deep); }
+    .n18-row p{ margin:0; font-size:var(--fs-body); line-height:1.5; color:var(--ink); }
+    .deck .slide[data-slide="N-18"] .viz-cycle,
+    .deck .slide[data-slide="N-19"] .viz-cycle{ width:400px; height:400px; margin:0; }
+    .deck .slide[data-slide="N-18"] .viz-cycle svg,
+    .deck .slide[data-slide="N-19"] .viz-cycle svg{ width:400px; height:400px; }
+    .deck .slide[data-slide="N-18"] .cyc-node,
+    .deck .slide[data-slide="N-19"] .cyc-node{ width:128px; }
+    .deck .slide[data-slide="N-18"] .cyc-node > b,
+    .deck .slide[data-slide="N-19"] .cyc-node > b{ font-size:20px; line-height:1.25; }
+    .deck .slide[data-slide="N-18"] .cyc-center,
+    .deck .slide[data-slide="N-19"] .cyc-center{ font-size:20px; font-weight:800; line-height:1.3; text-align:center; color:var(--blue); }
+
+    /* N-09 · 실습 개요 일곱 단계 + 산출물 */
+    .n09-track{ flex:1 1 auto; min-height:0; display:flex; flex-direction:column; justify-content:center; gap:var(--sp-18); margin:12px 0 0; }
+    .n09-line{ display:flex; align-items:stretch; }
+    .n09-step{ flex:1 1 0; min-width:0; display:flex; flex-direction:column; gap:8px; padding:16px 14px 14px;
+      border-radius:var(--r-lg); background:var(--blue-soft); border:1px solid var(--blue-line); }
+    .n09-step.is-check{ background:var(--mint-soft); border-color:var(--mint-line); }
+    .n09-step.is-demo{ background:var(--blue-panel); border:1px solid var(--blue-line-strong); }
+    .n09-step.is-goal{ background:var(--white); border:2px solid var(--mint-deep); }
+    .n09-head{ display:flex; align-items:flex-start; gap:10px; }
+    .n09-head > b{ font-size:24px; font-weight:800; line-height:var(--lh-box-title); color:var(--ink); }
+    .n09-n{ flex:0 0 32px; width:32px; height:32px; display:grid; place-items:center; border-radius:50%;
+      background:var(--blue); color:var(--white); font-size:17px; font-weight:800; }
+    .deck .slide[data-slide="N-09"] .n09-step .desc{ color:var(--gray-700); }
+    .n09-ar{ flex:0 0 28px; align-self:center; text-align:center; color:var(--blue); font-size:24px; font-weight:800; }
+    .n09-out{ margin:0; font-size:var(--fs-body); line-height:1.4; color:var(--ink); font-weight:600; }
+    .n09-out code{ font-family:var(--font-mono); font-weight:800; color:var(--mint-deep); }
+
+    /* N-10 · N-12 · N-16 · 실습(원본 w2-practice 골격 재사용) — 단계 설명은 div로 감싼다(R-QC-19) */
+    .deck .slide[data-slide="N-10"] .pr-steps .work-step > div,
+    .deck .slide[data-slide="N-12"] .pr-steps .work-step > div,
+    .deck .slide[data-slide="N-16"] .work-step > div{ display:flex; flex-direction:column; gap:2px; min-width:0; }
+    /* attempt-02(2026-09-11 렌더 실측 바닥선 3 · N-10 «완료 기준» 693): 4단계 + 완료 기준이 666을 약 27px
+       넘었다. 장식 accent-bar를 마크업에서 빼고(N-12·N-16과 같은 머리) 단계 간격·위아래 안쪽 여백만
+       줄인다 — 글자 크기·단계 수·문구는 그대로다(계산상 약 63px 확보). */
+    .deck .slide[data-slide="N-10"] .pr-steps{ gap:10px; margin-top:12px; }
+    .deck .slide[data-slide="N-10"] .pr-steps .work-step{ padding-top:11px; padding-bottom:11px; }
+    .n16-grid{ flex:1 1 auto; min-height:0; display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); align-content:center;
+      gap:var(--sp-18); margin:16px 0 0; }
+    .n16-grid .work-step{ margin:0; }
+    .n16-done{ margin:0; align-self:stretch; align-items:center; }
+
+    /* N-11 · N-13 · 예시 프롬프트(원본 pw-* 골격) — 메모 칸 문장은 22px 본문 */
+    .deck .slide[data-slide="N-11"] .pw-note p,
+    .deck .slide[data-slide="N-13"] .pw-note p{ font-size:var(--fs-body); line-height:1.4; }
+    .deck .slide[data-slide="N-11"] .pw-note .pw-k,
+    .deck .slide[data-slide="N-13"] .pw-note .pw-k{ font-size:19px; }
+
+    /* N-14 · 세 칸(원본 w2-scope 골격) + 요약 형식 */
+    .deck .slide[data-slide="N-14"] .sc-grid{ flex:0 0 auto; margin:18px 0 0; }
+    .deck .slide[data-slide="N-14"] .sc-col p + p{ color:var(--gray-700); }
+    /* attempt-02 이어받기(렌더 실측 바닥선 8 · 이탈 4 · «P@674»·«P@이탈750»): 원본 w2-scope 골격의 아이콘 크기
+       규칙은 원본에서 C2-5 전용(.slide[data-slide="C2-5"] .sc-icon)이라 이 덱으로 오지 않았다. 크기 없는 SVG가
+       칸 폭(약 322px)만큼 정사각형으로 커져 칸이 약 530px가 됐다(계산: 첫 문단 바닥 675 · 둘째 문단 749 = 실측 674·750).
+       원본 C2-5와 같은 28px로 고정한다 — 계산상 요약 형식 줄 바닥 약 556px(바닥선 666까지 약 110px). */
+    .deck .slide[data-slide="N-14"] .sc-icon{ flex:0 0 auto; width:28px; height:28px; margin-bottom:2px; display:block; }
+    .n14-format{ display:flex; align-items:baseline; gap:16px; margin:18px 0 0; padding:12px 18px; border-radius:var(--r-md);
+      background:var(--surface); border:1px solid var(--blue-line-strong); font-size:var(--fs-body); line-height:1.4; }
+    .n14-format > b{ flex:0 0 auto; color:var(--blue); font-weight:800; }
+    .n14-format code{ font-family:var(--font-mono); color:var(--ink); font-weight:700; }
+
+    /* N-15 · 폴더 구조 + 파일 안 형식 */
+    .n15-body{ flex:1 1 auto; min-height:0; display:grid; grid-template-columns:minmax(0,1.05fr) minmax(0,1fr); gap:32px;
+      align-items:center; margin:12px 0 0; }
+    .n15-tree{ display:flex; flex-direction:column; gap:12px; padding:22px; border-radius:var(--r-lg);
+      background:var(--blue-panel); border:1px solid var(--blue-line-strong); }
+    .n15-item{ margin:0; display:flex; align-items:center; gap:10px; font-size:var(--fs-body); line-height:1.4; color:var(--ink); }
+    .n15-item.lv1{ padding-left:34px; }
+    .n15-item.lv2{ padding-left:68px; }
+    .n15-item svg{ flex:0 0 26px; width:26px; height:26px; }
+    .n15-item code{ font-family:var(--font-mono); font-weight:800; white-space:nowrap; }
+    .n15-item.is-new code{ color:var(--mint-deep); }
+    .deck .slide[data-slide="N-15"] .n15-item .desc{ color:var(--gray-700); }
+    .deck .slide[data-slide="N-15"] .n15-md .terminal-copy{ font-size:20px; line-height:1.55; }
+
+    /* N-17 · 보고 ≠ 확인(원본 compare-slide 골격) */
+    .deck .slide[data-slide="N-17"] .n17-lead{ margin:8px 0 0; }
+    .n17-bubble{ margin:4px 0 0; padding:14px 18px; border-radius:var(--r-lg) var(--r-lg) var(--r-lg) 4px;
+      background:var(--coral-soft); border:1px solid var(--coral-line); font-size:var(--fs-body); line-height:1.5; color:var(--ink); }
+    .n17-note{ margin:12px 0 0; font-size:var(--fs-body); line-height:1.5; color:var(--gray-700); }
+
+    /* N-19 · 반복 실행(강사 시연) */
+    .n19-side{ display:flex; flex-direction:column; gap:var(--sp-18); }
+    .n19-demo{ display:flex; flex-direction:column; gap:6px; padding:18px 22px; border-radius:var(--r-lg);
+      background:var(--blue-panel); border:1px solid var(--blue-line-strong); }
+    .n19-demo > b{ font-size:var(--fs-box-title); font-weight:800; line-height:var(--lh-box-title); color:var(--blue); }
+    .n19-demo p, .n19-vs p, .n19-keep{ margin:0; font-size:var(--fs-body); line-height:1.5; color:var(--ink); }
+    .n19-vs{ display:flex; flex-direction:column; gap:6px; }
+    .n19-vs b{ display:inline-block; min-width:96px; margin-right:10px; color:var(--blue); font-weight:800; }
+
+    /* N-20 · 작성 → 검토 → 결정 + 질문 대비 */
+    .n20-lane{ display:flex; align-items:stretch; margin:18px 0 0; }
+    .n20-role{ flex:1 1 0; min-width:0; display:flex; flex-direction:column; gap:6px; padding:16px 20px;
+      border-radius:var(--r-lg); background:var(--blue-soft); border:1px solid var(--blue-line); }
+    .n20-role.is-check{ background:var(--blue-panel); border-color:var(--blue-line-strong); }
+    .n20-role.is-human{ background:var(--mint-soft); border-color:var(--mint-line); }
+    .n20-role > b{ font-size:var(--fs-box-title); font-weight:800; line-height:var(--lh-box-title); color:var(--ink); }
+    .n20-k{ font-size:20px; font-weight:800; color:var(--blue); line-height:1.3; }
+    .n20-role.is-human .n20-k{ color:var(--mint-deep); }
+    .deck .slide[data-slide="N-20"] .n20-role .desc{ color:var(--gray-700); }
+    .n20-ar{ flex:0 0 40px; align-self:center; text-align:center; color:var(--blue); font-size:28px; font-weight:800; }
+    .n20-ask{ flex:1 1 auto; min-height:0; display:grid; grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr); gap:var(--sp-18);
+      align-content:center; margin:18px 0 0; }
+    .n20-q{ display:flex; flex-direction:column; gap:6px; padding:16px 20px; border-radius:var(--r-lg); }
+    .n20-q.is-bad{ background:var(--coral-soft); border:1px solid var(--coral-line); }
+    .n20-q.is-bad .n20-k{ color:var(--coral-deep); }
+    .n20-q.is-good{ background:var(--mint-soft); border:1px solid var(--mint-line); }
+    .n20-q.is-good .n20-k{ color:var(--mint-deep); }
+    .n20-q p{ margin:0; font-size:var(--fs-body); line-height:1.5; color:var(--ink); }
+
+    /* N-21 · 산출물 세 파일 */
+    .n21-files{ flex:1 1 auto; min-height:0; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:var(--sp-18);
+      align-content:center; margin:16px 0 0; }
+    .n21-file{ display:flex; flex-direction:column; gap:10px; padding:20px; border-radius:var(--r-lg);
+      background:var(--blue-soft); border:1px solid var(--blue-line); }
+    .n21-file.is-check{ background:var(--mint-soft); border-color:var(--mint-line); }
+    .n21-file svg{ width:40px; height:40px; }
+    .n21-file code{ font-family:var(--font-mono); font-size:var(--fs-body); font-weight:800; color:var(--blue); }
+    .n21-file.is-check code{ color:var(--mint-deep); }
+    .n21-file p{ margin:0; font-size:var(--fs-body); line-height:1.5; color:var(--ink); }
+    .deck .slide[data-slide="N-21"] .n21-file .desc{ margin-top:auto; color:var(--gray-700); }
+    .n21-plus{ margin:14px 0 0; font-size:var(--fs-body); line-height:1.5; color:var(--gray-700); }
+
+    /* N-22 · 3차시 흐름 */
+    .n22-flow{ display:flex; align-items:stretch; margin:22px 0 0; }
+    .n22-step{ flex:1 1 0; min-width:0; display:flex; flex-direction:column; gap:8px; padding:16px 14px;
+      border-radius:var(--r-lg); background:var(--blue-soft); border:1px solid var(--blue-line); }
+    .n22-step.is-goal{ background:var(--mint-soft); border-color:var(--mint-line); }
+    .n22-step > b{ font-size:24px; font-weight:800; line-height:var(--lh-box-title); color:var(--ink); }
+    .n22-n{ width:32px; height:32px; display:grid; place-items:center; border-radius:50%; background:var(--blue);
+      color:var(--white); font-size:17px; font-weight:800; }
+    .deck .slide[data-slide="N-22"] .n22-step .desc{ color:var(--gray-700); }
+    .n22-ar{ flex:0 0 28px; align-self:center; text-align:center; color:var(--blue); font-size:24px; font-weight:800; }
+    .n22-bridge{ flex:1 1 auto; min-height:0; display:flex; flex-direction:column; justify-content:center; gap:10px; margin:18px 0 0; }
+    .n22-bridge p{ margin:0; display:flex; align-items:baseline; flex-wrap:wrap; gap:10px; font-size:var(--fs-body); line-height:1.5; color:var(--ink); }
+    .n22-bridge b{ padding:0 10px; border-radius:var(--r-pill); background:var(--blue-soft); color:var(--blue); font-weight:800; }
+    .n22-bridge i{ font-style:normal; color:var(--blue); font-weight:800; }
+  </style>
+  <!-- 원본(바이브코딩 2주차) 구도 CSS 이식본 — kit은 바꾸지 않았다. 원본의 캐스케이드 순서(셸 → 파트)를 지키려고
+       kit-additions 뒤에 둔다. 신규(M6) CSS는 위 kit-additions에 있다. -->
+  <link rel="stylesheet" href="강의덱.초안/revision.css">
+  <!--
+    ┌── 새 덱 만드는 법 ─────────────────────────────────────────────┐
+    │ 1) 이 파일을 복사. 고정 1·2·3(표지·도입·아젠다) 텍스트를 교체.   │
+    │ 2) 파트 수만큼 part-divider 배치(진행 도트 is-active 이동).      │
+    │ 3) 각 슬라이드: 정보 모양 판단 → kit/layouts/by-shape.md에서     │
+    │    레이아웃 후보 → (필요시) kit/charts/by-shape.md에서 element.  │
+    │    직전 슬라이드와 같은 구도 패밀리 회피, split은 희소하게.      │
+    │ 4) 레이아웃 <section>은 kit/layouts/catalog.html(코드 코어)에서  │
+    │    복사하거나 families/*.md 스펙대로 조립(토큰-치트시트 준수).   │
+    │ 5) 브라우저 검증(측정 우선) → base64 단일파일 배포.             │
+    └────────────────────────────────────────────────────────────────┘
+  -->
+</head>
+<body>
+  <div class="deck">
+
+    <!-- ============ 고정 슬라이드 4장(원본 바이브코딩 2주차 shell에서 복사 · 문구만 CSV 변경내용 적용) ============ -->
+    <section class="slide cover" data-slide="S01">
+      <svg class="cover-geo" viewBox="0 0 1280 720" fill="none" aria-hidden="true">
+        <g data-cube="top">
+        <polygon points="1170,300 1226,328 1170,356 1114,328" fill="var(--blue-soft)"/>
+        <polygon points="1114,328 1170,356 1170,414 1114,386" fill="var(--blue)"/>
+        <polygon points="1170,356 1226,328 1226,386 1170,414" fill="var(--mint)"/>
+        </g>
+        <g data-cube="middle">
+        <polygon points="1084,352 1140,380 1084,408 1028,380" fill="var(--blue-soft)"/>
+        <polygon points="1028,380 1084,408 1084,466 1028,438" fill="var(--blue)"/>
+        <polygon points="1084,408 1140,380 1140,438 1084,466" fill="var(--mint)"/>
+        </g>
+        <g data-cube="base">
+        <polygon points="998,404 1054,432 998,460 942,432" fill="var(--blue-soft)"/>
+        <polygon points="942,432 998,460 998,518 942,490" fill="var(--blue)"/>
+        <polygon points="998,460 1054,432 1054,490 998,518" fill="var(--mint)"/>
+        </g>
+        <circle cx="1170" cy="256" r="13" fill="var(--coral)"/>
+      </svg>
+      <header class="s-head cover-head">
+        <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg>
+        <div class="brand-stack">
+          <span class="s-brand">VIBECODING</span>
+          <span class="track">3차시 과정</span>
+        </div>
+        <div class="s-team">2차시 / 3차시</div>
+      </header>
+      <div class="cover-lead">2차시 · Coding Agent에게 일을 맡기는 법</div>
+      <div class="cover-title">
+        <h1 class="ko">AI에게 질문에서,<br>Agent에게 <span class="hl">일 맡기기</span>로</h1>
+      </div>
+      <div class="cover-presenter">VIBECODING 2차시</div>
+    </section>
+
+    <section class="slide s02-slide has-img-r has-image" data-slide="S02">
+      <div class="s-full" style="top:64px; right:730px; bottom:64px; display:flex; align-items:center; gap:48px;">
+        <div style="flex:1.15; display:flex; flex-direction:column; justify-content:center;">
+          <h2 class="s-title" style="font-size:58px; line-height:1.35; margin:0;">AI가 작성하고<br>사람이 검토하고<br><span class="hl-mint-text">사람이 결정합니다</span></h2>
+                    <div style="display:flex; flex-direction:column; gap:16px; margin-top:24px;">
+            <p class="s-body" style="margin:0;">초안·후보·코드를 빠르게 만들어 냅니다.</p>
+            <p class="s-body" style="margin:0;">화면과 문서를 직접 열어 눈으로 확인합니다.</p>
+            <p class="s-body" style="margin:0;">무엇을 넣고 무엇을 뺄지는 사람이 정합니다.</p>
+          </div>
+        </div>
+      </div>
+      <!-- 이미지 슬롯 복원(2026-07-31 사용자 결정: 이미지 제작지시서 19장을 그대로 살린다).
+           직전에 임시로 넣었던 SVG 도식은 제거했다 — IMG 프롬프트 §4-1이 이 자리의 정본이다. -->
+      <figure class="asset-slot asset-slot--support img-slot-r" style="right:64px; top:118px; width:650px; height:548px; max-width:650px; max-height:548px;" data-image-purpose="explanatory"
+        data-image-state="ready" data-expected-src="자료/images/s02_ai-writes-human-decides-paper-cut-v1-transparent.png"
+        role="img" aria-label="빠르게 움직이는 펜이 초안을 쓰고, 그 위에 도장이 찍혀 사람이 검토하고 최종 결정을 내리는 관계"><img src="자료/images/s02_ai-writes-human-decides-paper-cut-v1-transparent.png" alt="빠르게 움직이는 펜이 초안을 쓰고, 그 위에 도장이 찍혀 사람이 검토하고 최종 결정을 내리는 관계"></figure>
+    </section>
+
+    <section class="slide w2-week has-img-r" data-slide="S02B">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+    <span class="s-line"></span><div class="s-team">2차시<br>개요</div>
+  </header>
+  <div class="s-full">
+    <p class="s-eyebrow">2차시 전체 흐름</p>
+    <h2 class="s-title">오늘 <span class="hl-mint-text">뉴스 조사 Agent</span>까지 갑니다</h2>
+    <p class="wk-prev">1차시에 요청하고 확인하고 고쳤다면, 2차시는 기준을 정해 반복되는 일을 맡깁니다.</p>
+
+    <div class="wk-track">
+      <div class="wk-row" role="list" aria-label="PART 1~3 흐름">
+        <article class="wk-node" role="listitem">
+          <div class="wk-head"><span class="wk-n">1</span><h3 class="wk-title">되짚기와<br>역할 지도</h3></div>
+          <p class="wk-desc">1차시 회고 · 역할 나누기</p>
+        </article>
+        <span class="wk-arrow" aria-hidden="true">→</span>
+        <article class="wk-node" role="listitem">
+          <div class="wk-head"><span class="wk-n">2</span><h3 class="wk-title">Prompt<br>요청 설계</h3></div>
+          <p class="wk-desc">요청에 담을 다섯 칸</p>
+        </article>
+        <span class="wk-arrow" aria-hidden="true">→</span>
+        <article class="wk-node" role="listitem">
+          <div class="wk-head"><span class="wk-n">3</span><h3 class="wk-title">Context와<br>Memory</h3></div>
+          <p class="wk-desc">함께 넘길 것 · 긴 대화</p>
+        </article>
+      </div>
+
+      <div class="wk-row" role="list" aria-label="PART 4~8 흐름">
+        <article class="wk-node" role="listitem">
+          <div class="wk-head"><span class="wk-n">4</span><h3 class="wk-title">Markdown<br>기준 파일</h3></div>
+          <p class="wk-desc">기준은 파일에 남기기</p>
+        </article>
+        <span class="wk-arrow" aria-hidden="true">→</span>
+        <article class="wk-node" role="listitem">
+          <div class="wk-head"><span class="wk-n">5</span><h3 class="wk-title">Harness와<br>기준 적용</h3></div>
+          <p class="wk-desc">1차시 웹에 기준 적용</p>
+        </article>
+        <span class="wk-arrow" aria-hidden="true">→</span>
+        <article class="wk-node is-final" role="listitem">
+          <div class="wk-head"><span class="wk-n">6</span><h3 class="wk-title">뉴스 조사<br>Agent</h3></div>
+          <p class="wk-desc">NEWS_AGENT.md로 맡기기</p>
+        </article>
+      </div>
+    </div>
+  </div>
+  <!-- 우측 이미지 영역 — 수정요청서 3p절: "6개 박스 폭을 줄여 좌측에 몰아넣는다.
+       우측에 이미지 공간을 만든다." 좌측 트랙은 아래 스코프 CSS로 68%로 좁힌다. -->
+  <figure class="asset-slot asset-slot--support img-slot-r" data-image-purpose="explanatory"
+    data-image-state="ready" data-expected-src="자료/images/s03_six-sessions-to-mvp-paper-cut-v1-transparent.png"
+    role="img" aria-label="여덟 PART가 차례로 이어져 하나의 뉴스 조사 Agent로 수렴하는 흐름"><img src="자료/images/s03_six-sessions-to-mvp-paper-cut-v1-transparent.png" alt="여덟 PART가 차례로 이어져 하나의 뉴스 조사 Agent로 수렴하는 흐름"></figure>
+</section>
+
+    <section class="slide s03-slide" data-slide="S03">
+      <header class="s-head">
+        <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
+        <span class="s-line"></span>
+      </header>
+      <div class="an-left">
+        <span class="an-spark" aria-hidden="true"></span>
+        <h2 class="an-title">오늘 배우게 될 것</h2>
+        <div class="an-bar"></div>
+        <p class="an-intro">2차시 · <span class="hl">Coding Agent에게<br>일을 맡기는 법</span></p>
+      </div>
+      <div class="an-right">
+        <div class="an-item"><div class="an-num">1</div><div class="an-body"><div class="an-h">되짚기와 역할 지도</div><div class="an-d">1차시를 되짚고, AI Chat과 Coding Agent의 역할을 나눈다</div></div></div>
+        <div class="an-item"><div class="an-num">2</div><div class="an-body"><div class="an-h">Prompt</div><div class="an-d">목표·범위·조건·출력·완료 기준을 요청에 담는다</div></div></div>
+        <div class="an-item"><div class="an-num">3</div><div class="an-body"><div class="an-h">Context와 Memory</div><div class="an-d">함께 넘길 자료와 긴 대화에서 약해지는 것을 본다</div></div></div>
+        <div class="an-item"><div class="an-num">4</div><div class="an-body"><div class="an-h">Markdown으로 기준을 파일에</div><div class="an-d">대화에 흘리지 않고 AI가 매번 읽을 기준 파일로 남긴다</div></div></div>
+        <div class="an-item"><div class="an-num">5</div><div class="an-body"><div class="an-h">Harness — 도구·권한·검증</div><div class="an-d">1차시에 만든 웹에 기준을 적용하고 AI가 일할 환경을 갖춘다</div></div></div>
+        <div class="an-item"><div class="an-num">6</div><div class="an-body"><div class="an-h">AI 뉴스 조사 Agent</div><div class="an-d">뉴스 조사를 맡기고, 출처로 검토하고, 오늘을 정리한다</div></div></div>
+      </div>
+    </section>
+
+<!-- ::PARTS:: -->
+
+  </div>
+
+  <!-- 발표 리모컨 + 상세 메뉴 (불변요소 · 브라우저 검증된 엔진) -->
+  <div class="controls" id="controls">
+    <div class="navbar">
+      <button class="nav-btn" id="prevBtn" aria-label="이전 슬라이드">‹</button>
+      <button class="nav-counter" id="counter" aria-label="상세 발표 메뉴 열기" aria-expanded="false">1 / 1</button>
+      <button class="nav-btn" id="nextBtn" aria-label="다음 슬라이드">›</button>
+      <span class="nav-sep"></span>
+      <button class="nav-btn menu" id="menuBtn" aria-label="상세 발표 메뉴 열기" aria-expanded="false" title="상세 메뉴 (G)">☰</button>
+      <button class="nav-btn fs" id="fsBtn" aria-label="전체화면 (F)" title="전체화면 (F)">⛶</button>
+    </div>
+  </div>
+  <section class="presentation-menu" id="presentationMenu" role="dialog" aria-label="발표 상세 메뉴" hidden>
+    <div class="menu-head">
+      <div><p class="menu-eyebrow" id="menuPart">현재 슬라이드</p><p class="menu-title" id="menuTitle">슬라이드 제목</p></div>
+      <button class="menu-close" id="menuClose" aria-label="상세 메뉴 닫기">×</button>
+    </div>
+    <div class="menu-actions">
+      <button class="menu-action" id="homeBtn" aria-label="표지로 이동" title="홈">⌂</button>
+      <label class="page-jump" aria-label="페이지 번호로 이동"><input id="pageInput" type="number" min="1" inputmode="numeric" placeholder="페이지 번호"><button class="menu-go" id="goBtn">이동</button></label>
+      <button class="menu-action" id="pdfBtn" aria-label="PDF로 출력">PDF</button>
+      <button class="menu-action" id="helpBtn" aria-label="단축키 안내" title="단축키">?</button>
+    </div>
+    <div class="slide-list" id="slideList" aria-label="전체 슬라이드 목록"></div>
+  </section>
+  <section class="keyboard-help" id="keyboardHelp" role="dialog" aria-label="발표 단축키" hidden>
+    <button class="menu-close" id="helpClose" aria-label="단축키 안내 닫기">×</button>
+    <h2>발표 단축키</h2>
+    <dl><dt>← / →</dt><dd>이전·다음 슬라이드</dd><dt>Home / End</dt><dd>표지·마지막으로 이동</dd><dt>G</dt><dd>상세 메뉴 열기</dd><dt>B</dt><dd>화면 가리기</dd><dt>F</dt><dd>전체화면</dd><dt>?</dt><dd>이 안내 열기</dd><dt>Esc</dt><dd>열린 창 또는 화면 가리기 닫기</dd></dl>
+  </section>
+  <div class="presentation-blackout" id="blackout" aria-label="화면 가리기, 클릭하면 해제" hidden></div>
+
+  <script>
+  (function(){
+    /* ── 파트 전환 자동 생성기 (kit/starter/deck-template.html과 같은 계약) ──
+       ⚠️ 이 세 함수가 없으면 verify_deck이 「파트 전환 자동 생성기 누락」으로
+          **FAIL**한다. 2026-08-03 실측: 이 템플릿에만 빠져 있어 새 주차가
+          첫 조립부터 FAIL 1로 시작했다(1·2주차 덱과 킷 스타터에는 있었다).
+       도형·도트·PART n/N을 파트 수에 맞춰 만든다 — part-NN.html은 빈 훅만 둔다. */
+    function partGeometry(n){
+      var presets={
+        1:[[640,126,92,92]],
+        2:[[560,150,60,60],[640,230,70,70]],
+        3:[[670,136,58,58],[584,228,58,58],[756,228,58,58]],
+        4:[[620,94,58,58],[726,158,66,66],[522,188,50,50],[628,264,48,48]],
+        5:[[640,78,48,48],[532,146,62,62],[730,142,46,46],[574,258,48,48],[694,238,64,64]],
+        6:[[610,70,42,42],[510,138,56,56],[724,122,52,52],[466,246,40,40],[604,214,66,66],[764,246,44,44]]
+      }, points=presets[n]&&presets[n].slice();
+      if(!points){
+        points=[];
+        var size=Math.max(28,44-Math.floor((n-7)/2));
+        for(var i=0;i<n;i++){
+          var angle=-Math.PI/2+(Math.PI*2*i/n), ring=i%2?1:.72;
+          points.push([640+Math.cos(angle)*150*ring,178+Math.sin(angle)*82*ring+(i%3)*12,size,size]);
+        }
+      }
+      return points.sort(function(a,b){return a[1]-b[1];});
+    }
+    function cubeMarkup(p,i){
+      var x=Math.round(p[0]),y=Math.round(p[1]),w=Math.round(p[2]),d=Math.round(p[3]),h=Math.round(w/2);
+      return '<g class="pd-cube pd-cube-'+(i+1)+'" data-cube="'+(i+1)+'">'+
+        '<ellipse class="pd-cube-shadow" cx="'+x+'" cy="'+(y+w+d+9)+'" rx="'+Math.round(w*.72)+'" ry="'+Math.max(6,Math.round(w*.17))+'"/>'+
+        '<polygon points="'+x+','+y+' '+(x+w)+','+(y+h)+' '+x+','+(y+w)+' '+(x-w)+','+(y+h)+'" fill="var(--blue-soft)"/>'+
+        '<polygon points="'+(x-w)+','+(y+h)+' '+x+','+(y+w)+' '+x+','+(y+w+d)+' '+(x-w)+','+(y+h+d)+'" fill="var(--blue)"/>'+
+        '<polygon points="'+x+','+(y+w)+' '+(x+w)+','+(y+h)+' '+(x+w)+','+(y+h+d)+' '+x+','+(y+w+d)+'" fill="var(--mint)"/></g>';
+    }
+    function hydratePartDivider(s,index,total){
+      var hero=s.querySelector('.dv-hero'), points=partGeometry(index), html='';
+      for(var i=0;i<points.length;i++)html+=cubeMarkup(points[i],i);
+      if(hero){hero.innerHTML=html+'<circle class="pd-spark" cx="820" cy="112" r="7"/>';hero.setAttribute('data-geometry-count',index);}
+      var dots=s.querySelector('.pd-dots'), dotHtml='';
+      for(var d=1;d<=total;d++)dotHtml+='<span class="pd-dot'+(d===index?' is-active':'')+'"></span>';
+      if(dots)dots.innerHTML=dotHtml;
+      var eyebrow=s.querySelector('.pd-eyebrow');if(eyebrow)eyebrow.textContent='PART '+index+' / '+total;
+      s.setAttribute('data-part-index',index);s.setAttribute('data-part-total',total);
+    }
+
+    var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+    var totalParts = 0;
+    slides.forEach(function(s){ if (/\bpart-divider\b/.test(s.className)) totalParts++; });
+    var curPart = 0;
+    slides.forEach(function(s, i){
+      if (/\bpart-divider\b/.test(s.className)) { curPart++; hydratePartDivider(s, curPart, totalParts); }
+      var fixed = /\b(cover|s02-slide|s03-slide|part-divider|concept-recap|closing)\b/.test(s.className);
+      if (!/\b(cover|concept-recap|closing)\b/.test(s.className)) {
+        var pg = document.createElement('div');
+        pg.className = 's-pageno';
+        pg.textContent = (i + 1) + ' / ' + slides.length;
+        s.appendChild(pg);
+      }
+      var team = s.querySelector('.s-head .s-team');
+      /* 부록 헤더(2026-09-11 attempt-02 · 오케스트레이터 판정 «부록에는 PART 번호를 붙이지 않는다»).
+         마지막 divider 뒤 부록 5장에 «PART 8 / 8»이 주입되던 문제(매핑 D-13)를 막는다.
+         표식은 소스 헤더 «2차시 / 부록» 문구다 — 매핑 §⑧-8대로 부록 section에 클래스를 새로 주입하지 않는다.
+         원본의 w2-annex는 PART 안의 부록성 장(이 덱의 A3F2·A4R1)에도 붙어 있고 원본 엔진도 건너뛰지 않았다.
+         그래서 w2-annex를 건너뛰기 표식으로 쓰면 그 두 장의 PART 라벨이 사라진다. */
+      if (team && /부록/.test(team.textContent)) {
+        team.className = 's-part';
+        team.innerHTML = '<span class="lbl">부록</span>';
+      } else if (!fixed && curPart >= 1 && totalParts >= 1) {
+        if (team) {
+          var h = '<span class="lbl">PART ' + curPart + ' / ' + totalParts + '</span><span class="dots">';
+          for (var d = 1; d <= totalParts; d++) h += '<span class="pd' + (d === curPart ? ' on' : '') + '"></span>';
+          team.className = 's-part';
+          team.innerHTML = h + '</span>';
+        }
+      }
+    });
+    var controls = document.getElementById('controls');
+    var counter  = document.getElementById('counter');
+    var prevBtn  = document.getElementById('prevBtn');
+    var nextBtn  = document.getElementById('nextBtn');
+    var fsBtn    = document.getElementById('fsBtn');
+    var menuBtn  = document.getElementById('menuBtn');
+    var menu     = document.getElementById('presentationMenu');
+    var menuClose = document.getElementById('menuClose');
+    var homeBtn  = document.getElementById('homeBtn');
+    var pageInput = document.getElementById('pageInput');
+    var goBtn    = document.getElementById('goBtn');
+    var pdfBtn   = document.getElementById('pdfBtn');
+    var helpBtn  = document.getElementById('helpBtn');
+    var help     = document.getElementById('keyboardHelp');
+    var helpClose = document.getElementById('helpClose');
+    var blackout = document.getElementById('blackout');
+    var slideList = document.getElementById('slideList');
+    var menuTitle = document.getElementById('menuTitle');
+    var menuPart = document.getElementById('menuPart');
+    var idx = 0, hideTimer = null;
+    var storageKey = 'ai-coding-agent-session-2';
+
+    function initialIndex(){
+      var m = String(location.hash || '').match(/slide=(\d+)/i);
+      if (m) return Math.max(0, parseInt(m[1], 10) - 1);
+      try { var saved = parseInt(localStorage.getItem(storageKey), 10); return isNaN(saved) ? 0 : saved; }
+      catch (e) { return 0; }
+    }
+    function fit(){
+      var s = Math.min(window.innerWidth / 1280, window.innerHeight / 720);
+      document.documentElement.style.setProperty('--scale', s);
+    }
+    function show(i){
+      idx = Math.max(0, Math.min(slides.length - 1, i));
+      for (var n = 0; n < slides.length; n++){ slides[n].classList.toggle('is-active', n === idx); }
+      counter.textContent = (idx + 1) + ' / ' + slides.length;
+      prevBtn.disabled = (idx === 0);
+      nextBtn.disabled = (idx === slides.length - 1);
+      updateMenu();
+      try { localStorage.setItem(storageKey, String(idx)); } catch (e) {}
+      try { history.replaceState(null, '', '#slide=' + (idx + 1)); } catch (e) {}
+    }
+    function next(){ show(idx + 1); }
+    function prev(){ show(idx - 1); }
+    function slideName(s, i){
+      var heading = s.querySelector('h1,h2,h3');
+      var text = heading ? heading.textContent.replace(/\s+/g, ' ').trim() : '';
+      return text || s.getAttribute('data-slide') || ('슬라이드 ' + (i + 1));
+    }
+    function slidePart(s){
+      var el = s.querySelector('.s-part .lbl');
+      return el ? el.textContent : (s.classList.contains('cover') ? '표지' : '발표 슬라이드');
+    }
+    function buildSlideList(){
+      slides.forEach(function(s, i){
+        var btn = document.createElement('button');
+        var number = document.createElement('span');
+        var label = document.createElement('span');
+        btn.type = 'button'; btn.dataset.slideIndex = i;
+        number.className = 'list-num'; number.textContent = String(i + 1).padStart(3, '0');
+        label.textContent = slideName(s, i); btn.appendChild(number); btn.appendChild(label);
+        btn.addEventListener('click', function(){ show(i); closeMenu(); poke(); });
+        slideList.appendChild(btn);
+      });
+    }
+    function updateMenu(){
+      var current = slides[idx];
+      menuTitle.textContent = slideName(current, idx);
+      menuPart.textContent = slidePart(current);
+      pageInput.value = idx + 1;
+      Array.prototype.forEach.call(slideList.children, function(btn, i){ btn.classList.toggle('is-current', i === idx); });
+    }
+    function openMenu(){
+      menu.hidden = false; help.hidden = true; blackout.hidden = true;
+      menuBtn.setAttribute('aria-expanded', 'true'); counter.setAttribute('aria-expanded', 'true');
+      controls.classList.add('show'); clearTimeout(hideTimer); updateMenu();
+      setTimeout(function(){ pageInput.focus(); pageInput.select(); }, 0);
+    }
+    function closeMenu(){
+      menu.hidden = true; menuBtn.setAttribute('aria-expanded', 'false'); counter.setAttribute('aria-expanded', 'false');
+      poke();
+    }
+    function toggleMenu(){ menu.hidden ? openMenu() : closeMenu(); }
+    function openHelp(){ help.hidden = false; menu.hidden = true; menuBtn.setAttribute('aria-expanded', 'false'); counter.setAttribute('aria-expanded', 'false'); controls.classList.add('show'); clearTimeout(hideTimer); helpClose.focus(); }
+    function closeHelp(){ help.hidden = true; poke(); }
+    function jumpToInput(){ var n = parseInt(pageInput.value, 10); if (!isNaN(n)) { show(n - 1); closeMenu(); } }
+    function toggleBlackout(){ blackout.hidden = !blackout.hidden; if (blackout.hidden) poke(); }
+    function poke(){ controls.classList.add('show'); clearTimeout(hideTimer);
+      if (!menu.hidden || !help.hidden || !blackout.hidden) return;
+      hideTimer = setTimeout(function(){ controls.classList.remove('show'); }, 1000); }
+    function toggleFullscreen(){
+      if (!document.fullscreenElement){ (document.documentElement.requestFullscreen || function(){}).call(document.documentElement); }
+      else { (document.exitFullscreen || function(){}).call(document); }
+    }
+    document.addEventListener('keydown', function(e){
+      if (e.key === 'Escape') { if (!blackout.hidden) { blackout.hidden = true; } else if (!help.hidden) { closeHelp(); } else if (!menu.hidden) { closeMenu(); } return; }
+      if ((e.key === 'g' || e.key === 'G') && !e.ctrlKey && !e.metaKey) { toggleMenu(); e.preventDefault(); return; }
+      if (e.key === '?' && !e.ctrlKey && !e.metaKey) { openHelp(); e.preventDefault(); return; }
+      if ((e.key === 'b' || e.key === 'B') && !e.ctrlKey && !e.metaKey) { toggleBlackout(); e.preventDefault(); return; }
+      if (!menu.hidden || !help.hidden || !blackout.hidden) return;
+      switch (e.key){
+        /* 슬라이드 전환은 리모컨을 노출하지 않는다 — 리모컨은 마우스 이동(mousemove→poke)에만 나타난다. */
+        case 'ArrowRight': case 'PageDown': case ' ': case 'Spacebar': next(); e.preventDefault(); break;
+        case 'ArrowLeft': case 'PageUp': prev(); e.preventDefault(); break;
+        case 'Home': show(0); e.preventDefault(); break;
+        case 'End':  show(slides.length - 1); e.preventDefault(); break;
+        case 'f': case 'F': toggleFullscreen(); break;
+      }
+    });
+    prevBtn.addEventListener('click', function(){ prev(); poke(); });
+    nextBtn.addEventListener('click', function(){ next(); poke(); });
+    fsBtn.addEventListener('click', function(e){ e.stopPropagation(); toggleFullscreen(); poke(); });
+    menuBtn.addEventListener('click', function(e){ e.stopPropagation(); toggleMenu(); });
+    counter.addEventListener('click', function(e){ e.stopPropagation(); toggleMenu(); });
+    menuClose.addEventListener('click', closeMenu);
+    homeBtn.addEventListener('click', function(){ show(0); closeMenu(); });
+    goBtn.addEventListener('click', jumpToInput);
+    pageInput.addEventListener('keydown', function(e){ if (e.key === 'Enter') { jumpToInput(); e.preventDefault(); } });
+    pdfBtn.addEventListener('click', function(){ window.print(); });
+    helpBtn.addEventListener('click', openHelp);
+    helpClose.addEventListener('click', closeHelp);
+    blackout.addEventListener('click', toggleBlackout);
+    document.addEventListener('fullscreenchange', fit);
+    window.addEventListener('mousemove', poke);
+    window.addEventListener('resize', fit);
+    buildSlideList();
+    fit(); show(initialIndex()); poke();
+  })();
+  </script>
+</body>
+</html>

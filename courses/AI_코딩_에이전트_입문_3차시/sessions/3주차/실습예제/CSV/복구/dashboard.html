@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>[복구본] 주문 데이터 대시보드 — 최소 구성</title>
+<!--
+  복구본 — 실습 중 대시보드 제작이 막혔을 때 5~7분 안에 다시 따라잡기 위한 최소본.
+  핵심 지표 4개 + 표 1개만 있다. 차트·필터는 일부러 없앴다.
+  데이터는 아래 DATA 블록의 지표기준값.json 전문뿐이다(행 데이터는 싣지 않는다).
+  본편은 ../dashboard.html.
+-->
+<style>
+:root{
+  --blue:#1D4ED8; --mint:#14B8A6; --coral:#F97360; --navy:#16277A;
+  --white:#FFFFFF; --ink:#141821; --gray-700:#4F4F4F;
+  --surface:#F3F5F8; --line:#E5E8F0; --th:#EEF3FE;
+  --blue-panel:#F5F8FF; --blue-line:#DCE4FF; --mint-line:#C9EAE4; --coral-line:#FBD8CF;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--surface);color:var(--ink);
+  font-family:"Malgun Gothic","맑은 고딕","Apple SD Gothic Neo","Noto Sans KR",sans-serif;
+  font-size:15px;line-height:1.6}
+.wrap{max-width:900px;margin:0 auto;padding:24px 20px 48px}
+header{background:var(--navy);color:var(--white);padding:18px 20px;border-radius:12px}
+header h1{margin:0 0 4px;font-size:22px}
+header p{margin:0;font-size:13px;color:#C9D4F5}
+.check{margin-top:14px;padding:11px 15px;border-radius:10px;font-size:14px;font-weight:700}
+.check.ok{background:var(--mint-line);border:1px solid #0F766E;color:#083B36}
+.check.bad{background:var(--coral-line);border:1px solid #C2452F;color:#5C1C12}
+section{background:var(--white);border:1px solid var(--line);border-radius:12px;
+  padding:18px 20px;margin-top:16px}
+h2{margin:0 0 10px;font-size:17px;color:var(--navy)}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.kpi{background:var(--blue-panel);border:1px solid var(--blue-line);border-radius:10px;padding:12px 14px}
+.kpi .k{font-size:12px;color:var(--gray-700);font-weight:700}
+.kpi .v{font-size:23px;font-weight:800;color:var(--navy);font-variant-numeric:tabular-nums;
+  letter-spacing:-.5px}
+.kpi .u{font-size:13px;color:var(--gray-700);font-weight:700}
+.kpi .p{font-size:11px;color:var(--blue);font-family:ui-monospace,Consolas,monospace;margin-top:3px}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{border:1px solid var(--line);padding:7px 10px;text-align:right;font-variant-numeric:tabular-nums}
+th{background:var(--th);color:var(--navy);text-align:center;font-size:13px}
+td.l,th.l{text-align:left}
+tfoot td{background:var(--blue-panel);font-weight:700}
+.cond{font-size:12px;color:var(--gray-700);margin-top:8px;border-top:1px dashed var(--line);padding-top:7px}
+ul{margin:6px 0 0;padding-left:20px;font-size:14px}
+li{margin-bottom:5px}
+.tag{display:inline-block;font-size:11px;font-family:ui-monospace,Consolas,monospace;
+  background:var(--th);color:var(--blue);border:1px solid var(--blue-line);
+  border-radius:4px;padding:0 5px;margin-right:4px}
+.next{background:#FFF6E8;border:1px solid #B4761B;border-radius:10px;padding:12px 15px;font-size:14px}
+footer{margin-top:18px;font-size:12px;color:var(--gray-700);word-break:break-all}
+@media (max-width:760px){.kpis{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>[복구본] 2025년 주문 데이터 대시보드</h1>
+  <p>최소 구성 — 핵심 지표 4개 + 상품군 표 1개. 본편 제작이 막혔을 때 여기서 다시 시작한다.</p>
+</header>
+
+<div class="check" id="check">확인 중…</div>
+
+<section>
+  <h2>1. 핵심 지표 4개</h2>
+  <div class="kpis" id="kpis"></div>
+  <p class="cond" id="cond"></p>
+</section>
+
+<section>
+  <h2>2. 상품군별 매출과 마진</h2>
+  <table id="t"><thead><tr>
+    <th class="l">상품군</th><th>주문 수</th><th>총매출(원)</th><th>마진(원)</th><th>마진율(%)</th>
+  </tr></thead><tbody></tbody><tfoot></tfoot></table>
+  <p class="cond">값 포인터 <span class="tag">CAT-02</span> · 마진 = 총매출 − 상품 원가 · 배송비·인건비 미반영</p>
+</section>
+
+<section>
+  <h2>3. 이 표를 읽을 때 반드시 같이 말할 것</h2>
+  <ul>
+    <li><b>원본 행 ≠ 주문 수</b> — 원본에는 중복이 있었다<span class="tag">ROW-01</span><span class="tag">ROW-02</span>.</li>
+    <li><b>취소·대기 주문은 빠져 있다</b> — 매출이 확정되지 않았기 때문이다<span class="tag">S1</span>.</li>
+    <li><b>확인이 필요한 행이 남아 있다</b> — 임의로 정하지 않고 보류했다<span class="tag">HOLD-01</span>.</li>
+    <li><b>마진은 실제 이익이 아니다</b> — 상품 원가만 뺀 값이다.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>4. 다음에 할 일</h2>
+  <div class="next">
+    본편 <code>../dashboard.html</code>에는 월별 매출·배송·평점 차트와 필터가 더 있다.
+    여기까지 돌아왔다면 ① 월별 매출 막대그래프 ② 배송·평점 분포 ③ 상품군 필터 순서로 붙인다.
+    붙일 때마다 화면 숫자를 <code>지표기준값.json</code>과 대조한다.
+  </div>
+</section>
+
+<footer id="foot"></footer>
+</div>
+
+<!--DATA:BEGIN-->
+<script id="baseline-data" type="application/json">{"_meta":{"생성":"계산.py","정의정본":"지표정의.json","원본파일":"courses/AI_코딩_에이전트_입문_3차시/자료/데이터/mock_ecommerce_orders.csv","원본_sha256":"3502d6b4bcc78d28b5797566a6dbe8da5fc85d00c066bb0a3fef709e537d5192","원본_바이트":305614,"원본_변경없음":true,"판정기준일":"2026-09-10","반올림":"금액=원 단위 정수(행 단위 반올림 없음) · 비율=소수 1자리 · 평균=소수 2자리 · 전부 half-up · 집계 후 1회만"},"ROW":{"ROW-01_원본행수":2424,"ROW-02_고유주문ID수":2400,"ROW-03_분석대상행수":2203,"ROW-04_제외행수":219,"ROW-05_보류행수":2,"ROW-06_채택비율_pct":90.9,"ROW-07_조정표합계":2424,"ROW-08_제외_단계별":{"D1":23,"E1":5,"E2":6,"E5":4,"S1":181},"ROW-09_보류_단계별":{"H1":2},"ROW-10_배송지표_부분보류행수":4},"ORD":{"ORD-01_분석대상주문수":2203,"ORD-02_한행한주문":true,"ORD-03_고유고객수":784,"ORD-04_고객당평균주문수":2.81,"ORD-05_총수량":5515,"ORD-06_기간시작":"2025-01-01","ORD-07_기간종료":"2025-12-30","ORD-08_집계월수":12},"REV":{"REV-01_순매출_krw":205274700,"REV-02_할인전총액_krw":216058000,"REV-03_할인액_krw":10783300,"REV-04_할인율_pct":5.0,"REV-05_배송비합계_krw":4584000,"REV-06_평균주문금액_krw":93180,"REV-07_반품제외순매출_krw":195141300,"REV-08_반품매출_krw":10133400},"MGN":{"MGN-01_원가합계_krw":96065000,"MGN-02_마진_krw":109209700,"MGN-03_마진율_pct":53.2,"MGN-04_반품제외마진_krw":103843300},"MONTH":{"MONTH-01_월목록":["2025-01","2025-02","2025-03","2025-04","2025-05","2025-06","2025-07","2025-08","2025-09","2025-10","2025-11","2025-12"],"MONTH-02_월별순매출_krw":[17611700,14835800,19362500,14302250,17334250,17141600,15563450,16510600,16530850,20064500,17863150,18154050],"MONTH-03_월별주문수":[181,170,195,171,165,185,179,185,184,203,189,196],"MONTH-04_월별마진_krw":[9292700,8001800,10281500,7641250,9268250,9238600,8384450,8741600,8801850,10787500,9347150,9423050],"MONTH-05_최대월":"2025-10","MONTH-06_최소월":"2025-04"},"CAT":{"CAT-01_상품군수":6,"CAT-02_목록":[{"category":"Electronics","주문수":414,"수량":1026,"순매출_krw":68964650,"원가_krw":34684000,"마진_krw":34280650,"마진율_pct":49.7,"매출비중_pct":33.6},{"category":"Fashion","주문수":324,"수량":823,"순매출_krw":38658050,"원가_krw":18041000,"마진_krw":20617050,"마진율_pct":53.3,"매출비중_pct":18.8},{"category":"Food","주문수":416,"수량":1042,"순매출_krw":30586750,"원가_krw":14130000,"마진_krw":16456750,"마진율_pct":53.8,"매출비중_pct":14.9},{"category":"Home","주문수":392,"수량":992,"순매출_krw":28951300,"원가_krw":12690000,"마진_krw":16261300,"마진율_pct":56.2,"매출비중_pct":14.1},{"category":"Pet","주문수":320,"수량":785,"순매출_krw":23477250,"원가_krw":10519000,"마진_krw":12958250,"마진율_pct":55.2,"매출비중_pct":11.4},{"category":"Beauty","주문수":337,"수량":847,"순매출_krw":14636700,"원가_krw":6001000,"마진_krw":8635700,"마진율_pct":59.0,"매출비중_pct":7.1}]},"BRAND":{"BRAND-01_브랜드수":18,"BRAND-02_상위5":[{"brand":"Pulse","순매출_krw":30595950,"주문수":130},{"brand":"Soundly","순매출_krw":22759750,"주문수":144},{"brand":"Walkon","순매출_krw":17782600,"주문수":125},{"brand":"Nova","순매출_krw":15608950,"주문수":140},{"brand":"ComfyPaws","순매출_krw":13120050,"주문수":117}]},"DELIV":{"DELIV-01_평균일":3.45,"DELIV-02_중앙값일":3.0,"DELIV-03_최소일":1,"DELIV-04_최대일":9,"DELIV-05_분모행수":2199,"DELIV-06_결측행수":0,"DELIV-07_보류제외행수":4,"DELIV-08_분포":{"1":378,"2":405,"3":413,"4":380,"5":413,"6":59,"7":52,"8":39,"9":60},"DELIV-09_3일이내_pct":54.4},"RATE":{"RATE-01_평균":4.44,"RATE-02_분모행수":2139,"RATE-03_무응답행수":64,"RATE-04_무응답_pct":2.9,"RATE-05_분포":{"1":0,"2":14,"3":127,"4":910,"5":1088},"RATE-06_4점이상_pct":93.4},"RET":{"RET-01_반품건수":103,"RET-02_반품률_pct":4.7,"RET-03_사유분포":{"Changed mind":17,"Damaged item":25,"Different from description":19,"Late delivery":22,"Wrong size":20}},"QUAL":{"QUAL-01_검사한행수":{"COST":2424,"DATE":2424,"DELIV":2424,"PRICE":2424,"QTY":2424,"RATING":2424,"RETURN":2424},"QUAL-02_플래그건수":{"A1":6,"A2":6,"A3":4,"A6":4,"A7":4},"QUAL-03_플래그정의":{"A1":"수량 0","A2":"수량 50 이상","A3":"단가 999999(입력 오류 표식)","A4":"단가 0 이하","A5":"원가 > 단가","A6":"배송일 음수","A7":"배송일 30 이상(보류)","A8":"미래 주문일","A9":"평점 범위 밖","A10":"반품 여부와 사유 불일치"},"QUAL-04_미판정":0},"HOLD":{"HOLD-01_승인필요건수":6,"HOLD-02_중복충돌":[{"행":853,"order_id":"ORD00852","quantity":"0","사유":"중복 order_id의 값 충돌(quantity) — 사람 승인 필요"},{"행":2425,"order_id":"ORD00852","quantity":"2","사유":"중복 order_id의 값 충돌(quantity) — 사람 승인 필요"}],"HOLD-03_배송이상":[{"행":435,"order_id":"ORD00434","delivery_days":"45","사유":"배송 45일 — 불가능하지는 않으나 확인 필요"},{"행":601,"order_id":"ORD00600","delivery_days":"45","사유":"배송 45일 — 불가능하지는 않으나 확인 필요"},{"행":767,"order_id":"ORD00766","delivery_days":"45","사유":"배송 45일 — 불가능하지는 않으나 확인 필요"},{"행":933,"order_id":"ORD00932","delivery_days":"45","사유":"배송 45일 — 불가능하지는 않으나 확인 필요"}]}}</script>
+<!--DATA:END-->
+
+<script>
+(function(){
+"use strict";
+var el = document.getElementById("baseline-data");
+if(!el){
+  document.getElementById("check").className = "check bad";
+  document.getElementById("check").textContent =
+    "데이터가 없다 — 상위 폴더에서 `python 계산.py`를 먼저 실행하라.";
+  return;
+}
+var B = JSON.parse(el.textContent);
+function comma(n){
+  if(n===null||n===undefined) return "—";
+  var i = Math.floor(Math.abs(n)), f = Math.abs(n)-i;
+  var s = String(i).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  if(f>0) s += String(Math.round(f*100)/100).slice(1);
+  return (n<0?"−":"")+s;
+}
+function kpi(k,v,u,p){
+  return '<div class="kpi"><div class="k">'+k+'</div><div class="v">'+v+
+    (u?' <span class="u">'+u+'</span>':'')+'</div><div class="p">'+p+'</div></div>';
+}
+document.getElementById("kpis").innerHTML =
+  kpi("분석 대상 주문", comma(B.ORD["ORD-01_분석대상주문수"]), "건", "ORD-01") +
+  kpi("총매출(취소·대기 제외, 반품 미차감)", comma(B.REV["REV-01_순매출_krw"]), "원", "REV-01") +
+  kpi("마진", comma(B.MGN["MGN-02_마진_krw"]), "원", "MGN-02 · "+B.MGN["MGN-03_마진율_pct"]+"%") +
+  kpi("평균 주문금액", comma(B.REV["REV-06_평균주문금액_krw"]), "원", "REV-06");
+
+document.getElementById("cond").textContent =
+  "데이터 조건: 원본 " + comma(B.ROW["ROW-01_원본행수"]) + "행 중 분석 대상 " +
+  comma(B.ROW["ROW-03_분석대상행수"]) + "행(제외 " + comma(B.ROW["ROW-04_제외행수"]) +
+  " · 보류 " + comma(B.ROW["ROW-05_보류행수"]) + ") · 기간 " + B.ORD["ORD-06_기간시작"] +
+  " ~ " + B.ORD["ORD-07_기간종료"] + " · 할인 후 · 배송비 제외 · 반품 미차감 · Completed만";
+
+var tb = document.querySelector("#t tbody"), sumRev = 0, sumMg = 0, sumN = 0;
+B.CAT["CAT-02_목록"].forEach(function(c){
+  sumRev += c["순매출_krw"]; sumMg += c["마진_krw"]; sumN += c["주문수"];
+  tb.insertAdjacentHTML("beforeend",
+    '<tr><td class="l">'+c.category+'</td><td>'+comma(c["주문수"])+'</td><td>'+
+    comma(c["순매출_krw"])+'</td><td>'+comma(c["마진_krw"])+'</td><td>'+
+    c["마진율_pct"]+'</td></tr>');
+});
+document.querySelector("#t tfoot").innerHTML =
+  '<tr><td class="l">합계</td><td>'+comma(sumN)+'</td><td>'+comma(sumRev)+'</td><td>'+
+  comma(sumMg)+'</td><td>'+B.MGN["MGN-03_마진율_pct"]+'</td></tr>';
+
+/* 최소 대조 — 표의 합이 총계와 맞는지, 조정표가 원본 행수와 맞는지 */
+var bad = [];
+if(sumRev !== B.REV["REV-01_순매출_krw"]) bad.push("상품군 매출 합 ≠ REV-01");
+if(sumMg  !== B.MGN["MGN-02_마진_krw"])   bad.push("상품군 마진 합 ≠ MGN-02");
+if(sumN   !== B.ROW["ROW-03_분석대상행수"]) bad.push("상품군 주문수 합 ≠ ROW-03");
+if(B.ROW["ROW-07_조정표합계"] !== B.ROW["ROW-01_원본행수"]) bad.push("조정표 합계 ≠ 원본 행수");
+var ck = document.getElementById("check");
+if(bad.length===0){
+  ck.className = "check ok";
+  ck.textContent = "대조 통과 4/4 — 상품군 합계가 총계와 같고, 조정표 합계 " +
+    comma(B.ROW["ROW-07_조정표합계"]) + "이 원본 행수와 같다.";
+}else{
+  ck.className = "check bad";
+  ck.textContent = "대조 실패 — " + bad.join(" · ");
+}
+document.getElementById("foot").innerHTML =
+  "원본 SHA-256 <code>" + B._meta["원본_sha256"] + "</code> · 원본 변경 없음: " +
+  (B._meta["원본_변경없음"] ? "확인됨" : "확인 실패") + "<br>" +
+  "반올림 — " + B._meta["반올림"];
+})();
+</script>
+</body>
+</html>
