@@ -1,82 +1,80 @@
-<!-- ============ PART 1 전환 (불변요소 — 모든 파트 앞 필수 · 헤더 없음 · 아이소 큐브 클러스터) ============ -->
-<section class="slide part-divider" data-slide="P1">
-  <!-- ⚠️ 도형·도트·PART n/N은 **JS가 자동 생성**한다(shell의 hydratePartDivider).
-       손으로 큐브를 그리거나 도트를 세지 마라 — 파트 수가 바뀌면 전부 어긋난다.
-       종전 이 템플릿은 큐브 3개와 도트 4개를 하드코딩하고 있었고, 자동 생성기
-       자체가 shell에 없어 **새 주차가 첫 조립부터 verify_deck FAIL 1**이었다
-       (「파트 전환 자동 생성기 누락」, 2026-08-03 실측·수정). 빈 훅으로 둔다. -->
-  <svg class="dv-hero" viewBox="0 0 1280 720" fill="none" aria-hidden="true"><!-- JS가 현재 파트 번호만큼 아이소 큐브를 자동 생성 --></svg>
-  <div class="pd-dots" aria-hidden="true"><!-- JS가 전체 파트 수만큼 자동 생성 --></div>
-  <p class="pd-eyebrow">PART</p><!-- JS가 PART n / N으로 자동 갱신 -->
-  <h2 class="pd-title">파트 제목</h2><!-- ✏️ 한 줄 고정(nowrap). 실측 56px·상자 1080px → 한글 약 19자까지 들어간다. 짧을수록 좋다 -->
-
-  <p class="pd-sub">이 파트에서 다루는 것 한 줄</p>
+<!-- ============ PART 1 · 오전 되짚기 · W1 담당 (W0 골격 2026-09-15) ============
+     이 파일의 data-slide 순서 = 계약 sequences.PART1 = 초안 순서:
+     P1(초안 B1-01 간지) · B1-02 · B1-03 · B1-04 · B1-05
+     간지 data-slide는 초안 번호가 아니라 P1이다(verify_deck 단조성 · 오전 A1-01→P1 선례).
+     본문 슬라이드는 간지 아래에 초안 순서대로 이어 붙인다. 이 파일 안에 style 블록을 두지 않는다.
+     전용 CSS는 웨이브별 CSS로 내고 메인이 revision.css 끝 «오후 이식» 구획에 병합했다. 규약: W0 기록 §4 -->
+<section class="slide part-divider" data-slide="P1" data-shape="declaration">
+  <svg class="dv-hero" viewBox="0 0 1280 720" fill="none" aria-hidden="true"></svg>
+  <div class="pd-dots" aria-hidden="true"></div>
+  <p class="pd-eyebrow">PART</p>
+  <h2 class="pd-title">오전 되짚기</h2>
+  <p class="pd-sub">오전에 무엇을 했고, 오후에는 그 고리 앞에 무엇이 더 붙는지 봅니다.</p>
+  <!-- 발표노트: 설명 — 오전에는 타자 게임을 만들고 한 가지씩 고쳐 봤습니다. 오후에는 같은 고리 앞에 «기준을 정한다» 한 칸이 더 붙습니다. -->
 </section>
 
-<!-- ============ 교시 로드맵 (골격 · 교시마다 같은 모양) ============
-     사용자가 세 번 요청한 「교시 로드맵 템플릿 통일」의 마크업 계약이다.
-     이 슬라이드를 교시 수만큼 복사하고 data-slide만 M1·M2·… 로 바꾼다.
-     CSS는 shell.html의 .roadmap 블록이 소유한다 — 파트에서 재정의하지 않는다.
+<!-- B1-02 · 신규 구도(W0 §3) — 오전 part-07 A7-02 issue-columns-slide 틀 · 그림 뺌 -->
+<section class="slide issue-columns-slide" data-slide="B1-02" data-shape="classification">
+  <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 1<br>오전 되짚기</div></header>
+  <div class="s-full ic-full">
+    <h2 class="s-title">오전에 <span class="hl-mint-text">말로</span> 만들고 고쳐 봤습니다</h2>
+    <div class="ic-band">
+      <p class="ic-lead"><strong>오전에 한 것</strong> — 말로 요청해 타자 게임을 만들고, 브라우저로 열고, 한 가지씩 고쳤습니다.</p>
+    </div>
+    <p class="ic-ask">함께 떠올려 볼 것</p>
+    <div class="grid-3 ic-cols">
+      <article class="card surface ic-col"><h3>조건을 다시 말한 적이 있나요?</h3><p>대화가 길어지며 앞에서 말한 조건을 한 번 더 적어야 했던 순간</p></article>
+      <article class="card surface ic-col"><h3>결과가 달랐던 적이 있나요?</h3><p>같은 요청인데 다른 수강생과 화면이 달랐던 순간</p></article>
+      <article class="card surface ic-col"><h3>말로 설명하기 어려웠나요?</h3><p>원하는 색·크기·배치를 말로만 전하려던 순간</p></article>
+    </div>
+    <p class="ic-example">이 순간들을 줄이는 방법이 <b>오후의 주제</b>입니다.</p>
+  </div>
+  <!-- 발표노트: 시연 — 강사 화면공유 자리입니다. 오전 타자 게임 폴더를 열어 보이며 채팅으로 한 줄씩 받습니다. 한계를 따로 시연하는 장이 아니라 떠올리는 장입니다. -->
+</section>
 
-     계약: section.slide.roadmap > div.s-full > h2.s-title + p.rm-lead + div.rm-track
-           rm-track > div.rm-step( span.rm-n + b + span.desc + span.rm-out )
-                    > span.rm-arrow (스텝 사이)
-     · 스텝 3~5개. 5개면 .rm-track에 is-5를 함께 준다(제목 한 단계 축소).
-     · 마지막 스텝을 도착점으로 강조하려면 .rm-step에 is-goal.
-     · 금지: 장식 아이콘 SVG · 스텝 6개 이상 · .rm-* 재정의.
-     · 이 장은 박스만 남기 쉽다 — 시각자료를 함께 둘 수 있는지 먼저 보라.
-     · .roadmap을 deck.contract.json의 layout_families에 등재할 것. -->
-<!-- ⚠️ data-shape — 결정표에서 정한 정보 모양을 그대로 적는다(R-BOX-01b).
-     정준 12종만: declaration·concept·comparison·contrast·flow·containment·
-     mapping·classification·numeric·structure·checklist·screen-operation
-     안 적으면 「모양의 1순위가 시각물인데 시각자료 0」 검사가 **측정 불가**가 된다. -->
-<section class="slide roadmap" data-slide="M1" data-shape="flow">
-  <header class="s-head">
-    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span>
-    <span class="s-line"></span><div class="s-team">팀명<br>부제</div>
-  </header>
-  <div class="s-full">
-    <h2 class="s-title">1교시 이렇게 배웁니다</h2><!-- ✏️ 교시 번호만 바꾼다 -->
-    <p class="rm-lead">이 교시에서 무엇을 만들고 나가는지 한 줄.</p><!-- ✏️ -->
-    <!-- ★ 시각자료 자리 — 아래 한 줄의 주석을 풀어 쓴다.
-         2주차 교시 로드맵 5장은 **장당 박스 12.6개(기준판의 2.3배)에 시각자료 0**이었다.
-         「박스만 있는 장」이 되는 가장 흔한 자리가 여기다.
-         무엇을 넣나: 이 교시의 산출물 실제 캡처 · 흐름 다이어그램(D-flow-h) ·
-         화면 목업 중 하나. 주석을 풀면 CSS(.rm-visual)가 트랙을 자동으로 좁힌다.
-         정말 넣을 것이 없으면 **스텝을 줄여 여백으로 두어라** — 스텝을 늘려
-         채우지 마라(그게 박스 남용이다).
-         ⚠️ 주석으로 두는 이유: 빈 `asset-slot`을 그대로 두면 R-QC-18(상시 FAIL)이
-            「채우기로 해 놓고 안 채운 자리」로 잡는다. 템플릿이 첫 조립부터 FAIL을
-            만들면 게이트를 무시하는 습관이 생긴다 — 쓸 때 풀어라.
-         ⚠️ 넣지 않기로 했으면 그 판단이 맞는지 조립 후 확인된다:
-            run_deck_checks가 「교시 로드맵에 시각자료 0」을 이름으로 지목한다.
-    <figure class="asset-slot asset-slot--support rm-visual" data-image-purpose="explanatory"
-      data-image-state="expected" data-expected-src="자료/images/roadmap-01.png"
-      role="img" aria-label="이 교시에서 만들어 가는 결과물의 실제 화면"></figure>
-    -->
-    <div class="rm-track"><!-- ✏️ 스텝 3~5개. 5개면 class="rm-track is-5" -->
-      <div class="rm-step">
-        <span class="rm-n">1</span>
-        <b>단계 제목</b><!-- ✏️ 명사형 -->
-        <span class="desc">무엇을 하는 단계인지 한 줄.</span><!-- ✏️ 25자 이내 -->
-        <span class="rm-out">산출물 · 무엇이 남는가</span><!-- ✏️ -->
+<!-- B1-03 · AC2 part-01 C1-1(compare-slide) 재사용 — 해시태그 삭제 · 목록 표시 · 그림 두 장을 각 칸 머리로 -->
+<section class="slide compare-slide" data-slide="B1-03" data-shape="contrast">
+  <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 1<br>오전에서 오후로</div></header>
+  <div class="s-full cc-full">
+    <h2 class="s-title">오전에서 오후로</h2>
+    <p class="s-body c11-lead"><b>고리는 그대로입니다.</b> 앞에 기준 결정이 붙고, 결정을 파일로 남기는 단계가 늘었습니다.</p>
+    <div class="cc-grid">
+      <div class="cc-side is-am">
+        <div class="c11-top">
+          <div class="c11-name"><h3>오전</h3><p class="c11-flow">요청 → 확인 → 수정</p></div>
+          <figure class="asset-slot asset-slot--support c11-art" data-image-purpose="explanatory" data-image-state="ready" data-expected-src="자료/images/s07_last-week-loop-paper-cut-v1-transparent.png" role="img" aria-label="말풍선·돋보기·연필이 원을 그리며 처음으로 되돌아오는 오전의 요청·확인·수정 고리"><img src="자료/images/s07_last-week-loop-paper-cut-v1-transparent.png" alt="말풍선·돋보기·연필이 원을 그리며 처음으로 되돌아오는 오전의 요청·확인·수정 고리"></figure>
+        </div>
+        <ul class="c11-list">
+          <li><b>무엇을</b> 시킬지는 그때그때 정했습니다</li>
+          <li>결과가 마음에 안 들면 <b>다시 요청</b>했습니다</li>
+          <li>대화창을 닫으면 <b>정한 것이 사라졌습니다</b></li>
+        </ul>
       </div>
-      <span class="rm-arrow" aria-hidden="true">→</span>
-      <div class="rm-step">
-        <span class="rm-n">2</span>
-        <b>단계 제목</b>
-        <span class="desc">무엇을 하는 단계인지 한 줄.</span>
-        <span class="rm-out">산출물 · 무엇이 남는가</span>
-      </div>
-      <span class="rm-arrow" aria-hidden="true">→</span>
-      <div class="rm-step is-goal">
-        <span class="rm-n">3</span>
-        <b>도착점</b>
-        <span class="desc">이 교시를 마치면 할 수 있는 것.</span>
-        <span class="rm-out">산출물 · 무엇이 남는가</span>
+      <div class="cc-neq" aria-hidden="true">→</div>
+      <div class="cc-side is-pm">
+        <div class="c11-top">
+          <div class="c11-name"><h3>오후</h3><p class="c11-flow"><span class="hl-mint-text">기준 결정</span> → 요청 → 확인 → 수정</p></div>
+          <figure class="asset-slot asset-slot--support c11-art" data-image-purpose="explanatory" data-image-state="ready" data-expected-src="자료/images/s07_this-week-decide-paper-cut-v1-transparent.png" role="img" aria-label="확인 표식에서 출발해 돋보기와 문서를 거쳐 깃발까지 곧게 이어지는 오후의 흐름"><img src="자료/images/s07_this-week-decide-paper-cut-v1-transparent.png" alt="확인 표식에서 출발해 돋보기와 문서를 거쳐 깃발까지 곧게 이어지는 오후의 흐름"></figure>
+        </div>
+        <ul class="c11-list">
+          <li><b>무엇을·어디까지·무엇이 되면 끝</b>인지 먼저 정합니다</li>
+          <li>정한 것을 <b>문서와 폴더</b>에 남깁니다</li>
+          <li>다음 대화가 그 파일을 <b>읽고 이어갑니다</b></li>
+        </ul>
       </div>
     </div>
+    <p class="s-body c11-foot">새로 배우는 게 아니라, <span class="hl-mint-underline">맨 앞에 결정 한 칸</span>이 늘어납니다.</p>
   </div>
+  <!-- 발표노트: 설명 — 오전의 사이클은 그대로 씁니다. 오후에는 그 앞에 «무엇을·어디까지·무엇이 되면 끝인지» 한 칸을 붙일 뿐이라고 안심시킵니다. -->
 </section>
 
-<!-- 이 파트의 본문 슬라이드(section.slide)는 이 아래에 이어서 추가한다. -->
+<!-- B1-04·B1-05 · 전환 화면 짝 — 오전 part-01 A1-03 · part-02 A2-10 조각 복사(G1 Q3). 두 장 연속은 «해줘. → 해.» 짝 연출 -->
+<section class="slide intro-do no-page-number" data-slide="B1-04" data-shape="declaration" aria-label="해줘">
+  <p>해줘.</p>
+  <!-- 발표노트: 설명 — 오전 도입부의 «해줘.»를 다시 불러, 다음 장의 «해.»와 대비할 준비를 합니다. -->
+</section>
+
+<section class="slide intro-do intro-do-answer no-page-number" data-slide="B1-05" data-shape="declaration" aria-label="해">
+  <p>해.</p>
+  <!-- 발표노트: 설명 — 말투가 아니라, 물어보는 자리에서 정하는 자리로 옮겨 왔다는 뜻입니다. 오후에는 그 정한 것을 문서에 적습니다. -->
+</section>

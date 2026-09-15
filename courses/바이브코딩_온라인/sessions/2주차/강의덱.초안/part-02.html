@@ -1,0 +1,475 @@
+<!-- ============ PART 2 · Prompt · Context · Markdown · W1 담당 (W0 골격 2026-09-15) ============
+     이 파일의 data-slide 순서 = 계약 sequences.PART2 = 초안 순서:
+     P2(초안 B2-01 간지) · B2-02 · B2-03 · B2-04 · B2-05 · B2-06 · B2-07 · B2-08 · B2-09 · B2-10 · B2-11 · B2-12 · B2-13 · B2-14 · B2-15 · B2-16 · B2-17
+     간지 data-slide는 초안 번호가 아니라 P2이다(verify_deck 단조성 · 오전 A1-01→P1 선례).
+     본문 슬라이드는 간지 아래에 초안 순서대로 이어 붙인다. 이 파일 안에 style 블록을 두지 않는다.
+     전용 CSS는 웨이브별 CSS로 내고 메인이 revision.css 끝 «오후 이식» 구획에 병합했다. 규약: W0 기록 §4 -->
+<section class="slide part-divider" data-slide="P2" data-shape="declaration">
+  <svg class="dv-hero" viewBox="0 0 1280 720" fill="none" aria-hidden="true"></svg>
+  <div class="pd-dots" aria-hidden="true"></div>
+  <p class="pd-eyebrow">PART</p>
+  <h2 class="pd-title">Prompt · Context · Markdown</h2>
+  <p class="pd-sub">무엇을, 어디까지, 무엇이 되면 끝인가 — 요청에 담을 것, 함께 넘길 것, 파일로 남길 것을 봅니다.</p>
+  <!-- 발표노트: 설명 — 이 PART는 세 묶음입니다. Prompt는 «이번 한 번의 요청», Context는 그 요청과 함께 AI가 보는 모든 것, Markdown은 그 기준을 파일로 남기는 방법입니다. -->
+</section>
+
+<!-- B2-02 · AC2 part-02 N-03(n2-parts) — 다섯 칸 예시를 사이트로 -->
+<section class="slide n2-stage n2-parts" data-slide="B2-02" data-shape="classification">
+  <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 2<br>Prompt</div></header>
+  <div class="s-full">
+    <h2 class="s-title">Prompt는 다섯 칸으로 설계합니다</h2>
+    <p class="n2-lead"><b>Prompt Engineering</b>은 AI에게 어떤 요청을 어떻게 전달할지 설계하는 방법입니다. 다섯 칸을 채우면 <span class="hl-mint-mark">AI가 추측할 빈칸이 줄어듭니다</span>.</p>
+    <div class="n03-strip viz-parts" role="img" aria-label="요청 하나를 이루는 다섯 요소: 목표, 범위, 조건, 출력, 완료 기준이 더해져 한 요청이 된다. 칸마다 나를 소개하는 웹사이트 예시가 붙어 있다">
+      <div class="n03-slot"><span class="n03-no">1</span><b>목표</b><span class="desc">무엇을 얻고 싶은가</span><span class="desc n03-eg">예: 나를 소개하는 웹사이트 만들기</span></div>
+      <span class="n03-join" aria-hidden="true">+</span>
+      <div class="n03-slot"><span class="n03-no">2</span><b>범위</b><span class="desc">어디까지 볼 것인가</span><span class="desc n03-eg">예: 한 페이지 · 이름·한 줄 소개·관심사 2~3개만</span></div>
+      <span class="n03-join" aria-hidden="true">+</span>
+      <div class="n03-slot"><span class="n03-no">3</span><b>조건</b><span class="desc">무엇을 지켜야 하나</span><span class="desc n03-eg">예: 내가 주지 않은 경력·연락처는 만들지 않기</span></div>
+      <span class="n03-join" aria-hidden="true">+</span>
+      <div class="n03-slot"><span class="n03-no">4</span><b>출력</b><span class="desc">어떤 모양으로 받을까</span><span class="desc n03-eg">예: <code>index.html</code> · <code>style.css</code> · <code>script.js</code> 세 파일</span></div>
+      <span class="n03-join" aria-hidden="true">+</span>
+      <div class="n03-slot is-end"><span class="n03-no">5</span><b>완료 기준</b><span class="desc">무엇이 되면 끝인가</span><span class="desc n03-eg">예: 브라우저에서 이름·한 줄 소개·관심사가 모두 보임</span></div>
+    </div>
+  </div>
+  <!-- 발표노트: 설명 — Prompt Engineering의 정의부터 읽고 다섯 칸으로 내려갑니다. 예시는 전부 오후 실습 소재(나를 소개하는 웹사이트)에서 뽑았습니다. -->
+</section>
+
+<!-- B2-03 · 오전 part-04 A4-03(eng-axis-slide eng-prompt) 복사(G1 Q3) — 예시 교체 · «점검표로 쓰기» 한 단위 추가 -->
+<section class="slide eng-axis-slide eng-prompt" data-slide="B2-03" data-shape="classification">
+  <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 2<br>Prompt</div></header>
+  <div class="s-full eng-layout">
+    <div class="eng-head">
+      <div class="eng-head-copy"><h2 class="eng-title"><span class="eng-en">Prompt Engineering</span><span class="eng-ko">프롬프트 엔지니어링</span></h2><p class="eng-q">무엇을 <strong>지시</strong>할 것인가?</p></div>
+      <p class="eng-check"><b>점검표로 쓰기</b>네 원칙은 앞 장의 다섯 칸을 채운 뒤 빠진 것이 없는지 보는 <strong>체크리스트</strong>입니다.</p>
+    </div>
+    <article class="eng-concept"><h3>주요 개념</h3><p>AI에게 전달하는 <strong>작업 · 목표 · 조건 · 출력형식</strong>을 명확하게 설계합니다.</p></article>
+    <div class="eng-right">
+      <div class="eng-four">
+        <article><b>명확성</b><span>Clarity</span><p>원하는 결과를 구체적으로 설명할 것</p></article>
+        <article><b>역할</b><span>Persona</span><p>AI가 어떤 역할로 응답할지 지정할 것</p></article>
+        <article><b>조건</b><span>Constraints</span><p>핵심 조건을 구체적으로 제공할 것</p></article>
+        <article><b>출력형식</b><span>Format</span><p>형식 · 길이 · 스타일을 명시할 것</p></article>
+      </div>
+      <div class="eng-example">
+        <article class="eng-bad"><h4>이렇게 쓰면</h4><p>“자기소개 페이지 만들어줘”</p></article>
+        <article class="eng-good"><h4>이렇게 씁니다</h4><ul><li>너는 웹페이지를 만드는 <b>제작자</b>야</li><li>나를 소개하는 <b>한 페이지</b>를 만들려고 해</li><li><b>index.html · style.css · script.js</b> 세 파일로 나눠</li><li><b>브라우저에서 바로 열리는</b> 한 페이지로 만들어</li></ul></article>
+      </div>
+    </div>
+  </div>
+  <!-- 발표노트: 설명 — 영어 용어를 외우게 하지 않습니다. «AI에게 뭐라고 말할지 정하는 것»으로 풀고, 오전에 본 네 원칙을 오후 소재로 다시 대어 보는 장이라고 안내합니다. -->
+</section>
+
+<!-- B2-04 · AC2 part-02 N-04(n2-requests) — 어두운 입력 상자 두 개 → 흰 Codex 입력창 상자 · 칸 이름 칩 5 -->
+<section class="slide n2-stage n2-requests" data-slide="B2-04" data-shape="comparison">
+  <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 2<br>Prompt</div></header>
+  <div class="s-full">
+    <h2 class="s-title">막연한 요청과 구조화된 요청</h2>
+    <div class="n04-bands">
+      <div class="n04-band is-vague">
+        <div class="n04-head"><b>막연한 요청</b><span class="desc">목표만 있고 나머지는 추측</span></div>
+        <div class="codex-input n04-term" aria-label="Codex 입력창에 넣을 요청문 — 막연한 요청"><span class="codex-input-label">요청문 · Codex 입력창</span><p>자기소개 사이트 만들어줘.</p></div>
+      </div>
+      <div class="n04-band is-clear">
+        <div class="n04-head"><b>구조화된 요청</b><span class="desc">줄마다 <span class="hl-mint-text">담긴 칸</span>이 보입니다</span></div>
+        <div class="codex-input n04-term" aria-label="Codex 입력창에 넣을 요청문 — 구조화된 요청과 줄마다 담긴 칸"><span class="codex-input-label">요청문 · Codex 입력창</span><p>
+          <span class="n04-line"><span>나를 처음 알게 된 사람이 볼 자기소개 웹사이트를 만들어 주세요.</span><span class="n04-el">목표</span></span>
+          <span class="n04-line"><span>이름 · 한 줄 소개 · 관심사 2~3개만 한 페이지에 보여 주세요.</span><span class="n04-el">범위</span></span>
+          <span class="n04-line"><span>제가 주지 않은 경력 · 연락처는 만들지 마세요.</span><span class="n04-el">조건</span></span>
+          <span class="n04-line"><span>index.html · style.css · script.js 세 파일로 만들어 주세요.</span><span class="n04-el">출력</span></span>
+          <span class="n04-line"><span>브라우저에서 세 가지가 모두 보이면 끝입니다.</span><span class="n04-el">완료 기준</span></span>
+        </p></div>
+      </div>
+    </div>
+  </div>
+  <!-- 발표노트: 시연 — 위 한 줄과 아래 다섯 문장을 소리 내어 비교합니다. 문장 끝 칩이 앞 장 다섯 칸 중 무엇을 채웠는지 보여 줍니다. -->
+</section>
+
+<!-- B2-05 · AC2 part-02 C1-N3(compare-slide) — 입력 위치 표기를 Codex 입력창으로 · 예시 교체 -->
+<section class="slide compare-slide" data-slide="B2-05" data-shape="comparison">
+  <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 2<br>Prompt</div></header>
+  <div class="s-full cc-full">
+    <h2 class="s-title">프롬프트를 먼저 만들고 작업을 시킵니다</h2>
+    <p class="s-body cn3-lead">AI에게 일을 시키기 전에, <b>AI에게 그 일을 시킬 문장을 먼저 써 달라고</b> 합니다.</p>
+    <div class="cc-grid">
+      <div class="cc-side">
+        <h3>바로 시키기</h3>
+        <ul>
+          <li><b>Codex 입력창에 바로 입력합니다.</b>
+            <span class="subline">“내 자기소개 사이트 만들어줘”라고 그 자리에서 시킵니다.</span></li>
+        </ul>
+      </div>
+      <div class="cc-neq" aria-hidden="true">→</div>
+      <div class="cc-side">
+        <h3>프롬프트부터 받기</h3>
+        <ul>
+          <li><b>Codex에게 프롬프트를 먼저 써 달라고 요청합니다.</b>
+            <span class="subline">“자기소개 사이트를 만들 요청문을 목표·범위·조건·출력·완료 기준 다섯 칸으로 작성해 줘”</span></li>
+        </ul>
+      </div>
+    </div>
+    <p class="callout">한 번뿐인 질문은 바로 시키고, 반복해서 쓸 지시는 <span class="hl-mint-mark">프롬프트부터 받아 둡니다</span>.</p>
+  </div>
+  <!-- 발표노트: 설명 — 같은 요청도 지금 바로 시키는 것과, 프롬프트부터 받아 읽어 보고 쓰는 것의 결과가 다릅니다. 받은 프롬프트도 사람이 읽고 고친 뒤에 씁니다. -->
+</section>
+
+<!-- B2-06 · VC1 part-03 S3LM(limit-slide limit-lm) — 차트 재사용 · 보강 한 단위(가운데 구간) -->
+<section class="slide limit-slide limit-lm" data-slide="B2-06" data-shape="concept">
+  <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 2<br>중간 유실</div></header>
+  <div class="s-full limit-layout">
+    <h2 class="limit-title"><span class="limit-en">Lost in the Middle</span><span class="limit-ko">중간 유실 현상</span></h2>
+    <div class="limit-body">
+      <div class="limit-copy">
+        <p class="limit-lead">긴 문맥(Context)을 처리할 때,<br>입력의 <strong>시작과 끝</strong>은 잘 기억하지만<br><strong class="limit-mark">중간에 위치한 정보</strong>는 누락하거나 제대로 활용하지 못하는 현상입니다.</p>
+        <p class="limit-mid"><b>가운데 구간</b>중요한 자료가 가운데에 있으면, 자료를 아예 주지 않았을 때보다 못한 결과가 나오기도 합니다.</p>
+        <p class="limit-apply">그래서 <b>꼭 지킬 조건</b>은 요청의 맨 앞이나 맨 뒤에 두고, 길어지면 한 번 더 적습니다.</p>
+      </div>
+      <figure class="lm-chart" role="img" aria-label="문서 20개를 넣었을 때 정답이 든 문서의 위치별 정확도. 1번째 75.8퍼센트에서 10번째 53.8퍼센트까지 떨어졌다가 20번째 63.2퍼센트로 회복하는 U자 곡선이며, 문서를 하나도 주지 않았을 때의 정확도인 56.1퍼센트보다 낮아지는 구간이 있다.">
+        <figcaption class="lm-cap"><b>20 Total Retrieved Documents (~4K tokens)</b><span>문서 20개를 함께 넣었을 때</span></figcaption>
+        <svg class="lm-svg" viewBox="0 0 600 336" aria-hidden="true">
+          <line class="lm-grid" x1="78" y1="66" x2="570" y2="66"/>
+          <line class="lm-grid" x1="78" y1="108" x2="570" y2="108"/>
+          <line class="lm-grid" x1="78" y1="151" x2="570" y2="151"/>
+          <line class="lm-grid" x1="78" y1="194" x2="570" y2="194"/>
+          <line class="lm-grid" x1="78" y1="236" x2="570" y2="236"/>
+          <line class="lm-base" x1="78" y1="227" x2="570" y2="227"/>
+          <text class="lm-tick lm-tick-y" x="68" y="72">75</text>
+          <text class="lm-tick lm-tick-y" x="68" y="114">70</text>
+          <text class="lm-tick lm-tick-y" x="68" y="157">65</text>
+          <text class="lm-tick lm-tick-y" x="68" y="200">60</text>
+          <text class="lm-tick lm-tick-y" x="68" y="242">55</text>
+          <line class="lm-axis" x1="78" y1="40" x2="78" y2="262"/>
+          <line class="lm-axis" x1="78" y1="262" x2="570" y2="262"/>
+          <polyline class="lm-series" points="78,59 182,218 311,247 440,233 570,166"/>
+          <circle class="lm-dot" cx="78" cy="59" r="6"/>
+          <circle class="lm-dot" cx="182" cy="218" r="6"/>
+          <circle class="lm-dot is-low" cx="311" cy="247" r="7"/>
+          <circle class="lm-dot" cx="440" cy="233" r="6"/>
+          <circle class="lm-dot" cx="570" cy="166" r="6"/>
+          <text class="lm-val" x="78" y="42">75.8</text>
+          <rect class="lm-low-label-bg" x="279" y="194" width="64" height="30" rx="8"/>
+          <text class="lm-val is-low lm-low-label" x="311" y="215">53.8</text>
+          <text class="lm-val" x="558" y="150">63.2</text>
+          <text class="lm-tick" x="78" y="284">1st</text>
+          <text class="lm-tick" x="182" y="284">5th</text>
+          <text class="lm-tick" x="311" y="284">10th</text>
+          <text class="lm-tick" x="440" y="284">15th</text>
+          <text class="lm-tick" x="570" y="284">20th</text>
+          <text class="lm-axis-name" x="324" y="302"><tspan x="324">Position of Document with the Answer</tspan><tspan x="324" dy="26">정답이 든 문서의 위치</tspan></text>
+          <text class="lm-axis-name lm-axis-y" x="0" y="0" transform="translate(22,151) rotate(-90)">Accuracy · 정확도</text>
+        </svg>
+        <p class="lm-legend"><span class="lm-key-line"></span>gpt-3.5-turbo-0613<span class="lm-key-dash"></span>문서를 하나도 주지 않았을 때 <b>56.1</b></p>
+      </figure>
+    </div>
+  </div>
+  <!-- 발표노트: 시연 — 차트는 «가운데가 푹 꺼진 모양» 하나만 짚습니다. 수치를 외우게 하지 않습니다. -->
+</section>
+
+<!-- B2-07 · AC2 part-03 N-06(n2-lost) — 처음 조건 예시 교체 · 원문 표현만(must_keep) -->
+<section class="slide n2-stage n2-lost" data-slide="B2-07" data-shape="flow">
+  <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 2<br>긴 대화</div></header>
+  <div class="s-full">
+    <h2 class="s-title">긴 대화에서는 <span class="hl-mint-text">처음에 말한 조건이 약해집니다</span></h2>
+    <p class="n2-lead">앞 장의 «중간 유실»이 긴 대화에서 실제로 무엇을 잃게 하는지입니다.</p>
+    <p class="n2-lead n06-src">긴 대화나 장기 작업에서 <span class="hl-mint-underline">처음에 전달한 요구사항이나 조건</span>이 약해지거나 누락될 수 있습니다.</p>
+    <div class="n06-flow viz-flow" role="img" aria-label="대화가 길어지면 처음 조건(관심사 2~3개만 · 경력 지어내지 않기)이 약해져 관심사가 늘거나 쓰지 않은 경력이 섞일 수 있고, 보완책으로 그 조건을 기준 문서에 적어 요청할 때마다 다시 읽히게 하는 세 단계 흐름">
+      <div class="n06-step">
+        <b>① 대화가 길어짐</b>
+        <div class="n06-chat">
+          <p class="n06-msg is-first"><span class="desc">처음 조건: 관심사 2~3개만 · 경력 지어내지 않기</span></p>
+          <p class="n06-msg"><span class="desc">요청 · 답변</span></p>
+          <p class="n06-msg"><span class="desc">수정 요청 · 답변</span></p>
+          <p class="n06-msg"><span class="desc">또 수정 요청이 계속 쌓임</span></p>
+        </div>
+      </div>
+      <span class="n06-arrow" aria-hidden="true">→</span>
+      <div class="n06-step is-warn">
+        <b>② 처음 조건이 약해짐</b>
+        <div class="n06-chat">
+          <p class="n06-msg is-lost"><span class="desc">예: 관심사가 다섯 개로 늘어남</span></p>
+          <p class="n06-msg is-lost"><span class="desc">예: 쓰지 않은 경력 문장이 섞임</span></p>
+        </div>
+      </div>
+      <span class="n06-arrow" aria-hidden="true">→</span>
+      <div class="n06-step is-fix">
+        <b>③ 중요한 정보는 문서로</b>
+        <div class="n06-chat">
+          <p class="n06-file"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h8l4 4v14H6z" style="fill:var(--white);stroke:var(--mint-deep)" stroke-width="1.8" stroke-linejoin="round"/><path d="M14 3v4h4" style="fill:none;stroke:var(--mint-deep)" stroke-width="1.8"/></svg><code>기준 문서 (.md)</code></p>
+          <p class="n06-msg is-keep"><span class="desc">관심사 2~3개 · 경력 지어내지 않기</span></p>
+          <p class="n06-msg is-keep"><span class="desc">요청할 때마다 다시 읽힘</span></p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- 발표노트: 설명 — 원본 표현 그대로 «처음에 전달한 요구사항이나 조건이 약해지거나 누락될 수 있다»까지만 말합니다. 수치나 «중간만 사라진다» 같은 단정은 덧붙이지 않습니다. -->
+</section>
+
+<!-- B2-08 · 전환 화면 Context — 오전 A1-03 전환 구도 + 한 줄 부제(G1 Q6 · 부제는 p가 아닌 div) -->
+<section class="slide intro-do intro-do-sub no-page-number" data-slide="B2-08" data-shape="declaration" aria-label="Context">
+  <p>Context</p>
+  <div class="intro-do-subline">AI가 지금 보고 있는 것 — 무엇을 함께 넘기고, 정한 것을 어디에 남기는가.</div>
+  <!-- 발표노트: 설명 — Prompt가 «이번 한 번의 요청»이라면 Context는 그 요청과 함께 AI가 보는 모든 것입니다. -->
+</section>
+
+<!-- B2-09 · AC2 part-03 N-05(n2-hub) — 허브 네 칸 그대로 -->
+<section class="slide n2-stage n2-hub" data-slide="B2-09" data-shape="containment">
+  <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 2<br>Context</div></header>
+  <div class="s-full">
+    <h2 class="s-title">Context는 요청과 함께 넘기는 자료입니다</h2>
+    <p class="n2-lead"><b>Context Engineering</b>은 AI가 필요한 정보를 제대로 참고하도록 맥락을 구성하는 방법입니다. <span class="hl-mint-underline">같은 요청이라도 함께 넘긴 자료만큼</span> 결과가 달라집니다.</p>
+    <div class="viz-radial" role="img" aria-label="이번 요청을 가운데 두고 프로젝트 설명, 자료, 규칙, 오류 메시지 네 가지가 함께 넘어가는 Context 구성">
+      <svg viewBox="0 0 900 360" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <line class="rad-spoke on" x1="450" y1="180" x2="175" y2="84"/>
+        <line class="rad-spoke on" x1="450" y1="180" x2="725" y2="84"/>
+        <line class="rad-spoke on" x1="450" y1="180" x2="175" y2="280"/>
+        <line class="rad-spoke on" x1="450" y1="180" x2="725" y2="280"/>
+      </svg>
+      <div class="rad-hub"><b>이번 요청<small>Prompt</small></b></div>
+      <div class="rad-sat" style="left:175px;top:84px;"><h3>프로젝트 설명</h3><p class="desc">무엇을 만드는 중인가</p></div>
+      <div class="rad-sat" style="left:725px;top:84px;"><h3>자료</h3><p class="desc">요구사항 · 기존 문서 · 참고 자료</p></div>
+      <div class="rad-sat" style="left:175px;top:280px;"><h3>규칙</h3><p class="desc">지켜야 할 작업 규칙</p></div>
+      <div class="rad-sat" style="left:725px;top:280px;"><h3>오류 메시지</h3><p class="desc">실패했을 때 나온 그대로</p></div>
+    </div>
+  </div>
+  <!-- 발표노트: 설명 — Context Engineering 정의를 읽고 네 가지를 짚습니다. 오후에는 «프로젝트 설명·자료·규칙»이 곧 prd.md·design.md·AGENTS.md가 된다고 예고합니다. -->
+</section>
+
+<!-- B2-10 · VC1 part-03 S3CE(eng-axis-slide eng-context) — 원본 그대로(라벨 «이렇게 쓰면» · 보조 문장은 초안 범위만) -->
+<section class="slide eng-axis-slide eng-context" data-slide="B2-10" data-shape="classification">
+  <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 2<br>Context</div></header>
+  <div class="s-full eng-layout">
+    <div class="eng-head"><h2 class="eng-title"><span class="eng-en">Context Engineering</span><span class="eng-ko">컨텍스트 엔지니어링</span></h2><p class="eng-q">무엇을 <strong>제공</strong>할 것인가?</p></div>
+    <article class="eng-concept"><h3>주요 개념</h3><p>AI의 더 유용한 답변을 위해 <strong>배경정보 · 참고자료 · 판단기준 · 제약조건</strong>을 함께 제공해 맥락을 설계합니다.</p><p class="eng-note">지시를 다듬는 것만으로는 부족합니다.</p></article>
+    <div class="eng-right">
+      <div class="eng-four">
+        <article><b>배경 정보</b><span>Background</span><p>이 요청이 왜 필요한지 목적과 상황을 줄 것</p></article>
+        <article><b>참고 자료</b><span>Reference</span><p>참조할 문서 · 데이터 · 관련 정보를 줄 것</p></article>
+        <article><b>판단 기준</b><span>Criteria</span><p>어떤 기준으로 볼지 명확하게 줄 것</p></article>
+        <article><b>제약 조건</b><span>Constraints</span><p>하지 말아야 할 것과 지킬 형식을 줄 것</p></article>
+      </div>
+      <div class="eng-example">
+        <article class="eng-bad"><h4>이렇게 쓰면</h4><p>“자기소개 페이지 예쁘게 만들어줘”</p></article>
+        <article class="eng-good"><h4>이렇게 씁니다</h4><ul><li>처음 배우는 사람이 볼 거라 <b>읽기 쉬워야</b> 해</li><li>활동명 ○○, 소개 ○○, <b>관심사 ○○·○○</b>이야</li><li><b>이 세 가지가 다 보이면</b> 완성이야</li><li>설치·서버 쓰지 말고, <b>없는 경력 만들지 마</b></li></ul></article>
+      </div>
+    </div>
+  </div>
+  <!-- 발표노트: 설명 — 앞의 Prompt Engineering 장과 짝입니다. 판단 기준은 요청에 함께 담아, 이후 결과를 확인할 때 쓰는 기준이 됩니다. -->
+</section>
+
+<!-- B2-11 · AC2 part-03 C1-12(w2-persist) — 맥락/메모리 두 정의 줄 추가 -->
+<section class="slide w2-persist" data-slide="B2-11" data-shape="contrast">
+  <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 2<br>세션과 파일</div></header>
+  <div class="s-full">
+    <h2 class="s-title">대화 세션이 끝나면 결정도 사라집니다</h2>
+    <p class="ps-lead">채팅 하나하나가 하나의 <strong>세션</strong>입니다. 새 세션을 열면 AI는 <strong>이전 세션에서 정한 것을 모릅니다</strong>.
+      <span class="subline">결정이 그 세션의 <b>컨텍스트</b>(그 대화 안에서만 오간 맥락) 안에만 있었기 때문입니다.</span></p>
+    <div class="c112-def">
+      <p><b>맥락 (Context)</b>지금 대화에 실제로 들어온 정보입니다.</p>
+      <p><b>메모리 (Memory)</b>다음에도 참고하도록 남긴 정보입니다. 모든 대화를 자동으로 기억하는 기능이 아닙니다.</p>
+    </div>
+    <div class="c112-mem">
+      <div class="c112-mem-col">
+        <b>LLM의 «메모리»</b>
+        <span class="subline">이전 대화 내용이 <b>서비스 서버에</b> 저장돼 다음 대화에 불려 옵니다. 무엇이 저장됐는지 내가 열어 보기 어렵습니다.</span>
+      </div>
+      <div class="c112-mem-col is-agent">
+        <b>에이전트의 «작업 폴더»</b>
+        <span class="subline">결과물이 <b>내 폴더 안 파일로</b> 남고, 다음 대화가 그 파일을 직접 읽습니다. 내가 열어 보고 고칠 수 있습니다.</span>
+      </div>
+    </div>
+    <div class="ps-grid">
+      <div class="ps-col is-bad">
+        <h3>대화로만 남기면</h3>
+        <p class="ps-line">새 대화를 열 때마다 <b>처음부터 다시 설명</b>합니다</p>
+      </div>
+      <div class="ps-mid">
+        <figure class="ps-mid-img viz-c112-contrast" role="img" aria-label="흐려지며 흩어지는 말풍선과 선명하게 남아 있는 파일이 대비되어, 대화로만 남긴 결정은 사라지고 폴더 안 파일로 남긴 결정은 다음 대화까지 이어짐을 보여 준다">
+          <svg viewBox="0 0 260 260" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M40 60 Q20 60 20 85 Q20 110 45 110 L60 110 L52 128 L78 110 L150 110 Q170 110 170 85 Q170 60 150 60 Z" style="fill:var(--coral-soft)" opacity="0.55"/>
+            <path d="M40 60 Q20 60 20 85 Q20 110 45 110 L60 110 L52 128 L78 110 L150 110 Q170 110 170 85 Q170 60 150 60 Z" style="fill:none;stroke:var(--coral-deep)" stroke-width="2" stroke-dasharray="3 6" opacity="0.7"/>
+            <rect x="120" y="150" width="100" height="90" rx="8" style="fill:var(--mint)"/>
+            <rect x="132" y="168" width="76" height="8" rx="4" style="fill:var(--on-mint)" opacity="0.85"/>
+            <rect x="132" y="188" width="76" height="8" rx="4" style="fill:var(--on-mint)" opacity="0.85"/>
+            <rect x="132" y="208" width="50" height="8" rx="4" style="fill:var(--on-mint)" opacity="0.85"/>
+          </svg>
+        </figure>
+        <span class="ps-arrow" aria-hidden="true">&#8594;</span>
+      </div>
+      <div class="ps-col is-good">
+        <h3>폴더 안 파일로 남기면</h3>
+        <p class="ps-line">다음 대화가 그 파일을 <b>읽고 이어갑니다</b></p>
+      </div>
+    </div>
+  </div>
+  <!-- 발표노트: 설명 — 대화는 세션이 끝나면 잊히지만, Codex는 폴더 안 파일을 읽고 이어갈 수 있다는 차이를 짚습니다. AI가 모든 대화를 자동으로 영구 기억한다고 가정하지 않게 하세요. -->
+</section>
+
+<!-- B2-12 · 신규 구도(W0 §3) — 오전 part-04 A4-08 scope-contrast-slide 틀 · 대화 ≠ 문서 + 결론 + 회의록 비유 -->
+<section class="slide scope-contrast-slide" data-slide="B2-12" data-shape="contrast">
+  <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 2<br>대화와 문서</div></header>
+  <div class="s-full cc-full">
+    <h2 class="s-title">대화와 문서는 <span class="hl-mint-text">역할이 다릅니다</span></h2>
+    <div class="cc-grid">
+      <div class="cc-side ai"><h3>대화</h3><ul><li>탐색하고 질문하기</li></ul></div>
+      <div class="cc-neq" aria-hidden="true">≠</div>
+      <div class="cc-side human"><h3>문서</h3><ul><li>결정을 보존하기</li></ul></div>
+    </div>
+    <p class="scope-lead"><strong>대화는 흘러가고, 결정은 문서로 남깁니다.</strong></p>
+    <div class="scope-notes"><p><b>회의록처럼</b>회의 잡담은 기억나도 회의록이 없으면 다음 날 다시 회의합니다. 채팅은 위로 밀려 사라지니, 지킬 기준은 문서에 남깁니다.</p></div>
+  </div>
+  <!-- 발표노트: 설명 — 오전에 대화로만 고친 경험을 떠올리게 하고, 오후에는 정한 것을 문서로 남긴다는 결론으로 이어 갑니다. -->
+</section>
+
+<!-- B2-13 · AC2 part-03 C4-12(w2-nest) — 하네스 정식 정의(유일한 장 · must_keep) · 하네스 엔지니어링 한 문장 추가 -->
+<section class="slide w2-nest" data-slide="B2-13" data-shape="containment">
+  <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 2<br>하네스</div></header>
+  <div class="s-full">
+    <h2 class="s-title">프롬프트 · 컨텍스트 · 하네스</h2>
+    <p class="ns-lead">범위 · 순서 · 증거 · 멈춤 같은 약속은 프롬프트 한 줄보다 큰 바깥 구조에 놓입니다.<br><span class="ns-flow-line">프롬프트가 컨텍스트 <span class="hl-mint-text">안에</span>, 컨텍스트가 하네스 <span class="hl-mint-text">안에</span> 들어 있습니다.</span></p>
+    <div class="ns-body viz-nesting">
+      <div class="ns-ring ns-r3">
+        <div class="ns-head"><b>하네스 (Harness)</b><span>맡기기 전에 규칙 · 권한을 주고, 끝난 뒤에 확인까지 하는 바깥 틀입니다.</span></div>
+        <p class="ns-def">이 틀을 설계하는 일을 <b>하네스 엔지니어링</b>이라고 합니다 — AI가 일하는 동안 환경 · 도구 · 규칙 · 확인 구조를 설계하는 일.</p>
+        <div class="ns-ring ns-r2">
+          <div class="ns-head"><b>컨텍스트</b><span>지금 AI가 보고 있는 것. 읽은 파일과 나눈 대화.</span></div>
+          <div class="ns-ring ns-r1">
+            <div class="ns-head"><b>프롬프트</b><span>지금 이 한 번, 내가 친 그 문장.</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="ns-why">
+        <p class="ns-wh">하네스가 왜 필요한가 — 모델이 스스로 못 하는 세 가지</p>
+        <div class="ns-item"><b>저장</b><span>모델은 파일을 쓸 수 없습니다.<span class="subline">파일 쓰기 도구가 대신 실행합니다.</span></span></div>
+        <div class="ns-item"><b>기억</b><span>한 번에 담는 양에 상한이 있습니다.<span class="subline">앞 대화가 상한을 넘으면 밀려나 사라집니다.</span></span></div>
+        <div class="ns-item"><b>확인</b><span>자기 결과가 맞는지 스스로 판정할 수 없습니다.<span class="subline">테스트를 돌리거나 사람이 검토해야 확정됩니다.</span></span></div>
+      </div>
+    </div>
+    <p class="ns-foot">&ldquo;이제 프롬프트는 필요 없다&rdquo;는 말은 정확하지 않습니다.
+      <span class="subline"><span class="hl-mint-mark">없어진 게 아니라 가장 안쪽 자리로 들어간 것입니다.</span></span></p>
+  </div>
+  <!-- 발표노트: 설명 — 오늘 «하네스»라는 전문용어를 정식으로 정의하는 유일한 장입니다. 세 겹 그림을 안쪽(프롬프트)부터 바깥(하네스)으로 짚고, 프롬프트는 없어지는 것이 아니라 하네스 안쪽에서 이번 한 번의 요청을 담당한다고 설명합니다. -->
+</section>
+
+<!-- B2-14 · AC2 part-05 C4-H1 — 제목 전폭 + [글 | 그림] 2열로 재배치(원본 겹침 2건 수리) · «이 과정에서는» 약속 한 줄(must_keep) -->
+<section class="slide" data-slide="B2-14" data-shape="mapping">
+  <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 2<br>하네스 비유</div></header>
+  <div class="s-full hm-full">
+    <p class="hm-kicker">하네스라는 이름의 비유</p>
+    <h2 class="s-title">힘센 말도 마구 없이는 목적지로 가지 못합니다</h2>
+    <div class="hm-grid">
+      <div class="hm-copy">
+        <p class="hm-lead"><b>마구(馬具)</b>는 말의 힘을 줄이는 장치가 아니라, 힘을 수레 · 도구 · 목적지와 연결하는 장치입니다.</p>
+        <div class="hm-pairs" aria-label="말의 힘이 마구를 거쳐 수레와 확인 문으로 이어지는 비유와 하네스 엔지니어링 요소의 대응">
+          <p class="hm-flowline">말 → 마구 · 고삐 → 수레 · 도구 → 확인 문</p>
+          <div class="hm-cells">
+            <div><b>말</b>판단하는 AI</div>
+            <div><b>마구 · 고삐</b>따를 규칙 · 권한</div>
+            <div><b>수레 · 도구</b>실행 수단</div>
+            <div><b>확인 문</b>테스트 · 피드백</div>
+          </div>
+        </div>
+        <p class="hm-note"><b>하네스 엔지니어링</b>도 AI를 묶는 일이 아니라, <span class="hl-mint-underline">AI의 힘이 제대로 일로 이어지도록 환경을 설계하는 일</span>입니다.</p>
+      </div>
+      <div class="hm-art">
+        <figure class="asset-slot asset-slot--hero hm-hero" data-image-purpose="mnemonic" data-image-state="ready" data-expected-src="자료/images/s81_harness-horse-metaphor-v1-transparent.png" role="img" aria-label="마구를 착용한 말이 도구 상자를 실은 수레를 끌고 문 앞에 서 있는 모습"><img src="자료/images/s81_harness-horse-metaphor-v1-transparent.png" alt="마구를 착용한 말이 도구 상자를 실은 수레를 끌고 문 앞에 서 있는 모습"></figure>
+        <div class="hm-closeup-row">
+          <figure class="asset-slot asset-slot--support hm-closeup" data-image-purpose="explanatory" data-image-state="ready" data-expected-src="자료/images/s81_horse-bridle-bit-v1-transparent.png" role="img" aria-label="말의 입가 재갈과 가죽 굴레, 고삐 연결부를 보여 주는 클로즈업"><img src="자료/images/s81_horse-bridle-bit-v1-transparent.png" alt="말의 입가 재갈과 가죽 굴레, 고삐 연결부를 보여 주는 클로즈업"></figure>
+          <p class="hm-closeup-caption"><b>재갈 · 고삐</b> = AI가 따라야 할 규칙과 권한</p>
+        </div>
+      </div>
+    </div>
+    <p class="end-banner hm-course"><b>이 과정에서는</b> 이 장 뒤로 하네스를 <strong>«AI에게 일을 맡기는 틀»</strong>이라고 쉽게 부릅니다.</p>
+  </div>
+  <!-- 발표노트: 설명 — «하네스라는 이름은 말의 마구에서 왔습니다»라고 연결한 뒤, 말 → 마구·고삐 → 수레·도구 → 확인 문 순서로 왼쪽부터 읽습니다. 마지막 줄을 읽고 뒤 PART에서는 이 쉬운 말을 쓴다고 약속합니다. -->
+</section>
+
+<!-- B2-15 · 전환 화면 Markdown — B2-08과 같은 구도(G1 Q6) -->
+<section class="slide intro-do intro-do-answer intro-do-sub no-page-number" data-slide="B2-15" data-shape="declaration" aria-label="Markdown">
+  <p>Markdown</p>
+  <div class="intro-do-subline">대화에 흘리지 않고, AI가 매번 읽을 기준 파일로 남깁니다.</div>
+  <!-- 발표노트: 설명 — 정한 것을 프로젝트 안에 남겨야 AI와 사람이 같은 기준으로 다시 시작합니다. 여기서 기준 파일을 쓰는 형식을 봅니다. -->
+</section>
+
+<!-- B2-16 · AC2 part-04 C3-1 — 메모 예시 교체(7줄) · .md 파일 이름 읽기 한 단위 추가 -->
+<section class="slide" data-slide="B2-16" data-shape="concept">
+  <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 2<br>Markdown</div></header>
+  <div class="dc-title">
+    <h2 class="s-title">Markdown은 메모에 구조를 붙입니다</h2>
+  </div>
+  <div class="dc-stage c31-stage">
+    <div class="c31-doc">
+      <span class="def-term">Markdown이란</span>
+      <p class="c31-p">텍스트에 <span class="hl-mint-underline">약속된 기호</span>로 문서 구조를 표시하는 가벼운 문서 형식입니다.</p>
+      <p class="c31-p">일반 텍스트와 달리 특정 기호가 정해진 서식(제목 · 굵게 · 목록)으로 바뀝니다.</p>
+      <p class="md-leg-h">문서에 쓰인 기호 10개</p>
+      <table class="t md-leg-tbl">
+        <thead><tr><th scope="col">기호</th><th scope="col">화면에서 되는 것</th></tr></thead>
+        <tbody>
+          <tr><td><code>#</code></td><td>제목</td></tr>
+          <tr><td><code>##</code></td><td>소제목</td></tr>
+          <tr><td><code>**굵게**</code></td><td>강조</td></tr>
+          <tr><td><code>-</code></td><td>목록</td></tr>
+          <tr><td><code>- [ ]</code></td><td>할 일(미완료)</td></tr>
+          <tr><td><code>- [x]</code></td><td>할 일(완료)</td></tr>
+          <tr><td><code>&gt;</code></td><td>인용</td></tr>
+          <tr><td><code>---</code></td><td>구분선</td></tr>
+          <tr><td><code>[글](주소)</code></td><td>링크</td></tr>
+          <tr><td><code>```</code></td><td>코드 블록</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="c31-right">
+      <p class="c31-name"><b>파일 이름 읽기</b><code>prd.md</code>의 <b>.md</b>는 Markdown으로 쓴 문서라는 표시입니다(오전에 <code>index.html</code>의 .html을 읽은 것과 같은 방식).</p>
+      <div class="w2-editor viz-editor" role="img" aria-label="코드 편집기 화면. 왼쪽에 메모.md 원문 일곱 줄이 있고, 오른쪽에 그 문서가 제목·소제목·굵게·목록·할 일·인용으로 바뀐 모습이 나란히 보인다">
+        <div class="w2-ed-bar"><span></span><span></span><span></span>
+          <b class="w2-ed-tab">메모.md</b><b class="w2-ed-tab is-side">미리보기</b></div>
+        <div class="w2-ed-body">
+          <ol class="w2-ed-code">
+            <li><span class="ln"><span class="t-h"># 나를 소개하는 사이트 메모</span></span></li>
+            <li><span class="ln"><span class="t-h">## 꼭 보여 줄 것</span></span></li>
+            <li><span class="ln"><span class="t-b">**처음 만난 사람**</span>을 위한 소개</span></li>
+            <li><span class="ln"><span class="t-l">-</span> 한 줄 소개를 맨 위에</span></li>
+            <li><span class="ln"><span class="t-l">- [ ]</span> 관심사 2~3개 고르기</span></li>
+            <li><span class="ln"><span class="t-l">- [x]</span> 이름 정하기</span></li>
+            <li><span class="ln"><span class="t-c">&gt; AI 초안은 사람이 다시 확인</span></span></li>
+          </ol>
+          <div class="w2-ed-preview md-rendered">
+            <p class="mdr-h1">나를 소개하는 사이트 메모</p>
+            <p class="mdr-h2">꼭 보여 줄 것</p>
+            <p class="mdr-p"><b>처음 만난 사람</b>을 위한 소개</p>
+            <ul class="mdr-list"><li>한 줄 소개를 맨 위에</li></ul>
+            <ul class="mdr-check">
+              <li class="is-todo"><span class="box" aria-hidden="true"></span>관심사 2~3개 고르기</li>
+              <li class="is-done"><span class="box" aria-hidden="true">✓</span>이름 정하기</li>
+            </ul>
+            <blockquote class="mdr-quote">AI 초안은 사람이 다시 확인</blockquote>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- 발표노트: 설명 — Markdown은 시험 과목이 아니라 메모장에 붙이는 교통 표지판입니다. 문법을 외우는 게 아니라 AI가 만든 .md 파일을 읽고 고치기만 하면 됩니다. -->
+</section>
+
+<!-- B2-17 · AC2 part-04 N-18(n2-loop) — 순환 그대로 · Agent → Codex (must_keep) -->
+<section class="slide n2-stage n2-loop" data-slide="B2-17" data-shape="flow">
+  <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 2<br>기준 파일</div></header>
+  <div class="s-full">
+    <h2 class="s-title">중요한 기준은 대화가 아니라 파일에 남깁니다</h2>
+    <p class="n2-lead">대화에만 말한 기준은 창을 닫으면 사라지지만, <b>파일에 적은 기준은 다음 실행에서 다시 읽힙니다</b>.</p>
+    <div class="n18-body">
+      <div class="n18-pair">
+        <div class="n18-row is-chat"><b>대화에만 말하면</b><p>새 대화를 열거나 대화가 길어지면 기준이 약해집니다. 매번 다시 설명해야 합니다.</p></div>
+        <div class="n18-row is-file"><b>파일에 적으면</b><p>실행할 때마다 처음부터 다시 읽힙니다. <span class="hl-mint-mark">나도 Codex도 같은 기준</span>을 봅니다.</p></div>
+      </div>
+      <div class="viz-cycle" role="img" aria-label="기준 파일을 읽고, 작업을 실행하고, 결과를 확인하고, 바뀐 기준을 파일에 고친 뒤 다시 읽는 순환">
+        <svg viewBox="0 0 440 440" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs><marker id="b217-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" style="fill:var(--blue)"/></marker></defs><path class="cyc-wire" d="M271,79 A150,150 0 0 1 361,169" marker-end="url(#b217-arrow)"/><path class="cyc-wire" d="M361,271 A150,150 0 0 1 271,361" marker-end="url(#b217-arrow)"/><path class="cyc-wire" d="M169,361 A150,150 0 0 1 79,271" marker-end="url(#b217-arrow)"/><path class="cyc-wire" d="M79,169 A150,150 0 0 1 169,79" marker-end="url(#b217-arrow)"/></svg>
+        <div class="cyc-node" style="left:200px;top:55px;"><span class="cn">1</span><b>기준 파일<br>읽기</b></div>
+        <div class="cyc-node" style="left:338px;top:200px;"><span class="cn">2</span><b>작업 실행</b></div>
+        <div class="cyc-node" style="left:200px;top:345px;"><span class="cn">3</span><b>결과 확인</b></div>
+        <div class="cyc-node" style="left:62px;top:200px;"><span class="cn">4</span><b>파일<br>고치기</b></div>
+        <div class="cyc-center">다음 실행도<br>같은 기준</div>
+      </div>
+    </div>
+  </div>
+  <!-- 발표노트: 설명 — 제목을 그대로 읽습니다. 순환의 4번(파일 고치기)이 PART 6 «결정이 바뀌면 문서를 먼저 고칩니다»로 이어진다고 예고합니다. -->
+</section>

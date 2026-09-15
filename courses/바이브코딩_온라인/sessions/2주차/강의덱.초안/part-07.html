@@ -1,0 +1,240 @@
+<!-- ============ PART 7 · 검토 · 오류 대응 · 마무리 · W4 담당 (W0 골격 2026-09-15 · W4 조립 2026-09-15) ============
+     이 파일의 data-slide 순서 = 계약 sequences.PART7 = 초안 순서:
+     P7(초안 B7-01 간지) · B7-02 · B7-03 · B7-04 · B7-05 · B7-06 · B7-07 · B7-08 · B7-09 · B7-10 · B7-11 · B7-12 · B7-13 · B7-14 · B7-15
+     간지 data-slide는 초안 번호가 아니라 P7이다(verify_deck 단조성 · 오전 A1-01→P1 선례).
+     본문 슬라이드는 간지 아래에 초안 순서대로 이어 붙인다. 이 파일 안에 style 블록을 두지 않는다.
+     전용 CSS는 저장소 tmp 작업 폴더의 wave-4.css(revision.css 단일 라이터는 메인). 규약: 같은 폴더 W0-기록.md §4 · 판정표: W4-기록.md
+     이 PART에서 틀 용어는 «AI에게 일을 맡기는 틀»로만 쓴다(슬라이드지침 §4). -->
+<section class="slide part-divider" data-slide="P7" data-shape="declaration">
+  <svg class="dv-hero" viewBox="0 0 1280 720" fill="none" aria-hidden="true"></svg>
+  <div class="pd-dots" aria-hidden="true"></div>
+  <p class="pd-eyebrow">PART</p>
+  <h2 class="pd-title">검토 · 오류 대응 · 마무리</h2>
+  <p class="pd-sub">작동한다고 바로 완료는 아닙니다. 직접 확인하고, 공유하기 전에 한 번 더 점검합니다.</p>
+  <!-- 발표노트: 설명 — AI가 만들었다는 사실보다, 내가 정한 기준을 충족했는지가 중요합니다. -->
+</section>
+
+<section class="slide done-check-slide" data-slide="B7-02" data-shape="flow">
+  <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 7<br>대표 흐름 점검</div></header>
+  <div class="dc-title"><h2 class="s-title">대표 시나리오로 <span class="hl-mint-text">처음부터 끝까지</span></h2></div>
+  <div class="done-check-stage">
+    <p class="done-check-lead">정한 <strong class="hl-mint-text">대표 흐름</strong>을 실제 브라우저에서 그대로 따라갑니다.</p>
+    <div class="viz-flow-ph done-check-flow" data-viz="learning-flow" role="img" aria-label="대표 흐름의 예: 이름과 한 줄 소개 보기, 관심사 보기 누르기, 관심사 2~3개 확인"><div class="fl-node">이름과 한 줄 소개 보기</div><div class="fl-arrow" aria-hidden="true">→</div><div class="fl-node key">관심사 보기 누르기</div><div class="fl-arrow" aria-hidden="true">→</div><div class="fl-node">관심사 2~3개 확인</div></div>
+    <p class="done-check-analogy"><b>요리사처럼</b>손님에게 내기 전 자기 접시로 한 입 맛보는 것입니다. 내 입맛이 손님을 대신하지는 못합니다.</p>
+    <p class="end-banner">이것은 <strong>자체 점검</strong>이지 실제 방문자 테스트가 아닙니다.</p>
+  </div>
+  <!-- 발표노트: 설명 — prd.md «흐름» 항목을 옆에 띄워 두고 한 단계씩 따라가게 하세요. -->
+</section>
+
+<section class="slide retry-rows-slide" data-slide="B7-03" data-shape="checklist">
+  <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 7<br>다시 해 보기</div></header>
+  <div class="s-full"><h2 class="s-title">정상값과 다른 값으로 다시 — <span class="hl-mint-text">소개 사이트에서는</span></h2>
+    <p class="retry-lead"><strong>정상 흐름 1회로는 부족합니다.</strong></p>
+    <div class="dl-rows retry-rows"><div class="card surface dl-row"><span class="dl-term">새로고침 뒤 한 번 더</span><p class="s-body">새로고침한 뒤 처음부터 <strong>한 번 더</strong> 따라갑니다.</p></div><div class="card surface dl-row"><span class="dl-term">버튼 두 번 이상</span><p class="s-body">버튼은 <strong>두 번 이상</strong> 눌러 봅니다.</p></div><div class="card surface dl-row is-skip"><span class="dl-term">빈 입력 <span class="skip-tag">생략</span></span><p class="s-body">빈 입력 확인은 입력칸이 있는 기능에서만 합니다. 입력칸이 없는 소개 사이트는 생략합니다.</p></div></div>
+    <p class="retry-close">첫 번째 동작에만 감동하는 기능이 많습니다 — <span class="hl-mint-mark">두 번째가 진짜 면접입니다.</span></p>
+  </div>
+  <!-- 발표노트: 설명 — 원본은 정상값·다른 값·빈값 세 값으로 확인했습니다. 입력이 없는 소개 사이트에서는 «한 번 더, 두 번 이상»으로 바꿔 적용합니다. -->
+</section>
+
+<section class="slide check-questions-slide" data-slide="B7-04" data-shape="checklist">
+  <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 7<br>점검 질문</div></header>
+  <div class="s-full cq-layout">
+    <h2 class="s-title">대표 점검 <span class="hl-mint-text">다섯 질문</span></h2>
+    <ol class="cq-grid" aria-label="대표 점검에서 확인할 다섯 질문"><li><span class="cq-n">①</span><b>누구를 소개하는지 보이나</b></li><li><span class="cq-n">②</span><b>무엇을 보고 · 누르면 되는지 보이나</b></li><li><span class="cq-n">③</span><b>어떤 조작을 하나</b></li><li><span class="cq-n">④</span><b>결과가 나왔나</b></li><li class="is-cond"><span class="cq-n">⑤</span><b>잘못 입력을 알아채나</b><span class="cq-tag">입력칸이 있을 때만</span></li></ol>
+    <p class="cq-close">다섯 중 <strong>“모르겠다”가 나오면 그 지점이 수정 후보</strong>입니다.</p>
+  </div>
+  <!-- 발표노트: 설명 — 수정 후보가 여러 개면 완료 기준과 가장 가까운 하나만 고릅니다. 고칠 때는 PART 6의 «문서 먼저» 순서를 따릅니다. -->
+</section>
+
+<section class="slide completion-check-slide" data-slide="B7-05" data-shape="contrast">
+  <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 7<br>문서 대조</div></header>
+  <div class="s-full cc-full" data-viz="completion-checklist-map" aria-label="대조할 문서와 화면에서 확인할 네 질문"><h2 class="s-title">prd · 흐름과 <span class="hl-mint-text">실제를 대조</span></h2><div class="cc-grid"><div class="cc-side ai"><h3>대조할 문서</h3><ul><li><code>prd.md</code> 만들 것 · 만들지 않을 것 · 완료 기준</li><li><code>prd.md</code> «흐름» 항목</li><li><code>design.md</code> 내가 고른 기준</li></ul></div><div class="cc-side human"><h3>화면에서 확인할 질문</h3><ul><li>핵심 섹션 · 화면이 문서와 같은가?</li><li>제외한 것이 몰래 들어왔나?</li><li>완료 기준이 눈으로 확인되나?</li><li>design.md에서 고른 기준이 화면에 남아 있나?</li></ul></div></div><p class="end-banner"><strong>문서는 제작 전 계획이자 제작 후 채점표입니다.</strong></p></div>
+  <!-- 발표노트: 시연 — prd.md와 브라우저를 나란히 띄워 한 줄씩 대조하는 모습을 화면공유로 보여 줍니다. PART 4 «prd.md는 두 번 읽힙니다»의 «작업 후»입니다. -->
+</section>
+
+<section class="slide human-decides-slide" data-slide="B7-06" data-shape="contrast">
+  <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 7<br>AI 보조 점검</div></header>
+  <div class="s-full rs-layout">
+    <h2 class="s-title">AI Self Review는 <span class="hl-mint-text">보조 점검</span></h2>
+    <div class="rs-compare">
+      <article class="rs-ai"><span class="rs-k">보조 점검 · AI</span><p>AI에게는 <strong>문서 누락 · 파일 연결 · 명백한 오류</strong>만 점검시킵니다.</p></article>
+      <article class="rs-human"><span class="rs-k">최종 판단 · 사람</span><p><strong>최종 판단은 브라우저와 사람.</strong></p></article>
+    </div>
+    <p class="rs-note"><b>같은 사각지대</b>만든 AI는 같은 사각지대를 그대로 안고 봅니다. 외부 확인 없이 스스로 고치게 하면 오히려 나빠지기도 합니다.</p>
+  </div>
+  <!-- 발표노트: 설명 — «AI에게 검토를 시켰으니 끝»이 아니라고 짚습니다. 다음 장에서 검토를 부탁하는 방법을 봅니다. -->
+</section>
+
+<section class="slide n2-stage n2-review" data-slide="B7-07" data-shape="comparison">
+  <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 7<br>작성 · 검토 분리</div></header>
+  <div class="s-full">
+    <h2 class="s-title">작성자와 검토자를 나눕니다</h2>
+    <p class="n2-lead">만든 AI에게 «맞지?»라고 물으면 <b>동의하는 답이 나오기 쉽습니다</b>. 검토자 관점에서 <span class="hl-mint-underline">문서와 다시 대조</span>합니다.</p>
+    <div class="n20-lane viz-flow" role="img" aria-label="작성자인 Codex가 사이트 초안을 만들고, 검토 관점에서 prd.md와 design.md에 대조해 다른 점을 표시하고, 사람이 무엇을 남길지 결정하는 세 역할의 흐름">
+      <div class="n20-role"><span class="n20-k">작성자</span><b>Codex</b><span class="desc">사이트 초안 작성</span></div>
+      <span class="n20-ar" aria-hidden="true">→</span>
+      <div class="n20-role is-check"><span class="n20-k">검토자</span><b>검토 관점</b><span class="desc">prd.md · design.md와 대조해 다른 점 표시</span></div>
+      <span class="n20-ar" aria-hidden="true">→</span>
+      <div class="n20-role is-human"><span class="n20-k">결정</span><b>사람</b><span class="desc">무엇을 남길지 결정</span></div>
+    </div>
+    <div class="n20-ask">
+      <div class="n20-q is-bad"><span class="n20-k">피할 질문</span><p>«이 사이트, 잘 만들었지?»</p></div>
+      <div class="n20-q is-good"><span class="n20-k">검토 요청문</span><p>«prd.md의 만들 것 · 만들지 않을 것 · 완료 기준과 지금 사이트를 비교해 <span class="hl-mint-mark">다른 점만</span> 적어 주세요. 아직 고치지 마세요.»</p></div>
+    </div>
+  </div>
+  <!-- 발표노트: 설명 — 오전에 본 아첨 현상을 다시 부릅니다. 만든 쪽에 «맞지?»라고 묻는 것은 검토가 아니라 동의를 구하는 질문입니다. -->
+</section>
+
+<section class="slide w2-annex is-recovery" data-slide="B7-08" data-shape="flow">
+  <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 7<br>레퍼런스 복구</div></header>
+  <div class="s-full steps-full">
+    <h2 class="s-title">레퍼런스를 그대로 복사했을 때</h2>
+    <div class="eval-steps">
+      <div class="work-step"><span class="n">1</span><b><span>특정 사이트를 </span><strong>통째로 복제했다면</strong></b></div>
+      <div class="vf-down" aria-hidden="true">↓</div>
+      <div class="work-step"><span class="n">2</span><b><span>색 · 간격 · 구성의 </span><strong>특성만 뽑아</strong><span> 내 구조에 다시 적용합니다.</span></b></div>
+    </div>
+    <div class="codex-input" aria-label="Codex 입력창에 넣을 요청문"><span class="codex-input-label">요청문 · Codex 입력창</span><p>따라 하지 말고 특성만 뽑아 제 prd.md와 design.md에 맞춰 주세요.</p></div>
+    <p class="ref-warn"><b>표현을 그대로 옮기면</b> 저작권 문제가 될 수 있습니다.</p>
+  </div>
+  <!-- 발표노트: 설명 — 문제가 없는 수강생은 이 장을 건너뜁니다. PART 3 «레퍼런스는 복사가 아니라 관찰»의 복구 장입니다. -->
+</section>
+
+<section class="slide pitfalls" data-slide="B7-09" data-shape="checklist">
+  <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 7<br>공유 전 점검</div></header>
+  <div class="s-full"><p class="s-eyebrow">공유하기 전 사람이 직접 볼 세 가지</p><h2 class="s-title">공유하기 전에 개인정보·권리·사실을 <span class="hl-mint-underline">다시 확인합니다</span></h2>
+    <div class="pf-list"><div class="card surface pf-band"><p class="pf-risk">개인정보</p><p class="pf-reason">실명 · 연락처 · 계정 정보 · 민감 자료가 남아 있지 않은지 봅니다.</p><p class="pf-alt">예: AI가 임의로 만든 연락처나 경력을 지웁니다. 공개해도 되는 내용만 남깁니다.</p></div><div class="card surface pf-band"><p class="pf-risk">권리</p><p class="pf-reason">가져온 이미지 · 텍스트 · 폰트가 사용 가능한지 출처와 이용 조건을 확인합니다.</p><p class="pf-alt">예: 다른 사이트의 로고를 그대로 복사하지 않습니다.</p></div><div class="card surface pf-band"><p class="pf-risk">사실</p><p class="pf-reason">이름 · 날짜 · 숫자 · 링크가 실제와 맞는지 확인합니다.</p><p class="pf-alt">예: 소개에 들어간 소속이나 링크를 직접 엽니다.</p></div></div>
+    <p class="end-banner">확인하지 못한 내용은 넣지 않고 <strong>사람이 최종 결정</strong>합니다.</p>
+  </div>
+  <!-- 발표노트: 설명 — 공유는 오늘 하지 않습니다. 공유하기 전에 사람이 볼 세 가지만 남기세요. 개인정보 판단은 오전 «정보의 성격과 노출 위험» 기준을 그대로 씁니다 — 공개할 필요가 있는지, 공개되면 무엇이 위험한지. -->
+</section>
+
+<section class="slide w2-practice" data-slide="B7-10" data-shape="flow">
+  <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 7<br>전과 후</div></header>
+  <div class="s-full"><h2 class="s-title">AI에게 맡기기 전과 끝난 뒤를 설계합니다</h2><p class="p6-lead">AI가 일하는 중간을 통제하려 하기보다, <strong>넣어 주는 것과 확인하는 것</strong>을 분명히 합니다.</p>
+    <div class="p6-overview"><div class="p6-flow" role="img" aria-label="규칙·자료·절차를 AI에게 먼저 주고, 작업을 요청한 뒤, 기준·화면·기록으로 결과를 확인하는 흐름"><div class="p6-flow-node"><span class="n">전</span><div><b>규칙 · 자료 · 절차</b><span>AI가 시작하기 전에 무엇을 보고 어떻게 일할지 줍니다.</span></div></div><div class="p6-down" aria-hidden="true">↓</div><div class="p6-flow-node"><span class="n">AI</span><div><b>작업 요청</b><span>한 번에 맡길 범위와 확인할 결과를 말합니다.</span></div></div><div class="p6-down" aria-hidden="true">↓</div><div class="p6-flow-node is-result"><span class="n">후</span><div><b>기준 · 화면 · 기록</b><span>직접 열어 보고, 바뀐 것을 남깁니다.</span></div></div></div>
+      <div class="p6-art-card"><figure class="asset-slot asset-slot--support" data-image-purpose="explanatory" data-image-state="ready" data-asset-kind="paper-cut-v1" data-expected-src="자료/images/p6-p4-harness-paper-cut-v1-transparent.png" role="img" aria-label="규칙·자료·절차가 AI 작업대로 들어가고 화면 확인·체크리스트·기록으로 나오는 그림"><img src="자료/images/p6-p4-harness-paper-cut-v1-transparent.png" alt="AI 작업 전에 넣는 것과 작업 뒤에 확인하는 것이 이어지는 흐름"></figure><figcaption><b>전: 맡길 기준 / 후: 확인할 증거</b>를 갖춥니다.</figcaption></div></div>
+  </div>
+  <!-- 발표노트: 설명 — 오늘 오후의 정리판입니다. 전이 prd.md·design.md·AGENTS.md, 후가 브라우저 확인과 문서 대조였다고 짚어 주세요. -->
+</section>
+
+<section class="slide w2-pipe" data-slide="B7-11" data-shape="structure">
+  <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 7<br>맡기는 틀 여섯</div></header>
+  <div class="s-full">
+    <h2 class="s-title">AI에게 일을 맡기는 틀의 여섯 가지</h2>
+
+    <p class="pp-lead">앞 장의 «전과 후»가 실제로는 이 여섯 가지입니다.
+      <span class="subline">준비물은 AI가 일하는 <b>동안</b> 넣지 않습니다. <b>맡기기 전과 끝난 뒤, 작업을 앞뒤로 감쌉니다.</b></span></p>
+
+    <div class="pp-body viz-wrap">
+      <div class="pp-col pp-in">
+        <p class="pp-cap">맡기기 전에 준다</p>
+        <div class="pp-item"><b>지켜야 할 규칙</b><span>“외부 라이브러리를 쓰지 않는다”</span></div>
+        <div class="pp-item"><b>쓸 수 있는 도구와 자료</b><span>“이 폴더의 design.md를 먼저 읽어라”</span></div>
+        <div class="pp-item"><b>반복 작업의 절차</b><span>“수정할 때는 항상 이 순서로”</span></div>
+      </div>
+
+      <div class="pp-arrow">
+        <svg width="46" height="34" viewBox="0 0 46 34" aria-hidden="true">
+          <path d="M2 17 H30" style="stroke:var(--gray-700)" stroke-width="4" stroke-linecap="round"/>
+          <path d="M25 6 L40 17 L25 28" fill="none" style="stroke:var(--gray-700)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+
+      <div class="pp-core">
+        <b>AI가 일한다</b>
+        <span><span class="tl">안에서 벌어지는 일은</span> <span class="tl">우리가 정하지 못합니다</span></span>
+      </div>
+
+      <div class="pp-arrow">
+        <svg width="46" height="34" viewBox="0 0 46 34" aria-hidden="true">
+          <path d="M2 17 H30" style="stroke:var(--gray-700)" stroke-width="4" stroke-linecap="round"/>
+          <path d="M25 6 L40 17 L25 28" fill="none" style="stroke:var(--gray-700)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+
+      <div class="pp-col pp-out">
+        <p class="pp-cap">끝난 뒤에 확인한다</p>
+        <div class="pp-item"><b>돌려 볼 수 있는 기준</b><span>“관심사 보기를 누르면 관심사가 보이는가”</span></div>
+        <div class="pp-item"><b>눈으로 보는 결과 화면</b><span>“수정 전후 화면을 비교한다”</span></div>
+        <div class="pp-item"><b>무슨 일이 있었는지 기록</b><span>“무엇을 바꿨는지 남겨 둔다”</span></div>
+      </div>
+    </div>
+
+    <p class="pp-note"><b>사후 검증</b>이 비면 결과를 판정할 기준이 없어 사람이 매번 눈으로 보는 수밖에 없습니다.
+      <span class="pp-note-strong"><span class="hl-mint-mark">앞뒤가 다 있어야 합니다.</span></span>
+      <span class="subline">여섯 가지 이름은 확정 표준이 아니라 사람마다 묶는 방식이 다릅니다.</span></p>
+  </div>
+  <!-- 발표노트: 설명 — 맡기기 전 세 가지와 끝난 뒤 세 가지로 나눠 읽습니다. 가운데 «AI가 일한다» 칸은 우리가 정하지 못한다는 점이 핵심입니다. -->
+</section>
+
+<section class="slide w2-route" data-slide="B7-12" data-shape="mapping">
+  <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 7<br>반복 실수</div></header>
+  <div class="s-full">
+    <h2 class="s-title">반복되는 실수를 어디에 넣나</h2>
+
+    <p class="rt-lead">이 시스템은 한 번에 완성하는 설계가 아닙니다. <span class="hl-mint-text">같은 문제가 두 번 나올 때마다</span> 그 자리를 한 칸씩 메우는 일입니다.</p>
+
+    <div class="rt-grid viz-routing">
+      <div class="rt-sym">매번 같은 것을 처음부터 다시 설명한다</div>
+      <div class="rt-ar" aria-hidden="true">&#8594;</div>
+      <div class="rt-fix"><b>규칙 파일</b><span>AGENTS.md에 한 줄로 적어 둔다</span></div>
+
+      <div class="rt-sym">하지 말라고 적어 뒀는데 그냥 해 버린다</div>
+      <div class="rt-ar" aria-hidden="true">&#8594;</div>
+      <div class="rt-fix"><b>승인 · 권한</b><span>적는 것으로 부족한 자리는 장치로 막는다</span></div>
+
+      <div class="rt-sym">어제 왜 그렇게 정했는지 아무도 모른다</div>
+      <div class="rt-ar" aria-hidden="true">&#8594;</div>
+      <div class="rt-fix"><b>기록</b><span>결정과 이유를 파일에 남긴다</span></div>
+    </div>
+
+    <p class="rt-brake">한 번뿐인 실수까지 규칙으로 만들면 규칙이 길어져 아무도 읽지 않습니다. <span class="hl-mint-mark">두 번 이상 반복될 때만</span> 넣습니다.</p>
+  </div>
+  <!-- 발표노트: 설명 — 같은 문제가 두 번 나오면 그때 알맞은 칸(규칙 파일·승인·권한·기록)에 넣습니다. 오늘 만든 AGENTS.md가 «규칙 파일» 칸의 예입니다. -->
+</section>
+
+<section class="slide w2-stair" data-slide="B7-13" data-shape="flow">
+  <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 7<br>갖추는 단계</div></header>
+  <div class="s-full">
+    <p class="s-eyebrow"><span class="opt-pill">선택</span></p>
+    <h2 class="s-title">AI에게 일을 맡기는 틀을 갖추는 단계</h2>
+
+    <p class="st-lead">오늘 본 것을 <b>전부</b> 갖출 필요는 없습니다. 막히는 자리가 생겼을 때 <span class="hl-mint-text">한 칸씩</span> 올립니다.</p>
+
+    <div class="st-track viz-stair">
+      <div class="st-col">
+        <div class="st-box"><i>0단계</i><b>대화만</b><span>대화창에서 시키고 결과를 눈으로 본다</span></div>
+      </div>
+      <div class="st-col is-now">
+        <div class="st-box"><i>1단계</i><b>규칙 파일</b><span>지켜야 할 것과 만들 것을 파일로 적어 둔다</span></div>
+      </div>
+      <div class="st-col is-goal">
+        <div class="st-box"><i>2단계</i><b>확인 절차</b><span>끝난 뒤 무엇을 보면 되는지 미리 정해 둔다</span></div>
+      </div>
+      <div class="st-col">
+        <div class="st-box"><i>3단계</i><b>운영</b><span>권한 · 격리 실행 · 기록까지 — 여럿이 오래 쓸 때</span></div>
+      </div>
+    </div>
+    <div class="st-base"></div>
+  </div>
+  <!-- 발표노트: 설명 — 오전은 0단계, 오후는 1~2단계까지 해 봤다고 짚고, 막히는 자리가 생겼을 때 한 칸씩 올린다는 출구를 주고 끝냅니다. -->
+</section>
+
+<section class="slide fb-statement day-close-slide" data-slide="B7-14" data-shape="declaration">
+  <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 7<br>마무리</div></header>
+  <div class="center-msg close-msg">
+    <h2 class="cm-title"><span class="tl">AI가 작성하고,</span> <span class="tl">사람이 검토하고,</span> <span class="tl hl-mint-text">사람이 결정합니다.</span></h2>
+    <p class="close-flow">기준을 먼저 적고 · 그 기준으로 만들고 · 직접 확인하기</p>
+    <div class="close-files"><b>오늘 내 폴더에 남은 것</b><ul aria-label="오늘 폴더에 남은 여섯 파일"><li><code>prd.md</code></li><li><code>design.md</code></li><li><code>AGENTS.md</code></li><li><code>index.html</code></li><li><code>style.css</code></li><li><code>script.js</code></li></ul></div>
+  </div>
+  <!-- 발표노트: 설명 — 오늘 하루를 관통한 문장으로 닫습니다. 폴더를 열어 여섯 파일이 실제로 있는지 각자 확인하게 하세요 — 열리지 않는 파일은 오늘의 결과가 아닙니다. -->
+</section>
+
+<!-- B7-15 THANK YOU — AC2 part-08 THX 구조 그대로(data-slide만 개명). 계약 closing_text «THANK YOU»는 마지막 장에서만 찾으므로 이 장이 파일 끝에 남아야 한다.
+     ⚠️ revision.css의 THX(1) 셀렉터는 옛 ID 그대로다(개명은 CSS 병합 담당 · W4-idmap.tsv). -->
+<section class="slide closing thank-you" data-slide="B7-15" data-shape="declaration" aria-label="감사 슬라이드">
+  <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span></header>
+  <div class="ty-wrap"><h2>THANK YOU</h2></div>
+  <!-- 발표노트: 설명 — 질의응답으로 넘어갑니다. -->
+</section>

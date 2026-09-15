@@ -1,0 +1,1835 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>바이브코딩 온라인 원데이 · 오후 콘텐츠 리뷰</title>
+<style>
+  /* ---------- tokens ---------- */
+  :root{
+    --bg:#eef1ee; --surface:#ffffff; --surface-2:#f5f8f5; --ink:#171b1a; --ink-soft:#4b5450;
+    --line:#d9dfda; --line-strong:#c3ccc4;
+    --accent:#2c4b6e; --accent-ink:#1c3350; --accent-soft:#e4eaf1;
+    --mint:#2f7d5d; --mint-ink:#1f5b42; --mint-soft:#e1f0e7;
+    --amber:#a66a1e; --amber-ink:#7a4d13; --amber-soft:#f5e9d8;
+    --brick:#a23e3e; --brick-ink:#7a2e2e; --brick-soft:#f5e1e1;
+    --radius:10px;
+    --font-kr:"Pretendard Variable","Pretendard",-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",sans-serif;
+    --font-mono:"JetBrains Mono","SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#14181a; --surface:#1b2022; --surface-2:#20262a; --ink:#e9ece9; --ink-soft:#a9b3ae;
+      --line:#2b3234; --line-strong:#3a4346;
+      --accent:#82aad6; --accent-ink:#c3d8f0; --accent-soft:#20303f;
+      --mint:#6fcba0; --mint-ink:#a7e6c8; --mint-soft:#163326;
+      --amber:#e3a94d; --amber-ink:#f2cf98; --amber-soft:#35281a;
+      --brick:#e08080; --brick-ink:#f2b8b8; --brick-soft:#3a2020;
+      color-scheme: dark;
+    }
+  }
+
+  /* ---------- base ---------- */
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{background:var(--bg); color:var(--ink); font-family:var(--font-kr); font-size:15.5px; line-height:1.7; -webkit-font-smoothing:antialiased;}
+  h1,h2,h3,h4{font-family:var(--font-kr); font-weight:800; letter-spacing:-.01em; margin:0;}
+  p{margin:0;}
+  code,.mono{font-family:var(--font-mono); font-variant-numeric:tabular-nums;}
+  strong{font-weight:700; color:var(--ink);}
+  :focus-visible{outline:2px solid var(--accent); outline-offset:2px;}
+  @media (prefers-reduced-motion: reduce){ *{animation:none !important; transition:none !important;} }
+
+  main{max-width:1180px; margin:0 auto; padding:0 32px 80px;}
+  .section{padding-top:44px; scroll-margin-top:64px;}
+  .section-head{display:flex; align-items:baseline; gap:12px; margin-bottom:8px; flex-wrap:wrap;}
+  .section-eyebrow{font-family:var(--font-mono); font-size:11.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--accent); font-weight:700; background:var(--accent-soft); padding:3px 8px; border-radius:5px;}
+  .section-head h2{font-size:22px;}
+  .section-sub{color:var(--ink-soft); font-size:13.5px; margin:6px 0 18px; max-width:78ch;}
+
+  /* ---------- hero ---------- */
+  .hero{max-width:1180px; margin:0 auto; padding:40px 32px 20px;}
+  .hero-kicker{font-family:var(--font-mono); font-size:12px; letter-spacing:.09em; text-transform:uppercase; color:var(--ink-soft); font-weight:700; margin-bottom:8px;}
+  .hero h1{font-size:clamp(22px,3.2vw,32px); line-height:1.25;}
+  .hero-meta{margin-top:14px; display:flex; flex-direction:column; gap:4px; font-size:13px; color:var(--ink-soft);}
+  .hero-meta b{color:var(--ink); font-weight:700;}
+  .hero-meta code{background:var(--surface-2); border:1px solid var(--line); padding:1px 6px; border-radius:5px;}
+
+  .tpl-notice{max-width:1180px; margin:18px auto 0; padding:0 32px;}
+  .tpl-notice-box{border:1.5px dashed var(--line-strong); background:var(--surface-2); border-radius:var(--radius); padding:12px 16px; font-size:12.5px; color:var(--ink-soft); line-height:1.7;}
+  .tpl-notice-box b{color:var(--ink);}
+
+  /* ---------- legend (정보 단위 정의) ---------- */
+  .legend-box{max-width:1180px; margin:20px auto 0; padding:0 32px;}
+  .legend-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:10px; background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:16px 18px;}
+  .legend-item{display:flex; gap:8px; align-items:flex-start; font-size:12.5px; line-height:1.55;}
+  .legend-n{flex-shrink:0; width:22px; height:22px; border-radius:50%; background:var(--accent-soft); color:var(--accent-ink); font-family:var(--font-mono); font-weight:800; font-size:11.5px; display:flex; align-items:center; justify-content:center;}
+  .legend-item b{display:block; color:var(--ink);}
+  .legend-item span{color:var(--ink-soft);}
+  .legend-note{margin-top:10px; font-size:12px; color:var(--ink-soft);}
+
+  /* ---------- sticky nav ---------- */
+  .topnav{position:sticky; top:0; z-index:10; background:var(--bg); border-bottom:1px solid var(--line); padding:10px 32px; display:flex; gap:4px; flex-wrap:wrap; overflow-x:auto;}
+  .topnav a{white-space:nowrap; text-decoration:none; color:var(--ink-soft); font-size:13px; font-weight:700; padding:6px 12px; border-radius:7px;}
+  .topnav a:hover{background:var(--accent-soft); color:var(--accent-ink);}
+
+  /* ---------- chips ---------- */
+  .chip{display:inline-flex; align-items:center; gap:5px; font-size:11.5px; font-weight:700; padding:3px 9px; border-radius:999px; line-height:1.5; white-space:nowrap;}
+  .chip-slide{background:var(--accent); color:var(--surface); font-family:var(--font-mono);}
+  .chip-units{border:1.5px solid var(--line-strong); color:var(--ink-soft); font-family:var(--font-mono);}
+  .chip-units--empty{background:var(--brick-soft); color:var(--brick-ink); border-color:transparent;}
+  .chip-units--low{background:var(--amber-soft); color:var(--amber-ink); border-color:transparent;}
+  .chip-units--good{background:var(--mint-soft); color:var(--mint-ink); border-color:transparent;}
+  .chip-units--over{background:var(--amber-soft); color:var(--amber-ink); border-color:transparent;}
+  .tag-fixed{font-size:10.5px; font-weight:700; background:var(--accent); color:var(--surface); padding:1px 7px; border-radius:5px;}
+  .tag-optional{font-size:10.5px; font-weight:700; background:var(--surface-2); color:var(--ink-soft); border:1px solid var(--line); padding:1px 7px; border-radius:5px;}
+
+  /* ---------- density summary bar ---------- */
+  .density-bar{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:1px; background:var(--line); border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; margin-bottom:10px;}
+  .density-stat{background:var(--surface); padding:14px 16px; text-align:center;}
+  .density-num{display:block; font-family:var(--font-mono); font-size:24px; font-weight:800; font-variant-numeric:tabular-nums; color:var(--ink);}
+  .density-lbl{display:block; font-size:11.5px; color:var(--ink-soft); margin-top:2px;}
+  .density-stat.is-empty .density-num{color:var(--brick-ink);}
+  .density-stat.is-low .density-num{color:var(--amber-ink);}
+  .density-stat.is-good .density-num{color:var(--mint-ink);}
+  .density-stat.is-over .density-num{color:var(--amber-ink);}
+  .density-empty-list{font-size:12.5px; color:var(--ink-soft); margin-bottom:20px;}
+  .density-empty-list span{font-weight:700; color:var(--brick-ink);}
+
+  /* ---------- filter ---------- */
+  .filterbar{display:flex; gap:6px; flex-wrap:wrap; margin-bottom:16px;}
+  .filter-chip{border:1px solid var(--line); background:var(--surface); color:var(--ink-soft); font-size:12.5px; font-weight:700; padding:6px 13px; border-radius:8px; cursor:pointer;}
+  .filter-chip.is-active{background:var(--accent); border-color:var(--accent); color:var(--surface);}
+  .filter-chip:hover:not(.is-active){border-color:var(--accent);}
+
+  /* ---------- slide card grid ---------- */
+  .slide-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:14px;}
+  .slide-card{background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:15px 17px; display:flex; flex-direction:column; gap:8px;}
+  .slide-card.is-fixed{background:var(--accent-soft); border-color:var(--accent-soft);}
+  .slide-card.band-empty{border-left:4px solid var(--brick);}
+  .slide-card.band-low{border-left:4px solid var(--amber);}
+  .slide-card.band-over{border-left:4px solid var(--amber);}
+  .sc-head{display:flex; align-items:center; gap:8px; flex-wrap:wrap;}
+  .sc-title{font-size:14.5px; font-weight:700; flex:1; min-width:100px;}
+  .sc-body{display:flex; flex-direction:column; gap:5px;}
+  .sc-body p{font-size:13.5px; line-height:1.65;}
+  .sc-note{font-size:11.5px; color:var(--ink-soft); font-family:var(--font-mono); background:var(--surface-2); border-radius:6px; padding:5px 9px; width:fit-content;}
+
+  .cue{font-size:12.5px; line-height:1.6; color:var(--ink-soft); display:flex; gap:7px; padding-top:6px; border-top:1px dashed var(--line);}
+  .cue-tag{flex-shrink:0; font-size:11px; font-weight:700; padding:1px 7px; border-radius:5px; white-space:nowrap; height:fit-content;}
+  .cue-joke .cue-tag{background:var(--surface-2); color:var(--ink-soft); border:1px solid var(--line);}
+  .cue-demo .cue-tag{background:var(--accent-soft); color:var(--accent-ink);}
+  details.hint{padding-top:6px; border-top:1px dashed var(--line);}
+  details.hint summary{font-size:11.5px; font-weight:700; color:var(--amber-ink); background:var(--amber-soft); padding:3px 9px; border-radius:5px; display:inline-block; cursor:pointer; list-style:none;}
+  details.hint summary::-webkit-details-marker{display:none;}
+  details.hint summary::before{content:"🗣 ";}
+  details.hint p{font-size:12.5px; color:var(--ink-soft); margin-top:8px; padding:9px 11px; background:var(--surface-2); border-radius:6px; line-height:1.65; border-left:2px solid var(--amber);}
+
+  /* ---------- footer ---------- */
+  footer.foot{max-width:1180px; margin:56px auto 0; padding:20px 32px 0; border-top:1px solid var(--line); font-size:12px; color:var(--ink-soft); display:flex; flex-wrap:wrap; gap:6px 14px;}
+  footer.foot code{background:var(--surface-2); padding:1px 6px; border-radius:4px; border:1px solid var(--line);}
+
+  /* ---------- responsive ---------- */
+  @media (max-width:760px){
+    main,.hero,.tpl-notice,.legend-box,footer.foot{padding-left:16px; padding-right:16px;}
+    .topnav{padding-left:16px; padding-right:16px;}
+  }
+</style>
+
+<div class="hero">
+  <div class="hero-kicker">VIBECODING · 콘텐츠 리뷰(슬라이드 미리보기)</div>
+  <h1>바이브코딩 온라인 원데이 · 오후 콘텐츠 리뷰</h1>
+  <div class="hero-meta">
+    <div><b>작성:</b> create-slides(재구성)</div>
+    <div><b>작성일:</b> <code>2026-09-15</code></div>
+    <div><b>기준 문서:</b> <code>courses/바이브코딩_온라인/sessions/2주차/2주차_초안.md</code></div>
+    <div><b>대상 수강생:</b> 코딩 경험이 없는 입문자 · 연령대가 높은 편 · 온라인 수강</div>
+  </div>
+</div>
+
+<div class="legend-box" id="legendBox">
+  <div class="legend-grid">
+    <div class="legend-item"><span class="legend-n">1</span><div><b>개념 블록</b><span>정의·설명 문장 한 덩어리</span></div></div>
+    <div class="legend-item"><span class="legend-n">1</span><div><b>비유/예시</b><span>비유 하나 또는 워크드 예시 하나</span></div></div>
+    <div class="legend-item"><span class="legend-n">1</span><div><b>비교표</b><span>대조형 표 한 개</span></div></div>
+    <div class="legend-item"><span class="legend-n">1</span><div><b>오해→교정</b><span>흔한 오해 하나 + 교정 문장</span></div></div>
+    <div class="legend-item"><span class="legend-n">1</span><div><b>체크/콜아웃</b><span>체크리스트 또는 강조 콜아웃 한 개</span></div></div>
+  </div>
+  <p class="legend-note">정보 단위 = 위 다섯 종류 각 1단위(콘텐츠 SKILL §0-6). 목표는 슬라이드당 <b style="color:var(--ink)">3~6개</b> — <b style="color:var(--brick-ink)">1개 이하는 근-빈 슬라이드</b>로 지양합니다.</p>
+</div>
+
+<nav class="topnav">
+  <a href="#density">밀도 요약</a>
+  <a href="#slides">슬라이드 미리보기</a>
+</nav>
+
+<main>
+
+  <!-- ============ DENSITY SUMMARY ============ -->
+  <section class="section" id="density">
+    <div class="section-head">
+      <span class="section-eyebrow">밀도 점검</span>
+      <h2>밀도 요약 바</h2>
+    </div>
+    <p class="section-sub">아래 슬라이드 카드의 <code>data-info-units</code> 값을 스크립트가 스캔해 자동으로 채웁니다 — 카드를 추가·삭제하면 숫자가 그만큼 다시 계산됩니다.</p>
+
+    <div class="density-bar" id="densityBar">
+      <div class="density-stat"><span class="density-num" id="densityTotal">0</span><span class="density-lbl">전체 슬라이드</span></div>
+      <div class="density-stat is-empty"><span class="density-num" id="densityEmptyCount">0</span><span class="density-lbl">근-빈 (단위 ≤1)</span></div>
+      <div class="density-stat is-low"><span class="density-num" id="densityLowCount">0</span><span class="density-lbl">낮음 (단위 2)</span></div>
+      <div class="density-stat is-good"><span class="density-num" id="densityGoodCount">0</span><span class="density-lbl">적정 (단위 3~6)</span></div>
+      <div class="density-stat is-over"><span class="density-num" id="densityOverCount">0</span><span class="density-lbl">과다 (단위 ≥7)</span></div>
+    </div>
+    <p class="density-empty-list">근-빈 슬라이드(단위 ≤1) 목록 — 우선 보강 대상: <span id="densityEmptyList">없음</span></p>
+    <p class="density-empty-list">고정 슬라이드((표지)·(간지)·(전환 화면)) 12장은 정보 단위 산정에서 제외했습니다 — 전체 슬라이드 수에는 포함되지만 밴드 집계에는 들어가지 않습니다. 단위는 화면 본문 문구를 빈 줄(<code>&lt;br&gt;&lt;br&gt;</code>)로 나눈 블록 수로 <b>자동 근사</b>했습니다(멘트 칸 제외) — 라벨 줄 여러 개가 한 블록이면 1단위로 세므로 실제 단위와 다를 수 있어 사람이 검토합니다.</p>
+  </section>
+
+  <hr style="border:0; border-top:1px solid var(--line); margin:44px 0 0;">
+
+  <!-- ============ SLIDE GRID ============ -->
+  <section class="section" id="slides">
+    <div class="section-head">
+      <span class="section-eyebrow">슬라이드 미리보기</span>
+      <h2>슬라이드 카드 그리드</h2>
+    </div>
+    <p class="section-sub">여기 쓰인 문구가 화면 최종 문장입니다. <span class="cue-tag" style="background:var(--surface-2); color:var(--ink-soft); border:1px solid var(--line);">💬 농담</span>·<span class="cue-tag" style="background:var(--accent-soft); color:var(--accent-ink);">👀 시연</span>은 실제 덱에서는 발표자 노트로만 가고 화면엔 안 보입니다 — 검토 목적상 여기서는 펼쳐 보여줍니다. <span style="color:var(--amber-ink); font-weight:700;">🗣 완성 요청문</span>은 실제로도 화면엔 접힌 힌트로만 노출됩니다.</p>
+
+    <div class="filterbar" id="periodFilter"><!-- JS가 카드의 data-교시 값을 읽어 "전체" + 교시별 칩을 자동 생성합니다 --></div>
+
+    <div class="slide-grid" id="slideGrid">
+
+      <article class="slide-card is-fixed" data-slide="B0-01" data-교시="오프닝" data-info-units="">
+        <div class="sc-head">
+          <span class="chip chip-slide">B0-01</span>
+          <span class="sc-title">(표지) 바이브코딩 온라인 원데이 · 오후</span> <span class="tag-fixed">표지</span>
+          <span class="chip chip-units" data-units-badge>단위 제외</span>
+        </div>
+        <div class="sc-body">
+          <p><strong>기준을 먼저 세우고, 나를 소개하는 웹사이트 만들기</strong></p>
+          <p>VIBECODING · 오후<br>기준을 적고 · 그 기준으로 만들고 · 기준을 고쳐 넓혀 봅니다.</p>
+        </div>
+        <div class="sc-note">정보 단위 산정 제외 — 고정 슬라이드(표지)</div>
+        <div class="cue cue-joke"><span class="cue-tag">💬</span>오전의 «말로 바로»와 짝을 이루는 오후의 세 행동만 약속하세요.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B0-02" data-교시="오프닝" data-info-units="3">
+        <div class="sc-head">
+          <span class="chip chip-slide">B0-02</span>
+          <span class="sc-title">기준 문서를 먼저 쓰고, 그 기준으로 만듭니다</span>
+          <span class="chip chip-units" data-units-badge>단위 3</span>
+        </div>
+        <div class="sc-body">
+          <p><strong>오늘(오후)의 목표 — 기준 문서를 먼저 쓰고, 그 기준으로 사이트를 만듭니다.</strong></p>
+          <p><strong>기준 쓰기</strong> — <code>prd.md</code> · <code>design.md</code> · <code>AGENTS.md</code> 세 문서를 내 폴더에 만듭니다.<br><strong>만들기</strong> — 세 문서를 읽혀 <code>index.html</code> · <code>style.css</code> · <code>script.js</code> 세 파일로 나를 소개하는 웹사이트를 만듭니다.<br><strong>넓히기</strong> — 바꾸고 싶은 점은 문서를 먼저 고치고, 그다음 사이트에 적용합니다.</p>
+          <p><strong>대화창이 아니라 폴더에 남은 파일</strong>이 오늘의 결과입니다.</p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 3개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-joke"><span class="cue-tag">💬</span>오전에는 말로 바로 만들었다면, 오후에는 기준을 정해 일을 맡긴다고 한 줄로 예고합니다. 끝나면 폴더에 문서 세 개와 사이트 파일 세 개가 남습니다.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B0-03" data-교시="오프닝" data-info-units="3">
+        <div class="sc-head">
+          <span class="chip chip-slide">B0-03</span>
+          <span class="sc-title">오후에 배우게 될 것</span>
+          <span class="chip chip-units" data-units-badge>단위 3</span>
+        </div>
+        <div class="sc-body">
+          <p><strong>기준을 파일로 남기고 AI에게 일을 맡기는 방법</strong>을 배우고, 나를 소개하는 웹사이트를 만들어 넓혀 봅니다.</p>
+          <p><strong>1 오전 되짚기</strong> — 요청 → 확인 → 수정 앞에 붙는 한 칸<br><strong>2 Prompt · Context · Markdown</strong> — 요청에 담을 것 · 함께 넘길 것 · 파일로 남길 것<br><strong>3 기획</strong> — 누가 볼 사이트인가 · 꼭 넣을 섹션 · 보여 주는 순서<br><strong>4 md 3종 작성</strong> — prd.md · design.md · AGENTS.md<br><strong>5 사이트 만들기</strong> — 문서 읽히기 · 계획 확인 · 세 파일<br><strong>6 사이트 넓히기</strong> — 문서 먼저 고치고 적용<br><strong>7 검토와 마무리</strong> — 문서와 대조 · 공유 전 점검</p>
+          <p><strong>오전과 다른 점</strong> — 오전은 «말로 바로», 오후는 «기준 먼저»입니다.</p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 3개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-joke"><span class="cue-tag">💬</span>일곱 항목의 이름만 짚고 넘어갑니다. 오전과 같은 도구를 쓰지만 순서가 다르다는 대비만 남기세요.</div>
+      </article>
+
+      <article class="slide-card is-fixed" data-slide="B1-01" data-교시="PART 1 · 오전 되짚기" data-info-units="">
+        <div class="sc-head">
+          <span class="chip chip-slide">B1-01</span>
+          <span class="sc-title">(간지) 오전 되짚기</span> <span class="tag-fixed">간지</span>
+          <span class="chip chip-units" data-units-badge>단위 제외</span>
+        </div>
+        <div class="sc-body">
+          <p><strong>PART 1 · 오전 되짚기</strong></p>
+          <p>오전에 무엇을 했고, 오후에는 그 고리 앞에 무엇이 더 붙는지 봅니다.</p>
+        </div>
+        <div class="sc-note">정보 단위 산정 제외 — 고정 슬라이드(간지)</div>
+        <div class="cue cue-joke"><span class="cue-tag">💬</span>오전에는 타자 게임을 만들고 한 가지씩 고쳐 봤습니다. 오후에는 같은 고리 앞에 «기준을 정한다» 한 칸이 더 붙습니다.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B1-02" data-교시="PART 1 · 오전 되짚기" data-info-units="3">
+        <div class="sc-head">
+          <span class="chip chip-slide">B1-02</span>
+          <span class="sc-title">오전에 말로 만들고 고쳐 봤습니다</span>
+          <span class="chip chip-units" data-units-badge>단위 3</span>
+        </div>
+        <div class="sc-body">
+          <p><strong>오전에 한 것</strong> — 말로 요청해 타자 게임을 만들고, 브라우저로 열고, 한 가지씩 고쳤습니다.</p>
+          <p><strong>함께 떠올려 볼 것</strong><br><strong>조건을 다시 말한 적이 있나요?</strong> — 대화가 길어지며 앞에서 말한 조건을 한 번 더 적어야 했던 순간<br><strong>결과가 달랐던 적이 있나요?</strong> — 같은 요청인데 다른 수강생과 화면이 달랐던 순간<br><strong>말로 설명하기 어려웠나요?</strong> — 원하는 색·크기·배치를 말로만 전하려던 순간</p>
+          <p>이 순간들을 줄이는 방법이 <strong>오후의 주제</strong>입니다.</p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 3개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-demo"><span class="cue-tag">👀</span>강사 화면공유 자리입니다. 오전 타자 게임 폴더를 열어 보이며 채팅으로 한 줄씩 받습니다. 한계를 따로 시연하는 장이 아니라 떠올리는 장입니다.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B1-03" data-교시="PART 1 · 오전 되짚기" data-info-units="3">
+        <div class="sc-head">
+          <span class="chip chip-slide">B1-03</span>
+          <span class="sc-title">오전에서 오후로</span>
+          <span class="chip chip-units" data-units-badge>단위 3</span>
+        </div>
+        <div class="sc-body">
+          <p><strong>고리는 그대로입니다.</strong> 앞에 기준 결정이 붙고, 결정을 파일로 남기는 단계가 늘었습니다.</p>
+          <p><strong>오전 · 요청 → 확인 → 수정</strong> — 무엇을 시킬지는 그때그때 정했습니다 · 결과가 마음에 안 들면 다시 요청했습니다 · 대화창을 닫으면 정한 것이 사라졌습니다<br>→ <strong>오후 · 기준 결정 → 요청 → 확인 → 수정</strong> — 무엇을·어디까지·무엇이 되면 끝인지 먼저 정합니다 · 정한 것을 문서와 폴더에 남깁니다 · 다음 대화가 그 파일을 읽고 이어갑니다</p>
+          <p>새로 배우는 게 아니라, <strong>맨 앞에 결정 한 칸</strong>이 늘어납니다.</p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 3개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-joke"><span class="cue-tag">💬</span>오전의 사이클은 그대로 씁니다. 오후에는 그 앞에 «무엇을·어디까지·무엇이 되면 끝인지» 한 칸을 붙일 뿐이라고 안심시킵니다.</div>
+      </article>
+
+      <article class="slide-card is-fixed" data-slide="B1-04" data-교시="PART 1 · 오전 되짚기" data-info-units="">
+        <div class="sc-head">
+          <span class="chip chip-slide">B1-04</span>
+          <span class="sc-title">(전환 화면) 해줘.</span> <span class="tag-fixed">전환 화면</span>
+          <span class="chip chip-units" data-units-badge>단위 제외</span>
+        </div>
+        <div class="sc-body">
+          <p><strong>해줘.</strong></p>
+        </div>
+        <div class="sc-note">정보 단위 산정 제외 — 고정 슬라이드(전환 화면)</div>
+        <div class="cue cue-joke"><span class="cue-tag">💬</span>오전 도입부의 «해줘.»를 다시 불러, 다음 장의 «해.»와 대비할 준비를 합니다.</div>
+      </article>
+
+      <article class="slide-card is-fixed" data-slide="B1-05" data-교시="PART 1 · 오전 되짚기" data-info-units="">
+        <div class="sc-head">
+          <span class="chip chip-slide">B1-05</span>
+          <span class="sc-title">(전환 화면) 해.</span> <span class="tag-fixed">전환 화면</span>
+          <span class="chip chip-units" data-units-badge>단위 제외</span>
+        </div>
+        <div class="sc-body">
+          <p><strong>해.</strong></p>
+        </div>
+        <div class="sc-note">정보 단위 산정 제외 — 고정 슬라이드(전환 화면)</div>
+        <div class="cue cue-joke"><span class="cue-tag">💬</span>말투가 아니라, 물어보는 자리에서 정하는 자리로 옮겨 왔다는 뜻입니다. 오후에는 그 정한 것을 문서에 적습니다.</div>
+      </article>
+
+      <article class="slide-card is-fixed" data-slide="B2-01" data-교시="PART 2 · Prompt · Context · Markdown" data-info-units="">
+        <div class="sc-head">
+          <span class="chip chip-slide">B2-01</span>
+          <span class="sc-title">(간지) Prompt · Context · Markdown</span> <span class="tag-fixed">간지</span>
+          <span class="chip chip-units" data-units-badge>단위 제외</span>
+        </div>
+        <div class="sc-body">
+          <p><strong>PART 2 · Prompt · Context · Markdown</strong></p>
+          <p>무엇을, 어디까지, 무엇이 되면 끝인가 — 요청에 담을 것, 함께 넘길 것, 파일로 남길 것을 봅니다.</p>
+        </div>
+        <div class="sc-note">정보 단위 산정 제외 — 고정 슬라이드(간지)</div>
+        <div class="cue cue-joke"><span class="cue-tag">💬</span>이 PART는 세 묶음입니다. Prompt는 «이번 한 번의 요청», Context는 그 요청과 함께 AI가 보는 모든 것, Markdown은 그 기준을 파일로 남기는 방법입니다.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B2-02" data-교시="PART 2 · Prompt · Context · Markdown" data-info-units="2">
+        <div class="sc-head">
+          <span class="chip chip-slide">B2-02</span>
+          <span class="sc-title">Prompt는 다섯 칸으로 설계합니다</span>
+          <span class="chip chip-units" data-units-badge>단위 2</span>
+        </div>
+        <div class="sc-body">
+          <p><strong>Prompt Engineering</strong>은 AI에게 어떤 요청을 어떻게 전달할지 설계하는 방법입니다. 다섯 칸을 채우면 AI가 추측할 빈칸이 줄어듭니다.</p>
+          <p><strong>1 목표</strong> — 무엇을 얻고 싶은가 · 예: 나를 소개하는 웹사이트 만들기<br><strong>2 범위</strong> — 어디까지 볼 것인가 · 예: 한 페이지 · 이름·한 줄 소개·관심사 2~3개만<br><strong>3 조건</strong> — 무엇을 지켜야 하나 · 예: 내가 주지 않은 경력·연락처는 만들지 않기<br><strong>4 출력</strong> — 어떤 모양으로 받을까 · 예: <code>index.html</code> · <code>style.css</code> · <code>script.js</code> 세 파일<br><strong>5 완료 기준</strong> — 무엇이 되면 끝인가 · 예: 브라우저에서 이름·한 줄 소개·관심사가 모두 보임</p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 2개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-joke"><span class="cue-tag">💬</span>Prompt Engineering의 정의부터 읽고 다섯 칸으로 내려갑니다. 예시는 전부 오후 실습 소재(나를 소개하는 웹사이트)에서 뽑았습니다.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B2-03" data-교시="PART 2 · Prompt · Context · Markdown" data-info-units="5">
+        <div class="sc-head">
+          <span class="chip chip-slide">B2-03</span>
+          <span class="sc-title">Prompt Engineering · 프롬프트 엔지니어링</span>
+          <span class="chip chip-units" data-units-badge>단위 5</span>
+        </div>
+        <div class="sc-body">
+          <p><strong>무엇을 지시할 것인가?</strong></p>
+          <p><strong>주요 개념</strong> — AI에게 전달하는 작업 · 목표 · 조건 · 출력형식을 명확하게 설계합니다.</p>
+          <p><strong>명확성 (Clarity)</strong> — 원하는 결과를 구체적으로 설명할 것<br><strong>역할 (Persona)</strong> — AI가 어떤 역할로 응답할지 지정할 것<br><strong>조건 (Constraints)</strong> — 핵심 조건을 구체적으로 제공할 것<br><strong>출력형식 (Format)</strong> — 형식 · 길이 · 스타일을 명시할 것</p>
+          <p><strong>이렇게 쓰면</strong> — “자기소개 페이지 만들어줘”<br><strong>이렇게 씁니다</strong> — 너는 웹페이지를 만드는 제작자야 / 나를 소개하는 한 페이지를 만들려고 해 / <code>index.html</code> · <code>style.css</code> · <code>script.js</code> 세 파일로 나눠 / 브라우저에서 바로 열리는 한 페이지로 만들어</p>
+          <p><strong>점검표로 쓰기</strong> — 네 원칙은 앞 장의 다섯 칸을 채운 뒤 빠진 것이 없는지 보는 체크리스트입니다.</p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 5개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-joke"><span class="cue-tag">💬</span>영어 용어를 외우게 하지 않습니다. «AI에게 뭐라고 말할지 정하는 것»으로 풀고, 오전에 본 네 원칙을 오후 소재로 다시 대어 보는 장이라고 안내합니다.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B2-04" data-교시="PART 2 · Prompt · Context · Markdown" data-info-units="2">
+        <div class="sc-head">
+          <span class="chip chip-slide">B2-04</span>
+          <span class="sc-title">막연한 요청과 구조화된 요청</span>
+          <span class="chip chip-units" data-units-badge>단위 2</span>
+        </div>
+        <div class="sc-body">
+          <p><strong>막연한 요청</strong> — 목표만 있고 나머지는 추측<br><strong>요청문</strong> — 자기소개 사이트 만들어줘.</p>
+          <p><strong>구조화된 요청</strong> — 줄마다 담긴 칸이 보입니다<br><strong>요청문</strong> — 나를 처음 알게 된 사람이 볼 자기소개 웹사이트를 만들어 주세요.〔목표〕 이름 · 한 줄 소개 · 관심사 2~3개만 한 페이지에 보여 주세요.〔범위〕 제가 주지 않은 경력 · 연락처는 만들지 마세요.〔조건〕 index.html · style.css · script.js 세 파일로 만들어 주세요.〔출력〕 브라우저에서 세 가지가 모두 보이면 끝입니다.〔완료 기준〕</p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 2개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-demo"><span class="cue-tag">👀</span>위 한 줄과 아래 다섯 문장을 소리 내어 비교합니다. 문장 끝 괄호가 앞 장 다섯 칸 중 무엇을 채웠는지 보여 줍니다.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B2-05" data-교시="PART 2 · Prompt · Context · Markdown" data-info-units="3">
+        <div class="sc-head">
+          <span class="chip chip-slide">B2-05</span>
+          <span class="sc-title">프롬프트를 먼저 만들고 작업을 시킵니다</span>
+          <span class="chip chip-units" data-units-badge>단위 3</span>
+        </div>
+        <div class="sc-body">
+          <p>AI에게 일을 시키기 전에, <strong>AI에게 그 일을 시킬 문장을 먼저 써 달라고</strong> 합니다.</p>
+          <p><strong>바로 시키기</strong> — Codex 입력창에 바로 입력합니다. “내 자기소개 사이트 만들어줘”라고 그 자리에서 시킵니다.<br>→ <strong>프롬프트부터 받기</strong> — Codex에게 프롬프트를 먼저 써 달라고 요청합니다. “자기소개 사이트를 만들 요청문을 목표·범위·조건·출력·완료 기준 다섯 칸으로 작성해 줘”</p>
+          <p><strong>한 번뿐인 질문은 바로 시키고, 반복해서 쓸 지시는 프롬프트부터 받아 둡니다.</strong></p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 3개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-joke"><span class="cue-tag">💬</span>같은 요청도 지금 바로 시키는 것과, 프롬프트부터 받아 읽어 보고 쓰는 것의 결과가 다릅니다. 받은 프롬프트도 사람이 읽고 고친 뒤에 씁니다.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B2-06" data-교시="PART 2 · Prompt · Context · Markdown" data-info-units="3">
+        <div class="sc-head">
+          <span class="chip chip-slide">B2-06</span>
+          <span class="sc-title">Lost in the Middle · 중간 유실 현상</span>
+          <span class="chip chip-units" data-units-badge>단위 3</span>
+        </div>
+        <div class="sc-body">
+          <p>긴 문맥(Context)을 처리할 때, 입력의 <strong>시작과 끝</strong>은 잘 기억하지만 <strong>중간에 위치한 정보</strong>는 누락하거나 제대로 활용하지 못하는 현상입니다.</p>
+          <p><strong>가운데 구간</strong> — 중요한 자료가 가운데에 있으면, 자료를 아예 주지 않았을 때보다 못한 결과가 나오기도 합니다.</p>
+          <p>그래서 <strong>꼭 지킬 조건</strong>은 요청의 맨 앞이나 맨 뒤에 두고, 길어지면 한 번 더 적습니다.</p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 3개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-demo"><span class="cue-tag">👀</span>차트는 «가운데가 푹 꺼진 모양» 하나만 짚습니다. 수치를 외우게 하지 않습니다.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B2-07" data-교시="PART 2 · Prompt · Context · Markdown" data-info-units="3">
+        <div class="sc-head">
+          <span class="chip chip-slide">B2-07</span>
+          <span class="sc-title">긴 대화에서는 처음에 말한 조건이 약해집니다</span>
+          <span class="chip chip-units" data-units-badge>단위 3</span>
+        </div>
+        <div class="sc-body">
+          <p>앞 장의 «중간 유실»이 긴 대화에서 실제로 무엇을 잃게 하는지입니다.</p>
+          <p>긴 대화나 장기 작업에서 <strong>처음에 전달한 요구사항이나 조건이 약해지거나 누락될 수 있습니다.</strong></p>
+          <p><strong>① 대화가 길어짐</strong> — 요청 · 답변 · 수정 요청 · 답변 · 또 수정 요청이 계속 쌓임 · 처음 조건: 관심사 2~3개만 · 경력 지어내지 않기<br>→ <strong>② 처음 조건이 약해짐</strong> — 예: 관심사가 다섯 개로 늘어남 · 예: 쓰지 않은 경력 문장이 섞임<br>→ <strong>③ 중요한 정보는 문서로</strong> — 기준 문서(.md)에 «관심사 2~3개 · 경력 지어내지 않기»를 적어 두면 요청할 때마다 다시 읽힘</p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 3개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-joke"><span class="cue-tag">💬</span>원본 표현 그대로 «처음에 전달한 요구사항이나 조건이 약해지거나 누락될 수 있다»까지만 말합니다. 수치나 «중간만 사라진다» 같은 단정은 덧붙이지 않습니다.</div>
+      </article>
+
+      <article class="slide-card is-fixed" data-slide="B2-08" data-교시="PART 2 · Prompt · Context · Markdown" data-info-units="">
+        <div class="sc-head">
+          <span class="chip chip-slide">B2-08</span>
+          <span class="sc-title">(전환 화면) Context</span> <span class="tag-fixed">전환 화면</span>
+          <span class="chip chip-units" data-units-badge>단위 제외</span>
+        </div>
+        <div class="sc-body">
+          <p><strong>Context</strong></p>
+          <p>AI가 지금 보고 있는 것 — 무엇을 함께 넘기고, 정한 것을 어디에 남기는가.</p>
+        </div>
+        <div class="sc-note">정보 단위 산정 제외 — 고정 슬라이드(전환 화면)</div>
+        <div class="cue cue-joke"><span class="cue-tag">💬</span>Prompt가 «이번 한 번의 요청»이라면 Context는 그 요청과 함께 AI가 보는 모든 것입니다.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B2-09" data-교시="PART 2 · Prompt · Context · Markdown" data-info-units="2">
+        <div class="sc-head">
+          <span class="chip chip-slide">B2-09</span>
+          <span class="sc-title">Context는 요청과 함께 넘기는 자료입니다</span>
+          <span class="chip chip-units" data-units-badge>단위 2</span>
+        </div>
+        <div class="sc-body">
+          <p><strong>Context Engineering</strong>은 AI가 필요한 정보를 제대로 참고하도록 맥락을 구성하는 방법입니다. 같은 요청이라도 <strong>함께 넘긴 자료만큼</strong> 결과가 달라집니다.</p>
+          <p><strong>이번 요청 (Prompt)</strong> — 가운데에 놓이는 한 번의 요청<br><strong>프로젝트 설명</strong> — 무엇을 만드는 중인가<br><strong>자료</strong> — 요구사항 · 기존 문서 · 참고 자료<br><strong>규칙</strong> — 지켜야 할 작업 규칙<br><strong>오류 메시지</strong> — 실패했을 때 나온 그대로</p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 2개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-joke"><span class="cue-tag">💬</span>Context Engineering 정의를 읽고 네 가지를 짚습니다. 오후에는 «프로젝트 설명·자료·규칙»이 곧 prd.md·design.md·AGENTS.md가 된다고 예고합니다.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B2-10" data-교시="PART 2 · Prompt · Context · Markdown" data-info-units="4">
+        <div class="sc-head">
+          <span class="chip chip-slide">B2-10</span>
+          <span class="sc-title">Context Engineering · 컨텍스트 엔지니어링</span>
+          <span class="chip chip-units" data-units-badge>단위 4</span>
+        </div>
+        <div class="sc-body">
+          <p><strong>무엇을 제공할 것인가?</strong></p>
+          <p><strong>주요 개념</strong> — AI의 더 유용한 답변을 위해 배경정보 · 참고자료 · 판단기준 · 제약조건을 함께 제공해 맥락을 설계합니다. 지시를 다듬는 것만으로는 부족합니다.</p>
+          <p><strong>배경 정보 (Background)</strong> — 이 요청이 왜 필요한지 목적과 상황을 줄 것<br><strong>참고 자료 (Reference)</strong> — 참조할 문서 · 데이터 · 관련 정보를 줄 것<br><strong>판단 기준 (Criteria)</strong> — 어떤 기준으로 볼지 명확하게 줄 것<br><strong>제약 조건 (Constraints)</strong> — 하지 말아야 할 것과 지킬 형식을 줄 것</p>
+          <p><strong>이렇게 쓰면</strong> — “자기소개 페이지 예쁘게 만들어줘”<br><strong>이렇게 씁니다</strong> — 처음 배우는 사람이 볼 거라 읽기 쉬워야 해 / 활동명 ○○, 소개 ○○, 관심사 ○○·○○이야 / 이 세 가지가 다 보이면 완성이야 / 설치·서버 쓰지 말고, 없는 경력 만들지 마</p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 4개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-joke"><span class="cue-tag">💬</span>앞의 Prompt Engineering 장과 짝입니다. 판단 기준은 요청에 함께 담아, 이후 결과를 확인할 때 쓰는 기준이 됩니다.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B2-11" data-교시="PART 2 · Prompt · Context · Markdown" data-info-units="4">
+        <div class="sc-head">
+          <span class="chip chip-slide">B2-11</span>
+          <span class="sc-title">대화 세션이 끝나면 결정도 사라집니다</span>
+          <span class="chip chip-units" data-units-badge>단위 4</span>
+        </div>
+        <div class="sc-body">
+          <p>채팅 하나하나가 하나의 <strong>세션</strong>입니다. 새 세션을 열면 AI는 이전 세션에서 정한 것을 모릅니다. 결정이 그 세션의 컨텍스트(그 대화 안에서만 오간 맥락) 안에만 있었기 때문입니다.</p>
+          <p><strong>맥락 (Context)</strong> — 지금 대화에 실제로 들어온 정보입니다.<br><strong>메모리 (Memory)</strong> — 다음에도 참고하도록 남긴 정보입니다. 모든 대화를 자동으로 기억하는 기능이 아닙니다.</p>
+          <p><strong>LLM의 «메모리»</strong> — 이전 대화 내용이 서비스 서버에 저장돼 다음 대화에 불려 옵니다. 무엇이 저장됐는지 내가 열어 보기 어렵습니다.<br><strong>에이전트의 «작업 폴더»</strong> — 결과물이 내 폴더 안 파일로 남고, 다음 대화가 그 파일을 직접 읽습니다. 내가 열어 보고 고칠 수 있습니다.</p>
+          <p><strong>대화로만 남기면</strong> 새 대화를 열 때마다 처음부터 다시 설명합니다 → <strong>폴더 안 파일로 남기면</strong> 다음 대화가 그 파일을 읽고 이어갑니다.</p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 4개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-joke"><span class="cue-tag">💬</span>대화는 세션이 끝나면 잊히지만, Codex는 폴더 안 파일을 읽고 이어갈 수 있다는 차이를 짚습니다. AI가 모든 대화를 자동으로 영구 기억한다고 가정하지 않게 하세요.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B2-12" data-교시="PART 2 · Prompt · Context · Markdown" data-info-units="3">
+        <div class="sc-head">
+          <span class="chip chip-slide">B2-12</span>
+          <span class="sc-title">대화와 문서는 역할이 다릅니다</span>
+          <span class="chip chip-units" data-units-badge>단위 3</span>
+        </div>
+        <div class="sc-body">
+          <p><strong>대화</strong> — 탐색하고 질문하기<br><strong>문서</strong> — 결정을 보존하기</p>
+          <p><strong>대화는 흘러가고, 결정은 문서로 남깁니다.</strong></p>
+          <p><strong>회의록처럼</strong> — 회의 잡담은 기억나도 회의록이 없으면 다음 날 다시 회의합니다. 채팅은 위로 밀려 사라지니, 지킬 기준은 문서에 남깁니다.</p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 3개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-joke"><span class="cue-tag">💬</span>오전에 대화로만 고친 경험을 떠올리게 하고, 오후에는 정한 것을 문서로 남긴다는 결론으로 이어 갑니다.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B2-13" data-교시="PART 2 · Prompt · Context · Markdown" data-info-units="4">
+        <div class="sc-head">
+          <span class="chip chip-slide">B2-13</span>
+          <span class="sc-title">프롬프트 · 컨텍스트 · 하네스</span>
+          <span class="chip chip-units" data-units-badge>단위 4</span>
+        </div>
+        <div class="sc-body">
+          <p>범위 · 순서 · 증거 · 멈춤 같은 약속은 프롬프트 한 줄보다 큰 바깥 구조에 놓입니다. <strong>프롬프트가 컨텍스트 안에, 컨텍스트가 하네스 안에</strong> 들어 있습니다.</p>
+          <p><strong>하네스 (Harness)</strong> — 맡기기 전에 규칙 · 권한을 주고, 끝난 뒤에 확인까지 하는 바깥 틀입니다. 이 틀을 설계하는 일을 <strong>하네스 엔지니어링</strong>이라고 합니다 — AI가 일하는 동안 환경 · 도구 · 규칙 · 확인 구조를 설계하는 일.<br><strong>컨텍스트</strong> — 지금 AI가 보고 있는 것. 읽은 파일과 나눈 대화.<br><strong>프롬프트</strong> — 지금 이 한 번, 내가 친 그 문장.</p>
+          <p><strong>하네스가 왜 필요한가 — 모델이 스스로 못 하는 세 가지</strong><br><strong>저장</strong> — 모델은 파일을 쓸 수 없습니다. 파일 쓰기 도구가 대신 실행합니다.<br><strong>기억</strong> — 한 번에 담는 양에 상한이 있습니다. 앞 대화가 상한을 넘으면 밀려나 사라집니다.<br><strong>확인</strong> — 자기 결과가 맞는지 스스로 판정할 수 없습니다. 테스트를 돌리거나 사람이 검토해야 확정됩니다.</p>
+          <p>“이제 프롬프트는 필요 없다”는 말은 정확하지 않습니다. 없어진 게 아니라 <strong>가장 안쪽 자리</strong>로 들어간 것입니다.</p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 4개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-joke"><span class="cue-tag">💬</span>오늘 «하네스»라는 전문용어를 정식으로 정의하는 유일한 장입니다. 세 겹 그림을 안쪽(프롬프트)부터 바깥(하네스)으로 짚고, 프롬프트는 없어지는 것이 아니라 하네스 안쪽에서 이번 한 번의 요청을 담당한다고 설명합니다.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B2-14" data-교시="PART 2 · Prompt · Context · Markdown" data-info-units="4">
+        <div class="sc-head">
+          <span class="chip chip-slide">B2-14</span>
+          <span class="sc-title">힘센 말도 마구 없이는 목적지로 가지 못합니다</span>
+          <span class="chip chip-units" data-units-badge>단위 4</span>
+        </div>
+        <div class="sc-body">
+          <p><strong>하네스라는 이름의 비유</strong> — 마구(馬具)는 말의 힘을 줄이는 장치가 아니라, 힘을 수레 · 도구 · 목적지와 연결하는 장치입니다.</p>
+          <p><strong>말</strong> — 판단하는 AI<br>→ <strong>마구 · 고삐</strong> — 따를 규칙 · 권한 (재갈 · 고삐 = AI가 따라야 할 규칙과 권한)<br>→ <strong>수레 · 도구</strong> — 실행 수단<br>→ <strong>확인 문</strong> — 테스트 · 피드백</p>
+          <p>하네스 엔지니어링도 AI를 묶는 일이 아니라, <strong>AI의 힘이 제대로 일로 이어지도록 환경을 설계하는 일</strong>입니다.</p>
+          <p><strong>이 과정에서는</strong> — 이 장 뒤로 하네스를 <strong>«AI에게 일을 맡기는 틀»</strong>이라고 쉽게 부릅니다.</p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 4개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-joke"><span class="cue-tag">💬</span>«하네스라는 이름은 말의 마구에서 왔습니다»라고 연결한 뒤, 말 → 마구·고삐 → 수레·도구 → 확인 문 순서로 왼쪽부터 읽습니다. 마지막 줄을 읽고 뒤 PART에서는 이 쉬운 말을 쓴다고 약속합니다.</div>
+      </article>
+
+      <article class="slide-card is-fixed" data-slide="B2-15" data-교시="PART 2 · Prompt · Context · Markdown" data-info-units="">
+        <div class="sc-head">
+          <span class="chip chip-slide">B2-15</span>
+          <span class="sc-title">(전환 화면) Markdown</span> <span class="tag-fixed">전환 화면</span>
+          <span class="chip chip-units" data-units-badge>단위 제외</span>
+        </div>
+        <div class="sc-body">
+          <p><strong>Markdown</strong></p>
+          <p>대화에 흘리지 않고, AI가 매번 읽을 기준 파일로 남깁니다.</p>
+        </div>
+        <div class="sc-note">정보 단위 산정 제외 — 고정 슬라이드(전환 화면)</div>
+        <div class="cue cue-joke"><span class="cue-tag">💬</span>정한 것을 프로젝트 안에 남겨야 AI와 사람이 같은 기준으로 다시 시작합니다. 여기서 기준 파일을 쓰는 형식을 봅니다.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B2-16" data-교시="PART 2 · Prompt · Context · Markdown" data-info-units="4">
+        <div class="sc-head">
+          <span class="chip chip-slide">B2-16</span>
+          <span class="sc-title">Markdown은 메모에 구조를 붙입니다</span>
+          <span class="chip chip-units" data-units-badge>단위 4</span>
+        </div>
+        <div class="sc-body">
+          <p><strong>Markdown이란</strong> — 텍스트에 약속된 기호로 문서 구조를 표시하는 가벼운 문서 형식입니다. 일반 텍스트와 달리 특정 기호가 정해진 서식(제목 · 굵게 · 목록)으로 바뀝니다.</p>
+          <p><strong>파일 이름 읽기</strong> — <code>prd.md</code>의 <strong>.md</strong>는 Markdown으로 쓴 문서라는 표시입니다(오전에 <code>index.html</code>의 .html을 읽은 것과 같은 방식).</p>
+          <p><strong>문서에 쓰인 기호 10개</strong> — <code>#</code> 제목 · <code>##</code> 소제목 · <code>**굵게**</code> 강조 · <code>-</code> 목록 · <code>- [ ]</code> 할 일(미완료) · <code>- [x]</code> 할 일(완료) · <code>&gt;</code> 인용 · <code>---</code> 구분선 · <code>[글](주소)</code> 링크 · <code>```</code> 코드 블록</p>
+          <p><strong>메모.md 예시</strong> — <code># 나를 소개하는 사이트 메모</code> / <code>## 꼭 보여 줄 것</code> / <code>**처음 만난 사람**을 위한 소개</code> / <code>- 한 줄 소개를 맨 위에</code> / <code>- [ ] 관심사 2~3개 고르기</code> / <code>- [x] 이름 정하기</code> / <code>&gt; AI 초안은 사람이 다시 확인</code></p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 4개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-joke"><span class="cue-tag">💬</span>Markdown은 시험 과목이 아니라 메모장에 붙이는 교통 표지판입니다. 문법을 외우는 게 아니라 AI가 만든 .md 파일을 읽고 고치기만 하면 됩니다.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B2-17" data-교시="PART 2 · Prompt · Context · Markdown" data-info-units="3">
+        <div class="sc-head">
+          <span class="chip chip-slide">B2-17</span>
+          <span class="sc-title">중요한 기준은 대화가 아니라 파일에 남깁니다</span>
+          <span class="chip chip-units" data-units-badge>단위 3</span>
+        </div>
+        <div class="sc-body">
+          <p>대화에만 말한 기준은 창을 닫으면 사라지지만, <strong>파일에 적은 기준은 다음 실행에서 다시 읽힙니다.</strong></p>
+          <p><strong>대화에만 말하면</strong> — 새 대화를 열거나 대화가 길어지면 기준이 약해집니다. 매번 다시 설명해야 합니다.<br><strong>파일에 적으면</strong> — 실행할 때마다 처음부터 다시 읽힙니다. 나도 Codex도 같은 기준을 봅니다.</p>
+          <p><strong>1 기준 파일 읽기</strong> → <strong>2 작업 실행</strong> → <strong>3 결과 확인</strong> → <strong>4 파일 고치기</strong> → 다음 실행도 같은 기준</p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 3개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-joke"><span class="cue-tag">💬</span>제목을 그대로 읽습니다. 순환의 4번(파일 고치기)이 PART 6 «결정이 바뀌면 문서를 먼저 고칩니다»로 이어진다고 예고합니다.</div>
+      </article>
+
+      <article class="slide-card is-fixed" data-slide="B3-01" data-교시="PART 3 · 기획: 누가 볼 사이트인가" data-info-units="">
+        <div class="sc-head">
+          <span class="chip chip-slide">B3-01</span>
+          <span class="sc-title">(간지) 기획: 누가 볼 사이트인가</span> <span class="tag-fixed">간지</span>
+          <span class="chip chip-units" data-units-badge>단위 제외</span>
+        </div>
+        <div class="sc-body">
+          <p><strong>PART 3 · 기획 — 누가 볼 사이트인가</strong></p>
+          <p>누가 볼지 · 무엇을 꼭 넣을지 · 어떤 순서로 보여 줄지 · 무엇이 되면 끝인지를, 문서에 적기 전에 정합니다.</p>
+        </div>
+        <div class="sc-note">정보 단위 산정 제외 — 고정 슬라이드(간지)</div>
+        <div class="cue cue-joke"><span class="cue-tag">💬</span>많이 넣는 것이 좋은 사이트는 아닙니다. 무엇을 넣을지와 함께 무엇을 뺄지도 사람이 결정한다고 안내합니다.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B3-02" data-교시="PART 3 · 기획: 누가 볼 사이트인가" data-info-units="3">
+        <div class="sc-head">
+          <span class="chip chip-slide">B3-02</span>
+          <span class="sc-title">웹서비스는 여섯 단계를 돌며 완성됩니다</span>
+          <span class="chip chip-units" data-units-badge>단위 3</span>
+        </div>
+        <div class="sc-body">
+          <p><strong>웹서비스 제작 과정</strong></p>
+          <p><strong>1 기획</strong> — 사용자가 겪는 문제와 만들 결과의 목표를 정합니다. 여행 전 어디로 갈지 정하는 여행 계획과 같습니다.<br><strong>2 디자인</strong> — 필요한 정보의 순서와 화면 구조를 미리 그립니다. 요리를 어떤 그릇에 담을지 정하는 플레이팅과 같습니다.<br><strong>3 프론트엔드</strong> — HTML · CSS · JavaScript로 보이는 화면과 반응을 만듭니다. 완성한 요리를 손님 앞에 그대로 내어놓는 것과 같습니다.<br><strong>4 백엔드</strong> — 입력한 데이터를 저장하고 서비스 규칙대로 처리합니다. 주방과 창고와 같습니다.<br><strong>5 QA</strong> — 요청한 기능이 맞는지 확인하고 발견한 오류를 고칩니다. 거울 앞 매무새를 마지막으로 점검하는 것과 같습니다.<br><strong>6 운영 · 개선</strong> — 사용자의 반응과 문제를 살펴 다음 개선으로 이어 갑니다.</p>
+          <p><strong>4 백엔드</strong>는 이 과정에서 다루지 않습니다.</p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 3개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-joke"><span class="cue-tag">💬</span>여섯 단계를 다 설명하지 않습니다. 비유 한 줄씩만 읽고, 4 백엔드는 «오늘은 안 합니다»로 넘깁니다. 오후에는 기획·디자인을 문서로 먼저 하고 프론트엔드를 만든다고 짚습니다.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B3-03" data-교시="PART 3 · 기획: 누가 볼 사이트인가" data-info-units="3">
+        <div class="sc-head">
+          <span class="chip chip-slide">B3-03</span>
+          <span class="sc-title">누가 볼 사이트인가 — 타깃</span>
+          <span class="chip chip-units" data-units-badge>단위 3</span>
+        </div>
+        <div class="sc-body">
+          <p><strong>타깃</strong> — 내 사이트를 볼 사람이 대략 어떤 부류인지<br><strong>방문자가 궁금한 것</strong> — 그 사람이 나에 대해 가장 먼저 알고 싶은 것 하나</p>
+          <p><strong>나쁜 예</strong> — 타깃 = “모두” → 모두를 향한 소개는 아무에게도 또렷하게 남지 않습니다<br><strong>좋은 예</strong> — 타깃 = “모임에서 처음 만난 사람” · 궁금한 것 = “이 사람이 무엇에 관심 있는지” → 관심사가 잘 보이는 소개 사이트</p>
+          <p><strong>타깃을 좁힐수록</strong> 넣을 내용도, 보여 줄 순서도 또렷해집니다.</p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 3개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-joke"><span class="cue-tag">💬</span>원본은 «불편을 푸는 도구»의 타깃·페인포인트였습니다. 자기소개 사이트에서는 페인포인트를 «방문자가 나에 대해 가장 먼저 알고 싶은 것»으로 바꿔 읽습니다.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B3-04" data-교시="PART 3 · 기획: 누가 볼 사이트인가" data-info-units="3">
+        <div class="sc-head">
+          <span class="chip chip-slide">B3-04</span>
+          <span class="sc-title">나를 한 줄로 — 한 줄 정의는 제작 나침반</span>
+          <span class="chip chip-units" data-units-badge>단위 3</span>
+        </div>
+        <div class="sc-body">
+          <p><code>[누가]</code>가 <code>[어떤 상황에서]</code> <code>[나에 대해 무엇을 알도록]</code> 돕는 사이트</p>
+          <p><strong>좋은 예</strong> — 모임에서 처음 만난 사람이 인사 뒤에 내 관심사를 알 수 있게 돕는 소개 사이트<br><strong>나쁜 예</strong> — “세상을 바꿀 열정 가득한 나”처럼 멋진 홍보 문구</p>
+          <p><strong>택배 송장처럼</strong> — 한 줄 정의는 슬로건이 아니라 «무엇을 만들지» 좁히는 제작 기준입니다. 광고 문구가 아니라 송장입니다.</p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 3개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-joke"><span class="cue-tag">💬</span>빈칸을 홍보 카피로 채우지 마세요. 이 한 줄이 뒤 prd.md의 첫 항목(대상)이 됩니다.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B3-05" data-교시="PART 3 · 기획: 누가 볼 사이트인가" data-info-units="3">
+        <div class="sc-head">
+          <span class="chip chip-slide">B3-05</span>
+          <span class="sc-title">타깃을 좁히는 질문들</span>
+          <span class="chip chip-units" data-units-badge>단위 3</span>
+        </div>
+        <div class="sc-body">
+          <p><strong>넓은 생각을 세 질문으로 좁힙니다</strong></p>
+          <p>“자기소개 사이트” → <strong>누구?</strong> “모임에서 처음 만난 사람”<br>→ <strong>어떤 한 순간?</strong> “인사하고 난 뒤, 나를 다시 떠올릴 때”<br>→ <strong>한 결과?</strong> “이름 · 한 줄 소개 · 관심사를 한 화면에서 봄”</p>
+          <p>세 질문에 답하면 사이트가 <strong>무엇을 먼저 보여 줘야 하는지</strong>가 드러납니다.</p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 3개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-joke"><span class="cue-tag">💬</span>넓은 생각을 세 질문(누구·어떤 한 순간·한 결과)으로 좁히는 대화를 강사가 화면공유로 짧게 보여 줍니다.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B3-06" data-교시="PART 3 · 기획: 누가 볼 사이트인가" data-info-units="4">
+        <div class="sc-head">
+          <span class="chip chip-slide">B3-06</span>
+          <span class="sc-title">결과와 기능은 다릅니다 — 방문자가 얻는 것</span>
+          <span class="chip chip-units" data-units-badge>단위 4</span>
+        </div>
+        <div class="sc-body">
+          <p><strong>결과</strong> = 방문자가 얻는 변화 · <strong>기능</strong> = 사이트가 하는 동작</p>
+          <p><strong>흔한 실패</strong> — 멋진 효과를 다섯 개 넣어도 방문자가 나를 기억하지 못하면 결과는 0입니다<br><strong>흔한 실패</strong> — 기능은 ‘만든 것’, 결과는 ‘그것이 일으킨 변화’ — 기능이 있어도 결과가 없을 수 있습니다</p>
+          <p><strong>택시 비유</strong> — 바퀴가 굴러도(기능) → 엉뚱한 데 내려주면 결과는 0<br><strong>사이트 예</strong> — 관심사 보기 버튼(기능) → 방문자가 내 관심사를 알게 됨(결과)</p>
+          <p><strong>결과 하나를 정하면 기능도 작아집니다.</strong></p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 4개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-joke"><span class="cue-tag">💬</span>«기능 다섯 개 넣으면 결과도 다섯 배»는 아닙니다 — 오히려 무엇이 통했는지 알기 어려워집니다.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B3-07" data-교시="PART 3 · 기획: 누가 볼 사이트인가" data-info-units="3">
+        <div class="sc-head">
+          <span class="chip chip-slide">B3-07</span>
+          <span class="sc-title">첫 버전에 꼭 넣을 섹션 — MVP는 대충 만든 게 아닙니다</span>
+          <span class="chip chip-units" data-units-badge>단위 3</span>
+        </div>
+        <div class="sc-body">
+          <p><strong>MVP</strong> — 가설을 확인하려고 <strong>범위를 의도적으로 줄인 첫 작동 버전</strong></p>
+          <p>작게 만들고 → 실제로 열어 보고 → 다음을 결정합니다.</p>
+          <p><strong>품질이 아니라 수를 줄입니다</strong> — 기능 수를 줄인 것이지 품질을 낮춘 것이 아닙니다.<br><strong>오후 사이트에서는</strong> — 첫 버전에 꼭 넣을 섹션만 먼저 만들고, 나머지는 나중으로 미룹니다.<br><strong>이사 첫날처럼</strong> — 꼭 필요한 짐만 먼저 풉니다. 집 전체를 한 번에 완성하지 않습니다.</p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 3개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-joke"><span class="cue-tag">💬</span>에릭 리스는 MVP를 «가장 적은 노력으로 검증된 배움을 최대한 얻는 버전»으로 설명합니다. minimum은 저품질이 아니라고 짚어 주세요.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B3-08" data-교시="PART 3 · 기획: 누가 볼 사이트인가" data-info-units="3">
+        <div class="sc-head">
+          <span class="chip chip-slide">B3-08</span>
+          <span class="sc-title">먼저 보여줄 결과 하나</span>
+          <span class="chip chip-units" data-units-badge>단위 3</span>
+        </div>
+        <div class="sc-body">
+          <p>“무엇을 만들까?”보다<br><strong>“방문자가 다 보고 나서 무엇을 알게 할까?”</strong>를 먼저 정합니다.</p>
+          <p>그 결과를 만드는 섹션과 반응 하나만 이번 버전에 넣습니다.</p>
+          <p><strong>짚어 보기</strong> — 방문자가 마지막에 보는 장면이 결과, 거기까지 가는 동작이 기능입니다.</p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 3개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-demo"><span class="cue-tag">👀</span>예시 사이트 화면에서 «방문자가 마지막에 보는 것»을 손가락으로 짚어 봅니다.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B3-09" data-교시="PART 3 · 기획: 누가 볼 사이트인가" data-info-units="3">
+        <div class="sc-head">
+          <span class="chip chip-slide">B3-09</span>
+          <span class="sc-title">필수 섹션과 나중 섹션</span>
+          <span class="chip chip-units" data-units-badge>단위 3</span>
+        </div>
+        <div class="sc-body">
+          <p><strong>필수 섹션</strong> — 없으면 소개가 성립하지 않는 것 · 예: 이름 · 한 줄 소개 · 관심사<br><strong>나중 섹션</strong> — 없어도 소개가 유지되는 것 · 예: 사진 모음 · 로그인 · 공유 버튼</p>
+          <p>이번엔 <strong>필수 섹션만</strong> 만듭니다.</p>
+          <p><strong>버리는 게 아니라 보관합니다</strong> — 떠오른 섹션은 일단 주차장에 세워 둡니다.</p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 3개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-joke"><span class="cue-tag">💬</span>부가 기능은 버리는 게 아니라 보관하는 겁니다. PART 6 «나중 아이디어 보관함»으로 이어집니다.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B3-10" data-교시="PART 3 · 기획: 누가 볼 사이트인가" data-info-units="2">
+        <div class="sc-head">
+          <span class="chip chip-slide">B3-10</span>
+          <span class="sc-title">범위는 세 칸, 끝은 한 문장</span>
+          <span class="chip chip-units" data-units-badge>단위 2</span>
+        </div>
+        <div class="sc-body">
+          <p><strong>이번에 만들 것</strong> — 필수 섹션과 반응 하나<br><strong>이번엔 안 만들 것</strong> — 로그인 · 공유 · 서버 저장<br><strong>나중 아이디어</strong> — 다음에 더할 것. 기능을 버리는 것이 아니라 미룹니다.<br><strong>완료 기준</strong> — 무엇을 누르면 무엇이 보이는지 문장으로 적습니다. 예: “관심사 보기를 누르면 관심사 2~3개가 보인다.”</p>
+          <p><strong>반례</strong> — 다 넣으면 무엇이 끝났는지 모릅니다.<br><strong>여행 가방처럼</strong> — 무게 제한이 있어야 가방이 닫힙니다. ‘안 만들 것’을 정해야 끝이 납니다.</p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 2개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-joke"><span class="cue-tag">💬</span>범위를 안 정하면 요구가 계속 불어나 핵심조차 못 끝냅니다. 제외는 실패가 아니라 «이번에는 안 함»입니다.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B3-11" data-교시="PART 3 · 기획: 누가 볼 사이트인가" data-info-units="4">
+        <div class="sc-head">
+          <span class="chip chip-slide">B3-11</span>
+          <span class="sc-title">방문자가 보는 순서 — User Flow란?</span>
+          <span class="chip chip-units" data-units-badge>단위 4</span>
+        </div>
+        <div class="sc-body">
+          <p><strong>User Flow</strong> — 방문자가 한 가지 목표를 이루려 <strong>무엇을 보고 → 무엇을 누르고 → 무엇을 알게 되는지의 순서</strong></p>
+          <p>화면의 모든 요소가 아니라 <strong>대표 한 길</strong>을 먼저 그립니다.</p>
+          <p><strong>예</strong> — 이름과 한 줄 소개 보기 → 관심사 보기 누르기 → 관심사 2~3개 확인</p>
+          <p><strong>지하철 노선도처럼</strong> — 전체 노선도가 아니라 내가 매일 타는 한 경로만 그립니다.</p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 4개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-joke"><span class="cue-tag">💬</span>NN/g는 user flow를 «흔한 과업을 끝내는 데 필요한 전형적인 상호작용의 집합»으로 설명합니다. 이 순서가 뒤 prd.md «흐름» 항목이 됩니다.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B3-12" data-교시="PART 3 · 기획: 누가 볼 사이트인가" data-info-units="3">
+        <div class="sc-head">
+          <span class="chip chip-slide">B3-12</span>
+          <span class="sc-title">입력 → 실행 → 결과 → 변화 — 반응하는 곳에서</span>
+          <span class="chip chip-units" data-units-badge>단위 3</span>
+        </div>
+        <div class="sc-body">
+          <p>소개 사이트는 대부분 <strong>읽는 화면</strong>입니다. 네 요소는 <strong>반응하는 곳(버튼)</strong>에서만 봅니다.</p>
+          <p><strong>입력</strong> — 따로 적는 값 없이 버튼만 누릅니다<br><strong>실행</strong> — 관심사 보기 클릭<br><strong>결과</strong> — 관심사 목록이 화면에 나타남<br><strong>변화</strong> — 없으면 비워 둬도 됩니다</p>
+          <p><strong>하나라도 말하지 못하면</strong> 그 반응은 아직 흐린 것입니다.</p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 3개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-demo"><span class="cue-tag">👀</span>예시 화면의 버튼에서 네 요소를 손가락으로 짚어 봅니다. 읽기만 하는 섹션에는 이 틀을 억지로 대지 않습니다.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B3-13" data-교시="PART 3 · 기획: 누가 볼 사이트인가" data-info-units="3">
+        <div class="sc-head">
+          <span class="chip chip-slide">B3-13</span>
+          <span class="sc-title">완료 기준은 눈으로, 테스트는 방법</span>
+          <span class="chip chip-units" data-units-badge>단위 3</span>
+        </div>
+        <div class="sc-body">
+          <p><strong>완료 기준</strong> — 확인 가능한 장면(무엇을 누르면 무엇이 보인다)<br><strong>테스트</strong> — 정상 · 다른 · 빈값으로 확인하는 방법</p>
+          <p><strong>나쁜 예</strong> — “잘 작동한다”<br><strong>좋은 예</strong> — “관심사 보기를 누르면 관심사 2~3개가 보인다”</p>
+          <p><strong>채점표는 시험 전에</strong> — 채점표가 시험 뒤에 생기면 모두가 억울합니다. 만들기 전에 채점표를 만듭니다.<br><strong>확인할 수 없는 요구사항은 쓸모가 없습니다</strong> — ‘잘’은 사람마다 기준이 달라 O/X가 나지 않습니다.</p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 3개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-joke"><span class="cue-tag">💬</span>오전에 본 «완료 기준과 테스트»를 사이트 소재로 다시 대어 봅니다. 여기서 적은 문장이 prd.md «완료» 항목이 됩니다.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B3-14" data-교시="PART 3 · 기획: 누가 볼 사이트인가" data-info-units="3">
+        <div class="sc-head">
+          <span class="chip chip-slide">B3-14</span>
+          <span class="sc-title">화려함보다 필수 내용과 실행을 먼저 봅니다</span>
+          <span class="chip chip-units" data-units-badge>단위 3</span>
+        </div>
+        <div class="sc-body">
+          <p><strong>이름 또는 활동명</strong> · <strong>한 줄 소개</strong> · <strong>관심사 2~3개</strong>가 보이고, 글자가 잘리거나 밀리지 않는지 확인합니다.</p>
+          <p><strong>내가 주지 않은 정보</strong> — 내가 주지 않은 경력 · 연락처가 새로 만들어지지 않았는지도 함께 봅니다.</p>
+          <p><strong>문서에 미리 적기</strong> — 이 검수 항목은 뒤에서 prd.md의 «완료 기준»에 그대로 옮겨 적습니다.</p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 3개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-joke"><span class="cue-tag">💬</span>외형보다 필수 내용과 실행을 먼저 검수합니다.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B3-15" data-교시="PART 3 · 기획: 누가 볼 사이트인가" data-info-units="3">
+        <div class="sc-head">
+          <span class="chip chip-slide">B3-15</span>
+          <span class="sc-title">PRD는 팀이, prd.md는 AI가 읽는 기획서입니다</span>
+          <span class="chip chip-units" data-units-badge>단위 3</span>
+        </div>
+        <div class="sc-body">
+          <p><strong>PRD(제품 요구사항 문서)</strong>는 무엇을 왜 만드는지 적어 팀에 방향을 알리는 기획 문서입니다.</p>
+          <p><strong>누가 쓰나</strong> — PRD: 기획자 · PM / prd.md: 내가 직접<br><strong>누구에게</strong> — PRD: 팀 전체(개발자 · 디자이너) / prd.md: Codex<br><strong>무엇을 담나</strong> — PRD: 무엇을 왜 만드는지 / prd.md: 다섯 항목 대상 · 핵심 · 흐름 · 제외 · 완료<br><strong>형식 · 분량</strong> — PRD: 표준 양식 없음 · 규모 따라 수십 쪽도 / prd.md: Markdown 파일 · 길이보다 항목이 기준<br><strong>언제 읽히나</strong> — PRD: 코드보다 먼저, 팀이 방향을 맞출 때 / prd.md: 만들기 전에 먼저, 끝난 뒤 다시 대조</p>
+          <p><strong>PRD(개념) ≠ prd.md(우리의 최소 기준 문서)</strong></p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 3개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-joke"><span class="cue-tag">💬</span>회사 PRD는 여러 팀 합의를 위한 큰 문서이고 조직마다 형식이 다릅니다. 우리 prd.md는 혼자 만들 최소 기준만 담는 다섯 항목이라고 짚습니다.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B3-16" data-교시="PART 3 · 기획: 누가 볼 사이트인가" data-info-units="3">
+        <div class="sc-head">
+          <span class="chip chip-slide">B3-16</span>
+          <span class="sc-title">각 항목이 왜 AI 결과를 바꾸나</span>
+          <span class="chip chip-units" data-units-badge>단위 3</span>
+        </div>
+        <div class="sc-body">
+          <p>다섯 항목 가운데 하나라도 비워 두면, <strong>그 자리를 AI가 추측으로 메웁니다.</strong></p>
+          <p><strong>대상 없음</strong> — 결과가 매번 흔들립니다<br><strong>핵심 없음</strong> — 기능이 제멋대로 늘어납니다<br><strong>흐름 없음</strong> — 화면 순서가 뒤죽박죽이 됩니다<br><strong>제외 없음</strong> — 범위가 계속 커집니다<br><strong>완료 없음</strong> — 끝을 아무도 모릅니다</p>
+          <p><strong>빈칸은 AI의 추측이 됩니다.</strong> 문서는 최소로 시작해 갱신합니다 — 길게 쓰는 것이 목표가 아닙니다.</p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 3개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-joke"><span class="cue-tag">💬</span>막연한 요청은 AI가 적히지 않은 요구를 추측하게 만듭니다. 서른 쪽짜리 문서라고 결과가 좋아지는 게 아니라, 핵심 다섯 줄이 방향을 잡습니다.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B3-17" data-교시="PART 3 · 기획: 누가 볼 사이트인가" data-info-units="3">
+        <div class="sc-head">
+          <span class="chip chip-slide">B3-17</span>
+          <span class="sc-title">레퍼런스는 복사가 아니라 관찰</span>
+          <span class="chip chip-units" data-units-badge>단위 3</span>
+        </div>
+        <div class="sc-body">
+          <p><strong>레퍼런스</strong>란 우리 화면을 만들 때 참고하는 다른 서비스 · 화면입니다. 그대로 베끼는 자료가 아니라, 왜 그렇게 만들었는지 뜯어보는 <strong>관찰 대상</strong>입니다.</p>
+          <p><strong>금지</strong> — 통째로 복제하지 않기<br>↓ <strong>관찰</strong> — 색 · 여백 · 글자 · 정보 순서를 관찰하기<br>↓ <strong>결정</strong> — 무엇을 참고할지 · 무엇은 안 따라 할지도 정하기</p>
+          <p><strong>검색해서 나온다고 무료가 아닙니다</strong> — 이미지 · 글꼴은 출처와 사용 조건을 먼저 확인합니다.<br><strong>표현은 옮기지 않습니다</strong> — 저작권은 아이디어 · 방식이 아니라 표현을 보호합니다. ‘넓은 여백’ 같은 방향은 참고해도, 문구 · 이미지 · 화면을 그대로 옮기면 침해가 될 수 있습니다.</p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 3개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-joke"><span class="cue-tag">💬</span>레퍼런스는 정답지보다 견본 옷입니다 — 사이즈가 내 사이트에 맞는지 봅니다. 관찰한 특징은 PART 4 design.md에 적습니다.</div>
+      </article>
+
+      <article class="slide-card is-fixed" data-slide="B4-01" data-교시="PART 4 · 실습: md 3종 작성" data-info-units="">
+        <div class="sc-head">
+          <span class="chip chip-slide">B4-01</span>
+          <span class="sc-title">(간지) 실습: md 3종 작성</span> <span class="tag-fixed">간지</span>
+          <span class="chip chip-units" data-units-badge>단위 제외</span>
+        </div>
+        <div class="sc-body">
+          <p><strong>PART 4 · 실습: prd.md · design.md · AGENTS.md 작성</strong></p>
+          <p>기획에서 정한 것을 세 문서로 나눠 내 사이트 폴더에 남깁니다.</p>
+        </div>
+        <div class="sc-note">정보 단위 산정 제외 — 고정 슬라이드(간지)</div>
+        <div class="cue cue-joke"><span class="cue-tag">💬</span>정한 것을 프로젝트 안에 남겨야 AI와 사람이 같은 기준으로 다시 시작합니다. 사이트는 아직 만들지 않고 문서부터 만듭니다.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B4-02" data-교시="PART 4 · 실습: md 3종 작성" data-info-units="3">
+        <div class="sc-head">
+          <span class="chip chip-slide">B4-02</span>
+          <span class="sc-title">어떤 문서가 무엇을 책임지나</span>
+          <span class="chip chip-units" data-units-badge>단위 3</span>
+        </div>
+        <div class="sc-body">
+          <p>세 문서는 <strong>각각 다른 질문에 답합니다.</strong> 책임이 겹치면 나중에 어디를 고칠지 헷갈립니다.</p>
+          <p><strong>prd.md · 무엇을 만드나</strong> — 대상 · 핵심 · 흐름 · 제외 · 완료 기준 · “이 사이트는 무엇을 보여 주나요?”<br><strong>design.md · 어떻게 보이나</strong> — 색 · 간격 · 글자 크기 · 반복되는 화면 규칙 · “버튼은 무슨 색인가요?”<br><strong>AGENTS.md · 어떻게 일하나</strong> — 지켜야 할 규칙 · 파일 구조 · 확인 절차 · “고친 뒤에는 무엇을 확인하나요?”</p>
+          <p><strong>이 PART에서 세 문서를 모두 직접 만듭니다.</strong></p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 3개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-joke"><span class="cue-tag">💬</span>세 문서가 각각 다른 질문에 답한다는 것만 짚습니다. 문서를 고칠 일이 생기면 «이건 어느 질문에 대한 답인가»로 고칠 파일을 고릅니다.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B4-03" data-교시="PART 4 · 실습: md 3종 작성" data-info-units="3">
+        <div class="sc-head">
+          <span class="chip chip-slide">B4-03</span>
+          <span class="sc-title">문서는 AI가 읽을 프로젝트의 기준입니다</span>
+          <span class="chip chip-units" data-units-badge>단위 3</span>
+        </div>
+        <div class="sc-body">
+          <p>무엇을 만들지, 어떻게 보일지, 어떻게 일할지를 <strong>파일로 나눠 두고 AI에게 읽힙니다.</strong></p>
+          <p><strong>1 prd.md · design.md · AGENTS.md</strong> — 무엇 · 모양 · 작업 규칙을 각각 적습니다.<br>↓ <strong>2 AI에게 먼저 읽히기</strong> — 채팅에 붙이지 말고 프로젝트 폴더에서 읽게 합니다.<br>↓ <strong>3 파일과 첫 화면</strong> — 역할별 파일이 바뀌고, 실제 화면을 엽니다.</p>
+          <p><strong>문서 → AI → 파일 → 화면</strong> 순서를 기억합니다.</p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 3개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-joke"><span class="cue-tag">💬</span>«중요한 기준은 대화가 아니라 파일에 남긴다»를 오후 실습의 순서로 바꿔 보여 주는 장입니다.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B4-04" data-교시="PART 4 · 실습: md 3종 작성" data-info-units="3">
+        <div class="sc-head">
+          <span class="chip chip-slide">B4-04</span>
+          <span class="sc-title">prd.md는 시작 전과 끝난 뒤, 두 번 읽힙니다</span>
+          <span class="chip chip-units" data-units-badge>단위 3</span>
+        </div>
+        <div class="sc-body">
+          <p>앞 PART의 다섯 항목만 빠짐없이 채우면 됩니다. <strong>길이가 아니라 항목이 기준입니다.</strong> 프로젝트가 커지면 같은 다섯 항목이어도 길어집니다.</p>
+          <p><strong>작업 전</strong> — 에이전트가 prd.md를 읽고 무엇을 만들지 파악합니다. 대상 · 핵심 · 흐름을 먼저 확인합니다.<br>→ <strong>prd.md</strong> →<br><strong>작업 후</strong> — 만든 결과를 prd.md 기준과 맞춰 봅니다. 제외 · 완료 항목까지 지켰는지 확인합니다.</p>
+          <p>즉 prd.md는 에이전트가 <strong>시작하기 전과 끝난 뒤 두 번</strong> 참고하는 기준 문서입니다.</p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 3개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-joke"><span class="cue-tag">💬</span>PART 7에서 사이트를 prd.md와 대조할 때 이 장의 «작업 후»를 다시 부릅니다.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B4-05" data-교시="PART 4 · 실습: md 3종 작성" data-info-units="3">
+        <div class="sc-head">
+          <span class="chip chip-slide">B4-05</span>
+          <span class="sc-title">소제목 다섯 개가 곧 다섯 항목입니다</span>
+          <span class="chip chip-units" data-units-badge>단위 3</span>
+        </div>
+        <div class="sc-body">
+          <p><strong>prd.md 예시 · 나를 소개하는 웹사이트</strong></p>
+          <p><code># 나를 소개하는 웹사이트</code><br><code>## 1. 누구에게 어떤 도움·결과·경험을 제공하는가</code> — 모임에서 처음 만난 사람이 나의 이름 · 한 줄 소개 · 관심사를 한 화면에서 알게 돕는다.<br><code>## 2. 핵심 기능 하나</code> — 관심사 보기 버튼을 누르면 관심사 2~3개가 나타난다.<br><code>## 3. 대표 사용 흐름</code> — 이름과 한 줄 소개 보기 → 관심사 보기 누르기 → 관심사 확인<br><code>## 4. 이번에 만들 것과 만들지 않을 것</code> — 만들 것: 이름, 한 줄 소개, 관심사 보기 버튼과 관심사 목록 · 만들지 않을 것: 로그인, 공유, 서버 저장<br><code>## 5. 구현 완료 기준</code> — 브라우저에서 index.html을 열면 이름과 한 줄 소개가 보인다 · 관심사 보기를 누르면 관심사가 보인다 · 내가 주지 않은 경력 · 연락처가 없다</p>
+          <p><strong>이 제목이 맡는 항목</strong> — 대상 · 핵심 · 흐름 · 제외 · 완료</p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 3개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-joke"><span class="cue-tag">💬</span>실제 prd.md 파일 하나를 그대로 보여 줍니다. ## 소제목 다섯 개가 각각 다섯 항목을 맡습니다 — 이 파일 하나가 prd.md의 전부입니다. 예시 문장은 PART 3에서 정한 내용을 옮긴 것입니다.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B4-06" data-교시="PART 4 · 실습: md 3종 작성" data-info-units="3">
+        <div class="sc-head">
+          <span class="chip chip-slide">B4-06</span>
+          <span class="sc-title">사이트 폴더를 만들고 Codex에서 엽니다</span>
+          <span class="chip chip-units" data-units-badge>단위 3</span>
+        </div>
+        <div class="sc-body">
+          <p><strong>새 프로젝트 폴더</strong></p>
+          <p><strong>어디에</strong> — 오전 <code>typing-game</code>에 이어 쓰지 않고, <code>C:\VibeCoding</code> 안에 새 폴더 <strong>about_me</strong>를 만듭니다.<br><strong>확인할 주소</strong> — <code>C:\VibeCoding\about_me\</code><br><strong>Codex에서 열기</strong> — 오전과 같은 방법으로 이 폴더를 작업 폴더로 엽니다.<br><strong>화면에서 볼 것</strong> — Codex에 표시된 현재 작업 폴더 이름이 <strong>about_me</strong>인지 확인합니다. 다르면 요청을 보내지 않습니다.</p>
+          <p>세 문서와 사이트 세 파일이 <strong>모두 이 폴더 안에</strong> 생깁니다.</p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 3개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-demo"><span class="cue-tag">👀</span>[캡처 K3] 작업 폴더(프로젝트) 선택·열기 — 오전 typing-game 폴더와 헷갈리지 않게 새 폴더 이름을 분명히 보여 줍니다.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B4-07" data-교시="PART 4 · 실습: md 3종 작성" data-info-units="2">
+        <div class="sc-head">
+          <span class="chip chip-slide">B4-07</span>
+          <span class="sc-title">실습 ① prd.md 만들기</span>
+          <span class="chip chip-units" data-units-badge>단위 2</span>
+        </div>
+        <div class="sc-body">
+          <p><strong>1 재료 모으기</strong> — PART 3에서 정한 한 줄 정의 · 대표 흐름 3~5단계 · 완료 기준 한 줄을 메모합니다.<br><strong>2 Codex에게 초안 요청</strong> — 다섯 항목(대상 · 핵심 · 흐름 · 제외 · 완료)을 하나씩 묻고 초안을 보여 달라고 합니다.<br><strong>3 사람이 읽고 최소 1개 수정</strong> — 단어만 바꾸는 건 수정이 아닙니다. 대상이나 범위 가정 하나를 실제로 바꿉니다.<br><strong>4 prd.md로 저장</strong> — 폴더에 파일이 실제로 생겼는지 탐색기에서 엽니다.</p>
+          <p><strong>완료 기준</strong> — prd.md를 열었을 때 소제목 다섯 개 아래가 모두 채워져 있고, <strong>내가 바꾼 결정이 1개 이상</strong> 있습니다.</p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 2개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-demo"><span class="cue-tag">👀</span>[캡처 K11] prd.md 생성 결과.</div>
+        <div class="cue cue-joke"><span class="cue-tag">💬</span>원본 과정은 다른 채팅 도구로 초안을 받고 Codex로 저장했습니다. 오늘은 Codex 하나로 묻고, 고치고, 저장합니다. AI가 작성하고, 사람이 검토하고, 사람이 결정합니다.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B4-08" data-교시="PART 4 · 실습: md 3종 작성" data-info-units="2">
+        <div class="sc-head">
+          <span class="chip chip-slide">B4-08</span>
+          <span class="sc-title">prd.md를 만들 때 이렇게 요청합니다</span>
+          <span class="chip chip-units" data-units-badge>단위 2</span>
+        </div>
+        <div class="sc-body">
+          <p><strong>요청문 (Codex 입력창)</strong> — 이 폴더에 prd.md 초안을 만들려고 합니다. 대상 · 핵심 · 흐름 · 제외 · 완료를 하나씩 물어보고, 제 답을 모아 초안을 보여 주세요. 소제목은 다섯 개로 나눠 주세요. 제가 답하지 않은 내용은 만들지 말고, 모르는 것은 [확인 필요]로 남기세요. 아직 저장하지 마세요.</p>
+          <p><strong>이렇게 쓰는 이유</strong> — 하나씩 물어보게 하면 빈 항목이 남지 않습니다.<br><strong>이 줄이 막는 것</strong> — «[확인 필요]로 남기세요»가 지어낸 경력 · 연락처를 막고, «아직 저장하지 마세요»가 확인 전 저장을 막습니다.<br><strong>확인할 것</strong> — 저장 전에 내가 고친 줄이 1개 이상인지 봅니다. 그다음 “prd.md로 저장해 주세요”라고 요청합니다.</p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 2개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-demo"><span class="cue-tag">👀</span>[캡처 K5] 요청 입력창에 문장 입력한 상태. 대괄호가 없는 요청문이라 그대로 붙여 넣어도 됩니다. Codex가 묻는 질문에는 PART 3 메모로 답하게 합니다.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B4-09" data-교시="PART 4 · 실습: md 3종 작성" data-info-units="3">
+        <div class="sc-head">
+          <span class="chip chip-slide">B4-09</span>
+          <span class="sc-title">화면 기준을 담은 design.md</span>
+          <span class="chip chip-units" data-units-badge>단위 3</span>
+        </div>
+        <div class="sc-body">
+          <p><strong>같은 요청, 다른 결과입니다. 차이는 기준을 넘겼는가뿐입니다.</strong></p>
+          <p><strong>기준 없이</strong> — “자기소개 페이지 만들어 줘” · 요청할 때마다 색도 문구도 달라집니다. 매번 다시 설명하게 됩니다.<br><strong>기준을 주고</strong> — “design.md 먼저 읽고 화면 만들어 줘” · 나도 Codex도 같은 기준을 봅니다.</p>
+          <p><strong>design.md 예시</strong><br><strong>순서</strong> — 이름 → 한 줄 소개 → 관심사 보기 버튼 → 관심사 목록<br><strong>색</strong> — 밝은 배경, 차분한 초록<br><strong>문구</strong> — 버튼은 ‘관심사 보기’</p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 3개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-joke"><span class="cue-tag">💬</span>문서만 만들고 끝이 아니라, 결과가 기준대로 나왔는지는 사람이 확인합니다.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B4-10" data-교시="PART 4 · 실습: md 3종 작성" data-info-units="3">
+        <div class="sc-head">
+          <span class="chip chip-slide">B4-10</span>
+          <span class="sc-title">(선택) UI는 보이는 접점, UX는 경험 전체입니다</span> <span class="tag-optional">선택</span>
+          <span class="chip chip-units" data-units-badge>단위 3</span>
+        </div>
+        <div class="sc-body">
+          <p><strong>UI</strong> — 사용자가 보고 · 누르고 · 듣는, 서비스와 만나는 접점<br><strong>UX</strong> — 사용 전부터 사용 후까지 사용자가 겪는 모든 경험</p>
+          <p><strong>빙산처럼</strong> — UI는 빙산의 일각이고 UX는 수면 아래까지 이어지는 전체입니다.</p>
+          <p><strong>반대말이 아닙니다</strong> — UI는 UX 안에 포함된 접점입니다.</p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 3개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-joke"><span class="cue-tag">💬</span>선택 장입니다. UI와 UX를 서로 반대말처럼 나누지 않습니다. design.md는 주로 UI(보이는 접점)의 기준을 적는다고 연결합니다.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B4-11" data-교시="PART 4 · 실습: md 3종 작성" data-info-units="3">
+        <div class="sc-head">
+          <span class="chip chip-slide">B4-11</span>
+          <span class="sc-title">화면 정보도 순서가 있습니다</span>
+          <span class="chip chip-units" data-units-badge>단위 3</span>
+        </div>
+        <div class="sc-body">
+          <p><strong>기본 순서</strong> — 서비스 설명 → 입력 · 선택 → 실행 → 결과 → 안내<br><strong>소개 사이트에서는</strong> — 이름 → 한 줄 소개 → 관심사 보기 → 관심사 목록</p>
+          <p><strong>가장 중요한 하나가 가장 먼저 · 크게</strong><br>첫 화면에서 다음 행동을 짐작할 수 있어야 합니다.</p>
+          <p><strong>전부 크게 하면</strong> — 아무것도 강조되지 않습니다. 크기는 3단계 정도, 핵심 하나만 가장 크게 둡니다.</p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 3개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-demo"><span class="cue-tag">👀</span>예시 화면의 시선을 손가락으로 따라가며 순서가 끊기는 지점을 찾습니다. 이 순서가 design.md «순서» 줄이 됩니다.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B4-12" data-교시="PART 4 · 실습: md 3종 작성" data-info-units="3">
+        <div class="sc-head">
+          <span class="chip chip-slide">B4-12</span>
+          <span class="sc-title">버튼은 행동을 말해야 합니다</span>
+          <span class="chip chip-units" data-units-badge>단위 3</span>
+        </div>
+        <div class="sc-body">
+          <p><strong>나쁜 문구</strong> — 확인 · 처리<br><strong>좋은 문구</strong> — 관심사 보기 · 소개 더 보기</p>
+          <p>버튼은 <strong>누른 뒤 무슨 일이 일어나는지</strong> 말해야 합니다.</p>
+          <p><strong>엘리베이터처럼</strong> — 버튼에 ‘3층 사무실’이라 적힌 것처럼, 버튼도 자기소개를 해야 합니다.</p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 3개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-joke"><span class="cue-tag">💬</span>«확인» 버튼은 확인할 게 너무 많습니다. 정한 버튼 문구는 design.md «문구» 줄에 적습니다.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B4-13" data-교시="PART 4 · 실습: md 3종 작성" data-info-units="2">
+        <div class="sc-head">
+          <span class="chip chip-slide">B4-13</span>
+          <span class="sc-title">색만으로 상태를 설명하지 않습니다</span>
+          <span class="chip chip-units" data-units-badge>단위 2</span>
+        </div>
+        <div class="sc-body">
+          <p><strong>라벨</strong> — 버튼과 입력칸마다 무엇인지 글자로 붙입니다.<br><strong>색 + 글자</strong> — 상태나 안내는 색과 글자를 함께 씁니다.<br><strong>대비</strong> — 글자와 배경은 충분한 대비로 둡니다.</p>
+          <p><strong>색을 쓰지 말라는 게 아니라 ‘색만으로는 안 된다’입니다</strong> — 신호등도 위치와 글자가 함께 있습니다.<br><strong>세 가지면 충분합니다</strong> — 대비 · 색 단독 금지 · 라벨만 지켜도 흔한 실패 대부분을 피합니다.</p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 2개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-joke"><span class="cue-tag">💬</span>연령대가 높은 수강생에게 특히 와닿는 장입니다. 글자와 배경의 대비를 design.md «색» 줄에 함께 적게 합니다.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B4-14" data-교시="PART 4 · 실습: md 3종 작성" data-info-units="3">
+        <div class="sc-head">
+          <span class="chip chip-slide">B4-14</span>
+          <span class="sc-title">디자인 시스템 = 반복 규칙</span>
+          <span class="chip chip-units" data-units-badge>단위 3</span>
+        </div>
+        <div class="sc-body">
+          <p>여러 화면이 <strong>같은 제품처럼 보이게</strong> 하는 반복 규칙</p>
+          <p>색 · 글자 · 여백 · 버튼 · 상태를 <strong>한 번 정해 반복</strong>합니다.<br>그래서 화면이 들쭉날쭉하지 않습니다.</p>
+          <p><strong>옷장의 기본 3색처럼</strong> — 한 번 정해 반복하는 것입니다. 대기업만 쓰는 것이 아니라 작은 사이트에도 도움이 됩니다.</p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 3개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-joke"><span class="cue-tag">💬</span>문법·도구는 이번 범위 밖입니다. 오늘의 design.md가 가장 작은 디자인 시스템이라고만 연결합니다.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B4-15" data-교시="PART 4 · 실습: md 3종 작성" data-info-units="3">
+        <div class="sc-head">
+          <span class="chip chip-slide">B4-15</span>
+          <span class="sc-title">design.md는 화면 결정을 담는 문서</span>
+          <span class="chip chip-units" data-units-badge>단위 3</span>
+        </div>
+        <div class="sc-body">
+          <p><strong>담는 것</strong> — 먼저 볼 것 · 분위기 · 색 · 문구(버튼 · 안내) · 참고 · 안 따라 할 것</p>
+          <p><strong>전문 규격이 아닙니다</strong> — 세 줄이면 충분합니다.</p>
+          <p><strong>가게 규칙 메모처럼</strong> — 카페 알바생에게 남기는 ‘가게 규칙 메모’ 같은 것입니다. 나도 Codex도 같은 기준을 봅니다.</p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 3개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-joke"><span class="cue-tag">💬</span>PART 3에서 관찰한 레퍼런스의 «참고할 것·안 따라 할 것»도 여기에 적습니다.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B4-16" data-교시="PART 4 · 실습: md 3종 작성" data-info-units="3">
+        <div class="sc-head">
+          <span class="chip chip-slide">B4-16</span>
+          <span class="sc-title">(선택) 디자인 방향 3종</span> <span class="tag-optional">선택</span>
+          <span class="chip chip-units" data-units-badge>단위 3</span>
+        </div>
+        <div class="sc-body">
+          <p><strong>강사 제공 디자인 방향</strong></p>
+          <p><strong>A 단정한 정보형</strong> · <strong>B 활기찬</strong> · <strong>C 친근한 안내</strong></p>
+          <p>내 사이트에 맞는 방향 <strong>하나를 고릅니다.</strong><br>고른 방향은 design.md의 «분위기» 줄에 그대로 적습니다.</p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 3개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-demo"><span class="cue-tag">👀</span>방향별 화면 예를 보여 주고 하나를 고르게 합니다.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B4-17" data-교시="PART 4 · 실습: md 3종 작성" data-info-units="3">
+        <div class="sc-head">
+          <span class="chip chip-slide">B4-17</span>
+          <span class="sc-title">(선택) 화면 정보 순서 한 장에 고정</span> <span class="tag-optional">선택</span>
+          <span class="chip chip-units" data-units-badge>단위 3</span>
+        </div>
+        <div class="sc-body">
+          <p><strong>먼저 볼 것 · 다음 행동 · 확인할 것</strong>을 한 장에 적습니다.</p>
+          <p><strong>예</strong> — 먼저 볼 것: 이름과 한 줄 소개 · 다음 행동: 관심사 보기 누르기 · 확인할 것: 관심사 2~3개가 보이는가</p>
+          <p>화면을 만들기 전에 <strong>손가락으로 이동 경로를 그려 봅니다.</strong></p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 3개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-demo"><span class="cue-tag">👀</span>이 한 장이 design.md «순서» 줄과 prd.md «흐름» 항목을 동시에 점검하는 도구라고 짚습니다.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B4-18" data-교시="PART 4 · 실습: md 3종 작성" data-info-units="2">
+        <div class="sc-head">
+          <span class="chip chip-slide">B4-18</span>
+          <span class="sc-title">실습 ② design.md 만들기</span>
+          <span class="chip chip-units" data-units-badge>단위 2</span>
+        </div>
+        <div class="sc-body">
+          <p><strong>1 초안 받기</strong> — 순서 · 색 · 여백 · 문구 네 제목 아래 한 줄씩 채웁니다.<br>&nbsp;&nbsp;<strong>방법 A 직접 쓰기</strong> — 지킬 것을 두 줄 이상 직접 적습니다.<br>&nbsp;&nbsp;<strong>방법 B Codex에게 초안 받기</strong> — prd.md를 읽혀 기준 초안을 받습니다(다음 장 요청문).<br><strong>2 사람이 읽고 최소 1개 수정</strong> — 판단이 담긴 문장으로 바꿉니다.<br><strong>3 design.md로 저장</strong> — 파일을 직접 엽니다.</p>
+          <p><strong>화면 적용은 PART 5에서</strong> — 사이트가 아직 없으니 지금은 문서만 만들고, 사이트를 만든 뒤 <strong>최소 2가지를 화면에 적용</strong>합니다.<br><strong>완료 기준</strong> — design.md를 열었을 때 네 제목 아래가 채워져 있고, 내가 고친 줄이 있습니다.</p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 2개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-demo"><span class="cue-tag">👀</span>[캡처 K11] design.md 생성 결과.</div>
+        <div class="cue cue-joke"><span class="cue-tag">💬</span>원본은 이미 만든 화면을 캡처해 다른 채팅 도구에 첨부하는 방식이었습니다. 오후는 아직 화면이 없으므로 Codex에게 prd.md를 읽혀 초안을 받습니다.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B4-19" data-교시="PART 4 · 실습: md 3종 작성" data-info-units="2">
+        <div class="sc-head">
+          <span class="chip chip-slide">B4-19</span>
+          <span class="sc-title">design.md 초안을 만들 때 이렇게 요청합니다</span>
+          <span class="chip chip-units" data-units-badge>단위 2</span>
+        </div>
+        <div class="sc-body">
+          <p><strong>요청문 (Codex 입력창)</strong> — 이 폴더의 prd.md를 먼저 읽고 design.md 초안을 써 주세요. 목적: 이 사이트의 디자인 기준을 파일로 남기기 · 입력: prd.md와 제가 고른 분위기 [예: 친근한 안내] · 출력: 순서 · 색 · 여백 · 문구 네 제목 아래 한 줄씩 · 검증: prd.md에 없는 섹션은 만들지 말고, 모르면 [확인 필요]로 남기기. 초안만 보여 주세요. 한 줄은 제가 고친 뒤 저장합니다.</p>
+          <p><strong>이렇게 쓰는 이유</strong> — 네 제목을 정해 주면 빠진 기준이 보입니다.<br><strong>이 줄이 막는 것</strong> — «검증» 줄이 지어낸 기준을 막습니다.<br><strong>확인할 것</strong> — 고친 초안을 design.md로 저장했는가.</p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 2개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-demo"><span class="cue-tag">👀</span>[캡처 K5] 요청 입력창에 문장 입력한 상태. 대괄호 칸만 각자 바꿔 넣게 합니다.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B4-20" data-교시="PART 4 · 실습: md 3종 작성" data-info-units="3">
+        <div class="sc-head">
+          <span class="chip chip-slide">B4-20</span>
+          <span class="sc-title">AI에게 일을 맡기는 틀, 사실 별거 아닙니다</span>
+          <span class="chip chip-units" data-units-badge>단위 3</span>
+        </div>
+        <div class="sc-body">
+          <p>PART 2에서 본 «바깥 틀» 안에 <strong>어떤 도구로, 어떤 행동을 하게 할지</strong>를 미리 정해 두는 것입니다.</p>
+          <p><strong>범위를 건다</strong> — “이 폴더 밖은 못 건드린다” · 손댈 수 있는 자리를 프로젝트 폴더로 묶어 둡니다.<br><strong>순서를 건다</strong> — “design.md를 먼저 읽고 시작한다” · 무엇부터 볼지 정해 두면 매번 다른 답이 나오지 않습니다.<br><strong>증거를 건다</strong> — “끝나면 바꾼 파일을 보여 준다” · 끝났다는 말 대신 확인할 수 있는 것을 요구합니다.<br><strong>멈춤을 건다</strong> — “지우기 전에는 물어본다” · 되돌리기 어려운 행동은 승인 앞에서 멈춥니다.</p>
+          <p><strong>이 네 문장이 이미 AI에게 일을 맡기는 틀입니다.</strong> 사람이 매번 설명하지 않아도 장치가 확인하고 멈춥니다.</p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 3개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-joke"><span class="cue-tag">💬</span>PART 2에서 정의한 하네스를 여기서부터는 «AI에게 일을 맡기는 틀»이라고 부릅니다. 새 기술이라기보다 이미 하던 네 가지 약속에 이름을 붙인 것이라고 말해 주세요.</div>
+        <div class="cue cue-demo"><span class="cue-tag">👀</span>[캡처 K4] 멈춤(승인 요청)이 Codex에서 실제로 어떻게 보이는지는 캡처로 확인한 뒤 짚습니다.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B4-21" data-교시="PART 4 · 실습: md 3종 작성" data-info-units="3">
+        <div class="sc-head">
+          <span class="chip chip-slide">B4-21</span>
+          <span class="sc-title">AGENTS.md란 무엇인가</span>
+          <span class="chip chip-units" data-units-badge>단위 3</span>
+        </div>
+        <div class="sc-body">
+          <p>앞 장의 네 약속처럼 <strong>«맡기기 전에 주는 것»을 담는, 작업 전에 먼저 읽는 규칙 파일</strong>입니다.</p>
+          <p><strong>무엇을 담나</strong> — 프로젝트에서 계속 지킬 공통 규칙. 한 번만 쓰고 말 지시가 아니라, 매번 같이 적용될 약속만 적습니다.<br><strong>언제 읽히나</strong> — 도구가 지원하면 부르지 않아도 읽힙니다. 자동 읽기 여부는 도구마다 다릅니다.<br><strong>어디에 만드나</strong> — 프로젝트 폴더 바로 안에 직접 파일로. 별도 도구나 설정 화면이 필요 없습니다.<br><strong>없으면</strong> — 같은 이탈을 매번 반복합니다. 새 대화를 열 때마다 같은 주의를 다시 말해야 합니다.</p>
+          <p><strong>AI의 기억이 아니라, 사람이 적어 둔 만큼만 지키는 고정된 규칙입니다.</strong></p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 3개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-joke"><span class="cue-tag">💬</span>공용 작업실 벽에 붙은 «작업 수칙» 안내문처럼, 누가 와도 일 전에 먼저 읽는 파일이라고 비유합니다.</div>
+        <div class="cue cue-demo"><span class="cue-tag">👀</span>[캡처 K16] 프로젝트 폴더의 AGENTS.md를 Codex가 읽는 모습 — 실제로 읽는지와 그 표시는 캡처로 확인한 뒤에만 말합니다.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B4-22" data-교시="PART 4 · 실습: md 3종 작성" data-info-units="3">
+        <div class="sc-head">
+          <span class="chip chip-slide">B4-22</span>
+          <span class="sc-title">AGENTS.md에 무엇을 적나</span>
+          <span class="chip chip-units" data-units-badge>단위 3</span>
+        </div>
+        <div class="sc-body">
+          <p>프로젝트마다 다르지만, <strong>이 세 종류</strong>를 적습니다.</p>
+          <p><strong>지켜야 할 규칙</strong> — “외부 라이브러리를 쓰지 않는다”<br><strong>쓸 수 있는 자료</strong> — “이 폴더의 prd.md와 design.md를 먼저 읽는다”<br><strong>반복 절차</strong> — “수정한 뒤에는 브라우저에서 다시 확인한다”</p>
+          <p><strong>한 문장이 한 줄입니다.</strong> 길게 설명하지 않고 지킬 것만 짧게 적습니다.<br><strong>초안은 받아도 됩니다</strong> — 내 폴더를 읽게 한 뒤 «이 형식대로 AGENTS.md를 채워 줘»라고 요청하고, 나온 초안에서 내가 고칠 줄만 고칩니다.</p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 3개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-joke"><span class="cue-tag">💬</span>이 세 종류가 바로 실습 ③의 뼈대입니다.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B4-23" data-교시="PART 4 · 실습: md 3종 작성" data-info-units="3">
+        <div class="sc-head">
+          <span class="chip chip-slide">B4-23</span>
+          <span class="sc-title">이번 사이트의 기술 제한 (이유)</span>
+          <span class="chip chip-units" data-units-badge>단위 3</span>
+        </div>
+        <div class="sc-body">
+          <p><strong>일반 script.js만 사용</strong><br>module · import · export · 로컬 fetch · 빌드 · 서버는 쓰지 않습니다.</p>
+          <p><strong>왜</strong> — 브라우저로 파일을 직접 열 때(file://) 막히는 기능을 피하고, 모두 같은 출발선에 서기 위해서입니다.</p>
+          <p><strong>난간처럼</strong> — 제한은 실력을 줄이는 벽이 아니라 모두가 같은 출발선에 서게 하는 난간입니다.<br><strong>AGENTS.md의 재료</strong> — 이 제한은 «지켜야 할 규칙» 줄로 그대로 옮겨 적을 수 있습니다.</p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 3개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-joke"><span class="cue-tag">💬</span>모듈이나 React가 틀린 게 아니라 이번 범위에 안 맞을 뿐입니다.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B4-24" data-교시="PART 4 · 실습: md 3종 작성" data-info-units="2">
+        <div class="sc-head">
+          <span class="chip chip-slide">B4-24</span>
+          <span class="sc-title">실습 ③ AGENTS.md 만들기</span>
+          <span class="chip chip-units" data-units-badge>단위 2</span>
+        </div>
+        <div class="sc-body">
+          <p><strong>만들 것</strong> — <code>about_me</code> 폴더의 AGENTS.md <strong>6~10줄</strong><br><strong>고를 수 있는 규칙</strong> — 정적 웹만 사용 · 서버 코드 금지 · 한 번에 하나만 수정 · 수정 후 재확인</p>
+          <p><strong>1 먼저 보게 합니다</strong> — 고치기 전에 현황부터 · “내 폴더를 읽고 뭐가 있고 뭐가 부족한지 알려 줘. 아직 고치지는 마.”<br><strong>2 초안을 쓰게 합니다</strong> — 빈 문서에서 시작하지 않습니다.<br><strong>3 한 군데는 내가 고칩니다</strong> — 여기서 내 프로젝트가 됩니다.<br><strong>4 저장하고, 지켜지는지 봅니다</strong> — “만들었다”는 말은 증거가 아닙니다. 파일을 직접 열어 보고, 다음 요청에서 그 규칙을 실제로 지키는지 확인합니다.</p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 2개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-demo"><span class="cue-tag">👀</span>[캡처 K11] AGENTS.md 생성 결과.</div>
+        <div class="cue cue-joke"><span class="cue-tag">💬</span>AGENTS.md는 스스로 학습·기억하지 않습니다. 무엇을 고를지 모르겠으면 Codex에게 추천을 받아도 되지만, 고르는 것은 사람입니다.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B4-25" data-교시="PART 4 · 실습: md 3종 작성" data-info-units="2">
+        <div class="sc-head">
+          <span class="chip chip-slide">B4-25</span>
+          <span class="sc-title">AGENTS.md를 만들 때 이렇게 요청합니다</span>
+          <span class="chip chip-units" data-units-badge>단위 2</span>
+        </div>
+        <div class="sc-body">
+          <p><strong>요청문 (Codex 입력창)</strong> — 이 폴더를 먼저 읽고 무엇이 있고 없는지 알려 주세요. 아직 고치지 마세요. [내 프로젝트] 만드는 것: [prd.md의 한 줄 정의] · 지켜야 할 규칙: [꼭 지켰으면 하는 것 하나] · 먼저 읽을 자료: prd.md · design.md · 반복할 절차: [예: 수정 뒤 브라우저에서 다시 확인] 그다음 이 형식으로 AGENTS.md 초안을 6~10줄로 써 주세요. 모르는 것은 [확인 필요]로 남기고, 저장은 제가 확인한 뒤에 합니다. 먼저 초안만 보여 주세요.</p>
+          <p><strong>이렇게 쓰는 이유</strong> — 세 종류의 재료를 채우면 규칙 · 자료 · 절차가 내 프로젝트의 약속이 됩니다.<br><strong>이 줄이 막는 것</strong> — «[확인 필요]»가 없으면 모르는 내용을 그럴듯하게 지어낼 수 있습니다.<br><strong>확인할 것</strong> — 초안에서 내가 고친 줄이 최소 1개인지 확인한 뒤에만 저장합니다.</p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 2개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-demo"><span class="cue-tag">👀</span>첫 두 문장 «먼저 읽고 · 아직 고치지 마세요»를 짚습니다. 현황 파악과 수정을 한 번에 시키면 무엇이 바뀌었는지 알 수 없습니다.</div>
+      </article>
+
+      <article class="slide-card is-fixed" data-slide="B5-01" data-교시="PART 5 · 실습: md로 나를 소개하는 웹사이트 만들기" data-info-units="">
+        <div class="sc-head">
+          <span class="chip chip-slide">B5-01</span>
+          <span class="sc-title">(간지) 실습: md로 나를 소개하는 웹사이트 만들기</span> <span class="tag-fixed">간지</span>
+          <span class="chip chip-units" data-units-badge>단위 제외</span>
+        </div>
+        <div class="sc-body">
+          <p><strong>PART 5 · 실습: md로 나를 소개하는 웹사이트 만들기</strong></p>
+          <p>세 문서를 먼저 읽히고, 계획을 확인한 뒤, 세 파일로 사이트를 만들어 브라우저에서 엽니다.</p>
+        </div>
+        <div class="sc-note">정보 단위 산정 제외 — 고정 슬라이드(간지)</div>
+        <div class="cue cue-joke"><span class="cue-tag">💬</span>새 기능을 늘리는 시간이 아니라, 문서에 정한 사이트를 끝까지 작동시키는 시간입니다. 조작은 한 화면에 한 단계씩 진행합니다.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B5-02" data-교시="PART 5 · 실습: md로 나를 소개하는 웹사이트 만들기" data-info-units="3">
+        <div class="sc-head">
+          <span class="chip chip-slide">B5-02</span>
+          <span class="sc-title">코드 전에 계획을 다시 확인</span>
+          <span class="chip chip-units" data-units-badge>단위 3</span>
+        </div>
+        <div class="sc-body">
+          <p><strong>만들 파일 · 핵심 기능 · 확인 항목</strong></p>
+          <p>prd.md와 대표 흐름을 다시 봅니다.<br>범위가 커졌으면 <strong>코드 전에 멈춥니다.</strong></p>
+          <p><strong>코드로 반복하지 말고 계획으로 반복합니다</strong> — 잘못 만든 코드를 되돌리는 것이 계획을 고치는 것보다 더 비쌉니다.</p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 3개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-joke"><span class="cue-tag">💬</span>PART 4에서 만든 세 문서를 탐색기에서 한 번씩 열어 보고 시작하게 하세요.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B5-03" data-교시="PART 5 · 실습: md로 나를 소개하는 웹사이트 만들기" data-info-units="4">
+        <div class="sc-head">
+          <span class="chip chip-slide">B5-03</span>
+          <span class="sc-title">문서가 맥락이 됩니다 · 계획 먼저</span>
+          <span class="chip chip-units" data-units-badge>단위 4</span>
+        </div>
+        <div class="sc-body">
+          <p><strong>폴더 안 문서 = AI가 참고하는 맥락</strong> — 목적 · 범위 · 완료가 문서에 있습니다.</p>
+          <p>코드 전에 <strong>“무슨 파일을 어떤 순서로”</strong> 계획부터 보여 달라 하고, 사람이 확인한 뒤 진행합니다.</p>
+          <p><strong>요청문</strong> — 계획부터 보여 주세요. 만들 파일과 순서만 짧게 알려 주시고, 제가 확인하기 전에는 파일을 만들지 마세요.</p>
+          <p>계획을 길게 만들라는 게 아니라 <strong>엉뚱한 파일을 줄이는 짧은 점검</strong>입니다.</p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 4개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-demo"><span class="cue-tag">👀</span>[캡처 K10] 계획 먼저 보여 달라고 했을 때의 응답 — Codex가 계획을 어떤 모양으로 보여 주는지는 캡처로 확인한 뒤 짚습니다.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B5-04" data-교시="PART 5 · 실습: md로 나를 소개하는 웹사이트 만들기" data-info-units="4">
+        <div class="sc-head">
+          <span class="chip chip-slide">B5-04</span>
+          <span class="sc-title">prd.md를 어떻게 넘기나</span>
+          <span class="chip chip-units" data-units-badge>단위 4</span>
+        </div>
+        <div class="sc-body">
+          <p>같은 문서라도 <strong>넘기는 방식에 따라</strong> 다음 대화에서 살아남는지가 갈립니다.</p>
+          <p><strong>방법 A · 채팅창에 내용을 붙여넣기</strong> — 그 대화에서만 유효합니다. 새 대화를 열면 다시 붙여넣어야 합니다.<br><strong>방법 B · 프로젝트 폴더에 파일로 두고 «읽어라»라고 시키기 (이 수업이 쓰는 방식)</strong> — 파일이 폴더에 남아 다음 대화도 같은 기준을 읽습니다. 내가 열어 고칠 수도 있습니다.</p>
+          <p><strong>about_me/</strong> — <code>prd.md</code> 무엇을 만드나 · <code>design.md</code> 어떻게 보이나 · <code>AGENTS.md</code> 어떻게 일하나 · <code>index.html</code> 뼈대 · <code>style.css</code> 모양 · <code>script.js</code> 동작</p>
+          <p><strong>요청 첫 줄</strong> — “이 폴더의 prd.md를 먼저 읽고 시작해 주세요.”</p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 4개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-joke"><span class="cue-tag">💬</span>방법 B를 기본으로 씁니다. 붙여넣기는 그 대화에서만 유효해 새 대화를 열면 처음부터 다시라는 점을 짚습니다.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B5-05" data-교시="PART 5 · 실습: md로 나를 소개하는 웹사이트 만들기" data-info-units="3">
+        <div class="sc-head">
+          <span class="chip chip-slide">B5-05</span>
+          <span class="sc-title">한 파일 다음에는 세 파일로</span>
+          <span class="chip chip-units" data-units-badge>단위 3</span>
+        </div>
+        <div class="sc-body">
+          <p><strong>오전 · 한 파일</strong> — <code>index.html</code> 안에 구조 · 표현 · 반응을 함께 넣었습니다. 파일을 찾고 브라우저에서 여는 흐름을 단순하게 유지할 수 있었습니다.</p>
+          <p><strong>오후 · 새 폴더 · 세 파일</strong> — 타자 게임을 이어 고치는 대신 새 폴더에서 시작합니다. 요구를 <code>prd.md</code>에 정리하고 HTML · CSS · JavaScript를 역할별로 나눠 연결합니다.</p>
+          <p>오전에 한 파일로 시작한 것은 <strong>임시방편이 아니라, 그 목표에 맞춘 선택</strong>이었습니다.</p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 3개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-joke"><span class="cue-tag">💬</span>오전 결과가 틀린 방식이 아니었다고 먼저 말해 주세요. 목표가 달라져 구조가 달라졌을 뿐입니다.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B5-06" data-교시="PART 5 · 실습: md로 나를 소개하는 웹사이트 만들기" data-info-units="3">
+        <div class="sc-head">
+          <span class="chip chip-slide">B5-06</span>
+          <span class="sc-title">한 파일에서 여러 파일로</span>
+          <span class="chip chip-units" data-units-badge>단위 3</span>
+        </div>
+        <div class="sc-body">
+          <p><strong>index.html (뼈대)</strong> · <strong>style.css (모양)</strong> · <strong>script.js (동작)</strong><br>+ 기준 문서 prd.md · design.md · AGENTS.md</p>
+          <p>코드가 커지면 <strong>역할별로 나눠야</strong> 고칠 때 그 파일만 엽니다.</p>
+          <p><strong>index.html 하나만 열면</strong> 나머지가 함께 불려와 한 페이지가 됩니다.<br><strong>숨바꼭질처럼</strong> — 한 파일에 다 넣으면 처음엔 편하지만 나중에 어디를 고칠지 숨바꼭질이 시작됩니다.</p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 3개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-joke"><span class="cue-tag">💬</span>오전의 뼈대·옷·스위치 비유가 이제 파일 하나씩으로 나뉜다고 연결합니다.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B5-07" data-교시="PART 5 · 실습: md로 나를 소개하는 웹사이트 만들기" data-info-units="4">
+        <div class="sc-head">
+          <span class="chip chip-slide">B5-07</span>
+          <span class="sc-title">브라우저 직접 실행 vs 서버 방식</span>
+          <span class="chip chip-units" data-units-badge>단위 4</span>
+        </div>
+        <div class="sc-body">
+          <p>우리는 <code>index.html</code>을 <strong>직접 엽니다</strong> (주소가 <code>file://</code>로 시작).</p>
+          <p><strong>module · 로컬 fetch</strong> — 서버가 필요합니다 → 이번 범위 밖</p>
+          <p><strong>파일을 만든 것과 작동하는 것은 다릅니다.</strong></p>
+          <p><strong>file://은</strong> 인터넷 주소가 아니라 내 컴퓨터 경로입니다.</p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 4개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-joke"><span class="cue-tag">💬</span>PART 4 «기술 제한»이 왜 필요한지 여기서 다시 연결합니다. 서버 방식은 설명하지 않고 «오늘은 안 합니다»로 넘깁니다.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B5-08" data-교시="PART 5 · 실습: md로 나를 소개하는 웹사이트 만들기" data-info-units="4">
+        <div class="sc-head">
+          <span class="chip chip-slide">B5-08</span>
+          <span class="sc-title">제작 요청 전달하기</span>
+          <span class="chip chip-units" data-units-badge>단위 4</span>
+        </div>
+        <div class="sc-body">
+          <p>준비한 요청문을 Codex에 전달합니다.</p>
+          <p><strong>다시 볼 것</strong> — 문서 읽기 · 세 파일 · 필수 내용 · 제외 · 브라우저 열기 · 추가 설치 없음이 모두 적혔는지 봅니다.</p>
+          <p><strong>요청문 (Codex 입력창)</strong> — 이 폴더의 prd.md와 AGENTS.md를 먼저 읽고 시작해 주세요. prd.md의 «핵심»과 «흐름»대로 나를 소개하는 웹사이트를 index.html · style.css · script.js 세 파일로 만들어 주세요. «만들지 않을 것»에 적힌 것은 붙이지 말고, prd.md에 없는 경력 · 연락처는 만들지 마세요. 설치 · 빌드 · 서버는 사용하지 말고, 브라우저에서 index.html을 직접 열 수 있게 해 주세요. 만들기 전에 어느 파일을 만들지 먼저 알려 주세요. 다 만들면 «완료 기준»과 맞는지 대조해서 알려 주세요.</p>
+          <p>요청 뒤에는 Codex의 작업 보고와 실제 파일을 <strong>다음 장에서 따로</strong> 확인합니다.</p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 4개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-demo"><span class="cue-tag">👀</span>[캡처 K5] 요청 입력창에 문장 입력한 상태. 보낸 요청문은 메모장에 그대로 적어 두게 하세요.</div>
+        <div class="cue cue-joke"><span class="cue-tag">💬</span>한 번에 다른 조건을 더하지 않습니다. design.md 적용은 뒤 실습에서 따로 합니다.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B5-09" data-교시="PART 5 · 실습: md로 나를 소개하는 웹사이트 만들기" data-info-units="2">
+        <div class="sc-head">
+          <span class="chip chip-slide">B5-09</span>
+          <span class="sc-title">실습 ④ 세 파일 만들고 첫 화면 변화</span>
+          <span class="chip chip-units" data-units-badge>단위 2</span>
+        </div>
+        <div class="sc-body">
+          <p>prd.md를 기준으로 Codex가 <strong>index · style · script 세 파일을 최소로</strong> 만듭니다.<br>대표 흐름 하나로 <strong>버튼을 누르면 화면이 바뀌는 첫 작동</strong>을 확인합니다.</p>
+          <p><strong>완성</strong> — 브라우저에서 관심사 보기를 누르면 화면에 변화가 보입니다.<br><strong>정적이라는 말</strong> — “아무 반응 없음”이 아니라 “서버가 새 내용을 만들어 주지 않음”이라는 뜻입니다.<br><strong>안 되면</strong> — “안 돼요” 대신 <strong>어디에서 · 무엇을 했는데 · 실제로 어떻게 됐고 · 원래 무엇을 기대했는지</strong> 네 조각으로 알려 줍니다.</p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 2개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-demo"><span class="cue-tag">👀</span>[캡처 K12] md 기준으로 만든 웹사이트 결과. index.html을 브라우저로 열어 첫 반응을 함께 확인합니다. 파일을 만든 것과 작동하는 것은 다릅니다.</div>
+        <div class="cue cue-joke"><span class="cue-tag">💬</span>새로고침하면 펼친 목록이 처음 상태로 돌아가는 것은 고장이 아니라 이 범위의 자연스러운 경계입니다.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B5-10" data-교시="PART 5 · 실습: md로 나를 소개하는 웹사이트 만들기" data-info-units="3">
+        <div class="sc-head">
+          <span class="chip chip-slide">B5-10</span>
+          <span class="sc-title">필수 내용 확인하기</span>
+          <span class="chip chip-units" data-units-badge>단위 3</span>
+        </div>
+        <div class="sc-body">
+          <p>브라우저에서 <strong>이름 또는 활동명 · 한 줄 소개 · 관심사 2~3개</strong>를 차례로 확인합니다.</p>
+          <p><strong>지어낸 내 정보가 없는지</strong> — 내가 주지 않은 경력 · 연락처가 들어가 있지 않은지 봅니다.<br><strong>읽히는지</strong> — 글자가 잘리지 않고 읽히는지 봅니다.<br><strong>세 파일의 위치</strong> — 탐색기에서 <code>C:\VibeCoding\about_me\</code> <strong>바로 안</strong>에 index.html · style.css · script.js가 보이는지 봅니다. 하위 폴더에 들어가 있다면 바로 안으로 옮겨 달라고 요청합니다.</p>
+          <p><strong>외형보다 필수 내용과 실행을 먼저</strong> 확인합니다.</p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 3개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-joke"><span class="cue-tag">💬</span>AI가 소개 문장을 그럴듯하게 늘려 쓰는 경우가 많습니다. 내가 준 내용과 한 줄씩 대조하게 하세요.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B5-11" data-교시="PART 5 · 실습: md로 나를 소개하는 웹사이트 만들기" data-info-units="3">
+        <div class="sc-head">
+          <span class="chip chip-slide">B5-11</span>
+          <span class="sc-title">실습 ⑤ design.md를 화면에 2가지 이상 적용</span>
+          <span class="chip chip-units" data-units-badge>단위 3</span>
+        </div>
+        <div class="sc-body">
+          <p>design.md에 적은 기준 가운데 <strong>2가지를 골라</strong> 실제 화면에 적용합니다. <strong>문서만 만들고 끝내지 않습니다.</strong></p>
+          <p><strong>고르기</strong> — 색 · 순서 · 버튼 문구처럼 화면에서 눈으로 확인할 수 있는 것<br><strong>적용하기</strong> — 다음 장 요청문으로 Codex에게 design.md를 근거로 고치게 합니다.<br><strong>비교하기</strong> — 새로고침한 뒤 적용 전후 화면을 나란히 봅니다.</p>
+          <p><strong>완성</strong> — 고른 2가지가 화면에 반영되어 있고, 나머지 내용은 그대로입니다.</p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 3개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-demo"><span class="cue-tag">👀</span>[캡처 K12] design.md 적용 전후 화면을 비교합니다.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B5-12" data-교시="PART 5 · 실습: md로 나를 소개하는 웹사이트 만들기" data-info-units="2">
+        <div class="sc-head">
+          <span class="chip chip-slide">B5-12</span>
+          <span class="sc-title">design.md를 화면에 적용할 때 이렇게 요청합니다</span>
+          <span class="chip chip-units" data-units-badge>단위 2</span>
+        </div>
+        <div class="sc-body">
+          <p><strong>요청문 (Codex 입력창)</strong> — 이 폴더의 design.md를 먼저 읽어 주세요. [내 판단] 이번에 바꾸고 싶은 곳: [화면의 어느 부분] · 꼭 반영할 기준 2가지: [design.md에서 내가 고른 것] · 절대 건드리지 말 것: [지금 마음에 드는 부분] 고른 2가지를 지금 화면에 적용해 주세요. 무엇을 · 어디에 적용했는지 파일 이름과 함께 알려 주세요. 휴대폰 폭으로 좁혀도 글자와 버튼이 화면 밖으로 나가지 않게 해 주세요. design.md에 없는 기준은 만들지 말고, 모르는 것은 [확인 필요]로 남기세요. 바꿀 곳이 애매하면 고치지 말고 저에게 먼저 물어봐 주세요.</p>
+          <p><strong>이렇게 쓰는 이유</strong> — 문서를 기준으로 삼게 해야 화면과 문서가 갈라지지 않습니다.<br><strong>이 줄이 막는 것</strong> — «건드리지 말 것»을 정해 두면 마음에 들던 부분이 같이 바뀌지 않습니다.<br><strong>확인할 것</strong> — 화면을 열어 2가지가 실제로 바뀌었는지 확인합니다.</p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 2개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-demo"><span class="cue-tag">👀</span>«design.md에 없는 기준은 만들지 말고»와 «애매하면 고치지 말고 먼저 물어봐 주세요» 두 줄을 짚습니다. 이 두 줄이 없으면 AI가 문서 밖 기준을 스스로 만들 수 있습니다.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B5-13" data-교시="PART 5 · 실습: md로 나를 소개하는 웹사이트 만들기" data-info-units="3">
+        <div class="sc-head">
+          <span class="chip chip-slide">B5-13</span>
+          <span class="sc-title">핵심 기능은 한 단계씩 만들고 확인합니다</span>
+          <span class="chip chip-units" data-units-badge>단위 3</span>
+        </div>
+        <div class="sc-body">
+          <p>한 번에 전부 완성하려 하지 말고, <strong>화면 하나 · 동작 하나 · 확인 하나</strong>씩 이어 갑니다.</p>
+          <p><strong>1. 화면 자리</strong> — 이름 · 한 줄 소개 · 관심사 영역의 자리를 먼저 잡습니다.<br>→ <strong>2. 한 번의 동작</strong> — 관심사 보기 버튼 하나로 관심사가 나타나게 합니다.<br>→ <strong>3. 다시 확인</strong> — 새로고침하고 버튼을 다시 눌러 같은 결과가 나오는지 봅니다.</p>
+          <p><strong>이름과 소개가 보인다 · 버튼을 누르면 관심사가 보인다 · 화면이 깨지지 않는다</strong></p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 3개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-joke"><span class="cue-tag">💬</span>오전 타자 게임에서 쓴 «화면 자리 → 한 번의 동작 → 다시 확인» 순서를 소개 사이트에 그대로 대어 봅니다. 구조를 먼저 만들고 design.md 적용을 따로 한 이유도 이 순서입니다.</div>
+      </article>
+
+      <article class="slide-card is-fixed" data-slide="B6-01" data-교시="PART 6 · 실습: md를 먼저 고쳐 사이트 넓히기" data-info-units="">
+        <div class="sc-head">
+          <span class="chip chip-slide">B6-01</span>
+          <span class="sc-title">(간지) 실습: md를 먼저 고쳐 사이트 넓히기</span> <span class="tag-fixed">간지</span>
+          <span class="chip chip-units" data-units-badge>단위 제외</span>
+        </div>
+        <div class="sc-body">
+          <p><strong>PART 6 · 실습: md를 먼저 고쳐 사이트 넓히기</strong></p>
+          <p>바꾸고 싶은 것이 생기면 사이트보다 문서를 먼저 고치고, 그 문서를 다시 읽혀 적용합니다.</p>
+        </div>
+        <div class="sc-note">정보 단위 산정 제외 — 고정 슬라이드(간지)</div>
+        <div class="cue cue-joke"><span class="cue-tag">💬</span>오전에는 말로 바로 고쳤습니다. 오후에는 순서가 다릅니다 — 문서 고치기 → 적용 요청 → 화면 확인. 한 번에 한 가지만 바꾸는 것은 같습니다.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B6-02" data-교시="PART 6 · 실습: md를 먼저 고쳐 사이트 넓히기" data-info-units="3">
+        <div class="sc-head">
+          <span class="chip chip-slide">B6-02</span>
+          <span class="sc-title">결정이 바뀌면 문서를 먼저 고칩니다</span>
+          <span class="chip chip-units" data-units-badge>단위 3</span>
+        </div>
+        <div class="sc-body">
+          <p>코드만 바꾸면 다음 AI 작업이 <strong>낡은 기준을 다시 읽습니다.</strong> 문서부터 바꾸고 다시 확인합니다.</p>
+          <p><strong>↺ 결정 변경</strong> — 대상 · 섹션 · 제외 중 하나가 바뀌었다면 멈춥니다. 예: “관심사는 두 개만 보여 주자”<br>→ <strong>✎ 문서 수정</strong> — 바뀐 결정을 prd.md(또는 design.md)의 해당 항목에 반영합니다.<br>→ <strong>✓ 다시 읽히고 열기</strong> — AI가 바뀐 문서를 읽은 뒤, 화면에서 반영을 확인합니다. “prd.md를 다시 읽고 적용해 주세요”</p>
+          <p><strong>코드만 먼저 고치면</strong> 문서와 화면이 다른 약속을 합니다.<br><strong>도면처럼</strong> — 집을 고치기 전 도면부터 고칩니다.</p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 3개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-joke"><span class="cue-tag">💬</span>문서 수정도 사람이 승인하는 결정입니다. 이 PART의 모든 수정이 이 세 칸을 따릅니다.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B6-03" data-교시="PART 6 · 실습: md를 먼저 고쳐 사이트 넓히기" data-info-units="3">
+        <div class="sc-head">
+          <span class="chip chip-slide">B6-03</span>
+          <span class="sc-title">한 줄 소개 변경 요청 — prd.md 먼저</span>
+          <span class="chip chip-units" data-units-badge>단위 3</span>
+        </div>
+        <div class="sc-body">
+          <p><strong>1 문서 먼저</strong> — prd.md에 적힌 한 줄 소개를 새 문장으로 직접 고치고 저장합니다.<br><strong>2 적용 요청</strong> — 한 줄 소개만 바꿔 달라고 요청하고, 이름 · 관심사 · 나머지 구성은 그대로 두라고 함께 적습니다.</p>
+          <p><strong>수정 요청 3단</strong> — 무엇을 유지할지 → 무엇을 바꿀지 → 바뀐 뒤 무엇을 확인할지</p>
+          <p><strong>요청문 (Codex 입력창)</strong> — prd.md를 다시 읽어 주세요. 이름 · 관심사 · 디자인 · 나머지 구성은 그대로 유지해 주세요. 한 줄 소개만 prd.md에 고쳐 둔 새 문장으로 바꿔 주세요. 바꾼 뒤 어느 파일의 무엇을 바꿨는지 짧게 알려 주세요.</p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 3개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-demo"><span class="cue-tag">👀</span>[캡처 K12] 확장 전 화면. 요청문의 세 문장이 유지 → 변경 → 확인 3단에 하나씩 대응한다고 짚으며 읽어 줍니다.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B6-04" data-교시="PART 6 · 실습: md를 먼저 고쳐 사이트 넓히기" data-info-units="3">
+        <div class="sc-head">
+          <span class="chip chip-slide">B6-04</span>
+          <span class="sc-title">한 줄 소개 변경 확인</span>
+          <span class="chip chip-units" data-units-badge>단위 3</span>
+        </div>
+        <div class="sc-body">
+          <p>브라우저를 <strong>새로고침</strong>해 한 줄 소개가 새 문장으로 바뀌었는지 봅니다.</p>
+          <p><strong>유지 확인</strong> — 이름 · 관심사 · 나머지 구성도 이전과 같은지 함께 대조합니다.<br><strong>문서와 화면 대조</strong> — prd.md의 한 줄 소개와 화면의 문장이 한 글자까지 같은지 봅니다.</p>
+          <p>바뀐 점 하나와 유지된 점 하나를 말할 수 있으면 <strong>다음 수정으로</strong> 넘어갑니다.</p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 3개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-demo"><span class="cue-tag">👀</span>[캡처 K12] 확장 전/후 — 파일 열기 → 결과 화면 → 문서 수정 → 적용 → 새로고침 → 변경 확인의 순서를 화면으로 따라갑니다.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B6-05" data-교시="PART 6 · 실습: md를 먼저 고쳐 사이트 넓히기" data-info-units="3">
+        <div class="sc-head">
+          <span class="chip chip-slide">B6-05</span>
+          <span class="sc-title">배경색 변경 요청 — design.md 먼저</span>
+          <span class="chip chip-units" data-units-badge>단위 3</span>
+        </div>
+        <div class="sc-body">
+          <p><strong>1 문서 먼저</strong> — design.md의 «색» 줄을 원하는 배경색으로 고치고 저장합니다.<br><strong>2 적용 요청</strong> — 배경색만 바꿔 달라고 요청합니다.</p>
+          <p><strong>바꿀 것</strong> — 배경색 · <strong>그대로 둘 것</strong> — 한 줄 소개 · 이름 · 관심사 · 나머지 구성 · <strong>다시 볼 것</strong> — 새 배경 위에서 글자가 잘 읽히는지</p>
+          <p><strong>요청문 (Codex 입력창)</strong> — design.md를 다시 읽어 주세요. 배경색만 design.md에 고쳐 둔 색으로 바꿔 주세요. 한 줄 소개 · 이름 · 관심사 · 나머지 구성은 그대로 유지해 주세요. 바꾼 뒤 글자가 잘 읽히는지 확인할 수 있게 알려 주세요.</p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 3개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-joke"><span class="cue-tag">💬</span>이번에는 prd.md가 아니라 design.md를 고칩니다. «어떻게 보이나»에 대한 결정이기 때문입니다 — PART 4 «어떤 문서가 무엇을 책임지나»를 다시 부르세요.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B6-06" data-교시="PART 6 · 실습: md를 먼저 고쳐 사이트 넓히기" data-info-units="2">
+        <div class="sc-head">
+          <span class="chip chip-slide">B6-06</span>
+          <span class="sc-title">배경색 변경 확인</span>
+          <span class="chip chip-units" data-units-badge>단위 2</span>
+        </div>
+        <div class="sc-body">
+          <p>브라우저를 <strong>새로고침</strong>해 배경색이 바뀌었는지 확인합니다.</p>
+          <p><strong>유지 확인</strong> — 내용과 배치가 그대로인지 봅니다.<br><strong>읽히는지</strong> — 새 배경 위에서 글자가 충분히 읽히는지 봅니다. 대비가 약하면 design.md의 색부터 다시 고칩니다.<br><strong>비교하는 법</strong> — 이전 화면과 최신 화면을 혼동하지 않도록, 새로고침 뒤 한 지점을 정해 비교합니다.</p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 2개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-demo"><span class="cue-tag">👀</span>[캡처 K12] 배경색 적용 전/후와 유지된 내용을 함께 보여 줍니다.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B6-07" data-교시="PART 6 · 실습: md를 먼저 고쳐 사이트 넓히기" data-info-units="3">
+        <div class="sc-head">
+          <span class="chip chip-slide">B6-07</span>
+          <span class="sc-title">(선택) 원하는 한 가지 자유 수정</span> <span class="tag-optional">선택</span>
+          <span class="chip chip-units" data-units-badge>단위 3</span>
+        </div>
+        <div class="sc-body">
+          <p><strong>분위기 · 색 · 글자 · 간격 · 배치</strong> 중 원하는 특징 하나만 고릅니다.</p>
+          <p><strong>문서 먼저</strong> — 고른 특징을 알맞은 문서(무엇이면 prd.md, 모양이면 design.md)에 먼저 적습니다.<br><strong>같은 방식으로</strong> — 무엇을 바꿀지 · 무엇을 그대로 둘지 · 화면에서 무엇을 확인할지를 적어 요청합니다.</p>
+          <p>결과를 본 뒤에는 <strong>이대로 둡니다 · 한 번 더 고칩니다 · 여기서 마칩니다</strong> 중 하나를 사람이 정합니다.</p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 3개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-joke"><span class="cue-tag">💬</span>선택 장입니다. 참고 자료는 복제하지 않고 특징 하나만 선택합니다.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B6-08" data-교시="PART 6 · 실습: md를 먼저 고쳐 사이트 넓히기" data-info-units="2">
+        <div class="sc-head">
+          <span class="chip chip-slide">B6-08</span>
+          <span class="sc-title">나중 아이디어 보관함</span>
+          <span class="chip chip-units" data-units-badge>단위 2</span>
+        </div>
+        <div class="sc-body">
+          <p>제외한 좋은 섹션 · 기능을 <strong>‘나중 아이디어’ 목록</strong>으로 모아 둡니다.</p>
+          <p><strong>제외는 삭제가 아니라 보관입니다</strong> — 나중에 되살릴 수 있습니다.<br><strong>되살릴 때도 문서 먼저</strong> — 보관함에서 꺼낸 것은 prd.md의 «만들 것»에 먼저 옮겨 적은 뒤 적용합니다.</p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 2개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-joke"><span class="cue-tag">💬</span>사진 모음·공유 버튼 같은 생각이 떠오르면 여기에 적어 두게 하세요. 오늘 다 넣지 않아도 사라지지 않습니다.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B6-09" data-교시="PART 6 · 실습: md를 먼저 고쳐 사이트 넓히기" data-info-units="4">
+        <div class="sc-head">
+          <span class="chip chip-slide">B6-09</span>
+          <span class="sc-title">실습 ⑥ 범위 밖 기능 제거</span>
+          <span class="chip chip-units" data-units-badge>단위 4</span>
+        </div>
+        <div class="sc-body">
+          <p>만들고 고치는 중에 늘어난 섹션 · 기능 가운데 <strong>prd.md 범위 밖 1개를 제거</strong>합니다.</p>
+          <p><strong>요청문 (Codex 입력창)</strong> — prd.md의 «만들지 않을 것»과 지금 사이트를 비교해, 범위 밖에 들어온 기능을 알려 주세요. 아직 고치지 마세요.<br><strong>그다음</strong> — 내가 고른 하나만 빼 달라고 하고, 나머지는 그대로 유지해 달라고 적습니다.</p>
+          <p>AI에게 그냥 “고쳐줘”라고 하면 범위를 넘겨 만들 수 있어, <strong>유지할 것</strong>을 함께 적습니다.</p>
+          <p><strong>완성</strong> — 범위를 지킨 첫 버전</p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 4개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-joke"><span class="cue-tag">💬</span>무엇을 뺄지 정하는 게 진짜 기획입니다. 제거할 것이 없으면 «없음»을 확인한 것도 결과라고 말해 줍니다.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B6-10" data-교시="PART 6 · 실습: md를 먼저 고쳐 사이트 넓히기" data-info-units="2">
+        <div class="sc-head">
+          <span class="chip chip-slide">B6-10</span>
+          <span class="sc-title">문서와 구현을 맞춥니다</span>
+          <span class="chip chip-units" data-units-badge>단위 2</span>
+        </div>
+        <div class="sc-body">
+          <p>바뀐 결정을 <strong>prd.md · design.md에 반영</strong>합니다.<br>문서와 화면이 다른 약속을 하지 않게 맞춥니다.</p>
+          <p><strong>어긋나면 생기는 일</strong> — 다음 작업 때 AI가 옛 기준을 보고 엉뚱하게 만듭니다.<br><strong>확인 방법</strong> — prd.md의 만들 것 · 만들지 않을 것과 design.md의 순서 · 색을 화면과 한 줄씩 대조합니다.</p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 2개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-joke"><span class="cue-tag">💬</span>이 PART를 닫는 장입니다. 화면을 먼저 고친 곳이 있었다면 지금 문서에 반영하게 하세요.</div>
+      </article>
+
+      <article class="slide-card is-fixed" data-slide="B7-01" data-교시="PART 7 · 검토 · 오류 대응 · 마무리" data-info-units="">
+        <div class="sc-head">
+          <span class="chip chip-slide">B7-01</span>
+          <span class="sc-title">(간지) 검토 · 오류 대응 · 마무리</span> <span class="tag-fixed">간지</span>
+          <span class="chip chip-units" data-units-badge>단위 제외</span>
+        </div>
+        <div class="sc-body">
+          <p><strong>PART 7 · 검토 · 오류 대응 · 마무리</strong></p>
+          <p>작동한다고 바로 완료는 아닙니다. 직접 확인하고, 공유하기 전에 한 번 더 점검합니다.</p>
+        </div>
+        <div class="sc-note">정보 단위 산정 제외 — 고정 슬라이드(간지)</div>
+        <div class="cue cue-joke"><span class="cue-tag">💬</span>AI가 만들었다는 사실보다, 내가 정한 기준을 충족했는지가 중요합니다.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B7-02" data-교시="PART 7 · 검토 · 오류 대응 · 마무리" data-info-units="3">
+        <div class="sc-head">
+          <span class="chip chip-slide">B7-02</span>
+          <span class="sc-title">대표 시나리오로 처음부터 끝까지</span>
+          <span class="chip chip-units" data-units-badge>단위 3</span>
+        </div>
+        <div class="sc-body">
+          <p>정한 <strong>대표 흐름</strong>을 실제 브라우저에서 그대로 따라갑니다.</p>
+          <p>이것은 <strong>자체 점검</strong>이지 실제 방문자 테스트가 아닙니다.</p>
+          <p><strong>요리사처럼</strong> — 손님에게 내기 전 자기 접시로 한 입 맛보는 것입니다. 내 입맛이 손님을 대신하지는 못합니다.</p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 3개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-joke"><span class="cue-tag">💬</span>prd.md «흐름» 항목을 옆에 띄워 두고 한 단계씩 따라가게 하세요.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B7-03" data-교시="PART 7 · 검토 · 오류 대응 · 마무리" data-info-units="3">
+        <div class="sc-head">
+          <span class="chip chip-slide">B7-03</span>
+          <span class="sc-title">정상값과 다른 값으로 다시 — 소개 사이트에서는</span>
+          <span class="chip chip-units" data-units-badge>단위 3</span>
+        </div>
+        <div class="sc-body">
+          <p><strong>정상 흐름 1회로는 부족합니다.</strong></p>
+          <p><strong>다시 해 보기</strong> — 새로고침한 뒤 처음부터 한 번 더 따라가고, 버튼은 두 번 이상 눌러 봅니다.<br><strong>빈 입력</strong> — 빈 입력 확인은 입력칸이 있는 기능에서만 합니다. 입력칸이 없는 소개 사이트는 생략합니다.</p>
+          <p>첫 번째 동작에만 감동하는 기능이 많습니다 — <strong>두 번째가 진짜 면접입니다.</strong></p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 3개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-joke"><span class="cue-tag">💬</span>원본은 정상값·다른 값·빈값 세 값으로 확인했습니다. 입력이 없는 소개 사이트에서는 «한 번 더, 두 번 이상»으로 바꿔 적용합니다.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B7-04" data-교시="PART 7 · 검토 · 오류 대응 · 마무리" data-info-units="2">
+        <div class="sc-head">
+          <span class="chip chip-slide">B7-04</span>
+          <span class="sc-title">대표 점검 다섯 질문</span>
+          <span class="chip chip-units" data-units-badge>단위 2</span>
+        </div>
+        <div class="sc-body">
+          <p><strong>① 누구를 소개하는지 보이나</strong><br><strong>② 무엇을 보고 · 누르면 되는지 보이나</strong><br><strong>③ 어떤 조작을 하나</strong><br><strong>④ 결과가 나왔나</strong><br><strong>⑤ 잘못 입력을 알아채나</strong> — 입력칸이 있을 때만</p>
+          <p>다섯 중 <strong>“모르겠다”가 나오면 그 지점이 수정 후보</strong>입니다.</p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 2개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-joke"><span class="cue-tag">💬</span>수정 후보가 여러 개면 완료 기준과 가장 가까운 하나만 고릅니다. 고칠 때는 PART 6의 «문서 먼저» 순서를 따릅니다.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B7-05" data-교시="PART 7 · 검토 · 오류 대응 · 마무리" data-info-units="2">
+        <div class="sc-head">
+          <span class="chip chip-slide">B7-05</span>
+          <span class="sc-title">prd · 흐름과 실제를 대조</span>
+          <span class="chip chip-units" data-units-badge>단위 2</span>
+        </div>
+        <div class="sc-body">
+          <p><strong>핵심 섹션 · 화면이 문서와 같은가?</strong><br><strong>제외한 것이 몰래 들어왔나?</strong><br><strong>완료 기준이 눈으로 확인되나?</strong><br><strong>design.md에서 고른 기준이 화면에 남아 있나?</strong></p>
+          <p><strong>문서는 제작 전 계획이자 제작 후 채점표입니다.</strong></p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 2개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-demo"><span class="cue-tag">👀</span>prd.md와 브라우저를 나란히 띄워 한 줄씩 대조하는 모습을 화면공유로 보여 줍니다. PART 4 «prd.md는 두 번 읽힙니다»의 «작업 후»입니다.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B7-06" data-교시="PART 7 · 검토 · 오류 대응 · 마무리" data-info-units="3">
+        <div class="sc-head">
+          <span class="chip chip-slide">B7-06</span>
+          <span class="sc-title">AI Self Review는 보조 점검</span>
+          <span class="chip chip-units" data-units-badge>단위 3</span>
+        </div>
+        <div class="sc-body">
+          <p>AI에게는 <strong>문서 누락 · 파일 연결 · 명백한 오류</strong>만 점검시킵니다.</p>
+          <p><strong>최종 판단은 브라우저와 사람.</strong></p>
+          <p><strong>같은 사각지대</strong> — 만든 AI는 같은 사각지대를 그대로 안고 봅니다. 외부 확인 없이 스스로 고치게 하면 오히려 나빠지기도 합니다.</p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 3개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-joke"><span class="cue-tag">💬</span>«AI에게 검토를 시켰으니 끝»이 아니라고 짚습니다. 다음 장에서 검토를 부탁하는 방법을 봅니다.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B7-07" data-교시="PART 7 · 검토 · 오류 대응 · 마무리" data-info-units="3">
+        <div class="sc-head">
+          <span class="chip chip-slide">B7-07</span>
+          <span class="sc-title">작성자와 검토자를 나눕니다</span>
+          <span class="chip chip-units" data-units-badge>단위 3</span>
+        </div>
+        <div class="sc-body">
+          <p>만든 AI에게 «맞지?»라고 물으면 <strong>동의하는 답</strong>이 나오기 쉽습니다. 검토자 관점에서 문서와 다시 대조합니다.</p>
+          <p><strong>작성자 · Codex</strong> — 사이트 초안 작성<br>→ <strong>검토자 · 검토 관점</strong> — prd.md · design.md와 대조해 다른 점 표시<br>→ <strong>결정 · 사람</strong> — 무엇을 남길지 결정</p>
+          <p><strong>피할 질문</strong> — «이 사이트, 잘 만들었지?»<br><strong>검토 요청문</strong> — prd.md의 만들 것 · 만들지 않을 것 · 완료 기준과 지금 사이트를 비교해 다른 점만 적어 주세요. 아직 고치지 마세요.</p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 3개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-joke"><span class="cue-tag">💬</span>오전에 본 아첨 현상을 다시 부릅니다. 만든 쪽에 «맞지?»라고 묻는 것은 검토가 아니라 동의를 구하는 질문입니다.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B7-08" data-교시="PART 7 · 검토 · 오류 대응 · 마무리" data-info-units="3">
+        <div class="sc-head">
+          <span class="chip chip-slide">B7-08</span>
+          <span class="sc-title">레퍼런스를 그대로 복사했을 때</span>
+          <span class="chip chip-units" data-units-badge>단위 3</span>
+        </div>
+        <div class="sc-body">
+          <p>특정 사이트를 <strong>통째로 복제했다면</strong><br>색 · 간격 · 구성의 <strong>특성만 뽑아</strong> 내 구조에 다시 적용합니다.</p>
+          <p><strong>요청문 (Codex 입력창)</strong> — 따라 하지 말고 특성만 뽑아 제 prd.md와 design.md에 맞춰 주세요.</p>
+          <p><strong>표현을 그대로 옮기면</strong> 저작권 문제가 될 수 있습니다.</p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 3개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-joke"><span class="cue-tag">💬</span>문제가 없는 수강생은 이 장을 건너뜁니다. PART 3 «레퍼런스는 복사가 아니라 관찰»의 복구 장입니다.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B7-09" data-교시="PART 7 · 검토 · 오류 대응 · 마무리" data-info-units="3">
+        <div class="sc-head">
+          <span class="chip chip-slide">B7-09</span>
+          <span class="sc-title">공유하기 전에 개인정보·권리·사실을 다시 확인합니다</span>
+          <span class="chip chip-units" data-units-badge>단위 3</span>
+        </div>
+        <div class="sc-body">
+          <p><strong>공유하기 전 사람이 직접 볼 세 가지</strong></p>
+          <p><strong>개인정보</strong> — 실명 · 연락처 · 계정 정보 · 민감 자료가 남아 있지 않은지 봅니다. 예: AI가 임의로 만든 연락처나 경력을 지웁니다. 공개해도 되는 내용만 남깁니다.<br><strong>권리</strong> — 가져온 이미지 · 텍스트 · 폰트가 사용 가능한지 출처와 이용 조건을 확인합니다. 예: 다른 사이트의 로고를 그대로 복사하지 않습니다.<br><strong>사실</strong> — 이름 · 날짜 · 숫자 · 링크가 실제와 맞는지 확인합니다. 예: 소개에 들어간 소속이나 링크를 직접 엽니다.</p>
+          <p>확인하지 못한 내용은 넣지 않고 <strong>사람이 최종 결정</strong>합니다.</p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 3개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-joke"><span class="cue-tag">💬</span>공유는 오늘 하지 않습니다. 공유하기 전에 사람이 볼 세 가지만 남기세요. 개인정보 판단은 오전 «정보의 성격과 노출 위험» 기준을 그대로 씁니다 — 공개할 필요가 있는지, 공개되면 무엇이 위험한지.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B7-10" data-교시="PART 7 · 검토 · 오류 대응 · 마무리" data-info-units="3">
+        <div class="sc-head">
+          <span class="chip chip-slide">B7-10</span>
+          <span class="sc-title">AI에게 맡기기 전과 끝난 뒤를 설계합니다</span>
+          <span class="chip chip-units" data-units-badge>단위 3</span>
+        </div>
+        <div class="sc-body">
+          <p>AI가 일하는 중간을 통제하려 하기보다, <strong>넣어 주는 것과 확인하는 것</strong>을 분명히 합니다.</p>
+          <p><strong>전 · 규칙 · 자료 · 절차</strong> — AI가 시작하기 전에 무엇을 보고 어떻게 일할지 줍니다.<br>↓ <strong>AI · 작업 요청</strong> — 한 번에 맡길 범위와 확인할 결과를 말합니다.<br>↓ <strong>후 · 기준 · 화면 · 기록</strong> — 직접 열어 보고, 바뀐 것을 남깁니다.</p>
+          <p><strong>전: 맡길 기준 / 후: 확인할 증거</strong>를 갖춥니다.</p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 3개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-joke"><span class="cue-tag">💬</span>오늘 오후의 정리판입니다. 전이 prd.md·design.md·AGENTS.md, 후가 브라우저 확인과 문서 대조였다고 짚어 주세요.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B7-11" data-교시="PART 7 · 검토 · 오류 대응 · 마무리" data-info-units="3">
+        <div class="sc-head">
+          <span class="chip chip-slide">B7-11</span>
+          <span class="sc-title">AI에게 일을 맡기는 틀의 여섯 가지</span>
+          <span class="chip chip-units" data-units-badge>단위 3</span>
+        </div>
+        <div class="sc-body">
+          <p>앞 장의 «전과 후»가 실제로는 이 여섯 가지입니다. 준비물은 AI가 일하는 동안 넣지 않습니다. <strong>맡기기 전과 끝난 뒤, 작업을 앞뒤로 감쌉니다.</strong></p>
+          <p><strong>맡기기 전에 준다</strong> — 지켜야 할 규칙 “외부 라이브러리를 쓰지 않는다” · 쓸 수 있는 도구와 자료 “이 폴더의 design.md를 먼저 읽어라” · 반복 작업의 절차 “수정할 때는 항상 이 순서로”<br><strong>AI가 일한다</strong> — 안에서 벌어지는 일은 우리가 정하지 못합니다<br><strong>끝난 뒤에 확인한다</strong> — 돌려 볼 수 있는 기준 “관심사 보기를 누르면 관심사가 보이는가” · 눈으로 보는 결과 화면 “수정 전후 화면을 비교한다” · 무슨 일이 있었는지 기록 “무엇을 바꿨는지 남겨 둔다”</p>
+          <p><strong>사후 검증이 비면</strong> 결과를 판정할 기준이 없어 사람이 매번 눈으로 보는 수밖에 없습니다. 앞뒤가 다 있어야 합니다. 여섯 가지 이름은 확정 표준이 아니라 사람마다 묶는 방식이 다릅니다.</p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 3개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-joke"><span class="cue-tag">💬</span>맡기기 전 세 가지와 끝난 뒤 세 가지로 나눠 읽습니다. 가운데 «AI가 일한다» 칸은 우리가 정하지 못한다는 점이 핵심입니다.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B7-12" data-교시="PART 7 · 검토 · 오류 대응 · 마무리" data-info-units="3">
+        <div class="sc-head">
+          <span class="chip chip-slide">B7-12</span>
+          <span class="sc-title">반복되는 실수를 어디에 넣나</span>
+          <span class="chip chip-units" data-units-badge>단위 3</span>
+        </div>
+        <div class="sc-body">
+          <p>이 시스템은 한 번에 완성하는 설계가 아닙니다. <strong>같은 문제가 두 번 나올 때마다</strong> 그 자리를 한 칸씩 메우는 일입니다.</p>
+          <p><strong>매번 같은 것을 처음부터 다시 설명한다</strong> → <strong>규칙 파일</strong> — AGENTS.md에 한 줄로 적어 둔다<br><strong>하지 말라고 적어 뒀는데 그냥 해 버린다</strong> → <strong>승인 · 권한</strong> — 적는 것으로 부족한 자리는 장치로 막는다<br><strong>어제 왜 그렇게 정했는지 아무도 모른다</strong> → <strong>기록</strong> — 결정과 이유를 파일에 남긴다</p>
+          <p>한 번뿐인 실수까지 규칙으로 만들면 규칙이 길어져 아무도 읽지 않습니다. <strong>두 번 이상 반복될 때만</strong> 넣습니다.</p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 3개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-joke"><span class="cue-tag">💬</span>같은 문제가 두 번 나오면 그때 알맞은 칸(규칙 파일·승인·권한·기록)에 넣습니다. 오늘 만든 AGENTS.md가 «규칙 파일» 칸의 예입니다.</div>
+      </article>
+
+      <article class="slide-card" data-slide="B7-13" data-교시="PART 7 · 검토 · 오류 대응 · 마무리" data-info-units="2">
+        <div class="sc-head">
+          <span class="chip chip-slide">B7-13</span>
+          <span class="sc-title">(선택) AI에게 일을 맡기는 틀을 갖추는 단계</span> <span class="tag-optional">선택</span>
+          <span class="chip chip-units" data-units-badge>단위 2</span>
+        </div>
+        <div class="sc-body">
+          <p>오늘 본 것을 <strong>전부 갖출 필요는 없습니다.</strong> 막히는 자리가 생겼을 때 한 칸씩 올립니다.</p>
+          <p><strong>0단계 · 대화만</strong> — 대화창에서 시키고 결과를 눈으로 본다<br><strong>1단계 · 규칙 파일</strong> — 지켜야 할 것과 만들 것을 파일로 적어 둔다<br><strong>2단계 · 확인 절차</strong> — 끝난 뒤 무엇을 보면 되는지 미리 정해 둔다<br><strong>3단계 · 운영</strong> — 권한 · 격리 실행 · 기록까지 — 여럿이 오래 쓸 때</p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 2개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-joke"><span class="cue-tag">💬</span>오전은 0단계, 오후는 1~2단계까지 해 봤다고 짚고, 막히는 자리가 생겼을 때 한 칸씩 올린다는 출구를 주고 끝냅니다.</div>
+      </article>
+
+      <article class="slide-card is-fixed" data-slide="B7-14" data-교시="PART 7 · 검토 · 오류 대응 · 마무리" data-info-units="3">
+        <div class="sc-head">
+          <span class="chip chip-slide">B7-14</span>
+          <span class="sc-title">(마무리) AI가 작성하고, 사람이 검토하고, 사람이 결정합니다</span> <span class="tag-fixed">마무리</span>
+          <span class="chip chip-units" data-units-badge>단위 3</span>
+        </div>
+        <div class="sc-body">
+          <p><strong>AI가 작성하고,<br>사람이 검토하고,<br>사람이 결정합니다.</strong></p>
+          <p>기준을 먼저 적고 · 그 기준으로 만들고 · 직접 확인하기</p>
+          <p><strong>오늘 내 폴더에 남은 것</strong> — prd.md · design.md · AGENTS.md · index.html · style.css · script.js</p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 3개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-joke"><span class="cue-tag">💬</span>오늘 하루를 관통한 문장으로 닫습니다. 폴더를 열어 여섯 파일이 실제로 있는지 각자 확인하게 하세요 — 열리지 않는 파일은 오늘의 결과가 아닙니다.</div>
+      </article>
+
+      <article class="slide-card is-fixed" data-slide="B7-15" data-교시="PART 7 · 검토 · 오류 대응 · 마무리" data-info-units="1">
+        <div class="sc-head">
+          <span class="chip chip-slide">B7-15</span>
+          <span class="sc-title">(마무리) THANK YOU</span> <span class="tag-fixed">마무리</span>
+          <span class="chip chip-units" data-units-badge>단위 1</span>
+        </div>
+        <div class="sc-body">
+          <p><strong>THANK YOU</strong></p>
+        </div>
+        <div class="sc-note">단위 근사: 본문 블록 1개(빈 줄 구분 기준 자동 산정 — 사람 검토용)</div>
+        <div class="cue cue-joke"><span class="cue-tag">💬</span>질의응답으로 넘어갑니다.</div>
+      </article>
+
+    </div>
+  </section>
+
+</main>
+
+<footer class="foot">
+  <span>산출 경로:</span>
+  <code>courses/바이브코딩_온라인/sessions/2주차/2주차_콘텐츠_리뷰.html</code>
+  <code>courses/바이브코딩_온라인/sessions/2주차/2주차_초안.md</code>
+</footer>
+
+<script>
+(function(){
+  var grid = document.getElementById('slideGrid');
+  if(!grid) return;
+  var cards = Array.prototype.slice.call(grid.querySelectorAll('.slide-card'));
+
+  // ---- 교시 필터: data-교시 값을 읽어 필터 칩을 자동 생성 ----
+  var filterBar = document.getElementById('periodFilter');
+  if(filterBar){
+    var periods = [];
+    cards.forEach(function(card){
+      var p = (card.getAttribute('data-교시') || '').trim();
+      if(p && periods.indexOf(p) === -1) periods.push(p);
+    });
+
+    function makeChip(label, value){
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'filter-chip';
+      b.textContent = label;
+      b.setAttribute('data-filter-value', value);
+      return b;
+    }
+
+    var allBtn = makeChip('전체', '__all__');
+    allBtn.classList.add('is-active');
+    filterBar.appendChild(allBtn);
+    periods.forEach(function(p){ filterBar.appendChild(makeChip(p, p)); });
+
+    filterBar.addEventListener('click', function(e){
+      var btn = e.target.closest('.filter-chip');
+      if(!btn) return;
+      filterBar.querySelectorAll('.filter-chip').forEach(function(b){ b.classList.toggle('is-active', b === btn); });
+      var value = btn.getAttribute('data-filter-value');
+      cards.forEach(function(card){
+        if(value === '__all__'){ card.style.display = ''; return; }
+        card.style.display = (card.getAttribute('data-교시') || '') === value ? '' : 'none';
+      });
+    });
+  }
+
+  // ---- 밀도 요약: data-info-units 값을 스캔해 배지 색상 + 요약 바 채우기 ----
+  var bandCounts = { empty: 0, low: 0, good: 0, over: 0 };
+  var emptyIds = [];
+
+  cards.forEach(function(card){
+    var n = parseInt(card.getAttribute('data-info-units'), 10);
+    if(isNaN(n)) return;
+    var band = n <= 1 ? 'empty' : (n === 2 ? 'low' : (n <= 6 ? 'good' : 'over'));
+    bandCounts[band]++;
+    card.classList.add('band-' + band);
+    var badge = card.querySelector('[data-units-badge]');
+    if(badge) badge.classList.add('chip-units--' + band);
+    if(band === 'empty') emptyIds.push(card.getAttribute('data-slide') || '?');
+  });
+
+  var setText = function(id, value){ var el = document.getElementById(id); if(el) el.textContent = value; };
+  setText('densityTotal', cards.length);
+  setText('densityEmptyCount', bandCounts.empty);
+  setText('densityLowCount', bandCounts.low);
+  setText('densityGoodCount', bandCounts.good);
+  setText('densityOverCount', bandCounts.over);
+  setText('densityEmptyList', emptyIds.length ? emptyIds.join(', ') : '없음');
+})();
+</script>

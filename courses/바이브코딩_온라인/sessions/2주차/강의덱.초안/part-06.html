@@ -1,0 +1,140 @@
+<!-- ============ PART 6 · 실습: md를 먼저 고쳐 사이트 넓히기 · W4 담당 (W0 골격 2026-09-15 · W4 조립 2026-09-15) ============
+     이 파일의 data-slide 순서 = 계약 sequences.PART6 = 초안 순서:
+     P6(초안 B6-01 간지) · B6-02 · B6-03 · B6-04 · B6-05 · B6-06 · B6-07 · B6-08 · B6-09 · B6-10
+     간지 data-slide는 초안 번호가 아니라 P6이다(verify_deck 단조성 · 오전 A1-01→P1 선례).
+     본문 슬라이드는 간지 아래에 초안 순서대로 이어 붙인다. 이 파일 안에 style 블록을 두지 않는다.
+     전용 CSS는 저장소 tmp 작업 폴더의 wave-4.css(revision.css 단일 라이터는 메인). 규약: 같은 폴더 W0-기록.md §4 · 판정표: W4-기록.md -->
+<section class="slide part-divider" data-slide="P6" data-shape="declaration">
+  <svg class="dv-hero" viewBox="0 0 1280 720" fill="none" aria-hidden="true"></svg>
+  <div class="pd-dots" aria-hidden="true"></div>
+  <p class="pd-eyebrow">PART</p>
+  <h2 class="pd-title">실습: md를 먼저 고쳐 사이트 넓히기</h2>
+  <p class="pd-sub">바꾸고 싶은 것이 생기면 사이트보다 문서를 먼저 고치고, 그 문서를 다시 읽혀 적용합니다.</p>
+  <!-- 발표노트: 설명 — 오전에는 말로 바로 고쳤습니다. 오후에는 순서가 다릅니다 — 문서 고치기 → 적용 요청 → 화면 확인. 한 번에 한 가지만 바꾸는 것은 같습니다. -->
+</section>
+
+<section class="slide" data-slide="B6-02" data-shape="flow">
+  <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 6<br>문서 먼저</div></header>
+  <div class="s-full"><h2 class="s-title">결정이 바뀌면 <span class="hl-mint-text">문서를 먼저</span> 고칩니다</h2><p class="p6-lead">코드만 바꾸면 다음 AI 작업이 <strong>낡은 기준을 다시 읽습니다.</strong> 문서부터 바꾸고 다시 확인합니다.</p>
+    <div class="p6-grid3"><div class="p6-card"><span class="p6-symbol" aria-hidden="true">↺</span><h3>결정 변경</h3><p>대상 · 섹션 · 제외 중 하나가 바뀌었다면 멈춥니다.</p><span class="p6-example">예: “관심사는 두 개만 보여 주자”</span><i class="p6-arrow" aria-hidden="true">→</i></div><div class="p6-card"><span class="p6-symbol" aria-hidden="true">✎</span><h3>문서 수정</h3><p>바뀐 결정을 prd.md(또는 design.md)의 해당 항목에 반영합니다.</p><i class="p6-arrow" aria-hidden="true">→</i></div><div class="p6-card is-key"><span class="p6-symbol" aria-hidden="true">✓</span><h3>다시 읽히고 열기</h3><p>AI가 바뀐 문서를 읽은 뒤, 화면에서 반영을 확인합니다.</p><span class="p6-example">“prd.md를 다시 읽고 적용해 주세요”</span></div></div>
+    <div class="dm-notes"><p class="dm-warn"><b>코드만 먼저 고치면</b> 문서와 화면이 다른 약속을 합니다.</p><p class="dm-analogy"><b>도면처럼</b> — 집을 고치기 전 도면부터 고칩니다.</p></div>
+  </div>
+  <!-- 발표노트: 설명 — 문서 수정도 사람이 승인하는 결정입니다. 이 PART의 모든 수정이 이 세 칸을 따릅니다. -->
+</section>
+
+<section class="slide dl-list has-character-art" data-slide="B6-03" data-shape="screen-operation">
+  <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 6<br>한 줄 소개 변경</div></header>
+  <div class="s-full"><h2 class="s-title">한 줄 소개 변경 요청 — <span class="hl-mint-text">prd.md 먼저</span></h2>
+    <div class="dl-rows"><div class="card surface dl-row"><span class="dl-term">1 문서 먼저</span><p class="s-body">prd.md에 적힌 한 줄 소개를 <strong class="hl-mint-text">새 문장으로 직접 고치고 저장</strong>합니다.</p></div><div class="card surface dl-row"><span class="dl-term">2 적용 요청</span><p class="s-body">한 줄 소개만 바꿔 달라고 요청하고, 이름 · 관심사 · 나머지 구성은 그대로 두라고 함께 적습니다.</p></div></div>
+    <p class="fix-3step"><b>수정 요청 3단</b>무엇을 유지할지 → 무엇을 바꿀지 → 바뀐 뒤 무엇을 확인할지</p>
+    <div class="codex-input" aria-label="Codex 입력창에 넣을 요청문"><span class="codex-input-label">요청문 · Codex 입력창</span><p>prd.md를 다시 읽어 주세요. 이름 · 관심사 · 디자인 · 나머지 구성은 그대로 유지해 주세요. 한 줄 소개만 prd.md에 고쳐 둔 새 문장으로 바꿔 주세요. 바꾼 뒤 어느 파일의 무엇을 바꿨는지 짧게 알려 주세요.</p></div>
+  </div>
+  <div class="shot-side">
+    <figure class="shot-annot capture-slot" aria-label="한 줄 소개를 바꾸기 전 사이트 화면 캡처 자리"><div class="shot-frame demo-placeholder" data-capture="K12" role="img" aria-label="화면 캡처 자리 K12 — 확장 전 화면"><span class="dp-badge">화면 캡처 자리 · K12</span><b>확장 전 화면</b><p>실제 화면 캡처가 이 자리에 들어갑니다.</p></div></figure>
+    <figure class="asset-slot asset-slot--support character-art" data-image-purpose="mnemonic" data-image-role="support" data-asset-kind="paper-cut-v1" data-image-state="ready"><img src="자료/images/s46_one-change-protected-paper-cut-v1-transparent.png" alt="고정된 판에서 한 칸만 바꾸고 돋보기로 바뀐 칸을 확인하는 이미지"></figure>
+  </div>
+  <!-- 발표노트: 시연 — [캡처 K12] 확장 전 화면. 요청문의 세 문장이 유지 → 변경 → 확인 3단에 하나씩 대응한다고 짚으며 읽어 줍니다. -->
+</section>
+
+<section class="slide change-refresh-slide" data-slide="B6-04" data-shape="screen-operation">
+  <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 6<br>변경 확인</div></header>
+  <div class="dc-title"><h2 class="s-title">한 줄 소개 <span class="hl-mint-underline">변경 확인</span></h2></div>
+  <div class="refresh-stage">
+    <div class="refresh-body">
+      <div class="refresh-copy">
+        <p class="refresh-lead">브라우저를 <strong class="hl-mint-text">새로고침</strong>해 한 줄 소개가 새 문장으로 바뀌었는지 봅니다.</p>
+        <div class="refresh-rows"><p><b>유지 확인</b>이름 · 관심사 · 나머지 구성도 이전과 같은지 함께 대조합니다.</p><p><b>문서와 화면 대조</b>prd.md의 한 줄 소개와 화면의 문장이 한 글자까지 같은지 봅니다.</p></div>
+      </div>
+      <figure class="shot-annot capture-slot" aria-label="한 줄 소개 변경 전후 사이트 화면 캡처 자리"><div class="shot-frame demo-placeholder" data-capture="K12" role="img" aria-label="화면 캡처 자리 K12 — 확장 전/후(한 줄 소개)"><span class="dp-badge">화면 캡처 자리 · K12</span><b>확장 전/후 — 한 줄 소개</b><p>실제 화면 캡처가 이 자리에 들어갑니다.</p></div></figure>
+    </div>
+    <p class="end-banner">바뀐 점 하나와 유지된 점 하나를 말할 수 있으면 <strong>다음 수정으로</strong> 넘어갑니다.</p>
+  </div>
+  <!-- 발표노트: 시연 — [캡처 K12] 확장 전/후 — 파일 열기 → 결과 화면 → 문서 수정 → 적용 → 새로고침 → 변경 확인의 순서를 화면으로 따라갑니다. -->
+</section>
+
+<section class="slide change-scope-slide" data-slide="B6-05" data-shape="mapping">
+  <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 6<br>배경색 변경</div></header>
+  <div class="s-full"><h2 class="s-title">배경색 변경 요청 — <span class="hl-mint-text">design.md 먼저</span></h2>
+    <div class="cs-steps"><p><b>1 문서 먼저</b>design.md의 «색» 줄을 원하는 배경색으로 고치고 저장합니다.</p><p><b>2 적용 요청</b>배경색만 바꿔 달라고 요청합니다.</p></div>
+    <div class="change-scope-grid"><div class="change-scope-item change"><h3>바꿀 것</h3><p>배경색</p></div><div class="change-scope-item keep"><h3>그대로 둘 것</h3><p>한 줄 소개 · 이름 · 관심사 · 나머지 구성</p></div><div class="change-scope-item check"><h3>다시 볼 것</h3><p>새 배경 위에서 글자가 잘 읽히는지</p></div></div>
+    <div class="codex-input change-scope-request" aria-label="Codex 입력창에 넣을 요청문"><span class="codex-input-label">요청문 · Codex 입력창</span><p>design.md를 다시 읽어 주세요. 배경색만 design.md에 고쳐 둔 색으로 바꿔 주세요. 한 줄 소개 · 이름 · 관심사 · 나머지 구성은 그대로 유지해 주세요. 바꾼 뒤 글자가 잘 읽히는지 확인할 수 있게 알려 주세요.</p></div>
+  </div>
+  <!-- 발표노트: 설명 — 이번에는 prd.md가 아니라 design.md를 고칩니다. «어떻게 보이나»에 대한 결정이기 때문입니다 — PART 4 «어떤 문서가 무엇을 책임지나»를 다시 부르세요. -->
+</section>
+
+<section class="slide bg-check-slide" data-slide="B6-06" data-shape="checklist">
+  <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 6<br>배경색 확인</div></header>
+  <div class="s-full bg-check-main"><h2 class="s-title">배경색 <span class="hl-mint-text">변경 확인</span></h2>
+    <p class="bg-check-lead">브라우저를 <strong class="hl-mint-text">새로고침</strong>해 배경색이 바뀌었는지 확인합니다.</p>
+    <div class="dl-rows bg-rows"><div class="card surface dl-row"><span class="dl-term">유지 확인</span><p class="s-body">내용과 배치가 그대로인지 봅니다.</p></div><div class="card surface dl-row"><span class="dl-term">읽히는지</span><p class="s-body">새 배경 위에서 글자가 충분히 읽히는지 봅니다. 대비가 약하면 <strong class="hl-mint-text">design.md의 색부터</strong> 다시 고칩니다.</p></div><div class="card surface dl-row"><span class="dl-term">비교하는 법</span><p class="s-body">이전 화면과 최신 화면을 혼동하지 않도록, 새로고침 뒤 한 지점을 정해 비교합니다.</p></div></div>
+  </div>
+  <div class="bg-check-side">
+    <figure class="shot-annot capture-slot" aria-label="배경색 적용 전후 사이트 화면 캡처 자리"><div class="shot-frame demo-placeholder" data-capture="K12" role="img" aria-label="화면 캡처 자리 K12 — 배경색 적용 전/후"><span class="dp-badge">화면 캡처 자리 · K12</span><b>배경색 적용 전/후</b><p>실제 화면 캡처가 이 자리에 들어갑니다.</p></div></figure>
+    <figure class="bg-check-image asset-slot asset-slot--support" data-image-purpose="mnemonic" data-image-role="support" data-asset-kind="paper-cut-v1" data-image-state="ready"><img src="자료/images/s49_background-before-after-paper-cut-v1-transparent.png" alt="잠금으로 보호된 항목은 그대로 두고 앞 문서에서 뒤 문서로 한 가지만 옮겨 바꾸는 전후 관계 이미지"></figure>
+  </div>
+  <!-- 발표노트: 시연 — [캡처 K12] 배경색 적용 전/후와 유지된 내용을 함께 보여 줍니다. -->
+</section>
+
+<section class="slide dl-list has-character-art" data-slide="B6-07" data-shape="classification">
+  <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 6<br>자유 수정</div></header>
+  <div class="s-full"><p class="s-eyebrow"><span class="opt-pill">선택</span></p><h2 class="s-title">원하는 한 가지 <span class="hl-mint-underline">자유 수정</span></h2>
+    <p class="fc-lead"><strong class="hl-mint-text">분위기 · 색 · 글자 · 간격 · 배치</strong> 중 원하는 특징 하나만 고릅니다.</p>
+    <div class="dl-rows"><div class="card surface dl-row"><span class="dl-term">문서 먼저</span><p class="s-body">고른 특징을 알맞은 문서(무엇이면 prd.md, 모양이면 design.md)에 먼저 적습니다.</p></div><div class="card surface dl-row"><span class="dl-term">같은 방식으로</span><p class="s-body">무엇을 바꿀지 · 무엇을 그대로 둘지 · 화면에서 무엇을 확인할지를 적어 요청합니다.</p></div></div>
+    <p class="end-banner">결과를 본 뒤에는 <strong>이대로 둡니다 · 한 번 더 고칩니다 · 여기서 마칩니다</strong> 중 하나를 사람이 정합니다.</p>
+  </div>
+  <figure class="asset-slot asset-slot--support character-art" data-image-purpose="mnemonic" data-image-role="support" data-asset-kind="paper-cut-v1" data-image-state="ready"><img src="자료/images/s50_human-ai-free-change-paper-cut-v2-transparent.png" alt="사람이 세 선택지 가운데 하나를 고르고 AI가 문서를 들고 기다리는 이미지"></figure>
+  <!-- 발표노트: 설명 — 선택 장입니다. 참고 자료는 복제하지 않고 특징 하나만 선택합니다. -->
+</section>
+
+<section class="slide case-acts" data-slide="B6-08" data-shape="concept">
+  <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 6<br>나중 아이디어</div></header>
+  <div class="s-full">
+    <h2 class="s-title">나중 아이디어 <span class="hl-mint-text">보관함</span></h2>
+    <div class="accent-bar"></div>
+    <div class="ca-stack">
+      <div class="card surface ca-act"><span class="pill">상황</span><p class="s-lead">제외한 좋은 섹션 · 기능을 <strong class="hl-mint-text">‘나중 아이디어’ 목록</strong>으로 모아 둡니다.</p><p class="s-body">예: 사진 모음 · 공유 버튼</p></div>
+      <p class="ca-down" aria-hidden="true">↓</p>
+      <div class="card surface ca-act"><span class="pill">행동</span><p class="s-lead">제외는 삭제가 아니라 <span class="hl-mint-underline">보관</span>입니다.</p><p class="s-body">나중에 되살릴 수 있습니다.</p></div>
+      <p class="ca-down" aria-hidden="true">↓</p>
+      <div class="card surface ca-act"><span class="pill">결과</span><p class="s-lead">되살릴 때도 문서 먼저</p><p class="s-body">보관함에서 꺼낸 것은 prd.md의 «만들 것»에 먼저 옮겨 적은 뒤 적용합니다.</p></div>
+    </div>
+  </div>
+  <!-- 발표노트: 설명 — 사진 모음·공유 버튼 같은 생각이 떠오르면 여기에 적어 두게 하세요. 오늘 다 넣지 않아도 사라지지 않습니다. -->
+</section>
+
+<section class="slide issue-report-slide" data-slide="B6-09" data-shape="flow">
+  <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 6<br>실습 ⑥</div></header>
+  <div class="dc-title"><h2 class="s-title">실습 ⑥ <span class="hl-mint-underline">범위 밖 기능 제거</span></h2></div>
+  <div class="ir-stage">
+    <p class="ir-copy">만들고 고치는 중에 늘어난 섹션 · 기능 가운데 <strong class="hl-mint-text">prd.md 범위 밖 1개를 제거</strong>합니다.</p>
+    <div class="viz-flow-ph ir-flow" data-viz="learning-flow" role="img" aria-label="범위 밖 기능 제거 순서: 비교를 요청하되 아직 고치지 않기, 범위 밖 하나 고르기, 하나만 빼고 나머지 유지를 요청하기, 범위를 지킨 첫 버전 완성">
+      <div class="fl-node"><b>비교 요청</b><small>아직 고치지 않기</small></div>
+      <div class="fl-arrow" aria-hidden="true">→</div>
+      <div class="fl-node"><b>하나 고르기</b><small>범위 밖 1개</small></div>
+      <div class="fl-arrow" aria-hidden="true">→</div>
+      <div class="fl-node"><b>빼기 · 유지 요청</b><small>나머지는 그대로</small></div>
+      <div class="fl-arrow" aria-hidden="true">→</div>
+      <div class="fl-node key"><b>완성</b><small>범위를 지킨 첫 버전</small></div>
+    </div>
+    <div class="codex-input" aria-label="Codex 입력창에 넣을 요청문"><span class="codex-input-label">요청문 · Codex 입력창</span><p>prd.md의 «만들지 않을 것»과 지금 사이트를 비교해, 범위 밖에 들어온 기능을 알려 주세요. 아직 고치지 마세요.</p></div>
+    <div class="ir-notes"><p><b>그다음</b>내가 고른 하나만 빼 달라고 하고, 나머지는 그대로 유지해 달라고 적습니다.</p><p class="is-warn"><b>주의</b>AI에게 그냥 “고쳐줘”라고 하면 범위를 넘겨 만들 수 있어, <strong>유지할 것</strong>을 함께 적습니다.</p></div>
+  </div>
+  <!-- 발표노트: 설명 — 무엇을 뺄지 정하는 게 진짜 기획입니다. 제거할 것이 없으면 «없음»을 확인한 것도 결과라고 말해 줍니다. -->
+</section>
+
+<section class="slide prompt-map" data-slide="B6-10" data-shape="mapping">
+  <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 6<br>문서 · 구현 맞추기</div></header>
+  <div class="s-full">
+    <h2 class="s-title">문서와 구현을 <span class="hl-mint-text">맞춥니다</span></h2>
+    <p class="s-lead map-lead">바뀐 결정을 <strong class="hl-mint-text">prd.md · design.md에 반영</strong>합니다. 문서와 화면이 다른 약속을 하지 않게 맞춥니다.</p>
+    <p class="map-how"><b>확인 방법</b>prd.md의 만들 것 · 만들지 않을 것과 design.md의 순서 · 색을 화면과 한 줄씩 대조합니다.</p>
+    <div class="map-rows" role="list" aria-label="문서의 네 줄을 화면의 해당 부분과 한 줄씩 대조하는 대응">
+      <div class="map-row" role="listitem"><div class="pill map-left"><b>prd.md · 만들 것</b></div><span class="map-arrow" aria-hidden="true">→</span><div class="card surface map-right"><p class="s-body">화면의 섹션 · 기능</p></div></div>
+      <div class="map-row" role="listitem"><div class="pill map-left"><b>prd.md · 만들지 않을 것</b></div><span class="map-arrow" aria-hidden="true">→</span><div class="card surface map-right"><p class="s-body">화면의 섹션 · 기능</p></div></div>
+      <div class="map-row" role="listitem"><div class="pill map-left"><b>design.md · 순서</b></div><span class="map-arrow" aria-hidden="true">→</span><div class="card surface map-right"><p class="s-body">화면의 순서</p></div></div>
+      <div class="map-row" role="listitem"><div class="pill map-left"><b>design.md · 색</b></div><span class="map-arrow" aria-hidden="true">→</span><div class="card surface map-right"><p class="s-body">화면의 색</p></div></div>
+    </div>
+    <p class="map-warn"><b>어긋나면 생기는 일</b> — 다음 작업 때 AI가 옛 기준을 보고 엉뚱하게 만듭니다.</p>
+  </div>
+  <!-- 발표노트: 설명 — 이 PART를 닫는 장입니다. 화면을 먼저 고친 곳이 있었다면 지금 문서에 반영하게 하세요. -->
+</section>
