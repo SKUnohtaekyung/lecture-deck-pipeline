@@ -1506,7 +1506,7 @@
 .slide[data-slide="A3-13"] .c4n5-foot{ flex:0 0 auto; margin:auto 0 0; }
 
 /* ══════════════════════════════════════════════════════════════════════
-   바이브코딩 온라인 · 오전 — 조립 웨이브 1 (2026-09-14)
+   바이브코딩 온라인 · 1차시 — 조립 웨이브 1 (2026-09-14)
    위 본문은 AC1(AI 코딩 에이전트 입문 1차시 조각) revision.css 원문 복사본이다.
    data-slide 셀렉터만 새 ID로 바꿨고(원본ID→새ID 대응은 조립_보고.md §9), 새 덱에서
    아직 쓰지 않는 원본 ID 셀렉터(05·S10B·S42·S60)는 웨이브 2 뒤 정리하려고 남겨 두었다.
@@ -2183,7 +2183,7 @@
 .deck .slide[data-slide="A7-13"] .cc-side li{ font-size:22px; }
 .deck .slide[data-slide="A7-13"] .end-banner{ margin:16px auto 0; }
 
-/* ── A7-14 신규 — L-fb-statement(오후 예고) ── */
+/* ── A7-14 신규 — L-fb-statement(2차시 예고) ── */
 .deck .slide.fb-statement[data-slide="A7-14"] .center-msg{ left:64px; right:64px; top:110px; bottom:54px; max-width:none; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; }
 .deck .slide.fb-statement[data-slide="A7-14"] .cm-title{ margin:0; font-size:56px; line-height:1.2; }
 .deck .slide[data-slide="A7-14"] .ap-rows{ box-sizing:border-box; width:100%; max-width:1080px; margin-top:26px; display:grid; grid-template-columns:1fr 1fr; gap:20px; text-align:left; }
@@ -2418,3 +2418,849 @@
 .deck .slide[data-slide="A6-12"] .ep-body{ align-items:stretch; }
 .deck .slide[data-slide="A6-12"] .viz-pyramid{ justify-content:space-evenly; }
 .deck .slide[data-slide="A6-12"] .ep-side{ align-self:center; }
+
+/* ===== 수정요청 1차 · WA 오프닝·PART 1·2 (2026-09-16) ===== */
+/* ══════════════════════════════════════════════════════════════════════
+   웨이브 WA (2026-09-15 · 1차시 수정요청 1차 S2) — 오프닝 8장 + PART 1·2
+   병합 규약: revision.css 끝 구획에 그대로 덧붙인다(셀렉터를 쉼표로 쪼개지 않는다 — 쉼표 목록 없음).
+   명시도: 전부 .deck .slide[data-slide="A…"] 이상. 기존 A-ID 규칙과 충돌하는 곳은 section 클래스를 더해 한 단계 올렸다.
+   ══════════════════════════════════════════════════════════════════════ */
+
+/* ── A0-00 과정 대표 표지 (AC1 S00 구조) ── */
+/* 출처: AC1 shell.html:16 · S00 → A0-00 */
+.deck .slide.cover[data-slide="A0-00"]{ background:var(--white); }
+/* 출처: AC1 shell.html:17 · S00 → A0-00 */
+.deck .slide[data-slide="A0-00"] .cover-geo{ display:none; }
+/* 출처: AC1 shell.html:18 · S00 → A0-00 */
+.deck .slide[data-slide="A0-00"] .s00-bg{ position:absolute; inset:0; z-index:0; width:auto; height:auto; max-width:none; max-height:none; margin:0; pointer-events:none; }
+/* 출처: AC1 shell.html:19 · S00 → A0-00 */
+.deck .slide[data-slide="A0-00"] .s00-bg img{ display:block; width:100%; height:100%; object-fit:cover; }
+/* 출처: AC1 shell.html:20 · S00 → A0-00 */
+.deck .slide[data-slide="A0-00"] .cover-lead{ top:58px; color:var(--blue); font-size:18px; font-weight:900; letter-spacing:.08em; }
+/* 출처: AC1 shell.html:21 · S00 → A0-00 */
+.deck .slide[data-slide="A0-00"] .cover-title{ top:166px; right:600px; z-index:4; }
+/* 출처: AC1 shell.html:22 · S00 → A0-00 */
+.deck .slide[data-slide="A0-00"] .cover-title .ko{ font-size:72px; line-height:1.1; color:var(--ink); }
+/* 출처: AC1 shell.html:23 · S00 → A0-00 */
+.deck .slide[data-slide="A0-00"] .cover-title .ko .hl{ color:var(--mint-deep); }
+/* 출처: AC1 shell.html:24 · S00 → A0-00 */
+.deck .slide[data-slide="A0-00"] .cover-sub{ position:absolute; left:64px; right:620px; top:348px; z-index:4; margin:0; font-size:22px; line-height:1.58; color:var(--gray-700); font-weight:650; }
+/* 출처: AC1 shell.html:26 · S00 → A0-00 */
+.deck .slide[data-slide="A0-00"] .s00-hero{ position:absolute; right:0; top:78px; bottom:auto; z-index:2; width:1100px; height:570px; max-width:none; max-height:none; margin:0; overflow:visible; pointer-events:none; }
+/* 출처: AC1 shell.html:28 · S00 → A0-00 */
+.deck .slide[data-slide="A0-00"] .s00-hero img{ display:block; width:100%; height:100%; object-fit:contain; object-position:center; }
+/* 출처: AC1 shell.html:29 · S00 → A0-00 */
+.deck .slide[data-slide="A0-00"] .s00-spot{ position:absolute; z-index:3; margin:0; pointer-events:none; }
+/* 출처: AC1 shell.html:30 · S00 → A0-00 */
+.deck .slide[data-slide="A0-00"] .s00-spot img{ display:block; width:100%; height:100%; object-fit:contain; }
+/* 출처: AC1 shell.html:33 · S00 → A0-00 (31·32 s00-folder·s00-pencil은 원본 마크업에 요소가 없어 미이식) */
+.deck .slide[data-slide="A0-00"] .s00-check{ right:42px; top:62px; width:92px; height:92px; }
+/* 출처: AC1 shell.html:248 · S00 → A0-00 */
+.deck .slide[data-slide="A0-00"] .cover-tracks{ position:absolute; left:64px; right:620px; bottom:54px; z-index:5; display:flex; gap:8px; }
+/* 출처: AC1 shell.html:250 · S00 → A0-00 */
+.deck .slide[data-slide="A0-00"] .cover-track{ flex:1 1 0; background:var(--white); border:1px solid var(--blue-line-strong); border-radius:var(--r-pill); padding:9px 12px; box-shadow:var(--shadow-sm); }
+/* 출처: AC1 shell.html:253 · S00 → A0-00 */
+.deck .slide[data-slide="A0-00"] .cover-track:first-child{ background:var(--mint-soft); border-color:var(--mint-line); }
+/* 출처: AC1 shell.html:254 · S00 → A0-00 */
+.deck .slide[data-slide="A0-00"] .cover-track b{ display:inline; font-size:18px; font-weight:900; color:var(--blue); margin:0 5px 0 0; }
+/* 출처: AC1 shell.html:256 · S00 → A0-00 */
+.deck .slide[data-slide="A0-00"] .cover-track:first-child b{ color:var(--mint-deep); }
+/* 출처: AC1 shell.html:257 · S00 → A0-00 */
+.deck .slide[data-slide="A0-00"] .cover-track span{ display:inline; font-size:16px; font-weight:750; color:var(--gray-700); line-height:1.25; }
+/* 신규 · A0-00 — 원본 3칸(짧은 이름)이 2칸(«이름 · 방식» 긴 문구)이 되어 가로 두 칸이면 칸마다 두 줄로 접힘 → 세로 두 줄 */
+.deck .slide.cover[data-slide="A0-00"] .cover-tracks{ flex-direction:column; gap:10px; }
+/* 신규 · A0-00 — 위와 짝 */
+.deck .slide.cover[data-slide="A0-00"] .cover-track{ flex:0 0 auto; }
+
+/* ── A0-05 하루 전체 여정 (AC1 05 구조 · 3칸 → 2칸) ── */
+/* 출처: AC1 revision.css:1223 · 05 → A0-05 */
+.deck .slide[data-slide="A0-05"] .journey-track-image img{ position:absolute; inset:0; display:block; width:100%; height:100%; object-fit:contain; }
+/* 출처: AC1 revision.css:1224 · 05 → A0-05 */
+.deck .slide[data-slide="A0-05"] .journey-track-copy{ padding-top:26px; }
+/* 신규 · A0-05 — 1차시·2차시 두 칸(원본 repeat(3)) */
+.deck .slide.journey-slide[data-slide="A0-05"] .journey-track-grid{ grid-template-columns:repeat(2,minmax(0,1fr)); gap:22px; }
+/* 신규 · A0-05 — 초안 마지막 줄 «1차시 «말로 바로» → 2차시 «기준 먼저»» */
+.deck .slide[data-slide="A0-05"] .journey-bridge{ margin:14px 0 0; text-align:center; color:var(--ink); font-size:22px; font-weight:800; line-height:1.4; }
+
+/* ── A1-06 (AC1 06 화면 복원) — 1차시 revision.css의 A1-06 좌우 2열(role-defs) 규칙을 원본 가로 레일 값으로 덮는다 ── */
+/* 출처: AC1 revision.css:199 (.ai-role-flow .role-flow-layout) · 06 → A1-06 · 덮는 대상 1차시 revision.css:1563 */
+.deck .slide.ai-role-flow[data-slide="A1-06"] .role-flow-layout{ left:116px; right:116px; top:226px; bottom:auto; height:322px; display:block; }
+/* 출처: AC1 revision.css:200 · 06 → A1-06 · 덮는 대상 1차시 revision.css:1572 */
+.deck .slide.ai-role-flow[data-slide="A1-06"] .role-flow-rail{ height:100%; grid-template-columns:minmax(0,1fr) 136px minmax(0,1fr); grid-template-rows:none; gap:28px; }
+/* 출처: AC1 revision.css:201 · 06 → A1-06 · 덮는 대상 1차시 revision.css:1573 */
+.deck .slide.ai-role-flow[data-slide="A1-06"] .role-step{ padding:34px 40px; }
+/* 출처: AC1 revision.css:205 · 06 → A1-06 · 덮는 대상 1차시 revision.css:1574 */
+.deck .slide.ai-role-flow[data-slide="A1-06"] .role-step h3{ margin:12px 0 18px; font-size:34px; }
+/* 출처: AC1 revision.css:206 · 06 → A1-06 · 덮는 대상 1차시 revision.css:1575 */
+.deck .slide.ai-role-flow[data-slide="A1-06"] .role-step p{ font-size:23px; line-height:1.48; }
+/* 출처: AC1 revision.css:207 · 06 → A1-06 · 덮는 대상 1차시 revision.css:1576 */
+.deck .slide.ai-role-flow[data-slide="A1-06"] .role-step strong{ margin-top:18px; padding-top:16px; font-size:22px; line-height:1.42; }
+/* 출처: AC1 revision.css:211 · 06 → A1-06 · 덮는 대상 1차시 revision.css:1577 */
+.deck .slide.ai-role-flow[data-slide="A1-06"] .role-flow-bridge b{ font-size:54px; }
+
+/* ── A1-07 (AC1 07 화면 복원) — 토큰 밴드·밴드 안 이미지·검은 결론 상자 규칙을 원본 두 밴드 + 오른쪽 이미지로 덮는다 ── */
+/* 출처: AC1 revision.css:216 · 07 → A1-07 · 덮는 대상 1차시 revision.css:1581 (flex 316px 고정 대신 최소 316px — 22px 하한으로 줄이 늘어도 겹치지 않게) */
+.deck .slide.llm-agent-wide[data-slide="A1-07"] .s-full .llm-agent-layout{ flex:0 1 auto; min-height:316px; margin-top:16px; display:grid; grid-template-columns:minmax(0,1fr) 260px; gap:26px; }
+/* 출처: AC1 revision.css:217 · 07 → A1-07 · 덮는 대상 1차시 revision.css:1582 */
+.deck .slide.llm-agent-wide[data-slide="A1-07"] .s-full .llm-agent-bands{ height:auto; grid-template-rows:repeat(2,minmax(0,auto)); gap:16px; }
+/* 출처: AC1 revision.css:914 · 07 → A1-07 · 덮는 대상 1차시 revision.css:1583·1585 */
+.deck .slide.llm-agent-wide[data-slide="A1-07"] .s-full .llm-agent-band{ grid-template-columns:230px minmax(0,1fr); padding-block:16px; }
+/* 출처: AC1 revision.css:225 · 07 → A1-07 · 덮는 대상 1차시 revision.css:1586 */
+.deck .slide.llm-agent-wide[data-slide="A1-07"] .s-full .llm-agent-band li{ margin:3px 0; }
+/* 출처: AC1 revision.css:231 · 07 → A1-07 · 덮는 대상 1차시 revision.css:1587 */
+.deck .slide.llm-agent-wide[data-slide="A1-07"] .s-full .llm-agent-layout > .llm-agent-image.asset-slot--support{ position:relative; inset:auto; width:100%; height:252px; max-width:none; max-height:252px; align-self:center; margin:0; }
+/* 출처: AC1 revision.css:228·1123 · 07 → A1-07 · 덮는 대상 1차시 revision.css:1589·2393 (margin-top 84px → auto: 바닥 고정) */
+.deck .slide.llm-agent-wide[data-slide="A1-07"] .s-full .llm-agent-conclusion{ margin:auto 0 0; padding:0; border-radius:0; background:transparent; color:var(--gray-700); width:auto; max-width:none; align-self:stretch; font-size:22px; line-height:1.35; }
+/* 출처: AC1 revision.css:229 · 07 → A1-07 · 덮는 대상 1차시 revision.css:1590 */
+.deck .slide.llm-agent-wide[data-slide="A1-07"] .s-full .llm-agent-conclusion span{ color:var(--mint-deep); font-size:24px; font-weight:900; }
+
+/* ── A1-08 (수정요청 #6) — 레이아웃 유지 · 두 칸이 남은 높이를 다 먹어 초록 칸 안이 비던 것 → 칸은 내용 높이, 세 덩어리를 세로 가운데 ── */
+/* 신규 · A1-08 — 덮는 대상 1차시 revision.css:1593 margin-top:16px · 클래스 규칙 flex:1 */
+.deck .slide.coding-terms[data-slide="A1-08"] .coding-terms-path{ flex:0 0 auto; margin-top:auto; }
+/* 신규 · A1-08 — 위와 짝(아래 여백을 같게) */
+.deck .slide.coding-terms[data-slide="A1-08"] .coding-terms-course{ margin-bottom:auto; }
+/* 신규 · A1-08 — «Codex»(5자) → «에이전트»(4자 22px ≈ 88px)가 86px 이름 칸을 넘음 · 덮는 대상 1차시 revision.css:1599 */
+.deck .slide.coding-terms[data-slide="A1-08"] .coding-terms-roles p{ grid-template-columns:112px minmax(0,1fr); }
+
+/* ── A1-09 (수정요청 #7 · U23) — 리드 문장 삭제로 생긴 높이를 타일에 · «이미지 생성» 칸에 사용자 제공 그림 ── */
+/* 신규 · A1-09 — 첫 열을 넓혀 그림 칸 확보, 두 줄이 남은 높이를 나눔 · 덮는 대상 1차시 shell.html:171(.tiles-4x2 4등분) */
+.deck .slide.agent-kinds[data-slide="A1-09"] .tiles-4x2{ flex:1 1 auto; min-height:0; margin-top:22px; grid-template-columns:minmax(0,1.4fr) repeat(3,minmax(0,1fr)); grid-template-rows:repeat(2,minmax(0,1fr)); }
+/* 신규 · A1-09 — 늘어난 칸 높이 안에서 글을 세로 가운데 */
+.deck .slide.agent-kinds[data-slide="A1-09"] .tiles-4x2 .card{ justify-content:center; }
+/* 신규 · A1-09 — 그림 칸: 왼쪽 제목·설명, 오른쪽 그림 */
+.deck .slide.agent-kinds[data-slide="A1-09"] .tiles-4x2 .card.agent-kind-with-image{ display:grid; grid-template-columns:minmax(0,1fr) 120px; grid-template-rows:auto auto; align-content:center; column-gap:14px; row-gap:8px; }
+/* 신규 · A1-09 */
+.deck .slide.agent-kinds[data-slide="A1-09"] .tiles-4x2 .card.agent-kind-with-image > h3{ grid-column:1; grid-row:1; align-self:end; }
+/* 신규 · A1-09 */
+.deck .slide.agent-kinds[data-slide="A1-09"] .tiles-4x2 .card.agent-kind-with-image > .desc{ grid-column:1; grid-row:2; align-self:start; }
+/* 신규 · A1-09 — asset-slot 기본 absolute를 칸 흐름 안으로 */
+.deck .slide.agent-kinds[data-slide="A1-09"] .tiles-4x2 .agent-kind-example.asset-slot--spot{ grid-column:2; grid-row:1 / span 2; position:relative; inset:auto; width:120px; height:140px; max-width:none; max-height:none; margin:0; overflow:hidden; border-radius:var(--r-md); align-self:center; }
+/* 신규 · A1-09 */
+.deck .slide.agent-kinds[data-slide="A1-09"] .tiles-4x2 .agent-kind-example > img{ display:block; width:100%; height:100%; object-fit:cover; object-position:center top; }
+
+/* ── A1-10 (AC1 09 화면 복원) — 이미지 제외·2×2·민트 노트 규칙을 원본(오른쪽 그림 + 네 줄 목록)으로 덮는다 ── */
+/* 출처: AC1 revision.css:259 · 09 → A1-10 · 덮는 대상 1차시 revision.css:1606 (bottom 64 → 54: 네 줄 + 노트 세로 예산) */
+.deck .slide.tool-roles[data-slide="A1-10"] .s-full{ right:340px; bottom:54px; }
+/* 출처: 1차시 shell.html:217(.tool-role-list.is-4col · AC1 셸과 같은 값) · 09 → A1-10 · 덮는 대상 1차시 revision.css:2395 */
+.deck .slide.tool-roles[data-slide="A1-10"] .tool-role-list{ grid-template-columns:minmax(0,1fr); grid-template-rows:repeat(4,minmax(0,1fr)); gap:12px; }
+/* 출처: AC1 revision.css:261 · 09 → A1-10 · 덮는 대상 1차시 revision.css:1607 (230 → 250: «검색 기반 정보 탐색» 한 줄 · 행 여백 18 → 8) */
+.deck .slide.tool-roles[data-slide="A1-10"] .tool-role-list article{ grid-template-columns:92px 250px minmax(0,1fr); padding-block:8px; }
+/* 출처: AC1 revision.css:267 · 09 → A1-10 · 덮는 대상 1차시 revision.css:1609 */
+.deck .slide.tool-roles[data-slide="A1-10"] .tool-role-note{ padding:0; border-left:0; border-radius:0; background:transparent; }
+
+/* ── A4-09 (AC1 S10C 화면 복원) — 아웃라인 문장이 빠져 생긴 높이로 그림 줄을 원본 크기로 되돌린다 ── */
+/* 출처: AC1 revision.css:1200 · S10C → A4-09 · 덮는 대상 1차시 revision.css:2265 */
+.deck .slide.frontend-basics-slide[data-slide="A4-09"] .frontend-tech{ grid-template-rows:192px auto; }
+/* 출처: AC1 revision.css:1204 · S10C → A4-09 · 덮는 대상 1차시 revision.css:2266 */
+.deck .slide.frontend-basics-slide[data-slide="A4-09"] .frontend-tech-image.asset-slot--spot{ height:184px; }
+/* 출처: AC1 revision.css:1205 · S10C → A4-09 · 덮는 대상 1차시 revision.css:2267(!important라 같은 방식으로만 덮인다) */
+.deck .slide.frontend-basics-slide[data-slide="A4-09"] .frontend-tech-image > img{ height:156px!important; max-height:156px!important; }
+/* 출처: AC1 revision.css:1198 · S10C → A4-09 · 덮는 대상 1차시 revision.css:2264 */
+.deck .slide.frontend-basics-slide[data-slide="A4-09"] .frontend-tech-grid{ margin-top:22px; }
+/* 출처: AC1 revision.css:1209 · S10C → A4-09 · 덮는 대상 1차시 revision.css:2269 */
+.deck .slide.frontend-basics-slide[data-slide="A4-09"] .frontend-tech h3{ margin:3px 0 5px; font-size:30px; }
+
+/* ── A1-12 (AC1 S10B 원본 그대로 · U22) — 1차시 revision.css에 S10B 슬라이드 규칙이 없어 새로 옮긴다 ── */
+/* 출처: AC1 revision.css:1019 · S10B → A1-12 */
+.deck .slide[data-slide="A1-12"] .lifecycle-infographic.asset-slot--hero{ position:relative; inset:auto; width:100%; height:100%; max-width:none; max-height:none; margin:0; overflow:hidden; }
+/* 출처: AC1 revision.css:1020 · S10B → A1-12 */
+.deck .slide[data-slide="A1-12"] .lifecycle-infographic > img{ width:100%; height:100%; object-fit:contain; }
+/* 출처: AC1 revision.css:1230 · S10B → A1-12 */
+.deck .slide[data-slide="A1-12"] .lifecycle-infographic-body{ grid-template-rows:minmax(0,1fr); max-height:422px; margin-top:12px; }
+/* 출처: AC1 shell.html:239 · S10B → A1-12 */
+.deck .slide.lifecycle-infographic-slide[data-slide="A1-12"] .lifecycle-infographic-body{ grid-template-columns:560px minmax(0,1fr); }
+/* 출처: AC1 revision.css:1231 · S10B → A1-12 */
+.deck .slide[data-slide="A1-12"] .lifecycle-stage-list li{ padding:1px 0 1px 14px; }
+/* 출처: AC1 shell.html:240 · S10B → A1-12 */
+.deck .slide.lifecycle-infographic-slide[data-slide="A1-12"] .lifecycle-stage-list li{ grid-template-columns:124px minmax(0,1fr); }
+/* 출처: AC1 revision.css:1232 · S10B → A1-12 */
+.deck .slide[data-slide="A1-12"] .lifecycle-stage-list span{ line-height:1.14; }
+/* 출처: AC1 revision.css:1235 · S10B → A1-12 */
+.deck .slide[data-slide="A1-12"] .lifecycle-stage-list span b{ font-size:inherit; line-height:inherit; white-space:nowrap; }
+
+/* ── A2-02 (AC1 M6-02 화면 복원) — 검은 결론 배너가 빠져 3막 카드 압축(gap 0 · padding 6) 규칙을 kit 값으로 되돌린다 ── */
+/* 출처: kit/styles/patterns.css:206 · M6-02 → A2-02 · 덮는 대상 1차시 revision.css:2219 */
+.deck .slide.case-acts[data-slide="A2-02"] .s-full .ca-stack{ gap:4px; }
+/* 출처: kit/styles/patterns.css:207 · M6-02 → A2-02 · 덮는 대상 1차시 revision.css:2221 */
+.deck .slide.case-acts[data-slide="A2-02"] .s-full .ca-act{ padding:10px 22px; }
+/* 출처: kit/styles/patterns.css:209 · M6-02 → A2-02 · 덮는 대상 1차시 revision.css:2222 */
+.deck .slide.case-acts[data-slide="A2-02"] .s-full .ca-act .s-lead{ margin:0 0 4px; }
+/* 출처: kit/styles/patterns.css:204 · M6-02 → A2-02 · 덮는 대상 1차시 revision.css:2223 */
+.deck .slide.case-acts[data-slide="A2-02"] .s-full .accent-bar{ margin:2px 0 8px; }
+
+/* ── A2-05 (수정요청 #12) — 결론 한 줄을 제목 바로 아래 띠로 먼저 · 두 실행 비교 · 세 설명 ── */
+/* 신규 · A2-05 */
+.deck .slide.variance-compare[data-slide="A2-05"] .variance-conclusion{ margin:14px 0 0; padding:12px 22px; border-left:8px solid var(--blue); border-radius:var(--r-md); background:var(--blue-panel); color:var(--ink); font-size:22px; line-height:1.45; }
+/* 신규 · A2-05 — «한 줄 결론» 라벨 */
+.deck .slide.variance-compare[data-slide="A2-05"] .variance-conclusion b{ display:inline-block; margin-right:12px; padding:2px 12px; border-radius:var(--r-pill); background:var(--blue); color:var(--white); font-size:18px; font-weight:850; vertical-align:2px; }
+/* 신규 · A2-05 */
+.deck .slide.variance-compare[data-slide="A2-05"] .variance-conclusion strong{ color:var(--blue); font-weight:850; }
+/* 신규 · A2-05 — 덮는 대상 1차시 revision.css:1625 */
+.deck .slide.variance-compare[data-slide="A2-05"] .variance-grid .card{ gap:4px; padding:12px 22px; }
+/* 신규 · A2-05 — 두 칸 → 세 칸(가운데 설명이 가장 길다) · 덮는 대상 1차시 revision.css:1626 */
+.deck .slide.variance-compare[data-slide="A2-05"] .variance-notes{ margin-top:12px; display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.35fr) minmax(0,1fr); gap:14px; }
+/* 신규 · A2-05 — 덮는 대상 1차시 revision.css:1627 */
+.deck .slide.variance-compare[data-slide="A2-05"] .variance-notes p{ padding:10px 16px; line-height:1.38; }
+/* 신규 · A2-05 — 설명 이름을 한 줄 머리로 */
+.deck .slide.variance-compare[data-slide="A2-05"] .variance-notes b{ display:block; margin-bottom:2px; }
+
+/* ── A2-09 (AC1 S3HUM 화면 복원) — 사람/AI 두 줄·결론 배너가 빠져 생긴 높이를 원본처럼 두 인용에 ── */
+/* 출처: AC1 revision.css:1418 · S3HUM → A2-09 · 덮는 대상 1차시 revision.css:1653 */
+.deck .slide.human-decides-slide[data-slide="A2-09"] .human-compare{ margin-top:24px; }
+/* 출처: AC1 revision.css:1419 · S3HUM → A2-09 · 덮는 대상 1차시 revision.css:1655 */
+.deck .slide.human-decides-slide[data-slide="A2-09"] .human-compare article{ padding:20px 26px; }
+/* 출처: AC1 revision.css:1420 · S3HUM → A2-09 · 덮는 대상 1차시 revision.css:1656 */
+.deck .slide.human-decides-slide[data-slide="A2-09"] .human-compare b{ font-size:42px; }
+/* 출처: AC1 revision.css:1421 · S3HUM → A2-09 · 덮는 대상 1차시 revision.css:1657 */
+.deck .slide.human-decides-slide[data-slide="A2-09"] .human-compare p{ font-size:23px; }
+/* 출처: AC1 revision.css:1429 · S3HUM → A2-09 · 덮는 대상 1차시 revision.css:1663 */
+.deck .slide.human-decides-slide[data-slide="A2-09"] .human-quotes{ flex:1 1 auto; margin-top:20px; }
+/* 출처: AC1 revision.css:1430 · S3HUM → A2-09 · 덮는 대상 1차시 revision.css:1664 */
+.deck .slide.human-decides-slide[data-slide="A2-09"] .human-quotes blockquote{ padding:18px 24px; }
+/* 출처: AC1 revision.css:1431 · S3HUM → A2-09 · 덮는 대상 1차시 revision.css:1665 */
+.deck .slide.human-decides-slide[data-slide="A2-09"] .human-quotes p{ font-size:23px; }
+/* 출처: AC1 revision.css:1433 · S3HUM → A2-09 · 덮는 대상 1차시 revision.css:1666 */
+.deck .slide.human-decides-slide[data-slide="A2-09"] .human-quotes cite{ margin-top:12px; }
+
+/* ===== 수정요청 1차 · WB PART 3·4 (2026-09-16) ===== */
+/* ═══ 웨이브 B — PART 3·4 (1차시 수정요청 1차 · 2026-09-15) ═══════════════════════════
+   병합: revision.css 끝 구획에 그대로 덧붙인다(삭제·재구성 금지).
+   셀렉터는 전부 .deck .slide[.구도클래스][data-slide="A…"] 이상 — 기존 A-ID 규칙은 지우지 않고
+   명시도(구도 클래스 한 단계 추가)와 뒤 순서로 덮는다. 덮은 기존 규칙 목록은 WB-기록.md §7. */
+
+/* 출처: 접수 #17(«이름보다 역할»·«막혔을 때» 배경색 변경 · 한 줄 표시) · 기존 revision.css:1681~1684 A3-03 민트 띠 → A3-03 */
+.deck .slide.setup-steps[data-slide="A3-03"] .setup-notes{ grid-template-columns:minmax(0,1.45fr) minmax(0,1fr); }
+.deck .slide.setup-steps[data-slide="A3-03"] .setup-notes p{ border-left-color:var(--blue); background:var(--blue-panel); }
+.deck .slide.setup-steps[data-slide="A3-03"] .setup-notes b{ color:var(--blue); }
+.deck .slide.setup-steps[data-slide="A3-03"] .setup-notes p + p{ border-left-color:var(--coral); background:var(--coral-soft); }
+.deck .slide.setup-steps[data-slide="A3-03"] .setup-notes p + p b{ color:var(--coral-deep); }
+.deck .slide.setup-steps[data-slide="A3-03"] .setup-note-line{ display:block; white-space:nowrap; }
+
+/* 출처: AC1 part-03.html:29~32 · 12 → A3-04 (왼쪽 화면 | 오른쪽 세 단계 · 가짜 목업 → K2 캡처 이미지)
+   기존 revision.css:1687~1696 A3-04(위 3단 가로 · 아래 캡처|유보 세 줄) 덮음 · 끝 문장은 두 칸 아래 한 줄 */
+.deck .slide.agent-entry[data-slide="A3-04"] .agent-entry-layout{ grid-template-columns:minmax(0,58fr) minmax(0,42fr); grid-template-rows:minmax(0,1fr) auto; gap:12px 24px; }
+.deck .slide.agent-entry[data-slide="A3-04"] .agent-entry-shot{ grid-column:1; grid-row:1; position:relative; inset:auto; width:100%; height:100%; max-width:none; max-height:none; margin:0; padding:8px; box-sizing:border-box; display:flex; align-items:center; justify-content:center; overflow:hidden; border:1px solid var(--blue-line-strong); border-radius:var(--r-lg); background:var(--white); box-shadow:var(--shadow-md); }
+.deck .slide.agent-entry[data-slide="A3-04"] .agent-entry-shot > img{ display:block; width:100%; height:100%; object-fit:contain; }
+.deck .slide.agent-entry[data-slide="A3-04"] .agent-entry-steps{ grid-column:2; grid-row:1; grid-template-columns:minmax(0,1fr); grid-template-rows:repeat(3,minmax(0,1fr)); gap:10px; }
+.deck .slide.agent-entry[data-slide="A3-04"] .agent-entry-steps article{ grid-template-columns:40px minmax(0,1fr); padding:8px 16px; }
+.deck .slide.agent-entry[data-slide="A3-04"] .agent-entry-steps h3{ margin:0 0 2px; font-size:22px; }
+.deck .slide.agent-entry[data-slide="A3-04"] .agent-entry-close{ grid-column:1 / -1; grid-row:2; margin:0; color:var(--gray-700); font-size:22px; line-height:1.4; text-align:center; }
+
+/* 출처: VC1 part-02.html:47~59 · 15 → A3-07 (구조·이미지) · 캡처 틀 규칙은 1차시 revision.css:1699~1700·2237~2238·2344~2345 A3-06(VC1 14)과 같은 값으로 복제 */
+.deck .slide.folder-create-slide[data-slide="A3-07"] .folder-create-layout{ bottom:54px; }
+.deck .slide.folder-create-slide[data-slide="A3-07"] .folder-create-shot.asset-slot--hero{ padding:0; box-sizing:border-box; grid-template-rows:minmax(0,1fr); }
+.deck .slide.folder-create-slide[data-slide="A3-07"] .folder-create-shot > img{ display:block; width:100%; height:100%; max-height:100%; min-height:0; object-fit:contain; }
+
+/* 출처: VC1 part-02.html:61~68 · 20 → A3-09 (캡처 K3 | 확인 설명) · 기존 revision.css:950(top:224)는 유지,
+   revision.css:1224(max-width:580) · 1723(p 여백) 덮음 */
+.deck .slide.practice-create-slide[data-slide="A3-09"] .app-guide-layout{ bottom:54px; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:28px; }
+.deck .slide.practice-create-slide[data-slide="A3-09"] .app-guide-copy{ max-width:none; padding:24px 28px; }
+.deck .slide.practice-create-slide[data-slide="A3-09"] .app-guide-copy > p.guide-label{ margin:0 0 10px; color:var(--blue); font-size:22px; font-weight:900; }
+.deck .slide.practice-create-slide[data-slide="A3-09"] .app-guide-copy h3{ font-size:27px; line-height:1.3; }
+.deck .slide.practice-create-slide[data-slide="A3-09"] .app-guide-copy > p:not(.guide-label){ margin:14px 0 0; }
+.deck .slide.practice-create-slide[data-slide="A3-09"] .app-guide-copy ul{ margin:16px 0 0; font-size:22px; line-height:1.5; }
+
+/* 출처: VC1 part-02.html:2~6 <style data-part="part-02"> · 21 → A3-10 (두 컷 나란히 + 확인 기준)
+   img 규칙 → 캡처 자리 틀 규칙 · figcaption 19px → 22px · 바닥선 666 준수로 bottom 96/40 → 110/54 */
+.deck .slide.workspace-open-slide[data-slide="A3-10"] .workspace-open-shots{ position:absolute; left:64px; right:64px; top:224px; bottom:110px; display:grid; grid-template-columns:1fr 1fr; gap:28px; }
+.deck .slide.workspace-open-slide[data-slide="A3-10"] .workspace-open-shot{ position:relative; inset:auto; min-width:0; width:100%; height:100%; max-width:none; max-height:none; margin:0; padding:10px; box-sizing:border-box; display:flex; flex-direction:column; border:1px solid var(--blue-line-strong); border-radius:var(--r-lg); background:var(--white); box-shadow:var(--shadow-md); }
+.deck .slide.workspace-open-slide[data-slide="A3-10"] .workspace-open-shot > .shot-frame.demo-placeholder{ flex:1 1 auto; min-height:0; width:100%; height:auto; }
+.deck .slide.workspace-open-slide[data-slide="A3-10"] .workspace-open-shot figcaption{ margin-top:10px; padding-top:10px; border-top:1px solid var(--line); text-align:center; color:var(--blue); font-size:22px; font-weight:800; }
+.deck .slide.workspace-open-slide[data-slide="A3-10"] .workspace-open-check{ position:absolute; left:64px; right:64px; bottom:54px; margin:0; text-align:center; }
+
+/* 출처: AC1 part-03.html:88~95 · 23 → A3-15 (file-request-layout--separated 두 칸)
+   기존 revision.css:1767~1773 A3-15(파일 정보 위 띠 · 아래 캡처|요청문) 덮음 · 예시 입력창 틀·단어 카테고리 칸은 신규(접수 #26) */
+.deck .slide.material-file-slide[data-slide="A3-15"] .file-request-layout{ bottom:54px; grid-template-columns:minmax(0,1.18fr) minmax(390px,.82fr); grid-template-rows:minmax(0,1fr); gap:28px; }
+.deck .slide.material-file-slide[data-slide="A3-15"] .word-request-stack{ grid-column:1; grid-row:1; min-width:0; min-height:0; display:flex; flex-direction:column; gap:14px; }
+.deck .slide.material-file-slide[data-slide="A3-15"] .word-request-frame{ flex:1 1 auto; min-height:0; display:flex; flex-direction:column; justify-content:center; padding:20px 24px; box-sizing:border-box; }
+.deck .slide.material-file-slide[data-slide="A3-15"] .word-category{ flex:0 0 auto; padding:12px 20px 14px; border:1px solid var(--mint-line); border-radius:var(--r-md); background:var(--mint-soft); }
+.deck .slide.material-file-slide[data-slide="A3-15"] .word-category h3{ margin:0 0 8px; color:var(--mint-deep); font-size:22px; font-weight:850; }
+.deck .slide.material-file-slide[data-slide="A3-15"] .word-category-grid{ display:grid; grid-template-columns:minmax(0,1fr); gap:4px; }
+.deck .slide.material-file-slide[data-slide="A3-15"] .word-category-grid article{ min-width:0; display:grid; grid-template-columns:110px minmax(0,1fr); align-items:baseline; gap:12px; }
+.deck .slide.material-file-slide[data-slide="A3-15"] .word-category-grid b{ color:var(--ink); font-size:22px; font-weight:850; }
+.deck .slide.material-file-slide[data-slide="A3-15"] .word-category-grid span{ min-width:0; color:var(--gray-700); font-size:22px; line-height:1.4; }
+.deck .slide.material-file-slide[data-slide="A3-15"] .file-request-copy{ grid-column:2; grid-row:1; justify-content:center; gap:14px; padding:22px 24px; }
+
+/* 출처: AC1 part-03.html:96~103 · 24 → A3-16 (캡처 K7 | 네 확인 + 결론 문장)
+   기존 revision.css:1776(bottom:124 · 1:1) 덮음 · 1780 끝 배너 규칙은 마크업 삭제로 미사용 */
+.deck .slide.file-verify-slide[data-slide="A3-16"] .verify-file-layout{ bottom:54px; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:28px; }
+.deck .slide.file-verify-slide[data-slide="A3-16"] .verify-file-sequence{ justify-content:center; }
+.deck .slide.file-verify-slide[data-slide="A3-16"] .verify-conclusion{ margin:8px 0 0; color:var(--ink); font-size:22px; line-height:1.4; }
+.deck .slide.file-verify-slide[data-slide="A3-16"] .verify-conclusion strong{ color:var(--ink); font-weight:850; }
+
+/* 출처: AC1 part-03.html:115~140 · 19 → A3-12 (왼쪽 그림 복원 · 흐름 | 주의 카드)
+   기존 revision.css:1753~1754 · 2402(그림 없는 한 칸 · 주의 카드 380/470px) 덮음 */
+.deck .slide.permission-slide[data-slide="A3-12"] .permission-stage{ grid-template-columns:30% minmax(0,1fr); gap:24px; }
+.deck .slide.permission-slide[data-slide="A3-12"] .permission-stage > .permission-image{ grid-column:1; grid-row:1; }
+.deck .slide.permission-slide[data-slide="A3-12"] .permission-stage > .permission-content{ grid-column:2; grid-row:1; grid-template-columns:minmax(0,1fr) 300px; gap:18px; }
+.deck .slide.permission-slide[data-slide="A3-12"] .risk-flow--stacked article{ padding:8px 16px; }
+
+/* 출처: VC1 part-03.html:97~116 · S3CE → A4-11 · .eng-* 공용 규칙은 1차시 revision.css:1262~1297에 이미 있어 복사하지 않음
+   eng-note 21px → 22px · 예시 칸 296px → 240px(타자 게임 예시 문장이 원본보다 길다) */
+.deck .slide.eng-context[data-slide="A4-11"] .eng-note{ font-size:22px; line-height:1.45; }
+.deck .slide.eng-context[data-slide="A4-11"] .eng-example{ grid-template-columns:240px minmax(0,1fr); }
+
+/* 출처: 접수 #32(«처음부터~» 세로 가운데) → A4-05 · 공용 revision.css:1397 .iterate-warn align-items:baseline 덮음 */
+.deck .slide.iterate-slide[data-slide="A4-05"] .iterate-warn{ align-items:center; }
+
+/* 출처: 접수 #33 → A4-06 · «예»를 «구체적인 요청» 칸 안으로 · 검은 배너(.end-banner) → 흰 바탕 결론 줄
+   기존 revision.css:1873~1876(칸 밖 «예» 띠 · end-banner 여백)은 마크업 변경으로 일부 미사용 */
+.deck .slide.request-compare-slide[data-slide="A4-06"] .specific-request .request-example{ margin:10px 0 0; padding:8px 14px; border-left:5px solid var(--blue); border-radius:var(--r-md); background:var(--white); color:var(--gray-700); font-size:22px; line-height:1.42; }
+.deck .slide.request-compare-slide[data-slide="A4-06"] .specific-request .request-example b{ margin-right:10px; color:var(--blue); }
+.deck .slide.request-compare-slide[data-slide="A4-06"] .request-compare-verdict{ flex:0 0 auto; margin:14px 0 0; padding:12px 0 0; border-top:2px solid var(--blue-line-strong); background:transparent; color:var(--ink); font-size:24px; font-weight:800; line-height:1.4; text-align:center; }
+.deck .slide.request-compare-slide[data-slide="A4-06"] .request-compare-verdict .hl-blue-text{ color:var(--blue); }
+
+/* ===== 수정요청 1차 · WC PART 5·6·마무리 (2026-09-16) ===== */
+/* ══════════════════════════════════════════════════════════════════════
+   웨이브 WC — 1차시 수정요청 1차 · PART 5 + PART 6(옛 6+7) + 마무리 전용 CSS
+   통합 워커가 revision.css 끝 구획에 그대로 덧붙인다(삭제·재구성·쉼표 분해 금지).
+   셀렉터는 전부 .deck .slide[data-slide="A…"] 이상. 같은 명시도 기존 규칙보다 뒤에 붙어야 이긴다.
+   ══════════════════════════════════════════════════════════════════════ */
+
+/* 출처: AC1 part-04.html:114 · 32 → A5-07 (신규 래퍼 — K5 캡처 자리를 검정 요청문 상자에 얹음. 상자 자체는 기존 .detailed-prompt-layout 규칙 그대로) */
+.deck .slide[data-slide="A5-07"] .detailed-prompt-layout > .prompt-capture{ position:relative; min-width:0; height:100%; }
+.deck .slide[data-slide="A5-07"] .prompt-capture > .terminal-dark{ height:100%; }
+.deck .slide[data-slide="A5-07"] .prompt-capture > .dp-badge{ position:absolute; right:14px; top:9px; z-index:2; padding:3px 12px; border-radius:var(--r-pill);
+  background:var(--mint); color:var(--on-mint);
+  /* 스케일 밖 값: 짧은 라벨(24자 이하) · 캡션 등급 — .codex-input-label과 같은 값 */
+  font-size:16px; font-weight:800; line-height:1.3; }
+
+/* 출처: AC1 part-04.html:148 · S39 → A5-10 (원본 목업의 aside 열 복원 — 기존 revision.css:1936 «1열»을 덮음) */
+.deck .slide[data-slide="A5-10"] .browser-capture .browser-result-body{ grid-template-columns:minmax(0,31%) minmax(0,69%); }
+.deck .slide[data-slide="A5-10"] .browser-capture .browser-result-body main{ min-width:0; padding:24px 28px; }
+.deck .slide[data-slide="A5-10"] .browser-capture .profile-orb{ width:88px; height:88px; }
+.deck .slide[data-slide="A5-10"] .browser-capture .browser-tags{ flex-wrap:wrap; }
+
+/* 출처: 1차시 shell.html:258 · A7-03 .s53-note(AC1 shell.html:289 · S53) — 초안 굵은 구절 «위에서부터 하나씩»만 색으로 구분 */
+.deck .slide[data-slide="A7-03"] .s53-note strong{ color:var(--blue); font-weight:900; }
+
+/* 출처: 신규(WC 재제작) · 1차시 part-06.html(0fda762) A6-13 → A6-13 — 게임 화면 창 두 개(나쁜 예 → 좋은 예) + 결론 배너 */
+.deck .slide[data-slide="A6-13"] .copy-guide{ display:flex; flex-direction:column; }
+.deck .slide[data-slide="A6-13"] .copy-screens{ flex:1 1 auto; min-height:0; margin:18px 0 0; display:grid; grid-template-columns:minmax(0,.82fr) 56px minmax(0,1.18fr); align-items:stretch; }
+.deck .slide[data-slide="A6-13"] .copy-screen{ min-width:0; display:flex; flex-direction:column; overflow:hidden; border:2px solid var(--ink); border-radius:var(--r-lg); background:var(--white); box-shadow:var(--shadow-md); }
+.deck .slide[data-slide="A6-13"] .copy-screen-bar{ flex:0 0 auto; height:44px; display:flex; align-items:center; gap:8px; padding:0 14px; background:var(--ink); }
+.deck .slide[data-slide="A6-13"] .copy-screen-bar > span{ width:10px; height:10px; border-radius:50%; background:var(--white); opacity:.7; }
+.deck .slide[data-slide="A6-13"] .copy-verdict{ margin-left:auto; display:inline-flex; align-items:center; gap:6px; padding:3px 14px; border-radius:var(--r-pill); font-size:20px; font-weight:850; line-height:1.3; }
+.deck .slide[data-slide="A6-13"] .copy-verdict i{ font-style:normal; font-weight:900; }
+.deck .slide[data-slide="A6-13"] .copy-screen--bad .copy-verdict{ background:var(--coral); color:var(--on-coral); }
+.deck .slide[data-slide="A6-13"] .copy-screen--good .copy-verdict{ background:var(--mint); color:var(--on-mint); }
+.deck .slide[data-slide="A6-13"] .copy-screen-body{ flex:1 1 auto; min-height:0; display:flex; flex-direction:column; justify-content:center; gap:14px; padding:20px 24px; background:var(--blue-panel); }
+.deck .slide[data-slide="A6-13"] .copy-msg{ margin:0; padding:14px 18px; border-radius:var(--r-md); font-size:24px; font-weight:750; line-height:1.4; }
+.deck .slide[data-slide="A6-13"] .copy-screen--bad .copy-msg{ border:2px solid var(--coral-line); background:var(--coral-soft); color:var(--coral-deep); }
+.deck .slide[data-slide="A6-13"] .copy-screen--good .copy-msg{ border:2px solid var(--mint-line); background:var(--mint-soft); color:var(--ink); }
+.deck .slide[data-slide="A6-13"] .copy-arrow{ align-self:center; text-align:center; color:var(--blue); font-size:40px; font-weight:800; }
+.deck .slide[data-slide="A6-13"] .copy-conclusion{ margin:18px auto 0; }
+
+/* 출처: AC1 part-05.html:18 · S57 → A7-11 (dc-stage: 흐름 → 요청문을 같은 폭으로 쌓는 구조) — 기존 revision.css:2157(space-between)·2349(열)·2398(fit-content 좌측 정렬)을 덮음 */
+.deck .slide[data-slide="A7-11"] .ir-stage{ justify-content:flex-start; gap:20px; }
+.deck .slide[data-slide="A7-11"] .ir-stage > .ir-flow{ display:grid; grid-template-columns:minmax(0,1fr) auto minmax(0,1fr) auto minmax(0,1fr) auto minmax(0,1fr); align-items:stretch; gap:10px; }
+.deck .slide[data-slide="A7-11"] .ir-stage > .ir-flow > .fl-node{ box-sizing:border-box; min-height:112px; justify-content:center; align-items:center; text-align:center; }
+.deck .slide[data-slide="A7-11"] .ir-stage > .ir-flow > .fl-arrow{ align-self:center; }
+.deck .slide[data-slide="A7-11"] .ir-stage > .ir-prompt{ align-self:stretch; width:auto; max-width:none; }
+.deck .slide[data-slide="A7-11"] .ir-prompt .tl{ display:block; }
+
+/* 출처: 1차시 part-02.html(0fda762):106 · A2-07 → A2-07(PART 6 이동) — 하단 여백 채움: 두 칸이 남는 높이를 차지 · 오른쪽 칸 틴트 · 결론 배너 확대. 기존 revision.css:1644 · shell.html:291(flex:0 0 auto)을 덮음 */
+.deck .slide.done-contrast[data-slide="A2-07"] .cc-full > .cc-grid{ flex:1 1 auto; min-height:0; margin:16px 0 0; align-items:stretch; grid-template-columns:minmax(0,1fr) 72px minmax(0,1fr); }
+.deck .slide.done-contrast[data-slide="A2-07"] .cc-grid > .cc-side{ display:flex; flex-direction:column; justify-content:center; padding:20px 28px; }
+.deck .slide.done-contrast[data-slide="A2-07"] .cc-grid > .cc-side.human{ border:2px solid var(--mint-line); background:var(--mint-soft); }
+.deck .slide.done-contrast[data-slide="A2-07"] .cc-grid > .cc-neq{ align-self:center; }
+.deck .slide.done-contrast[data-slide="A2-07"] .cc-side > ul > li{ font-size:23px; line-height:1.45; }
+.deck .slide.done-contrast[data-slide="A2-07"] .cc-full > .done-banner{ margin:18px auto 0; padding:14px 26px; font-size:24px; }
+
+/* 출처: AC1 revision.css:706·711·793~798 · S60 → A7-15 (글자 크기는 1차시 하한 22px로 올림) */
+.deck .slide[data-slide="A7-15"] .s-full{ right:404px; top:108px; bottom:48px; display:flex; flex-direction:column; }
+.deck .slide[data-slide="A7-15"] .pf-list{ flex:1 1 auto; min-height:0; margin-top:20px; display:grid; grid-template-rows:repeat(3,minmax(0,1fr)); gap:12px; }
+.deck .slide[data-slide="A7-15"] .pf-band{ min-height:0; display:grid; grid-template-columns:112px minmax(0,1fr) minmax(0,1fr); align-items:center; gap:18px; padding:12px 18px; }
+.deck .slide[data-slide="A7-15"] .pf-risk{ margin:0; color:var(--coral-deep); font-size:23px; font-weight:900; }
+.deck .slide[data-slide="A7-15"] .pf-reason{ margin:0; color:var(--gray-700); font-size:22px; line-height:1.38; }
+.deck .slide[data-slide="A7-15"] .pf-alt{ margin:0; color:var(--mint-deep); font-size:22px; line-height:1.38; font-weight:750; }
+.deck .slide[data-slide="A7-15"] .asset-slot--support{ right:42px; top:205px; width:330px; height:350px; max-width:none; max-height:none; }
+
+/* 출처: 신규(WC) · 1차시 part-07.html(0fda762):170 A7-14 → A7-14 — 왼쪽 예고 문구 + 오른쪽 «나를 소개하는 웹사이트» 브라우저 창 목업(HTML/CSS · 인물 정보·사진 없음). 기존 fb-statement·center-msg·ap-* 규칙은 클래스가 빠져 적용되지 않음 */
+.deck .slide[data-slide="A7-14"] .s2p-copy{ position:absolute; left:64px; top:108px; bottom:54px; width:600px; display:flex; flex-direction:column; }
+.deck .slide[data-slide="A7-14"] .s2p-copy > .s-title{ margin:0; }
+.deck .slide[data-slide="A7-14"] .s2p-rows{ margin-top:22px; display:flex; flex-direction:column; gap:14px; }
+.deck .slide[data-slide="A7-14"] .s2p-row{ margin:0; padding:14px 22px; border:1px solid var(--blue-line-strong); border-radius:var(--r-md); background:var(--blue-panel); color:var(--gray-700); font-size:22px; line-height:1.45; }
+.deck .slide[data-slide="A7-14"] .s2p-row--next{ border-color:var(--mint-line); background:var(--mint-soft); }
+.deck .slide[data-slide="A7-14"] .s2p-row b{ display:block; margin-bottom:4px; color:var(--ink); font-size:24px; font-weight:850; }
+.deck .slide[data-slide="A7-14"] .s2p-row strong:not([class]){ color:var(--ink); font-weight:850; }
+.deck .slide[data-slide="A7-14"] .s2p-flow{ margin:20px 0 0; color:var(--ink); font-size:24px; line-height:1.4; }
+.deck .slide[data-slide="A7-14"] .s2p-final{ margin:auto 0 0; padding-top:14px; border-top:2px solid var(--blue-line-strong); color:var(--blue); font-size:26px; font-weight:850; line-height:1.35; }
+.deck .slide[data-slide="A7-14"] .s2p-site{ position:absolute; left:700px; right:64px; top:124px; bottom:62px; margin:0; display:flex; flex-direction:column; }
+.deck .slide[data-slide="A7-14"] .s2p-browser{ flex:1 1 auto; min-height:0; display:flex; flex-direction:column; overflow:hidden; border:2px solid var(--ink); border-radius:var(--r-lg); background:var(--white); box-shadow:var(--shadow-lg); }
+.deck .slide[data-slide="A7-14"] .s2p-bar{ flex:0 0 auto; height:40px; display:flex; align-items:center; gap:8px; padding:0 14px; background:var(--ink); }
+.deck .slide[data-slide="A7-14"] .s2p-bar > span{ width:10px; height:10px; border-radius:50%; background:var(--white); opacity:.7; }
+.deck .slide[data-slide="A7-14"] .s2p-address{ display:block; flex:1 1 auto; height:18px; margin-left:10px; border-radius:var(--r-pill); background:var(--white); opacity:.18; }
+.deck .slide[data-slide="A7-14"] .s2p-page{ flex:1 1 auto; min-height:0; display:flex; flex-direction:column; gap:14px; padding:16px 20px 20px; background:var(--paper); }
+.deck .slide[data-slide="A7-14"] .s2p-nav{ flex:0 0 auto; display:flex; align-items:center; gap:10px; }
+.deck .slide[data-slide="A7-14"] .s2p-logo-dot{ display:block; width:22px; height:22px; margin-right:auto; border-radius:50%; background:var(--blue); }
+.deck .slide[data-slide="A7-14"] .s2p-nav-item{ display:block; width:46px; height:10px; border-radius:var(--r-pill); background:var(--blue-line-strong); }
+.deck .slide[data-slide="A7-14"] .s2p-hero{ flex:1 1 auto; min-height:0; display:flex; align-items:center; gap:20px; padding:18px 20px; border-radius:var(--r-md); background:var(--blue-soft); }
+.deck .slide[data-slide="A7-14"] .s2p-avatar{ flex:0 0 auto; width:96px; height:96px; display:grid; place-items:center; border-radius:50%; background:var(--blue); }
+.deck .slide[data-slide="A7-14"] .s2p-avatar svg{ display:block; width:64px; height:64px; }
+.deck .slide[data-slide="A7-14"] .s2p-hero-text{ flex:1 1 auto; min-width:0; display:flex; flex-direction:column; gap:10px; }
+.deck .slide[data-slide="A7-14"] .s2p-hero-text b{ color:var(--ink); font-size:26px; font-weight:850; line-height:1.25; }
+.deck .slide[data-slide="A7-14"] .s2p-line{ display:block; height:10px; border-radius:var(--r-pill); background:var(--blue-line-strong); }
+.deck .slide[data-slide="A7-14"] .s2p-line--short{ width:62%; }
+.deck .slide[data-slide="A7-14"] .s2p-cta{ display:block; width:108px; height:30px; margin-top:4px; border-radius:var(--r-pill); background:var(--mint); }
+.deck .slide[data-slide="A7-14"] .s2p-cards{ flex:0 0 auto; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; }
+.deck .slide[data-slide="A7-14"] .s2p-card{ display:flex; flex-direction:column; gap:8px; padding:14px; border:1px solid var(--blue-line-strong); border-radius:var(--r-md); background:var(--white); }
+.deck .slide[data-slide="A7-14"] .s2p-card-icon{ display:block; width:30px; height:30px; border-radius:var(--r-sm); background:var(--blue); }
+.deck .slide[data-slide="A7-14"] .s2p-card-icon--mint{ background:var(--mint); }
+.deck .slide[data-slide="A7-14"] .s2p-card-icon--coral{ background:var(--coral); }
+.deck .slide[data-slide="A7-14"] .s2p-badge{ align-self:flex-end; margin-top:10px; padding:3px 12px; border-radius:var(--r-pill); background:var(--ink); color:var(--white);
+  /* 스케일 밖 값: 짧은 라벨(24자 이하) · 캡션 등급 */
+  font-size:16px; font-weight:800; line-height:1.3; }
+
+/* ===== 수정요청 1차 · 렌더 수정 (2026-09-16) =====
+   메인 렌더 감사 1차(sha 7eb599d8 · 조립_보고 §11-12) 결함 7장 · 렌더 WARN 15건을 없앤다.
+   문구·구조 불변 — 위치·크기·폭·간격·자간만 조정. 기존 규칙은 지우지 않고 같은 명시도 이상으로 뒤에서 덮는다. */
+
+/* A0-00 — 결함: IMG@697(바닥선 초과) · IMG×ko(제목과 겹침). 원인: 투명 여백이 큰 1672×941 그림을 1100×619 상자로 깔아
+   상자가 제목 영역까지 덮고 바닥선을 넘음. 조치: 그림의 실제 칠해진 영역(알파 경계 679,145–1526,924)만 object-view-box로 잘라
+   같은 오른쪽 자리에 525×483(배율 0.62)으로 놓음 — 상자 = 그림. 기존 revision.css:2449·2451을 덮음 */
+.deck .slide[data-slide="A0-00"] .s00-hero{ left:659px; right:auto; top:177px; width:525px; height:483px; }
+.deck .slide[data-slide="A0-00"] .s00-hero img{ height:100%; object-view-box:inset(145px 146px 17px 679px); }
+/* A0-00 — 폰트 하한: 1차시·2차시 띠 글자 16px → 22px(이 과목 본문 하한 · R-TYPE-01). 기존 revision.css:2465·2469를 덮음 */
+.deck .slide[data-slide="A0-00"] .cover-track b{ font-size:22px; }
+.deck .slide[data-slide="A0-00"] .cover-track span{ font-size:22px; line-height:1.3; }
+
+/* A0-05 — 결함: journey-bridge@672. 원인: .journey-overview bottom:48px(=672)의 맨 아래 줄. 조치: bottom 54px(=666) — 두 칸 격자가 6px 줄어 흡수 */
+.deck .slide.journey-slide[data-slide="A0-05"] .journey-overview{ bottom:54px; }
+
+/* A4-09 — 결함: frontend-tech-analogy@674 ×3. 원인: 그림 행 192px(AC1 복원 값)로 세 칸이 바닥선을 8px 넘음. 조치: 그림 행 192→180 · 칸 184→172 · 그림 156→146(기존 revision.css:2553~2557을 덮음) */
+.deck .slide.frontend-basics-slide[data-slide="A4-09"] .frontend-tech{ grid-template-rows:180px auto; }
+.deck .slide.frontend-basics-slide[data-slide="A4-09"] .frontend-tech-image.asset-slot--spot{ height:172px; }
+.deck .slide.frontend-basics-slide[data-slide="A4-09"] .frontend-tech-image > img{ height:146px!important; max-height:146px!important; }
+
+/* A5-07 — 결함: capture-slot prompt-capture@672. 원인: .terminal-explain-layout bottom:48px(revision.css:543). 조치: bottom 54px */
+.deck .slide[data-slide="A5-07"] .terminal-explain-layout{ bottom:54px; }
+
+/* A3-02 — 결함: readiness-notes@100w/53x(가로 꽉 채우고 빔). 원인: 한 줄 안내가 두 칸 전체 폭 상자에 들어가 오른쪽 절반이 빔. 조치: 상자를 글 폭에 맞춤(왼쪽 정렬 유지) */
+.deck .slide[data-slide="A3-02"] .readiness-notes{ justify-self:start; width:fit-content; max-width:100%; }
+
+/* A7-11 — 결함: codex-input ir-prompt@100w/44x. 원인: 네 줄 요청문(가장 긴 줄 ≈626px)이 1152px 폭으로 늘어남(revision.css:2759 stretch). 조치: 상자를 글 폭에 맞춤 · 왼쪽 정렬(옛 revision.css:2398과 같은 방향) */
+.deck .slide[data-slide="A7-11"] .ir-stage > .ir-prompt{ align-self:flex-start; width:fit-content; max-width:100%; }
+
+/* A3-15 — 결함: word-category@58w/51x(가로 늘림). 원인: 카테고리 4줄이 한 열이라 글이 상자 왼쪽 절반에만. 조치: 2×2 격자 · 칸마다 이름 위 · 단어 아래(문구·순서 불변) */
+.deck .slide.material-file-slide[data-slide="A3-15"] .word-category-grid{ grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px 20px; }
+.deck .slide.material-file-slide[data-slide="A3-15"] .word-category-grid article{ grid-template-columns:minmax(0,1fr); gap:0; }
+
+/* A1-12 — 폰트 하한: 일곱 단계 설명 17px → 22px. 넘침 흡수: 목록 칸 560→760px(22px에서 모든 설명이 두 줄 이하가 되는 최소 폭 · 브라우저 실측) ·
+   행 여백 0 · 오른쪽 순환 그림은 남는 폭에 원본 비율로 가운데 정렬. 그림 위 단계 라벨은 그림 기준 세로 위치를 유지하도록 top 재계산
+   (옛 칸 568×422 안 그림 568×320 기준: 1~6단계 11.7% · 7단계 72%) · 라벨 좌우 여백 9→6px(좁아진 간격에서 서로 닿지 않게) */
+.deck .slide.lifecycle-infographic-slide[data-slide="A1-12"] .lifecycle-infographic-body{ grid-template-columns:760px minmax(0,1fr); gap:20px; max-height:420px; }
+.deck .slide.lifecycle-infographic-slide[data-slide="A1-12"] .lifecycle-stage-list li{ grid-template-columns:124px minmax(0,1fr); padding:0 0 0 14px; }
+.deck .slide.lifecycle-infographic-slide[data-slide="A1-12"] .lifecycle-stage-list span{ font-size:22px; line-height:1.2; }
+.deck .slide.lifecycle-infographic-slide[data-slide="A1-12"] .lifecycle-infographic.asset-slot--hero{ align-self:center; height:auto; aspect-ratio:1672 / 941; }
+.deck .slide[data-slide="A1-12"] .lifecycle-image-labels span{ top:11.7%; padding:5px 6px; }
+.deck .slide[data-slide="A1-12"] .lifecycle-image-labels span.stage-7{ top:72%; }
+
+/* 자간 보정 누락(32px 이상 · audit_typography TRACKING_MAX_EM -0.02em) — kit cover-title과 같은 -0.03em */
+.deck .slide[data-slide="A1-06"] .role-step h3{ letter-spacing:-0.03em; }
+.deck .slide[data-slide="A1-06"] .role-flow-bridge b{ letter-spacing:-0.03em; }
+.deck .slide[data-slide="A5-10"] .browser-capture .profile-orb{ letter-spacing:-0.03em; }
+.deck .slide[data-slide="A6-13"] .copy-arrow{ letter-spacing:-0.03em; }
+
+/* 정렬 지배값 충돌(제목 top 150×32 vs 155×4) — 155인 4장(A2-04·A2-09·A7-13·A7-15)은 .s-full(top 108) 안 눈썹 아래 여백이 14px라
+   5px 내려감(dc-title 장은 9px → 150). 조치: 네 장의 눈썹 아래 여백 9px → 제목 top 150 */
+.deck .slide[data-slide="A2-04"] .s-full > .s-eyebrow{ margin-bottom:9px; }
+.deck .slide[data-slide="A2-09"] .s-full > .s-eyebrow{ margin-bottom:9px; }
+.deck .slide[data-slide="A7-13"] .s-full > .s-eyebrow{ margin-bottom:9px; }
+.deck .slide[data-slide="A7-15"] .s-full > .s-eyebrow{ margin-bottom:9px; }
+
+/* A3-04 — K2 캡처 이미지 → K2를 참고한 HTML/CSS 화면 목업(캡처가 칸 안 약 650×232로 줄어 글자를 읽을 수 없음 · 사용자 허용).
+   왼쪽 사이드바 · 위 가운데 Chat | Work 탭 · 가운데 인사말 · 입력칸. 글자는 22px 이상. Codex 작업 탭은 표시하지 않음(U24).
+   칸 자리·테두리는 기존 revision.css:2642 .agent-entry-shot 규칙을 그대로 쓰고 안쪽 여백만 0 */
+.deck .slide.agent-entry[data-slide="A3-04"] .agent-entry-mock{ padding:0; }
+.deck .slide[data-slide="A3-04"] .k2-window{ width:100%; height:100%; display:grid; grid-template-columns:214px minmax(0,1fr); background:var(--white); }
+.deck .slide[data-slide="A3-04"] .k2-side{ min-width:0; display:flex; flex-direction:column; padding:14px 12px 12px 18px; border-right:1px solid var(--line); background:var(--paper); }
+.deck .slide[data-slide="A3-04"] .k2-brand{ margin:0 0 6px; color:var(--ink); font-size:22px; font-weight:800; line-height:1.4; white-space:nowrap; }
+.deck .slide[data-slide="A3-04"] .k2-menu{ margin:0; padding:0; list-style:none; }
+.deck .slide[data-slide="A3-04"] .k2-groups{ margin:10px 0 0; padding:0; list-style:none; }
+.deck .slide[data-slide="A3-04"] .k2-menu li{ color:var(--ink); font-size:22px; line-height:1.4; white-space:nowrap; }
+.deck .slide[data-slide="A3-04"] .k2-groups li{ color:var(--gray-700); font-size:22px; line-height:1.4; white-space:nowrap; }
+.deck .slide[data-slide="A3-04"] .k2-main{ min-width:0; display:flex; flex-direction:column; align-items:center; padding:14px 18px 18px; }
+.deck .slide[data-slide="A3-04"] .k2-tabs{ display:flex; gap:2px; padding:4px; border-radius:var(--r-pill); background:var(--paper); }
+.deck .slide[data-slide="A3-04"] .k2-tabs > span{ padding:3px 22px; border-radius:var(--r-pill); color:var(--ink); font-size:22px; font-weight:700; line-height:1.4; }
+.deck .slide[data-slide="A3-04"] .k2-tabs > .is-on{ background:var(--white); box-shadow:var(--shadow-sm); }
+.deck .slide[data-slide="A3-04"] .k2-hello{ margin:auto 0 16px; color:var(--ink); font-size:28px; font-weight:650; line-height:1.3; letter-spacing:-0.02em; }
+.deck .slide[data-slide="A3-04"] .k2-input{ align-self:stretch; margin-bottom:auto; display:flex; align-items:center; gap:10px; padding:8px 8px 8px 16px; border:1px solid var(--line); border-radius:var(--r-pill); background:var(--white); box-shadow:var(--shadow-sm); color:var(--ink); }
+.deck .slide[data-slide="A3-04"] .k2-input > svg{ flex:0 0 auto; width:22px; height:22px; }
+.deck .slide[data-slide="A3-04"] .k2-placeholder{ flex:1 1 auto; min-width:0; color:var(--gray-700); font-size:22px; line-height:1.4; white-space:nowrap; }
+.deck .slide[data-slide="A3-04"] .k2-send{ flex:0 0 auto; width:38px; height:38px; display:grid; place-items:center; border-radius:50%; background:var(--blue); color:var(--white); }
+.deck .slide[data-slide="A3-04"] .k2-send > svg{ width:20px; height:20px; }
+
+/* ===== 수정요청 2차 · WA 오프닝·PART 1·2 (2026-09-16) ===== */
+/* ══════════════════════════════════════════════════════════════════════
+   웨이브 WA (2026-09-16 · 1차시 수정요청 2차 R2-S2) — 오프닝 8장 + PART 1·2 (새 순서표 #1~#30)
+   병합 규약: revision.css 끝 구획에 그대로 덧붙인다(쉼표 셀렉터 없음 — 원본의 쉼표 목록은 손으로 규칙을 나눠 적었다).
+   명시도: 전부 .deck .slide[data-slide="A…"] 이상. 옛 1차시 A-ID 규칙과 같은 셀렉터면 뒤에 붙어 이기고,
+          옛 규칙이 더 높은 곳은 section 클래스를 더해 한 단계 올렸다(덮은 규칙은 WA-기록 §6).
+   ══════════════════════════════════════════════════════════════════════ */
+
+/* ── A0-00 과정 대표 표지 — U25 과정명(두 줄) ── */
+/* 신규 · A0-00 — «코딩 에이전트와 / 함께하는 바이브코딩»이 제목 칸(616px)에서 72px면 둘째 줄이 칸 폭에 닿아 세 줄로 접힐 위험 → 64px. 덮는 대상 1차시 revision.css:2443 */
+.deck .slide.cover[data-slide="A0-00"] .cover-title .ko{ font-size:64px; }
+
+/* ── A0-02 오늘의 목표 (AC1 S02 그대로) — 세 행동 줄 제거로 1차시 전용 제목·리드 축소 규칙을 원본 값으로 되돌린다 ── */
+/* 출처: AC1 revision.css:83 · S02 → A0-02 · 덮는 대상 1차시 revision.css:1537 */
+.deck .slide.s02-slide[data-slide="A0-02"] .s-title{ margin-top:20px; font-size:66px; line-height:1.14; }
+/* 출처: AC1 revision.css:84 · S02 → A0-02 · 덮는 대상 1차시 revision.css:1543 */
+.deck .slide.s02-slide[data-slide="A0-02"] .s-lead{ margin-top:26px; font-size:27px; }
+
+/* ── A0-03 1차시에 배우게 될 것 — 왼쪽 두 목록 삭제 · 오른쪽 1~6 목차 세로 가운데 · 행 글자 세로 가운데 ── */
+/* 출처: kit/styles/deck.css:606-607 · S03 → A0-03 (bottom 56 · 가운데 · 간격 16) · 덮는 대상 1차시 revision.css:1552·2203 */
+.deck .slide.s03-slide[data-slide="A0-03"] .an-right{ bottom:56px; justify-content:center; gap:16px; }
+/* 신규 · A0-03 — 행 글자를 번호 원과 같은 세로 가운데로(kit .an-body padding-top 4px 제거) */
+.deck .slide.s03-slide[data-slide="A0-03"] .an-body{ padding-top:0; }
+
+/* ── A1-13 Chat·Work·Codex의 주된 역할 (VC1 09 그대로) — kit이 원본 ID 09에만 거는 글 칸·그림 자리를 새 ID로 ── */
+/* 출처: kit/styles/patterns.css:240 · 09 → A1-13 */
+.deck .slide.tool-roles[data-slide="A1-13"] .s-full{ right:420px; }
+/* 출처: kit/styles/patterns.css:243-244 · 09 → A1-13 */
+.deck .slide[data-slide="A1-13"] .tool-role-image.asset-slot--support{ right:64px; top:244px; width:300px; height:252px; max-width:300px; max-height:252px; }
+
+/* ── A1-14 AI는 글을 토큰으로 쪼개서 읽습니다 (VC1 T01 그대로) ── */
+/* 출처: VC1 part-01.html:10 · T01 → A1-14 */
+.deck .slide[data-slide="A1-14"] .tok-lead{ margin:14px 0 0; color:var(--gray-700); font-size:22px; line-height:1.5; }
+/* 출처: VC1 part-01.html:11 · T01 → A1-14 */
+.deck .slide[data-slide="A1-14"] .tok-stage{ margin-top:28px; display:flex; flex-direction:column; align-items:center; gap:8px; }
+/* 출처: VC1 part-01.html:12 · T01 → A1-14 */
+.deck .slide[data-slide="A1-14"] .tok-orig{ margin:0; padding:8px 22px; border:1px solid var(--blue-line-strong); border-radius:var(--r-md); background:var(--white); color:var(--ink); font-family:var(--font-mono); font-size:23px; }
+/* 출처: VC1 part-01.html:13 · T01 → A1-14 */
+.deck .slide[data-slide="A1-14"] .tok-arrow{ margin:0; color:var(--blue); font-size:22px; font-weight:800; }
+/* 출처: VC1 part-01.html:14 · T01 → A1-14 */
+.deck .slide[data-slide="A1-14"] .tok-chips{ display:flex; gap:10px; }
+/* 출처: VC1 part-01.html:15 · T01 → A1-14 */
+.deck .slide[data-slide="A1-14"] .tok-chip{ padding:9px 16px; border-radius:var(--r-md); border:2px solid var(--blue-line-strong); background:var(--blue-soft); color:var(--ink); font-family:var(--font-mono); font-size:22px; font-weight:800; }
+/* 출처: VC1 part-01.html:16 · T01 → A1-14 */
+.deck .slide[data-slide="A1-14"] .tok-chip:nth-child(even){ background:var(--blue-panel); border-color:var(--blue-line); }
+/* 출처: VC1 part-01.html:17 · T01 → A1-14 */
+.deck .slide[data-slide="A1-14"] .tok-caption{ margin:26px 0 0; padding:12px 22px; border:1px solid var(--blue-line-strong); border-radius:var(--r-md); background:var(--blue-panel); color:var(--gray-700); font-size:22px; text-align:center; }
+/* 출처: VC1 part-01.html:18 · T01 → A1-14 */
+.deck .slide[data-slide="A1-14"] .tok-myth{ margin-top:28px; padding:16px 20px; border:1px solid var(--coral-line); border-radius:var(--r-md); background:var(--coral-soft); }
+/* 출처: VC1 part-01.html:19 · T01 → A1-14 */
+.deck .slide[data-slide="A1-14"] .tok-myth-h{ margin:0; color:var(--coral-deep); font-size:22px; font-weight:800; }
+/* 출처: VC1 part-01.html:20 · T01 → A1-14 */
+.deck .slide[data-slide="A1-14"] .tok-myth-b{ margin:6px 0 0; color:var(--gray-700); font-size:22px; }
+/* 출처: VC1 part-01.html:21 · T01 → A1-14 */
+.deck .slide[data-slide="A1-14"] .tok-myth-close{ margin:6px 0 0; color:var(--coral-deep); font-size:22px; font-weight:800; }
+
+/* ── A1-15 추론 강도는 생각의 깊이를 정하는 다이얼입니다 (VC1 T02 그대로 + U30 GPT-6 Astra 세 번째 줄) ── */
+/* 출처: VC1 part-01.html:24 · T02 → A1-15 */
+.deck .slide[data-slide="A1-15"] .reason-compare-grid{ display:flex; align-items:flex-start; gap:40px; margin-top:20px; }
+/* 출처: VC1 part-01.html:25-26 · T02 → A1-15 (원본 쉼표 목록의 첫 셀렉터) */
+.deck .slide[data-slide="A1-15"] .reason-line-panel{ flex:1 1 0; min-width:0; margin-top:0; }
+/* 출처: VC1 part-01.html:25-26 · T02 → A1-15 (원본 쉼표 목록의 둘째 셀렉터) */
+.deck .slide[data-slide="A1-15"] .reason-scale{ flex:1 1 0; min-width:0; margin-top:0; }
+/* 출처: VC1 part-01.html:27 · T02 → A1-15 · 22px 하한: 25자 서술문(R-TYPE-01 narrative) 20px → 22px(크기만) */
+.deck .slide[data-slide="A1-15"] .rcp-label{ margin:0 0 8px; color:var(--blue); font-size:22px; font-weight:800; line-height:1.35; }
+/* 출처: VC1 part-01.html:28 · T02 → A1-15 */
+.deck .slide[data-slide="A1-15"] .viz-line{ display:block; width:100%; height:auto; }
+/* 출처: VC1 part-01.html:29 · T02 → A1-15 */
+.deck .slide[data-slide="A1-15"] .ln-axis{ stroke:var(--line); stroke-width:2; }
+/* 출처: VC1 part-01.html:30 · T02 → A1-15 */
+.deck .slide[data-slide="A1-15"] .ln-series{ fill:none; stroke:var(--periwinkle); stroke-width:3; }
+/* 출처: VC1 part-01.html:31 · T02 → A1-15 */
+.deck .slide[data-slide="A1-15"] .ln-series.is-key{ stroke:var(--blue); stroke-width:4; }
+/* 신규 · A1-15 — U30 GPT-6 Astra 선(Sol 강조 유지 · 세 번째 색 민트) */
+.deck .slide[data-slide="A1-15"] .ln-series.astra{ stroke:var(--mint-deep); }
+/* 출처: VC1 part-01.html:32 · T02 → A1-15 */
+.deck .slide[data-slide="A1-15"] .ln-dot{ fill:var(--blue); }
+/* 출처: VC1 part-01.html:33 · T02 → A1-15 */
+.deck .slide[data-slide="A1-15"] .ln-dot.is-terra{ fill:var(--periwinkle); }
+/* 신규 · A1-15 — U30 GPT-6 Astra 점 */
+.deck .slide[data-slide="A1-15"] .ln-dot.is-astra{ fill:var(--mint-deep); }
+/* 출처: VC1 part-01.html:34 · T02 → A1-15 (축 눈금 라벨 16 — R-TYPE-01 label 하한 14 이상) */
+.deck .slide[data-slide="A1-15"] .ln-tick{ font-size:16px; font-weight:700; fill:var(--gray-700); }
+/* 출처: VC1 part-01.html:35 · T02 → A1-15 (축 이름 라벨 15 — label 하한 14 이상) */
+.deck .slide[data-slide="A1-15"] .ln-axis-caption{ font-size:15px; font-weight:800; fill:var(--gray-700); }
+/* 출처: VC1 part-01.html:36 · T02 → A1-15 */
+.deck .slide[data-slide="A1-15"] .rcp-legend{ display:flex; gap:20px; margin-top:6px; }
+/* 출처: VC1 part-01.html:37 · T02 → A1-15 */
+.deck .slide[data-slide="A1-15"] .rcp-legend span{ display:inline-flex; align-items:center; gap:8px; color:var(--ink); font-size:19px; font-weight:700; }
+/* 출처: VC1 part-01.html:38 · T02 → A1-15 */
+.deck .slide[data-slide="A1-15"] .rcp-legend i{ display:inline-block; width:13px; height:13px; border-radius:4px; }
+/* 출처: VC1 part-01.html:39 · T02 → A1-15 */
+.deck .slide[data-slide="A1-15"] .rcp-legend .sol i{ background:var(--blue); }
+/* 출처: VC1 part-01.html:40 · T02 → A1-15 */
+.deck .slide[data-slide="A1-15"] .rcp-legend .terra i{ background:var(--periwinkle); }
+/* 신규 · A1-15 — U30 GPT-6 Astra 범례 */
+.deck .slide[data-slide="A1-15"] .rcp-legend .astra i{ background:var(--mint-deep); }
+/* 출처: VC1 part-01.html:41 · T02 → A1-15 */
+.deck .slide[data-slide="A1-15"] .rs-track{ display:flex; align-items:flex-end; gap:10px; height:180px; padding:0; border-bottom:2px solid var(--blue-line-strong); }
+/* 출처: VC1 part-01.html:42 · T02 → A1-15 */
+.deck .slide[data-slide="A1-15"] .rs-col{ flex:1; display:flex; flex-direction:column; align-items:center; justify-content:flex-end; height:100%; gap:6px; }
+/* 출처: VC1 part-01.html:43 · T02 → A1-15 */
+.deck .slide[data-slide="A1-15"] .rs-bar{ display:block; width:40px; border-radius:8px 8px 0 0; background:var(--blue); }
+/* 출처: VC1 part-01.html:216 인라인 style="height:32px" · T02 → A1-15 (인라인 금지 → 규칙) */
+.deck .slide[data-slide="A1-15"] .rs-col:nth-child(1) .rs-bar{ height:32px; }
+/* 출처: VC1 part-01.html:216 인라인 style="height:72px" · T02 → A1-15 */
+.deck .slide[data-slide="A1-15"] .rs-col:nth-child(2) .rs-bar{ height:72px; }
+/* 출처: VC1 part-01.html:216 인라인 style="height:120px" · T02 → A1-15 */
+.deck .slide[data-slide="A1-15"] .rs-col:nth-child(3) .rs-bar{ height:120px; }
+/* 출처: VC1 part-01.html:216 인라인 style="height:176px" · T02 → A1-15 */
+.deck .slide[data-slide="A1-15"] .rs-col:nth-child(4) .rs-bar{ height:176px; }
+/* 출처: VC1 part-01.html:44 · T02 → A1-15 (배지 16 — badge·label 하한 이상) */
+.deck .slide[data-slide="A1-15"] .rs-badge{ padding:4px 9px; border-radius:999px; background:var(--blue); color:var(--white); font-size:16px; font-weight:900; white-space:nowrap; }
+/* 출처: VC1 part-01.html:45 · T02 → A1-15 */
+.deck .slide[data-slide="A1-15"] .rs-labels{ display:flex; gap:10px; padding:0; margin-top:6px; }
+/* 출처: VC1 part-01.html:46 · T02 → A1-15 */
+.deck .slide[data-slide="A1-15"] .rs-labels span{ flex:1; text-align:center; color:var(--ink); font-size:16px; font-weight:800; }
+/* 출처: VC1 part-01.html:47 · T02 → A1-15 */
+.deck .slide[data-slide="A1-15"] .rs-results{ display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:15px; }
+/* 출처: VC1 part-01.html:48 · T02 → A1-15 */
+.deck .slide[data-slide="A1-15"] .rs-result{ min-height:64px; padding:10px 12px; border:1px solid var(--coral-line); border-radius:var(--r-md); background:var(--coral-soft); color:var(--gray-700); line-height:1.25; }
+/* 출처: VC1 part-01.html:49 · T02 → A1-15 */
+.deck .slide[data-slide="A1-15"] .rs-result.is-quality{ border-color:var(--mint-line); background:var(--mint-soft); }
+/* 출처: VC1 part-01.html:50 · T02 → A1-15 */
+.deck .slide[data-slide="A1-15"] .rs-result b{ display:block; margin-bottom:4px; color:var(--ink); font-size:17px; }
+/* 출처: VC1 part-01.html:51 · T02 → A1-15 */
+.deck .slide[data-slide="A1-15"] .rs-result span{ display:block; font-size:15px; }
+/* 출처: VC1 part-01.html:52 · T02 → A1-15 */
+.deck .slide[data-slide="A1-15"] .reason-where{ margin-top:14px; padding:10px 16px; border-left:5px solid var(--blue); background:var(--blue-soft); color:var(--ink); font-size:22px; line-height:1.35; }
+
+/* ── A4-10 index.html — 왼쪽 검정 이름 칸 높이를 오른쪽 파랑·초록 두 칸 묶음 높이와 같게 ── */
+/* 신규 · A4-10 — 행은 세로 가운데(1차시 revision.css:2416) 그대로 두고 검정 칸만 행 높이로 늘린다 */
+.deck .slide[data-slide="A4-10"] .index-name-map > .index-name-token{ align-self:stretch; }
+
+/* ── A1-12 웹서비스 일곱 단계 (VC1 S10B 그대로 · AC1판 대체) ── */
+/* 출처: VC1 revision.css:1037·1258 · S10B → A1-12 — 22px 하한으로 설명이 두 줄이 되도록 목록 칸 440 → 500px(크기만 올리고 두 칸 구조 유지) · 덮는 대상 1차시 revision.css:2571·2852 */
+.deck .slide.lifecycle-infographic-slide[data-slide="A1-12"] .lifecycle-infographic-body{ grid-template-columns:500px minmax(0,1fr); gap:24px; max-height:422px; margin-top:12px; }
+/* 출처: VC1 revision.css:1216·1259 · S10B → A1-12 · 덮는 대상 1차시 revision.css:2575·2853 */
+.deck .slide.lifecycle-infographic-slide[data-slide="A1-12"] .lifecycle-stage-list li{ grid-template-columns:126px minmax(0,1fr); padding:1px 0 1px 14px; }
+/* 출처: VC1 revision.css:1217·1260 · S10B → A1-12 — 설명 17px → 22px(하한) · 줄높이 원본 1.14 · 덮는 대상 1차시 revision.css:2854 */
+.deck .slide.lifecycle-infographic-slide[data-slide="A1-12"] .lifecycle-stage-list span{ font-size:22px; line-height:1.14; }
+/* 출처: VC1 revision.css:1219 · S10B → A1-12 — 그림 위 라벨: 원본 그림 상자 기준 21%·67%를 그림 자체 기준으로 환산(18.4%·68.5%) · 좌우 여백 원본 9px · 덮는 대상 1차시 revision.css:2856 */
+.deck .slide[data-slide="A1-12"] .lifecycle-image-labels span{ top:18.4%; padding:5px 9px; }
+/* 출처: VC1 revision.css:1226 · S10B → A1-12 · 덮는 대상 1차시 revision.css:2857 */
+.deck .slide[data-slide="A1-12"] .lifecycle-image-labels span.stage-7{ top:68.5%; }
+
+/* ── A2-03 Sycophancy · 아첨 현상 (VC1 S3SY 그대로 · AC1판 대체) ── */
+/* 출처: VC1 revision.css:1439 · S3SY → A2-03 — 대화 속 굵은 숫자 21px → 22px(대화 글자 22px 하한 revision.css:2226과 같은 크기) */
+.deck .slide[data-slide="A2-03"] .sy-ai p b{ font-size:22px; }
+
+/* ── A2-05 결과 변동성 (AC1 M6-03 그대로) — 결론 띠·세 설명 제거로 1차시 압축 규칙을 원본 값으로 되돌린다 ── */
+/* 출처: AC1 shell.html:305 · M6-03 → A2-05 · 덮는 대상 1차시 revision.css:1624 */
+.deck .slide.variance-compare[data-slide="A2-05"] .variance-grid{ margin:auto 0; }
+/* 출처: AC1 shell.html:202 · M6-03 → A2-05 · 덮는 대상 1차시 revision.css:1625·2599 */
+.deck .slide.variance-compare[data-slide="A2-05"] .variance-grid .card{ gap:10px; padding:22px 24px; }
+
+/* ===== 수정요청 2차 · WB PART 3·4 (2026-09-16) ===== */
+/* ================================================================
+   wave-B · 1차시 수정요청 2차 · PART 3(part-03) + PART 4(part-04) · 새 순서 #31~#49
+   병합 위치: revision.css 끝(통합 워커). 모든 셀렉터 .deck .slide…[data-slide="A…"] 이상.
+   ================================================================ */
+
+/* 출처: 캡처 K3(sessions/이미지 캡쳐/K3.png → 자료/images/k3_explorer-typing_game-folder.png 1423×670) · A3-09
+   캡처 자리 → 실제 이미지(수정요청 2차 #13). 덮음: revision.css:1209~1222
+   ([data-slide="A3-09"] .app-guide-shot.asset-slot--hero 절대배치 546×354) — 칸 안 흐름 배치로. */
+.deck .slide.practice-create-slide[data-slide="A3-09"] .app-guide-shot.k3-shot.asset-slot--hero{ position:relative; inset:auto; align-self:center; justify-self:stretch; width:100%; height:auto; max-width:none; max-height:none; aspect-ratio:1423 / 670; margin:0; padding:0; box-sizing:border-box; display:block; overflow:hidden; border:1px solid var(--blue-line-strong); border-radius:var(--r-lg); background:var(--white); box-shadow:var(--shadow-md); }
+.deck .slide.practice-create-slide[data-slide="A3-09"] .app-guide-shot.k3-shot > img{ width:100%; height:100%; object-fit:contain; }
+
+/* 출처: 캡처 K17_1(910×613) · K17_2(1660×912) → 자료/images/k17-1_codex-new-project.png · k17-2_codex-project-root-select.png · A3-10
+   두 컷(높이 246 고정 · 비율 그대로) + ①~④ 네 단계(초안 4단계 · Q9) + 확인 기준(수정요청 2차 #14).
+   미사용화: revision.css:2665~2668(workspace-open-shots 캡처 자리 두 칸 — 마크업 삭제). 덮음: :2669 .workspace-open-check 절대배치 → 흐름 배치.
+   번호 배지: kit deck.css .shot-badge(42px) → 36px · 위치는 캡처의 빨간 상자 옆(이미지 좌표 %). */
+.deck .slide.workspace-open-slide[data-slide="A3-10"] .k17-layout{ position:absolute; left:64px; right:64px; top:224px; bottom:54px; display:flex; flex-direction:column; gap:14px; }
+.deck .slide.workspace-open-slide[data-slide="A3-10"] .k17-shots{ flex:0 0 auto; display:flex; justify-content:center; align-items:flex-end; gap:28px; }
+.deck .slide.workspace-open-slide[data-slide="A3-10"] .k17-shot.asset-slot--hero{ position:relative; inset:auto; flex:0 0 auto; height:248px; max-width:none; max-height:none; margin:0; padding:0; box-sizing:border-box; display:block; overflow:visible; border:1px solid var(--blue-line-strong); border-radius:var(--r-md); background:var(--white); box-shadow:var(--shadow-md); }
+.deck .slide.workspace-open-slide[data-slide="A3-10"] .k17-shot--new.asset-slot--hero{ width:368px; }
+.deck .slide.workspace-open-slide[data-slide="A3-10"] .k17-shot--root.asset-slot--hero{ width:450px; }
+.deck .slide.workspace-open-slide[data-slide="A3-10"] .k17-shot > img{ width:100%; height:100%; object-fit:contain; border-radius:inherit; }
+.deck .slide.workspace-open-slide[data-slide="A3-10"] .k17-shot > .k17-badge{ z-index:2; width:36px; height:36px; font-size:22px; }
+.deck .slide.workspace-open-slide[data-slide="A3-10"] .k17-badge--1{ left:45%; top:66%; }
+.deck .slide.workspace-open-slide[data-slide="A3-10"] .k17-badge--2{ left:29%; top:29%; }
+.deck .slide.workspace-open-slide[data-slide="A3-10"] .k17-badge--3{ left:83%; top:73%; }
+.deck .slide.workspace-open-slide[data-slide="A3-10"] .k17-badge--4{ left:33%; top:52%; }
+.deck .slide.workspace-open-slide[data-slide="A3-10"] .k17-steps{ flex:0 0 auto; margin:0; padding:0; list-style:none; display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px 28px; }
+.deck .slide.workspace-open-slide[data-slide="A3-10"] .k17-steps li{ min-width:0; display:grid; grid-template-columns:32px minmax(0,1fr); align-items:baseline; gap:8px; }
+.deck .slide.workspace-open-slide[data-slide="A3-10"] .k17-num{ color:var(--blue); font-size:24px; font-weight:900; line-height:1.4; }
+.deck .slide.workspace-open-slide[data-slide="A3-10"] .k17-steps p{ margin:0; color:var(--gray-700); font-size:22px; line-height:1.4; }
+.deck .slide.workspace-open-slide[data-slide="A3-10"] .k17-steps strong{ color:var(--ink); font-weight:850; }
+.deck .slide.workspace-open-slide[data-slide="A3-10"] .k17-steps code{ font-size:22px; }
+.deck .slide.workspace-open-slide[data-slide="A3-10"] .k17-layout > .workspace-open-check{ position:static; inset:auto; flex:0 0 auto; margin:auto 0 0; text-align:center; }
+
+/* 출처: 1차시 A5-07 검정 프롬프트 창(스냅샷 base-827b7b04 part-05.html:25 · revision.css:28~41 dark terminal 계약 · :551~554) · A3-15
+   흰 요청문 상자(.codex-input) → 검정 프롬프트 창(U28 · 캡처 배지 없음) · 카테고리 네 칸 → «다른 카테고리도 적어도 됩니다» 제안 줄(수정요청 2차 #15).
+   유지: revision.css:2673~2674(두 칸 · 왼쪽 세로 쌓기) · :2676~2677(word-category 틀·제목) · :2682(오른쪽 칸).
+   미사용화: :2675(word-request-frame) · :2678~2681 · :2846~2847(word-category-grid) — 마크업 삭제. */
+.deck .slide.material-file-slide[data-slide="A3-15"] .word-request-terminal{ flex:1 1 auto; min-height:0; display:flex; flex-direction:column; }
+.deck .slide.material-file-slide[data-slide="A3-15"] .word-request-terminal .terminal-body{ flex:1 1 auto; min-height:0; height:auto; display:flex; align-items:center; padding:24px 28px; }
+.deck .slide.material-file-slide[data-slide="A3-15"] .word-request-terminal .terminal-copy{ display:block; margin:0; font-size:24px; line-height:1.55; }
+.deck .slide.material-file-slide[data-slide="A3-15"] .word-category-guide{ margin:0 0 6px; color:var(--gray-700); font-size:22px; line-height:1.4; }
+.deck .slide.material-file-slide[data-slide="A3-15"] .word-category-list{ margin:0; padding-left:26px; display:grid; gap:2px; }
+.deck .slide.material-file-slide[data-slide="A3-15"] .word-category-list li{ color:var(--ink); font-size:22px; font-weight:700; line-height:1.4; }
+
+/* 출처: VC1 revision.css:1330~1347 «PART 3 흐름 지도 (S3MAP)» → A4-12 · 1차시 revision.css에 s3map-* 규칙 0건이라 전량 이식(값 불변 · 모두 22px 이상) */
+.deck .slide.s3map-slide[data-slide="A4-12"] .s3map-layout{ top:112px; bottom:54px; display:flex; flex-direction:column; }
+.deck .slide.s3map-slide[data-slide="A4-12"] .s3map-layout .s-title{ margin:3px 0 0; }
+.deck .slide.s3map-slide[data-slide="A4-12"] .s3map-lead{ margin:10px 0 0; color:var(--gray-700); font-size:23px; line-height:1.4; }
+.deck .slide.s3map-slide[data-slide="A4-12"] .s3map-title-chip{ display:inline-block; width:auto; background:var(--mint); color:var(--white);
+  padding:0 3px 1px; font-weight:800; line-height:1.1; font-size:.82em; vertical-align:.08em;
+  box-decoration-break:clone; -webkit-box-decoration-break:clone; }
+.deck .slide.s3map-slide[data-slide="A4-12"] .s3map-lead-underline{ padding-bottom:2px; border-bottom:5px solid var(--mint); color:var(--ink); font-weight:800; }
+.deck .slide.s3map-slide[data-slide="A4-12"] .s3map-flow{ flex:1 1 auto; min-height:0; margin-top:22px; display:grid; grid-template-columns:minmax(0,1fr) 32px minmax(0,1fr) 32px minmax(0,1fr) 32px minmax(0,1fr) 32px minmax(0,1fr); align-items:center; gap:0; padding:0; border:0; background:transparent; }
+.deck .slide.s3map-slide[data-slide="A4-12"] .s3map-step{ min-width:0; min-height:220px; display:flex; flex-direction:column; justify-content:center; padding:18px 16px; border:1px solid var(--blue-line-strong); border-radius:var(--r-md); background:var(--blue-panel); }
+.deck .slide.s3map-slide[data-slide="A4-12"] .s3map-step span{ color:var(--blue); font-size:22px; font-weight:850; }
+.deck .slide.s3map-slide[data-slide="A4-12"] .s3map-step h3{ margin:10px 0 0; color:var(--ink); font-size:25px; line-height:1.24; letter-spacing:-.025em; }
+.deck .slide.s3map-slide[data-slide="A4-12"] .s3map-step p{ margin:12px 0 0; color:var(--gray-700); font-size:22px; line-height:1.35; }
+.deck .slide.s3map-slide[data-slide="A4-12"] .s3map-step--coral{ border-color:var(--coral-line); background:var(--coral-soft); }
+.deck .slide.s3map-slide[data-slide="A4-12"] .s3map-step--coral span{ color:var(--coral-deep); }
+.deck .slide.s3map-slide[data-slide="A4-12"] .s3map-step--mint{ border-color:var(--mint-line); background:var(--mint-soft); }
+.deck .slide.s3map-slide[data-slide="A4-12"] .s3map-step--mint span{ color:var(--mint-deep); }
+.deck .slide.s3map-slide[data-slide="A4-12"] .s3map-arrow{ color:var(--gray-400); font-size:30px; font-weight:800; line-height:1; text-align:center; }
+
+/* 출처: AC1 part-04.html:6~24 S3PE → A4-03 · AC1 revision.css:1303~1338(eng-* 공용 — 1차시 revision.css:1262~1297에 같은 값이 있어 복사 안 함)
+   덮음: 1차시 revision.css:2409~2412(«A4-03 stretchY» — 주요 개념을 머리 아래 띠로 바꾼 옛 구도) → 원본 300px 왼쪽 칸 복원
+         shell kit-additions `.eng-prompt .eng-bad{ align-self:start }`(AC1 shell:326 이식) → 사용자 지정으로 옆 칸 높이
+   사용자 지정(수정요청 2차 #18): «주요 개념»과 하위 문장 세로 가운데 · «이렇게 쓰면» 칸 높이 = 옆 칸 · 글자 세로 가운데
+   원본의 빈 예상 슬롯(eng-spot · data-image-state="expected" · s3pe_prompt-four-elements-v1.png 미생산 · 화면에 보이지 않음)은 넣지 않음 */
+.deck .slide.eng-prompt[data-slide="A4-03"] .eng-layout{ grid-template-columns:300px 1fr; grid-template-rows:auto 1fr; }
+.deck .slide.eng-prompt[data-slide="A4-03"] .eng-concept{ justify-self:stretch; width:auto; max-width:none; flex-direction:column; align-items:stretch; justify-content:center; gap:0; padding:22px; }
+.deck .slide.eng-prompt[data-slide="A4-03"] .eng-concept h3{ flex:0 0 auto; margin:0 0 12px; }
+.deck .slide.eng-prompt[data-slide="A4-03"] .eng-example > .eng-bad{ align-self:stretch; justify-content:center; }
+/* 22px 하한(원본이 더 작으면 크기만): 영문 라벨 20px → 22px(revision.css:1284) · 예시 칸 머리 21px → 22px(:1289) */
+.deck .slide.eng-prompt[data-slide="A4-03"] .eng-four span{ font-size:22px; }
+.deck .slide.eng-prompt[data-slide="A4-03"] .eng-example h4{ font-size:22px; }
+
+/* 출처: VC1 revision.css:1417~1418(S3LM 낮은 값 라벨 바탕) → A4-13 · 1차시 revision.css:1300~1333에 limit-*·lm-* 나머지는 같은 값이 있어 복사 안 함 */
+.deck .slide.limit-lm[data-slide="A4-13"] .lm-low-label-bg{ fill:var(--coral-soft); stroke:var(--coral-line); stroke-width:1; }
+.deck .slide.limit-lm[data-slide="A4-13"] .lm-low-label{ dominant-baseline:middle; }
+/* 22px 하한(원본이 더 작으면 크기만): 차트 머리 21·19px → 22px(revision.css:1316~1317) · 범례 19px → 22px(:1330 · 한 줄에 안 들어가 줄바꿈 허용)
+   SVG 글자는 viewBox 600 → 실제 폭 580px(×0.967)로 줄어 보이므로 사용자 단위 23 = 화면 약 22.2px: 눈금 21 · 값 22 · 세로축 이름 20 → 23(:1325·1327·1329)
+   ⚠️ 가로축 이름(«Position of Document with the Answer · 정답이 든 문서의 위치» · x=324 가운데 정렬)은 원본 20 그대로 둔다 —
+      20에서 이미 viewBox 폭(가운데 기준 오른쪽 여유 276)에 가깝다고 추정, 23이면 오른쪽이 잘릴 위험. 렌더 측정 후 메인이 결정 */
+.deck .slide.limit-lm[data-slide="A4-13"] .lm-cap b{ font-size:22px; }
+.deck .slide.limit-lm[data-slide="A4-13"] .lm-cap span{ font-size:22px; }
+.deck .slide.limit-lm[data-slide="A4-13"] .lm-legend{ flex-wrap:wrap; row-gap:2px; font-size:22px; }
+.deck .slide.limit-lm[data-slide="A4-13"] .lm-tick{ font-size:23px; }
+.deck .slide.limit-lm[data-slide="A4-13"] .lm-val{ font-size:23px; }
+.deck .slide.limit-lm[data-slide="A4-13"] .lm-axis-name.lm-axis-y{ font-size:23px; }
+
+/* 출처: VC1 revision.css:1134(.slide[data-slide="18"] 그림 칸 340×380 가운데) → A4-14 · context-memory-* 공용은 1차시 revision.css:425~434·994~996에 같은 값 */
+.deck .slide.context-memory-slide[data-slide="A4-14"] .context-memory-image--center-right.asset-slot--support{ position:relative; inset:auto; justify-self:end; align-self:center; width:340px; height:380px; max-width:none; max-height:none; transform:none; }
+
+/* ===== 수정요청 2차 · WC PART 5·6 (2026-09-16) ===== */
+/* ══════════════════════════════════════════════════════════════════════
+   웨이브 WC — 1차시 수정요청 2차 · PART 5(#50~#59) + PART 6(#60~#82) 전용 CSS
+   통합 워커가 revision.css 끝 구획에 그대로 덧붙인다(삭제·재구성·쉼표 분해 금지).
+   셀렉터는 전부 .deck .slide.<장 클래스>[data-slide="A…"] — 옛 .deck .slide[data-slide] 규칙보다 명시도 +1.
+   옛 규칙은 지우지 않고 덮는다. 덮은 행번호는 편집 전 revision.css(스냅샷 base-827b7b04) 기준.
+   ══════════════════════════════════════════════════════════════════════ */
+
+/* 출처: AC1 part-04.html:122 · M6-06 → A5-08 (U26 그대로 · 캡처 없음)
+   원본 .viz-flow-ph는 dc-stage 안 기본 flex(0 1 auto). 옛 revision.css:1919 «flex:0 0 auto»를 원본 값으로 덮음. */
+.deck .slide.agent-progress[data-slide="A5-08"] .dc-stage > .agent-progress-flow{ flex:0 1 auto; }
+
+/* 출처: AC1 part-04.html:148 · S39 → A5-10 (U26 그대로 · 캡처 없음) · AC1 revision.css:675·685
+   옛 :1936 «1열»을 원본 31% 69%로, 옛 :1940 «static·세로 flex»를 원본 절대 배치 3칸 격자로 덮음. */
+.deck .slide.browser-result-slide[data-slide="A5-10"] .browser-result-frame > .browser-result-body{ grid-template-columns:31% 69%; }
+.deck .slide.browser-result-slide[data-slide="A5-10"] > .browser-success-criteria{ position:absolute; left:94px; right:94px; bottom:42px; display:grid; grid-template-columns:repeat(3,1fr); flex-direction:row; align-items:normal; gap:12px; }
+/* 34px 숫자 자간 — 렌더 수정 §11-12 값. 옛 :2862는 .browser-capture 래퍼 전제라 새 마크업에 걸리지 않는다. */
+.deck .slide.browser-result-slide[data-slide="A5-10"] .profile-orb{ letter-spacing:-0.03em; }
+
+/* 출처: AC1 part-05.html:8 · S46 → A6-04 (U26 그대로) · AC1 revision.css:707·955
+   옛 :2351(flex:0 0 auto · margin-top 10) · :2303(gap 6) · :2302(padding-block 8)을 원본 값으로 덮음. */
+.deck .slide.dl-list[data-slide="A6-04"] .s-full > .dl-rows{ flex:1 1 auto; min-height:0; margin-top:22px; gap:12px; }
+.deck .slide.dl-list[data-slide="A6-04"] .dl-rows > .dl-row{ padding-block:13px; }
+/* U28 검정 프롬프트 창(A5-07 모양 · 원본 S46에 없는 요청문을 초안대로 dl-rows 아래에 추가) */
+.deck .slide.dl-list[data-slide="A6-04"] .s-full > .terminal-dark{ flex:0 0 auto; height:auto; margin-top:14px; }
+.deck .slide.dl-list[data-slide="A6-04"] .s-full > .terminal-dark > .terminal-body{ height:auto; padding:14px 24px 16px; }
+.deck .slide.dl-list[data-slide="A6-04"] .terminal-dark .terminal-copy{ display:block; margin:0; font-size:22px; line-height:1.45; }
+
+/* 출처: AC1 part-05.html:9 · S47 → A6-05 (U26 그대로 · 캡처 없음) · AC1 revision.css:726
+   옛 :1983(세로 flex · gap 4) · :2347(1열)을 원본 가로 3단(1fr 50px 1fr 50px 1fr · kit gap 20)으로 덮음. */
+.deck .slide.change-refresh-slide[data-slide="A6-05"] .dc-stage > .change-refresh-flow{ display:grid; grid-template-columns:1fr 50px 1fr 50px 1fr; flex-direction:row; align-items:stretch; gap:20px; }
+
+/* 출처: AC1 part-05.html:10 · S48 → A6-06 (U26 그대로) — 원본 .change-scope-prompt(margin-top 18) 자리에
+   U28 검정 프롬프트 창(A5-07 모양)을 둔다. 옛 :1990 .change-scope-request는 클래스를 떼어 걸리지 않는다. */
+.deck .slide.change-scope-slide[data-slide="A6-06"] .s-full > .terminal-dark{ flex:0 0 auto; height:auto; margin-top:18px; }
+.deck .slide.change-scope-slide[data-slide="A6-06"] .s-full > .terminal-dark > .terminal-body{ height:auto; padding:14px 24px 16px; }
+.deck .slide.change-scope-slide[data-slide="A6-06"] .terminal-dark .terminal-copy{ display:block; margin:0; font-size:22px; line-height:1.45; }
+
+/* 출처: AC1 part-05.html:11 · S49 → A6-07 (U26 그대로 · 캡처 없음)
+   원본 규칙(:699~704 · :868 · :937)이 이미 A6-07에 걸려 있어 추가 규칙 없음. 옛 :1993~2000(.size-compare-*)은 클래스를 떼어 걸리지 않는다. */
+
+/* A6-08 가독성(수정요청 2차 #29 · 초안 축약본) — 경고 카드 1장을 «머리 · 문장» 한 줄 띠로.
+   옛 :1815·:1817(카드 flex:1 · 머리 block)을 덮음. 단계·그림 배치는 옛 :2305~2311·:2338~2339 그대로. */
+.deck .slide.w2-stepwarn[data-slide="A6-08"] .sw-warn{ margin-top:14px; }
+.deck .slide.w2-stepwarn[data-slide="A6-08"] .sw-warn > .sw-warncard{ display:flex; align-items:baseline; gap:18px; padding:12px 22px; }
+.deck .slide.w2-stepwarn[data-slide="A6-08"] .sw-warncard > .tag{ flex:0 0 auto; margin:0; font-size:22px; }
+.deck .slide.w2-stepwarn[data-slide="A6-08"] .sw-warncard > p{ margin:0; }
+.deck .slide.w2-stepwarn[data-slide="A6-08"] .sw-end{ margin-top:12px; color:var(--ink); }
+
+/* A6-09 필수 설명 장(수정요청 2차 #30) — 주장 띠 + 5행(머리 150px | 내용). «(선택)» 눈썹을 지워 제목 top을 108로(옛 :2387 top 116 덮음).
+   .dg-extra(보강 요소)는 CSS가 기대지 않는다 — 요소를 지워도 배치가 깨지지 않는다. */
+.deck .slide.dup-guard-slide[data-slide="A6-09"] .s-full{ top:108px; bottom:54px; }
+.deck .slide.dup-guard-slide[data-slide="A6-09"] .s-full > .cr-claim{ margin:10px 0 0; padding:10px 24px 12px; }
+.deck .slide.dup-guard-slide[data-slide="A6-09"] .cr-claim > b{ font-size:28px; line-height:1.25; }
+.deck .slide.dup-guard-slide[data-slide="A6-09"] .cr-claim > p{ margin:4px 0 0; line-height:1.4; }
+.deck .slide.dup-guard-slide[data-slide="A6-09"] .s-full > .dg-rows{ flex:1 1 auto; min-height:0; margin-top:10px; display:flex; flex-direction:column; justify-content:center; gap:4px; }
+.deck .slide.dup-guard-slide[data-slide="A6-09"] .dg-rows > .dg-row{ display:grid; grid-template-columns:150px minmax(0,1fr); align-items:center; column-gap:18px; margin:0; padding:6px 20px; }
+.deck .slide.dup-guard-slide[data-slide="A6-09"] .dg-row > .dg-term{ color:var(--blue); font-size:22px; font-weight:800; line-height:1.3; }
+.deck .slide.dup-guard-slide[data-slide="A6-09"] .dg-row > .dg-text{ margin:0; color:var(--gray-700); font-size:22px; line-height:1.36; }
+.deck .slide.dup-guard-slide[data-slide="A6-09"] .dg-text > .dg-line{ display:block; }
+.deck .slide.dup-guard-slide[data-slide="A6-09"] .dg-rows > .dg-prompt-row{ padding-block:0; }
+.deck .slide.dup-guard-slide[data-slide="A6-09"] .dg-prompt-row > .terminal-dark{ grid-column:2; height:auto; }
+.deck .slide.dup-guard-slide[data-slide="A6-09"] .dg-prompt-row .terminal-bar{ min-height:34px; }
+.deck .slide.dup-guard-slide[data-slide="A6-09"] .dg-prompt-row .terminal-body{ height:auto; padding:6px 20px 8px; }
+.deck .slide.dup-guard-slide[data-slide="A6-09"] .dg-prompt-row .terminal-copy{ display:block; margin:0; font-size:22px; line-height:1.36; }
+
+/* A6-14 왼쪽 격자 세로 가운데(수정요청 2차 #32) — 옛 :2313(flex:0 1 auto)로 제목 바로 아래에 붙은 3행을
+   남는 높이의 가운데로(auto 여백). 기준: AC1 S50의 .dl-rows{flex:1; justify-content:center}(행이 칸 가운데). */
+.deck .slide.dl-list[data-slide="A6-14"] .s-full > .dl-rows{ margin-top:auto; margin-bottom:auto; }
+
+/* A7-08 왼쪽 격자 세로 가운데(수정요청 2차 #33) — 옛 :2126(flex:0 0 auto · margin-top 18)로 위에 붙은 두 단계를
+   남는 높이의 가운데로. 기준: AC1 S56의 .eval-steps{flex:1; justify-content:center}. 그림·글 칸 폭(옛 :2124~2125)은 손대지 않음. */
+.deck .slide.refresh-check-slide[data-slide="A7-08"] .steps-full > .eval-steps{ margin-top:auto; margin-bottom:auto; }
+
+/* A7-11 깨진 배치(수정요청 2차 #34) — 기준: AC1 S57(dc-stage 2행 = 흐름 190px / 요청문 창) · 1차시 revision.css:716~733 공용 규칙.
+   흐름은 4노드라 1fr 50px ×3 + 1fr. 옛 .ir-stage(:2157 · :2755~2759 · :2843)·.codex-input(:2398)·.ir-copy(:2161)는 마크업에서 사라져 걸리지 않고,
+   옛 :2158(노드 padding 14/16)·:2349(auto 화살표 열)를 덮음. 요청문은 U28 검정 프롬프트 창. */
+.deck .slide.issue-report-slide[data-slide="A7-11"] > .dc-stage{ top:220px; bottom:56px; display:grid; grid-template-columns:minmax(0,1fr); grid-template-rows:190px minmax(0,1fr); justify-content:stretch; align-items:stretch; gap:24px; }
+.deck .slide.issue-report-slide[data-slide="A7-11"] .dc-stage > .ir-flow{ display:grid; grid-template-columns:minmax(0,1fr) 50px minmax(0,1fr) 50px minmax(0,1fr) 50px minmax(0,1fr); align-items:stretch; gap:8px; padding:0; border:0; background:transparent; }
+.deck .slide.issue-report-slide[data-slide="A7-11"] .ir-flow > .fl-node{ min-width:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px; padding:16px 14px; text-align:center; }
+.deck .slide.issue-report-slide[data-slide="A7-11"] .ir-flow > .fl-arrow{ display:grid; place-items:center; }
+.deck .slide.issue-report-slide[data-slide="A7-11"] .dc-stage > .terminal-dark{ height:100%; min-height:0; }
+.deck .slide.issue-report-slide[data-slide="A7-11"] .dc-stage > .terminal-dark > .terminal-body{ box-sizing:border-box; height:calc(100% - 46px); display:flex; flex-direction:column; justify-content:center; padding:16px 26px; }
+.deck .slide.issue-report-slide[data-slide="A7-11"] .terminal-dark .terminal-copy{ display:block; margin:0; font-size:22px; line-height:1.55; }
+
+/* ===== 수정요청 2차 · 렌더 수정 (2026-09-16) ===== */
+/* 메인 렌더 감사(sha 38cfdbbd) 결함 7장 + 폰트 하한 WARN 1 + 「조사 뒤 <br>」 WARN 3곳. 문구 불변 · 크기·간격·정렬만 · 옛 규칙은 지우지 않고 덮는다. */
+
+/* A5-10 (AC1 S39 그대로) — 확인 3칸 바닥 678 → 666: 바닥 여백 42 → 54 · 칸 위아래 안쪽 여백 13 → 7(칸 top 624·틀과의 간격 8 유지) */
+.deck .slide.browser-result-slide[data-slide="A5-10"] > .browser-success-criteria{ bottom:54px; }
+.deck .slide.browser-result-slide[data-slide="A5-10"] > .browser-success-criteria > span{ padding-block:7px; }
+
+/* A4-10 — 검정 칸 높이 = 오른쪽 두 칸 묶음 높이(:3026 stretch 유지) · 채움 17% → 34%: 이름 글자 58 → 72px + 위아래 안쪽 여백 24 */
+.deck .slide.index-entry-slide[data-slide="A4-10"] .index-name-map > .index-name-token{ padding-block:24px; font-size:72px; }
+
+/* A4-03 — «이렇게 쓰면» 칸 높이 = 옆 칸(grid stretch · :3123) · 글자 세로 가운데(:3123 justify-content:center) 유지.
+   ① 옆 칸 내용(253px)이 예시 줄(243px)을 넘어 두 칸 바닥이 676까지 내려가던 것 → 오른쪽 세로 간격 16 → 12 · 예시 두 칸 위아래 안쪽 여백 18 → 14 (두 칸 247px · 바닥 666)
+   ② 빨간 칸 채움 22% → 34%: 예시 문장 23 → 26px + 빨간 칸 위아래 안쪽 여백 34(대칭이라 세로 가운데 유지) */
+.deck .slide.eng-prompt[data-slide="A4-03"] .eng-right{ gap:12px; }
+.deck .slide.eng-prompt[data-slide="A4-03"] .eng-example > article{ padding-block:14px; }
+.deck .slide.eng-prompt[data-slide="A4-03"] .eng-example > .eng-bad{ padding-block:34px; }
+.deck .slide.eng-prompt[data-slide="A4-03"] .eng-bad > p{ font-size:26px; }
+
+/* A1-14 (VC1 T01 그대로) — 전폭 경고 칸의 세 줄이 왼쪽 37%에만 몰림(우측 빈 63%) → 위 캡션(:2940 가운데 정렬)과 같은 가운데 정렬 */
+.deck .slide.dl-list[data-slide="A1-14"] .tok-myth{ text-align:center; }
+
+/* A1-15 (VC1 T02 그대로) — 왼쪽 파랑 줄 안내 띠가 전폭인데 문장은 59%까지만 → 띠 폭을 문장에 맞춤(왼쪽 정렬·위치 그대로) */
+.deck .slide.compare-slide[data-slide="A1-15"] .s-full > .reason-where{ align-self:flex-start; width:fit-content; max-width:100%; box-sizing:border-box; }
+
+/* A6-08 — «머리 · 문장» 한 줄 경고 띠(:3189)가 전폭인데 내용은 72%까지만 → 띠 폭을 내용에 맞춤(:1815 flex:1 1 0 덮음) */
+.deck .slide.w2-stepwarn[data-slide="A6-08"] .sw-warn > .sw-warncard{ flex:0 1 auto; }
+
+/* A4-13 (VC1 S3LM 그대로) — 가로축 이름 20 → 22px, 한 줄 유지·잘림 없이:
+   차트 칸 580 → 600px(viewBox 600과 1:1 · 사용자 단위 22 = 화면 22px · 왼쪽 글 칸 544 → 524px, 줄 수 변화 없음 실측)
+   축 이름 폭 583(단위) → 가운데 x 324 → 300(part-04 속성)으로 옮겨 8~591 안에 들어감. 나머지 차트 글자는 23단위 = 화면 23px */
+.deck .slide.limit-lm[data-slide="A4-13"] .limit-body{ grid-template-columns:minmax(0,1fr) 600px; }
+.deck .slide.limit-lm[data-slide="A4-13"] .lm-axis-name:not(.lm-axis-y){ font-size:22px; }
+
+/* 「조사 바로 뒤 <br>」 3곳 — <br>을 줄 단위 블록 span으로 바꿔 줄바꿈 위치·화면은 그대로 둔다(문구 불변) */
+.deck .slide.cover[data-slide="A0-00"] .cover-title .ko > .cover-line{ display:block; }
+.deck .slide.s3map-slide[data-slide="A4-12"] .s3map-step p > .s3map-line{ display:block; }
+.deck .slide.limit-lm[data-slide="A4-13"] .limit-lead > .limit-line{ display:block; }

@@ -1,7 +1,7 @@
 <!-- ============ PART 6 · 실습: md를 먼저 고쳐 사이트 넓히기 · W4 담당 (W0 골격 2026-09-15 · W4 조립 2026-09-15) ============
      이 파일의 data-slide 순서 = 계약 sequences.PART6 = 초안 순서:
      P6(초안 B6-01 간지) · B6-02 · B6-03 · B6-04 · B6-05 · B6-06 · B6-07 · B6-08 · B6-09 · B6-10
-     간지 data-slide는 초안 번호가 아니라 P6이다(verify_deck 단조성 · 오전 A1-01→P1 선례).
+     간지 data-slide는 초안 번호가 아니라 P6이다(verify_deck 단조성 · 1차시 A1-01→P1 선례).
      본문 슬라이드는 간지 아래에 초안 순서대로 이어 붙인다. 이 파일 안에 style 블록을 두지 않는다.
      전용 CSS는 저장소 tmp 작업 폴더의 wave-4.css(revision.css 단일 라이터는 메인). 규약: 같은 폴더 W0-기록.md §4 · 판정표: W4-기록.md -->
 <section class="slide part-divider" data-slide="P6" data-shape="declaration">
@@ -10,7 +10,7 @@
   <p class="pd-eyebrow">PART</p>
   <h2 class="pd-title">실습: md를 먼저 고쳐 사이트 넓히기</h2>
   <p class="pd-sub">바꾸고 싶은 것이 생기면 사이트보다 문서를 먼저 고치고, 그 문서를 다시 읽혀 적용합니다.</p>
-  <!-- 발표노트: 설명 — 오전에는 말로 바로 고쳤습니다. 오후에는 순서가 다릅니다 — 문서 고치기 → 적용 요청 → 화면 확인. 한 번에 한 가지만 바꾸는 것은 같습니다. -->
+  <!-- 발표노트: 설명 — 1차시에는 말로 바로 고쳤습니다. 2차시에는 순서가 다릅니다 — 문서 고치기 → 적용 요청 → 화면 확인. 한 번에 한 가지만 바꾸는 것은 같습니다. -->
 </section>
 
 <section class="slide" data-slide="B6-02" data-shape="flow">
@@ -27,7 +27,7 @@
   <div class="s-full"><h2 class="s-title">한 줄 소개 변경 요청 — <span class="hl-mint-text">prd.md 먼저</span></h2>
     <div class="dl-rows"><div class="card surface dl-row"><span class="dl-term">1 문서 먼저</span><p class="s-body">prd.md에 적힌 한 줄 소개를 <strong class="hl-mint-text">새 문장으로 직접 고치고 저장</strong>합니다.</p></div><div class="card surface dl-row"><span class="dl-term">2 적용 요청</span><p class="s-body">한 줄 소개만 바꿔 달라고 요청하고, 이름 · 관심사 · 나머지 구성은 그대로 두라고 함께 적습니다.</p></div></div>
     <p class="fix-3step"><b>수정 요청 3단</b>무엇을 유지할지 → 무엇을 바꿀지 → 바뀐 뒤 무엇을 확인할지</p>
-    <div class="codex-input" aria-label="Codex 입력창에 넣을 요청문"><span class="codex-input-label">요청문 · Codex 입력창</span><p>prd.md를 다시 읽어 주세요. 이름 · 관심사 · 디자인 · 나머지 구성은 그대로 유지해 주세요. 한 줄 소개만 prd.md에 고쳐 둔 새 문장으로 바꿔 주세요. 바꾼 뒤 어느 파일의 무엇을 바꿨는지 짧게 알려 주세요.</p></div>
+    <div class="codex-input terminal-dark terminal-white-copy" aria-label="프롬프트 창에 넣을 요청문"><div class="terminal-bar"><span></span><span></span><span></span><b>요청문 · 프롬프트 창</b></div><div class="terminal-body"><p>prd.md를 다시 읽어 주세요. 이름 · 관심사 · 디자인 · 나머지 구성은 그대로 유지해 주세요. 한 줄 소개만 prd.md에 고쳐 둔 새 문장으로 바꿔 주세요. 바꾼 뒤 어느 파일의 무엇을 바꿨는지 짧게 알려 주세요.</p></div></div>
   </div>
   <div class="shot-side">
     <figure class="shot-annot capture-slot" aria-label="한 줄 소개를 바꾸기 전 사이트 화면 캡처 자리"><div class="shot-frame demo-placeholder" data-capture="K12" role="img" aria-label="화면 캡처 자리 K12 — 확장 전 화면"><span class="dp-badge">화면 캡처 자리 · K12</span><b>확장 전 화면</b><p>실제 화면 캡처가 이 자리에 들어갑니다.</p></div></figure>
@@ -57,7 +57,7 @@
   <div class="s-full"><h2 class="s-title">배경색 변경 요청 — <span class="hl-mint-text">design.md 먼저</span></h2>
     <div class="cs-steps"><p><b>1 문서 먼저</b>design.md의 «색» 줄을 원하는 배경색으로 고치고 저장합니다.</p><p><b>2 적용 요청</b>배경색만 바꿔 달라고 요청합니다.</p></div>
     <div class="change-scope-grid"><div class="change-scope-item change"><h3>바꿀 것</h3><p>배경색</p></div><div class="change-scope-item keep"><h3>그대로 둘 것</h3><p>한 줄 소개 · 이름 · 관심사 · 나머지 구성</p></div><div class="change-scope-item check"><h3>다시 볼 것</h3><p>새 배경 위에서 글자가 잘 읽히는지</p></div></div>
-    <div class="codex-input change-scope-request" aria-label="Codex 입력창에 넣을 요청문"><span class="codex-input-label">요청문 · Codex 입력창</span><p>design.md를 다시 읽어 주세요. 배경색만 design.md에 고쳐 둔 색으로 바꿔 주세요. 한 줄 소개 · 이름 · 관심사 · 나머지 구성은 그대로 유지해 주세요. 바꾼 뒤 글자가 잘 읽히는지 확인할 수 있게 알려 주세요.</p></div>
+    <div class="codex-input change-scope-request terminal-dark terminal-white-copy" aria-label="프롬프트 창에 넣을 요청문"><div class="terminal-bar"><span></span><span></span><span></span><b>요청문 · 프롬프트 창</b></div><div class="terminal-body"><p>design.md를 다시 읽어 주세요. 배경색만 design.md에 고쳐 둔 색으로 바꿔 주세요. 한 줄 소개 · 이름 · 관심사 · 나머지 구성은 그대로 유지해 주세요. 바꾼 뒤 글자가 잘 읽히는지 확인할 수 있게 알려 주세요.</p></div></div>
   </div>
   <!-- 발표노트: 설명 — 이번에는 prd.md가 아니라 design.md를 고칩니다. «어떻게 보이나»에 대한 결정이기 때문입니다 — PART 4 «어떤 문서가 무엇을 책임지나»를 다시 부르세요. -->
 </section>
@@ -116,7 +116,7 @@
       <div class="fl-arrow" aria-hidden="true">→</div>
       <div class="fl-node key"><b>완성</b><small>범위를 지킨 첫 버전</small></div>
     </div>
-    <div class="codex-input" aria-label="Codex 입력창에 넣을 요청문"><span class="codex-input-label">요청문 · Codex 입력창</span><p>prd.md의 «만들지 않을 것»과 지금 사이트를 비교해, 범위 밖에 들어온 기능을 알려 주세요. 아직 고치지 마세요.</p></div>
+    <div class="codex-input terminal-dark terminal-white-copy" aria-label="프롬프트 창에 넣을 요청문"><div class="terminal-bar"><span></span><span></span><span></span><b>요청문 · 프롬프트 창</b></div><div class="terminal-body"><p>prd.md의 «만들지 않을 것»과 지금 사이트를 비교해, 범위 밖에 들어온 기능을 알려 주세요. 아직 고치지 마세요.</p></div></div>
     <div class="ir-notes"><p><b>그다음</b>내가 고른 하나만 빼 달라고 하고, 나머지는 그대로 유지해 달라고 적습니다.</p><p class="is-warn"><b>주의</b>AI에게 그냥 “고쳐줘”라고 하면 범위를 넘겨 만들 수 있어, <strong>유지할 것</strong>을 함께 적습니다.</p></div>
   </div>
   <!-- 발표노트: 설명 — 무엇을 뺄지 정하는 게 진짜 기획입니다. 제거할 것이 없으면 «없음»을 확인한 것도 결과라고 말해 줍니다. -->

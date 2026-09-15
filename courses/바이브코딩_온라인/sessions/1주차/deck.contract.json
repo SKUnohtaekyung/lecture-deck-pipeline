@@ -1,36 +1,47 @@
 {
   "week": "1주차",
   "frozen": false,
-  "_readme": "바이브코딩 온라인 원데이 · 오전(폴더 1주차, 화면 표기 «오전») 구조 계약. 규약 정본은 sessions/README.md 「주차 구조 계약」. 원본 대응(원본 과목·ID → 새 data-slide)은 조립_보고.md §2 결정표·§9 ID 대응표와 자료/1주차_콘텐츠_집필노트.md가 정본이다. 새 과목이라 known_violations는 0에서 시작한다(AC1 waiver 상속 없음).",
+  "_readme": "코딩 에이전트와 함께하는 바이브코딩 · 1차시(과목 폴더 바이브코딩_온라인 · 폴더 1주차, 화면 표기 «1차시») 구조 계약. 규약 정본은 sessions/README.md 「주차 구조 계약」. 원본 대응(원본 과목·ID → 새 data-slide)은 조립_보고.md §2 결정표·§9 ID 대응표와 자료/1주차_콘텐츠_집필노트.md가 정본이다. 새 과목이라 known_violations는 0에서 시작한다(AC1 waiver 상속 없음).",
   "decks": {
     "강의덱": {
-      "slides": 90,
-      "dividers": 7,
+      "slides": 82,
+      "dividers": 6,
       "intro": [
+        "A0-00",
         "A0-01",
+        "A1-02",
+        "A1-03",
+        "A1-04",
+        "A0-05",
         "A0-02",
-        "A0-03",
-        "A0-04"
+        "A0-03"
       ],
       "sequences": {
         "OPENING": [
+          "A0-00",
           "A0-01",
-          "A0-02",
-          "A0-03",
-          "A0-04"
-        ],
-        "PART1": [
-          "P1",
           "A1-02",
           "A1-03",
           "A1-04",
+          "A0-05",
+          "A0-02",
+          "A0-03"
+        ],
+        "PART1": [
+          "P1",
           "A1-05",
           "A1-06",
           "A1-07",
           "A1-08",
           "A1-09",
           "A1-10",
-          "A1-11"
+          "A1-13",
+          "A1-14",
+          "A1-15",
+          "A1-11",
+          "A4-09",
+          "A4-10",
+          "A1-12"
         ],
         "PART2": [
           "P2",
@@ -39,8 +50,6 @@
           "A2-04",
           "A2-05",
           "A2-06",
-          "A2-07",
-          "A2-08",
           "A2-09",
           "A2-10"
         ],
@@ -52,40 +61,32 @@
           "A3-05",
           "A3-06",
           "A3-07",
-          "A3-08",
           "A3-09",
           "A3-10",
-          "A3-11",
-          "A3-12",
-          "A3-13",
-          "A3-14",
           "A3-15",
-          "A3-16"
+          "A3-16",
+          "A2-08",
+          "A3-12"
         ],
         "PART4": [
           "P4",
-          "A4-02",
+          "A4-12",
           "A4-03",
+          "A4-13",
+          "A4-11",
+          "A4-14"
+        ],
+        "PART5": [
+          "P5",
           "A4-04",
           "A4-05",
           "A4-06",
           "A4-07",
-          "A4-08",
-          "A4-09",
-          "A4-10"
-        ],
-        "PART5": [
-          "P5",
-          "A5-02",
-          "A5-03",
-          "A5-04",
-          "A5-05",
           "A5-06",
           "A5-07",
           "A5-08",
           "A5-09",
-          "A5-10",
-          "A5-11"
+          "A5-10"
         ],
         "PART6": [
           "P6",
@@ -97,56 +98,61 @@
           "A6-07",
           "A6-08",
           "A6-09",
-          "A6-10",
-          "A6-11",
-          "A6-12",
-          "A6-13",
-          "A6-14"
-        ],
-        "PART7": [
-          "P7",
+          "A6-14",
           "A7-02",
+          "A6-13",
           "A7-03",
           "A7-04",
           "A7-05",
           "A7-06",
-          "A7-07",
           "A7-08",
-          "A7-09",
-          "A7-10",
           "A7-11",
-          "A7-12",
           "A7-13",
-          "A7-14"
+          "A2-07",
+          "A7-15",
+          "A7-14",
+          "A7-16"
         ]
       },
       "must_keep": {
         "A2-02": "할루시네이션 3막 — 이름·경로·숫자는 실제 파일과 화면에서 직접 확인(AC1 M6-02 이관).",
-        "A2-03": "아첨(Sycophancy) — «잘 모르는 영역일수록 못 알아챈다» 결론과 arXiv:2310.13548 출처(AC1 S3SY 이관).",
-        "A2-07": "AI가 말한 것 ≠ 내가 열어 확인한 것 · 직접 연 것만 완료로 셈(AC1 M6-07 조정 이관 + AC2 N-17 병합).",
+        "A2-03": "아첨(Sycophancy) — «잘 모르는 영역일수록 못 알아챕니다» 결론(AC1 S3SY 이관 · 수정요청 2차 2026-09-16 화면을 VC1 S3SY로 교체 — VC1 원본에 화면 출처 줄이 없어 arXiv:2310.13548 인용은 초안 결정으로 발표노트로 옮김).",
+        "A2-07": "AI가 말한 것 ≠ 내가 열어 확인한 것 — AI의 «완료»는 확인이 아니라 보고(AC1 M6-07 조정 이관 + AC2 N-17 병합 · 수정요청 2차 2026-09-16 사용자 삭제 지시 #35로 «직접 연 것만 완료로 셈» 결론 문장은 화면에서 빠짐).",
         "A3-16": "«Agent의 완료 보고가 아니라 실제 파일을 기준으로» + 위치·존재·내용·유지 4점검(AC1 24 이관).",
         "A7-13": "«체크리스트는 AI의 자가평가가 아니라 사람이 실제 화면과 파일을 확인하는 순서»(AC1 S59 이관).",
         "A3-12": "«모든 작업을 묻지 않고 허용하는 설정은 쓰지 않기» · «비밀번호·API 키·개인정보는 입력하지 않기»(AC1 19 조정 이관).",
-        "A5-04": "실행 전 목표 경로와 Codex 현재 작업 폴더 대조 게이트(AC1 S36 이관).",
-        "A2-09": "«AI에게 넘기는 것은 판단이 아니라, 정해진 범위의 실행»(AC1 S3HUM 이관).",
+        "A2-09": "«AI에게 넘기는 것은 판단이 아니라 실행»(AC1 S3HUM 이관 · 수정요청 1차 2026-09-16 화면을 AC1 원문으로 복원 — 옛 설명의 «정해진 범위의»는 발표노트 멘트로만 남는다).",
         "A1-07": "«허용된 권한과 폴더 범위 안에서만» · «AI가 작성해도 최종 결정은 사람에게 있습니다»(AC1 07 이관).",
         "A2-08": "개인정보 3단 판단(입력 금지 / 검토 후 결정 / 목적에 따라 사용)과 «무조건 금지가 아닙니다»(AC1 S3PRV 이관).",
         "A6-14": "«마지막 결정은 사람이 합니다» · «무엇을 확인했는지 기록합니다»(AC1 S50 이관)."
       },
       "dark_terminal_slides": [
-        "A5-05",
-        "A5-07"
+        "A2-04",
+        "A3-15",
+        "A5-07",
+        "A6-04",
+        "A6-06",
+        "A6-09",
+        "A7-11"
       ],
-      "note": "slides 90 · dividers 7 · sequences OPENING+PART1~7 = 초안 90행 순서(조립 웨이브 2 완료). must_keep은 조립_보고 §4 이관안 11장."
+      "closing_text": "THANK YOU",
+      "note": "slides 82 · dividers 6(data-slide P1~P6 = 초안 A1-01~A6-01) · intro = OPENING 8장 · sequences OPENING 8 + PART1 14 · PART2 8 · PART3 13 · PART4 6 · PART5 10 · PART6 23 = 초안 82행 순서(수정요청 2차 통합 · 2026-09-16 · 새 순서표 plans/바이브코딩_온라인/1차시-수정2-PLAN.md §1 — P5 간지를 A4-04 앞으로(U27) · A2-08은 A3-16 뒤 · A6-13은 A7-02 뒤 · 신규 A1-13·A1-14·A1-15·A4-12·A4-13·A4-14). 옛 값 76장(수정요청 1차 · 조립_보고 §11) · 90장 PART 7(§9·§10). must_keep은 조립_보고 §4 이관안 11장 중 10장 — A5-04(AC1 S36 이관)는 2026-09-16 사용자 삭제 지시(수정요청 1차 #37)로 제외 · 설치 파트 A3-10으로 대체. A2-09 설명은 수정요청 1차에서 AC1 원문 «AI에게 넘기는 것은 판단이 아니라 실행» 기준으로 갱신. 수정요청 2차 설명 갱신 2건: A2-03 — 화면이 VC1 S3SY로 교체돼 arXiv:2310.13548 인용이 화면에서 발표노트로 옮겨짐(초안 결정 · 결론 문장은 화면에 남음) · A2-07 — «직접 연 것만 완료로 셉니다. 완료는 사람이 화면과 파일에서 확인했을 때 성립합니다.»가 2026-09-16 사용자 삭제 지시(수정요청 2차 #35)로 화면에서 빠져 남은 사수 문구(AI가 말한 것 ≠ 내가 열어 확인한 것 · 완료는 보고) 기준으로 갱신. 나머지 8장(A1-07·A2-02·A2-08·A2-09·A3-12·A3-16·A6-14·A7-13)은 조립 덱 화면에서 사수 문구를 대조해 설명 변경 없음. dark_terminal_slides 7: A2-04(수정요청 1차 렌더 수정에서 추가 · terminal-white-copy 보강) · A5-07(AC1 32) + 수정요청 2차 U28 «요청문 프롬프트 창은 검정 배경» 4장 A3-15·A6-04·A6-06·A6-09·A7-11 — 전부 .terminal-dark 안 p.terminal-copy이고 revision.css `.terminal-dark *` 흰 글자 규칙을 받는다. closing_text «THANK YOU»는 마지막 장 A7-16(AC1 S62 구조)에서 찾는다."
     }
   },
-  "known_violations": {},
+  "known_violations": {
+    "render_lowFill": {
+      "count": 1,
+      "slides": ["A1-13"],
+      "reason": "A1-13 = VC1 `09`(Chat·Work·Codex 역할) «화면 그대로» 복원 장(사용자 수정요청 2차 #5 · U26 «원본 화면·구조를 빠짐없이 똑같이»). 역할 카드 2개(ARTICLE)가 원본 구도상 카드 높이에 비해 글이 짧아 채움 약 30%로 lowFill 판정. 렌더 수정 워커가 카드 바깥 크기는 그대로 두고 안쪽 여백만 18→24px로 늘려 수치만 통과시켰으나(화면 변화 없음 = 감사기 우회), 메인이 2026-09-16 그 규칙을 되돌리고 원본 구조 유지 사유로 등재. 해소하려면 원본 구도를 바꿔야 하므로 사용자 확인 전까지 유지. count 초과는 FAIL.",
+      "date": "2026-09-16"
+    }
+  },
   "warn_baseline": {
     "static_gates": 0,
-    "date": "2026-09-14",
-    "note": "run_deck_checks WARN 래칫 기준선(조립 웨이브 2 실측 · 2026-09-14). static_gates 0 = verify_deck 구조 WARN 0(FAIL 0 · PASS 65). quality 7 = verify_deck_quality 기본 모드 WARN 7건 분해: ① R-QC-02 의미 블록<5 — A6-11(VC2 C5-18 선언형 이식)·A7-10(신규 3칸) ② R-QC-01 본문<76자 — A1-02(AC1 S01A 상속 도입 장) ③ R-QC-03 근-빈 컨테이너 — A4-02(AC2 C1-14 준비 네 칸, 칸당 한 구절) ④ R-QC-15 하단 결론 콜아웃 16.7%(8/48 — 결정표 «검은 배너» 마무리 배정) ⑤ R-QC-16 박스 4개↑ — A1-05·A1-09·A4-04·A4-05(AC1 warn_baseline 상속)·A7-02(3단 재배치) ⑥ R-QC-17 실습 단계<2 — A3-09(AC1 20 상속) ⑦ R-QC-19 격자 안 맨 텍스트 — A7-03·A7-08(AC1 S53·S56 상속). R-QC-08 FAIL(시각자료 43.8%)은 WARN이 아니라 캡처 대기(K2~K10·K15 자리표시 14곳 미집계) — 캡처 교체 후 재측정. 구조 WARN이 생기면 원인을 없애거나, 없앨 수 없는 사유를 적고 이 값을 올린다. render 0 = 메인 렌더 감사 2차 반영 뒤 audit_all 실측(1400×860): 폰트하한위반 0 · 자간보정누락 0(32px 이상 −0.02em 보정 27건) · 정렬지배값충돌 0(제목 상단 149/155/159/112/167 → 150/108/165로 모음 4건) · waiver 강등 0.",
-    "quality": 7,
-    "render": 0
+    "date": "2026-09-16",
+    "note": "run_deck_checks WARN 래칫 기준선. 수정요청 2차 통합(2026-09-16 · 82장) 재산정 — static_gates 0 = verify_deck 구조 WARN 0 유지. quality 6 = verify_deck_quality 기본 모드 WARN 6건 분해(옛 6 → 6 · 구성 변경): ① R-QC-02 의미 블록<5 — A6-14(4 · AC1 S50 원본 복원 · 옛과 같음) ② R-QC-01 본문<76자 — A1-02(73자 · AC1 S01A 상속 · 옛과 같음) ③ R-QC-03 근-빈 컨테이너 — A1-15(4개 · 신규 · VC1 T02 원본 그대로(접수 #5 · U26) — VC1 1주차 덱 T02도 같은 검사에서 4개로 WARN(2026-09-16 실측) · Astra 줄 추가(U30)는 개수에 영향 없음) ④ R-QC-16 박스 4개↑ 16.3%(8/49) — A1-05·A1-09·A4-04·A4-05·A7-02·A7-14(옛과 같음) + A5-08(5 · AC1 M6-06 그대로 · 접수 #23) + A6-09(4 · «선택» 해제 후 필수 설명 5행 · 접수 #30) ⑤ R-QC-17 실습 단계<2 — A3-09(VC1 20 구조 · 캡처 K3 한 컷 + 확인 설명 · 옛과 같음) ⑥ R-QC-19 격자 안 맨 텍스트 — A7-03·A7-08(AC1 S53·S56 상속 · 옛과 같음). 옛 R-QC-15(하단 결론 콜아웃 12.8%)는 A2-07 결론 배너 삭제(#35)·설명 장 증가로 10.2%(5/49)가 돼 PASS로 해소. 전부 «AC1/VC1 화면 그대로» 또는 사용자 지시 구도라 문구·구조 변경 없이 없앨 수 없다. R-QC-08은 캡처 자리 정리(K3·K17×2 이미지 대체 · K5·K6·K8·K9×2 삭제)와 신규 그림 장으로 PASS 57.1%(28/49 · 임계 55%) — 남은 캡처 대기는 A3-16 K7 한 곳. render 0은 76장 덱 렌더 감사(수정요청 1차 · 조립_보고 §11-12) 기준 — 82장 덱 렌더 감사(R2-S4)에서 다시 확인한다.",
+    "quality": 6,
+    "render": 1
   },
   "layout_families": {
     "roadmap": "roadmap",
@@ -189,6 +195,14 @@
     "stuck-stage-slide": "flow",
     "restore-first-slide": "grid",
     "afternoon-preview-slide": "centered",
-    "_note": "① roadmap~workspace-rings는 AC1 계약 이관(오전 미사용 journey-track-grid·lifecycle-stage-list는 제외). ② frontend-basics-slide·index-entry-slide·w2-annex·w2-ready·w2-stepwarn은 조립_보고 §6-3 등재안. ③ day-flow-contrast(A0-04)·writes-decides-slide(A2-06)·ext-show-slide(A3-08)·perm-questions-slide(A3-11)·rules-vs-permission(A3-13)·plan-first-slide(A3-14)·folder-gui(A3-09 폴더 화면)는 조립 웨이브 1 신규 구도. 캡처 자리 장(A3-04·08·10·11·14·16)은 kit .shot-annot 틀을 쓰므로 판정기가 shot으로 먼저 잡는다(A3-10은 breadcrumb 우선). ④ 조립 웨이브 2 신규·재설계 구도: scope-contrast-slide(A4-08)·agent-open-slide(A5-03 K3 캡처 host)·step-build-slide(A5-11)·size-compare-slide(A6-07)·dup-guard-slide(A6-09)·criteria-test-slide(A6-10)·backup-slide(A6-11)·evidence-pyramid-slide(A6-12)·copy-contrast-slide(A6-13)·issue-columns-slide(A7-02)·stuck-order-slide(A7-03)·name-mismatch-slide(A7-05)·subfolder-index-slide(A7-06)·done-check-slide(A7-07)·stuck-stage-slide(A7-09)·restore-first-slide(A7-10)·afternoon-preview-slide(A7-14). w2-ready(A4-02)·w2-stepwarn(A6-08)은 ②에 이미 등재."
+    "journey-slide": "roadmap",
+    "lifecycle-infographic-slide": "flow",
+    "session2-preview-slide": "split",
+    "s3map-slide": "flow",
+    "limit-lm": "figure",
+    "context-memory-slide": "compare",
+    "k17-layout": "shot",
+    "k3-shot": "shot",
+    "_note": "① roadmap~workspace-rings는 AC1 계약 이관(1차시 미사용 journey-track-grid·lifecycle-stage-list는 제외). ② frontend-basics-slide·index-entry-slide·w2-annex·w2-ready·w2-stepwarn은 조립_보고 §6-3 등재안. ③ day-flow-contrast(A0-04)·writes-decides-slide(A2-06)·ext-show-slide(A3-08)·perm-questions-slide(A3-11)·rules-vs-permission(A3-13)·plan-first-slide(A3-14)·folder-gui(A3-09 폴더 화면)는 조립 웨이브 1 신규 구도. 캡처 자리 장(A3-04·08·10·11·14·16)은 kit .shot-annot 틀을 쓰므로 판정기가 shot으로 먼저 잡는다(A3-10은 breadcrumb 우선). ④ 조립 웨이브 2 신규·재설계 구도: scope-contrast-slide(A4-08)·agent-open-slide(A5-03 K3 캡처 host)·step-build-slide(A5-11)·size-compare-slide(A6-07)·dup-guard-slide(A6-09)·criteria-test-slide(A6-10)·backup-slide(A6-11)·evidence-pyramid-slide(A6-12)·copy-contrast-slide(A6-13)·issue-columns-slide(A7-02)·stuck-order-slide(A7-03)·name-mismatch-slide(A7-05)·subfolder-index-slide(A7-06)·done-check-slide(A7-07)·stuck-stage-slide(A7-09)·restore-first-slide(A7-10)·afternoon-preview-slide(A7-14). w2-ready(A4-02)·w2-stepwarn(A6-08)은 ②에 이미 등재. ⑤ 수정요청 1차 S2 통합(2026-09-16): journey-slide(A0-05 · AC1 05 1차시→2차시 두 정거장 여정 — 옛 AC1 계약 journey-track-grid는 grid였으나 두 칸 여정 경로라 roadmap) · lifecycle-infographic-slide(A1-12 · AC1 S10B · 내장 lifecycle-flow 판정과 같은 flow를 계약에 명시) · session2-preview-slide(A7-14 · 좌 문구 / 우 브라우저 목업 → split). 삭제 장이 쓰던 등재(day-flow-contrast A0-04 · ext-show-slide A3-08 · perm-questions-slide A3-11 · rules-vs-permission A3-13 · plan-first-slide A3-14 · scope-contrast-slide A4-08 · w2-ready A4-02 · agent-open-slide A5-03 · step-build-slide A5-11 · criteria-test-slide A6-10 · backup-slide A6-11 · evidence-pyramid-slide A6-12 · done-check-slide A7-07 · stuck-stage-slide A7-09 · restore-first-slide A7-10 · afternoon-preview-slide 옛 A7-14 · folder-gui 옛 A3-09 폴더 화면)은 1차시 덱에서 사용처 0이지만 남겼다 — 판정기는 덱에 있는 클래스만 대조하므로 미사용 등재는 판정에 영향이 없고, 삭제 ID는 재사용하지 않으며(R-SLIDE-ID-01) 2차시 이관·복원 때 같은 값을 쓸 수 있다. ⑥ 수정요청 2차 통합(2026-09-16): s3map-slide(A4-12 · VC1 S3MAP 다섯 단계 가로 흐름 → flow) · limit-lm(A4-13 · VC1 S3LM 글 + 선그래프 → figure · 등재 전 내장 판정은 chart) · context-memory-slide(A4-14 · VC1 18 맥락/메모리 두 띠 대비 + 그림 → compare · 등재 전 내장 판정은 bands) · k17-layout(A3-10 · 실제 캡처 두 컷 → shot) · k3-shot(A3-09 · 실제 캡처 한 컷 → shot). k17-layout·k3-shot·s3map-slide는 등재 전에도 내장 판정(screenshot asset-kind → shot · flow)과 같은 값이라 판정 불변 — 웨이브 구도 이름을 계약에 명시하려고 등재. size-compare-slide(옛 A6-07)는 A6-07이 AC1 S49 원본 dl-list로 돌아가 사용처 0이 됐으나 ⑤와 같은 이유(판정기는 덱에 있는 클래스만 대조 · 삭제 ID 재사용 없음)로 남겼다."
   }
 }

@@ -1,17 +1,20 @@
+<!-- PART 6 · 고치고 다시 확인하기 (수정요청 2차 · 웨이브 WC — 옛 PART 6과 PART 7을 합침, P7 간지 없음)
+     순서: P6 · A6-02 · A6-03 · A6-04 · A6-05 · A6-06 · A6-07 · A6-08 · A6-09 · A6-14 · A7-02 · A6-13 · A7-03 · A7-04 · A7-05 · A7-06 · A7-08 · A7-11 · A7-13 · A2-07 · A7-15 · A7-14 · A7-16
+     A6-04~A6-07은 AC1 S46~S49 화면 그대로(U26 · 캡처 없음). 요청문은 검정 프롬프트 창(U28 · A5-07 모양). A6-13은 A7-02 뒤로 옮김.
+     화면 문구 정본은 1주차_초안.md. 이 파일 안에 style 블록을 두지 않는다(전용 CSS는 tmp 작업 폴더 wave-C.css).
+     A7-16 THANK YOU는 덱의 마지막 장이다 — 이 파일 끝에 남긴다. -->
 <section class="slide part-divider" data-slide="P6" data-shape="declaration">
   <svg class="dv-hero" viewBox="0 0 1280 720" fill="none" aria-hidden="true"></svg>
   <div class="pd-dots" aria-hidden="true"></div>
   <p class="pd-eyebrow">PART</p>
-  <h2 class="pd-title">실습: 한 번에 하나씩 고치기</h2>
+  <h2 class="pd-title">고치고 다시 확인하기</h2>
   <p class="pd-sub">한 번에 하나씩 바꾸고, 나머지가 그대로인지 확인합니다.</p>
-  <!-- 발표노트: 설명 — 한 번에 한 가지만 변경하고, 매번 결과를 확인합니다. -->
+  <!-- 발표노트: 설명 — 한 번에 한 가지만 변경하고, 매번 결과를 확인합니다. 이 파트 뒤쪽에는 오류 대응이 붙어 있으니, 강제 오류 실습은 하지 않습니다. -->
 </section>
 <section class="slide dl-list with-support-art" data-slide="A6-02" data-shape="classification">
   <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 6<br>수정 범위</div></header>
   <div class="s-full"><p class="s-eyebrow">수정 전에 정할 세 가지</p><h2 class="s-title">유지할 것과 <span class="hl-mint-text">바꿀 것</span></h2>
     <div class="dl-rows"><div class="card surface dl-row"><span class="dl-term">그대로 둘 부분</span><p class="s-body">단어 목록 · 점수 규칙 · 현재 구조처럼 <span class="hl-blue-text">이번 요청에서 건드리지 않을 것</span>을 먼저 적습니다.</p></div><div class="card surface dl-row"><span class="dl-term">이번에 바꿀 부분</span><p class="s-body">제한 시간이나 글자 크기처럼 지금 확인할 <strong>한 가지</strong>만 고릅니다.</p></div><div class="card surface dl-row"><span class="dl-term">화면에서 볼 점</span><p class="s-body">바뀐 부분 하나와 그대로 남은 부분 하나를 브라우저에서 나란히 봅니다.</p></div></div>
-    <p class="keep-warn">유지 조건을 빠뜨리면 멀쩡하던 내용까지 바뀔 수 있습니다.</p>
-    <p class="end-banner"><strong>한 번에 하나만 바꿔야 어떤 요청이 결과를 만들었는지 알 수 있습니다.</strong></p>
   </div>
   <figure class="asset-slot asset-slot--support" data-image-purpose="mnemonic" data-image-role="support" data-asset-kind="paper-cut-v1" data-image-state="ready" data-asset-id="ASSET-012"><img src="자료/images/s44_keep-change-check-paper-cut-v1-transparent.png" alt="고정된 작업지시서에 한 가지를 수정하고 돋보기로 결과를 확인하는 흐름"></figure>
   <!-- 발표노트: 설명 — «그대로 둘 것»을 먼저 적게 하세요. 초보자는 바꿀 것만 말하고 나머지가 함께 바뀌어도 알아채지 못합니다. 이 세 칸은 뒤 네 장의 틀입니다. -->
@@ -29,161 +32,273 @@
   <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 6<br>제한 시간 추가</div></header>
   <div class="s-full"><p class="s-eyebrow">제한 시간만 넣기</p><h2 class="s-title"><span class="hl-blue-text">바꿀 한 가지</span>와 <span class="hl-mint-text">남길 내용</span>을 함께 말합니다</h2>
     <div class="dl-rows"><div class="card surface dl-row"><span class="dl-term">이번 요청</span><p class="s-body"><strong class="hl-blue-text">제한 시간 30초만</strong> 추가해 달라고 말합니다.</p></div><div class="card surface dl-row"><span class="dl-term">그대로 둘 내용</span><p class="s-body"><strong class="hl-mint-text">단어 목록 · 점수 규칙 · 나머지 구성</strong>은 그대로 유지해 달라고 덧붙입니다.</p></div><div class="card surface dl-row"><span class="dl-term">다시 볼 장면</span><p class="s-body">브라우저에서 남은 시간 표시 하나와 <strong class="hl-blue-text">이전 구성의 유지 여부</strong>를 함께 봅니다.</p></div></div>
-    <div class="codex-input" aria-label="Codex 입력창에 넣을 요청문"><span class="codex-input-label">요청문 · Codex 입력창</span><p>제한 시간 30초만 추가해 주세요. 단어 목록·점수 규칙·나머지 구성은 그대로 유지해 주세요.</p></div>
-    <p class="mistake-note"><b>흔한 실수</b> — 제한 시간과 다른 변경을 한 요청에 섞으면 무엇 때문에 달라졌는지 알 수 없습니다.</p>
+    <div class="terminal-dark" aria-label="프롬프트 창에 넣을 요청문"><div class="terminal-bar"><span></span><span></span><span></span><b>요청문 · 프롬프트 창</b></div><div class="terminal-body"><p class="terminal-copy"><span class="tl">제한 시간 30초만 추가해 주세요.</span><span class="tl">단어 목록·점수 규칙·나머지 구성은 그대로 유지해 주세요.</span></p></div></div>
   </div>
   <figure class="asset-slot asset-slot--support character-art" data-image-purpose="mnemonic" data-image-role="support" data-asset-kind="paper-cut-v1" data-image-state="ready" data-asset-id="ASSET-014"><img src="자료/images/s46_one-change-protected-paper-cut-v1-transparent.png" alt="보호된 작업판에서 한 항목만 바꾸고 결과를 확인하는 이미지"></figure>
-  <!-- 발표노트: 설명 — 요청문의 두 문장이 «이번 요청»과 «그대로 둘 내용»에 하나씩 대응한다고 짚으며 읽어 줍니다. -->
+  <!-- 발표노트: 설명 — 요청문의 두 문장이 «이번 요청»과 «그대로 둘 내용»에 하나씩 대응한다고 짚으며 읽어 줍니다. / 시연 — [이미지] AC1 자료/images/s46_one-change-protected-paper-cut-v1-transparent.png(ASSET-022) — 원본 화면 그대로. -->
 </section>
 <section class="slide change-refresh-slide" data-slide="A6-05" data-shape="flow">
   <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 6<br>변경 확인</div></header>
   <div class="dc-title"><p class="s-eyebrow">제한 시간을 넣은 뒤</p><h2 class="s-title">바뀐 점과 <span class="hl-mint-underline">남은 점</span>을 함께 봅니다</h2></div>
-  <div class="refresh-stage">
-    <div class="refresh-body">
-      <div class="refresh-copy">
-        <div class="viz-flow-ph change-refresh-flow" data-viz="learning-flow" role="img" aria-label="세로 흐름: 제한 시간만 추가 → 새로고침(F5) → 변경과 유지 함께 보기"><div class="fl-node">제한 시간만 추가</div><div class="fl-arrow" aria-hidden="true">↓</div><div class="fl-node key">새로고침 (F5)</div><div class="fl-arrow" aria-hidden="true">↓</div><div class="fl-node">변경 · 유지 함께 보기</div></div>
-        <p class="refresh-cap">남은 시간이 보이는지 먼저 확인합니다. 이어서 단어 · 입력칸 · 점수 · 나머지 배치가 이전과 같은지 비교합니다.</p>
-      </div>
-      <figure class="shot-annot capture-slot" aria-label="제한 시간 추가 수정 전/후 화면 캡처 자리"><div class="shot-frame demo-placeholder" data-capture="K9" role="img" aria-label="화면 캡처 자리 K9 — 수정 전/후(제한 시간 추가)"><span class="dp-badge">화면 캡처 자리 · K9</span><b>수정 전/후 — 제한 시간 추가</b><p>실제 화면 캡처가 이 자리에 들어갑니다.</p></div></figure>
-    </div>
-    <p class="end-banner"><strong>바뀐 한 가지와 유지된 나머지를 모두 말할 수 있을 때</strong> 수정이 끝난 것입니다.</p>
-  </div>
-  <!-- 발표노트: 시연 — [캡처 K9] 수정 전/후(제한 시간 추가). 파일 열기 → 결과 화면 → 한 가지 수정 → 새로고침 → 변경 확인의 순서를 화면으로 따라갑니다. -->
+  <div class="dc-stage"><div class="viz-flow-ph change-refresh-flow" data-viz="learning-flow" role="img" aria-label="제한 시간 추가, 새로고침, 변경과 유지 확인의 순서"><div class="fl-node">제한 시간만 추가</div><div class="fl-arrow" aria-hidden="true">→</div><div class="fl-node key">새로고침 (F5)</div><div class="fl-arrow" aria-hidden="true">→</div><div class="fl-node">변경 · 유지 함께 보기</div></div><p class="dc-cap change-refresh-cap">남은 시간이 보이는지 먼저 확인합니다. 이어서 단어 · 입력칸 · 점수 · 나머지 배치가 이전과 같은지 비교합니다.<br><strong>바뀐 한 가지와 유지된 나머지를 모두 말할 수 있을 때</strong> 수정이 끝난 것입니다.</p></div>
+  <!-- 발표노트: 시연 — 파일 열기 → 결과 화면 → 한 가지 수정 → 새로고침 → 변경 확인의 순서를 화면으로 따라갑니다. 바뀐 한 가지와 유지된 나머지를 모두 말할 수 있을 때 끝입니다. -->
 </section>
 <section class="slide compare-slide change-scope-slide" data-slide="A6-06" data-shape="mapping">
   <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 6<br>글자 크기 수정</div></header>
   <div class="s-full"><p class="s-eyebrow">글자 크기만 바꾸는 요청</p><h2 class="s-title"><span class="hl-blue-text">바꿀 것</span>·남길 것·<span class="hl-mint-mark">확인할 것</span></h2>
-    <div class="change-scope-grid"><div class="change-scope-item change"><h3>바꿀 것</h3><p>단어 글자 크기만 <strong>더 크게</strong> 바꿉니다.</p></div><div class="change-scope-item keep"><h3>남길 것</h3><p>단어 목록 · 점수 규칙 · 제한 시간 · 나머지 배치를 유지합니다.</p></div><div class="change-scope-item check"><h3>확인할 것</h3><p>커진 글자가 화면을 넘치지 않고 이전 기능이 그대로인지 봅니다.</p></div></div>
-    <div class="codex-input change-scope-request" aria-label="Codex 입력창에 넣을 요청문"><span class="codex-input-label">요청문 · Codex 입력창</span><p>단어 글자 크기만 더 크게 바꿔 주세요. 단어 목록·점수 규칙·제한 시간·나머지 구성은 그대로 유지해 주세요. 글자가 화면을 넘치지 않는지도 확인해 주세요.</p></div>
+    <div class="change-scope-grid"><div class="change-scope-item change"><span>CHANGE</span><h3>바꿀 것</h3><p>단어 글자 크기만 <strong>더 크게</strong> 바꿉니다.</p></div><div class="change-scope-item keep"><span>KEEP</span><h3>남길 것</h3><p>단어 목록 · 점수 규칙 · 제한 시간 · 나머지 배치를 유지합니다.</p></div><div class="change-scope-item check"><span>CHECK</span><h3>확인할 것</h3><p>커진 글자가 화면을 넘치지 않고 이전 기능이 그대로인지 봅니다.</p></div></div>
+    <div class="terminal-dark" aria-label="글자 크기만 바꾸는 요청을 넣은 프롬프트 창"><div class="terminal-bar"><span></span><span></span><span></span><b>요청문 · 프롬프트 창</b></div><div class="terminal-body"><p class="terminal-copy"><span class="tl">단어 글자 크기만 더 크게 바꿔 주세요.</span><span class="tl">나머지 기능과 구성은 그대로 유지하고, 글자가 화면을 넘치지 않는지도 확인해 주세요.</span></p></div></div>
     <p class="compare-foot"><span class="hl-mint-underline">바꿀 것 · 남길 것 · 확인할 것</span>을 한 요청에 함께 적으면 결과를 분명하게 검토할 수 있습니다.</p>
   </div>
-  <!-- 발표노트: 설명 — 세 칸이 요청문 세 문장과 하나씩 대응한다고 짚습니다. -->
+  <!-- 발표노트: 설명 — 세 칸이 요청문 안에 하나씩 들어 있다고 짚습니다. -->
 </section>
-<section class="slide size-compare-slide" data-slide="A6-07" data-shape="checklist">
+<section class="slide dl-list has-character-art" data-slide="A6-07" data-shape="checklist">
   <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 6<br>크기 확인</div></header>
-  <div class="s-full size-compare-main"><p class="s-eyebrow">글자 크기를 바꾼 뒤</p><h2 class="s-title">커진 글자와 <span class="hl-mint-text">같은 기능</span>을 비교합니다</h2>
-    <div class="dl-rows size-rows"><div class="card surface dl-row"><span class="dl-term">먼저 새로고침</span><p class="s-body">이전 화면이 아니라 최신 결과를 기준으로 봅니다.</p></div><div class="card surface dl-row"><span class="dl-term">글자 크기만 달라졌는지</span><p class="s-body">크기는 바뀌고 단어 · 점수 · 제한 시간 · 배치는 남아 있는지 봅니다.</p></div><div class="card surface dl-row"><span class="dl-term">읽기 쉬운지</span><p class="s-body">커진 글자가 잘리거나 겹치지 않는지 직접 확인합니다.</p></div><div class="card surface dl-row"><span class="dl-term">비교하는 법</span><p class="s-body">새로고침 뒤 한 지점(예: 단어가 나오는 자리)을 정해 이전 화면과 비교합니다.</p></div><div class="card surface dl-row"><span class="dl-term">겹침 확인</span><p class="s-body">커진 글자가 입력칸·점수 표시와 겹치지 않는지, 새 크기에서도 충분히 읽히는지 봅니다.</p></div></div>
+  <div class="s-full"><p class="s-eyebrow">글자 크기를 바꾼 뒤</p><h2 class="s-title">커진 글자와 <span class="hl-mint-text">같은 기능</span>을 비교합니다</h2>
+    <div class="dl-rows"><div class="card surface dl-row"><span class="dl-term">먼저 새로고침</span><p class="s-body">이전 화면이 아니라 최신 결과를 기준으로 봅니다.</p></div><div class="card surface dl-row"><span class="dl-term">글자 크기만 달라졌는지</span><p class="s-body">크기는 바뀌고 단어 · 점수 · 제한 시간 · 배치는 남아 있는지 봅니다.</p></div><div class="card surface dl-row"><span class="dl-term">읽기 쉬운지</span><p class="s-body">커진 글자가 잘리거나 겹치지 않는지 직접 확인합니다.</p></div></div>
   </div>
-  <div class="size-compare-side">
-    <figure class="shot-annot capture-slot" aria-label="글자 크기 수정 전/후 화면 캡처 자리"><div class="shot-frame demo-placeholder" data-capture="K9" role="img" aria-label="화면 캡처 자리 K9 — 수정 전/후(글자 크기)"><span class="dp-badge">화면 캡처 자리 · K9</span><b>수정 전/후 — 글자 크기</b><p>실제 화면 캡처가 이 자리에 들어갑니다.</p></div></figure>
-    <figure class="size-compare-image asset-slot asset-slot--support" data-image-purpose="mnemonic" data-image-role="support" data-asset-kind="paper-cut-v1" data-image-state="ready" data-asset-id="ASSET-015"><img src="자료/images/s49_background-before-after-paper-cut-v1-transparent.png" alt="글자 크기만 바꾸고 내용은 유지하는 전후 관계 이미지"></figure>
-  </div>
-  <!-- 발표노트: 시연 — [캡처 K9] 수정 전/후(글자 크기). -->
+  <figure class="asset-slot asset-slot--support character-art" data-image-purpose="mnemonic" data-image-role="support" data-asset-kind="paper-cut-v1" data-image-state="ready" data-asset-id="ASSET-015"><img src="자료/images/s49_background-before-after-paper-cut-v1-transparent.png" alt="글자 크기만 바꾸고 내용은 유지하는 전후 관계 이미지"></figure>
+  <!-- 발표노트: 시연 — 이전 화면과 최신 화면을 혼동하지 않도록 새로고침 뒤 한 지점을 확인합니다. / 시연 — [이미지] AC1 자료/images/s49_background-before-after-paper-cut-v1-transparent.png(ASSET-023) — 원본 화면 그대로(캡처 아님). -->
 </section>
 <section class="slide w2-stepwarn" data-slide="A6-08" data-shape="flow">
   <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 6<br>한 단계씩 고치기</div></header>
   <div class="s-full">
-    <h2 class="s-title">앞에서 본 «한 단계씩»을 <span class="hl-mint-text">고치기에 적용</span>합니다</h2>
-    <p class="sw-lead">앞 PART에서 본 «화면 하나 · 동작 하나 · 확인 하나»를 <strong>고칠 때도 그대로</strong> 씁니다.</p>
+    <h2 class="s-title">«한 단계씩»을 <span class="hl-mint-text">고치기에 적용</span>합니다</h2>
+    <p class="sw-lead">«화면 하나 · 동작 하나 · 확인 하나»를 <strong>고칠 때도 그대로</strong> 씁니다.</p>
     <div class="sw-warn">
-      <div class="sw-warncard"><span class="tag">그냥 다 시키면</span><p>범위가 부풀고 Codex가 추측으로 채우는 부분이 늘어납니다.</p></div>
-      <div class="sw-warncard"><span class="tag">그 결과</span><p>어디서 틀렸는지 알기 어려워 고치는 데 더 오래 걸립니다.</p></div>
+      <div class="sw-warncard"><span class="tag">한 번에 다 시키면</span><p>Codex가 추측으로 채우는 부분이 늘고, 어디서 틀렸는지 알기 어려워집니다.</p></div>
     </div>
     <div class="sw-body">
     <div class="sw-steps">
-      <div class="work-step"><span class="n">1</span><b>화면·입력·결과 영역 만들기</b><span class="desc">재료 손질처럼, 아직 동작 안 해도 자리부터 잡습니다</span></div>
+      <div class="work-step"><span class="n">1</span><b>자리 잡기</b><span class="desc">화면 · 입력 · 결과 영역부터 만듭니다</span></div>
       <div class="vf-down" aria-hidden="true">↓</div>
-      <div class="work-step"><span class="n">2</span><b>대표 입력 하나로 결과 나오게 하기</b><span class="desc">볶기처럼, 이 단계가 핵심 동작입니다</span></div>
+      <div class="work-step"><span class="n">2</span><b>핵심 동작</b><span class="desc">대표 입력 하나로 결과가 나오게 합니다</span></div>
       <div class="vf-down" aria-hidden="true">↓</div>
-      <div class="work-step"><span class="n">3</span><b>다른 값으로 다시 확인하기</b><span class="desc">간 맞추기처럼, 중간에 맛을 보며 확인합니다</span></div>
+      <div class="work-step"><span class="n">3</span><b>다시 확인</b><span class="desc">다른 값으로 한 번 더 확인합니다</span></div>
     </div>
     <figure class="sw-figure asset-slot asset-slot--support" data-image-purpose="mnemonic" data-image-state="ready" data-asset-kind="paper-cut-v1" data-asset-id="ASSET-016"><img src="자료/images/s75_one-step-at-a-time-paper-cut-v1-transparent.png" alt="위에서 아래로 이어지는 세 단계가 화면 구조·입력 실행·다른 값 확인의 순서를 보여준다"></figure>
     </div>
-    <p class="sw-end">이삿짐도 상자 하나씩 옮깁니다 — <strong>한 번에 전부 완성하려 하지 않습니다.</strong></p>
+    <p class="sw-end"><strong>한 번에 전부 완성하려 하지 않습니다.</strong></p>
   </div>
-  <!-- 발표노트: 시연 — 처음부터 전체를 멋지게 만들지 말고, 결과가 한 번 나타나는 순간을 먼저 찾습니다. 고칠 때도 같습니다 — 여러 기능을 한 번에 넣지 않습니다. -->
+  <!-- 발표노트: 시연 — 처음부터 전체를 멋지게 만들지 말고, 결과가 한 번 나타나는 순간을 먼저 찾습니다. 고칠 때도 같습니다 — 여러 기능을 한 번에 넣지 않습니다. / 설명 — 비유는 말로만 붙입니다 — ① 재료 손질처럼 아직 동작 안 해도 자리부터, ② 볶기처럼 핵심 동작, ③ 간 맞추기처럼 중간에 맛보기. 이삿짐도 상자 하나씩 옮깁니다. -->
 </section>
 <section class="slide claim-rationale dup-guard-slide" data-slide="A6-09" data-shape="concept">
-  <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 6<br>선택 · 중복 막기</div></header>
+  <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 6<br>중복 막기</div></header>
   <div class="s-full">
-    <p class="s-eyebrow"><span class="opt-pill">선택</span></p>
     <h2 class="s-title">중복·깨짐을 막는 <span class="hl-mint-text">요청·확인법</span></h2>
     <div class="cr-claim"><b>“기존 구조를 먼저 확인하고 · 중복 없이”</b><p>고칠수록 같은 코드가 두 번 들어가거나, 새 기능이 기존 기능을 깨뜨릴 수 있습니다.</p></div>
-    <div class="cr-spine" aria-hidden="true">↓</div>
-    <div class="grid-3">
-      <article class="card surface cr-card"><h3>요청할 때</h3><p>기존 파일을 먼저 확인하고 중복 없이 고쳐 달라고 적습니다.</p></article>
-      <article class="card surface cr-card"><h3>요청문</h3><div class="codex-input" aria-label="Codex 입력창에 넣을 요청문"><span class="codex-input-label">요청문 · Codex 입력창</span><p>기존 파일을 먼저 확인하고 중복 없이 고쳐 주세요.</p></div></article>
-      <article class="card surface cr-card"><h3>수정 후</h3><p>새로 넣은 기능과 원래 있던 기능(단어 · 입력칸 · 점수)을 다시 확인합니다.</p></article>
+    <div class="dg-rows">
+      <div class="card surface dg-row dg-extra"><span class="dg-term">왜 생기나요</span><p class="dg-text">그냥 “고쳐 줘”라고만 하면 요청보다 넓게, 때로는 파일 전체를 다시 써서 잘 되던 부분까지 바뀔 수 있습니다.</p></div>
+      <div class="card surface dg-row"><span class="dg-term">요청할 때</span><p class="dg-text"><span class="dg-line">기존 파일을 먼저 확인하고 중복 없이 고쳐 달라고 적습니다.</span><span class="dg-line dg-extra">그대로 둘 기능(단어 · 입력칸 · 점수)도 함께 적습니다.</span></p></div>
+      <div class="dg-row dg-prompt-row"><div class="terminal-dark" aria-label="프롬프트 창에 넣을 중복 없이 고치기 요청문"><div class="terminal-bar"><span></span><span></span><span></span><b>요청문 · 프롬프트 창</b></div><div class="terminal-body"><p class="terminal-copy"><span class="tl">기존 파일을 먼저 확인하고 중복 없이 고쳐 주세요.</span><span class="tl dg-extra">단어 · 입력칸 · 점수는 그대로 유지해 주세요.</span></p></div></div></div>
+      <div class="card surface dg-row"><span class="dg-term">수정 후</span><p class="dg-text">새로 넣은 기능과 원래 있던 기능(단어 · 입력칸 · 점수)을 다시 확인합니다.</p></div>
+      <div class="card surface dg-row dg-extra"><span class="dg-term">깨졌다면</span><p class="dg-text">여러 곳을 한꺼번에 고치지 않습니다. 한꺼번에 바꾸면 무엇이 원인이었는지 알 수 없습니다. 깨진 한 가지만 고쳐 달라고 요청합니다.</p></div>
     </div>
   </div>
-  <!-- 발표노트: 설명 — 선택 장입니다. 고칠수록 화면이 이상해지는 수강생에게 보여 줍니다. -->
-</section>
-<section class="slide criteria-test-slide" data-slide="A6-10" data-shape="comparison">
-  <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 6<br>완료 기준과 테스트</div></header>
-  <div class="s-full cc-full">
-    <h2 class="s-title">완료 기준과 <span class="hl-mint-text">테스트</span></h2>
-    <p class="s-body c210-lead"><b>완료 기준</b>은 «무엇이 보이면 끝인가»를 미리 적은 문장이고, <b>테스트</b>는 그 문장이 실제 화면에서 나오는지 확인하는 행동입니다.</p>
-    <table class="t w2-tbl-inline c210-tbl">
-      <thead><tr><th>&nbsp;</th><th>완료 기준</th><th>테스트</th></tr></thead>
-      <tbody>
-        <tr><th>무엇인가</th><td>확인할 수 있는 장면을 적은 한 문장</td><td>그 장면이 나오는지 직접 해 보는 일</td></tr>
-        <tr><th>언제</th><td><span class="hl-mint-underline">만들기 전에 미리</span></td><td>화면을 만든 뒤에</td></tr>
-        <tr><th>예</th><td>"맞는 단어를 입력하면 점수가 1 오른다"</td><td>맞는 단어 · 빈칸 · 틀린 단어로 각각 입력해 본다</td></tr>
-        <tr><th>안 되면</th><td>기준을 고치는 게 아니라 그대로 둡니다</td><td><span class="hl-mint-mark">미완료로 보고</span> 원인을 다시 찾습니다</td></tr>
-      </tbody>
-    </table>
-  </div>
-  <figure class="asset-slot asset-slot--support c210-figure" data-image-purpose="explanatory" data-image-state="ready" data-asset-kind="paper-cut-v1" data-asset-id="ASSET-017"><img src="자료/images/s34-completion-criteria-vs-test-paper-cut-v1-transparent.png" alt="미리 정한 완료 기준 카드가 테스트 화면으로 이어져 결과 확인으로 충족 여부를 판별하는 흐름"></figure>
-  <!-- 발표노트: 설명 — 완료 기준(만들기 전에 적어 두는, 눈으로 확인 가능한 장면)과 테스트(정상·다른·빈값으로 확인하는 방법)는 다른 개념이라는 것을 대비로 보여 줍니다. 완료 기준이 화면에 그대로 나오는지 테스트로 확인한다는 순서를 짚어 주세요. -->
-</section>
-<section class="slide backup-slide" data-slide="A6-11" data-shape="declaration">
-  <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 6<br>되돌아갈 기준</div></header>
-  <div class="center-msg">
-    <h2 class="cm-title">수정 전, 마지막 작동 상태를 지킵니다</h2>
-    <p class="cm-sub cm-statement"><strong>되돌아갈 기준</strong>(지금 잘 되는 상태 한 벌)을 남깁니다.</p>
-    <p class="cm-sub">고치다 잘못되면 그 상태로 돌아옵니다.</p>
-    <p class="cm-sub cm-detail"><b>방법</b> — 크게 고치기 전에 잘 되는 폴더를 복사해 두는 등, 강사가 안내한 한 가지 방법으로 통일합니다. 도구의 되돌리기 기능만 믿지 않습니다.</p>
-  </div>
-  <figure class="backup-figure" role="img" aria-label="원본 프로젝트 폴더와 복사본 폴더가 나란히 있는 그림">
-    <svg width="100%" height="100%" viewBox="0 0 300 300" aria-hidden="true">
-      <path d="M20 90 h60 l14 18 h96 a8 8 0 0 1 8 8 v110 a8 8 0 0 1 -8 8 H20 a8 8 0 0 1 -8 -8 V98 a8 8 0 0 1 8 -8 z" fill="var(--blue-soft)" stroke="var(--blue)" stroke-width="4"/>
-      <text x="90" y="170" text-anchor="middle" font-size="22" font-weight="800" fill="var(--blue)">원본</text>
-      <path d="M170 70 h60 l14 18 h30 a8 8 0 0 1 8 8 v130 a8 8 0 0 1 -8 8 H170 a8 8 0 0 1 -8 -8 V78 a8 8 0 0 1 8 -8 z" fill="var(--mint-soft)" stroke="var(--mint-deep)" stroke-width="4"/>
-      <text x="238" y="150" text-anchor="middle" font-size="22" font-weight="800" fill="var(--mint-deep)">복사본</text>
-      <rect x="112" y="220" width="182" height="36" rx="18" fill="var(--blue)"/>
-      <text x="203" y="244" text-anchor="middle" font-size="22" font-weight="800" fill="var(--white)">폴더 복사</text>
-    </svg>
-  </figure>
-  <!-- 발표노트: 설명 — 문서를 크게 고치기 전 '다른 이름으로 저장'과 같습니다. / 시연 — [캡처 K14] (있다면) Codex의 되돌리기 기능 화면 — 기능 유무와 이름을 캡처로 확인하기 전에는 폴더 복사 방식으로 안내합니다. -->
-</section>
-<section class="slide evidence-pyramid-slide" data-slide="A6-12" data-shape="structure">
-  <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 6<br>완료 증거</div></header>
-  <div class="s-full ep-full">
-    <h2 class="s-title">“완료했다”보다 <span class="hl-mint-text">직접 연 화면</span>이 강합니다</h2>
-    <p class="s-lead ep-lead"><strong>완료 증거를 강하게 만듭니다.</strong></p>
-    <div class="ep-body">
-      <div class="viz-pyramid" role="img" aria-label="완료 증거의 강도 피라미드: 꼭대기 1 직접 열어 봄이 가장 강하고, 2 기계가 판정, 바닥 3 기록만 있음이 가장 약하다">
-        <p class="vp-cap">완료 증거의 강도</p>
-        <div class="vp-tier vp-t1"><span class="vp-rank">1</span><div><b>직접 열어 봄</b><span>화면에서 내가 정한 결과를 확인</span></div></div>
-        <div class="vp-tier vp-t2"><span class="vp-rank">2</span><div><b>기계가 판정</b><span>테스트나 검사 결과를 확인</span></div></div>
-        <div class="vp-tier vp-t3"><span class="vp-rank">3</span><div><b>기록만 있음</b><span>코드나 메시지는 보이지만 결과는 미확인</span></div></div>
-      </div>
-      <aside class="ep-side"><b>«다 했어요»라고 말하기 전에</b><p>지금 내 증거가 1~3 중 어디인지 따져 봅니다. 대부분 3(기록만 있음)에서 멈춰 있습니다.</p></aside>
-    </div>
-  </div>
-  <!-- 발표노트: 설명 — «다 했어요»라고 말하는 사람에게 증거 강도 1~3 중 어디인지 물어보세요. -->
-</section>
-<section class="slide copy-contrast-slide" data-slide="A6-13" data-shape="contrast">
-  <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 6<br>선택 · 문구</div></header>
-  <div class="s-full cc-full">
-    <p class="s-eyebrow"><span class="opt-pill">선택</span></p>
-    <h2 class="s-title">문구 good/bad <span class="hl-mint-text">더 보기</span></h2>
-    <p class="s-lead copy-lead">게임 안내 문구 · 결과 문구의 <strong>좋은 예와 나쁜 예</strong>를 봅니다.</p>
-    <div class="cc-grid">
-      <div class="cc-side ai copy-bad"><h3>나쁜 예</h3><ul><li>“오류 발생”</li><li>“입력 오류”</li></ul></div>
-      <div class="cc-neq" aria-hidden="true">≠</div>
-      <div class="cc-side human"><h3>좋은 예</h3><ul><li>“단어를 입력한 뒤 Enter를 눌러 주세요”</li><li>“시간이 끝났어요. 다시 시작을 눌러 한 번 더 해 보세요”</li></ul></div>
-    </div>
-    <p class="copy-foot"><strong>문제만 말하지 말고 다음 행동을 줍니다.</strong> 문구를 고칠 때도 바꿀 문구 하나 · 남길 기능 · 확인할 화면을 함께 적습니다.</p>
-  </div>
-  <!-- 발표노트: 설명 — "오류 발생" vs "단어를 입력한 뒤 Enter를 눌러 주세요" — 문제만 말하지 말고 다음 행동을 줍니다. -->
+  <!-- 발표노트: 설명 — 고칠수록 화면이 이상해질 수 있다는 점부터 짚습니다. «왜 생기나요 → 요청할 때 → 수정 후 → 깨졌다면» 순서로 읽고, 요청문 두 문장이 «중복 없이»와 «그대로 둘 기능»에 하나씩 대응한다고 연결합니다. -->
 </section>
 <section class="slide dl-list has-character-art" data-slide="A6-14" data-shape="classification">
   <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 6<br>사람의 결정</div></header>
   <div class="s-full"><p class="s-eyebrow">원하는 한 가지를 더 바꾼 뒤</p><h2 class="s-title">마지막 결정은 <span class="hl-mint-underline">사람이 합니다</span></h2>
     <div class="dl-rows"><div class="card surface dl-row"><span class="dl-term">참고 자료를 볼 때</span><p class="s-body">통째로 복제하지 않고 분위기 · 색 · 글자 · 여백 · 배치 중 <strong>특징 하나</strong>만 고릅니다.</p></div><div class="card surface dl-row"><span class="dl-term">다시 요청할 때</span><p class="s-body">고른 특징 하나만 바꾸고, 내 단어 목록과 게임 규칙은 그대로 둔다고 적습니다.</p></div><div class="card surface dl-row"><span class="dl-term">여기서 마칠 때</span><p class="s-body">필수 기능과 읽기 쉬움이 맞으면 현재 결과를 남기고 무엇을 확인했는지 기록합니다.</p></div></div>
-    <p class="end-banner">결과를 본 뒤에는 <strong>이대로 둡니다 · 한 번 더 고칩니다 · 여기서 마칩니다</strong> 중 하나를 사람이 정합니다.</p>
   </div>
   <figure class="asset-slot asset-slot--support character-art" data-image-purpose="mnemonic" data-image-role="support" data-asset-kind="paper-cut-v1" data-image-state="ready" data-asset-id="ASSET-018"><img src="자료/images/s50_human-ai-free-change-paper-cut-v2-transparent.png" alt="사람과 AI가 한 가지 선택지를 고르고 결과를 확인하는 이미지"></figure>
-  <!-- 발표노트: 설명 — 참고 자료는 복제하지 않고 특징 하나만 선택합니다. 마지막 결정은 사람이라는 결론으로 이 파트를 닫습니다. -->
+  <!-- 발표노트: 설명 — 참고 자료는 복제하지 않고 분위기·색·글자·간격·배치 중 특징 하나만 선택합니다. 마지막 결정은 사람이라는 결론으로 이 파트를 닫습니다. -->
+</section>
+<section class="slide issue-columns-slide" data-slide="A7-02" data-shape="classification">
+  <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 6<br>문제 구분</div></header>
+  <div class="s-full ic-full">
+    <p class="s-eyebrow">무엇이 다른지 먼저 가르기</p>
+    <h2 class="s-title">오류·요구 불일치·<span class="hl-mint-text">취향</span></h2>
+    <div class="ic-band">
+      <figure class="ic-image asset-slot asset-slot--support" data-viz="issue-type-check" data-image-purpose="mnemonic" data-image-role="support" data-asset-kind="paper-cut-v1" data-image-state="ready" data-asset-id="ASSET-019"><img src="자료/images/s52_issue-type-check-paper-cut-v1-transparent.png" alt="오류, 요구 불일치, 취향 차이를 구분하는 이미지"></figure>
+      <p class="ic-lead">같은 ‘안 됨’처럼 보여도 <strong>원인이 다르면 다음 행동도 다릅니다.</strong></p>
+    </div>
+    <div class="grid-3 ic-cols">
+      <article class="card surface ic-col ic-err"><h3>오류</h3><p>페이지가 열리지 않거나 작동하지 않습니다.</p><p class="ic-next">파일 위치 · 이름 · 저장 · 새로고침을 차례로 확인합니다.</p></article>
+      <article class="card surface ic-col ic-req"><h3>요구 불일치</h3><p>실행은 되지만 요청한 조건을 지키지 않았습니다.</p><p class="ic-next">빠진 조건 하나만 다시 말합니다.</p></article>
+      <article class="card surface ic-col ic-taste"><h3>취향 차이</h3><p>조건은 맞지만 색 · 글자 · 여백이 마음에 들지 않습니다.</p><p class="ic-next">원하는 특징 하나를 고릅니다.</p></article>
+    </div>
+    <p class="ic-example">예를 들어 파일이 열리지 않으면 <b>오류</b>, 단어를 10개 넣었는데 5개만 나오면 <b>요구 불일치</b>, 색이 마음에 들지 않으면 <b>취향 차이</b>입니다.</p>
+  </div>
+  <!-- 발표노트: 설명 — “안 돼요”가 나오면 먼저 세 가지 중 무엇인지 물어보세요 — 오류인가, 요청과 다른가, 마음에 안 드는가. 대응이 완전히 다릅니다. 세 경우는 실패 등급이 아니라 다음 요청을 고르는 기준입니다. -->
+</section>
+<section class="slide copy-contrast-slide" data-slide="A6-13" data-shape="contrast">
+  <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 6<br>안내 문구</div></header>
+  <div class="s-full cc-full copy-guide">
+    <h2 class="s-title">문구 good/bad <span class="hl-mint-text">더 보기</span></h2>
+    <p class="s-lead copy-lead">게임 안내 문구 · 결과 문구의 <strong>좋은 예와 나쁜 예</strong>를 봅니다.</p>
+    <div class="copy-screens">
+      <div class="copy-screen copy-screen--bad" role="group" aria-label="나쁜 예 — 문제만 말하는 게임 문구 두 개">
+        <div class="copy-screen-bar"><span></span><span></span><span></span><b class="copy-verdict"><i aria-hidden="true">✕</i>나쁜 예</b></div>
+        <div class="copy-screen-body"><p class="copy-msg">“오류 발생”</p><p class="copy-msg">“입력 오류”</p></div>
+      </div>
+      <div class="copy-arrow" aria-hidden="true">→</div>
+      <div class="copy-screen copy-screen--good" role="group" aria-label="좋은 예 — 다음 행동을 알려 주는 게임 문구 두 개">
+        <div class="copy-screen-bar"><span></span><span></span><span></span><b class="copy-verdict"><i aria-hidden="true">✓</i>좋은 예</b></div>
+        <div class="copy-screen-body"><p class="copy-msg">“단어를 입력한 뒤 Enter를 눌러 주세요”</p><p class="copy-msg">“시간이 끝났어요. 다시 시작을 눌러 한 번 더 해 보세요”</p></div>
+      </div>
+    </div>
+    <p class="end-banner copy-conclusion"><strong>문제만 말하지 말고 다음 행동을 줍니다.</strong> 문구를 고칠 때도 바꿀 문구 하나 · 남길 기능 · 확인할 화면을 함께 적습니다.</p>
+  </div>
+  <!-- 발표노트: 설명 — "오류 발생" vs "단어를 입력한 뒤 Enter를 눌러 주세요" — 문제만 말하지 말고 다음 행동을 줍니다. -->
+</section>
+<section class="slide stuck-order-slide" data-slide="A7-03" data-shape="flow">
+  <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 6<br>확인 순서</div></header>
+  <div class="s-full"><p class="s-eyebrow">막혔을 때</p><h2 class="s-title">이 순서대로 <span class="hl-mint-mark">하나씩</span> 확인합니다</h2>
+    <div class="s53-body">
+      <div class="s53-steps"><div class="work-step"><span class="n">1</span><div><b>파일 위치</b><span>지금 연 파일이 그 폴더 안의 <code>index.html</code>이 맞는지 봅니다.</span></div></div><div class="s53-arrow" aria-hidden="true">↓</div><div class="work-step"><span class="n">2</span><div><b>작업 완료</b><span>Codex의 작업이 끝났는지, 승인을 기다리고 있지 않은지 봅니다.</span></div></div><div class="s53-arrow" aria-hidden="true">↓</div><div class="work-step"><span class="n">3</span><div><b>새로고침 (F5)</b><span>브라우저가 이전 화면을 그대로 보여 주고 있지 않은지 봅니다.</span></div></div><div class="s53-arrow" aria-hidden="true">↓</div><div class="work-step"><span class="n">4</span><div><b>그래도 안 되면</b><span>보인 것과 기대한 것을 네 줄로 적어 다시 요청합니다.</span></div></div></div>
+      <p class="s53-note">한꺼번에 고치지 않고,<br><strong>위에서부터 하나씩</strong> 봅니다.</p>
+    </div>
+  </div>
+  <!-- 발표노트: 설명 — 네 단계를 위에서부터 하나씩입니다. 한꺼번에 고치면 무엇이 원인이었는지 알 수 없습니다. -->
+</section>
+<section class="slide path-inspection-slide" data-slide="A7-04" data-shape="screen-operation">
+  <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 6<br>경로 확인</div></header>
+  <div class="dc-title"><p class="s-eyebrow">막혔을 때 첫 확인</p><h2 class="s-title">파일 위치부터 <span class="hl-mint-mark">바로잡습니다</span></h2></div>
+  <div class="path-inspection-layout"><div class="path-inspection-gui" role="img" aria-label="프로젝트 폴더 바로 안의 index.html을 확인하는 파일 탐색기 화면"><div class="tree-window-bar"><span></span><span></span><span></span><b>파일 탐색기</b></div><div class="tree-breadcrumb">C: <i>›</i> VibeCoding <i>›</i> typing_game</div><div class="file-list-head"><span>이름</span><span>종류</span></div><div class="file-list-row active"><span><b class="html-badge">HTML</b> index.html</span><span>Chrome HTML 문서</span></div></div><div class="path-inspection-copy"><div><span class="path-check-label">현재 경로</span><code>C:\VibeCoding\typing_game\</code></div><div><span class="path-check-label">실제 파일</span><strong>index.html</strong></div><p>최근 목록이나 기억이 아니라 <strong class="hl-blue-text">프로젝트 폴더 바로 안의 실제 파일</strong>을 엽니다.</p><p class="path-inspection-note">다른 폴더에 같은 이름의 파일이 있다면 먼저 위치부터 맞춘 뒤 다음 확인으로 갑니다.</p></div></div>
+  <!-- 발표노트: 설명 — 문제가 없는 수강생은 이 장을 건너뜁니다. 경로는 C:\VibeCoding\typing_game\입니다. -->
+</section>
+<section class="slide name-mismatch-slide" data-slide="A7-05" data-shape="concept">
+  <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 6<br>파일명 불일치</div></header>
+  <div class="s-full nm-full">
+    <p class="s-eyebrow">기능은 되는데 스타일만 안 먹으면</p>
+    <h2 class="s-title">스타일이 안 먹어요 — <span class="hl-mint-text">파일명 불일치</span></h2>
+    <p class="nm-lead">파일이 나뉘어 만들어졌다면, 파일명과 연결 이름(<code>style.css</code> vs <code>styles.css</code>)이 <strong>한 글자까지 같은지</strong> 확인합니다.</p>
+    <div class="nm-figure" role="img" aria-label="연결 이름 style.css와 실제 파일명 styles.css가 한 글자(s) 다른 모습">
+      <div class="nm-token"><span class="nm-label">연결 이름</span><code>style<i class="nm-gap" aria-hidden="true"></i>.css</code></div>
+      <div class="nm-neq" aria-hidden="true">≠</div>
+      <div class="nm-token nm-file"><span class="nm-label">파일명</span><code>style<mark>s</mark>.css</code></div>
+    </div>
+    <p class="nm-note">1차시 게임은 <code>index.html</code> 한 파일이 기준입니다. 요청하지 않았는데 파일이 나뉘어 있다면, 그것도 <strong>요구 불일치</strong>로 보고 한 파일로 합쳐 달라고 요청할 수 있습니다.</p>
+  </div>
+  <!-- 발표노트: 시연 — 한 글자 차이가 연결을 끊는 모습을 보여 줍니다. -->
+</section>
+<section class="slide subfolder-index-slide" data-slide="A7-06" data-shape="structure">
+  <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 6<br>하위 폴더</div></header>
+  <div class="s-full sf-full">
+    <h2 class="s-title">스타일이 안 먹어요 — <span class="hl-mint-text">하위 폴더 index</span></h2>
+    <p class="sf-q"><strong>파일을 찾을 수 없다는 화면(FILE_NOT_FOUND)이 나면</strong></p>
+    <div class="sf-stage">
+      <div class="viz-tree" role="img" aria-label="typing_game 프로젝트 폴더 바로 안이 index.html의 기준 위치이고, 하위 폴더 안에 생긴 index.html은 루트로 옮겨야 한다는 위계 트리">
+        <div class="vt-root">typing_game<small>프로젝트 루트</small></div>
+        <svg class="vt-wire" width="420" height="44" viewBox="0 0 420 44" aria-hidden="true"><path d="M210 0 V20 H100 V44 M210 20 H320 V44" fill="none" stroke="var(--blue-line-strong)" stroke-width="3"/></svg>
+        <div class="vt-leaves">
+          <div class="vt-leaf sf-ok"><b>index.html</b><span>바로 안 · 기준 위치</span></div>
+          <div class="vt-leaf sf-bad"><b>하위 폴더</b><span>안에 index.html</span><em>↖ 루트로 옮기기</em></div>
+        </div>
+      </div>
+      <div class="sf-copy">
+        <p><code>index.html</code>이 프로젝트 폴더 바로 안이 아니라 <strong>하위 폴더에</strong> 생기지 않았는지 봅니다.</p>
+        <p class="sf-fix">하위 폴더에 있다면 <code>index.html</code>을 프로젝트 루트(<code>C:\VibeCoding\typing_game\</code>)로 옮기고 파일 사이 연결 경로를 정리해 달라고 요청합니다.</p>
+      </div>
+    </div>
+  </div>
+  <!-- 발표노트: 시연 — index가 하위 폴더에 생기면 파일 사이 연결 기준(./)이 어긋납니다. -->
+</section>
+<section class="slide has-character-art refresh-check-slide" data-slide="A7-08" data-shape="flow">
+  <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 6<br>새로고침</div></header>
+  <div class="s-full steps-full"><p class="s-eyebrow">작업 완료 다음에 하는 일</p><h2 class="s-title">브라우저를 다시 <span class="hl-mint-mark">새로고침</span>합니다</h2>
+    <div class="eval-steps"><div class="work-step"><span class="n">1</span><div><b>최신 <code>index.html</code>을 기준으로 새로고침합니다.</b><span>브라우저가 이전 화면을 그대로 보여 주고 있지 않은지 확인합니다.</span></div></div><div class="vf-down" aria-hidden="true">↓</div><div class="work-step"><span class="n">2</span><div><b>최신 내용이 보이는지 확인합니다.</b><span>파일 위치 · 작업 완료 · 새로고침을 한꺼번에 고치지 않고 순서대로 봅니다.</span></div></div></div>
+  </div>
+  <figure class="asset-slot asset-slot--support character-art refresh-check-art" data-image-purpose="mnemonic" data-image-role="support" data-asset-kind="paper-cut-v1" data-image-state="ready" data-asset-id="ASSET-020"><img src="자료/images/s56_human-ai-refresh-check-paper-cut-v2-transparent.png" alt="작업이 끝난 파일을 새로고침하고 최신 화면을 확인하는 이미지"></figure>
+  <!-- 발표노트: 설명 — 대표 오류는 파일 위치·작업 미완료·새로고침 누락 3가지로 설명만 합니다. -->
+</section>
+<section class="slide issue-report-slide" data-slide="A7-11" data-shape="flow">
+  <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 6<br>문제 전달</div></header>
+  <div class="dc-title"><p class="s-eyebrow">문제를 정확하게 말하기</p><h2 class="s-title">네 줄로 상황을 <span class="hl-mint-underline">알려 줍니다</span></h2></div>
+  <div class="dc-stage">
+    <div class="viz-flow-ph ir-flow" data-viz="learning-flow" role="img" aria-label="어디에서, 무엇을 했는데, 실제로 어떻게 됐고, 원래 무엇을 기대했는지를 순서대로 적는 문제 보고 구조">
+      <div class="fl-node"><b>어디에서</b><small>파일 · 화면 위치</small></div>
+      <div class="fl-arrow" aria-hidden="true">→</div>
+      <div class="fl-node"><b>무엇을 했는데</b><small>방금 한 행동</small></div>
+      <div class="fl-arrow" aria-hidden="true">→</div>
+      <div class="fl-node key"><b>실제로 어떻게 됐고</b><small>실제 결과</small></div>
+      <div class="fl-arrow" aria-hidden="true">→</div>
+      <div class="fl-node"><b>원래 무엇을 기대했는지</b><small>원래 보여야 할 것</small></div>
+    </div>
+    <div class="terminal-dark" aria-label="프롬프트 창에 넣을 오류 보고 요청문"><div class="terminal-bar"><span></span><span></span><span></span><b>요청문 · 프롬프트 창</b></div><div class="terminal-body"><p class="terminal-copy"><span class="tl">브라우저에서 index.html을 열었더니 단어는 보이는데 입력칸이 없습니다.</span><span class="tl">글자를 쳐도 점수가 오르지 않습니다.</span><span class="tl">원래는 입력칸에 단어를 치면 점수가 올라야 합니다.</span><span class="tl">이 문제만 최소한으로 고쳐 주세요.</span></p></div></div>
+  </div>
+  <!-- 발표노트: 설명 — 요청문의 문장마다 어디에서·무엇을·실제·기대 중 어느 조각인지 짚어 줍니다. -->
+</section>
+<section class="slide completion-check-slide" data-slide="A7-13" data-shape="checklist">
+  <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 6<br>완료 체크</div></header>
+  <div class="s-full cc-full" data-viz="completion-checklist-map" aria-label="오늘의 경험을 마무리하는 완료 점검"><p class="s-eyebrow">오늘의 경험을 다음 작업에도 연결하기</p><h2 class="s-title">세 번의 행동을 <span class="hl-mint-text">다섯 가지 확인</span>으로 닫습니다</h2><div class="cc-grid"><div class="cc-side ai"><h3>오늘 해 본 행동</h3><ul><li>브라우저에서 게임 열기</li><li>단어를 입력해 보기</li><li>한 가지를 바꾸고 다시 보기</li></ul></div><div class="cc-side human"><h3>마지막 다섯 가지 확인</h3><ul><li>게임이 열리는가</li><li>단어와 입력칸이 보이는가</li><li>요청한 한 가지가 바뀌었는가</li><li>나머지 내용이 유지됐는가</li><li><code>index.html</code>을 다시 찾을 수 있는가</li></ul></div></div><p class="s-body"><strong>체크리스트는 AI의 자가평가가 아니라 <span class="hl-mint-underline">사람이 실제 화면과 파일을 확인하는 순서</span>입니다.</strong></p></div>
+  <!-- 발표노트: 설명 — 완료하지 못한 항목은 현재 상태로 기록한 뒤, 같은 파일을 다시 열어 다듬을 수 있다고 연결합니다. -->
+</section>
+<section class="slide done-contrast" data-slide="A2-07" data-shape="contrast">
+  <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 6<br>완료의 정의</div></header>
+  <div class="s-full cc-full">
+    <h2 class="s-title">AI의 «완료»는 <span class="hl-mint-text">완료 증거가 아닙니다</span></h2>
+    <p class="s-lead done-lead">Codex가 «타자 게임을 완성했습니다»라고 해도, 그것은 <strong class="hl-blue-text">확인이 아니라 보고</strong>입니다.</p>
+    <div class="cc-grid">
+      <div class="cc-side ai">
+        <h3>AI가 말한 것</h3>
+        <ul>
+          <li>요청하신 타자 게임을 완성했습니다.</li>
+          <li>모든 기능이 정상 동작합니다.</li>
+          <li>필요하시면 더 도와드리겠습니다.</li>
+        </ul>
+        <p class="cc-note">파일을 열어 보기 전까지는 사실인지 알 수 없습니다.</p>
+      </div>
+      <div class="cc-neq" aria-hidden="true">≠</div>
+      <div class="cc-side human">
+        <h3>내가 열어 확인한 것</h3>
+        <ul>
+          <li>파일이 실제로 생성됐는가</li>
+          <li>요구사항(내 단어 · 점수)이 반영됐는가</li>
+          <li>화면에 적힌 내용이 요청과 맞는가</li>
+          <li>브라우저에서 index.html이 열리고, 맞게 입력하면 점수가 오르는가</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <!-- 발표노트: 설명 — 제목을 그대로 읽습니다. 왼쪽은 AI 말투 그대로 읽어 주고, 오른쪽 네 줄은 방금 실습에서 직접 해 본 확인 목록이라고 짚습니다. / 시연 — “그래서 «완료»는 누가 정합니까?”를 물어 답을 받아 냅니다. 바로 앞 다섯 가지 확인이 이 기준을 실제로 해 본 것이라고 연결합니다. -->
+</section>
+<section class="slide pitfalls with-support-art" data-slide="A7-15" data-shape="checklist">
+  <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 6<br>최종 안전 점검</div></header>
+  <div class="s-full"><p class="s-eyebrow">공유하기 전 사람이 직접 볼 세 가지</p><h2 class="s-title">개인정보·권리·사실을 <span class="hl-mint-underline">다시 확인합니다</span></h2>
+    <div class="pf-list"><div class="card surface pf-band"><p class="pf-risk">개인정보</p><p class="pf-reason">연락처 · 환경변수 · 계정 정보가 들어가 있지 않은지 봅니다.</p><p class="pf-alt">공개해도 되는 단어만 남깁니다.</p></div><div class="card surface pf-band"><p class="pf-risk">권리</p><p class="pf-reason">다른 사이트의 로고나 이미지를 그대로 복사하지 않았는지 봅니다.</p><p class="pf-alt">참고 자료에서는 분위기 · 색 · 여백 등 특징 하나만 고릅니다.</p></div><div class="card surface pf-band"><p class="pf-risk">사실</p><p class="pf-reason">화면에 적힌 안내 문구와 점수 규칙이 실제 동작과 맞는지 직접 확인합니다.</p><p class="pf-alt">확인하지 못한 내용은 넣지 않고 사람이 최종 결정합니다.</p></div></div>
+  </div>
+  <figure class="asset-slot asset-slot--support" data-image-purpose="mnemonic" data-image-role="support" data-asset-kind="paper-cut-v1" data-image-state="ready" data-asset-id="ASSET-021"><img src="자료/images/s60_final-three-checks-paper-cut-v1-transparent.png" alt="개인정보, 권리, 사실을 확인하는 최종 점검 이미지"></figure>
+  <!-- 발표노트: 설명 — 공유는 오늘 하지 않습니다. 공유하기 전에 사람이 볼 세 가지만 남기세요 — 개인정보·권리·사실. -->
+</section>
+<section class="slide session2-preview-slide" data-slide="A7-14" data-shape="declaration">
+  <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 6<br>2차시 예고</div></header>
+  <div class="s2p-copy">
+    <h2 class="s-title">2차시에는 <span class="hl-mint-text">기준을 먼저</span> 세웁니다</h2>
+    <div class="s2p-rows">
+      <p class="s2p-row s2p-row--done"><b>1차시에 한 것</b>말로 바로 요청하고, 열어 보고, 한 가지씩 고치는 흐름을 익혔습니다.</p>
+      <p class="s2p-row s2p-row--next"><b>2차시에 할 것</b>만들기 전에 원하는 결과의 <strong>기준을 Markdown 문서로 먼저</strong> 적고, 그 기준으로 <strong class="hl-blue-text">나를 소개하는 웹사이트</strong>를 만들고 넓혀 봅니다.</p>
+    </div>
+    <p class="s2p-flow"><strong>요청 → 확인 → 수정</strong>의 흐름은 2차시에도 그대로입니다.</p>
+    <p class="s2p-final">AI가 작성하고, 사람이 검토하고, 사람이 결정합니다.</p>
+  </div>
+  <figure class="s2p-site" role="img" aria-label="2차시에 만들 나를 소개하는 웹사이트의 예시 화면 — 실제 인물 정보나 사진 없이 자리 모양만 그린 브라우저 창">
+    <div class="s2p-browser" aria-hidden="true">
+      <div class="s2p-bar"><span></span><span></span><span></span><i class="s2p-address"></i></div>
+      <div class="s2p-page">
+        <div class="s2p-nav"><i class="s2p-logo-dot"></i><i class="s2p-nav-item"></i><i class="s2p-nav-item"></i><i class="s2p-nav-item"></i></div>
+        <div class="s2p-hero">
+          <div class="s2p-avatar"><svg viewBox="0 0 64 64" width="64" height="64"><circle cx="32" cy="24" r="12" fill="var(--white)"/><path d="M10 58c2-13 11-20 22-20s20 7 22 20z" fill="var(--white)"/></svg></div>
+          <div class="s2p-hero-text"><b>나를 소개하는 웹사이트</b><i class="s2p-line"></i><i class="s2p-line s2p-line--short"></i><i class="s2p-cta"></i></div>
+        </div>
+        <div class="s2p-cards">
+          <div class="s2p-card"><i class="s2p-card-icon"></i><i class="s2p-line"></i><i class="s2p-line s2p-line--short"></i></div>
+          <div class="s2p-card"><i class="s2p-card-icon s2p-card-icon--mint"></i><i class="s2p-line"></i><i class="s2p-line s2p-line--short"></i></div>
+          <div class="s2p-card"><i class="s2p-card-icon s2p-card-icon--coral"></i><i class="s2p-line"></i><i class="s2p-line s2p-line--short"></i></div>
+        </div>
+      </div>
+    </div>
+    <figcaption class="s2p-badge">예시 화면</figcaption>
+  </figure>
+  <!-- 발표노트: 시연 — [이미지] 2차시에 만들 «나를 소개하는 웹사이트» 완성 모습 예시를 함께 보여 주어 결과물을 어필합니다 — 조립 단계에서 예시 인물로 제작하고 실제 개인정보는 넣지 않습니다. / 설명 — 2차시 예고는 한 줄로 끊습니다 — «말로 바로»에서 «기준 먼저»로. 1차시에 말로 고칠 때 어려웠던 점을 점심 동안 떠올려 오게 하면 2차시 첫 장과 이어집니다. -->
+</section>
+<section class="slide thank-you" data-slide="A7-16" data-shape="declaration" aria-label="감사 슬라이드">
+  <div class="thank-you-center">
+    <p class="thank-you-kicker">VIBECODING · 1차시</p>
+    <h2>THANK YOU</h2>
+    <p class="thank-you-next">나를 소개하는 웹사이트.<br>2차시에 만듭니다.</p>
+  </div>
+  <!-- 발표노트: 설명 — 질의응답 시간입니다. 답을 모르는 질문은 모른다고 말하고 다음 시간에 확인해 오겠다고 하세요 — 오늘 가르친 태도와 같습니다. -->
 </section>

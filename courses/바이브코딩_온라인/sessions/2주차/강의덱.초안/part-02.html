@@ -1,9 +1,9 @@
 <!-- ============ PART 2 · Prompt · Context · Markdown · W1 담당 (W0 골격 2026-09-15) ============
      이 파일의 data-slide 순서 = 계약 sequences.PART2 = 초안 순서:
      P2(초안 B2-01 간지) · B2-02 · B2-03 · B2-04 · B2-05 · B2-06 · B2-07 · B2-08 · B2-09 · B2-10 · B2-11 · B2-12 · B2-13 · B2-14 · B2-15 · B2-16 · B2-17
-     간지 data-slide는 초안 번호가 아니라 P2이다(verify_deck 단조성 · 오전 A1-01→P1 선례).
+     간지 data-slide는 초안 번호가 아니라 P2이다(verify_deck 단조성 · 1차시 A1-01→P1 선례).
      본문 슬라이드는 간지 아래에 초안 순서대로 이어 붙인다. 이 파일 안에 style 블록을 두지 않는다.
-     전용 CSS는 웨이브별 CSS로 내고 메인이 revision.css 끝 «오후 이식» 구획에 병합했다. 규약: W0 기록 §4 -->
+     전용 CSS는 웨이브별 CSS로 내고 메인이 revision.css 끝 «2차시 이식» 구획에 병합했다. 규약: W0 기록 §4 -->
 <section class="slide part-divider" data-slide="P2" data-shape="declaration">
   <svg class="dv-hero" viewBox="0 0 1280 720" fill="none" aria-hidden="true"></svg>
   <div class="pd-dots" aria-hidden="true"></div>
@@ -31,10 +31,10 @@
       <div class="n03-slot is-end"><span class="n03-no">5</span><b>완료 기준</b><span class="desc">무엇이 되면 끝인가</span><span class="desc n03-eg">예: 브라우저에서 이름·한 줄 소개·관심사가 모두 보임</span></div>
     </div>
   </div>
-  <!-- 발표노트: 설명 — Prompt Engineering의 정의부터 읽고 다섯 칸으로 내려갑니다. 예시는 전부 오후 실습 소재(나를 소개하는 웹사이트)에서 뽑았습니다. -->
+  <!-- 발표노트: 설명 — Prompt Engineering의 정의부터 읽고 다섯 칸으로 내려갑니다. 예시는 전부 2차시 실습 소재(나를 소개하는 웹사이트)에서 뽑았습니다. -->
 </section>
 
-<!-- B2-03 · 오전 part-04 A4-03(eng-axis-slide eng-prompt) 복사(G1 Q3) — 예시 교체 · «점검표로 쓰기» 한 단위 추가 -->
+<!-- B2-03 · 1차시 part-04 A4-03(eng-axis-slide eng-prompt) 복사(G1 Q3) — 예시 교체 · «점검표로 쓰기» 한 단위 추가 -->
 <section class="slide eng-axis-slide eng-prompt" data-slide="B2-03" data-shape="classification">
   <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 2<br>Prompt</div></header>
   <div class="s-full eng-layout">
@@ -56,7 +56,7 @@
       </div>
     </div>
   </div>
-  <!-- 발표노트: 설명 — 영어 용어를 외우게 하지 않습니다. «AI에게 뭐라고 말할지 정하는 것»으로 풀고, 오전에 본 네 원칙을 오후 소재로 다시 대어 보는 장이라고 안내합니다. -->
+  <!-- 발표노트: 설명 — 영어 용어를 외우게 하지 않습니다. «AI에게 뭐라고 말할지 정하는 것»으로 풀고, 1차시에 본 네 원칙을 2차시 소재로 다시 대어 보는 장이라고 안내합니다. -->
 </section>
 
 <!-- B2-04 · AC2 part-02 N-04(n2-requests) — 어두운 입력 상자 두 개 → 흰 Codex 입력창 상자 · 칸 이름 칩 5 -->
@@ -67,17 +67,17 @@
     <div class="n04-bands">
       <div class="n04-band is-vague">
         <div class="n04-head"><b>막연한 요청</b><span class="desc">목표만 있고 나머지는 추측</span></div>
-        <div class="codex-input n04-term" aria-label="Codex 입력창에 넣을 요청문 — 막연한 요청"><span class="codex-input-label">요청문 · Codex 입력창</span><p>자기소개 사이트 만들어줘.</p></div>
+        <div class="codex-input n04-term terminal-dark terminal-white-copy" aria-label="프롬프트 창에 넣을 요청문 — 막연한 요청"><div class="terminal-bar"><span></span><span></span><span></span><b>요청문 · 프롬프트 창</b></div><div class="terminal-body"><p>자기소개 사이트 만들어줘.</p></div></div>
       </div>
       <div class="n04-band is-clear">
         <div class="n04-head"><b>구조화된 요청</b><span class="desc">줄마다 <span class="hl-mint-text">담긴 칸</span>이 보입니다</span></div>
-        <div class="codex-input n04-term" aria-label="Codex 입력창에 넣을 요청문 — 구조화된 요청과 줄마다 담긴 칸"><span class="codex-input-label">요청문 · Codex 입력창</span><p>
+        <div class="codex-input n04-term terminal-dark terminal-white-copy" aria-label="프롬프트 창에 넣을 요청문 — 구조화된 요청과 줄마다 담긴 칸"><div class="terminal-bar"><span></span><span></span><span></span><b>요청문 · 프롬프트 창</b></div><div class="terminal-body"><p>
           <span class="n04-line"><span>나를 처음 알게 된 사람이 볼 자기소개 웹사이트를 만들어 주세요.</span><span class="n04-el">목표</span></span>
           <span class="n04-line"><span>이름 · 한 줄 소개 · 관심사 2~3개만 한 페이지에 보여 주세요.</span><span class="n04-el">범위</span></span>
           <span class="n04-line"><span>제가 주지 않은 경력 · 연락처는 만들지 마세요.</span><span class="n04-el">조건</span></span>
           <span class="n04-line"><span>index.html · style.css · script.js 세 파일로 만들어 주세요.</span><span class="n04-el">출력</span></span>
           <span class="n04-line"><span>브라우저에서 세 가지가 모두 보이면 끝입니다.</span><span class="n04-el">완료 기준</span></span>
-        </p></div>
+        </p></div></div>
       </div>
     </div>
   </div>
@@ -203,7 +203,7 @@
   <!-- 발표노트: 설명 — 원본 표현 그대로 «처음에 전달한 요구사항이나 조건이 약해지거나 누락될 수 있다»까지만 말합니다. 수치나 «중간만 사라진다» 같은 단정은 덧붙이지 않습니다. -->
 </section>
 
-<!-- B2-08 · 전환 화면 Context — 오전 A1-03 전환 구도 + 한 줄 부제(G1 Q6 · 부제는 p가 아닌 div) -->
+<!-- B2-08 · 전환 화면 Context — 1차시 A1-03 전환 구도 + 한 줄 부제(G1 Q6 · 부제는 p가 아닌 div) -->
 <section class="slide intro-do intro-do-sub no-page-number" data-slide="B2-08" data-shape="declaration" aria-label="Context">
   <p>Context</p>
   <div class="intro-do-subline">AI가 지금 보고 있는 것 — 무엇을 함께 넘기고, 정한 것을 어디에 남기는가.</div>
@@ -230,7 +230,7 @@
       <div class="rad-sat" style="left:725px;top:280px;"><h3>오류 메시지</h3><p class="desc">실패했을 때 나온 그대로</p></div>
     </div>
   </div>
-  <!-- 발표노트: 설명 — Context Engineering 정의를 읽고 네 가지를 짚습니다. 오후에는 «프로젝트 설명·자료·규칙»이 곧 prd.md·design.md·AGENTS.md가 된다고 예고합니다. -->
+  <!-- 발표노트: 설명 — Context Engineering 정의를 읽고 네 가지를 짚습니다. 2차시에는 «프로젝트 설명·자료·규칙»이 곧 prd.md·design.md·AGENTS.md가 된다고 예고합니다. -->
 </section>
 
 <!-- B2-10 · VC1 part-03 S3CE(eng-axis-slide eng-context) — 원본 그대로(라벨 «이렇게 쓰면» · 보조 문장은 초안 범위만) -->
@@ -303,7 +303,7 @@
   <!-- 발표노트: 설명 — 대화는 세션이 끝나면 잊히지만, Codex는 폴더 안 파일을 읽고 이어갈 수 있다는 차이를 짚습니다. AI가 모든 대화를 자동으로 영구 기억한다고 가정하지 않게 하세요. -->
 </section>
 
-<!-- B2-12 · 신규 구도(W0 §3) — 오전 part-04 A4-08 scope-contrast-slide 틀 · 대화 ≠ 문서 + 결론 + 회의록 비유 -->
+<!-- B2-12 · 신규 구도(W0 §3) — 1차시 part-04 A4-08 scope-contrast-slide 틀 · 대화 ≠ 문서 + 결론 + 회의록 비유 -->
 <section class="slide scope-contrast-slide" data-slide="B2-12" data-shape="contrast">
   <header class="s-head"><svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">VIBECODING</span><span class="s-line"></span><div class="s-team">PART 2<br>대화와 문서</div></header>
   <div class="s-full cc-full">
@@ -316,7 +316,7 @@
     <p class="scope-lead"><strong>대화는 흘러가고, 결정은 문서로 남깁니다.</strong></p>
     <div class="scope-notes"><p><b>회의록처럼</b>회의 잡담은 기억나도 회의록이 없으면 다음 날 다시 회의합니다. 채팅은 위로 밀려 사라지니, 지킬 기준은 문서에 남깁니다.</p></div>
   </div>
-  <!-- 발표노트: 설명 — 오전에 대화로만 고친 경험을 떠올리게 하고, 오후에는 정한 것을 문서로 남긴다는 결론으로 이어 갑니다. -->
+  <!-- 발표노트: 설명 — 1차시에 대화로만 고친 경험을 떠올리게 하고, 2차시에는 정한 것을 문서로 남긴다는 결론으로 이어 갑니다. -->
 </section>
 
 <!-- B2-13 · AC2 part-03 C4-12(w2-nest) — 하네스 정식 정의(유일한 장 · must_keep) · 하네스 엔지니어링 한 문장 추가 -->
@@ -418,7 +418,7 @@
       </table>
     </div>
     <div class="c31-right">
-      <p class="c31-name"><b>파일 이름 읽기</b><code>prd.md</code>의 <b>.md</b>는 Markdown으로 쓴 문서라는 표시입니다(오전에 <code>index.html</code>의 .html을 읽은 것과 같은 방식).</p>
+      <p class="c31-name"><b>파일 이름 읽기</b><code>prd.md</code>의 <b>.md</b>는 Markdown으로 쓴 문서라는 표시입니다(1차시에 <code>index.html</code>의 .html을 읽은 것과 같은 방식).</p>
       <div class="w2-editor viz-editor" role="img" aria-label="코드 편집기 화면. 왼쪽에 메모.md 원문 일곱 줄이 있고, 오른쪽에 그 문서가 제목·소제목·굵게·목록·할 일·인용으로 바뀐 모습이 나란히 보인다">
         <div class="w2-ed-bar"><span></span><span></span><span></span>
           <b class="w2-ed-tab">메모.md</b><b class="w2-ed-tab is-side">미리보기</b></div>

@@ -1269,7 +1269,7 @@
    18자짜리 P4 제목이 2줄로 깨져 마지막 글자만 다음 줄로 떨어졌다(실측 h=132px).
    명시 폭을 주면 translateX(-50%)가 그 폭 기준으로 중앙을 잡는다. */
 .part-divider .pd-title{ width:1000px; max-width:1000px; }
-/* 오후 P4 제목(37자 «실습: prd.md · design.md · AGENTS.md 작성»)은 56px 한 줄 폭 1048px로
+/* 2차시 P4 제목(37자 «실습: prd.md · design.md · AGENTS.md 작성»)은 56px 한 줄 폭 1048px로
    1000px를 넘어 «작성»만 둘째 줄로 떨어졌다(2026-09-15 실측). 문구는 유지하고 P4만
    --fs-display(52px · 한 줄 폭 974px)로 낮춘다. 다른 간지는 56px에서 최대 892px(P5)라 그대로. */
 .deck .slide.part-divider[data-slide="P4"] .pd-title{ font-size:var(--fs-display); }
@@ -3800,13 +3800,13 @@
 .slide[data-slide="C6-S4"] .p6-panel > h3 + *{ margin-top:auto; }
 .slide[data-slide="C6-S4"] .p6-panel > :last-child{ margin-bottom:auto; }
 
-/* ===== 오후 이식 · 공용 ===== */
-/* W0-shared.css — 오후 덱 여러 웨이브가 함께 쓰는 공용 클래스 규칙(오전 덱 원문 그대로 · 2026-09-15 W0 추출).
+/* ===== 2차시 이식 · 공용 ===== */
+/* W0-shared.css — 2차시 덱 여러 웨이브가 함께 쓰는 공용 클래스 규칙(1차시 덱 원문 그대로 · 2026-09-15 W0 추출).
    AC2 기반 CSS(shell kit-additions·revision.css)에는 아래 클래스 규칙이 0건이다(grep 실측).
-   메인이 revision.css «오후 이식 · 공용» 구획으로 한 번만 병합한다. 웨이브 CSS(wave-N.css)는 이 규칙을 다시 쓰지 않는다.
-   로드 순서 주의: 오전 덱은 revision.css가 kit-additions보다 먼저, 오후(AC2 셸)는 나중에 로드된다. */
+   메인이 revision.css «2차시 이식 · 공용» 구획으로 한 번만 병합한다. 웨이브 CSS(wave-N.css)는 이 규칙을 다시 쓰지 않는다.
+   로드 순서 주의: 1차시 덱은 revision.css가 kit-additions보다 먼저, 2차시(AC2 셸)는 나중에 로드된다. */
 
-/* ── 출처 ① 오전 revision.css 1517~1531행: 마무리 배너 · Codex 입력창 상자 · 캡처 자리 ── */
+/* ── 출처 ① 1차시 revision.css 1517~1531행: 마무리 배너 · Codex 입력창 상자 · 캡처 자리 ── */
 /* ── 공용: 마무리 배너 · Codex 입력창 상자 · 캡처 자리 ─────────────────── */
 .deck .slide .end-banner{ align-self:center; width:fit-content; max-width:1060px; margin:14px auto 0;
   padding:12px 22px; border-radius:var(--r-md); background:var(--ink); color:var(--white);
@@ -3823,13 +3823,13 @@
 .deck .slide .capture-slot{ width:100%; height:100%; max-width:none; min-width:0; min-height:0; margin:0; }
 .deck .slide .capture-slot > .shot-frame.demo-placeholder{ width:100%; height:100%; box-sizing:border-box; overflow:visible; }
 
-/* ── 출처 ② 오전 revision.css 1849~1852행: 선택 장 표식 ── */
+/* ── 출처 ② 1차시 revision.css 1849~1852행: 선택 장 표식 ── */
 /* ── ② 공용: 선택 장 표식 · 블록 줄 ── */
 .deck .slide .opt-pill{ display:inline-block; padding:2px 14px; border:1px solid var(--line); border-radius:var(--r-pill); background:var(--surface); color:var(--gray-700);
   /* 스케일 밖 값: 짧은 라벨(4자) · 캡션 등급 */
   font-size:16px; font-weight:800; }
 
-/* ── 출처 ③ 오전 shell.html kit-additions 158~169행: 캡처 자리표시(.demo-placeholder) ── */
+/* ── 출처 ③ 1차시 shell.html kit-additions 158~169행: 캡처 자리표시(.demo-placeholder) ── */
   .demo-placeholder{ display:flex; flex-direction:column; align-items:center;
     justify-content:center; gap:10px; padding:26px 24px; text-align:center;
     border:1px dashed var(--blue-line-strong); border-radius:var(--r-lg);
@@ -3843,37 +3843,37 @@
   .demo-placeholder > p{ margin:0; max-width:420px; font-size:22px; font-weight:500;
     line-height:1.45; color:var(--gray-700); }
 
-/* ── 출처 ④ 오전 shell.html kit-additions 73행: 경화 ② 위계 목록의 자리표시 제목 항목.
-   AC2 셸의 ② 목록에는 없다 → 오후 셸 ② 목록에 한 줄 추가하거나 아래 단독 규칙으로 둔다. ── */
+/* ── 출처 ④ 1차시 shell.html kit-additions 73행: 경화 ② 위계 목록의 자리표시 제목 항목.
+   AC2 셸의 ② 목록에는 없다 → 2차시 셸 ② 목록에 한 줄 추가하거나 아래 단독 규칙으로 둔다. ── */
 .deck .slide[data-slide] .demo-placeholder > b{
       font-size:var(--fs-box-title); font-weight:800; line-height:var(--lh-box-title); }
 
-/* ===== 오후 이식 · W1 PART 0·1·2 ===== */
-/* wave-1.css — 바이브코딩 온라인 오후 덱 W1(오프닝 B0-01~03 · PART 1 · PART 2) 전용 규칙 (2026-09-15)
-   메인이 revision.css «오후 이식 · W1» 구획으로 한 번 병합한다. 셀렉터를 쉼표로 쪼갠 기계 가공 없음(손 편집 항목은 블록 주석에 표시).
-   오후 셸 로드 순서: kit 3종 → shell kit-additions → revision.css(여기 병합). 오전 덱은 revision.css가 kit-additions보다 앞이었다.
-   원본 행 번호: 오전 = courses/바이브코딩_온라인/sessions/1주차/강의덱.초안/revision.css · VC1 = courses/바이브코딩/sessions/1주차/강의덱.초안/revision.css
+/* ===== 2차시 이식 · W1 PART 0·1·2 ===== */
+/* wave-1.css — 바이브코딩 온라인 2차시 덱 W1(오프닝 B0-01~03 · PART 1 · PART 2) 전용 규칙 (2026-09-15)
+   메인이 revision.css «2차시 이식 · W1» 구획으로 한 번 병합한다. 셀렉터를 쉼표로 쪼갠 기계 가공 없음(손 편집 항목은 블록 주석에 표시).
+   2차시 셸 로드 순서: kit 3종 → shell kit-additions → revision.css(여기 병합). 1차시 덱은 revision.css가 kit-additions보다 앞이었다.
+   원본 행 번호: 1차시 = courses/바이브코딩_온라인/sessions/1주차/강의덱.초안/revision.css · VC1 = courses/바이브코딩/sessions/1주차/강의덱.초안/revision.css
    공용(.codex-input · .end-banner 등)은 W0-shared.css 몫이라 여기 다시 쓰지 않는다. */
 
 /* ═════════ 공용 구도 이식 ① 전환 화면 .intro-do (W1만 사용 · W0 §4-2) ═════════ */
 
-/* 출처: 오전:71 · A1-03·A2-10 공용 → B1-04·B1-05·B2-08·B2-15 (손 편집: 그룹 셀렉터 `.intro-do, .intro-do-more` 중 .intro-do만) */
+/* 출처: 1차시:71 · A1-03·A2-10 공용 → B1-04·B1-05·B2-08·B2-15 (손 편집: 그룹 셀렉터 `.intro-do, .intro-do-more` 중 .intro-do만) */
 .intro-do { background:var(--ink); color:var(--white); }
-/* 출처: 오전:73 · A1-03·A2-10 → B1-04·B1-05·B2-08·B2-15 */
+/* 출처: 1차시:73 · A1-03·A2-10 → B1-04·B1-05·B2-08·B2-15 */
 .intro-do { display:grid; place-items:center; }
-/* 출처: 오전:74 · A1-03·A2-10 → B1-04·B1-05·B2-08·B2-15 */
+/* 출처: 1차시:74 · A1-03·A2-10 → B1-04·B1-05·B2-08·B2-15 */
 .intro-do p { margin:0; color:var(--mint-soft); font-size:214px; line-height:1; font-weight:900; letter-spacing:-.075em; }
-/* 출처: 오전:970 · A1-03·A2-10 → B1-04·B1-05·B2-08·B2-15 */
+/* 출처: 1차시:970 · A1-03·A2-10 → B1-04·B1-05·B2-08·B2-15 */
 .intro-do { position:relative; padding:0; }
-/* 출처: 오전:971~973 · A1-03·A2-10 → B1-04·B1-05·B2-08·B2-15 */
+/* 출처: 1차시:971~973 · A1-03·A2-10 → B1-04·B1-05·B2-08·B2-15 */
 .intro-do p { position:absolute; inset:0; display:grid; place-items:center; color:var(--mint); font-size:220px; letter-spacing:.06em; text-align:center; filter:saturate(1.45) brightness(1.2); text-shadow:0 0 18px color-mix(in srgb, var(--mint) 55%, transparent); }
-/* 출처: 오전:2211~2212 · A1-03·A2-10 below 보정(전면 P@720 → 글자 줄 상자만 세로 가운데) → B1-04·B1-05·B2-08·B2-15 */
+/* 출처: 1차시:2211~2212 · A1-03·A2-10 below 보정(전면 P@720 → 글자 줄 상자만 세로 가운데) → B1-04·B1-05·B2-08·B2-15 */
 .deck .slide.intro-do p{ inset:auto; left:0; right:0; top:50%; transform:translateY(-50%); }
-/* 출처: 오전:2362~2378 자간 광학 보정 그룹 · 공용 → B1-04·B1-05·B2-08·B2-15 (손 편집: 그룹 중 `.deck .slide.intro-do p` 한 항목만) */
+/* 출처: 1차시:2362~2378 자간 광학 보정 그룹 · 공용 → B1-04·B1-05·B2-08·B2-15 (손 편집: 그룹 중 `.deck .slide.intro-do p` 한 항목만) */
 .deck .slide.intro-do p{ letter-spacing:-.02em; }
 
 /* 신규(W1) · B2-08·B2-15 — G1 Q6 «전면 전환 구도 + 한 줄 부제».
-   오전 .intro-do p는 모든 p를 가운데에 겹치므로 부제는 p가 아닌 div.intro-do-subline으로 둔다(W0 §4-7).
+   1차시 .intro-do p는 모든 p를 가운데에 겹치므로 부제는 p가 아닌 div.intro-do-subline으로 둔다(W0 §4-7).
    라틴 단어(Context 7자 · Markdown 8자)는 220px이면 «Markdown» 폭이 약 1,050px로 캔버스에 붙어 176px로 둔다(추정 약 840px — 렌더 측정 필요). */
 .deck .slide.intro-do.intro-do-sub p{ top:44%; font-size:176px; }
 .deck .slide.intro-do.intro-do-sub .intro-do-subline{ position:absolute; left:120px; right:120px; top:calc(44% + 124px); margin:0;
@@ -3881,7 +3881,7 @@
 
 /* ═════════ 공용 구도 이식 ② 엔지니어링 두 축 .eng-* (B2-03 · B2-10 · AC2 기반 0건) ═════════ */
 
-/* 출처: 오전:1262~1297(eng-spot 1278 제외 — 오후 미사용) · A4-03 공용(원 VC1 S3PE·S3CE) → B2-03·B2-10 */
+/* 출처: 1차시:1262~1297(eng-spot 1278 제외 — 2차시 미사용) · A4-03 공용(원 VC1 S3PE·S3CE) → B2-03·B2-10 */
 .eng-layout{ top:108px; bottom:54px; display:grid; grid-template-columns:300px 1fr; grid-template-rows:auto 1fr; gap:16px 20px; }
 .eng-head{ grid-column:1 / -1; }
 .eng-title{ margin:0; display:flex; align-items:baseline; gap:18px; flex-wrap:wrap; }
@@ -3920,7 +3920,7 @@
 
 /* ═════════ 공용 구도 이식 ③ 구조적 한계 .limit-* · .lm-* (B2-06 · AC2 기반 0건) ═════════ */
 
-/* 출처: 오전:1299~1333(limit-src 1305 제외 — B2-06 미사용) · 공용(원 VC1 S3LM) → B2-06 */
+/* 출처: 1차시:1299~1333(limit-src 1305 제외 — B2-06 미사용) · 공용(원 VC1 S3LM) → B2-06 */
 .limit-layout{ top:108px; bottom:54px; display:flex; flex-direction:column; gap:14px; }
 .limit-title{ margin:0; display:flex; align-items:baseline; gap:20px; flex-wrap:wrap; }
 .limit-en{ color:var(--ink); font-size:84px; font-weight:900; line-height:1.02; letter-spacing:-.035em; }
@@ -3952,13 +3952,13 @@
 .lm-legend b{ color:var(--coral-deep); }
 .lm-key-line{ width:26px; height:4px; border-radius:2px; background:var(--blue); }
 .lm-key-dash{ width:26px; height:0; margin-left:16px; border-top:3px dashed var(--coral); }
-/* 출처: VC1:1417~1418 · S3LM → B2-06 (오전에는 없는 규칙 — 최저점 라벨 바탕 사각형) */
+/* 출처: VC1:1417~1418 · S3LM → B2-06 (1차시에는 없는 규칙 — 최저점 라벨 바탕 사각형) */
 .lm-low-label-bg{ fill:var(--coral-soft); stroke:var(--coral-line); stroke-width:1; }
 .lm-low-label{ dominant-baseline:middle; }
 
 /* ═════════ 오프닝 B0 ═════════ */
 
-/* 출처: 오전:1533~1534 · A0-01 → B0-01 */
+/* 출처: 1차시:1533~1534 · A0-01 → B0-01 */
 .deck .slide[data-slide="B0-01"] .cover-terminal .q{ font-size:22px; }
 
 /* 신규(W1) · B0-02 ← AC2 S02B(w2-week). 세 칸 한 줄 + 결과 띠(파일 칩 6) · 그림 뺌(G1 Q5).
@@ -3981,45 +3981,45 @@
 .deck .slide[data-slide="B0-02"] .wk-goal-label strong{ color:var(--mint-deep); font-weight:850; }
 .deck .slide[data-slide="B0-02"] .wk-goal-chips{ flex-wrap:wrap; gap:10px; }
 
-/* 출처: 오전 shell.html:18(kit-additions) · A0-03 → B0-03 */
+/* 출처: 1차시 shell.html:18(kit-additions) · A0-03 → B0-03 */
 [data-slide="B0-03"] .an-d{ font-size:22px; line-height:1.4; }
-/* 출처: 오전:1545~1552 · A0-03 → B0-03 (7항목 1열 + 좌열 노트) */
+/* 출처: 1차시:1545~1552 · A0-03 → B0-03 (7항목 1열 + 좌열 노트) */
 .deck .slide[data-slide="B0-03"] .an-intro{ font-size:22px; line-height:1.5; }
 .deck .slide[data-slide="B0-03"] .an-notes{ margin-top:18px; display:flex; flex-direction:column; gap:12px; }
 .deck .slide[data-slide="B0-03"] .an-notes p{ margin:0; padding:10px 16px; border-left:6px solid var(--mint); border-radius:var(--r-md);
   background:var(--mint-soft); color:var(--gray-700); font-size:22px; line-height:1.38; }
 .deck .slide[data-slide="B0-03"] .an-notes b{ display:block; color:var(--mint-deep); font-weight:850; }
 .deck .slide.s03-slide[data-slide="B0-03"] .an-right{ display:flex; flex-direction:column; justify-content:space-between; }
-/* 출처: 오전:2203~2208 · A0-03 → B0-03 (1열 7항목 바닥선 보정) */
+/* 출처: 1차시:2203~2208 · A0-03 → B0-03 (1열 7항목 바닥선 보정) */
 .deck .slide.s03-slide[data-slide="B0-03"] .an-right{ bottom:auto; justify-content:flex-start; gap:8px; }
 .deck .slide.s03-slide[data-slide="B0-03"] .an-item{ gap:20px; align-items:center; }
 .deck .slide.s03-slide[data-slide="B0-03"] .an-num{ width:52px; height:52px; font-size:22px; }
 .deck .slide.s03-slide[data-slide="B0-03"] .an-item:not(:last-child)::after{ left:25px; }
 .deck .slide.s03-slide[data-slide="B0-03"] .an-h{ line-height:1.2; }
 .deck .slide.s03-slide[data-slide="B0-03"] .an-d{ margin-top:2px; line-height:1.3; }
-/* 출처: 오전:2362~2378 자간 광학 보정 그룹 · A0-03 → B0-03 (손 편집: 그룹 중 an-title 한 항목만) */
+/* 출처: 1차시:2362~2378 자간 광학 보정 그룹 · A0-03 → B0-03 (손 편집: 그룹 중 an-title 한 항목만) */
 .deck .slide.s03-slide[data-slide="B0-03"] .an-title{ letter-spacing:-.02em; }
 
 /* ═════════ PART 1 ═════════ */
 
-/* 출처: 오전:2062 + 2381~2382(top:103) · A7-02 → B1-02 (그림 밴드 뺌 · 세로 가운데 추가) */
+/* 출처: 1차시:2062 + 2381~2382(top:103) · A7-02 → B1-02 (그림 밴드 뺌 · 세로 가운데 추가) */
 .deck .slide[data-slide="B1-02"] .s-full.ic-full{ top:103px; right:64px; bottom:54px; display:flex; flex-direction:column; justify-content:center; }
-/* 출처: 오전:2063 · A7-02 → B1-02 (220px 그림 열 제거 → 한 칸 띠) */
+/* 출처: 1차시:2063 · A7-02 → B1-02 (220px 그림 열 제거 → 한 칸 띠) */
 .deck .slide[data-slide="B1-02"] .ic-band{ margin-top:14px; display:block; padding:12px 22px; border-radius:var(--r-lg); background:var(--blue-panel); }
-/* 출처: 오전:2066 · A7-02 → B1-02 */
+/* 출처: 1차시:2066 · A7-02 → B1-02 */
 .deck .slide[data-slide="B1-02"] .ic-lead{ margin:0; color:var(--ink); font-size:26px; line-height:1.4; }
 /* 신규(W1) · B1-02 리드 라벨 · «함께 떠올려 볼 것» 줄 */
 .deck .slide[data-slide="B1-02"] .ic-lead strong{ color:var(--blue); font-weight:850; }
 .deck .slide[data-slide="B1-02"] .ic-ask{ margin:20px 0 0; color:var(--blue); font-size:22px; font-weight:850; }
-/* 출처: 오전:2067 · A7-02 → B1-02 (flex:1 → 내용 높이 — 한두 줄 카드의 빈 칸 방지) */
+/* 출처: 1차시:2067 · A7-02 → B1-02 (flex:1 → 내용 높이 — 한두 줄 카드의 빈 칸 방지) */
 .deck .slide[data-slide="B1-02"] .ic-cols{ flex:0 0 auto; min-height:0; margin-top:10px; gap:18px; }
-/* 출처: 오전:2068 · A7-02 → B1-02 (윗줄 색: 세 질문은 동급이라 코랄·블루·민트 구분 대신 블루 하나) */
+/* 출처: 1차시:2068 · A7-02 → B1-02 (윗줄 색: 세 질문은 동급이라 코랄·블루·민트 구분 대신 블루 하나) */
 .deck .slide[data-slide="B1-02"] .ic-col{ display:flex; flex-direction:column; gap:10px; padding:18px 22px; border-top:6px solid var(--blue); }
-/* 출처: 오전:2071 · A7-02 → B1-02 (코랄 → 잉크) */
+/* 출처: 1차시:2071 · A7-02 → B1-02 (코랄 → 잉크) */
 .deck .slide[data-slide="B1-02"] .ic-col h3{ margin:0; color:var(--ink); font-size:26px; font-weight:850; line-height:1.3; }
-/* 출처: 오전:2074 · A7-02 → B1-02 */
+/* 출처: 1차시:2074 · A7-02 → B1-02 */
 .deck .slide[data-slide="B1-02"] .ic-col p{ margin:0; color:var(--gray-700); font-size:22px; line-height:1.45; }
-/* 출처: 오전:2076~2077 · A7-02 → B1-02 */
+/* 출처: 1차시:2076~2077 · A7-02 → B1-02 */
 .deck .slide[data-slide="B1-02"] .ic-example{ margin:18px 0 0; padding:12px 20px; border-left:6px solid var(--mint); border-radius:var(--r-md); background:var(--mint-soft);
   color:var(--gray-700); font-size:22px; line-height:1.45; }
 .deck .slide[data-slide="B1-02"] .ic-example b{ color:var(--mint-deep); font-weight:850; }
@@ -4047,7 +4047,7 @@
 
 /* ═════════ PART 2 ═════════ */
 
-/* 출처: 오전:2409~2412 · A4-03 → B2-03 (주요 개념 칸 450 높이 stretchY → 내용 폭 띠) */
+/* 출처: 1차시:2409~2412 · A4-03 → B2-03 (주요 개념 칸 450 높이 stretchY → 내용 폭 띠) */
 .deck .slide[data-slide="B2-03"] .eng-layout{ grid-template-columns:minmax(0,1fr); grid-template-rows:auto auto minmax(0,1fr); }
 .deck .slide[data-slide="B2-03"] .eng-concept{ justify-self:start; width:fit-content; max-width:100%; flex-direction:row; align-items:baseline; gap:18px; padding:12px 22px; }
 .deck .slide[data-slide="B2-03"] .eng-concept h3{ flex:0 0 auto; margin:0; }
@@ -4089,7 +4089,7 @@
 .deck .slide[data-slide="B2-11"] .ps-col{ padding:14px 24px; gap:8px; }
 .deck .slide[data-slide="B2-11"] .ps-mid-img{ width:110px; height:110px; }
 
-/* 출처: 오전:1885~1892 · A4-08 → B2-12 (세로 가운데 추가 · 비유 칸 1개라 2열 → 1열 가운데 · 칸 속 한 줄을 26px 핵심 문구로) */
+/* 출처: 1차시:1885~1892 · A4-08 → B2-12 (세로 가운데 추가 · 비유 칸 1개라 2열 → 1열 가운데 · 칸 속 한 줄을 26px 핵심 문구로) */
 .deck .slide[data-slide="B2-12"] .cc-full{ bottom:54px; justify-content:center; }
 .deck .slide[data-slide="B2-12"] .cc-grid{ flex:0 0 auto; margin:22px 0 0; grid-template-columns:minmax(0,1fr) 84px minmax(0,1fr); }
 .deck .slide[data-slide="B2-12"] .cc-side{ text-align:center; }
@@ -4156,14 +4156,14 @@
 .deck .slide[data-slide="B2-16"] .w2-ed-preview .mdr-check .box{ width:16px; height:16px; font-size:12px; }
 .deck .slide[data-slide="B2-16"] .w2-ed-preview .mdr-quote{ margin:8px 0; font-size:19px; }
 
-/* ===== 오후 이식 · W2 PART 3·5 ===== */
+/* ===== 2차시 이식 · W2 PART 3·5 ===== */
 /* ═══════════════════════════════════════════════════════════════════
-   wave-2.css — 바이브코딩 온라인 오후 덱 · W2(PART 3 · PART 5) 전용 규칙 (2026-09-15)
-   메인이 revision.css «오후 이식 · PART 3/5» 구획으로 병합한다. 웨이브는 revision.css를 쓰지 않는다.
-   규약: tmp/vco-2주차/W0-기록.md §4 — 모든 규칙은 `.deck .slide[data-slide="Bx-yy"]` 스코프(오후 셸은 revision.css가
+   wave-2.css — 바이브코딩 온라인 2차시 덱 · W2(PART 3 · PART 5) 전용 규칙 (2026-09-15)
+   메인이 revision.css «2차시 이식 · PART 3/5» 구획으로 병합한다. 웨이브는 revision.css를 쓰지 않는다.
+   규약: tmp/vco-2주차/W0-기록.md §4 — 모든 규칙은 `.deck .slide[data-slide="Bx-yy"]` 스코프(2차시 셸은 revision.css가
    kit-additions 뒤에 로드 · 명시도 0,3,0 이상).
-   오전 덱의 전역 클래스 규칙(completion-* · must-* · browser-* 등)은 전역으로 옮기지 않고 슬라이드 스코프로 재현했다
-   (오전 revision.css 머리의 전역 shared contracts가 AC2 장을 흔드는 사고 방지 · W0 §4-4).
+   1차시 덱의 전역 클래스 규칙(completion-* · must-* · browser-* 등)은 전역으로 옮기지 않고 슬라이드 스코프로 재현했다
+   (1차시 revision.css 머리의 전역 shared contracts가 AC2 장을 흔드는 사고 방지 · W0 §4-4).
    AC2 revision.css에 이미 원본 ID 규칙이 있는 장(C3-2→B3-15 · C3-3→B3-16 · C5-7→B3-17 · C3-N3→B5-04)은
    규칙을 복사하지 않고 추가분만 여기 둔다 — 원본 규칙 개명은 메인(W2-idmap.tsv «제자리개명»).
    ═══════════════════════════════════════════════════════════════════ */
@@ -4358,7 +4358,7 @@
 .deck .slide[data-slide="B3-12"] .r4-warn .itr-icon{ width:24px; height:24px; flex:0 0 auto; }
 
 /* ── B3-13 · 정의·예 표 4행 + 노트 2 + 오른쪽 그림 ──
-   출처: courses/바이브코딩_온라인/sessions/1주차/강의덱.초안/revision.css:1833~1840·2020~2023 · A6-10 → B3-13 (표 머리행 제거 · 3열 → 2열 · c210-notes 신규 — 오전 1911~1914 completion-notes 틀) */
+   출처: courses/바이브코딩_온라인/sessions/1주차/강의덱.초안/revision.css:1833~1840·2020~2023 · A6-10 → B3-13 (표 머리행 제거 · 3열 → 2열 · c210-notes 신규 — 1차시 1911~1914 completion-notes 틀) */
 .deck .slide[data-slide="B3-13"] .s-full.cc-full{ right:430px; bottom:54px; display:flex; flex-direction:column; }
 .deck .slide[data-slide="B3-13"] .c210-tbl{ flex:0 0 auto; width:100%; margin:16px 0 0; }
 .deck .slide[data-slide="B3-13"] .c210-tbl th{ width:130px; padding:10px 16px; font-size:20px; line-height:1.35; text-align:left; white-space:nowrap; }
@@ -4373,7 +4373,7 @@
 
 /* ── B3-14 · 확인 항목 브라우저 목업 + 노트 2 ──
    출처: courses/바이브코딩_온라인/sessions/1주차/강의덱.초안/revision.css:510·576~585·1911~1914·2281~2283·2408 · A5-06 → B3-14
-   (오전 전역 클래스 규칙 completion-check-layout/completion-screen/completion-browser-*를 B3-14 스코프로 재현 · 목업 칸 설명 줄(small)은 초안에 없어 제외 · 목업 높이 flex:1 → 내용 높이 + 위아래 auto 여백) */
+   (1차시 전역 클래스 규칙 completion-check-layout/completion-screen/completion-browser-*를 B3-14 스코프로 재현 · 목업 칸 설명 줄(small)은 초안에 없어 제외 · 목업 높이 flex:1 → 내용 높이 + 위아래 auto 여백) */
 .deck .slide[data-slide="B3-14"] .completion-check-layout{ bottom:54px; display:flex; flex-direction:column; }
 .deck .slide[data-slide="B3-14"] .cc14-lead{ flex:0 0 auto; margin:8px 0 0; font-size:22px; line-height:1.5; }
 .deck .slide[data-slide="B3-14"] .completion-screen{ flex:0 0 auto; margin:auto 0; overflow:hidden; border:2px solid var(--ink); border-radius:var(--r-lg); background:var(--white); box-shadow:var(--shadow-md); }
@@ -4409,7 +4409,7 @@
 
 /* ── B5-02 · 다시 볼 세 칸 + 멈춤 배너 + 노트 ──
    출처: courses/바이브코딩_온라인/sessions/1주차/강의덱.초안/revision.css:510·564~573·1879~1882·2255~2261 · A4-07 → B5-02
-   (오전 전역 클래스 규칙 required-conditions-layout/must-condition-rail/must-banner를 B5-02 스코프로 재현 · 칸 설명 p 없음 → 칸을 가로 한 줄로 · 칸 색 구분 제거(세 칸이 동급)) */
+   (1차시 전역 클래스 규칙 required-conditions-layout/must-condition-rail/must-banner를 B5-02 스코프로 재현 · 칸 설명 p 없음 → 칸을 가로 한 줄로 · 칸 색 구분 제거(세 칸이 동급)) */
 .deck .slide[data-slide="B5-02"] .required-conditions-layout{ bottom:54px; display:flex; flex-direction:column; }
 .deck .slide[data-slide="B5-02"] .must-condition-rail{ flex:0 0 auto; margin:auto 0 0; display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
 .deck .slide[data-slide="B5-02"] .must-condition-rail article{ display:flex; align-items:center; gap:16px; padding:22px 24px; border:2px solid var(--blue-line-strong); border-radius:var(--r-lg); background:var(--blue-panel); }
@@ -4439,7 +4439,7 @@
 .deck .slide[data-slide="B5-04"] .c3n3-first{ align-self:center; }
 .deck .slide[data-slide="B5-04"] .c3n3-first p{ font-size:24px; line-height:1.45; }
 
-/* ── B5-05 · 오전/오후 대비 + 그림 | 결론 ──
+/* ── B5-05 · 1차시/2차시 대비 + 그림 | 결론 ──
    출처: courses/바이브코딩/sessions/1주차/강의덱.초안/revision.css:714~720·971 · S42 → B5-05 (s-full right:404 → 전폭 · 그림 칸 330×340 절대배치 → 하단 줄 380×200 · li 19→22px · cc-neq 칸 추가) */
 .deck .slide[data-slide="B5-05"] .s-full{ bottom:54px; display:flex; flex-direction:column; }
 .deck .slide[data-slide="B5-05"] .cc-grid{ flex:0 0 auto; grid-template-columns:minmax(0,1fr) 44px minmax(0,1fr); gap:16px; margin:20px 0 0; }
@@ -4481,7 +4481,7 @@
 .deck .slide[data-slide="B5-07"] .compare-foot{ flex:0 0 auto; margin:12px 0 0; font-size:24px; line-height:1.45; text-align:center; }
 
 /* ── B5-08 · 설명 + 캡처 K5 | 흰 요청문 상자 ──
-   출처: 신규 규칙(VC1 part-03.html:258 «32» 설명|요청문 2열 구도 참고 · 원본 검정 터미널 규칙 part-03.html:255~256 미사용 · 2열 틀은 오전 revision.css:1760 A3-14 준용) · 32 → B5-08 */
+   출처: 신규 규칙(VC1 part-03.html:258 «32» 설명|요청문 2열 구도 참고 · 원본 검정 터미널 규칙 part-03.html:255~256 미사용 · 2열 틀은 1차시 revision.css:1760 A3-14 준용) · 32 → B5-08 */
 .deck .slide[data-slide="B5-08"] .rs-layout{ position:absolute; left:64px; right:64px; top:192px; bottom:54px; display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.3fr); gap:28px; }
 .deck .slide[data-slide="B5-08"] .rs-left{ min-width:0; display:flex; flex-direction:column; gap:12px; }
 .deck .slide[data-slide="B5-08"] .rs-lead{ margin:0; font-size:24px; font-weight:700; line-height:1.4; color:var(--ink); }
@@ -4494,7 +4494,7 @@
 .deck .slide[data-slide="B5-08"] .rs-input .codex-input-label{ align-self:flex-start; }
 
 /* ── B5-09 · 설명 + 세 줄(완성·정적·안 되면) | 캡처 K12 ──
-   출처: 신규 규칙(VC2 part-03.html:851 C3-6 구도 참고 · 원본 트리 규칙 part-03.html:230~237·377 · shell.html:1807은 트리 제외로 미사용 · 2열 틀은 오전 revision.css:1760 A3-14 준용) · C3-6 → B5-09 */
+   출처: 신규 규칙(VC2 part-03.html:851 C3-6 구도 참고 · 원본 트리 규칙 part-03.html:230~237·377 · shell.html:1807은 트리 제외로 미사용 · 2열 틀은 1차시 revision.css:1760 A3-14 준용) · C3-6 → B5-09 */
 .deck .slide[data-slide="B5-09"] .fr-layout{ position:absolute; left:64px; right:64px; top:192px; bottom:54px; display:grid; grid-template-columns:minmax(0,1.4fr) minmax(0,1fr); gap:28px; }
 .deck .slide[data-slide="B5-09"] .fr-copy{ min-width:0; display:flex; flex-direction:column; justify-content:center; gap:12px; }
 .deck .slide[data-slide="B5-09"] .fr-copy > p{ margin:0; font-size:22px; line-height:1.5; color:var(--gray-700); }
@@ -4510,7 +4510,7 @@
 
 /* ── B5-10 · 브라우저 예시 목업 | 확인 세 줄 + 결론 ──
    출처: courses/바이브코딩_온라인/sessions/1주차/강의덱.초안/revision.css:671~686·1932~1941·2290~2293 · A5-10 → B5-10
-   (오전 전역 클래스 규칙 browser-result-frame/browser-chrome/browser-address/browser-result-body/browser-tags를 B5-10 스코프로 재현 · 캡처 슬롯 K8 → 예시 목업(초안에 캡처 표식 없음) · browser-success-criteria → br-checks) */
+   (1차시 전역 클래스 규칙 browser-result-frame/browser-chrome/browser-address/browser-result-body/browser-tags를 B5-10 스코프로 재현 · 캡처 슬롯 K8 → 예시 목업(초안에 캡처 표식 없음) · browser-success-criteria → br-checks) */
 .deck .slide[data-slide="B5-10"] .br-lead{ margin:8px 0 0; font-size:22px; line-height:1.45; color:var(--gray-700); }
 .deck .slide[data-slide="B5-10"] .br-lead strong{ color:var(--ink); }
 .deck .slide[data-slide="B5-10"] .browser-check-layout{ position:absolute; left:64px; right:64px; top:232px; bottom:54px; display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.3fr); gap:28px; }
@@ -4535,7 +4535,7 @@
 
 /* ── B5-11 · 실습 3단계 + 완성 밴드 | 캡처 K12 ──
    출처: courses/바이브코딩/sessions/2주차/강의덱.초안/part-04.html:63·79·85·262~273 · C5-9(VC2) → B5-11
-   ⚠️ 원본 ID 분기: AC2 revision.css의 C5-9 규칙(오후 revision.css 2887·2979~2980행 포함)은 B4-18용 — W3 제자리 개명 대상. 여기는 VC2 원본만 복사.
+   ⚠️ 원본 ID 분기: AC2 revision.css의 C5-9 규칙(2차시 revision.css 2887·2979~2980행 포함)은 B4-18용 — W3 제자리 개명 대상. 여기는 VC2 원본만 복사.
    (pr-prompt/terminal 규칙 271·276행은 요청문을 다음 장으로 넘겨 미사용 · pf-band p 19→22px · 2열 pr11-body 신규) */
 .deck .slide[data-slide="B5-11"] .s-full{ bottom:54px; display:flex; flex-direction:column; }
 .deck .slide[data-slide="B5-11"] .accent-bar{ display:none; }
@@ -4578,9 +4578,9 @@
 .deck .slide[data-slide="B5-13"] .sb-checks li{ position:relative; padding-left:28px; color:var(--ink); font-size:22px; line-height:1.4; font-weight:650; }
 .deck .slide[data-slide="B5-13"] .sb-checks li::before{ content:"✓"; position:absolute; left:0; color:var(--mint-deep); font-weight:900; }
 
-/* ===== 오후 이식 · W3 PART 4 ===== */
-/* ============ wave-3.css — 오후 덱 PART 4(P4 · B4-02~B4-25) 전용 규칙 · W3 2026-09-15 ============
-   메인이 revision.css «오후 이식 · PART 4» 구획으로 병합한다(단일 라이터).
+/* ===== 2차시 이식 · W3 PART 4 ===== */
+/* ============ wave-3.css — 2차시 덱 PART 4(P4 · B4-02~B4-25) 전용 규칙 · W3 2026-09-15 ============
+   메인이 revision.css «2차시 이식 · PART 4» 구획으로 병합한다(단일 라이터).
    - AC2 원본 ID 규칙(C1-13 · C6-N3 · C3-N2 · N-23 · C5-5 · C5-9 · N-24 · C4-N4 · C3-N4 · C4-N2 · C4-11 · A5F2-P)은 여기 복사하지 않았다
      → tmp/vco-2주차/W3-idmap.tsv «제자리개명». 아래 B4-05·B4-18·B4-19·B4-20·B4-21·B4-22·B4-24 규칙은 그 개명 규칙 «위에» 얹는 덧규칙이다
      (명시도 .deck .slide[data-slide] = 0,3,0 이상 + 로드 순서상 뒤 → 개명 규칙 .slide[data-slide] 0,2,0 계열을 이긴다).
@@ -4593,21 +4593,21 @@
    초안 prd.md 문장이 원본보다 길다(최장 줄 ≈ 790px @19px nowrap). 오른쪽 칸은 설명 없이 항목 이름 알약만 남아(초안) 파일 칸을 780 → 920px로 넓힌다. */
 .deck .slide[data-slide="B4-05"] .n23-map{ grid-template-columns:920px 60px minmax(0,1fr); }
 
-/* ── B4-06 (오전 A5-02 · A5-03 병합 · 복사+재설계) ───────────────────────────── */
-/* 신규: 캡처 자리(왼쪽 440px) + 설명 4칸(오른쪽) + 아래 한 줄. 오전 .agent-open-layout(절대 배치 · 56/44%)은 설명 4칸이 세로 예산을 넘어 쓰지 않았다. */
+/* ── B4-06 (1차시 A5-02 · A5-03 병합 · 복사+재설계) ───────────────────────────── */
+/* 신규: 캡처 자리(왼쪽 440px) + 설명 4칸(오른쪽) + 아래 한 줄. 1차시 .agent-open-layout(절대 배치 · 56/44%)은 설명 4칸이 세로 예산을 넘어 쓰지 않았다. */
 .deck .slide[data-slide="B4-06"] .b406-full{ bottom:54px; display:flex; flex-direction:column; }
 .deck .slide[data-slide="B4-06"] .b406-full > .s-eyebrow{ margin:0 0 8px; }
 .deck .slide[data-slide="B4-06"] .b406-grid{ flex:1 1 auto; min-height:0; display:grid; grid-template-columns:440px minmax(0,1fr); gap:28px; margin-top:12px; }
 .deck .slide[data-slide="B4-06"] .agent-open-copy{ min-width:0; display:flex; flex-direction:column; justify-content:space-between; gap:8px; }
 /* 출처: courses/바이브코딩_온라인/sessions/1주차/강의덱.초안/revision.css:630 · A5-03(.agent-open-copy > div) → B4-06 · padding 18/22 → 10/18(4칸) */
 .deck .slide[data-slide="B4-06"] .agent-open-copy > div{ flex:1 1 auto; display:flex; flex-direction:column; justify-content:center; padding:10px 18px; border:1px solid var(--blue-line-strong); background:var(--blue-panel); }
-/* 출처: 오전 revision.css:631 · A5-03(.agent-open-check) → B4-06 */
+/* 출처: 1차시 revision.css:631 · A5-03(.agent-open-check) → B4-06 */
 .deck .slide[data-slide="B4-06"] .agent-open-copy .agent-open-check{ border-color:var(--mint-line); background:var(--mint-soft); }
-/* 출처: 오전 revision.css:632 · A5-03(.agent-open-copy strong) → B4-06 */
+/* 출처: 1차시 revision.css:632 · A5-03(.agent-open-copy strong) → B4-06 */
 .deck .slide[data-slide="B4-06"] .agent-open-copy strong{ color:var(--blue); font-size:19px; }
-/* 출처: 오전 revision.css:633 · A5-03(.agent-open-check strong) → B4-06 */
+/* 출처: 1차시 revision.css:633 · A5-03(.agent-open-check strong) → B4-06 */
 .deck .slide[data-slide="B4-06"] .agent-open-copy .agent-open-check strong{ color:var(--mint-deep); }
-/* 출처: 오전 revision.css:634 + 817(22px 하한 목록의 .agent-open-copy p) · A5-03 → B4-06 · margin 7 → 4 */
+/* 출처: 1차시 revision.css:634 + 817(22px 하한 목록의 .agent-open-copy p) · A5-03 → B4-06 · margin 7 → 4 */
 .deck .slide[data-slide="B4-06"] .agent-open-copy p{ margin:4px 0 0; color:var(--gray-700); font-size:22px; line-height:1.4; }
 .deck .slide[data-slide="B4-06"] .agent-open-copy p b{ color:var(--ink); font-weight:800; }
 .deck .slide[data-slide="B4-06"] .b406-foot{ flex:0 0 auto; margin:12px 0 0; font-size:22px; line-height:1.4; text-align:center; color:var(--ink); }
@@ -4711,18 +4711,18 @@
 .deck .slide[data-slide="B4-14"] .ds-say{ flex:0 0 auto; margin:0; font-size:22px; line-height:1.45; text-align:center; color:var(--ink); }
 .deck .slide[data-slide="B4-14"] .ds-note{ flex:0 0 auto; margin:0; padding:10px 0 10px 18px; border-left:5px solid var(--mint); font-size:22px; line-height:1.44; font-weight:650; color:var(--ink); }
 
-/* ── B4-15 (오전 A4-10 · 복사+재설계 · W0 §3 index-entry-slide → definition) ─── */
+/* ── B4-15 (1차시 A4-10 · 복사+재설계 · W0 §3 index-entry-slide → definition) ─── */
 /* 출처: courses/바이브코딩_온라인/sessions/1주차/강의덱.초안/revision.css:1112 + 2385 + 1197 · A4-10(.index-entry-layout · .s-full top) → B4-15 · bottom 42 → 54 · 세 규칙을 합침 */
 .deck .slide[data-slide="B4-15"] .index-entry-layout{ top:103px; bottom:54px; display:flex; flex-direction:column; }
-/* 출처: 오전 revision.css:1130 · A4-10(.index-entry-layout .s-title) → B4-15 */
+/* 출처: 1차시 revision.css:1130 · A4-10(.index-entry-layout .s-title) → B4-15 */
 .deck .slide[data-slide="B4-15"] .index-entry-layout .s-title{ max-width:1050px; }
-/* 출처: 오전 revision.css:1131 + 2416 · A4-10(.index-name-map) → B4-15 · margin-top 42 → 24 */
+/* 출처: 1차시 revision.css:1131 + 2416 · A4-10(.index-name-map) → B4-15 · margin-top 42 → 24 */
 .deck .slide[data-slide="B4-15"] .index-name-map{ margin-top:24px; display:grid; grid-template-columns:410px minmax(0,1fr); gap:28px; align-items:center; }
-/* 출처: 오전 revision.css:1132 · A4-10(.index-name-token) → B4-15 · min-height 추가 */
+/* 출처: 1차시 revision.css:1132 · A4-10(.index-name-token) → B4-15 · min-height 추가 */
 .deck .slide[data-slide="B4-15"] .index-name-token{ display:flex; align-items:center; justify-content:center; min-height:200px; overflow:hidden; border:2px solid var(--blue-line-strong); border-radius:var(--r-lg); background:var(--ink); font-family:var(--font-mono); font-size:58px; font-weight:900; letter-spacing:-.05em; }
-/* 출처: 오전 revision.css:1133 · A4-10(.index-name-token span) → B4-15 */
+/* 출처: 1차시 revision.css:1133 · A4-10(.index-name-token span) → B4-15 */
 .deck .slide[data-slide="B4-15"] .index-name-token span{ color:var(--white); }
-/* 출처: 오전 revision.css:1134 · A4-10(.index-name-token b) → B4-15 */
+/* 출처: 1차시 revision.css:1134 · A4-10(.index-name-token b) → B4-15 */
 .deck .slide[data-slide="B4-15"] .index-name-token b{ color:var(--mint); }
 /* 신규: «담는 것» 6칩 · 노트 2 */
 .deck .slide[data-slide="B4-15"] .dm-holds{ padding:18px 22px; border:1px solid var(--blue-line-strong); border-radius:var(--r-lg); background:var(--blue-panel); }
@@ -4736,18 +4736,18 @@
 .deck .slide[data-slide="B4-15"] .dm-notes > article > h3{ margin:0; color:var(--ink); }
 .deck .slide[data-slide="B4-15"] .dm-notes p{ margin:6px 0 0; font-size:22px; line-height:1.45; color:var(--gray-700); }
 
-/* ── B4-16 (오전 A7-10 · 복사+재설계 · W0 §3 restore-first-slide → grid) ──────── */
+/* ── B4-16 (1차시 A7-10 · 복사+재설계 · W0 §3 restore-first-slide → grid) ──────── */
 /* 출처: courses/바이브코딩_온라인/sessions/1주차/강의덱.초안/revision.css:2146 · A7-10 → B4-16 */
 .deck .slide[data-slide="B4-16"] .rf-full{ bottom:54px; display:flex; flex-direction:column; }
-/* 출처: 오전 revision.css:2147 · A7-10(.rf-banner) → B4-16 · 위치를 격자 아래로 옮겨 margin 16 auto 0 → 22 auto 0 · font 26 → 24(두 문장) */
+/* 출처: 1차시 revision.css:2147 · A7-10(.rf-banner) → B4-16 · 위치를 격자 아래로 옮겨 margin 16 auto 0 → 22 auto 0 · font 26 → 24(두 문장) */
 .deck .slide[data-slide="B4-16"] .rf-banner{ margin:22px auto 0; padding:14px 26px; font-size:24px; }
-/* 출처: 오전 revision.css:2148 · A7-10(.rf-grid) → B4-16 · margin-top 22 → 18 */
+/* 출처: 1차시 revision.css:2148 · A7-10(.rf-grid) → B4-16 · margin-top 22 → 18 */
 .deck .slide[data-slide="B4-16"] .rf-grid{ flex:1 1 auto; min-height:0; margin-top:18px; gap:22px; }
-/* 출처: 오전 revision.css:2149 · A7-10(.rf-card) → B4-16 · 가운데 정렬 추가 */
+/* 출처: 1차시 revision.css:2149 · A7-10(.rf-card) → B4-16 · 가운데 정렬 추가 */
 .deck .slide[data-slide="B4-16"] .rf-card{ display:flex; flex-direction:column; justify-content:center; align-items:center; gap:14px; padding:24px 26px; text-align:center; }
-/* 출처: 오전 revision.css:2150 · A7-10(.rf-n) → B4-16 · 48 → 64px(배지 A·B·C가 칸의 주인공) */
+/* 출처: 1차시 revision.css:2150 · A7-10(.rf-n) → B4-16 · 48 → 64px(배지 A·B·C가 칸의 주인공) */
 .deck .slide[data-slide="B4-16"] .rf-n{ width:64px; height:64px; display:grid; place-items:center; border-radius:50%; background:var(--blue); color:var(--white); font-size:30px; font-weight:850; }
-/* 출처: 오전 revision.css:2153 · A7-10(.rf-card h3) → B4-16 · 26 → 30px */
+/* 출처: 1차시 revision.css:2153 · A7-10(.rf-card h3) → B4-16 · 26 → 30px */
 .deck .slide[data-slide="B4-16"] .rf-card h3{ margin:0; color:var(--ink); font-size:30px; font-weight:850; }
 .deck .slide[data-slide="B4-16"] .rf-full > .s-eyebrow{ margin:0 0 6px; }
 .deck .slide[data-slide="B4-16"] .rf-lead{ margin:10px 0 0; font-size:24px; font-weight:800; color:var(--blue); }
@@ -4810,20 +4810,20 @@
 .deck .slide[data-slide="B4-22"] .c4n2-list{ flex:1 1 auto; min-height:0; justify-content:center; width:100%; max-width:920px; margin:12px auto 0; }
 .deck .slide[data-slide="B4-22"] .c4n2-k{ font-size:22px; }
 
-/* ── B4-23 (오전 A6-09 · 복사 · W0 §3 claim-rationale → claim · 보조 클래스 dup-guard-slide → tech-limit-slide) ── */
+/* ── B4-23 (1차시 A6-09 · 복사 · W0 §3 claim-rationale → claim · 보조 클래스 dup-guard-slide → tech-limit-slide) ── */
 /* 출처: courses/바이브코딩_온라인/sessions/1주차/강의덱.초안/revision.css:2011 · A6-09 → B4-23 */
 .deck .slide[data-slide="B4-23"] .cr-claim{ margin:12px 0 0; padding:14px 24px; border:2px solid var(--blue); border-radius:var(--r-lg); background:var(--blue-soft); text-align:center; }
-/* 출처: 오전 revision.css:2012 · A6-09 → B4-23 */
+/* 출처: 1차시 revision.css:2012 · A6-09 → B4-23 */
 .deck .slide[data-slide="B4-23"] .cr-claim b{ display:block; color:var(--blue); font-size:30px; font-weight:850; }
-/* 출처: 오전 revision.css:2013 · A6-09 → B4-23 */
+/* 출처: 1차시 revision.css:2013 · A6-09 → B4-23 */
 .deck .slide[data-slide="B4-23"] .cr-claim p{ margin:8px 0 0; color:var(--gray-700); font-size:22px; line-height:1.45; }
-/* 출처: 오전 revision.css:2014 · A6-09 → B4-23 */
+/* 출처: 1차시 revision.css:2014 · A6-09 → B4-23 */
 .deck .slide[data-slide="B4-23"] .cr-spine{ margin:6px 0; font-size:22px; }
-/* 출처: 오전 revision.css:2015 · A6-09 → B4-23 */
+/* 출처: 1차시 revision.css:2015 · A6-09 → B4-23 */
 .deck .slide[data-slide="B4-23"] .grid-3{ gap:18px; }
-/* 출처: 오전 revision.css:2016 · A6-09 → B4-23 */
+/* 출처: 1차시 revision.css:2016 · A6-09 → B4-23 */
 .deck .slide[data-slide="B4-23"] .cr-card{ justify-content:center; padding:18px 22px; }
-/* 출처: 오전 revision.css:2017 · A6-09 → B4-23 */
+/* 출처: 1차시 revision.css:2017 · A6-09 → B4-23 */
 .deck .slide[data-slide="B4-23"] .cr-card h3{ font-size:26px; }
 .deck .slide[data-slide="B4-23"] .cr-card.is-key{ background:var(--mint-soft); border-color:var(--mint-line); }
 
@@ -4840,11 +4840,11 @@
 /* ── B4-25 (AC2 A5F2-P 제자리개명 · 원본 ID 규칙 0 · 검정 터미널 → 흰 요청문 상자) ── */
 .deck .slide[data-slide="B4-25"] .b425-input{ flex:0 0 auto; margin-top:12px; }
 
-/* ===== 오후 이식 · W4 PART 6·7 ===== */
-/* wave-4.css — 바이브코딩 온라인 오후 덱 W4(PART 6 · PART 7) 전용 규칙 (2026-09-15)
-   메인이 revision.css «오후 이식 · PART 6~7» 구획으로 병합한다(단일 라이터).
-   규약(W0-기록.md §4): 오전 조각 원본 ID 규칙은 새 ID로 옮겨 적었다 · AC2 유래 장(N-20·A4R1·C4-4·C4-13·C4-15·THX)은
-   여기에 복사하지 않고 W4-idmap.tsv «제자리개명»으로만 넘긴다 · 오전 revision.css 머리의 전역 shared contracts는
+/* ===== 2차시 이식 · W4 PART 6·7 ===== */
+/* wave-4.css — 바이브코딩 온라인 2차시 덱 W4(PART 6 · PART 7) 전용 규칙 (2026-09-15)
+   메인이 revision.css «2차시 이식 · PART 6~7» 구획으로 병합한다(단일 라이터).
+   규약(W0-기록.md §4): 1차시 조각 원본 ID 규칙은 새 ID로 옮겨 적었다 · AC2 유래 장(N-20·A4R1·C4-4·C4-13·C4-15·THX)은
+   여기에 복사하지 않고 W4-idmap.tsv «제자리개명»으로만 넘긴다 · 1차시 revision.css 머리의 전역 shared contracts는
    옮기지 않고 필요한 장에서만 슬라이드 스코프로 재현했다 · 공용 클래스(.end-banner·.codex-input·.capture-slot·
    .demo-placeholder·.opt-pill)는 W0-shared.css 몫이라 다시 쓰지 않는다.
    셀렉터 목록은 스크립트로 쪼개지 않았다 — 원본의 쉼표 목록 규칙에서 필요한 항목만 손으로 옮겼고 그 사실을 출처 줄에 적었다. */
@@ -4866,24 +4866,24 @@
 .deck .slide[data-slide="B6-02"] .dm-analogy{ border-left:6px solid var(--mint); background:var(--mint-soft); }
 .deck .slide[data-slide="B6-02"] .dm-analogy b{ color:var(--mint-deep); font-weight:850; }
 
-/* 출처: 오전 revision.css:699-703 · 868 · 937 · 2301-2303 · 2350-2351 · 2383 (:is 묶음·경화 목록에서 A6-04 항목만 손으로 옮김) · A6-04 → B6-03 */
+/* 출처: 1차시 revision.css:699-703 · 868 · 937 · 2301-2303 · 2350-2351 · 2383 (:is 묶음·경화 목록에서 A6-04 항목만 손으로 옮김) · A6-04 → B6-03 */
 .deck .slide[data-slide="B6-03"] .s-full{ right:420px; top:109px; bottom:54px; display:flex; flex-direction:column; }
 .deck .slide[data-slide="B6-03"] .dl-rows{ flex:0 0 auto; min-height:0; margin-top:10px; gap:6px; }
 .deck .slide[data-slide="B6-03"] .dl-row{ min-height:0; align-items:center; padding:8px 18px; }
 .deck .slide[data-slide="B6-03"] .dl-term{ flex:0 0 150px; color:var(--blue); font-size:22px; }
 .deck .slide[data-slide="B6-03"] .dl-row .s-body{ font-size:22px; line-height:1.4; }
-/* 출처: 오전 revision.css:1974-1977 · 2335-2336 (요청문 상자 여백 · mistake-note 틀 → 수정 요청 3단 띠) · A6-04 → B6-03 */
+/* 출처: 1차시 revision.css:1974-1977 · 2335-2336 (요청문 상자 여백 · mistake-note 틀 → 수정 요청 3단 띠) · A6-04 → B6-03 */
 .deck .slide[data-slide="B6-03"] .codex-input{ margin-top:10px; padding:8px 16px 10px; }
 .deck .slide[data-slide="B6-03"] .fix-3step{ margin:10px 0 0; padding:8px 16px; border-left:6px solid var(--mint); border-radius:var(--r-md); background:var(--mint-soft); color:var(--gray-700); font-size:22px; line-height:1.4; }
 .deck .slide[data-slide="B6-03"] .fix-3step b{ margin-right:10px; color:var(--mint-deep); font-weight:850; }
-/* 출처: 오전 revision.css:1998-2000 (오른쪽 캡처+그림 두 칸) · A6-07 → B6-03 */
+/* 출처: 1차시 revision.css:1998-2000 (오른쪽 캡처+그림 두 칸) · A6-07 → B6-03 */
 .deck .slide[data-slide="B6-03"] .shot-side{ position:absolute; right:64px; top:118px; bottom:56px; width:330px; display:grid; grid-template-rows:minmax(0,1fr) minmax(0,1fr); gap:16px; }
 .deck .slide[data-slide="B6-03"] .shot-side .asset-slot--support{ position:relative; inset:auto; width:100%; height:100%; max-width:none; max-height:none; margin:0; }
 .deck .slide[data-slide="B6-03"] .shot-side .asset-slot--support img{ width:100%; height:100%; object-fit:contain; }
 
-/* 출처: 오전 revision.css:23 shared contracts(.dc-title) — 전역 대신 슬라이드 스코프 재현 · 전역 → B6-04 */
+/* 출처: 1차시 revision.css:23 shared contracts(.dc-title) — 전역 대신 슬라이드 스코프 재현 · 전역 → B6-04 */
 .deck .slide[data-slide="B6-04"] .dc-title{ top:108px; left:64px; right:64px; }
-/* 출처: 오전 revision.css:1980-1982 · 1987 · A6-05 → B6-04 (세로 흐름 칸은 초안에 흐름 단계가 없어 리드+두 줄로 교체 · 흐름 규칙 1983-1986·2347 미사용) */
+/* 출처: 1차시 revision.css:1980-1982 · 1987 · A6-05 → B6-04 (세로 흐름 칸은 초안에 흐름 단계가 없어 리드+두 줄로 교체 · 흐름 규칙 1983-1986·2347 미사용) */
 .deck .slide[data-slide="B6-04"] .refresh-stage{ position:absolute; left:64px; right:64px; top:196px; bottom:56px; display:flex; flex-direction:column; gap:14px; }
 .deck .slide[data-slide="B6-04"] .refresh-body{ flex:1 1 auto; min-height:0; display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.15fr); gap:28px; }
 .deck .slide[data-slide="B6-04"] .refresh-copy{ min-width:0; display:flex; flex-direction:column; justify-content:center; gap:16px; }
@@ -4894,7 +4894,7 @@
 .deck .slide[data-slide="B6-04"] .refresh-rows p{ margin:0; padding:12px 18px; border:1px solid var(--blue-line-strong); border-radius:var(--r-md); background:var(--blue-panel); color:var(--gray-700); font-size:22px; line-height:1.42; }
 .deck .slide[data-slide="B6-04"] .refresh-rows b{ display:block; margin-bottom:2px; color:var(--blue); font-weight:850; }
 
-/* 출처: 오전 revision.css:735-739 · 741-742 (클래스 규칙 · 터미널 요청 상자 740·743-752와 compare-foot 753 제외) → B6-05 */
+/* 출처: 1차시 revision.css:735-739 · 741-742 (클래스 규칙 · 터미널 요청 상자 740·743-752와 compare-foot 753 제외) → B6-05 */
 .change-scope-slide .s-full { top:108px; bottom:42px; display:flex; flex-direction:column; }
 .change-scope-grid { margin-top:22px; display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
 .change-scope-item { min-height:158px; padding:20px 22px; border-top:7px solid var(--blue); background:var(--blue-panel); }
@@ -4902,10 +4902,10 @@
 .change-scope-item.check { border-top-color:var(--coral); background:var(--coral-soft); }
 .change-scope-item h3 { margin:8px 0; font-size:24px; }
 .change-scope-item p { margin:0; color:var(--gray-700); font-size:18px; line-height:1.38; }
-/* 출처: 오전 revision.css:869 · 938 (경화 목록에서 change-scope-item 항목만 손으로 옮김) → B6-05 */
+/* 출처: 1차시 revision.css:869 · 938 (경화 목록에서 change-scope-item 항목만 손으로 옮김) → B6-05 */
 .change-scope-item p { font-size:22px; }
 .change-scope-item { padding-block:16px; }
-/* 출처: 오전 revision.css:1990 · 2382 · A6-06 → B6-05 */
+/* 출처: 1차시 revision.css:1990 · 2382 · A6-06 → B6-05 */
 .deck .slide[data-slide="B6-05"] .change-scope-request{ margin-top:14px; }
 .deck .slide[data-slide="B6-05"] .s-full{ top:103px; bottom:54px; }
 /* 신규 · B6-05 (두 단계 줄 · 칸 높이 = 내용) */
@@ -4916,7 +4916,7 @@
 .deck .slide[data-slide="B6-05"] .change-scope-item{ min-height:0; }
 .deck .slide[data-slide="B6-05"] .change-scope-item > h3{ margin:0 0 6px; font-size:var(--fs-box-title); font-weight:800; line-height:var(--lh-box-title); }
 
-/* 출처: 오전 revision.css:1993-2000 · 2382 · A6-07 → B6-06 (size-compare-* → bg-check-* · 다섯 줄 → 리드+세 줄) */
+/* 출처: 1차시 revision.css:1993-2000 · 2382 · A6-07 → B6-06 (size-compare-* → bg-check-* · 다섯 줄 → 리드+세 줄) */
 .deck .slide[data-slide="B6-06"] .bg-check-main{ right:420px; top:103px; bottom:54px; display:flex; flex-direction:column; }
 .deck .slide[data-slide="B6-06"] .bg-rows{ flex:1 1 auto; min-height:0; margin-top:12px; display:flex; flex-direction:column; justify-content:space-between; gap:8px; }
 .deck .slide[data-slide="B6-06"] .bg-rows .dl-row{ align-items:center; padding:8px 16px; }
@@ -4928,21 +4928,21 @@
 /* 신규 · B6-06 */
 .deck .slide[data-slide="B6-06"] .bg-check-lead{ margin:8px 0 0; color:var(--gray-700); font-size:22px; line-height:1.45; }
 
-/* 출처: 오전 revision.css:699-703 · 868 · 937 · 2383 (:is 묶음·경화 목록에서 A6-14 항목만 손으로 옮김) · A6-14 → B6-07 */
+/* 출처: 1차시 revision.css:699-703 · 868 · 937 · 2383 (:is 묶음·경화 목록에서 A6-14 항목만 손으로 옮김) · A6-14 → B6-07 */
 .deck .slide[data-slide="B6-07"] .s-full{ top:109px; bottom:48px; display:flex; flex-direction:column; }
 .deck .slide[data-slide="B6-07"] .dl-rows{ flex:0 1 auto; min-height:0; margin-top:14px; gap:12px; }
 .deck .slide[data-slide="B6-07"] .dl-row{ min-height:0; align-items:center; padding:13px 20px; }
 .deck .slide[data-slide="B6-07"] .dl-term{ flex:0 0 150px; color:var(--blue); font-size:22px; }
 .deck .slide[data-slide="B6-07"] .dl-row .s-body{ font-size:22px; line-height:1.42; }
-/* 출처: 오전 revision.css:1241-1242 · A6-14 → B6-07 (본문 폭 확보로 right 534 → 470 · 그림 440 → 380) */
+/* 출처: 1차시 revision.css:1241-1242 · A6-14 → B6-07 (본문 폭 확보로 right 534 → 470 · 그림 440 → 380) */
 .deck .slide[data-slide="B6-07"] .s-full{ right:470px; }
 .deck .slide[data-slide="B6-07"] .asset-slot--support{ right:64px; top:205px; width:380px; height:340px; max-width:none; max-height:none; }
-/* 출처: 오전 revision.css:2059 · A6-14 → B6-07 */
+/* 출처: 1차시 revision.css:2059 · A6-14 → B6-07 */
 .deck .slide[data-slide="B6-07"] .end-banner{ margin:14px 0 0; align-self:flex-start; text-align:left; }
 /* 신규 · B6-07 */
 .deck .slide[data-slide="B6-07"] .fc-lead{ margin:10px 0 0; color:var(--ink); font-size:24px; line-height:1.4; font-weight:650; }
 
-/* 출처: 오전 revision.css:2220-2223 · 2384 · A2-02 → B6-08 (결론 배너 1617·2224는 초안에 결론 줄이 없어 미사용 → 막 안쪽 여백 6 → 10) */
+/* 출처: 1차시 revision.css:2220-2223 · 2384 · A2-02 → B6-08 (결론 배너 1617·2224는 초안에 결론 줄이 없어 미사용 → 막 안쪽 여백 6 → 10) */
 .deck .slide.case-acts[data-slide="B6-08"] .ca-stack{ gap:0; }
 .deck .slide.case-acts[data-slide="B6-08"] .ca-act{ padding:10px 22px; }
 .deck .slide.case-acts[data-slide="B6-08"] .ca-act .s-lead{ margin:0 0 2px; }
@@ -4953,15 +4953,15 @@
 .deck .slide[data-slide="B6-08"] .ca-act .pill{ font-size:16px; }
 .deck .slide[data-slide="B6-08"] .ca-down{ padding:4px 0; font-size:22px; }
 
-/* 출처: 오전 revision.css:719-721 · 722-724 · 725-727 · 728-730 · 1090-1092 (셀렉터 목록 중 .issue-report-slide 항목만 손으로 옮김 · .dc-stage 716-718 · .dc-cap 731-733·1059 미사용) → B6-09 */
+/* 출처: 1차시 revision.css:719-721 · 722-724 · 725-727 · 728-730 · 1090-1092 (셀렉터 목록 중 .issue-report-slide 항목만 손으로 옮김 · .dc-stage 716-718 · .dc-cap 731-733·1059 미사용) → B6-09 */
 .issue-report-slide .viz-flow-ph { min-height:0; display:grid; grid-template-columns:1fr 50px 1fr 50px 1fr; align-items:stretch; padding:0; border:0; background:transparent; }
 .issue-report-slide .fl-node { min-width:0; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:20px; border:1px solid var(--blue-line-strong); border-radius:var(--r-lg); background:var(--blue-panel); color:var(--ink); font-size:22px; text-align:center; }
 .issue-report-slide .fl-node.key { border-color:var(--mint-line); background:var(--mint-soft); color:var(--mint-deep); }
 .issue-report-slide .fl-arrow { display:grid; place-items:center; color:var(--blue); font-size:30px; }
 .issue-report-slide .fl-node.key { box-shadow:none; }
-/* 출처: 오전 revision.css:23 shared contracts(.dc-title) — 슬라이드 스코프 재현 · 전역 → B6-09 */
+/* 출처: 1차시 revision.css:23 shared contracts(.dc-title) — 슬라이드 스코프 재현 · 전역 → B6-09 */
 .deck .slide[data-slide="B6-09"] .dc-title{ top:108px; left:64px; right:64px; }
-/* 출처: 오전 revision.css:2157-2161 · 2321-2323 · 2349 · A7-11 → B6-09 (stage top 196 → 184 · 설명문 small 22 → 20 desc 티어) */
+/* 출처: 1차시 revision.css:2157-2161 · 2321-2323 · 2349 · A7-11 → B6-09 (stage top 196 → 184 · 설명문 small 22 → 20 desc 티어) */
 .deck .slide[data-slide="B6-09"] .ir-stage{ position:absolute; left:64px; right:64px; top:184px; bottom:56px; display:flex; flex-direction:column; justify-content:space-between; gap:12px; }
 .deck .slide[data-slide="B6-09"] .ir-flow .fl-node{ display:flex; flex-direction:column; gap:4px; padding:12px 14px; }
 .deck .slide[data-slide="B6-09"] .ir-flow .fl-node b{ font-size:22px; }
@@ -4979,7 +4979,7 @@
 .deck .slide[data-slide="B6-09"] .ir-notes .is-warn{ border:2px solid var(--coral-line); border-left-width:6px; background:var(--white); }
 .deck .slide[data-slide="B6-09"] .ir-notes .is-warn b{ color:var(--coral-deep); }
 
-/* 출처: 오전 shell.html:195-204 (kit-additions · L-td-mapping-rows 클래스 규칙) → B6-10
+/* 출처: 1차시 shell.html:195-204 (kit-additions · L-td-mapping-rows 클래스 규칙) → B6-10
    ⚠️ 원본은 .map-rows·.map-row·.map-left… 무스코프다. kit deck.css에 .map-row가 따로 있어 다른 장을 건드리지 않도록 .prompt-map 스코프를 붙였다(명시도 +1). */
 .prompt-map .s-full{ bottom:54px; display:flex; flex-direction:column; }
 .prompt-map .map-rows{ flex:1 1 auto; min-height:0; margin:18px 0 0; display:flex; flex-direction:column; justify-content:center; gap:14px; }
@@ -4990,11 +4990,11 @@
 .prompt-map .map-right{ padding:14px 22px; }
 .prompt-map .map-right .s-body{ margin:0; color:var(--gray-700); }
 .prompt-map .map-lead{ margin:10px 0 0; color:var(--gray-700); }
-/* 출처: 오전 shell.html:285-288 → B6-10 */
+/* 출처: 1차시 shell.html:285-288 → B6-10 */
 .deck .slide.prompt-map .map-row{ margin:0; grid-template-columns:200px 48px minmax(0,520px); justify-content:center; }
 .prompt-map .map-rows{ gap:18px; }
 .prompt-map .map-left.pill{ justify-content:center; padding:12px 20px; border-radius:var(--r-pill); background:var(--blue-soft); border-color:var(--blue-line-strong); box-shadow:none; }
-/* 출처: 오전 shell.html:72 (경화 ② 목록의 .map-left > b 항목 — 단독 규칙으로 옮기되 이 장 라벨 폭 때문에 24px) → B6-10 */
+/* 출처: 1차시 shell.html:72 (경화 ② 목록의 .map-left > b 항목 — 단독 규칙으로 옮기되 이 장 라벨 폭 때문에 24px) → B6-10 */
 .deck .slide[data-slide="B6-10"] .map-left > b{ font-size:24px; font-weight:800; line-height:var(--lh-box-title); }
 /* 신규 · B6-10 (라벨이 «prd.md · 만들지 않을 것»이라 왼쪽 칸 200 → 320 · 확인 방법 띠 · 경고 한 줄) */
 .deck .slide[data-slide="B6-10"] .map-row{ grid-template-columns:320px 48px minmax(0,440px); }
@@ -5010,9 +5010,9 @@
 
 /* ═════════════════════════════ PART 7 ═════════════════════════════ */
 
-/* 출처: 오전 revision.css:23 shared contracts(.dc-title) — 슬라이드 스코프 재현 · 전역 → B7-02 */
+/* 출처: 1차시 revision.css:23 shared contracts(.dc-title) — 슬라이드 스코프 재현 · 전역 → B7-02 */
 .deck .slide[data-slide="B7-02"] .dc-title{ top:108px; left:64px; right:64px; }
-/* 출처: 오전 revision.css:2117-2118 · 2121 · A7-07 → B7-02 (캡처 두 칸 2119-2120 미사용 → 비유 한 줄) */
+/* 출처: 1차시 revision.css:2117-2118 · 2121 · A7-07 → B7-02 (캡처 두 칸 2119-2120 미사용 → 비유 한 줄) */
 .deck .slide[data-slide="B7-02"] .done-check-stage{ position:absolute; left:64px; right:64px; top:196px; bottom:56px; display:flex; flex-direction:column; justify-content:space-between; gap:14px; }
 .deck .slide[data-slide="B7-02"] .done-check-flow{ flex:0 0 auto; }
 .deck .slide[data-slide="B7-02"] .end-banner{ margin:0 auto; }
@@ -5022,7 +5022,7 @@
 .deck .slide[data-slide="B7-02"] .done-check-analogy{ margin:0; align-self:center; width:fit-content; max-width:100%; padding:14px 24px; border-left:6px solid var(--mint); border-radius:var(--r-md); background:var(--mint-soft); color:var(--gray-700); font-size:22px; line-height:1.45; }
 .deck .slide[data-slide="B7-02"] .done-check-analogy b{ display:block; color:var(--mint-deep); font-weight:850; }
 
-/* 출처: 오전 revision.css:1993-1997 · 2382 · A6-07 dl-rows 틀 → B7-03 (오른쪽 캡처·그림 칸 1998-2000 제거 → 전폭 · size-rows → retry-rows) */
+/* 출처: 1차시 revision.css:1993-1997 · 2382 · A6-07 dl-rows 틀 → B7-03 (오른쪽 캡처·그림 칸 1998-2000 제거 → 전폭 · size-rows → retry-rows) */
 .deck .slide[data-slide="B7-03"] .s-full{ right:64px; top:103px; bottom:54px; display:flex; flex-direction:column; }
 .deck .slide[data-slide="B7-03"] .retry-rows{ flex:1 1 auto; min-height:0; margin-top:14px; display:flex; flex-direction:column; justify-content:center; gap:14px; }
 .deck .slide[data-slide="B7-03"] .retry-rows .dl-row{ align-items:center; padding:16px 22px; }
@@ -5037,7 +5037,7 @@
   font-size:16px; font-weight:800; vertical-align:middle; }
 .deck .slide[data-slide="B7-03"] .retry-close{ margin:16px 0 0; text-align:center; color:var(--ink); font-size:24px; line-height:1.45; font-weight:650; }
 
-/* 출처: 오전 revision.css:1734 · 1736-1739 · A3-11 → B7-04 (perm-q-* → cq-* · 4칸 → 5칸 · K4 캡처·s19 그림·보조 칸 1740-1749 제거) */
+/* 출처: 1차시 revision.css:1734 · 1736-1739 · A3-11 → B7-04 (perm-q-* → cq-* · 4칸 → 5칸 · K4 캡처·s19 그림·보조 칸 1740-1749 제거) */
 .deck .slide[data-slide="B7-04"] .cq-layout{ bottom:54px; display:flex; flex-direction:column; }
 .deck .slide[data-slide="B7-04"] .cq-grid{ flex:1 1 auto; min-height:0; margin:18px 0 0; padding:0; list-style:none; display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:14px; align-content:center; }
 .deck .slide[data-slide="B7-04"] .cq-grid li{ display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px; min-height:220px; padding:18px 14px;
@@ -5053,17 +5053,17 @@
 .deck .slide[data-slide="B7-04"] .cq-close{ align-self:center; width:fit-content; max-width:100%; margin:18px auto 0; padding:12px 22px; border:2px solid var(--blue); border-radius:var(--r-md); background:var(--white); color:var(--ink); font-size:22px; line-height:1.42; }
 .deck .slide[data-slide="B7-04"] .cq-close strong{ color:var(--blue); font-weight:850; }
 
-/* 출처: 오전 revision.css:779-783 · 873 · A7-13 → B7-05 (h3 27 → box-title 토큰 · 목록 20 → 22는 2183 반영) */
+/* 출처: 1차시 revision.css:779-783 · 873 · A7-13 → B7-05 (h3 27 → box-title 토큰 · 목록 20 → 22는 2183 반영) */
 .deck .slide[data-slide="B7-05"] .cc-full{ right:64px; top:108px; bottom:54px; display:flex; flex-direction:column; }
 .deck .slide[data-slide="B7-05"] .cc-grid{ flex:1; min-height:0; margin:24px 0 0; grid-template-columns:.85fr 1.15fr; gap:20px; }
 .deck .slide[data-slide="B7-05"] .cc-side{ min-height:0; padding:24px 28px; }
 .deck .slide[data-slide="B7-05"] .cc-side h3{ font-size:var(--fs-box-title); }
 .deck .slide[data-slide="B7-05"] .cc-side li{ font-size:22px; line-height:1.45; }
-/* 출처: 오전 revision.css:2182-2184 · A7-13 → B7-05 */
+/* 출처: 1차시 revision.css:2182-2184 · A7-13 → B7-05 */
 .deck .slide[data-slide="B7-05"] .cc-full{ bottom:54px; }
 .deck .slide[data-slide="B7-05"] .end-banner{ margin:16px auto 0; }
 
-/* 출처: 오전 revision.css:1376-1381 · 1385-1387 (human-* 무스코프 클래스 규칙 → rs-* 슬라이드 스코프) · 1654-1662 · 2386 · A2-09 → B7-06
+/* 출처: 1차시 revision.css:1376-1381 · 1385-1387 (human-* 무스코프 클래스 규칙 → rs-* 슬라이드 스코프) · 1654-1662 · 2386 · A2-09 → B7-06
    («해줘/해» 코랄·민트 대비 → AI 블루 · 사람 민트 · 인용 블록 1663-1666은 초안에 없어 미사용) */
 .deck .slide[data-slide="B7-06"] .rs-layout{ top:108px; bottom:54px; display:flex; flex-direction:column; }
 .deck .slide[data-slide="B7-06"] .rs-compare{ flex:1 1 auto; min-height:0; margin-top:24px; display:grid; grid-template-columns:1fr 1fr; gap:22px; align-content:center; }
@@ -5085,7 +5085,7 @@
 .deck .slide[data-slide="B7-11"] .pp-core .tl{ display:block; }
 
 /* 신규 · B7-08 (A4R1 구도 — 기반 A4R1 규칙 2개는 제자리개명 · 검정 터미널 요청문 → .codex-input · 저작권 경고 한 줄)
-   .vf-down은 기반에 규칙 0 → 오전 revision.css:712(A6-03·A7-08 :is 묶음) 값을 이 장 스코프로 옮김 */
+   .vf-down은 기반에 규칙 0 → 1차시 revision.css:712(A6-03·A7-08 :is 묶음) 값을 이 장 스코프로 옮김 */
 .deck .slide[data-slide="B7-08"] .vf-down{ color:var(--blue); font-size:22px; font-weight:800; text-align:center; }
 .deck .slide[data-slide="B7-08"] .codex-input{ margin-top:16px; }
 .deck .slide[data-slide="B7-08"] .ref-warn{ align-self:center; width:fit-content; max-width:100%; margin:14px auto 0; padding:10px 20px; border:2px solid var(--coral-line); border-radius:var(--r-md); background:var(--white); color:var(--gray-700); font-size:22px; line-height:1.4; }
@@ -5102,12 +5102,12 @@
 /* 신규 · B7-09 */
 .deck .slide[data-slide="B7-09"] .end-banner{ margin:14px auto 0; }
 
-/* 출처: 오전 revision.css:2187-2188 · A7-14 → B7-14 */
+/* 출처: 1차시 revision.css:2187-2188 · A7-14 → B7-14 */
 .deck .slide.fb-statement[data-slide="B7-14"] .center-msg{ left:64px; right:64px; top:110px; bottom:54px; max-width:none; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; }
 .deck .slide.fb-statement[data-slide="B7-14"] .cm-title{ margin:0; font-size:56px; line-height:1.2; }
 /* 신규 · B7-14 (관통 문장 세 줄 <br> → 블록 줄 span · verify_deck «<br> 직전 조사 종결» WARN 해소) */
 .deck .slide[data-slide="B7-14"] .cm-title .tl{ display:block; }
-/* 출처: 오전 revision.css:2194 (ap-flow) · A7-14 → B7-14 (ap-rows 두 칸·ap-final 2189-2195 제외 → 파일 칩 6) */
+/* 출처: 1차시 revision.css:2194 (ap-flow) · A7-14 → B7-14 (ap-rows 두 칸·ap-final 2189-2195 제외 → 파일 칩 6) */
 .deck .slide[data-slide="B7-14"] .close-flow{ margin:26px 0 0; color:var(--ink); font-size:26px; line-height:1.4; font-weight:650; }
 /* 신규 · B7-14 */
 .deck .slide[data-slide="B7-14"] .close-files{ margin-top:26px; display:flex; flex-direction:column; align-items:center; gap:12px; }
@@ -5253,3 +5253,44 @@
 .deck .slide[data-slide="B7-02"] .fl-arrow,
 .deck .slide[data-slide="B7-04"] .cq-n,
 .deck .slide[data-slide="B7-06"] .rs-human strong{ letter-spacing:-.02em; }
+
+/* ===== 수정요청 1차 · B4-26 이식 (2026-09-15) ===== */
+/* 1차시 revision.css(커밋 0fda762)의 A3-13 전용 규칙 7개(원본 AC2 C4-N5 6개 + 1차시 렌더 수정 22px 1개)를 B4-26 셀렉터로 옮겼다.
+   기반부의 C4-N5 셀렉터 규칙(미사용 원본 ID)은 그대로 둔다. .w2-tbl · .subline · .callout 전역 규칙은 이 파일에 이미 있어 추가하지 않았다. */
+.slide[data-slide="B4-26"] .s-full.c4n5-full{ bottom:54px; display:flex; flex-direction:column; }
+.slide[data-slide="B4-26"] .c4n5-lead{ margin:8px 0 0; font-size:22px; line-height:1.45; }
+.slide[data-slide="B4-26"] .c4n5-tbl{ margin:14px 0 0; }
+.slide[data-slide="B4-26"] .c4n5-tbl th:first-child{ width:130px; }
+.slide[data-slide="B4-26"] .c4n5-tbl table.t th,
+.slide[data-slide="B4-26"] .c4n5-tbl table.t td{ padding:10px 16px; }
+.slide[data-slide="B4-26"] .c4n5-foot{ flex:0 0 auto; margin:auto 0 0; }
+.deck .slide[data-slide="B4-26"] .c4n5-foot,
+.deck .slide[data-slide="B4-26"] .c4n5-foot .subline{ font-size:22px; }
+
+/* ===== 1차시 수정요청 2차 · U28 검정 프롬프트 창 (2026-09-16) ===== */
+/* 사용자 결정 U28: 요청문 프롬프트 창은 1·2차시 두 덱 모두 검정 배경 프롬프트 창(1차시 A5-07 모양)으로 통일.
+   마크업: .codex-input에 .terminal-dark .terminal-white-copy를 더하고, 라벨 칩을 창 머리(.terminal-bar · 점 3개 + ‹b›라벨)로,
+   ‹p›를 .terminal-body로 감쌌다 — 문구·줄바꿈은 그대로. .codex-input 클래스를 남긴 것은 장별 배치 규칙(여백·너비·정렬)을
+   살리기 위해서다 — 겉모양(흰 바탕·파란 테두리·잉크 글자)만 여기서 덮는다. 창 머리 치수는 이 파일 §0-9 .w2-prompt(38px · 라벨 16px),
+   점 3개·검정 바탕·흰 글자·모노 글꼴은 kit patterns.css .terminal-dark/.terminal-bar 그대로. 본문 22px(옛 .codex-input p)은 건드리지 않는다. */
+.deck .slide .codex-input.terminal-dark{ display:flex; flex-direction:column; justify-content:flex-start; padding:0;
+  border:2px solid var(--ink); border-radius:var(--r-lg); background:var(--ink); color:var(--white); box-shadow:var(--shadow-lg); }
+.deck .slide .codex-input.terminal-dark > .terminal-bar{ flex:0 0 auto; min-height:38px; padding:0 16px; }
+.deck .slide .codex-input.terminal-dark > .terminal-bar b{ margin-left:8px; color:var(--white);
+  /* 스케일 밖 값: 창 머리 라벨(24자 이하) · 캡션 등급 — 옛 .codex-input-label과 같은 16px */
+  font-family:var(--font-mono); font-size:16px; font-weight:700; }
+.deck .slide .codex-input.terminal-dark > .terminal-body{ flex:1 1 auto; display:flex; flex-direction:column; justify-content:center; padding:12px 18px 14px; }
+.deck .slide .codex-input.terminal-dark p,
+.deck .slide .codex-input.terminal-dark p strong{ color:var(--white); font-family:var(--font-mono); }
+/* 채울 칸: 흰 바탕용 파랑(B4-08·B4-19·B4-25·B5-12 규칙) → 검정 위 밝은 민트(§0-9 --mint-bright · 대비 12.01:1) */
+.deck .slide .codex-input.terminal-dark .fill{ color:var(--mint-bright); }
+/* ===== 1차시 수정요청 2차 · 프롬프트 창 머리 통일 (2026-09-16) ===== */
+/* 1차시 A5-07 «요청문 · 프롬프트 창» 창 머리와 같은 치수로 맞춘다. 값 출처: 1차시 revision.css:36-41(= kit patterns.css .terminal-bar)
+   — 1차시 A5-07에는 창 머리를 덮는 장별 규칙이 없다(tmp wave-C.css의 창 머리 규칙은 A6-09 34px 하나뿐 · 브라우저 계산값으로 확인).
+   위 U28 구획의 창 머리 38px · 좌우 16px · 라벨 16px을 같은 셀렉터(같은 특이도)로 뒤에서 덮는다.
+   창 몸통(.terminal-body) · 본문 22px · 채울 칸 색은 건드리지 않는다. */
+.deck .slide .codex-input.terminal-dark > .terminal-bar{ min-height:46px; gap:9px; padding:0 18px; border-bottom:1px solid var(--gray-700); }
+.deck .slide .codex-input.terminal-dark > .terminal-bar > span{ width:10px; height:10px; border-radius:50%; background:var(--white); opacity:.7; }
+.deck .slide .codex-input.terminal-dark > .terminal-bar b{ margin-left:8px;
+  /* 스케일 밖 값: 창 머리 라벨 · 1차시 A5-07과 같은 14px(kit .terminal-bar b 기본값) */
+  font-size:14px; font-weight:700; }
