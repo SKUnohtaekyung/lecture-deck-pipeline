@@ -5294,3 +5294,12 @@
 .deck .slide .codex-input.terminal-dark > .terminal-bar b{ margin-left:8px;
   /* 스케일 밖 값: 창 머리 라벨 · 1차시 A5-07과 같은 14px(kit .terminal-bar b 기본값) */
   font-size:14px; font-weight:700; }
+/* ===== U32 후속 · B7-07 피할 질문 카드 늘림 해소 (2026-09-16) ===== */
+/* U32에서 오른쪽 «검토 요청문»을 검정 프롬프트 창(본문 3줄 · 높이 172px)으로 바꾸자, shell .n20-ask 격자의 기본 align-items:stretch 때문에
+   왼쪽 «피할 질문» 카드(한 줄 문장)가 창 높이로 늘어나 속이 비었다(카드 454x172 · 빈 가로 46% · 빈 세로 56% · 채움 23%).
+   사용자 결정 U32: waiver 없이 없앤다. 카드를 행 높이로 늘리지 않고(가운데 정렬) 문장을 박스 제목 등급(26px/800)으로 올려 칸을 채우며,
+   왼쪽 칸을 .8fr → .75fr로 좁혀 카드 폭을 내용에 맞춘다. .75fr까지는 창 본문이 3줄로 남아 행 높이 172px · 하단 여백이 그대로다
+   (.7fr은 창이 2줄로 줄어 하단 빈 띠가 32px 늘어 채택하지 않았다). 문구 · 창 · 좌우 구도는 그대로. */
+.deck .slide[data-slide="B7-07"] .n20-ask{ grid-template-columns:minmax(0,.75fr) minmax(0,1.25fr); }
+.deck .slide[data-slide="B7-07"] .n20-q.is-bad{ align-self:center; }
+.deck .slide[data-slide="B7-07"] .n20-q.is-bad p{ font-size:var(--fs-box-title); font-weight:800; line-height:var(--lh-box-title); }
