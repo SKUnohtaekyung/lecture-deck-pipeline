@@ -1630,39 +1630,42 @@
       "slide_id": "A3-16",
       "part": 3,
       "decision": "IMAGE_EXPLANATORY",
-      "decision_reason": "수정요청 1차 S2 통합(2026-09-16) · AC1 24 구조 · 캡처 K7(집필노트 §3) — 덱에는 data-capture=\"K7\" 자리표시.",
+      "decision_reason": "수정요청 3차 확정분(2026-09-16) — 사용자 제공 `sessions/이미지 캡쳐/K7.png`(1705×1309 · Codex 대화 + 파일 탐색기)를 복사해 캡처 자리 K7을 실제 이미지로 대체(K3·K17과 같은 방식). AC1 24 구조.",
       "purpose": "explanatory",
       "role": "hero",
       "brief": {
-        "learning_point": "파일 탐색기에서 타자게임 단어.txt 생성 결과",
+        "learning_point": "Codex의 완료 보고 뒤 파일 탐색기에서 typing_game 안 타자게임 단어.txt를 직접 확인",
         "source_metaphor": null,
         "metaphor_mapping": [],
         "must_show": [
-          "파일 탐색기에서 typing_game 안 타자게임 단어.txt"
+          "Codex 대화의 파일 생성 보고",
+          "파일 탐색기 주소 표시줄 VibeCoding › typing_game",
+          "타자게임 단어 텍스트 문서"
         ],
         "must_not_imply": [
-          "캡처 전 화면 이름·버튼 위치 단정"
+          "캡처와 다른 폴더 경로"
         ],
-        "alt_text": "파일 탐색기에서 타자게임 단어.txt 생성 결과 실제 화면 캡처",
+        "alt_text": "Codex 대화에 타자게임 단어.txt를 만들었다는 보고와 과일 이름 8줄이 보이고, 아래 파일 탐색기 주소 표시줄 내 PC › 로컬 디스크 (C:) › VibeCoding › typing_game 안에 타자게임 단어 텍스트 문서가 보인다.",
         "audience": "코딩 경험이 없는 입문자 · 연령대가 높은 편 · 온라인 수강",
         "components": [
+          "Codex 대화",
           "파일 탐색기",
           "주소 표시줄",
           "타자게임 단어.txt"
         ],
         "key_relationship": "flow"
       },
-      "expected_file": "자료/images/k07_explorer-typing-words-txt.png",
-      "method": "none",
-      "asset_id": null,
+      "expected_file": "자료/images/k7_codex-explorer-typing-words-txt.png",
+      "method": "reuse",
+      "asset_id": "ASSET-039",
       "parent_asset_ids": [],
       "prompt_id": null,
-      "status": "blocked",
+      "status": "ready",
       "qa": {
-        "static": "pending",
-        "pixel": "pending",
+        "static": "pass",
+        "pixel": "not_applicable",
         "visual": "pending",
-        "notes": "사용자 캡처 대기(U15) — 도착 후 교체·검수"
+        "notes": "사용자 제공 캡처 — 새 덱 렌더 감사 대기"
       }
     },
     {
@@ -2493,49 +2496,10 @@
       }
     },
     {
-      "slide_id": "A6-08",
-      "part": 6,
-      "decision": "IMAGE_MNEMONIC",
-      "decision_reason": "결정표 §2 IMAGE_MNEMONIC — VC2 C5-15 PNG 재사용.",
-      "purpose": "mnemonic",
-      "role": "support",
-      "brief": {
-        "learning_point": "화면 하나 · 동작 하나 · 확인 하나",
-        "source_metaphor": null,
-        "metaphor_mapping": [],
-        "must_show": [
-          "세 단계 순서"
-        ],
-        "must_not_imply": [
-          "한 번에 전부 완성"
-        ],
-        "alt_text": "위에서 아래로 이어지는 세 단계가 화면 구조·입력 실행·다른 값 확인의 순서를 보여준다",
-        "audience": "코딩 경험이 없는 입문자 · 연령대가 높은 편 · 온라인 수강",
-        "components": [
-          "화면 구조",
-          "입력 실행",
-          "다른 값 확인"
-        ],
-        "key_relationship": "flow"
-      },
-      "expected_file": "자료/images/s75_one-step-at-a-time-paper-cut-v1-transparent.png",
-      "method": "reuse",
-      "asset_id": "ASSET-016",
-      "parent_asset_ids": [],
-      "prompt_id": null,
-      "status": "ready",
-      "qa": {
-        "static": "pass",
-        "pixel": "not_applicable",
-        "visual": "pending",
-        "notes": "원본 과목에서 렌더 검증된 PNG 재사용 — 새 덱 렌더 감사 대기"
-      }
-    },
-    {
       "slide_id": "A6-09",
       "part": 6,
       "decision": "NO_IMAGE",
-      "decision_reason": "결정표 §2 NO_IMAGE",
+      "decision_reason": "결정표 §2 NO_IMAGE · 수정요청 4차(2026-09-17) · 후속: 코드 시각화 → 타자 게임 화면 전후 비교 — «고친 뒤»는 배치가 흐트러진 화면(겹침 · 삐져나옴 · 쏠림)을 인라인 SVG로 그림(HTML/CSS·SVG 목업 · 이미지 에셋 아님)",
       "purpose": "none",
       "role": "none",
       "brief": {
