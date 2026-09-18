@@ -1,0 +1,507 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>발표자 노트 — 내 진단 테스트 만들고 공개하기 · 4시간 워크숍</title>
+<!--
+  발표자 노트 스타터 — create-slides
+  ─────────────────────────────────────────────────────────────
+  메인 덱과 별개의 독립 문서다. 강사가 발표 중/전에 참고한다.
+  콘텐츠 초안의 💬(농담)·👀(시연 큐)·🗣(막힐 때 힌트)를 슬라이드 순서대로 모은다.
+  · 🗣는 여기선 "펼쳐진" 상태 — 강사는 안전망 예시를 미리 다 봐야 한다(수강생 화면과 반대).
+  · 1280×720 캔버스 제약 없음. 읽기·인쇄 친화 세로 문서.
+  · deck.css를 링크하지 않는다(슬라이드 display:none 규칙이 문서 레이아웃을 깨므로) — 팔레트만 아래 :root로 미러.
+  조립 시: {{...}} 자리표시자를 채우고, .pn-slide 블록을 슬라이드 수만큼 복제한다.
+  멘트 없는 슬라이드는 목록에서 생략해도 된다(노트가 있는 슬라이드만 실어도 무방).
+-->
+<style>
+  :root{
+    --blue:#5B34D9; --mint-deep:#047857; --coral-deep:#B45309; --ink:#181528;
+    --gray-700:#4F4F4F; --gray-400:#9A9A9A; --white:#fff;
+    --surface:#F4F4F8; --line:#E7E5EF; --paper:#F7F5FC;
+    --blue-soft:#F1ECFE; --mint-soft:#E7F8F1; --coral-soft:#FEF5E6;
+    --r-lg:20px; --r-md:14px; --r-pill:999px;
+    --font-mono:"JetBrains Mono","D2Coding",ui-monospace,SFMono-Regular,Menlo,monospace;
+    --font:"Pretendard",system-ui,-apple-system,"Malgun Gothic",sans-serif;
+  }
+  *{ box-sizing:border-box; }
+  body{ margin:0; padding:32px 20px 64px; background:var(--paper); color:var(--ink);
+    font-family:var(--font); line-height:1.6; -webkit-font-smoothing:antialiased; }
+  .pn-wrap{ max-width:840px; margin:0 auto; }
+
+  /* 헤더 */
+  .pn-head{ border-bottom:2px solid var(--blue); padding-bottom:16px; margin-bottom:28px; }
+  .pn-kicker{ font-size:14px; font-weight:800; color:var(--blue); letter-spacing:.02em; }
+  .pn-title{ font-size:30px; font-weight:800; margin:6px 0 4px; }
+  .pn-note{ font-size:15px; color:var(--gray-700); margin:0; }
+  .pn-legend{ display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }
+  .pn-legend span{ font-size:13px; font-weight:700; border-radius:var(--r-pill); padding:4px 11px; border:1px solid var(--line); }
+  .lg-joke{ background:var(--blue-soft); color:var(--blue); }
+  .lg-demo{ background:var(--coral-soft); color:var(--coral-deep); }
+  .lg-hint{ background:var(--mint-soft); color:var(--mint-deep); }
+
+  /* 슬라이드 블록 */
+  .pn-slide{ border:1px solid var(--line); border-radius:var(--r-lg); background:var(--white);
+    padding:18px 20px; margin:0 0 16px; break-inside:avoid; }
+  .pn-slide-head{ display:flex; align-items:baseline; gap:12px; margin-bottom:10px; }
+  .pn-no{ flex:0 0 auto; font-size:14px; font-weight:800; color:var(--white); background:var(--blue);
+    border-radius:var(--r-pill); padding:3px 11px; }
+  .pn-slide-title{ font-size:19px; font-weight:800; margin:0; }
+
+  /* 멘트 항목 — 종류별 좌측 컬러 바 + 라벨 */
+  .pn-item{ border-left:4px solid var(--line); padding:8px 0 8px 14px; margin:8px 0; }
+  .pn-item .lbl{ display:inline-block; font-size:12px; font-weight:800; margin-bottom:3px; }
+  .pn-item p{ margin:0; font-size:16px; color:var(--gray-700); }
+  .pn-joke{ border-left-color:var(--blue); } .pn-joke .lbl{ color:var(--blue); }
+  .pn-demo{ border-left-color:var(--coral-deep); } .pn-demo .lbl{ color:var(--coral-deep); }
+  .pn-hint{ border-left-color:var(--mint-deep); background:var(--mint-soft);
+    border-radius:0 var(--r-md) var(--r-md) 0; }
+  .pn-hint .lbl{ color:var(--mint-deep); }
+  .pn-hint .prompt{ font-family:var(--font-mono); font-size:14.5px; color:var(--ink);
+    background:var(--white); border:1px solid var(--line); border-radius:var(--r-md);
+    padding:10px 12px; margin-top:4px; white-space:pre-wrap; }
+  .pn-hint .aside{ font-size:12.5px; color:var(--gray-400); margin-top:5px; }
+
+  @media print{
+    body{ background:var(--white); padding:0 8mm; }
+    .pn-slide{ box-shadow:none; }
+  }
+</style>
+</head>
+<body>
+<div class="pn-wrap">
+
+  <header class="pn-head">
+    <div class="pn-kicker">발표자 노트 · 4시간 실습 워크숍</div>
+    <h1 class="pn-title">내 진단 테스트 만들고 공개하기</h1>
+    <p class="pn-note">강사용 참고 문서입니다. 수강생 화면(덱)에는 <strong>💬 농담·👀 시연 큐가 보이지 않고</strong>, 🗣 힌트는 <strong>접힌 상태</strong>로 들어갑니다. 여기서는 모두 펼쳐 둡니다.</p>
+    <div class="pn-legend">
+      <span class="lg-joke">💬 농담·애드리브</span>
+      <span class="lg-demo">👀 시연·관찰 큐</span>
+      <span class="lg-hint">🗣 막힐 때 힌트(수강생 화면엔 접힘)</span>
+    </div>
+  </header>
+
+  
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">5</span>
+      <h2 class="pn-slide-title">오늘 네 번 반복할 세 가지</h2>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">시연·관찰</span>
+      <p>「계획 확인 → 승인 → 실행 → 검증」 순서를 채팅창에 한 줄로 적어 둔다. 블록마다 이 셋으로 돌아온다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">6</span>
+      <h2 class="pn-slide-title">무엇을 만들지 지금 고릅니다</h2>
+    </div>
+    <div class="pn-item pn-hint">
+      <span class="lbl">요청문 예시</span>
+      <p>&quot;넷 중에 뭐가 제일 만들고 싶으세요?&quot; 손 드는 수를 세어 그 자리에서 하나로 정한다. 정하고 나면 나머지 셋은 덮어 둔다.</p>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">시연·관찰</span>
+      <p>화면 쪽 둘은 눌러 보는 결과물이고, 대화 쪽 둘은 물어보는 결과물이다. 이 차이를 여기서 한 번 짚어 둔다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">7</span>
+      <h2 class="pn-slide-title">눌러서 결과를 받는 두 가지</h2>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">농담·애드리브</span>
+      <p>&quot;결과 화면이 이렇게 생겼습니다. 오늘 4시간 뒤에 여러분 주소로 이 화면이 열립니다.&quot;</p>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">시연·관찰</span>
+      <p>유형 이름과 세 줄 설명이 결과의 전부다. 이 두 가지를 사람이 쓰고, 화면은 에이전트가 만든다는 것을 여기서 한 번 더 말한다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">8</span>
+      <h2 class="pn-slide-title">물어보면 답해 주는 두 가지</h2>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">농담·애드리브</span>
+      <p>&quot;이 둘은 화면을 만드는 게 아닙니다. 무엇을 묻고 무엇은 답하지 않을지를 정하는 게 만드는 일입니다.&quot;</p>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">시연·관찰</span>
+      <p>③의 마지막 답(&quot;자료에 없습니다&quot;)을 짚어 준다. 모르는 것을 지어내지 않게 막는 것이 이 주제에서 사람이 하는 일이다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">9</span>
+      <h2 class="pn-slide-title">눌러 보는 웹페이지를 만듭니다</h2>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">농담·애드리브</span>
+      <p>&quot;코드 파일이 세 개 생기는데, 여러분이 손댈 건 글이 든 한 개입니다.&quot;</p>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">시연·관찰</span>
+      <p>폴더 그림을 손으로 짚으며 «이 폴더를 통째로 끌어다 놓는 게 3교시에 할 일»이라고 미리 연결해 둔다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">10</span>
+      <h2 class="pn-slide-title">물어보면 답하는 에이전트를 만듭니다</h2>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">농담·애드리브</span>
+      <p>&quot;여기서 «만든다»는 건 글을 쓴다는 뜻입니다. 화면은 도구가 이미 갖고 있습니다.&quot;</p>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">시연·관찰</span>
+      <p>왼쪽 네 줄을 하나씩 읽고, 각각이 오른쪽 대화의 어느 부분을 만드는지 짚어 준다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">11</span>
+      <h2 class="pn-slide-title">한 줄 정의는 누가 · 무엇을 · 얼마나로 씁니다</h2>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">농담·애드리브</span>
+      <p>&quot;이 한 줄을 못 쓰면 문항도 못 씁니다. 여기서 5분 쓰는 게 뒤에서 30분을 아낍니다.&quot;</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">12</span>
+      <h2 class="pn-slide-title">주제를 정합니다</h2>
+    </div>
+    <div class="pn-item pn-hint">
+      <span class="lbl">요청문 예시</span>
+      <p>&quot;저는 A와 B 중에 하나를 만들려고 합니다. 어느 쪽이 나을지 제가 답해야 할 질문 다섯 개를 먼저 주세요.&quot;</p>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">시연·관찰</span>
+      <p>에이전트에게 «답»을 시키지 않고 «질문»을 시키는 것이 요령이다. 답을 고르는 건 사람이 한다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">13</span>
+      <h2 class="pn-slide-title">셋을 한 파일로 묶습니다</h2>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">시연·관찰</span>
+      <p>파일을 연 화면과 각자 적은 메모를 나란히 띄워 같은 문장인지 짚어 준다.</p>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">농담·애드리브</span>
+      <p>&quot;이 파일 하나가 다음 50분의 입력입니다. 여기가 비면 뒤가 전부 빕니다.&quot;</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">15</span>
+      <h2 class="pn-slide-title">업무 성향 진단, 네 단계로 만듭니다</h2>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">농담·애드리브</span>
+      <p>&quot;네 칸 중에 셋이 글쓰기입니다. 코드는 마지막 한 칸에서 요청 한 번으로 끝납니다.&quot;</p>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">시연·관찰</span>
+      <p>오른쪽 확장 셋은 오늘 하지 않는다고 분명히 말한다. 기본 네 단계를 끝낸 사람만 손댄다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">16</span>
+      <h2 class="pn-slide-title">내 취향 찾기, 소재부터 하나로 줄입니다</h2>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">농담·애드리브</span>
+      <p>&quot;취향 테스트는 문항보다 결과 문장이 전부입니다. 여기서 시간을 더 쓰세요.&quot;</p>
+    </div>
+    <div class="pn-item pn-hint">
+      <span class="lbl">요청문 예시</span>
+      <p>&quot;커피 취향을 묻는 6문항을 만들려고 합니다. 각 보기가 어떤 취향 유형에 해당하는지 표로 같이 주세요.&quot;</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">19</span>
+      <h2 class="pn-slide-title">요청문은 네 칸으로 적습니다</h2>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">시연·관찰</span>
+      <p>강사 화면에서 네 칸을 채운 요청문을 한 번 읽고, 검증 칸만 비운 채 &quot;이러면 무슨 일이 생길까요?&quot;를 묻는다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">20</span>
+      <h2 class="pn-slide-title">받은 계획을 읽고 승인한 뒤 화면을 확인합니다</h2>
+    </div>
+    <div class="pn-item pn-hint">
+      <span class="lbl">요청문 예시</span>
+      <p>&quot;content.json을 읽어 시작·진행·결과 세 화면으로 도는 index.html을 만들어 주세요. 문항은 파일에 있는 8개만 쓰고, 결과는 유형 4개 중 하나가 나오게 해 주세요. 다 만들면 브라우저에서 확인할 순서를 알려 주세요.&quot;</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">21</span>
+      <h2 class="pn-slide-title">한 번에 하나씩, 유지 · 변경 · 확인</h2>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">농담·애드리브</span>
+      <p>&quot;한 번에 다 고쳐 달라고 하면, 다 고쳐지긴 합니다. 어디가 왜 바뀌었는지만 모를 뿐입니다.&quot;</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">22</span>
+      <h2 class="pn-slide-title">막히면 세 줄로 보고합니다</h2>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">시연·관찰</span>
+      <p>일부러 오타를 낸 화면을 띄우고 세 줄 보고를 참가자에게 즉석에서 받아 본다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">23</span>
+      <h2 class="pn-slide-title">결과를 파일로 받게 합니다</h2>
+    </div>
+    <div class="pn-item pn-hint">
+      <span class="lbl">요청문 예시</span>
+      <p>&quot;결과 화면에 내려받기 버튼을 추가해 주세요. 유형 이름과 설명, 오늘 날짜를 담은 텍스트 파일이 저장되면 됩니다.&quot;</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">24</span>
+      <h2 class="pn-slide-title">받은 파일을 재료 파일과 대조합니다</h2>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">시연·관찰</span>
+      <p>받은 파일을 연 화면과 재료 파일을 나란히 띄워 같은 문장인지 짚어 준다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">25</span>
+      <h2 class="pn-slide-title">올리기 전에 여섯 군데를 눌러 봅니다</h2>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">농담·애드리브</span>
+      <p>&quot;여섯 개 다 체크한 분, 손 들어 보세요. 아직이면 그게 정상입니다.&quot;</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">26</span>
+      <h2 class="pn-slide-title">이제 화면이 돌아갑니다</h2>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">시연·관찰</span>
+      <p>쉬는 시간에 점검표가 덜 찬 사람의 화면을 먼저 확인한다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">28</span>
+      <h2 class="pn-slide-title">원래 배포는 여기까지 가야 합니다</h2>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">농담·애드리브</span>
+      <p>&quot;윗줄은 개발자가 몇 시간 걸려 하는 일입니다. 우리는 아랫줄로 가되, 아랫줄의 한계를 알고 갑니다.&quot;</p>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">시연·관찰</span>
+      <p>윗줄을 손가락으로 한 칸씩 짚으며 읽어 주면 길이 차이가 체감된다. 단계 이름을 설명하지는 않는다 — 오늘 쓰지 않는 것이다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">29</span>
+      <h2 class="pn-slide-title">셋 다 되지만, 손이 가는 곳이 다릅니다</h2>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">시연·관찰</span>
+      <p>세 줄을 위에서 아래로 읽어 주기만 하면 된다. 칸 수가 곧 손이 가는 양이다.</p>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">농담·애드리브</span>
+      <p>&quot;Vercel은 Git을 알아야 하고, Sites는 우리가 만든 파일을 안 씁니다. 그래서 오늘은 맨 윗줄입니다.&quot;</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">30</span>
+      <h2 class="pn-slide-title">이 방식이 담지 못하는 것</h2>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">농담·애드리브</span>
+      <p>&quot;왼쪽만으로도 오늘 목표는 끝납니다. 오른쪽이 필요해지는 순간이 바로 개발자를 찾아야 할 때입니다.&quot;</p>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">시연·관찰</span>
+      <p>오른쪽 세 번째(키)를 특히 짚는다. 올린 파일은 누구나 열어 볼 수 있으므로, 비밀번호나 키를 파일에 적어 두면 그대로 공개된다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">31</span>
+      <h2 class="pn-slide-title">폴더를 끌어다 놓아 주소를 만듭니다</h2>
+    </div>
+    <div class="pn-item pn-hint">
+      <span class="lbl">요청문 예시</span>
+      <p>&quot;브라우저에서 바로 열리는 정적 페이지만 올립니다. 폴더 안에 index.html이 맨 위에 있는지 먼저 확인해 주세요.&quot;</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">32</span>
+      <h2 class="pn-slide-title">올리기 전 30초 점검</h2>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">시연·관찰</span>
+      <p>&quot;30초면 됩니다. 이 30초가 없으면 나중에 30분을 씁니다.&quot;</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">33</span>
+      <h2 class="pn-slide-title">주소가 생기는 순간 바뀌는 것</h2>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">시연·관찰</span>
+      <p>강사가 참가자 한 명의 주소를 열어 설명 없이 조작하며 막히는 지점을 소리 내어 말한다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">34</span>
+      <h2 class="pn-slide-title">링크를 바꿔 써 봅니다</h2>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">시연·관찰</span>
+      <p>&quot;자기 주소가 올라오면 설명을 덧붙이고 싶어집니다. 그걸 참는 게 이 실습의 절반입니다.&quot;</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">35</span>
+      <h2 class="pn-slide-title">딱 세 군데만 봅니다</h2>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">시연·관찰</span>
+      <p>채팅으로 올라온 &quot;예쁘다/별로다&quot;를 하나 골라 행동 문장으로 바꿔 보여 준다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">36</span>
+      <h2 class="pn-slide-title">관찰을 판정표로 옮깁니다</h2>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">시연·관찰</span>
+      <p>&quot;판정표는 네 칸이 전부입니다. 관찰·원인 추정·판정·근거.&quot;</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">37</span>
+      <h2 class="pn-slide-title">판정표를 채우고 셋을 고릅니다</h2>
+    </div>
+    <div class="pn-item pn-hint">
+      <span class="lbl">요청문 예시</span>
+      <p>&quot;판정표의 채택 항목 세 개를 한 번에 하나씩 고치려고 합니다. 먼저 첫 번째 항목만 고치고, 무엇을 확인하면 되는지 알려 주세요.&quot;</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">38</span>
+      <h2 class="pn-slide-title">주소가 생겼고, 의견도 모였습니다</h2>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">시연·관찰</span>
+      <p>쉬는 시간에 발표 순서를 채팅창에 적어 둔다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">40</span>
+      <h2 class="pn-slide-title">세 개까지만 고칩니다</h2>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">시연·관찰</span>
+      <p>&quot;욕심내면 마지막 10분에 화면이 하얘집니다. 해 봤습니다.&quot;</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">41</span>
+      <h2 class="pn-slide-title">한 번에 하나씩 고치기</h2>
+    </div>
+    <div class="pn-item pn-hint">
+      <span class="lbl">요청문 예시</span>
+      <p>&quot;지금 화면에서 결과 설명만 세 줄로 줄여 주세요. 문항과 배점은 그대로 둡니다. 바뀐 뒤 결과 화면만 다시 보면 됩니다.&quot;</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">42</span>
+      <h2 class="pn-slide-title">고쳤으면 다시 올립니다</h2>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">시연·관찰</span>
+      <p>새로고침해도 옛 화면이 보이는 경우를 한 번 시연하고, 다시 올렸는지부터 확인하게 한다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">43</span>
+      <h2 class="pn-slide-title">2분씩 보여 주기</h2>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">시연·관찰</span>
+      <p>타이머를 화면에 띄우고 2분에서 끊는다. 질문은 전체 발표가 끝난 뒤로 모은다.</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">44</span>
+      <h2 class="pn-slide-title">오늘 쓴 방법을 한 장으로 남깁니다</h2>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">시연·관찰</span>
+      <p>&quot;오늘 만든 게 테스트라서 중요한 게 아니라, 이 순서를 한 번 돌려 봤다는 게 중요합니다.&quot;</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">45</span>
+      <h2 class="pn-slide-title">혼자 할 때 쓰는 점검표</h2>
+    </div>
+    <div class="pn-item pn-hint">
+      <span class="lbl">요청문 예시</span>
+      <p>&quot;이 점검표를 내 작업 폴더에 CHECK.md로 저장해 주세요. 항목은 그대로 두고 순서만 지켜 주세요.&quot;</p>
+    </div>
+  </section>
+  <section class="pn-slide">
+    <div class="pn-slide-head">
+      <span class="pn-no">46</span>
+      <h2 class="pn-slide-title">다음에 바꿔 볼 것 세 가지</h2>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">시연·관찰</span>
+      <p>&quot;오늘 링크를 남긴 분은 이미 다음 것도 만들 수 있습니다.&quot;</p>
+    </div>
+  </section>
+</div>
+</body>
+</html>

@@ -1,0 +1,304 @@
+<!-- ============ PART 3 전환 ============ -->
+<section class="slide part-divider" data-slide="P3">
+  <svg class="dv-hero" viewBox="0 0 1280 720" fill="none" aria-hidden="true"></svg>
+  <div class="pd-dots" aria-hidden="true"></div>
+  <p class="pd-eyebrow">PART</p>
+  <h2 class="pd-title">공개</h2>
+  <p class="pd-sub">링크를 만들고 서로 바꿔 써 봅니다</p>
+</section>
+
+<!-- W3-01 · comparison — 원래 배포와 오늘 쓰는 배포 -->
+<section class="slide" data-shape="comparison" data-slide="W3-01">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">WORKSHOP</span>
+    <span class="s-line"></span><div class="s-team">4시간 워크숍</div>
+  </header>
+  <div class="s-full fill">
+    <p class="s-eyebrow">공개하는 두 가지 길</p>
+    <h2 class="s-title">원래 배포는 <span class="hl">여기까지</span> 가야 합니다</h2>
+    <div class="viz-rails" data-viz="rails" role="img" aria-label="일반적인 배포는 서버 빌리기부터 보안 인증서까지 다섯 단계를 거치지만, 오늘 쓰는 방식은 폴더를 끌어다 놓는 것과 주소가 생기는 것 두 단계로 끝난다" style="margin-top:22px;">
+      <div class="rl-row">
+        <span class="rl-tag">일반적인<br>배포 방식</span>
+        <span class="rl-track">
+          <span class="rl-step">서버 빌리기<small>매달 요금이 나간다</small></span>
+          <span class="rl-step">접속·보안 설정<small>명령어로 한다</small></span>
+          <span class="rl-step">파일 올리기<small>폴더 구조를 맞춘다</small></span>
+          <span class="rl-step">주소 연결<small>주소를 따로 산다</small></span>
+          <span class="rl-step">보안 인증서<small>없으면 경고가 뜬다</small></span>
+        </span>
+        <span class="rl-cost">코딩 지식 필요</span>
+      </div>
+      <div class="rl-row is-ours">
+        <span class="rl-tag">오늘<br>쓰는 방식</span>
+        <span class="rl-track">
+          <span class="rl-step">폴더를 끌어다 놓기<small>설치도 명령어도 없다</small></span>
+          <span class="rl-step">주소가 바로 생김<small>휴대폰에서도 열린다</small></span>
+        </span>
+        <span class="rl-cost">4분</span>
+      </div>
+    </div>
+    <div class="s-body" style="margin-top:24px;">
+      <p>윗줄이 회사에서 서비스를 내보내는 <strong>진짜 배포</strong>입니다. 설치와 설정이 많고 중간에 한 칸이라도 틀리면 화면이 열리지 않습니다.</p>
+      <p><span class="hl-mint-mark">오늘은 아랫줄만 씁니다.</span> 대신 아랫줄로 할 수 없는 것이 있고, 그것을 알고 쓰는 것이 오늘의 몫입니다.</p>
+    </div>
+  </div>
+  <!-- 발표노트: 💬 "윗줄은 개발자가 몇 시간 걸려 하는 일입니다. 우리는 아랫줄로 가되, 아랫줄의 한계를 알고 갑니다." -->
+  <!-- 발표노트: 👀 윗줄을 손가락으로 한 칸씩 짚으며 읽어 주면 길이 차이가 체감된다. 단계 이름을 설명하지는 않는다 — 오늘 쓰지 않는 것이다. -->
+</section>
+
+<!-- W3-02 · comparison — 세 서비스 -->
+<section class="slide" data-shape="comparison" data-slide="W3-02">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">WORKSHOP</span>
+    <span class="s-line"></span><div class="s-team">4시간 워크숍</div>
+  </header>
+  <div class="s-full fill">
+    <p class="s-eyebrow">쓸 만한 서비스 셋</p>
+    <h2 class="s-title">셋 다 되지만, <span class="hl">손이 가는 곳</span>이 다릅니다</h2>
+    <div class="viz-rails" data-viz="rails" role="img" aria-label="Netlify는 폴더를 끌어다 놓으면 주소가 나고, Vercel은 계정과 저장소를 연결해야 하며, ChatGPT Sites는 대화로 시키면 서비스가 페이지를 만들어 준다" style="margin-top:20px;">
+      <div class="rl-row is-ours">
+        <span class="rl-tag">Netlify<br><small style="font-weight:700;">오늘 씁니다</small></span>
+        <span class="rl-track">
+          <span class="rl-step">폴더를 끌어다 놓기<small>계정 없이도 됩니다</small></span>
+          <span class="rl-step">주소가 바로 생김<small>내 파일이 그대로 올라갑니다</small></span>
+        </span>
+        <span class="rl-cost">1분</span>
+      </div>
+      <div class="rl-row">
+        <span class="rl-tag">Vercel</span>
+        <span class="rl-track">
+          <span class="rl-step">계정 만들기<small>이메일 인증까지</small></span>
+          <span class="rl-step">저장소나 CLI 연결<small>둘 중 하나는 다룰 줄 알아야 합니다</small></span>
+          <span class="rl-step">자동으로 올라감<small>고칠 때마다 알아서</small></span>
+        </span>
+        <span class="rl-cost">준비가 더 듭니다</span>
+      </div>
+      <div class="rl-row">
+        <span class="rl-tag">ChatGPT Sites</span>
+        <span class="rl-track">
+          <span class="rl-step">대화로 시키기<small>말로 설명합니다</small></span>
+          <span class="rl-step">서비스가 페이지를 만듦<small>내 파일은 안 올라갑니다</small></span>
+        </span>
+        <span class="rl-cost">내 파일이 안 올라갑니다</span>
+      </div>
+    </div>
+    <div class="s-body" style="margin-top:22px;">
+      <p><span class="hl-mint-mark">오늘은 Netlify입니다.</span> 계정을 만들지 않아도 폴더를 끌어다 놓으면 바로 주소가 나옵니다.</p>
+    </div>
+  </div>
+  <!-- 발표노트: 👀 세 줄을 위에서 아래로 읽어 주기만 하면 된다. 칸 수가 곧 손이 가는 양이다. -->
+  <!-- 발표노트: 💬 "Vercel은 Git을 알아야 하고, Sites는 우리가 만든 파일을 안 씁니다. 그래서 오늘은 맨 윗줄입니다." -->
+</section>
+
+<!-- W3-03 · classification — 이 방식의 한계 -->
+<section class="slide" data-shape="classification" data-slide="W3-03">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">WORKSHOP</span>
+    <span class="s-line"></span><div class="s-team">4시간 워크숍</div>
+  </header>
+  <div class="s-full fill">
+    <p class="s-eyebrow">알고 쓰는 한계</p>
+    <h2 class="s-title">이 방식이 <span class="hl">담지 못하는 것</span></h2>
+    <div class="viz-fence" data-viz="fence" role="img" aria-label="정적 배포가 담는 것과 담지 못하는 것을 점선으로 가른 도해" style="margin-top:20px;">
+      <div class="fn-side is-in">
+        <p class="fn-cap">여기까지는 됩니다</p>
+        <div class="fn-item"><span>화면에 보이는 글과 그림<small>내가 만든 파일이 그대로 열린다</small></span></div>
+        <div class="fn-item"><span>눌러서 움직이는 동작<small>문항을 고르고 결과가 바뀌는 것까지</small></span></div>
+        <div class="fn-item"><span>결과를 파일로 내려받기<small>브라우저 안에서 끝나는 일이다</small></span></div>
+        <div class="fn-item"><span>주소 하나로 누구에게나 공유<small>휴대폰에서도 열린다</small></span></div>
+      </div>
+      <div class="fn-line" aria-hidden="true"></div>
+      <div class="fn-side is-out">
+        <p class="fn-cap">여기부터는 안 됩니다</p>
+        <div class="fn-item"><span>남이 남긴 답을 모아 두기<small>저장할 곳이 없어 새로 고치면 사라진다</small></span></div>
+        <div class="fn-item"><span>몇 명이 했는지 세어 보기<small>세어 줄 서버가 없다</small></span></div>
+        <div class="fn-item"><span>감춰야 할 키를 넣어 두기<small>올린 파일은 누구나 열어 볼 수 있다</small></span></div>
+        <div class="fn-item"><span>주소를 내 마음대로 정하기<small>무료 범위에서는 서비스 이름이 붙는다</small></span></div>
+      </div>
+    </div>
+    <p class="s-body" style="margin-top:18px;"><span class="hl-mint-underline">오늘 만드는 것은 «한 사람이 열어서 그 자리에서 끝나는» 결과물입니다.</span> 답을 모으거나 세어 보려면 여기서 한 걸음 더 나가야 하고, 그것은 오늘 범위가 아닙니다.</p>
+  </div>
+  <!-- 발표노트: 💬 "왼쪽만으로도 오늘 목표는 끝납니다. 오른쪽이 필요해지는 순간이 바로 개발자를 찾아야 할 때입니다." -->
+  <!-- 발표노트: 👀 오른쪽 세 번째(키)를 특히 짚는다. 올린 파일은 누구나 열어 볼 수 있으므로, 비밀번호나 키를 파일에 적어 두면 그대로 공개된다. -->
+</section>
+
+<!-- W3-04 · screen-operation — 실습 ⑦ 끌어다 놓아 주소 만들기 -->
+<section class="slide steps-full practice" data-shape="screen-operation" data-slide="W3-04">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">WORKSHOP</span>
+    <span class="s-line"></span><div class="s-team">4시간 워크숍</div>
+  </header>
+  <div class="s-full steps-full">
+    <span class="timing">실습 ⑤ · 12분</span>
+    <h2 class="s-title">폴더를 끌어다 놓아 <span class="hl">주소</span>를 만듭니다</h2>
+    <div class="viz-drop" data-viz="drop" role="img" aria-label="작업 폴더를 점선 영역에 끌어다 놓으면 주소가 만들어진다" style="margin:12px 0 4px;">
+      <span class="dp-folder">내 작업 폴더</span>
+      <span class="dp-arrow">&rarr;</span>
+      <span class="dp-zone">여기에 폴더를 끌어다 놓으세요<small>파일 하나가 아니라 폴더 통째로</small></span>
+      <span class="dp-arrow">&rarr;</span>
+      <span class="dp-out">https://<b>...</b>.netlify.app<small>주소가 생겼습니다</small></span>
+    </div>
+    <div class="eval-steps viz-flow-v" data-viz="flow-v" role="img" aria-label="번호 순서대로 이어지는 절차 도해">
+      <div class="work-step"><span class="n">1</span><div class="ws-body"><b>배포 서비스 화면 열기</b><span>배포 서비스 화면을 엽니다.</span></div></div>
+      <div class="work-step"><span class="n">2</span><div class="ws-body"><b>작업 폴더 통째로 끌어다 놓기</b><span>내 작업 폴더를 통째로 화면에 끌어다 놓습니다.</span></div></div>
+      <div class="work-step"><span class="n">3</span><div class="ws-body"><b>주소 만들어질 때까지 기다리기</b><span>주소가 만들어질 때까지 기다립니다.</span></div></div>
+      <div class="work-step"><span class="n">4</span><div class="ws-body"><b>휴대폰에서 주소 열어 보기</b><span>만들어진 주소를 휴대폰에서 열어 봅니다.</span></div></div>
+    </div>
+  </div>
+  <!-- 발표노트: 🗣 "브라우저에서 바로 열리는 정적 페이지만 올립니다. 폴더 안에 index.html이 맨 위에 있는지 먼저 확인해 주세요." -->
+</section>
+
+<!-- W3-05 · checklist — 올리기 전 30초 점검 -->
+<section class="slide" data-shape="checklist" data-slide="W3-05">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">WORKSHOP</span>
+    <span class="s-line"></span><div class="s-team">4시간 워크숍</div>
+  </header>
+  <div class="s-full quad-full">
+    <p class="s-eyebrow">공개 전 점검</p>
+    <h2 class="s-title">올리기 전 <span class="hl">30초</span> 점검</h2>
+    <div class="quad-grid" data-viz="quad" role="img" aria-label="네 칸으로 나눈 사분면 도해">
+      <div class="quad-card"><span class="qn">1</span><h3>개인정보</h3><p>이름·연락처·회사 자료가 화면에 없나.</p></div>
+      <div class="quad-card"><span class="qn">2</span><h3>키</h3><p>어떤 비밀번호나 키도 파일에 없나.</p></div>
+      <div class="quad-card"><span class="qn">3</span><h3>링크</h3><p>눌리는 링크가 다 열리나.</p></div>
+      <div class="quad-card"><span class="qn">4</span><h3>휴대폰</h3><p>좁은 화면에서 글자가 잘리지 않나.</p></div>
+    </div>
+    <p class="s-body" style="margin-top:12px;"><span class="hl-mint-underline">네 칸은 올릴 때마다 다시 봅니다.</span> 고치고 다시 올릴 때도 같습니다.</p>
+  </div>
+  <!-- 발표노트: "30초면 됩니다. 이 30초가 없으면 나중에 30분을 씁니다." -->
+</section>
+
+<!-- W3-06 · contrast — 주소가 생기는 순간 바뀌는 것 -->
+<section class="slide" data-shape="contrast" data-slide="W3-06">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">WORKSHOP</span>
+    <span class="s-line"></span><div class="s-team">4시간 워크숍</div>
+  </header>
+  <div class="s-full cc-full">
+    <p class="s-eyebrow">관점 전환</p>
+    <h2 class="s-title">주소가 생기는 순간 <span class="hl">바뀌는 것</span></h2>
+    <div class="cc-grid" data-viz="contrast" role="img" aria-label="두 입장을 좌우로 놓고 가운데 기호로 대비한 도해">
+      <div class="cc-side ai">
+        <h3>내 화면일 때</h3>
+        <ul>
+          <li>내가 아는 순서대로 눌렀습니다.</li>
+        </ul>
+      </div>
+      <div class="cc-neq" aria-hidden="true">≠</div>
+      <div class="cc-side human">
+        <h3>남의 화면이 되면</h3>
+        <ul>
+          <li>아무 데나 눌립니다.</li>
+          <li>중간부터 봅니다.</li>
+          <li>설명 없이 판단합니다.</li>
+        </ul>
+      </div>
+    </div>
+    <p class="s-body" style="margin:0;">그래서 다음 30분은 만드는 시간이 아니라 <span class="hl-mint-text">보는 시간</span>입니다. <span class="hl-mint-underline">내가 설명하지 않아도 알 수 있는지가 유일한 기준입니다.</span></p>
+  </div>
+  <!-- 발표노트: 강사가 참가자 한 명의 주소를 열어 설명 없이 조작하며 막히는 지점을 소리 내어 말한다. -->
+</section>
+
+<!-- W3-07 · screen-operation — 실습 ⑧ 링크를 바꿔 써 봅니다 -->
+<section class="slide steps-full practice" data-shape="screen-operation" data-slide="W3-07">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">WORKSHOP</span>
+    <span class="s-line"></span><div class="s-team">4시간 워크숍</div>
+  </header>
+  <div class="s-full steps-full">
+    <span class="timing">실습 ⑥ · 12분</span>
+    <h2 class="s-title">링크를 <span class="hl">바꿔 써</span> 봅니다</h2>
+    <div class="eval-steps viz-flow-v" data-viz="flow-v" role="img" aria-label="번호 순서대로 이어지는 절차 도해">
+      <div class="work-step"><span class="n">1</span><div class="ws-body"><b>채팅창에 내 주소 올리기</b><span>내 주소를 수업 채팅창에 올립니다.</span></div></div>
+      <div class="work-step"><span class="n">2</span><div class="ws-body"><b>남의 주소 둘을 골라 해 보기</b><span>올라온 주소 중 둘을 골라 설명 없이 끝까지 해 봅니다.</span></div></div>
+      <div class="work-step"><span class="n">3</span><div class="ws-body"><b>막힌 곳·오해한 곳 적기</b><span>막힌 곳, 오해한 곳, 다시 물어야 했던 곳을 적습니다.</span></div></div>
+      <div class="work-step"><span class="n">4</span><div class="ws-body"><b>적은 것을 주인에게 보내기</b><span>적은 것을 그 주소 주인에게 채팅으로 보냅니다.</span></div></div>
+    </div>
+  </div>
+  <!-- 발표노트: "자기 주소가 올라오면 설명을 덧붙이고 싶어집니다. 그걸 참는 게 이 실습의 절반입니다." -->
+</section>
+
+<!-- W3-08 · classification — 볼 것은 세 가지뿐입니다 -->
+<section class="slide" data-shape="classification" data-slide="W3-08">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">WORKSHOP</span>
+    <span class="s-line"></span><div class="s-team">4시간 워크숍</div>
+  </header>
+  <div class="s-full fill">
+    <p class="s-eyebrow">관찰 기준</p>
+    <h2 class="s-title">딱 <span class="hl">세 군데</span>만 봅니다</h2>
+    <div class="viz-radial" role="img" aria-label="관찰 허브에서 멈춘 곳·오해한 곳·다시 물은 것 세 위성으로 뻗는 방사형 구조">
+      <svg viewBox="0 0 900 360" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <line class="rad-spoke" x1="450" y1="200" x2="450" y2="60"/>
+        <line class="rad-spoke" x1="450" y1="200" x2="210" y2="300"/>
+        <line class="rad-spoke" x1="450" y1="200" x2="690" y2="300"/>
+      </svg>
+      <div class="rad-hub"><b>관찰</b></div>
+      <div class="rad-sat" style="left:450px;top:60px;"><h3>멈춘 곳</h3><p>어디서 손이 멈췄나</p></div>
+      <div class="rad-sat" style="left:210px;top:300px;"><h3>오해한 곳</h3><p>무엇을 다르게 이해했나</p></div>
+      <div class="rad-sat" style="left:690px;top:300px;"><h3>다시 물은 것</h3><p>화면만 보고 몰라서 물어본 것은 무엇인가</p></div>
+    </div>
+    <p class="s-body" style="margin-top:10px;text-align:center;">좋다·싫다 대신 무슨 행동을 했는지 적습니다. <span class="hl-mint-mark">행동만 적습니다.</span> <span class="hl-mint-underline">행동을 적으면 고칠 곳이 바로 드러납니다.</span></p>
+  </div>
+  <!-- 발표노트: 채팅으로 올라온 "예쁘다/별로다"를 하나 골라 행동 문장으로 바꿔 보여 준다. -->
+</section>
+
+<!-- W3-09 · mapping — 관찰을 판정표로 옮깁니다 -->
+<section class="slide" data-shape="mapping" data-slide="W3-09">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">WORKSHOP</span>
+    <span class="s-line"></span><div class="s-team">4시간 워크숍</div>
+  </header>
+  <div class="s-full fill">
+    <p class="s-eyebrow">네 칸 정리</p>
+    <h2 class="s-title">관찰을 <span class="hl">판정표</span>로 옮깁니다</h2>
+    <table class="t viz-table" data-viz="table" style="margin-top:18px;">
+      <thead><tr><th>칸</th><th>적는 것</th></tr></thead>
+      <tbody>
+        <tr><td><strong>관찰</strong></td><td>무엇을 봤나</td></tr>
+        <tr><td><strong>원인 추정</strong></td><td>왜 그랬을까</td></tr>
+        <tr><td><strong>판정</strong></td><td>고칠지 말지 — 채택·보류·기각 중 하나</td></tr>
+        <tr><td><strong>근거</strong></td><td>왜 그렇게 정했나</td></tr>
+      </tbody>
+    </table>
+    <p class="s-body" style="margin-top:16px;"><span class="hl-mint-underline">기각도 결정입니다.</span> 이유까지 적어 두면 나중에 한 번에 끝납니다.</p>
+    <p class="s-body"><strong>채택</strong>은 오늘 고칩니다. <strong>보류</strong>는 오늘은 두고 기록만 남깁니다. <strong>기각</strong>은 고치지 않기로 정한 것입니다.</p>
+  </div>
+  <!-- 발표노트: "판정표는 네 칸이 전부입니다. 관찰·원인 추정·판정·근거." -->
+</section>
+
+<!-- W3-10 · screen-operation — 실습 ⑨ 판정표 채우고 셋 고르기 -->
+<section class="slide steps-full practice" data-shape="screen-operation" data-slide="W3-10">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">WORKSHOP</span>
+    <span class="s-line"></span><div class="s-team">4시간 워크숍</div>
+  </header>
+  <div class="s-full steps-full">
+    <span class="timing">실습 ⑦ · 10분</span>
+    <h2 class="s-title">판정표를 채우고 <span class="hl">셋</span>을 고릅니다</h2>
+    <div class="eval-steps viz-flow-v" data-viz="flow-v" role="img" aria-label="번호 순서대로 이어지는 절차 도해">
+      <div class="work-step"><span class="n">1</span><div class="ws-body"><b>받은 관찰 전부 옮기기</b><span>받은 관찰을 전부 판정표에 옮깁니다.</span></div></div>
+      <div class="work-step"><span class="n">2</span><div class="ws-body"><b>같은 말 한 사람 둘 이상 표시하기</b><span>같은 말을 한 사람이 둘 이상인 항목에 표시합니다.</span></div></div>
+      <div class="work-step"><span class="n">3</span><div class="ws-body"><b>채택 세 개까지만 고르기</b><span>채택은 세 개까지만 고릅니다.</span></div></div>
+      <div class="work-step"><span class="n">4</span><div class="ws-body"><b>고칠 순서대로 번호 매기기</b><span>고른 세 개를 고치는 순서대로 번호를 매깁니다.</span></div></div>
+    </div>
+  </div>
+  <!-- 발표노트: 🗣 "판정표의 채택 항목 세 개를 한 번에 하나씩 고치려고 합니다. 먼저 첫 번째 항목만 고치고, 무엇을 확인하면 되는지 알려 주세요." -->
+</section>
+
+<!-- BR3 · declaration — 휴식 -->
+<section class="slide" data-shape="declaration" data-slide="BR3">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">WORKSHOP</span>
+    <span class="s-line"></span><div class="s-team">4시간 워크숍</div>
+  </header>
+  <div class="center-msg">
+    <span class="timing">쉬는 시간 · 10분</span>
+    <h2 class="cm-title">주소가 생겼고, <span class="hl">의견도 모였습니다</span></h2>
+    <p class="cm-sub">돌아오면 고치고 다시 올린 뒤 2분씩 보여 줍니다.</p>
+    <p class="s-body" style="text-align:center;margin-top:20px;"><span class="hl-mint-underline">고칠 세 개를 아직 못 고른 분은 표시해 둔 항목부터 고르세요.</span></p>
+    <p class="s-body" style="text-align:center;margin-top:10px;">돌아오면 고른 세 가지를 고치고 <strong>다시 올립니다.</strong></p>
+    <p class="s-body" style="text-align:center;margin:0;">발표 순서는 채팅창에 적어 두겠습니다.</p>
+  </div>
+  <!-- 발표노트: 쉬는 시간에 발표 순서를 채팅창에 적어 둔다. -->
+</section>
