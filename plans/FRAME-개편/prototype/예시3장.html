@@ -1,0 +1,460 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=1280">
+  <title>FRAME — 예시 3장</title>
+  <!-- ✏️ 파비콘 — **테마 토큰을 쓸 수 없는 유일한 색 자리다.** 브라우저 크롬이 읽는
+       외부 리소스라 CSS 커스텀 속성이 닿지 않는다. 그래서 기본값을 «중립 잉크»로 둔다 —
+       특정 테마의 브랜드 색을 여기 박아 두면 다른 테마의 덱이 남의 팔레트를 달고 다닌다
+       (2026-08-29 실측: default 팔레트가 그대로 박혀 있었다). 과목·테마의 마크가 있으면
+       이 줄을 그 색으로 교체하라. -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'><path d='M8 18 V8 H18 M30 8 H40 V18 M40 30 V40 H30 M18 40 H8 V30' fill='none' stroke='%230E4A5A' stroke-width='5'/><rect x='19' y='19' width='10' height='10' fill='%237DE0EC'/></svg>">
+  <!-- 폰트: Pretendard (문서가 인정하는 유일한 외부 의존성) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+  <!-- ▼ 킷 상속: deck.css(베이스) → legibility.css(강의장 가독성) 순서 고정.
+       덱을 패키지 밖에 생성할 땐 이 두 파일을 옆에 복사하거나 <style>로 인라인(base64 단일파일 배포). -->
+  <link rel="stylesheet" href="../../../kit/styles/deck.css">
+  <link rel="stylesheet" href="../../../kit/styles/legibility.css">
+  <link rel="stylesheet" href="../../../kit/styles/patterns.css"><!-- 코드 코어: 검증된 레이아웃/element CSS(재사용) -->
+  <!-- ✏️ 테마 — default가 아니면 이 줄을 켠다. **kit 링크 다음에** 와야 :root를 덮는다.
+       과목이 어느 테마를 쓰는지는 courses/<과목>/profile.md §5의 「테마」 행이 정본이고,
+       값은 kit/themes/<이름>/tokens.css에만 있다. 두 개 이상 링크하면 검사기가 FAIL한다
+       (어느 값이 이기는지 파일 순서에 의존하게 되므로). 규약: kit/guide/테마-계약.md §6
+  <link rel="stylesheet" href="../themes/<테마이름>/tokens.css">
+  -->
+  <link rel="stylesheet" href="../../../kit/themes/frame/tokens.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/wan2land/d2coding/d2coding-full.css">
+  <style id="kit-additions">
+    /* ── FRAME 예시 3장 전용(프로토타입) — 승인되면 세션 CSS·계약 등재로 옮긴다 ── */
+    .s-brand{ color:var(--ink); letter-spacing:.06em; }
+    .cx, .hub-top, .hub-grid, .pr-hero, .pr-steps, .pr-prompt, .pr-foot{ word-break:keep-all; overflow-wrap:break-word; }
+    .tag{ display:inline-block; font-size:var(--fs-caption); font-weight:800; padding:3px 10px; border-radius:6px; margin-right:10px; vertical-align:3px; }
+    .tag-def{ background:var(--blue); color:var(--white); }
+    .tag-ana{ background:var(--mint); color:var(--on-mint); }
+    .tag-do{ background:var(--ink); color:var(--white); }
+    /* 개념 */
+    .cx{ position:absolute; left:64px; right:64px; top:104px; display:flex; flex-direction:column; gap:var(--sp-12); }
+    .cx .s-eyebrow, .cx .s-title{ margin:0; }
+    .cx-def{ margin:0; font-size:var(--fs-lead); font-weight:600; line-height:var(--lh-lead); color:var(--ink); }
+    .cx-chart{ margin:0; display:grid; grid-template-columns:600px 1fr; gap:var(--sp-24); align-items:center; background:var(--surface); border-radius:var(--r-md); padding:var(--sp-12) var(--sp-24); }
+    .cx-chart svg{ width:600px; height:184px; display:block; }
+    .cx-chart .cv{ font:800 22px/1 Pretendard, sans-serif; fill:var(--ink); }
+    .cx-chart .cl{ font:700 17px/1 Pretendard, sans-serif; fill:var(--gray-700); }
+    .cx-cap{ display:flex; flex-direction:column; gap:var(--sp-8); font-size:var(--fs-box-desc); color:var(--gray-700); line-height:var(--lh-caption); }
+    .cx-cap b{ color:var(--ink); }
+    .cx-base{ display:flex; align-items:center; gap:var(--sp-8); font-weight:700; color:var(--red); }
+    .cx-base i{ width:32px; border-top:3px dashed var(--red); }
+    .cx-note{ font-size:var(--fs-body); font-weight:700; color:var(--ink); line-height:var(--lh-box-desc); }
+    .cx-row{ display:grid; grid-template-columns:1fr 1fr; gap:var(--sp-18); }
+    .cx-card{ border-radius:var(--r-md); padding:var(--sp-16) var(--sp-24); }
+    .cx-card p{ margin:var(--sp-8) 0 0; font-size:var(--fs-body); line-height:var(--lh-box-desc); color:var(--ink); }
+    .cx-analogy{ background:var(--mint-soft); border:2px solid var(--mint-line); }
+    .cx-do{ background:var(--blue-panel); border:2px solid var(--blue-line); }
+    .cx-src{ margin:0; font-size:var(--fs-caption); color:var(--gray-400); }
+    /* 허브 */
+    .hub-top{ position:absolute; left:64px; right:64px; top:104px; }
+    .hub-top .s-title{ margin:4px 0 8px; }
+    .hub-lead{ margin:0; font-size:var(--fs-body); line-height:var(--lh-box-desc); color:var(--gray-700); }
+    .hub-grid{ position:absolute; left:64px; right:64px; top:262px; display:grid; grid-template-columns:1fr 1fr; gap:var(--sp-18); }
+    .hub-card{ display:flex; gap:var(--sp-18); align-items:flex-start; text-align:left; font:inherit; color:var(--ink); cursor:pointer;
+      background:var(--surface); border:2px solid var(--line); border-radius:var(--r-lg); padding:var(--sp-24); min-height:176px;
+      transition:transform .3s cubic-bezier(.2,.8,.2,1), border-color .3s, background-color .3s, box-shadow .3s; }
+    .hub-card:hover, .hub-card:focus-visible{ transform:translateY(-4px); border-color:var(--blue); background:var(--blue-panel); box-shadow:var(--shadow-md); outline:none; }
+    .hub-no{ flex:0 0 56px; height:56px; border-radius:14px; background:var(--blue); color:var(--white); font-size:28px; font-weight:800; display:grid; place-items:center; transition:background-color .3s, color .3s; }
+    .hub-card:hover .hub-no{ background:var(--mint); color:var(--on-mint); }
+    .hub-body{ display:flex; flex-direction:column; gap:6px; }
+    .hub-name{ font-size:var(--fs-box-title); font-weight:800; line-height:var(--lh-box-title); }
+    .hub-out{ font-size:var(--fs-box-desc); font-weight:500; color:var(--gray-700); }
+    .hub-meta{ display:flex; gap:var(--sp-8); margin-top:10px; }
+    .chip{ font-size:var(--fs-caption); font-weight:800; padding:4px 12px; border-radius:var(--r-pill); }
+    .chip-concept{ background:var(--mint); color:var(--on-mint); }
+    .chip-time{ background:var(--white); color:var(--gray-700); border:1px solid var(--line); }
+    /* 실습 셸 — 페트롤 전면 */
+    .slide.practice-slide{ background:var(--blue); color:var(--white); }
+    .practice-slide .s-line{ background:var(--mint); }
+    .pr-hero{ position:absolute; left:64px; right:64px; top:100px; }
+    .pr-top{ display:flex; align-items:center; gap:var(--sp-16); }
+    .pr-badge{ background:var(--mint); color:var(--on-mint); font-size:var(--fs-body); font-weight:800; padding:6px 18px; border-radius:10px; }
+    .pr-concept{ font-size:var(--fs-eyebrow); font-weight:700; color:var(--on-blue-muted); }
+    .pr-time{ margin-left:auto; font-family:var(--font-mono); font-size:var(--fs-40); font-weight:700; color:var(--mint); letter-spacing:-.02em; }
+    .pr-title{ margin:10px 0 0; font-size:var(--fs-title); line-height:var(--lh-title); font-weight:800; color:var(--white); letter-spacing:-.02em; }
+    .pr-steps{ position:absolute; left:64px; right:64px; top:244px; margin:0; padding:0; list-style:none; display:grid; grid-template-columns:repeat(4,1fr); gap:var(--sp-16); }
+    .pr-steps li{ background:var(--navy); border-radius:var(--r-md); padding:var(--sp-18); display:flex; flex-direction:column; gap:var(--sp-12); min-height:150px; }
+    .pr-steps b{ width:40px; height:40px; border-radius:50%; background:var(--mint); color:var(--on-mint); font-size:22px; display:grid; place-items:center; }
+    .pr-steps span{ font-size:var(--fs-body); line-height:1.5; color:var(--white); }
+    .practice-slide code{ font-family:var(--font-mono); color:var(--mint); white-space:nowrap; }
+    .pr-prompt{ position:absolute; left:64px; right:64px; top:436px; background:var(--navy); border:2px solid var(--mint); border-radius:var(--r-md); padding:var(--sp-16) var(--sp-24); }
+    .pr-plabel{ font-size:var(--fs-caption); font-weight:800; color:var(--mint); }
+    .pr-prompt p{ margin:6px 0 0; font-family:var(--font-mono); font-size:var(--fs-body); line-height:1.6; color:var(--white); }
+    .pr-foot{ position:absolute; left:64px; right:64px; top:608px; display:flex; align-items:center; justify-content:space-between; }
+    .pr-out{ font-size:var(--fs-body); color:var(--on-blue-muted); }
+    .pr-back{ font:inherit; font-size:var(--fs-body); font-weight:800; color:var(--on-mint); background:var(--mint); border:0; border-radius:var(--r-pill); padding:10px 26px; cursor:pointer; transition:transform .3s cubic-bezier(.2,.8,.2,1); }
+    .pr-back:hover{ transform:translateY(-3px); }
+    /* 클릭 모션 — View Transitions(카드 ↔ 실습 머리) */
+    ::view-transition-group(frame-hero){ animation-duration:.45s; animation-timing-function:cubic-bezier(.2,.8,.2,1); }
+    ::view-transition-old(root), ::view-transition-new(root){ animation-duration:.3s; }
+    @media (prefers-reduced-motion: reduce){
+      ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*){ animation:none !important; }
+      .hub-card, .pr-back{ transition:none; }
+    }
+
+    /* 새 구도의 CSS는 여기가 아니라 kit/styles/patterns.css에 환류한다.
+       여기 남기면 다음 주차가 같은 CSS를 다시 짜게 되고 노드 스타일이 갈린다.
+       상세는 루트 SKILL.md §5 환류 규칙. */
+  </style>
+  <!--
+    ┌── 새 덱 만드는 법 ─────────────────────────────────────────────┐
+    │ 1) 이 파일을 복사. 고정 1·2·3(표지·도입·아젠다) 텍스트를 교체.   │
+    │ 2) 파트 수만큼 part-divider 배치(도형·도트·n/N은 JS 자동 생성). │
+    │ 3) 각 슬라이드: 정보 모양 판단 → kit/layouts/by-shape.md에서     │
+    │    레이아웃 후보 → (필요시) kit/charts/by-shape.md에서 element.  │
+    │    직전 슬라이드와 같은 구도 패밀리 회피, split은 희소하게.      │
+    │ 4) 레이아웃 <section>은 kit/layouts/catalog.html(코드 코어)에서  │
+    │    복사하거나 families/*.md 스펙대로 조립(토큰-치트시트 준수).   │
+    │ 5) 브라우저 검증(측정 우선) → base64 단일파일 배포.             │
+    └────────────────────────────────────────────────────────────────┘
+  -->
+</head>
+<body>
+  <div class="deck">
+    <!-- ============ 예시 1 · 개념 슬라이드 (컨텍스트 · 중간 유실) ============ -->
+    <section class="slide cx-slide" data-slide="C-04">
+      <header class="s-head">
+        <svg class="s-logo" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 18 V8 H18 M30 8 H40 V18 M40 30 V40 H30 M18 40 H8 V30" fill="none" style="stroke:var(--blue)" stroke-width="5"/><rect x="19" y="19" width="10" height="10" style="fill:var(--mint)"/></svg><span class="s-brand">FRAME</span>
+        <span class="s-line"></span><div class="s-team">블록 2<br>컨텍스트</div>
+      </header>
+      <div class="cx">
+        <p class="s-eyebrow">개념 · 컨텍스트</p>
+        <h2 class="s-title">중간 유실: 긴 자료의 가운데를 놓치는 현상</h2>
+        <p class="cx-def"><span class="tag tag-def">정의</span>AI에게 긴 자료를 주면 앞부분과 끝부분은 잘 활용하고, 가운데에 있는 정보는 더 자주 놓칩니다.</p>
+        <figure class="cx-chart">
+          <svg viewBox="0 0 640 196" role="img" aria-label="관련 문서가 첫 번째일 때 정답률 75.8, 열 번째일 때 53.8, 스무 번째일 때 63.2. 문서 없이 답했을 때 56.1.">
+            <line x1="40" y1="160" x2="620" y2="160" style="stroke:var(--gray-400)" stroke-width="2"/>
+            <rect x="80" y="54" width="110" height="106" rx="6" style="fill:var(--blue)"/>
+            <rect x="265" y="85" width="110" height="75" rx="6" style="fill:var(--coral)"/>
+            <rect x="450" y="72" width="110" height="88" rx="6" style="fill:var(--blue)"/>
+            <line x1="40" y1="81.5" x2="620" y2="81.5" style="stroke:var(--red)" stroke-width="2.5" stroke-dasharray="8 6"/>
+            <text x="135" y="44" text-anchor="middle" class="cv">75.8</text>
+            <text x="320" y="75" text-anchor="middle" class="cv">53.8</text>
+            <text x="505" y="62" text-anchor="middle" class="cv">63.2</text>
+            <text x="135" y="186" text-anchor="middle" class="cl">첫 번째</text>
+            <text x="320" y="186" text-anchor="middle" class="cl">열 번째</text>
+            <text x="505" y="186" text-anchor="middle" class="cl">스무 번째</text>
+          </svg>
+          <figcaption class="cx-cap">
+            <b>정답률(%)</b><span>답이 든 문서의 위치(20개 중)</span>
+            <span class="cx-base"><i aria-hidden="true"></i>문서 없이 답했을 때 56.1</span>
+            <span class="cx-note">가운데에 두면 자료를 주지 않았을 때보다 낮았습니다.</span>
+          </figcaption>
+        </figure>
+        <div class="cx-row">
+          <div class="cx-card cx-analogy"><span class="tag tag-ana">비유</span><p>긴 회의록을 한 번 훑으면 첫 안건과 마지막 결론은 기억나는데, 중간에 바뀐 결정은 흐릿합니다.</p></div>
+          <div class="cx-card cx-do"><span class="tag tag-do">대응</span><p>꼭 지킬 조건은 요청문 맨 앞이나 맨 뒤에 씁니다. 긴 자료는 나눠서 줍니다.</p></div>
+        </div>
+        <p class="cx-src">출처 Liu 외(2023)</p><!-- 노트: 「Lost in the Middle」 arXiv 2307.03172 · GPT-3.5-Turbo · 문서 20개(약 4천 토큰) 조건 -->
+      </div>
+    </section>
+
+    <!-- ============ 예시 2 · 실습 허브 ============ -->
+    <section class="slide hub-slide" data-slide="HUB">
+      <header class="s-head">
+        <svg class="s-logo" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 18 V8 H18 M30 8 H40 V18 M40 30 V40 H30 M18 40 H8 V30" fill="none" style="stroke:var(--blue)" stroke-width="5"/><rect x="19" y="19" width="10" height="10" style="fill:var(--mint)"/></svg><span class="s-brand">FRAME</span>
+        <span class="s-line"></span><div class="s-team">에이전트 실습</div>
+      </header>
+      <div class="hub-top">
+        <p class="s-eyebrow">실습 허브</p>
+        <h2 class="s-title">에이전트 실습 고르기</h2>
+        <p class="hub-lead">강사가 고른 카드를 누르면 그 실습으로 이동합니다. 실습이 끝나면 이 화면으로 돌아옵니다.</p>
+      </div>
+      <div class="hub-grid">
+        <button class="hub-card" type="button" data-go="P1-1" data-vt-key="p1">
+          <span class="hub-no">1</span>
+          <span class="hub-body"><span class="hub-name">회의·통화 메모 → 할 일 표</span><span class="hub-out">결과물 할일표.md</span><span class="hub-out">준비물 회의·통화 메모 4개</span>
+            <span class="hub-meta"><span class="chip chip-concept">컨텍스트</span><span class="chip chip-time">15분</span></span></span>
+        </button>
+        <button class="hub-card" type="button" data-go="P1-1" data-vt-key="p2">
+          <span class="hub-no">2</span>
+          <span class="hub-body"><span class="hub-name">폴더·파일 정리</span><span class="hub-out">결과물 정리된 폴더와 이동 기록</span><span class="hub-out">준비물 파일 40개 · 규칙 파일</span>
+            <span class="hub-meta"><span class="chip chip-concept">하네스</span><span class="chip chip-time">15분</span></span></span>
+        </button>
+        <button class="hub-card" type="button" data-go="P1-1" data-vt-key="p3">
+          <span class="hub-no">3</span>
+          <span class="hub-body"><span class="hub-name">자주 받는 문의 답장 초안</span><span class="hub-out">결과물 답장 초안 12건</span><span class="hub-out">준비물 FAQ 문서 · 문의 12건</span>
+            <span class="hub-meta"><span class="chip chip-concept">환각 · 아첨</span><span class="chip chip-time">15분</span></span></span>
+        </button>
+        <button class="hub-card" type="button" data-go="P1-1" data-vt-key="p4">
+          <span class="hub-no">4</span>
+          <span class="hub-body"><span class="hub-name">여러 파일 → 주간 보고서</span><span class="hub-out">결과물 주간보고서.md</span><span class="hub-out">준비물 5일치 메모 · 매출 표</span>
+            <span class="hub-meta"><span class="chip chip-concept">검증</span><span class="chip chip-time">15분</span></span></span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ============ 예시 3 · 실습 슬라이드 (새 셸) ============ -->
+    <section class="slide practice-slide" data-slide="P1-1">
+      <header class="s-head">
+        <svg class="s-logo" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 18 V8 H18 M30 8 H40 V18 M40 30 V40 H30 M18 40 H8 V30" fill="none" style="stroke:var(--white)" stroke-width="5"/><rect x="19" y="19" width="10" height="10" style="fill:var(--mint)"/></svg><span class="s-brand on-dark">FRAME</span>
+        <span class="s-line"></span><div class="s-team on-dark">에이전트 실습</div>
+      </header>
+      <div class="pr-hero" data-vt-key="p1">
+        <div class="pr-top"><span class="pr-badge">실습 1</span><span class="pr-concept">연결 개념 · 컨텍스트(중간 유실)</span><span class="pr-time">15:00</span></div>
+        <h2 class="pr-title">회의·통화 메모를 할 일 표로 정리합니다</h2>
+      </div>
+      <ol class="pr-steps">
+        <li><b>1</b><span>에이전트 앱에서 <code>01_회의메모</code> 폴더를 엽니다</span></li>
+        <li><b>2</b><span>아래 요청문을 붙여 넣고 보냅니다</span></li>
+        <li><b>3</b><span>에이전트가 보여 준 계획을 읽고 승인합니다</span></li>
+        <li><b>4</b><span><code>할일표.md</code>의 기한을 메모 원문과 대조합니다</span></li>
+      </ol>
+      <div class="pr-prompt"><span class="pr-plabel">요청문</span><p>이 폴더의 메모를 모두 읽고 할 일 표를 만들어 줘.<br>열은 할 일 · 담당 · 기한 · 근거(파일 이름, 줄 번호)로 해 줘.<br>결과는 할일표.md로 저장하고, 메모끼리 다른 내용은 표 아래에 적어 줘.</p></div>
+      <div class="pr-foot"><span class="pr-out">결과물 <code>할일표.md</code></span><button class="pr-back" type="button" data-go="HUB" data-vt-key="p1">허브로 돌아가기</button></div>
+    </section>
+
+  </div>
+
+  <!-- 발표 리모컨 + 상세 메뉴 (불변요소 · 브라우저 검증된 엔진) -->
+  <div class="controls" id="controls">
+    <div class="navbar">
+      <button class="nav-btn" id="prevBtn" aria-label="이전 슬라이드">‹</button>
+      <button class="nav-counter" id="counter" aria-label="상세 발표 메뉴 열기" aria-expanded="false">1 / 1</button>
+      <button class="nav-btn" id="nextBtn" aria-label="다음 슬라이드">›</button>
+      <span class="nav-sep"></span>
+      <button class="nav-btn menu" id="menuBtn" aria-label="상세 발표 메뉴 열기" aria-expanded="false" title="상세 메뉴 (G)">☰</button>
+      <button class="nav-btn fs" id="fsBtn" aria-label="전체화면 (F)" title="전체화면 (F)">⛶</button>
+    </div>
+  </div>
+  <section class="presentation-menu" id="presentationMenu" role="dialog" aria-label="발표 상세 메뉴" hidden>
+    <div class="menu-head">
+      <div><p class="menu-eyebrow" id="menuPart">현재 슬라이드</p><p class="menu-title" id="menuTitle">슬라이드 제목</p></div>
+      <button class="menu-close" id="menuClose" aria-label="상세 메뉴 닫기">×</button>
+    </div>
+    <div class="menu-actions">
+      <button class="menu-action" id="homeBtn" aria-label="표지로 이동" title="홈">⌂</button>
+      <label class="page-jump" aria-label="페이지 번호로 이동"><input id="pageInput" type="number" min="1" inputmode="numeric" placeholder="페이지 번호"><button class="menu-go" id="goBtn">이동</button></label>
+      <button class="menu-action" id="pdfBtn" aria-label="PDF로 출력">PDF</button>
+      <button class="menu-action" id="helpBtn" aria-label="단축키 안내" title="단축키">?</button>
+    </div>
+    <div class="slide-list" id="slideList" aria-label="전체 슬라이드 목록"></div>
+  </section>
+  <section class="keyboard-help" id="keyboardHelp" role="dialog" aria-label="발표 단축키" hidden>
+    <button class="menu-close" id="helpClose" aria-label="단축키 안내 닫기">×</button>
+    <h2>발표 단축키</h2>
+    <dl><dt>← / →</dt><dd>이전·다음 슬라이드</dd><dt>Home / End</dt><dd>표지·마지막으로 이동</dd><dt>G</dt><dd>상세 메뉴 열기</dd><dt>B</dt><dd>화면 가리기</dd><dt>F</dt><dd>전체화면</dd><dt>?</dt><dd>이 안내 열기</dd><dt>Esc</dt><dd>열린 창 또는 화면 가리기 닫기</dd></dl>
+  </section>
+  <div class="presentation-blackout" id="blackout" aria-label="화면 가리기, 클릭하면 해제" hidden></div>
+
+  <script>
+  (function(){
+    function partGeometry(n){
+      var presets={
+        1:[[640,126,92,92]],
+        2:[[560,150,60,60],[640,230,70,70]],
+        3:[[670,136,58,58],[584,228,58,58],[756,228,58,58]],
+        4:[[620,94,58,58],[726,158,66,66],[522,188,50,50],[628,264,48,48]],
+        5:[[640,78,48,48],[532,146,62,62],[730,142,46,46],[574,258,48,48],[694,238,64,64]],
+        6:[[610,70,42,42],[510,138,56,56],[724,122,52,52],[466,246,40,40],[604,214,66,66],[764,246,44,44]]
+      }, points=presets[n]&&presets[n].slice();
+      if(!points){
+        points=[];
+        var size=Math.max(28,44-Math.floor((n-7)/2));
+        for(var i=0;i<n;i++){
+          var angle=-Math.PI/2+(Math.PI*2*i/n), ring=i%2?1:.72;
+          points.push([640+Math.cos(angle)*150*ring,178+Math.sin(angle)*82*ring+(i%3)*12,size,size]);
+        }
+      }
+      return points.sort(function(a,b){return a[1]-b[1];});
+    }
+    function cubeMarkup(p,i){
+      var x=Math.round(p[0]),y=Math.round(p[1]),w=Math.round(p[2]),d=Math.round(p[3]),h=Math.round(w/2);
+      return '<g class="pd-cube pd-cube-'+(i+1)+'" data-cube="'+(i+1)+'">'+
+        '<ellipse class="pd-cube-shadow" cx="'+x+'" cy="'+(y+w+d+9)+'" rx="'+Math.round(w*.72)+'" ry="'+Math.max(6,Math.round(w*.17))+'"/>'+
+        '<polygon points="'+x+','+y+' '+(x+w)+','+(y+h)+' '+x+','+(y+w)+' '+(x-w)+','+(y+h)+'" fill="var(--blue-soft)"/>'+
+        '<polygon points="'+(x-w)+','+(y+h)+' '+x+','+(y+w)+' '+x+','+(y+w+d)+' '+(x-w)+','+(y+h+d)+'" fill="var(--blue)"/>'+
+        '<polygon points="'+x+','+(y+w)+' '+(x+w)+','+(y+h)+' '+(x+w)+','+(y+h+d)+' '+x+','+(y+w+d)+'" fill="var(--mint)"/></g>';
+    }
+    function hydratePartDivider(s,index,total){
+      var hero=s.querySelector('.dv-hero'), points=partGeometry(index), html='';
+      for(var i=0;i<points.length;i++)html+=cubeMarkup(points[i],i);
+      if(hero){hero.innerHTML=html+'<circle class="pd-spark" cx="820" cy="112" r="7"/>';hero.setAttribute('data-geometry-count',index);}
+      var dots=s.querySelector('.pd-dots'), dotHtml='';
+      for(var d=1;d<=total;d++)dotHtml+='<span class="pd-dot'+(d===index?' is-active':'')+'"></span>';
+      if(dots)dots.innerHTML=dotHtml;
+      var eyebrow=s.querySelector('.pd-eyebrow');if(eyebrow)eyebrow.textContent='PART '+index+' / '+total;
+      s.setAttribute('data-part-index',index);s.setAttribute('data-part-total',total);
+    }
+    var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+    var totalParts = 0;
+    slides.forEach(function(s){ if (/\bpart-divider\b/.test(s.className)) totalParts++; });
+    var curPart = 0;
+    slides.forEach(function(s, i){
+      if (/\bpart-divider\b/.test(s.className)) { curPart++; hydratePartDivider(s, curPart, totalParts); }
+      var fixed = /\b(cover|s02-slide|s03-slide|part-divider|concept-recap|closing)\b/.test(s.className);
+      if (!/\b(cover|concept-recap|closing)\b/.test(s.className)) {
+        var pg = document.createElement('div');
+        pg.className = 's-pageno';
+        pg.textContent = (i + 1) + ' / ' + slides.length;
+        s.appendChild(pg);
+      }
+      if (!fixed && curPart >= 1 && totalParts >= 1) {
+        var team = s.querySelector('.s-head .s-team');
+        if (team) {
+          var h = '<span class="lbl">PART ' + curPart + ' / ' + totalParts + '</span><span class="dots">';
+          for (var d = 1; d <= totalParts; d++) h += '<span class="pd' + (d === curPart ? ' on' : '') + '"></span>';
+          team.className = 's-part';
+          team.innerHTML = h + '</span>';
+        }
+      }
+    });
+    var controls = document.getElementById('controls');
+    var counter  = document.getElementById('counter');
+    var prevBtn  = document.getElementById('prevBtn');
+    var nextBtn  = document.getElementById('nextBtn');
+    var fsBtn    = document.getElementById('fsBtn');
+    var menuBtn  = document.getElementById('menuBtn');
+    var menu     = document.getElementById('presentationMenu');
+    var menuClose = document.getElementById('menuClose');
+    var homeBtn  = document.getElementById('homeBtn');
+    var pageInput = document.getElementById('pageInput');
+    var goBtn    = document.getElementById('goBtn');
+    var pdfBtn   = document.getElementById('pdfBtn');
+    var helpBtn  = document.getElementById('helpBtn');
+    var help     = document.getElementById('keyboardHelp');
+    var helpClose = document.getElementById('helpClose');
+    var blackout = document.getElementById('blackout');
+    var slideList = document.getElementById('slideList');
+    var menuTitle = document.getElementById('menuTitle');
+    var menuPart = document.getElementById('menuPart');
+    var idx = 0, hideTimer = null;
+    var storageKey = 'frame-prototype';  /* ✏️ 덱마다 고유 문자열로 바꾸면 위치 기억이 분리됨 */
+
+    function initialIndex(){
+      var m = String(location.hash || '').match(/slide=(\d+)/i);
+      if (m) return Math.max(0, parseInt(m[1], 10) - 1);
+      try { var saved = parseInt(localStorage.getItem(storageKey), 10); return isNaN(saved) ? 0 : saved; }
+      catch (e) { return 0; }
+    }
+    function fit(){
+      var s = Math.min(window.innerWidth / 1280, window.innerHeight / 720);
+      document.documentElement.style.setProperty('--scale', s);
+    }
+    function show(i){
+      idx = Math.max(0, Math.min(slides.length - 1, i));
+      for (var n = 0; n < slides.length; n++){ slides[n].classList.toggle('is-active', n === idx); }
+      counter.textContent = (idx + 1) + ' / ' + slides.length;
+      prevBtn.disabled = (idx === 0);
+      nextBtn.disabled = (idx === slides.length - 1);
+      updateMenu();
+      try { localStorage.setItem(storageKey, String(idx)); } catch (e) {}
+      try { history.replaceState(null, '', '#slide=' + (idx + 1)); } catch (e) {}
+    }
+    function next(){ show(idx + 1); }
+    function prev(){ show(idx - 1); }
+    function slideName(s, i){
+      var heading = s.querySelector('h1,h2,h3');
+      var text = heading ? heading.textContent.replace(/\s+/g, ' ').trim() : '';
+      return text || s.getAttribute('data-slide') || ('슬라이드 ' + (i + 1));
+    }
+    function slidePart(s){
+      var el = s.querySelector('.s-part .lbl');
+      return el ? el.textContent : (s.classList.contains('cover') ? '표지' : '발표 슬라이드');
+    }
+    function buildSlideList(){
+      slides.forEach(function(s, i){
+        var btn = document.createElement('button');
+        var number = document.createElement('span');
+        var label = document.createElement('span');
+        btn.type = 'button'; btn.dataset.slideIndex = i;
+        number.className = 'list-num'; number.textContent = String(i + 1).padStart(3, '0');
+        label.textContent = slideName(s, i); btn.appendChild(number); btn.appendChild(label);
+        btn.addEventListener('click', function(){ show(i); closeMenu(); poke(); });
+        slideList.appendChild(btn);
+      });
+    }
+    function updateMenu(){
+      var current = slides[idx];
+      menuTitle.textContent = slideName(current, idx);
+      menuPart.textContent = slidePart(current);
+      pageInput.value = idx + 1;
+      Array.prototype.forEach.call(slideList.children, function(btn, i){ btn.classList.toggle('is-current', i === idx); });
+    }
+    function openMenu(){
+      menu.hidden = false; help.hidden = true; blackout.hidden = true;
+      menuBtn.setAttribute('aria-expanded', 'true'); counter.setAttribute('aria-expanded', 'true');
+      controls.classList.add('show'); clearTimeout(hideTimer); updateMenu();
+      setTimeout(function(){ pageInput.focus(); pageInput.select(); }, 0);
+    }
+    function closeMenu(){
+      menu.hidden = true; menuBtn.setAttribute('aria-expanded', 'false'); counter.setAttribute('aria-expanded', 'false');
+      poke();
+    }
+    function toggleMenu(){ menu.hidden ? openMenu() : closeMenu(); }
+    function openHelp(){ help.hidden = false; menu.hidden = true; menuBtn.setAttribute('aria-expanded', 'false'); counter.setAttribute('aria-expanded', 'false'); controls.classList.add('show'); clearTimeout(hideTimer); helpClose.focus(); }
+    function closeHelp(){ help.hidden = true; poke(); }
+    function jumpToInput(){ var n = parseInt(pageInput.value, 10); if (!isNaN(n)) { show(n - 1); closeMenu(); } }
+    function toggleBlackout(){ blackout.hidden = !blackout.hidden; if (blackout.hidden) poke(); }
+    function poke(){ controls.classList.add('show'); clearTimeout(hideTimer);
+      if (!menu.hidden || !help.hidden || !blackout.hidden) return;
+      hideTimer = setTimeout(function(){ controls.classList.remove('show'); }, 1000); }
+    function toggleFullscreen(){
+      if (!document.fullscreenElement){ (document.documentElement.requestFullscreen || function(){}).call(document.documentElement); }
+      else { (document.exitFullscreen || function(){}).call(document); }
+    }
+    document.addEventListener('keydown', function(e){
+      if (e.key === 'Escape') { if (!blackout.hidden) { blackout.hidden = true; } else if (!help.hidden) { closeHelp(); } else if (!menu.hidden) { closeMenu(); } return; }
+      if ((e.key === 'g' || e.key === 'G') && !e.ctrlKey && !e.metaKey) { toggleMenu(); e.preventDefault(); return; }
+      if (e.key === '?' && !e.ctrlKey && !e.metaKey) { openHelp(); e.preventDefault(); return; }
+      if ((e.key === 'b' || e.key === 'B') && !e.ctrlKey && !e.metaKey) { toggleBlackout(); e.preventDefault(); return; }
+      if (!menu.hidden || !help.hidden || !blackout.hidden) return;
+      switch (e.key){
+        /* 슬라이드 전환은 리모컨을 노출하지 않는다 — 리모컨은 마우스 이동(mousemove→poke)에만 나타난다. */
+        case 'ArrowRight': case 'PageDown': case ' ': case 'Spacebar': next(); e.preventDefault(); break;
+        case 'ArrowLeft': case 'PageUp': prev(); e.preventDefault(); break;
+        case 'Home': show(0); e.preventDefault(); break;
+        case 'End':  show(slides.length - 1); e.preventDefault(); break;
+        case 'f': case 'F': toggleFullscreen(); break;
+      }
+    });
+    prevBtn.addEventListener('click', function(){ prev(); poke(); });
+    nextBtn.addEventListener('click', function(){ next(); poke(); });
+    fsBtn.addEventListener('click', function(e){ e.stopPropagation(); toggleFullscreen(); poke(); });
+    menuBtn.addEventListener('click', function(e){ e.stopPropagation(); toggleMenu(); });
+    counter.addEventListener('click', function(e){ e.stopPropagation(); toggleMenu(); });
+    menuClose.addEventListener('click', closeMenu);
+    homeBtn.addEventListener('click', function(){ show(0); closeMenu(); });
+    goBtn.addEventListener('click', jumpToInput);
+    pageInput.addEventListener('keydown', function(e){ if (e.key === 'Enter') { jumpToInput(); e.preventDefault(); } });
+    pdfBtn.addEventListener('click', function(){ window.print(); });
+    helpBtn.addEventListener('click', openHelp);
+    helpClose.addEventListener('click', closeHelp);
+    blackout.addEventListener('click', toggleBlackout);
+    document.addEventListener('fullscreenchange', fit);
+    window.addEventListener('mousemove', poke);
+    window.addEventListener('resize', fit);
+    buildSlideList();
+    window.__deckShow = show;
+    fit(); show(initialIndex()); poke();
+  })();
+  </script>
+  <script>
+  /* FRAME 허브 이동 — 슬라이드 ID(data-slide)로 이동한다. 번호를 하드코딩하지 않는다.
+     클릭한 요소와 도착 장의 같은 data-vt-key 요소를 하나의 view-transition으로 잇는다. */
+  (function(){
+    var slides = [].slice.call(document.querySelectorAll('.deck .slide'));
+    function indexOf(id){ for (var i = 0; i < slides.length; i++){ if (slides[i].getAttribute('data-slide') === id) return i; } return -1; }
+    function go(el){
+      var t = indexOf(el.getAttribute('data-go')); if (t < 0 || !window.__deckShow) return;
+      var key = el.getAttribute('data-vt-key');
+      var src = el.classList.contains('pr-back') ? el.closest('.slide').querySelector('.pr-hero') : el;
+      var dest = key ? slides[t].querySelector('[data-vt-key="' + key + '"]:not(.pr-back)') : null;
+      var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (!document.startViewTransition || reduce || !dest){ window.__deckShow(t); return; }
+      src.style.viewTransitionName = 'frame-hero';
+      var tr = document.startViewTransition(function(){ src.style.viewTransitionName = ''; dest.style.viewTransitionName = 'frame-hero'; window.__deckShow(t); });
+      tr.finished.finally(function(){ dest.style.viewTransitionName = ''; });
+    }
+    document.addEventListener('click', function(e){ var el = e.target.closest('[data-go]'); if (!el) return; e.preventDefault(); e.stopPropagation(); go(el); });
+  })();
+  </script>
+</body>
+</html>
