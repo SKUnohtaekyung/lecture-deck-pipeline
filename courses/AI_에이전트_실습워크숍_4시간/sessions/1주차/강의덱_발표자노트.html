@@ -6,7 +6,7 @@
 <title>발표자 노트 — FRAME 1주차</title>
 <!--
   발표자 노트 — FRAME 1주차 (E9)
-  형식: kit/starter/presenter-notes-template.html. 덱 82장과 같은 순서이며 pn-no = 덱 쪽 번호.
+  형식: kit/starter/presenter-notes-template.html. 덱 84장과 같은 순서이며 pn-no = 덱 쪽 번호.
   · 🎙 전체 대본(개념 장 C-*) · 📌 요점(그 밖의 장)은 class pn-joke pn-say — 발표 런타임에서는 「강사 설명·애드리브」로 읽힌다.
   · 🔑 강사용 정답 · ⚠ 확인은 class pn-demo 와 보조 class(pn-answer · pn-caution)를 함께 쓴다.
   · 🗣는 여기선 펼친 상태. 1280×720 캔버스 제약 없음. deck.css를 링크하지 않는다.
@@ -46,14 +46,14 @@
     border-radius:var(--r-md); padding:8px 14px; margin:26px 0 12px; }
 
   /* 슬라이드 블록 */
-  .pn-slide{ border:1px solid var(--line); border-radius:var(--r-lg); background:var(--white);
+  .pn-slide, .pn-pre{ border:1px solid var(--line); border-radius:var(--r-lg); background:var(--white);
     padding:18px 20px; margin:0 0 16px; break-inside:avoid; }
-  .pn-slide-head{ display:flex; flex-wrap:wrap; align-items:baseline; gap:6px 12px; margin-bottom:10px; }
-  .pn-no{ flex:0 0 auto; font-size:14px; font-weight:800; color:var(--white); background:var(--blue);
+  .pn-slide-head, .pn-pre-head{ display:flex; flex-wrap:wrap; align-items:baseline; gap:6px 12px; margin-bottom:10px; }
+  .pn-no, .pn-pre-tag{ flex:0 0 auto; font-size:14px; font-weight:800; color:var(--white); background:var(--blue);
     border-radius:var(--r-pill); padding:3px 11px; }
   .pn-id{ flex:0 0 auto; font-size:13px; font-weight:800; color:var(--blue); background:var(--blue-soft);
     border-radius:var(--r-pill); padding:2px 9px; font-family:var(--font-mono); }
-  .pn-slide-title{ font-size:19px; font-weight:800; margin:0; flex:1 1 280px; }
+  .pn-slide-title, .pn-pre-title{ font-size:19px; font-weight:800; margin:0; flex:1 1 280px; }
   .pn-time{ flex:0 0 auto; font-size:13px; font-weight:700; color:var(--gray-700); margin-left:auto; }
 
   /* 멘트 항목 — 종류별 좌측 컬러 바 + 라벨 */
@@ -93,7 +93,7 @@
   <header class="pn-head">
     <div class="pn-kicker">발표자 노트 · 1주차</div>
     <h1 class="pn-title">FRAME — AI 에이전트 실습 4시간</h1>
-    <p class="pn-note">강사용 참고 문서입니다. 쪽 번호는 덱의 장 순서와 같고, 덱은 82장입니다. 82장 모두에 노트가 있습니다.</p>
+    <p class="pn-note">강사용 참고 문서입니다. 쪽 번호는 덱의 장 순서와 같고, 덱은 84장입니다. 84장 모두에 노트가 있습니다(표지는 쪽 번호가 없어 「표지」로 표시).</p>
     <p class="pn-note">ID가 C-로 시작하는 개념 장 20장은 전체 대본(🎙)이고, 나머지는 요점(📌)입니다. 대본은 화면의 정의 → 비유 → 근거 → 대응 순서를 따르므로 그대로 읽어도 됩니다.</p>
     <p class="pn-note">수강생 화면(덱)에는 💬 애드리브 · 👀 시연 큐 · 🔑 정답이 보이지 않고, 🗣 힌트는 접힌 상태로 들어갑니다. 여기서는 모두 펼쳐 둡니다.</p>
     <div class="pn-legend">
@@ -104,21 +104,21 @@
     </div>
     <table class="pn-blocks">
       <tr><th>구간</th><th>쪽</th><th>행 합계</th><th>내용</th></tr>
-      <tr><td>블록 1</td><td>1~18쪽</td><td>44분</td><td>개념 · 자료 받기 · 문항 쓰기</td></tr>
-      <tr><td>블록 2</td><td>19~32쪽</td><td>49분 30초</td><td>결과 글 · 에이전트 실습 A · 점검 화면</td></tr>
-      <tr><td>블록 3</td><td>33~48쪽</td><td>49분 30초</td><td>화면 수정 · 에이전트 실습 B · 공개 주소</td></tr>
-      <tr><td>블록 4</td><td>49~65쪽</td><td>48분</td><td>서로 써 보기 · 고치기 · 시연 · 마무리</td></tr>
-      <tr><td>허브 구간</td><td>66~82쪽</td><td>57분</td><td>실습 4종(01~04) · 슬롯 A·B에서 1개씩</td></tr>
+      <tr><td>블록 1</td><td>1~17쪽</td><td>43분 30초</td><td>개념 · 자료 받기 · 문항 쓰기</td></tr>
+      <tr><td>블록 2</td><td>18~32쪽</td><td>50분</td><td>결과 글 · 에이전트 실습 A · 점검 화면</td></tr>
+      <tr><td>블록 3</td><td>33~49쪽</td><td>50분</td><td>화면 수정 · 에이전트 실습 B · 공개 주소</td></tr>
+      <tr><td>블록 4</td><td>50~67쪽</td><td>48분 30초</td><td>서로 써 보기 · 고치기 · 시연 · 마무리</td></tr>
+      <tr><td>허브 구간</td><td>68~84쪽</td><td>57분</td><td>실습 4종(01~04) · 슬롯 A·B에서 1개씩</td></tr>
     </table>
     <p class="pn-note">시간은 결정표의 「분」 열 값입니다. 블록 상한은 50분이고, 남는 시간은 여유입니다. 휴식 10분 세 번은 시간표 밖입니다.</p>
   </header>
 
-  <div class="pn-block">블록 1 · 1~18쪽 · 행 합계 44분(블록 상한 50분) · 블록 뒤 휴식 10분(시간표 밖)</div>
-  <section class="pn-slide" id="p1">
-    <div class="pn-slide-head">
-      <span class="pn-no">1</span>
+  <div class="pn-block">블록 1 · 1~17쪽 · 행 합계 43분 30초(블록 상한 50분) · 블록 뒤 휴식 10분(시간표 밖)</div>
+  <section class="pn-pre" id="p1">
+    <div class="pn-pre-head">
+      <span class="pn-pre-tag">표지</span>
       <span class="pn-id">COVER</span>
-      <h2 class="pn-slide-title">FRAME — AI 에이전트 실습 4시간</h2>
+      <h3 class="pn-pre-title">AGENT</h3>
       <span class="pn-time">블록 1 · 이 장 30초 · 누적 30초</span>
     </div>
     <div class="pn-item pn-joke pn-say">
@@ -230,30 +230,9 @@
   <section class="pn-slide" id="p6">
     <div class="pn-slide-head">
       <span class="pn-no">6</span>
-      <span class="pn-id">O-04</span>
-      <h2 class="pn-slide-title">막혔을 때 채팅에 남기는 말</h2>
-      <span class="pn-time">블록 1 · 이 장 30초 · 누적 10분</span>
-    </div>
-    <div class="pn-item pn-joke pn-say">
-      <span class="lbl">📌 요점</span>
-      <ul>
-        <li>막히면 말로 끊지 말고 채팅에 한 줄을 남겨 달라고 합니다. 어디서 막혔는지가 한 줄에 들어 있으면 강사가 같은 장을 화면에 띄울 수 있습니다.</li>
-        <li>형식은 「막힘 · 어디 · 장 번호와 단계」입니다. 어디는 메인 또는 실습 번호, 장 번호는 화면에 적힌 ①~④, 단계는 몇 번째 단계인지입니다.</li>
-        <li>예시는 「막힘 · 실습 1 · ② 3단계」입니다.</li>
-      </ul>
-    </div>
-    <div class="pn-item pn-joke">
-      <span class="lbl">💬 애드리브</span>
-      <p>"화면 사진만 올리면 저도 어디냐고 다시 물어야 합니다. 한 줄을 먼저 남겨 주세요."</p>
-    </div>
-  </section>
-
-  <section class="pn-slide" id="p7">
-    <div class="pn-slide-head">
-      <span class="pn-no">7</span>
       <span class="pn-id">C-01</span>
       <h2 class="pn-slide-title">다음 말 예측 — 글 뒤에 올 조각을 확률로 고르는 방식</h2>
-      <span class="pn-time">블록 1 · 이 장 3분 · 누적 13분</span>
+      <span class="pn-time">블록 1 · 이 장 3분 · 누적 12분 30초</span>
     </div>
     <div class="pn-item pn-joke pn-say">
       <span class="lbl">🎙 전체 대본</span>
@@ -273,12 +252,12 @@
     <p class="pn-refs">출처 ID: S01</p>
   </section>
 
-  <section class="pn-slide" id="p8">
+  <section class="pn-slide" id="p7">
     <div class="pn-slide-head">
-      <span class="pn-no">8</span>
+      <span class="pn-no">7</span>
       <span class="pn-id">C-04</span>
       <h2 class="pn-slide-title">환각 — 사실이 아닌 내용을 사실처럼 만드는 현상</h2>
-      <span class="pn-time">블록 1 · 이 장 3분 · 누적 16분</span>
+      <span class="pn-time">블록 1 · 이 장 3분 · 누적 15분 30초</span>
     </div>
     <div class="pn-item pn-joke pn-say">
       <span class="lbl">🎙 전체 대본</span>
@@ -297,12 +276,12 @@
     <p class="pn-refs">출처 ID: S04 · S05</p>
   </section>
 
-  <section class="pn-slide" id="p9">
+  <section class="pn-slide" id="p8">
     <div class="pn-slide-head">
-      <span class="pn-no">9</span>
+      <span class="pn-no">8</span>
       <span class="pn-id">C-05</span>
       <h2 class="pn-slide-title">답을 받은 뒤 확인할 곳</h2>
-      <span class="pn-time">블록 1 · 이 장 1분 · 누적 17분</span>
+      <span class="pn-time">블록 1 · 이 장 1분 · 누적 16분 30초</span>
     </div>
     <div class="pn-item pn-joke pn-say">
       <span class="lbl">🎙 전체 대본</span>
@@ -311,12 +290,12 @@
     </div>
   </section>
 
-  <section class="pn-slide" id="p10">
+  <section class="pn-slide" id="p9">
     <div class="pn-slide-head">
-      <span class="pn-no">10</span>
+      <span class="pn-no">9</span>
       <span class="pn-id">X-01</span>
       <h2 class="pn-slide-title">같은 문단을 두 가지로 물어봅니다</h2>
-      <span class="pn-time">블록 1 · 이 장 4분 · 누적 21분</span>
+      <span class="pn-time">블록 1 · 이 장 4분 · 누적 20분 30초</span>
     </div>
     <div class="pn-item pn-joke pn-say">
       <span class="lbl">📌 요점</span>
@@ -334,12 +313,12 @@
     </div>
   </section>
 
-  <section class="pn-slide" id="p11">
+  <section class="pn-slide" id="p10">
     <div class="pn-slide-head">
-      <span class="pn-no">11</span>
+      <span class="pn-no">10</span>
       <span class="pn-id">C-06</span>
       <h2 class="pn-slide-title">아첨 — 듣기 좋은 쪽으로 기우는 경향</h2>
-      <span class="pn-time">블록 1 · 이 장 2분 · 누적 23분</span>
+      <span class="pn-time">블록 1 · 이 장 2분 · 누적 22분 30초</span>
     </div>
     <div class="pn-item pn-joke pn-say">
       <span class="lbl">🎙 전체 대본</span>
@@ -359,12 +338,12 @@
     <p class="pn-refs">출처 ID: S06 · S07 · S08</p>
   </section>
 
-  <section class="pn-slide" id="p12">
+  <section class="pn-slide" id="p11">
     <div class="pn-slide-head">
-      <span class="pn-no">12</span>
+      <span class="pn-no">11</span>
       <span class="pn-id">C-07</span>
       <h2 class="pn-slide-title">프롬프트 — AI에게 건네는 요청문</h2>
-      <span class="pn-time">블록 1 · 이 장 4분 · 누적 27분</span>
+      <span class="pn-time">블록 1 · 이 장 4분 · 누적 26분 30초</span>
     </div>
     <div class="pn-item pn-joke pn-say">
       <span class="lbl">🎙 전체 대본</span>
@@ -380,12 +359,12 @@
     <p class="pn-refs">출처 ID: S20</p>
   </section>
 
-  <section class="pn-slide" id="p13">
+  <section class="pn-slide" id="p12">
     <div class="pn-slide-head">
-      <span class="pn-no">13</span>
+      <span class="pn-no">12</span>
       <span class="pn-id">C-08</span>
       <h2 class="pn-slide-title">요청문을 채우기 전과 후 — 확인 칸에 적는 것</h2>
-      <span class="pn-time">블록 1 · 이 장 1분 · 누적 28분</span>
+      <span class="pn-time">블록 1 · 이 장 1분 · 누적 27분 30초</span>
     </div>
     <div class="pn-item pn-joke pn-say">
       <span class="lbl">🎙 전체 대본</span>
@@ -398,12 +377,12 @@
     </div>
   </section>
 
-  <section class="pn-slide" id="p14">
+  <section class="pn-slide" id="p13">
     <div class="pn-slide-head">
-      <span class="pn-no">14</span>
+      <span class="pn-no">13</span>
       <span class="pn-id">C-14</span>
       <h2 class="pn-slide-title">에이전트 — 읽기 · 계획 · 실행 · 확인을 되풀이하는 프로그램</h2>
-      <span class="pn-time">블록 1 · 이 장 2분 · 누적 30분</span>
+      <span class="pn-time">블록 1 · 이 장 2분 · 누적 29분 30초</span>
     </div>
     <div class="pn-item pn-joke pn-say">
       <span class="lbl">🎙 전체 대본</span>
@@ -418,12 +397,12 @@
     <p class="pn-refs">출처 ID: S28 · S29 · S30</p>
   </section>
 
-  <section class="pn-slide" id="p15">
+  <section class="pn-slide" id="p14">
     <div class="pn-slide-head">
-      <span class="pn-no">15</span>
+      <span class="pn-no">14</span>
       <span class="pn-id">M1-1</span>
       <h2 class="pn-slide-title">유형을 나누는 두 축</h2>
-      <span class="pn-time">블록 1 · 이 장 3분 · 누적 33분</span>
+      <span class="pn-time">블록 1 · 이 장 3분 · 누적 32분 30초</span>
     </div>
     <div class="pn-item pn-joke pn-say">
       <span class="lbl">📌 요점</span>
@@ -452,12 +431,12 @@
     <p class="pn-refs">출처 ID: S08 · S21 · S22 · S23</p>
   </section>
 
-  <section class="pn-slide" id="p16">
+  <section class="pn-slide" id="p15">
     <div class="pn-slide-head">
-      <span class="pn-no">16</span>
+      <span class="pn-no">15</span>
       <span class="pn-id">M1-2</span>
       <h2 class="pn-slide-title">점검 문항을 문항.txt에 씁니다</h2>
-      <span class="pn-time">블록 1 · 이 장 9분 · 누적 42분</span>
+      <span class="pn-time">블록 1 · 이 장 9분 · 누적 41분 30초</span>
     </div>
     <div class="pn-item pn-joke pn-say">
       <span class="lbl">📌 요점</span>
@@ -479,12 +458,12 @@
     </div>
   </section>
 
-  <section class="pn-slide" id="p17">
+  <section class="pn-slide" id="p16">
     <div class="pn-slide-head">
-      <span class="pn-no">17</span>
+      <span class="pn-no">16</span>
       <span class="pn-id">M1-3</span>
       <h2 class="pn-slide-title">쓴 문항을 확인합니다</h2>
-      <span class="pn-time">블록 1 · 이 장 2분 · 누적 44분</span>
+      <span class="pn-time">블록 1 · 이 장 2분 · 누적 43분 30초</span>
     </div>
     <div class="pn-item pn-joke pn-say">
       <span class="lbl">📌 요점</span>
@@ -502,9 +481,9 @@
     </div>
   </section>
 
-  <section class="pn-slide" id="p18">
+  <section class="pn-slide" id="p17">
     <div class="pn-slide-head">
-      <span class="pn-no">18</span>
+      <span class="pn-no">17</span>
       <span class="pn-id">BR-1</span>
       <h2 class="pn-slide-title">쉬는 시간 10분</h2>
       <span class="pn-time">블록 1 끝 · 휴식 10분(시간표 밖)</span>
@@ -522,10 +501,10 @@
     </div>
   </section>
 
-  <div class="pn-block">블록 2 · 19~32쪽 · 행 합계 49분 30초(블록 상한 50분) · 블록 뒤 휴식 10분(시간표 밖)</div>
-  <section class="pn-slide" id="p19">
+  <div class="pn-block">블록 2 · 18~32쪽 · 행 합계 50분(블록 상한 50분) · 블록 뒤 휴식 10분(시간표 밖)</div>
+  <section class="pn-slide" id="p18">
     <div class="pn-slide-head">
-      <span class="pn-no">19</span>
+      <span class="pn-no">18</span>
       <span class="pn-id">B2-0</span>
       <h2 class="pn-slide-title">블록 2 — 결과 글과 화면</h2>
       <span class="pn-time">블록 2 · 이 장 30초 · 누적 30초</span>
@@ -538,12 +517,27 @@
     </div>
   </section>
 
+  <section class="pn-slide" id="p19">
+    <div class="pn-slide-head">
+      <span class="pn-no">19</span>
+      <span class="pn-id">B2-1</span>
+      <h2 class="pn-slide-title">블록 2에서 하는 일</h2>
+      <span class="pn-time">블록 2 · 이 장 30초 · 누적 1분</span>
+    </div>
+    <div class="pn-item pn-joke pn-say">
+      <span class="lbl">📌 요점</span>
+      <ul>
+        <li>블록 2에서 하는 일은 세 가지입니다. 결과 글을 쓰고, 에이전트 실습을 한 번 하고, 점검 화면을 만듭니다. 사이에 컨텍스트와 관련된 개념 세 가지를 설명합니다.</li>
+      </ul>
+    </div>
+  </section>
+
   <section class="pn-slide" id="p20">
     <div class="pn-slide-head">
       <span class="pn-no">20</span>
       <span class="pn-id">M1-4</span>
       <h2 class="pn-slide-title">유형별 결과 글을 씁니다</h2>
-      <span class="pn-time">블록 2 · 이 장 7분 · 누적 7분 30초</span>
+      <span class="pn-time">블록 2 · 이 장 7분 · 누적 8분</span>
     </div>
     <div class="pn-item pn-joke pn-say">
       <span class="lbl">📌 요점</span>
@@ -579,7 +573,7 @@ AI 먼저 · 그대로 씀: 결론을 말하기 전에 선택지 두세 개와 �
       <span class="pn-no">21</span>
       <span class="pn-id">M1-5</span>
       <h2 class="pn-slide-title">결과 글을 확인합니다</h2>
-      <span class="pn-time">블록 2 · 이 장 2분 · 누적 9분 30초</span>
+      <span class="pn-time">블록 2 · 이 장 2분 · 누적 10분</span>
     </div>
     <div class="pn-item pn-joke pn-say">
       <span class="lbl">📌 요점</span>
@@ -601,7 +595,7 @@ AI 먼저 · 그대로 씀: 결론을 말하기 전에 선택지 두세 개와 �
       <span class="pn-no">22</span>
       <span class="pn-id">M1-6</span>
       <h2 class="pn-slide-title">저장하고 이어 갑니다</h2>
-      <span class="pn-time">블록 2 · 이 장 30초 · 누적 10분</span>
+      <span class="pn-time">블록 2 · 이 장 30초 · 누적 10분 30초</span>
     </div>
     <div class="pn-item pn-joke pn-say">
       <span class="lbl">📌 요점</span>
@@ -619,7 +613,7 @@ AI 먼저 · 그대로 씀: 결론을 말하기 전에 선택지 두세 개와 �
       <span class="pn-no">23</span>
       <span class="pn-id">C-10</span>
       <h2 class="pn-slide-title">컨텍스트 — AI가 답하는 순간 볼 수 있는 정보 전체</h2>
-      <span class="pn-time">블록 2 · 이 장 2분 · 누적 12분</span>
+      <span class="pn-time">블록 2 · 이 장 2분 · 누적 12분 30초</span>
     </div>
     <div class="pn-item pn-joke pn-say">
       <span class="lbl">🎙 전체 대본</span>
@@ -644,7 +638,7 @@ AI 먼저 · 그대로 씀: 결론을 말하기 전에 선택지 두세 개와 �
       <span class="pn-no">24</span>
       <span class="pn-id">C-11</span>
       <h2 class="pn-slide-title">중간 유실 — 긴 자료의 가운데 정보를 덜 활용하는 현상</h2>
-      <span class="pn-time">블록 2 · 이 장 3분 · 누적 15분</span>
+      <span class="pn-time">블록 2 · 이 장 3분 · 누적 15분 30초</span>
     </div>
     <div class="pn-item pn-joke pn-say">
       <span class="lbl">🎙 전체 대본</span>
@@ -666,7 +660,7 @@ AI 먼저 · 그대로 씀: 결론을 말하기 전에 선택지 두세 개와 �
       <span class="pn-no">25</span>
       <span class="pn-id">C-12</span>
       <h2 class="pn-slide-title">길어진 대화 — 앞 내용을 활용하는 정도가 떨어지는 현상</h2>
-      <span class="pn-time">블록 2 · 이 장 2분 · 누적 17분</span>
+      <span class="pn-time">블록 2 · 이 장 2분 · 누적 17분 30초</span>
     </div>
     <div class="pn-item pn-joke pn-say">
       <span class="lbl">🎙 전체 대본</span>
@@ -688,7 +682,7 @@ AI 먼저 · 그대로 씀: 결론을 말하기 전에 선택지 두세 개와 �
       <span class="pn-no">26</span>
       <span class="pn-id">C-13</span>
       <h2 class="pn-slide-title">새 대화로 넘길 때 쓰는 요청문</h2>
-      <span class="pn-time">블록 2 · 이 장 1분 30초 · 누적 18분 30초</span>
+      <span class="pn-time">블록 2 · 이 장 1분 30초 · 누적 19분</span>
     </div>
     <div class="pn-item pn-joke pn-say">
       <span class="lbl">🎙 전체 대본</span>
@@ -706,7 +700,7 @@ AI 먼저 · 그대로 씀: 결론을 말하기 전에 선택지 두세 개와 �
       <span class="pn-no">27</span>
       <span class="pn-id">SLOT-A</span>
       <h2 class="pn-slide-title">에이전트 실습 시간 A</h2>
-      <span class="pn-time">블록 2 · 이 장 15분 · 누적 33분 30초</span>
+      <span class="pn-time">블록 2 · 이 장 15분 · 누적 34분</span>
     </div>
     <div class="pn-item pn-joke pn-say">
       <span class="lbl">📌 요점</span>
@@ -728,7 +722,7 @@ AI 먼저 · 그대로 씀: 결론을 말하기 전에 선택지 두세 개와 �
       <span class="pn-no">28</span>
       <span class="pn-id">R-A</span>
       <h2 class="pn-slide-title">점검 페이지 폴더로 돌아옵니다</h2>
-      <span class="pn-time">블록 2 · 이 장 3분 · 누적 36분 30초</span>
+      <span class="pn-time">블록 2 · 이 장 3분 · 누적 37분</span>
     </div>
     <div class="pn-item pn-joke pn-say">
       <span class="lbl">📌 요점</span>
@@ -750,7 +744,7 @@ AI 먼저 · 그대로 씀: 결론을 말하기 전에 선택지 두세 개와 �
       <span class="pn-no">29</span>
       <span class="pn-id">M2-1</span>
       <h2 class="pn-slide-title">문항 파일을 읽는 점검 화면을 만듭니다</h2>
-      <span class="pn-time">블록 2 · 이 장 2분 · 누적 38분 30초</span>
+      <span class="pn-time">블록 2 · 이 장 2분 · 누적 39분</span>
     </div>
     <div class="pn-item pn-joke pn-say">
       <span class="lbl">📌 요점</span>
@@ -771,7 +765,7 @@ AI 먼저 · 그대로 씀: 결론을 말하기 전에 선택지 두세 개와 �
       <span class="pn-no">30</span>
       <span class="pn-id">M2-2</span>
       <h2 class="pn-slide-title">화면 제작 요청을 보내고 계획을 읽습니다</h2>
-      <span class="pn-time">블록 2 · 이 장 9분 · 누적 47분 30초</span>
+      <span class="pn-time">블록 2 · 이 장 9분 · 누적 48분</span>
     </div>
     <div class="pn-item pn-joke pn-say">
       <span class="lbl">📌 요점</span>
@@ -799,7 +793,7 @@ AI 먼저 · 그대로 씀: 결론을 말하기 전에 선택지 두세 개와 �
       <span class="pn-no">31</span>
       <span class="pn-id">M2-3</span>
       <h2 class="pn-slide-title">브라우저로 열어 눌러 봅니다</h2>
-      <span class="pn-time">블록 2 · 이 장 2분 · 누적 49분 30초</span>
+      <span class="pn-time">블록 2 · 이 장 2분 · 누적 50분</span>
     </div>
     <div class="pn-item pn-joke pn-say">
       <span class="lbl">📌 요점</span>
@@ -838,7 +832,7 @@ AI 먼저 · 그대로 씀: 결론을 말하기 전에 선택지 두세 개와 �
     </div>
   </section>
 
-  <div class="pn-block">블록 3 · 33~48쪽 · 행 합계 49분 30초(블록 상한 50분) · 블록 뒤 휴식 10분(시간표 밖)</div>
+  <div class="pn-block">블록 3 · 33~49쪽 · 행 합계 50분(블록 상한 50분) · 블록 뒤 휴식 10분(시간표 밖)</div>
   <section class="pn-slide" id="p33">
     <div class="pn-slide-head">
       <span class="pn-no">33</span>
@@ -857,9 +851,24 @@ AI 먼저 · 그대로 씀: 결론을 말하기 전에 선택지 두세 개와 �
   <section class="pn-slide" id="p34">
     <div class="pn-slide-head">
       <span class="pn-no">34</span>
+      <span class="pn-id">B3-1</span>
+      <h2 class="pn-slide-title">블록 3에서 하는 일</h2>
+      <span class="pn-time">블록 3 · 이 장 30초 · 누적 1분</span>
+    </div>
+    <div class="pn-item pn-joke pn-say">
+      <span class="lbl">📌 요점</span>
+      <ul>
+        <li>블록 3에서 하는 일은 세 가지입니다. 화면을 한 곳씩 고치고, 에이전트 실습을 한 번 하고, 공개 주소를 만듭니다. 사이에 하네스와 관련된 개념 네 가지를 설명합니다.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p35">
+    <div class="pn-slide-head">
+      <span class="pn-no">35</span>
       <span class="pn-id">M2-4</span>
       <h2 class="pn-slide-title">변경은 하나씩 요청합니다</h2>
-      <span class="pn-time">블록 3 · 이 장 5분 · 누적 5분 30초</span>
+      <span class="pn-time">블록 3 · 이 장 5분 · 누적 6분</span>
     </div>
     <div class="pn-item pn-joke pn-say">
       <span class="lbl">📌 요점</span>
@@ -882,12 +891,12 @@ AI 먼저 · 그대로 씀: 결론을 말하기 전에 선택지 두세 개와 �
     </div>
   </section>
 
-  <section class="pn-slide" id="p35">
+  <section class="pn-slide" id="p36">
     <div class="pn-slide-head">
-      <span class="pn-no">35</span>
+      <span class="pn-no">36</span>
       <span class="pn-id">M2-5</span>
       <h2 class="pn-slide-title">막히면 세 줄로 알립니다</h2>
-      <span class="pn-time">블록 3 · 이 장 2분 · 누적 7분 30초</span>
+      <span class="pn-time">블록 3 · 이 장 2분 · 누적 8분</span>
     </div>
     <div class="pn-item pn-joke pn-say">
       <span class="lbl">📌 요점</span>
@@ -912,12 +921,12 @@ AI 먼저 · 그대로 씀: 결론을 말하기 전에 선택지 두세 개와 �
     </div>
   </section>
 
-  <section class="pn-slide" id="p36">
+  <section class="pn-slide" id="p37">
     <div class="pn-slide-head">
-      <span class="pn-no">36</span>
+      <span class="pn-no">37</span>
       <span class="pn-id">M2-6</span>
       <h2 class="pn-slide-title">복사와 내려받기 버튼을 확인합니다</h2>
-      <span class="pn-time">블록 3 · 이 장 2분 30초 · 누적 10분</span>
+      <span class="pn-time">블록 3 · 이 장 2분 30초 · 누적 10분 30초</span>
     </div>
     <div class="pn-item pn-joke pn-say">
       <span class="lbl">📌 요점</span>
@@ -933,12 +942,12 @@ AI 먼저 · 그대로 씀: 결론을 말하기 전에 선택지 두세 개와 �
     </div>
   </section>
 
-  <section class="pn-slide" id="p37">
+  <section class="pn-slide" id="p38">
     <div class="pn-slide-head">
-      <span class="pn-no">37</span>
+      <span class="pn-no">38</span>
       <span class="pn-id">C-15</span>
       <h2 class="pn-slide-title">하네스 — 도구 · 규칙 · 권한 · 확인 절차의 설계</h2>
-      <span class="pn-time">블록 3 · 이 장 3분 · 누적 13분</span>
+      <span class="pn-time">블록 3 · 이 장 3분 · 누적 13분 30초</span>
     </div>
     <div class="pn-item pn-joke pn-say">
       <span class="lbl">🎙 전체 대본</span>
@@ -954,12 +963,12 @@ AI 먼저 · 그대로 씀: 결론을 말하기 전에 선택지 두세 개와 �
     <p class="pn-refs">출처 ID: S17 · S19 · S20</p>
   </section>
 
-  <section class="pn-slide" id="p38">
+  <section class="pn-slide" id="p39">
     <div class="pn-slide-head">
-      <span class="pn-no">38</span>
+      <span class="pn-no">39</span>
       <span class="pn-id">C-16</span>
       <h2 class="pn-slide-title">규칙 파일 — 작업을 시작할 때 읽는 지시 문서</h2>
-      <span class="pn-time">블록 3 · 이 장 2분 30초 · 누적 15분 30초</span>
+      <span class="pn-time">블록 3 · 이 장 2분 30초 · 누적 16분</span>
     </div>
     <div class="pn-item pn-joke pn-say">
       <span class="lbl">🎙 전체 대본</span>
@@ -979,12 +988,12 @@ AI 먼저 · 그대로 씀: 결론을 말하기 전에 선택지 두세 개와 �
     <p class="pn-refs">출처 ID: S28 · S29 · S30</p>
   </section>
 
-  <section class="pn-slide" id="p39">
+  <section class="pn-slide" id="p40">
     <div class="pn-slide-head">
-      <span class="pn-no">39</span>
+      <span class="pn-no">40</span>
       <span class="pn-id">C-17</span>
       <h2 class="pn-slide-title">승인 · 되돌리기 · 점검표</h2>
-      <span class="pn-time">블록 3 · 이 장 2분 · 누적 17분 30초</span>
+      <span class="pn-time">블록 3 · 이 장 2분 · 누적 18분</span>
     </div>
     <div class="pn-item pn-joke pn-say">
       <span class="lbl">🎙 전체 대본</span>
@@ -1000,12 +1009,12 @@ AI 먼저 · 그대로 씀: 결론을 말하기 전에 선택지 두세 개와 �
     <p class="pn-refs">출처 ID: S28 · S29 · S30</p>
   </section>
 
-  <section class="pn-slide" id="p40">
+  <section class="pn-slide" id="p41">
     <div class="pn-slide-head">
-      <span class="pn-no">40</span>
+      <span class="pn-no">41</span>
       <span class="pn-id">C-19</span>
       <h2 class="pn-slide-title">프롬프트 인젝션 — 문서 속 숨은 지시를 따르게 되는 문제</h2>
-      <span class="pn-time">블록 3 · 이 장 2분 · 누적 19분 30초</span>
+      <span class="pn-time">블록 3 · 이 장 2분 · 누적 20분</span>
     </div>
     <div class="pn-item pn-joke pn-say">
       <span class="lbl">🎙 전체 대본</span>
@@ -1021,12 +1030,12 @@ AI 먼저 · 그대로 씀: 결론을 말하기 전에 선택지 두세 개와 �
     <p class="pn-refs">출처 ID: S12 · S13</p>
   </section>
 
-  <section class="pn-slide" id="p41">
+  <section class="pn-slide" id="p42">
     <div class="pn-slide-head">
-      <span class="pn-no">41</span>
+      <span class="pn-no">42</span>
       <span class="pn-id">SLOT-B</span>
       <h2 class="pn-slide-title">에이전트 실습 시간 B</h2>
-      <span class="pn-time">블록 3 · 이 장 15분 · 누적 34분 30초</span>
+      <span class="pn-time">블록 3 · 이 장 15분 · 누적 35분</span>
     </div>
     <div class="pn-item pn-joke pn-say">
       <span class="lbl">📌 요점</span>
@@ -1042,12 +1051,12 @@ AI 먼저 · 그대로 씀: 결론을 말하기 전에 선택지 두세 개와 �
     </div>
   </section>
 
-  <section class="pn-slide" id="p42">
+  <section class="pn-slide" id="p43">
     <div class="pn-slide-head">
-      <span class="pn-no">42</span>
+      <span class="pn-no">43</span>
       <span class="pn-id">R-B</span>
       <h2 class="pn-slide-title">점검 페이지 폴더로 돌아옵니다</h2>
-      <span class="pn-time">블록 3 · 이 장 3분 · 누적 37분 30초</span>
+      <span class="pn-time">블록 3 · 이 장 3분 · 누적 38분</span>
     </div>
     <div class="pn-item pn-joke pn-say">
       <span class="lbl">📌 요점</span>
@@ -1059,12 +1068,12 @@ AI 먼저 · 그대로 씀: 결론을 말하기 전에 선택지 두세 개와 �
     </div>
   </section>
 
-  <section class="pn-slide" id="p43">
+  <section class="pn-slide" id="p44">
     <div class="pn-slide-head">
-      <span class="pn-no">43</span>
+      <span class="pn-no">44</span>
       <span class="pn-id">M3-1</span>
       <h2 class="pn-slide-title">폴더를 올려 공개 주소를 만듭니다</h2>
-      <span class="pn-time">블록 3 · 이 장 1분 30초 · 누적 39분</span>
+      <span class="pn-time">블록 3 · 이 장 1분 30초 · 누적 39분 30초</span>
     </div>
     <div class="pn-item pn-joke pn-say">
       <span class="lbl">📌 요점</span>
@@ -1077,12 +1086,12 @@ AI 먼저 · 그대로 씀: 결론을 말하기 전에 선택지 두세 개와 �
     <p class="pn-refs">출처 ID: S31</p>
   </section>
 
-  <section class="pn-slide" id="p44">
+  <section class="pn-slide" id="p45">
     <div class="pn-slide-head">
-      <span class="pn-no">44</span>
+      <span class="pn-no">45</span>
       <span class="pn-id">M3-2</span>
       <h2 class="pn-slide-title">올리기 전에 확인할 곳</h2>
-      <span class="pn-time">블록 3 · 이 장 1분 30초 · 누적 40분 30초</span>
+      <span class="pn-time">블록 3 · 이 장 1분 30초 · 누적 41분</span>
     </div>
     <div class="pn-item pn-joke pn-say">
       <span class="lbl">📌 요점</span>
@@ -1101,12 +1110,12 @@ AI 먼저 · 그대로 씀: 결론을 말하기 전에 선택지 두세 개와 �
     <p class="pn-refs">출처 ID: S31</p>
   </section>
 
-  <section class="pn-slide" id="p45">
+  <section class="pn-slide" id="p46">
     <div class="pn-slide-head">
-      <span class="pn-no">45</span>
+      <span class="pn-no">46</span>
       <span class="pn-id">M3-3</span>
       <h2 class="pn-slide-title">Netlify 로그인을 확인합니다</h2>
-      <span class="pn-time">블록 3 · 이 장 2분 · 누적 42분 30초</span>
+      <span class="pn-time">블록 3 · 이 장 2분 · 누적 43분</span>
     </div>
     <div class="pn-item pn-joke pn-say">
       <span class="lbl">📌 요점</span>
@@ -1123,12 +1132,12 @@ AI 먼저 · 그대로 씀: 결론을 말하기 전에 선택지 두세 개와 �
     <p class="pn-refs">출처 ID: S31</p>
   </section>
 
-  <section class="pn-slide" id="p46">
+  <section class="pn-slide" id="p47">
     <div class="pn-slide-head">
-      <span class="pn-no">46</span>
+      <span class="pn-no">47</span>
       <span class="pn-id">M3-4</span>
       <h2 class="pn-slide-title">점검 페이지 폴더를 끌어다 놓아 주소를 만듭니다</h2>
-      <span class="pn-time">블록 3 · 이 장 6분 · 누적 48분 30초</span>
+      <span class="pn-time">블록 3 · 이 장 6분 · 누적 49분</span>
     </div>
     <div class="pn-item pn-joke pn-say">
       <span class="lbl">📌 요점</span>
@@ -1149,12 +1158,12 @@ AI 먼저 · 그대로 씀: 결론을 말하기 전에 선택지 두세 개와 �
     <p class="pn-refs">출처 ID: S31</p>
   </section>
 
-  <section class="pn-slide" id="p47">
+  <section class="pn-slide" id="p48">
     <div class="pn-slide-head">
-      <span class="pn-no">47</span>
+      <span class="pn-no">48</span>
       <span class="pn-id">M3-5</span>
       <h2 class="pn-slide-title">다른 창에서 주소를 열어 봅니다</h2>
-      <span class="pn-time">블록 3 · 이 장 1분 · 누적 49분 30초</span>
+      <span class="pn-time">블록 3 · 이 장 1분 · 누적 50분</span>
     </div>
     <div class="pn-item pn-joke pn-say">
       <span class="lbl">📌 요점</span>
@@ -1167,9 +1176,9 @@ AI 먼저 · 그대로 씀: 결론을 말하기 전에 선택지 두세 개와 �
     <p class="pn-refs">출처 ID: S31</p>
   </section>
 
-  <section class="pn-slide" id="p48">
+  <section class="pn-slide" id="p49">
     <div class="pn-slide-head">
-      <span class="pn-no">48</span>
+      <span class="pn-no">49</span>
       <span class="pn-id">BR-3</span>
       <h2 class="pn-slide-title">쉬는 시간 10분</h2>
       <span class="pn-time">블록 3 끝 · 휴식 10분(시간표 밖)</span>
@@ -1187,10 +1196,10 @@ AI 먼저 · 그대로 씀: 결론을 말하기 전에 선택지 두세 개와 �
     </div>
   </section>
 
-  <div class="pn-block">블록 4 · 49~65쪽 · 행 합계 48분(블록 상한 50분)</div>
-  <section class="pn-slide" id="p49">
+  <div class="pn-block">블록 4 · 50~67쪽 · 행 합계 48분 30초(블록 상한 50분)</div>
+  <section class="pn-slide" id="p50">
     <div class="pn-slide-head">
-      <span class="pn-no">49</span>
+      <span class="pn-no">50</span>
       <span class="pn-id">B4-0</span>
       <h2 class="pn-slide-title">블록 4 — 서로 써 보기와 수정</h2>
       <span class="pn-time">블록 4 · 이 장 30초 · 누적 30초</span>
@@ -1203,12 +1212,27 @@ AI 먼저 · 그대로 씀: 결론을 말하기 전에 선택지 두세 개와 �
     </div>
   </section>
 
-  <section class="pn-slide" id="p50">
+  <section class="pn-slide" id="p51">
     <div class="pn-slide-head">
-      <span class="pn-no">50</span>
+      <span class="pn-no">51</span>
+      <span class="pn-id">B4-1</span>
+      <h2 class="pn-slide-title">블록 4에서 하는 일</h2>
+      <span class="pn-time">블록 4 · 이 장 30초 · 누적 1분</span>
+    </div>
+    <div class="pn-item pn-joke pn-say">
+      <span class="lbl">📌 요점</span>
+      <ul>
+        <li>블록 4에서 하는 일은 세 가지입니다. 서로의 점검 페이지를 써 보고, 한 곳을 고쳐 다시 올리고, 강사 시연을 본 뒤 마무리합니다. 앞부분에 AI와 생각에 관한 개념을 설명합니다.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p52">
+    <div class="pn-slide-head">
+      <span class="pn-no">52</span>
       <span class="pn-id">C-20</span>
       <h2 class="pn-slide-title">답을 바로 받을 때와 힌트를 받을 때</h2>
-      <span class="pn-time">블록 4 · 이 장 1분 30초 · 누적 2분</span>
+      <span class="pn-time">블록 4 · 이 장 1분 30초 · 누적 2분 30초</span>
     </div>
     <div class="pn-item pn-joke pn-say">
       <span class="lbl">🎙 전체 대본</span>
@@ -1229,12 +1253,12 @@ AI 먼저 · 그대로 씀: 결론을 말하기 전에 선택지 두세 개와 �
     <p class="pn-refs">출처 ID: S33</p>
   </section>
 
-  <section class="pn-slide" id="p51">
+  <section class="pn-slide" id="p53">
     <div class="pn-slide-head">
-      <span class="pn-no">51</span>
+      <span class="pn-no">53</span>
       <span class="pn-id">C-21</span>
       <h2 class="pn-slide-title">생각의 외주화 — 생각하는 일을 AI에게 맡기는 것</h2>
-      <span class="pn-time">블록 4 · 이 장 3분 · 누적 5분</span>
+      <span class="pn-time">블록 4 · 이 장 3분 · 누적 5분 30초</span>
     </div>
     <div class="pn-item pn-joke pn-say">
       <span class="lbl">🎙 전체 대본</span>
@@ -1254,12 +1278,12 @@ AI 먼저 · 그대로 씀: 결론을 말하기 전에 선택지 두세 개와 �
     <p class="pn-refs">출처 ID: S21</p>
   </section>
 
-  <section class="pn-slide" id="p52">
+  <section class="pn-slide" id="p54">
     <div class="pn-slide-head">
-      <span class="pn-no">52</span>
+      <span class="pn-no">54</span>
       <span class="pn-id">C-22</span>
       <h2 class="pn-slide-title">AI를 믿는 정도와 비판적으로 생각하는 정도</h2>
-      <span class="pn-time">블록 4 · 이 장 2분 · 누적 7분</span>
+      <span class="pn-time">블록 4 · 이 장 2분 · 누적 7분 30초</span>
     </div>
     <div class="pn-item pn-joke pn-say">
       <span class="lbl">🎙 전체 대본</span>
@@ -1270,12 +1294,12 @@ AI 먼저 · 그대로 씀: 결론을 말하기 전에 선택지 두세 개와 �
     <p class="pn-refs">출처 ID: S22</p>
   </section>
 
-  <section class="pn-slide" id="p53">
+  <section class="pn-slide" id="p55">
     <div class="pn-slide-head">
-      <span class="pn-no">53</span>
+      <span class="pn-no">55</span>
       <span class="pn-id">C-23</span>
       <h2 class="pn-slide-title">자동화 편향 — 기계의 답을 확인 없이 받아들이는 경향</h2>
-      <span class="pn-time">블록 4 · 이 장 1분 30초 · 누적 8분 30초</span>
+      <span class="pn-time">블록 4 · 이 장 1분 30초 · 누적 9분</span>
     </div>
     <div class="pn-item pn-joke pn-say">
       <span class="lbl">🎙 전체 대본</span>
@@ -1287,12 +1311,12 @@ AI 먼저 · 그대로 씀: 결론을 말하기 전에 선택지 두세 개와 �
     <p class="pn-refs">출처 ID: S14</p>
   </section>
 
-  <section class="pn-slide" id="p54">
+  <section class="pn-slide" id="p56">
     <div class="pn-slide-head">
-      <span class="pn-no">54</span>
+      <span class="pn-no">56</span>
       <span class="pn-id">C-24</span>
       <h2 class="pn-slide-title">체감과 실측 — 빨라졌다는 느낌과 잰 시간의 차이</h2>
-      <span class="pn-time">블록 4 · 이 장 2분 · 누적 10분 30초</span>
+      <span class="pn-time">블록 4 · 이 장 2분 · 누적 11분</span>
     </div>
     <div class="pn-item pn-joke pn-say">
       <span class="lbl">🎙 전체 대본</span>
@@ -1312,12 +1336,12 @@ AI 먼저 · 그대로 씀: 결론을 말하기 전에 선택지 두세 개와 �
     <p class="pn-refs">출처 ID: S23 · S24</p>
   </section>
 
-  <section class="pn-slide" id="p55">
+  <section class="pn-slide" id="p57">
     <div class="pn-slide-head">
-      <span class="pn-no">55</span>
+      <span class="pn-no">57</span>
       <span class="pn-id">T-01</span>
       <h2 class="pn-slide-title">맡길 일과 직접 할 일 나누기</h2>
-      <span class="pn-time">블록 4 · 이 장 4분 · 누적 14분 30초</span>
+      <span class="pn-time">블록 4 · 이 장 4분 · 누적 15분</span>
     </div>
     <div class="pn-item pn-joke pn-say">
       <span class="lbl">📌 요점</span>
@@ -1333,12 +1357,12 @@ AI 먼저 · 그대로 씀: 결론을 말하기 전에 선택지 두세 개와 �
     </div>
   </section>
 
-  <section class="pn-slide" id="p56">
+  <section class="pn-slide" id="p58">
     <div class="pn-slide-head">
-      <span class="pn-no">56</span>
+      <span class="pn-no">58</span>
       <span class="pn-id">M4-1</span>
       <h2 class="pn-slide-title">서로의 점검 페이지를 써 봅니다</h2>
-      <span class="pn-time">블록 4 · 이 장 7분 · 누적 21분 30초</span>
+      <span class="pn-time">블록 4 · 이 장 7분 · 누적 22분</span>
     </div>
     <div class="pn-item pn-joke pn-say">
       <span class="lbl">📌 요점</span>
@@ -1358,12 +1382,12 @@ AI 먼저 · 그대로 씀: 결론을 말하기 전에 선택지 두세 개와 �
     </div>
   </section>
 
-  <section class="pn-slide" id="p57">
+  <section class="pn-slide" id="p59">
     <div class="pn-slide-head">
-      <span class="pn-no">57</span>
+      <span class="pn-no">59</span>
       <span class="pn-id">M4-2</span>
       <h2 class="pn-slide-title">써 본 결과를 판정표에 적습니다</h2>
-      <span class="pn-time">블록 4 · 이 장 2분 30초 · 누적 24분</span>
+      <span class="pn-time">블록 4 · 이 장 2분 30초 · 누적 24분 30초</span>
     </div>
     <div class="pn-item pn-joke pn-say">
       <span class="lbl">📌 요점</span>
@@ -1379,12 +1403,12 @@ AI 먼저 · 그대로 씀: 결론을 말하기 전에 선택지 두세 개와 �
     </div>
   </section>
 
-  <section class="pn-slide" id="p58">
+  <section class="pn-slide" id="p60">
     <div class="pn-slide-head">
-      <span class="pn-no">58</span>
+      <span class="pn-no">60</span>
       <span class="pn-id">M4-3</span>
       <h2 class="pn-slide-title">판정표에서 고칠 것 하나를 고릅니다</h2>
-      <span class="pn-time">블록 4 · 이 장 2분 · 누적 26분</span>
+      <span class="pn-time">블록 4 · 이 장 2분 · 누적 26분 30초</span>
     </div>
     <div class="pn-item pn-joke pn-say">
       <span class="lbl">📌 요점</span>
@@ -1400,12 +1424,12 @@ AI 먼저 · 그대로 씀: 결론을 말하기 전에 선택지 두세 개와 �
     </div>
   </section>
 
-  <section class="pn-slide" id="p59">
+  <section class="pn-slide" id="p61">
     <div class="pn-slide-head">
-      <span class="pn-no">59</span>
+      <span class="pn-no">61</span>
       <span class="pn-id">M4-4</span>
       <h2 class="pn-slide-title">판정표에서 고른 곳을 고치고 남은 문항과 결과 글을 채웁니다</h2>
-      <span class="pn-time">블록 4 · 이 장 9분 · 누적 35분</span>
+      <span class="pn-time">블록 4 · 이 장 9분 · 누적 35분 30초</span>
     </div>
     <div class="pn-item pn-joke pn-say">
       <span class="lbl">📌 요점</span>
@@ -1430,12 +1454,12 @@ AI 먼저 · 그대로 씀: 결론을 말하기 전에 선택지 두세 개와 �
     </div>
   </section>
 
-  <section class="pn-slide" id="p60">
+  <section class="pn-slide" id="p62">
     <div class="pn-slide-head">
-      <span class="pn-no">60</span>
+      <span class="pn-no">62</span>
       <span class="pn-id">M4-5</span>
       <h2 class="pn-slide-title">다시 올리고 주소를 확인합니다</h2>
-      <span class="pn-time">블록 4 · 이 장 3분 · 누적 38분</span>
+      <span class="pn-time">블록 4 · 이 장 3분 · 누적 38분 30초</span>
     </div>
     <div class="pn-item pn-joke pn-say">
       <span class="lbl">📌 요점</span>
@@ -1457,12 +1481,12 @@ AI 먼저 · 그대로 씀: 결론을 말하기 전에 선택지 두세 개와 �
     <p class="pn-refs">출처 ID: S31</p>
   </section>
 
-  <section class="pn-slide" id="p61">
+  <section class="pn-slide" id="p63">
     <div class="pn-slide-head">
-      <span class="pn-no">61</span>
+      <span class="pn-no">63</span>
       <span class="pn-id">D-01</span>
       <h2 class="pn-slide-title">강사 시연 — ChatGPT Sites로 같은 페이지 만들기</h2>
-      <span class="pn-time">블록 4 · 이 장 3분 · 누적 41분</span>
+      <span class="pn-time">블록 4 · 이 장 3분 · 누적 41분 30초</span>
     </div>
     <div class="pn-item pn-joke pn-say">
       <span class="lbl">📌 요점</span>
@@ -1484,12 +1508,12 @@ AI 먼저 · 그대로 씀: 결론을 말하기 전에 선택지 두세 개와 �
     <p class="pn-refs">출처 ID: S32</p>
   </section>
 
-  <section class="pn-slide" id="p62">
+  <section class="pn-slide" id="p64">
     <div class="pn-slide-head">
-      <span class="pn-no">62</span>
+      <span class="pn-no">64</span>
       <span class="pn-id">D-02</span>
       <h2 class="pn-slide-title">Netlify와 ChatGPT Sites 비교</h2>
-      <span class="pn-time">블록 4 · 이 장 3분 · 누적 44분</span>
+      <span class="pn-time">블록 4 · 이 장 3분 · 누적 44분 30초</span>
     </div>
     <div class="pn-item pn-joke pn-say">
       <span class="lbl">📌 요점</span>
@@ -1507,12 +1531,12 @@ AI 먼저 · 그대로 씀: 결론을 말하기 전에 선택지 두세 개와 �
     <p class="pn-refs">출처 ID: S31 · S32</p>
   </section>
 
-  <section class="pn-slide" id="p63">
+  <section class="pn-slide" id="p65">
     <div class="pn-slide-head">
-      <span class="pn-no">63</span>
+      <span class="pn-no">65</span>
       <span class="pn-id">F-02</span>
       <h2 class="pn-slide-title">오늘 쓴 요청문 모음</h2>
-      <span class="pn-time">블록 4 · 이 장 1분 30초 · 누적 45분 30초</span>
+      <span class="pn-time">블록 4 · 이 장 1분 30초 · 누적 46분</span>
     </div>
     <div class="pn-item pn-joke pn-say">
       <span class="lbl">📌 요점</span>
@@ -1524,12 +1548,12 @@ AI 먼저 · 그대로 씀: 결론을 말하기 전에 선택지 두세 개와 �
     </div>
   </section>
 
-  <section class="pn-slide" id="p64">
+  <section class="pn-slide" id="p66">
     <div class="pn-slide-head">
-      <span class="pn-no">64</span>
+      <span class="pn-no">66</span>
       <span class="pn-id">F-03</span>
       <h2 class="pn-slide-title">혼자 할 때 쓰는 점검표</h2>
-      <span class="pn-time">블록 4 · 이 장 1분 30초 · 누적 47분</span>
+      <span class="pn-time">블록 4 · 이 장 1분 30초 · 누적 47분 30초</span>
     </div>
     <div class="pn-item pn-joke pn-say">
       <span class="lbl">📌 요점</span>
@@ -1545,12 +1569,12 @@ AI 먼저 · 그대로 씀: 결론을 말하기 전에 선택지 두세 개와 �
     </div>
   </section>
 
-  <section class="pn-slide" id="p65">
+  <section class="pn-slide" id="p67">
     <div class="pn-slide-head">
-      <span class="pn-no">65</span>
+      <span class="pn-no">67</span>
       <span class="pn-id">F-04</span>
       <h2 class="pn-slide-title">자료와 링크</h2>
-      <span class="pn-time">블록 4 · 이 장 1분 · 누적 48분</span>
+      <span class="pn-time">블록 4 · 이 장 1분 · 누적 48분 30초</span>
     </div>
     <div class="pn-item pn-joke pn-say">
       <span class="lbl">📌 요점</span>
@@ -1563,10 +1587,10 @@ AI 먼저 · 그대로 씀: 결론을 말하기 전에 선택지 두세 개와 �
     </div>
   </section>
 
-  <div class="pn-block">허브 구간 · 66~82쪽 · 슬롯 A·B에서 강사가 고른 실습 1개를 진행합니다(허브 1분 + 실습 14분 = 슬롯 15분). 행 합계 57분는 실습 4개를 모두 더한 값입니다.</div>
-  <section class="pn-slide" id="p66">
+  <div class="pn-block">허브 구간 · 68~84쪽 · 슬롯 A·B에서 강사가 고른 실습 1개를 진행합니다(허브 1분 + 실습 14분 = 슬롯 15분). 행 합계 57분는 실습 4개를 모두 더한 값입니다.</div>
+  <section class="pn-slide" id="p68">
     <div class="pn-slide-head">
-      <span class="pn-no">66</span>
+      <span class="pn-no">68</span>
       <span class="pn-id">HUB</span>
       <h2 class="pn-slide-title">에이전트 실습 고르기</h2>
       <span class="pn-time">허브 구간 · 이 장 1분</span>
@@ -1588,9 +1612,9 @@ AI 먼저 · 그대로 씀: 결론을 말하기 전에 선택지 두세 개와 �
     </div>
   </section>
 
-  <section class="pn-slide" id="p67">
+  <section class="pn-slide" id="p69">
     <div class="pn-slide-head">
-      <span class="pn-no">67</span>
+      <span class="pn-no">69</span>
       <span class="pn-id">P1-1</span>
       <h2 class="pn-slide-title">흩어진 메모 4개를 할 일 표 하나로 모읍니다</h2>
       <span class="pn-time">허브 구간 · 이 장 1분 30초</span>
@@ -1614,9 +1638,9 @@ AI 먼저 · 그대로 씀: 결론을 말하기 전에 선택지 두세 개와 �
     </div>
   </section>
 
-  <section class="pn-slide" id="p68">
+  <section class="pn-slide" id="p70">
     <div class="pn-slide-head">
-      <span class="pn-no">68</span>
+      <span class="pn-no">70</span>
       <span class="pn-id">P1-2</span>
       <h2 class="pn-slide-title">요청문을 보내고 에이전트의 계획을 읽습니다</h2>
       <span class="pn-time">허브 구간 · 이 장 8분</span>
@@ -1644,9 +1668,9 @@ AI 먼저 · 그대로 씀: 결론을 말하기 전에 선택지 두세 개와 �
     </div>
   </section>
 
-  <section class="pn-slide" id="p69">
+  <section class="pn-slide" id="p71">
     <div class="pn-slide-head">
-      <span class="pn-no">69</span>
+      <span class="pn-no">71</span>
       <span class="pn-id">P1-3</span>
       <h2 class="pn-slide-title">기한마다 근거 줄을 열어 원문과 대조합니다</h2>
       <span class="pn-time">허브 구간 · 이 장 3분</span>
@@ -1678,9 +1702,9 @@ AI 먼저 · 그대로 씀: 결론을 말하기 전에 선택지 두세 개와 �
     </div>
   </section>
 
-  <section class="pn-slide" id="p70">
+  <section class="pn-slide" id="p72">
     <div class="pn-slide-head">
-      <span class="pn-no">70</span>
+      <span class="pn-no">72</span>
       <span class="pn-id">P1-4</span>
       <h2 class="pn-slide-title">확인에서 찾은 행을 고쳐 달라고 요청합니다</h2>
       <span class="pn-time">허브 구간 · 이 장 1분 30초</span>
@@ -1713,9 +1737,9 @@ AI 먼저 · 그대로 씀: 결론을 말하기 전에 선택지 두세 개와 �
     </div>
   </section>
 
-  <section class="pn-slide" id="p71">
+  <section class="pn-slide" id="p73">
     <div class="pn-slide-head">
-      <span class="pn-no">71</span>
+      <span class="pn-no">73</span>
       <span class="pn-id">P2-1</span>
       <h2 class="pn-slide-title">흩어진 파일 40개를 규칙대로 폴더에 나눕니다</h2>
       <span class="pn-time">허브 구간 · 이 장 1분 30초</span>
@@ -1738,9 +1762,9 @@ AI 먼저 · 그대로 씀: 결론을 말하기 전에 선택지 두세 개와 �
     </div>
   </section>
 
-  <section class="pn-slide" id="p72">
+  <section class="pn-slide" id="p74">
     <div class="pn-slide-head">
-      <span class="pn-no">72</span>
+      <span class="pn-no">74</span>
       <span class="pn-id">P2-2</span>
       <h2 class="pn-slide-title">AGENTS.md를 확인하고 정리를 요청합니다</h2>
       <span class="pn-time">허브 구간 · 이 장 8분</span>
@@ -1768,9 +1792,9 @@ AI 먼저 · 그대로 씀: 결론을 말하기 전에 선택지 두세 개와 �
     </div>
   </section>
 
-  <section class="pn-slide" id="p73">
+  <section class="pn-slide" id="p75">
     <div class="pn-slide-head">
-      <span class="pn-no">73</span>
+      <span class="pn-no">75</span>
       <span class="pn-id">P2-3</span>
       <h2 class="pn-slide-title">이동기록과 폴더를 대조합니다</h2>
       <span class="pn-time">허브 구간 · 이 장 3분</span>
@@ -1801,9 +1825,9 @@ AI 먼저 · 그대로 씀: 결론을 말하기 전에 선택지 두세 개와 �
     </div>
   </section>
 
-  <section class="pn-slide" id="p74">
+  <section class="pn-slide" id="p76">
     <div class="pn-slide-head">
-      <span class="pn-no">74</span>
+      <span class="pn-no">76</span>
       <span class="pn-id">P2-4</span>
       <h2 class="pn-slide-title">확인에서 찾은 파일을 제자리로 옮기게 요청합니다</h2>
       <span class="pn-time">허브 구간 · 이 장 1분 30초</span>
@@ -1835,9 +1859,9 @@ AI 먼저 · 그대로 씀: 결론을 말하기 전에 선택지 두세 개와 �
     </div>
   </section>
 
-  <section class="pn-slide" id="p75">
+  <section class="pn-slide" id="p77">
     <div class="pn-slide-head">
-      <span class="pn-no">75</span>
+      <span class="pn-no">77</span>
       <span class="pn-id">P3-1</span>
       <h2 class="pn-slide-title">문의 12건에 FAQ를 근거로 답장 초안을 씁니다</h2>
       <span class="pn-time">허브 구간 · 이 장 1분 30초</span>
@@ -1859,9 +1883,9 @@ AI 먼저 · 그대로 씀: 결론을 말하기 전에 선택지 두세 개와 �
     </div>
   </section>
 
-  <section class="pn-slide" id="p76">
+  <section class="pn-slide" id="p78">
     <div class="pn-slide-head">
-      <span class="pn-no">76</span>
+      <span class="pn-no">78</span>
       <span class="pn-id">P3-2</span>
       <h2 class="pn-slide-title">답장마다 FAQ 항목 번호를 적게 요청합니다</h2>
       <span class="pn-time">허브 구간 · 이 장 8분</span>
@@ -1889,9 +1913,9 @@ AI 먼저 · 그대로 씀: 결론을 말하기 전에 선택지 두세 개와 �
     </div>
   </section>
 
-  <section class="pn-slide" id="p77">
+  <section class="pn-slide" id="p79">
     <div class="pn-slide-head">
-      <span class="pn-no">77</span>
+      <span class="pn-no">79</span>
       <span class="pn-id">P3-3</span>
       <h2 class="pn-slide-title">답장마다 FAQ 근거를 확인합니다</h2>
       <span class="pn-time">허브 구간 · 이 장 3분</span>
@@ -1923,9 +1947,9 @@ AI 먼저 · 그대로 씀: 결론을 말하기 전에 선택지 두세 개와 �
     </div>
   </section>
 
-  <section class="pn-slide" id="p78">
+  <section class="pn-slide" id="p80">
     <div class="pn-slide-head">
-      <span class="pn-no">78</span>
+      <span class="pn-no">80</span>
       <span class="pn-id">P3-4</span>
       <h2 class="pn-slide-title">확인에서 찾은 답장을 고쳐 달라고 요청합니다</h2>
       <span class="pn-time">허브 구간 · 이 장 1분 30초</span>
@@ -1958,9 +1982,9 @@ AI 먼저 · 그대로 씀: 결론을 말하기 전에 선택지 두세 개와 �
     </div>
   </section>
 
-  <section class="pn-slide" id="p79">
+  <section class="pn-slide" id="p81">
     <div class="pn-slide-head">
-      <span class="pn-no">79</span>
+      <span class="pn-no">81</span>
       <span class="pn-id">P4-1</span>
       <h2 class="pn-slide-title">월~금 메모와 매출 표로 주간 보고서를 만듭니다</h2>
       <span class="pn-time">허브 구간 · 이 장 1분 30초</span>
@@ -1983,9 +2007,9 @@ AI 먼저 · 그대로 씀: 결론을 말하기 전에 선택지 두세 개와 �
     </div>
   </section>
 
-  <section class="pn-slide" id="p80">
+  <section class="pn-slide" id="p82">
     <div class="pn-slide-head">
-      <span class="pn-no">80</span>
+      <span class="pn-no">82</span>
       <span class="pn-id">P4-2</span>
       <h2 class="pn-slide-title">보고서 요청을 보내고 계획을 읽습니다</h2>
       <span class="pn-time">허브 구간 · 이 장 8분</span>
@@ -2013,9 +2037,9 @@ AI 먼저 · 그대로 씀: 결론을 말하기 전에 선택지 두세 개와 �
     </div>
   </section>
 
-  <section class="pn-slide" id="p81">
+  <section class="pn-slide" id="p83">
     <div class="pn-slide-head">
-      <span class="pn-no">81</span>
+      <span class="pn-no">83</span>
       <span class="pn-id">P4-3</span>
       <h2 class="pn-slide-title">보고서의 합계를 표에서 다시 계산합니다</h2>
       <span class="pn-time">허브 구간 · 이 장 3분</span>
@@ -2046,9 +2070,9 @@ AI 먼저 · 그대로 씀: 결론을 말하기 전에 선택지 두세 개와 �
     </div>
   </section>
 
-  <section class="pn-slide" id="p82">
+  <section class="pn-slide" id="p84">
     <div class="pn-slide-head">
-      <span class="pn-no">82</span>
+      <span class="pn-no">84</span>
       <span class="pn-id">P4-4</span>
       <h2 class="pn-slide-title">확인에서 찾은 숫자를 고쳐 달라고 요청합니다</h2>
       <span class="pn-time">허브 구간 · 이 장 1분 30초</span>

@@ -14,7 +14,7 @@ seq = {'BLOCK2': ids[cut[0]:cut[1]], 'BLOCK3': ids[cut[1]:cut[2]], 'BLOCK4+HUB':
 old = json.loads((S1 / 'deck.contract.json').read_text(encoding='utf-8'))
 c = {
     'week': '1주차', 'frozen': False,
-    '_readme': 'FRAME 개편(2026-10-01) 82장 덱 구조 계약. 블록 간지 3장이 part-divider(--parts 3). 블록 1은 표지부터 첫 간지 전까지(intro), PART 5 허브 구간은 블록 4 뒤에 붙는다. 규약 정본은 sessions/README.md · 생성 plans/FRAME-개편/gen/build_contract.py.',
+    '_readme': 'FRAME 개편(2026-10-01) 84장 덱 구조 계약. 블록 간지 3장이 part-divider(--parts 3). 블록 1은 표지부터 첫 간지 전까지(intro), PART 5 허브 구간은 블록 4 뒤에 붙는다. 규약 정본은 sessions/README.md · 생성 plans/FRAME-개편/gen/build_contract.py.',
     'decks': {'강의덱': {
         'slides': len(ids), 'dividers': len(DIV), 'intro': intro, 'sequences': seq,
         'must_keep': {

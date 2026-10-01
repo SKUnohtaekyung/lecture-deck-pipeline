@@ -1,10 +1,8 @@
-<!-- ============ B3-0 · 어두운 간지 + 여정 지도(지금 = 제작 → 공개 사이 블록 3) ============ -->
-<section class="slide part-divider f-divider dark" data-slide="B3-0">
-  <header class="s-head">
-    <svg class="s-logo" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 18 V8 H18 M30 8 H40 V18 M40 30 V40 H30 M18 40 H8 V30" fill="none" style="stroke:var(--blue)" stroke-width="5"/><rect x="19" y="19" width="10" height="10" style="fill:var(--mint)"/></svg><span class="s-brand">FRAME</span>
-    <span class="s-line"></span><div class="s-team">블록 3</div>
-  </header>
-  <p class="kick">블록 3 / 4</p>
-  <h2 class="s-title"><span class="sr-only">블록 3 — </span>화면 수정과 공개 주소</h2>
+<!-- ============ B3-0 · kit 표준 파트 전환(slide part-divider · 헤더 없음) — 큐브 자리에 여정 지도(.journey) 유지.
+     번호는 「블록 n / 4」 고정: 셸 JS가 .pd-eyebrow · .pd-dots를 「PART n / 3」으로 덮으므로 그 두 클래스는 쓰지 않고 같은 모양을 인라인으로 준다 ============ -->
+<section class="slide part-divider" data-slide="B3-0">
+  <div aria-hidden="true" style="position:absolute;top:132px;left:50%;transform:translateX(-50%);z-index:1;display:flex;align-items:center;gap:14px;margin:0"><span class="pd-dot"></span><span class="pd-dot"></span><span class="pd-dot is-active"></span><span class="pd-dot"></span></div>
+  <p style="position:absolute;top:168px;left:50%;transform:translateX(-50%);z-index:1;margin:0;font-size:18px;font-weight:700;letter-spacing:.08em;color:var(--blue)">블록 3 / 4</p>
+  <h2 class="pd-title" style="top:204px"><span class="sr-only">블록 3 — </span>화면 수정과 공개 주소</h2>
   <div class="journey" data-now="2" data-tag="지금 · 블록 3"><span>기획</span><span>제작</span><span>공개</span><span>개선</span></div>
 </section>

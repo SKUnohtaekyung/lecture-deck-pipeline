@@ -85,33 +85,36 @@
 - 셸 v2 완료(`tmp/frame/E1/src/40-v2.css` · 요약 지침 `tmp/frame/E/v2_요약.md` 76줄). v2 재작성 1차 wave: b1 허브·실습1·2 · b2 실습3·4 · b3 · b4 메인 과제.
 - 2026-10-01 팔레트 축소(사용자: 보라·노랑 제거): frame 테마 --coral 노랑→주황(#FF8A5C · deep #B8431F · 대비 5.1) · 셸 틴트 lav/sand 폐기 별칭(→sky/mist) · --t-mist 신설 · hub/pcards 순환 교체 · v2_요약/공통지침 허용색 갱신. 백업 tmp/frame/backup/palette/. wave1 끝나면 슬라이드의 t-lav/t-sand 치환.
 
-## ⏸ 중단 지점 — 2026-10-01 05:23 (사용자 지시로 전 작업 중단 · 워커 4명 · 감시 2개 정지)
+## 2026-10-01 낮 — 재개(다른 PC)
 
-**v2 재작성 현황 (82장 중 v2 완료 35 · 거의 완료 9 · 미착수 38)**
+- `restore.py` 복사 128 · 슬라이드 82장 복원. 이 PC에는 Python `playwright`가 없어 1.62.0 설치(이미 있던 chromium-1234와 맞는 판). 8810 서버 · `live_assemble.py --watch` 기동(완성 82/82 · assemble 0).
+- 메인 점검 도구 추가: `tmp/frame/E/audit_live.py`(live 덱 전체 감사 요약 → `audit_live.json`) · `tmp/frame/E/sheet.py`(스크린샷 모아 보기).
+- **b1 9장 ✅** 스크린샷 9장 육안 + 전체 감사(결함형 6종 0 · 폰트 하한 0). 중단 전 워커의 `audit.json` · PNG는 `tmp/`에만 있어 이 PC에 없다 → 다시 찍어 확인. 실습 2(P2-1~4)의 하늘 면을 실습 기본 살구로 통일(b2 색 정리와 같은 기준).
+- **노트 게이트 해소**: `tmp/frame/E9/build_notes.py` — 표지는 번호 없는 머리 블록(`pn-pre` · 「표지」)으로 낸다 → `verify_notes` MISMATCH 0 · OK 81/81 · 판정 81 · 미판정 0 · exit 0.
+- **v2 재작성 82/82 ✅** — b5~b10 워커 6명(frame-builder · sonnet · xhigh · 묶음당 7~9장 · 호출 62~87 · T9 경고 0). 묶음마다 메인이 모아 찍은 시트(`tmp/frame/E/shots/_sheet_b<N>.png`)로 육안 확인 후 수락.
+  - 전체 덱 감사(`audit_live.py` · 1440×900 · 82장): 결함형 6종(below · off · lap · wb · ovf · slots) 0 · 폰트 하한 0 · `t-lav`/`t-sand` 잔존 0 · `build_parts --partial` 완성 82/82 · assemble 0.
+  - **남은 신호(미해소 · 다음 세션에서 판정)**: deadZones 3(COVER 바닥 · M1-5 · M2-3) · tracking 16(재개 직후 4 → 워커 작업 뒤 늘었다, 장 미확인) · hollowBadge 8 · stretchX 2 · stretchY 2 · lowFill 3 · ragged 1(C-08 전/후 터미널 높이 차 — 의도) · sparse 29(참고치).
+  - 육안으로 적어 둔 것: M4-4 타이머가 바닥 줄에 붙음 · C-08 동그라미 친 확인 줄이 터미널 오른쪽 끝에 붙음(잘림 확대 확인) · X-01 아래 여백 · O-03 앱 창 오른쪽 칸 빔 · M2-4 · M2-5 완성 예시가 단계 줄과 약 10px 겹침(전 세션 기록).
+  - 워커 판단 중 메인이 수락한 것: C-15 왼쪽 면(인라인 `left:0`) · F-02 결과 모형 SVG 7종 제거 · M3-5 타이머 1분(결정표 값) · C-23 숫자 올라감 연출 제거. 메인 과제 장의 하늘 면(M3-2 · M3-4 · M4-1)은 유지.
+  - 미확인: 위젯 조작 일부(b10 toggle · step · pick · C-13 복사) · 인쇄/PDF · `no-anim` 렌더.
 
-| 묶음 | ID | 상태 | 남은 일 |
-|---|---|---|---|
-| b1 허브·실습1·2 | HUB · P1-1~P1-4 · P2-1~P2-4 (9) | ⚠ 보고 전 중단. 9장 모두 05:11~05:22 수정 · `tmp/frame/E/v2/b1/`에 장별 PNG · audit.json · 조작 스크린샷(open_*) 있음 → 거의 완료로 보임 | 메인이 9장 스크린샷 확인 + audit 수치 확인. 결함 있으면 해당 장만 새 워커 |
-| b2 실습3·4 | P3-1~P3-4 · P4-1~P4-4 (8) | ✅ 보고 완료(호출 64 · FAIL 0 · 결함 0). 메인이 색 정리: lav/sand/sky 제거 → 실습 기본 살구(P4-1 매출 표 카드만 하늘) | — |
-| b3 메인 과제 블록1·2앞 | M1-1 · M1-2 · M1-3 · B2-0 · M1-4 · M1-5 · M1-6 · SLOT-A · R-A (9) | ✅ 보고 완료(호출 65 · 결함 0). B2-0 data-now=1(기획) 판단 수락 | deadZones M1-5 아래 154px(결함형 밖 · 전수 썸네일 때 확인) |
-| b4 메인 과제 블록2·3 | M2-1 · M2-2 · M2-3 · B3-0 · M2-4 · M2-5 · M2-6 · SLOT-B · R-B (9) | ✅ 보고 완료(호출 76). 메인이 M2-2 요청문 터미널 수정(`.term.xdense` 15px · 행간 1.4 · `--lc:350px` · 넘침 0 실측) · M2-5 · SLOT-B 카드 한 색 | M2-4 · M2-5 완성 예시(위로 열림)가 단계 줄과 약 10px 겹침 — 허용 판단, 전수 확인 때 재검 |
-| b5 메인 과제 블록3·4 | M3-1~M3-5 · B4-0 · M4-1 · M4-2 (8) | ✖ 착수 직후 중단 — 슬라이드 수정 없음(v1 그대로) | 새 워커로 처음부터 |
-| b6 개선·마무리·표지 | M4-3 · M4-4 · M4-5 · F-02 · F-03 · F-04 · COVER (7) | ✖ 착수 직후 중단 — 수정 없음 | 새 워커로 처음부터 |
-| b7 오프닝·휴식 | O-01(s02) · M1-0(s03) · O-02 · O-03 · O-04 · BR-1 · BR-2 · BR-3 (8) | ✖ 착수 직후 중단 — 수정 없음 | 새 워커로 처음부터 |
-| b8 개념1 | C-01 · C-04 · C-05 · X-01 · C-06 · C-07 · C-08 (7) | 미착수 | |
-| b9 개념2 | C-14 · C-10 · C-11 · C-12 · C-13 · C-15 · C-16 · C-17 (8) | 미착수 | |
-| b10 개념3 | C-19 · C-20 · C-21 · C-22 · C-23 · C-24 · T-01 · D-01 · D-02 (9) | 미착수 | |
+## ▶ 다음 할 일 — Phase E 마무리(새 세션에서 시작)
 
-**이번 세션 메인이 한 것(중단 직전)**
-- 팔레트 축소(사용자 지시 「보라·노랑 빼고 색 적게」): `kit/themes/frame/tokens.css` --coral 노랑→주황 · 셸 `10-base.css` `--t-mist` 신설 · `t-lav`/`t-sand`는 폐기 별칭 · `30-layouts.css` 허브 카드 살구 한 색 · `40-v2.css` pcards 색 순환 제거 · `20-components.css` `.term.xdense` 추가 → `build_shell.py` 재빌드. 슬라이드에 lav/sand 잔존 0. 백업: `tmp/frame/backup/palette/`(CSS) · `tmp/frame/E/v2/palette_bak/`(슬라이드).
-- 워커 지침(`v2_요약.md` 77줄 · `공통지침.md`)에 허용 색 · 장당 면 색 2개 · 카드 한 색 반영. 메모리 `deck-palette-few-colors` 추가.
-- 워커 프롬프트 템플릿: `tmp/frame/E/v2/_워커프롬프트_템플릿.md`.
-- T9: 경고 6명은 모두 교훈 이전 긴 워커. 새 규칙 워커(b2~b4 · 호출 64~76)는 경고 없음.
+0. `tmp/frame/`이 비었으면 `python plans/FRAME-개편/wip/restore.py`. 이 PC는 `playwright==1.62.0`(chromium-1234)이 깔려 있다. `.claude/launch.json` "frame-live"(8810) + `PYTHONIOENCODING=utf-8 python -u tmp/frame/view/live_assemble.py --watch > tmp/frame/view/assemble.log 2>&1`.
+1. 남은 신호 정리: `python tmp/frame/E/audit_live.py` → `tmp/frame/E/audit_live.json`에서 tracking 16 · deadZones 3 · stretch · lowFill 장을 찾아 해당 장만 고친다(한두 장은 메인 직접).
+2. `python plans/FRAME-개편/gen/build_parts.py`(partial 없이) → `assemble_deck` → `verify_deck.py --parts 3` → E7 렌더 감사 · `run_deck_checks.py` → 계약 재생성 → `python tmp/frame/E9/build_notes.py` · `verify_notes`(표지 번호 문제는 해소됨 — 현재 PASS 81/81).
+3. E10 · E12 · E13 · E11 → 전 장 썸네일 점검(줄글 · 색 수 · 같은 구도 3연속 — 묶음 경계 포함. 육안 점검은 검토 워커에 맡기고 메인은 결함 장만 본다) → Phase F → 사용자 보고.
+4. 커밋은 사용자 확인 후(2.16MB zip 포함 여부 결정 필요). 세션을 끝낼 때 `restore.py --save`.
 
-**재개 절차**
-0. `tmp/`는 git에 없다 — 다른 환경이거나 `tmp/frame/`이 비었으면 `python plans/FRAME-개편/wip/restore.py`로 작업 원본(슬라이드 82장 · 셸 소스 · 지침 · 서버 스크립트)을 복원한다. 세션을 끝낼 때는 `restore.py --save` 뒤 커밋.
-1. 새 세션으로 시작(캐시 만료). `.claude/launch.json` "frame-live"로 8810 서버 → `PYTHONIOENCODING=utf-8 python -u tmp/frame/view/live_assemble.py --watch > tmp/frame/view/assemble.log 2>&1` 백그라운드.
-2. b1 9장 확인: `python tmp/frame/E/shoot_ids.py HUB P1-1 … P2-4` → `tmp/frame/E/shots/_main_<ID>.png` 훑기 · `tmp/frame/E/v2/b1/audit.json` 결함 수치.
-3. b5 · b6 · b7 · b8 → 동시 4명, 끝나는 대로 b9 · b10(템플릿 사용 · 워커 1명 1묶음 · 끝나면 `audit_context_budget.py <세션> --t9`).
-4. 82장 완료 뒤 Phase E 마무리: `build_parts.py`(partial 없이) → `assemble_deck` → `verify_deck.py --parts 3` → E7 렌더 감사 · `run_deck_checks.py` → 계약 · 노트 재생성/verify_notes(cover 쪽번호) → E10 · E12 · E13 · E11 → 전 장 썸네일 점검(줄글 · 색 수) → Phase F → 사용자 보고. 커밋은 사용자 확인 후(2.16MB zip 포함 여부 결정 필요).
-- ⚠ 중단 지점 WIP 커밋은 `SKIP_DECK_GATES=1`로 올렸다 — pre-commit 차단 1건: verify_notes MISMATCH(노트 pn-no=1이 표지 = 쪽 번호 제외 클래스). 나머지 게이트는 PASS. 재개 뒤 최종 조립 때 `tmp/frame/E9/build_notes.py`에서 표지 항목 번호 처리를 고쳐 게이트를 정상 통과시킨다.
+## 2026-10-01 오후 — 사용자 지시(표지 · 간지 · 6쪽 삭제)
+
+- **D41 표지 = kit 표준 표지**(`slide cover` · 아이소 큐브 3단) + frame 테마 색. 제목은 「AGENT」만(FRAME을 강조하지 않는다), 머리줄에 FRAME 마크 + 워드마크. 전용 표지(`f-cover` · 틀 모서리 연출)는 폐기. 결정표 · 초안(병합본 · `tmp/frame/draft/main-task.md`) COVER 제목 「AGENT」로 교체.
+- **D42 간지 = kit 표준 파트 전환**(`slide part-divider` · 밝은 바탕 · 헤더 없음) + 여정 지도(`.journey`) 유지. 번호는 「블록 n / 4」 고정 — 셸 JS(`hydratePartDivider`)가 `.pd-eyebrow` · `.pd-dots`를 「PART n / 3」으로 덮어서 그 두 클래스를 쓰지 않고 같은 모양을 인라인으로 줬다. `f-divider` · `dark`는 뗐다(덱에 어두운 전면 장 없음).
+- **D43 O-04(막혔을 때 채팅에 남기는 말 · 6쪽) 삭제** → 81장. 슬라이드 · 결정표 · 초안 · `notes_data.py` · 계약(`build_contract.py` → 81장) · 노트 재생성. M3-3 · M3-5의 「채팅에 막힘 한 줄」 문구는 남아 있다(형식을 알려 주는 장이 없어졌으므로 강사 멘트로 안내 — 확인 필요).
+- 검사: `build_parts --partial` 완성 81/81 · `time_check` FAIL 0(블록 43.5 · 49.5 · 49.5 · 48 = 190.5분 · 여유 9.5) · `verify_notes` PASS(판정 80 · 미판정 0) · 전체 감사 결함형 6종 0 · 폰트 하한 0 · deadZones 2(M1-5 · M2-3) · tracking 13.
+- PLAN §16의 표지 · 간지 서술과 집필노트 「O-03 · O-04」 행은 아직 고치지 않았다(최종 조립 때 정합).
+- **D44 블록 미리 보기 3장 추가**(사용자 선택 A — 각 파트 표지 바로 뒤) → **84장**. B2-1 · B3-1 · B4-1 「블록 n에서 하는 일」: 하는 일 카드 3(한 색) + 「함께 배우는 개념」 띠 · 각 0.5분. 블록 1은 간지가 없어 2쪽 O-01이 그 역할(추가 없음). 슬라이드 · 결정표 · 초안(병합본 · main-task.md) · notes_data · 계약(84장) · 노트 반영.
+  - 검사: `build_parts --partial` 완성 84/84 · `time_check` FAIL 0 · 미판정 0(블록 43.5 · **50 · 50** · 48.5 = 192분 — 블록 2 · 3 여유 0) · `tone_lint` 위반 0 · `verify_notes` PASS(판정 83) · 전체 감사 결함형 6종 0 · 폰트 하한 0 · deadZones 2 · tracking 13.
+  - 「▶ 다음 할 일」 절의 82장 표기는 84장으로 읽는다.
+- **D45 에이전트 실습의 「몇 분」 표기를 화면에서 뺀다**(사용자 2026-10-01). 뺀 곳: HUB 카드 4(시간 15분) · P1-1~P4-1(「시간 15분 — 진행, 확인, 고치기 순서」→「순서 진행, 확인, 고치기」) · O-01(실습 A · B의 (15분)) · SLOT-A · B · B2-1 · B3-1. 초안 화면 열도 같이 고쳤다. 슬라이드에 「15분」 잔존 0. **실습 장의 타이머(② 08:00 · ③ 03:00 · 8장)와 강사 멘트 열의 15분 언급은 그대로다 — 아래 시간 재설계와 같이 정한다.**
+- **⚠ 전제 누락 발견(사용자 2026-10-01)**: 에이전트 실습은 **강사가 화면 공유로 같이 진행**한다. 계획 · 결정표 · 시간표에는 이 전제가 없었다(실습 = 참가자 혼자 15분 · 타이머 8분 + 3분으로 설계). 강사 동시 진행이면 실습 한 번이 15분을 넘는다 — 블록 2 · 3은 여유 0분이라 시간표 재설계가 필요하다. 사용자 결정 대기.

@@ -256,7 +256,7 @@ def build():
             refs = " · ".join(x for x in re.split(r"[,\s]+", refs) if x)
         refs_html = (f'    <p class="pn-refs">출처 ID: {H.escape(refs, quote=False)}</p>\n' if refs else "")
 
-        body.append(
+        block = (
             f'  <section class="pn-slide" id="p{no}">\n'
             f'    <div class="pn-slide-head">\n'
             f'      <span class="pn-no">{no}</span>\n'
@@ -264,6 +264,13 @@ def build():
             f'      <h2 class="pn-slide-title">{H.escape(r["title"], quote=False)}</h2>\n'
             f'      <span class="pn-time">{H.escape(tm, quote=False)}</span>\n'
             f'    </div>\n' + "".join(items) + refs_html + '  </section>\n\n')
+        if rid == "COVER":
+            # 표지는 쪽 번호 제외 장이다 — 번호 붙은 노트(pn-slide-head · pn-no)로 내면 verify_notes가
+            # 「화면에 없는 번호」로 잡고 발표자 화면 주입도 매핑하지 못한다. 번호 없는 머리 블록으로 낸다.
+            block = (block.replace('class="pn-slide"', 'class="pn-pre"').replace('pn-slide-head', 'pn-pre-head')
+                     .replace(f'      <span class="pn-no">{no}</span>\n', '      <span class="pn-pre-tag">표지</span>\n')
+                     .replace('<h2 class="pn-slide-title">', '<h3 class="pn-pre-title">').replace('</h2>', '</h3>'))
+        body.append(block)
         stats["notes"] += 1
 
         # ── 대조 ──
@@ -325,14 +332,14 @@ CSS = """
     border-radius:var(--r-md); padding:8px 14px; margin:26px 0 12px; }
 
   /* 슬라이드 블록 */
-  .pn-slide{ border:1px solid var(--line); border-radius:var(--r-lg); background:var(--white);
+  .pn-slide, .pn-pre{ border:1px solid var(--line); border-radius:var(--r-lg); background:var(--white);
     padding:18px 20px; margin:0 0 16px; break-inside:avoid; }
-  .pn-slide-head{ display:flex; flex-wrap:wrap; align-items:baseline; gap:6px 12px; margin-bottom:10px; }
-  .pn-no{ flex:0 0 auto; font-size:14px; font-weight:800; color:var(--white); background:var(--blue);
+  .pn-slide-head, .pn-pre-head{ display:flex; flex-wrap:wrap; align-items:baseline; gap:6px 12px; margin-bottom:10px; }
+  .pn-no, .pn-pre-tag{ flex:0 0 auto; font-size:14px; font-weight:800; color:var(--white); background:var(--blue);
     border-radius:var(--r-pill); padding:3px 11px; }
   .pn-id{ flex:0 0 auto; font-size:13px; font-weight:800; color:var(--blue); background:var(--blue-soft);
     border-radius:var(--r-pill); padding:2px 9px; font-family:var(--font-mono); }
-  .pn-slide-title{ font-size:19px; font-weight:800; margin:0; flex:1 1 280px; }
+  .pn-slide-title, .pn-pre-title{ font-size:19px; font-weight:800; margin:0; flex:1 1 280px; }
   .pn-time{ flex:0 0 auto; font-size:13px; font-weight:700; color:var(--gray-700); margin-left:auto; }
 
   /* 멘트 항목 — 종류별 좌측 컬러 바 + 라벨 */
@@ -379,7 +386,7 @@ def head_html(blocks, stats):
     return f"""  <header class="pn-head">
     <div class="pn-kicker">발표자 노트 · 1주차</div>
     <h1 class="pn-title">FRAME — AI 에이전트 실습 4시간</h1>
-    <p class="pn-note">강사용 참고 문서입니다. 쪽 번호는 덱의 장 순서와 같고, 덱은 82장입니다. 82장 모두에 노트가 있습니다.</p>
+    <p class="pn-note">강사용 참고 문서입니다. 쪽 번호는 덱의 장 순서와 같고, 덱은 84장입니다. 84장 모두에 노트가 있습니다(표지는 쪽 번호가 없어 「표지」로 표시).</p>
     <p class="pn-note">ID가 C-로 시작하는 개념 장 20장은 전체 대본(🎙)이고, 나머지는 요점(📌)입니다. 대본은 화면의 정의 → 비유 → 근거 → 대응 순서를 따르므로 그대로 읽어도 됩니다.</p>
     <p class="pn-note">수강생 화면(덱)에는 💬 애드리브 · 👀 시연 큐 · 🔑 정답이 보이지 않고, 🗣 힌트는 접힌 상태로 들어갑니다. 여기서는 모두 펼쳐 둡니다.</p>
     <div class="pn-legend">
@@ -408,7 +415,7 @@ def main():
 <title>발표자 노트 — FRAME 1주차</title>
 <!--
   발표자 노트 — FRAME 1주차 (E9)
-  형식: kit/starter/presenter-notes-template.html. 덱 82장과 같은 순서이며 pn-no = 덱 쪽 번호.
+  형식: kit/starter/presenter-notes-template.html. 덱 84장과 같은 순서이며 pn-no = 덱 쪽 번호.
   · 🎙 전체 대본(개념 장 C-*) · 📌 요점(그 밖의 장)은 class pn-joke pn-say — 발표 런타임에서는 「강사 설명·애드리브」로 읽힌다.
   · 🔑 강사용 정답 · ⚠ 확인은 class pn-demo 와 보조 class(pn-answer · pn-caution)를 함께 쓴다.
   · 🗣는 여기선 펼친 상태. 1280×720 캔버스 제약 없음. deck.css를 링크하지 않는다.

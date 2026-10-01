@@ -148,7 +148,7 @@
 
 ## 미해결
 
-### ▶ FRAME 개편 — `AI_에이전트_실습워크숍_4시간` 1주차 전면 교체 (2026-10-01 · G0 · G1a 승인 · Phase D 완료 · G1b 위임(D40) · **Phase E v2 재작성 중단 — 82장 중 v2 35 · 거의 완료 9(b1) · 미착수 38. 재개는 `plans/FRAME-개편/PROGRESS.md` 맨 끝 「⏸ 중단 지점」 표와 재개 절차**)
+### ▶ FRAME 개편 — `AI_에이전트_실습워크숍_4시간` 1주차 전면 교체 (2026-10-01 · G0 · G1a 승인 · Phase D 완료 · G1b 위임(D40) · **Phase E v2 재작성 완료 · 84장(2026-10-01 — 표지 · 간지 kit 템플릿 D41 · D42 · 6쪽 삭제 D43 · 블록 미리 보기 3장 D44) — 남은 것은 감사 신호 정리 · 최종 조립 · 전수 검증 · Phase F. 재개는 `plans/FRAME-개편/PROGRESS.md` 맨 끝 「⏸ 중단 지점」 표와 재개 절차**)
 
 > **재개는 `plans/FRAME-개편/PLAN.md` + `PROGRESS.md`부터** — 잠긴 결정 D1~D39 · §16 디자인 원칙 · 게이트 G0→G1a→**G1b(초안)**→GR(사용자 리허설)→G2. 초안 정본은 `tmp/frame/draft/{concepts,main-task,agent-practice}.md` → `gen/merge_draft.py`로 `sessions/1주차/1주차_초안.md`(82행) 병합(병합본 직접 편집 금지). 자료는 `plans/FRAME-개편/gen/`의 생성기로만 만든다(gen_prompts · gen_01~04 · check_d1/02/01_03_04 · pack_zip). 가상 회사 이름은 **도담수납**(가온리빙은 실존 회사와 겹쳐 폐기). D6 드라이런: Sonnet 에이전트가 함정 4개를 첫 요청에서 모두 피함 → ③의 이어가기 대조 경로로 운영, 도구별 결과는 GR 체크리스트(`리허설_체크리스트.md`). 남은 일: G1b 제출 → GR → Phase E 조립(콘텐츠 리뷰 HTML · 이미지-에셋 재생성 · profile §3-G 장수 갱신). 커밋은 사용자 확인 뒤. 보기 페이지 `tmp/frame/view/`(launch `deck-verify` 8799).
 

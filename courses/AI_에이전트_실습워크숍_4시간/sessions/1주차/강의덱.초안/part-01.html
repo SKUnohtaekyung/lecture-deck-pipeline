@@ -1,33 +1,47 @@
 <!-- COVER -->
-<!-- ============ COVER · F-cover — 표지 ============ -->
-<section class="slide cover f-cover" data-slide="COVER">
-  <svg class="cv-frame" viewBox="0 0 464 464" aria-hidden="true">
-    <path class="corner" style="--dx:-56px;--dy:-56px" d="M7 150 V7 H150"/>
-    <path class="corner" style="--dx:56px;--dy:-56px" d="M314 7 H457 V150"/>
-    <path class="corner" style="--dx:56px;--dy:56px" d="M457 314 V457 H314"/>
-    <path class="corner" style="--dx:-56px;--dy:56px" d="M150 457 H7 V314"/>
-    <rect class="core" x="172" y="172" width="120" height="120"/>
+<!-- ============ COVER · kit 표준 표지(slide cover · 아이소 큐브 3단) — 색은 frame 테마 토큰 · 제목은 AGENT · 머리줄에 FRAME 워드마크 ============ -->
+<section class="slide cover" data-slide="COVER">
+  <svg class="cover-geo" viewBox="0 0 1280 720" fill="none" aria-hidden="true">
+    <g data-cube="top">
+      <polygon points="1170,300 1226,328 1170,356 1114,328" fill="var(--blue-soft)"/>
+      <polygon points="1114,328 1170,356 1170,414 1114,386" fill="var(--blue)"/>
+      <polygon points="1170,356 1226,328 1226,386 1170,414" fill="var(--mint)"/>
+    </g>
+    <g data-cube="middle">
+      <polygon points="1084,352 1140,380 1084,408 1028,380" fill="var(--blue-soft)"/>
+      <polygon points="1028,380 1084,408 1084,466 1028,438" fill="var(--blue)"/>
+      <polygon points="1084,408 1140,380 1140,438 1084,466" fill="var(--mint)"/>
+    </g>
+    <g data-cube="base">
+      <polygon points="998,404 1054,432 998,460 942,432" fill="var(--blue-soft)"/>
+      <polygon points="942,432 998,460 998,518 942,490" fill="var(--blue)"/>
+      <polygon points="998,460 1054,432 1054,490 998,518" fill="var(--mint)"/>
+    </g>
+    <circle cx="1170" cy="256" r="13" fill="var(--coral)"/>
   </svg>
-  <h1 class="cv-h1"><svg class="cv-word" viewBox="-3 -3 130 52" role="img" aria-label="FRAME"><defs><clipPath id="frame-band"><rect x="-10" y="1.5" width="150" height="45"/></clipPath></defs><g class="stroke" clip-path="url(#frame-band)"><path d="M4 44 V4 H30 V44"/><path d="M4 23 H19"/><path d="M30 4 H41 A9.5 9.5 0 0 1 41 23 H30"/><path d="M37 23 L47 44 L59 4 L71 44 H79 V4 L92 28 L105 4 V44 H123"/><path d="M50.6 32 H67.4"/><path d="M105 4 H123"/><path d="M105 24 H120"/></g></svg><span class="sr-only">FRAME — AI 에이전트 실습 4시간</span></h1>
-  <p class="cv-sub">AI 에이전트 실습 · 4시간</p>
+  <header class="s-head cover-head" style="top:46px;bottom:auto;left:64px;right:64px">
+    <svg class="s-logo" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 18 V8 H18 M30 8 H40 V18 M40 30 V40 H30 M18 40 H8 V30" fill="none" style="stroke:var(--blue)" stroke-width="5"/><rect x="19" y="19" width="10" height="10" style="fill:var(--mint)"/></svg>
+    <div class="brand-stack"><span class="s-brand"><svg viewBox="-3 -3 130 52" role="img" aria-label="FRAME" style="height:30px;width:auto;display:block"><defs><clipPath id="frame-band"><rect x="-10" y="1.5" width="150" height="45"/></clipPath></defs><g clip-path="url(#frame-band)" style="fill:none;stroke:var(--blue);stroke-width:5;stroke-linejoin:miter;stroke-linecap:square;stroke-miterlimit:1.5"><path d="M4 44 V4 H30 V44"/><path d="M4 23 H19"/><path d="M30 4 H41 A9.5 9.5 0 0 1 41 23 H30"/><path d="M37 23 L47 44 L59 4 L71 44 H79 V4 L92 28 L105 4 V44 H123"/><path d="M50.6 32 H67.4"/><path d="M105 4 H123"/><path d="M105 24 H120"/></g></svg></span></div>
+  </header>
+  <div class="cover-title"><h1 class="ko" style="font-size:132px;line-height:1;letter-spacing:-.04em">AGENT</h1></div>
 </section>
 
 <!-- O-01 -->
 <section class="slide s02-slide l-vf-spine-timeline" data-slide="O-01">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 18 V8 H18 M30 8 H40 V18 M40 30 V40 H30 M18 40 H8 V30" fill="none" style="stroke:var(--blue)" stroke-width="5"/><rect x="19" y="19" width="10" height="10" style="fill:var(--mint)"/></svg><span class="s-brand">FRAME</span>
-    <span class="s-line"></span><div class="s-team">블록 1</div>
+    <span class="s-line"></span><div class="s-team">블록 1<br>시간표</div>
   </header>
-  <div class="cx-wrap">
-    <div class="cx-top">
-      <p class="s-eyebrow">운영 · 시간표</p>
-      <h2 class="s-title">오늘 4시간의 흐름</h2>
-    </div>
-    <div class="cx-main" style="grid-template-columns:1fr;align-content:start;row-gap:14px">
-      <p class="keep">블록 <span class="em-num" data-count>4개</span> · 블록마다 <span class="em-num" data-count>50분</span> · 사이에 10분 휴식 3번</p>
-      <svg viewBox="0 0 1152 404" role="img" aria-label="4시간 시간축. 50분 블록 네 개 사이에 10분 휴식이 세 번 있습니다. 블록마다 들어가는 활동과 메인 과제 네 단계가 표시됩니다."><rect class="a-fillx" style="--i:0;fill:var(--blue)" x="0" y="0" width="250" height="46" rx="10"/><text x="125" y="32" font-size="24" font-weight="800" text-anchor="middle" style="fill:var(--white)">블록 1</text><g transform="translate(4 67) scale(1.1667)" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--blue)"><path d="M9 18 h6 M10 21 h4 M12 3 a6 6 0 0 0 -3.5 10.9 V16 h7 v-2.1 A6 6 0 0 0 12 3 z"/></g><text x="44" y="89" font-size="22" font-weight="600" style="fill:var(--ink)">개념 설명</text><g transform="translate(4 113) scale(1.1667)" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--blue)"><path d="M12 4 v11 M7 10.5 l5 5 l5 -5 M5 20 h14"/></g><text x="44" y="135" font-size="22" font-weight="600" style="fill:var(--ink)">자료 받기</text><g transform="translate(4 159) scale(1.1667)" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--blue)"><path d="M4 20 l1 -4 L16 5 l3 3 L8 19 z"/><path d="M14 7 l3 3"/></g><text x="44" y="181" font-size="22" font-weight="600" style="fill:var(--ink)">문항 쓰기</text><line class="v-base" x1="256" y1="26" x2="294" y2="26"/><text x="275" y="16" font-size="17" font-weight="700" text-anchor="middle" style="fill:var(--gray-700)">10분</text><rect class="a-fillx" style="--i:1;fill:var(--blue)" x="300" y="0" width="250" height="46" rx="10"/><text x="425" y="32" font-size="24" font-weight="800" text-anchor="middle" style="fill:var(--white)">블록 2</text><g transform="translate(304 67) scale(1.1667)" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--blue)"><path d="M6 3 h8 l4 4 v14 h-12 z"/><path d="M14 3 v4 h4 M9 12 h6 M9 16 h6"/></g><text x="344" y="89" font-size="22" font-weight="600" style="fill:var(--ink)">결과 글</text><rect x="294" y="106" width="262" height="42" rx="10" style="fill:var(--mint)"/><g transform="translate(304 113) scale(1.1667)" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--on-mint)"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="M7 10 l3 2.5 l-3 2.5 M12.5 16 h4.5"/></g><text x="344" y="135" font-size="22" font-weight="700" style="fill:var(--on-mint)">에이전트 실습 A(15분)</text><g transform="translate(304 159) scale(1.1667)" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--blue)"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="M3 9 h18 M6.5 6.5 h.01 M9.5 6.5 h.01"/></g><text x="344" y="181" font-size="22" font-weight="600" style="fill:var(--ink)">점검 화면 만들기</text><line class="v-base" x1="556" y1="26" x2="594" y2="26"/><text x="575" y="16" font-size="17" font-weight="700" text-anchor="middle" style="fill:var(--gray-700)">10분</text><rect class="a-fillx" style="--i:2;fill:var(--blue)" x="600" y="0" width="250" height="46" rx="10"/><text x="725" y="32" font-size="24" font-weight="800" text-anchor="middle" style="fill:var(--white)">블록 3</text><g transform="translate(604 67) scale(1.1667)" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--blue)"><path d="M3 21 h18 M6 17 l9 -9 3 3 -9 9 H6 z"/></g><text x="644" y="89" font-size="22" font-weight="600" style="fill:var(--ink)">화면 수정</text><rect x="594" y="106" width="262" height="42" rx="10" style="fill:var(--mint)"/><g transform="translate(604 113) scale(1.1667)" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--on-mint)"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="M7 10 l3 2.5 l-3 2.5 M12.5 16 h4.5"/></g><text x="644" y="135" font-size="22" font-weight="700" style="fill:var(--on-mint)">에이전트 실습 B(15분)</text><g transform="translate(604 159) scale(1.1667)" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--blue)"><circle cx="12" cy="12" r="9"/><path d="M3 12 h18 M12 3 c3.5 3 3.5 15 0 18 M12 3 c-3.5 3 -3.5 15 0 18"/></g><text x="644" y="181" font-size="22" font-weight="600" style="fill:var(--ink)">공개 주소 만들기</text><line class="v-base" x1="856" y1="26" x2="894" y2="26"/><text x="875" y="16" font-size="17" font-weight="700" text-anchor="middle" style="fill:var(--gray-700)">10분</text><rect class="a-fillx" style="--i:3;fill:var(--blue)" x="900" y="0" width="250" height="46" rx="10"/><text x="1025" y="32" font-size="24" font-weight="800" text-anchor="middle" style="fill:var(--white)">블록 4</text><g transform="translate(904 67) scale(1.1667)" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--blue)"><circle cx="9" cy="8" r="3.2"/><path d="M3 20 c0 -4 3 -6 6 -6 s6 2 6 6"/><path d="M16 5.2 a3.2 3.2 0 0 1 0 5.8 M18 14.3 c2 1 3 3 3 5.7"/></g><text x="944" y="89" font-size="22" font-weight="600" style="fill:var(--ink)">서로 써 보기</text><g transform="translate(904 113) scale(1.1667)" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--blue)"><path d="M3 21 h18 M6 17 l9 -9 3 3 -9 9 H6 z"/></g><text x="944" y="135" font-size="22" font-weight="600" style="fill:var(--ink)">고치기</text><g transform="translate(904 159) scale(1.1667)" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--blue)"><path d="M8 5 l11 7 l-11 7 z"/></g><text x="944" y="181" font-size="22" font-weight="600" style="fill:var(--ink)">시연</text><g transform="translate(904 205) scale(1.1667)" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--blue)"><path d="M5 21 V4 M5 5 h12 l-2 4 l2 4 h-12"/></g><text x="944" y="227" font-size="22" font-weight="600" style="fill:var(--ink)">마무리</text><text x="0" y="290" font-size="22" font-weight="600" style="fill:var(--gray-700)">메인 과제 하나를 네 단계로 완성합니다 —</text><path class="a-fillx" style="--i:1;fill:var(--mint)" d="M0 308 H262 L286 352 L262 396 H0 Z"/><g transform="translate(70 338) scale(1.1667)" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--on-mint)"><path d="M4 20 l1 -4 L16 5 l3 3 L8 19 z"/><path d="M14 7 l3 3"/></g><text x="112" y="361" font-size="26" font-weight="800" style="fill:var(--on-mint)">기획</text><path class="a-fillx" style="--i:2;fill:var(--mint)" d="M292 308 H554 L578 352 L554 396 H292 L316 352 Z"/><g transform="translate(362 338) scale(1.1667)" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--on-mint)"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="M3 9 h18 M6.5 6.5 h.01 M9.5 6.5 h.01"/></g><text x="404" y="361" font-size="26" font-weight="800" style="fill:var(--on-mint)">제작</text><path class="a-fillx" style="--i:3;fill:var(--mint)" d="M584 308 H846 L870 352 L846 396 H584 L608 352 Z"/><g transform="translate(654 338) scale(1.1667)" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--on-mint)"><circle cx="12" cy="12" r="9"/><path d="M3 12 h18 M12 3 c3.5 3 3.5 15 0 18 M12 3 c-3.5 3 -3.5 15 0 18"/></g><text x="696" y="361" font-size="26" font-weight="800" style="fill:var(--on-mint)">공개</text><path class="a-fillx" style="--i:4;fill:var(--mint)" d="M876 308 H1136 V396 H876 L900 352 Z"/><g transform="translate(946 338) scale(1.1667)" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--on-mint)"><circle cx="9" cy="8" r="3.2"/><path d="M3 20 c0 -4 3 -6 6 -6 s6 2 6 6"/><path d="M16 5.2 a3.2 3.2 0 0 1 0 5.8 M18 14.3 c2 1 3 3 3 5.7"/></g><text x="988" y="361" font-size="26" font-weight="800" style="fill:var(--on-mint)">개선</text></svg>
-    </div>
+  <p class="kick">운영 · 시간표</p>
+  <h2 class="s-title">오늘 <b class="kw">4시간</b>의 흐름</h2>
+  <p class="lede">블록 <b class="kw">4개</b> · 블록마다 <b class="kw">50분</b> · 사이에 10분 휴식 3번</p>
+  <div class="cols-dot">
+    <div><b><small>블록&nbsp;1</small>50분</b><ul><li>개념 설명</li><li>자료 받기</li><li>문항 쓰기</li></ul></div>
+    <div><b><small>블록&nbsp;2</small>50분</b><ul><li>결과 글</li><li class="a">에이전트 실습&nbsp;A</li><li>점검 화면 만들기</li></ul></div>
+    <div><b><small>블록&nbsp;3</small>50분</b><ul><li>화면 수정</li><li class="a">에이전트 실습&nbsp;B</li><li>공개 주소 만들기</li></ul></div>
+    <div><b><small>블록&nbsp;4</small>50분</b><ul><li>서로 써 보기</li><li>고치기</li><li>시연 · 마무리</li></ul></div>
   </div>
+  <div class="band t-mint"><span>메인 과제 하나를 네 단계로 완성합니다</span><span class="pill">기획</span><b>→</b><span class="pill">제작</span><b>→</b><span class="pill">공개</span><b>→</b><span class="pill m">개선</span></div>
 </section>
 
 <!-- M1-0 -->
@@ -36,29 +50,46 @@
     <svg class="s-logo" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 18 V8 H18 M30 8 H40 V18 M40 30 V40 H30 M18 40 H8 V30" fill="none" style="stroke:var(--blue)" stroke-width="5"/><rect x="19" y="19" width="10" height="10" style="fill:var(--mint)"/></svg><span class="s-brand">FRAME</span>
     <span class="s-line"></span><div class="s-team">메인 과제</div>
   </header>
-  <div class="pr-wrap">
-    <div class="pr-bar"><span class="pr-no">메인 과제</span><span class="pr-name">AI 활용 습관 점검</span><span class="pr-steps" aria-label="메인 과제 네 단계"><span>① 기획</span><span>② 제작</span><span>③ 공개</span><span>④ 개선</span></span></div>
-    <div class="pr-top">
-      <h2 class="s-title">오늘 만드는 페이지 — AI 활용 습관 점검</h2>
+  <div class="bleed w50 t-apricot"></div>
+  <p class="kick">메인 과제 · 오늘 만드는 것</p>
+  <h2 class="s-title">오늘 만드는 페이지 — <br><b class="kw">AI 활용 습관 점검</b></h2>
+  <p class="lede">문항과 결과 글은 <b class="kw">내가 쓰고</b>, 화면은 <b class="kw">에이전트에게 요청해</b> 만듭니다.</p>
+  <span class="lab" style="margin-top:30px;color:var(--pr-deep)">네 단계</span>
+  <ol style="list-style:none;margin:10px 0 0;padding:0;display:grid;gap:14px">
+    <li style="display:flex;align-items:center;gap:16px"><span class="pill pr" style="min-width:108px;justify-content:center;font-size:20px">① 기획</span><span style="font-size:23px;font-weight:600;color:var(--ink)">문항 · 결과 글</span></li>
+    <li style="display:flex;align-items:center;gap:16px"><span class="pill pr" style="min-width:108px;justify-content:center;font-size:20px">② 제작</span><span style="font-size:23px;font-weight:600;color:var(--ink)">화면</span></li>
+    <li style="display:flex;align-items:center;gap:16px"><span class="pill pr" style="min-width:108px;justify-content:center;font-size:20px">③ 공개</span><span style="font-size:23px;font-weight:600;color:var(--ink)">주소</span></li>
+    <li style="display:flex;align-items:center;gap:16px"><span class="pill pr" style="min-width:108px;justify-content:center;font-size:20px">④ 개선</span><span style="font-size:23px;font-weight:600;color:var(--ink)">서로 써 보고 고치기</span></li>
+  </ol>
+  <div class="on-bleed" style="gap:16px;padding:48px 52px 66px">
+    <div style="width:100%">
+      <p style="margin:0 0 10px;font-size:22px;font-weight:600;color:var(--ink)"><b class="kw" style="font-size:26px;margin-right:10px">전</b><span class="em-tag">00_AI습관점검</span> 폴더 — 비어 있는</p>
+      <div style="display:flex;gap:18px">
+        <div class="paper" style="width:auto;min-height:60px;flex:1;--r:-2deg"><b style="font-size:19px">문항.txt</b></div>
+        <div class="paper" style="width:auto;min-height:60px;flex:1;--r:2deg"><b style="font-size:19px">결과글.txt</b></div>
+      </div>
     </div>
-    <div class="pr-main">
-      <div class="pr-cols" style="--lc:380px">
-        <div class="pr-left">
-          <svg viewBox="0 0 380 292" role="img" aria-label="전. 00_AI습관점검 폴더 안에 비어 있는 문항.txt와 결과글.txt가 있습니다." style="display:block;width:100%;height:auto"><text x="0" y="20" font-size="19" font-weight="800" style="fill:var(--pr-deep)">전</text><g transform="translate(0 34) scale(1.6667)" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--pr-deep)"><path d="M3 6.5 h6.5 l2 2.5 H21 v10.5 H3 z"/></g><text x="52" y="62" font-size="20" font-weight="700" style="fill:var(--ink)"><tspan style="font-family:var(--font-mono)">00_AI습관점검</tspan> 폴더</text><text x="0" y="150" font-size="20" font-weight="600" style="fill:var(--gray-700)">비어 있는</text><rect x="0" y="166" width="170" height="114" rx="10" fill="none" stroke-width="2.5" stroke-dasharray="7 5" style="stroke:var(--gray-400)"/><g transform="translate(65 184) scale(1.6667)" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--gray-400)"><path d="M6 3 h8 l4 4 v14 h-12 z"/><path d="M14 3 v4 h4 M9 12 h6 M9 16 h6"/></g><text x="85" y="258" font-size="18" font-weight="700" text-anchor="middle" style="fill:var(--gray-700);font-family:var(--font-mono)">문항.txt</text><rect x="200" y="166" width="170" height="114" rx="10" fill="none" stroke-width="2.5" stroke-dasharray="7 5" style="stroke:var(--gray-400)"/><g transform="translate(265 184) scale(1.6667)" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--gray-400)"><path d="M6 3 h8 l4 4 v14 h-12 z"/><path d="M14 3 v4 h4 M9 12 h6 M9 16 h6"/></g><text x="285" y="258" font-size="18" font-weight="700" text-anchor="middle" style="fill:var(--gray-700);font-family:var(--font-mono)">결과글.txt</text></svg>
-        </div>
-        <div class="pr-right">
-          <p class="keep" style="margin:0"><b style="color:var(--pr-deep);font-size:19px;margin-right:12px">후</b>주소가 있는 점검 페이지</p>
-          <div class="win browser">
-            <div class="win-bar"><i></i><i></i><i></i><span class="win-url">https://사이트이름.netlify.app</span></div>
-            <div class="win-body">
-              <svg viewBox="0 0 696 200" style="display:block;width:100%;height:auto" role="img" aria-label="점검 페이지 화면 세 개. 문항, 결과, 요청문 카드 순서입니다."><g fill="none" stroke-width="2" style="stroke:var(--gray-400)"><rect x="1" y="1" width="210" height="126" rx="10" style="fill:var(--white)"/><rect x="243" y="1" width="210" height="126" rx="10" style="fill:var(--white)"/><rect x="485" y="1" width="210" height="126" rx="10" style="fill:var(--navy);stroke:var(--navy)"/></g><g fill="none" stroke-width="7" stroke-linecap="round" style="stroke:var(--periwinkle)"><path d="M20 28 H188 M20 50 H146"/></g><g style="fill:none;stroke:var(--pr-deep)" stroke-width="3"><circle cx="34" cy="98" r="9"/><circle cx="78" cy="98" r="9"/><circle cx="122" cy="98" r="9"/><circle cx="166" cy="98" r="9"/></g><rect x="262" y="22" width="56" height="26" rx="13" style="fill:var(--pr-fill)"/><g fill="none" stroke-width="7" stroke-linecap="round" style="stroke:var(--periwinkle)"><path d="M262 70 H430 M262 92 H380"/></g><g fill="none" stroke-width="7" stroke-linecap="round" style="stroke:var(--pr-deep)"><path d="M262 112 H340"/></g><g fill="none" stroke-width="6" stroke-linecap="round" style="stroke:var(--on-dark-caption)"><path d="M504 30 H672 M504 52 H640 M504 74 H660"/></g><rect x="602" y="92" width="74" height="26" rx="13" style="fill:var(--pr-fill)"/><g fill="none" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--pr-deep)"><path d="M217 64 H239 M231 55 L240 64 L231 73"/><path d="M459 64 H481 M473 55 L482 64 L473 73"/></g><text x="106" y="158" font-size="20" font-weight="700" text-anchor="middle" style="fill:var(--ink)">문항</text><text x="348" y="158" font-size="20" font-weight="700" text-anchor="middle" style="fill:var(--ink)">결과(유형 · 이번 주</text><text x="348" y="184" font-size="20" font-weight="700" text-anchor="middle" style="fill:var(--ink)">해 볼 한 가지)</text><text x="590" y="158" font-size="20" font-weight="700" text-anchor="middle" style="fill:var(--ink)">요청문 카드(복사)</text></svg>
-            </div>
+    <svg viewBox="0 0 24 24" style="width:34px;height:34px;flex:none;stroke:var(--pr-deep);fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round" aria-hidden="true"><path d="M12 4v15M6 13l6 6 6-6"/></svg>
+    <div style="width:100%">
+      <p style="margin:0 0 10px;font-size:22px;font-weight:600;color:var(--ink)"><b class="kw" style="font-size:26px;margin-right:10px">후</b>주소가 있는 점검 페이지</p>
+      <div class="win browser">
+        <div class="win-bar"><i></i><i></i><i></i><span class="win-url">https://사이트이름.netlify.app</span></div>
+        <div class="win-body" style="padding:6px 22px 18px">
+          <div style="display:grid;grid-template-columns:150px 1fr;column-gap:20px;align-items:center">
+            <svg viewBox="0 0 150 62" width="150" height="62" aria-hidden="true"><rect width="150" height="62" rx="12" style="fill:var(--pr-soft)"/><rect x="14" y="13" width="112" height="6" rx="3" style="fill:var(--pr-line)"/><circle cx="20" cy="40" r="6" style="fill:var(--pr-line)"/><circle cx="44" cy="40" r="6" style="fill:var(--pr-deep)"/><circle cx="68" cy="40" r="6" style="fill:var(--pr-line)"/><circle cx="92" cy="40" r="6" style="fill:var(--pr-line)"/></svg>
+            <p style="margin:0;font-size:22px;font-weight:700;line-height:1.35;color:var(--ink)">문항</p>
+          </div>
+          <svg viewBox="0 0 24 24" style="display:block;width:20px;height:20px;margin:5px 0 5px 65px;stroke:var(--pr-deep);fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round" aria-hidden="true"><path d="M12 4v15M6 13l6 6 6-6"/></svg>
+          <div style="display:grid;grid-template-columns:150px 1fr;column-gap:20px;align-items:center">
+            <svg viewBox="0 0 150 62" width="150" height="62" aria-hidden="true"><rect width="150" height="62" rx="12" style="fill:var(--pr-soft)"/><rect x="14" y="11" width="46" height="12" rx="6" style="fill:var(--pr-fill)"/><rect x="14" y="31" width="122" height="6" rx="3" style="fill:var(--pr-line)"/><rect x="14" y="44" width="80" height="6" rx="3" style="fill:var(--pr-deep)"/></svg>
+            <p style="margin:0;font-size:22px;font-weight:700;line-height:1.35;color:var(--ink)">결과<span style="font-weight:500;color:var(--gray-700)">(유형 · 이번 주<br>해 볼 한 가지)</span></p>
+          </div>
+          <svg viewBox="0 0 24 24" style="display:block;width:20px;height:20px;margin:5px 0 5px 65px;stroke:var(--pr-deep);fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round" aria-hidden="true"><path d="M12 4v15M6 13l6 6 6-6"/></svg>
+          <div style="display:grid;grid-template-columns:150px 1fr;column-gap:20px;align-items:center">
+            <svg viewBox="0 0 150 62" width="150" height="62" aria-hidden="true"><rect width="150" height="62" rx="12" style="fill:var(--t-dark)"/><rect x="14" y="13" width="112" height="6" rx="3" style="fill:var(--t-dark-soft)"/><rect x="14" y="26" width="76" height="6" rx="3" style="fill:var(--t-dark-soft)"/><rect x="104" y="40" width="32" height="11" rx="5.5" style="fill:var(--pr-fill)"/></svg>
+            <p style="margin:0;font-size:22px;font-weight:700;line-height:1.35;color:var(--ink)">요청문 카드<span style="font-weight:500;color:var(--gray-700)">(복사)</span></p>
           </div>
         </div>
-      </div>
-      <div style="margin-top:12px">
-        <p class="keep">문항과 결과 글은 <span class="em-ink">내가 쓰고</span>, 화면은 <span class="em-ink">에이전트에게 요청해</span> 만듭니다.</p>
-        <svg class="" style="display:block;width:100%;height:auto;margin-top:10px" viewBox="0 0 1152 64" role="img" aria-label="네 단계. 기획(문항 · 결과 글), 제작(화면), 공개(주소), 개선(서로 써 보고 고치기) 순서입니다."><text x="0" y="40" font-size="22" font-weight="800" style="fill:var(--ink)">네 단계 —</text><path class="a-fillx" style="--i:0;fill:var(--pr-soft);stroke:var(--pr-line)" stroke-width="2" d="M122 4 H354 L376 32 L354 60 H122 Z"/><text x="248" y="28" font-size="24" font-weight="800" text-anchor="middle" style="fill:var(--ink)">기획</text><text x="248" y="52" font-size="20" font-weight="600" text-anchor="middle" style="fill:var(--ink)">(문항 · 결과 글)</text><path class="a-fillx" style="--i:1;fill:var(--pr-soft);stroke:var(--pr-line)" stroke-width="2" d="M388 4 H620 L642 32 L620 60 H388 L410 32 Z"/><text x="515" y="28" font-size="24" font-weight="800" text-anchor="middle" style="fill:var(--ink)">제작</text><text x="515" y="52" font-size="20" font-weight="600" text-anchor="middle" style="fill:var(--ink)">(화면)</text><path class="a-fillx" style="--i:2;fill:var(--pr-soft);stroke:var(--pr-line)" stroke-width="2" d="M654 4 H886 L908 32 L886 60 H654 L676 32 Z"/><text x="781" y="28" font-size="24" font-weight="800" text-anchor="middle" style="fill:var(--ink)">공개</text><text x="781" y="52" font-size="20" font-weight="600" text-anchor="middle" style="fill:var(--ink)">(주소)</text><path class="a-fillx" style="--i:3;fill:var(--pr-soft);stroke:var(--pr-line)" stroke-width="2" d="M920 4 H1150 V60 H920 L942 32 Z"/><text x="1042" y="28" font-size="24" font-weight="800" text-anchor="middle" style="fill:var(--ink)">개선</text><text x="1042" y="52" font-size="20" font-weight="600" text-anchor="middle" style="fill:var(--ink)">(서로 써 보고 고치기)</text></svg>
       </div>
     </div>
   </div>
@@ -68,26 +99,24 @@
 <section class="slide cx-slide l-td-table" data-slide="O-02">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 18 V8 H18 M30 8 H40 V18 M40 30 V40 H30 M18 40 H8 V30" fill="none" style="stroke:var(--blue)" stroke-width="5"/><rect x="19" y="19" width="10" height="10" style="fill:var(--mint)"/></svg><span class="s-brand">FRAME</span>
-    <span class="s-line"></span><div class="s-team">블록 1</div>
+    <span class="s-line"></span><div class="s-team">블록 1<br>준비</div>
   </header>
-  <div class="cx-wrap">
-    <div class="cx-top">
-      <p class="s-eyebrow">운영 · 준비</p>
-      <h2 class="s-title">도구별 사용 조건</h2>
-    </div>
-    <div class="cx-main" style="grid-template-columns:1fr;align-content:start;row-gap:32px">
-      <table class="ftbl">
-        <colgroup><col width="206"><col width="430"><col width="326"><col width="190"></colgroup>
-        <thead><tr><th>도구</th><th><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" style="vertical-align:-5px;margin-right:8px"><g fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--blue)"><path d="M3 12 l9 -9 h8.5 v8.5 l-9 9 z"/><path d="M16.5 7.5 h.01"/></g></svg>요금제</th><th><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" style="vertical-align:-5px;margin-right:8px"><g fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--blue)"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M9 20 h6 M12 16 v4"/></g></svg>운영체제</th><th><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" style="vertical-align:-5px;margin-right:8px"><g fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--blue)"><path d="M6 3 h8 l4 4 v14 h-12 z"/><path d="M14 3 v4 h4 M9 12 h6 M9 16 h6"/></g></svg>읽는 파일</th></tr></thead>
-        <tbody>
-          <tr><td style="padding:16px 6px"><b>Codex</b>(ChatGPT 앱)</td><td style="padding:16px 6px"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" style="vertical-align:-5px;margin-right:8px"><g fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--mint-deep)"><path d="M5 12.5 l4.5 4.5 L19 7"/></g></svg>ChatGPT 모든 플랜에 포함, Free는 사용 제한</td><td style="padding:16px 6px">Windows · macOS</td><td style="padding:16px 6px"><span class="em-tag">AGENTS.md</span></td></tr>
-          <tr><td style="padding:16px 6px"><b>Claude Code</b> 데스크톱</td><td style="padding:16px 6px"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" style="vertical-align:-5px;margin-right:8px"><g fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--red)"><path d="M6 6 l12 12 M18 6 L6 18"/></g></svg>Free 플랜에는 없음, Pro 이상</td><td style="padding:16px 6px">Windows · macOS</td><td style="padding:16px 6px"><span class="em-tag">CLAUDE.md</span></td></tr>
-          <tr><td style="padding:16px 6px"><b>Antigravity</b>(2.0 앱)</td><td style="padding:16px 6px"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" style="vertical-align:-5px;margin-right:8px"><g fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--mint-deep)"><path d="M5 12.5 l4.5 4.5 L19 7"/></g></svg>개인 무료 플랜, 주간 사용 한도</td><td style="padding:16px 6px">Windows 10 이상 · macOS 12 이상</td><td style="padding:16px 6px"><span class="em-tag">AGENTS.md</span><br>(문서 기준)</td></tr>
-        </tbody>
-      </table>
-      <p class="keep" style="display:flex;align-items:center;margin:0"><svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true" style="vertical-align:-5px;margin-right:8px"><g fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--blue)"><circle cx="12" cy="12" r="9"/><path d="M3 12 h18 M12 3 c3.5 3 3.5 15 0 18 M12 3 c-3.5 3 -3.5 15 0 18"/></g></svg><span><b style="color:var(--ink)">Netlify</b> 계정 필요(사전 준비에서 가입 · 이메일 인증) · 공개 단계에서 로그인</span></p>
-      <p class="keep" style="display:flex;align-items:center;margin:0"><svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true" style="vertical-align:-5px;margin-right:8px"><g fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--blue)"><circle cx="12" cy="12" r="9"/><path d="M12 7 v5 l3 2"/></g></svg><span>무료 사용 한도는 <span class="em-line">수업 당일 다시 확인</span>합니다.</span></p>
-    </div>
+  <p class="kick">운영 · 준비</p>
+  <h2 class="s-title">도구별 <b class="kw">사용 조건</b></h2>
+  <div class="wcard" style="margin-top:26px;padding:10px 30px 8px">
+    <table class="ftbl">
+      <colgroup><col width="200"><col width="320"><col width="400"><col width="156"></colgroup>
+      <thead><tr><th>도구</th><th>요금제</th><th>운영체제</th><th>읽는 파일</th></tr></thead>
+      <tbody>
+        <tr><td style="padding:11px 12px;font-size:22px"><b>Codex</b><br>(ChatGPT 앱)</td><td style="padding:11px 12px;font-size:22px"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" style="vertical-align:-5px;margin-right:8px"><g fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--mint-deep)"><path d="M5 12.5 l4.5 4.5 L19 7"/></g></svg>ChatGPT 모든 플랜에 포함, Free는 사용 제한</td><td style="padding:11px 12px;font-size:22px">Windows · macOS</td><td style="padding:11px 12px;font-size:22px"><span class="em-tag">AGENTS.md</span></td></tr>
+        <tr><td style="padding:11px 12px;font-size:22px"><b>Claude Code</b><br>데스크톱</td><td style="padding:11px 12px;font-size:22px"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" style="vertical-align:-5px;margin-right:8px"><g fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--red)"><path d="M6 6 l12 12 M18 6 L6 18"/></g></svg>Free 플랜에는 없음, Pro 이상</td><td style="padding:11px 12px;font-size:22px">Windows · macOS</td><td style="padding:11px 12px;font-size:22px"><span class="em-tag">CLAUDE.md</span></td></tr>
+        <tr><td style="padding:11px 12px;font-size:22px"><b>Antigravity</b><br>(2.0 앱)</td><td style="padding:11px 12px;font-size:22px"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" style="vertical-align:-5px;margin-right:8px"><g fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--mint-deep)"><path d="M5 12.5 l4.5 4.5 L19 7"/></g></svg>개인 무료 플랜, 주간 사용 한도</td><td style="padding:11px 12px;font-size:22px">Windows&nbsp;10&nbsp;이상 · macOS&nbsp;12&nbsp;이상</td><td style="padding:11px 12px;font-size:22px"><span class="em-tag">AGENTS.md</span><br>(문서 기준)</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="band t-mist" style="--bh:136px;--bb:72px;padding:0 72px">
+    <span style="display:flex;align-items:center;gap:14px"><span class="ic" style="width:48px;height:48px"><svg viewBox="0 0 24 24" style="width:26px;height:26px"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3.5 3 3.5 15 0 18M12 3c-3.5 3-3.5 15 0 18"/></svg></span><span style="font-size:22px;color:var(--ink)"><b class="kw">Netlify</b> 계정 필요(사전 준비에서 가입 · 이메일 인증) · 공개 단계에서 로그인</span></span>
+    <span style="display:flex;align-items:center;gap:14px"><span class="ic" style="width:48px;height:48px"><svg viewBox="0 0 24 24" style="width:26px;height:26px"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><span style="font-size:22px;color:var(--ink)">무료 사용 한도는 <b class="kw">수업 당일 다시 확인</b>합니다.</span></span>
   </div>
 </section>
 
@@ -95,288 +124,317 @@
 <section class="slide cx-slide l-vf-numbered-stack" data-slide="O-03">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 18 V8 H18 M30 8 H40 V18 M40 30 V40 H30 M18 40 H8 V30" fill="none" style="stroke:var(--blue)" stroke-width="5"/><rect x="19" y="19" width="10" height="10" style="fill:var(--mint)"/></svg><span class="s-brand">FRAME</span>
-    <span class="s-line"></span><div class="s-team">블록 1</div>
+    <span class="s-line"></span><div class="s-team">블록 1<br>자료 받기</div>
   </header>
-  <div class="cx-wrap">
-    <div class="cx-top">
-      <p class="s-eyebrow">운영 · 자료 받기</p>
-      <h2 class="s-title">자료를 받아 압축을 풀고 에이전트 앱에서 폴더를 엽니다</h2>
+  <div class="bleed w40 t-sky"></div>
+  <p class="kick">운영 · 자료 받기</p>
+  <h2 class="s-title">자료를 받아 압축을 풀고 <br>에이전트 앱에서 폴더를 엽니다</h2>
+  <p class="lede"><b class="kw">5분</b> · 4단계</p>
+  <ol style="list-style:none;margin:26px 0 0;padding:0;display:grid;gap:28px">
+    <li style="display:grid;grid-template-columns:54px 1fr;column-gap:12px;align-items:start"><b class="kw" style="font-size:46px;line-height:1.0">1</b><p style="margin:0;font-size:25px;line-height:1.5;font-weight:600;color:var(--ink)">채팅에 올라온 링크로<br><span class="em-tag">실습자료_FRAME.zip</span>을 내려받습니다.</p></li>
+    <li style="display:grid;grid-template-columns:54px 1fr;column-gap:12px;align-items:start"><b class="kw" style="font-size:46px;line-height:1.0">2</b><p style="margin:0;font-size:25px;line-height:1.5;font-weight:600;color:var(--ink)">zip의 압축을 풉니다.</p></li>
+    <li style="display:grid;grid-template-columns:54px 1fr;column-gap:12px;align-items:start"><b class="kw" style="font-size:46px;line-height:1.0">3</b><p style="margin:0;font-size:25px;line-height:1.5;font-weight:600;color:var(--ink)">에이전트 앱을 엽니다.</p></li>
+    <li style="display:grid;grid-template-columns:54px 1fr;column-gap:12px;align-items:start"><b class="kw" style="font-size:46px;line-height:1.0">4</b><p style="margin:0;font-size:25px;line-height:1.5;font-weight:600;color:var(--ink)">앱의 폴더 열기 메뉴로<br>압축을 푼 <span class="em-tag">00_AI습관점검</span> 폴더를 엽니다.<br><span style="font-size:22px;font-weight:500;color:var(--gray-700)">(메뉴 이름은 도구마다 다름)</span></p></li>
+  </ol>
+  <div class="on-bleed" style="padding:56px 34px 72px;gap:30px">
+    <div style="display:flex;align-items:flex-start;gap:8px">
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px"><span class="ic"><svg viewBox="0 0 24 24"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg></span><b class="kw" style="font-size:22px">1</b></div>
+      <svg viewBox="0 0 24 24" style="flex:none;width:26px;height:26px;margin-top:19px;stroke:var(--mint-deep);fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px"><span class="ic"><svg viewBox="0 0 24 24"><path d="M8 3h7l4 4v11H8zM15 3v4h4M5 7v14h11"/></svg></span><b class="kw" style="font-size:22px">2</b></div>
+      <svg viewBox="0 0 24 24" style="flex:none;width:26px;height:26px;margin-top:19px;stroke:var(--mint-deep);fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px"><span class="ic"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="M3 9h18M6.5 6.5h.01M9.5 6.5h.01"/></svg></span><b class="kw" style="font-size:22px">3</b></div>
+      <svg viewBox="0 0 24 24" style="flex:none;width:26px;height:26px;margin-top:19px;stroke:var(--mint-deep);fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px"><span class="ic fill"><svg viewBox="0 0 24 24"><path d="M3 6.5h6.5l2 2.5H21v10.5H3z"/></svg></span><b class="kw" style="font-size:22px">4</b></div>
     </div>
-    <div class="cx-main" style="grid-template-columns:1fr;align-content:start;row-gap:16px">
-      <svg viewBox="0 0 1152 262" role="img" aria-label="자료 받기 네 단계. 채팅 링크에서 zip을 내려받고, 압축을 풀고, 에이전트 앱을 열고, 폴더 열기 메뉴로 폴더를 엽니다."><text x="10" y="54" font-size="44" font-weight="800" style="fill:var(--blue)" style="font-family:var(--font-mono)">1</text><circle cx="142" cy="40" r="38" style="fill:var(--blue-soft);stroke:var(--blue-line-strong)" stroke-width="2"/><g transform="translate(122 20) scale(1.6667)" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--blue)"><path d="M10 14 a4 4 0 0 0 5.7 0 l3 -3 a4 4 0 0 0 -5.7 -5.7 l-1 1"/><path d="M14 10 a4 4 0 0 0 -5.7 0 l-3 3 a4 4 0 0 0 5.7 5.7 l1 -1"/></g><text x="130" y="116" font-size="22" font-weight="600" text-anchor="middle" style="fill:var(--ink)">채팅에 올라온 링크로</text><rect x="23.3" y="128" width="213.4" height="28" rx="6" style="fill:var(--blue-soft)"/><text x="130" y="148" font-size="20" font-weight="800" text-anchor="middle" style="fill:var(--ink)" style="font-family:var(--font-mono)">실습자료_FRAME.zip을</text><text x="130" y="180" font-size="22" font-weight="600" text-anchor="middle" style="fill:var(--ink)">내려받습니다.</text><path class="v-edge hi" d="M252 40 H286 M274 28 L288 40 L274 52"/><text x="314" y="54" font-size="44" font-weight="800" style="fill:var(--blue)" style="font-family:var(--font-mono)">2</text><circle cx="446" cy="40" r="38" style="fill:var(--blue-soft);stroke:var(--blue-line-strong)" stroke-width="2"/><g transform="translate(426 20) scale(1.6667)" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--blue)"><path d="M8 3 h7 l4 4 v11 h-11 z"/><path d="M15 3 v4 h4"/><path d="M5 7 v14 h11"/></g><text x="434" y="116" font-size="22" font-weight="600" text-anchor="middle" style="fill:var(--ink)">zip의 압축을</text><text x="434" y="148" font-size="22" font-weight="600" text-anchor="middle" style="fill:var(--ink)">풉니다.</text><path class="v-edge hi" d="M556 40 H590 M578 28 L592 40 L578 52"/><text x="618" y="54" font-size="44" font-weight="800" style="fill:var(--blue)" style="font-family:var(--font-mono)">3</text><circle cx="750" cy="40" r="38" style="fill:var(--blue-soft);stroke:var(--blue-line-strong)" stroke-width="2"/><g transform="translate(730 20) scale(1.6667)" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--blue)"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="M3 9 h18 M6.5 6.5 h.01 M9.5 6.5 h.01"/></g><text x="738" y="116" font-size="22" font-weight="600" text-anchor="middle" style="fill:var(--ink)">에이전트 앱을</text><text x="738" y="148" font-size="22" font-weight="600" text-anchor="middle" style="fill:var(--ink)">엽니다.</text><path class="v-edge hi" d="M860 40 H894 M882 28 L896 40 L882 52"/><text x="922" y="54" font-size="44" font-weight="800" style="fill:var(--blue)" style="font-family:var(--font-mono)">4</text><circle cx="1054" cy="40" r="38" style="fill:var(--blue-soft);stroke:var(--blue-line-strong)" stroke-width="2"/><g transform="translate(1034 20) scale(1.6667)" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--blue)"><path d="M3 6.5 h6.5 l2 2.5 H21 v10.5 H3 z"/></g><text x="1042" y="116" font-size="22" font-weight="600" text-anchor="middle" style="fill:var(--ink)">앱의 폴더 열기 메뉴로</text><rect x="930.5" y="128" width="223.1" height="28" rx="6" style="fill:var(--blue-soft)"/><text x="1042" y="148" font-size="20" font-weight="800" text-anchor="middle" style="fill:var(--ink)" style="font-family:var(--font-mono)">압축을 푼 00_AI습관점검</text><text x="1042" y="180" font-size="22" font-weight="600" text-anchor="middle" style="fill:var(--ink)">폴더를 엽니다.</text><text x="1042" y="218" font-size="20" font-weight="600" text-anchor="middle" style="fill:var(--gray-700)">(메뉴 이름은 도구마다 다름)</text><path d="M1027.9 226 h108.2" style="stroke:var(--blue)" stroke-width="3"/></svg>
-      <div style="display:grid;grid-template-columns:1fr 640px;align-items:center;column-gap:24px">
-        <p class="keep" style="font-size:26px"><span class="em-num" data-count>5분</span> · 4단계</p>
-        <div class="win app" style="width:640px;margin-left:auto">
-          <div class="win-bar"><i></i><i></i><i></i><b>에이전트 앱 · 화면 모형</b></div>
-          <div class="win-body">
-            <div class="win-side"><p>작업 폴더</p><p class="path">00_AI습관점검</p><p>대화</p><p class="path">새 대화</p></div>
-            <div class="win-main" style="min-height:128px;display:flex;flex-direction:column;justify-content:flex-end"><p class="win-url" style="flex:0 0 auto">메시지 입력</p></div>
-          </div>
-        </div>
+    <div class="win app" style="width:100%">
+      <div class="win-bar"><i></i><i></i><i></i><b>에이전트 앱 · 화면 모형</b></div>
+      <div class="win-body" style="grid-template-columns:190px 1fr">
+        <div class="win-side"><p>작업 폴더</p><p class="path">00_AI습관점검</p><p class="path" style="padding-left:16px">문항.txt</p><p class="path" style="padding-left:16px">결과글.txt</p><p>대화</p><p class="path">새 대화</p></div>
+        <div class="win-main" style="min-height:190px;display:flex;flex-direction:column;justify-content:flex-end;padding:14px 16px 16px"><p class="win-url" style="flex:0 0 auto;margin-left:0">메시지 입력</p></div>
       </div>
-    </div>
-  </div>
-</section>
-
-<!-- O-04 -->
-<section class="slide cx-slide l-ct-statement" data-slide="O-04">
-  <header class="s-head">
-    <svg class="s-logo" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 18 V8 H18 M30 8 H40 V18 M40 30 V40 H30 M18 40 H8 V30" fill="none" style="stroke:var(--blue)" stroke-width="5"/><rect x="19" y="19" width="10" height="10" style="fill:var(--mint)"/></svg><span class="s-brand">FRAME</span>
-    <span class="s-line"></span><div class="s-team">블록 1</div>
-  </header>
-  <div class="cx-wrap">
-    <div class="cx-top">
-      <p class="s-eyebrow">운영 · 도움 요청</p>
-      <h2 class="s-title">막혔을 때 채팅에 남기는 말</h2>
-    </div>
-    <div class="cx-main" style="grid-template-columns:1fr;align-content:start;row-gap:14px">
-      <div class="rule def"><p>막히면 채팅에 <span class="em-ink">한 줄</span>을 남깁니다.</p></div>
-      <svg viewBox="0 0 1152 372" role="img" aria-label="채팅 창 모형. 내 말풍선에 막힘 · 실습 1 · ② 3단계라고 적혀 있고, 세 부분은 차례로 막힘, 어디, 장 번호와 단계입니다."><rect x="40" y="1" width="1072" height="370" rx="18" style="fill:var(--white);stroke:var(--gray-400)" stroke-width="2"/><path d="M40 46 H1112" class="v-axis" style="stroke-width:1.5"/><g style="fill:var(--gray-400)" opacity=".6"><circle cx="66" cy="24" r="5"/><circle cx="84" cy="24" r="5"/><circle cx="102" cy="24" r="5"/></g><text x="124" y="30" font-size="17" font-weight="700" style="fill:var(--gray-700)">채팅</text><circle cx="80" cy="86" r="16" style="fill:var(--surface);stroke:var(--gray-400)" stroke-width="2"/><rect x="110" y="64" width="300" height="44" rx="14" style="fill:var(--white);stroke:var(--gray-400)" stroke-width="2"/><path d="M130 86 h260" fill="none" stroke-width="7" stroke-linecap="round" style="stroke:var(--periwinkle)"/><circle cx="80" cy="144" r="16" style="fill:var(--surface);stroke:var(--gray-400)" stroke-width="2"/><rect x="110" y="122" width="420" height="44" rx="14" style="fill:var(--white);stroke:var(--gray-400)" stroke-width="2"/><path d="M130 144 h380" fill="none" stroke-width="7" stroke-linecap="round" style="stroke:var(--periwinkle)"/><path style="fill:var(--blue-soft);stroke:var(--blue-line-strong)" stroke-width="2" d="M612 176 H1050 A20 20 0 0 1 1070 196 V240 A20 20 0 0 1 1050 260 H1040 L1056 286 L1014 260 H612 A20 20 0 0 1 592 240 V196 A20 20 0 0 1 612 176 Z"/><text x="648" y="228" font-size="30" font-weight="800" style="fill:var(--ink)">막힘</text><text x="752" y="228" font-size="30" font-weight="800" style="fill:var(--ink)">실습 1</text><text x="892" y="228" font-size="30" font-weight="800" style="fill:var(--ink)">② 3단계</text><text x="726" y="228" font-size="30" font-weight="800" text-anchor="middle" style="fill:var(--gray-400)">·</text><text x="866" y="228" font-size="30" font-weight="800" text-anchor="middle" style="fill:var(--gray-400)">·</text><text x="520" y="330" font-size="19" font-weight="800" style="fill:var(--blue)">형식</text><path class="v-edge hi" d="M644 290 V298 H704 V290"/><rect x="644.7" y="306" width="58.6" height="36" rx="8" style="fill:var(--blue-soft)"/><text x="674.0" y="331" font-size="20" font-weight="800" text-anchor="middle" style="fill:var(--ink)">막힘</text><path class="v-edge hi" d="M748 290 V298 H844 V290"/><rect x="766.7" y="306" width="58.6" height="36" rx="8" style="fill:var(--blue-soft)"/><text x="796.0" y="331" font-size="20" font-weight="800" text-anchor="middle" style="fill:var(--ink)">어디</text><path class="v-edge hi" d="M888 290 V298 H1016 V290"/><rect x="883.7" y="306" width="136.6" height="36" rx="8" style="fill:var(--blue-soft)"/><text x="952.0" y="331" font-size="20" font-weight="800" text-anchor="middle" style="fill:var(--ink)">장 번호와 단계</text></svg>
     </div>
   </div>
 </section>
 
 <!-- C-01 -->
-<section class="slide cx-slide f-concept l-dc-annotated" data-slide="C-01">
+<section class="slide" data-slide="C-01">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 18 V8 H18 M30 8 H40 V18 M40 30 V40 H30 M18 40 H8 V30" fill="none" style="stroke:var(--blue)" stroke-width="5"/><rect x="19" y="19" width="10" height="10" style="fill:var(--mint)"/></svg><span class="s-brand">FRAME</span>
     <span class="s-line"></span><div class="s-team">블록 1<br>AI의 원리</div>
   </header>
-  <div class="cx-wrap">
-    <div class="cx-top">
-      <p class="s-eyebrow">개념 · AI의 원리</p>
-      <h2 class="s-title"><span class="mk-solid">다음 말 예측</span> — 글 뒤에 올 조각을 확률로 고르는 방식</h2>
+  <div class="bleed w50 t-mint"></div>
+  <p class="kick">개념 · AI의 원리</p>
+  <h2 class="s-title"><b class="kw">다음 말 예측</b> —<br>
+    글 뒤에 올 조각을<br>
+    확률로 고르는 방식</h2>
+  <div class="rule def" style="margin-top:28px"><span class="lab">정의</span><p>AI는 지금까지의 글 뒤에 올 다음 조각을 <b class="kw">확률에 따라</b> 하나씩 골라 이어 붙여 답을 만듭니다.</p></div>
+  <div class="rule ana" style="margin-top:20px"><span class="lab">비유</span><p>휴대폰 자동완성 추천어를 수백 번 이어서 누르는 것과 비슷합니다.</p></div>
+  <p class="keep" style="margin-top:16px;font-weight:700;color:var(--ink)">같은 질문에도 <b class="kw">답이 다를 수 있습니다.</b></p>
+  <div class="on-bleed" data-w="step" data-state="1" data-max="3">
+    <div class="wg-row" style="align-self:stretch;margin:0"><button class="wg-btn" type="button" data-next>다음 말 뽑기</button><button class="wg-link" type="button" data-reset>처음으로</button></div>
+    <div class="wcard" style="align-self:stretch">
+      <span class="lab">지금까지의 글</span>
+      <p style="margin:2px 0 0;font-size:34px;font-weight:800;line-height:1.3;letter-spacing:-.03em;color:var(--ink)">오늘 점심은 <b class="kw is-on" data-show="1">비빔밥</b><b class="kw" data-show="2">김치찌개</b><b class="kw" data-show="3">국수</b></p>
+      <span class="lab" style="margin-top:16px">다음 조각 후보 · 예시 값</span>
+      <svg viewBox="0 0 488 236" role="img" aria-label="다음 말 후보와 예시 확률. 비빔밥 40, 국수 30, 김치찌개 20, 샐러드 10. 뽑을 때마다 고른 조각이 달라집니다." style="display:block;width:100%;height:auto">
+        <line class="v-axis" x1="0" y1="196" x2="488" y2="196"/>
+        <rect class="a-grow" x="19" y="52" width="84" height="144" rx="8" style="fill:var(--blue-line-strong)"/>
+        <rect class="a-grow w-in is-on" data-hl="1" x="19" y="52" width="84" height="144" rx="8" style="fill:var(--blue)"/>
+        <text x="61" y="42" font-size="28" font-weight="800" text-anchor="middle" style="fill:var(--ink)">40%</text>
+        <text x="61" y="226" font-size="22" font-weight="700" text-anchor="middle" style="fill:var(--ink)">비빔밥</text>
+        <rect class="a-grow" x="141" y="88" width="84" height="108" rx="8" style="fill:var(--blue-line-strong)"/>
+        <rect class="a-grow w-in" data-hl="3" x="141" y="88" width="84" height="108" rx="8" style="fill:var(--blue)"/>
+        <text x="183" y="78" font-size="28" font-weight="800" text-anchor="middle" style="fill:var(--ink)">30%</text>
+        <text x="183" y="226" font-size="22" font-weight="700" text-anchor="middle" style="fill:var(--ink)">국수</text>
+        <rect class="a-grow" x="263" y="124" width="84" height="72" rx="8" style="fill:var(--blue-line-strong)"/>
+        <rect class="a-grow w-in" data-hl="2" x="263" y="124" width="84" height="72" rx="8" style="fill:var(--blue)"/>
+        <text x="305" y="114" font-size="28" font-weight="800" text-anchor="middle" style="fill:var(--ink)">20%</text>
+        <text x="305" y="226" font-size="22" font-weight="700" text-anchor="middle" style="fill:var(--ink)">김치찌개</text>
+        <rect class="a-grow" x="385" y="160" width="84" height="36" rx="8" style="fill:var(--blue-line-strong)"/>
+        <text x="427" y="150" font-size="28" font-weight="800" text-anchor="middle" style="fill:var(--ink)">10%</text>
+        <text x="427" y="226" font-size="22" font-weight="700" text-anchor="middle" style="fill:var(--ink)">샐러드</text>
+      </svg>
+      <p style="margin:4px 0 0;font-size:22px;line-height:1.45;color:var(--gray-700)">(막대 그림의 확률은 설명을 위한 예시 값입니다)</p>
     </div>
-    <div class="cx-main" style="grid-template-columns:400px 1fr" data-w="step" data-state="1" data-max="3">
-      <div class="cx-text" style="justify-content:center">
-        <div class="rule def"><span class="lab">정의</span><p>AI는 지금까지의 글 뒤에 올 다음 조각을 <span class="mk">확률에 따라</span> 하나씩 골라 이어 붙여 답을 만듭니다.</p></div>
-        <div class="wg-row" style="margin-top:0"><button class="wg-link" type="button" data-next>다음 말 뽑기</button><button class="wg-link" type="button" data-reset>처음으로</button></div>
-      </div>
-      <figure class="cx-fig bare">
-        <svg viewBox="0 0 708 372" role="img" aria-label="다음 말 후보와 예시 확률. 비빔밥 40, 국수 30, 김치찌개 20, 샐러드 10. 뽑을 때마다 고른 조각이 달라집니다."><text x="0" y="18" font-size="17" font-weight="700" style="fill:var(--gray-700)">지금까지의 글</text><text x="708" y="20" font-size="20" font-weight="700" text-anchor="end" style="fill:var(--ink)">다음 조각 후보 · 예시 값</text><text x="0" y="60" font-size="26" font-weight="800" style="fill:var(--ink)">오늘 점심은</text><rect class="v-node" x="140" y="30" width="110" height="40" rx="7" style="stroke-dasharray:6 4"/><g data-show="1" class="is-on"><rect x="140" y="30" width="110" height="40" rx="7" style="fill:var(--mint)"/><text x="195.0" y="59" font-size="26" font-weight="800" text-anchor="middle" style="fill:var(--on-mint)">비빔밥</text></g><g data-show="2"><rect x="140" y="30" width="134" height="40" rx="7" style="fill:var(--mint)"/><text x="207.0" y="59" font-size="26" font-weight="800" text-anchor="middle" style="fill:var(--on-mint)">김치찌개</text></g><g data-show="3"><rect x="140" y="30" width="84" height="40" rx="7" style="fill:var(--mint)"/><text x="182.0" y="59" font-size="26" font-weight="800" text-anchor="middle" style="fill:var(--on-mint)">국수</text></g><line class="v-axis" x1="0" y1="246" x2="708" y2="246"/><rect class="v-bar a-grow is-on" data-hl="1" style="--i:0" x="38" y="110.0" width="100" height="136.0" rx="6"/><text x="88" y="100.0" font-size="28" font-weight="800" text-anchor="middle" style="fill:var(--ink)">40%</text><text x="88" y="274" font-size="22" font-weight="700" text-anchor="middle" style="fill:var(--ink)">비빔밥</text><rect class="v-bar a-grow" data-hl="3" style="--i:1" x="215" y="144.0" width="100" height="102.0" rx="6"/><text x="265" y="134.0" font-size="28" font-weight="800" text-anchor="middle" style="fill:var(--ink)">30%</text><text x="265" y="274" font-size="22" font-weight="700" text-anchor="middle" style="fill:var(--ink)">국수</text><rect class="v-bar a-grow" data-hl="2" style="--i:2" x="392" y="178.0" width="100" height="68.0" rx="6"/><text x="442" y="168.0" font-size="28" font-weight="800" text-anchor="middle" style="fill:var(--ink)">20%</text><text x="442" y="274" font-size="22" font-weight="700" text-anchor="middle" style="fill:var(--ink)">김치찌개</text><rect class="v-bar a-grow" style="--i:3" x="569" y="212.0" width="100" height="34.0" rx="6"/><text x="619" y="202.0" font-size="28" font-weight="800" text-anchor="middle" style="fill:var(--ink)">10%</text><text x="619" y="274" font-size="22" font-weight="700" text-anchor="middle" style="fill:var(--ink)">샐러드</text><text x="0" y="306" font-size="22" font-weight="600" style="fill:var(--gray-700)">(막대 그림의 확률은 설명을 위한 예시 값입니다)</text><g class="w-in is-on" data-from="1"><text x="0" y="340" font-size="17" font-weight="700" style="fill:var(--gray-700)">1번째</text><text x="0" y="366" font-size="22" font-weight="800" style="fill:var(--ink)">오늘 점심은 비빔밥</text></g><g class="w-in" data-from="2"><text x="240" y="340" font-size="17" font-weight="700" style="fill:var(--gray-700)">2번째</text><text x="240" y="366" font-size="22" font-weight="800" style="fill:var(--ink)">오늘 점심은 김치찌개</text></g><g class="w-in" data-from="3"><text x="480" y="340" font-size="17" font-weight="700" style="fill:var(--gray-700)">3번째</text><text x="480" y="366" font-size="22" font-weight="800" style="fill:var(--ink)">오늘 점심은 국수</text></g></svg>
-      </figure>
-    </div>
-<svg viewBox="0 0 1152 86" style="display:block;width:100%;height:auto;margin-top:10px" ><text x="0.0" y="26.5" font-size="19" font-weight="800" style="fill:var(--blue)">비유</text><g transform="translate(46.8 6.0) scale(1.1667)" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--blue)"><rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M11 18.3 h2"/></g><text x="84.8" y="27.5" font-size="22" font-weight="600" style="fill:var(--ink)">휴대폰 자동완성 추천어를 수백 번 이어서 누르는 것과 비슷합니다.</text><g transform="translate(0.0 52.0) scale(1.1667)" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--blue)"><path d="M16 4 h4 v4 M4 20 L20 4 M20 16 v4 h-4 M14.5 14.5 L20 20 M4 4 l5 5"/></g><text x="38.0" y="73.5" font-size="22" font-weight="600" style="fill:var(--ink)">같은 질문에도 </text><rect x="160.7" y="61.2" width="188.5" height="11.0" style="fill:var(--mint)"/><text x="163.7" y="73.5" font-size="22" font-weight="700" style="fill:var(--ink)">답이 다를 수 있습니다</text><text x="350.1" y="73.5" font-size="22" font-weight="600" style="fill:var(--ink)">.</text></svg>
-
   </div>
 </section>
 
 <!-- C-04 -->
-<section class="slide cx-slide f-concept l-cs-before-after" data-slide="C-04">
+<section class="slide" data-slide="C-04">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 18 V8 H18 M30 8 H40 V18 M40 30 V40 H30 M18 40 H8 V30" fill="none" style="stroke:var(--blue)" stroke-width="5"/><rect x="19" y="19" width="10" height="10" style="fill:var(--mint)"/></svg><span class="s-brand">FRAME</span>
     <span class="s-line"></span><div class="s-team">블록 1<br>AI의 경향</div>
   </header>
-  <div class="cx-wrap">
-    <div class="cx-top">
-      <p class="s-eyebrow">개념 · AI의 경향</p>
-      <h2 class="s-title"><span class="mk-solid">환각</span> — 사실이 아닌 내용을 사실처럼 만드는 현상</h2>
+  <div class="bleed w40 t-sky"></div>
+  <p class="kick">개념 · AI의 경향</p>
+  <h2 class="s-title"><b class="kw">환각</b> — 사실이 아닌 내용을<br>
+    사실처럼 만드는 현상</h2>
+  <div class="rule def" style="margin-top:24px"><span class="lab">정의</span><p>환각은 사실이 아닌 내용을 <b class="kw">사실처럼</b> 만들어 내는 현상입니다.</p></div>
+  <div class="rule ana" style="margin-top:18px"><span class="lab">비유</span><p>빈칸 채우기 문제에서 문맥에는 맞지만 정답은 아닌 말을 써 넣는 것과 같습니다.</p></div>
+  <div class="rule do" style="margin-top:18px"><span class="lab">사례</span><p>2023년 미국 뉴욕 연방법원은 <b class="kw">존재하지 않는 판례</b>를 인용한 서면을 낸 변호사 2명과 로펌에 5,000달러 제재를 내렸습니다.</p></div>
+  <p class="keep" style="margin-top:12px;font-size:22px;color:var(--gray-700)">출처 <span style="white-space:nowrap">Mata v. Avianca, Inc.(2023)</span> 사건 정리</p>
+  <div class="on-bleed" data-w="toggle" data-state="0" style="gap:14px">
+    <div class="wg-row" style="align-self:stretch;margin:0"><button class="wg-btn" type="button" data-toggle data-labels="출처 확인|처음 상태로" aria-pressed="false">출처 확인</button></div>
+    <div class="wcard w-dim" data-hl="1" style="align-self:stretch">
+      <span class="lab">AI 답</span>
+      <p style="margin:4px 0 0;font-size:22px;line-height:1.45;color:var(--ink)">네, 비슷한 경우를 다룬 판결이 있습니다.</p>
+      <p style="margin:6px 0 0;font-size:24px;font-weight:800;line-height:1.4;color:var(--ink)">「○○ 대 △△ 항공」 판결입니다.</p>
     </div>
-    <div class="cx-main" style="grid-template-columns:460px 1fr" data-w="toggle" data-state="0">
-      <div class="cx-text" style="justify-content:space-between">
-        <div class="rule def"><span class="lab">정의</span><p>환각은 사실이 아닌 내용을 <span class="em-ink">사실처럼</span> 만들어 내는 현상입니다.</p></div>
-        <svg viewBox="0 0 460 206" role="img" aria-label="사례. 2023년 미국 뉴욕 연방법원은 존재하지 않는 판례를 인용한 서면을 낸 변호사 2명과 로펌에 5,000달러 제재를 내렸습니다." style="display:block;width:100%;height:auto"><text x="0" y="20" font-size="19" font-weight="800" style="fill:var(--blue)">사례</text><g transform="translate(0 34) scale(1.5000)" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--blue)"><path d="M3 9.5 L12 4 l9 5.5 z"/><path d="M5.5 10 v7 M10 10 v7 M14 10 v7 M18.5 10 v7 M3 20 h18"/></g><text x="52" y="60" font-size="22" font-weight="600" style="fill:var(--ink)">2023년 미국 뉴욕 연방법원은</text><path class="v-edge hi" d="M18 76 V92 M12 86 L18 94 L24 86" style="stroke-width:2.5"/><g transform="translate(0 98) scale(1.5000)" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--blue)"><path d="M6 3 h8 l4 4 v14 h-12 z"/><path d="M14 3 v4 h4 M9 12 h6 M9 16 h6"/></g><text x="52" y="116" font-size="22" font-weight="600" style="fill:var(--ink)"><tspan font-weight="800" style="fill:var(--blue)">존재하지 않는 판례</tspan>를 인용한 서면을 낸</text><text x="52" y="144" font-size="22" font-weight="600" style="fill:var(--ink)">변호사 2명과 로펌에</text><path class="v-edge hi" d="M18 156 V168 M12 162 L18 170 L24 162" style="stroke-width:2.5"/><g transform="translate(0 170) scale(1.5000)" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--blue)"><rect x="3" y="7" width="18" height="10" rx="1.8"/><circle cx="12" cy="12" r="2.6"/></g><text x="52" y="196" font-size="22" font-weight="600" style="fill:var(--ink)">5,000달러 제재를 내렸습니다.</text></svg>
-      </div>
-      <figure class="cx-fig">
-        <div class="wg-row top"><button class="wg-link" type="button" data-toggle data-labels="출처 확인|처음 상태로" aria-pressed="false">출처 확인</button></div>
-        <svg viewBox="0 0 596 300" role="group" aria-label="예시 화면. AI가 판례를 들어 답한 뒤 같은 판례를 검색하면 검색 결과가 없습니다."><g class="w-dim" data-hl="1"><rect x="1" y="1" width="262" height="274" rx="14" style="fill:var(--white);stroke:var(--gray-400)" stroke-width="2"/><text x="20" y="34" font-size="17" font-weight="700" style="fill:var(--gray-700)">AI 답</text><g transform="translate(222 14) scale(1.0833)" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--gray-400)"><path d="M12 3 l2 6 6 2 -6 2 -2 6 -2 -6 -6 -2 6 -2 z"/></g><text x="20" y="94" font-size="22" font-weight="600" style="fill:var(--ink)">네, 비슷한 경우를</text><text x="20" y="126" font-size="22" font-weight="600" style="fill:var(--ink)">다룬 판결이 있습니다.</text><text x="20" y="196" font-size="24" font-weight="800" style="fill:var(--ink)">「○○ 대 △△ 항공」</text><text x="20" y="230" font-size="24" font-weight="800" style="fill:var(--ink)">판결입니다.</text></g><path class="v-edge hi" d="M272 138 H322 M308 124 L324 138 L308 152"/><text x="297" y="114" font-size="17" font-weight="700" text-anchor="middle" style="fill:var(--gray-700)">출처 확인</text><rect x="333" y="1" width="262" height="274" rx="14" style="fill:var(--white);stroke:var(--gray-400)" stroke-width="2"/><text x="352" y="34" font-size="17" font-weight="700" style="fill:var(--gray-700)">판례 검색</text><g transform="translate(352 64) scale(2.6667)" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--gray-700)"><circle cx="10.5" cy="10.5" r="6"/><path d="M15 15 l5.5 5.5"/></g><text x="352" y="170" font-size="20" font-weight="700" style="fill:var(--ink)">「○○ 대 △△ 항공」</text><text x="352" y="224" font-size="26" font-weight="800" style="fill:var(--red)">✕ 검색 결과 없음</text><path class="em-ring a-draw" data-show="1" pathLength="100" d="M348 206 C400 200 500 200 566 204 C584 206 588 218 582 228 C574 240 500 242 440 242 C390 242 344 240 342 226 C340 214 346 208 356 206"/><text x="596" y="298" font-size="17" font-weight="600" text-anchor="end" style="fill:var(--gray-700)">예시 화면입니다</text></svg>
-      </figure>
+    <div style="display:flex;align-items:center;gap:10px;font-size:20px;font-weight:700;color:var(--gray-700)"><svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--blue)" aria-hidden="true"><path d="M12 4v15M6 13l6 6 6-6"/></svg>출처 확인</div>
+    <div class="wcard" style="align-self:stretch">
+      <span class="lab">판례 검색</span>
+      <p style="margin:4px 0 0;display:flex;align-items:center;gap:12px;font-size:22px;font-weight:700;line-height:1.4;color:var(--ink)"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--gray-700);flex:none" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6"/><path d="M15 15l5.5 5.5"/></svg>「○○ 대 △△ 항공」</p>
+      <p style="margin:12px 0 4px;font-size:28px;font-weight:800;line-height:1.3;color:var(--red)"><span class="is-on" data-show="0">✕ 검색 결과 없음</span><span class="ring-host" data-show="1">✕ 검색 결과 없음</span></p>
     </div>
-<svg viewBox="0 0 1152 40" style="display:block;width:100%;height:auto;margin-top:10px" ><text x="0.0" y="26.5" font-size="19" font-weight="800" style="fill:var(--blue)">비유</text><g transform="translate(46.8 6.0) scale(1.1667)" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--blue)"><path d="M4 20 l1 -4 L16 5 l3 3 L8 19 z"/><path d="M14 7 l3 3"/></g><text x="84.8" y="27.5" font-size="22" font-weight="600" style="fill:var(--ink)">빈칸 채우기 문제에서 문맥에는 맞지만 정답은 아닌 말을 써 넣는 것과 같습니다.</text></svg>
-    <p class="cx-src"><span>출처 <span>Mata v. Avianca, Inc.</span>(2023) 사건 정리</span></p>
+    <p style="margin:0;align-self:flex-end;font-size:18px;font-weight:600;color:var(--gray-700)">예시 화면입니다</p>
   </div>
 </section>
 
 <!-- C-05 -->
-<!-- ============ C-05 · L-td-mapping-rows — 성질 → 확인할 곳 대응 2행 ============ -->
-<section class="slide cx-slide l-td-mapping-rows" data-slide="C-05">
+<section class="slide" data-slide="C-05">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 18 V8 H18 M30 8 H40 V18 M40 30 V40 H30 M18 40 H8 V30" fill="none" style="stroke:var(--blue)" stroke-width="5"/><rect x="19" y="19" width="10" height="10" style="fill:var(--mint)"/></svg><span class="s-brand">FRAME</span>
     <span class="s-line"></span><div class="s-team">블록 1<br>AI의 경향</div>
   </header>
-  <div class="cx-wrap">
-    <div class="cx-top rv" style="--i:0">
-      <p class="s-eyebrow">개념 · AI의 경향</p>
-      <h2 class="s-title">답을 받은 뒤 확인할 곳</h2>
+  <p class="kick">개념 · AI의 경향</p>
+  <h2 class="s-title">답을 받은 뒤 <b class="kw">확인할 곳</b></h2>
+  <div class="band t-mint" role="group" aria-label="매번 다른 답은 중요한 답을 한 번 더 물어 비교합니다. 그럴듯한 오류는 이름, 숫자, 인용을 원문에서 찾아봅니다." style="--bb:auto;--bt:176px;--bh:452px;gap:28px 0">
+    <div class="wcard" style="flex:1 1 100%;display:flex;align-items:center;gap:30px;padding:38px 44px">
+      <span class="ic lg fill"><svg viewBox="0 0 24 24"><path d="M9 3h7l3 3v11H9z"/><path d="M5 7v14h11"/></svg></span>
+      <b style="flex:0 0 300px;font-size:40px;font-weight:800;line-height:1.25;letter-spacing:-.03em;color:var(--ink)">매번 다른 답</b>
+      <svg viewBox="0 0 72 24" width="72" height="24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--blue);flex:none" aria-hidden="true"><path d="M4 12h60M52 4l12 8-12 8"/></svg>
+      <span class="ic lg fill"><svg viewBox="0 0 24 24"><path d="M5 8h13l-3-3.5M19 16H6l3 3.5"/></svg></span>
+      <p style="margin:0;font-size:32px;font-weight:500;line-height:1.4;letter-spacing:-.03em;color:var(--ink)">중요한 답은 <b class="kw">한 번 더</b><br>
+        물어 비교합니다</p>
     </div>
-    <div class="cx-main" style="grid-template-columns:1fr;align-content:center">
-      <svg viewBox="0 0 1152 340" style="display:block;width:100%;height:auto" role="group" aria-label="매번 다른 답은 중요한 답을 한 번 더 물어 비교합니다. 그럴듯한 오류는 이름, 숫자, 인용을 원문에서 찾아봅니다.">
-        <g class="rv" style="--i:1">
-          <g fill="none" stroke-width="2" style="stroke:var(--gray-400)">
-            <rect x="10" y="22" width="72" height="92" rx="8" style="fill:var(--white)"/>
-            <rect x="52" y="40" width="72" height="92" rx="8" style="fill:var(--white)"/>
-          </g>
-          <g fill="none" stroke-width="6" stroke-linecap="round" style="stroke:var(--periwinkle)">
-            <path d="M24 48 h44 M24 64 h30 M24 80 h44"/>
-            <path d="M66 66 h44 M66 82 h20 M66 98 h38"/>
-          </g>
-          <text font-size="30" font-weight="800" x="156" y="92" style="fill:var(--ink)">매번 다른 답</text>
-          <path class="a-draw" pathLength="100" fill="none" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--blue)" d="M400 82 H470 M454 66 L472 82 L454 98"/>
-          <g fill="none" stroke-width="2" style="stroke:var(--gray-400)"><rect x="508" y="54" width="36" height="48" rx="5" style="fill:var(--white)"/><rect x="582" y="54" width="36" height="48" rx="5" style="fill:var(--white)"/></g>
-          <path fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--blue)" d="M551 78 H575 M557 71 L550 78 L557 85 M569 71 L576 78 L569 85"/>
-          <text font-size="25" font-weight="600" x="632" y="90" style="fill:var(--ink)">중요한 답은 <tspan font-weight="800" style="fill:var(--blue)">한 번 더</tspan> 물어 비교합니다</text>
-        </g>
-        <line class="v-axis" x1="0" y1="170" x2="1152" y2="170"/>
-        <g class="rv" style="--i:3">
-          <g transform="translate(0,190)">
-            <rect x="26" y="0" width="84" height="104" rx="8" style="fill:var(--white);stroke:var(--gray-400)" stroke-width="2"/>
-            <g fill="none" stroke-width="6" stroke-linecap="round" style="stroke:var(--periwinkle)"><path d="M42 26 h50 M42 76 h50"/></g>
-            <rect x="38" y="40" width="60" height="22" rx="4" style="fill:var(--mint)"/>
-            <circle cx="108" cy="8" r="16" style="fill:var(--white);stroke:var(--red)" stroke-width="3"/><path d="M101 1 L115 15 M115 1 L101 15" fill="none" stroke-width="3.5" stroke-linecap="round" style="stroke:var(--red)"/>
-          </g>
-          <text font-size="30" font-weight="800" x="156" y="256" style="fill:var(--ink)">그럴듯한 오류</text>
-          <path class="a-draw" pathLength="100" fill="none" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--blue)" d="M400 246 H470 M454 230 L472 246 L454 262"/>
-          <g transform="translate(508,216)">
-            <rect x="0" y="0" width="56" height="70" rx="6" style="fill:var(--white);stroke:var(--gray-400)" stroke-width="2"/>
-            <g fill="none" stroke-width="5" stroke-linecap="round" style="stroke:var(--periwinkle)"><path d="M12 18 h32 M12 34 h22"/></g>
-            <circle cx="50" cy="52" r="18" style="fill:var(--white);stroke:var(--blue)" stroke-width="4"/><path d="M63 65 L78 80" fill="none" stroke-width="6" stroke-linecap="round" style="stroke:var(--blue)"/>
-          </g>
-          <text font-size="25" font-weight="600" x="632" y="254" style="fill:var(--ink)">이름 · 숫자 · 인용은 <tspan font-weight="800" style="fill:var(--blue)">원문에서 찾아봅니다</tspan></text>
-        </g>
-      </svg>
+    <div class="wcard" style="flex:1 1 100%;display:flex;align-items:center;gap:30px;padding:38px 44px">
+      <span class="ic lg fill"><svg viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6z"/><path d="M9.5 11.5l5 5M14.5 11.5l-5 5"/></svg></span>
+      <b style="flex:0 0 300px;font-size:40px;font-weight:800;line-height:1.25;letter-spacing:-.03em;color:var(--ink)">그럴듯한 오류</b>
+      <svg viewBox="0 0 72 24" width="72" height="24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--blue);flex:none" aria-hidden="true"><path d="M4 12h60M52 4l12 8-12 8"/></svg>
+      <span class="ic lg fill"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6"/><path d="M15 15l5.5 5.5"/></svg></span>
+      <p style="margin:0;font-size:32px;font-weight:500;line-height:1.4;letter-spacing:-.03em;color:var(--ink)">이름 · 숫자 · 인용은<br>
+        <b class="kw">원문에서 찾아봅니다</b></p>
     </div>
   </div>
 </section>
 
 <!-- X-01 -->
-<!-- ============ X-01 · L-cs-side-by-side — 요청문 터미널 2개 나란히(복사) + 단계 3 ============ -->
-<section class="slide cx-slide l-cs-side-by-side" data-slide="X-01">
+<section class="slide" data-slide="X-01">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 18 V8 H18 M30 8 H40 V18 M40 30 V40 H30 M18 40 H8 V30" fill="none" style="stroke:var(--blue)" stroke-width="5"/><rect x="19" y="19" width="10" height="10" style="fill:var(--mint)"/></svg><span class="s-brand">FRAME</span>
     <span class="s-line"></span><div class="s-team">블록 1<br>체험</div>
   </header>
-  <div class="cx-wrap">
-    <div class="cx-top rv" style="--i:0">
-      <p class="s-eyebrow">체험 · AI의 경향</p>
-      <h2 class="s-title">같은 문단을 두 가지로 물어봅니다</h2>
-    </div>
-    <div class="cx-main" style="grid-template-columns:1fr 1fr;grid-template-rows:auto auto auto;column-gap:48px;row-gap:20px;align-content:center">
+  <p class="kick">체험 · AI의 경향</p>
+  <h2 class="s-title">같은 문단을 <b class="kw">두 가지로</b> 물어봅니다</h2>
+  <div style="display:grid;grid-template-columns:1fr 1fr;column-gap:48px;margin-top:36px">
+    <div>
       <ol class="flow" data-w="todo" style="--pr-deep:var(--blue)">
-        <li class="rv" style="--i:1"><button type="button" aria-pressed="false"><span class="n">1</span><span class="t"><span class="em-line">새 대화</span>를 열고 <span class="em-tag">왼쪽 요청문</span>을 보냅니다</span></button></li>
+        <li><button type="button" aria-pressed="false"><span class="n">1</span><span class="t"><span class="em-line">새 대화</span>를 열고 <span class="em-tag">왼쪽 요청문</span>을 보냅니다</span></button></li>
       </ol>
-      <ol class="flow" data-w="todo" style="--pr-deep:var(--blue)">
-        <li class="rv" style="--i:2"><button type="button" aria-pressed="false"><span class="n">2</span><span class="t"><span class="em-line">새 대화</span>를 하나 더 열고 <span class="em-tag">오른쪽 요청문</span>을 보냅니다</span></button></li>
-      </ol>
-      <div class="term lg terminal-dark rv" style="--i:3">
+      <div class="term lg terminal-dark" style="margin-top:16px">
         <div class="terminal-bar"><span></span><span></span><span></span><b>요청문/체험_문단.txt · 질문 1</b><button class="copy" type="button" data-copy>복사</button></div>
         <div class="terminal-copy"><p><span class="terminal-prompt">&gt;</span> 아래 문단은 제가 쓴 건데 정말 잘 쓴 것 같아요. 최고죠?</p></div>
       </div>
-      <div class="term lg terminal-dark rv" style="--i:4">
-        <div class="terminal-bar"><span></span><span></span><span></span><b>요청문/체험_문단.txt · 질문 2</b><button class="copy" type="button" data-copy>복사</button></div>
-        <div class="terminal-copy"><p><span class="terminal-prompt">&gt;</span> 아래 문단의 문제점을 세 가지 찾아 줘.</p></div>
-      </div>
-      <ol class="flow" data-w="todo" style="--pr-deep:var(--blue);grid-column:1/-1">
-        <li class="rv" style="--i:5"><button type="button" aria-pressed="false"><span class="n">3</span><span class="t">두 답의 어조와 지적한 내용을 비교합니다</span></button></li>
-      </ol>
     </div>
+    <div>
+      <ol class="flow" data-w="todo" style="--pr-deep:var(--blue)">
+        <li><button type="button" aria-pressed="false"><span class="n">2</span><span class="t"><span class="em-line">새 대화</span>를 하나 더 열고 <span class="em-tag">오른쪽 요청문</span>을 보냅니다</span></button></li>
+      </ol>
+      <div class="term lg terminal-dark" style="margin-top:16px">
+        <div class="terminal-bar"><span></span><span></span><span></span><b>요청문/체험_문단.txt · 질문 2</b><button class="copy" type="button" data-copy>복사</button></div>
+        <div class="terminal-copy" style="min-height:108px"><p><span class="terminal-prompt">&gt;</span> 아래 문단의 문제점을 세 가지 찾아 줘.</p></div>
+      </div>
+    </div>
+  </div>
+  <div class="band t-sky" style="--bb:auto;--bt:488px;--bh:104px">
+    <ol class="flow" data-w="todo" style="--pr-deep:var(--blue)">
+      <li><button type="button" aria-pressed="false"><span class="n">3</span><span class="t">두 답의 어조와 지적한 내용을 <b class="kw">비교</b>합니다</span></button></li>
+    </ol>
   </div>
 </section>
 
 <!-- C-06 -->
-<section class="slide cx-slide f-concept l-ct-definition" data-slide="C-06">
+<section class="slide" data-slide="C-06">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 18 V8 H18 M30 8 H40 V18 M40 30 V40 H30 M18 40 H8 V30" fill="none" style="stroke:var(--blue)" stroke-width="5"/><rect x="19" y="19" width="10" height="10" style="fill:var(--mint)"/></svg><span class="s-brand">FRAME</span>
     <span class="s-line"></span><div class="s-team">블록 1<br>AI의 경향</div>
   </header>
-  <div class="cx-wrap">
-    <div class="cx-top">
-      <p class="s-eyebrow">개념 · AI의 경향</p>
-      <h2 class="s-title"><span class="mk-solid">아첨</span> — 듣기 좋은 쪽으로 기우는 경향</h2>
+  <p class="kick">개념 · AI의 경향</p>
+  <div data-w="toggle" data-state="0">
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:24px">
+      <h2 class="s-title"><b class="kw">아첨</b> — 듣기 좋은 쪽으로 기우는 경향</h2>
+      <button class="wg-btn" type="button" data-toggle data-labels="「맞죠?」 붙이기|「맞죠?」 빼기" aria-pressed="false" style="flex:none">「맞죠?」 붙이기</button>
     </div>
-    <div class="cx-main" style="grid-template-columns:400px 1fr" data-w="toggle" data-state="0">
-      <div class="cx-text" style="justify-content:center">
-        <div class="rule def"><span class="lab">정의</span><p>아첨은 사용자의 의견에 맞춰, 정확한 평가보다 <span class="mk">듣기 좋은 답</span>을 내놓는 경향입니다.</p></div>
-        <div class="wg-row" style="margin-top:0"><button class="wg-link" type="button" data-toggle data-labels="「맞죠?」 붙이기|「맞죠?」 빼기" aria-pressed="false">「맞죠?」 붙이기</button></div>
+    <div class="rule def" style="margin-top:18px"><span class="lab">정의</span><p>아첨은 사용자의 의견에 맞춰, 정확한 평가보다 <b class="kw">듣기 좋은 답</b>을 내놓는 경향입니다.</p></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;column-gap:28px;margin-top:20px" role="group" aria-label="같은 문단에 대한 질문 두 개와 AI 답 두 개. 왼쪽은 이 문단 어때 라고 묻고, 오른쪽은 맞죠 를 붙여 묻습니다.">
+      <div class="wcard w-dim" data-hl="1" style="padding:20px 24px">
+        <p class="bubble me" style="margin:0 0 0 auto;font-size:22px;font-weight:700">이 문단 어때?</p>
+        <p class="bubble" style="margin:12px 0 0;font-size:22px;background:var(--surface)">좋은 점은 사례가 구체적입니다. 보완할 점은 결론이 뒤에 나옵니다.</p>
       </div>
-      <figure class="cx-fig bare">
-        <svg viewBox="0 0 708 316" role="group" aria-label="같은 문단에 대한 질문 두 개와 AI 답 두 개. 왼쪽은 이 문단 어때 라고 묻고, 오른쪽은 맞죠 를 붙여 묻습니다."><g class="w-dim" data-hl="1"><g transform="translate(0 0)"><rect x="1" y="1" width="338" height="306" rx="16" style="fill:var(--white);stroke:var(--gray-400)" stroke-width="2"/><rect x="44" y="18" width="278" height="58" rx="14" style="fill:var(--blue-soft);stroke:var(--blue-line-strong)" stroke-width="2"/><text x="60" y="50" font-size="22" font-weight="700" style="fill:var(--ink)">이 문단 어때?</text><g transform="translate(4 20) scale(1.2500)" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--gray-400)"><circle cx="12" cy="8" r="3.6"/><path d="M5 20 c0 -4.2 3 -6.4 7 -6.4 s7 2.2 7 6.4"/></g><rect x="18" y="94" width="278" height="148" rx="14" style="fill:var(--surface);stroke:var(--gray-400)" stroke-width="2"/><text x="34" y="126" font-size="22" font-weight="600" style="fill:var(--ink)">좋은 점은 사례가</text><text x="34" y="156" font-size="22" font-weight="600" style="fill:var(--ink)">구체적입니다.</text><text x="34" y="186" font-size="22" font-weight="600" style="fill:var(--ink)">보완할 점은 결론이</text><text x="34" y="216" font-size="22" font-weight="600" style="fill:var(--ink)">뒤에 나옵니다.</text><g transform="translate(302 100) scale(1.0833)" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--gray-400)"><path d="M12 3 l2 6 6 2 -6 2 -2 6 -2 -6 -6 -2 6 -2 z"/></g></g></g><g transform="translate(368 0)"><rect x="1" y="1" width="338" height="306" rx="16" style="fill:var(--white);stroke:var(--gray-400)" stroke-width="2"/><rect x="44" y="18" width="278" height="88" rx="14" style="fill:var(--blue-soft);stroke:var(--blue-line-strong)" stroke-width="2"/><text x="60" y="50" font-size="22" font-weight="700" style="fill:var(--ink)">이 문단 정말 잘 쓴 것</text><rect class="w-in" data-hl="1" x="105.1" y="62" width="57.9" height="14" style="fill:var(--mint)"/><text x="60" y="80" font-size="22" font-weight="700" style="fill:var(--ink)">같아, 맞죠?</text><g transform="translate(4 20) scale(1.2500)" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--gray-400)"><circle cx="12" cy="8" r="3.6"/><path d="M5 20 c0 -4.2 3 -6.4 7 -6.4 s7 2.2 7 6.4"/></g><rect x="18" y="124" width="278" height="148" rx="14" style="fill:var(--surface);stroke:var(--gray-400)" stroke-width="2"/><text x="34" y="156" font-size="22" font-weight="600" style="fill:var(--ink)">네, 정말 잘 쓴</text><text x="34" y="186" font-size="22" font-weight="600" style="fill:var(--ink)">문단입니다.</text><text x="34" y="216" font-size="22" font-weight="600" style="fill:var(--ink)">구성이 깔끔합니다.</text><g transform="translate(302 130) scale(1.0833)" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--gray-400)"><path d="M12 3 l2 6 6 2 -6 2 -2 6 -2 -6 -6 -2 6 -2 z"/></g></g></svg>
-      </figure>
+      <div class="wcard" style="padding:20px 24px">
+        <p class="bubble me" style="margin:0 0 0 auto;font-size:22px;font-weight:700">이 문단 정말 잘 쓴 것 같아, <b class="kw">맞죠?</b></p>
+        <p class="bubble" style="margin:12px 0 0;font-size:22px;background:var(--surface)">네, 정말 잘 쓴 문단입니다. 구성이 깔끔합니다.</p>
+      </div>
     </div>
-<svg viewBox="0 0 1152 132" style="display:block;width:100%;height:auto;margin-top:10px" ><text x="0.0" y="26.5" font-size="19" font-weight="800" style="fill:var(--blue)">비유</text><g transform="translate(46.8 6.0) scale(1.1667)" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--blue)"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8 l1.5 1.5 L12 7 M8 14 l1.5 1.5 L12 13 M14.5 8.5 h2.5 M14.5 14.5 h2.5"/></g><text x="84.8" y="27.5" font-size="22" font-weight="600" style="fill:var(--ink)">「~맞죠?」로 끝나는 설문지와 같습니다. 질문에 답이 들어 있으면 「예」가 많이 나옵니다.</text><text x="0.0" y="72.5" font-size="19" font-weight="800" style="fill:var(--blue)">대응</text><g transform="translate(46.8 52.0) scale(1.1667)" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--blue)"><path d="M5 12.5 l4.5 4.5 L19 7"/></g><text x="84.8" y="73.5" font-size="22" font-weight="600" style="fill:var(--ink)">의견을 물을 때는 내 생각을 밝히지 않고 </text><rect x="418.2" y="61.2" width="165.0" height="11.0" style="fill:var(--mint)"/><text x="421.2" y="73.5" font-size="22" font-weight="700" style="fill:var(--ink)">먼저 장단점을 요청</text><text x="584.2" y="73.5" font-size="22" font-weight="600" style="fill:var(--ink)">합니다.</text><g transform="translate(54.0 98.0) scale(1.1667)" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--blue)"><path d="M9 4 L5 8 L9 12"/><path d="M5 8 h9 a5 5 0 0 1 0 10 H8"/></g><text x="92.0" y="119.5" font-size="22" font-weight="600" style="fill:var(--ink)">2025년 4월, 지나치게 동조하게 바뀐 ChatGPT 업데이트가 되돌려졌습니다.</text></svg>
-
   </div>
+  <dl class="facts" style="margin-top:22px;gap:8px">
+    <div class="f"><dt>비유</dt><dd>「~맞죠?」로 끝나는 설문지와 같습니다. 질문에 답이 들어 있으면 「예」가 많이 나옵니다.</dd></div>
+    <div class="f"><dt>대응</dt><dd>의견을 물을 때는 내 생각을 밝히지 않고 <b class="kw">먼저 장단점을 요청</b>합니다.</dd></div>
+  </dl>
+  <p style="margin:18px 0 0;display:flex;align-items:center;gap:14px;font-size:24px;font-weight:700;line-height:1.4;color:var(--ink)"><span class="ic fill" style="width:48px;height:48px"><svg viewBox="0 0 24 24"><path d="M9 5L4 10l5 5"/><path d="M4 10h10a6 6 0 0 1 0 12h-4"/></svg></span><span>2025년&nbsp;4월, 지나치게 동조하게 바뀐 ChatGPT 업데이트가 <b class="kw">되돌려졌습니다.</b></span></p>
 </section>
 
 <!-- C-07 -->
-<section class="slide cx-slide f-concept l-dc-flow-canvas" data-slide="C-07">
+<section class="slide" data-slide="C-07">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 18 V8 H18 M30 8 H40 V18 M40 30 V40 H30 M18 40 H8 V30" fill="none" style="stroke:var(--blue)" stroke-width="5"/><rect x="19" y="19" width="10" height="10" style="fill:var(--mint)"/></svg><span class="s-brand">FRAME</span>
     <span class="s-line"></span><div class="s-team">블록 1<br>프롬프트</div>
   </header>
-  <div class="cx-wrap">
-    <div class="cx-top">
-      <p class="s-eyebrow">개념 · 프롬프트</p>
-      <h2 class="s-title">프롬프트 — AI에게 건네는 요청문</h2>
+  <p class="kick">개념 · 프롬프트</p>
+  <h2 class="s-title"><b class="kw">프롬프트</b> — AI에게 건네는 요청문</h2>
+  <div data-w="pick" data-state="">
+    <div style="display:grid;grid-template-columns:1fr 1.15fr;column-gap:56px;margin-top:20px">
+      <div class="rule def"><span class="lab">정의</span><p>프롬프트는 AI에게 건네는 요청문입니다.<br>
+        이&nbsp;강의에서는 <b class="kw">네 칸</b>으로 나눠 씁니다.</p></div>
+      <div class="rule ana"><span class="lab">비유</span><p>택배 송장과 같습니다. 받는 곳 · 물건 · 포장 · 수령 확인 칸이<br>
+        정해져 있어 <b class="kw">빠진 칸이 바로 보입니다.</b></p></div>
     </div>
-    <div class="cx-main" style="grid-template-columns:400px 1fr" data-w="pick" data-state="">
-      <div class="cx-text" style="justify-content:center">
-        <div class="rule def"><span class="lab">정의</span><p>프롬프트는 AI에게 건네는 요청문입니다. 이 강의에서는 <span class="mk">네 칸</span>으로 나눠 씁니다.</p></div>
-        <div class="rule do"><span class="lab">네 칸</span><p><span class="em-tag">목적 · 입력 · 출력 · 확인</span></p></div>
-        <div class="wg-row" style="margin-top:0"><span class="wg-hint">칸을 눌러 보세요</span><button class="wg-link" type="button" data-set="">모두 보기</button></div>
-      </div>
-      <figure class="cx-fig bare">
-        <svg viewBox="0 0 708 154" role="group" aria-label="요청문의 네 칸. 목적, 입력, 출력, 확인. 칸을 누르면 아래 요청문에서 그 부분이 또렷해집니다."><g data-pick="0" tabindex="0" role="button" aria-label="목적 칸"><rect class="hit" x="-4" y="0" width="158" height="108"/><rect class="v-node" data-hl="0" x="0" y="4" width="150" height="96" rx="14"/><g transform="translate(14 34) scale(1.4167)" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--blue)"><path d="M5 21 V4 M5 5 h12 l-2 4 l2 4 h-12"/></g><text x="58" y="63" font-size="28" font-weight="800" style="fill:var(--ink)">목적</text></g><text x="168" y="64" font-size="30" font-weight="800" text-anchor="middle" style="fill:var(--gray-400)">+</text><g data-pick="1" tabindex="0" role="button" aria-label="입력 칸"><rect class="hit" x="182" y="0" width="158" height="108"/><rect class="v-node" data-hl="1" x="186" y="4" width="150" height="96" rx="14"/><g transform="translate(200 34) scale(1.4167)" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--blue)"><path d="M8 3 h7 l4 4 v11 h-11 z"/><path d="M15 3 v4 h4"/><path d="M5 7 v14 h11"/></g><text x="244" y="63" font-size="28" font-weight="800" style="fill:var(--ink)">입력</text></g><text x="354" y="64" font-size="30" font-weight="800" text-anchor="middle" style="fill:var(--gray-400)">+</text><g data-pick="2" tabindex="0" role="button" aria-label="출력 칸"><rect class="hit" x="368" y="0" width="158" height="108"/><rect class="v-node" data-hl="2" x="372" y="4" width="150" height="96" rx="14"/><g transform="translate(386 34) scale(1.4167)" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--blue)"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M12 4 v16 M3 9.5 h18"/></g><text x="430" y="63" font-size="28" font-weight="800" style="fill:var(--ink)">출력</text></g><text x="540" y="64" font-size="30" font-weight="800" text-anchor="middle" style="fill:var(--gray-400)">+</text><g data-pick="3" tabindex="0" role="button" aria-label="확인 칸"><rect class="hit" x="554" y="0" width="158" height="108"/><rect class="v-node" data-hl="3" x="558" y="4" width="150" height="96" rx="14"/><g transform="translate(572 34) scale(1.4167)" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--blue)"><path d="M5 12.5 l4.5 4.5 L19 7"/></g><text x="616" y="63" font-size="28" font-weight="800" style="fill:var(--ink)">확인</text></g><path class="v-edge hi" d="M354 108 V136 M342 126 L354 138 L366 126"/><text x="372" y="130" font-size="17" font-weight="700" style="fill:var(--gray-700)">요청문</text></svg>
-        <div class="term lg terminal-dark" style="margin-top:12px">
-          <div class="terminal-bar"><span></span><span></span><span></span><b>예시</b></div>
-          <div class="terminal-copy"><p><span class="terminal-prompt">&gt;</span> <span class="w-dim" data-hl="0 2 3">이번 주 회의 메모로(입력)</span> <span class="w-dim" data-hl="1 2 3">할 일을 정리해 줘(목적).</span> <span class="w-dim" data-hl="0 1 3">표로 만들고(출력),</span> <span class="w-dim" data-hl="0 1 2">항목마다 근거 줄을 적어 줘(확인).</span></p></div>
-        </div>
-      </figure>
+    <div style="display:flex;align-items:baseline;justify-content:space-between;margin-top:22px">
+      <span class="lab" style="margin:0;font-size:18px">네 칸</span>
+      <span style="display:flex;align-items:baseline;gap:20px"><span class="wg-hint">칸을 눌러 보세요</span><button class="wg-link" type="button" data-set="">모두 보기</button></span>
     </div>
-<svg viewBox="0 0 1152 86" style="display:block;width:100%;height:auto;margin-top:10px" ><text x="0.0" y="26.5" font-size="19" font-weight="800" style="fill:var(--blue)">비유</text><g transform="translate(46.8 6.0) scale(1.1667)" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--blue)"><path d="M3 8 l9 -5 l9 5 v9 l-9 5 l-9 -5 z"/><path d="M3 8 l9 5 l9 -5 M12 13 v9"/></g><text x="84.8" y="27.5" font-size="22" font-weight="600" style="fill:var(--ink)">택배 송장과 같습니다. </text><rect x="277.2" y="4.0" width="82.3" height="32" rx="8" style="fill:var(--white);stroke:var(--gray-400)" stroke-width="2"/><text x="318.3" y="26.5" font-size="20" font-weight="800" text-anchor="middle" style="fill:var(--ink)">받는 곳</text><rect x="369.5" y="4.0" width="60.6" height="32" rx="8" style="fill:var(--white);stroke:var(--gray-400)" stroke-width="2"/><text x="399.8" y="26.5" font-size="20" font-weight="800" text-anchor="middle" style="fill:var(--ink)">물건</text><rect x="440.1" y="4.0" width="60.6" height="32" rx="8" style="fill:var(--white);stroke:var(--gray-400)" stroke-width="2"/><text x="470.4" y="26.5" font-size="20" font-weight="800" text-anchor="middle" style="fill:var(--ink)">포장</text><rect x="510.7" y="4.0" width="99.6" height="32" rx="8" style="fill:var(--white);stroke:var(--gray-400)" stroke-width="2"/><text x="560.5" y="26.5" font-size="20" font-weight="800" text-anchor="middle" style="fill:var(--ink)">수령 확인</text><text x="92.0" y="73.5" font-size="22" font-weight="600" style="fill:var(--ink)">칸이 정해져 있어 </text><rect x="238.1" y="61.2" width="207.2" height="11.0" style="fill:var(--mint)"/><text x="241.1" y="73.5" font-size="22" font-weight="700" style="fill:var(--ink)">빠진 칸이 바로 보입니다</text><text x="446.3" y="73.5" font-size="22" font-weight="600" style="fill:var(--ink)">.</text></svg>
-
+    <div style="display:flex;align-items:center;gap:14px;margin-top:8px" role="group" aria-label="요청문의 네 칸. 목적, 입력, 출력, 확인. 칸을 누르면 아래 요청문에서 그 부분이 또렷해집니다.">
+      <div class="pc w-dim" data-pick="0" data-hl="1 2 3" tabindex="0" role="button" aria-label="목적 칸" style="flex:1 1 0;flex-direction:row;align-items:center;gap:16px;padding:16px 22px"><span class="ic fill" style="margin:0"><svg viewBox="0 0 24 24"><path d="M5 21V4M5 5h12l-2 4 2 4H5"/></svg></span><b>목적</b></div>
+      <b style="font-size:30px;color:var(--gray-400)">·</b>
+      <div class="pc w-dim" data-pick="1" data-hl="0 2 3" tabindex="0" role="button" aria-label="입력 칸" style="flex:1 1 0;flex-direction:row;align-items:center;gap:16px;padding:16px 22px"><span class="ic fill" style="margin:0"><svg viewBox="0 0 24 24"><path d="M8 3h7l4 4v11H8z"/><path d="M15 3v4h4"/><path d="M5 7v14h11"/></svg></span><b>입력</b></div>
+      <b style="font-size:30px;color:var(--gray-400)">·</b>
+      <div class="pc w-dim" data-pick="2" data-hl="0 1 3" tabindex="0" role="button" aria-label="출력 칸" style="flex:1 1 0;flex-direction:row;align-items:center;gap:16px;padding:16px 22px"><span class="ic fill" style="margin:0"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M12 4v16M3 9.5h18"/></svg></span><b>출력</b></div>
+      <b style="font-size:30px;color:var(--gray-400)">·</b>
+      <div class="pc w-dim" data-pick="3" data-hl="0 1 2" tabindex="0" role="button" aria-label="확인 칸" style="flex:1 1 0;flex-direction:row;align-items:center;gap:16px;padding:16px 22px"><span class="ic fill" style="margin:0"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span><b>확인</b></div>
+    </div>
+    <div class="term lg terminal-dark" style="margin-top:20px">
+      <div class="terminal-bar"><span></span><span></span><span></span><b>예시</b></div>
+      <div class="terminal-copy"><p><span class="terminal-prompt">&gt;</span> <span class="w-dim" data-hl="0 2 3">이번 주 회의 메모로(입력)</span> <span class="w-dim" data-hl="1 2 3">할 일을 정리해 줘(목적).</span><br>
+        <span class="w-dim" data-hl="0 1 3">표로 만들고(출력),</span> <span class="w-dim" data-hl="0 1 2">항목마다 근거 줄을 적어 줘(확인).</span></p></div>
+    </div>
   </div>
 </section>
 
 <!-- C-08 -->
-<section class="slide cx-slide f-concept l-cs-before-after" data-slide="C-08">
+<section class="slide" data-slide="C-08">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 18 V8 H18 M30 8 H40 V18 M40 30 V40 H30 M18 40 H8 V30" fill="none" style="stroke:var(--blue)" stroke-width="5"/><rect x="19" y="19" width="10" height="10" style="fill:var(--mint)"/></svg><span class="s-brand">FRAME</span>
     <span class="s-line"></span><div class="s-team">블록 1<br>프롬프트</div>
   </header>
-  <div class="cx-wrap">
-    <div class="cx-top">
-      <p class="s-eyebrow">개념 · 프롬프트</p>
-      <h2 class="s-title">요청문을 채우기 전과 후 — <span class="em-line">확인 칸</span>에 적는 것</h2>
+  <p class="kick">개념 · 프롬프트</p>
+  <div data-w="toggle" data-state="2">
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:24px">
+      <h2 class="s-title">요청문을 채우기 전과 후 — <b class="kw">확인 칸</b>에 적는 것</h2>
+      <button class="wg-btn" type="button" data-toggle data-labels="후 보기|전 보기" aria-pressed="false" style="flex:none">후 보기</button>
     </div>
-    <div class="cx-main" style="grid-template-columns:400px 1fr" data-w="toggle" data-state="1">
-      <div class="cx-text" style="justify-content:center">
-        <svg viewBox="0 0 400 356" role="group" aria-label="확인 칸에 적는 것 세 가지와 그 결과 표 모형." style="display:block;width:100%;height:auto"><text x="0" y="20" font-size="19" font-weight="800" style="fill:var(--blue)">확인 칸에 적는 것</text><g transform="translate(0 40) scale(1.3333)" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--blue)"><path d="M6 3 h8 l4 4 v14 h-12 z"/><path d="M14 3 v4 h4 M9 12 h6 M9 16 h6"/></g><text x="48" y="64" font-size="22" font-weight="600" style="fill:var(--ink)">근거 표시(파일 · 줄)</text><g transform="translate(0 90) scale(1.3333)" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--blue)"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M12 4 v16 M3 9.5 h18"/></g><text x="48" y="114" font-size="22" font-weight="600" style="fill:var(--ink)">서로 다른 내용은 따로</text><g transform="translate(0 140) scale(1.3333)" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--blue)"><path d="M5 3 h11 l3 3 v15 H5 z"/><path d="M8 3 v5 h7 V3 M8 21 v-7 h8 v7"/></g><text x="48" y="164" font-size="22" font-weight="600" style="fill:var(--ink)">저장할 파일 이름</text><path d="M0 210 H400" class="v-axis"/><text x="0" y="244" font-size="18" font-weight="700" style="fill:var(--gray-700)" class="v-mono">할일표.md</text><rect x="300" y="256" width="100" height="100" rx="8" style="fill:var(--mint);opacity:.55"/><text x="0" y="280" font-size="20" font-weight="800" style="fill:var(--gray-700)">할 일</text><text x="122" y="280" font-size="20" font-weight="800" style="fill:var(--gray-700)">담당</text><text x="214" y="280" font-size="20" font-weight="800" style="fill:var(--gray-700)">기한</text><text x="314" y="280" font-size="20" font-weight="800" style="fill:var(--gray-700)">근거</text><path d="M0 290 H400" stroke-width="2" style="stroke:var(--gray-400)"/><path fill="none" stroke-width="7" stroke-linecap="round" style="stroke:var(--periwinkle)" d="M0 316 h92 M122 316 h54 M214 316 h56"/><path fill="none" stroke-width="7" stroke-linecap="round" style="stroke:var(--blue)" d="M314 316 h70"/><path fill="none" stroke-width="7" stroke-linecap="round" style="stroke:var(--periwinkle)" d="M0 334 h92 M122 334 h54 M214 334 h56"/><path fill="none" stroke-width="7" stroke-linecap="round" style="stroke:var(--blue)" d="M314 334 h70"/><path fill="none" stroke-width="7" stroke-linecap="round" style="stroke:var(--periwinkle)" d="M0 352 h92 M122 352 h54 M214 352 h56"/><path fill="none" stroke-width="7" stroke-linecap="round" style="stroke:var(--blue)" d="M314 352 h70"/></svg>
-      </div>
-      <figure class="cx-fig bare">
-        <div class="wg-row top"><button class="wg-link" type="button" data-toggle data-labels="후 보기|전 보기" aria-pressed="true">전 보기</button></div>
-        <div class="term terminal-dark">
-          <div class="terminal-bar"><span></span><span></span><span></span><b>요청문 · 전과 후</b></div>
-          <div class="terminal-copy sep w-dim is-on" data-hl="1"><p><span class="tc-tag">전</span><span class="terminal-prompt">&gt;</span> 메모 정리해 줘</p></div>
-          <div class="terminal-copy w-dim" data-hl="0"><p><span class="tc-tag">후</span><span class="terminal-prompt">&gt;</span> 목적: 회의 메모를 할 일 표로 정리합니다.<br>입력: 01_회의메모 폴더의 메모 4개<br>출력: 할 일 · 담당 · 기한 · 근거 열의 표<br><span class="ring-host">확인: 근거에 파일 이름과 줄 번호, 다른 내용은 따로, 저장은 할일표.md</span></p></div>
+    <div style="display:grid;grid-template-columns:320px 1fr;column-gap:28px;margin-top:24px;align-items:start">
+      <div class="w-dim" data-hl="1">
+        <div style="min-height:70px"><span class="pill">전</span></div>
+        <div class="term lg terminal-dark">
+          <div class="terminal-bar"><span></span><span></span><span></span><b>요청문</b></div>
+          <div class="terminal-copy"><p><span class="terminal-prompt">&gt;</span> 「메모 정리해 줘」</p></div>
         </div>
-      </figure>
+      </div>
+      <div class="w-dim" data-hl="0">
+        <div style="min-height:70px;display:flex;align-items:flex-start;gap:14px"><span class="pill m" style="flex:none">후</span><p class="keep" style="font-size:22px;color:var(--ink)">앞 장의 예시처럼 목적 · 입력 · 출력 · 확인 네 칸을 채운 요청문</p></div>
+        <div class="term lg terminal-dark">
+          <div class="terminal-bar"><span></span><span></span><span></span><b>요청문</b></div>
+          <div class="terminal-copy"><p><span class="terminal-prompt">&gt;</span> 목적: 회의 메모를 할 일 표로 정리합니다.<br>입력: 01_회의메모 폴더의 메모 4개<br>출력: 할 일 · 담당 · 기한 · 근거 열의 표<br><span class="ring-host">확인: 근거에 파일 이름과 줄 번호, 다른 내용은 따로, 저장은 할일표.md</span></p></div>
+        </div>
+      </div>
     </div>
-<svg viewBox="0 0 1152 40" style="display:block;width:100%;height:auto;margin-top:10px" ><g transform="translate(0.0 6.0) scale(1.1667)" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--blue)"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="M7 10 l3 2.5 l-3 2.5 M12.5 16 h4.5"/></g><text x="38.0" y="27.5" font-size="22" font-weight="600" style="fill:var(--ink)">후: 앞 장의 예시처럼 목적 · 입력 · 출력 · 확인 네 칸을 채운 요청문</text></svg>
-
+  </div>
+  <div class="band t-mint" style="--bb:56px;--bh:104px;gap:10px 22px">
+    <span class="lab" style="margin:0;font-size:19px">확인 칸에 적는 것</span>
+    <span style="display:inline-flex;align-items:center;gap:12px;font-size:24px;font-weight:700;color:var(--ink)"><span class="ic" style="width:48px;height:48px"><svg viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4M9 12h6M9 16h6"/></svg></span>근거 표시(파일 · 줄)</span>
+    <b style="font-size:26px;color:var(--gray-400)">·</b>
+    <span style="display:inline-flex;align-items:center;gap:12px;font-size:24px;font-weight:700;color:var(--ink)"><span class="ic" style="width:48px;height:48px"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M12 4v16M3 9.5h18"/></svg></span>서로 다른 내용은 따로</span>
+    <b style="font-size:26px;color:var(--gray-400)">·</b>
+    <span style="display:inline-flex;align-items:center;gap:12px;font-size:24px;font-weight:700;color:var(--ink)"><span class="ic" style="width:48px;height:48px"><svg viewBox="0 0 24 24"><path d="M5 3h11l3 3v15H5z"/><path d="M8 3v5h7V3M8 21v-7h8v7"/></svg></span>저장할 파일 이름</span>
   </div>
 </section>
 
 <!-- C-14 -->
-<section class="slide cx-slide f-concept l-dc-radial-hub" data-slide="C-14">
+<section class="slide" data-slide="C-14">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 18 V8 H18 M30 8 H40 V18 M40 30 V40 H30 M18 40 H8 V30" fill="none" style="stroke:var(--blue)" stroke-width="5"/><rect x="19" y="19" width="10" height="10" style="fill:var(--mint)"/></svg><span class="s-brand">FRAME</span>
     <span class="s-line"></span><div class="s-team">블록 1<br>에이전트</div>
   </header>
-  <div class="cx-wrap">
-    <div class="cx-top">
-      <p class="s-eyebrow">개념 · 에이전트</p>
-      <h2 class="s-title"><span class="mk-solid">에이전트</span> — 읽기 · 계획 · 실행 · 확인을 되풀이하는 프로그램</h2>
+  <div class="bleed w50 t-mint"></div>
+  <p class="kick">개념 · 에이전트</p>
+  <h2 class="s-title"><b class="kw">에이전트</b> — 읽기 · 계획 · <br>실행 · 확인을 <br>되풀이하는 프로그램</h2>
+  <div class="rule def" style="margin-top:28px"><span class="lab">정의</span><p>에이전트는 요청을 받으면 파일을 읽고, 계획을 세우고, 실행하고, 결과를 확인하는 과정을 <b class="kw">되풀이하도록</b> 만든 AI 프로그램입니다.</p></div>
+  <div class="rule ana" style="margin-top:22px"><span class="lab">비유</span><p>세탁기 코스와 같습니다. 한 번 누르면 불림 · 세탁 · 헹굼 · 탈수를 차례로 하고 단계마다 상태를 확인합니다.</p></div>
+  <div class="on-bleed" style="gap:16px">
+    <div style="position:relative;width:460px;height:330px;flex:none">
+      <svg width="460" height="330" viewBox="0 0 460 330" style="position:absolute;left:0;top:0" role="img" aria-label="에이전트의 순환. 읽기, 계획, 실행, 확인 순서로 돌고 다시 읽기로 돌아갑니다.">
+        <ellipse cx="230" cy="145.5" rx="182" ry="97.5" fill="none" stroke-width="3" stroke-dasharray="9 8" style="stroke:var(--blue-line-strong)"/>
+        <g style="fill:var(--mint-deep)">
+          <path d="M-10 -8 L10 0 L-10 8 Z" transform="translate(358.7 76.6) rotate(28.2)"/>
+          <path d="M-10 -8 L10 0 L-10 8 Z" transform="translate(358.7 214.4) rotate(151.8)"/>
+          <path d="M-10 -8 L10 0 L-10 8 Z" transform="translate(101.3 214.4) rotate(208.2)"/>
+          <path d="M-10 -8 L10 0 L-10 8 Z" transform="translate(101.3 76.6) rotate(-28.2)"/>
+        </g>
+      </svg>
+      <div style="position:absolute;left:182px;top:0;width:96px;display:flex;flex-direction:column;align-items:center;gap:8px"><span class="ic lg"><svg viewBox="0 0 24 24"><path d="M4 5h6a3 3 0 0 1 3 3v11a2 2 0 0 0-2-2H4z"/><path d="M20 5h-6a3 3 0 0 0-3 3v11a2 2 0 0 1 2-2h7z"/></svg></span><b style="font-size:24px;color:var(--ink)">읽기</b></div>
+      <div style="position:absolute;left:364px;top:97px;width:96px;display:flex;flex-direction:column;align-items:center;gap:8px"><span class="ic lg"><svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h3"/></svg></span><b style="font-size:24px;color:var(--ink)">계획</b></div>
+      <div style="position:absolute;left:182px;top:195px;width:96px;display:flex;flex-direction:column;align-items:center;gap:8px"><span class="ic lg"><svg viewBox="0 0 24 24"><path d="M7 4l12 8-12 8z"/></svg></span><b style="font-size:24px;color:var(--ink)">실행</b></div>
+      <div style="position:absolute;left:0;top:97px;width:96px;display:flex;flex-direction:column;align-items:center;gap:8px"><span class="ic lg"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span><b style="font-size:24px;color:var(--ink)">확인</b></div>
+      <span class="pill" style="position:absolute;left:50%;top:164px;transform:translate(-50%,-50%);font-size:20px">되풀이</span>
     </div>
-    <div class="cx-main" style="grid-template-columns:400px 1fr">
-      <div class="cx-text" style="justify-content:center">
-        <div class="rule def"><span class="lab">정의</span><p>에이전트는 요청을 받으면 파일을 읽고, 계획을 세우고, 실행하고, 결과를 확인하는 과정을 <span class="mk">되풀이하도록</span> 만든 AI 프로그램입니다.</p></div>
+    <div class="wcard" style="width:100%;box-sizing:border-box;padding:16px 22px 18px">
+      <p style="margin:0 0 8px;font-size:17px;font-weight:800;color:var(--mint-deep)">파일을 바꾸기 전에 묻는 방식</p>
+      <div style="display:grid;grid-template-columns:150px 1fr;gap:6px 12px;font-size:22px;line-height:1.45;color:var(--gray-700)">
+        <b style="color:var(--ink)">Codex</b><span>기본 설정에서 작업 폴더 밖이나 네트워크를 묻습니다</span>
+        <b style="color:var(--ink)">Claude&nbsp;Code</b><span>모드를 고를 수 있습니다</span>
+        <b style="color:var(--ink)">Antigravity</b><span>허용 · 확인 · 거부 목록으로 정합니다</span>
       </div>
-      <figure class="cx-fig bare">
-        <svg viewBox="0 0 708 330" role="group" aria-label="에이전트의 순환. 읽기, 계획, 실행, 확인 순서로 돌고 다시 읽기로 돌아갑니다. 오른쪽은 도구 세 가지가 파일을 바꾸기 전에 묻는 방식입니다."><g class="a-pop" style="--i:0"><rect x="0" y="30" width="140" height="64" rx="14" style="fill:var(--mint)"/><text x="70" y="72" font-size="28" font-weight="800" text-anchor="middle" style="fill:var(--on-mint)">읽기</text></g><g class="a-pop" style="--i:1"><rect x="190" y="30" width="140" height="64" rx="14" style="fill:var(--mint)"/><text x="260" y="72" font-size="28" font-weight="800" text-anchor="middle" style="fill:var(--on-mint)">계획</text></g><g class="a-pop" style="--i:2"><rect x="190" y="210" width="140" height="64" rx="14" style="fill:var(--mint)"/><text x="260" y="252" font-size="28" font-weight="800" text-anchor="middle" style="fill:var(--on-mint)">실행</text></g><g class="a-pop" style="--i:3"><rect x="0" y="210" width="140" height="64" rx="14" style="fill:var(--mint)"/><text x="70" y="252" font-size="28" font-weight="800" text-anchor="middle" style="fill:var(--on-mint)">확인</text></g><g fill="none" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--blue)"><path d="M146 62 H182 M170 50 L184 62 L170 74"/><path d="M260 100 V202 M248 190 L260 204 L272 190"/><path d="M184 242 H148 M160 230 L146 242 L160 254"/><path d="M70 202 V100 M58 114 L70 98 L82 114"/></g><text x="165" y="162" font-size="26" font-weight="800" text-anchor="middle" style="fill:var(--ink)">되풀이</text><text x="372" y="24" font-size="19" font-weight="800" style="fill:var(--blue)">파일을 바꾸기 전에 묻는 방식</text><g transform="translate(372 48) scale(1.2500)" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--blue)"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="M7 10 l3 2.5 l-3 2.5 M12.5 16 h4.5"/></g><text x="414" y="70" font-size="22" font-weight="800" style="fill:var(--ink)">Codex</text><text x="414" y="98" font-size="20" font-weight="600" style="fill:var(--gray-700)">기본 설정에서 작업 폴더 밖이나</text><text x="414" y="124" font-size="20" font-weight="600" style="fill:var(--gray-700)">네트워크를 묻습니다</text><line class="v-axis" x1="372" y1="138" x2="708" y2="138" style="stroke-width:1.5"/><g transform="translate(372 152) scale(1.2500)" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--blue)"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="M7 10 l3 2.5 l-3 2.5 M12.5 16 h4.5"/></g><text x="414" y="174" font-size="22" font-weight="800" style="fill:var(--ink)">Claude Code</text><text x="414" y="202" font-size="20" font-weight="600" style="fill:var(--gray-700)">모드를 고를 수 있습니다</text><line class="v-axis" x1="372" y1="214" x2="708" y2="214" style="stroke-width:1.5"/><g transform="translate(372 228) scale(1.2500)" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--blue)"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="M7 10 l3 2.5 l-3 2.5 M12.5 16 h4.5"/></g><text x="414" y="250" font-size="22" font-weight="800" style="fill:var(--ink)">Antigravity</text><text x="414" y="278" font-size="20" font-weight="600" style="fill:var(--gray-700)">허용 · 확인 · 거부 목록으로</text><text x="414" y="304" font-size="20" font-weight="600" style="fill:var(--gray-700)">정합니다</text></svg>
-      </figure>
     </div>
-<svg viewBox="0 0 1152 86" style="display:block;width:100%;height:auto;margin-top:10px" ><text x="0.0" y="26.5" font-size="19" font-weight="800" style="fill:var(--blue)">비유</text><g transform="translate(46.8 6.0) scale(1.1667)" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--blue)"><rect x="4" y="3" width="16" height="18" rx="2.5"/><circle cx="12" cy="13.5" r="4.5"/><path d="M7.5 6.5 h.01 M11 6.5 h.01"/></g><text x="84.8" y="27.5" font-size="22" font-weight="600" style="fill:var(--ink)">세탁기 코스와 같습니다.</text><text x="92.0" y="73.5" font-size="22" font-weight="600" style="fill:var(--ink)">한 번 누르면</text><rect x="199.0" y="50.0" width="60.6" height="32" rx="8" style="fill:var(--white);stroke:var(--gray-400)" stroke-width="2"/><text x="229.3" y="72.5" font-size="20" font-weight="800" text-anchor="middle" style="fill:var(--ink)">불림</text><g transform="translate(271.6 55.0) scale(0.9167)" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--gray-400)"><path d="M4 12 h15 M13 6 l6 6 -6 6"/></g><rect x="305.6" y="50.0" width="60.6" height="32" rx="8" style="fill:var(--white);stroke:var(--gray-400)" stroke-width="2"/><text x="335.9" y="72.5" font-size="20" font-weight="800" text-anchor="middle" style="fill:var(--ink)">세탁</text><g transform="translate(378.2 55.0) scale(0.9167)" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--gray-400)"><path d="M4 12 h15 M13 6 l6 6 -6 6"/></g><rect x="412.2" y="50.0" width="60.6" height="32" rx="8" style="fill:var(--white);stroke:var(--gray-400)" stroke-width="2"/><text x="442.5" y="72.5" font-size="20" font-weight="800" text-anchor="middle" style="fill:var(--ink)">헹굼</text><g transform="translate(484.8 55.0) scale(0.9167)" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--gray-400)"><path d="M4 12 h15 M13 6 l6 6 -6 6"/></g><rect x="518.8" y="50.0" width="60.6" height="32" rx="8" style="fill:var(--white);stroke:var(--gray-400)" stroke-width="2"/><text x="549.1" y="72.5" font-size="20" font-weight="800" text-anchor="middle" style="fill:var(--ink)">탈수</text><text x="589.4" y="73.5" font-size="22" font-weight="600" style="fill:var(--ink)">를 차례로 하고 단계마다 상태를 확인합니다.</text></svg>
-
   </div>
 </section>
 
@@ -449,11 +507,14 @@
 <section class="slide fb-bignum" data-slide="BR-1">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 18 V8 H18 M30 8 H40 V18 M40 30 V40 H30 M18 40 H8 V30" fill="none" style="stroke:var(--blue)" stroke-width="5"/><rect x="19" y="19" width="10" height="10" style="fill:var(--mint)"/></svg><span class="s-brand">FRAME</span>
-    <span class="s-line"></span><div class="s-team">블록 1</div>
+    <span class="s-line"></span><div class="s-team">블록 1<br>쉬는 시간</div>
   </header>
-  <div class="center-msg">
-    <h2 class="s-title rv" style="--i:0">쉬는 시간 <span class="em-num">10분</span></h2>
-    <button class="timer big rv" style="--i:1" type="button" data-min="10" aria-label="타이머 10분 — 누르면 시작, 다시 누르면 멈춤"><span class="tv">10:00</span><span class="tl">▶ 시작</span></button>
-    <p class="keep rv" style="--i:2">돌아오면 — 결과 글을 씁니다</p>
+  <div class="bleed w50 t-mint"></div>
+  <p class="kick">블록 1 → 블록 2</p>
+  <h2 class="s-title">쉬는 시간 <b class="kw">10분</b></h2>
+  <div style="position:absolute;left:72px;bottom:88px;display:flex;align-items:center;gap:24px">
+    <span class="ic lg fill"><svg viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6zM14 3v4h4M9 12h6M9 16h6"/></svg></span>
+    <p style="margin:0;font-size:32px;line-height:1.45;font-weight:800;color:var(--ink)"><span style="color:var(--gray-700);font-weight:600">돌아오면 —</span><br>결과 글을 씁니다</p>
   </div>
+  <div class="on-bleed"><button class="timer big" type="button" data-min="10" aria-label="타이머 10분 — 누르면 시작, 다시 누르면 멈춤"><span class="tv">10:00</span><span class="tl">▶ 시작</span></button></div>
 </section>

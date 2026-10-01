@@ -1,23 +1,41 @@
-<section class="slide cx-slide f-concept l-dc-annotated" data-slide="C-01">
+<section class="slide" data-slide="C-01">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 18 V8 H18 M30 8 H40 V18 M40 30 V40 H30 M18 40 H8 V30" fill="none" style="stroke:var(--blue)" stroke-width="5"/><rect x="19" y="19" width="10" height="10" style="fill:var(--mint)"/></svg><span class="s-brand">FRAME</span>
     <span class="s-line"></span><div class="s-team">블록 1<br>AI의 원리</div>
   </header>
-  <div class="cx-wrap">
-    <div class="cx-top">
-      <p class="s-eyebrow">개념 · AI의 원리</p>
-      <h2 class="s-title"><span class="mk-solid">다음 말 예측</span> — 글 뒤에 올 조각을 확률로 고르는 방식</h2>
+  <div class="bleed w50 t-mint"></div>
+  <p class="kick">개념 · AI의 원리</p>
+  <h2 class="s-title"><b class="kw">다음 말 예측</b> —<br>
+    글 뒤에 올 조각을<br>
+    확률로 고르는 방식</h2>
+  <div class="rule def" style="margin-top:28px"><span class="lab">정의</span><p>AI는 지금까지의 글 뒤에 올 다음 조각을 <b class="kw">확률에 따라</b> 하나씩 골라 이어 붙여 답을 만듭니다.</p></div>
+  <div class="rule ana" style="margin-top:20px"><span class="lab">비유</span><p>휴대폰 자동완성 추천어를 수백 번 이어서 누르는 것과 비슷합니다.</p></div>
+  <p class="keep" style="margin-top:16px;font-weight:700;color:var(--ink)">같은 질문에도 <b class="kw">답이 다를 수 있습니다.</b></p>
+  <div class="on-bleed" data-w="step" data-state="1" data-max="3">
+    <div class="wg-row" style="align-self:stretch;margin:0"><button class="wg-btn" type="button" data-next>다음 말 뽑기</button><button class="wg-link" type="button" data-reset>처음으로</button></div>
+    <div class="wcard" style="align-self:stretch">
+      <span class="lab">지금까지의 글</span>
+      <p style="margin:2px 0 0;font-size:34px;font-weight:800;line-height:1.3;letter-spacing:-.03em;color:var(--ink)">오늘 점심은 <b class="kw is-on" data-show="1">비빔밥</b><b class="kw" data-show="2">김치찌개</b><b class="kw" data-show="3">국수</b></p>
+      <span class="lab" style="margin-top:16px">다음 조각 후보 · 예시 값</span>
+      <svg viewBox="0 0 488 236" role="img" aria-label="다음 말 후보와 예시 확률. 비빔밥 40, 국수 30, 김치찌개 20, 샐러드 10. 뽑을 때마다 고른 조각이 달라집니다." style="display:block;width:100%;height:auto">
+        <line class="v-axis" x1="0" y1="196" x2="488" y2="196"/>
+        <rect class="a-grow" x="19" y="52" width="84" height="144" rx="8" style="fill:var(--blue-line-strong)"/>
+        <rect class="a-grow w-in is-on" data-hl="1" x="19" y="52" width="84" height="144" rx="8" style="fill:var(--blue)"/>
+        <text x="61" y="42" font-size="28" font-weight="800" text-anchor="middle" style="fill:var(--ink)">40%</text>
+        <text x="61" y="226" font-size="22" font-weight="700" text-anchor="middle" style="fill:var(--ink)">비빔밥</text>
+        <rect class="a-grow" x="141" y="88" width="84" height="108" rx="8" style="fill:var(--blue-line-strong)"/>
+        <rect class="a-grow w-in" data-hl="3" x="141" y="88" width="84" height="108" rx="8" style="fill:var(--blue)"/>
+        <text x="183" y="78" font-size="28" font-weight="800" text-anchor="middle" style="fill:var(--ink)">30%</text>
+        <text x="183" y="226" font-size="22" font-weight="700" text-anchor="middle" style="fill:var(--ink)">국수</text>
+        <rect class="a-grow" x="263" y="124" width="84" height="72" rx="8" style="fill:var(--blue-line-strong)"/>
+        <rect class="a-grow w-in" data-hl="2" x="263" y="124" width="84" height="72" rx="8" style="fill:var(--blue)"/>
+        <text x="305" y="114" font-size="28" font-weight="800" text-anchor="middle" style="fill:var(--ink)">20%</text>
+        <text x="305" y="226" font-size="22" font-weight="700" text-anchor="middle" style="fill:var(--ink)">김치찌개</text>
+        <rect class="a-grow" x="385" y="160" width="84" height="36" rx="8" style="fill:var(--blue-line-strong)"/>
+        <text x="427" y="150" font-size="28" font-weight="800" text-anchor="middle" style="fill:var(--ink)">10%</text>
+        <text x="427" y="226" font-size="22" font-weight="700" text-anchor="middle" style="fill:var(--ink)">샐러드</text>
+      </svg>
+      <p style="margin:4px 0 0;font-size:22px;line-height:1.45;color:var(--gray-700)">(막대 그림의 확률은 설명을 위한 예시 값입니다)</p>
     </div>
-    <div class="cx-main" style="grid-template-columns:400px 1fr" data-w="step" data-state="1" data-max="3">
-      <div class="cx-text" style="justify-content:center">
-        <div class="rule def"><span class="lab">정의</span><p>AI는 지금까지의 글 뒤에 올 다음 조각을 <span class="mk">확률에 따라</span> 하나씩 골라 이어 붙여 답을 만듭니다.</p></div>
-        <div class="wg-row" style="margin-top:0"><button class="wg-link" type="button" data-next>다음 말 뽑기</button><button class="wg-link" type="button" data-reset>처음으로</button></div>
-      </div>
-      <figure class="cx-fig bare">
-        <svg viewBox="0 0 708 372" role="img" aria-label="다음 말 후보와 예시 확률. 비빔밥 40, 국수 30, 김치찌개 20, 샐러드 10. 뽑을 때마다 고른 조각이 달라집니다."><text x="0" y="18" font-size="17" font-weight="700" style="fill:var(--gray-700)">지금까지의 글</text><text x="708" y="20" font-size="20" font-weight="700" text-anchor="end" style="fill:var(--ink)">다음 조각 후보 · 예시 값</text><text x="0" y="60" font-size="26" font-weight="800" style="fill:var(--ink)">오늘 점심은</text><rect class="v-node" x="140" y="30" width="110" height="40" rx="7" style="stroke-dasharray:6 4"/><g data-show="1" class="is-on"><rect x="140" y="30" width="110" height="40" rx="7" style="fill:var(--mint)"/><text x="195.0" y="59" font-size="26" font-weight="800" text-anchor="middle" style="fill:var(--on-mint)">비빔밥</text></g><g data-show="2"><rect x="140" y="30" width="134" height="40" rx="7" style="fill:var(--mint)"/><text x="207.0" y="59" font-size="26" font-weight="800" text-anchor="middle" style="fill:var(--on-mint)">김치찌개</text></g><g data-show="3"><rect x="140" y="30" width="84" height="40" rx="7" style="fill:var(--mint)"/><text x="182.0" y="59" font-size="26" font-weight="800" text-anchor="middle" style="fill:var(--on-mint)">국수</text></g><line class="v-axis" x1="0" y1="246" x2="708" y2="246"/><rect class="v-bar a-grow is-on" data-hl="1" style="--i:0" x="38" y="110.0" width="100" height="136.0" rx="6"/><text x="88" y="100.0" font-size="28" font-weight="800" text-anchor="middle" style="fill:var(--ink)">40%</text><text x="88" y="274" font-size="22" font-weight="700" text-anchor="middle" style="fill:var(--ink)">비빔밥</text><rect class="v-bar a-grow" data-hl="3" style="--i:1" x="215" y="144.0" width="100" height="102.0" rx="6"/><text x="265" y="134.0" font-size="28" font-weight="800" text-anchor="middle" style="fill:var(--ink)">30%</text><text x="265" y="274" font-size="22" font-weight="700" text-anchor="middle" style="fill:var(--ink)">국수</text><rect class="v-bar a-grow" data-hl="2" style="--i:2" x="392" y="178.0" width="100" height="68.0" rx="6"/><text x="442" y="168.0" font-size="28" font-weight="800" text-anchor="middle" style="fill:var(--ink)">20%</text><text x="442" y="274" font-size="22" font-weight="700" text-anchor="middle" style="fill:var(--ink)">김치찌개</text><rect class="v-bar a-grow" style="--i:3" x="569" y="212.0" width="100" height="34.0" rx="6"/><text x="619" y="202.0" font-size="28" font-weight="800" text-anchor="middle" style="fill:var(--ink)">10%</text><text x="619" y="274" font-size="22" font-weight="700" text-anchor="middle" style="fill:var(--ink)">샐러드</text><text x="0" y="306" font-size="22" font-weight="600" style="fill:var(--gray-700)">(막대 그림의 확률은 설명을 위한 예시 값입니다)</text><g class="w-in is-on" data-from="1"><text x="0" y="340" font-size="17" font-weight="700" style="fill:var(--gray-700)">1번째</text><text x="0" y="366" font-size="22" font-weight="800" style="fill:var(--ink)">오늘 점심은 비빔밥</text></g><g class="w-in" data-from="2"><text x="240" y="340" font-size="17" font-weight="700" style="fill:var(--gray-700)">2번째</text><text x="240" y="366" font-size="22" font-weight="800" style="fill:var(--ink)">오늘 점심은 김치찌개</text></g><g class="w-in" data-from="3"><text x="480" y="340" font-size="17" font-weight="700" style="fill:var(--gray-700)">3번째</text><text x="480" y="366" font-size="22" font-weight="800" style="fill:var(--ink)">오늘 점심은 국수</text></g></svg>
-      </figure>
-    </div>
-<svg viewBox="0 0 1152 86" style="display:block;width:100%;height:auto;margin-top:10px" ><text x="0.0" y="26.5" font-size="19" font-weight="800" style="fill:var(--blue)">비유</text><g transform="translate(46.8 6.0) scale(1.1667)" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--blue)"><rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M11 18.3 h2"/></g><text x="84.8" y="27.5" font-size="22" font-weight="600" style="fill:var(--ink)">휴대폰 자동완성 추천어를 수백 번 이어서 누르는 것과 비슷합니다.</text><g transform="translate(0.0 52.0) scale(1.1667)" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--blue)"><path d="M16 4 h4 v4 M4 20 L20 4 M20 16 v4 h-4 M14.5 14.5 L20 20 M4 4 l5 5"/></g><text x="38.0" y="73.5" font-size="22" font-weight="600" style="fill:var(--ink)">같은 질문에도 </text><rect x="160.7" y="61.2" width="188.5" height="11.0" style="fill:var(--mint)"/><text x="163.7" y="73.5" font-size="22" font-weight="700" style="fill:var(--ink)">답이 다를 수 있습니다</text><text x="350.1" y="73.5" font-size="22" font-weight="600" style="fill:var(--ink)">.</text></svg>
-
   </div>
 </section>

@@ -1,65 +1,40 @@
-<!-- ============ C-15 · L-ct-concentric — 하네스: 세 겹 동심 도식 + 층별 설명 + 마구 비유 그림 (data-w="pick") ============ -->
-<section class="slide cx-slide f-concept l-ct-concentric" data-slide="C-15">
+<section class="slide" data-slide="C-15">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 18 V8 H18 M30 8 H40 V18 M40 30 V40 H30 M18 40 H8 V30" fill="none" style="stroke:var(--blue)" stroke-width="5"/><rect x="19" y="19" width="10" height="10" style="fill:var(--mint)"/></svg><span class="s-brand">FRAME</span>
     <span class="s-line"></span><div class="s-team">블록 3<br>하네스</div>
   </header>
-  <div class="cx-wrap">
-    <div class="cx-top">
-      <p class="s-eyebrow">개념 · 하네스</p>
-      <h2 class="s-title"><span class="mk-solid">하네스</span> — 도구 · 규칙 · 권한 · 확인 절차의 설계</h2>
-    </div>
-    <div class="cx-main" style="grid-template-columns:372px 1fr">
-      <div class="cx-text">
-        <div class="rule def"><span class="lab">정의</span><p>하네스 엔지니어링은 AI가 일하는 동안 쓰는 도구 · 규칙 · 권한 · 확인 절차를 설계해 <span class="em-ink">같은 실수</span>가 되풀이되지 않게 하는 일입니다.</p></div>
-        <svg viewBox="0 0 372 250" role="img" aria-label="비유. 말은 힘을 내고, 마구는 방향과 범위를 정합니다.">
-          <text class="v-txt" x="0" y="24" style="fill:var(--blue)">비유</text>
-          <text x="0" y="62" font-size="22" font-weight="700" style="fill:var(--ink)">말에 채우는 마구(harness)와 같습니다.</text>
-          <path d="M8 120 H96" fill="none" stroke-width="10" stroke-linecap="round" style="stroke:var(--blue)"/><path d="M92 102 L122 120 L92 138 Z" style="fill:var(--blue)"/>
-          <text class="v-txt" x="146" y="128">힘은 말이 내고,</text>
-          <path d="M8 172 H122 M8 214 H122" fill="none" stroke-width="5" stroke-linecap="round" style="stroke:var(--gray-700)"/>
-          <path d="M20 193 H96" fill="none" stroke-width="6" stroke-linecap="round" style="stroke:var(--blue)"/><path d="M94 183 L112 193 L94 203 Z" style="fill:var(--blue)"/>
-          <text class="v-txt" x="146" y="186">방향과 범위는</text>
-          <text class="v-txt" x="146" y="214">마구가 정합니다.</text>
-        </svg>
-      </div>
-      <figure class="cx-fig bare" data-w="pick" data-state="a">
-        <svg viewBox="0 0 728 440" role="group" aria-label="프롬프트가 컨텍스트 안에, 컨텍스트가 하네스 안에 들어 있는 세 겹 동심원. 층을 누르면 그 층만 진하게 남습니다.">
-          <g data-pick="2" tabindex="0" role="button" aria-label="하네스 층">
-            <circle class="hit" cx="196" cy="204" r="186"/>
-            <circle class="v-node is-on" data-hl="a 2" cx="196" cy="204" r="186"/>
-            <text class="v-txt-lg" x="196" y="58" text-anchor="middle">하네스</text>
-          </g>
-          <g data-pick="1" tabindex="0" role="button" aria-label="컨텍스트 층">
-            <circle class="hit" cx="196" cy="204" r="128"/>
-            <circle class="v-node" data-hl="1" cx="196" cy="204" r="128"/>
-            <text class="v-txt-lg" x="196" y="114" text-anchor="middle">컨텍스트</text>
-          </g>
-          <g data-pick="0" tabindex="0" role="button" aria-label="프롬프트 층">
-            <circle class="hit" cx="196" cy="204" r="68"/>
-            <circle class="v-node" data-hl="0" cx="196" cy="204" r="68"/>
-            <text class="v-txt-lg" x="196" y="212" text-anchor="middle">프롬프트</text>
-          </g>
-          <g class="w-dim" data-hl="0 1">
-            <path class="v-edge" d="M300 96 L400 96"/><circle cx="300" cy="96" r="5" style="fill:var(--blue)"/>
-            <text class="v-txt-lg" x="416" y="100">하네스</text>
-            <text class="v-txt" x="416" y="132">도구 · 규칙 · 권한 · 확인 절차</text>
-          </g>
-          <g class="w-dim" data-hl="0 2">
-            <path class="v-edge" d="M294 210 L400 210"/><circle cx="294" cy="210" r="5" style="fill:var(--blue)"/>
-            <text class="v-txt-lg" x="416" y="214">컨텍스트</text>
-            <text class="v-txt" x="416" y="246">대화 내용 · 첨부 파일 · 규칙</text>
-          </g>
-          <g class="w-dim" data-hl="1 2">
-            <path class="v-edge" d="M236 244 L306 320 L400 320"/><circle cx="236" cy="244" r="5" style="fill:var(--blue)"/>
-            <text class="v-txt-lg" x="416" y="324">프롬프트</text>
-            <text class="v-txt" x="416" y="356">AI에게 건네는 요청문</text>
-          </g>
-          <g data-set="a" tabindex="0" role="button" aria-label="모두 보기"><rect class="hit" x="600" y="0" width="128" height="34"/><text class="v-txt" x="728" y="22" text-anchor="end" style="fill:var(--blue)">모두 보기</text><path class="v-edge hi" d="M636 28 H728"/></g>
-          <text class="v-txt" x="0" y="432" style="fill:var(--blue)">세 겹</text>
-          <text x="64" y="432" font-size="22" font-weight="700" style="fill:var(--ink)">프롬프트 ⊂ 컨텍스트 ⊂ 하네스(이 강의의 정리)</text>
-        </svg>
-      </figure>
+  <div class="bleed w50 t-mist" style="left:0;right:auto"></div>
+  <div style="margin-left:616px;width:520px">
+    <p class="kick">개념 · 하네스</p>
+    <h2 class="s-title"><b class="kw">하네스</b> — 도구 · 규칙 · <br>권한 · 확인 절차의 설계</h2>
+    <div class="rule def" style="margin-top:28px"><span class="lab">정의</span><p>하네스 엔지니어링은 AI가 일하는 동안 쓰는 도구 · 규칙 · 권한 · 확인 절차를 설계해 <b class="kw">같은 실수</b>가 되풀이되지 않게 하는 일입니다.</p></div>
+    <div class="rule ana" style="margin-top:22px"><span class="lab">비유</span><p>말에 채우는 마구(harness)와 같습니다. 힘은 말이 내고, 방향과 범위는 마구가 정합니다.</p></div>
+  </div>
+  <div class="on-bleed" style="left:0;right:auto">
+    <div data-w="pick" data-state="2" style="width:528px;flex:none">
+      <svg width="528" height="540" viewBox="0 0 528 540" style="display:block;overflow:visible" role="group" aria-label="프롬프트가 컨텍스트 안에, 컨텍스트가 하네스 안에 들어 있는 세 겹 동심원. 층을 누르면 그 층의 설명이 나옵니다.">
+        <g data-pick="2" tabindex="0" role="button" aria-label="하네스 층">
+          <circle class="hit" cx="264" cy="196" r="190"/>
+          <circle class="v-node" data-hl="2" cx="264" cy="196" r="190"/>
+          <text class="v-txt-lg" x="264" y="48" text-anchor="middle">하네스</text>
+        </g>
+        <g data-pick="1" tabindex="0" role="button" aria-label="컨텍스트 층">
+          <circle class="hit" cx="264" cy="196" r="128"/>
+          <circle class="v-node" data-hl="1" cx="264" cy="196" r="128"/>
+          <text class="v-txt-lg" x="264" y="110" text-anchor="middle">컨텍스트</text>
+        </g>
+        <g data-pick="0" tabindex="0" role="button" aria-label="프롬프트 층">
+          <circle class="hit" cx="264" cy="196" r="66"/>
+          <circle class="v-node" data-hl="0" cx="264" cy="196" r="66"/>
+          <text class="v-txt-lg" x="264" y="204" text-anchor="middle">프롬프트</text>
+        </g>
+        <g data-show="2" class="is-on"><text x="264" y="440" font-size="22" font-weight="700" text-anchor="middle" style="fill:var(--ink)">하네스 — 도구 · 규칙 · 권한 · 확인 절차</text></g>
+        <g data-show="1"><text x="264" y="440" font-size="22" font-weight="700" text-anchor="middle" style="fill:var(--ink)">컨텍스트 — 대화 내용 · 첨부 파일 · 규칙</text></g>
+        <g data-show="0"><text x="264" y="440" font-size="22" font-weight="700" text-anchor="middle" style="fill:var(--ink)">프롬프트 — AI에게 건네는 요청문</text></g>
+        <text x="264" y="480" font-size="17" font-weight="800" text-anchor="middle" style="fill:var(--mint-deep)">세 겹</text>
+        <text x="264" y="512" font-size="24" font-weight="800" text-anchor="middle" style="fill:var(--ink)">프롬프트 ⊂ 컨텍스트 ⊂ 하네스</text>
+        <text x="264" y="536" font-size="20" font-weight="600" text-anchor="middle" style="fill:var(--gray-700)">(이 강의의 정리)</text>
+      </svg>
     </div>
   </div>
 </section>
