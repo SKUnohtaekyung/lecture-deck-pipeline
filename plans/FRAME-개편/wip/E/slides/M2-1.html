@@ -1,0 +1,30 @@
+<!-- ============ M2-1 · 오른쪽 면 + 전후 — 종이 두 장이 점검 화면이 된다 ============ -->
+<section class="slide pr" data-slide="M2-1">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 18 V8 H18 M30 8 H40 V18 M40 30 V40 H30 M18 40 H8 V30" fill="none" style="stroke:var(--blue)" stroke-width="5"/><rect x="19" y="19" width="10" height="10" style="fill:var(--mint)"/></svg><span class="s-brand">FRAME</span>
+    <span class="s-line"></span><div class="s-team">블록 2 · 메인 과제</div>
+  </header>
+  <div class="bleed w40 t-apricot"></div>
+  <p class="kick">메인 과제 · ② 제작</p>
+  <h2 class="s-title">문항 파일을 읽는 <br><b class="kw">점검 화면</b>을 만듭니다</h2>
+  <dl class="facts" style="margin-top:48px;gap:30px">
+    <div class="f" style="grid-template-columns:150px 1fr"><dt style="font-size:20px;color:var(--pr-deep)">전</dt><dd><span class="em-tag">문항.txt</span> · <span class="em-tag">결과글.txt</span> — 글만 있는 파일</dd></div>
+    <div class="f" style="grid-template-columns:150px 1fr"><dt style="font-size:20px;color:var(--pr-deep)">후</dt><dd>문항에 답하면 유형 글이 나오는 점검 화면(<span class="em-tag">index.html</span>)</dd></div>
+    <div class="f" style="grid-template-columns:150px 1fr"><dt style="font-size:20px;color:var(--pr-deep)">화면이 하는 일</dt><dd><span style="white-space:nowrap">문항 한 화면에 하나</span> <b style="color:var(--pr-deep)">→</b> <span style="white-space:nowrap">답 0~3점</span> <b style="color:var(--pr-deep)">→</b> <span style="white-space:nowrap">축 평균 1.75 이상이면 높은 쪽</span> <b style="color:var(--pr-deep)">→</b> <span style="white-space:nowrap">그 유형의 결과 글</span></dd></div>
+  </dl>
+  <div class="on-bleed" style="gap:12px">
+    <div style="position:relative;width:400px;height:146px;flex:none">
+      <div class="paper" style="--r:-5deg;position:absolute;left:6px;top:14px"><b>문항.txt</b><i></i><i></i><i></i></div>
+      <div class="paper" style="--r:4deg;position:absolute;left:222px;top:2px"><b>결과글.txt</b><i></i><i></i><i></i></div>
+    </div>
+    <svg width="36" height="34" viewBox="0 0 36 34" aria-hidden="true" style="flex:none"><path d="M18 3v22M8 16l10 10 10-10" fill="none" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--pr-deep)"/></svg>
+    <p class="keep" style="max-width:400px;text-align:center;color:var(--ink);font-weight:600">에이전트가 두 파일의 내용을 <span class="em-tag">content.js</span>로 옮기고 화면을 만듭니다.</p>
+    <div class="win browser" style="width:400px;flex:none">
+      <div class="win-bar"><i></i><i></i><i></i><span class="win-url">index.html</span></div>
+      <div class="win-body">
+        <p class="keep" style="margin:8px 0 14px;color:var(--ink);font-weight:700">AI가 알려 준 날짜나 숫자를 원본 문서에서 다시 본다.</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px"><span class="pill ghost" style="justify-content:center">거의 없다 0</span><span class="pill ghost" style="justify-content:center">가끔 1</span><span class="pill pr" style="justify-content:center">자주 2</span><span class="pill ghost" style="justify-content:center">거의 항상 3</span></div>
+      </div>
+    </div>
+  </div>
+</section>

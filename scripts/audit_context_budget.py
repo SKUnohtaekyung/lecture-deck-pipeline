@@ -32,6 +32,10 @@
   T5 서브에이전트 비중      — 세션 폴더 `<id>/subagents/**.jsonl`을 load()와 같은 규칙으로 집계
   T7 API 오류로 끝난 서브   — `isApiErrorMessage` 행(사용량 한도 429 등)이 있는 로그
   T8 세션 중 모델 전환      — 모델이 바뀌면 프롬프트 캐시가 전량 재작성된다
+  T9 워커 중단선(2026-10-01 신설) — 워커 하나가 호출 80회 또는 호출당 평균 창 200k를 넘으면 경고.
+     근거: FRAME 덱 조립에서 워커 5명이 150~208회 · 평균 창 370~436k로 세션 비용의 60%를 썼다
+     (`skills/하네스/SKILL.md` §6-7). 경고가 나면 그 워커를 멈추고 남은 일을 새 워커로 나눈다.
+     wave 도중 점검: `--t9`(T9 줄만 출력 · 경고 있으면 종료코드 3).
   (메인 대 워커 토큰 총량의 상세는 여전히 `analyze_agent_usage.py` D절이 담당한다.)
 
   2026-09-11 계측 정정(`_dev/설계기록/토큰감사-2026-09-11.md` §1)
@@ -43,6 +47,7 @@
 사용:
     python scripts/audit_context_budget.py <session-id>
     python scripts/audit_context_budget.py <session-id> --json
+    python scripts/audit_context_budget.py <session-id> --t9    # 워커 중단선만(경고 3 · 없음 0 · 워커 0명 4)
     python scripts/audit_context_budget.py --list        # 세션 목록(최근순)
     python scripts/audit_context_budget.py --list --project-dir <경로>  # 다른 프로젝트 지정
 
@@ -157,6 +162,17 @@ def load(path):
     return calls, dup, bad
 
 
+T9_CALLS = 80          # 워커 1명 호출 수 중단선
+T9_AVG_CONTEXT = 200_000  # 워커 호출당 평균 창 중단선
+
+
+def t9_hits(subs):
+    """관측 T9 — 중단선을 넘은 워커. 호출 0인 로그는 미판정으로 따로 센다."""
+    judged = [x for x in subs if x["calls"] > 0]
+    hits = [x for x in judged if x["calls"] > T9_CALLS or x["avg_ctx"] > T9_AVG_CONTEXT]
+    return judged, hits, len(subs) - len(judged)
+
+
 def call_cost(c):
     return (c["inp"] * W_INPUT + c["cc"] * W_CACHE_CREATE
             + c["cr"] * W_CACHE_READ + c["out"] * W_OUTPUT)
@@ -193,7 +209,9 @@ def subagent_stats(base_dir, sid):
                         meta = json.load(mh)
                 except Exception:
                     meta = {}
+            ctx = [c["inp"] + c["cc"] + c["cr"] for c in calls]
             res.append({"file": f, "calls": len(calls),
+                        "avg_ctx": (sum(ctx) / len(ctx)) if ctx else 0,
                         "cost": sum(call_cost(c) for c in calls),
                         "api_error": api_error,
                         "type": meta.get("agentType", "?"),
@@ -303,6 +321,16 @@ def main():
 
     # 관측 T5·T7·T8(종료코드 무관)
     subs = subagent_stats(base_dir, sids[0])
+    judged9, hits9, undet9 = t9_hits(subs)
+    if "--t9" in argv:
+        if not subs:
+            out("T9 | 미판정 | 워커 로그 0개")
+            return 4
+        for x in sorted(hits9, key=lambda y: -y["avg_ctx"]):
+            out("  경고 · 호출 %3d · 평균 창 %4dk · %s" % (x["calls"], x["avg_ctx"] / 1000, (x["desc"] or x["file"])[:40]))
+        out("T9 | %s | 판정 %d명 · 경고 %d명 · 미판정 %d명(호출 0) · 기준 호출 >%d 또는 평균 창 >%dk" % (
+            "WARN" if hits9 else "OK", len(judged9), len(hits9), undet9, T9_CALLS, T9_AVG_CONTEXT // 1000))
+        return 3 if hits9 else 0
     sub_cost = sum(x["cost"] for x in subs)
     sub_pct = sub_cost / (total_cost + sub_cost) * 100 if subs else 0.0
     err_subs = [x for x in subs if x["api_error"]]
@@ -357,7 +385,8 @@ def main():
             "observe": {"subagents": len(subs), "subagent_cost_pct": round(sub_pct, 1),
                         "api_error_subagents": len(err_subs),
                         "api_error_cost_pct": round(err_pct, 1),
-                        "model_switches": len(switches)},
+                        "model_switches": len(switches),
+                        "t9_judged": len(judged9), "t9_warn": len(hits9), "t9_undetermined": undet9},
         }, ensure_ascii=False))
         return 1 if viol else 0
 
@@ -405,6 +434,10 @@ def main():
     out("  T7 API 오류로 끝난 서브   : %d개 · 서브 비용의 %.1f%%" % (len(err_subs), err_pct))
     out("  T8 세션 중 모델 전환      : %d회%s" % (len(switches),
         (" (" + ", ".join("%s→%s" % sw for sw in switches[:4]) + ")") if switches else ""))
+    out("  T9 워커 중단선            : 판정 %d명 · 경고 %d명 · 미판정 %d명 (호출 >%d 또는 평균 창 >%dk)" % (
+        len(judged9), len(hits9), undet9, T9_CALLS, T9_AVG_CONTEXT // 1000))
+    for x in sorted(hits9, key=lambda y: -y["avg_ctx"])[:8]:
+        out("     - 경고 · 호출 %3d · 평균 창 %4dk · %s" % (x["calls"], x["avg_ctx"] / 1000, (x["desc"] or x["file"])[:40]))
     out("")
     if viol:
         out("RESULT | FAIL | 위반 %s" % ", ".join(viol))

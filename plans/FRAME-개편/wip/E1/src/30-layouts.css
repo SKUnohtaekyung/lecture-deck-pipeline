@@ -1,0 +1,146 @@
+
+    /* ══════════ F-cover · 표지 ══════════ 클래스: slide cover f-cover — 네 모서리가 안쪽으로 모인다(표지의 유일한 연출) */
+    .f-cover{ background:var(--paper); padding:0; }
+    .f-cover::before{ content:none; }                                   /* kit .cover의 점 격자를 끈다 */
+    .f-cover .cv-h1{ margin:0; font-size:var(--fs-caption); letter-spacing:0; }   /* 글자는 sr-only라 14px로 둔다 — 32px 기본값은 자간 검사(≥32px)에 걸린다 */
+    .f-cover .cv-word{ position:absolute; left:72px; top:206px; width:560px; height:auto; display:block; }
+    .f-cover .cv-word .stroke{ fill:none; stroke:var(--blue); stroke-width:5; stroke-linejoin:miter; stroke-linecap:square; stroke-miterlimit:1.5; }
+    .f-cover .cv-sub{ position:absolute; left:72px; top:470px; margin:0; font-size:var(--fs-40); font-weight:800; line-height:1.2; letter-spacing:-.03em; color:var(--ink); }
+    .f-cover .cv-line{ position:absolute; left:74px; top:538px; margin:0; font-size:var(--fs-lead); font-weight:600; line-height:1.45; color:var(--gray-700); }
+    .f-cover .cv-frame{ position:absolute; left:700px; top:112px; width:500px; height:500px; display:block; overflow:visible; }
+    .f-cover .cv-frame .corner{ fill:none; stroke:var(--blue); stroke-width:14; stroke-linecap:square; }
+    .f-cover .cv-frame .core{ fill:var(--mint); }
+    @keyframes fr-corner{ from{ opacity:0; transform:translate(var(--dx,0),var(--dy,0)); } }
+    .slide.is-active.f-cover .cv-frame .corner{ animation:fr-corner .6s cubic-bezier(.2,.8,.2,1) backwards; }
+
+    /* ══════════ F-divider · 블록 간지 ══════════ 클래스: slide part-divider f-divider — 어두운 전면 + 여정 지도(.journey) */
+    .f-divider, .slide.dark{ background:var(--t-dark); color:var(--white); }
+    .f-divider .s-title, .slide.dark .s-title, .f-divider .dv-title{ color:var(--white); }
+    .f-divider .kick, .slide.dark .kick, .f-divider .s-eyebrow, .slide.dark .s-eyebrow, .f-divider .dv-no{ color:var(--mint); }
+    .f-divider .lede, .slide.dark .lede, .f-divider .dv-sub{ color:var(--t-dark-soft); }
+    .f-divider .dv-corners{ position:absolute; left:0; top:0; width:1280px; height:720px; display:block; pointer-events:none; }
+    .f-divider .dv-corners path{ fill:none; stroke:var(--t-dark-2); stroke-width:6; stroke-linecap:square; }
+    .dv-wrap{ position:absolute; left:72px; right:72px; top:0; bottom:0; display:flex; flex-direction:column; justify-content:center; }
+    .dv-no{ margin:0 0 12px; font-size:var(--fs-lead); font-weight:800; letter-spacing:.04em; line-height:1.2; color:var(--blue); }
+    .dv-title{ margin:0; font-size:var(--fs-display-lg); font-weight:700; line-height:1.15; letter-spacing:-.04em; color:var(--ink); }
+    .dv-sub{ margin:14px 0 0; max-width:900px; font-size:var(--fs-lead); font-weight:500; line-height:1.5; color:var(--gray-400); }
+    .dv-bar{ display:block; width:100%; max-width:928px; height:auto; margin-top:56px; }
+    .dv-bar .seg{ fill:var(--t-dark-2); }
+    .dv-bar .seg.done{ fill:var(--t-dark-soft); }
+    .dv-bar .seg.cur{ fill:var(--mint); }
+    .dv-steps{ display:grid; grid-template-columns:repeat(4,1fr); column-gap:16px; width:100%; max-width:928px; margin:10px 0 0; padding:0; list-style:none; }
+    .dv-steps li{ font-size:var(--fs-eyebrow); font-weight:700; line-height:1.3; color:var(--t-dark-soft); }
+    .dv-steps li.cur{ font-weight:800; color:var(--white); }
+
+    /* ══════════ F-hub · 에이전트 실습 허브 ══════════ 클래스: slide f-hub — 테두리 없는 파스텔 카드 네 장 */
+    .hub-wrap, .slot-wrap, .cx-wrap{ position:absolute; left:72px; right:72px; top:56px; bottom:54px; display:flex; flex-direction:column; }
+    .hub-top .s-title, .slot-top .s-title, .cx-top .s-title{ margin:8px 0 0; }
+    .hub-lead{ margin:10px 0 0; font-size:var(--fs-lead); line-height:1.55; color:var(--gray-400); }
+    .hub-grid{ flex:1 1 auto; min-height:0; margin-top:24px; display:grid; grid-template-columns:1fr 1fr; grid-template-rows:1fr 1fr; gap:20px; }
+    .hub-card{ position:relative; z-index:0; display:grid; grid-template-columns:64px 1fr 132px; gap:18px; align-items:center; text-align:left; font:inherit; color:var(--ink);
+      background:none; border:0; padding:0 26px 0 22px; cursor:pointer; transition:transform .3s cubic-bezier(.2,.8,.2,1); }
+    .hub-card::before{ content:""; position:absolute; inset:0; z-index:-1; border-radius:26px; background:var(--tint,var(--t-mint)); transition:box-shadow .3s; }
+    .hub-card{ --tint:var(--t-apricot); }   /* 네 실습 모두 실습 색 한 가지(색 순환 없음) */
+    .hub-card:hover, .hub-card:focus-visible{ transform:translateY(-4px); }
+    .hub-card:hover::before, .hub-card:focus-visible::before{ box-shadow:var(--sh-pop); }
+    .hub-card[aria-disabled="true"]{ cursor:default; }
+    .hub-card[aria-disabled="true"]:hover{ transform:none; }
+    .hub-no{ font-size:60px; font-weight:800; line-height:1; color:var(--blue); letter-spacing:-.04em; text-align:center; }
+    .hub-card.is-done .hub-no{ color:var(--mint-deep); }
+    .hub-body{ display:flex; flex-direction:column; gap:6px; min-width:0; }
+    .hub-name{ font-size:var(--fs-box-title); font-weight:800; line-height:1.3; letter-spacing:-.02em; }
+    .hub-meta{ font-size:var(--fs-box-desc); font-weight:500; color:var(--gray-700); line-height:1.4; }
+    .hub-meta b{ font-weight:800; color:var(--ink); }
+    .hub-done{ display:none; font-size:var(--fs-box-desc); font-weight:800; color:var(--mint-deep); }
+    .hub-card.is-done .hub-done{ display:block; }
+    .hub-pic{ width:132px; height:64px; display:block; }
+    .hub-pic .p-s{ fill:none; stroke:var(--gray-700); stroke-width:2.5; stroke-linecap:round; stroke-linejoin:round; }
+    .hub-pic .p-f{ fill:var(--t-card); }
+    .hub-pic .p-a{ fill:none; stroke:var(--blue); stroke-width:2.5; stroke-linecap:round; stroke-linejoin:round; }
+    .hub-foot{ display:flex; align-items:center; justify-content:space-between; gap:24px; margin-top:14px; min-height:52px; }
+    .hub-foot p{ margin:0; font-size:var(--fs-body); font-weight:500; color:var(--gray-700); }
+    .hub-foot p b{ color:var(--ink); font-weight:800; }
+
+    /* ══════════ F-slot · 수업 안의 실습 시간 ══════════ 클래스: slide f-slot · data-return-to="R-A" */
+    .slot-lead{ margin:10px 0 0; font-size:var(--fs-lead); line-height:1.55; color:var(--gray-400); }
+    .slot-main{ flex:1 1 auto; min-height:0; margin-top:24px; display:grid; grid-template-columns:1fr 600px; column-gap:56px; align-items:center; }
+    .slot-text{ display:flex; flex-direction:column; gap:26px; }
+    .slot-mini{ position:relative; z-index:0; display:grid; grid-template-columns:1fr 1fr; gap:12px; width:100%; padding:14px; font:inherit; color:var(--ink); background:none; border:0; cursor:pointer;
+      transition:transform .3s cubic-bezier(.2,.8,.2,1); }
+    .slot-mini::before{ content:""; position:absolute; inset:0; z-index:-1; border-radius:30px; background:var(--t-sky); }
+    .slot-mini:hover, .slot-mini:focus-visible{ transform:translateY(-4px); }
+    .mini-card{ position:relative; z-index:0; display:grid; grid-template-columns:48px 1fr; gap:14px; align-items:center; padding:26px 22px; text-align:left; }
+    .mini-card::before{ content:""; position:absolute; inset:0; z-index:-1; border-radius:20px; background:var(--t-card); box-shadow:var(--sh-card); }
+    .mini-no{ font-size:var(--fs-40); font-weight:800; line-height:1; letter-spacing:-.03em; font-variant-numeric:tabular-nums; color:var(--blue); text-align:center; }
+    .mini-name{ font-size:var(--fs-box-desc); font-weight:700; line-height:1.3; }
+    .mini-card.is-done .mini-no{ color:var(--mint-deep); }
+    .mini-card.is-done .mini-name::after{ content:" ✓"; color:var(--mint-deep); }
+    .slot-hint{ display:block; margin-top:14px; font-size:var(--fs-box-desc); font-weight:700; color:var(--gray-700); text-align:center; }
+
+    /* ══════════ 실습 셸(F-pr-*·F-return) — 흰 바탕 + 살구 면(.bleed.t-apricot). 표식: 주홍 눈썹 「실습 N」 · 타이머 · 단계 번호 · 살구 면 ══════════ */
+    .pr-wrap{ position:absolute; left:72px; right:72px; top:56px; bottom:54px; display:flex; flex-direction:column; }
+    .pr-bar{ display:flex; align-items:baseline; gap:12px; min-height:30px; }
+    .pr-no{ font-size:18px; font-weight:800; line-height:1.4; letter-spacing:.01em; color:var(--pr-deep); }   /* 표식 「실습 N」 라벨(눈썹) */
+    .pr-name{ font-size:18px; font-weight:700; line-height:1.4; color:var(--gray-700); }
+    .pr-name::before{ content:"·"; margin-right:12px; color:var(--gray-400); }
+    .pr-steps{ margin-left:auto; display:flex; gap:6px; font-size:var(--fs-box-desc); font-weight:700; color:var(--gray-400); }
+    .pr-steps span{ position:relative; z-index:0; padding:3px 14px; }
+    .pr-steps .cur{ color:var(--ink); }
+    .pr-steps .cur::before{ content:""; position:absolute; inset:0; z-index:-1; border-radius:999px; background:var(--pr-fill); }
+    .pr-top .s-title{ margin:8px 0 0; }
+    .pr-top.has-timer{ display:flex; align-items:flex-start; justify-content:space-between; gap:28px; }   /* 제목 줄 오른쪽에 작은 타이머(.timer.sm) */
+    .pr-lead{ margin:10px 0 0; max-width:30em; font-size:var(--fs-lead); line-height:1.55; color:var(--gray-400); }
+    .pr-main{ flex:1 1 auto; min-height:0; margin-top:24px; position:relative; display:flex; flex-direction:column; }
+    .pr-cols{ --lc:540px; flex:1 1 auto; min-height:0; display:grid; grid-template-columns:var(--lc) 1fr; column-gap:40px; }
+    .pr-left{ display:flex; flex-direction:column; justify-content:space-between; gap:16px; min-height:0; }
+    .pr-right{ display:flex; flex-direction:column; gap:16px; min-height:0; }
+    .pr-right .tail{ margin-top:auto; }
+    .fx-back{ margin-top:auto; display:flex; align-items:center; justify-content:space-between; gap:24px; }   /* ④ 아래 줄: 안내 한 줄 + 허브로 단추 */
+
+    /* F-pr-goal ① 목표 — 전후 미리보기 + 시간·준비물·결과물 */
+    .pv{ flex:1 1 auto; display:grid; grid-template-columns:392px 96px 1fr; align-items:center; gap:12px; }
+    .pv-before{ width:392px; height:250px; display:block; }
+    .pv-before .sheet{ fill:var(--t-card); stroke:none; filter:drop-shadow(0 5px 8px var(--t-shadow)); }
+    .pv-before .ln{ stroke:var(--t-memo); stroke-width:6; stroke-linecap:round; }
+    .pv-before .ln.hot{ stroke:var(--pr-fill); }
+    .pv-before .fn{ font:700 17px/1 "Pretendard",sans-serif; fill:var(--pr-deep); }
+    .pv-arrow{ width:96px; height:40px; display:block; }
+    .pv-arrow path{ fill:none; stroke:var(--pr-deep); stroke-width:4; stroke-linecap:round; stroke-linejoin:round; }
+    .meta3{ margin:auto 0 0; display:grid; grid-template-columns:200px 1fr 1fr; gap:36px; }
+    .meta3 > div{ position:relative; padding:0; }
+    .meta3 dt{ font-size:17px; font-weight:800; line-height:1.3; color:var(--gray-400); }
+    .meta3 dd{ margin:4px 0 0; font-size:var(--fs-body); font-weight:500; line-height:1.45; color:var(--ink); }
+    .meta3 .big{ font-size:var(--fs-40); font-weight:800; line-height:1; letter-spacing:-.03em; font-variant-numeric:tabular-nums; color:var(--pr-deep); }
+
+    /* F-pr-check ③ 확인 — 위쪽에 대조할 것(원문 창 + 결과 표 등), 아래쪽에 체크 목록 */
+    .ck-top{ position:relative; flex:1 1 auto; display:grid; grid-template-columns:500px 1fr; column-gap:96px; align-items:center; }
+    .ck-top > .win .win-body{ padding:4px 18px 12px; }
+    .ck-top > .win .code{ line-height:1.5; }
+    .ck-top{ margin-bottom:16px; }
+    .ck-list.tail{ margin-top:auto; }
+    .ck-link{ position:absolute; left:0; top:0; width:1280px; height:720px; pointer-events:none; }
+    .ck-link path{ fill:none; stroke:var(--pr-deep); stroke-width:3; stroke-dasharray:7 5; }
+    .ck-link circle{ fill:var(--pr-deep); }
+
+    /* F-pr-fix ④ 고치기 · F-pr-list · F-pr-screen · F-return — .pr-cols 두 칸(--lc로 왼쪽 폭을 바꾼다) */
+    .fx-lead{ margin:0; font-size:var(--fs-body); line-height:1.55; color:var(--ink); }
+    .loc{ width:250px; height:330px; display:block; }
+    .loc .page{ fill:var(--t-card); stroke:none; filter:drop-shadow(0 5px 8px var(--t-shadow)); }
+    .loc .ln{ stroke:var(--t-memo); stroke-width:7; stroke-linecap:round; }
+    .loc .ln.hot{ stroke:var(--pr-fill); stroke-width:9; }
+    .loc .tick{ font:700 17px/1 "Pretendard",sans-serif; fill:var(--gray-700); }
+    .loc .pin{ fill:var(--pr-deep); }
+    .reveal-row{ display:grid; grid-template-columns:250px 1fr; gap:24px; align-items:start; }
+    .resume{ margin-top:auto; }
+    .resume p{ margin:0; font-size:var(--fs-body); line-height:1.5; }
+
+    /* ══════════ F-concept-fig · 개념 장 틀 ══════════ 클래스: slide cx-slide — 정의 → 비유 → 대응(선 없이 라벨 + 글자 위계) + 시각 자료 자리 */
+    .cx-main{ flex:1 1 auto; min-height:0; margin-top:26px; display:grid; grid-template-columns:470px 1fr; column-gap:44px; align-items:stretch; }
+    .cx-text{ display:flex; flex-direction:column; gap:26px; }
+    .cx-fig{ position:relative; z-index:0; margin:0; display:flex; flex-direction:column; justify-content:flex-start; padding:20px 28px 18px; }
+    .cx-fig::before{ content:""; position:absolute; inset:0; z-index:-1; border-radius:26px; background:var(--t-card); box-shadow:var(--sh-card); }   /* 흰 카드 + 약한 그림자 — 면 대신 그림만 두려면 .bare */
+    .cx-fig.bare{ padding:0; }
+    .cx-fig.bare::before{ content:none; }
+    .cx-fig svg{ display:block; width:100%; height:auto; }
+    .cx-src{ margin:auto 0 0; display:flex; flex-wrap:wrap; gap:0 14px; font-size:var(--fs-caption); line-height:var(--lh-caption); color:var(--gray-400); }
+    .cx-src span + span::before{ content:"·"; margin-right:14px; }   /* 출처·캡션은 요소 하나에 24자 이하 — 더 길면 22px(audit_typography 서술문 판정) */

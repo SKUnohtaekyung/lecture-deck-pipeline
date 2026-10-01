@@ -3,28 +3,21 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=1280">
-  <title>에이전트로 간단한 서비스 만들기 — WORKSHOP</title>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 96'><line x1='28.8' y1='28.7' x2='49' y2='70' stroke='%2314B8A6' stroke-width='18' stroke-linecap='round'/><line x1='70.9' y1='25.1' x2='49' y2='70' stroke='%231D4ED8' stroke-width='19' stroke-linecap='round'/><circle cx='49' cy='70' r='9.5' fill='%23141821'/></svg>">
-  <!-- 폰트: Pretendard (문서가 인정하는 유일한 외부 의존성) -->
+  <title>FRAME — AI 에이전트 실습 · 4시간</title>
+  <!-- 파비콘은 테마 토큰을 쓸 수 없는 유일한 색 자리다 — FRAME 마크(페트롤 틀 + 아쿠아 사각형) -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'><path d='M8 18 V8 H18 M30 8 H40 V18 M40 30 V40 H30 M18 40 H8 V30' fill='none' stroke='%230E4A5A' stroke-width='5'/><rect x='19' y='19' width='10' height='10' fill='%237DE0EC'/></svg>">
+  <!-- 폰트: Pretendard(제목·본문) + D2Coding(요청문·코드). 배포본은 사용 글자 서브셋을 임베드한다 -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
-  <!-- ▼ 킷 상속: deck.css(베이스) → legibility.css(강의장 가독성) 순서 고정.
-       덱을 패키지 밖에 생성할 땐 이 두 파일을 옆에 복사하거나 <style>로 인라인(base64 단일파일 배포). -->
-  <!-- ⚠️ 경로는 «생성물 강의덱.html의 위치» 기준이다. 이 템플릿은 courses/<과목>/sessions/N주차/로
-       복사되므로 저장소 루트까지 4단계다. 2단계(../../)로 두면 CSS가 404인데 정적 검사는 전부
-       PASS하고 브라우저에서만 «전 슬라이드 동시 표시 + 로고 0×0»으로 드러난다(2026-07 실제 사고).
-       덱을 만들면 반드시 로컬 http로 열어 document.styleSheets.length를 확인할 것. -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/wan2land/d2coding/d2coding-full.css">
+  <!-- ⚠️ 경로는 «생성물 강의덱.html의 위치» 기준 4단계다(courses/<과목>/sessions/N주차/). 틀려도 정적 검증은 PASS하고
+       브라우저에서만 «전 슬라이드 동시 표시 + 로고 0×0»으로 드러난다 — 조립 후 document.styleSheets.length를 확인한다. -->
   <link rel="stylesheet" href="../../../../kit/styles/deck.css">
   <link rel="stylesheet" href="../../../../kit/styles/legibility.css">
   <link rel="stylesheet" href="../../../../kit/styles/patterns.css">
-  <!-- 테마 workshopViolet — kit 링크 다음에 와야 :root를 덮는다(테마 계약 §6). 과목 프로필 §5가 정본. -->
-  <link rel="stylesheet" href="../../../../kit/themes/workshopViolet/tokens.css"><!-- 코드 코어: 검증된 레이아웃/element CSS(재사용) -->
+  <link rel="stylesheet" href="../../../../kit/themes/frame/tokens.css">
   <style id="kit-additions">
-    /* 이 주차 전용 신규 구도의 CSS는 여기 둔다(그게 기본이다).
-       클래스는 반드시 이 주차 deck.contract.json의 layout_families에 등재할 것 —
-       미등재 구도는 전부 'full'로 뭉개져 「동일 구도 연속」 FAIL 오탐이 난다.
-       kit/styles/patterns.css 환류는 「서로 다른 과목에서 이미 2회 이상 쓰인」
-       형태만 검토 대상이다(2026-07-29 확정 · R-PROMO-01). 「앞으로 쓸 것 같다」는
-       예측으로 올리지 마라. 상세는 references/phases/05-시각화.md 환류 규칙. */
+    /* 이 덱 전용 CSS는 여기 둔다. 새 구도 클래스는 deck.contract.json의 layout_families에 등재한다
+       (미등재 구도는 full로 뭉개져 「동일 구도 연속」 FAIL 오탐이 난다). */
 
     /* ══════════════════════════════════════════════════════════════════
        기본 경화 5종 — 지우지 말 것 (2026-08-03 신설)
@@ -161,703 +154,577 @@
     .roadmap .s-full:has(.rm-visual) .rm-track{ margin-right:412px; }
     .roadmap .s-full:has(.rm-visual) .rm-lead{ max-width:760px; }
 
-    /* ⑦ 이 주차 국소 보정 (2026-09-18 브라우저 실측 기준) ─────────────────
-       ⓐ 어절 중간 잘림 — kit의 keep-all이 닿지 않는 자식 셀렉터에 직접 건다.
-          실측: cc-side li · co-note p · rad-sat p · vt-leaf span에서 8건. */
-    .slide .cc-side li, .slide .co-note p, .slide .rad-sat p,
-    .slide .vt-leaf span, .slide .pf-reason, .slide .pf-alt,
-    .slide .quad-card p, .slide .dl-row .s-body{ word-break:keep-all; }
 
-    /*  ⓑ 바닥선(666px) 초과 — 본문 블록을 더한 장의 세로 여백만 조인다.
-          문장을 줄이는 대신 여백을 줄이는 쪽을 택했다(정보 단위 유지). */
-    .slide[data-slide="W1-07"] .cc-grid{ margin:8px 0 4px; }
-    .slide[data-slide="W2-12"] .cc-grid{ margin:8px 0 4px; }
-    .slide[data-slide="W3-05"] .cc-grid{ margin:8px 0 4px; }
-    .slide:is([data-slide="W1-07"],[data-slide="W3-05"]) .cc-side{ padding:18px 20px; }
-    .slide:is([data-slide="W1-07"],[data-slide="W3-05"]) .cc-side li{ font-size:19px; line-height:1.45; }
-    .slide:is([data-slide="W3-01"],[data-slide="W3-08"],[data-slide="W3-05"]) .s-body{ margin-top:8px; }
-    .slide:is([data-slide="W3-01"],[data-slide="W3-08"]) .s-body p{ margin:0 0 6px; }
-    .slide[data-slide="W3-08"] table.t th, .slide[data-slide="W3-08"] table.t td{ padding:6px 10px; }
-    .slide[data-slide="W3-01"] .def-msg{ top:132px; }
+    /* ══════════════════════════════════════════════════════════════════
+       FRAME 세션 CSS v2 — 옅은 면 · 흰 카드 · 큰 제목 · 색 글자 키워드 · 바닥 한 줄 머리
+       정본: 사용자 승인 프리뷰 tmp/frame/view/design_dir.html · 작성 지침 tmp/frame/E/공통지침.md 「디자인 v2」
+       색은 토큰(var(--*))과 이 파일의 커스텀 속성(--t-* · --pr-* · --sh-*)만 쓴다.
+       raw hex · rgba()는 커스텀 속성 정의 줄에만 있다(verify_deck은 커스텀 속성 정의 줄을 색 검사에서 뺀다).
+       ══════════════════════════════════════════════════════════════════ */
 
-    /*  ⓒ W2-07(개정 전 W2-04) 순환 도해 — kit .viz-cycle은 440×440 고정인데 .s-full.fill(세로 flex)
-          안에서 눌려 절대배치 노드가 본문 위로 흘러내렸다(브라우저 실측 occl 1건).
-          이 장만 270px로 줄이고 flex 수축을 끈다. 노드 좌표는 조각에서 함께 옮겼다. */
-    .slide[data-slide="W2-07"] .viz-cycle{ width:270px; height:270px; flex:0 0 270px;
-      margin:6px auto 4px; }
-    .slide[data-slide="W2-07"] .viz-cycle svg{ width:270px; height:270px; }
-    .slide[data-slide="W2-07"] .cyc-node{ width:118px; padding:9px 8px; }
-    .slide[data-slide="W2-07"] .cyc-node > b{ font-size:17px; }
-    .slide[data-slide="W2-07"] .cyc-center{ font-size:15px; padding:7px 14px; }
+    /* ── 0. 색 · 그림자 정의 — 모든 장 공통(틴트 면 · 흰 카드 · 어두운 전면) ── */
+    .slide{ --t-card:#FFFFFF; --t-mint:var(--mint-soft); --t-sky:#E2EFFA; --t-apricot:#FFEDE5; --t-mist:#EDF2F4; --t-lav:var(--t-sky); --t-sand:var(--t-mist);   /* lav·sand는 폐기 별칭(보라·노랑 제거) — 새로 쓰지 않는다 */
+      --t-dark:#08323D; --t-dark-2:#1F5563; --t-dark-3:#2E7B8C; --t-dark-ink:#CFE7EC; --t-dark-soft:#9FC3CC; --t-memo:#F4E4DC;
+      --t-pr-fill:#FF8A5C; --t-shadow:rgba(8,50,61,.16);
+      --sh-card:0 6px 18px rgba(8,50,61,.10); --sh-pop:0 12px 32px rgba(8,50,61,.14); --sh-ic:0 4px 12px rgba(8,50,61,.10); --t-glow:rgba(125,224,236,.30); }
 
-    /*  ⓓ 나머지 어절 잘림 — 좌우분할 해설 단락에도 keep-all을 건다. */
-    .slide .viz-note p{ word-break:keep-all; }
+    /* ── 1. 기본 · 글자 ─────────────────────────────────────────────── */
+    .slide{ line-height:1.45; font-weight:500; padding:56px 72px 0; isolation:isolate; word-break:keep-all; overflow-wrap:break-word; }   /* 행간 normal 방치를 막는다 · 자유 흐름 마크업(.kick · .s-title · .lede)의 여백 · 면(.bleed)이 글 아래로 가게 쌓임 맥락을 만든다 */
+    .s-brand{ color:var(--gray-400); letter-spacing:.06em; }
+    .slide p, .slide h1, .slide h2, .slide h3, .slide li, .slide figcaption, .slide button,
+    .slide dt, .slide dd, .slide td, .slide th, .slide summary{ word-break:keep-all; overflow-wrap:break-word; }   /* 한국어는 어절 단위로 줄을 바꾼다 */
+    .slide h1, .slide h2, .slide h3{ text-wrap:balance; }                                                          /* 제목은 줄 길이를 고르게 */
+    .slide p, .slide li, .slide dd, .slide figcaption{ text-wrap:pretty; }                                        /* 본문은 외톨이 글자를 막는다 */
+    .sr-only{ position:absolute; width:1px; height:1px; margin:-1px; padding:0; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0; }
+    /* verify_deck는 s02-slide·s03-slide 클래스를 가진 장이 있어야 PASS한다(FIXED 상수 — 계약으로 끌 수 없다).
+       이 덱에는 고정 도입·아젠다가 없으므로, 그 표지 역할만 두 장에 클래스로 달 수 있게 kit의 배치 규칙을 되돌린다.
+       선택자는 kit와 같은 명시도(0,2,0)로 맞춰 이 파일의 제목 · eyebrow 규칙보다 앞에 둔다 — 뒤의 규칙이 이긴다.
+       달아도 화면이 바뀌지 않는다(전후 픽셀 비교: tmp/frame/E1/marker_check.py). */
+    .s02-slide .s-eyebrow{ font-size:var(--fs-eyebrow); margin:0 0 6px; }
+    .s02-slide .s-title{ white-space:normal; }
+    .s02-slide .s-lead{ font-size:var(--fs-lead); margin:0 0 14px; }
+    .s03-slide .s-head .s-team{ display:block; }
 
-    /*  ⓔ 대비 3장(W1-07·W2-12·W3-06) — 실측 3~10px 초과분을 여백으로 흡수한다. */
-    .slide:is([data-slide="W1-07"],[data-slide="W3-05"]) .cc-grid{ margin:6px 0 2px; }
-    .slide:is([data-slide="W1-07"],[data-slide="W3-05"]) .cc-side{ padding:15px 18px; }
-    .slide:is([data-slide="W1-07"],[data-slide="W3-05"]) .cc-side h3{ margin-bottom:8px; font-size:23px; }
-    .slide:is([data-slide="W1-07"],[data-slide="W3-05"]) .cc-side ul{ gap:7px; }
-    .slide:is([data-slide="W1-07"],[data-slide="W3-05"]) .s-title{ margin-bottom:6px; }
+    /* 눈썹(.kick) — 제목 위 색 글자 한 줄. 칩이 아니다. 기존 .s-eyebrow도 같은 모양 */
+    .kick, .slide .s-eyebrow{ display:block; width:auto; margin:0; padding:0; border-radius:0; background:none;
+      font-size:18px; font-weight:800; line-height:1.4; letter-spacing:.01em; color:var(--mint-deep); }
+    /* 제목 — 48/700, 두 줄까지. 18자가 넘으면 글 쪽에서 의미 경계에 <br> */
+    .slide .s-title{ margin:8px 0 0; font-size:48px; font-weight:700; line-height:1.25; letter-spacing:-.035em; color:var(--ink); }
+    .slide .s-title .hl{ color:var(--mint-deep); }
+    /* 보조 설명(.lede) — 제목 아래 회색 23px */
+    .lede{ margin:14px 0 0; max-width:30em; font-size:23px; font-weight:500; line-height:1.6; color:var(--gray-400); }
 
-    /*  ⓕ 원인은 여백이 아니라 컨테이너 바닥이었다 — kit .cc-full은 bottom:44px(=676px)로
-          바닥선 666px보다 10px 아래에 끝난다(토큰 치트시트가 「결함 관행」으로 적어 둔 값).
-          .cc-grid가 flex로 늘어나 마지막 문단이 그 바닥에 붙으므로, 이 덱은 54px로 올린다. */
-    .slide .cc-full{ bottom:54px; }
-    /* ⑧ 가독성 보정 — 얇은 보조 글씨 (2026-09-18 사용자 지시) ──────────────
-       "22페이지처럼 너무 글씨가 얇으면 잘 안 보여."
-       22쪽(개정 전 W2-05 · 현 W2-09)의 실체는 kit `.viz-code`의 `.co-note p`(17px/weight 400)와
-       `.co-src`(20px/weight 400)였다. 크기가 아니라 **굵기**가 원인이라,
-       크기 규칙(R-TYPE-01)은 그대로 두고 굵기만 한 단계 올린다.
-       토큰 치트시트의 「설명은 weight 500」은 기본값이지 상한이 아니며,
-       투사 환경에서 읽히지 않는다는 실사용 판정이 우선한다. */
-    .slide .co-note p{ font-size:19px; font-weight:600; color:var(--gray-700); line-height:1.45; }
-    .slide .co-src{ font-weight:500; }
-    .slide .co-bar{ font-size:18px; }
-    .deck .slide[data-slide] .work-step .ws-body > span{ font-weight:600; }
-    .deck .slide[data-slide] .desc{ font-weight:600; }
-    .slide .vt-leaf > span, .slide .rad-sat p, .slide .quad-card p,
-    .slide .pf-reason, .slide .pf-alt{ font-weight:600; }
-    .slide .vt-leaf > span{ font-size:16px; }
+    .slide [tabindex]:focus{ outline:none; }
+    .slide [tabindex]:focus-visible, .slide button:focus-visible, .slide summary:focus-visible{ outline:2px dashed var(--ink); outline-offset:3px; }
+    .slide svg [tabindex]:focus-visible{ outline:none; }        /* SVG 요소는 아래 .hit 테두리로 표시한다 */
+    .slide .hit{ fill:transparent; stroke:none; }
+    .slide svg [tabindex]:focus-visible .hit{ stroke:var(--ink); stroke-width:3; stroke-dasharray:6 4; }
 
-    /* ⑨ 이 주차 신규 시각 구도 ─────────────────────────────────────────
-       사용자 지시: "지금보다 더 시각적 자료를 많이 사용해. 너무 박스 위주야."
-       박스 나열(L-gm-*)을 화면 모형·갈래 도해·사분면·레일 비교로 교체한다. */
+    /* ── 2. 머리 → 바닥 한 줄 — s-head 마크업은 그대로 두고 위치 · 모양만 바꾼다(작은 로고 · 「FRAME · .s-team」 · 가로선 없음) ── */
+    .s-head{ top:auto; bottom:22px; left:72px; right:auto; height:auto; gap:8px; font-size:14px; font-weight:600; color:var(--gray-400); }
+    .s-logo{ width:18px; height:18px; }
+    .s-brand{ font-size:14px; font-weight:700; }
+    .s-line{ display:none; }
+    .s-team{ margin:0; font-size:14px; line-height:1.4; font-weight:600; color:var(--gray-400); text-align:left; }
+    .s-team::before{ content:"·"; margin:0 8px 0 0; }
+    .slide.dark .s-head, .slide.dark .s-brand, .slide.dark .s-team, .slide.dark .s-pageno{ color:var(--t-dark-soft); }
+    .slide.dark .s-logo path{ stroke:var(--t-dark-soft) !important; }
 
-    /* ⑨-a 화면 모형 (.viz-screen) — 결과 화면이 어떻게 생겼는지 그대로 보인다.
-       외부 이미지 없이 CSS로만 그린다(배포본 자립성 유지). */
-    .viz-screen{ width:100%; max-width:470px; background:var(--white);
-      border:1px solid var(--blue-line-strong); border-radius:12px; overflow:hidden;
-      box-shadow:var(--shadow-md); }
-    .sc-bar{ display:flex; align-items:center; gap:7px; padding:8px 12px;
-      background:var(--blue-soft); border-bottom:1px solid var(--blue-line); }
-    .sc-dot{ width:9px; height:9px; border-radius:50%; background:var(--gray-400); flex:0 0 auto; }
-    .sc-url{ flex:1 1 auto; margin-left:6px; padding:3px 10px; border-radius:999px;
-      background:var(--white); border:1px solid var(--blue-line);
-      font-family:var(--font-mono); font-size:13px; color:var(--gray-700);
-      overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-    .sc-body{ padding:16px 18px 18px; }
-    .sc-kicker{ font-size:14px; font-weight:700; color:var(--blue); letter-spacing:.02em; }
-    .sc-type{ font-size:27px; font-weight:800; color:var(--ink); line-height:1.2; margin:5px 0 9px; }
-    .sc-lines{ display:flex; flex-direction:column; gap:6px; }
-    .sc-lines span{ font-size:16px; font-weight:600; line-height:1.4; color:var(--gray-700);
-      padding-left:13px; position:relative; }
-    .sc-lines span::before{ content:""; position:absolute; left:0; top:9px;
-      width:6px; height:6px; border-radius:50%; background:var(--mint); }
-    .sc-btn{ margin-top:12px; display:inline-block; padding:8px 16px; border-radius:9px;
-      background:var(--blue); color:var(--white); font-size:15px; font-weight:800; }
-    .sc-meter{ display:flex; gap:5px; margin:9px 0 3px; }
-    .sc-meter i{ height:9px; flex:1 1 0; border-radius:4px; background:var(--blue-soft); }
-    .sc-meter i.on{ background:var(--blue); }
+    /* ── 3. 실습 확장 색(§16-3) — 테마 토큰 100개는 고정이라 .slide.pr 범위 커스텀 속성으로 둔다 ──
+       실습 표식(색 하나에 기대지 않는다): 주홍 눈썹 「실습 N」 · 타이머 · 단계 번호 · 살구 면. 왼쪽 주홍 띠는 없앴다. */
+    .slide.pr{ --pr-deep:#B8431F; --pr-fill:#FF8A5C; --pr-soft:#FFEDE5; --pr-line:#F7C9B5; --pr-bg:#FFFFFF; }
+    .slide.pr{ background:var(--pr-bg); }
+    .slide.pr .kick, .slide.pr .s-eyebrow{ color:var(--pr-deep); }
+    .slide.pr .s-title .hl{ color:var(--pr-deep); }
+    code, .path{ font-family:inherit; font-weight:700; }          /* 고정폭 글꼴은 터미널 창 안에만 */
+    .slide.pr code{ color:var(--pr-deep); }
+    .path{ word-break:break-all; }
 
-    /* ⑨-b 대화 모형 (.viz-chat) — 에이전트형 주제의 결과물은 화면이 아니라 대화다. */
-    .viz-chat{ width:100%; max-width:470px; background:var(--white);
-      border:1px solid var(--blue-line-strong); border-radius:12px; overflow:hidden;
-      box-shadow:var(--shadow-md); }
-    .ch-bar{ padding:8px 14px; background:var(--blue); color:var(--white);
-      font-size:15px; font-weight:800; }
-    .ch-body{ padding:13px 14px; display:flex; flex-direction:column; gap:8px; }
-    .ch-msg{ max-width:84%; padding:8px 12px; border-radius:12px; font-size:16px;
-      font-weight:600; line-height:1.4; }
-    .ch-msg.is-ai{ align-self:flex-start; background:var(--paper); color:var(--ink);
-      border:1px solid var(--line); border-bottom-left-radius:4px; }
-    .ch-msg.is-me{ align-self:flex-end; background:var(--blue); color:var(--white);
-      border-bottom-right-radius:4px; }
-    .ch-msg b{ font-weight:800; }
-    .ch-out{ margin:2px 13px 13px; padding:10px 13px; border-radius:10px;
-      background:var(--paper); border:1px dashed var(--mint);
-      font-size:15px; font-weight:700; color:var(--mint-deep); }
+    /* ── 4. 강조 — 면(형광펜)을 없애고 색 글자 800으로 모은다. .mk · .mk-solid는 .kw와 같은 모양 ── */
+    .kw, .mk, .mk-solid{ color:var(--mint-deep); font-weight:800; }
+    .mk::after, .mk-solid::after{ content:none; }
+    .slide.pr .kw, .slide.pr .mk, .slide.pr .mk-solid{ color:var(--pr-deep); }
+    .slide.dark .kw, .slide.dark .mk, .slide.dark .mk-solid{ color:var(--mint); }
+    .em-ink{ color:var(--blue); font-weight:800; }
+    .slide.pr .em-ink{ color:var(--pr-deep); }
+    .slide.dark .em-ink{ color:var(--white); }
+    .em-line{ white-space:nowrap; text-decoration:underline; text-decoration-thickness:4px; text-underline-offset:7px; text-decoration-skip-ink:none; text-decoration-color:var(--mint); }
+    .slide.pr .em-line{ text-decoration-color:var(--pr-fill); }
+    .em-num{ font-size:1.6em; font-weight:800; line-height:1; letter-spacing:-.03em; font-variant-numeric:tabular-nums; color:var(--blue); }
+    .slide.pr .em-num{ color:var(--pr-deep); }
+    .s-title .em-num, .pr-top .em-num{ font-size:1.12em; }
+    .em-tag{ position:relative; z-index:0; font-weight:700; color:var(--ink); padding:0 .3em; white-space:nowrap; }   /* 파일 · 버튼 · 메뉴 이름 — 본문 글꼴 + 옅은 칩 */
+    .em-tag::after{ content:""; position:absolute; z-index:-1; left:0; right:0; top:.04em; bottom:.04em; border-radius:.45em; background:var(--blue-soft); }
+    .slide.pr .em-tag::after{ background:var(--pr-soft); }
+    /* 동그라미 — 시각 자료 안에서만. SVG 요소에 .em-ring을 직접 달거나, 글자 둘레는 .ring-host로 감싼다(엔진이 타원을 그린다) */
+    .em-ring{ fill:none; stroke:var(--blue); stroke-width:4; stroke-linecap:round; stroke-linejoin:round; }
+    .slide.pr .em-ring{ stroke:var(--pr-deep); }
+    .ring-host{ position:relative; display:inline-block; }
+    .ring-host > .ring-svg{ position:absolute; pointer-events:none; overflow:visible; }
+    .terminal-dark .em-ring{ stroke:var(--mint); }                      /* 어두운 터미널 위에서는 아쿠아 */
 
-    /* ⑨-c 갈래 도해 (.viz-fork) — 하나의 뿌리가 두 갈래로 갈리고 갈래마다 항목 둘. */
-    .viz-fork{ display:flex; flex-direction:column; align-items:center; }
-    .vf-root{ background:var(--blue); color:var(--white); font-weight:800; font-size:21px;
-      border-radius:13px; padding:12px 26px; box-shadow:var(--shadow-blue); }
-    .vf-arms{ display:flex; gap:64px; }
-    .vf-arm{ display:flex; flex-direction:column; align-items:center; gap:9px; }
-    .vf-head{ padding:7px 18px; border-radius:999px; font-size:18px; font-weight:800;
-      background:var(--periwinkle); color:var(--ink); }
-    .vf-arm.is-agent .vf-head{ background:var(--mint); color:var(--on-mint); }
-    .vf-items{ display:flex; gap:12px; }
-    .vf-item{ width:212px; background:var(--white); border:1px solid var(--blue-line-strong);
-      border-radius:12px; padding:11px 14px; }
-    .vf-arm.is-agent .vf-item{ border-color:var(--mint); }
-    .vf-item b{ display:block; font-size:19px; font-weight:800; color:var(--ink); line-height:1.25; }
-    .vf-item span{ display:block; font-size:15px; font-weight:600; color:var(--gray-700);
-      margin-top:4px; line-height:1.35; }
+    /* ── 5. 등장 연출 — 요소별 떠오름 · 형광펜 칠하기 · 팝 · 선 그리기는 없앴다(2026-10-01 사용자 지시 「넘길 때 애니메이션이 많다」).
+       남기는 것은 도표 막대가 한 번 자라는 것(0.35초 · 차례 지연 없음)뿐이다. .rv · --i · --mkd 표기는 남아 있어도 효과가 없다.
+       from 키프레임만 쓰고 fill-mode는 backwards다 — 끝나면 원래 상태로 남아 PDF·배포본·감사에서도 같은 모습이다. */
+    @keyframes fr-rise{ from{ opacity:0; transform:translateY(12px); } }
+    @keyframes fr-mark{ from{ transform:scaleX(0); } }
+    @keyframes fr-grow{ from{ transform:scaleY(0); } }
+    @keyframes fr-fade{ from{ opacity:0; } }
+    @keyframes fr-draw{ from{ stroke-dashoffset:var(--len,100); } }
+    @keyframes fr-fillx{ from{ transform:scaleX(0); } }
+    @keyframes fr-pop{ from{ opacity:0; transform:scale(.6); } }
+    .a-draw, .em-ring{ stroke-dasharray:var(--len,100); }
+    .slide.is-active .a-grow{ transform-box:fill-box; transform-origin:center bottom; animation:fr-grow .35s cubic-bezier(.2,.8,.2,1) backwards; }
+    .slide.is-active .a-fillx{ transform-box:fill-box; transform-origin:left center; animation:fr-fillx .35s cubic-bezier(.2,.8,.2,1) backwards; }
+    /* 감사 모드 · 동작 줄이기 · 인쇄 → 즉시 최종 상태. 무한 반복 연출은 이 덱에 없다 */
+    html.no-anim .slide *, html.no-anim .slide *::before, html.no-anim .slide *::after{ animation:none !important; transition:none !important; }
+    @media (prefers-reduced-motion:reduce){
+      .slide *, .slide *::before, .slide *::after{ animation:none !important; transition:none !important; }
+      ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*){ animation:none !important; }
+    }
+    @media print{ .slide *, .slide *::before, .slide *::after{ animation:none !important; transition:none !important; } }
+    /* 허브 전환(View Transition 0.45s) — 이름은 엔진이 출발·도착 요소에 잠깐 붙인다 */
+    ::view-transition-group(frame-hero){ animation-duration:.45s; animation-timing-function:cubic-bezier(.2,.8,.2,1); }
+    ::view-transition-old(root), ::view-transition-new(root){ animation-duration:.3s; }
 
-    /* ⑨-d 두 갈래 레일 비교 (.viz-rails) — 절차의 길이 차이가 곧 논지일 때. */
-    .viz-rails{ display:flex; flex-direction:column; gap:34px; width:100%; margin-top:10px; }
-    .rl-row{ display:flex; align-items:center; gap:12px; }
-    .rl-tag{ flex:0 0 156px; font-size:20px; font-weight:800; color:var(--gray-700);
-      text-align:right; line-height:1.25; }
-    .rl-track{ flex:1 1 auto; display:flex; align-items:center; gap:7px; }
-    .rl-step{ padding:12px 14px; border-radius:10px; background:var(--paper);
-      border:1px solid var(--line); font-size:17px; font-weight:700; color:var(--gray-700);
-      white-space:nowrap; }
-    .rl-row.is-ours .rl-tag{ color:var(--blue); }
-    .rl-row.is-ours .rl-step{ background:var(--blue); border-color:var(--blue);
-      color:var(--white); font-size:22px; font-weight:800; padding:20px 28px; }
-    .rl-sep{ color:var(--gray-400); font-weight:800; font-size:15px; }
-    .rl-row.is-ours .rl-sep{ color:var(--blue); font-size:19px; }
-    .rl-cost{ flex:0 0 auto; margin-left:6px; font-size:18px; font-weight:800;
-      color:var(--coral-deep); white-space:nowrap; }
-    .rl-row.is-ours .rl-cost{ color:var(--mint-deep); }
+    /* ── 6. 덩어리 — 세로 규칙선을 없앴다. 작은 색 라벨 + 글자 크기 위계(정의 26 · 비유 22 · 대응 22) ── */
+    .rule{ position:relative; padding:0; }
+    .rule::before{ content:none; }
+    .rule .lab, .lab{ display:block; margin:0 0 4px; font-size:16px; font-weight:800; line-height:1.4; letter-spacing:.04em; color:var(--mint-deep); }
+    .rule.ana .lab{ color:var(--gray-400); }
+    .rule.do .lab{ color:var(--blue); }
+    .slide.pr .rule .lab, .slide.pr .lab{ color:var(--pr-deep); }
+    .rule p{ margin:0; font-size:var(--fs-body); line-height:1.6; font-weight:500; color:var(--gray-700); }
+    .rule.def p{ font-size:26px; line-height:1.55; color:var(--ink); }
+    .rule.do p{ color:var(--ink); font-weight:600; }
+    .keep{ margin:0; font-size:var(--fs-body); line-height:1.45; color:var(--gray-700); }
+    .keep b{ font-weight:800; color:var(--ink); }
 
-    /* ⑨-e 사분면 (.viz-matrix) — 두 축 위의 «자리»가 판단일 때. */
-    .viz-matrix{ position:relative; width:730px; height:330px; margin:10px auto 0;
-      border-left:2px solid var(--blue-line-strong); border-bottom:2px solid var(--blue-line-strong); }
-    .viz-matrix::before{ content:""; position:absolute; left:0; right:0; top:50%;
-      border-top:1px dashed var(--line); }
-    .viz-matrix::after{ content:""; position:absolute; top:0; bottom:0; left:50%;
-      border-left:1px dashed var(--line); }
-    .mx-ax{ position:absolute; font-size:15px; font-weight:800; color:var(--gray-700); }
-    .mx-ax.x{ left:50%; bottom:-27px; transform:translateX(-50%); }
-    .mx-ax.y{ left:-128px; top:50%; transform:translateY(-50%) rotate(-90deg); white-space:nowrap; }
-    .mx-pt{ position:absolute; transform:translate(-50%,-50%); width:200px; padding:10px 13px;
-      border-radius:12px; background:var(--white); border:1px solid var(--blue-line-strong);
-      box-shadow:var(--shadow-sm); }
-    .mx-pt b{ display:block; font-size:19px; font-weight:800; color:var(--ink); }
-    .mx-pt span{ display:block; font-size:15px; font-weight:600; color:var(--gray-700);
-      margin-top:3px; line-height:1.35; }
-    .mx-pt.is-today{ background:var(--blue); border-color:var(--blue);
-      box-shadow:var(--shadow-blue); }
-    .mx-pt.is-today b, .mx-pt.is-today span{ color:var(--white); }
+    /* 측정 모드 — 엔진이 화면 밖 장의 대조선·동그라미를 그릴 때만 잠깐 붙는다(같은 동작 안에서 떼므로 화면에 나타나지 않는다) */
+    html.fr-measure .slide{ display:block !important; position:relative !important; top:auto !important; left:auto !important; transform:none !important; }
 
-    /* ⑨-f 경계 도해 (.viz-fence) — 「담기는 것」과 「담기지 않는 것」의 선. */
-    .viz-fence{ display:grid; grid-template-columns:1fr 2px 1fr; gap:0 28px; width:100%; }
-    .fn-side{ display:flex; flex-direction:column; gap:10px; }
-    .fn-line{ width:0; border-left:2px dashed var(--blue-line); }
-    .fn-cap{ font-size:19px; font-weight:800; margin-bottom:2px; }
-    .fn-side.is-in .fn-cap{ color:var(--mint-deep); }
-    .fn-side.is-out .fn-cap{ color:var(--coral-deep); }
-    .fn-item{ display:flex; gap:10px; align-items:flex-start;
-      font-size:18px; font-weight:600; color:var(--ink); line-height:1.4; }
-    .fn-item::before{ content:""; flex:0 0 auto; width:11px; height:11px; border-radius:50%;
-      margin-top:7px; background:var(--mint); }
-    .fn-side.is-out .fn-item::before{ background:var(--white); border:2px solid var(--coral); }
-    .fn-item small{ display:block; font-size:15px; font-weight:600; color:var(--gray-700); }
+    /* ── 5. 터미널 창(D32 요청문) — kit .terminal-dark 계약 위에 자리·글자만 얹는다. 복사 버튼은 `>` 없이 요청문만 복사한다 ── */
+    .term{ width:100%; }
+    .term.terminal-dark{ border-radius:20px; box-shadow:var(--sh-pop); }
+    .term .terminal-bar b{ font-family:"Pretendard",sans-serif; font-size:17px; font-weight:700; }
+    .term .copy{ margin-left:auto; font-family:"Pretendard",sans-serif; font-size:var(--fs-eyebrow); font-weight:800; line-height:1; color:var(--white);
+      background:none; border:0; padding:6px 2px; cursor:pointer; text-decoration:underline; text-underline-offset:4px; }
+    .term .terminal-copy{ padding:16px 24px 20px; }
+    .term .terminal-copy p{ margin:0; font-size:var(--fs-box-desc); line-height:1.6; overflow-wrap:anywhere; }
+    .term.lg .terminal-copy p{ font-size:var(--fs-body); line-height:1.65; }
+    /* 긴 요청문 변형(E4-W1 제안 · 메인 반영) — dense: 글자 17px(터미널은 폰트 하한 제외) · fill: 남은 높이를 채우고 안에서 스크롤, 복사는 전문 */
+    .term.dense .terminal-copy{ padding:12px 20px 14px; }
+    .term.dense .terminal-copy p{ font-size:17px; line-height:1.5; }
+    .term.xdense .terminal-copy p{ font-size:15px; line-height:1.4; }   /* 한 화면 긴 요청문 전용(M2-2) — 터미널은 글자 하한 밖, 참가자는 복사해 쓴다 */
+    .term.fill{ flex:1 1 auto; min-height:0; display:flex; flex-direction:column; }
+    .term.fill .terminal-copy{ flex:1 1 auto; min-height:0; overflow-y:auto; }
+    .term .terminal-copy p + p{ margin-top:10px; }
+    .term .terminal-copy.sep{ border-bottom:1.5px solid var(--gray-700); }   /* 한 창 안의 구간 구분 — 위쪽 테두리는 박스로 세어지므로 아래쪽 선만 쓴다 */
+    .term .tc-tag{ display:inline-block; min-width:1.6em; margin-right:8px; font-family:"Pretendard",sans-serif; font-size:17px; font-weight:800; color:var(--mint); }
+    .term .terminal-copy .ph{ color:var(--mint-soft); font-weight:700; }   /* 〈 〉 자리표시 */
+    .term .copy:focus-visible{ outline:2px dashed var(--white); outline-offset:2px; }
+    /* 펼침 칸 안의 터미널 — .reveal-body p의 글자색 · 여백이 터미널 글자를 덮지 않게(W1 제안 반영) */
+    .reveal .reveal-body .term .terminal-copy p{ color:inherit; margin:0; }
+    .reveal .reveal-body .term .terminal-copy p + p{ margin-top:10px; }
 
-    /* ⑨-g 주제 2개 나란히 보이기 (.topic-pair) — 설명 + 결과 화면 모형 한 쌍. */
-    .topic-pair{ display:grid; grid-template-columns:1fr 1fr; gap:26px; width:100%; }
-    .tp-one{ display:flex; flex-direction:column; gap:7px; min-width:0; }
-    .tp-name{ display:flex; align-items:baseline; gap:9px; }
-    .tp-no{ flex:0 0 auto; width:29px; height:29px; border-radius:50%; background:var(--blue);
-      color:var(--white); font-size:16px; font-weight:800; display:grid; place-items:center; }
-    .tp-name b{ font-size:24px; font-weight:800; color:var(--ink); line-height:1.2; }
-    .tp-what{ font-size:18px; font-weight:600; color:var(--gray-700); line-height:1.35; margin:0; }
-    .tp-what em{ font-style:normal; font-weight:800; color:var(--ink); }
+    /* ── 6. 창 모형(D27 공통 화면 모형 · 파일 창) — 흰 카드 + 약한 그림자. 테두리 선을 쓰지 않는다. 창 하나가 박스 1개 ── */
+    .win{ background:var(--t-card); border-radius:20px; box-shadow:var(--sh-card); overflow:hidden; text-align:left; }
+    .win-bar{ display:flex; align-items:center; gap:9px; min-height:46px; padding:0 20px; }
+    .win-bar i{ flex:0 0 auto; width:10px; height:10px; border-radius:50%; background:var(--gray-400); opacity:.45; }
+    .win-bar b{ margin-left:8px; font-size:17px; font-weight:700; color:var(--gray-700); line-height:1.3; }
+    .win-body{ padding:4px 22px 20px; }
+    .win-url{ position:relative; z-index:0; flex:1 1 auto; margin-left:10px; padding:5px 16px; font-size:17px; font-weight:700; color:var(--gray-700); }
+    .win-url::before{ content:""; position:absolute; inset:0; z-index:-1; border-radius:999px; background:var(--blue-soft); }
+    .win-side{ position:relative; z-index:0; float:left; width:200px; padding:14px 18px; min-height:100%; }
+    .win-side::before{ content:""; position:absolute; inset:0; z-index:-1; background:var(--blue-panel); }
+    .win-side p{ margin:0 0 8px; font-size:17px; font-weight:700; color:var(--gray-700); }
+    .win.app .win-body{ padding:0; display:grid; grid-template-columns:200px 1fr; }
+    .win.app .win-side{ float:none; }
+    .win-main{ padding:14px 22px 18px; }
+    .drop{ margin:10px 0; padding:22px 16px; text-align:center; font-size:var(--fs-body); font-weight:700; color:var(--gray-700); outline:3px dashed var(--mint); outline-offset:-3px; border-radius:var(--r-md); }
+    .slide.pr .drop{ outline-color:var(--pr-fill); color:var(--ink); }
+    /* 코드·파일 줄 — 줄 번호 + 본문. 파일 이름 · 경로 · 트리도 본문 글꼴이다(고정폭은 터미널 안에만). .hit 줄은 왼쪽 띠로 표시한다 */
+    .code{ margin:0; font-family:inherit; font-size:var(--fs-box-desc); font-weight:600; line-height:1.6; color:var(--gray-700); white-space:pre-wrap; word-break:keep-all; overflow-wrap:anywhere; font-variant-numeric:tabular-nums; }
+    .code .l{ display:block; position:relative; min-height:1.6em; padding-left:54px; }
+    .code .l > i{ position:absolute; left:0; width:38px; text-align:right; font-style:normal; color:var(--gray-400); }
+    .code .l.ref{ color:var(--gray-700); font-weight:600; }
+    .code .l.hit, .code .l.on{ color:var(--ink); font-weight:800; }
+    .code .l.hit::before, .code .l.on::before{ content:""; position:absolute; left:-12px; top:3px; bottom:3px; width:6px; border-radius:3px; background:var(--mint); }
+    .slide.pr .code .l.hit::before, .slide.pr .code .l.on::before{ background:var(--pr-fill); }
+    .slide.pr .code .l.on{ color:var(--pr-deep); }
+    .code .l.gap{ color:var(--gray-400); }
+    .code .dir{ font-weight:800; color:var(--ink); }
+    .bubble{ display:block; width:fit-content; max-width:100%; margin:8px 0; padding:10px 18px; border-radius:var(--r-lg); background:var(--blue-soft); font-size:var(--fs-box-desc); line-height:1.45; color:var(--ink); }
+    .bubble.me{ margin-left:auto; background:var(--mint-soft); }
+    .slide.pr .bubble, .slide.pr .bubble.me{ background:var(--pr-soft); }
+    /* 박스 없는 대화 — 작은 라벨 + 글 */
+    .say{ position:relative; margin:0 0 18px; padding:0; }
+    .say .who{ display:block; margin:0 0 2px; font-size:16px; font-weight:800; line-height:1.4; letter-spacing:.04em; color:var(--gray-400); }
+    .say.me .who{ color:var(--mint-deep); }
+    .slide.pr .say.me .who{ color:var(--pr-deep); }
+    .say p{ margin:0; font-size:var(--fs-body); font-weight:600; line-height:1.55; color:var(--ink); }
 
-    /* ⑩ 실습 절차를 «흐름»으로 보이게 한다 (.eval-steps.viz-flow-v) ─────────
-       번호 칸을 세로선으로 이어 박스 나열이 아니라 한 줄기 절차로 읽히게 한다.
-       높이를 늘리지 않는 방식이라 554px 예산을 건드리지 않는다. */
-    .slide .eval-steps.viz-flow-v{ position:relative; }
-    .slide .eval-steps.viz-flow-v::before{ content:""; position:absolute; left:23px; top:26px;
-      bottom:26px; width:2px; background:var(--blue-soft); border-radius:2px; z-index:0; }
-    .slide .eval-steps.viz-flow-v .work-step{ position:relative; z-index:1; }
+    /* ── 7. 표 — 선 없이 머리 글자 색 + 줄 사이 여백. 고른 행은 옅은 면(inset 그림자)으로 표시한다 ── */
+    .ftbl{ width:100%; border-collapse:separate; border-spacing:0; }
+    .ftbl th, .ftbl td{ text-align:left; padding:10px 12px; font-size:var(--fs-box-desc); font-weight:500; line-height:1.3; color:var(--ink); vertical-align:middle; }
+    .ftbl th{ font-size:var(--fs-table); font-weight:800; color:var(--mint-deep); white-space:nowrap; }
+    .slide.pr .ftbl th{ color:var(--pr-deep); }
+    .ftbl td.src{ font-size:18px; font-weight:600; color:var(--gray-700); white-space:nowrap; }
+    .ftbl .x{ color:var(--red); font-weight:800; }
+    .ftbl tr[data-pick]{ cursor:pointer; }
+    .ftbl tr[data-pick]:focus-visible{ outline:2px dashed var(--ink); outline-offset:-2px; }
+    .ftbl tr[data-pick] td{ color:var(--gray-700); }
+    .ftbl tr[data-pick].on td{ color:var(--ink); font-weight:700; box-shadow:inset 0 0 0 100px var(--blue-soft); }
+    .slide.pr .ftbl tr[data-pick].on td{ box-shadow:inset 0 0 0 100px var(--pr-soft); }
+    .ftbl tr[data-pick].on td:first-child{ border-radius:12px 0 0 12px; }
+    .ftbl tr[data-pick].on td:last-child{ border-radius:0 12px 12px 0; }
+    .slide.pr .ftbl tr[data-pick].on td.due{ color:var(--pr-deep); font-weight:800; }
+    .ftbl-cap{ display:block; margin:0 0 4px; font-size:var(--fs-caption); font-weight:700; color:var(--gray-700); }
 
-    /* ⑪ 가로 스파인 타임라인 (.viz-spine) — 시점마다 볼 것이 달라질 때. */
-    .viz-spine{ position:relative; display:grid; grid-auto-flow:column; grid-auto-columns:1fr;
-      gap:16px; width:100%; padding-top:34px; }
-    .viz-spine::before{ content:""; position:absolute; left:6%; right:6%; top:14px; height:3px;
-      background:var(--blue-soft); border-radius:3px; }
-    .sp-mark{ position:relative; display:flex; flex-direction:column; align-items:center; gap:8px; }
-    .sp-mark::before{ content:""; position:absolute; top:-27px; width:19px; height:19px;
-      border-radius:50%; background:var(--blue); border:4px solid var(--white);
-      box-shadow:0 0 0 2px var(--blue); }
-    .sp-when{ font-size:19px; font-weight:800; color:var(--blue); }
-    .sp-ask{ font-size:18px; font-weight:600; color:var(--ink); line-height:1.45; text-align:center; }
+    /* ── 8. 조작 요소 ── */
+    /* 단계 목록(큰 번호 세로 흐름 · 박스 없음) — data-w="todo": 눌러서 완료 표시 */
+    .flow{ margin:0; padding:0; list-style:none; display:flex; flex-direction:column; gap:12px; }
+    .flow button{ display:grid; grid-template-columns:58px 1fr; gap:14px; align-items:start; width:100%; text-align:left; font:inherit; color:var(--ink); background:none; border:0; padding:4px 0; cursor:pointer; }
+    .flow .n{ font-size:44px; font-weight:800; line-height:1; letter-spacing:-.03em; font-variant-numeric:tabular-nums; color:var(--pr-deep); text-align:center; }   /* 표식 ④ 단계 번호 */
+    .flow .t{ font-size:var(--fs-body); font-weight:500; line-height:1.5; padding-top:4px; }
+    .flow .t b{ font-weight:800; color:var(--pr-deep); }
+    .flow .done .n{ color:var(--mint-deep); }
+    .flow .done .t{ color:var(--gray-700); }
+    .flow .t .tip{ display:block; margin-top:2px; font-size:var(--fs-box-desc); font-weight:500; color:var(--gray-700); }
+    .ck-list{ margin:0; padding:0; list-style:none; display:flex; flex-direction:column; gap:10px; }
+    .ck-list button{ display:grid; grid-template-columns:34px 1fr; gap:10px; align-items:start; width:100%; text-align:left; font:inherit; font-size:var(--fs-body); font-weight:600; line-height:1.45; color:var(--ink); background:none; border:0; padding:2px 0; cursor:pointer; }
+    .ck-list .bx{ font-size:26px; line-height:1.1; color:var(--pr-deep); }
+    .ck-list .done .t{ color:var(--gray-700); }
+    .slide:not(.pr) .ck-list .bx{ color:var(--blue); }
+    /* 타이머(표식 ③) — 분 값은 data-min. 눌러서 시작·멈춤, 0이 되면 끝 */
+    .timer{ display:inline-flex; align-items:baseline; gap:14px; font:inherit; color:var(--ink); background:none; border:0; padding:0; cursor:pointer; }
+    .timer .tv{ font-size:56px; font-weight:800; line-height:1; letter-spacing:-.03em; font-variant-numeric:tabular-nums; color:var(--pr-deep); }
+    .timer .tl{ font-size:var(--fs-box-desc); font-weight:800; color:var(--gray-700); }
+    .slide:not(.pr) .timer .tv{ color:var(--blue); }
+    .timer.end .tv{ color:var(--red); }
+    .timer.big .tv{ font-size:120px; }
+    .timer.sm{ gap:10px; }                                   /* 제목 줄 오른쪽의 작은 타이머(W1 제안 반영) */
+    .timer.sm .tv{ font-size:34px; }
+    .timer.sm .tl{ font-size:17px; }
+    /* [펼침] — 강사가 눌러서 공개하는 칸. <details>라 Enter/Space로 열린다. 닫힌 동안은 본문을 배치에서 뺀다 */
+    .reveal{ position:relative; padding:0; }
+    .reveal::before{ content:none; }
+    .reveal:not([open]) > .reveal-body{ display:none; }    /* 이 줄이 없으면 Chromium이 닫힌 details 자식의 배치를 유지해 감사가 겹침 · 가려짐으로 잡는다(W2 실측) */
+    .reveal > summary{ position:relative; z-index:0; display:inline-flex; align-items:baseline; gap:10px; padding:8px 20px; list-style:none; cursor:pointer; font-size:var(--fs-lead); font-weight:800; line-height:1.3; color:var(--pr-deep, var(--blue)); }
+    .reveal > summary::after{ content:""; position:absolute; inset:0; z-index:-1; border-radius:999px; background:var(--pr-soft, var(--blue-soft)); }
+    .reveal > summary::-webkit-details-marker{ display:none; }
+    .reveal > summary::before{ content:"▸"; font-size:var(--fs-eyebrow); }
+    .reveal[open] > summary::before{ content:"▾"; }
+    .reveal > summary .hint{ font-size:var(--fs-box-desc); font-weight:500; color:var(--gray-700); }
+    .reveal[open] > summary .hint{ display:none; }
+    .reveal .reveal-body{ margin-top:10px; }
+    .reveal .reveal-body p{ margin:0 0 8px; font-size:var(--fs-body); line-height:1.55; color:var(--ink); }
+    /* 위에 겹쳐 뜨는 펼침 패널 — .reveal.pop. 폭은 style="--rw:740px". 흰 카드 + 그림자, 열린 동안만 자리를 차지한다 */
+    .reveal.pop > .reveal-body{ position:absolute; left:0; top:100%; z-index:6; margin-top:10px; width:var(--rw,700px); padding:16px 20px; background:var(--t-card); border-radius:22px; box-shadow:var(--sh-pop); }
+    /* 돌아가기·이동 버튼 — 주홍 면 알약(허용 박스 1) */
+    .back{ font:inherit; font-size:var(--fs-body); font-weight:800; color:var(--ink); background:var(--pr-fill); border:0; border-radius:var(--r-pill); padding:12px 30px; cursor:pointer; transition:transform .3s cubic-bezier(.2,.8,.2,1); }
+    .slide:not(.pr) .back{ background:var(--mint); }
+    .back:hover, .back:focus-visible{ transform:translateY(-3px); }
+    .back[hidden]{ display:none; }
 
-    /* ⑫ 끌어다 놓기 도해 (.viz-drop) — 폴더가 점선 영역에 들어가면 주소가 난다. */
-    .viz-drop{ display:flex; align-items:center; justify-content:center; gap:18px; width:100%; }
-    .dp-folder{ flex:0 0 auto; width:116px; height:88px; border-radius:6px 12px 12px 12px;
-      background:var(--periwinkle); border:2px solid var(--blue-line-strong); position:relative;
-      display:grid; place-items:end center; padding-bottom:9px;
-      font-size:15px; font-weight:800; color:var(--ink); }
-    .dp-folder::before{ content:""; position:absolute; top:-9px; left:0; width:48px; height:11px;
-      border-radius:5px 5px 0 0; background:var(--blue-line-strong); }
-    .dp-arrow{ flex:0 0 auto; font-size:26px; font-weight:800; color:var(--blue); }
-    .dp-zone{ flex:0 0 auto; width:318px; height:118px; border-radius:14px;
-      border:3px dashed var(--blue); background:var(--paper); display:grid; place-items:center;
-      text-align:center; font-size:19px; font-weight:800; color:var(--blue); line-height:1.35; }
-    .dp-zone small{ display:block; font-size:15px; font-weight:600; color:var(--gray-700); margin-top:4px; }
-    .dp-out{ flex:0 0 auto; padding:11px 15px; border-radius:10px; background:var(--white);
-      border:1px solid var(--blue-line-strong); box-shadow:var(--shadow-md);
-      font-family:var(--font-mono); font-size:15px; font-weight:700; color:var(--ink); }
-    .dp-out small{ display:block; font-family:var(--font-sans); font-size:14px;
-      font-weight:700; color:var(--mint-deep); margin-top:4px; }
+    /* ── 9. 개념 위젯 공통(data-w="toggle|step|pick") — 조작 전 초기 상태는 마크업에 적힌 그대로 읽힌다 ── */
+    [data-show]:not(.is-on){ display:none; }
+    [data-pick], [data-set], [data-toggle], [data-next], [data-prev], [data-reset]{ cursor:pointer; }
+    .wg-row{ display:flex; align-items:center; flex-wrap:wrap; gap:12px 22px; margin-top:10px; }
+    .wg-row.top{ margin:0 0 14px; }          /* 조작 줄을 그림 위에 둔다 — 상태가 바뀌어 그림 높이가 달라져도 버튼 자리가 그대로다 */
+    .wg-btn{ font:inherit; font-size:var(--fs-box-desc); font-weight:800; color:var(--white); background:var(--blue); border:0; border-radius:var(--r-pill); padding:9px 22px; cursor:pointer; transition:transform .25s cubic-bezier(.2,.8,.2,1); }
+    .wg-btn:hover, .wg-btn:focus-visible{ transform:translateY(-2px); }
+    .wg-btn[aria-pressed="true"]{ background:var(--mint); color:var(--on-mint); }
+    .wg-link{ font:inherit; font-size:var(--fs-box-desc); font-weight:800; color:var(--blue); background:none; border:0; padding:4px 0; cursor:pointer; text-decoration:underline; text-underline-offset:4px; }
+    .wg-link[aria-pressed="true"]{ color:var(--ink); }
+    .wg-read{ margin:10px 0 0; min-height:2.9em; font-size:var(--fs-body); font-weight:700; line-height:1.45; color:var(--ink); }
+    .wg-hint{ font-size:var(--fs-box-desc); font-weight:600; line-height:1.4; color:var(--gray-700); }
 
-    /* ⑬ 시간 막대 (.viz-timebar) — 정해진 시간을 어떻게 나눠 쓰는지. */
-    .viz-timebar{ display:flex; width:100%; border-radius:10px; overflow:hidden;
-      border:1px solid var(--blue-line-strong); }
-    .tb-seg{ padding:13px 16px; display:flex; flex-direction:column; gap:3px;
-      border-right:1px solid var(--white); }
-    .tb-seg:last-child{ border-right:0; }
-    .tb-seg b{ font-size:19px; font-weight:800; line-height:1.2; }
-    .tb-seg span{ font-size:15px; font-weight:600; line-height:1.35; }
-    .tb-seg.a{ background:var(--blue); color:var(--white); }
-    .tb-seg.a span{ color:var(--white); opacity:.88; }
-    .tb-seg.b{ background:var(--periwinkle); color:var(--ink); }
-    .tb-seg.b span{ color:var(--gray-700); }
-    .tb-seg.c{ background:var(--mint); color:var(--on-mint); }
-    .tb-seg.c span{ color:var(--on-mint); opacity:.86; }
-    .slide .rl-track{ gap:26px; }
-    .slide .rl-step{ position:relative; text-align:left; }
-    .slide .rl-step:not(:last-child)::after{ content:"→"; position:absolute; right:-20px;
-      top:50%; transform:translateY(-50%); color:var(--gray-400); font-size:16px; font-weight:800; }
-    .slide .rl-row.is-ours .rl-step:not(:last-child)::after{ color:var(--blue); font-size:21px; right:-21px; }
-    .slide .rl-step small{ display:block; font-size:15px; font-weight:600;
-      color:var(--gray-700); margin-top:4px; line-height:1.3; }
-    .slide .rl-row.is-ours .rl-step small{ color:var(--white); opacity:.88; font-size:16px; }
-    .slide .rl-step.is-diff{ background:var(--mint); border-color:var(--mint); color:var(--on-mint);
-      font-size:18px; font-weight:800; }
-    .slide .rl-step.is-diff small{ color:var(--on-mint); opacity:.82; }
-    /* ⑭ 신규 구도 공통 보정 (2026-09-18 브라우저 실측) ────────────────────
-       .s-full.fill / .steps-full 은 세로 flex라, 높이를 선언하지 않은 블록이
-       flex-shrink로 눌려 자식이 상자 밖으로 흘러내린다(W4-05에서 실측:
-       .tb-seg 높이 28px에 자식 43px). 새 구도에는 전부 shrink를 끈다. */
-    .slide .viz-timebar, .slide .viz-drop, .slide .viz-spine, .slide .viz-fence,
-    .slide .viz-rails, .slide .viz-fork, .slide .topic-pair, .slide .viz-matrix,
-    .slide .viz-screen, .slide .viz-chat{ flex:0 0 auto; }
+    /* ── 10. SVG 시각 자료 어휘 — viewBox 폭을 그려지는 폭에 가깝게 잡아(배율 ≥ 1) SVG 안 px가 실제 px가 되게 한다 ── */
+    .v-ax{ font:700 17px/1 "Pretendard",sans-serif; fill:var(--gray-700); }
+    .v-val{ font:800 26px/1 "Pretendard",sans-serif; fill:var(--ink); }
+    .v-txt{ font:700 20px/1.3 "Pretendard",sans-serif; fill:var(--ink); }
+    .v-txt-lg{ font:800 24px/1.3 "Pretendard",sans-serif; fill:var(--ink); }
+    .v-note{ font:600 17px/1.3 "Pretendard",sans-serif; fill:var(--gray-700); }
+    .v-mono{ font:700 18px/1.3 var(--font-mono); fill:var(--ink); }
+    .v-axis{ stroke:var(--gray-400); stroke-width:2; fill:none; }
+    .v-base{ stroke:var(--gray-700); stroke-width:2.5; stroke-dasharray:8 6; fill:none; }
+    .v-edge{ stroke:var(--gray-700); stroke-width:2.5; fill:none; stroke-linecap:round; stroke-linejoin:round; }
+    .v-edge.hi{ stroke:var(--blue); stroke-width:3; }
+    .v-bar{ fill:var(--periwinkle); transition:fill .25s; }
+    .v-bar.hi, .v-bar.is-on, [data-pick].on > .v-bar{ fill:var(--blue); }
+    .v-bar.warn, [data-pick].on.warn > .v-bar{ fill:var(--coral); }
+    .v-node{ fill:var(--white); stroke:var(--gray-400); stroke-width:2; transition:fill .25s, stroke .25s; }
+    .v-node.is-on{ fill:var(--mint); stroke:var(--blue); }
+    .v-node.hi{ fill:var(--blue-soft); stroke:var(--blue); }
+    /* 위젯 표시 클래스 — data-from·data-hl 대상에 붙인다: w-in(켜지면 나타남) · w-dim(켜지면 흐려짐) */
+    .w-in, [data-from]{ opacity:0; transition:opacity .25s; }
+    .w-in.is-on, [data-from].is-on{ opacity:1; }
+    .w-dim{ transition:opacity .25s; }
+    .w-dim.is-on{ opacity:.3; }
 
-    /* 어절 잘림(word-break) — 새 구도의 서술 텍스트에 keep-all을 건다. */
-    .slide .tp-what, .slide .ch-msg, .slide .ch-out, .slide .mx-pt span,
-    .slide .sc-lines span, .slide .vf-item span, .slide .rl-step small,
-    .slide .fn-item, .slide .sp-ask, .slide .tb-seg span, .slide .dp-zone small,
-    .slide .sc-type{ word-break:keep-all; }
-    /* ⑮ 개정판 높이 보정 (2026-09-18 브라우저 실측 — 바닥선 666px) ────────
-       ⑧의 굵기 상향과 신규 도해로 늘어난 세로분을 여기서 되돌린다.
-       글자 크기는 줄이지 않는다 — 읽히게 하려고 올린 값이다. */
-    .slide[data-slide="W3-04"] .dp-zone{ height:76px; }
-    .slide[data-slide="W3-04"] .dp-folder{ height:64px; }
-    .slide[data-slide="W3-04"] .eval-steps .work-step{ padding-top:6px; padding-bottom:6px; }
-    .slide[data-slide="W3-04"] .eval-steps{ gap:8px; }
-    .slide[data-slide="W2-09"] .co-src,
-    .slide[data-slide="W2-09"] .co-num{ padding-top:4px; padding-bottom:4px; }
-    .slide[data-slide="W2-09"] .co-note{ padding-top:2px; padding-bottom:2px; }
-    .slide[data-slide="W2-09"] .co-note p{ line-height:1.32; }
-    .slide[data-slide="W2-09"] .viz-code{ margin-top:8px; }
+    /* ══════════ F-cover · 표지 ══════════ 클래스: slide cover f-cover — 네 모서리가 안쪽으로 모인다(표지의 유일한 연출) */
+    .f-cover{ background:var(--paper); padding:0; }
+    .f-cover::before{ content:none; }                                   /* kit .cover의 점 격자를 끈다 */
+    .f-cover .cv-h1{ margin:0; font-size:var(--fs-caption); letter-spacing:0; }   /* 글자는 sr-only라 14px로 둔다 — 32px 기본값은 자간 검사(≥32px)에 걸린다 */
+    .f-cover .cv-word{ position:absolute; left:72px; top:206px; width:560px; height:auto; display:block; }
+    .f-cover .cv-word .stroke{ fill:none; stroke:var(--blue); stroke-width:5; stroke-linejoin:miter; stroke-linecap:square; stroke-miterlimit:1.5; }
+    .f-cover .cv-sub{ position:absolute; left:72px; top:470px; margin:0; font-size:var(--fs-40); font-weight:800; line-height:1.2; letter-spacing:-.03em; color:var(--ink); }
+    .f-cover .cv-line{ position:absolute; left:74px; top:538px; margin:0; font-size:var(--fs-lead); font-weight:600; line-height:1.45; color:var(--gray-700); }
+    .f-cover .cv-frame{ position:absolute; left:700px; top:112px; width:500px; height:500px; display:block; overflow:visible; }
+    .f-cover .cv-frame .corner{ fill:none; stroke:var(--blue); stroke-width:14; stroke-linecap:square; }
+    .f-cover .cv-frame .core{ fill:var(--mint); }
+    @keyframes fr-corner{ from{ opacity:0; transform:translate(var(--dx,0),var(--dy,0)); } }
+    .slide.is-active.f-cover .cv-frame .corner{ animation:fr-corner .6s cubic-bezier(.2,.8,.2,1) backwards; }
 
-    /* ⑯ 결과 화면 · 대화 모형 v2 (2026-09-18 사용자 지시) ────────────────
-       "예시 화면은 더 다양한 색을 써도 된다. 실제 UI/UX처럼 퀄리티를 높여라."
-       ⑨-a·⑨-b의 최소 모형을 실제 화면에 가깝게 다시 만든다. 색은 전부 토큰이고,
-       주제마다 강조색을 달리해(파랑/앰버) 두 화면이 같은 틀로 보이지 않게 한다.
-       클래스 이름에 card·-box·-col·-node를 쓰지 않는다 — R-QC-03/16의 후보가 된다. */
+    /* ══════════ F-divider · 블록 간지 ══════════ 클래스: slide part-divider f-divider — 어두운 전면 + 여정 지도(.journey) */
+    .f-divider, .slide.dark{ background:var(--t-dark); color:var(--white); }
+    .f-divider .s-title, .slide.dark .s-title, .f-divider .dv-title{ color:var(--white); }
+    .f-divider .kick, .slide.dark .kick, .f-divider .s-eyebrow, .slide.dark .s-eyebrow, .f-divider .dv-no{ color:var(--mint); }
+    .f-divider .lede, .slide.dark .lede, .f-divider .dv-sub{ color:var(--t-dark-soft); }
+    .f-divider .dv-corners{ position:absolute; left:0; top:0; width:1280px; height:720px; display:block; pointer-events:none; }
+    .f-divider .dv-corners path{ fill:none; stroke:var(--t-dark-2); stroke-width:6; stroke-linecap:square; }
+    .dv-wrap{ position:absolute; left:72px; right:72px; top:0; bottom:0; display:flex; flex-direction:column; justify-content:center; }
+    .dv-no{ margin:0 0 12px; font-size:var(--fs-lead); font-weight:800; letter-spacing:.04em; line-height:1.2; color:var(--blue); }
+    .dv-title{ margin:0; font-size:var(--fs-display-lg); font-weight:700; line-height:1.15; letter-spacing:-.04em; color:var(--ink); }
+    .dv-sub{ margin:14px 0 0; max-width:900px; font-size:var(--fs-lead); font-weight:500; line-height:1.5; color:var(--gray-400); }
+    .dv-bar{ display:block; width:100%; max-width:928px; height:auto; margin-top:56px; }
+    .dv-bar .seg{ fill:var(--t-dark-2); }
+    .dv-bar .seg.done{ fill:var(--t-dark-soft); }
+    .dv-bar .seg.cur{ fill:var(--mint); }
+    .dv-steps{ display:grid; grid-template-columns:repeat(4,1fr); column-gap:16px; width:100%; max-width:928px; margin:10px 0 0; padding:0; list-style:none; }
+    .dv-steps li{ font-size:var(--fs-eyebrow); font-weight:700; line-height:1.3; color:var(--t-dark-soft); }
+    .dv-steps li.cur{ font-weight:800; color:var(--white); }
 
-    /* ── 창 틀 ── */
-    .viz-screen{ width:100%; max-width:516px; background:var(--white);
-      border:1px solid var(--blue-line-strong); border-radius:14px; overflow:hidden;
-      box-shadow:var(--shadow-md); }
-    .sc-bar{ display:flex; align-items:center; gap:6px; padding:9px 13px;
-      background:var(--blue-soft); border-bottom:1px solid var(--blue-line); }
-    .sc-dot{ width:9px; height:9px; border-radius:50%; flex:0 0 auto; background:var(--gray-400); }
-    .sc-dot.d1{ background:var(--red); }
-    .sc-dot.d2{ background:var(--coral); }
-    .sc-dot.d3{ background:var(--mint); }
-    .sc-url{ flex:1 1 auto; margin-left:8px; padding:4px 11px; border-radius:999px;
-      background:var(--white); border:1px solid var(--blue-line);
-      font-family:var(--font-mono); font-size:13px; color:var(--gray-700);
-      display:flex; align-items:center; gap:7px; overflow:hidden; white-space:nowrap; }
-    .sc-lock{ flex:0 0 auto; width:9px; height:7px; border-radius:1px;
-      background:var(--mint-deep); position:relative; }
-    .sc-lock::before{ content:""; position:absolute; left:1.5px; top:-4px; width:6px; height:5px;
-      border:1.5px solid var(--mint-deep); border-bottom:0; border-radius:3px 3px 0 0; }
+    /* ══════════ F-hub · 에이전트 실습 허브 ══════════ 클래스: slide f-hub — 테두리 없는 파스텔 카드 네 장 */
+    .hub-wrap, .slot-wrap, .cx-wrap{ position:absolute; left:72px; right:72px; top:56px; bottom:54px; display:flex; flex-direction:column; }
+    .hub-top .s-title, .slot-top .s-title, .cx-top .s-title{ margin:8px 0 0; }
+    .hub-lead{ margin:10px 0 0; font-size:var(--fs-lead); line-height:1.55; color:var(--gray-400); }
+    .hub-grid{ flex:1 1 auto; min-height:0; margin-top:24px; display:grid; grid-template-columns:1fr 1fr; grid-template-rows:1fr 1fr; gap:20px; }
+    .hub-card{ position:relative; z-index:0; display:grid; grid-template-columns:64px 1fr 132px; gap:18px; align-items:center; text-align:left; font:inherit; color:var(--ink);
+      background:none; border:0; padding:0 26px 0 22px; cursor:pointer; transition:transform .3s cubic-bezier(.2,.8,.2,1); }
+    .hub-card::before{ content:""; position:absolute; inset:0; z-index:-1; border-radius:26px; background:var(--tint,var(--t-mint)); transition:box-shadow .3s; }
+    .hub-card{ --tint:var(--t-apricot); }   /* 네 실습 모두 실습 색 한 가지(색 순환 없음) */
+    .hub-card:hover, .hub-card:focus-visible{ transform:translateY(-4px); }
+    .hub-card:hover::before, .hub-card:focus-visible::before{ box-shadow:var(--sh-pop); }
+    .hub-card[aria-disabled="true"]{ cursor:default; }
+    .hub-card[aria-disabled="true"]:hover{ transform:none; }
+    .hub-no{ font-size:60px; font-weight:800; line-height:1; color:var(--blue); letter-spacing:-.04em; text-align:center; }
+    .hub-card.is-done .hub-no{ color:var(--mint-deep); }
+    .hub-body{ display:flex; flex-direction:column; gap:6px; min-width:0; }
+    .hub-name{ font-size:var(--fs-box-title); font-weight:800; line-height:1.3; letter-spacing:-.02em; }
+    .hub-meta{ font-size:var(--fs-box-desc); font-weight:500; color:var(--gray-700); line-height:1.4; }
+    .hub-meta b{ font-weight:800; color:var(--ink); }
+    .hub-done{ display:none; font-size:var(--fs-box-desc); font-weight:800; color:var(--mint-deep); }
+    .hub-card.is-done .hub-done{ display:block; }
+    .hub-pic{ width:132px; height:64px; display:block; }
+    .hub-pic .p-s{ fill:none; stroke:var(--gray-700); stroke-width:2.5; stroke-linecap:round; stroke-linejoin:round; }
+    .hub-pic .p-f{ fill:var(--t-card); }
+    .hub-pic .p-a{ fill:none; stroke:var(--blue); stroke-width:2.5; stroke-linecap:round; stroke-linejoin:round; }
+    .hub-foot{ display:flex; align-items:center; justify-content:space-between; gap:24px; margin-top:14px; min-height:52px; }
+    .hub-foot p{ margin:0; font-size:var(--fs-body); font-weight:500; color:var(--gray-700); }
+    .hub-foot p b{ color:var(--ink); font-weight:800; }
 
-    /* ── 화면 내용 ── */
-    .sc-body{ padding:12px 16px 7px; }
-    .sc-top{ display:flex; align-items:center; gap:8px; margin-bottom:8px; }
-    .sc-mark{ width:23px; height:23px; border-radius:7px; background:var(--blue);
-      flex:0 0 auto; position:relative; }
-    .sc-mark::after{ content:""; position:absolute; left:7px; top:7px; width:9px; height:9px;
-      border-radius:2px; background:var(--white); }
-    .sc-app{ font-size:15px; font-weight:800; color:var(--ink); }
-    .sc-step{ margin-left:auto; font-size:12px; font-weight:800; color:var(--mint-deep);
-      background:var(--mint-soft); border:1px solid var(--mint-line); border-radius:999px;
-      padding:2px 9px; }
-    .sc-badge{ display:inline-block; padding:3px 11px; border-radius:999px;
-      background:var(--blue); color:var(--white); font-size:13px; font-weight:800; }
-    .sc-type{ font-size:23px; font-weight:800; color:var(--ink); line-height:1.15; margin:5px 0 3px; }
-    .sc-sum{ margin:0 0 6px; font-size:15px; font-weight:600; color:var(--gray-700); line-height:1.4; }
+    /* ══════════ F-slot · 수업 안의 실습 시간 ══════════ 클래스: slide f-slot · data-return-to="R-A" */
+    .slot-lead{ margin:10px 0 0; font-size:var(--fs-lead); line-height:1.55; color:var(--gray-400); }
+    .slot-main{ flex:1 1 auto; min-height:0; margin-top:24px; display:grid; grid-template-columns:1fr 600px; column-gap:56px; align-items:center; }
+    .slot-text{ display:flex; flex-direction:column; gap:26px; }
+    .slot-mini{ position:relative; z-index:0; display:grid; grid-template-columns:1fr 1fr; gap:12px; width:100%; padding:14px; font:inherit; color:var(--ink); background:none; border:0; cursor:pointer;
+      transition:transform .3s cubic-bezier(.2,.8,.2,1); }
+    .slot-mini::before{ content:""; position:absolute; inset:0; z-index:-1; border-radius:30px; background:var(--t-sky); }
+    .slot-mini:hover, .slot-mini:focus-visible{ transform:translateY(-4px); }
+    .mini-card{ position:relative; z-index:0; display:grid; grid-template-columns:48px 1fr; gap:14px; align-items:center; padding:26px 22px; text-align:left; }
+    .mini-card::before{ content:""; position:absolute; inset:0; z-index:-1; border-radius:20px; background:var(--t-card); box-shadow:var(--sh-card); }
+    .mini-no{ font-size:var(--fs-40); font-weight:800; line-height:1; letter-spacing:-.03em; font-variant-numeric:tabular-nums; color:var(--blue); text-align:center; }
+    .mini-name{ font-size:var(--fs-box-desc); font-weight:700; line-height:1.3; }
+    .mini-card.is-done .mini-no{ color:var(--mint-deep); }
+    .mini-card.is-done .mini-name::after{ content:" ✓"; color:var(--mint-deep); }
+    .slot-hint{ display:block; margin-top:14px; font-size:var(--fs-box-desc); font-weight:700; color:var(--gray-700); text-align:center; }
 
-    /* ── 유형 분포 막대 ── */
-    .sc-bars{ display:flex; flex-direction:column; gap:4px; margin-bottom:7px;
-      padding:7px 11px; border-radius:10px; background:var(--paper); }
-    .sc-b{ display:flex; align-items:center; gap:9px; }
-    .sc-b > span{ flex:0 0 52px; font-size:13px; font-weight:700; color:var(--gray-700); }
-    .sc-b > i{ flex:1 1 auto; height:9px; border-radius:5px; background:var(--ice);
-      border:1px solid var(--blue-line); position:relative; }
-    .sc-b > i::after{ content:""; position:absolute; left:-1px; top:-1px; bottom:-1px;
-      width:var(--w); border-radius:5px; background:var(--c); }
-    .sc-b > b{ flex:0 0 30px; text-align:right; font-size:13px; font-weight:800; color:var(--gray-400); }
-    .sc-b.on > span{ color:var(--ink); font-weight:800; }
-    .sc-b.on > b{ color:var(--ink); }
+    /* ══════════ 실습 셸(F-pr-*·F-return) — 흰 바탕 + 살구 면(.bleed.t-apricot). 표식: 주홍 눈썹 「실습 N」 · 타이머 · 단계 번호 · 살구 면 ══════════ */
+    .pr-wrap{ position:absolute; left:72px; right:72px; top:56px; bottom:54px; display:flex; flex-direction:column; }
+    .pr-bar{ display:flex; align-items:baseline; gap:12px; min-height:30px; }
+    .pr-no{ font-size:18px; font-weight:800; line-height:1.4; letter-spacing:.01em; color:var(--pr-deep); }   /* 표식 「실습 N」 라벨(눈썹) */
+    .pr-name{ font-size:18px; font-weight:700; line-height:1.4; color:var(--gray-700); }
+    .pr-name::before{ content:"·"; margin-right:12px; color:var(--gray-400); }
+    .pr-steps{ margin-left:auto; display:flex; gap:6px; font-size:var(--fs-box-desc); font-weight:700; color:var(--gray-400); }
+    .pr-steps span{ position:relative; z-index:0; padding:3px 14px; }
+    .pr-steps .cur{ color:var(--ink); }
+    .pr-steps .cur::before{ content:""; position:absolute; inset:0; z-index:-1; border-radius:999px; background:var(--pr-fill); }
+    .pr-top .s-title{ margin:8px 0 0; }
+    .pr-top.has-timer{ display:flex; align-items:flex-start; justify-content:space-between; gap:28px; }   /* 제목 줄 오른쪽에 작은 타이머(.timer.sm) */
+    .pr-lead{ margin:10px 0 0; max-width:30em; font-size:var(--fs-lead); line-height:1.55; color:var(--gray-400); }
+    .pr-main{ flex:1 1 auto; min-height:0; margin-top:24px; position:relative; display:flex; flex-direction:column; }
+    .pr-cols{ --lc:540px; flex:1 1 auto; min-height:0; display:grid; grid-template-columns:var(--lc) 1fr; column-gap:40px; }
+    .pr-left{ display:flex; flex-direction:column; justify-content:space-between; gap:16px; min-height:0; }
+    .pr-right{ display:flex; flex-direction:column; gap:16px; min-height:0; }
+    .pr-right .tail{ margin-top:auto; }
+    .fx-back{ margin-top:auto; display:flex; align-items:center; justify-content:space-between; gap:24px; }   /* ④ 아래 줄: 안내 한 줄 + 허브로 단추 */
 
-    /* ── 태그 · 동작 ── */
-    .sc-tags{ display:flex; gap:6px; flex-wrap:wrap; margin-bottom:7px; }
-    .sc-tags > span{ font-size:13px; font-weight:700; padding:3px 10px; border-radius:999px;
-      background:var(--blue-soft); border:1px solid var(--blue-line); color:var(--blue); }
-    .sc-acts{ display:flex; gap:8px; align-items:center; line-height:1.2; }
-    .sc-btn{ padding:8px 15px; border-radius:9px; background:var(--blue); color:var(--white);
-      font-size:15px; font-weight:800; }
-    .sc-ghost{ padding:8px 13px; border-radius:9px; border:1px solid var(--blue-line-strong);
-      color:var(--blue); font-size:15px; font-weight:800; }
-    .sc-meta{ margin-left:auto; font-size:12px; font-weight:700; color:var(--gray-400); }
+    /* F-pr-goal ① 목표 — 전후 미리보기 + 시간·준비물·결과물 */
+    .pv{ flex:1 1 auto; display:grid; grid-template-columns:392px 96px 1fr; align-items:center; gap:12px; }
+    .pv-before{ width:392px; height:250px; display:block; }
+    .pv-before .sheet{ fill:var(--t-card); stroke:none; filter:drop-shadow(0 5px 8px var(--t-shadow)); }
+    .pv-before .ln{ stroke:var(--t-memo); stroke-width:6; stroke-linecap:round; }
+    .pv-before .ln.hot{ stroke:var(--pr-fill); }
+    .pv-before .fn{ font:700 17px/1 "Pretendard",sans-serif; fill:var(--pr-deep); }
+    .pv-arrow{ width:96px; height:40px; display:block; }
+    .pv-arrow path{ fill:none; stroke:var(--pr-deep); stroke-width:4; stroke-linecap:round; stroke-linejoin:round; }
+    .meta3{ margin:auto 0 0; display:grid; grid-template-columns:200px 1fr 1fr; gap:36px; }
+    .meta3 > div{ position:relative; padding:0; }
+    .meta3 dt{ font-size:17px; font-weight:800; line-height:1.3; color:var(--gray-400); }
+    .meta3 dd{ margin:4px 0 0; font-size:var(--fs-body); font-weight:500; line-height:1.45; color:var(--ink); }
+    .meta3 .big{ font-size:var(--fs-40); font-weight:800; line-height:1; letter-spacing:-.03em; font-variant-numeric:tabular-nums; color:var(--pr-deep); }
 
-    /* ── 주제 ②의 따뜻한 색조 ── */
-    .viz-screen.tone-warm{ border-color:var(--coral-line); }
-    .viz-screen.tone-warm .sc-bar{ background:var(--coral-soft); border-bottom-color:var(--coral-line); }
-    .viz-screen.tone-warm .sc-url{ border-color:var(--coral-line); }
-    .viz-screen.tone-warm .sc-mark{ background:var(--coral-deep); }
-    .viz-screen.tone-warm .sc-badge{ background:var(--coral-deep); color:var(--white); }
-    .viz-screen.tone-warm .sc-tags > span{ background:var(--coral-soft);
-      border-color:var(--coral-line); color:var(--coral-deep); }
-    .viz-screen.tone-warm .sc-btn{ background:var(--coral-deep); }
-    .viz-screen.tone-warm .sc-ghost{ border-color:var(--coral-line); color:var(--coral-deep); }
+    /* F-pr-check ③ 확인 — 위쪽에 대조할 것(원문 창 + 결과 표 등), 아래쪽에 체크 목록 */
+    .ck-top{ position:relative; flex:1 1 auto; display:grid; grid-template-columns:500px 1fr; column-gap:96px; align-items:center; }
+    .ck-top > .win .win-body{ padding:4px 18px 12px; }
+    .ck-top > .win .code{ line-height:1.5; }
+    .ck-top{ margin-bottom:16px; }
+    .ck-list.tail{ margin-top:auto; }
+    .ck-link{ position:absolute; left:0; top:0; width:1280px; height:720px; pointer-events:none; }
+    .ck-link path{ fill:none; stroke:var(--pr-deep); stroke-width:3; stroke-dasharray:7 5; }
+    .ck-link circle{ fill:var(--pr-deep); }
 
-    /* ── 대화 모형 ── */
-    .viz-chat{ width:100%; max-width:516px; background:var(--surface);
-      border:1px solid var(--blue-line-strong); border-radius:14px; overflow:hidden;
-      box-shadow:var(--shadow-md); display:flex; flex-direction:column; }
-    .ch-bar{ display:flex; align-items:center; gap:9px; padding:9px 13px;
-      background:var(--blue); color:var(--white); }
-    .ch-ava{ width:27px; height:27px; border-radius:50%; background:var(--white);
-      color:var(--blue); font-size:13px; font-weight:800; display:grid; place-items:center;
-      flex:0 0 auto; }
-    .ch-who{ display:flex; flex-direction:column; line-height:1.15; }
-    .ch-who b{ font-size:15px; font-weight:800; }
-    .ch-who small{ font-size:12px; font-weight:700; opacity:.8; }
-    .ch-live{ margin-left:auto; display:flex; align-items:center; gap:5px;
-      font-size:12px; font-weight:700; opacity:.9; }
-    .ch-live::before{ content:""; width:7px; height:7px; border-radius:50%; background:var(--mint); }
-    .ch-body{ padding:10px 12px; display:flex; flex-direction:column; gap:7px;
-      background:var(--paper); }
-    .ch-row{ display:flex; align-items:flex-end; gap:7px; }
-    .ch-row.me{ justify-content:flex-end; }
-    .ch-av{ flex:0 0 auto; width:23px; height:23px; border-radius:50%; background:var(--blue);
-      color:var(--white); font-size:11px; font-weight:800; display:grid; place-items:center; }
-    .ch-msg{ max-width:78%; padding:8px 12px; border-radius:13px; font-size:15px;
-      font-weight:600; line-height:1.45; }
-    .ch-msg.is-ai{ background:var(--white); color:var(--ink);
-      border:1px solid var(--blue-line); border-bottom-left-radius:4px; }
-    .ch-msg.is-me{ background:var(--blue); color:var(--white); border-bottom-right-radius:4px; }
-    .ch-msg.is-ai.warn{ background:var(--coral-soft); border-color:var(--coral-line);
-      color:var(--coral-deep); font-weight:700; }
-    .ch-msg b{ font-weight:800; }
-    .ch-src{ display:block; margin-top:5px; font-size:12px; font-weight:700;
-      color:var(--mint-deep); }
-    .ch-chips{ display:flex; gap:6px; flex-wrap:wrap; justify-content:flex-end; }
-    .ch-chips > span{ font-size:13px; font-weight:700; padding:4px 11px; border-radius:999px;
-      background:var(--white); border:1px solid var(--blue-line-strong); color:var(--blue); }
-    .ch-chips > span.on{ background:var(--blue); border-color:var(--blue); color:var(--white); }
-    .ch-out{ margin:0 12px 10px; padding:10px 12px; border-radius:11px;
-      background:var(--mint-soft); border:1px solid var(--mint-line); }
-    .ch-out b{ display:block; font-size:15px; font-weight:800; color:var(--mint-deep); margin-bottom:5px; }
-    .ch-out ol{ margin:0; padding-left:19px; }
-    .ch-out li{ font-size:14px; font-weight:600; color:var(--ink); line-height:1.5; }
-    .ch-more{ display:block; margin-top:4px; font-size:12px; font-weight:700; color:var(--gray-400); }
-    .ch-input{ display:flex; align-items:center; gap:9px; padding:7px 13px;
-      background:var(--white); border-top:1px solid var(--line);
-      font-size:14px; font-weight:600; color:var(--gray-400); }
-    .ch-send{ margin-left:auto; flex:0 0 auto; width:25px; height:25px; border-radius:50%;
-      background:var(--blue); position:relative; }
-    .ch-send::after{ content:""; position:absolute; left:8px; top:7px;
-      border-left:8px solid var(--white); border-top:5px solid transparent;
-      border-bottom:5px solid transparent; }
+    /* F-pr-fix ④ 고치기 · F-pr-list · F-pr-screen · F-return — .pr-cols 두 칸(--lc로 왼쪽 폭을 바꾼다) */
+    .fx-lead{ margin:0; font-size:var(--fs-body); line-height:1.55; color:var(--ink); }
+    .loc{ width:250px; height:330px; display:block; }
+    .loc .page{ fill:var(--t-card); stroke:none; filter:drop-shadow(0 5px 8px var(--t-shadow)); }
+    .loc .ln{ stroke:var(--t-memo); stroke-width:7; stroke-linecap:round; }
+    .loc .ln.hot{ stroke:var(--pr-fill); stroke-width:9; }
+    .loc .tick{ font:700 17px/1 "Pretendard",sans-serif; fill:var(--gray-700); }
+    .loc .pin{ fill:var(--pr-deep); }
+    .reveal-row{ display:grid; grid-template-columns:250px 1fr; gap:24px; align-items:start; }
+    .resume{ margin-top:auto; }
+    .resume p{ margin:0; font-size:var(--fs-body); line-height:1.5; }
 
-    /* 주제 ④는 절차를 짜 주는 도우미라 색조를 바꾼다(에메랄드 계열) */
-    .viz-chat.tone-deep{ border-color:var(--mint-line); }
-    .viz-chat.tone-deep .ch-bar{ background:var(--mint-deep); }
-    .viz-chat.tone-deep .ch-ava{ color:var(--mint-deep); }
-    .viz-chat.tone-deep .ch-msg.is-me{ background:var(--mint-deep); }
-    .viz-chat.tone-deep .ch-msg.is-ai{ border-color:var(--mint-line); }
-    .viz-chat.tone-deep .ch-av{ background:var(--mint-deep); }
-    .viz-chat.tone-deep .ch-chips > span{ border-color:var(--mint); color:var(--mint-deep); }
-    .viz-chat.tone-deep .ch-chips > span.on{ background:var(--mint-deep); border-color:var(--mint-deep); color:var(--white); }
-    .viz-chat.tone-deep .ch-out{ background:var(--blue-soft); border-color:var(--blue-line); }
-    .viz-chat.tone-deep .ch-out b{ color:var(--blue); }
-    /* W1-01 허브를 위로 올려 하단 위성과의 간격을 확보한다(실측: 겹침 3.5px) */
-    .slide[data-slide="W1-01"] .rad-hub{ top:148px; }
-    /* ⑰ 확장 기능 줄 (.plus-strip) — 「기본은 여기까지, 더 하려면 이렇게」 ─────
-       주제별 만드는 법 4장의 하단 띠. 클래스에 card·-band·-box·-col·-node를
-       쓰지 않는다(R-QC-03/16 후보가 된다). */
-    .plus-strip{ display:flex; align-items:flex-start; gap:16px; width:100%;
-      padding:14px 18px; border-radius:12px; background:var(--blue-soft);
-      border:1px dashed var(--blue-line-strong); flex:0 0 auto; }
-    .plus-cap{ flex:0 0 146px; font-size:18px; font-weight:800; color:var(--blue);
-      line-height:1.3; }
-    .plus-one{ flex:1 1 0; display:flex; flex-direction:column; gap:3px;
-      padding-left:17px; position:relative; min-width:0; }
-    .plus-one::before{ content:"+"; position:absolute; left:0; top:-1px;
-      color:var(--mint-deep); font-size:18px; font-weight:800; }
-    .plus-one b{ font-size:18px; font-weight:800; color:var(--ink); line-height:1.25; }
-    .plus-one span{ font-size:16px; font-weight:600; color:var(--gray-700);
-      line-height:1.35; word-break:keep-all; }
-    /* ⑱ 두 방식을 나란히 (.dual-view) + 점수 눈금 · 네 칸 ─────────────────
-       2026-09-18 사용자 지시: "너무 이해하기 어렵고 추상적이다. 정확하게 말해라."
-       표로만 설명하던 유형 나누기를 실제 눈금과 네 칸으로 그려 보인다. */
-    .dual-view{ display:grid; grid-template-columns:1fr 1fr; gap:30px; width:100%; flex:0 0 auto; }
-    .dv-one{ display:flex; flex-direction:column; gap:9px; min-width:0; }
-    .dv-head{ display:flex; align-items:baseline; gap:9px; flex-wrap:wrap; }
-    .dv-head b{ font-size:21px; font-weight:800; color:var(--ink); }
-    .dv-head > span{ font-size:15px; font-weight:700; color:var(--blue); }
-    .dv-cap{ margin:0; font-size:16px; font-weight:600; color:var(--gray-700);
-      line-height:1.4; word-break:keep-all; }
+    /* ══════════ F-concept-fig · 개념 장 틀 ══════════ 클래스: slide cx-slide — 정의 → 비유 → 대응(선 없이 라벨 + 글자 위계) + 시각 자료 자리 */
+    .cx-main{ flex:1 1 auto; min-height:0; margin-top:26px; display:grid; grid-template-columns:470px 1fr; column-gap:44px; align-items:stretch; }
+    .cx-text{ display:flex; flex-direction:column; gap:26px; }
+    .cx-fig{ position:relative; z-index:0; margin:0; display:flex; flex-direction:column; justify-content:flex-start; padding:20px 28px 18px; }
+    .cx-fig::before{ content:""; position:absolute; inset:0; z-index:-1; border-radius:26px; background:var(--t-card); box-shadow:var(--sh-card); }   /* 흰 카드 + 약한 그림자 — 면 대신 그림만 두려면 .bare */
+    .cx-fig.bare{ padding:0; }
+    .cx-fig.bare::before{ content:none; }
+    .cx-fig svg{ display:block; width:100%; height:auto; }
+    .cx-src{ margin:auto 0 0; display:flex; flex-wrap:wrap; gap:0 14px; font-size:var(--fs-caption); line-height:var(--lh-caption); color:var(--gray-400); }
+    .cx-src span + span::before{ content:"·"; margin-right:14px; }   /* 출처·캡션은 요소 하나에 24자 이하 — 더 길면 22px(audit_typography 서술문 판정) */
 
-    /* 점수 눈금 */
-    .viz-scale{ width:100%; }
-    .vs-track{ display:flex; height:40px; border-radius:9px; overflow:hidden;
-      border:1px solid var(--blue-line-strong); }
-    .vs-seg{ display:grid; place-items:center; font-size:16px; font-weight:800; }
-    .vs-seg.a{ background:var(--ice); color:var(--gray-700); }
-    .vs-seg.b{ background:var(--periwinkle); color:var(--ink); }
-    .vs-seg.c{ background:var(--blue); color:var(--white); }
-    .vs-ruler{ display:flex; justify-content:space-between; margin-top:5px;
-      font-size:15px; font-weight:700; color:var(--gray-700); }
-    .vs-you{ margin:8px 0 0; font-size:17px; font-weight:700; color:var(--ink); }
-    .vs-you b{ color:var(--blue); font-weight:800; }
+    /* ══════════ 디자인 v2 클래스 — 면 · 띠 · 카드 · 큰 숫자 · 여정 지도 · 도트 · 도넛 ══════════
+       면(배경색 · 그림자)은 전부 ::before 의사 요소로 그린다 — 박스 선 없이 면으로 구분하는 v2 규칙이고, audit_render.js가 box로 세지 않는다.
+       (실제 bg를 가진 요소는 터미널 · 창 · 단추 · 알약 버튼처럼 박스 예산에 드는 것뿐이다.) */
 
-    /* 네 칸 */
-    .viz-quad4{ display:grid; grid-template-columns:1fr 1fr; grid-template-rows:1fr 1fr;
-      gap:2px; width:100%; height:112px; background:var(--blue-line);
-      border:1px solid var(--blue-line-strong); border-radius:9px; overflow:hidden; }
-    .q4-zone{ display:grid; place-items:center; text-align:center; background:var(--white);
-      font-size:17px; font-weight:800; color:var(--ink); line-height:1.2; }
-    .q4-zone small{ display:block; font-size:14px; font-weight:800; color:var(--blue); margin-top:2px; }
-    .q4-zone.on{ background:var(--blue); color:var(--white); }
-    .q4-zone.on small{ color:var(--white); opacity:.85; }
-    .q4-legend{ margin:5px 0 0; font-size:16px; font-weight:700; color:var(--gray-700); }
-    /* ⑲ 주제별 만드는 법 4장 보정 (2026-09-18 브라우저 실측) ──────────────
-       .s-full.fill은 세로 flex라 높이를 선언하지 않은 블록이 눌린다 —
-       W2-03에서 터미널(필요 197px)이 182px로 줄어 다음 문단과 겹쳤다.
-       ⑭와 같은 원인이므로 터미널·표에도 shrink를 끈다. */
-    .slide .terminal-dark, .slide table.t, .slide .plus-strip{ flex:0 0 auto; }
+    /* 틴트 색 — .t-* 를 면 · 띠 · 카드에 붙인다. 기본은 민트(실습 장은 살구) */
+    .bleed, .band, .pc{ --tint:var(--t-mint); }
+    :where(.slide.pr) .bleed, :where(.slide.pr) .band, :where(.slide.pr) .pc{ --tint:var(--t-apricot); }
+    .t-mint{ --tint:var(--t-mint); } .t-sky{ --tint:var(--t-sky); } .t-apricot{ --tint:var(--t-apricot); } .t-mist{ --tint:var(--t-mist); } .t-lav{ --tint:var(--t-sky); } .t-sand{ --tint:var(--t-mist); }
 
-    /* W2-01·W2-02는 세로 여백이 130px 남는다 — 도해를 키워 화면을 채운다. */
-    .slide:is([data-slide="W2-01"],[data-slide="W2-02"]) .viz-spine{ padding-top:48px; }
-    .slide:is([data-slide="W2-01"],[data-slide="W2-02"]) .sp-when{ font-size:22px; }
-    .slide:is([data-slide="W2-01"],[data-slide="W2-02"]) .sp-ask{ font-size:19px; line-height:1.5; }
-    .slide:is([data-slide="W2-01"],[data-slide="W2-02"]) .plus-strip{ margin-top:34px !important; }
+    /* .bleed — 오른쪽 끝(위 · 아래 · 오른쪽)까지 닿는 옅은 면. 섹션 직속에 두고 그림은 .on-bleed 안에. 폭 .w40 · .w50(기본) · .w60 */
+    .bleed{ position:absolute; top:0; right:0; bottom:0; width:50%; }
+    .bleed::before{ content:""; position:absolute; inset:0; z-index:-1; background:var(--tint); }
+    .bleed.w40{ width:40%; } .bleed.w50{ width:50%; } .bleed.w60{ width:60%; }
+    .on-bleed{ position:absolute; top:0; right:0; bottom:0; width:50%; box-sizing:border-box; padding:56px 56px 72px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:20px; }
+    .bleed.w40 ~ .on-bleed, .on-bleed.w40{ width:40%; } .bleed.w60 ~ .on-bleed, .on-bleed.w60{ width:60%; }
+    .bleed > .on-bleed{ inset:0; width:auto; }
+    /* 면이 오른쪽에 있으면 제목 · 본문 칸은 왼쪽 나머지 폭 안에 둔다 */
+    .slide:has(> .bleed.w40){ --tw:656px; } .slide:has(> .bleed.w50){ --tw:520px; } .slide:has(> .bleed.w60){ --tw:392px; }
+    .slide:has(> .bleed) > :is(.kick, .s-title, .lede, .rule, .keep, .bignum, p, ul, ol, dl){ max-width:var(--tw); }
 
-    /* W2-04는 표 4행 + 확장 줄이라 37px 넘친다 — 셀 여백만 줄인다. */
-    .slide[data-slide="W2-04"] table.t th,
-    .slide[data-slide="W2-04"] table.t td{ padding:6px 11px; }
-    /* ⑳ 「무엇을 만드는가」 좌우 구도 (.make-row) ─────────────────────────
-       왼쪽에 내가 만드는 것, 오른쪽에 그것이 돌아가는 모습을 나란히 둔다.
-       ①②(파일 세 개 → 화면)와 ③④(지시문 네 줄 → 대화)에 같은 틀을 쓴다. */
-    .make-row{ display:grid; grid-template-columns:1fr 34px 1fr; align-items:center;
-      gap:14px; width:100%; flex:0 0 auto; }
-    .mk-arrow{ font-size:29px; font-weight:800; color:var(--blue); text-align:center; }
-    .mk-label{ margin:0 0 9px; font-size:16px; font-weight:800; color:var(--blue); }
-    .file-list{ display:flex; flex-direction:column; gap:9px; }
-    .file-one{ display:flex; flex-direction:column; gap:3px; padding:10px 13px;
-      border-radius:10px; background:var(--paper); border:1px solid var(--blue-line); }
-    .file-one code{ font-family:var(--font-mono); font-size:17px; font-weight:800; color:var(--blue); }
-    .file-one > span{ font-size:15px; font-weight:600; color:var(--gray-700);
-      line-height:1.35; word-break:keep-all; }
+    /* .band — 화면 폭 옅은 띠(짧은 순서 · 요약 한 줄). 기본은 바닥 위 74px. style="--bb:auto;--bt:300px;--bh:140px"로 자리 · 높이를 바꾼다 */
+    .band{ position:absolute; left:0; right:0; bottom:var(--bb,74px); top:var(--bt,auto); z-index:0; min-height:var(--bh,128px); box-sizing:border-box; padding:0 72px; display:flex; align-items:center; flex-wrap:wrap; gap:14px 22px; font-size:var(--fs-body); font-weight:600; color:var(--gray-700); }
+    .band::before{ content:""; position:absolute; inset:0; z-index:-1; background:var(--tint); }
 
-    /* ㉑ kit .key 충돌 회피 ───────────────────────────────────────────────
-       kit/styles/deck.css의 `.key`는 **키보드 키 배지**(흰 글씨 + 파란 배경)인데,
-       metric 카드의 강조 수치 `.kpi-val.key`와 클래스 이름이 겹친다. 그 결과
-       「3개」가 파란 배경 위 파란 글씨가 되어 보이지 않았다(실측). kit은 고치지
-       않고, 이 덱에서 강조 수치만 배지 스타일을 물리고 색으로만 강조한다. */
-    .slide .kpi-val.key{ display:block; background:none; padding:0; border-radius:0;
-      font-size:56px; font-weight:800; line-height:1; color:var(--blue); }
-    /* ㉒ ③④ 안내 줄 (.alt-line) ─────────────────────────────────────────
-       PART 1의 재료 만들기 다섯 장은 ①②(진단·취향) 기준으로 쓰여 있다.
-       ③④(챗봇·체크리스트)를 고른 참가자가 같은 시간에 무엇을 하는지
-       장마다 한 줄로 붙여 둔다. */
-    .alt-line{ margin:14px 0 0; padding:9px 14px; border-radius:9px;
-      background:var(--mint-soft); border-left:4px solid var(--mint);
-      font-size:17px; font-weight:600; color:var(--on-mint); line-height:1.45;
-      word-break:keep-all; flex:0 0 auto; }
-    .alt-line strong{ font-weight:800; }
-    /* ㉓ 5차 개정 높이 보정 (2026-09-18 브라우저 실측 · 바닥선 666px) ─────── */
-    .slide .an-intro{ word-break:keep-all; }
-    .slide:is([data-slide="W1-09"],[data-slide="W1-09"]) .eval-steps{ gap:8px; }
-    .slide:is([data-slide="W1-09"],[data-slide="W1-09"]) .eval-steps .work-step{
-      padding-top:6px; padding-bottom:6px; }
-    .slide[data-slide="W1-09"] .viz-split{ margin-top:10px; }
-    .slide[data-slide="W2-09"] .plus-strip{ padding:10px 14px; }
-    .slide[data-slide="W2-09"] .plus-one > span{ font-size:15px; }
-    .slide[data-slide="W2-09"] .viz-code{ margin-top:6px; }
-    .slide:is([data-slide="W1-09"],[data-slide="W1-09"]) .alt-line{ margin-top:8px; }
-    .slide[data-slide="W1-09"] .alt-line{ padding:7px 14px; font-size:16px; }
-    .slide[data-slide="W1-09"] .eval-steps{ gap:6px; flex:0 0 auto; }
-    /* steps-full은 .eval-steps를 늘려 바닥을 채운다 — 그 아래 안내 줄을 붙이면
-       늘어난 만큼 그대로 넘친다. 안내 줄이 있는 장만 늘림을 끈다(실측). */
-    .slide:is([data-slide="W1-09"],[data-slide="W1-09"]) .eval-steps{ gap:6px; }
-    .slide[data-slide="W1-09"] .viz-terminal > div{ font-size:18px; line-height:1.5; padding:12px 16px; }
-    .slide[data-slide="W1-09"] .s-full > .s-body{ margin-top:8px; }
-    .deck .slide[data-slide] .work-step .ws-body > span{ word-break:keep-all; }
-    .deck .slide:is([data-slide="W1-09"],[data-slide="W1-09"]) .work-step .ws-body > b{ font-size:22px; }
-    .deck .slide:is([data-slide="W1-09"],[data-slide="W1-09"]) .work-step .ws-body > span{ line-height:1.35; }
-    /* ㉔ 주제 표식 (.topic-flag) — 이 장이 어느 주제 것인지 크게 밝힌다 */
-    .topic-flag{ display:inline-block; margin:0 0 6px; padding:6px 16px; border-radius:999px;
-      background:var(--blue); color:var(--white); font-size:19px; font-weight:800; }
-    .topic-flag.is-agent{ background:var(--mint-deep); }
+    /* .bignum — 초대형 숫자. 단위는 <small>. .md는 112px */
+    .bignum{ margin:16px 0 0; font-size:170px; font-weight:800; line-height:1; letter-spacing:-.05em; font-variant-numeric:tabular-nums; color:var(--blue); }
+    .bignum.md{ font-size:112px; }
+    .bignum small{ font-size:.36em; font-weight:800; letter-spacing:-.03em; }
+    .bignum.md small{ font-size:.4em; }
+    .slide.pr .bignum{ color:var(--pr-deep); }
+    .slide.dark .bignum{ color:var(--mint); }
 
-    /* 31쪽 경계 도해 — 읽히도록 키운다 */
-    .slide[data-slide="W3-03"] .fn-cap{ font-size:23px; }
-    .slide[data-slide="W3-03"] .fn-item{ font-size:20px; }
-    .slide[data-slide="W3-03"] .fn-item small{ font-size:17px; }
+    /* .ic — 흰 원 안 선 아이콘(.lg 96px · .fill 색 면 원) */
+    .ic{ position:relative; z-index:0; display:grid; place-items:center; flex:none; width:64px; height:64px; }
+    .ic::before{ content:""; position:absolute; inset:0; z-index:-1; border-radius:50%; background:var(--t-card); box-shadow:var(--sh-ic); }
+    .ic svg{ width:32px; height:32px; stroke:var(--blue); fill:none; stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round; }
+    .slide.pr .ic svg{ stroke:var(--pr-deep); }
+    .ic.lg{ width:96px; height:96px; } .ic.lg svg{ width:44px; height:44px; }
+    .ic.fill::before{ background:var(--mint); } .ic.fill svg{ stroke:var(--on-mint); }
+    .slide.pr .ic.fill::before{ background:var(--pr-fill); } .slide.pr .ic.fill svg{ stroke:var(--ink); }
 
-    /* 초록(에메랄드)을 «행동·성공» 자리에 함께 쓴다 — 보라 일색을 깬다 */
-    .slide .viz-rails .rl-row.is-ours .rl-step{ background:var(--mint-deep); border-color:var(--mint-deep); }
-    .slide .viz-rails .rl-row.is-ours .rl-step:not(:last-child)::after{ color:var(--mint-deep); }
-    .slide .viz-rails .rl-row.is-ours .rl-tag{ color:var(--mint-deep); }
-    .slide .viz-rails .rl-row.is-ours .rl-cost{ color:var(--mint-deep); }
-    /* ㉕ 주제 ③④ 만드는 법 — 좌 절차 / 우 결과물을 한 화면에 */
-    .slide:is([data-slide="W2-03"],[data-slide="W2-04"]) .eval-steps{ gap:5px; flex:0 0 auto; }
-    .slide:is([data-slide="W2-03"],[data-slide="W2-04"]) .work-step{ padding:5px 12px; }
-    .deck .slide:is([data-slide="W2-03"],[data-slide="W2-04"]) .work-step .ws-body > b{ font-size:19px; }
-    .deck .slide:is([data-slide="W2-03"],[data-slide="W2-04"]) .work-step .ws-body > span{ font-size:16px; line-height:1.3; }
-    .slide:is([data-slide="W2-03"],[data-slide="W2-04"]) .file-one{ padding:7px 12px; }
-    .slide:is([data-slide="W2-03"],[data-slide="W2-04"]) .file-one code{ font-size:16px; }
-    .slide:is([data-slide="W2-03"],[data-slide="W2-04"]) .file-one > span{ font-size:14px; }
-    .slide:is([data-slide="W2-03"],[data-slide="W2-04"]) .file-list{ gap:6px; }
-    .slide:is([data-slide="W2-03"],[data-slide="W2-04"]) .plus-strip{ padding:10px 13px; gap:12px; }
-    .slide:is([data-slide="W2-03"],[data-slide="W2-04"]) .plus-one b{ font-size:16px; }
-    .slide:is([data-slide="W2-03"],[data-slide="W2-04"]) .plus-one > span{ font-size:14px; }
-    .slide:is([data-slide="W2-03"],[data-slide="W2-04"]) .mk-label{ margin-bottom:7px; }
+    /* .pill — 알약 칩(단계 · 태그 · 「지금」). 기본은 어두운 페트롤, .m 민트 · .pr 주홍 · .ghost 윤곽 */
+    .pill{ position:relative; z-index:0; display:inline-flex; border:0; background:none; box-shadow:none; align-items:center; gap:8px; padding:7px 16px; font-size:17px; font-weight:700; line-height:1.3; color:var(--white); white-space:nowrap; }
+    .pill::before{ content:""; position:absolute; inset:0; z-index:-1; border-radius:999px; background:var(--t-dark); }
+    .slide.dark .pill::before, .f-divider .pill::before{ background:var(--t-dark-2); }
+    .pill.m{ color:var(--on-mint); } .pill.m::before{ background:var(--mint); }
+    .pill.pr{ color:var(--ink); } .pill.pr::before{ background:var(--t-pr-fill); }
+    .pill.ghost{ color:var(--ink); } .pill.ghost::before{ background:none; box-shadow:inset 0 0 0 2px var(--gray-400); }
+
+    /* .pcards / .pc — 테두리 없는 파스텔 카드 2~4장 + 작은 아이콘. 색은 .t-* 로 바꾸고, 없으면 민트 · 하늘 · 라벤더 · 모래 순 */
+    .pcards{ display:grid; grid-auto-flow:column; grid-auto-columns:1fr; gap:20px; }
+    .pc{ position:relative; z-index:0; padding:26px 26px 24px; display:flex; flex-direction:column; align-items:flex-start; gap:10px; }
+    .pc::before{ content:""; position:absolute; inset:0; z-index:-1; border-radius:26px; background:var(--tint); }
+    /* 카드 색 순환 없음(2026-10-01 사용자: 색 수 축소) — 같은 급 카드는 한 색. 구분이 필요하면 .t-* 로 한 장만 다르게 */
+    .pc .ic{ margin-bottom:6px; }
+    .pc b{ font-size:27px; font-weight:800; line-height:1.3; letter-spacing:-.02em; color:var(--ink); }
+    .pc p{ margin:0; font-size:var(--fs-body); line-height:1.55; color:var(--gray-700); }
+
+    /* .wcard — 흰 카드 + 약한 그림자(결과물 모형 · 표 · 화면 모형) */
+    .wcard{ position:relative; z-index:0; padding:16px 20px; }
+    .wcard::before{ content:""; position:absolute; inset:0; z-index:-1; border-radius:22px; background:var(--t-card); box-shadow:var(--sh-pop); }
+
+    /* .paper — 살짝 기운 종이 메모(파일 이름 + 회색 줄). 전후 모형의 「전」. style="--r:-5deg" */
+    .paper{ position:relative; z-index:0; width:170px; min-height:124px; box-sizing:border-box; padding:14px 16px; transform:rotate(var(--r,0deg)); }
+    .paper::before{ content:""; position:absolute; inset:0; z-index:-1; border-radius:14px; background:var(--t-card); box-shadow:var(--sh-card); }
+    .paper b{ display:block; font-size:16px; font-weight:700; line-height:1.3; color:var(--pr-deep, var(--blue)); }
+    .paper i{ display:block; height:7px; margin-top:11px; border-radius:4px; background:var(--t-memo); }
+    .paper i:nth-of-type(2){ width:78%; } .paper i:nth-of-type(3){ width:55%; }
+
+    /* .toggles — 토글 목록 화면 모형(켜짐 .on / 꺼짐). 맡길 일 · 승인 */
+    .toggles{ position:relative; z-index:0; list-style:none; margin:0; padding:8px 26px; width:min(100%,460px); }
+    .toggles::before{ content:""; position:absolute; inset:0; z-index:-1; border-radius:24px; background:var(--t-card); box-shadow:var(--sh-pop); }
+    .toggles li{ position:relative; display:flex; align-items:center; justify-content:space-between; gap:20px; padding:16px 0; font-size:24px; font-weight:700; line-height:1.3; color:var(--ink); }
+    .toggles li::before{ content:""; order:2; flex:none; width:58px; height:32px; border-radius:16px; background:var(--periwinkle); }
+    .toggles li::after{ content:""; position:absolute; right:32px; top:50%; width:26px; height:26px; margin-top:-13px; border-radius:50%; background:var(--t-card); box-shadow:var(--sh-ic); }
+    .toggles li.on::before{ background:var(--mint-deep); }
+    .toggles li.on::after{ right:3px; }
+
+    /* .cols-dot — 점 달린 단계 기둥(가로선 위 점 + 기둥별 목록) */
+    .cols-dot{ position:relative; display:grid; grid-auto-flow:column; grid-auto-columns:1fr; gap:28px; margin-top:40px; }
+    .cols-dot::before{ content:""; position:absolute; left:6px; right:0; top:6px; height:2px; background:var(--blue-line-strong); }
+    .cols-dot > div{ position:relative; }
+    .cols-dot > div::before{ content:""; display:block; width:14px; height:14px; border-radius:50%; background:var(--blue); position:relative; }
+    .cols-dot b{ display:block; margin:18px 0 12px; font-size:27px; font-weight:800; line-height:1.3; letter-spacing:-.02em; color:var(--ink); }
+    .cols-dot b small{ display:block; margin-bottom:2px; font-size:16px; font-weight:800; letter-spacing:.02em; color:var(--gray-400); }
+    .cols-dot ul{ margin:0; padding:0; list-style:none; font-size:var(--fs-body); line-height:1.7; color:var(--gray-700); }
+    .cols-dot li::before{ content:""; display:inline-block; width:9px; height:9px; margin:0 10px 3px 0; border-radius:50%; background:var(--mint-deep); }
+    .cols-dot li.a::before{ background:var(--mint); }
+    .slide.pr .cols-dot > div::before{ background:var(--pr-deep); }
+    .slide.pr .cols-dot li::before{ background:var(--pr-deep); } .slide.pr .cols-dot li.a::before{ background:var(--pr-fill); }
+
+    /* .journey — 여정 지도(물결 길 + 단계 점 + 「지금」 표). 엔진이 길 · 점 · 자리를 만든다. JS 없이도 단계 이름이 한 줄로 읽힌다 */
+    .journey{ --jr-road:var(--blue-panel-strong); --jr-on:var(--mint-line); --jr-done:var(--mint-deep); --jr-ring:var(--gray-400); --jr-ink:var(--gray-700); --jr-now-ink:var(--ink);
+      position:relative; width:100%; min-height:120px; display:flex; justify-content:space-around; align-items:center; font-size:22px; font-weight:700; color:var(--jr-ink); }
+    .journey.is-built{ display:block; aspect-ratio:1280/330; min-height:0; }
+    .slide.dark .journey, .f-divider .journey{ --jr-road:var(--t-dark-2); --jr-on:var(--t-dark-3); --jr-done:var(--t-dark-soft); --jr-ring:var(--t-dark-soft); --jr-ink:var(--t-dark-ink); --jr-now-ink:var(--white); }
+    .slide > .journey{ position:absolute; left:0; right:0; bottom:0; width:auto; }
+    .slide > .journey.is-built{ height:330px; aspect-ratio:auto; }
+    .jr-road{ position:absolute; inset:0; width:100%; height:100%; overflow:visible; }
+    .jr-road path{ fill:none; stroke-width:44px; stroke-linecap:round; vector-effect:non-scaling-stroke; }
+    .jr-road .base{ stroke:var(--jr-road); } .jr-road .on{ stroke:var(--jr-on); }
+    .jr-st{ position:absolute; width:0; height:0; }
+    .jr-st .jr-d{ position:absolute; left:0; top:0; display:block; width:22px; height:22px; margin:-11px 0 0 -11px; overflow:visible; }
+    .jr-st.now .jr-d{ width:60px; height:60px; margin:-30px 0 0 -30px; }
+    .jr-d .ring{ fill:none; stroke:var(--jr-ring); stroke-width:4; } .jr-d .fill{ fill:var(--jr-done); } .jr-d .glow{ fill:var(--t-glow); } .jr-d .core{ fill:var(--mint); }
+    .jr-st.next .fill, .jr-st.done .ring{ display:none; }
+    .jr-st b{ position:absolute; left:0; top:26px; transform:translateX(-50%); font-size:22px; font-weight:700; line-height:1.3; color:var(--jr-ink); white-space:nowrap; }
+    .jr-st.now b{ top:36px; color:var(--jr-now-ink); }
+    .jr-tag{ position:absolute; z-index:0; transform:translate(-50%,-100%); padding:6px 14px; font-size:16px; font-weight:800; line-height:1.3; color:var(--on-mint); white-space:nowrap; }
+    .jr-tag::before{ content:""; position:absolute; inset:0; z-index:-1; border-radius:999px; background:var(--mint); }
+
+    /* .dotgrid(data-n · data-on) · .donut(data-v) — 검증 수치만. 엔진이 SVG를 그린다(초기 상태가 곧 완성본) */
+    .dotgrid{ width:var(--dw,360px); }
+    .dotgrid svg{ display:block; width:100%; height:auto; }
+    .dotgrid .d{ fill:var(--blue-line); } .dotgrid .d.on{ fill:var(--blue); }
+    .slide.pr .dotgrid .d{ fill:var(--pr-line); } .slide.pr .dotgrid .d.on{ fill:var(--pr-deep); }
+    .donut{ position:relative; width:var(--dw,220px); aspect-ratio:1; display:grid; place-items:center; }
+    .donut svg{ position:absolute; inset:0; width:100%; height:100%; }
+    .donut .tr{ fill:none; stroke:var(--blue-line); stroke-width:14; } .donut .ar{ fill:none; stroke:var(--blue); stroke-width:14; }
+    .slide.pr .donut .tr{ stroke:var(--pr-line); } .slide.pr .donut .ar{ stroke:var(--pr-deep); }
+    .donut b{ position:relative; font-size:40px; font-weight:800; line-height:1; letter-spacing:-.03em; font-variant-numeric:tabular-nums; color:var(--ink); }
+
+    /* .facts — 라벨 + 값 줄 목록(만들 것 · 준비물 · 시간). 면 · 선 없이 글자 위계만 */
+    .facts{ margin:26px 0 0; display:grid; gap:14px; }
+    .facts .f{ display:grid; grid-template-columns:88px 1fr; margin:0; }
+    .facts dt{ padding-top:3px; font-size:17px; font-weight:800; line-height:1.4; color:var(--gray-400); }
+    .facts dd{ margin:0; font-size:var(--fs-lead); font-weight:500; line-height:1.5; color:var(--ink); }
 
   </style>
-  <!--
-    ┌── 새 덱 만드는 법 ─────────────────────────────────────────────┐
-    │ 1) 이 파일을 복사. 고정 1·2·3(표지·도입·아젠다) 텍스트를 교체.   │
-    │ 2) 파트 수만큼 part-divider 배치(진행 도트 is-active 이동).      │
-    │ 3) 각 슬라이드: 정보 모양 판단 → kit/layouts/by-shape.md에서     │
-    │    레이아웃 후보 → (필요시) kit/charts/by-shape.md에서 element.  │
-    │    직전 슬라이드와 같은 구도 패밀리 회피, split은 희소하게.      │
-    │ 4) 레이아웃 <section>은 kit/layouts/catalog.html(코드 코어)에서  │
-    │    복사하거나 families/*.md 스펙대로 조립(토큰-치트시트 준수).   │
-    │ 5) 브라우저 검증(측정 우선) → base64 단일파일 배포.             │
-    └────────────────────────────────────────────────────────────────┘
-  -->
 </head>
 <body>
   <div class="deck">
-
-    <!-- ============ 1 · 표지 (불변요소 · 라이트 지오메트리 최종) ============ -->
-    <!-- ⚠️ 모든 .slide는 data-slide를 반드시 갖고, 값은 덱 안에서 유일해야 한다(R-SLIDE-ID-01).
-         이 값이 슬라이드의 영구 ID다 — 발표본의 강사 메모가 순번이 아니라 이 값에 붙으므로,
-         한 번 정한 값은 바꾸지 않는다. 누락·중복이면 verify_deck FAIL, 주입기는 중단한다. -->
-    <section class="slide cover" data-slide="S01">
-      <svg class="cover-geo" viewBox="0 0 1280 720" fill="none" aria-hidden="true"><!-- 아이소메트릭 3단 스택: data-cube 3개 × 면 3개 + 코랄 스파크. fill=토큰 -->
-        <g data-cube="top">
-        <polygon points="1170,300 1226,328 1170,356 1114,328" fill="var(--blue-soft)"/>
-        <polygon points="1114,328 1170,356 1170,414 1114,386" fill="var(--blue)"/>
-        <polygon points="1170,356 1226,328 1226,386 1170,414" fill="var(--mint)"/>
-        </g>
-        <g data-cube="middle">
-        <polygon points="1084,352 1140,380 1084,408 1028,380" fill="var(--blue-soft)"/>
-        <polygon points="1028,380 1084,408 1084,466 1028,438" fill="var(--blue)"/>
-        <polygon points="1084,408 1140,380 1140,438 1084,466" fill="var(--mint)"/>
-        </g>
-        <g data-cube="base">
-        <polygon points="998,404 1054,432 998,460 942,432" fill="var(--blue-soft)"/>
-        <polygon points="942,432 998,460 998,518 942,490" fill="var(--blue)"/>
-        <polygon points="998,460 1054,432 1054,490 998,518" fill="var(--mint)"/>
-        </g>
-        <circle cx="1170" cy="256" r="13" fill="var(--coral)"/>
-      </svg>
-      <header class="s-head cover-head">
-        <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg>
-        <div class="brand-stack">
-          <span class="s-brand">WORKSHOP</span><!-- ✏️ 브랜드 -->
-          <span class="track">4시간</span>
-        </div>
-        <div class="s-team">4시간 워크숍</div>
-      </header>
-      <div class="cover-lead">코딩 없이, 하루에 하나</div>
-      <div class="cover-title">
-        <h1 class="ko">에이전트와 함께<br>간단한 서비스 <span class="hl">만들기</span></h1>
-      </div>
-      <div class="cover-terminal"><span class="pfx">&gt;_</span><span class="q">고른 주제 하나를 오늘 안에 끝냅니다</span><span class="cur" aria-hidden="true"></span></div><!-- ✏️ 예: "첫 웹페이지 만들어줘" -->
-      <div class="cover-presenter">워크숍 진행 강사</div>
-    </section>
-
-    <!-- ============ 2 · 도입 (불변요소·구조 고정) ============ -->
-    <section class="slide s02-slide" data-slide="S02"><!-- 이미지 사용 시 class에 has-image 추가 -->
-      <header class="s-head">
-        <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">WORKSHOP</span>
-        <span class="s-line"></span><div class="s-team">4시간 워크숍</div>
-      </header>
-      <div class="s-body-wrap">
-        <p class="s-eyebrow">오늘의 약속</p>
-        <h2 class="s-title">오늘은 듣는 시간이 아니라 <span class="hl">만드는 시간</span>입니다</h2>
-        <p class="s-lead">네 시간 뒤에는 각자 만든 것을 주소로 열어 볼 수 있습니다.</p>
-        <div class="s-body">주제를 함께 고르고, 재료를 쓰고, 만들고, 올립니다.<br>설명은 한 꼭지에 5분입니다. 남는 시간은 전부 손으로 씁니다.<br>막히면 혼자 붙들지 말고 <strong>세 줄로</strong> 물어보세요.</div>
-      </div>
-      <!-- 이미지 슬롯 예시(하나만 선택해 주석 해제):
-           설명/기억 이미지 — 관계를 설명하는 한국어 alt 필수
-           <figure class="asset-slot asset-slot--hero" data-image-purpose="explanatory" data-asset-id="ASSET-001">
-             <img src="자료/images/asset-001.png" alt="작은 요청 카드가 AI를 거쳐 완성된 웹페이지로 확장되는 관계">
-           </figure>
-
-           장식 이미지 — 내용 중복 설명 금지, alt="" + aria-hidden="true"
-           <figure class="asset-slot asset-slot--spot" data-image-purpose="decorative" aria-hidden="true">
-             <img src="자료/images/asset-002.png" alt="" aria-hidden="true">
-           </figure>
-
-           prompt_only — img를 만들지 않고 예상 파일만 기록(배포 전 unresolved FAIL)
-           <figure class="asset-slot asset-slot--hero" data-image-purpose="explanatory"
-             data-image-state="expected" data-expected-src="자료/images/asset-001.png"
-             role="img" aria-label="작은 요청 카드가 AI를 거쳐 완성된 웹페이지로 확장되는 관계"></figure>
-      -->
-    </section>
-
-    <!-- ============ 3 · 아젠다 (불변요소·구조 고정) · 노드-타임라인 (v3) ============
-         제목은 고정 멘트 "오늘 배우게 될 것"(verify 강제) + 민트 바(.an-bar) + 리드 1~2줄.
-         노드 수 가변: .an-item을 아젠다 항목 수만큼 반복(파트 수 또는 여정 단계 수). 권장 3~6, an-d는 짧게.
-         ⚠️ 4개 초과 시 .an-right에 an-2col 부여(크기 축소 금지, 2열 자동 균형분배·세로 중앙 — verify가 강제). ≤4는 미부여. -->
-    <section class="slide s03-slide" data-slide="S03">
-      <header class="s-head">
-        <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">WORKSHOP</span>
-        <span class="s-line"></span><!-- ✏️ 팀명 없음(지오메트리 헤더) -->
-      </header>
-      <div class="an-left">
-        <span class="an-spark" aria-hidden="true"></span><!-- ⚠️ 코랄 스파크 — .an-left 안 고정(제목 좌상단 대각), 위치 임의 이동 금지 -->
-        <h2 class="an-title">오늘 배우게 될 것</h2><!-- ⚠️ 고정 멘트(verify 강제) — 주차마다 자유 작성 금지 -->
-        <div class="an-bar"></div>
-        <p class="an-intro">네 블록이 각각 <span class="hl">50분</span>입니다<br>블록이 끝날 때마다 손에 잡히는 것이 하나씩 늘어납니다</p>
-      </div>
-      <div class="an-right"><!-- ✏️ .an-item을 항목 수만큼 반복(3~6 권장). 연결선·간격 자동. -->
-        <div class="an-item"><div class="an-num">1</div><div class="an-body"><div class="an-h">기획</div><div class="an-d">주제를 고르고 안에 들어갈 내용을 씁니다</div></div></div>
-        <div class="an-item"><div class="an-num">2</div><div class="an-body"><div class="an-h">제작</div><div class="an-d">에이전트에게 시켜 실제로 돌아가게 만듭니다</div></div></div>
-        <div class="an-item"><div class="an-num">3</div><div class="an-body"><div class="an-h">공개</div><div class="an-d">주소를 만들어 남이 열어 보게 합니다</div></div></div>
-        <div class="an-item"><div class="an-num">4</div><div class="an-body"><div class="an-h">개선</div><div class="an-d">써 본 사람 의견을 반영해 다시 올립니다</div></div></div>
-      </div>
-    </section>
-
+    <!-- ⚠️ 이 덱에는 고정 슬라이드가 없다. 표지(COVER)·블록 간지·허브까지 전부 part-NN.html에서 온다.
+         모든 <section class="slide ...">는 data-slide에 결정표 ID를 갖고, 값은 덱 안에서 유일하다(R-SLIDE-ID-01).
+         아래 한 줄이 조립기가 part-NN.html을 끼우는 자리다 — 주석 안에 같은 문구를 쓰지 않는다(조립기가 개수를 센다). -->
 <!-- ::PARTS:: -->
-
-    <!-- ============ 마무리 · 개념 정리 (불변요소·기본 마무리) — v2 풀폭 상하 밴드
-         .concept-panel = 세로 flex(메시지·프로세스·카드·배너 4밴드), 캔버스 전체 폭 사용.
-         .concept-flow span(flex:1)·.concept-cards(auto-fit)는 개수(N)에 자동 대응 —
-         프로세스 3~6단계·카드 3~6장 어떤 조합이든 이 마크업 구조 그대로 개수만 늘리면 된다. -->
-    <section class="slide concept-recap" data-slide="END">
-      <header class="s-head">
-        <svg class="s-logo" viewBox="0 0 96 96" aria-hidden="true"><line x1="28.8" y1="28.7" x2="49" y2="70" style="stroke:var(--mint)" stroke-width="18" stroke-linecap="round"/><line x1="70.9" y1="25.1" x2="49" y2="70" style="stroke:var(--blue)" stroke-width="19" stroke-linecap="round"/><circle cx="49" cy="70" r="9.5" style="fill:var(--ink)"/></svg><span class="s-brand">WORKSHOP</span>
-        <span class="s-line"></span><div class="s-team">4시간 워크숍</div>
-      </header>
-      <div class="concept-panel">
-        <div class="concept-top"><!-- ✏️ 제목·리드 -->
-          <p class="s-eyebrow">워크숍 요약</p>
-          <h2 class="s-title">이 순서는 <span class="hl">다음 것에도</span> 그대로 통합니다</h2>
-          <p class="concept-lead">안에 들어갈 내용을 정하면 화면이 따라오고, 화면이 생기면 <strong>주소와 피드백</strong>이 따라옵니다.</p>
-        </div>
-        <div class="concept-flow" data-viz="flow-h" role="img" aria-label="한 줄 정의에서 재료 파일, 화면, 링크, 관찰과 개선으로 이어지는 다섯 단계 흐름">
-          <span>한 줄 정의</span><b>→</b><span>재료 파일</span><b>→</b><span>화면</span><b>→</b><span>링크</span><b>→</b><span>관찰·개선</span>
-        </div>
-        <div class="concept-cards"><!-- ✏️ N카드(3~6 권장), concept-card 반복 -->
-          <div class="concept-card"><h3>한 줄 정의</h3><p>누가·무엇을 얻나·얼마나 걸리나를 한 줄로 적습니다</p></div>
-          <div class="concept-card"><h3>네 칸 요청문</h3><p>목적·입력·출력·검증 중 검증이 가장 자주 빠집니다</p></div>
-          <div class="concept-card"><h3>30초 점검</h3><p>개인정보·키·링크·휴대폰 네 칸을 올릴 때마다 봅니다</p></div>
-          <div class="concept-card"><h3>관찰 셋</h3><p>멈춘 곳·오해한 곳·다시 물은 것만 적습니다</p></div>
-        </div>
-        <div class="concept-bottom">오늘 만든 건 하나지만, 익힌 건 <span class="hl-mint-mark">만들고 공개하고 고치는 순서</span>입니다.<small>다음에는 내용만 바꿔 같은 순서를 다시 돌리면 됩니다.</small></div>
-      </div>
-    </section>
-
   </div>
 
   <!-- 발표 리모컨 + 상세 메뉴 (불변요소 · 브라우저 검증된 엔진) -->
@@ -893,11 +760,6 @@
 
   <script>
   (function(){
-    /* ── 파트 전환 자동 생성기 (kit/starter/deck-template.html과 같은 계약) ──
-       ⚠️ 이 세 함수가 없으면 verify_deck이 「파트 전환 자동 생성기 누락」으로
-          **FAIL**한다. 2026-08-03 실측: 이 템플릿에만 빠져 있어 새 주차가
-          첫 조립부터 FAIL 1로 시작했다(1·2주차 덱과 킷 스타터에는 있었다).
-       도형·도트·PART n/N을 파트 수에 맞춰 만든다 — part-NN.html은 빈 훅만 둔다. */
     function partGeometry(n){
       var presets={
         1:[[640,126,92,92]],
@@ -935,7 +797,6 @@
       var eyebrow=s.querySelector('.pd-eyebrow');if(eyebrow)eyebrow.textContent='PART '+index+' / '+total;
       s.setAttribute('data-part-index',index);s.setAttribute('data-part-total',total);
     }
-
     var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
     var totalParts = 0;
     slides.forEach(function(s){ if (/\bpart-divider\b/.test(s.className)) totalParts++; });
@@ -949,15 +810,8 @@
         pg.textContent = (i + 1) + ' / ' + slides.length;
         s.appendChild(pg);
       }
-      if (!fixed && curPart >= 1 && totalParts >= 1) {
-        var team = s.querySelector('.s-head .s-team');
-        if (team) {
-          var h = '<span class="lbl">PART ' + curPart + ' / ' + totalParts + '</span><span class="dots">';
-          for (var d = 1; d <= totalParts; d++) h += '<span class="pd' + (d === curPart ? ' on' : '') + '"></span>';
-          team.className = 's-part';
-          team.innerHTML = h + '</span>';
-        }
-      }
+      /* FRAME: 헤더 오른쪽 라벨(.s-team)은 장마다 마크업에 적는다. kit의 PART n/N 도트(.s-part) 자동 주입은 쓰지 않는다 —
+         블록 간지(f-divider)가 part-divider 클래스를 함께 달아 verify가 파트로 세게 하되, 본문 헤더는 건드리지 않게 하려는 것이다. */
     });
     var controls = document.getElementById('controls');
     var counter  = document.getElementById('counter');
@@ -979,11 +833,14 @@
     var menuTitle = document.getElementById('menuTitle');
     var menuPart = document.getElementById('menuPart');
     var idx = 0, hideTimer = null;
-    var storageKey = 'workshop-4h-diagnostic';  /* ✏️ 덱마다 고유 문자열로 바꾸면 위치 기억이 분리됨 */
+    var storageKey = 'frame-week1';  /* 덱마다 고유 문자열 — 위치 기억이 분리된다 */
 
     function initialIndex(){
       var m = String(location.hash || '').match(/slide=(\d+)/i);
       if (m) return Math.max(0, parseInt(m[1], 10) - 1);
+      /* FRAME: #slide=<슬라이드ID> 도 받는다(ID 기반 이동 · 측정 · 수정 요청 접수) */
+      var mi = String(location.hash || '').match(/slide=([A-Za-z][\w-]*)/);
+      if (mi) { for (var q = 0; q < slides.length; q++) { if (slides[q].getAttribute('data-slide') === mi[1]) return q; } }
       try { var saved = parseInt(localStorage.getItem(storageKey), 10); return isNaN(saved) ? 0 : saved; }
       catch (e) { return 0; }
     }
@@ -1085,7 +942,375 @@
     window.addEventListener('mousemove', poke);
     window.addEventListener('resize', fit);
     buildSlideList();
+    window.__deckShow = show;   /* FRAME 엔진이 이동에 쓴다 */
     fit(); show(initialIndex()); poke();
+  })();
+  </script>
+  <script>
+  /* FRAME 엔진 — 이동(data-go · 복귀) · 등장 연출 보조 · 조작 위젯 · 타이머 · 복사.
+     덱 엔진(위 스크립트)이 window.__deckShow(i)를 열어 두면 그것을 쓴다.
+     모든 조작은 클릭과 Enter/Space 둘 다 된다. 방향키 이동은 연출을 기다리지 않는다.
+     감사 모드: 주소에 ?audit 가 있거나 <html class="no-anim">이면 연출 없이 최종 상태.
+     무한 반복 연출은 없다. 위젯 상태는 페이지를 다시 열 때까지 DOM에 남는다. */
+  (function(){
+    'use strict';
+    var root = document.documentElement;
+    if (/[?&]audit\b/.test(location.search)) root.classList.add('no-anim');
+    var mqReduce = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : null;
+    function reduced(){ return !!(mqReduce && mqReduce.matches) || root.classList.contains('no-anim'); }
+    var NS = 'http://www.w3.org/2000/svg';
+    var slides = [].slice.call(document.querySelectorAll('.deck .slide'));
+    function all(sel, el){ return [].slice.call((el || document).querySelectorAll(sel)); }
+    function idxOf(id){ for (var i = 0; i < slides.length; i++){ if (slides[i].getAttribute('data-slide') === id) return i; } return -1; }
+    function slideOf(el){ return el && el.closest ? el.closest('.slide') : null; }
+    var store = {
+      get: function(k){ try { return sessionStorage.getItem(k); } catch (e) { return null; } },
+      set: function(k, v){ try { sessionStorage.setItem(k, v); } catch (e) {} }
+    };
+
+    /* ── 이동 — 번호 없이 data-go="<슬라이드ID>". data-vt-key가 출발·도착에 같으면 View Transition 0.45초 ── */
+    var trail = [];
+    function goId(id, src){
+      var t = idxOf(id); if (t < 0 || !window.__deckShow) return false;
+      var key = src && src.getAttribute && src.getAttribute('data-vt-key');
+      var dest = key ? slides[t].querySelector('[data-vt-key="' + key + '"]') : null;
+      if (!document.startViewTransition || reduced() || !dest){ window.__deckShow(t); return true; }
+      src.style.viewTransitionName = 'frame-hero';
+      var tr = document.startViewTransition(function(){ src.style.viewTransitionName = ''; dest.style.viewTransitionName = 'frame-hero'; window.__deckShow(t); });
+      function clear(){ dest.style.viewTransitionName = ''; }
+      tr.ready.catch(function(){}); tr.finished.then(clear, clear);
+      return true;
+    }
+    /* 슬롯에서 나갈 때 출발 슬롯을 기억하고, 허브의 「수업으로 돌아가기」는 그 슬롯의 다음 장으로 간다 */
+    function noteOrigin(from){
+      if (from && (from.classList.contains('f-slot') || from.hasAttribute('data-return-to'))) store.set('frame.origin', from.getAttribute('data-slide'));
+    }
+    function doneList(){ return (store.get('frame.done') || '').split(',').filter(Boolean); }
+    function noteDone(el){
+      var p = el.getAttribute('data-pr'); if (!p) return;
+      var list = doneList(); if (list.indexOf(p) < 0){ list.push(p); store.set('frame.done', list.join(',')); }
+    }
+    function applyMarks(slide){
+      var list = doneList();
+      all('[data-pr]', slide).forEach(function(e){ e.classList.toggle('is-done', list.indexOf(e.getAttribute('data-pr')) >= 0); });
+    }
+    function returnTarget(){
+      var o = store.get('frame.origin'), oi = o ? idxOf(o) : -1;
+      if (oi >= 0){
+        var to = slides[oi].getAttribute('data-return-to');
+        if (to && idxOf(to) >= 0) return to;
+        if (slides[oi + 1]) return slides[oi + 1].getAttribute('data-slide');
+      }
+      for (var k = trail.length - 1; k >= 0; k--){      /* 슬롯을 거치지 않고 온 경우: 허브·실습 밖에서 마지막으로 본 장 */
+        var s = slides[idxOf(trail[k])];
+        if (s && !s.classList.contains('pr') && !s.classList.contains('f-hub')) return trail[k];
+      }
+      return null;
+    }
+
+    /* ── 위젯 data-w="toggle|step|pick" — 상태 하나(data-state)와 그 상태를 보여 주는 표식 ──
+       root  : data-w · data-state(처음 상태) · (step) data-max
+       조작  : data-toggle(0↔1) · data-set="값" · data-pick="값" · (step) data-next · data-prev · data-reset
+       보기  : data-show="값 …"(그 상태에서만 표시) · data-hl="값 …"(그 상태에서 .is-on) · (step) data-from="n"(n 이상에서 .is-on) */
+    function inList(v, list){ return (' ' + (list || '') + ' ').indexOf(' ' + v + ' ') >= 0; }
+    function mine(w, e){ return e.closest('[data-w]') === w; }
+    function syncWidget(w){
+      var kind = w.getAttribute('data-w');
+      if (kind !== 'toggle' && kind !== 'step' && kind !== 'pick') return;
+      var st = w.getAttribute('data-state');
+      if (st === null){
+        var pre = w.querySelector('[data-pick].on, [data-pick][aria-pressed="true"]');
+        st = pre ? pre.getAttribute('data-pick') : (kind === 'pick' ? '' : '0');
+        w.setAttribute('data-state', st);
+      }
+      if (!w.hasAttribute('data-init')) w.setAttribute('data-init', st);
+      all('[data-show]', w).forEach(function(e){ if (mine(w, e)) e.classList.toggle('is-on', inList(st, e.getAttribute('data-show'))); });
+      all('[data-hl]', w).forEach(function(e){ if (mine(w, e)) e.classList.toggle('is-on', inList(st, e.getAttribute('data-hl'))); });
+      all('[data-from]', w).forEach(function(e){ if (mine(w, e)) e.classList.toggle('is-on', (+st || 0) >= +e.getAttribute('data-from')); });
+      all('[data-set], [data-pick]', w).forEach(function(c){
+        if (!mine(w, c)) return;
+        var v = c.hasAttribute('data-set') ? c.getAttribute('data-set') : c.getAttribute('data-pick');
+        c.classList.toggle('on', v === st); c.setAttribute('aria-pressed', v === st ? 'true' : 'false');
+      });
+      all('[data-toggle]', w).forEach(function(c){
+        if (!mine(w, c)) return;
+        c.setAttribute('aria-pressed', st === '1' ? 'true' : 'false');
+        var labels = c.getAttribute('data-labels');           /* "꺼진 상태 글|켜진 상태 글" */
+        if (labels){ var t = labels.split('|')[st === '1' ? 1 : 0]; if (t){ (c.querySelector('.t') || c).textContent = t; } }
+      });
+      var max = +w.getAttribute('data-max');
+      all('[data-next]', w).forEach(function(c){ if (mine(w, c) && max) c.disabled = (+st || 0) >= max; });
+      all('[data-prev]', w).forEach(function(c){ if (mine(w, c)) c.disabled = (+st || 0) <= 0; });
+    }
+    function setState(w, v){
+      w.setAttribute('data-state', v); syncWidget(w);
+      var sl = slideOf(w); if (sl) buildRings(sl);      /* 새로 보이게 된 글자의 동그라미를 그린다 */
+      try { w.dispatchEvent(new CustomEvent('frame:widget', { bubbles:true, detail:{ w:w.getAttribute('data-w'), state:v, id:w.id || null } })); } catch (e) {}
+    }
+    function widgetAct(c){
+      var w = c.closest('[data-w]'); if (!w) return false;
+      var kind = w.getAttribute('data-w'), st = w.getAttribute('data-state');
+      if (kind === 'trace'){ if (c.hasAttribute('data-pick')){ all('[data-pick]', w).forEach(function(r){ r.classList.toggle('on', r === c); r.setAttribute('aria-pressed', r === c ? 'true' : 'false'); }); drawTrace(slideOf(w)); return true; } return false; }
+      if (kind !== 'toggle' && kind !== 'step' && kind !== 'pick') return false;
+      var max = +w.getAttribute('data-max') || 9999;
+      if (c.hasAttribute('data-toggle')) setState(w, st === '1' ? '0' : '1');
+      else if (c.hasAttribute('data-set')) setState(w, c.getAttribute('data-set'));
+      else if (c.hasAttribute('data-pick')) setState(w, c.getAttribute('data-pick'));
+      else if (c.hasAttribute('data-next')) setState(w, String(Math.min(max, (+st || 0) + 1)));
+      else if (c.hasAttribute('data-prev')) setState(w, String(Math.max(0, (+st || 0) - 1)));
+      else if (c.hasAttribute('data-reset')) setState(w, w.getAttribute('data-init') || '0');
+      else return false;
+      return true;
+    }
+    /* 단계·체크 목록 data-w="todo" — 눌러서 완료 표시(번호는 ✓로, ☐는 ☑로) */
+    function todoAct(el){
+      var box = el.closest('[data-w="todo"]'); if (!box) return false;
+      var btn = el.closest('button'); if (!btn) return false;
+      var on = btn.getAttribute('aria-pressed') !== 'true';
+      btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+      (btn.closest('li') || btn.parentNode).classList.toggle('done', on);
+      var bx = btn.querySelector('.bx'); if (bx) bx.textContent = on ? '☑' : '☐';
+      var n = btn.querySelector('.n'); if (n){ if (!n.hasAttribute('data-n')) n.setAttribute('data-n', n.textContent); n.textContent = on ? '✓' : n.getAttribute('data-n'); }
+      return true;
+    }
+
+    /* ── 실습 ③ 대조선 — 결과 표의 행을 고르면 근거 줄과 잇는다(글자를 가로지르지 않고 행 왼쪽 끝에서 멈춘다) ── */
+    function offsetIn(el, slide){ var x = 0, y = 0; while (el && el !== slide){ x += el.offsetLeft; y += el.offsetTop; el = el.offsetParent; } return { x:x, y:y }; }
+    function drawTrace(slide){
+      var box = slide && slide.querySelector('[data-w="trace"]'); if (!box) return;
+      var row = box.querySelector('[data-pick].on'), key = row && row.getAttribute('data-pick');
+      all('[data-line]', slide).forEach(function(li){ li.classList.toggle('on', li.getAttribute('data-line') === key); });
+      var svg = slide.querySelector('.ck-link'), line = key && slide.querySelector('[data-line="' + key + '"]');
+      if (!row || !line || !svg || !line.offsetWidth) return;
+      var src = line.closest('.win') || line.parentNode, a = offsetIn(line, slide), sx = offsetIn(src, slide).x + src.offsetWidth + 6, sy = a.y + line.offsetHeight / 2;
+      var tb = row.closest('table'), ex = offsetIn(tb, slide).x - 8, ey = offsetIn(row, slide).y + row.offsetHeight / 2, mx = (sx + ex) / 2;
+      svg.querySelector('path').setAttribute('d', 'M' + sx + ' ' + sy + ' C' + mx + ' ' + sy + ' ' + mx + ' ' + ey + ' ' + ex + ' ' + ey);
+      var c = svg.querySelectorAll('circle'); c[0].setAttribute('cx', sx); c[0].setAttribute('cy', sy); c[1].setAttribute('cx', ex); c[1].setAttribute('cy', ey);
+    }
+
+    /* ── 동그라미(.ring-host) — 글자 둘레에 손으로 그린 듯한 타원을 만든다 ── */
+    function ringPath(W, H){
+      /* 둥근 사각형(알약)을 손으로 그린 듯 살짝 흔들고, 끝을 시작점 너머로 겹친다 — 글자 쪽으로는 들어오지 않는다 */
+      function f(n){ return n.toFixed(1); }
+      var r = Math.min(H / 2, 26), k = r * 0.5523, x0 = r, x1 = W - r, y0 = r, y1 = H - r, m = (x1 - x0);
+      return 'M' + f(x0 * 0.9) + ' ' + f(2.5) +
+        ' C' + f(x0 + m * .3) + ' ' + f(-1.5) + ' ' + f(x0 + m * .7) + ' ' + f(-1.5) + ' ' + f(x1) + ' ' + f(1) +
+        ' C' + f(x1 + k) + ' ' + f(1) + ' ' + f(W + .5) + ' ' + f(y0 - k) + ' ' + f(W) + ' ' + f(y0) +
+        ' L' + f(W) + ' ' + f(y1) +
+        ' C' + f(W) + ' ' + f(y1 + k) + ' ' + f(x1 + k) + ' ' + f(H) + ' ' + f(x1) + ' ' + f(H - .5) +
+        ' C' + f(x0 + m * .7) + ' ' + f(H + 2.5) + ' ' + f(x0 + m * .3) + ' ' + f(H + 2.5) + ' ' + f(x0) + ' ' + f(H - 1) +
+        ' C' + f(x0 - k) + ' ' + f(H) + ' ' + f(-.5) + ' ' + f(y1 + k) + ' ' + f(0) + ' ' + f(y1) +
+        ' L' + f(0) + ' ' + f(y0) +
+        ' C' + f(0) + ' ' + f(y0 - k) + ' ' + f(x0 * .5) + ' ' + f(1) + ' ' + f(x0 * 1.25) + ' ' + f(5);
+    }
+    function buildRings(slide){
+      all('.ring-host', slide).forEach(function(h){
+        var w = h.offsetWidth, hh = h.offsetHeight; if (!w) return;
+        var W = w + 24, H = hh + 8, svg = h.querySelector('.ring-svg');
+        if (!svg){
+          svg = document.createElementNS(NS, 'svg'); svg.setAttribute('class', 'ring-svg'); svg.setAttribute('aria-hidden', 'true');
+          var p = document.createElementNS(NS, 'path'); p.setAttribute('class', 'em-ring a-draw'); p.setAttribute('pathLength', '100');
+          svg.appendChild(p); h.appendChild(svg);
+        }
+        svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H); svg.setAttribute('width', W); svg.setAttribute('height', H);
+        svg.style.left = '-12px'; svg.style.top = '-4px';
+        svg.firstChild.setAttribute('d', ringPath(W, H));
+      });
+    }
+
+    /* ── 숫자 올라가기(data-count) — 0.5초, 끝나면 마크업의 최종 글자로 되돌려 놓는다 ── */
+    function countUp(slide){
+      if (reduced()) return;
+      all('[data-count]', slide).forEach(function(e){
+        if (e.__final === undefined) e.__final = e.textContent;
+        var txt = e.__final, m = txt.match(/-?\d+(?:\.\d+)?/); if (!m) return;
+        var pre = txt.slice(0, m.index), post = txt.slice(m.index + m[0].length), dec = (m[0].split('.')[1] || '').length, target = parseFloat(m[0]), t0 = null;
+        if (e.__raf) cancelAnimationFrame(e.__raf);
+        function step(ts){
+          if (t0 === null) t0 = ts;
+          var k = Math.min(1, (ts - t0) / 500), v = target * (1 - Math.pow(1 - k, 3));
+          e.textContent = k < 1 ? pre + v.toFixed(dec) + post : e.__final;
+          if (k < 1) e.__raf = requestAnimationFrame(step);
+        }
+        e.textContent = pre + (0).toFixed(dec) + post; e.__raf = requestAnimationFrame(step);
+      });
+    }
+
+    /* ── 타이머 — 분 값은 data-min. 누르면 시작·멈춤, 0이 되면 끝 ── */
+    function fmt(s){ var m = Math.floor(s / 60), r = s % 60; return (m < 10 ? '0' : '') + m + ':' + (r < 10 ? '0' : '') + r; }
+    function timerInit(b){
+      if (b.__t) return;
+      var sec = Math.round(parseFloat(b.getAttribute('data-min')) * 60) || 0;
+      b.__t = { total:sec, left:sec, id:0, end:0 };
+      var tv = b.querySelector('.tv'); if (tv) tv.textContent = fmt(sec);
+    }
+    function timerToggle(b){
+      timerInit(b);
+      var t = b.__t, tv = b.querySelector('.tv'), tl = b.querySelector('.tl');
+      if (t.id){ clearInterval(t.id); t.id = 0; t.left = Math.max(0, Math.ceil((t.end - Date.now()) / 1000)); if (tl) tl.textContent = '▶ 이어서'; return; }
+      if (t.left <= 0){ t.left = t.total; b.classList.remove('end'); }
+      t.end = Date.now() + t.left * 1000; if (tl) tl.textContent = '❚❚ 멈춤';
+      t.id = setInterval(function(){
+        var left = Math.max(0, Math.ceil((t.end - Date.now()) / 1000)); t.left = left; if (tv) tv.textContent = fmt(left);
+        if (!left){ clearInterval(t.id); t.id = 0; b.classList.add('end'); if (tl) tl.textContent = '끝 · 다시 시작'; }
+      }, 250);
+    }
+
+    /* ── 복사 — 터미널 창의 요청문에서 `>` 프롬프트와 커서를 빼고 글자만 ── */
+    function termText(term){
+      var src = term.querySelector('.terminal-copy'), out = '';
+      if (!src) return '';
+      (function walk(n){
+        for (var c = n.firstChild; c; c = c.nextSibling){
+          if (c.nodeType === 3){ out += c.nodeValue.replace(/\s+/g, ' '); }
+          else if (c.nodeType === 1){
+            if (c.classList.contains('terminal-prompt') || c.classList.contains('terminal-cursor')) continue;
+            if (c.tagName === 'BR'){ out += '\n'; continue; }
+            var blk = c.tagName === 'P' || c.tagName === 'DIV';
+            if (blk && out && out.slice(-1) !== '\n') out += '\n';
+            walk(c);
+            if (blk && out.slice(-1) !== '\n') out += '\n';
+          }
+        }
+      })(src);
+      return out.replace(/[ \t]*\n[ \t]*/g, '\n').replace(/\n{3,}/g, '\n\n').trim();
+    }
+    function fallbackCopy(t, done){
+      var ta = document.createElement('textarea'); ta.value = t; ta.setAttribute('readonly', '');
+      ta.style.cssText = 'position:fixed;left:-9999px;top:0'; document.body.appendChild(ta); ta.select();
+      try { document.execCommand('copy'); } catch (e) {}
+      document.body.removeChild(ta); done();
+    }
+    function doCopy(btn){
+      var term = btn.closest('.term'); if (!term) return;
+      var text = termText(term), label = btn.getAttribute('data-label') || btn.textContent;
+      btn.setAttribute('data-label', label);
+      function done(){ btn.textContent = '복사됨'; clearTimeout(btn.__to); btn.__to = setTimeout(function(){ btn.textContent = label; }, 1500); }
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, function(){ fallbackCopy(text, done); });
+      else fallbackCopy(text, done);
+    }
+
+    /* ── 클릭 · 키보드(Enter/Space) ── */
+    function act(el){
+      if (el.hasAttribute('data-return')){ var rt = returnTarget(); if (rt) goId(rt, el); return; }
+      if (el.hasAttribute('data-go')){ noteOrigin(slideOf(el)); noteDone(el); goId(el.getAttribute('data-go'), el); return; }
+      if (el.hasAttribute('data-copy')) return doCopy(el);
+      if (el.hasAttribute('data-min')) return timerToggle(el);
+      if (todoAct(el)) return;
+      widgetAct(el);
+    }
+    var SEL = '[data-go], [data-return], [data-pick], [data-set], [data-toggle], [data-next], [data-prev], [data-reset], [data-copy], [data-min], [data-w="todo"] button';
+    var NATIVE = 'button, summary, a[href], input, select, textarea';
+    document.addEventListener('click', function(e){
+      var el = e.target.closest ? e.target.closest(SEL) : null;
+      if (!el || !slideOf(el) || el.getAttribute('aria-disabled') === 'true' || el.disabled) return;
+      e.preventDefault(); e.stopPropagation(); act(el);
+    });
+    /* 조작 요소 위의 Enter/Space는 슬라이드를 넘기지 않는다(덱 keydown은 document에 걸려 있다) */
+    slides.forEach(function(s){
+      s.addEventListener('keydown', function(e){
+        if (e.key !== 'Enter' && e.key !== ' ' && e.key !== 'Spacebar') return;
+        var t = e.target; if (!t || !t.closest) return;
+        if (t.closest(NATIVE)){ e.stopPropagation(); return; }     /* 네이티브 버튼·summary는 기본 동작이 눌러 준다 */
+        var el = t.closest(SEL); if (!el) return;
+        e.stopPropagation(); e.preventDefault();
+        if (el.getAttribute('aria-disabled') !== 'true') act(el);
+      });
+    });
+
+    /* ── 디자인 v2 그림 — 머리 글자 · 여정 지도 · 도트 · 도넛. 전부 로드 때 한 번 만든다(레이아웃 측정이 필요 없다). 초기 상태가 곧 완성본이다 ── */
+    function svgEl(tag, attrs){ var e = document.createElementNS(NS, tag); for (var k in attrs) e.setAttribute(k, attrs[k]); return e; }
+    /* 바닥 한 줄 머리의 .s-team — <br>을 「 · 」로 */
+    function fixTeam(){
+      all('.s-head .s-team').forEach(function(t){ if (t.querySelector('br')) t.innerHTML = t.innerHTML.replace(/<br\s*\/?>/gi, ' · '); });
+    }
+    /* 여정 지도 — 세 구간 3차 베지어 길(viewBox 1280×330). 단계 점은 길 위에, 「지금」 표는 data-now(1부터) 점 위에 */
+    var JR = [ [[-10,250],[200,250],[260,150],[420,170]], [[420,170],[580,190],[700,250],[860,170]], [[860,170],[1020,90],[1120,90],[1300,110]] ];
+    function bzPt(P, t){ var u = 1 - t; return [u*u*u*P[0][0] + 3*u*u*t*P[1][0] + 3*u*t*t*P[2][0] + t*t*t*P[3][0], u*u*u*P[0][1] + 3*u*u*t*P[1][1] + 3*u*t*t*P[2][1] + t*t*t*P[3][1]]; }
+    function bzAtX(P, x){ var lo = 0, hi = 1, m = 0; for (var i = 0; i < 28; i++){ m = (lo + hi) / 2; if (bzPt(P, m)[0] < x) lo = m; else hi = m; } return { t:m, y:bzPt(P, m)[1] }; }
+    function bzSplit(P, t){   /* 앞쪽 [0,t] 구간의 제어점 */
+      function mix(a, b){ return [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t]; }
+      var a = mix(P[0], P[1]), b = mix(P[1], P[2]), c = mix(P[2], P[3]), d = mix(a, b), e = mix(b, c), f = mix(d, e);
+      return [P[0], a, d, f];
+    }
+    function jrAt(x){ for (var i = 0; i < JR.length; i++){ if (x <= JR[i][3][0] || i === JR.length - 1){ var r = bzAtX(JR[i], x); return { seg:i, t:r.t, y:r.y }; } } }
+    function pathD(segs){ var d = 'M' + segs[0][0][0] + ' ' + segs[0][0][1]; segs.forEach(function(P){ d += ' C' + P[1][0].toFixed(1) + ' ' + P[1][1].toFixed(1) + ' ' + P[2][0].toFixed(1) + ' ' + P[2][1].toFixed(1) + ' ' + P[3][0].toFixed(1) + ' ' + P[3][1].toFixed(1); }); return d; }
+    function buildJourney(j){
+      if (j.classList.contains('is-built')) return;
+      var labels = [].slice.call(j.children).filter(function(c){ return c.tagName === 'SPAN' && c.textContent.trim(); });
+      var n = labels.length; if (!n) return;
+      var now = parseInt(j.getAttribute('data-now'), 10) || 0, tag = j.getAttribute('data-tag') || '지금';
+      var xs = n === 4 ? [170, 500, 860, 1140] : labels.map(function(_, i){ return n === 1 ? 640 : 170 + i * (970 / (n - 1)); });
+      var svg = svgEl('svg', { 'class':'jr-road', viewBox:'0 0 1280 330', preserveAspectRatio:'none', 'aria-hidden':'true' });
+      svg.appendChild(svgEl('path', { 'class':'base', d:pathD(JR) }));
+      if (now >= 1 && now <= n){
+        var nx = xs[now - 1], at = jrAt(nx), part = JR.slice(0, at.seg).concat([bzSplit(JR[at.seg], at.t)]);
+        svg.appendChild(svgEl('path', { 'class':'on', d:pathD(part) }));
+      }
+      var frag = document.createDocumentFragment(); frag.appendChild(svg);
+      labels.forEach(function(sp, i){
+        var x = xs[i], y = jrAt(x).y, st = i + 1 < now ? 'done' : (i + 1 === now ? 'now' : 'next');
+        var text = sp.textContent.trim(), el = document.createElement('span');
+        el.className = 'jr-st ' + st; el.style.left = (x / 12.8) + '%'; el.style.top = (y / 3.3) + '%';
+        var big = st === 'now', d = svgEl('svg', { 'class':'jr-d', viewBox:big ? '0 0 60 60' : '0 0 22 22', 'aria-hidden':'true' });
+        if (big){ d.appendChild(svgEl('circle', { 'class':'glow', cx:30, cy:30, r:30 })); d.appendChild(svgEl('circle', { 'class':'core', cx:30, cy:30, r:20 })); }
+        else { d.appendChild(svgEl('circle', { 'class':'fill', cx:11, cy:11, r:11 })); d.appendChild(svgEl('circle', { 'class':'ring', cx:11, cy:11, r:9 })); }
+        var b = document.createElement('b'); b.textContent = text;
+        el.appendChild(d); el.appendChild(b); frag.appendChild(el);
+        if (big){ var t = document.createElement('span'); t.className = 'jr-tag'; t.textContent = tag; t.style.left = (x / 12.8) + '%'; t.style.top = ((y - 44) / 3.3) + '%'; frag.appendChild(t); }
+        j.removeChild(sp);
+      });
+      j.appendChild(frag); j.classList.add('is-built');
+    }
+    /* 도트 매트릭스 — data-n(칸 수) · data-on(켜진 칸) · data-cols(선택) */
+    function buildDotgrid(g){
+      if (g.querySelector('svg')) return;
+      var n = parseInt(g.getAttribute('data-n'), 10) || 100, on = parseInt(g.getAttribute('data-on'), 10) || 0, cols = parseInt(g.getAttribute('data-cols'), 10) || Math.ceil(Math.sqrt(n)), rows = Math.ceil(n / cols), C = 34;
+      var svg = svgEl('svg', { viewBox:'0 0 ' + (cols * C) + ' ' + (rows * C), 'aria-hidden':'true' });
+      for (var i = 0; i < n; i++) svg.appendChild(svgEl('circle', { 'class':'d' + (i < on ? ' on' : ''), cx:(i % cols) * C + C / 2, cy:Math.floor(i / cols) * C + C / 2, r:12 }));
+      g.setAttribute('role', 'img'); if (!g.hasAttribute('aria-label')) g.setAttribute('aria-label', n + '칸 중 ' + on + '칸');
+      g.insertBefore(svg, g.firstChild);
+    }
+    /* 도넛 — data-v(0~100) */
+    function buildDonut(dn){
+      if (dn.querySelector('svg')) return;
+      var v = Math.max(0, Math.min(100, parseFloat(dn.getAttribute('data-v')) || 0));
+      var svg = svgEl('svg', { viewBox:'0 0 100 100', 'aria-hidden':'true' });
+      svg.appendChild(svgEl('circle', { 'class':'tr', cx:50, cy:50, r:42 }));
+      svg.appendChild(svgEl('circle', { 'class':'ar', cx:50, cy:50, r:42, pathLength:100, 'stroke-dasharray':v + ' ' + (100 - v), transform:'rotate(-90 50 50)' }));
+      dn.insertBefore(svg, dn.firstChild);
+    }
+    function buildV2(){
+      fixTeam();
+      all('.journey').forEach(buildJourney); all('.dotgrid').forEach(buildDotgrid); all('.donut').forEach(buildDonut);
+    }
+    buildV2();
+
+    /* ── 장이 켜질 때(감사 순회 포함) — 초기 상태를 그린다 ── */
+    function withMeasure(fn){ root.classList.add('fr-measure'); try { fn(); } finally { root.classList.remove('fr-measure'); } }
+    function onActivate(s){
+      var id = s.getAttribute('data-slide'); if (trail[trail.length - 1] !== id){ trail.push(id); if (trail.length > 60) trail.shift(); }
+      all('[data-w]', s).forEach(syncWidget);
+      all('[data-min]', s).forEach(timerInit);
+      buildRings(s); drawTrace(s); applyMarks(s);
+      var back = s.querySelector('[data-return]'); if (back) back.hidden = !returnTarget();
+      countUp(s);
+    }
+    slides.forEach(function(s){
+      all('[data-w]', s).forEach(syncWidget);
+      all('[data-min]', s).forEach(timerInit);
+      all('[data-w="todo"] .n', s).forEach(function(n){ n.setAttribute('data-n', n.textContent); });
+    });
+    var mo = new MutationObserver(function(list){
+      list.forEach(function(m){ var s = m.target; if (s.classList.contains('is-active') && (m.oldValue || '').indexOf('is-active') < 0) onActivate(s); });
+    });
+    slides.forEach(function(s){ mo.observe(s, { attributes:true, attributeFilter:['class'], attributeOldValue:true }); });
+    var cur = slides.filter(function(s){ return s.classList.contains('is-active'); })[0]; if (cur) onActivate(cur);
+    /* 인쇄(PDF) 전 · 글꼴 로드 뒤 — 화면에 없는 장도 대조선·동그라미를 미리 그려 둔다 */
+    function prepAll(){ withMeasure(function(){ slides.forEach(function(s){ buildRings(s); drawTrace(s); }); }); }
+    window.addEventListener('beforeprint', prepAll);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(prepAll);
+    window.FRAME = { go: function(id){ return goId(id); }, origin: function(){ return store.get('frame.origin'); }, returnTarget: returnTarget, trail: trail, fmt: fmt };
   })();
   </script>
 </body>

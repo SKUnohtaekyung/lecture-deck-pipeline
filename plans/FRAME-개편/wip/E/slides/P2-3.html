@@ -1,0 +1,46 @@
+<!-- ============ P2-3 · ③ 확인 — 왼쪽 이동기록 창 + 체크 · 오른쪽 하늘 면 위 폴더 표 카드(대조선) + 타이머 ============ -->
+<section class="slide pr f-check" data-slide="P2-3">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 18 V8 H18 M30 8 H40 V18 M40 30 V40 H30 M18 40 H8 V30" fill="none" style="stroke:var(--blue)" stroke-width="5"/><rect x="19" y="19" width="10" height="10" style="fill:var(--mint)"/></svg><span class="s-brand">FRAME</span>
+    <span class="s-line"></span><div class="s-team">에이전트 실습</div>
+  </header>
+  <div class="bleed w40 t-sky"></div>
+  <div class="pr-wrap">
+    <div class="pr-bar"><span class="pr-no">실습 2</span><span class="pr-name">폴더 정리</span><details class="reveal pop" style="--rw:700px;margin-left:18px"><summary><span>막힐 때</span></summary><div class="reveal-body"><p>시간이 남으면 AGENTS.md의 규칙 여섯 개를 이동기록과 한 줄씩 맞춰 봅니다. 지운 파일이 없는지, 이동기록의 줄 수가 옮긴 파일 수와 같은지 봅니다.</p></div></details><span class="pr-steps" aria-label="4단계 중 3단계"><span>① 목표</span><span>② 진행</span><span class="cur" aria-current="step">③ 확인</span><span>④ 고치기</span></span></div>
+    <div class="pr-top" style="max-width:656px">
+      <h2 class="s-title"><b class="kw">이동기록</b>과 폴더를 대조합니다</h2>
+      <p class="lede" style="margin-top:10px"><span class="em-tag">이동기록.md</span>의 줄과 폴더 안의 파일을 대조합니다.</p>
+    </div>
+    <div class="pr-main" style="margin-top:22px">
+      <div class="ck-top" data-w="trace" style="flex:none;align-items:start;grid-template-columns:600px 1fr;column-gap:96px;margin-bottom:0">
+        <div>
+          <div class="win file">
+            <div class="win-bar"><i></i><i></i><i></i><b>이동기록.md</b><svg viewBox="0 0 48 48" aria-hidden="true" style="margin-left:auto;width:26px;height:26px;fill:none;stroke:var(--pr-deep);stroke-width:4;stroke-linecap:round"><circle cx="21" cy="21" r="13"/><path d="M31 31l12 12"/></svg></div>
+            <div class="win-body"><pre class="code"><span class="l ref" data-line="a"><i>·</i>도면_84타입.png → 05_도면/도면_84타입.png | 도면</span><span class="l ref on" data-line="b"><i>·</i>메모_할일.txt → 06_기타/메모_할일.txt | 할 일 메모</span><span class="l ref" data-line="c"><i>·</i>임시.txt → 보류/임시.txt | 내용 없음</span></pre></div>
+          </div>
+          <ul class="ck-list" data-w="todo" style="margin-top:16px">
+            <li><button type="button" aria-pressed="false"><span class="bx" aria-hidden="true">☐</span><span class="t"><span class="em-tag">이동기록.md</span>의 줄을 위에서부터 하나씩, 옮긴 파일을 열어 <b class="kw">적힌 이유가</b> 맞는지 봅니다</span></button></li>
+            <li><button type="button" aria-pressed="false"><span class="bx" aria-hidden="true">☐</span><span class="t">삭제금지 폴더를 열어 <b class="kw">파일&nbsp;4개가</b> 그대로 있는지 셉니다</span></button></li>
+          </ul>
+          <p class="keep" style="margin-top:12px">다른 곳을 찾지 못했으면 <span class="em-tag">이어가기/02_폴더정리/정리후</span> 폴더를 열어 같은 방법으로 대조합니다.</p>
+        </div>
+        <div style="padding-left:24px">
+          <div class="wcard">
+            <span class="ftbl-cap">받은자료</span>
+            <table class="ftbl">
+              <thead><tr><th>폴더</th><th>파일</th><th aria-hidden="true"></th></tr></thead>
+              <tbody>
+                <tr data-pick="a" tabindex="0" role="button" aria-pressed="false"><td class="src">05_도면</td><td class="src">도면_84타입.png</td><td><svg viewBox="0 0 64 28" aria-hidden="true" style="display:block;width:64px;height:28px"><g style="fill:none;stroke:var(--gray-400);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round"><circle cx="14" cy="14" r="11"/><path d="M8.5 14.5l4 4 7-8"/><circle cx="50" cy="14" r="11"/><path d="M44.5 8.5l11 11M55.5 8.5l-11 11"/></g></svg></td></tr>
+                <tr data-pick="b" tabindex="0" role="button" aria-pressed="true" class="on"><td class="src">06_기타</td><td class="src">메모_할일.txt</td><td><svg viewBox="0 0 64 28" aria-hidden="true" style="display:block;width:64px;height:28px"><g style="fill:none;stroke:var(--gray-400);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round"><circle cx="14" cy="14" r="11"/><path d="M8.5 14.5l4 4 7-8"/><circle cx="50" cy="14" r="11"/><path d="M44.5 8.5l11 11M55.5 8.5l-11 11"/></g></svg></td></tr>
+                <tr data-pick="c" tabindex="0" role="button" aria-pressed="false"><td class="src">보류</td><td class="src">임시.txt</td><td><svg viewBox="0 0 64 28" aria-hidden="true" style="display:block;width:64px;height:28px"><g style="fill:none;stroke:var(--gray-400);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round"><circle cx="14" cy="14" r="11"/><path d="M8.5 14.5l4 4 7-8"/><circle cx="50" cy="14" r="11"/><path d="M44.5 8.5l11 11M55.5 8.5l-11 11"/></g></svg></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="keep" style="margin-top:16px"><b>비교할 값</b>: 파일을 열어 보이는 이름 · 숫자 · 날짜</p>
+          <button class="timer" type="button" data-min="3" style="margin-top:18px" aria-label="타이머 3분 — 누르면 시작, 다시 누르면 멈춤"><span class="tv">03:00</span><span class="tl">▶ 시작</span></button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <svg class="ck-link" viewBox="0 0 1280 720" aria-hidden="true"><path class="a-draw" pathLength="100" d=""/><circle r="6" cx="-20" cy="-20"/><circle r="6" cx="-20" cy="-20"/></svg>
+</section>

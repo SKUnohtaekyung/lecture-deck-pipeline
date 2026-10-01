@@ -2,7 +2,7 @@
    Theme frame — token values (2026-09-30)
    ----------------------------------------------------------------------------
    FRAME 과목(AI_에이전트_실습워크숍_4시간) 전용 쿨톤 라이트 팔레트.
-   구조=페트롤 / 행동·포인트=아쿠아(면 전용) / 주의=호박 / 오류=주홍.
+   구조=페트롤 / 행동·포인트=아쿠아(면 전용) / 주의=호박 / 오류=진홍(✕ 기호 병기).
    규약 정본은 kit/guide/테마-계약.md — 바꾼 것은 값뿐이고 토큰 이름 100개는
    default와 같다. 비색 중 바꾼 것은 --font-mono(D2Coding 우선) 하나다.
 
@@ -15,7 +15,7 @@
    - 아쿠아(--mint)는 흰 배경 위 글자로 쓰면 1.4:1 — 면 전용. 위 글자는 --on-mint.
    실측 대비비(WCAG, 2026-09-30 계산): ink/배경 15.5 · gray-700 9.8 · gray-400 5.8(면 5.4)
      · blue/배경 9.2 · 흰글자/blue 9.2 · 아쿠아/blue 6.4 · on-mint/아쿠아 9.0
-     · mint-deep 5.0 · coral-deep 4.9 · on-coral/coral 8.2 · red 5.1
+     · mint-deep 5.0 · coral-deep 5.1(coral-soft 4.8) · on-coral/coral 7.0 · red 6.3(흰 6.7 · red-soft 5.8)
      · on-dark-caption/navy 5.6 — 모두 AA 충족. 아쿠아/배경 1.3(글자 금지).
    ============================================================================ */
 
@@ -27,12 +27,12 @@
   --blue:#0E4A5A;         /* 구조·주강조 */
   --blue-rgb:14,74,90;   /* --blue의 채널값 — rgba(var(--blue-rgb),α) 용. --blue와 같은 색이어야 한다 */
   --mint:#7DE0EC;         /* 행동·성공·안전 (fill) */
-  --coral:#F5B942;        /* 주의·경고 (fill) */
-  --red:#C0392B;          /* 오류·위험 */
+  --coral:#FF8A5C;        /* 주의·경고 (fill) — 실습 주황과 한 계열(2026-10-01 사용자: 노랑·보라 제거, 색 수 축소) */
+  --red:#B3124E;          /* 오류·위험 — 진홍(실습 보색 주홍과 색상각 36° 분리 · D29) */
 
   /* 밝은 배경용 딥 톤 · fill 위 글자 */
   --mint-deep:#0F7A64;    --on-mint:#08323D;
-  --coral-deep:#A15C00;   --on-coral:#3D2400;
+  --coral-deep:#B8431F;   --on-coral:#3D1405;
 
   /* ── 깊이·보조 (로열족) ── */
   --navy:#08323D;         /* 깊이·다크 층 */
@@ -50,7 +50,7 @@
   --surface-alt:#FAFBFC; --surface-row:#F9FBFC; --surface-recap:#EEF4F6;
   --blue-line:#C9DCE1; --blue-line-strong:#A7C3CB;
   --blue-panel:#EEF5F7; --blue-panel-alt:#EAF3F5; --blue-panel-strong:#DCEBEF;
-  --coral-line:#F4DDB0; --red-line:#F2C6C0; --mint-line:#BDEBF1;
+  --coral-line:#F7C9B5; --red-line:#F0C3D3; --mint-line:#BDEBF1;
   --on-dark-muted:#D3E2E7; --on-dark-caption:#93AAB3; --on-blue-muted:#CFE3E8;
   --blue-overlay:rgba(227,238,242,.92);
   --glass-white:rgba(255,255,255,.26);
@@ -64,7 +64,7 @@
 
   /* ── 소프트 틴트 (콜아웃) ── */
   --blue-soft:#E6F0F3;  --mint-soft:#E4F8FA;
-  --coral-soft:#FEF5E3; --red-soft:#FBEDEB;
+  --coral-soft:#FFEDE5; --red-soft:#FBE9EF;
 
   /* ── 표지·클로징 ── */
   --cover-bg:#08323D;      /* (옵션) 다크 클로징 전용 — 표지는 라이트 M3로 이동(2026-07) */
