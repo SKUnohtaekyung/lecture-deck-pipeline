@@ -1,0 +1,826 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=1280">
+  <title>FRAME — 예시 v2</title>
+  <!-- ✏️ 파비콘 — **테마 토큰을 쓸 수 없는 유일한 색 자리다.** 브라우저 크롬이 읽는
+       외부 리소스라 CSS 커스텀 속성이 닿지 않는다. 그래서 기본값을 «중립 잉크»로 둔다 —
+       특정 테마의 브랜드 색을 여기 박아 두면 다른 테마의 덱이 남의 팔레트를 달고 다닌다
+       (2026-08-29 실측: default 팔레트가 그대로 박혀 있었다). 과목·테마의 마크가 있으면
+       이 줄을 그 색으로 교체하라. -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'><path d='M8 18 V8 H18 M30 8 H40 V18 M40 30 V40 H30 M18 40 H8 V30' fill='none' stroke='%230E4A5A' stroke-width='5'/><rect x='19' y='19' width='10' height='10' fill='%237DE0EC'/></svg>">
+  <!-- 폰트: Pretendard (문서가 인정하는 유일한 외부 의존성) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+  <!-- ▼ 킷 상속: deck.css(베이스) → legibility.css(강의장 가독성) 순서 고정.
+       덱을 패키지 밖에 생성할 땐 이 두 파일을 옆에 복사하거나 <style>로 인라인(base64 단일파일 배포). -->
+  <link rel="stylesheet" href="../../../kit/styles/deck.css">
+  <link rel="stylesheet" href="../../../kit/styles/legibility.css">
+  <link rel="stylesheet" href="../../../kit/styles/patterns.css"><!-- 코드 코어: 검증된 레이아웃/element CSS(재사용) -->
+  <!-- ✏️ 테마 — default가 아니면 이 줄을 켠다. **kit 링크 다음에** 와야 :root를 덮는다.
+       과목이 어느 테마를 쓰는지는 courses/<과목>/profile.md §5의 「테마」 행이 정본이고,
+       값은 kit/themes/<이름>/tokens.css에만 있다. 두 개 이상 링크하면 검사기가 FAIL한다
+       (어느 값이 이기는지 파일 순서에 의존하게 되므로). 규약: kit/guide/테마-계약.md §6
+  <link rel="stylesheet" href="../themes/<테마이름>/tokens.css">
+  -->
+  <link rel="stylesheet" href="../../../kit/themes/frame/tokens.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/wan2land/d2coding/d2coding-full.css">
+  <style id="kit-additions">
+    /* ── FRAME 예시 v2 전용(프로토타입) — G0 승인되면 세션 CSS·계약 등재로 옮긴다 ──
+       §16 디자인 원칙 v3: 형광펜 강조 · 박스 절제 · 실습=흰 바탕+주홍 · 인터랙션 · 감사 모드 */
+    .s-brand{ color:var(--ink); letter-spacing:.06em; }
+    .slide p, .slide h2, .slide li, .slide figcaption, .slide button{ word-break:keep-all; overflow-wrap:break-word; }
+
+    /* ── 실습 확장 색(§16-3) — 테마 토큰 100개는 고정이라 .slide.pr 범위 커스텀 속성으로 둔다 ── */
+    .slide.pr{ --pr-deep:#B8431F; --pr-fill:#FF8A5C; --pr-soft:#FFEDE5; --pr-line:#F7C9B5; --pr-bg:#FFFFFF; }
+
+    /* ── 강조(§16-1) — 그라디언트 금지(R-COLOR-01) → 평면 색 의사 요소 ── */
+    .mk, .mk-solid{ position:relative; z-index:0; white-space:nowrap; }
+    .mk::after, .mk-solid::after{ content:""; position:absolute; z-index:-1; left:-3px; right:-3px; background:var(--mint); transform-origin:left center; }
+    .mk::after{ bottom:.04em; height:.44em; }
+    .mk-solid{ color:var(--on-mint); padding:0 .12em; }
+    .mk-solid::after{ top:.1em; bottom:.02em; border-radius:4px; }
+    .slide.pr .mk::after, .slide.pr .mk-solid::after{ background:var(--pr-fill); }
+    .slide.pr .mk-solid{ color:var(--ink); }
+
+    /* ── 등장 연출(§16-5) — 떠오름 250ms · 60ms 간격 → 형광펜 400ms → 막대 500ms · 한 장 0.9초 이내 ── */
+    @keyframes fr-rise{ from{ opacity:0; transform:translateY(12px); } }
+    @keyframes fr-mark{ from{ transform:scaleX(0); } }
+    @keyframes fr-grow{ from{ transform:scaleY(0); } }
+    @keyframes fr-fade{ from{ opacity:0; } }
+    @keyframes fr-draw{ from{ stroke-dashoffset:var(--len,600); } }
+    .slide.is-active .rv{ animation:fr-rise .25s cubic-bezier(.2,.8,.2,1) both; animation-delay:calc(var(--i,0) * 60ms); }
+    .slide.is-active .mk::after, .slide.is-active .mk-solid::after{ animation:fr-mark .4s cubic-bezier(.3,.7,.2,1) both; animation-delay:var(--mkd,.3s); }
+    .slide.is-active .bar{ transform-box:fill-box; transform-origin:center bottom; animation:fr-grow .5s cubic-bezier(.2,.8,.2,1) both; animation-delay:calc(.2s + var(--i,0) * 60ms); }
+    .slide.is-active .fade-late{ animation:fr-fade .25s ease-out both; animation-delay:.55s; }
+    .slide.is-active .draw{ stroke-dasharray:var(--len,600); animation:fr-draw .5s ease-out both; animation-delay:.35s; }
+    /* 감사 모드 · 동작 줄이기 · 인쇄 → 즉시 최종 상태(무한 반복 연출 없음) */
+    html.no-anim .slide *, html.no-anim .slide *::after{ animation:none !important; transition:none !important; }
+    @media (prefers-reduced-motion:reduce){
+      .slide *, .slide *::after{ animation:none !important; transition:none !important; }
+      ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*){ animation:none !important; }
+    }
+    @media print{ .slide *, .slide *::after{ animation:none !important; transition:none !important; } }
+
+    /* 텍스트 묶음은 박스 대신 왼쪽 세로선(의사 요소 — 상자로 세지 않는다) */
+    .rule{ position:relative; padding-left:22px; }
+    .rule::before{ content:""; position:absolute; left:0; top:6px; bottom:6px; width:4px; border-radius:2px; background:var(--blue); }
+    .lab{ display:block; font-size:var(--fs-eyebrow); font-weight:800; letter-spacing:.02em; color:var(--blue); margin-bottom:4px; }
+
+    /* 조작 가능한 SVG 요소 공통 */
+    [data-pick]{ cursor:pointer; }
+    [data-pick]:focus{ outline:none; }
+    [data-pick]:focus-visible .hit{ stroke:var(--ink); stroke-width:3; stroke-dasharray:6 4; }
+
+    /* ── 강조 어휘(D30) — 인라인 면은 의사 요소로 그린다(감사가 상자로 세지 않게) ── */
+    .em-ink{ color:var(--navy); font-weight:800; }
+    .slide.pr .em-ink{ color:var(--pr-deep); }
+    .em-line{ text-decoration:underline; text-decoration-thickness:4px; text-underline-offset:7px; text-decoration-skip-ink:none; text-decoration-color:var(--blue); }
+    .slide.pr .em-line{ text-decoration-color:var(--pr-fill); }
+    .em-num{ font-family:var(--font-mono); font-size:1.25em; font-weight:700; color:var(--pr-deep); letter-spacing:-.03em; }
+    .em-tag{ position:relative; z-index:0; font-family:var(--font-mono); font-weight:700; color:var(--ink); padding:0 .25em; }
+    .em-tag::after{ content:""; position:absolute; z-index:-1; left:0; right:0; top:.05em; bottom:.05em; border-radius:5px; background:var(--blue-soft); }
+
+    /* 터미널 요청문(D32) — kit .terminal-dark 계약 위에 자리·크기만 준다 */
+    .term{ position:absolute; left:590px; right:64px; top:236px; }
+    .term .terminal-bar b{ font-family:Pretendard, sans-serif; }
+    .term .copy{ margin-left:auto; font-family:Pretendard, sans-serif; font-size:var(--fs-eyebrow); font-weight:800; color:var(--white); background:transparent; border:0; cursor:pointer; text-decoration:underline; text-underline-offset:4px; }
+    .term .terminal-copy{ padding:16px 24px 20px; }
+    .term .terminal-copy p{ margin:0; font-size:var(--fs-body); line-height:1.65; }
+    .term-fix{ left:auto; width:420px; top:246px; }
+
+    /* ════════ 개념 슬라이드 — 중간 유실 ════════ */
+    .cx-top{ position:absolute; left:64px; right:64px; top:100px; }
+    .cx-top .s-eyebrow, .cx-top .s-title{ margin:0; }
+    .cx-top .s-title{ margin-top:6px; }
+    .cx-text{ position:absolute; left:64px; width:470px; top:212px; display:flex; flex-direction:column; gap:26px; }
+    .cx-text p{ margin:0; font-size:var(--fs-body); line-height:1.6; color:var(--ink); }
+    .cx-text .def p{ font-size:var(--fs-lead); font-weight:600; }
+    .cx-text .ana::before{ background:var(--mint); }
+    .cx-text .do::before{ background:var(--gray-400); }
+    .cx-fig{ position:absolute; left:570px; right:64px; top:196px; margin:0; background:var(--surface); border-radius:var(--r-lg); padding:18px 26px 16px; }
+    .cx-fig svg{ display:block; width:100%; height:auto; }
+    .cx-fig .ax{ font:700 17px/1 Pretendard, sans-serif; fill:var(--gray-700); }
+    .cx-fig .val{ font:800 26px/1 Pretendard, sans-serif; fill:var(--ink); }
+    .cx-fig .bar{ fill:var(--periwinkle); transition:fill .25s; }
+    .cx-fig [data-pick].on .bar{ fill:var(--blue); }
+    .cx-fig [data-pick].on.mid .bar{ fill:var(--coral); }
+    .cx-fig .hit{ fill:transparent; stroke:none; }
+    .cx-fig .base{ stroke:var(--gray-700); stroke-width:2.5; stroke-dasharray:8 6; }
+    .cx-fig .baselab{ font:700 17px/1 Pretendard, sans-serif; fill:var(--gray-700); }
+    .cx-fig .doc{ fill:var(--white); stroke:var(--line); stroke-width:1.5; }
+    .cx-fig .doc.on{ fill:var(--coral); stroke:var(--coral-deep); }
+    .cx-fig .doc.on.edge{ fill:var(--blue); stroke:var(--blue); }
+    .cx-read{ margin:10px 0 0; font-size:var(--fs-body); font-weight:700; color:var(--ink); line-height:1.45; min-height:64px; }
+    .cx-hint{ margin:2px 0 0; font-size:var(--fs-caption); font-weight:600; color:var(--gray-700); }
+    .cx-src{ position:absolute; left:64px; right:64px; top:636px; margin:0; font-size:var(--fs-caption); color:var(--gray-400); }
+
+    /* ════════ 허브 ════════ */
+    .hub-top{ position:absolute; left:64px; right:64px; top:100px; }
+    .hub-top .s-eyebrow, .hub-top .s-title{ margin:0; }
+    .hub-top .s-title{ margin-top:6px; }
+    .hub-lead{ margin:8px 0 0; font-size:var(--fs-body); line-height:1.5; color:var(--gray-700); }
+    .hub-grid{ position:absolute; left:64px; right:64px; top:250px; display:grid; grid-template-columns:1fr 1fr; column-gap:48px; row-gap:0; }
+    .hub-card{ position:relative; display:grid; grid-template-columns:64px 1fr 132px; gap:18px; align-items:center; text-align:left; font:inherit; color:var(--ink);
+      background:transparent; border:0; border-radius:var(--r-md); padding:36px 18px 36px 8px; cursor:pointer;
+      transition:transform .3s cubic-bezier(.2,.8,.2,1), background-color .3s; }
+    .hub-card::after{ content:""; position:absolute; left:8px; right:8px; bottom:0; height:1.5px; background:var(--line); }
+    .hub-card:hover, .hub-card:focus-visible{ transform:translateY(-4px); background:var(--blue-panel); outline:none; }
+    .hub-card[aria-disabled="true"]{ cursor:default; }
+    .hub-card[aria-disabled="true"]:hover{ transform:none; background:transparent; }
+    .hub-no{ font-size:56px; font-weight:800; line-height:1; color:var(--blue); letter-spacing:-.04em; text-align:center; }
+    .hub-body{ display:flex; flex-direction:column; gap:6px; min-width:0; }
+    .hub-name{ font-size:var(--fs-box-title); font-weight:800; line-height:1.3; }
+    .hub-meta{ font-size:var(--fs-box-desc); font-weight:500; color:var(--gray-700); line-height:1.4; }
+    .hub-meta b{ font-weight:800; color:var(--ink); }
+    .hub-pic{ width:132px; height:64px; display:block; }
+    .hub-pic .p-s{ fill:none; stroke:var(--gray-700); stroke-width:2.5; stroke-linecap:round; stroke-linejoin:round; }
+    .hub-pic .p-f{ fill:var(--mint); }
+    .hub-pic .p-a{ fill:none; stroke:var(--blue); stroke-width:2.5; stroke-linecap:round; stroke-linejoin:round; }
+    .hub-foot{ position:absolute; left:64px; right:64px; top:616px; margin:0; font-size:var(--fs-body); font-weight:600; color:var(--gray-700); }
+    .hub-foot b{ color:var(--ink); font-weight:800; }
+
+    /* ════════ 실습 셸(§16-3 · §16-6) — 흰 바탕 + 주홍 · 색 하나에 기대지 않는 표식 4종 ════════ */
+    .slide.pr{ background:var(--pr-bg); }
+    .slide.pr::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:14px; background:var(--pr-deep); }   /* ① 세로 띠 */
+    .slide.pr .s-line{ background:var(--pr-line); }
+    .pr-bar{ position:absolute; left:64px; right:64px; top:98px; display:flex; align-items:baseline; gap:18px; }
+    .pr-no{ font-size:var(--fs-box-title); font-weight:800; color:var(--pr-deep); letter-spacing:-.01em; }            /* ② 「실습 N」 라벨 */
+    .pr-name{ font-size:var(--fs-body); font-weight:700; color:var(--ink); }
+    .pr-steps{ margin-left:auto; display:flex; gap:20px; font-size:var(--fs-box-desc); font-weight:700; color:var(--gray-400); }   /* ④ 단계 번호 */
+    .pr-steps .cur{ color:var(--ink); }
+    .pr-top{ position:absolute; left:64px; right:64px; top:146px; }
+    .pr-top .s-title{ margin:0; }
+    .pr-lead{ margin:6px 0 0; font-size:var(--fs-body); line-height:1.5; color:var(--gray-700); }
+    .slide.pr code, .pr-mono{ font-family:var(--font-mono); font-weight:700; }
+
+    /* P1-1 목표 — 전후 미리보기 */
+    .pv{ position:absolute; left:64px; right:64px; top:262px; display:grid; grid-template-columns:392px 96px 1fr; align-items:center; gap:12px; }
+    .pv-memos{ width:392px; height:250px; display:block; }
+    .pv-memos .sheet{ fill:var(--white); stroke:var(--gray-400); stroke-width:1.5; }
+    .pv-memos .ln{ stroke:var(--line); stroke-width:6; stroke-linecap:round; }
+    .pv-memos .ln.hot{ stroke:var(--pr-fill); }
+    .pv-memos .fn{ font:700 17px/1 "D2Coding", monospace; fill:var(--gray-700); }
+    .pv-arrow{ width:96px; height:40px; display:block; }
+    .pv-arrow path{ fill:none; stroke:var(--pr-deep); stroke-width:4; stroke-linecap:round; stroke-linejoin:round; }
+    .pv-table{ background:var(--white); border-radius:var(--r-md); box-shadow:0 0 0 1.5px var(--gray-400); padding:10px 18px 12px; }
+    .pv-file{ font-family:var(--font-mono); font-size:var(--fs-caption); font-weight:700; color:var(--gray-700); }
+    .tbl{ width:100%; border-collapse:collapse; margin-top:6px; }
+    .tbl th, .tbl td{ text-align:left; padding:7px 8px; font-size:var(--fs-box-desc); line-height:1.3; border-bottom:1.5px solid var(--line); }
+    .tbl th{ font-weight:800; color:var(--gray-700); border-bottom-color:var(--gray-400); }
+    .tbl td{ font-weight:500; color:var(--ink); }
+    .tbl td.src{ font-family:var(--font-mono); font-size:18px; color:var(--gray-700); white-space:nowrap; }
+    .meta3{ position:absolute; left:64px; right:64px; top:548px; display:grid; grid-template-columns:200px 1fr 1fr; gap:36px; }
+    .meta3 > div{ position:relative; padding-left:20px; }
+    .meta3 > div::before{ content:""; position:absolute; left:0; top:4px; bottom:4px; width:3px; background:var(--pr-line); }
+    .meta3 dt{ font-size:var(--fs-eyebrow); font-weight:800; color:var(--pr-deep); }
+    .meta3 dd{ margin:4px 0 0; font-size:var(--fs-body); font-weight:600; color:var(--ink); line-height:1.45; }
+    .meta3 .big{ font-family:var(--font-mono); font-size:var(--fs-40); font-weight:700; line-height:1; letter-spacing:-.02em; }
+
+    /* P1-2 진행 — 큰 번호 세로 흐름(박스 없음) + 요청문 상자 */
+    .flow{ position:absolute; left:64px; width:480px; top:238px; margin:0; padding:0; list-style:none; display:flex; flex-direction:column; gap:14px; }
+    .flow button{ display:grid; grid-template-columns:58px 1fr; gap:14px; align-items:start; width:100%; text-align:left; font:inherit; color:var(--ink);
+      background:transparent; border:0; padding:4px 0; cursor:pointer; }
+    .flow .n{ font-size:44px; font-weight:800; line-height:1; letter-spacing:-.03em; color:var(--pr-deep); text-align:center; font-family:var(--font-mono); }
+    .flow .t{ font-size:var(--fs-body); font-weight:600; line-height:1.5; padding-top:6px; }
+    .flow .done .n{ color:var(--mint-deep); }
+    .flow .done .t{ color:var(--gray-700); }
+    .flow button:focus-visible .t{ outline:2px dashed var(--ink); outline-offset:3px; }
+    .copy{ font:inherit; font-size:var(--fs-box-desc); font-weight:800; color:var(--pr-deep); background:transparent; border:0; padding:2px 0; cursor:pointer; text-decoration:underline; text-underline-offset:4px; }
+    .timer{ position:absolute; right:64px; top:560px; display:flex; align-items:baseline; gap:14px; font:inherit; color:var(--ink); background:transparent; border:0; cursor:pointer; padding:0; }
+    .timer .tv{ font-family:var(--font-mono); font-size:56px; font-weight:700; letter-spacing:-.02em; color:var(--pr-deep); line-height:1; }       /* ③ 타이머 */
+    .timer .tl{ font-size:var(--fs-box-desc); font-weight:800; color:var(--gray-700); }
+    .timer:focus-visible .tv{ outline:2px dashed var(--ink); outline-offset:4px; }
+    .keep{ position:absolute; left:590px; right:330px; top:556px; margin:0; font-size:var(--fs-body); color:var(--gray-700); line-height:1.45; }
+
+    /* P1-3 확인 — 원문 줄 ↔ 결과 셀 대조선 */
+    .ck-src{ position:absolute; left:64px; width:560px; top:246px; margin:0; background:var(--surface); border-radius:var(--r-md); padding:12px 0 12px; }
+    .ck-src .fname{ padding:0 18px 6px; font-family:var(--font-mono); font-size:var(--fs-caption); font-weight:700; color:var(--gray-700); }
+    .ck-src ol{ margin:0; padding:0; list-style:none; }
+    .ck-src li{ display:grid; grid-template-columns:44px 1fr; gap:10px; padding:4px 18px; font-family:var(--font-mono); font-size:var(--fs-body); line-height:1.45; color:var(--gray-700); }
+    .ck-src li i{ font-style:normal; color:var(--gray-400); text-align:right; }
+    .ck-src li.hit{ color:var(--ink); font-weight:700; }
+    .ck-src li{ position:relative; }
+    .ck-src li.hit.on::before{ content:""; position:absolute; left:4px; top:4px; bottom:4px; width:6px; border-radius:3px; background:var(--pr-fill); }
+    .ck-src li.hit.on span{ color:var(--pr-deep); }
+    .ck-src li.gap{ color:var(--gray-400); }
+    .ck-out{ position:absolute; left:736px; right:64px; top:246px; }
+    .ck-out .pv-file{ display:block; }
+    .ck-out tr[data-pick]{ cursor:pointer; }
+    .ck-out tr[data-pick] td{ color:var(--gray-700); }
+    .ck-out tr[data-pick].on td{ color:var(--ink); font-weight:700; }
+    .ck-out tr[data-pick].on td.due{ color:var(--pr-deep); font-weight:800; }
+    .ck-out .x{ color:var(--red); font-weight:800; }
+    .ck-out tr.wrong.on td.due{ color:var(--red); text-decoration:line-through; }
+    .ck-out tr[data-pick]:focus-visible td{ outline:2px dashed var(--ink); outline-offset:-2px; }
+    .ck-link{ position:absolute; left:0; top:0; width:1280px; height:720px; pointer-events:none; }
+    .ck-link path{ fill:none; stroke:var(--pr-deep); stroke-width:3; stroke-dasharray:7 5; }
+    .ck-link circle{ fill:var(--pr-deep); }
+    .ck-list{ position:absolute; left:736px; right:64px; top:470px; margin:0; padding:0; list-style:none; display:flex; flex-direction:column; gap:8px; }
+    .ck-list button{ display:grid; grid-template-columns:34px 1fr; gap:10px; align-items:start; width:100%; text-align:left; font:inherit; font-size:var(--fs-body); font-weight:600; line-height:1.45; color:var(--ink); background:transparent; border:0; padding:2px 0; cursor:pointer; }
+    .ck-list .bx{ font-size:26px; line-height:1.1; color:var(--pr-deep); }
+    .ck-list button:focus-visible{ outline:2px dashed var(--ink); outline-offset:3px; }
+
+    /* P1-4 돌아보기 — 함정 위치 · 개념 축소 모형 · 허브로 */
+    .rv-strip{ position:absolute; left:64px; width:250px; top:236px; height:360px; display:block; }
+    .rv-strip .page{ fill:var(--white); stroke:var(--gray-400); stroke-width:1.5; }
+    .rv-strip .ln{ stroke:var(--line); stroke-width:7; stroke-linecap:round; }
+    .rv-strip .ln.hot{ stroke:var(--pr-fill); stroke-width:9; }
+    .rv-strip .tick{ font:700 17px/1 Pretendard, sans-serif; fill:var(--gray-700); }
+    .rv-strip .pin{ fill:var(--pr-deep); }
+    .rv-text{ position:absolute; left:352px; width:430px; top:250px; display:flex; flex-direction:column; gap:22px; }
+    .rv-text p{ margin:0; font-size:var(--fs-body); line-height:1.6; color:var(--ink); }
+    .rv-text .rule::before{ background:var(--pr-deep); }
+    .rv-text .lab{ color:var(--pr-deep); }
+    .back{ position:absolute; right:64px; top:590px; font:inherit; font-size:var(--fs-body); font-weight:800; color:var(--ink); background:var(--pr-fill); border:0; border-radius:var(--r-pill); padding:12px 30px; cursor:pointer;
+      transition:transform .3s cubic-bezier(.2,.8,.2,1); }
+    .back:hover, .back:focus-visible{ transform:translateY(-3px); outline:none; }
+
+    /* 허브 전환(View Transition) */
+    ::view-transition-group(frame-hero){ animation-duration:.45s; animation-timing-function:cubic-bezier(.2,.8,.2,1); }
+    ::view-transition-old(root), ::view-transition-new(root){ animation-duration:.3s; }
+
+    /* 새 구도의 CSS는 여기가 아니라 kit/styles/patterns.css에 환류한다.
+       여기 남기면 다음 주차가 같은 CSS를 다시 짜게 되고 노드 스타일이 갈린다.
+       상세는 루트 SKILL.md §5 환류 규칙. */
+  </style>
+  <!--
+    ┌── 새 덱 만드는 법 ─────────────────────────────────────────────┐
+    │ 1) 이 파일을 복사. 고정 1·2·3(표지·도입·아젠다) 텍스트를 교체.   │
+    │ 2) 파트 수만큼 part-divider 배치(도형·도트·n/N은 JS 자동 생성). │
+    │ 3) 각 슬라이드: 정보 모양 판단 → kit/layouts/by-shape.md에서     │
+    │    레이아웃 후보 → (필요시) kit/charts/by-shape.md에서 element.  │
+    │    직전 슬라이드와 같은 구도 패밀리 회피, split은 희소하게.      │
+    │ 4) 레이아웃 <section>은 kit/layouts/catalog.html(코드 코어)에서  │
+    │    복사하거나 families/*.md 스펙대로 조립(토큰-치트시트 준수).   │
+    │ 5) 브라우저 검증(측정 우선) → base64 단일파일 배포.             │
+    └────────────────────────────────────────────────────────────────┘
+  -->
+</head>
+<body>
+  <div class="deck">
+    <!-- ============ 예시 v2 · 개념 (컨텍스트 · 중간 유실) ============ -->
+    <section class="slide cx-slide" data-slide="C-04">
+      <header class="s-head">
+        <svg class="s-logo" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 18 V8 H18 M30 8 H40 V18 M40 30 V40 H30 M18 40 H8 V30" fill="none" style="stroke:var(--blue)" stroke-width="5"/><rect x="19" y="19" width="10" height="10" style="fill:var(--mint)"/></svg><span class="s-brand">FRAME</span>
+        <span class="s-line"></span><div class="s-team">블록 2<br>컨텍스트</div>
+      </header>
+      <div class="cx-top rv" style="--i:0">
+        <p class="s-eyebrow">개념 · 컨텍스트</p>
+        <h2 class="s-title"><span class="mk-solid" style="--mkd:.25s">중간 유실</span> — 긴 자료의 가운데를 놓치는 현상</h2>
+      </div>
+      <div class="cx-text">
+        <div class="rule def rv" style="--i:1"><span class="lab">정의</span><p>AI에게 긴 자료를 주면 <span class="mk">앞부분과 끝부분</span>은 잘 활용하고, <span class="mk" style="--mkd:.5s">가운데 정보</span>는 더 자주 놓칩니다.</p></div>
+        <div class="rule ana rv" style="--i:2"><span class="lab">비유</span><p>긴 회의록을 한 번 훑으면 첫 안건과 마지막 결론은 기억나는데, 중간에 바뀐 결정은 흐릿합니다.</p></div>
+        <div class="rule do rv" style="--i:3"><span class="lab">대응</span><p>꼭 지킬 조건은 요청문 맨 앞이나 맨 뒤에 씁니다. 긴 자료는 나눠서 줍니다.</p></div>
+      </div>
+      <figure class="cx-fig rv" style="--i:2" data-widget="lost">
+        <svg viewBox="0 0 580 290" role="group" aria-label="답이 든 문서의 위치별 정답률. 첫 번째 75.8, 열 번째 53.8, 스무 번째 63.2. 문서 없이 답했을 때 56.1. 막대를 누르면 위치를 고릅니다.">
+          <line x1="20" y1="200" x2="560" y2="200" style="stroke:var(--gray-400)" stroke-width="2"/>
+          <g data-pick="0" tabindex="0" role="button" aria-label="첫 번째 위치 75.8" class="edge">
+            <rect class="hit" x="50" y="20" width="120" height="206"/>
+            <rect class="bar" style="--i:0" x="60" y="63.6" width="100" height="136.4" rx="5"/>
+            <text class="val fade-late" x="110" y="52" text-anchor="middle">75.8</text>
+            <text class="ax" x="110" y="226" text-anchor="middle">첫 번째</text>
+          </g>
+          <g data-pick="1" tabindex="0" role="button" aria-label="열 번째 위치 53.8" class="on mid">
+            <rect class="hit" x="230" y="20" width="120" height="206"/>
+            <rect class="bar" style="--i:1" x="240" y="103.2" width="100" height="96.8" rx="5"/>
+            <text class="val fade-late" x="290" y="92" text-anchor="middle">53.8</text>
+            <text class="ax" x="290" y="226" text-anchor="middle">열 번째</text>
+          </g>
+          <g data-pick="2" tabindex="0" role="button" aria-label="스무 번째 위치 63.2" class="edge">
+            <rect class="hit" x="410" y="20" width="120" height="206"/>
+            <rect class="bar" style="--i:2" x="420" y="86.2" width="100" height="113.8" rx="5"/>
+            <text class="val fade-late" x="470" y="75" text-anchor="middle">63.2</text>
+            <text class="ax" x="470" y="226" text-anchor="middle">스무 번째</text>
+          </g>
+          <line class="base fade-late" x1="20" y1="99" x2="560" y2="99"/>
+          <g class="docs" aria-hidden="true">
+            <!-- 문서 20개 — 답이 든 문서의 위치를 표시(nav.js가 .on을 옮긴다) -->
+          </g>
+          <text class="ax" x="20" y="286">답이 든 문서의 위치(20개 중)</text>
+          <line class="base" x1="446" y1="280" x2="478" y2="280"/><text class="baselab" x="560" y="286" text-anchor="end">자료 없이 56.1</text>
+        </svg>
+        <p class="cx-read" aria-live="polite">답이 든 문서를 <b>열 번째</b>에 두면 정답률 53.8% — 문서를 주지 않았을 때(56.1%)보다 낮습니다.</p>
+      </figure>
+      <p class="cx-src">출처 Liu 외(2023), GPT-3.5-Turbo</p><!-- 노트: 「Lost in the Middle」 arXiv 2307.03172 · 문서 20개(약 4천 토큰) 조건 · 세로축 정답률(%) -->
+    </section>
+
+    <!-- ============ 예시 v2 · 실습 허브 ============ -->
+    <section class="slide hub-slide" data-slide="HUB">
+      <header class="s-head">
+        <svg class="s-logo" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 18 V8 H18 M30 8 H40 V18 M40 30 V40 H30 M18 40 H8 V30" fill="none" style="stroke:var(--blue)" stroke-width="5"/><rect x="19" y="19" width="10" height="10" style="fill:var(--mint)"/></svg><span class="s-brand">FRAME</span>
+        <span class="s-line"></span><div class="s-team">에이전트 실습</div>
+      </header>
+      <div class="hub-top rv" style="--i:0">
+        <p class="s-eyebrow">실습 허브</p>
+        <h2 class="s-title">에이전트 실습 고르기</h2>
+        <p class="hub-lead">강사가 고른 실습 카드를 누르면 그 실습으로 이동합니다. 실습 마지막 장에서 이 화면으로 돌아옵니다.</p>
+      </div>
+      <div class="hub-grid">
+        <button class="hub-card rv" style="--i:1" type="button" data-go="P1-1" data-vt-key="p1">
+          <span class="hub-no">1</span>
+          <span class="hub-body"><span class="hub-name">회의·통화 메모 → 할 일 표</span><span class="hub-meta">결과물 <span class="em-tag">할일표.md</span> · 15분</span><span class="hub-meta">준비물 회의·통화 메모 4개</span></span>
+          <svg class="hub-pic" viewBox="0 0 132 64" aria-hidden="true"><rect class="p-s" x="4" y="8" width="30" height="40" rx="3"/><path class="p-s" d="M10 18h18M10 26h14M10 34h18"/><path class="p-a" d="M44 32h22M60 26l6 6-6 6"/><rect class="p-f" x="76" y="10" width="52" height="10" rx="2"/><rect class="p-s" x="76" y="10" width="52" height="44" rx="3"/><path class="p-s" d="M76 32h52M76 43h52M96 10v44"/></svg>
+        </button>
+        <button class="hub-card rv" style="--i:2" type="button" aria-disabled="true" title="예시 v2에는 실습 1만 있습니다">
+          <span class="hub-no">2</span>
+          <span class="hub-body"><span class="hub-name">폴더·파일 정리</span><span class="hub-meta">결과물 <b>정리된 폴더</b> · 15분</span><span class="hub-meta">준비물 파일 40개 · 규칙 파일</span></span>
+          <svg class="hub-pic" viewBox="0 0 132 64" aria-hidden="true"><rect class="p-s" x="6" y="10" width="12" height="14" rx="2" transform="rotate(-12 12 17)"/><rect class="p-s" x="22" y="30" width="12" height="14" rx="2" transform="rotate(10 28 37)"/><rect class="p-s" x="4" y="40" width="12" height="14" rx="2" transform="rotate(4 10 47)"/><rect class="p-s" x="24" y="6" width="12" height="14" rx="2"/><path class="p-a" d="M44 32h22M60 26l6 6-6 6"/><path class="p-f" d="M76 18h18l5 6h29v30H76z"/><path class="p-s" d="M76 18h18l5 6h29v30H76z"/><path class="p-s" d="M84 34h36M84 42h36"/></svg>
+        </button>
+        <button class="hub-card rv" style="--i:3" type="button" aria-disabled="true" title="예시 v2에는 실습 1만 있습니다">
+          <span class="hub-no">3</span>
+          <span class="hub-body"><span class="hub-name">자주 받는 문의 답장 초안</span><span class="hub-meta">결과물 <b>답장 초안 12건</b> · 15분</span><span class="hub-meta">준비물 FAQ 문서 · 문의 12건</span></span>
+          <svg class="hub-pic" viewBox="0 0 132 64" aria-hidden="true"><path class="p-s" d="M4 10h34v24H16l-8 8v-8H4z"/><path class="p-s" d="M14 20h14"/><path class="p-a" d="M44 32h22M60 26l6 6-6 6"/><path class="p-f" d="M76 14h52v28h-10v10l-10-10H76z"/><path class="p-s" d="M76 14h52v28h-10v10l-10-10H76z"/><path class="p-s" d="M84 24h36M84 32h26"/></svg>
+        </button>
+        <button class="hub-card rv" style="--i:4" type="button" aria-disabled="true" title="예시 v2에는 실습 1만 있습니다">
+          <span class="hub-no">4</span>
+          <span class="hub-body"><span class="hub-name">여러 파일 → 주간 보고서</span><span class="hub-meta">결과물 <span class="em-tag">주간보고서.md</span> · 15분</span><span class="hub-meta">준비물 5일치 메모 · 매출 표</span></span>
+          <svg class="hub-pic" viewBox="0 0 132 64" aria-hidden="true"><rect class="p-s" x="12" y="4" width="26" height="34" rx="3"/><rect class="p-s" x="8" y="12" width="26" height="34" rx="3"/><rect class="p-s" x="4" y="20" width="26" height="34" rx="3"/><path class="p-a" d="M44 32h22M60 26l6 6-6 6"/><rect class="p-s" x="80" y="6" width="44" height="52" rx="3"/><rect class="p-f" x="88" y="34" width="7" height="16"/><rect class="p-f" x="99" y="26" width="7" height="24"/><rect class="p-f" x="110" y="18" width="7" height="32"/></svg>
+        </button>
+      </div>
+      <p class="hub-foot rv" style="--i:5">실습마다 4장으로 진행합니다 — <b>① 목표</b> → <b>② 진행</b> → <b>③ 확인</b> → <b>④ 고치기</b></p>
+    </section>
+
+    <!-- ============ 예시 v2 · 실습 1 ① 목표 ============ -->
+    <section class="slide pr" data-slide="P1-1">
+      <header class="s-head">
+        <svg class="s-logo" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 18 V8 H18 M30 8 H40 V18 M40 30 V40 H30 M18 40 H8 V30" fill="none" style="stroke:var(--blue)" stroke-width="5"/><rect x="19" y="19" width="10" height="10" style="fill:var(--mint)"/></svg><span class="s-brand">FRAME</span>
+        <span class="s-line"></span><div class="s-team">에이전트 실습</div>
+      </header>
+      <div class="pr-bar"><span class="pr-no">실습 1</span><span class="pr-name">회의·통화 메모 → 할 일 표</span><span class="pr-steps" aria-label="4단계 중 1단계"><span class="cur">① 목표</span><span>② 진행</span><span>③ 확인</span><span>④ 고치기</span></span></div>
+      <div class="pr-top rv" style="--i:0" data-vt-key="p1">
+        <h2 class="s-title">흩어진 메모 4개를 <span class="em-ink">할 일 표</span> 하나로 모읍니다</h2>
+        <p class="pr-lead">에이전트가 폴더 속 메모를 모두 읽고 <code>할일표.md</code>를 만듭니다. 여러분은 요청문을 보내고 결과를 원문과 대조합니다.</p>
+      </div>
+      <div class="pv">
+        <svg class="pv-memos rv" style="--i:1" viewBox="0 0 392 250" role="img" aria-label="메모 파일 4개: 회의_0312.md, 통화_0314.txt, 회의_0319.md, 메모_기타.txt">
+          <g transform="rotate(-5 90 130)"><rect class="sheet" x="14" y="30" width="160" height="200" rx="6"/><text class="fn" x="28" y="60">회의_0312.md</text><path class="ln" d="M30 88h124M30 108h100M30 128h124"/><path class="ln hot" d="M30 148h112"/><path class="ln" d="M30 168h92M30 188h120"/></g>
+          <g transform="rotate(3 290 110)"><rect class="sheet" x="214" y="14" width="160" height="200" rx="6"/><text class="fn" x="228" y="44">통화_0314.txt</text><path class="ln" d="M230 72h120M230 92h96M230 112h124M230 132h80"/></g>
+          <g transform="rotate(6 150 190)"><rect class="sheet" x="96" y="120" width="130" height="118" rx="6"/><text class="fn" x="108" y="148">회의_0319.md</text><path class="ln" d="M110 172h98M110 192h80M110 212h98"/></g>
+          <g transform="rotate(-4 320 200)"><rect class="sheet" x="250" y="150" width="130" height="92" rx="6"/><text class="fn" x="262" y="178">메모_기타.txt</text><path class="ln" d="M264 202h96M264 222h70"/></g>
+        </svg>
+        <svg class="pv-arrow rv" style="--i:2" viewBox="0 0 96 40" aria-hidden="true"><path d="M8 20h76M70 8l14 12-14 12"/></svg>
+        <div class="pv-table rv" style="--i:3">
+          <span class="pv-file">할일표.md</span>
+          <table class="tbl">
+            <thead><tr><th>할 일</th><th>담당</th><th>기한</th><th>근거</th></tr></thead>
+            <tbody>
+              <tr><td>견적서 발송</td><td>김지원</td><td>3/27</td><td class="src">회의_0312 31줄</td></tr>
+              <tr><td>행사장 답사</td><td>박도윤</td><td>3/21</td><td class="src">통화_0314 8줄</td></tr>
+              <tr><td>참가 신청 마감 공지</td><td>이서연</td><td>3/25</td><td class="src">회의_0319 12줄</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <dl class="meta3">
+        <div class="rv" style="--i:4"><dt>시간</dt><dd class="big">15:00</dd></div>
+        <div class="rv" style="--i:5"><dt>준비물</dt><dd><code>01_회의메모</code> 폴더 · 메모 4개</dd></div>
+        <div class="rv" style="--i:6"><dt>결과물</dt><dd><span class="mk" style="--mkd:.5s">할일표.md</span> 1개</dd></div>
+      </dl>
+    </section>
+
+    <!-- ============ 예시 v2 · 실습 1 ② 진행 ============ -->
+    <section class="slide pr" data-slide="P1-2">
+      <header class="s-head">
+        <svg class="s-logo" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 18 V8 H18 M30 8 H40 V18 M40 30 V40 H30 M18 40 H8 V30" fill="none" style="stroke:var(--blue)" stroke-width="5"/><rect x="19" y="19" width="10" height="10" style="fill:var(--mint)"/></svg><span class="s-brand">FRAME</span>
+        <span class="s-line"></span><div class="s-team">에이전트 실습</div>
+      </header>
+      <div class="pr-bar"><span class="pr-no">실습 1</span><span class="pr-name">회의·통화 메모 → 할 일 표</span><span class="pr-steps" aria-label="4단계 중 2단계"><span>① 목표</span><span class="cur">② 진행</span><span>③ 확인</span><span>④ 고치기</span></span></div>
+      <div class="pr-top rv" style="--i:0">
+        <h2 class="s-title"><span class="mk">요청문</span>을 보내고 에이전트의 <span class="em-line">계획</span>을 읽습니다</h2>
+      </div>
+      <ol class="flow" data-widget="steps">
+        <li class="rv" style="--i:1"><button type="button" aria-pressed="false"><span class="n">1</span><span class="t">에이전트 앱에서 <code>01_회의메모</code> 폴더를 엽니다</span></button></li>
+        <li class="rv" style="--i:2"><button type="button" aria-pressed="false"><span class="n">2</span><span class="t">오른쪽 요청문을 복사해 붙여 넣고 보냅니다</span></button></li>
+        <li class="rv" style="--i:3"><button type="button" aria-pressed="false"><span class="n">3</span><span class="t">에이전트가 보여 주는 계획과 승인 요청을 읽고 진행합니다</span></button></li>
+        <li class="rv" style="--i:4"><button type="button" aria-pressed="false"><span class="n">4</span><span class="t">만들어진 <code>할일표.md</code>를 엽니다</span></button></li>
+      </ol>
+      <div class="term terminal-dark rv" style="--i:2">
+        <div class="terminal-bar"><span></span><span></span><span></span><b>요청문 · 01_회의메모</b><button class="copy" type="button" data-copy>복사</button></div>
+        <div class="terminal-copy"><p><span class="terminal-prompt">&gt;</span> 이 폴더의 메모를 모두 읽고 할 일 표를 만들어 줘.<br>열은 할 일 · 담당 · 기한 · 근거(파일 이름, 줄 번호)로 해 줘.<br>결과는 할일표.md로 저장하고, 메모끼리 다른 내용은 표 아래에 적어 줘.<span class="terminal-cursor" aria-hidden="true"></span></p></div>
+      </div>
+      <p class="keep rv" style="--i:5">막히면 <code>이어가기/</code> 폴더의 완성본으로 다음 단계를 이어 갑니다.</p>
+      <button class="timer rv" style="--i:6" type="button" data-timer="900" aria-label="타이머 15분 — 누르면 시작"><span class="tv">15:00</span><span class="tl">▶ 시작</span></button>
+    </section>
+
+    <!-- ============ 예시 v2 · 실습 1 ③ 확인 ============ -->
+    <section class="slide pr" data-slide="P1-3">
+      <header class="s-head">
+        <svg class="s-logo" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 18 V8 H18 M30 8 H40 V18 M40 30 V40 H30 M18 40 H8 V30" fill="none" style="stroke:var(--blue)" stroke-width="5"/><rect x="19" y="19" width="10" height="10" style="fill:var(--mint)"/></svg><span class="s-brand">FRAME</span>
+        <span class="s-line"></span><div class="s-team">에이전트 실습</div>
+      </header>
+      <div class="pr-bar"><span class="pr-no">실습 1</span><span class="pr-name">회의·통화 메모 → 할 일 표</span><span class="pr-steps" aria-label="4단계 중 3단계"><span>① 목표</span><span>② 진행</span><span class="cur">③ 확인</span><span>④ 고치기</span></span></div>
+      <div class="pr-top rv" style="--i:0">
+        <h2 class="s-title">기한마다 <span class="mk">근거 줄</span>을 열어 <span class="em-ink">원문</span>과 대조합니다</h2>
+      </div>
+      <figure class="ck-src rv" style="--i:1">
+        <div class="fname">회의_0312.md</div>
+        <ol>
+          <li><i>12</i><span>## 안건 2. 거래처 견적</span></li>
+          <li><i>13</i><span>- 견적서는 김지원 님이 보낸다</span></li>
+          <li class="hit" data-line="14"><i>14</i><span>- 마감은 3월 20일로 한다</span></li>
+          <li class="gap"><i>⋮</i><span></span></li>
+          <li><i>30</i><span>## 추가 논의</span></li>
+          <li class="hit on" data-line="31"><i>31</i><span>- 거래처 요청으로 견적 마감을 3월 27일로 미룬다</span></li>
+          <li><i>32</i><span>- 나머지 일정은 그대로 둔다</span></li>
+        </ol>
+      </figure>
+      <div class="ck-out rv" style="--i:2" data-widget="trace">
+        <span class="pv-file">할일표.md</span>
+        <table class="tbl">
+          <thead><tr><th>할 일</th><th>기한</th><th>근거</th></tr></thead>
+          <tbody>
+            <tr data-pick="31" tabindex="0" role="button" aria-pressed="true" class="on"><td>견적서 발송</td><td class="due">3/27</td><td class="src">회의_0312 31줄</td></tr>
+            <tr data-pick="14" tabindex="0" role="button" aria-pressed="false" class="wrong"><td>견적서 발송 <span class="x">✕</span></td><td class="due">3/20</td><td class="src">회의_0312 14줄</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <ul class="ck-list" data-widget="check">
+        <li class="rv" style="--i:3"><button type="button" aria-pressed="false"><span class="bx">☐</span><span>모든 행에 근거(파일 · 줄)가 있다</span></button></li>
+        <li class="rv" style="--i:4"><button type="button" aria-pressed="false"><span class="bx">☐</span><span>근거 줄의 날짜가 표와 같다</span></button></li>
+        <li class="rv" style="--i:5"><button type="button" aria-pressed="false"><span class="bx">☐</span><span>메모끼리 다른 내용이 표 아래에 있다</span></button></li>
+      </ul>
+      <svg class="ck-link" viewBox="0 0 1280 720" aria-hidden="true"><path class="draw" pathLength="100" style="--len:100" d=""/><circle r="6" cx="-20" cy="-20"/><circle r="6" cx="-20" cy="-20"/></svg>
+    </section>
+
+    <!-- ============ 예시 v2 · 실습 1 ④ 고치기 ============ -->
+    <section class="slide pr" data-slide="P1-4">
+      <header class="s-head">
+        <svg class="s-logo" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 18 V8 H18 M30 8 H40 V18 M40 30 V40 H30 M18 40 H8 V30" fill="none" style="stroke:var(--blue)" stroke-width="5"/><rect x="19" y="19" width="10" height="10" style="fill:var(--mint)"/></svg><span class="s-brand">FRAME</span>
+        <span class="s-line"></span><div class="s-team">에이전트 실습</div>
+      </header>
+      <div class="pr-bar"><span class="pr-no">실습 1</span><span class="pr-name">회의·통화 메모 → 할 일 표</span><span class="pr-steps" aria-label="4단계 중 4단계"><span>① 목표</span><span>② 진행</span><span>③ 확인</span><span class="cur">④ 고치기</span></span></div>
+      <div class="pr-top rv" style="--i:0">
+        <h2 class="s-title">마감이 바뀐 <span class="em-num">31줄</span>을 다시 읽고 표를 고칩니다</h2>
+      </div>
+      <svg class="rv-strip rv" style="--i:1" viewBox="0 0 250 360" role="img" aria-label="회의_0312.md 62줄 중 31줄에서 마감이 3월 27일로 바뀐다">
+        <rect class="page" x="70" y="6" width="170" height="348" rx="6"/>
+        <path class="ln" d="M90 30h120M90 50h96M90 70h128M90 90h104M90 110h120M90 130h88M90 150h120M90 170h100"/>
+        <path class="ln hot" d="M90 190h132"/>
+        <path class="ln" d="M90 210h112M90 230h92M90 250h124M90 270h100M90 290h116M90 310h84M90 330h108"/>
+        <text class="tick" x="60" y="36" text-anchor="end">1줄</text>
+        <text class="tick" x="60" y="196" text-anchor="end">31줄</text>
+        <text class="tick" x="60" y="336" text-anchor="end">62줄</text>
+        <path class="pin" d="M226 190l14-9v18z"/>
+      </svg>
+      <div class="rv-text">
+        <div class="rule rv" style="--i:2"><span class="lab">확인할 곳</span><p><code>회의_0312.md</code> 62줄 중 31줄에서 견적 마감이 3월 20일에서 <span class="em-line">3월 27일</span>로 바뀝니다.</p></div>
+        <div class="rule rv" style="--i:3"><span class="lab">표에 3월 20일이 남았다면</span><p>오른쪽 요청문으로 그 행만 고칩니다. 고친 뒤 ③ 확인을 한 번 더 합니다.</p></div>
+      </div>
+      <div class="term term-fix terminal-dark rv" style="--i:3">
+        <div class="terminal-bar"><span></span><span></span><span></span><b>고쳐 보낼 요청문</b><button class="copy" type="button" data-copy>복사</button></div>
+        <div class="terminal-copy"><p><span class="terminal-prompt">&gt;</span> 회의_0312.md 31줄을 다시 읽고, 할일표.md에서 견적서 발송 기한만 그 줄에 맞게 고쳐 줘. 다른 행은 그대로 둬.<span class="terminal-cursor" aria-hidden="true"></span></p></div>
+      </div>
+      <button class="back rv" style="--i:5" type="button" data-go="HUB" data-vt-key="p1">허브로 돌아가기</button>
+    </section>
+
+  </div>
+
+  <!-- 발표 리모컨 + 상세 메뉴 (불변요소 · 브라우저 검증된 엔진) -->
+  <div class="controls" id="controls">
+    <div class="navbar">
+      <button class="nav-btn" id="prevBtn" aria-label="이전 슬라이드">‹</button>
+      <button class="nav-counter" id="counter" aria-label="상세 발표 메뉴 열기" aria-expanded="false">1 / 1</button>
+      <button class="nav-btn" id="nextBtn" aria-label="다음 슬라이드">›</button>
+      <span class="nav-sep"></span>
+      <button class="nav-btn menu" id="menuBtn" aria-label="상세 발표 메뉴 열기" aria-expanded="false" title="상세 메뉴 (G)">☰</button>
+      <button class="nav-btn fs" id="fsBtn" aria-label="전체화면 (F)" title="전체화면 (F)">⛶</button>
+    </div>
+  </div>
+  <section class="presentation-menu" id="presentationMenu" role="dialog" aria-label="발표 상세 메뉴" hidden>
+    <div class="menu-head">
+      <div><p class="menu-eyebrow" id="menuPart">현재 슬라이드</p><p class="menu-title" id="menuTitle">슬라이드 제목</p></div>
+      <button class="menu-close" id="menuClose" aria-label="상세 메뉴 닫기">×</button>
+    </div>
+    <div class="menu-actions">
+      <button class="menu-action" id="homeBtn" aria-label="표지로 이동" title="홈">⌂</button>
+      <label class="page-jump" aria-label="페이지 번호로 이동"><input id="pageInput" type="number" min="1" inputmode="numeric" placeholder="페이지 번호"><button class="menu-go" id="goBtn">이동</button></label>
+      <button class="menu-action" id="pdfBtn" aria-label="PDF로 출력">PDF</button>
+      <button class="menu-action" id="helpBtn" aria-label="단축키 안내" title="단축키">?</button>
+    </div>
+    <div class="slide-list" id="slideList" aria-label="전체 슬라이드 목록"></div>
+  </section>
+  <section class="keyboard-help" id="keyboardHelp" role="dialog" aria-label="발표 단축키" hidden>
+    <button class="menu-close" id="helpClose" aria-label="단축키 안내 닫기">×</button>
+    <h2>발표 단축키</h2>
+    <dl><dt>← / →</dt><dd>이전·다음 슬라이드</dd><dt>Home / End</dt><dd>표지·마지막으로 이동</dd><dt>G</dt><dd>상세 메뉴 열기</dd><dt>B</dt><dd>화면 가리기</dd><dt>F</dt><dd>전체화면</dd><dt>?</dt><dd>이 안내 열기</dd><dt>Esc</dt><dd>열린 창 또는 화면 가리기 닫기</dd></dl>
+  </section>
+  <div class="presentation-blackout" id="blackout" aria-label="화면 가리기, 클릭하면 해제" hidden></div>
+
+  <script>
+  (function(){
+    function partGeometry(n){
+      var presets={
+        1:[[640,126,92,92]],
+        2:[[560,150,60,60],[640,230,70,70]],
+        3:[[670,136,58,58],[584,228,58,58],[756,228,58,58]],
+        4:[[620,94,58,58],[726,158,66,66],[522,188,50,50],[628,264,48,48]],
+        5:[[640,78,48,48],[532,146,62,62],[730,142,46,46],[574,258,48,48],[694,238,64,64]],
+        6:[[610,70,42,42],[510,138,56,56],[724,122,52,52],[466,246,40,40],[604,214,66,66],[764,246,44,44]]
+      }, points=presets[n]&&presets[n].slice();
+      if(!points){
+        points=[];
+        var size=Math.max(28,44-Math.floor((n-7)/2));
+        for(var i=0;i<n;i++){
+          var angle=-Math.PI/2+(Math.PI*2*i/n), ring=i%2?1:.72;
+          points.push([640+Math.cos(angle)*150*ring,178+Math.sin(angle)*82*ring+(i%3)*12,size,size]);
+        }
+      }
+      return points.sort(function(a,b){return a[1]-b[1];});
+    }
+    function cubeMarkup(p,i){
+      var x=Math.round(p[0]),y=Math.round(p[1]),w=Math.round(p[2]),d=Math.round(p[3]),h=Math.round(w/2);
+      return '<g class="pd-cube pd-cube-'+(i+1)+'" data-cube="'+(i+1)+'">'+
+        '<ellipse class="pd-cube-shadow" cx="'+x+'" cy="'+(y+w+d+9)+'" rx="'+Math.round(w*.72)+'" ry="'+Math.max(6,Math.round(w*.17))+'"/>'+
+        '<polygon points="'+x+','+y+' '+(x+w)+','+(y+h)+' '+x+','+(y+w)+' '+(x-w)+','+(y+h)+'" fill="var(--blue-soft)"/>'+
+        '<polygon points="'+(x-w)+','+(y+h)+' '+x+','+(y+w)+' '+x+','+(y+w+d)+' '+(x-w)+','+(y+h+d)+'" fill="var(--blue)"/>'+
+        '<polygon points="'+x+','+(y+w)+' '+(x+w)+','+(y+h)+' '+(x+w)+','+(y+h+d)+' '+x+','+(y+w+d)+'" fill="var(--mint)"/></g>';
+    }
+    function hydratePartDivider(s,index,total){
+      var hero=s.querySelector('.dv-hero'), points=partGeometry(index), html='';
+      for(var i=0;i<points.length;i++)html+=cubeMarkup(points[i],i);
+      if(hero){hero.innerHTML=html+'<circle class="pd-spark" cx="820" cy="112" r="7"/>';hero.setAttribute('data-geometry-count',index);}
+      var dots=s.querySelector('.pd-dots'), dotHtml='';
+      for(var d=1;d<=total;d++)dotHtml+='<span class="pd-dot'+(d===index?' is-active':'')+'"></span>';
+      if(dots)dots.innerHTML=dotHtml;
+      var eyebrow=s.querySelector('.pd-eyebrow');if(eyebrow)eyebrow.textContent='PART '+index+' / '+total;
+      s.setAttribute('data-part-index',index);s.setAttribute('data-part-total',total);
+    }
+    var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+    var totalParts = 0;
+    slides.forEach(function(s){ if (/\bpart-divider\b/.test(s.className)) totalParts++; });
+    var curPart = 0;
+    slides.forEach(function(s, i){
+      if (/\bpart-divider\b/.test(s.className)) { curPart++; hydratePartDivider(s, curPart, totalParts); }
+      var fixed = /\b(cover|s02-slide|s03-slide|part-divider|concept-recap|closing)\b/.test(s.className);
+      if (!/\b(cover|concept-recap|closing)\b/.test(s.className)) {
+        var pg = document.createElement('div');
+        pg.className = 's-pageno';
+        pg.textContent = (i + 1) + ' / ' + slides.length;
+        s.appendChild(pg);
+      }
+      if (!fixed && curPart >= 1 && totalParts >= 1) {
+        var team = s.querySelector('.s-head .s-team');
+        if (team) {
+          var h = '<span class="lbl">PART ' + curPart + ' / ' + totalParts + '</span><span class="dots">';
+          for (var d = 1; d <= totalParts; d++) h += '<span class="pd' + (d === curPart ? ' on' : '') + '"></span>';
+          team.className = 's-part';
+          team.innerHTML = h + '</span>';
+        }
+      }
+    });
+    var controls = document.getElementById('controls');
+    var counter  = document.getElementById('counter');
+    var prevBtn  = document.getElementById('prevBtn');
+    var nextBtn  = document.getElementById('nextBtn');
+    var fsBtn    = document.getElementById('fsBtn');
+    var menuBtn  = document.getElementById('menuBtn');
+    var menu     = document.getElementById('presentationMenu');
+    var menuClose = document.getElementById('menuClose');
+    var homeBtn  = document.getElementById('homeBtn');
+    var pageInput = document.getElementById('pageInput');
+    var goBtn    = document.getElementById('goBtn');
+    var pdfBtn   = document.getElementById('pdfBtn');
+    var helpBtn  = document.getElementById('helpBtn');
+    var help     = document.getElementById('keyboardHelp');
+    var helpClose = document.getElementById('helpClose');
+    var blackout = document.getElementById('blackout');
+    var slideList = document.getElementById('slideList');
+    var menuTitle = document.getElementById('menuTitle');
+    var menuPart = document.getElementById('menuPart');
+    var idx = 0, hideTimer = null;
+    var storageKey = 'frame-prototype-v2';  /* ✏️ 덱마다 고유 문자열로 바꾸면 위치 기억이 분리됨 */
+
+    function initialIndex(){
+      var m = String(location.hash || '').match(/slide=(\d+)/i);
+      if (m) return Math.max(0, parseInt(m[1], 10) - 1);
+      try { var saved = parseInt(localStorage.getItem(storageKey), 10); return isNaN(saved) ? 0 : saved; }
+      catch (e) { return 0; }
+    }
+    function fit(){
+      var s = Math.min(window.innerWidth / 1280, window.innerHeight / 720);
+      document.documentElement.style.setProperty('--scale', s);
+    }
+    function show(i){
+      idx = Math.max(0, Math.min(slides.length - 1, i));
+      for (var n = 0; n < slides.length; n++){ slides[n].classList.toggle('is-active', n === idx); }
+      counter.textContent = (idx + 1) + ' / ' + slides.length;
+      prevBtn.disabled = (idx === 0);
+      nextBtn.disabled = (idx === slides.length - 1);
+      updateMenu();
+      try { localStorage.setItem(storageKey, String(idx)); } catch (e) {}
+      try { history.replaceState(null, '', '#slide=' + (idx + 1)); } catch (e) {}
+    }
+    function next(){ show(idx + 1); }
+    function prev(){ show(idx - 1); }
+    function slideName(s, i){
+      var heading = s.querySelector('h1,h2,h3');
+      var text = heading ? heading.textContent.replace(/\s+/g, ' ').trim() : '';
+      return text || s.getAttribute('data-slide') || ('슬라이드 ' + (i + 1));
+    }
+    function slidePart(s){
+      var el = s.querySelector('.s-part .lbl');
+      return el ? el.textContent : (s.classList.contains('cover') ? '표지' : '발표 슬라이드');
+    }
+    function buildSlideList(){
+      slides.forEach(function(s, i){
+        var btn = document.createElement('button');
+        var number = document.createElement('span');
+        var label = document.createElement('span');
+        btn.type = 'button'; btn.dataset.slideIndex = i;
+        number.className = 'list-num'; number.textContent = String(i + 1).padStart(3, '0');
+        label.textContent = slideName(s, i); btn.appendChild(number); btn.appendChild(label);
+        btn.addEventListener('click', function(){ show(i); closeMenu(); poke(); });
+        slideList.appendChild(btn);
+      });
+    }
+    function updateMenu(){
+      var current = slides[idx];
+      menuTitle.textContent = slideName(current, idx);
+      menuPart.textContent = slidePart(current);
+      pageInput.value = idx + 1;
+      Array.prototype.forEach.call(slideList.children, function(btn, i){ btn.classList.toggle('is-current', i === idx); });
+    }
+    function openMenu(){
+      menu.hidden = false; help.hidden = true; blackout.hidden = true;
+      menuBtn.setAttribute('aria-expanded', 'true'); counter.setAttribute('aria-expanded', 'true');
+      controls.classList.add('show'); clearTimeout(hideTimer); updateMenu();
+      setTimeout(function(){ pageInput.focus(); pageInput.select(); }, 0);
+    }
+    function closeMenu(){
+      menu.hidden = true; menuBtn.setAttribute('aria-expanded', 'false'); counter.setAttribute('aria-expanded', 'false');
+      poke();
+    }
+    function toggleMenu(){ menu.hidden ? openMenu() : closeMenu(); }
+    function openHelp(){ help.hidden = false; menu.hidden = true; menuBtn.setAttribute('aria-expanded', 'false'); counter.setAttribute('aria-expanded', 'false'); controls.classList.add('show'); clearTimeout(hideTimer); helpClose.focus(); }
+    function closeHelp(){ help.hidden = true; poke(); }
+    function jumpToInput(){ var n = parseInt(pageInput.value, 10); if (!isNaN(n)) { show(n - 1); closeMenu(); } }
+    function toggleBlackout(){ blackout.hidden = !blackout.hidden; if (blackout.hidden) poke(); }
+    function poke(){ controls.classList.add('show'); clearTimeout(hideTimer);
+      if (!menu.hidden || !help.hidden || !blackout.hidden) return;
+      hideTimer = setTimeout(function(){ controls.classList.remove('show'); }, 1000); }
+    function toggleFullscreen(){
+      if (!document.fullscreenElement){ (document.documentElement.requestFullscreen || function(){}).call(document.documentElement); }
+      else { (document.exitFullscreen || function(){}).call(document); }
+    }
+    document.addEventListener('keydown', function(e){
+      if (e.key === 'Escape') { if (!blackout.hidden) { blackout.hidden = true; } else if (!help.hidden) { closeHelp(); } else if (!menu.hidden) { closeMenu(); } return; }
+      if ((e.key === 'g' || e.key === 'G') && !e.ctrlKey && !e.metaKey) { toggleMenu(); e.preventDefault(); return; }
+      if (e.key === '?' && !e.ctrlKey && !e.metaKey) { openHelp(); e.preventDefault(); return; }
+      if ((e.key === 'b' || e.key === 'B') && !e.ctrlKey && !e.metaKey) { toggleBlackout(); e.preventDefault(); return; }
+      if (!menu.hidden || !help.hidden || !blackout.hidden) return;
+      switch (e.key){
+        /* 슬라이드 전환은 리모컨을 노출하지 않는다 — 리모컨은 마우스 이동(mousemove→poke)에만 나타난다. */
+        case 'ArrowRight': case 'PageDown': case ' ': case 'Spacebar': next(); e.preventDefault(); break;
+        case 'ArrowLeft': case 'PageUp': prev(); e.preventDefault(); break;
+        case 'Home': show(0); e.preventDefault(); break;
+        case 'End':  show(slides.length - 1); e.preventDefault(); break;
+        case 'f': case 'F': toggleFullscreen(); break;
+      }
+    });
+    prevBtn.addEventListener('click', function(){ prev(); poke(); });
+    nextBtn.addEventListener('click', function(){ next(); poke(); });
+    fsBtn.addEventListener('click', function(e){ e.stopPropagation(); toggleFullscreen(); poke(); });
+    menuBtn.addEventListener('click', function(e){ e.stopPropagation(); toggleMenu(); });
+    counter.addEventListener('click', function(e){ e.stopPropagation(); toggleMenu(); });
+    menuClose.addEventListener('click', closeMenu);
+    homeBtn.addEventListener('click', function(){ show(0); closeMenu(); });
+    goBtn.addEventListener('click', jumpToInput);
+    pageInput.addEventListener('keydown', function(e){ if (e.key === 'Enter') { jumpToInput(); e.preventDefault(); } });
+    pdfBtn.addEventListener('click', function(){ window.print(); });
+    helpBtn.addEventListener('click', openHelp);
+    helpClose.addEventListener('click', closeHelp);
+    blackout.addEventListener('click', toggleBlackout);
+    document.addEventListener('fullscreenchange', fit);
+    window.addEventListener('mousemove', poke);
+    window.addEventListener('resize', fit);
+    buildSlideList();
+    window.__deckShow = show;
+    fit(); show(initialIndex()); poke();
+  })();
+  </script>
+  <script>
+  /* FRAME 예시 v2 — 허브 이동(ID 기반) · 조작 위젯. 모든 조작은 클릭과 Enter/Space 둘 다 된다.
+     감사 모드: 주소에 ?audit 이 있거나 html.no-anim 이면 연출 없이 최종 상태. */
+  (function(){
+    var root = document.documentElement;
+    if (/[?&]audit\b/.test(location.search)) root.classList.add('no-anim');
+    var slides = [].slice.call(document.querySelectorAll('.deck .slide'));
+    function indexOf(id){ for (var i = 0; i < slides.length; i++){ if (slides[i].getAttribute('data-slide') === id) return i; } return -1; }
+
+    /* ── 허브 이동 — 번호 하드코딩 없이 data-go(슬라이드 ID)로 ── */
+    function go(el){
+      var t = indexOf(el.getAttribute('data-go')); if (t < 0 || !window.__deckShow) return;
+      var key = el.getAttribute('data-vt-key');
+      var dest = key ? slides[t].querySelector('[data-vt-key="' + key + '"]') : null;
+      var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (!document.startViewTransition || reduce || root.classList.contains('no-anim') || !dest){ window.__deckShow(t); return; }
+      el.style.viewTransitionName = 'frame-hero';
+      var tr = document.startViewTransition(function(){ el.style.viewTransitionName = ''; dest.style.viewTransitionName = 'frame-hero'; window.__deckShow(t); });
+      tr.finished.finally(function(){ dest.style.viewTransitionName = ''; });
+    }
+
+    /* ── 개념: 중간 유실 막대 고르기 ── */
+    var LOST = [
+      { pos:1,  name:'첫 번째',  v:'75.8', tail:'문서를 주지 않았을 때(56.1%)보다 높습니다.' },
+      { pos:10, name:'열 번째',  v:'53.8', tail:'문서를 주지 않았을 때(56.1%)보다 낮습니다.' },
+      { pos:20, name:'스무 번째', v:'63.2', tail:'문서를 주지 않았을 때(56.1%)보다 높습니다.' }
+    ];
+    function buildDocs(fig){
+      var g = fig.querySelector('.docs'); if (!g || g.childNodes.length > 3) return;
+      var ns = 'http://www.w3.org/2000/svg';
+      for (var d = 1; d <= 20; d++){
+        var r = document.createElementNS(ns, 'rect');
+        r.setAttribute('x', 20 + (d - 1) * 27); r.setAttribute('y', 244); r.setAttribute('width', 21); r.setAttribute('height', 22); r.setAttribute('rx', 3);
+        r.setAttribute('class', 'doc'); r.setAttribute('data-doc', d); g.appendChild(r);
+      }
+    }
+    function pickLost(fig, k){
+      buildDocs(fig);
+      [].forEach.call(fig.querySelectorAll('[data-pick]'), function(g){ var on = +g.getAttribute('data-pick') === k; g.classList.toggle('on', on); g.setAttribute('aria-pressed', on); });
+      [].forEach.call(fig.querySelectorAll('.doc'), function(r){ var on = +r.getAttribute('data-doc') === LOST[k].pos; r.classList.toggle('on', on); r.classList.toggle('edge', on && k !== 1); });
+      fig.querySelector('.cx-read').innerHTML = '답이 든 문서를 <b>' + LOST[k].name + '</b>에 두면 정답률 ' + LOST[k].v + '% — ' + LOST[k].tail;
+    }
+
+    /* ── 실습 ③: 원문 줄 ↔ 결과 셀 대조선(좌표는 변환 전 레이아웃 값으로 잰다) ── */
+    function offsetIn(el, slide){ var x = 0, y = 0; while (el && el !== slide){ x += el.offsetLeft; y += el.offsetTop; el = el.offsetParent; } return { x:x, y:y }; }
+    function drawTrace(slide){
+      var box = slide.querySelector('[data-widget="trace"]'); if (!box) return;
+      var row = box.querySelector('tr.on'); var line = row && slide.querySelector('.ck-src li[data-line="' + row.getAttribute('data-pick') + '"]');
+      [].forEach.call(slide.querySelectorAll('.ck-src li.hit'), function(li){ li.classList.toggle('on', li === line); });
+      var svg = slide.querySelector('.ck-link'); if (!row || !line || !svg || !line.offsetWidth) return;
+      var cell = row.querySelector('.due');
+      var a = offsetIn(line, slide), b = offsetIn(cell, slide), src = slide.querySelector('.ck-src');
+      var sx = offsetIn(src, slide).x + src.offsetWidth + 6, sy = a.y + line.offsetHeight / 2;
+      var tb = row.closest('table'), ex = offsetIn(tb, slide).x - 8, ey = offsetIn(row, slide).y + row.offsetHeight / 2, mx = (sx + ex) / 2;   /* 행 왼쪽 끝에서 멈춘다 — 셀 글자를 가로지르지 않게 */
+      svg.querySelector('path').setAttribute('d', 'M' + sx + ' ' + sy + ' C' + mx + ' ' + sy + ' ' + mx + ' ' + ey + ' ' + ex + ' ' + ey);
+      var c = svg.querySelectorAll('circle'); c[0].setAttribute('cx', sx); c[0].setAttribute('cy', sy); c[1].setAttribute('cx', ex); c[1].setAttribute('cy', ey);
+      row.closest('table').classList.toggle('is-wrong', row.classList.contains('wrong'));
+    }
+
+    /* ── 타이머 ── */
+    var tick = null;
+    function fmt(s){ return String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0'); }
+    function toggleTimer(btn){
+      var left = +(btn.getAttribute('data-left') || btn.getAttribute('data-timer'));
+      if (tick){ clearInterval(tick); tick = null; btn.querySelector('.tl').textContent = '▶ 이어서'; return; }
+      btn.querySelector('.tl').textContent = '❚❚ 멈춤';
+      tick = setInterval(function(){
+        left = Math.max(0, left - 1); btn.setAttribute('data-left', left); btn.querySelector('.tv').textContent = fmt(left);
+        if (!left){ clearInterval(tick); tick = null; btn.querySelector('.tl').textContent = '끝'; }
+      }, 1000);
+    }
+
+    function act(el){
+      if (el.hasAttribute('data-go')) return go(el);
+      var fig = el.closest('[data-widget="lost"]');
+      if (fig && el.hasAttribute('data-pick')) return pickLost(fig, +el.getAttribute('data-pick'));
+      var tr = el.closest('[data-widget="trace"]');
+      if (tr && el.hasAttribute('data-pick')){
+        [].forEach.call(tr.querySelectorAll('tr[data-pick]'), function(r){ r.classList.toggle('on', r === el); r.setAttribute('aria-pressed', r === el); });
+        return drawTrace(el.closest('.slide'));
+      }
+      if (el.closest('[data-widget="steps"]') || el.closest('[data-widget="check"]')){
+        var on = el.getAttribute('aria-pressed') !== 'true'; el.setAttribute('aria-pressed', on); el.parentNode.classList.toggle('done', on);
+        var bx = el.querySelector('.bx'); if (bx) bx.textContent = on ? '☑' : '☐';
+        var n = el.querySelector('.n'); if (n) n.textContent = on ? '✓' : n.getAttribute('data-n') || (n.setAttribute('data-n', n.textContent), n.getAttribute('data-n'));
+        return;
+      }
+      if (el.hasAttribute('data-copy')){
+        var text = el.closest('.term').querySelector('.terminal-copy').innerText.replace(/^>\s*/, '');
+        var done = function(){ el.textContent = '복사됨'; setTimeout(function(){ el.textContent = '복사'; }, 1500); };
+        if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, done); else done();
+        return;
+      }
+      if (el.hasAttribute('data-timer')) return toggleTimer(el);
+    }
+    /* 단계 번호 원래 값 기억 */
+    [].forEach.call(document.querySelectorAll('.flow .n'), function(n){ n.setAttribute('data-n', n.textContent); });
+
+    var SEL = '[data-go], [data-pick], [data-copy], [data-timer], [data-widget="steps"] button, [data-widget="check"] button';
+    document.addEventListener('click', function(e){
+      var el = e.target.closest(SEL); if (!el || el.getAttribute('aria-disabled') === 'true') return;
+      e.preventDefault(); e.stopPropagation(); act(el);
+    });
+    /* Enter/Space가 조작 요소 위에서는 슬라이드를 넘기지 않는다(덱 keydown은 document에 걸려 있다) */
+    slides.forEach(function(s){
+      s.addEventListener('keydown', function(e){
+        if (e.key !== 'Enter' && e.key !== ' ' && e.key !== 'Spacebar') return;
+        var el = e.target.closest && e.target.closest(SEL); if (!el) return;
+        e.stopPropagation();
+        if (el.tagName !== 'BUTTON'){ e.preventDefault(); if (el.getAttribute('aria-disabled') !== 'true') act(el); }
+      });
+    });
+
+    /* 슬라이드가 켜질 때(감사 순회 포함) · 인쇄 전 — 초기 상태를 그린다 */
+    function prep(s){ var f = s.querySelector('[data-widget="lost"]'); if (f){ buildDocs(f); var on = f.querySelector('[data-pick].on'); pickLost(f, on ? +on.getAttribute('data-pick') : 1); } drawTrace(s); }
+    var mo = new MutationObserver(function(list){ list.forEach(function(m){ if (m.target.classList.contains('is-active')) prep(m.target); }); });
+    slides.forEach(function(s){ mo.observe(s, { attributes:true, attributeFilter:['class'] }); if (s.classList.contains('is-active')) prep(s); });
+    window.addEventListener('beforeprint', function(){ slides.forEach(prep); });
+    slides.forEach(function(s){ var f = s.querySelector('[data-widget="lost"]'); if (f) pickLost(f, 1); });
+  })();
+  </script>
+</body>
+</html>

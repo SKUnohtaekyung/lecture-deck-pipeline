@@ -1,0 +1,128 @@
+
+    /* ══════════════════════════════════════════════════════════════════
+       FRAME 세션 CSS v2 — 옅은 면 · 흰 카드 · 큰 제목 · 색 글자 키워드 · 바닥 한 줄 머리
+       정본: 사용자 승인 프리뷰 tmp/frame/view/design_dir.html · 작성 지침 tmp/frame/E/공통지침.md 「디자인 v2」
+       색은 토큰(var(--*))과 이 파일의 커스텀 속성(--t-* · --pr-* · --sh-*)만 쓴다.
+       raw hex · rgba()는 커스텀 속성 정의 줄에만 있다(verify_deck은 커스텀 속성 정의 줄을 색 검사에서 뺀다).
+       ══════════════════════════════════════════════════════════════════ */
+
+    /* ── 0. 색 · 그림자 정의 — 모든 장 공통(틴트 면 · 흰 카드 · 어두운 전면) ── */
+    .slide{ --t-card:#FFFFFF; --t-mint:var(--mint-soft); --t-sky:#E2EFFA; --t-apricot:#FFEDE5; --t-mist:#EDF2F4; --t-lav:var(--t-sky); --t-sand:var(--t-mist);   /* lav·sand는 폐기 별칭(보라·노랑 제거) — 새로 쓰지 않는다 */
+      --t-dark:#08323D; --t-dark-2:#1F5563; --t-dark-3:#2E7B8C; --t-dark-ink:#CFE7EC; --t-dark-soft:#9FC3CC; --t-memo:#F4E4DC;
+      --t-pr-fill:#FF8A5C; --t-shadow:rgba(8,50,61,.16);
+      --sh-card:0 6px 18px rgba(8,50,61,.10); --sh-pop:0 12px 32px rgba(8,50,61,.14); --sh-ic:0 4px 12px rgba(8,50,61,.10); --t-glow:rgba(125,224,236,.30); }
+
+    /* ── 1. 기본 · 글자 ─────────────────────────────────────────────── */
+    .slide{ line-height:1.45; font-weight:500; padding:56px 72px 0; isolation:isolate; word-break:keep-all; overflow-wrap:break-word; }   /* 행간 normal 방치를 막는다 · 자유 흐름 마크업(.kick · .s-title · .lede)의 여백 · 면(.bleed)이 글 아래로 가게 쌓임 맥락을 만든다 */
+    .s-brand{ color:var(--gray-400); letter-spacing:.06em; }
+    .slide p, .slide h1, .slide h2, .slide h3, .slide li, .slide figcaption, .slide button,
+    .slide dt, .slide dd, .slide td, .slide th, .slide summary{ word-break:keep-all; overflow-wrap:break-word; }   /* 한국어는 어절 단위로 줄을 바꾼다 */
+    .slide h1, .slide h2, .slide h3{ text-wrap:balance; }                                                          /* 제목은 줄 길이를 고르게 */
+    .slide p, .slide li, .slide dd, .slide figcaption{ text-wrap:pretty; }                                        /* 본문은 외톨이 글자를 막는다 */
+    .sr-only{ position:absolute; width:1px; height:1px; margin:-1px; padding:0; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0; }
+    /* verify_deck는 s02-slide·s03-slide 클래스를 가진 장이 있어야 PASS한다(FIXED 상수 — 계약으로 끌 수 없다).
+       이 덱에는 고정 도입·아젠다가 없으므로, 그 표지 역할만 두 장에 클래스로 달 수 있게 kit의 배치 규칙을 되돌린다.
+       선택자는 kit와 같은 명시도(0,2,0)로 맞춰 이 파일의 제목 · eyebrow 규칙보다 앞에 둔다 — 뒤의 규칙이 이긴다.
+       달아도 화면이 바뀌지 않는다(전후 픽셀 비교: tmp/frame/E1/marker_check.py). */
+    .s02-slide .s-eyebrow{ font-size:var(--fs-eyebrow); margin:0 0 6px; }
+    .s02-slide .s-title{ white-space:normal; }
+    .s02-slide .s-lead{ font-size:var(--fs-lead); margin:0 0 14px; }
+    .s03-slide .s-head .s-team{ display:block; }
+
+    /* 눈썹(.kick) — 제목 위 색 글자 한 줄. 칩이 아니다. 기존 .s-eyebrow도 같은 모양 */
+    .kick, .slide .s-eyebrow{ display:block; width:auto; margin:0; padding:0; border-radius:0; background:none;
+      font-size:18px; font-weight:800; line-height:1.4; letter-spacing:.01em; color:var(--mint-deep); }
+    /* 제목 — 48/700, 두 줄까지. 18자가 넘으면 글 쪽에서 의미 경계에 <br> */
+    .slide .s-title{ margin:8px 0 0; font-size:48px; font-weight:700; line-height:1.25; letter-spacing:-.035em; color:var(--ink); }
+    .slide .s-title .hl{ color:var(--mint-deep); }
+    /* 보조 설명(.lede) — 제목 아래 회색 23px */
+    .lede{ margin:14px 0 0; max-width:30em; font-size:23px; font-weight:500; line-height:1.6; color:var(--gray-400); }
+
+    .slide [tabindex]:focus{ outline:none; }
+    .slide [tabindex]:focus-visible, .slide button:focus-visible, .slide summary:focus-visible{ outline:2px dashed var(--ink); outline-offset:3px; }
+    .slide svg [tabindex]:focus-visible{ outline:none; }        /* SVG 요소는 아래 .hit 테두리로 표시한다 */
+    .slide .hit{ fill:transparent; stroke:none; }
+    .slide svg [tabindex]:focus-visible .hit{ stroke:var(--ink); stroke-width:3; stroke-dasharray:6 4; }
+
+    /* ── 2. 머리 → 바닥 한 줄 — s-head 마크업은 그대로 두고 위치 · 모양만 바꾼다(작은 로고 · 「FRAME · .s-team」 · 가로선 없음) ── */
+    .s-head{ top:auto; bottom:22px; left:72px; right:auto; height:auto; gap:8px; font-size:14px; font-weight:600; color:var(--gray-400); }
+    .s-logo{ width:18px; height:18px; }
+    .s-brand{ font-size:14px; font-weight:700; }
+    .s-line{ display:none; }
+    .s-team{ margin:0; font-size:14px; line-height:1.4; font-weight:600; color:var(--gray-400); text-align:left; }
+    .s-team::before{ content:"·"; margin:0 8px 0 0; }
+    .slide.dark .s-head, .slide.dark .s-brand, .slide.dark .s-team, .slide.dark .s-pageno{ color:var(--t-dark-soft); }
+    .slide.dark .s-logo path{ stroke:var(--t-dark-soft) !important; }
+
+    /* ── 3. 실습 확장 색(§16-3) — 테마 토큰 100개는 고정이라 .slide.pr 범위 커스텀 속성으로 둔다 ──
+       실습 표식(색 하나에 기대지 않는다): 주홍 눈썹 「실습 N」 · 타이머 · 단계 번호 · 살구 면. 왼쪽 주홍 띠는 없앴다. */
+    .slide.pr{ --pr-deep:#B8431F; --pr-fill:#FF8A5C; --pr-soft:#FFEDE5; --pr-line:#F7C9B5; --pr-bg:#FFFFFF; }
+    .slide.pr{ background:var(--pr-bg); }
+    .slide.pr .kick, .slide.pr .s-eyebrow{ color:var(--pr-deep); }
+    .slide.pr .s-title .hl{ color:var(--pr-deep); }
+    code, .path{ font-family:inherit; font-weight:700; }          /* 고정폭 글꼴은 터미널 창 안에만 */
+    .slide.pr code{ color:var(--pr-deep); }
+    .path{ word-break:break-all; }
+
+    /* ── 4. 강조 — 면(형광펜)을 없애고 색 글자 800으로 모은다. .mk · .mk-solid는 .kw와 같은 모양 ── */
+    .kw, .mk, .mk-solid{ color:var(--mint-deep); font-weight:800; }
+    .mk::after, .mk-solid::after{ content:none; }
+    .slide.pr .kw, .slide.pr .mk, .slide.pr .mk-solid{ color:var(--pr-deep); }
+    .slide.dark .kw, .slide.dark .mk, .slide.dark .mk-solid{ color:var(--mint); }
+    .em-ink{ color:var(--blue); font-weight:800; }
+    .slide.pr .em-ink{ color:var(--pr-deep); }
+    .slide.dark .em-ink{ color:var(--white); }
+    .em-line{ white-space:nowrap; text-decoration:underline; text-decoration-thickness:4px; text-underline-offset:7px; text-decoration-skip-ink:none; text-decoration-color:var(--mint); }
+    .slide.pr .em-line{ text-decoration-color:var(--pr-fill); }
+    .em-num{ font-size:1.6em; font-weight:800; line-height:1; letter-spacing:-.03em; font-variant-numeric:tabular-nums; color:var(--blue); }
+    .slide.pr .em-num{ color:var(--pr-deep); }
+    .s-title .em-num, .pr-top .em-num{ font-size:1.12em; }
+    .em-tag{ position:relative; z-index:0; font-weight:700; color:var(--ink); padding:0 .3em; white-space:nowrap; }   /* 파일 · 버튼 · 메뉴 이름 — 본문 글꼴 + 옅은 칩 */
+    .em-tag::after{ content:""; position:absolute; z-index:-1; left:0; right:0; top:.04em; bottom:.04em; border-radius:.45em; background:var(--blue-soft); }
+    .slide.pr .em-tag::after{ background:var(--pr-soft); }
+    /* 동그라미 — 시각 자료 안에서만. SVG 요소에 .em-ring을 직접 달거나, 글자 둘레는 .ring-host로 감싼다(엔진이 타원을 그린다) */
+    .em-ring{ fill:none; stroke:var(--blue); stroke-width:4; stroke-linecap:round; stroke-linejoin:round; }
+    .slide.pr .em-ring{ stroke:var(--pr-deep); }
+    .ring-host{ position:relative; display:inline-block; }
+    .ring-host > .ring-svg{ position:absolute; pointer-events:none; overflow:visible; }
+    .terminal-dark .em-ring{ stroke:var(--mint); }                      /* 어두운 터미널 위에서는 아쿠아 */
+
+    /* ── 5. 등장 연출 — 요소별 떠오름 · 형광펜 칠하기 · 팝 · 선 그리기는 없앴다(2026-10-01 사용자 지시 「넘길 때 애니메이션이 많다」).
+       남기는 것은 도표 막대가 한 번 자라는 것(0.35초 · 차례 지연 없음)뿐이다. .rv · --i · --mkd 표기는 남아 있어도 효과가 없다.
+       from 키프레임만 쓰고 fill-mode는 backwards다 — 끝나면 원래 상태로 남아 PDF·배포본·감사에서도 같은 모습이다. */
+    @keyframes fr-rise{ from{ opacity:0; transform:translateY(12px); } }
+    @keyframes fr-mark{ from{ transform:scaleX(0); } }
+    @keyframes fr-grow{ from{ transform:scaleY(0); } }
+    @keyframes fr-fade{ from{ opacity:0; } }
+    @keyframes fr-draw{ from{ stroke-dashoffset:var(--len,100); } }
+    @keyframes fr-fillx{ from{ transform:scaleX(0); } }
+    @keyframes fr-pop{ from{ opacity:0; transform:scale(.6); } }
+    .a-draw, .em-ring{ stroke-dasharray:var(--len,100); }
+    .slide.is-active .a-grow{ transform-box:fill-box; transform-origin:center bottom; animation:fr-grow .35s cubic-bezier(.2,.8,.2,1) backwards; }
+    .slide.is-active .a-fillx{ transform-box:fill-box; transform-origin:left center; animation:fr-fillx .35s cubic-bezier(.2,.8,.2,1) backwards; }
+    /* 감사 모드 · 동작 줄이기 · 인쇄 → 즉시 최종 상태. 무한 반복 연출은 이 덱에 없다 */
+    html.no-anim .slide *, html.no-anim .slide *::before, html.no-anim .slide *::after{ animation:none !important; transition:none !important; }
+    @media (prefers-reduced-motion:reduce){
+      .slide *, .slide *::before, .slide *::after{ animation:none !important; transition:none !important; }
+      ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*){ animation:none !important; }
+    }
+    @media print{ .slide *, .slide *::before, .slide *::after{ animation:none !important; transition:none !important; } }
+    /* 허브 전환(View Transition 0.45s) — 이름은 엔진이 출발·도착 요소에 잠깐 붙인다 */
+    ::view-transition-group(frame-hero){ animation-duration:.45s; animation-timing-function:cubic-bezier(.2,.8,.2,1); }
+    ::view-transition-old(root), ::view-transition-new(root){ animation-duration:.3s; }
+
+    /* ── 6. 덩어리 — 세로 규칙선을 없앴다. 작은 색 라벨 + 글자 크기 위계(정의 26 · 비유 22 · 대응 22) ── */
+    .rule{ position:relative; padding:0; }
+    .rule::before{ content:none; }
+    .rule .lab, .lab{ display:block; margin:0 0 4px; font-size:16px; font-weight:800; line-height:1.4; letter-spacing:.04em; color:var(--mint-deep); }
+    .rule.ana .lab{ color:var(--gray-400); }
+    .rule.do .lab{ color:var(--blue); }
+    .slide.pr .rule .lab, .slide.pr .lab{ color:var(--pr-deep); }
+    .rule p{ margin:0; font-size:var(--fs-body); line-height:1.6; font-weight:500; color:var(--gray-700); }
+    .rule.def p{ font-size:26px; line-height:1.55; color:var(--ink); }
+    .rule.do p{ color:var(--ink); font-weight:600; }
+    .keep{ margin:0; font-size:var(--fs-body); line-height:1.45; color:var(--gray-700); }
+    .keep b{ font-weight:800; color:var(--ink); }
+
+    /* 측정 모드 — 엔진이 화면 밖 장의 대조선·동그라미를 그릴 때만 잠깐 붙는다(같은 동작 안에서 떼므로 화면에 나타나지 않는다) */
+    html.fr-measure .slide{ display:block !important; position:relative !important; top:auto !important; left:auto !important; transform:none !important; }

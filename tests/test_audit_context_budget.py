@@ -120,3 +120,20 @@ class SubagentObservationTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class T9WorkerStoplineTests(unittest.TestCase):
+    """T9 — 호출 80회 또는 평균 창 200k를 넘는 워커만 경고, 호출 0은 미판정(2026-10-01)."""
+
+    def test_hits_calls_or_context_and_counts_undetermined(self):
+        from scripts.audit_context_budget import t9_hits
+        subs = [
+            {"calls": 81, "avg_ctx": 50_000, "desc": "호출 초과"},
+            {"calls": 20, "avg_ctx": 200_001, "desc": "창 초과"},
+            {"calls": 80, "avg_ctx": 200_000, "desc": "경계 — 통과"},
+            {"calls": 0, "avg_ctx": 0, "desc": "로그만 있음"},
+        ]
+        judged, hits, undet = t9_hits(subs)
+        self.assertEqual(len(judged), 3)
+        self.assertEqual({h["desc"] for h in hits}, {"호출 초과", "창 초과"})
+        self.assertEqual(undet, 1)

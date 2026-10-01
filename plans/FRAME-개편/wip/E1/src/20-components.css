@@ -1,0 +1,160 @@
+
+    /* ── 5. 터미널 창(D32 요청문) — kit .terminal-dark 계약 위에 자리·글자만 얹는다. 복사 버튼은 `>` 없이 요청문만 복사한다 ── */
+    .term{ width:100%; }
+    .term.terminal-dark{ border-radius:20px; box-shadow:var(--sh-pop); }
+    .term .terminal-bar b{ font-family:"Pretendard",sans-serif; font-size:17px; font-weight:700; }
+    .term .copy{ margin-left:auto; font-family:"Pretendard",sans-serif; font-size:var(--fs-eyebrow); font-weight:800; line-height:1; color:var(--white);
+      background:none; border:0; padding:6px 2px; cursor:pointer; text-decoration:underline; text-underline-offset:4px; }
+    .term .terminal-copy{ padding:16px 24px 20px; }
+    .term .terminal-copy p{ margin:0; font-size:var(--fs-box-desc); line-height:1.6; overflow-wrap:anywhere; }
+    .term.lg .terminal-copy p{ font-size:var(--fs-body); line-height:1.65; }
+    /* 긴 요청문 변형(E4-W1 제안 · 메인 반영) — dense: 글자 17px(터미널은 폰트 하한 제외) · fill: 남은 높이를 채우고 안에서 스크롤, 복사는 전문 */
+    .term.dense .terminal-copy{ padding:12px 20px 14px; }
+    .term.dense .terminal-copy p{ font-size:17px; line-height:1.5; }
+    .term.xdense .terminal-copy p{ font-size:15px; line-height:1.4; }   /* 한 화면 긴 요청문 전용(M2-2) — 터미널은 글자 하한 밖, 참가자는 복사해 쓴다 */
+    .term.fill{ flex:1 1 auto; min-height:0; display:flex; flex-direction:column; }
+    .term.fill .terminal-copy{ flex:1 1 auto; min-height:0; overflow-y:auto; }
+    .term .terminal-copy p + p{ margin-top:10px; }
+    .term .terminal-copy.sep{ border-bottom:1.5px solid var(--gray-700); }   /* 한 창 안의 구간 구분 — 위쪽 테두리는 박스로 세어지므로 아래쪽 선만 쓴다 */
+    .term .tc-tag{ display:inline-block; min-width:1.6em; margin-right:8px; font-family:"Pretendard",sans-serif; font-size:17px; font-weight:800; color:var(--mint); }
+    .term .terminal-copy .ph{ color:var(--mint-soft); font-weight:700; }   /* 〈 〉 자리표시 */
+    .term .copy:focus-visible{ outline:2px dashed var(--white); outline-offset:2px; }
+    /* 펼침 칸 안의 터미널 — .reveal-body p의 글자색 · 여백이 터미널 글자를 덮지 않게(W1 제안 반영) */
+    .reveal .reveal-body .term .terminal-copy p{ color:inherit; margin:0; }
+    .reveal .reveal-body .term .terminal-copy p + p{ margin-top:10px; }
+
+    /* ── 6. 창 모형(D27 공통 화면 모형 · 파일 창) — 흰 카드 + 약한 그림자. 테두리 선을 쓰지 않는다. 창 하나가 박스 1개 ── */
+    .win{ background:var(--t-card); border-radius:20px; box-shadow:var(--sh-card); overflow:hidden; text-align:left; }
+    .win-bar{ display:flex; align-items:center; gap:9px; min-height:46px; padding:0 20px; }
+    .win-bar i{ flex:0 0 auto; width:10px; height:10px; border-radius:50%; background:var(--gray-400); opacity:.45; }
+    .win-bar b{ margin-left:8px; font-size:17px; font-weight:700; color:var(--gray-700); line-height:1.3; }
+    .win-body{ padding:4px 22px 20px; }
+    .win-url{ position:relative; z-index:0; flex:1 1 auto; margin-left:10px; padding:5px 16px; font-size:17px; font-weight:700; color:var(--gray-700); }
+    .win-url::before{ content:""; position:absolute; inset:0; z-index:-1; border-radius:999px; background:var(--blue-soft); }
+    .win-side{ position:relative; z-index:0; float:left; width:200px; padding:14px 18px; min-height:100%; }
+    .win-side::before{ content:""; position:absolute; inset:0; z-index:-1; background:var(--blue-panel); }
+    .win-side p{ margin:0 0 8px; font-size:17px; font-weight:700; color:var(--gray-700); }
+    .win.app .win-body{ padding:0; display:grid; grid-template-columns:200px 1fr; }
+    .win.app .win-side{ float:none; }
+    .win-main{ padding:14px 22px 18px; }
+    .drop{ margin:10px 0; padding:22px 16px; text-align:center; font-size:var(--fs-body); font-weight:700; color:var(--gray-700); outline:3px dashed var(--mint); outline-offset:-3px; border-radius:var(--r-md); }
+    .slide.pr .drop{ outline-color:var(--pr-fill); color:var(--ink); }
+    /* 코드·파일 줄 — 줄 번호 + 본문. 파일 이름 · 경로 · 트리도 본문 글꼴이다(고정폭은 터미널 안에만). .hit 줄은 왼쪽 띠로 표시한다 */
+    .code{ margin:0; font-family:inherit; font-size:var(--fs-box-desc); font-weight:600; line-height:1.6; color:var(--gray-700); white-space:pre-wrap; word-break:keep-all; overflow-wrap:anywhere; font-variant-numeric:tabular-nums; }
+    .code .l{ display:block; position:relative; min-height:1.6em; padding-left:54px; }
+    .code .l > i{ position:absolute; left:0; width:38px; text-align:right; font-style:normal; color:var(--gray-400); }
+    .code .l.ref{ color:var(--gray-700); font-weight:600; }
+    .code .l.hit, .code .l.on{ color:var(--ink); font-weight:800; }
+    .code .l.hit::before, .code .l.on::before{ content:""; position:absolute; left:-12px; top:3px; bottom:3px; width:6px; border-radius:3px; background:var(--mint); }
+    .slide.pr .code .l.hit::before, .slide.pr .code .l.on::before{ background:var(--pr-fill); }
+    .slide.pr .code .l.on{ color:var(--pr-deep); }
+    .code .l.gap{ color:var(--gray-400); }
+    .code .dir{ font-weight:800; color:var(--ink); }
+    .bubble{ display:block; width:fit-content; max-width:100%; margin:8px 0; padding:10px 18px; border-radius:var(--r-lg); background:var(--blue-soft); font-size:var(--fs-box-desc); line-height:1.45; color:var(--ink); }
+    .bubble.me{ margin-left:auto; background:var(--mint-soft); }
+    .slide.pr .bubble, .slide.pr .bubble.me{ background:var(--pr-soft); }
+    /* 박스 없는 대화 — 작은 라벨 + 글 */
+    .say{ position:relative; margin:0 0 18px; padding:0; }
+    .say .who{ display:block; margin:0 0 2px; font-size:16px; font-weight:800; line-height:1.4; letter-spacing:.04em; color:var(--gray-400); }
+    .say.me .who{ color:var(--mint-deep); }
+    .slide.pr .say.me .who{ color:var(--pr-deep); }
+    .say p{ margin:0; font-size:var(--fs-body); font-weight:600; line-height:1.55; color:var(--ink); }
+
+    /* ── 7. 표 — 선 없이 머리 글자 색 + 줄 사이 여백. 고른 행은 옅은 면(inset 그림자)으로 표시한다 ── */
+    .ftbl{ width:100%; border-collapse:separate; border-spacing:0; }
+    .ftbl th, .ftbl td{ text-align:left; padding:10px 12px; font-size:var(--fs-box-desc); font-weight:500; line-height:1.3; color:var(--ink); vertical-align:middle; }
+    .ftbl th{ font-size:var(--fs-table); font-weight:800; color:var(--mint-deep); white-space:nowrap; }
+    .slide.pr .ftbl th{ color:var(--pr-deep); }
+    .ftbl td.src{ font-size:18px; font-weight:600; color:var(--gray-700); white-space:nowrap; }
+    .ftbl .x{ color:var(--red); font-weight:800; }
+    .ftbl tr[data-pick]{ cursor:pointer; }
+    .ftbl tr[data-pick]:focus-visible{ outline:2px dashed var(--ink); outline-offset:-2px; }
+    .ftbl tr[data-pick] td{ color:var(--gray-700); }
+    .ftbl tr[data-pick].on td{ color:var(--ink); font-weight:700; box-shadow:inset 0 0 0 100px var(--blue-soft); }
+    .slide.pr .ftbl tr[data-pick].on td{ box-shadow:inset 0 0 0 100px var(--pr-soft); }
+    .ftbl tr[data-pick].on td:first-child{ border-radius:12px 0 0 12px; }
+    .ftbl tr[data-pick].on td:last-child{ border-radius:0 12px 12px 0; }
+    .slide.pr .ftbl tr[data-pick].on td.due{ color:var(--pr-deep); font-weight:800; }
+    .ftbl-cap{ display:block; margin:0 0 4px; font-size:var(--fs-caption); font-weight:700; color:var(--gray-700); }
+
+    /* ── 8. 조작 요소 ── */
+    /* 단계 목록(큰 번호 세로 흐름 · 박스 없음) — data-w="todo": 눌러서 완료 표시 */
+    .flow{ margin:0; padding:0; list-style:none; display:flex; flex-direction:column; gap:12px; }
+    .flow button{ display:grid; grid-template-columns:58px 1fr; gap:14px; align-items:start; width:100%; text-align:left; font:inherit; color:var(--ink); background:none; border:0; padding:4px 0; cursor:pointer; }
+    .flow .n{ font-size:44px; font-weight:800; line-height:1; letter-spacing:-.03em; font-variant-numeric:tabular-nums; color:var(--pr-deep); text-align:center; }   /* 표식 ④ 단계 번호 */
+    .flow .t{ font-size:var(--fs-body); font-weight:500; line-height:1.5; padding-top:4px; }
+    .flow .t b{ font-weight:800; color:var(--pr-deep); }
+    .flow .done .n{ color:var(--mint-deep); }
+    .flow .done .t{ color:var(--gray-700); }
+    .flow .t .tip{ display:block; margin-top:2px; font-size:var(--fs-box-desc); font-weight:500; color:var(--gray-700); }
+    .ck-list{ margin:0; padding:0; list-style:none; display:flex; flex-direction:column; gap:10px; }
+    .ck-list button{ display:grid; grid-template-columns:34px 1fr; gap:10px; align-items:start; width:100%; text-align:left; font:inherit; font-size:var(--fs-body); font-weight:600; line-height:1.45; color:var(--ink); background:none; border:0; padding:2px 0; cursor:pointer; }
+    .ck-list .bx{ font-size:26px; line-height:1.1; color:var(--pr-deep); }
+    .ck-list .done .t{ color:var(--gray-700); }
+    .slide:not(.pr) .ck-list .bx{ color:var(--blue); }
+    /* 타이머(표식 ③) — 분 값은 data-min. 눌러서 시작·멈춤, 0이 되면 끝 */
+    .timer{ display:inline-flex; align-items:baseline; gap:14px; font:inherit; color:var(--ink); background:none; border:0; padding:0; cursor:pointer; }
+    .timer .tv{ font-size:56px; font-weight:800; line-height:1; letter-spacing:-.03em; font-variant-numeric:tabular-nums; color:var(--pr-deep); }
+    .timer .tl{ font-size:var(--fs-box-desc); font-weight:800; color:var(--gray-700); }
+    .slide:not(.pr) .timer .tv{ color:var(--blue); }
+    .timer.end .tv{ color:var(--red); }
+    .timer.big .tv{ font-size:120px; }
+    .timer.sm{ gap:10px; }                                   /* 제목 줄 오른쪽의 작은 타이머(W1 제안 반영) */
+    .timer.sm .tv{ font-size:34px; }
+    .timer.sm .tl{ font-size:17px; }
+    /* [펼침] — 강사가 눌러서 공개하는 칸. <details>라 Enter/Space로 열린다. 닫힌 동안은 본문을 배치에서 뺀다 */
+    .reveal{ position:relative; padding:0; }
+    .reveal::before{ content:none; }
+    .reveal:not([open]) > .reveal-body{ display:none; }    /* 이 줄이 없으면 Chromium이 닫힌 details 자식의 배치를 유지해 감사가 겹침 · 가려짐으로 잡는다(W2 실측) */
+    .reveal > summary{ position:relative; z-index:0; display:inline-flex; align-items:baseline; gap:10px; padding:8px 20px; list-style:none; cursor:pointer; font-size:var(--fs-lead); font-weight:800; line-height:1.3; color:var(--pr-deep, var(--blue)); }
+    .reveal > summary::after{ content:""; position:absolute; inset:0; z-index:-1; border-radius:999px; background:var(--pr-soft, var(--blue-soft)); }
+    .reveal > summary::-webkit-details-marker{ display:none; }
+    .reveal > summary::before{ content:"▸"; font-size:var(--fs-eyebrow); }
+    .reveal[open] > summary::before{ content:"▾"; }
+    .reveal > summary .hint{ font-size:var(--fs-box-desc); font-weight:500; color:var(--gray-700); }
+    .reveal[open] > summary .hint{ display:none; }
+    .reveal .reveal-body{ margin-top:10px; }
+    .reveal .reveal-body p{ margin:0 0 8px; font-size:var(--fs-body); line-height:1.55; color:var(--ink); }
+    /* 위에 겹쳐 뜨는 펼침 패널 — .reveal.pop. 폭은 style="--rw:740px". 흰 카드 + 그림자, 열린 동안만 자리를 차지한다 */
+    .reveal.pop > .reveal-body{ position:absolute; left:0; top:100%; z-index:6; margin-top:10px; width:var(--rw,700px); padding:16px 20px; background:var(--t-card); border-radius:22px; box-shadow:var(--sh-pop); }
+    /* 돌아가기·이동 버튼 — 주홍 면 알약(허용 박스 1) */
+    .back{ font:inherit; font-size:var(--fs-body); font-weight:800; color:var(--ink); background:var(--pr-fill); border:0; border-radius:var(--r-pill); padding:12px 30px; cursor:pointer; transition:transform .3s cubic-bezier(.2,.8,.2,1); }
+    .slide:not(.pr) .back{ background:var(--mint); }
+    .back:hover, .back:focus-visible{ transform:translateY(-3px); }
+    .back[hidden]{ display:none; }
+
+    /* ── 9. 개념 위젯 공통(data-w="toggle|step|pick") — 조작 전 초기 상태는 마크업에 적힌 그대로 읽힌다 ── */
+    [data-show]:not(.is-on){ display:none; }
+    [data-pick], [data-set], [data-toggle], [data-next], [data-prev], [data-reset]{ cursor:pointer; }
+    .wg-row{ display:flex; align-items:center; flex-wrap:wrap; gap:12px 22px; margin-top:10px; }
+    .wg-row.top{ margin:0 0 14px; }          /* 조작 줄을 그림 위에 둔다 — 상태가 바뀌어 그림 높이가 달라져도 버튼 자리가 그대로다 */
+    .wg-btn{ font:inherit; font-size:var(--fs-box-desc); font-weight:800; color:var(--white); background:var(--blue); border:0; border-radius:var(--r-pill); padding:9px 22px; cursor:pointer; transition:transform .25s cubic-bezier(.2,.8,.2,1); }
+    .wg-btn:hover, .wg-btn:focus-visible{ transform:translateY(-2px); }
+    .wg-btn[aria-pressed="true"]{ background:var(--mint); color:var(--on-mint); }
+    .wg-link{ font:inherit; font-size:var(--fs-box-desc); font-weight:800; color:var(--blue); background:none; border:0; padding:4px 0; cursor:pointer; text-decoration:underline; text-underline-offset:4px; }
+    .wg-link[aria-pressed="true"]{ color:var(--ink); }
+    .wg-read{ margin:10px 0 0; min-height:2.9em; font-size:var(--fs-body); font-weight:700; line-height:1.45; color:var(--ink); }
+    .wg-hint{ font-size:var(--fs-box-desc); font-weight:600; line-height:1.4; color:var(--gray-700); }
+
+    /* ── 10. SVG 시각 자료 어휘 — viewBox 폭을 그려지는 폭에 가깝게 잡아(배율 ≥ 1) SVG 안 px가 실제 px가 되게 한다 ── */
+    .v-ax{ font:700 17px/1 "Pretendard",sans-serif; fill:var(--gray-700); }
+    .v-val{ font:800 26px/1 "Pretendard",sans-serif; fill:var(--ink); }
+    .v-txt{ font:700 20px/1.3 "Pretendard",sans-serif; fill:var(--ink); }
+    .v-txt-lg{ font:800 24px/1.3 "Pretendard",sans-serif; fill:var(--ink); }
+    .v-note{ font:600 17px/1.3 "Pretendard",sans-serif; fill:var(--gray-700); }
+    .v-mono{ font:700 18px/1.3 var(--font-mono); fill:var(--ink); }
+    .v-axis{ stroke:var(--gray-400); stroke-width:2; fill:none; }
+    .v-base{ stroke:var(--gray-700); stroke-width:2.5; stroke-dasharray:8 6; fill:none; }
+    .v-edge{ stroke:var(--gray-700); stroke-width:2.5; fill:none; stroke-linecap:round; stroke-linejoin:round; }
+    .v-edge.hi{ stroke:var(--blue); stroke-width:3; }
+    .v-bar{ fill:var(--periwinkle); transition:fill .25s; }
+    .v-bar.hi, .v-bar.is-on, [data-pick].on > .v-bar{ fill:var(--blue); }
+    .v-bar.warn, [data-pick].on.warn > .v-bar{ fill:var(--coral); }
+    .v-node{ fill:var(--white); stroke:var(--gray-400); stroke-width:2; transition:fill .25s, stroke .25s; }
+    .v-node.is-on{ fill:var(--mint); stroke:var(--blue); }
+    .v-node.hi{ fill:var(--blue-soft); stroke:var(--blue); }
+    /* 위젯 표시 클래스 — data-from·data-hl 대상에 붙인다: w-in(켜지면 나타남) · w-dim(켜지면 흐려짐) */
+    .w-in, [data-from]{ opacity:0; transition:opacity .25s; }
+    .w-in.is-on, [data-from].is-on{ opacity:1; }
+    .w-dim{ transition:opacity .25s; }
+    .w-dim.is-on{ opacity:.3; }

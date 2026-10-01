@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FRAME 디자인 수정 방향</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+<link rel="stylesheet" href="/kit/themes/frame/tokens.css">
+<style>
+  body{ margin:0; background:#DDE5EA; font-family:Pretendard,"Malgun Gothic",sans-serif; color:var(--ink); }
+  .wrap{ max-width:1400px; margin:0 auto; padding:32px 24px 80px; }
+  h1{ font-size:32px; letter-spacing:-.02em; margin:0 0 6px; }
+  .lead{ color:var(--gray-700); font-size:17px; margin:0 0 20px; line-height:1.6; }
+  h2.sec{ font-size:22px; margin:44px 0 14px; letter-spacing:-.01em; }
+  .card{ background:#fff; border-radius:18px; padding:22px 28px; }
+  .diag{ display:grid; grid-template-columns:1fr 1fr; gap:14px 28px; }
+  .diag div, .card li, .card p{ font-size:15.5px; line-height:1.6; }
+  .diag b{ display:block; font-size:16.5px; margin-bottom:2px; }
+  .fix{ color:var(--mint-deep); font-weight:600; }
+  .refs{ display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
+  .ref img{ width:100%; border-radius:10px; display:block; box-shadow:0 4px 16px rgba(8,50,61,.12); }
+  .ref p{ margin:8px 2px 0; font-size:14.5px; line-height:1.55; color:var(--gray-700); }
+  .ref p b{ color:var(--ink); }
+  .ref .src{ font-size:12.5px; font-weight:700; color:var(--gray-400); letter-spacing:.03em; }
+  .no{ display:grid; grid-template-columns:1fr 1fr; gap:10px 28px; }
+  .row{ display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:34px; }
+  .cap{ font-size:14px; font-weight:700; color:var(--gray-400); margin:0 0 8px; letter-spacing:.02em; }
+  .cap.new{ color:var(--mint-deep); }
+  .frame{ width:100%; aspect-ratio:16/9; border-radius:10px; overflow:hidden; box-shadow:0 6px 24px rgba(8,50,61,.12); background:#fff; position:relative; }
+  .frame img{ width:100%; height:100%; display:block; }
+  .frame .scaler{ position:absolute; left:0; top:0; width:1280px; height:720px; transform-origin:0 0; }
+  .note{ font-size:14.5px; color:var(--gray-700); line-height:1.6; margin-top:10px; }
+  .montage{ width:100%; border-radius:12px; display:block; box-shadow:0 6px 24px rgba(8,50,61,.12); }
+  .single{ max-width:760px; }
+
+  /* ════════════ 수정안 슬라이드 (HON 계열 참고) ════════════ */
+  .ns{ width:1280px; height:720px; box-sizing:border-box; padding:64px 72px 48px; background:#FFFFFF; position:relative; overflow:hidden;
+       font-family:Pretendard,sans-serif; color:var(--ink); word-break:keep-all; }
+  .ns.pr{ --pr-deep:#B8431F; --pr-fill:#FF8A5C; --pr-soft:#FFEDE5; }
+  .ns .kick{ font-size:16px; font-weight:700; color:var(--mint-deep); letter-spacing:.01em; }
+  .ns.pr .kick{ color:var(--pr-deep); }
+  .ns h2{ margin:10px 0 0; font-size:48px; line-height:1.25; font-weight:700; letter-spacing:-.04em; }
+  .ns h2 em{ font-style:normal; color:var(--mint-deep); }
+  .ns.pr h2 em{ color:var(--pr-deep); }
+  .ns .sub{ margin:14px 0 0; font-size:23px; line-height:1.6; color:var(--gray-400); font-weight:500; }
+  /* 머리 대신 바닥 한 줄 — 왼쪽 로고, 오른쪽 쪽 번호 */
+  .ns .ft{ position:absolute; left:72px; right:48px; bottom:26px; display:flex; align-items:center; gap:8px; font-size:13px; font-weight:600; color:var(--gray-400); }
+  .ns .ft svg{ width:18px; height:18px; } .ns .ft .pn{ margin-left:auto; }
+  .ns.dark .ft{ color:#9FC3CC; }
+  /* 오른쪽 끝까지 닿는 옅은 면 */
+  .bleed{ position:absolute; top:0; right:0; bottom:0; background:var(--mint-soft); }
+  .ns.pr .bleed{ background:var(--pr-soft); }
+  .pill{ display:inline-flex; align-items:center; gap:8px; font-size:17px; font-weight:700; border-radius:999px; padding:7px 16px; background:var(--navy); color:#fff; }
+  .pill.m{ background:var(--mint); color:var(--on-mint); }
+  .ic{ width:64px; height:64px; border-radius:50%; background:#fff; display:grid; place-items:center; flex:none; box-shadow:0 4px 12px rgba(8,50,61,.10); }
+  .ic svg{ width:32px; height:32px; stroke:var(--blue); fill:none; stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round; }
+  .ns.pr .ic svg{ stroke:var(--pr-deep); }
+
+  /* 1. O-01 — 단계 기둥(HON 「기본은 갖추고」) + 민트 띠(HON 「관찰→근거→한계→질문」) */
+  .o1-cols{ position:relative; display:grid; grid-template-columns:repeat(4,1fr); gap:28px; margin-top:44px; }
+  .o1-cols::before{ content:""; position:absolute; left:6px; right:0; top:6px; height:2px; background:var(--line); }
+  .o1-c .dot{ width:14px; height:14px; border-radius:50%; background:var(--blue); position:relative; }
+  .o1-c .t{ font-size:27px; font-weight:700; margin:18px 0 12px; letter-spacing:-.02em; }
+  .o1-c .t small{ display:block; font-size:15px; color:var(--gray-400); font-weight:700; margin-bottom:2px; }
+  .o1-c ul{ margin:0; padding:0; list-style:none; font-size:21px; line-height:1.7; color:var(--gray-700); }
+  .o1-c li::before{ content:""; display:inline-block; width:9px; height:9px; border-radius:50%; background:var(--mint-deep); margin:0 10px 3px 0; }
+  .o1-c li.a::before{ background:var(--mint); }
+  .o1-band{ position:absolute; left:0; right:0; bottom:74px; height:132px; background:var(--mint-soft); display:flex; align-items:center; gap:26px; padding:0 72px; }
+  .o1-band .lb{ font-size:21px; color:var(--gray-700); font-weight:600; margin-right:10px; }
+  .o1-band .ar{ color:var(--mint-deep); font-size:24px; font-weight:800; }
+
+  /* 2. C-14 — 오른쪽 끝까지 민트 면 + 순환 */
+  .c14 .bleed{ left:640px; }
+  .c14 .def{ width:500px; margin-top:34px; font-size:25px; line-height:1.65; font-weight:500; }
+  .c14 .def b{ color:var(--mint-deep); }
+  .c14 .ana{ width:500px; margin-top:28px; display:flex; gap:16px; align-items:flex-start; }
+  .c14 .ana .k{ font-size:15px; font-weight:800; color:var(--gray-400); }
+  .c14 .ana p{ margin:4px 0 0; font-size:21px; line-height:1.6; color:var(--gray-700); }
+  .c14 .fig{ position:absolute; left:680px; top:70px; width:540px; height:560px; }
+  .c14 .ring{ position:absolute; inset:60px 70px; border-radius:50%; border:3px dashed #9FD8DE; }
+  .c14 .node{ position:absolute; display:flex; flex-direction:column; align-items:center; gap:10px; }
+  .c14 .node .ic{ width:96px; height:96px; } .c14 .node .ic svg{ width:44px; height:44px; }
+  .c14 .node span{ font-size:24px; font-weight:700; }
+  .c14 .n1{ left:50%; top:0; transform:translateX(-50%); } .c14 .n2{ right:0; top:50%; transform:translateY(-60%); }
+  .c14 .n3{ left:50%; bottom:0; transform:translateX(-50%); } .c14 .n4{ left:0; top:50%; transform:translateY(-60%); }
+  .c14 .mid{ position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); text-align:center; }
+
+  /* 3. P1-1 — 왼쪽 큰 숫자, 오른쪽 끝까지 살구 면 위 전후 모형 */
+  .p11 .bleed{ left:600px; }
+  .p11 .big{ margin-top:30px; font-size:112px; font-weight:800; letter-spacing:-.05em; line-height:1; color:var(--pr-deep); }
+  .p11 .big span{ font-size:44px; color:var(--ink); letter-spacing:-.03em; }
+  .p11 .facts{ margin-top:34px; display:grid; gap:14px; width:480px; }
+  .p11 .f{ display:grid; grid-template-columns:88px 1fr; font-size:21px; line-height:1.5; }
+  .p11 .f .k{ color:var(--gray-400); font-weight:700; font-size:17px; padding-top:3px; }
+  .p11 .f code{ font-family:Pretendard; font-weight:700; color:var(--pr-deep); }
+  .memo{ position:absolute; width:170px; height:124px; background:#fff; border-radius:14px; box-shadow:0 6px 18px rgba(61,20,5,.10); padding:14px 16px; box-sizing:border-box; }
+  .memo .fn{ font-size:15px; font-weight:700; color:var(--pr-deep); }
+  .memo i{ display:block; height:7px; border-radius:4px; background:#F4E4DC; margin-top:11px; } .memo i:nth-child(3){ width:78%; } .memo i:nth-child(4){ width:55%; }
+  .m1{ left:650px; top:92px; transform:rotate(-6deg); } .m2{ left:840px; top:74px; transform:rotate(5deg); }
+  .m3{ left:676px; top:236px; transform:rotate(4deg); } .m4{ left:872px; top:226px; transform:rotate(-4deg); }
+  .p11 .down{ position:absolute; left:880px; top:372px; width:44px; height:44px; }
+  .p11 .down svg{ width:44px; height:44px; stroke:var(--pr-deep); fill:none; stroke-width:3; stroke-linecap:round; stroke-linejoin:round; }
+  .tbl{ position:absolute; left:640px; right:40px; top:430px; background:#fff; border-radius:22px; box-shadow:0 10px 30px rgba(61,20,5,.12); padding:16px 20px; }
+  .tbl .tt{ font-size:17px; font-weight:800; margin-bottom:8px; }
+  .tbl .hr, .tbl .r{ display:grid; grid-template-columns:1.7fr .8fr .8fr 1.1fr; gap:8px; font-size:16px; padding:7px 8px; }
+  .tbl .hr{ font-weight:800; color:var(--pr-deep); background:var(--pr-soft); border-radius:10px; }
+  .tbl .r.g i{ display:block; height:8px; border-radius:4px; background:#F4E4DC; margin-top:6px; }
+
+  /* 4. B2-0 — 어두운 간지 + 여정 지도(HON 「지금 어디까지 왔나요」) */
+  .ns.dark{ background:var(--navy); color:#fff; }
+  .ns.dark .kick{ color:var(--mint); }
+  .ns.dark h2 em{ color:var(--mint); }
+  .jr{ position:absolute; left:0; right:0; bottom:0; height:330px; }
+  .jr .st{ position:absolute; display:flex; flex-direction:column; align-items:center; gap:10px; transform:translate(-50%,-50%); }
+  .jr .st .d{ width:22px; height:22px; border-radius:50%; background:var(--navy); border:4px solid #9FC3CC; }
+  .jr .st.done .d{ background:#9FC3CC; }
+  .jr .st.now .d{ width:40px; height:40px; background:var(--mint); border:0; box-shadow:0 0 0 10px rgba(125,224,236,.25); }
+  .jr .st span{ font-size:22px; font-weight:700; color:#CFE7EC; }
+  .jr .st.now span{ color:#fff; }
+  .jr .tag{ position:absolute; transform:translate(-50%,-100%); font-size:16px; font-weight:800; color:var(--on-mint); background:var(--mint); border-radius:999px; padding:6px 14px; }
+
+  /* 5. C-23 — 큰 숫자(HON 「4명 중 1명」 · PULSE 「73.4%」) */
+  .c23 .num{ margin-top:18px; font-size:170px; font-weight:800; letter-spacing:-.05em; line-height:1; color:var(--blue); }
+  .c23 .num small{ font-size:60px; }
+  .c23 .lbl{ font-size:26px; font-weight:700; margin-top:8px; }
+  .c23 .cond{ margin-top:10px; font-size:19px; color:var(--gray-400); line-height:1.6; }
+  .c23 .bleed{ left:720px; }
+  .c23 .pair{ position:absolute; left:780px; top:130px; width:420px; }
+  .c23 .bar{ margin-bottom:34px; } .c23 .bar .k{ font-size:19px; font-weight:700; color:var(--gray-700); margin-bottom:10px; }
+  .c23 .bar .t{ height:44px; border-radius:12px; background:#fff; position:relative; overflow:hidden; }
+  .c23 .bar .t i{ position:absolute; left:0; top:0; bottom:0; border-radius:12px; background:var(--blue); }
+  .c23 .bar .v{ font-size:22px; font-weight:800; margin-top:8px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>FRAME 디자인 — 「딱딱하다」 원인과 수정 방향 (Figma 레퍼런스 반영)</h1>
+  <p class="lead">현재 덱을 훑어 원인을 여덟 가지로 나눴고, 보내 주신 Figma 두 벌에서 가져올 것과 가져오지 않을 것을 골랐습니다. 아래 수정안 다섯 장은 같은 초안 문구로 다시 그린 것입니다. 이 방향이 맞으면 셸(공통 CSS)을 바꿔 82장에 한 번에 적용하고, 장별 그림은 이 문법으로 다시 그립니다.</p>
+
+  <h2 class="sec">현재 덱 12장</h2>
+  <img class="montage" src="dd/_montage.png" alt="현재 덱 12장 썸네일">
+
+  <h2 class="sec">원인 — 왜 딱딱해 보이나</h2>
+  <div class="card diag">
+    <div><b>① 매 장 같은 머리</b>로고 + 화면 폭 가로선 + 오른쪽 작은 라벨이 82장에 똑같이 붙어 서식 문서처럼 보인다. <span class="fix">→ 머리를 없애고 바닥 한 줄(작은 로고 · 쪽 번호)만.</span></div>
+    <div><b>② 선으로만 그렸다</b>가로선 · 정의/비유 세로선 · 1px 표 테두리 · 선 아이콘. 면이 없다. <span class="fix">→ 오른쪽 끝까지 닿는 옅은 색 면, 흰 카드에 약한 그림자.</span></div>
+    <div><b>③ 강조가 사각 형광펜</b>키워드에 직사각 면이 깔려 형광펜 칠한 문서 같다. <span class="fix">→ 키워드는 색 글자(민트 딥 · 주홍 딥)로만.</span></div>
+    <div><b>④ 제목이 한 줄 · 굵기로만 위계</b>제목 800 굵기 한 줄, 라벨은 작은 굵은 글씨, 본문 22px 빽빽. <span class="fix">→ 제목 48/700 두 줄까지, 눈썹은 색 글자 한 줄, 보조 설명은 회색 23px.</span></div>
+    <div><b>⑤ 2단 문서 구도</b>왼쪽 글 · 오른쪽 작은 도식, 아래는 빈 채로. <span class="fix">→ 오른쪽 절반을 면으로 채우고 그림을 크게, 숫자가 요점이면 숫자를 170px로.</span></div>
+    <div><b>⑥ 색이 한 가지</b>페트롤 글자 + 회색. 아쿠아는 형광펜 몇 곳뿐. <span class="fix">→ 민트 면 · 살구 면을 넓게, 간지는 어두운 페트롤 전면.</span></div>
+    <div><b>⑦ 고정폭 글꼴 과다</b>파일 이름 · 타이머 · 칩까지 D2Coding. <span class="fix">→ 고정폭은 터미널 안에만.</span></div>
+    <div><b>⑧ 실습 표식이 무겁다</b>왼쪽 굵은 주홍 띠 + 주홍 숫자. <span class="fix">→ 띠 대신 살구 면 + 주홍 눈썹 「실습 1 · 회의 메모」 + 타이머 · 단계 번호(색 하나에 기대지 않는 표식은 유지).</span></div>
+  </div>
+
+  <h2 class="sec">Figma 레퍼런스 — 가져올 것</h2>
+  <div class="refs">
+    <div class="ref"><img src="dd/ref_hon_split.png" alt=""><p><span class="src">HON</span><br><b>오른쪽 끝까지 닿는 옅은 면 + 큰 숫자.</b> 왼쪽은 제목과 짧은 설명, 오른쪽 면에 그림 · 막대. 우리 개념 장 · 실습 목표 장의 기본 구도로 쓴다.</p></div>
+    <div class="ref"><img src="dd/ref_hon_toggle.png" alt=""><p><span class="src">HON</span><br><b>제목 두 줄 · 키워드는 색 글자.</b> 사각 형광펜 대신. 오른쪽 UI 모형(토글)은 T-01 「맡길 일과 직접 할 일」, C-17 「승인」에 그대로 맞는다.</p></div>
+    <div class="ref"><img src="dd/ref_hon_journey.png" alt=""><p><span class="src">HON</span><br><b>여정 지도 「지금 어디까지 왔나요」.</b> 메인 과제 기획 → 제작 → 공개 → 개선의 현재 위치 — 간지 · 슬롯 · 복귀 장에 쓴다.</p></div>
+    <div class="ref"><img src="dd/ref_hon_steps.png" alt=""><p><span class="src">HON</span><br><b>점이 달린 단계 기둥.</b> 가로선 위 점 + 기둥별 점 목록. O-01 시간표 · 블록 구성.</p></div>
+    <div class="ref"><img src="dd/ref_hon_band.png" alt=""><p><span class="src">HON</span><br><b>화면 폭 민트 띠 위 알약 단계.</b> 짧은 순서(4단계 이하)를 박스 없이 보여 준다 — 실습 ② 진행 장의 단계.</p></div>
+    <div class="ref"><img src="dd/ref_hon_cards.png" alt=""><p><span class="src">HON</span><br><b>파스텔 카드 네 장 + 작은 아이콘.</b> 테두리 없는 색 면. 허브 카드 · 마무리 점검표.</p></div>
+    <div class="ref"><img src="dd/ref_hon_bignum.png" alt=""><p><span class="src">HON</span><br><b>어두운 전면 + 초대형 숫자.</b> 숫자가 요점인 장(C-23 26% · C-24)과 블록 간지.</p></div>
+    <div class="ref"><img src="dd/ref_pulse_dotmatrix.png" alt=""><p><span class="src">PULSE</span><br><b>도트 매트릭스 비율.</b> 100칸 중 몇 칸 — 비율 수치를 막대 대신 셀 수 있게.</p></div>
+    <div class="ref"><img src="dd/ref_pulse_donut.png" alt=""><p><span class="src">PULSE</span><br><b>도넛 두 개 나란히.</b> 두 비율을 대비할 때. (조사 수치가 있는 장에만 — 없는 수치를 만들지 않는다.)</p></div>
+  </div>
+
+  <h2 class="sec">가져오지 않을 것</h2>
+  <div class="card no">
+    <p><b>어두운 배경을 기본으로 쓰는 것</b>(PULSE) — 4시간 화면 공유에서 눈이 피로하고 참가자 앱 화면(밝음)과 오가며 명암이 튄다. 어두운 면은 간지 · 숫자 장에만.</p>
+    <p><b>실사 사진 · 3D 도로 · 휴대폰 목업 몽타주</b>(PULSE) — 우리에게 그런 이미지 자산이 없고, 계획서가 코드 시각화 우선 · 외부 이미지 0을 정했다. 화면 모형은 CSS 공통 모형으로 그린다.</p>
+    <p><b>캐릭터 일러스트</b>(HON) — 따로 그린 자산이라 옮길 수 없다. 대신 색 원 안의 두 톤 아이콘으로 친근함을 낸다.</p>
+    <p><b>「~해요」 말투</b>(HON) — 이 과목의 문체 기준은 합니다체 담백한 설명문이다(말투 린트). 모양만 가져오고 문장은 초안 그대로.</p>
+  </div>
+
+  <h2 class="sec">수정안 1 — 운영 장 O-01 「오늘 4시간의 흐름」</h2>
+  <div class="row">
+    <div><p class="cap">현재</p><div class="frame"><img src="dd/_main_O-01.png" alt=""></div></div>
+    <div><p class="cap new">수정안 · 단계 기둥 + 민트 띠</p><div class="frame"><div class="scaler">
+      <section class="ns">
+        <div class="kick">운영 · 시간표</div>
+        <h2>오늘 <em>4시간</em>의 흐름</h2>
+        <p class="sub">블록 4개 · 블록마다 50분 · 사이에 10분 휴식 3번</p>
+        <div class="o1-cols">
+          <div class="o1-c"><div class="dot"></div><div class="t"><small>블록 1</small>50분</div><ul><li>개념 설명</li><li>자료 받기</li><li>문항 쓰기</li></ul></div>
+          <div class="o1-c"><div class="dot"></div><div class="t"><small>블록 2</small>50분</div><ul><li>결과 글</li><li class="a">에이전트 실습 A(15분)</li><li>점검 화면 만들기</li></ul></div>
+          <div class="o1-c"><div class="dot"></div><div class="t"><small>블록 3</small>50분</div><ul><li>화면 수정</li><li class="a">에이전트 실습 B(15분)</li><li>공개 주소 만들기</li></ul></div>
+          <div class="o1-c"><div class="dot"></div><div class="t"><small>블록 4</small>50분</div><ul><li>서로 써 보기</li><li>고치기</li><li>시연 · 마무리</li></ul></div>
+        </div>
+        <div class="o1-band"><span class="lb">메인 과제 하나를 네 단계로 완성합니다</span>
+          <span class="pill">기획</span><span class="ar">→</span><span class="pill">제작</span><span class="ar">→</span><span class="pill">공개</span><span class="ar">→</span><span class="pill m">개선</span></div>
+        <div class="ft"><svg viewBox="0 0 48 48"><path d="M8 18 V8 H18 M30 8 H40 V18 M40 30 V40 H30 M18 40 H8 V30" fill="none" stroke="currentColor" stroke-width="5"/><rect x="19" y="19" width="10" height="10" fill="var(--mint)"/></svg>FRAME · 블록 1<span class="pn">2 / 82</span></div>
+      </section></div></div>
+      <p class="note">머리 가로선 · 각진 막대를 없애고, HON의 점 기둥으로 블록 넷을, 화면 폭 민트 띠로 네 단계를 보여 준다.</p>
+    </div>
+  </div>
+
+  <h2 class="sec">수정안 2 — 개념 장 C-14 「에이전트」</h2>
+  <div class="row">
+    <div><p class="cap">현재</p><div class="frame"><img src="dd/_main_C-14.png" alt=""></div></div>
+    <div><p class="cap new">수정안 · 오른쪽 끝까지 민트 면 + 아이콘 순환</p><div class="frame"><div class="scaler">
+      <section class="ns c14">
+        <div class="bleed"></div>
+        <div class="kick">개념 · 에이전트</div>
+        <h2><em>에이전트</em> — 읽기 · 계획 ·<br>실행 · 확인을 되풀이하는<br>프로그램</h2>
+        <div class="def">에이전트는 요청을 받으면 파일을 읽고, 계획을 세우고, 실행하고, 결과를 확인하는 과정을 <b>되풀이하도록</b> 만든 AI 프로그램입니다.</div>
+        <div class="ana"><div><div class="k">비유</div><p>세탁기 코스와 같습니다. 한 번 누르면 불림 · 세탁 · 헹굼 · 탈수를 차례로 하고 단계마다 상태를 확인합니다.</p></div></div>
+        <div class="fig">
+          <div class="ring"></div>
+          <div class="node n1"><div class="ic"><svg viewBox="0 0 24 24"><path d="M4 5h6a3 3 0 0 1 3 3v11a2 2 0 0 0-2-2H4z"/><path d="M20 5h-6a3 3 0 0 0-3 3v11a2 2 0 0 1 2-2h7z"/></svg></div><span>읽기</span></div>
+          <div class="node n2"><div class="ic"><svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h3"/></svg></div><span>계획</span></div>
+          <div class="node n3"><div class="ic"><svg viewBox="0 0 24 24"><path d="M7 4l12 8-12 8z"/></svg></div><span>실행</span></div>
+          <div class="node n4"><div class="ic"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg></div><span>확인</span></div>
+          <div class="mid"><span class="pill">되풀이</span></div>
+        </div>
+        <div class="ft"><svg viewBox="0 0 48 48"><path d="M8 18 V8 H18 M30 8 H40 V18 M40 30 V40 H30 M18 40 H8 V30" fill="none" stroke="currentColor" stroke-width="5"/><rect x="19" y="19" width="10" height="10" fill="var(--mint)"/></svg>FRAME · 블록 1<span class="pn">14 / 82</span></div>
+      </section></div></div>
+      <p class="note">키워드는 색 글자, 정의 · 비유는 세로선 없이 글자 위계로. 오른쪽 절반은 민트 면 위 흰 원 아이콘 네 개가 도는 순환도.</p>
+    </div>
+  </div>
+
+  <h2 class="sec">수정안 3 — 실습 장 P1-1 「흩어진 메모 4개를 할 일 표 하나로 모읍니다」</h2>
+  <div class="row">
+    <div><p class="cap">현재</p><div class="frame"><img src="dd/_main_P1-1.png" alt=""></div></div>
+    <div><p class="cap new">수정안 · 큰 숫자 + 살구 면 위 전후 모형</p><div class="frame"><div class="scaler">
+      <section class="ns pr p11">
+        <div class="bleed"></div>
+        <div class="kick">실습 1 · 회의 메모 · ① 목표</div>
+        <h2>흩어진 메모 4개를<br><em>할 일 표 하나</em>로<br>모읍니다</h2>
+        <div class="big">4<span> → </span>1</div>
+        <div class="facts">
+          <div class="f"><span class="k">만들 것</span><span><code>할일표.md</code> — 할 일 · 담당 · 기한 · 근거 네 열</span></div>
+          <div class="f"><span class="k">준비물</span><span>01_회의메모 폴더 · 요청문</span></div>
+          <div class="f"><span class="k">시간</span><span>15분 — 진행, 확인, 고치기 순서</span></div>
+        </div>
+        <div class="memo m1"><div class="fn">회의_0312.md</div><i></i><i></i><i></i></div>
+        <div class="memo m2"><div class="fn">통화_0314.txt</div><i></i><i></i><i></i></div>
+        <div class="memo m3"><div class="fn">회의_0319.md</div><i></i><i></i><i></i></div>
+        <div class="memo m4"><div class="fn">메모_기타.txt</div><i></i><i></i><i></i></div>
+        <div class="down"><svg viewBox="0 0 24 24"><path d="M12 4v15M6 13l6 6 6-6"/></svg></div>
+        <div class="tbl"><div class="tt">할일표.md</div>
+          <div class="hr"><span>할 일</span><span>담당</span><span>기한</span><span>근거</span></div>
+          <div class="r"><span>명함 재주문 파일 전달</span><span>정하윤</span><span>3월 25일</span><span>메모_기타.txt 5</span></div>
+          <div class="r g"><i></i><i></i><i></i><i></i></div></div>
+        <div class="ft"><svg viewBox="0 0 48 48"><path d="M8 18 V8 H18 M30 8 H40 V18 M40 30 V40 H30 M18 40 H8 V30" fill="none" stroke="currentColor" stroke-width="5"/><rect x="19" y="19" width="10" height="10" fill="var(--mint)"/></svg>FRAME · 에이전트 실습<span class="pn">67 / 82</span></div>
+      </section></div></div>
+      <p class="note">왼쪽 굵은 주홍 띠를 없애고 살구 면으로 실습을 구분한다. 「4 → 1」 큰 숫자가 목표를 한눈에, 오른쪽은 흩어진 종이 메모 → 그림자 있는 표 카드. 「4 → 1」은 새로 만든 요약 표기다 — 적용 전에 초안에 한 줄 추가할지 정한다.</p>
+    </div>
+  </div>
+
+  <h2 class="sec">수정안 4 — 블록 간지 B2-0 (현재 없음 → 여정 지도)</h2>
+  <div class="single"><div class="frame"><div class="scaler">
+    <section class="ns dark">
+      <div class="kick">블록 2</div>
+      <h2>결과 글과 화면</h2>
+      <p class="sub" style="color:#9FC3CC">메인 과제 — 지금 어디까지 왔는지</p>
+      <div class="jr">
+        <svg viewBox="0 0 1280 330" style="position:absolute;inset:0;width:100%;height:100%"><path d="M-10 250 C 200 250, 260 150, 420 170 S 700 250, 860 170 S 1120 90, 1300 110" fill="none" stroke="#1F5563" stroke-width="44" stroke-linecap="round"/><path d="M-10 250 C 200 250, 260 150, 420 170 S 700 250, 860 170" fill="none" stroke="#2E7B8C" stroke-width="44" stroke-linecap="round"/></svg>
+        <div class="st done" style="left:170px;top:230px"><div class="d"></div><span>기획</span></div>
+        <div class="st now" style="left:500px;top:192px"><div class="d"></div><span>제작</span></div>
+        <div class="tag" style="left:500px;top:150px">지금 · 블록 2</div>
+        <div class="st" style="left:860px;top:170px"><div class="d"></div><span>공개</span></div>
+        <div class="st" style="left:1140px;top:106px"><div class="d"></div><span>개선</span></div>
+      </div>
+      <div class="ft"><svg viewBox="0 0 48 48"><path d="M8 18 V8 H18 M30 8 H40 V18 M40 30 V40 H30 M18 40 H8 V30" fill="none" stroke="currentColor" stroke-width="5"/><rect x="19" y="19" width="10" height="10" fill="var(--mint)"/></svg>FRAME<span class="pn">19 / 82</span></div>
+    </section></div></div>
+    <p class="note">HON 「지금 어디까지 왔나요」를 간지 세 장 · 슬롯 · 복귀 장의 공통 그림으로. 어두운 전면은 간지에만.</p>
+  </div>
+
+  <h2 class="sec">수정안 5 — 숫자 장 C-23 「자동화 편향」</h2>
+  <div class="single"><div class="frame"><div class="scaler">
+    <section class="ns c23">
+      <div class="bleed"></div>
+      <div class="kick">개념 · 자동화 편향</div>
+      <h2><em>자동화 편향</em> — 기계의 답을<br>확인 없이 받아들이는 경향</h2>
+      <div class="num">26<small>%</small></div>
+      <div class="lbl">의사결정 지원 도구를 쓴 쪽에서<br>틀린 조언을 따를 가능성이 늘어난 정도(상대 비교)</div>
+      <div class="cond">2012년 · 임상 의사결정 지원 연구 74개 검토 · 메타분석 4건</div>
+      <div class="pair">
+        <div class="k" style="font-size:18px;font-weight:700;color:var(--gray-400);margin-bottom:10px">비유 — 맞춤법 검사기</div>
+        <div style="background:#fff;border-radius:20px;box-shadow:0 8px 24px rgba(8,50,61,.10);padding:20px 22px;font-size:22px;line-height:1.7">
+          회의는 다음 주 <span style="border-bottom:3px wavy var(--red)">화요일</span>에 합니다.<br>
+          발표 자료는 금요일<span style="background:var(--coral-soft);border-radius:6px;padding:0 4px">깨지</span> 보냅니다.
+          <div style="margin-top:12px;font-size:17px;font-weight:700;color:var(--mint-deep)">✓ 빨간 줄 없음 — 「틀린 곳이 없다」고 여기기 쉽다</div>
+        </div>
+        <div class="bar" style="margin-top:40px"><div class="k">맞았던 결정이 틀린 결정으로 바뀐 비율</div>
+          <div class="t"><i style="left:6%;width:5%;background:var(--blue)"></i></div><div class="v">6~11%</div></div>
+      </div>
+      <div class="ft"><svg viewBox="0 0 48 48"><path d="M8 18 V8 H18 M30 8 H40 V18 M40 30 V40 H30 M18 40 H8 V30" fill="none" stroke="currentColor" stroke-width="5"/><rect x="19" y="19" width="10" height="10" fill="var(--mint)"/></svg>FRAME · 블록 4<span class="pn">53 / 82</span></div>
+    </section></div></div>
+    <p class="note">숫자가 요점인 장은 숫자를 170px로. 오른쪽 면은 조건과 비교 막대. (막대 모양은 예시 — 적용 때 검증값만으로 다시 그린다.)</p>
+  </div>
+
+  <h2 class="sec">바뀌는 규칙 (승인되면 셸 · 계획서 · 워커 지시에 반영)</h2>
+  <ol class="card">
+    <li><b>머리 없앰</b> — 로고 · 가로선 · 오른쪽 라벨 대신 바닥 한 줄(작은 로고 · 「FRAME · 블록 N」 · 쪽 번호).</li>
+    <li><b>강조</b> — 사각 형광펜(`mk` · `mk-solid`)을 색 글자로 바꾼다. 형광펜은 장당 1곳 이하로 남긴다(강조 7종 표 개정).</li>
+    <li><b>면</b> — 박스 절제 규칙(§16-2)은 「테두리 선 박스」 금지로 좁히고, 오른쪽 끝까지 닿는 옅은 면 · 흰 카드 + 약한 그림자를 허용한다.</li>
+    <li><b>구도</b> — 기본 구도는 「왼쪽 제목 · 짧은 설명 / 오른쪽 절반 면 위 그림」. 숫자 장 · 간지는 어두운 전면.</li>
+    <li><b>실습 표식</b> — 왼쪽 주홍 띠 대신 살구 면 + 주홍 눈썹 + 타이머 · 단계 번호.</li>
+    <li><b>글자</b> — 제목 48/700 두 줄까지, 눈썹은 색 글자, 보조 설명 회색 23px, 고정폭은 터미널 안에만.</li>
+    <li><b>말투 · 문구</b> — 그대로(합니다체 · 초안 원문).</li>
+  </ol>
+</div>
+<script>
+  function fit(){ document.querySelectorAll('.frame .scaler').forEach(function(s){ s.style.transform='scale('+(s.parentElement.clientWidth/1280)+')'; }); }
+  addEventListener('resize', fit); fit();
+</script>
+</body>
+</html>

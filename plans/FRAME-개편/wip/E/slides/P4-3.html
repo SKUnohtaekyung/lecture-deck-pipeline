@@ -1,0 +1,44 @@
+<!-- ============ P4-3 · ③ 확인 — 위쪽 대조(보고서 줄 ↔ 표 행) + 아래 모래 띠 체크 목록 ============ -->
+<section class="slide pr f-check" data-slide="P4-3">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 18 V8 H18 M30 8 H40 V18 M40 30 V40 H30 M18 40 H8 V30" fill="none" style="stroke:var(--blue)" stroke-width="5"/><rect x="19" y="19" width="10" height="10" style="fill:var(--mint)"/></svg><span class="s-brand">FRAME</span>
+    <span class="s-line"></span><div class="s-team">에이전트 실습</div>
+  </header>
+  <p class="kick">실습 4 · 주간 보고서 · ③ 확인</p>
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:28px">
+    <h2 class="s-title">보고서의 <b class="kw">합계</b>를 표에서 다시 계산합니다</h2>
+    <button class="timer" type="button" data-min="3" aria-label="타이머 3분 — 누르면 시작, 다시 누르면 멈춤"><span class="tv">03:00</span><span class="tl">▶ 시작</span></button>
+  </div>
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:24px;margin-top:14px">
+    <p class="lede" style="margin:0">보고서의 숫자를 표의 행에서 직접 더해 맞춥니다.</p>
+    <details class="reveal pop" style="--rw:640px"><summary><span>막힐 때</span></summary><div class="reveal-body" style="left:auto;right:0"><p>엑셀에서는 세 셀을 선택하면 아래쪽 상태 표시줄에 합계가 보입니다. 다른 프로그램이면 계산기에 세 금액을 입력합니다.</p></div></details>
+  </div>
+  <div class="ck-top" data-w="trace" style="flex:none;grid-template-columns:480px 1fr;column-gap:96px;margin:22px 0 0">
+    <div class="win file">
+      <div class="win-bar"><i></i><i></i><i></i><b>주간보고서.md</b><svg viewBox="0 0 48 48" aria-hidden="true" style="margin-left:auto;width:26px;height:26px;fill:none;stroke:var(--pr-deep);stroke-width:4;stroke-linecap:round"><circle cx="21" cy="21" r="13"/><path d="M31 31l12 12"/></svg></div>
+      <div class="win-body"><pre class="code"><span class="l ref on" data-line="mon"><i>·</i>3월 23일(월) | 3,690,000</span><span class="l ref" data-line="tue"><i>·</i>3월 24일(화) | 3,170,000</span></pre></div>
+    </div>
+    <div>
+      <span class="ftbl-cap" style="font-size:18px">매출.xlsx</span>
+      <table class="ftbl">
+        <thead><tr><th>일자</th><th>금액(원)</th><th aria-hidden="true"></th></tr></thead>
+        <tbody>
+          <tr data-pick="mon" tabindex="0" role="button" aria-pressed="true" class="on"><td class="src">3월 23일</td><td><svg viewBox="0 0 236 22" aria-hidden="true" style="display:block;width:236px;height:22px"><g style="fill:none;stroke:var(--pr-line);stroke-width:8;stroke-linecap:round"><path d="M4 11h58M94 11h50M176 11h56"/></g><g style="fill:none;stroke:var(--gray-400);stroke-width:2.6;stroke-linecap:round"><path d="M70 11h16M78 3v16M152 11h16M160 3v16"/></g></svg></td><td><svg viewBox="0 0 64 28" aria-hidden="true" style="display:block;width:64px;height:28px"><g style="fill:none;stroke:var(--gray-400);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round"><circle cx="14" cy="14" r="11"/><path d="M8.5 14.5l4 4 7-8"/><circle cx="50" cy="14" r="11"/><path d="M44.5 8.5l11 11M55.5 8.5l-11 11"/></g></svg></td></tr>
+          <tr data-pick="tue" tabindex="0" role="button" aria-pressed="false"><td class="src">3월 24일</td><td><svg viewBox="0 0 236 22" aria-hidden="true" style="display:block;width:236px;height:22px"><g style="fill:none;stroke:var(--pr-line);stroke-width:8;stroke-linecap:round"><path d="M4 11h52M94 11h60M176 11h40"/></g><g style="fill:none;stroke:var(--gray-400);stroke-width:2.6;stroke-linecap:round"><path d="M70 11h16M78 3v16M162 11h16M170 3v16"/></g></svg></td><td><svg viewBox="0 0 64 28" aria-hidden="true" style="display:block;width:64px;height:28px"><g style="fill:none;stroke:var(--gray-400);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round"><circle cx="14" cy="14" r="11"/><path d="M8.5 14.5l4 4 7-8"/><circle cx="50" cy="14" r="11"/><path d="M44.5 8.5l11 11M55.5 8.5l-11 11"/></g></svg></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <p class="keep" style="margin-top:16px"><b>계산 기준</b>: <span class="em-tag">매출.xlsx</span>의 금액(원) 열</p>
+  <div class="band" style="--bb:54px;--bh:212px">
+    <div style="width:100%">
+      <ul class="ck-list" data-w="todo">
+        <li><button type="button" aria-pressed="false"><span class="bx" aria-hidden="true">☐</span><span class="t">일자별 매출 다섯 개를 각각 <span class="em-tag">매출.xlsx</span>의 그날 행 세 개를 더한 값과 맞춥니다</span></button></li>
+        <li><button type="button" aria-pressed="false"><span class="bx" aria-hidden="true">☐</span><span class="t">맞지 않는 요일이 있는지 봅니다</span></button></li>
+        <li><button type="button" aria-pressed="false"><span class="bx" aria-hidden="true">☐</span><span class="t"><b class="kw">주간 합계</b>를 <span class="em-tag">매출.xlsx</span>의 금액(원) 열 전체를 더한 값과 맞춥니다</span></button></li>
+      </ul>
+      <p class="keep" style="margin-top:12px">다른 곳을 찾지 못했으면 <span class="path">이어가기/04_주간보고서/주간보고서.md</span>를 열어 같은 방법으로 대조합니다.</p>
+    </div>
+  </div>
+  <svg class="ck-link" viewBox="0 0 1280 720" aria-hidden="true" style="z-index:2"><path class="a-draw" pathLength="100" d=""/><circle r="6" cx="-20" cy="-20"/><circle r="6" cx="-20" cy="-20"/></svg>
+</section>
