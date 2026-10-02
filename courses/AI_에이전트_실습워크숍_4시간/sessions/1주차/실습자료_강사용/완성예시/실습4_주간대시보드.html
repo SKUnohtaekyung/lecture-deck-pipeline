@@ -1,0 +1,637 @@
+<!doctype html>
+<html lang="ko" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>하루상점 주간 경영 대시보드 — 12주차</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js"></script>
+<style>
+:root{ --bg:#F6F7F9; --card:#FFFFFF; --ink:#111827; --sub:#6B7280; --line:#E5E7EB; --main:#0E4A5A; --main-soft:#E3EEF1; --point:#FF8A5C; --point-soft:#FFEDE5; --good:#16A34A; --bad:#DC2626; --warn:#D97706; --shadow:0 1px 2px rgba(16,24,40,.04),0 8px 24px rgba(16,24,40,.06); }
+html[data-theme="dark"]{ --bg:#0B1418; --card:#132229; --ink:#EEF4F6; --sub:#9FB3BA; --line:#22363E; --main:#7DE0EC; --main-soft:#17323B; --point:#FF9D76; --point-soft:#3A2218; --good:#4ADE80; --bad:#F87171; --warn:#FBBF24; --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.35); }
+*{ box-sizing:border-box; }
+html,body{ margin:0; }
+body{ background:var(--bg); color:var(--ink); font-family:"Pretendard",-apple-system,"Malgun Gothic",sans-serif; font-size:15px; line-height:1.55; font-variant-numeric:tabular-nums; -webkit-font-smoothing:antialiased; }
+.wrap{ max-width:1440px; margin:0 auto; padding:28px 32px 56px; }
+header.top{ display:flex; align-items:flex-end; justify-content:space-between; gap:24px; flex-wrap:wrap; margin-bottom:22px; }
+.eyebrow{ font-size:13px; font-weight:700; letter-spacing:.04em; color:var(--point); }
+h1{ margin:2px 0 4px; font-size:28px; font-weight:800; letter-spacing:-.02em; }
+.meta{ color:var(--sub); font-size:14px; }
+.tools{ display:flex; gap:10px; flex-wrap:wrap; }
+button.btn{ font:inherit; font-size:14px; font-weight:700; padding:10px 16px; border-radius:12px; border:0; cursor:pointer; background:var(--card); color:var(--ink); box-shadow:var(--shadow); transition:transform .15s; }
+button.btn:hover{ transform:translateY(-1px); }
+button.btn.primary{ background:var(--main); color:var(--card); }
+html[data-theme="dark"] button.btn.primary{ color:#0B1418; }
+.grid{ display:grid; gap:18px; }
+.kpis{ grid-template-columns:repeat(5,1fr); margin-bottom:18px; }
+.card{ background:var(--card); border-radius:16px; box-shadow:var(--shadow); padding:22px 24px; min-width:0; }
+.card h2{ margin:0 0 14px; font-size:18px; font-weight:800; letter-spacing:-.01em; display:flex; align-items:center; justify-content:space-between; gap:12px; }
+.card h2 small{ font-size:13px; font-weight:600; color:var(--sub); }
+.kpi .lab{ font-size:13px; font-weight:700; color:var(--sub); }
+.kpi .val{ margin-top:6px; font-size:34px; font-weight:800; letter-spacing:-.03em; line-height:1.1; }
+.kpi .val small{ font-size:16px; font-weight:700; margin-left:2px; }
+.kpi .delta{ margin-top:8px; font-size:13px; font-weight:700; }
+.up{ color:var(--good); } .down{ color:var(--bad); } .flat{ color:var(--sub); }
+.bar{ height:8px; border-radius:99px; background:var(--main-soft); overflow:hidden; margin-top:10px; }
+.bar > i{ display:block; height:100%; border-radius:99px; background:var(--point); }
+.chip{ display:inline-flex; align-items:center; gap:6px; padding:3px 10px; border-radius:99px; font-size:12px; font-weight:700; background:var(--main-soft); color:var(--main); white-space:nowrap; }
+.chip.p{ background:var(--point-soft); color:var(--point); } .chip.r{ background:rgba(220,38,38,.12); color:var(--bad); } .chip.g{ background:rgba(22,163,74,.12); color:var(--good); } .chip.n{ background:var(--bg); color:var(--sub); }
+table{ width:100%; border-collapse:collapse; }
+th{ text-align:left; font-size:12px; font-weight:700; color:var(--sub); padding:6px 8px; }
+td{ padding:9px 8px; border-top:1px solid var(--line); font-size:14px; vertical-align:top; }
+.src{ font-size:12px; color:var(--sub); }
+.ai{ background:linear-gradient(135deg,var(--main-soft),var(--card)); }
+.ai ol{ margin:0; padding-left:20px; display:grid; gap:10px; }
+.ai li b{ color:var(--main); }
+input.search, select.sel{ font:inherit; font-size:14px; padding:9px 14px; border-radius:12px; border:1px solid var(--line); background:var(--card); color:var(--ink); outline:none; }
+input.search:focus, select.sel:focus{ border-color:var(--main); }
+.canvas{ position:relative; height:280px; }
+.muted{ color:var(--sub); }
+@media (max-width:1100px){ .kpis{ grid-template-columns:repeat(2,1fr); } .cols-2,.cols-3,.cols-23{ grid-template-columns:1fr !important; } }
+@media print{ body{ background:#fff; } .tools,.noprint{ display:none !important; } .card{ box-shadow:none; border:1px solid #ddd; break-inside:avoid; } }
+
+.cols-2{ grid-template-columns:1.25fr 1fr; } .cols-3{ grid-template-columns:.8fr 1.3fr 1fr; } .cols-23{ grid-template-columns:1fr 1.1fr 1.2fr; }
+.stock li{ display:flex; align-items:center; justify-content:space-between; gap:10px; padding:10px 0; border-top:1px solid var(--line); }
+.stock ul, .tl{ list-style:none; margin:0; padding:0; }
+.stock li:first-child{ border-top:0; }
+.tl li{ display:grid; grid-template-columns:64px 1fr; gap:12px; padding:9px 0; border-top:1px solid var(--line); }
+.tl li:first-child{ border-top:0; }
+.tl b{ color:var(--main); font-size:13px; }
+.sec{ margin-top:18px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div>
+      <div class="eyebrow">하루상점 · 주간 경영 대시보드</div>
+      <h1>12주차 — 라이브방송이 끌어올린 한 주</h1>
+      <div class="meta">대상 기간 2026-03-23(월) ~ 03-29(일) · 만든 날 2026-03-30 · 자료 매출.xlsx · 주간메모.docx · 지난주보고.pptx</div>
+    </div>
+    <div class="tools">
+      <button class="btn primary" id="pptBtn">PPT로 내려받기</button>
+      <button class="btn" onclick="window.print()">인쇄 · PDF</button>
+      <button class="btn" id="themeBtn">어둡게</button>
+    </div>
+  </header>
+
+  <section class="grid kpis" id="kpis"></section>
+
+  <section class="grid cols-2">
+    <div class="card"><h2>12주 매출 추세 <small>막대: 주간 매출 · 점선: 이번 주 목표</small></h2><div class="canvas"><canvas id="cWeek"></canvas></div></div>
+    <div class="card"><h2>이번 주 일별 매출 <small>채널별로 쌓음</small></h2><div class="canvas"><canvas id="cDay"></canvas></div></div>
+  </section>
+
+  <section class="grid cols-3 sec">
+    <div class="card"><h2>채널별 비중</h2><div class="canvas" style="height:240px"><canvas id="cCh"></canvas></div><div id="chNote" class="src" style="margin-top:10px"></div></div>
+    <div class="card"><h2>상품 순위 상위 10 <small>이번 주 매출</small></h2><div class="canvas" style="height:300px"><canvas id="cProd"></canvas></div></div>
+    <div class="card stock"><h2>재고 경고 <small>안전재고보다 적음</small></h2><ul id="stock"></ul><div class="src" style="margin-top:8px">근거: 매출.xlsx · 상품목록 시트</div></div>
+  </section>
+
+  <section class="grid cols-23 sec">
+    <div class="card ai"><h2>AI가 읽은 요점</h2><ol id="ai"></ol><div class="src" style="margin-top:12px">원인 설명은 주간메모를 근거로 한 추정입니다.</div></div>
+    <div class="card"><h2>이번 주 이슈 <small>주간메모.docx</small></h2><ul class="tl" id="issues"></ul></div>
+    <div class="card"><h2>다음 주 할 일 <small>13주차</small></h2><table><thead><tr><th>할 일</th><th>담당</th><th>기한</th></tr></thead><tbody id="todo"></tbody></table>
+      <h2 style="margin-top:20px">확인 필요</h2><ul class="tl" id="check"></ul></div>
+  </section>
+</div>
+<script>
+const D = {
+ "weekly": [
+  {
+   "week": 1,
+   "start": "2026-01-05",
+   "end": "2026-01-11",
+   "orders": 69,
+   "sales": 2159800,
+   "aov": 31301,
+   "new": 41,
+   "re": 28,
+   "ad": 904000
+  },
+  {
+   "week": 2,
+   "start": "2026-01-12",
+   "end": "2026-01-18",
+   "orders": 71,
+   "sales": 2418700,
+   "aov": 34066,
+   "new": 42,
+   "re": 29,
+   "ad": 920000
+  },
+  {
+   "week": 3,
+   "start": "2026-01-19",
+   "end": "2026-01-25",
+   "orders": 76,
+   "sales": 2561000,
+   "aov": 33697,
+   "new": 38,
+   "re": 38,
+   "ad": 1007000
+  },
+  {
+   "week": 4,
+   "start": "2026-01-26",
+   "end": "2026-02-01",
+   "orders": 76,
+   "sales": 2362400,
+   "aov": 31084,
+   "new": 43,
+   "re": 33,
+   "ad": 1053000
+  },
+  {
+   "week": 5,
+   "start": "2026-02-02",
+   "end": "2026-02-08",
+   "orders": 75,
+   "sales": 2216000,
+   "aov": 29546,
+   "new": 43,
+   "re": 32,
+   "ad": 1052000
+  },
+  {
+   "week": 6,
+   "start": "2026-02-09",
+   "end": "2026-02-15",
+   "orders": 76,
+   "sales": 2022500,
+   "aov": 26611,
+   "new": 48,
+   "re": 28,
+   "ad": 1448000
+  },
+  {
+   "week": 7,
+   "start": "2026-02-16",
+   "end": "2026-02-22",
+   "orders": 64,
+   "sales": 1995900,
+   "aov": 31185,
+   "new": 39,
+   "re": 25,
+   "ad": 1162000
+  },
+  {
+   "week": 8,
+   "start": "2026-02-23",
+   "end": "2026-03-01",
+   "orders": 81,
+   "sales": 2788200,
+   "aov": 34422,
+   "new": 41,
+   "re": 40,
+   "ad": 1095000
+  },
+  {
+   "week": 9,
+   "start": "2026-03-02",
+   "end": "2026-03-08",
+   "orders": 104,
+   "sales": 3138700,
+   "aov": 30179,
+   "new": 57,
+   "re": 47,
+   "ad": 1535000
+  },
+  {
+   "week": 10,
+   "start": "2026-03-09",
+   "end": "2026-03-15",
+   "orders": 98,
+   "sales": 2582600,
+   "aov": 26353,
+   "new": 62,
+   "re": 36,
+   "ad": 1186000
+  },
+  {
+   "week": 11,
+   "start": "2026-03-16",
+   "end": "2026-03-22",
+   "orders": 99,
+   "sales": 3080700,
+   "aov": 31118,
+   "new": 53,
+   "re": 46,
+   "ad": 1209000
+  },
+  {
+   "week": 12,
+   "start": "2026-03-23",
+   "end": "2026-03-29",
+   "orders": 148,
+   "sales": 3950600,
+   "aov": 26693,
+   "new": 82,
+   "re": 66,
+   "ad": 1743000
+  }
+ ],
+ "daily12": [
+  {
+   "date": "2026-03-23",
+   "dow": "월",
+   "orders": 15,
+   "sales": 509500,
+   "자사몰": 298600,
+   "오픈마켓": 210900,
+   "소셜커머스": 0,
+   "라이브방송": 0
+  },
+  {
+   "date": "2026-03-24",
+   "dow": "화",
+   "orders": 13,
+   "sales": 346700,
+   "자사몰": 149100,
+   "오픈마켓": 55100,
+   "소셜커머스": 142500,
+   "라이브방송": 0
+  },
+  {
+   "date": "2026-03-25",
+   "dow": "수",
+   "orders": 61,
+   "sales": 1515400,
+   "자사몰": 254900,
+   "오픈마켓": 180700,
+   "소셜커머스": 22900,
+   "라이브방송": 1056900
+  },
+  {
+   "date": "2026-03-26",
+   "dow": "목",
+   "orders": 15,
+   "sales": 425900,
+   "자사몰": 205400,
+   "오픈마켓": 116500,
+   "소셜커머스": 104000,
+   "라이브방송": 0
+  },
+  {
+   "date": "2026-03-27",
+   "dow": "금",
+   "orders": 12,
+   "sales": 243100,
+   "자사몰": 172300,
+   "오픈마켓": 70800,
+   "소셜커머스": 0,
+   "라이브방송": 0
+  },
+  {
+   "date": "2026-03-28",
+   "dow": "토",
+   "orders": 15,
+   "sales": 466700,
+   "자사몰": 239800,
+   "오픈마켓": 205700,
+   "소셜커머스": 21200,
+   "라이브방송": 0
+  },
+  {
+   "date": "2026-03-29",
+   "dow": "일",
+   "orders": 17,
+   "sales": 443300,
+   "자사몰": 221600,
+   "오픈마켓": 221700,
+   "소셜커머스": 0,
+   "라이브방송": 0
+  }
+ ],
+ "channel12": {
+  "오픈마켓": 1061400,
+  "자사몰": 1541700,
+  "소셜커머스": 290600,
+  "라이브방송": 1056900
+ },
+ "channel11": {
+  "자사몰": 1784000,
+  "소셜커머스": 335900,
+  "오픈마켓": 960800
+ },
+ "product12": {
+  "극세사 러그 100x150": 191900,
+  "샤워기 필터 헤드": 133900,
+  "규조토 컵받침 4p": 38600,
+  "실리콘 조리도구 5종 세트": 394700,
+  "접이식 식기 건조대": 207300,
+  "서랍 칸막이 정리함 6p": 161000,
+  "데스크 매트 80x40": 69800,
+  "틈새 이동식 수납장": 151600,
+  "스테인리스 텀블러 500ml": 578100,
+  "모니터 받침대": 266300,
+  "무선 LED 무드등": 234900,
+  "아로마 디퓨저 200ml": 460900,
+  "대나무 칫솔 4p": 53700,
+  "밀폐 유리 반찬통 4p": 389500,
+  "옷걸이 논슬립 30p": 175300,
+  "암막 커튼 2장": 128700,
+  "케이블 정리 클립 10p": 71800,
+  "리빙박스 60L 3p": 100100,
+  "규조토 발매트": 51700,
+  "무타공 욕실 선반": 90800
+ },
+ "category12": {
+  "리빙": 1016400,
+  "욕실": 330100,
+  "주방": 1608200,
+  "수납": 588000,
+  "데스크": 407900
+ },
+ "region12": {
+  "서울": 1018900,
+  "대전": 271800,
+  "인천": 517000,
+  "부산": 430300,
+  "경기": 758300,
+  "광주": 123200,
+  "기타": 674300,
+  "대구": 156800
+ },
+ "products": [
+  {
+   "code": "K-101",
+   "name": "스테인리스 텀블러 500ml",
+   "cat": "주방",
+   "price": 18900,
+   "cost": 8200,
+   "stock": 0,
+   "safe": 30
+  },
+  {
+   "code": "K-102",
+   "name": "실리콘 조리도구 5종 세트",
+   "cat": "주방",
+   "price": 24900,
+   "cost": 11000,
+   "stock": 122,
+   "safe": 30
+  },
+  {
+   "code": "K-103",
+   "name": "밀폐 유리 반찬통 4p",
+   "cat": "주방",
+   "price": 21900,
+   "cost": 10400,
+   "stock": 18,
+   "safe": 30
+  },
+  {
+   "code": "K-104",
+   "name": "규조토 컵받침 4p",
+   "cat": "주방",
+   "price": 9900,
+   "cost": 3600,
+   "stock": 175,
+   "safe": 15
+  },
+  {
+   "code": "K-105",
+   "name": "접이식 식기 건조대",
+   "cat": "주방",
+   "price": 32900,
+   "cost": 15800,
+   "stock": 162,
+   "safe": 15
+  },
+  {
+   "code": "B-201",
+   "name": "규조토 발매트",
+   "cat": "욕실",
+   "price": 19900,
+   "cost": 8900,
+   "stock": 154,
+   "safe": 30
+  },
+  {
+   "code": "B-202",
+   "name": "대나무 칫솔 4p",
+   "cat": "욕실",
+   "price": 7900,
+   "cost": 2700,
+   "stock": 113,
+   "safe": 30
+  },
+  {
+   "code": "B-203",
+   "name": "샤워기 필터 헤드",
+   "cat": "욕실",
+   "price": 27900,
+   "cost": 12500,
+   "stock": 183,
+   "safe": 15
+  },
+  {
+   "code": "B-204",
+   "name": "무타공 욕실 선반",
+   "cat": "욕실",
+   "price": 23900,
+   "cost": 10900,
+   "stock": 227,
+   "safe": 15
+  },
+  {
+   "code": "S-301",
+   "name": "리빙박스 60L 3p",
+   "cat": "수납",
+   "price": 29900,
+   "cost": 14900,
+   "stock": 156,
+   "safe": 30
+  },
+  {
+   "code": "S-302",
+   "name": "옷걸이 논슬립 30p",
+   "cat": "수납",
+   "price": 12900,
+   "cost": 5100,
+   "stock": 223,
+   "safe": 30
+  },
+  {
+   "code": "S-303",
+   "name": "서랍 칸막이 정리함 6p",
+   "cat": "수납",
+   "price": 14900,
+   "cost": 6200,
+   "stock": 202,
+   "safe": 30
+  },
+  {
+   "code": "S-304",
+   "name": "틈새 이동식 수납장",
+   "cat": "수납",
+   "price": 39900,
+   "cost": 20100,
+   "stock": 9,
+   "safe": 15
+  },
+  {
+   "code": "L-401",
+   "name": "극세사 러그 100x150",
+   "cat": "리빙",
+   "price": 34900,
+   "cost": 17300,
+   "stock": 108,
+   "safe": 15
+  },
+  {
+   "code": "L-402",
+   "name": "암막 커튼 2장",
+   "cat": "리빙",
+   "price": 42900,
+   "cost": 21500,
+   "stock": 182,
+   "safe": 15
+  },
+  {
+   "code": "L-403",
+   "name": "무선 LED 무드등",
+   "cat": "리빙",
+   "price": 16900,
+   "cost": 7300,
+   "stock": 232,
+   "safe": 30
+  },
+  {
+   "code": "L-404",
+   "name": "아로마 디퓨저 200ml",
+   "cat": "리빙",
+   "price": 15900,
+   "cost": 5900,
+   "stock": 22,
+   "safe": 30
+  },
+  {
+   "code": "D-501",
+   "name": "모니터 받침대",
+   "cat": "데스크",
+   "price": 26900,
+   "cost": 12900,
+   "stock": 216,
+   "safe": 15
+  },
+  {
+   "code": "D-502",
+   "name": "케이블 정리 클립 10p",
+   "cat": "데스크",
+   "price": 6900,
+   "cost": 2100,
+   "stock": 83,
+   "safe": 30
+  },
+  {
+   "code": "D-503",
+   "name": "데스크 매트 80x40",
+   "cat": "데스크",
+   "price": 17900,
+   "cost": 7600,
+   "stock": 229,
+   "safe": 15
+  }
+ ],
+ "target12": 3600000,
+ "adLive12": 600000
+};
+const ISSUES = [
+  ['3/24 화','텀블러 500개 추가 발주, 입고 예정 3/30. 택배 집하 시간이 16시 → 15시로 당겨짐'],
+  ['3/25 수','라이브방송 20:00~21:00. 방송 직후 텀블러 품절'],
+  ['3/26 목','방송 주문 출고 밀림(약 30건이 금요일로). 유리 반찬통 뚜껑 불량 신고 3건'],
+  ['3/27 금','밀린 출고 모두 처리, 지연 안내 문자 30건 발송'],
+  ['주말','텀블러 품절 유지. 반품 접수 4건(불량 1건은 유리 반찬통)'],
+];
+const TODO = [
+  ['텀블러 입고 확인 · 판매 재개 · 재입고 알림 발송','김나연 · 최유나','3/30(월)'],
+  ['유리 반찬통 불량 원인 회신 받기','김나연','3/31(화)'],
+  ['기획전 배너 확정','정민서 · 이도현','4/1(수)'],
+  ['다음 라이브방송 날짜 · 상품 정하기','이도현','4/3(금)'],
+  ['방송 날 포장 인력 1명 추가 검토','오태호','미정'],
+];
+const CHECK = [
+  ['반품','메모에는 반품 4건이 적혀 있지만 매출.xlsx에는 반품 자료가 없습니다 — 자료에 없음'],
+  ['텀블러','메모의 방송 전 재고 「120개 남짓」은 엑셀로 확인할 수 없습니다(상품목록은 현재 재고 0만 있음)'],
+];
+const won = n => Math.round(n).toLocaleString('ko-KR');
+const man = n => (n/10000).toFixed(n >= 1e6 ? 0 : 1);
+const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+const W = D.weekly, cur = W[W.length-1], prev = W[W.length-2];
+const pct = (a,b) => (a/b-1)*100;
+function delta(v, unit='%'){ const c = v > 0.05 ? 'up' : v < -0.05 ? 'down' : 'flat'; return `<span class="${c}">${v>0?'▲':v<0?'▼':'–'} ${Math.abs(v).toFixed(1)}${unit}</span> <span class="muted">전주 대비</span>`; }
+const rate = cur.sales / D.target12 * 100;
+const liveShare = (D.channel12['라이브방송']||0) / cur.sales * 100;
+document.getElementById('kpis').innerHTML = [
+  ['이번 주 매출', `${man(cur.sales)}<small>만 원</small>`, delta(pct(cur.sales, prev.sales))],
+  ['주문 수', `${cur.orders}<small>건</small>`, delta(pct(cur.orders, prev.orders))],
+  ['객단가', `${won(cur.aov)}<small>원</small>`, delta(pct(cur.aov, prev.aov))],
+  ['목표 달성률', `${rate.toFixed(0)}<small>%</small>`, `<div class="bar"><i style="width:${Math.min(100,rate)}%"></i></div><span class="muted" style="font-size:12px">목표 ${man(D.target12)}만 원</span>`],
+  ['신규 고객 주문', `${(cur.new/cur.orders*100).toFixed(0)}<small>%</small>`, delta(cur.new/cur.orders*100 - prev.new/prev.orders*100, '%p')],
+].map(k => `<div class="card kpi"><div class="lab">${k[0]}</div><div class="val">${k[1]}</div><div class="delta">${k[2]}</div></div>`).join('');
+
+const CH = ['자사몰','오픈마켓','소셜커머스','라이브방송'];
+let charts = [];
+function draw(){
+  charts.forEach(c => c.destroy()); charts = [];
+  const ink = css('--ink'), sub = css('--sub'), line = css('--line'), main = css('--main'), point = css('--point'), soft = css('--main-soft');
+  const pal = [main, '#5BA7B6', '#B9D7DE', point];
+  Chart.defaults.font.family = 'Pretendard, sans-serif'; Chart.defaults.color = sub; Chart.defaults.borderColor = line;
+  const tip = { callbacks:{ label: c => ` ${c.dataset.label||c.label}: ${won(c.parsed.y ?? c.parsed.x ?? c.parsed)}원` } };
+  charts.push(new Chart(cWeek, { data:{ labels:W.map(w => w.week+'주'), datasets:[
+      { type:'bar', label:'주간 매출', data:W.map(w => w.sales), backgroundColor:W.map((w,i) => i === W.length-1 ? point : soft), borderRadius:8 },
+      { type:'line', label:'이번 주 목표', data:W.map(() => D.target12), borderColor:sub, borderDash:[6,6], pointRadius:0, borderWidth:1.5 } ] },
+    options:{ maintainAspectRatio:false, plugins:{ legend:{ display:false }, tooltip:tip }, scales:{ y:{ ticks:{ callback:v => (v/10000)+'만' }, grid:{ color:line } }, x:{ grid:{ display:false } } } } }));
+  charts.push(new Chart(cDay, { type:'bar', data:{ labels:D.daily12.map(d => d.date.slice(5).replace('-','/')+' '+d.dow), datasets:CH.map((c,i) => ({ label:c, data:D.daily12.map(d => d[c]), backgroundColor:pal[i], borderRadius:4 })) },
+    options:{ maintainAspectRatio:false, plugins:{ legend:{ position:'bottom', labels:{ boxWidth:12, usePointStyle:true } }, tooltip:tip }, scales:{ x:{ stacked:true, grid:{ display:false } }, y:{ stacked:true, ticks:{ callback:v => (v/10000)+'만' } } } } }));
+  charts.push(new Chart(cCh, { type:'doughnut', data:{ labels:CH, datasets:[{ data:CH.map(c => D.channel12[c]||0), backgroundColor:pal, borderWidth:0 }] },
+    options:{ maintainAspectRatio:false, cutout:'62%', plugins:{ legend:{ position:'right', labels:{ boxWidth:12, usePointStyle:true } }, tooltip:{ callbacks:{ label:c => ` ${c.label}: ${won(c.parsed)}원 (${(c.parsed/cur.sales*100).toFixed(0)}%)` } } } } }));
+  const cat = Object.fromEntries(D.products.map(p => [p.name, p.cat])), catCol = { '주방':point, '욕실':'#5BA7B6', '수납':main, '리빙':'#B9D7DE', '데스크':sub };
+  const top = Object.entries(D.product12).sort((a,b) => b[1]-a[1]).slice(0,10);
+  charts.push(new Chart(cProd, { type:'bar', data:{ labels:top.map(t => t[0]), datasets:[{ data:top.map(t => t[1]), backgroundColor:top.map(t => catCol[cat[t[0]]]), borderRadius:6 }] },
+    options:{ indexAxis:'y', maintainAspectRatio:false, plugins:{ legend:{ display:false }, tooltip:{ callbacks:{ label:c => ` ${won(c.parsed.x)}원 · ${cat[c.label]}` } } }, scales:{ x:{ ticks:{ callback:v => (v/10000)+'만' } }, y:{ grid:{ display:false }, ticks:{ color:ink, font:{ size:12 } } } } } }));
+}
+document.getElementById('chNote').textContent = `라이브방송이 하루 방송으로 이번 주 매출의 ${liveShare.toFixed(0)}%를 만들었습니다. 근거: 주문내역 시트`;
+document.getElementById('stock').innerHTML = D.products.filter(p => p.stock < p.safe).sort((a,b) => a.stock-b.stock)
+  .map(p => `<li><span><b>${p.name}</b><br><span class="src">안전재고 ${p.safe}개</span></span><span class="chip ${p.stock === 0 ? 'r' : 'p'}">${p.stock === 0 ? '품절' : p.stock + '개 남음'}</span></li>`).join('');
+const wed = D.daily12.find(d => d.dow === '수'), others = D.daily12.filter(d => d.dow !== '수'), avg = others.reduce((s,d) => s+d.sales, 0)/others.length;
+const roas = (D.channel12['라이브방송']||0) / D.adLive12;
+document.getElementById('ai').innerHTML = [
+  `<b>매출이 전주보다 ${pct(cur.sales, prev.sales).toFixed(0)}% 늘었습니다.</b> 수요일 하루 매출(${man(wed.sales)}만 원)이 다른 요일 평균(${man(avg)}만 원)의 ${(wed.sales/avg).toFixed(1)}배였고, 그날 라이브방송이 있었습니다.`,
+  `<b>라이브방송은 광고비 60만 원으로 매출 ${man(D.channel12['라이브방송'])}만 원</b>을 냈습니다(광고비의 ${roas.toFixed(1)}배). 다만 할인율 20%가 적용돼 객단가는 전주보다 ${Math.abs(pct(cur.aov, prev.aov)).toFixed(0)}% ${cur.aov < prev.aov ? '낮아졌습니다' : '높아졌습니다'}.`,
+  `<b>가장 잘 팔린 텀블러가 품절</b>입니다(목~일 판매 0). 3/30 입고 전까지 매출이 빠지고, 유리 반찬통도 재고 18개에 불량 신고가 겹쳐 있습니다. 다음 주에 먼저 챙길 두 가지입니다.`,
+].map(t => `<li>${t}</li>`).join('');
+document.getElementById('issues').innerHTML = ISSUES.map(i => `<li><b>${i[0]}</b><span>${i[1]}</span></li>`).join('');
+document.getElementById('todo').innerHTML = TODO.map(t => `<tr><td>${t[0]}</td><td>${t[1]}</td><td><span class="chip ${t[2] === '미정' ? 'n' : ''}">${t[2]}</span></td></tr>`).join('');
+document.getElementById('check').innerHTML = CHECK.map(i => `<li><b>${i[0]}</b><span>${i[1]}</span></li>`).join('');
+draw();
+themeBtn.onclick = () => { const d = document.documentElement, dark = d.dataset.theme !== 'dark'; d.dataset.theme = dark ? 'dark' : 'light'; themeBtn.textContent = dark ? '밝게' : '어둡게'; draw(); };
+
+pptBtn.onclick = async () => {
+  const p = new PptxGenJS(); p.layout = 'LAYOUT_WIDE';
+  const MAIN = '0E4A5A', POINT = 'FF8A5C', INK = '111827', SUB = '6B7280', F = '맑은 고딕';
+  const head = (s, t) => { s.background = { color:'F6F7F9' }; s.addShape(p.ShapeType.rect, { x:0, y:0, w:13.33, h:1.0, fill:{ color:MAIN } }); s.addText(t, { x:0.5, y:0.18, w:12, h:0.65, fontSize:26, bold:true, color:'FFFFFF', fontFace:F }); };
+  const img = id => document.getElementById(id).toDataURL('image/png');
+  let s = p.addSlide(); s.background = { color:MAIN };
+  s.addText('하루상점 주간 보고', { x:0.8, y:2.3, w:11, h:1, fontSize:44, bold:true, color:'FFFFFF', fontFace:F });
+  s.addText('12주차 (3/23 ~ 3/29) · 보고 박서준', { x:0.8, y:3.4, w:11, h:0.6, fontSize:20, color:'B9D7DE', fontFace:F });
+  s = p.addSlide(); head(s, '1. 이번 주 요약');
+  [['매출', man(cur.sales)+'만 원', `전주 대비 ${pct(cur.sales,prev.sales) >= 0 ? '+' : ''}${pct(cur.sales,prev.sales).toFixed(1)}%`], ['주문', cur.orders+'건', `전주 ${prev.orders}건`], ['객단가', won(cur.aov)+'원', `전주 ${won(prev.aov)}원`], ['목표 달성률', rate.toFixed(0)+'%', `목표 ${man(D.target12)}만 원`]]
+    .forEach((k,i) => { const x = 0.5 + i*3.1; s.addShape(p.ShapeType.roundRect, { x, y:1.4, w:2.9, h:2.0, fill:{ color:'FFFFFF' }, rectRadius:0.12, line:{ color:'E5E7EB' } });
+      s.addText(k[0], { x:x+0.2, y:1.5, w:2.5, h:0.4, fontSize:14, color:SUB, fontFace:F }); s.addText(k[1], { x:x+0.2, y:1.95, w:2.5, h:0.8, fontSize:30, bold:true, color:i === 0 ? POINT : INK, fontFace:F }); s.addText(k[2], { x:x+0.2, y:2.8, w:2.5, h:0.4, fontSize:13, color:SUB, fontFace:F }); });
+  s.addText([...document.querySelectorAll('#ai li')].map(l => ({ text:l.textContent, options:{ bullet:true, breakLine:true } })), { x:0.6, y:3.8, w:12.1, h:3.2, fontSize:16, color:INK, fontFace:F, paraSpaceAfter:10, valign:'top' });
+  s = p.addSlide(); head(s, '2. 매출 추세'); s.addImage({ data:img('cWeek'), x:0.5, y:1.3, w:6.1, h:3.4 }); s.addImage({ data:img('cDay'), x:6.8, y:1.3, w:6.1, h:3.4 });
+  s.addText('왼쪽: 12주 주간 매출(주황 = 이번 주) · 오른쪽: 이번 주 일별 매출(채널별)', { x:0.5, y:4.9, w:12.3, h:0.4, fontSize:13, color:SUB, fontFace:F });
+  s = p.addSlide(); head(s, '3. 채널과 상품'); s.addImage({ data:img('cCh'), x:0.5, y:1.4, w:4.6, h:3.2 }); s.addImage({ data:img('cProd'), x:5.4, y:1.3, w:7.4, h:4.6 });
+  s = p.addSlide(); head(s, '4. 이슈');
+  s.addTable([[{ text:'날짜', options:{ bold:true, fill:{ color:'E3EEF1' } } }, { text:'내용', options:{ bold:true, fill:{ color:'E3EEF1' } } }], ...ISSUES], { x:0.5, y:1.4, w:12.3, colW:[1.6,10.7], fontSize:15, fontFace:F, color:INK, border:{ type:'solid', color:'E5E7EB' } });
+  s = p.addSlide(); head(s, '5. 다음 주(13주차)');
+  s.addTable([['할 일','담당','기한'].map(t => ({ text:t, options:{ bold:true, fill:{ color:'E3EEF1' } } })), ...TODO], { x:0.5, y:1.4, w:12.3, colW:[7.3,3,2], fontSize:15, fontFace:F, color:INK, border:{ type:'solid', color:'E5E7EB' } });
+  await p.writeFile({ fileName:'하루상점_주간보고_12주차.pptx' });
+};
+</script>
+</body>
+</html>

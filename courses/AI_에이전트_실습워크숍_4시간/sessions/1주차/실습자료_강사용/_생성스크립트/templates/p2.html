@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>하루상점 세컨드 브레인</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+<script src="https://cdn.jsdelivr.net/npm/3d-force-graph@1.77.0/dist/3d-force-graph.min.js"></script>
+<script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+<style>
+:root{ --bg:#1E1E1E; --panel:#262626; --panel2:#2F2F2F; --ink:#DADADA; --sub:#8E8E8E; --line:#363636; --accent:#A882FF; }
+*{ box-sizing:border-box; }
+html,body{ margin:0; height:100%; overflow:hidden; background:var(--bg); color:var(--ink); font-family:"Pretendard","Malgun Gothic",sans-serif; font-size:14px; line-height:1.55; font-variant-numeric:tabular-nums; }
+.app{ display:grid; grid-template-columns:44px 280px 1fr 380px; grid-template-rows:38px 1fr 26px; height:100vh; }
+.titlebar{ grid-column:1/-1; display:flex; align-items:center; gap:14px; padding:0 14px; background:var(--panel); border-bottom:1px solid var(--line); font-size:13px; color:var(--sub); }
+.titlebar b{ color:var(--ink); font-weight:700; }
+.titlebar .tab{ padding:6px 14px; border-radius:8px 8px 0 0; background:var(--bg); color:var(--ink); align-self:flex-end; }
+.titlebar .sp{ margin-left:auto; display:flex; gap:8px; }
+button{ font:inherit; cursor:pointer; }
+.tbtn{ border:0; border-radius:6px; padding:5px 12px; font-size:12px; font-weight:700; background:var(--panel2); color:var(--ink); }
+.tbtn.p{ background:var(--accent); color:#16101F; }
+.ribbon{ grid-row:2; background:var(--panel); border-right:1px solid var(--line); display:flex; flex-direction:column; align-items:center; gap:14px; padding-top:14px; }
+.ribbon svg{ width:20px; height:20px; stroke:var(--sub); fill:none; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; }
+.ribbon svg.on{ stroke:var(--accent); }
+.side{ grid-row:2; background:var(--panel); border-right:1px solid var(--line); display:flex; flex-direction:column; min-height:0; }
+.side input{ margin:12px; padding:8px 12px; border-radius:6px; border:1px solid var(--line); background:var(--bg); color:var(--ink); font:inherit; outline:none; }
+.side input:focus{ border-color:var(--accent); }
+.seg{ display:flex; gap:4px; margin:0 12px 8px; }
+.seg button{ flex:1; border:0; border-radius:6px; padding:5px; font-size:12px; font-weight:700; background:none; color:var(--sub); }
+.seg button.on{ background:var(--panel2); color:var(--ink); }
+.tree{ flex:1; overflow:auto; padding:0 6px 12px; }
+.fold{ padding:5px 8px; font-size:13px; font-weight:700; color:var(--ink); cursor:pointer; user-select:none; }
+.fold::before{ content:"▾ "; color:var(--sub); } .fold.shut::before{ content:"▸ "; }
+.fold.shut + .kids{ display:none; }
+.file{ display:flex; align-items:center; gap:8px; padding:4px 8px 4px 22px; border-radius:5px; font-size:13px; color:var(--sub); cursor:pointer; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.file:hover{ background:var(--panel2); color:var(--ink); } .file.on{ background:rgba(168,130,255,.18); color:var(--ink); }
+.file i{ flex:none; width:8px; height:8px; border-radius:50%; background:var(--c); }
+.file em{ margin-left:auto; font-style:normal; font-size:10px; font-weight:800; color:var(--sub); border:1px solid var(--line); border-radius:4px; padding:0 4px; }
+.stage{ grid-row:2; position:relative; min-width:0; overflow:hidden; background:radial-gradient(ellipse at center,#252525 0%,#1A1A1A 100%); }
+#graph{ position:absolute; inset:0; }
+#labels{ position:absolute; inset:0; pointer-events:none; overflow:hidden; }
+#labels span{ position:absolute; transform:translate(-50%,10px); font-size:11px; font-weight:600; color:var(--c,#B0B0B0); white-space:nowrap; text-shadow:0 0 4px #000,0 0 2px #000; transition:opacity .2s; }
+/* 연결점(접점) — 어두운 알약 바탕에 흰 굵은 글자 + 연결 수. 많이 연결된 것은 더 크게 */
+#labels span.ent{ transform:translate(-50%,13px); z-index:2; padding:1px 9px; border-radius:99px; background:rgba(18,18,18,.82); box-shadow:0 0 0 1px rgba(255,255,255,.4); color:#FFF; font-weight:700; font-size:12px; text-shadow:none; }
+#labels span.ent.hub{ font-size:16px; padding:3px 12px; box-shadow:0 0 0 2px #FFF, 0 0 14px rgba(255,255,255,.35); }
+#labels span.ent em{ font-style:normal; margin-left:6px; font-size:.8em; color:#C9B2FF; }
+/* 주제 묶음 이름 — 묶음 한가운데 위에 색 알약으로 */
+#labels span.grp{ transform:translate(-50%,-50%); z-index:3; padding:5px 16px; border-radius:99px; background:var(--c); color:#16101F; font-size:19px; font-weight:800; text-shadow:none; box-shadow:0 4px 14px rgba(0,0,0,.45); }
+/* 이름표도 누를 수 있다 — 작은 공을 정확히 맞히지 않아도 된다 */
+#labels span.ent, #labels span.grp, #labels span.doc{ pointer-events:auto; cursor:pointer; }
+#labels span.doc{ padding:2px 8px; border-radius:99px; background:rgba(18,18,18,.72); text-shadow:none; font-size:12px; }
+#labels span.ent:hover, #labels span.doc:hover{ box-shadow:0 0 0 2px #A882FF; }
+#labels span.grp:hover{ box-shadow:0 0 0 3px #FFF, 0 4px 14px rgba(0,0,0,.45); }
+#labels span.dim{ opacity:.08; pointer-events:none; }
+.hud{ position:absolute; left:16px; top:14px; display:flex; gap:10px; }
+.stat{ background:rgba(38,38,38,.88); border:1px solid var(--line); border-radius:10px; padding:8px 14px; }
+.stat b{ display:block; font-size:22px; font-weight:800; color:#FFF; line-height:1.15; }
+.stat span{ font-size:11px; color:var(--sub); }
+.legend{ position:absolute; left:16px; bottom:14px; display:flex; flex-wrap:wrap; gap:6px; max-width:70%; }
+.legend button{ display:flex; align-items:center; gap:6px; border:1px solid var(--line); border-radius:99px; padding:4px 11px; font-size:12px; font-weight:600; background:rgba(38,38,38,.88); color:var(--ink); }
+.legend button i{ width:9px; height:9px; border-radius:50%; background:var(--c); }
+.legend button.off{ opacity:.35; }
+.help{ position:absolute; right:16px; bottom:14px; font-size:11px; color:var(--sub); text-align:right; }
+.note{ grid-row:2; background:var(--bg); border-left:1px solid var(--line); overflow:auto; padding:22px 24px 40px; }
+.note h1{ margin:0 0 6px; font-size:24px; font-weight:800; color:#FFF; letter-spacing:-.02em; line-height:1.3; }
+.note .path{ font-size:12px; color:var(--sub); word-break:break-all; }
+.note h2{ margin:22px 0 8px; font-size:13px; font-weight:800; color:var(--accent); letter-spacing:.03em; }
+.note p{ margin:0 0 8px; } .note ul{ margin:0; padding-left:18px; } .note li{ margin-bottom:5px; }
+.note pre{ margin:0; white-space:pre-wrap; font:inherit; font-size:13px; color:#B8B8B8; background:var(--panel); border-radius:8px; padding:12px 14px; max-height:260px; overflow:auto; }
+.tag{ display:inline-block; margin:0 6px 6px 0; padding:2px 10px; border-radius:99px; font-size:12px; font-weight:600; background:rgba(168,130,255,.16); color:#C9B2FF; cursor:pointer; }
+.link{ display:flex; align-items:center; gap:8px; padding:5px 8px; margin:0 -8px; border-radius:5px; cursor:pointer; color:var(--ink); }
+.link:hover{ background:var(--panel); } .link i{ flex:none; width:8px; height:8px; border-radius:50%; background:var(--c); }
+.callout{ border-left:3px solid #E5B567; background:rgba(229,181,103,.1); border-radius:0 8px 8px 0; padding:10px 14px; margin-top:10px; font-size:13px; }
+.callout.ai{ border-color:var(--accent); background:rgba(168,130,255,.1); }
+.rank{ display:grid; grid-template-columns:1fr auto; gap:4px 12px; }
+.rank span:nth-child(even){ color:var(--sub); text-align:right; }
+.status{ grid-column:1/-1; display:flex; align-items:center; justify-content:flex-end; gap:18px; padding:0 14px; background:var(--panel); border-top:1px solid var(--line); font-size:11px; color:var(--sub); }
+::-webkit-scrollbar{ width:8px; height:8px; } ::-webkit-scrollbar-thumb{ background:#3A3A3A; border-radius:4px; }
+@media (max-width:1100px){ .app{ grid-template-columns:44px 220px 1fr; } .note{ position:fixed; right:0; top:38px; bottom:26px; width:340px; box-shadow:-12px 0 32px rgba(0,0,0,.5); } }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="titlebar"><b>하루상점 세컨드 브레인</b><span class="tab">그래프 뷰</span><span>내문서/ 폴더의 문서 40개를 읽어 만든 지식 지도</span>
+    <span class="sp"><button class="tbtn" id="homeBtn">전체 보기</button><button class="tbtn" id="spinBtn">회전 멈춤</button><button class="tbtn p" id="xlsBtn">문서 색인 엑셀로</button></span></div>
+  <div class="ribbon"><svg class="on" viewBox="0 0 24 24"><circle cx="6" cy="7" r="2.4"/><circle cx="18" cy="6" r="2.4"/><circle cx="12" cy="18" r="2.4"/><path d="M8 8l3 8M16 8l-3 8M8.4 6.8l7.2-.6"/></svg><svg viewBox="0 0 24 24"><path d="M3 6.5h6.5l2 2.5H21v10.5H3z"/></svg><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6"/><path d="M15 15l5.5 5.5"/></svg><svg viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6zM14 3v4h4M9 12h6M9 16h6"/></svg></div>
+  <aside class="side">
+    <input id="q" placeholder="검색 — 제목 · 내용 · 이름">
+    <div class="seg" id="seg"><button data-m="group" class="on">주제 묶음</button><button data-m="folder">원래 폴더</button></div>
+    <div class="tree" id="tree"></div>
+  </aside>
+  <main class="stage">
+    <div id="graph"></div><div id="labels"></div>
+    <div class="hud" id="hud"></div>
+    <div class="legend" id="legend"></div>
+    <div class="help">묶음 이름을 누르면 그 묶음의 문서가 펼쳐집니다 · 공이나 이름표를 누르면 노트가 열립니다</div>
+  </main>
+  <aside class="note" id="note"></aside>
+  <div class="status"><span id="st1"></span><span>만든 날 2026-03-30</span></div>
+</div>
+<script>
+const D = /*__DATA__*/;
+const C = D.colors, ENT_C = '#FFFFFF';
+const nodes = D.nodes.map(n => ({ ...n })), links = D.links.map(l => ({ ...l }));
+const byId = Object.fromEntries(nodes.map(n => [n.id, n]));
+const nb = {}; links.forEach(l => { (nb[l.source] = nb[l.source] || []).push(l.target); (nb[l.target] = nb[l.target] || []).push(l.source); });
+nodes.forEach(n => { n.deg = (nb[n.id] || []).length; n.color = n.kind === 'doc' ? C[n.group] : ENT_C; });
+const docs = nodes.filter(n => n.kind === 'doc'), ents = nodes.filter(n => n.kind === 'ent');
+// 한 줄 요약 · 핵심 내용 — 원문에서 뽑는다
+docs.forEach(d => { const L = d.text.split('\n').map(s => s.trim()).filter(s => s && !s.startsWith('#') && !s.startsWith('[슬라이드') ); const body = L.filter(s => s !== d.title);
+  d.sum = (body.find(s => !s.includes(' | ') && s.length > 12) || body[0] || '').replace(/^- /, ''); d.keys = body.filter(s => s !== d.sum).slice(0, 5).map(s => s.replace(/^- /, '')); });
+const DUP = { 'USB 백업/브랜드소개서_최종.pptx':'예전 판입니다. 「최종_진짜최종」 쪽에 새 로고 슬라이드가 있고 숫자가 더 최근입니다(누적 주문 6만 → 7만 건, 재구매율 31% → 34%).',
+              'USB 백업/브랜드소개서_최종_진짜최종.pptx':'「브랜드소개서_최종.pptx」와 내용이 거의 같습니다. 이쪽이 최신 판으로 보입니다(새 로고 슬라이드 추가 · 숫자 갱신).' };
+hud.innerHTML = [[docs.length,'문서'],[ents.length,'연결점'],[links.length,'연결'],[Object.keys(DUP).length,'중복 의심']].map(s => `<div class="stat"><b>${s[0]}</b><span>${s[1]}</span></div>`).join('');
+st1.textContent = `문서 ${docs.length} · 연결점 ${ents.length} · 연결 ${links.length}`;
+
+let active = null, hidden = new Set(), query = '', focus = null, hover = false;
+const visible = n => n.kind === 'ent' ? (nb[n.id] || []).some(id => !hidden.has(byId[id].group)) : !hidden.has(n.group);
+const lit = n => { if (!visible(n)) return false; if (query) return match(n) || (nb[n.id] || []).some(id => match(byId[id])); if (active) return n.id === active || (nb[active] || []).includes(n.id); if (focus) return n.kind === 'doc' ? n.group === focus : (nb[n.id] || []).some(id => byId[id].group === focus); return true; };
+const match = n => (n.title + ' ' + (n.text || '') + ' ' + (n.file || '')).toLowerCase().includes(query);
+const fade = (hex, a) => { const v = parseInt(hex.slice(1), 16); return `rgba(${v >> 16},${(v >> 8) & 255},${v & 255},${a})`; };
+const shade = (hex, k) => { const v = parseInt(hex.slice(1), 16); return '#' + [v >> 16, (v >> 8) & 255, v & 255].map(c => Math.round(c * k).toString(16).padStart(2, '0')).join(''); };
+const G = ForceGraph3D()(document.getElementById('graph'))
+  .graphData({ nodes, links }).backgroundColor('rgba(0,0,0,0)').showNavInfo(false)
+  .nodeVal(n => n.kind === 'ent' ? 1.6 + n.deg * 1.1 : 4.2 + n.deg * 0.3).nodeRelSize(3.6).nodeOpacity(0.95).nodeResolution(18)
+  .nodeColor(n => lit(n) ? n.color : fade(n.color, 0.07)).nodeLabel(n => n.kind === 'doc' ? `${n.title}<br><span style="color:#aaa">${n.folder}</span>` : n.title)
+  .linkOpacity(0.6).linkColor(l => { const a = l.source.id || l.source, b = l.target.id || l.target; return (active && (a === active || b === active)) ? '#A882FF' : (lit(byId[a]) && lit(byId[b])) ? shade((byId[a].kind === 'doc' ? byId[a] : byId[b]).color, 0.62) : '#242424'; })
+  .linkWidth(l => { const a = l.source.id || l.source, b = l.target.id || l.target; return active && (a === active || b === active) ? 1.2 : 0.3; })
+  .linkDirectionalParticles(l => { const a = l.source.id || l.source, b = l.target.id || l.target; return active && (a === active || b === active) ? 3 : 0; }).linkDirectionalParticleWidth(1.6).linkDirectionalParticleColor(() => '#A882FF')
+  .enableNodeDrag(false).onNodeHover(n => { document.getElementById('graph').style.cursor = n ? 'pointer' : 'grab'; })
+  .onNodeClick(n => openNote(n.id)).onBackgroundClick(() => { active = null; focus = null; refresh(); home(); });
+// 마우스가 그래프 위에 있으면 자동 회전을 멈춘다 — 움직이는 공을 쫓아 누르지 않아도 된다
+const stageEl = document.querySelector('.stage'); stageEl.addEventListener('mouseenter', () => { hover = true; }); stageEl.addEventListener('mouseleave', () => { hover = false; if (spin){ const c = G.cameraPosition(); angle = Math.atan2(c.x, c.z); dist = Math.hypot(c.x, c.z); } });
+G.d3Force('charge').strength(-260); G.d3Force('link').distance(90).strength(0.06);
+// 주제 묶음마다 자리를 정해 그쪽으로 끌어당긴다 — 같은 묶음의 문서가 한 덩어리로 보인다
+const GROUPS = Object.keys(C), ANCHOR = {};
+GROUPS.forEach((g, i) => { const a = i / GROUPS.length * Math.PI * 2; ANCHOR[g] = { x:290 * Math.cos(a), y:215 * Math.sin(a), z:(i % 2 ? 90 : -90) }; });
+const cluster = (() => { let ns = []; const f = alpha => ns.forEach(n => { if (n.kind !== 'doc') return; const t = ANCHOR[n.group], k = alpha * 0.45; n.vx += (t.x - n.x) * k; n.vy += (t.y - n.y) * k; n.vz += (t.z - n.z) * k; }); f.initialize = n => { ns = n; }; return f; })();
+G.d3Force('cluster', cluster);
+function fit(){ const r = document.querySelector('.stage').getBoundingClientRect(); G.width(r.width).height(r.height); }
+fit(); addEventListener('resize', fit);
+// 이름표 — 공 아래에 글자를 겹쳐 그린다
+const labelBox = document.getElementById('labels');
+const light = hex => { const v = parseInt(hex.slice(1), 16); return 'rgb(' + [v >> 16, (v >> 8) & 255, v & 255].map(c => Math.round(c + (255 - c) * 0.35)).join(',') + ')'; };
+nodes.forEach(n => { const s = document.createElement('span'); const t = n.title.length > 16 ? n.title.slice(0, 15) + '…' : n.title;
+  if (n.kind === 'ent'){ s.className = 'ent' + (n.deg >= 8 ? ' hub' : ''); s.innerHTML = t + '<em>' + n.deg + '</em>'; } else { s.className = 'doc'; s.textContent = t; s.style.setProperty('--c', light(n.color)); }
+  s.addEventListener('click', e => { e.stopPropagation(); openNote(n.id); });
+  labelBox.appendChild(s); n._l = s; });
+const grpLabel = {}; GROUPS.forEach(g => { const s = document.createElement('span'); s.className = 'grp'; s.style.setProperty('--c', C[g]); s.textContent = g + ' ' + docs.filter(d => d.group === g).length; s.title = '누르면 이 묶음의 문서가 펼쳐집니다'; s.addEventListener('click', e => { e.stopPropagation(); focusGroup(g); }); labelBox.appendChild(s); grpLabel[g] = s; });
+function focusGroup(g){ active = null; focus = focus === g ? null : g; refresh(); if (!focus) return home(); busy = true; spin = false; spinBtn.textContent = '회전 켜기';
+  const t = ANCHOR[g], d = Math.hypot(t.x, t.y, t.z) || 1, k = 1 + 300 / d; G.cameraPosition({ x:t.x * k, y:t.y * k, z:t.z * k }, t, 900); setTimeout(() => busy = false, 950); }
+let spin = true, angle = 0, dist = 900, busy = false;
+(function loop(){ const w = labelBox.clientWidth, h = labelBox.clientHeight;
+  if (spin && !busy && !hover){ angle += 0.0018; G.cameraPosition({ x:dist * Math.sin(angle), z:dist * Math.cos(angle) }); }
+  nodes.forEach(n => { if (n.x === undefined) return; const p = G.graph2ScreenCoords(n.x, n.y, n.z); const on = p.x > 0 && p.x < w && p.y > 0 && p.y < h && visible(n);
+    const show = on && (n.kind === 'ent' || ((active || query || focus) && lit(n))); n._l.style.display = show ? '' : 'none'; if (show){ n._l.style.left = p.x + 'px'; n._l.style.top = p.y + 'px'; n._l.classList.toggle('dim', !lit(n)); } });
+  GROUPS.forEach(g => { const ds = docs.filter(d => d.group === g && d.x !== undefined), el = grpLabel[g]; if (!ds.length || hidden.has(g)){ el.style.display = 'none'; return; }
+    const c = ds.reduce((m, d) => ({ x:m.x + d.x / ds.length, y:m.y + d.y / ds.length, z:m.z + d.z / ds.length }), { x:0, y:0, z:0 }), p = G.graph2ScreenCoords(c.x, c.y, c.z);
+    el.style.display = ''; el.style.left = p.x + 'px'; el.style.top = (p.y - 34) + 'px'; el.classList.toggle('dim', !!(active || query) || (focus && focus !== g)); });
+  requestAnimationFrame(loop); })();
+function refresh(){ G.nodeColor(G.nodeColor()).linkColor(G.linkColor()).linkWidth(G.linkWidth()).linkDirectionalParticles(G.linkDirectionalParticles()); document.querySelectorAll('.file').forEach(f => f.classList.toggle('on', f.dataset.id === active)); }
+function home(){ busy = true; G.cameraPosition({ x:dist * Math.sin(angle), y:0, z:dist * Math.cos(angle) }, { x:0, y:0, z:0 }, 900); setTimeout(() => busy = false, 950); renderHome(); }
+function openNote(id){ const n = byId[id]; if (!n) return; active = id; busy = true; spin = false; spinBtn.textContent = '회전 켜기';
+  const d = Math.hypot(n.x, n.y, n.z) || 1, k = 1 + 220 / d; G.cameraPosition({ x:n.x * k, y:n.y * k, z:n.z * k }, n, 1100); refresh(); renderNote(n); }
+const dot = n => `<i style="--c:${n.color}"></i>`;
+function renderNote(n){
+  const rel = (nb[n.id] || []).map(id => byId[id]);
+  if (n.kind === 'ent'){ note.innerHTML = `<h1>${n.title}</h1><div class="path">연결점 · ${n.group}</div><h2>이 이름이 나오는 문서 ${rel.length}개</h2>${rel.map(r => `<div class="link" data-id="${r.id}">${dot(r)}${r.title}</div>`).join('')}`; return; }
+  const sib = [...new Set(rel.flatMap(e => (nb[e.id] || []).filter(id => id !== n.id)))].map(id => byId[id]).map(d => ({ d, w: rel.filter(e => nb[e.id].includes(d.id)).length })).sort((a,b) => b.w - a.w).slice(0, 8);
+  note.innerHTML = `<h1>${n.title}</h1><div class="path">내문서/${n.folder}/${n.file}</div>
+    ${DUP[n.id] ? `<div class="callout"><b>중복 의심</b> — ${DUP[n.id]}</div>` : ''}
+    <h2>한 줄 요약</h2><p>${n.sum}</p>
+    <h2>핵심 내용</h2><ul>${n.keys.map(k => `<li>${k}</li>`).join('')}</ul>
+    <h2>태그</h2><div><span class="tag" style="background:${fade(n.color, .18)};color:${n.color}">#${n.group}</span>${rel.map(e => `<span class="tag" data-id="${e.id}">#${e.title.replace(/ /g, '_')}</span>`).join('')}</div>
+    <h2>연결된 문서</h2>${sib.map(s => `<div class="link" data-id="${s.d.id}">${dot(s.d)}${s.d.title}<span style="margin-left:auto;color:var(--sub);font-size:12px">${s.w}</span></div>`).join('')}
+    <h2>원문</h2><pre>${n.text.replace(/</g, '&lt;')}</pre>`;
+}
+function renderHome(){
+  const top = [...ents].sort((a,b) => b.deg - a.deg).slice(0, 8);
+  note.innerHTML = `<h1>하루상점 세컨드 브레인</h1><div class="path">바탕화면 · 다운로드 · 문서 · USB 백업 · 카톡 받은 파일에 흩어져 있던 문서 40개</div>
+    <div class="callout ai" style="margin-top:16px"><b>AI가 읽은 요점</b><ol style="margin:8px 0 0;padding-left:18px"><li>4월의 중심은 <b>「데일리 키친」 출시(4/13)</b>입니다. 기획서 · 가격안 · 견적서 · 계약서 초안 · 회의록 등 ${nb['E:데일리 키친'].length}개 문서가 이어져 있고, KC 인증 서류가 일정의 관건입니다.</li><li><b>3/25 라이브방송</b>이 매출 · 재고 · 문의 문서에 함께 나옵니다. 텀블러 품절과 출고 지연이 같은 날에서 시작됐습니다.</li><li><b>김나연</b>에게 제조사 · 발주 · 사양 · 불량 확인이 몰려 있습니다(연결 ${byId['E:김나연'].deg}개).</li></ol></div>
+    <h2>내용이 어긋나는 곳</h2><ul><li>브랜드 소개서 두 파일의 숫자가 다릅니다: 누적 주문 6만 / 7만 건, 재구매율 31% / 34%</li><li>3월 매출: 「2026 월별 목표와 실적」은 1,360만 원인데 주별 자료로는 확인할 수 없습니다 — 확인 필요</li><li>초도 물량: 기획서는 「250과 300 가운데 정하는 중」, 견적서는 250세트 기준</li></ul>
+    <h2>가장 많이 연결된 것</h2><div class="rank">${top.map(e => `<span class="link" data-id="${e.id}" style="margin:0">${e.title}</span><span>문서 ${e.deg}개</span>`).join('')}</div>
+    <h2>쓰는 법</h2><p style="color:var(--sub)">왼쪽에서 문서를 고르거나 검색합니다. 그래프의 공을 누르면 그 문서의 요약과 연결된 문서가 여기에 열립니다. 색 범례를 누르면 그 묶음을 숨깁니다.</p>`;
+}
+let mode = 'group';
+function renderTree(){
+  const key = mode === 'group' ? 'group' : 'folder', groups = {};
+  docs.filter(d => !query || match(d)).forEach(d => (groups[d[key]] = groups[d[key]] || []).push(d));
+  tree.innerHTML = Object.keys(groups).sort().map(g => `<div class="fold">${g} <span style="color:var(--sub);font-weight:500">${groups[g].length}</span></div><div class="kids">${groups[g].map(d => `<div class="file ${d.id === active ? 'on' : ''}" data-id="${d.id}" title="${d.file}">${dot(d)}<span style="overflow:hidden;text-overflow:ellipsis">${d.title}</span><em>${d.ext}</em></div>`).join('')}</div>`).join('') || '<div class="file">검색 결과 없음</div>';
+}
+legend.innerHTML = Object.keys(C).map(g => `<button data-g="${g}"><i style="--c:${C[g]}"></i>${g}</button>`).join('') + `<button disabled style="opacity:.8"><i style="--c:#fff"></i>연결점(사람 · 거래처 · 상품 · 주제)</button>`;
+legend.addEventListener('click', e => { const b = e.target.closest('[data-g]'); if (!b) return; const g = b.dataset.g; hidden.has(g) ? hidden.delete(g) : hidden.add(g); b.classList.toggle('off'); G.nodeVisibility(visible).linkVisibility(l => visible(byId[l.source.id || l.source]) && visible(byId[l.target.id || l.target])); refresh(); });
+document.addEventListener('click', e => { const f = e.target.closest('[data-id]'); if (f) openNote(f.dataset.id); const fo = e.target.closest('.fold'); if (fo) fo.classList.toggle('shut'); });
+seg.addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; mode = b.dataset.m; [...seg.children].forEach(x => x.classList.toggle('on', x === b)); renderTree(); });
+q.addEventListener('input', () => { query = q.value.trim().toLowerCase(); active = null; renderTree(); refresh(); });
+homeBtn.onclick = () => { active = null; focus = null; refresh(); home(); };
+spinBtn.onclick = () => { spin = !spin; spinBtn.textContent = spin ? '회전 멈춤' : '회전 켜기'; if (spin){ const c = G.cameraPosition(); angle = Math.atan2(c.x, c.z); dist = Math.hypot(c.x, c.z); } };
+xlsBtn.onclick = () => { const wb = XLSX.utils.book_new(); const ws = XLSX.utils.json_to_sheet(docs.map(d => ({ '제목':d.title, '원본 위치':'내문서/' + d.folder + '/' + d.file, '묶음':d.group, '한 줄 요약':d.sum, '연결된 이름':d.ents.join(', '), '비고':DUP[d.id] ? '중복 의심' : '' })));
+  ws['!cols'] = [34,52,10,70,50,12].map(w => ({ wch:w })); XLSX.utils.book_append_sheet(wb, ws, '문서 색인'); XLSX.writeFile(wb, '하루상점_문서색인.xlsx'); };
+renderTree(); renderHome();
+</script>
+</body>
+</html>

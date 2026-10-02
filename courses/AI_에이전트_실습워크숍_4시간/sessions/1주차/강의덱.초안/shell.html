@@ -717,6 +717,66 @@
     .facts dt{ padding-top:3px; font-size:17px; font-weight:800; line-height:1.4; color:var(--gray-400); }
     .facts dd{ margin:0; font-size:var(--fs-lead); font-weight:500; line-height:1.5; color:var(--ink); }
 
+    /* ══════════ 2026-10 개편 — 개념 제목 · Color Hunt 화면 모형 · 링크 단추 ══════════ */
+    /* 개념 제목: 개념어는 크게(색 글자), 뜻은 아랫줄에 작게. 「—」로 잇지 않는다 */
+    .slide .s-title.term{ font-size:28px; font-weight:600; line-height:1.4; letter-spacing:-.02em; color:var(--gray-700); text-wrap:pretty; }
+    .slide .s-title.term > .kw{ display:block; margin-bottom:2px; font-size:60px; font-weight:800; line-height:1.15; letter-spacing:-.04em; }
+    a.back{ display:inline-block; }
+    /* Color Hunt 화면 모형(DS-3) — 실제 화면 실측값: 팔레트 정사각형 · 줄 41/26/18/15% · 모서리 10px · 테두리 #ECECEC */
+    .ch{ --ch-line:#ECECEC; --ch-ink:#1A1A1A; --ch-sub:#8F8F8F; --ch-on:#F2F2F2; background:var(--white); border-radius:18px; box-shadow:var(--sh-pop); overflow:hidden; color:var(--ch-ink); }
+    .ch-top{ display:flex; align-items:center; gap:22px; height:54px; padding:0 18px; border-bottom:1px solid var(--ch-line); }
+    .ch-logo{ display:flex; align-items:center; gap:9px; font-size:19px; font-weight:500; white-space:nowrap; }
+    .ch-logo svg{ width:25px; height:29px; }
+    .ch-search{ flex:1; display:flex; align-items:center; gap:8px; height:36px; padding:0 14px; border:1px solid var(--ch-line); border-radius:40px; font-size:14px; color:var(--ch-sub); }
+    .ch-search svg, .ch-nav svg, .ch-like svg{ width:16px; height:16px; fill:none; stroke:var(--ch-ink); stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; }
+    .ch-url{ font-size:14px; font-weight:600; color:var(--ch-sub); }
+    .ch-body{ display:grid; grid-template-columns:148px 1fr; }
+    .ch-nav{ padding:12px 10px; display:flex; flex-direction:column; gap:2px; }
+    .ch-nav b{ display:flex; align-items:center; gap:10px; padding:8px 12px; border-radius:10px; font-size:15px; font-weight:400; }
+    .ch-nav b.on{ background:var(--ch-on); font-weight:500; }
+    .ch-nav hr{ width:100%; border:0; border-top:1px solid var(--ch-line); margin:6px 0; }
+    .ch-nav span{ padding:3px 12px; font-size:12px; line-height:1.5; color:var(--ch-sub); }
+    .ch-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:14px 18px; padding:16px 20px 16px 10px; }
+    .ch-pal{ aspect-ratio:1; border-radius:10px; overflow:hidden; display:flex; flex-direction:column; }
+    .ch-pal i{ display:block; position:relative; width:100%; flex:none; }
+    .ch-meta{ display:flex; justify-content:space-between; align-items:center; margin-top:9px; font-size:12px; color:var(--ch-ink); }
+    .ch-like{ display:inline-flex; align-items:center; gap:7px; height:30px; padding:0 10px; border:1px solid var(--ch-line); border-radius:10px; font-size:13px; }
+
+    /* ══════════ 표지 3D(f-cover3d) — 기둥 12개의 틀 + 아쿠아 정육면체 + 바닥 + 파일 카드. CSS 3D만 쓰고 빛 번짐 · 입자는 쓰지 않는다 ══════════ */
+    .f-cover3d .cover-lead{ top:226px; font-size:20px; font-weight:800; color:var(--mint-deep); }
+    .f-cover3d .cover-title{ top:260px; right:auto; }
+    .cv-desc{ position:absolute; left:64px; top:412px; z-index:2; margin:0; max-width:540px; font-size:27px; font-weight:600; line-height:1.45; letter-spacing:-.02em; color:var(--gray-700); }
+    .cv3d{ --b1:var(--blue); --b2:#2E7B8C; --b3:#08323D; position:absolute; right:64px; top:50px; width:620px; height:620px; z-index:2; perspective:2200px; cursor:grab; touch-action:none; user-select:none; }
+    .cv3d.is-drag{ cursor:grabbing; }
+    .cv3d-obj{ position:absolute; inset:0; transform-style:preserve-3d; transform:rotateX(-18deg) rotateY(32deg); }
+    .cv3d-obj > *, .cv-core > i, .cv-beam > i{ position:absolute; left:50%; top:50%; }
+    .cv-beam, .cv-core{ width:0; height:0; transform-style:preserve-3d; }
+    .cv-beam > i{ width:316px; height:16px; margin:-8px 0 0 -158px; }
+    .cv-beam .b1{ background:var(--b1); } .cv-beam .b2{ background:var(--b2); } .cv-beam .b3{ background:var(--b3); }
+    .cv-glass{ width:284px; height:284px; margin:-142px 0 0 -142px; background:linear-gradient(135deg,rgba(125,224,236,.10),rgba(125,224,236,.02)); }
+    .cv-solid{ width:100px; height:100px; margin:-50px 0 0 -50px; background:var(--mint); box-shadow:inset 0 0 0 2px rgba(255,255,255,.35); }
+    .cv-solid.s2{ background:var(--mint-deep); } .cv-solid.s3{ background:#4FC4D4; } .cv-solid.s4{ background:#B8F0F6; }
+    /* 바닥 — 틀 아래 누운 면: 부드러운 그림자와 점 격자 */
+    .cv-ground{ width:520px; height:520px; margin:-260px 0 0 -260px; border-radius:50%; background:radial-gradient(closest-side,rgba(8,50,61,.22),rgba(8,50,61,.08) 45%,rgba(8,50,61,0) 72%); transform:translateY(236px) rotateX(90deg); }
+    .cv-grid{ width:640px; height:640px; margin:-320px 0 0 -320px; border-radius:50%; transform:translateY(234px) rotateX(90deg);
+      background-image:radial-gradient(circle,rgba(14,74,90,.34) 1.6px,transparent 2px); background-size:32px 32px; -webkit-mask-image:radial-gradient(closest-side,#000 30%,transparent 96%); mask-image:radial-gradient(closest-side,#000 30%,transparent 96%); }
+    /* 파일 카드 — 그 파일의 내용을 본뜬 작은 화면 */
+    .cv-card{ width:168px; box-sizing:border-box; padding:14px 16px 16px; border-radius:16px; background:var(--white); box-shadow:0 2px 0 rgba(8,50,61,.06), 0 14px 30px rgba(8,50,61,.18); }
+    .cv-card b{ display:block; margin-bottom:10px; font-size:19px; font-weight:800; line-height:1.2; color:var(--blue); }
+    .cv-card .row{ display:flex; align-items:center; gap:8px; margin-top:8px; }
+    .cv-card .row i{ display:block; flex:1 1 auto; height:7px; border-radius:4px; background:var(--blue-panel); }
+    .cv-card .ck{ flex:none; width:13px; height:13px; border-radius:4px; background:var(--mint-deep); }
+    .cv-card .ck.off{ background:none; box-shadow:inset 0 0 0 2px var(--blue-line-strong); }
+    .cv-card em{ flex:none; width:14px; font-style:normal; font-size:13px; font-weight:800; line-height:1; color:var(--mint-deep); }
+    .cv-card .sw{ display:flex; height:26px; border-radius:8px; overflow:hidden; box-shadow:inset 0 0 0 1px rgba(8,50,61,.10); }
+    .cv-card .sw u{ display:block; }
+    .cv-card.hot{ width:178px; background:#F7F4EA; } .cv-card.hot b{ color:var(--ink); }
+    .cv-card .bar{ display:block; height:7px; border-radius:4px; background:rgba(31,78,95,.16); overflow:hidden; }
+    .cv-card .bar u{ display:block; width:60%; height:100%; border-radius:4px; background:#1F4E5F; }
+    .cv-card .opt{ display:block; height:20px; margin-top:8px; border-radius:7px; background:var(--white); }
+    .cv-card .opt.on{ box-shadow:inset 0 0 0 2px #1F4E5F; }
+    .cv-card .go{ display:block; height:22px; margin-top:10px; border-radius:7px; background:#F2A65A; }
+
   </style>
 </head>
 <body>
@@ -981,7 +1041,7 @@
       tr.ready.catch(function(){}); tr.finished.then(clear, clear);
       return true;
     }
-    /* 슬롯에서 나갈 때 출발 슬롯을 기억하고, 허브의 「수업으로 돌아가기」는 그 슬롯의 다음 장으로 간다 */
+    /* 슬롯에서 나갈 때 출발 슬롯을 기억하고, 허브의 「수업으로 돌아가기」는 그 슬롯으로 돌아간다(data-return-to가 있으면 그 장) */
     function noteOrigin(from){
       if (from && (from.classList.contains('f-slot') || from.hasAttribute('data-return-to'))) store.set('frame.origin', from.getAttribute('data-slide'));
     }
@@ -999,7 +1059,7 @@
       if (oi >= 0){
         var to = slides[oi].getAttribute('data-return-to');
         if (to && idxOf(to) >= 0) return to;
-        if (slides[oi + 1]) return slides[oi + 1].getAttribute('data-slide');
+        return o;
       }
       for (var k = trail.length - 1; k >= 0; k--){      /* 슬롯을 거치지 않고 온 경우: 허브·실습 밖에서 마지막으로 본 장 */
         var s = slides[idxOf(trail[k])];
@@ -1311,6 +1371,46 @@
     window.addEventListener('beforeprint', prepAll);
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(prepAll);
     window.FRAME = { go: function(id){ return goId(id); }, origin: function(){ return store.get('frame.origin'); }, returnTarget: returnTarget, trail: trail, fmt: fmt };
+  })();
+  </script>
+
+  <script>
+  /* 표지 3D — 천천히 돌고, 마우스를 따라 조금 기울고, 끌면 돌고, 누르면 카드가 펼쳐진다. 감사 모드 · 동작 줄이기에서는 멈춘 그림 */
+  (function(){
+    var box = document.querySelector('.cv3d'); if (!box) return;
+    var obj = box.querySelector('.cv3d-obj'), core = box.querySelector('.cv-core'), slide = box.closest('.slide');
+    var cards = [].slice.call(box.querySelectorAll('.cv-card')).map(function(el, i){ return { el:el, x:+el.dataset.x, y:+el.dataset.y, z:+el.dataset.z, p:i * 1.7 }; });
+    var still = document.documentElement.classList.contains('no-anim') || (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+    var rx = -18, ry = 32, hx = 0, hy = 0, thx = 0, thy = 0, spread = 1, tspread = 1, drag = null, moved = 0, t0 = performance.now();
+    function draw(now){
+      var t = (now - t0) / 1000;
+      hx += (thx - hx) * 0.08; hy += (thy - hy) * 0.08; spread += (tspread - spread) * 0.1;
+      var ax = rx + hx, ay = ry + hy;
+      obj.style.transform = 'rotateX(' + ax.toFixed(2) + 'deg) rotateY(' + ay.toFixed(2) + 'deg)';
+      core.style.transform = 'translateY(' + (still ? 0 : Math.sin(t * 0.8) * 10).toFixed(2) + 'px) rotateY(' + (still ? 20 : -t * 16).toFixed(2) + 'deg) rotateX(' + (still ? 12 : t * 10).toFixed(2) + 'deg)';
+      cards.forEach(function(c){
+        var bob = still ? 0 : Math.sin(t * 0.9 + c.p) * 9;
+        /* 카드는 늘 정면을 보게 틀의 회전을 되돌린다 */
+        c.el.style.transform = 'translate(-50%,-50%) translate3d(' + (c.x * spread) + 'px,' + (c.y * spread + bob) + 'px,' + (c.z * spread) + 'px) rotateY(' + (-ay).toFixed(2) + 'deg) rotateX(' + (-ax).toFixed(2) + 'deg)';
+      });
+    }
+    function loop(now){
+      if (slide.classList.contains('is-active')){ if (!drag && !still) ry += 0.1; draw(now); }
+      requestAnimationFrame(loop);
+    }
+    draw(t0);
+    if (!still) requestAnimationFrame(loop);
+    box.addEventListener('pointerdown', function(e){ drag = { x:e.clientX, y:e.clientY, rx:rx, ry:ry }; moved = 0; box.classList.add('is-drag'); try { box.setPointerCapture(e.pointerId); } catch (err) {} e.stopPropagation(); });
+    box.addEventListener('pointermove', function(e){
+      if (!drag) return;
+      var dx = e.clientX - drag.x, dy = e.clientY - drag.y; moved = Math.max(moved, Math.abs(dx) + Math.abs(dy));
+      ry = drag.ry + dx * 0.45; rx = Math.max(-70, Math.min(70, drag.rx - dy * 0.45)); draw(performance.now());
+    });
+    function end(){ if (!drag) return; drag = null; box.classList.remove('is-drag'); if (moved < 6){ tspread = tspread > 1 ? 1 : 1.16; box.classList.toggle('is-open', tspread > 1); if (still){ spread = tspread; } draw(performance.now()); } }
+    box.addEventListener('pointerup', end); box.addEventListener('pointercancel', end);
+    /* 표지 어디서든 마우스를 움직이면 그림이 그쪽으로 조금 기운다 */
+    slide.addEventListener('pointermove', function(e){ if (drag || still) return; var r = slide.getBoundingClientRect(); thy = ((e.clientX - r.left) / r.width - 0.5) * 22; thx = -((e.clientY - r.top) / r.height - 0.5) * 16; });
+    slide.addEventListener('pointerleave', function(){ thx = 0; thy = 0; });
   })();
   </script>
 </body>

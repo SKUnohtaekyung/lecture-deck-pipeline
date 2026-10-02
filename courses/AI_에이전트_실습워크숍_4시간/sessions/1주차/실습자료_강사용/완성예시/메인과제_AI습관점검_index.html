@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI 활용 습관 점검</title>
+<style>
+/* design.md — 배경 60 · 메인 30 · 포인트 10 */
+:root{ --bg:#F7F4EA; --card:#FFFFFF; --main:#1F4E5F; --main-soft:#DCE8EA; --point:#F2A65A; --ink:#1B1B1B; --sub:#5F6B6D; --r:20px; }
+*{ box-sizing:border-box; }
+body{ margin:0; min-height:100vh; display:grid; place-items:center; background:var(--bg); color:var(--ink); font-family:"Pretendard","Malgun Gothic",-apple-system,sans-serif; line-height:1.6; padding:24px 16px; }
+.app{ width:min(560px,100%); }
+.card{ background:var(--card); border-radius:var(--r); padding:36px 32px; box-shadow:0 12px 40px rgba(31,78,95,.12); }
+.eyebrow{ font-size:13px; font-weight:800; letter-spacing:.06em; color:var(--main); }
+h1{ margin:10px 0 12px; font-size:32px; line-height:1.3; letter-spacing:-.03em; }
+p{ margin:0 0 12px; color:var(--sub); }
+button{ font:inherit; cursor:pointer; border:0; }
+.cta{ width:100%; margin-top:18px; padding:16px; border-radius:14px; background:var(--point); color:var(--ink); font-size:18px; font-weight:800; transition:transform .15s; }
+.cta:hover{ transform:translateY(-2px); }
+.ghost{ background:none; color:var(--main); font-weight:700; text-decoration:underline; text-underline-offset:4px; padding:8px 0; }
+.prog{ height:8px; border-radius:99px; background:var(--main-soft); overflow:hidden; }
+.prog i{ display:block; height:100%; background:var(--main); border-radius:99px; transition:width .3s; }
+.axis{ display:inline-block; margin:22px 0 8px; padding:3px 12px; border-radius:99px; background:var(--main-soft); color:var(--main); font-size:13px; font-weight:800; }
+.qtext{ font-size:24px; font-weight:800; line-height:1.45; letter-spacing:-.02em; min-height:105px; }
+.opts{ display:grid; gap:10px; margin-top:18px; }
+.opt{ display:flex; justify-content:space-between; align-items:center; padding:15px 18px; border-radius:14px; background:var(--bg); font-size:17px; font-weight:700; color:var(--ink); border:2px solid transparent; transition:border-color .15s,transform .15s; }
+.opt:hover{ border-color:var(--main); transform:translateX(3px); }
+.opt span{ font-size:13px; color:var(--sub); font-weight:600; }
+.type{ font-size:30px; font-weight:800; color:var(--main); letter-spacing:-.03em; line-height:1.3; margin:8px 0 14px; }
+.map{ display:block; width:100%; height:auto; margin:6px 0 16px; }
+.box{ background:var(--bg); border-radius:14px; padding:16px 18px; margin-top:12px; }
+.box b{ display:block; font-size:13px; color:var(--main); letter-spacing:.03em; margin-bottom:4px; }
+.prompt{ background:var(--main); color:#fff; border-radius:14px; padding:16px 18px; margin-top:12px; display:flex; gap:12px; align-items:flex-start; justify-content:space-between; }
+.prompt code{ font-family:inherit; font-size:15px; }
+.prompt button{ flex:none; background:var(--point); color:var(--ink); font-weight:800; font-size:13px; padding:7px 12px; border-radius:9px; }
+.foot{ margin-top:16px; font-size:13px; color:var(--sub); text-align:center; }
+.row{ display:flex; justify-content:space-between; gap:12px; margin-top:14px; }
+[hidden]{ display:none !important; }
+</style>
+</head>
+<body>
+<div class="app">
+  <section class="card" id="sStart">
+    <div class="eyebrow">AI 활용 습관 점검</div>
+    <h1>보고서를 쓸 때,<br>나는 AI를 어떻게 쓰고 있을까요</h1>
+    <p>문항 10개에 답하면 지금의 습관이 네 유형 가운데 어디에 가까운지 보여 드립니다. 2분이면 됩니다.</p>
+    <p>이름이나 연락처는 묻지 않고, 답은 어디에도 보내지 않습니다.</p>
+    <button class="cta" id="startBtn">시작하기</button>
+  </section>
+  <section class="card" id="sQuiz" hidden>
+    <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:700;color:var(--sub);margin-bottom:8px"><span id="step"></span><button class="ghost" id="backBtn" style="padding:0">이전 문항</button></div>
+    <div class="prog"><i id="bar"></i></div>
+    <span class="axis" id="axis"></span>
+    <div class="qtext" id="qtext"></div>
+    <div class="opts" id="opts"></div>
+  </section>
+  <section class="card" id="sResult" hidden>
+    <div class="eyebrow">지금의 습관은</div>
+    <div class="type" id="rType"></div>
+    <svg class="map" viewBox="0 0 400 220" id="map" role="img" aria-label="두 축 위의 내 위치"></svg>
+    <p id="rSum" style="color:var(--ink);font-size:17px;font-weight:600"></p>
+    <div class="box"><b>이번 주 해 볼 한 가지</b><span id="rDo"></span></div>
+    <div class="prompt"><code id="rPrompt"></code><button id="copyBtn">복사</button></div>
+    <div class="row"><button class="ghost" id="againBtn">다시 하기</button><button class="ghost" id="otherBtn">다른 유형 보기</button></div>
+    <div class="foot">유형은 지금의 습관을 적은 것이고 바뀔 수 있습니다.</div>
+  </section>
+</div>
+<script>
+// prd.md의 문항과 결과 글
+const Q = [
+  ['start','보고서 주제를 받으면 AI에 묻기 전에 내 결론을 한 줄로 적어 둔다.'],
+  ['start','AI에게 초안을 맡기기 전에 목차를 내가 먼저 잡는다.'],
+  ['start','요청문에 「내 생각은 이렇다」를 적고 그 근거를 따져 달라고 한다.'],
+  ['start','자료를 찾기 전에 내가 알고 있는 것과 모르는 것을 나눠 적는다.'],
+  ['start','AI 답을 받기 전에 「이런 답이 나올 것 같다」를 먼저 떠올려 본다.'],
+  ['end','AI가 알려 준 숫자나 날짜를 원본 문서에서 다시 본다.'],
+  ['end','AI가 쓴 문장을 보고서에 넣기 전에 내 말로 고쳐 쓴다.'],
+  ['end','AI가 든 출처를 직접 열어 본다.'],
+  ['end','제출하기 전에 「이 내용에 책임질 수 있는가」를 한 번 묻는다.'],
+  ['end','AI 답이 내 생각과 다르면 어느 쪽이 맞는지 따로 찾아본다.'],
+];
+const OPT = [['거의 없다',0],['가끔',1],['자주',2],['거의 항상',3]];
+const TYPES = {
+  '11':{ name:'내 생각 먼저 · 확인하고 씀', sum:'보고서의 방향을 내가 먼저 잡고, 받은 답은 확인한 뒤에 쓰는 편입니다.', act:'확인에 걸린 시간을 한 번 재서, AI 없이 쓸 때와 비교해 봅니다.', prompt:'내 초안과 네 제안을 비교해서 달라진 곳과 그 근거를 표로 보여 줘.' },
+  '01':{ name:'AI 먼저 · 확인하고 씀', sum:'AI 초안에서 시작하고, 보고서에 넣기 전에 확인하는 편입니다.', act:'AI를 켜기 전에 내 결론을 한 줄 적어 둡니다.', prompt:'답을 주기 전에 내가 먼저 생각해 볼 질문 세 개를 물어봐 줘.' },
+  '10':{ name:'내 생각 먼저 · 그대로 씀', sum:'방향은 내가 잡지만, 받은 답은 대부분 그대로 쓰는 편입니다.', act:'틀리면 곤란한 숫자 하나를 골라 원본 문서에서 확인합니다.', prompt:'이 답에서 사실 확인이 필요한 문장을 골라 출처와 함께 목록으로 보여 줘.' },
+  '00':{ name:'AI 먼저 · 그대로 씀', sum:'AI 초안에서 시작하고, 대부분 그대로 쓰는 편입니다.', act:'AI 답을 내 말로 세 줄 요약해 본 뒤에 씁니다.', prompt:'결론을 말하기 전에 선택지 두세 개와 각각의 장단점을 먼저 보여 줘.' },
+};
+const $ = id => document.getElementById(id);
+let i = 0, ans = [];
+function go(id){ ['sStart','sQuiz','sResult'].forEach(s => $(s).hidden = s !== id); }
+function ask(){
+  $('step').textContent = (i+1) + ' / ' + Q.length; $('bar').style.width = (i/Q.length*100) + '%'; $('backBtn').hidden = i === 0;
+  $('axis').textContent = Q[i][0] === 'start' ? '시작 — AI를 켜기 전' : '마무리 — 답을 받은 뒤'; $('qtext').textContent = Q[i][1];
+  $('opts').innerHTML = OPT.map(o => '<button class="opt" data-v="' + o[1] + '">' + o[0] + '<span>' + o[1] + '점</span></button>').join('');
+}
+function avg(k){ const v = Q.map((q,j) => q[0] === k ? ans[j] : null).filter(x => x !== null); return v.reduce((a,b) => a+b, 0) / v.length; }
+function result(key, s, e){
+  const t = TYPES[key]; $('rType').textContent = t.name; $('rSum').textContent = t.sum; $('rDo').textContent = t.act; $('rPrompt').textContent = t.prompt;
+  const th = 60 + (1.75/3)*300, tv = 190 - (1.75/3)*160, hx = key[0] === '1', hy = key[1] === '1';
+  const zx = hx ? th : 60, zw = hx ? 360 - th : th - 60, zy = hy ? 30 : tv, zh = hy ? tv - 30 : 190 - tv;
+  let me = '';
+  if (s !== null){ const x = 60 + (s/3)*300, y = 190 - (e/3)*160; me = '<circle cx="' + x + '" cy="' + y + '" r="16" fill="var(--point)" opacity=".3"/><circle cx="' + x + '" cy="' + y + '" r="8" fill="var(--point)" stroke="#fff" stroke-width="3"/><text x="' + x + '" y="' + (y-20) + '" font-size="12" font-weight="800" fill="var(--ink)" text-anchor="middle">나</text>'; }
+  $('map').innerHTML = '<rect x="60" y="30" width="300" height="160" rx="12" fill="var(--bg)"/><rect x="' + zx + '" y="' + zy + '" width="' + zw + '" height="' + zh + '" rx="12" fill="var(--main-soft)"/>'
+    + '<line x1="' + th + '" y1="30" x2="' + th + '" y2="190" stroke="var(--main)" stroke-dasharray="4 5" opacity=".5"/><line x1="60" y1="' + tv + '" x2="360" y2="' + tv + '" stroke="var(--main)" stroke-dasharray="4 5" opacity=".5"/>'
+    + '<text x="210" y="212" font-size="12" font-weight="700" fill="var(--sub)" text-anchor="middle">시작 — AI 먼저 ← → 내 생각 먼저</text>'
+    + '<text x="14" y="110" font-size="12" font-weight="700" fill="var(--sub)" transform="rotate(-90 14 110)" text-anchor="middle">마무리 — 그대로 ← → 확인</text>' + me;
+  go('sResult');
+}
+$('startBtn').onclick = () => { i = 0; ans = []; go('sQuiz'); ask(); };
+$('backBtn').onclick = () => { if (i > 0){ i--; ask(); } };
+$('opts').onclick = ev => { const b = ev.target.closest('.opt'); if (!b) return; ans[i] = +b.dataset.v; i++;
+  if (i < Q.length) return ask(); const s = avg('start'), en = avg('end'); result((s >= 1.75 ? '1' : '0') + (en >= 1.75 ? '1' : '0'), s, en); };
+$('againBtn').onclick = () => go('sStart');
+let peek = 0; $('otherBtn').onclick = () => { const keys = Object.keys(TYPES); peek = (peek + 1) % keys.length; result(keys[peek], null, null); };
+// 주소 끝에 #q 또는 #r 을 붙이면 문항 화면 · 결과 화면부터 보여 준다(발표 자료 캡처용)
+if (location.hash === '#q'){ i = 5; ans = [3,2,3,2,3]; go('sQuiz'); ask(); }
+if (location.hash === '#r'){ ans = [3,2,3,2,3,1,1,2,1,1]; result('10', avg('start'), avg('end')); }
+$('copyBtn').onclick = () => navigator.clipboard.writeText($('rPrompt').textContent).then(() => { $('copyBtn').textContent = '복사됨'; setTimeout(() => $('copyBtn').textContent = '복사', 1500); });
+</script>
+</body>
+</html>

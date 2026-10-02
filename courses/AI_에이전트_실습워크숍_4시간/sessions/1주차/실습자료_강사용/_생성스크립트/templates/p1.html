@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="ko" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>데일리 키친 출시 — 실행 보드</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+<script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+<style>
+/*__BASE__*/
+:root{ --a-상품:#FF8A5C; --a-디자인:#8B5CF6; --a-마케팅:#0EA5E9; --a-물류:#16A34A; --a-고객지원:#D97706; --a-운영:#0E4A5A; }
+html[data-theme="dark"]{ --a-운영:#7DE0EC; }
+.filters{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin:0 0 18px; }
+.tabs{ display:flex; gap:6px; margin-left:auto; background:var(--card); padding:5px; border-radius:14px; box-shadow:var(--shadow); }
+.tabs button{ font:inherit; font-size:14px; font-weight:700; border:0; background:none; color:var(--sub); padding:8px 16px; border-radius:10px; cursor:pointer; }
+.tabs button.on{ background:var(--main); color:var(--card); }
+html[data-theme="dark"] .tabs button.on{ color:#0B1418; }
+.board{ display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
+.col{ background:var(--main-soft); border-radius:18px; padding:14px; }
+.col h3{ margin:4px 6px 12px; font-size:15px; font-weight:800; display:flex; justify-content:space-between; }
+.col h3 span{ color:var(--sub); }
+.t{ background:var(--card); border-radius:14px; padding:14px 16px; margin-bottom:10px; box-shadow:var(--shadow); cursor:pointer; border-left:5px solid var(--ac); transition:transform .15s; }
+.t:hover{ transform:translateY(-2px); }
+.t b{ display:block; font-size:15px; line-height:1.4; }
+.t .row{ display:flex; gap:6px; flex-wrap:wrap; align-items:center; margin-top:8px; }
+.t .hist{ margin-top:8px; font-size:12px; color:var(--sub); }
+.t.late{ outline:2px solid var(--bad); }
+.gantt{ overflow-x:auto; }
+.g-row{ display:grid; grid-template-columns:270px 1fr; align-items:center; min-height:30px; border-top:1px solid var(--line); }
+.g-row:first-child{ border-top:0; }
+.g-name{ font-size:13px; padding-right:12px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.g-track{ position:relative; height:30px; min-width:820px; }
+.g-bar{ position:absolute; top:8px; height:14px; border-radius:7px; background:var(--ac); }
+.g-bar.done{ opacity:.35; }
+.g-dot{ position:absolute; top:5px; width:20px; height:20px; margin-left:-10px; border-radius:50%; background:var(--ac); border:3px solid var(--card); }
+.g-line{ position:absolute; top:0; bottom:0; width:2px; background:var(--bad); z-index:2; }
+.g-line.launch{ background:var(--point); }
+.g-head{ position:relative; height:28px; min-width:820px; font-size:12px; color:var(--sub); }
+.g-head span{ position:absolute; top:4px; transform:translateX(-50%); white-space:nowrap; }
+.people{ display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
+.person{ background:var(--bg); border-radius:14px; padding:16px; }
+.person b{ font-size:16px; } .person .n{ font-size:30px; font-weight:800; letter-spacing:-.03em; }
+.lists{ grid-template-columns:1fr 1fr 1fr; }
+.lists ul{ list-style:none; margin:0; padding:0; } .lists li{ padding:10px 0; border-top:1px solid var(--line); } .lists li:first-child{ border-top:0; }
+.lists li b{ display:block; }
+dialog{ border:0; border-radius:18px; padding:26px 28px; width:min(560px,92vw); background:var(--card); color:var(--ink); box-shadow:0 24px 64px rgba(0,0,0,.3); }
+dialog::backdrop{ background:rgba(8,20,26,.45); }
+dialog h3{ margin:0 0 12px; font-size:20px; }
+dialog dl{ display:grid; grid-template-columns:80px 1fr; gap:8px 12px; margin:0; }
+dialog dt{ color:var(--sub); font-weight:700; font-size:13px; padding-top:2px; }
+dialog dd{ margin:0; }
+.view{ display:none; } .view.on{ display:block; }
+@media (max-width:1100px){ .board,.people,.lists{ grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div>
+      <div class="eyebrow">하루상점 · 프로젝트 실행 보드</div>
+      <h1>신상품 「데일리 키친」 출시</h1>
+      <div class="meta">기준일 2026-03-24(화) · 출시일 2026-04-13(월) · 자료 회의록 4개 · 통화 메모 1개</div>
+    </div>
+    <div class="tools">
+      <button class="btn primary" id="xlsBtn">엑셀로 내려받기</button>
+      <button class="btn" onclick="window.print()">인쇄 · PDF</button>
+      <button class="btn" id="themeBtn">어둡게</button>
+    </div>
+  </header>
+  <section class="grid kpis" id="kpis"></section>
+  <section class="card ai" style="margin-bottom:18px"><h2>AI가 읽은 요점 <small>이번 주에 먼저 챙길 세 가지</small></h2><ol id="ai"></ol></section>
+  <div class="filters noprint">
+    <input class="search" id="q" placeholder="할 일 · 담당 검색" style="width:240px">
+    <select class="sel" id="fOwner"></select><select class="sel" id="fArea"></select>
+    <div class="tabs" id="tabs"><button data-v="board" class="on">칸반</button><button data-v="gantt">타임라인</button><button data-v="people">담당자</button></div>
+  </div>
+  <section class="view on" id="v-board"><div class="board" id="board"></div></section>
+  <section class="view card" id="v-gantt"><h2>타임라인 <small>빨간 선: 오늘(3/24) · 주황 선: 출시일(4/13) · 막대: 처음 정한 기한 → 지금 기한</small></h2><div class="gantt" id="gantt"></div></section>
+  <section class="view card" id="v-people"><h2>담당자별 <small>남은 일 기준</small></h2><div class="people" id="people"></div></section>
+  <section class="grid lists sec" style="margin-top:18px">
+    <div class="card"><h2>아직 정하지 못한 것</h2><ul id="openL"></ul></div>
+    <div class="card"><h2>위험 요소</h2><ul id="risk"></ul></div>
+    <div class="card"><h2>결정 이력</h2><ul id="dec"></ul></div>
+  </section>
+</div>
+<dialog id="dlg"><h3 id="dT"></h3><dl id="dB"></dl><div style="text-align:right;margin-top:18px"><button class="btn primary" onclick="dlg.close()">닫기</button></div></dialog>
+<script>
+const D = /*__DATA__*/;
+const day = s => new Date(s + 'T00:00:00'), TODAY = day(D.today), LAUNCH = day(D.launch), DAYMS = 864e5;
+const fmt = s => s ? (+s.slice(5,7)) + '/' + (+s.slice(8,10)) + '(' + '일월화수목금토'[day(s).getDay()] + ')' : '미정';
+const area = a => `var(--a-${a})`;
+const T = D.tasks.map((t,i) => ({ ...t, i, late: t.due && t.status !== '완료' && day(t.due) < TODAY, week: t.due && t.status !== '완료' && day(t.due) >= TODAY && day(t.due) <= day('2026-03-29') }));
+const left = T.filter(t => t.status !== '완료');
+document.getElementById('kpis').innerHTML = [
+  ['전체 할 일', T.length, '<span class="muted">회의 자료 5개에서 뽑음</span>'],
+  ['완료', T.filter(t => t.status === '완료').length, `<div class="bar"><i style="width:${T.filter(t => t.status === '완료').length/T.length*100}%"></i></div>`],
+  ['이번 주 마감', T.filter(t => t.week).length, '<span class="muted">3/24 ~ 3/29</span>'],
+  ['기한 지남', T.filter(t => t.late).length, T.filter(t => t.late).length ? '<span class="down">바로 확인</span>' : '<span class="up">없음</span>'],
+  ['출시까지', 'D-' + Math.round((LAUNCH - TODAY)/DAYMS), '<span class="muted">4/13(월) · 처음 계획 4/6</span>'],
+].map(k => `<div class="card kpi"><div class="lab">${k[0]}</div><div class="val">${k[1]}</div><div class="delta">${k[2]}</div></div>`).join('');
+document.getElementById('ai').innerHTML = [
+  '<b>3/27(금)에 마감이 다섯 개 몰려 있습니다.</b> 상세페이지 2종 · 체험단 모집 · 포장재 발주 · 사양 확인서 · 할인율 결정. 포장재는 업체도 아직 정해지지 않았습니다.',
+  '<b>KC 인증 서류(4/1)가 출시일을 좌우합니다.</b> 늦으면 4/13 출시가 다시 밀립니다. 3/30에 제조사에 한 번 더 확인하기로 되어 있습니다.',
+  '<b>상세페이지 마감이 두 번 밀렸습니다(3/20 → 3/27 → 4/3).</b> 뒤에 이어지는 기획전 페이지(4/8)와 오픈마켓 등록(4/9)까지 여유가 3~4일뿐입니다.',
+].map(t => `<li>${t}</li>`).join('');
+const uniq = a => [...new Set(a)];
+fOwner.innerHTML = '<option value="">담당 전체</option>' + uniq(T.flatMap(t => t.owner.split(' · '))).map(o => `<option>${o}</option>`).join('');
+fArea.innerHTML = '<option value="">분야 전체</option>' + uniq(T.map(t => t.area)).map(o => `<option>${o}</option>`).join('');
+function pass(t){ const s = q.value.trim(); return (!s || (t.title + t.owner).includes(s)) && (!fOwner.value || t.owner.includes(fOwner.value)) && (!fArea.value || t.area === fArea.value); }
+function card(t){ return `<div class="t ${t.late ? 'late' : ''}" style="--ac:${area(t.area)}" data-i="${t.i}"><b>${t.title}</b><div class="row"><span class="chip n">${t.owner}</span><span class="chip ${t.late ? 'r' : t.week ? 'p' : ''}">${fmt(t.due)}</span><span class="chip n" style="color:${area(t.area)}">${t.area}</span></div>${t.hist ? `<div class="hist">↻ ${t.hist}</div>` : ''}</div>`; }
+function render(){
+  const list = T.filter(pass);
+  board.innerHTML = ['할 일','진행 중','완료'].map(s => { const c = list.filter(t => t.status === s).sort((a,b) => (a.due||'9').localeCompare(b.due||'9')); return `<div class="col"><h3>${s}<span>${c.length}</span></h3>${c.map(card).join('')}</div>`; }).join('');
+  const S = day('2026-03-02'), E = day('2026-04-14'), span = (E - S)/DAYMS, x = d => ((d - S)/DAYMS/span*100).toFixed(2) + '%';
+  let head = ''; for (let d = new Date(S); d <= E; d = new Date(+d + 7*DAYMS)) head += `<span style="left:${x(d)}">${d.getMonth()+1}/${d.getDate()}</span>`;
+  gantt.innerHTML = `<div class="g-row"><div></div><div class="g-head">${head}</div></div>` + list.filter(t => t.due).sort((a,b) => a.due.localeCompare(b.due)).map(t => {
+    const m = t.hist.match(/^(\d+)\/(\d+) →/), first = m ? day(`2026-${String(m[1]).padStart(2,'0')}-${String(m[2]).padStart(2,'0')}`) : null, due = day(t.due);
+    const bar = first ? `<i class="g-bar ${t.status === '완료' ? 'done' : ''}" style="left:${x(first)};width:calc(${x(due)} - ${x(first)})"></i>` : '';
+    return `<div class="g-row" style="--ac:${area(t.area)}"><div class="g-name" title="${t.title}">${t.status === '완료' ? '✓ ' : ''}${t.title} <span class="muted">· ${t.owner}</span></div><div class="g-track"><i class="g-line" style="left:${x(TODAY)}"></i><i class="g-line launch" style="left:${x(LAUNCH)}"></i>${bar}<i class="g-dot" style="left:${x(due)};${t.status === '완료' ? 'opacity:.4' : ''}"></i></div></div>`; }).join('');
+  const names = uniq(T.flatMap(t => t.owner.split(' · '))).filter(n => n !== '전원');
+  people.innerHTML = names.map(n => { const mine = left.filter(t => t.owner.includes(n)); const wk = mine.filter(t => t.week); return `<div class="person"><b>${n}</b><div class="n">${mine.length}<small style="font-size:14px;font-weight:700"> 건</small></div><div class="src">이번 주 마감 ${wk.length}건</div>${wk.map(t => `<div style="margin-top:6px;font-size:13px">· ${t.title}</div>`).join('')}</div>`; }).join('');
+}
+document.addEventListener('click', e => { const c = e.target.closest('.t'); if (!c) return; const t = T[+c.dataset.i]; dT.textContent = t.title;
+  dB.innerHTML = `<dt>담당</dt><dd>${t.owner}</dd><dt>기한</dt><dd>${fmt(t.due)}</dd><dt>상태</dt><dd>${t.status}${t.late ? ' · <span class="down">기한 지남</span>' : ''}</dd><dt>분야</dt><dd>${t.area}</dd><dt>바뀐 이력</dt><dd>${t.hist || '없음'}</dd><dt>근거</dt><dd>${t.src}.docx</dd>`; dlg.showModal(); });
+[q, fOwner, fArea].forEach(el => el.addEventListener('input', render));
+tabs.addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; [...tabs.children].forEach(x => x.classList.toggle('on', x === b)); document.querySelectorAll('.view').forEach(v => v.classList.toggle('on', v.id === 'v-' + b.dataset.v)); });
+openL.innerHTML = D.open.map(o => `<li><b>${o.title}</b>${o.note}<div class="src">근거: ${o.src}</div></li>`).join('');
+risk.innerHTML = D.risk.map(o => `<li><b>${o.title} <span class="chip ${o.level === '높음' ? 'r' : 'p'}">${o.level}</span></b>${o.note}</li>`).join('');
+dec.innerHTML = D.decisions.map(o => `<li><b>${o.title}</b><span class="src">${fmt(o.date)} 회의${o.note ? ' · ' + o.note : ''}</span></li>`).join('');
+render();
+themeBtn.onclick = () => { const d = document.documentElement, dark = d.dataset.theme !== 'dark'; d.dataset.theme = dark ? 'dark' : 'light'; themeBtn.textContent = dark ? '밝게' : '어둡게'; };
+xlsBtn.onclick = () => { const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(T.map(t => ({ '할 일':t.title, '담당':t.owner, '기한':t.due || '미정', '상태':t.status, '분야':t.area, '근거':t.src, '바뀐 이력':t.hist }))), '할 일');
+  XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(D.open.map(o => ({ '정하지 못한 것':o.title, '내용':o.note, '근거':o.src }))), '미정 사항');
+  XLSX.writeFile(wb, '데일리키친_실행보드.xlsx'); };
+</script>
+</body>
+</html>

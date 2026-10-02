@@ -1,0 +1,1577 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>하루상점 세컨드 브레인</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+<script src="https://cdn.jsdelivr.net/npm/3d-force-graph@1.77.0/dist/3d-force-graph.min.js"></script>
+<script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+<style>
+:root{ --bg:#1E1E1E; --panel:#262626; --panel2:#2F2F2F; --ink:#DADADA; --sub:#8E8E8E; --line:#363636; --accent:#A882FF; }
+*{ box-sizing:border-box; }
+html,body{ margin:0; height:100%; overflow:hidden; background:var(--bg); color:var(--ink); font-family:"Pretendard","Malgun Gothic",sans-serif; font-size:14px; line-height:1.55; font-variant-numeric:tabular-nums; }
+.app{ display:grid; grid-template-columns:44px 280px 1fr 380px; grid-template-rows:38px 1fr 26px; height:100vh; }
+.titlebar{ grid-column:1/-1; display:flex; align-items:center; gap:14px; padding:0 14px; background:var(--panel); border-bottom:1px solid var(--line); font-size:13px; color:var(--sub); }
+.titlebar b{ color:var(--ink); font-weight:700; }
+.titlebar .tab{ padding:6px 14px; border-radius:8px 8px 0 0; background:var(--bg); color:var(--ink); align-self:flex-end; }
+.titlebar .sp{ margin-left:auto; display:flex; gap:8px; }
+button{ font:inherit; cursor:pointer; }
+.tbtn{ border:0; border-radius:6px; padding:5px 12px; font-size:12px; font-weight:700; background:var(--panel2); color:var(--ink); }
+.tbtn.p{ background:var(--accent); color:#16101F; }
+.ribbon{ grid-row:2; background:var(--panel); border-right:1px solid var(--line); display:flex; flex-direction:column; align-items:center; gap:14px; padding-top:14px; }
+.ribbon svg{ width:20px; height:20px; stroke:var(--sub); fill:none; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; }
+.ribbon svg.on{ stroke:var(--accent); }
+.side{ grid-row:2; background:var(--panel); border-right:1px solid var(--line); display:flex; flex-direction:column; min-height:0; }
+.side input{ margin:12px; padding:8px 12px; border-radius:6px; border:1px solid var(--line); background:var(--bg); color:var(--ink); font:inherit; outline:none; }
+.side input:focus{ border-color:var(--accent); }
+.seg{ display:flex; gap:4px; margin:0 12px 8px; }
+.seg button{ flex:1; border:0; border-radius:6px; padding:5px; font-size:12px; font-weight:700; background:none; color:var(--sub); }
+.seg button.on{ background:var(--panel2); color:var(--ink); }
+.tree{ flex:1; overflow:auto; padding:0 6px 12px; }
+.fold{ padding:5px 8px; font-size:13px; font-weight:700; color:var(--ink); cursor:pointer; user-select:none; }
+.fold::before{ content:"▾ "; color:var(--sub); } .fold.shut::before{ content:"▸ "; }
+.fold.shut + .kids{ display:none; }
+.file{ display:flex; align-items:center; gap:8px; padding:4px 8px 4px 22px; border-radius:5px; font-size:13px; color:var(--sub); cursor:pointer; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.file:hover{ background:var(--panel2); color:var(--ink); } .file.on{ background:rgba(168,130,255,.18); color:var(--ink); }
+.file i{ flex:none; width:8px; height:8px; border-radius:50%; background:var(--c); }
+.file em{ margin-left:auto; font-style:normal; font-size:10px; font-weight:800; color:var(--sub); border:1px solid var(--line); border-radius:4px; padding:0 4px; }
+.stage{ grid-row:2; position:relative; min-width:0; overflow:hidden; background:radial-gradient(ellipse at center,#252525 0%,#1A1A1A 100%); }
+#graph{ position:absolute; inset:0; }
+#labels{ position:absolute; inset:0; pointer-events:none; overflow:hidden; }
+#labels span{ position:absolute; transform:translate(-50%,10px); font-size:11px; font-weight:600; color:var(--c,#B0B0B0); white-space:nowrap; text-shadow:0 0 4px #000,0 0 2px #000; transition:opacity .2s; }
+/* 연결점(접점) — 어두운 알약 바탕에 흰 굵은 글자 + 연결 수. 많이 연결된 것은 더 크게 */
+#labels span.ent{ transform:translate(-50%,13px); z-index:2; padding:1px 9px; border-radius:99px; background:rgba(18,18,18,.82); box-shadow:0 0 0 1px rgba(255,255,255,.4); color:#FFF; font-weight:700; font-size:12px; text-shadow:none; }
+#labels span.ent.hub{ font-size:16px; padding:3px 12px; box-shadow:0 0 0 2px #FFF, 0 0 14px rgba(255,255,255,.35); }
+#labels span.ent em{ font-style:normal; margin-left:6px; font-size:.8em; color:#C9B2FF; }
+/* 주제 묶음 이름 — 묶음 한가운데 위에 색 알약으로 */
+#labels span.grp{ transform:translate(-50%,-50%); z-index:3; padding:5px 16px; border-radius:99px; background:var(--c); color:#16101F; font-size:19px; font-weight:800; text-shadow:none; box-shadow:0 4px 14px rgba(0,0,0,.45); }
+/* 이름표도 누를 수 있다 — 작은 공을 정확히 맞히지 않아도 된다 */
+#labels span.ent, #labels span.grp, #labels span.doc{ pointer-events:auto; cursor:pointer; }
+#labels span.doc{ padding:2px 8px; border-radius:99px; background:rgba(18,18,18,.72); text-shadow:none; font-size:12px; }
+#labels span.ent:hover, #labels span.doc:hover{ box-shadow:0 0 0 2px #A882FF; }
+#labels span.grp:hover{ box-shadow:0 0 0 3px #FFF, 0 4px 14px rgba(0,0,0,.45); }
+#labels span.dim{ opacity:.08; pointer-events:none; }
+.hud{ position:absolute; left:16px; top:14px; display:flex; gap:10px; }
+.stat{ background:rgba(38,38,38,.88); border:1px solid var(--line); border-radius:10px; padding:8px 14px; }
+.stat b{ display:block; font-size:22px; font-weight:800; color:#FFF; line-height:1.15; }
+.stat span{ font-size:11px; color:var(--sub); }
+.legend{ position:absolute; left:16px; bottom:14px; display:flex; flex-wrap:wrap; gap:6px; max-width:70%; }
+.legend button{ display:flex; align-items:center; gap:6px; border:1px solid var(--line); border-radius:99px; padding:4px 11px; font-size:12px; font-weight:600; background:rgba(38,38,38,.88); color:var(--ink); }
+.legend button i{ width:9px; height:9px; border-radius:50%; background:var(--c); }
+.legend button.off{ opacity:.35; }
+.help{ position:absolute; right:16px; bottom:14px; font-size:11px; color:var(--sub); text-align:right; }
+.note{ grid-row:2; background:var(--bg); border-left:1px solid var(--line); overflow:auto; padding:22px 24px 40px; }
+.note h1{ margin:0 0 6px; font-size:24px; font-weight:800; color:#FFF; letter-spacing:-.02em; line-height:1.3; }
+.note .path{ font-size:12px; color:var(--sub); word-break:break-all; }
+.note h2{ margin:22px 0 8px; font-size:13px; font-weight:800; color:var(--accent); letter-spacing:.03em; }
+.note p{ margin:0 0 8px; } .note ul{ margin:0; padding-left:18px; } .note li{ margin-bottom:5px; }
+.note pre{ margin:0; white-space:pre-wrap; font:inherit; font-size:13px; color:#B8B8B8; background:var(--panel); border-radius:8px; padding:12px 14px; max-height:260px; overflow:auto; }
+.tag{ display:inline-block; margin:0 6px 6px 0; padding:2px 10px; border-radius:99px; font-size:12px; font-weight:600; background:rgba(168,130,255,.16); color:#C9B2FF; cursor:pointer; }
+.link{ display:flex; align-items:center; gap:8px; padding:5px 8px; margin:0 -8px; border-radius:5px; cursor:pointer; color:var(--ink); }
+.link:hover{ background:var(--panel); } .link i{ flex:none; width:8px; height:8px; border-radius:50%; background:var(--c); }
+.callout{ border-left:3px solid #E5B567; background:rgba(229,181,103,.1); border-radius:0 8px 8px 0; padding:10px 14px; margin-top:10px; font-size:13px; }
+.callout.ai{ border-color:var(--accent); background:rgba(168,130,255,.1); }
+.rank{ display:grid; grid-template-columns:1fr auto; gap:4px 12px; }
+.rank span:nth-child(even){ color:var(--sub); text-align:right; }
+.status{ grid-column:1/-1; display:flex; align-items:center; justify-content:flex-end; gap:18px; padding:0 14px; background:var(--panel); border-top:1px solid var(--line); font-size:11px; color:var(--sub); }
+::-webkit-scrollbar{ width:8px; height:8px; } ::-webkit-scrollbar-thumb{ background:#3A3A3A; border-radius:4px; }
+@media (max-width:1100px){ .app{ grid-template-columns:44px 220px 1fr; } .note{ position:fixed; right:0; top:38px; bottom:26px; width:340px; box-shadow:-12px 0 32px rgba(0,0,0,.5); } }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="titlebar"><b>하루상점 세컨드 브레인</b><span class="tab">그래프 뷰</span><span>내문서/ 폴더의 문서 40개를 읽어 만든 지식 지도</span>
+    <span class="sp"><button class="tbtn" id="homeBtn">전체 보기</button><button class="tbtn" id="spinBtn">회전 멈춤</button><button class="tbtn p" id="xlsBtn">문서 색인 엑셀로</button></span></div>
+  <div class="ribbon"><svg class="on" viewBox="0 0 24 24"><circle cx="6" cy="7" r="2.4"/><circle cx="18" cy="6" r="2.4"/><circle cx="12" cy="18" r="2.4"/><path d="M8 8l3 8M16 8l-3 8M8.4 6.8l7.2-.6"/></svg><svg viewBox="0 0 24 24"><path d="M3 6.5h6.5l2 2.5H21v10.5H3z"/></svg><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6"/><path d="M15 15l5.5 5.5"/></svg><svg viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6zM14 3v4h4M9 12h6M9 16h6"/></svg></div>
+  <aside class="side">
+    <input id="q" placeholder="검색 — 제목 · 내용 · 이름">
+    <div class="seg" id="seg"><button data-m="group" class="on">주제 묶음</button><button data-m="folder">원래 폴더</button></div>
+    <div class="tree" id="tree"></div>
+  </aside>
+  <main class="stage">
+    <div id="graph"></div><div id="labels"></div>
+    <div class="hud" id="hud"></div>
+    <div class="legend" id="legend"></div>
+    <div class="help">묶음 이름을 누르면 그 묶음의 문서가 펼쳐집니다 · 공이나 이름표를 누르면 노트가 열립니다</div>
+  </main>
+  <aside class="note" id="note"></aside>
+  <div class="status"><span id="st1"></span><span>만든 날 2026-03-30</span></div>
+</div>
+<script>
+const D = {
+ "nodes": [
+  {
+   "id": "문서/회사자료/데일리키친_출시기획서.docx",
+   "kind": "doc",
+   "title": "「데일리 키친」 출시 기획서",
+   "file": "데일리키친_출시기획서.docx",
+   "folder": "문서/회사자료",
+   "ext": "docx",
+   "group": "상품",
+   "text": "# 「데일리 키친」 출시 기획서\n\n## 배경\n주방 상품을 산 고객의 재구매율이 다른 카테고리보다 높다. 그래서 봄 신상품을 주방 라인으로 묶어 낸다.\n\n## 구성\n- 실리콘 조리도구 세트(새 색상)\n- 유리 계량컵\n- 스테인리스 채반 2p\n- 실리콘 냄비 받침\n- 밀폐 양념통 6p\n\n## 일정\n출시일은 4월 13일(월). 제조는 그린홈 제작소가 맡는다. 초도 물량은 250세트와 300세트 가운데 정하는 중이다.\n\n## 목표\n첫 달 매출 800만 원. 담당은 김나연, 일정 관리는 박서준.",
+   "ents": [
+    "데일리 키친",
+    "김나연",
+    "그린홈 제작소",
+    "실리콘 조리도구 세트"
+   ]
+  },
+  {
+   "id": "E:데일리 키친",
+   "kind": "ent",
+   "title": "데일리 키친",
+   "group": "주제"
+  },
+  {
+   "id": "E:김나연",
+   "kind": "ent",
+   "title": "김나연",
+   "group": "사람"
+  },
+  {
+   "id": "E:그린홈 제작소",
+   "kind": "ent",
+   "title": "그린홈 제작소",
+   "group": "거래처"
+  },
+  {
+   "id": "E:실리콘 조리도구 세트",
+   "kind": "ent",
+   "title": "실리콘 조리도구 세트",
+   "group": "상품명"
+  },
+  {
+   "id": "바탕화면/신상품 가격안 v3.xlsx",
+   "kind": "doc",
+   "title": "신상품 가격안",
+   "file": "신상품 가격안 v3.xlsx",
+   "folder": "바탕화면",
+   "ext": "xlsx",
+   "group": "상품",
+   "text": "신상품 가격안\n상품 | 원가 | 판매가 안 | 마진율 | 비고\n실리콘 조리도구 세트(새 색상) | 11000 | 24900 | 56% | 기존 가격 유지\n유리 계량컵 | 5200 | 12900 | 60% | \n스테인리스 채반 2p | 7800 | 17900 | 56% | \n실리콘 냄비 받침 | 2900 | 7900 | 63% | \n밀폐 양념통 6p | 9400 | 21900 | 57% | 뚜껑 색 확인 중",
+   "ents": [
+    "데일리 키친",
+    "김나연",
+    "한지우"
+   ]
+  },
+  {
+   "id": "E:한지우",
+   "kind": "ent",
+   "title": "한지우",
+   "group": "사람"
+  },
+  {
+   "id": "다운로드/그린홈제작소_견적서_0311.xlsx",
+   "kind": "doc",
+   "title": "그린홈 제작소 견적서",
+   "file": "그린홈제작소_견적서_0311.xlsx",
+   "folder": "다운로드",
+   "ext": "xlsx",
+   "group": "거래처",
+   "text": "그린홈 제작소 견적서\n품목 | 수량 | 단가 | 금액 | 납기\n실리콘 조리도구 세트 | 250 | 11000 | 2750000 | 4/7\n유리 계량컵 | 250 | 5200 | 1300000 | 4/7\n스테인리스 채반 2p | 250 | 7800 | 1950000 | 4/7\n실리콘 냄비 받침 | 250 | 2900 | 725000 | 4/7\n밀폐 양념통 6p | 250 | 9400 | 2350000 | 4/7",
+   "ents": [
+    "그린홈 제작소",
+    "데일리 키친",
+    "김나연"
+   ]
+  },
+  {
+   "id": "카톡 받은 파일/제조사 통화 정리.txt",
+   "kind": "doc",
+   "title": "제조사 통화 정리",
+   "file": "제조사 통화 정리.txt",
+   "folder": "카톡 받은 파일",
+   "ext": "txt",
+   "group": "거래처",
+   "text": "3/12 그린홈 제작소 문 과장 통화.\n금형 수정으로 납기 1주 지연, 4/7 납품 가능.\n초도 250세트까지만 가능. 나머지는 4월 말.\nKC 인증 서류는 4/1에 보내 준다고 함. 이게 없으면 판매 못 함.\n→ 출시일 4/13으로 미루는 안을 회의에 올리기 (김나연)",
+   "ents": [
+    "그린홈 제작소",
+    "김나연",
+    "데일리 키친",
+    "KC 인증"
+   ]
+  },
+  {
+   "id": "E:KC 인증",
+   "kind": "ent",
+   "title": "KC 인증",
+   "group": "주제"
+  },
+  {
+   "id": "문서/회사자료/상품 사양 정리.docx",
+   "kind": "doc",
+   "title": "주요 상품 사양 정리",
+   "file": "상품 사양 정리.docx",
+   "folder": "문서/회사자료",
+   "ext": "docx",
+   "group": "상품",
+   "text": "# 주요 상품 사양 정리\n고객 문의가 많은 사양만 모았다. 최유나가 요청해서 김나연이 정리.\n\n## 스테인리스 텀블러 500ml\n- 보온 6시간 · 보냉 12시간(제조사 시험 기준)\n- 식기세척기 사용 불가(도장 벗겨짐)\n\n## 밀폐 유리 반찬통 4p\n- 본체는 전자레인지 · 식기세척기 가능, 뚜껑은 불가\n- 3월 생산분 뚜껑 패킹 불량 신고 있음\n\n## 규조토 발매트\n- 석면 불검출 시험 성적서 보유(요청하면 PDF 전달)",
+   "ents": [
+    "스테인리스 텀블러",
+    "밀폐 유리 반찬통",
+    "김나연",
+    "최유나"
+   ]
+  },
+  {
+   "id": "E:스테인리스 텀블러",
+   "kind": "ent",
+   "title": "스테인리스 텀블러",
+   "group": "상품명"
+  },
+  {
+   "id": "E:밀폐 유리 반찬통",
+   "kind": "ent",
+   "title": "밀폐 유리 반찬통",
+   "group": "상품명"
+  },
+  {
+   "id": "E:최유나",
+   "kind": "ent",
+   "title": "최유나",
+   "group": "사람"
+  },
+  {
+   "id": "문서/2025 정리 안 함/2025 상품별 판매 결산.xlsx",
+   "kind": "doc",
+   "title": "2025년 상품별 판매 결산",
+   "file": "2025 상품별 판매 결산.xlsx",
+   "folder": "문서/2025 정리 안 함",
+   "ext": "xlsx",
+   "group": "재무",
+   "text": "2025년 상품별 판매 결산\n상품 | 판매 수량 | 매출 | 반품률 | 메모\n스테인리스 텀블러 500ml | 4210 | 79569000 | 1.2% | 연중 1위\n밀폐 유리 반찬통 4p | 2980 | 65262000 | 2.9% | 파손 반품 많음\n옷걸이 논슬립 30p | 3350 | 43215000 | 0.8% | \n규조토 발매트 | 2140 | 42586000 | 3.4% | 배송 중 파손\n아로마 디퓨저 200ml | 2460 | 39114000 | 1.0% | 선물 수요\n리빙박스 60L 3p | 1320 | 39468000 | 1.5% |",
+   "ents": [
+    "스테인리스 텀블러",
+    "밀폐 유리 반찬통",
+    "옷걸이 논슬립",
+    "박서준"
+   ]
+  },
+  {
+   "id": "E:옷걸이 논슬립",
+   "kind": "ent",
+   "title": "옷걸이 논슬립",
+   "group": "상품명"
+  },
+  {
+   "id": "E:박서준",
+   "kind": "ent",
+   "title": "박서준",
+   "group": "사람"
+  },
+  {
+   "id": "바탕화면/새 폴더/아이디어 메모 - 구독 상품.txt",
+   "kind": "doc",
+   "title": "구독 상품 아이디어",
+   "file": "아이디어 메모 - 구독 상품.txt",
+   "folder": "바탕화면/새 폴더",
+   "ext": "txt",
+   "group": "아이디어",
+   "text": "칫솔이랑 디퓨저 리필은 주기적으로 사는 물건.\n3개월마다 자동으로 보내 주는 구독을 만들면 어떨까.\n게스트하우스에서 칫솔 정기 주문 문의도 왔었다.\n재구매 쿠폰 실험 결과 보고 나서 대표님께 제안해 보기.",
+   "ents": [
+    "대나무 칫솔",
+    "아로마 디퓨저",
+    "재구매 쿠폰 실험",
+    "한지우"
+   ]
+  },
+  {
+   "id": "E:대나무 칫솔",
+   "kind": "ent",
+   "title": "대나무 칫솔",
+   "group": "상품명"
+  },
+  {
+   "id": "E:아로마 디퓨저",
+   "kind": "ent",
+   "title": "아로마 디퓨저",
+   "group": "상품명"
+  },
+  {
+   "id": "E:재구매 쿠폰 실험",
+   "kind": "ent",
+   "title": "재구매 쿠폰 실험",
+   "group": "주제"
+  },
+  {
+   "id": "문서/회사자료/3월 라이브방송 기획안.docx",
+   "kind": "doc",
+   "title": "3월 25일 라이브방송 기획안",
+   "file": "3월 라이브방송 기획안.docx",
+   "folder": "문서/회사자료",
+   "ext": "docx",
+   "group": "마케팅",
+   "text": "# 3월 25일 라이브방송 기획안\n\n## 개요\n3월 25일(수) 20:00~21:00. 진행 이도현, 채팅 응대 최유나.\n\n## 상품\n- 스테인리스 텀블러 500ml\n- 밀폐 유리 반찬통 4p\n- 아로마 디퓨저 200ml\n방송 중 20% 할인. 쿠폰과 함께 쓸 수 없다.\n\n## 준비\n텀블러 재고가 120개 남짓이라 모자랄 수 있다. 김나연이 추가 발주를 넣기로 했다.\n광고비 60만 원.",
+   "ents": [
+    "라이브방송",
+    "이도현",
+    "스테인리스 텀블러",
+    "밀폐 유리 반찬통",
+    "아로마 디퓨저"
+   ]
+  },
+  {
+   "id": "E:라이브방송",
+   "kind": "ent",
+   "title": "라이브방송",
+   "group": "주제"
+  },
+  {
+   "id": "E:이도현",
+   "kind": "ent",
+   "title": "이도현",
+   "group": "사람"
+  },
+  {
+   "id": "바탕화면/라이브방송 결과 메모.txt",
+   "kind": "doc",
+   "title": "라이브방송 결과 메모",
+   "file": "라이브방송 결과 메모.txt",
+   "folder": "바탕화면",
+   "ext": "txt",
+   "group": "마케팅",
+   "text": "3/25 방송 주문이 평소 하루 주문보다 많았음.\n텀블러는 방송 직후 품절. 재입고 3/30.\n출고가 밀려서 30건쯤 금요일로 넘어감 (오태호). 바른택배 집하 시간이 15시로 당겨진 영향도 있음.\n다음 방송: 채팅 응대 2명, 포장 인력 1명 추가.\n다음 방송 날짜는 데일리 키친 출시 주간 4/15 후보.",
+   "ents": [
+    "라이브방송",
+    "이도현",
+    "스테인리스 텀블러",
+    "오태호",
+    "바른택배"
+   ]
+  },
+  {
+   "id": "E:오태호",
+   "kind": "ent",
+   "title": "오태호",
+   "group": "사람"
+  },
+  {
+   "id": "E:바른택배",
+   "kind": "ent",
+   "title": "바른택배",
+   "group": "거래처"
+  },
+  {
+   "id": "문서/회사자료/봄정리 기획전 계획.pptx",
+   "kind": "doc",
+   "title": "봄 정리 기획전 계획",
+   "file": "봄정리 기획전 계획.pptx",
+   "folder": "문서/회사자료",
+   "ext": "pptx",
+   "group": "마케팅",
+   "text": "[슬라이드 1] 봄 정리 기획전\n- 기간: 4월 6일 ~ 4월 19일\n- 오픈마켓과 자사몰 동시 진행\n- 담당: 이도현(기획) · 정민서(배너)\n\n[슬라이드 2] 대상 상품\n- 리빙박스 60L 3p\n- 옷걸이 논슬립 30p\n- 서랍 칸막이 정리함 6p\n- 틈새 이동식 수납장\n\n[슬라이드 3] 목표\n- 수납 카테고리 매출 전월 대비 30% 증가\n- 기획전 배너 2종 가운데 4월 1일까지 확정",
+   "ents": [
+    "봄 정리 기획전",
+    "이도현",
+    "정민서",
+    "리빙박스",
+    "옷걸이 논슬립"
+   ]
+  },
+  {
+   "id": "E:봄 정리 기획전",
+   "kind": "ent",
+   "title": "봄 정리 기획전",
+   "group": "주제"
+  },
+  {
+   "id": "E:정민서",
+   "kind": "ent",
+   "title": "정민서",
+   "group": "사람"
+  },
+  {
+   "id": "E:리빙박스",
+   "kind": "ent",
+   "title": "리빙박스",
+   "group": "상품명"
+  },
+  {
+   "id": "다운로드/인스타 광고 성과_2월.xlsx",
+   "kind": "doc",
+   "title": "인스타그램 광고 성과 (2월)",
+   "file": "인스타 광고 성과_2월.xlsx",
+   "folder": "다운로드",
+   "ext": "xlsx",
+   "group": "마케팅",
+   "text": "인스타그램 광고 성과 (2월)\n소재 | 노출 | 클릭 | 클릭률 | 광고비 | 매출\n텀블러 출근길 영상 | 48200 | 1930 | 4.0% | 180000 | 1250000\n디퓨저 선물 이미지 | 39600 | 990 | 2.5% | 150000 | 610000\n발매트 사용 전후 | 27400 | 1120 | 4.1% | 120000 | 540000\n수납 정리 영상 | 31000 | 870 | 2.8% | 130000 | 395000",
+   "ents": [
+    "이도현",
+    "아로마 디퓨저",
+    "스테인리스 텀블러"
+   ]
+  },
+  {
+   "id": "문서/회사자료/재구매 쿠폰 실험 결과.docx",
+   "kind": "doc",
+   "title": "재구매 쿠폰 실험 결과",
+   "file": "재구매 쿠폰 실험 결과.docx",
+   "folder": "문서/회사자료",
+   "ext": "docx",
+   "group": "마케팅",
+   "text": "# 재구매 쿠폰 실험 결과\n\n## 실험\n2월 한 달 동안 첫 구매 고객 절반에게 14일 안에 쓰는 3,000원 쿠폰을 보냈다.\n\n## 결과\n- 쿠폰을 받은 쪽의 30일 재구매율 18%\n- 받지 않은 쪽 11%\n쿠폰 비용을 빼도 이익이 남았다.\n\n## 다음\n4월부터 전체 첫 구매 고객에게 보낸다. 박서준이 자동 발송을 설정한다. 구독 상품 아이디어와도 이어서 검토.",
+   "ents": [
+    "재구매 쿠폰 실험",
+    "이도현",
+    "박서준"
+   ]
+  },
+  {
+   "id": "USB 백업/브랜드소개서_최종.pptx",
+   "kind": "doc",
+   "title": "하루상점 브랜드 소개서",
+   "file": "브랜드소개서_최종.pptx",
+   "folder": "USB 백업",
+   "ext": "pptx",
+   "group": "브랜드",
+   "text": "[슬라이드 1] 하루상점\n- 매일 쓰는 물건을 더 낫게\n- 2022년 시작한 온라인 생활용품 쇼핑몰\n\n[슬라이드 2] 우리가 파는 것\n- 주방 · 욕실 · 수납 · 리빙 · 데스크 5개 카테고리\n- 상품 20종, 직접 써 보고 고른 것만\n\n[슬라이드 3] 숫자\n- 누적 주문 6만 건\n- 재구매율 31%",
+   "ents": [
+    "브랜드 리뉴얼",
+    "정민서",
+    "한지우"
+   ]
+  },
+  {
+   "id": "E:브랜드 리뉴얼",
+   "kind": "ent",
+   "title": "브랜드 리뉴얼",
+   "group": "주제"
+  },
+  {
+   "id": "USB 백업/브랜드소개서_최종_진짜최종.pptx",
+   "kind": "doc",
+   "title": "하루상점 브랜드 소개서 (고친 판)",
+   "file": "브랜드소개서_최종_진짜최종.pptx",
+   "folder": "USB 백업",
+   "ext": "pptx",
+   "group": "브랜드",
+   "text": "[슬라이드 1] 하루상점\n- 매일 쓰는 물건을 더 낫게\n- 2022년 시작한 온라인 생활용품 쇼핑몰\n\n[슬라이드 2] 우리가 파는 것\n- 주방 · 욕실 · 수납 · 리빙 · 데스크 5개 카테고리\n- 상품 20종, 직접 써 보고 고른 것만\n\n[슬라이드 3] 숫자\n- 누적 주문 7만 건\n- 재구매율 34%\n\n[슬라이드 4] 새 로고\n- 2026년 5월 적용 예정\n- 디자인 정민서",
+   "ents": [
+    "브랜드 리뉴얼",
+    "정민서",
+    "한지우"
+   ]
+  },
+  {
+   "id": "문서/회사자료/브랜드 리뉴얼 방향.docx",
+   "kind": "doc",
+   "title": "브랜드 리뉴얼 방향",
+   "file": "브랜드 리뉴얼 방향.docx",
+   "folder": "문서/회사자료",
+   "ext": "docx",
+   "group": "브랜드",
+   "text": "# 브랜드 리뉴얼 방향\n\n## 왜 바꾸나\n지금 로고는 작은 화면에서 잘 안 읽힌다. 포장 박스와 상세페이지의 색도 제각각이다.\n\n## 방향\n- 색: 배경은 밝은 회색, 주색은 짙은 청록, 포인트는 주황\n- 글꼴 한 가지로 통일\n\n## 일정\n5월 적용. 로고 시안은 외부 디자인 회사 스튜디오 온과 정민서가 같이 작업한다. 예산 300만 원(한지우 승인).",
+   "ents": [
+    "브랜드 리뉴얼",
+    "정민서",
+    "한지우",
+    "스튜디오 온"
+   ]
+  },
+  {
+   "id": "E:스튜디오 온",
+   "kind": "ent",
+   "title": "스튜디오 온",
+   "group": "거래처"
+  },
+  {
+   "id": "문서/회사자료/고객 응대 기준.docx",
+   "kind": "doc",
+   "title": "고객 응대 기준",
+   "file": "고객 응대 기준.docx",
+   "folder": "문서/회사자료",
+   "ext": "docx",
+   "group": "고객",
+   "text": "# 고객 응대 기준\n\n## 배송\n평일 14시 30분 이전 결제는 당일 출고. 택배사는 바른택배.\n\n## 교환 · 반품\n받은 날부터 7일 이내. 단순 변심은 왕복 배송비 6,000원.\n\n## 불량\n30일 이내 접수하면 배송비는 회사 부담. 유리 반찬통 뚜껑은 사진 없이도 재발송.\n\n## 품절\n텀블러는 3월 30일 재입고 예정.\n담당 최유나.",
+   "ents": [
+    "최유나",
+    "바른택배",
+    "밀폐 유리 반찬통",
+    "스테인리스 텀블러"
+   ]
+  },
+  {
+   "id": "다운로드/3월 문의 유형 집계.xlsx",
+   "kind": "doc",
+   "title": "3월 문의 유형 집계",
+   "file": "3월 문의 유형 집계.xlsx",
+   "folder": "다운로드",
+   "ext": "xlsx",
+   "group": "고객",
+   "text": "3월 문의 유형 집계\n유형 | 1주 | 2주 | 3주 | 4주 | 메모\n배송 | 9 | 8 | 10 | 21 | 4주는 라이브방송 출고 지연\n교환·반품 | 7 | 6 | 8 | 10 | \n불량·파손 | 2 | 3 | 3 | 7 | 유리 반찬통 뚜껑\n품절·재입고 | 1 | 0 | 2 | 6 | 텀블러\n상품 문의 | 6 | 7 | 5 | 9 |",
+   "ents": [
+    "최유나",
+    "라이브방송",
+    "밀폐 유리 반찬통"
+   ]
+  },
+  {
+   "id": "카톡 받은 파일/반찬통 뚜껑 불량 건.txt",
+   "kind": "doc",
+   "title": "반찬통 뚜껑 불량 건",
+   "file": "반찬통 뚜껑 불량 건.txt",
+   "folder": "카톡 받은 파일",
+   "ext": "txt",
+   "group": "고객",
+   "text": "3/26 이후 뚜껑 불량 신고 7건.\n전부 3월 생산분으로 보임.\n제조사 한빛 유리에 원인 확인 요청함 (김나연). 3/31까지 회신 받기로.\n그때까지 최유나는 사진 없이도 뚜껑 재발송.\n반품률 올라가면 상세페이지에 안내 문구 넣을지 검토.",
+   "ents": [
+    "밀폐 유리 반찬통",
+    "김나연",
+    "최유나",
+    "한빛 유리"
+   ]
+  },
+  {
+   "id": "E:한빛 유리",
+   "kind": "ent",
+   "title": "한빛 유리",
+   "group": "거래처"
+  },
+  {
+   "id": "바탕화면/고객 후기 모음.docx",
+   "kind": "doc",
+   "title": "고객 후기 모음 (좋았던 것 · 아쉬운 것)",
+   "file": "고객 후기 모음.docx",
+   "folder": "바탕화면",
+   "ext": "docx",
+   "group": "고객",
+   "text": "# 고객 후기 모음 (좋았던 것 · 아쉬운 것)\n최유나가 2월 후기 300건에서 골랐다.\n\n## 좋았던 것\n- 텀블러: 뚜껑이 안 새서 가방에 넣기 좋다\n- 디퓨저: 향이 세지 않아 선물하기 좋다\n\n## 아쉬운 것\n- 발매트: 배송 중 깨져서 왔다(포장 보강 필요)\n- 텀블러: 색이 더 다양했으면\n포장 문제는 오태호에게 전달함.",
+   "ents": [
+    "스테인리스 텀블러",
+    "규조토 발매트",
+    "아로마 디퓨저",
+    "최유나"
+   ]
+  },
+  {
+   "id": "E:규조토 발매트",
+   "kind": "ent",
+   "title": "규조토 발매트",
+   "group": "상품명"
+  },
+  {
+   "id": "문서/회사자료/기업구매 문의 대응.docx",
+   "kind": "doc",
+   "title": "기업 · 대량 구매 문의 대응",
+   "file": "기업구매 문의 대응.docx",
+   "folder": "문서/회사자료",
+   "ext": "docx",
+   "group": "고객",
+   "text": "# 기업 · 대량 구매 문의 대응\n같은 상품 30개 이상은 박서준이 따로 견적을 낸다.\n세금계산서 발행 가능.\n\n## 최근 문의\n- 회사 창립기념일 선물용 텀블러 120개\n- 게스트하우스 칫솔 매달 50세트 정기 주문\n정기 주문은 구독 상품 아이디어와 같이 검토한다.",
+   "ents": [
+    "박서준",
+    "스테인리스 텀블러",
+    "대나무 칫솔"
+   ]
+  },
+  {
+   "id": "문서/회사자료/출고 작업 순서.docx",
+   "kind": "doc",
+   "title": "출고 작업 순서 (창고)",
+   "file": "출고 작업 순서.docx",
+   "folder": "문서/회사자료",
+   "ext": "docx",
+   "group": "운영",
+   "text": "# 출고 작업 순서 (창고)\n\n## 하루 순서\n- 10:00 주문 내려받기\n- 10:30 ~ 14:30 포장\n- 15:00 바른택배 집하(3월 25일부터 16시에서 15시로 바뀜)\n\n## 주의\n유리 · 규조토 상품은 완충재 두 겹. 라이브방송 날은 포장 인력을 한 명 더 둔다.\n담당 오태호.",
+   "ents": [
+    "오태호",
+    "바른택배"
+   ]
+  },
+  {
+   "id": "다운로드/재고 현황_0327.xlsx",
+   "kind": "doc",
+   "title": "재고 현황 (3월 27일)",
+   "file": "재고 현황_0327.xlsx",
+   "folder": "다운로드",
+   "ext": "xlsx",
+   "group": "운영",
+   "text": "재고 현황 (3월 27일)\n상품 | 현재 재고 | 안전 재고 | 상태 | 메모\n스테인리스 텀블러 500ml | 0 | 30 | 품절 | 3/30 500개 입고 예정\n밀폐 유리 반찬통 4p | 18 | 30 | 부족 | 불량 원인 확인 뒤 발주\n아로마 디퓨저 200ml | 22 | 30 | 부족 | 라벤더 향 품절\n틈새 이동식 수납장 | 9 | 15 | 부족 | \n옷걸이 논슬립 30p | 214 | 30 | 충분 |",
+   "ents": [
+    "오태호",
+    "스테인리스 텀블러",
+    "밀폐 유리 반찬통",
+    "김나연"
+   ]
+  },
+  {
+   "id": "문서/회사자료/택배 계약 조건_바른택배.docx",
+   "kind": "doc",
+   "title": "택배 계약 조건 — 바른택배",
+   "file": "택배 계약 조건_바른택배.docx",
+   "folder": "문서/회사자료",
+   "ext": "docx",
+   "group": "거래처",
+   "text": "# 택배 계약 조건 — 바른택배\n\n## 조건\n- 기본 단가 2,650원(월 1,500건 이상일 때)\n- 제주 · 도서산간 추가 3,000원\n- 집하 시간 평일 15:00\n\n## 계약\n2026년 6월 30일 만료. 박서준이 5월에 재계약 협의를 시작한다.\n파손 보상은 건당 최대 5만 원. 접수는 오태호.",
+   "ents": [
+    "바른택배",
+    "오태호",
+    "박서준"
+   ]
+  },
+  {
+   "id": "바탕화면/새 폴더/포장재 견적 비교.xlsx",
+   "kind": "doc",
+   "title": "포장재 견적 비교",
+   "file": "포장재 견적 비교.xlsx",
+   "folder": "바탕화면/새 폴더",
+   "ext": "xlsx",
+   "group": "거래처",
+   "text": "포장재 견적 비교\n업체 | 박스 단가 | 완충재 단가 | 최소 수량 | 납기 | 메모\n한빛패키지 | 420 | 90 | 1000 | 5일 | 지금 거래 중\n모아포장 | 390 | 110 | 2000 | 7일 | 견적 아직 일부만 옴",
+   "ents": [
+    "한빛패키지",
+    "오태호",
+    "데일리 키친"
+   ]
+  },
+  {
+   "id": "E:한빛패키지",
+   "kind": "ent",
+   "title": "한빛패키지",
+   "group": "거래처"
+  },
+  {
+   "id": "문서/2025 정리 안 함/창고 이전 검토 (보류).docx",
+   "kind": "doc",
+   "title": "창고 이전 검토 (보류)",
+   "file": "창고 이전 검토 (보류).docx",
+   "folder": "문서/2025 정리 안 함",
+   "ext": "docx",
+   "group": "운영",
+   "text": "# 창고 이전 검토 (보류)\n2025년 11월에 검토했다가 보류한 건.\n지금 창고는 20평. 신상품이 늘면 진열 자리가 모자란다.\n\n## 후보\n- 같은 건물 2층 35평, 월 110만 원\n- 차로 10분 거리 50평, 월 130만 원\n한지우 대표: 2026년 상반기 매출을 보고 다시 이야기하자.",
+   "ents": [
+    "오태호",
+    "한지우"
+   ]
+  },
+  {
+   "id": "문서/회사자료/거래처 목록.xlsx",
+   "kind": "doc",
+   "title": "거래처 목록",
+   "file": "거래처 목록.xlsx",
+   "folder": "문서/회사자료",
+   "ext": "xlsx",
+   "group": "거래처",
+   "text": "거래처 목록\n거래처 | 하는 일 | 담당자 | 우리 쪽 담당 | 메모\n그린홈 제작소 | 주방 상품 제조 | 문 과장 | 김나연 | 데일리 키친 제조\n한빛 유리 | 유리 반찬통 제조 | 서 대리 | 김나연 | 뚜껑 불량 확인 중\n한빛패키지 | 박스 · 완충재 | 윤 실장 | 오태호 | \n바른택배 | 택배 | 지점장 | 오태호 | 6월 말 계약 만료\n스튜디오 온 | 로고 · 브랜드 디자인 | 강 디자이너 | 정민서 | 리뉴얼 진행",
+   "ents": [
+    "그린홈 제작소",
+    "한빛 유리",
+    "한빛패키지",
+    "바른택배",
+    "스튜디오 온"
+   ]
+  },
+  {
+   "id": "USB 백업/그린홈제작소 공급계약서 초안.docx",
+   "kind": "doc",
+   "title": "그린홈 제작소 공급 계약서 (초안)",
+   "file": "그린홈제작소 공급계약서 초안.docx",
+   "folder": "USB 백업",
+   "ext": "docx",
+   "group": "거래처",
+   "text": "# 그린홈 제작소 공급 계약서 (초안)\n\n## 주요 조건\n- 정산: 납품 다음 달 10일\n- 세금계산서: 납품일 기준 발행\n- 불량률 2%가 넘으면 넘는 수량을 무상 교체\n- KC 인증 서류는 제조사가 준비해 납품 전에 전달\n한지우 대표가 3월 31일까지 날인한다. 초도 물량(250 또는 300)은 날인 전에 정한다.",
+   "ents": [
+    "그린홈 제작소",
+    "한지우",
+    "데일리 키친",
+    "KC 인증"
+   ]
+  },
+  {
+   "id": "다운로드/스튜디오온_로고시안_설명.pptx",
+   "kind": "doc",
+   "title": "로고 시안 설명 — 스튜디오 온",
+   "file": "스튜디오온_로고시안_설명.pptx",
+   "folder": "다운로드",
+   "ext": "pptx",
+   "group": "브랜드",
+   "text": "[슬라이드 1] 로고 시안 3종\n- A안: 글자만\n- B안: 글자 + 하루를 뜻하는 원\n- C안: 손글씨\n\n[슬라이드 2] 추천\n- B안 — 작은 화면에서도 읽힌다\n- 색은 짙은 청록과 주황\n\n[슬라이드 3] 다음 단계\n- 4월 10일까지 한 가지를 고르면 4월 말에 최종 파일 전달\n- 담당 정민서",
+   "ents": [
+    "스튜디오 온",
+    "브랜드 리뉴얼",
+    "정민서"
+   ]
+  },
+  {
+   "id": "문서/회사자료/2026 월별 목표와 실적.xlsx",
+   "kind": "doc",
+   "title": "2026년 월별 목표와 실적",
+   "file": "2026 월별 목표와 실적.xlsx",
+   "folder": "문서/회사자료",
+   "ext": "xlsx",
+   "group": "재무",
+   "text": "2026년 월별 목표와 실적\n월 | 목표 매출 | 실적 | 달성률 | 메모\n1월 | 10000000 | 9960000 | 100% | 설 선물 수요\n2월 | 9500000 | 8700000 | 92% | 설 연휴 배송 휴무\n3월 | 13000000 | 13600000 | 105% | 라이브방송 효과\n4월 | 15000000 |  |  | 데일리 키친 출시 · 봄 정리 기획전",
+   "ents": [
+    "박서준",
+    "한지우",
+    "라이브방송"
+   ]
+  },
+  {
+   "id": "바탕화면/광고비 집행 내역 1분기.xlsx",
+   "kind": "doc",
+   "title": "1분기 광고비 집행 내역",
+   "file": "광고비 집행 내역 1분기.xlsx",
+   "folder": "바탕화면",
+   "ext": "xlsx",
+   "group": "재무",
+   "text": "1분기 광고비 집행 내역\n월 | 자사몰 광고 | 오픈마켓 광고 | 소셜커머스 광고 | 라이브방송 | 합계\n1월 | 1780000 | 1320000 | 760000 | 0 | 3860000\n2월 | 1890000 | 1400000 | 810000 | 350000 | 4450000\n3월 | 2060000 | 1520000 | 880000 | 950000 | 5410000",
+   "ents": [
+    "이도현",
+    "라이브방송"
+   ]
+  },
+  {
+   "id": "카톡 받은 파일/세무사 전달 사항.txt",
+   "kind": "doc",
+   "title": "세무사 전달 사항",
+   "file": "세무사 전달 사항.txt",
+   "folder": "카톡 받은 파일",
+   "ext": "txt",
+   "group": "재무",
+   "text": "부가세 신고 자료는 4/10까지 세무사 사무실로.\n매출 자료는 박서준, 매입 세금계산서는 한지우 대표가 모은다.\n작년에 오픈마켓 정산서가 빠져서 다시 냈으니 이번엔 꼭 포함.",
+   "ents": [
+    "한지우",
+    "박서준"
+   ]
+  },
+  {
+   "id": "문서/회사자료/업무 분담표.xlsx",
+   "kind": "doc",
+   "title": "업무 분담표",
+   "file": "업무 분담표.xlsx",
+   "folder": "문서/회사자료",
+   "ext": "xlsx",
+   "group": "조직",
+   "text": "업무 분담표\n이름 | 역할 | 맡은 일 | 대신할 사람\n한지우 | 대표 | 계약 · 자금 · 최종 결정 | 박서준\n박서준 | 운영 팀장 | 일정 관리 · 오픈마켓 · 기업 구매 | 김나연\n김나연 | 상품기획(MD) | 상품 선정 · 제조사 · 발주 | 박서준\n이도현 | 마케팅 | 광고 · 라이브방송 · 기획전 | 정민서\n최유나 | 고객지원 | 문의 응대 · 후기 관리 | 박서준\n정민서 | 디자인 | 상세페이지 · 배너 · 브랜드 | 이도현\n오태호 | 물류 | 입고 · 포장 · 출고 · 재고 | 박서준",
+   "ents": [
+    "한지우",
+    "박서준",
+    "김나연",
+    "이도현",
+    "최유나",
+    "정민서",
+    "오태호"
+   ]
+  },
+  {
+   "id": "문서/회사자료/주간회의록_0323.docx",
+   "kind": "doc",
+   "title": "주간 회의록 (3월 23일)",
+   "file": "주간회의록_0323.docx",
+   "folder": "문서/회사자료",
+   "ext": "docx",
+   "group": "조직",
+   "text": "# 주간 회의록 (3월 23일)\n\n## 진행\n- 발주서 발송 완료, 판매가 확정(김나연)\n- 샘플 수령 완료, 수요일 촬영(정민서)\n\n## 조정\n상세페이지 5종 마감을 4월 3일로 미룬다. 2종은 3월 27일까지 먼저.\n\n## 위험\nKC 인증 서류가 늦으면 출시일이 밀린다.\n\n## 이번 주\n수요일 라이브방송. 기록 박서준.",
+   "ents": [
+    "박서준",
+    "데일리 키친",
+    "정민서",
+    "김나연",
+    "KC 인증",
+    "라이브방송"
+   ]
+  },
+  {
+   "id": "바탕화면/신입 안내 메모.txt",
+   "kind": "doc",
+   "title": "신입 안내 메모",
+   "file": "신입 안내 메모.txt",
+   "folder": "바탕화면",
+   "ext": "txt",
+   "group": "조직",
+   "text": "새로 오는 사람에게 첫 주에 알려 줄 것.\n1. 업무 분담표 먼저 읽기\n2. 고객 응대 기준 읽기 (최유나에게 질문)\n3. 창고 출고 작업 하루 같이 해 보기 (오태호)\n4. 주간 회의는 월요일 10시 (박서준 진행)",
+   "ents": [
+    "박서준",
+    "최유나",
+    "오태호"
+   ]
+  },
+  {
+   "id": "문서/2025 정리 안 함/2025 워크숍 회고.docx",
+   "kind": "doc",
+   "title": "2025년 워크숍 회고",
+   "file": "2025 워크숍 회고.docx",
+   "folder": "문서/2025 정리 안 함",
+   "ext": "docx",
+   "group": "조직",
+   "text": "# 2025년 워크숍 회고\n2025년 12월 워크숍에서 나온 이야기.\n\n## 잘한 것\n- 주방 카테고리 재구매율이 올랐다\n- 출고 실수가 줄었다\n\n## 아쉬운 것\n- 문서가 여기저기 흩어져 있어 찾기 어렵다\n- 브랜드 색과 로고가 제각각이다\n\n## 2026년에 할 것\n- 재구매 쿠폰 실험\n- 브랜드 리뉴얼\n- 신상품은 분기마다 한 라인",
+   "ents": [
+    "한지우",
+    "박서준",
+    "재구매 쿠폰 실험",
+    "브랜드 리뉴얼"
+   ]
+  },
+  {
+   "id": "바탕화면/새 폴더/할 일 메모.txt",
+   "kind": "doc",
+   "title": "할 일 메모",
+   "file": "할 일 메모.txt",
+   "folder": "바탕화면/새 폴더",
+   "ext": "txt",
+   "group": "아이디어",
+   "text": "- 바른택배 재계약 5월에 시작\n- 데일리 키친 출시 당일 체크리스트 4/10까지\n- 구 색상 조리도구 재고 140개 묶음 할인?\n- 부가세 자료 4/10",
+   "ents": [
+    "박서준",
+    "바른택배",
+    "데일리 키친"
+   ]
+  },
+  {
+   "id": "바탕화면/읽을 것 - 상세페이지 잘 쓰는 법.txt",
+   "kind": "doc",
+   "title": "상세페이지 잘 쓰는 법 (읽은 것 정리)",
+   "file": "읽을 것 - 상세페이지 잘 쓰는 법.txt",
+   "folder": "바탕화면",
+   "ext": "txt",
+   "group": "아이디어",
+   "text": "첫 화면에 「누가 언제 쓰는 물건인지」를 한 문장으로.\n사양은 표로, 사용 장면은 사진으로.\n자주 묻는 질문을 맨 아래에 넣으면 문의가 준다.\n→ 데일리 키친 상세페이지에 적용 (정민서와 이야기)",
+   "ents": [
+    "정민서",
+    "데일리 키친"
+   ]
+  },
+  {
+   "id": "다운로드/경쟁사 가격 조사.xlsx",
+   "kind": "doc",
+   "title": "경쟁사 가격 조사",
+   "file": "경쟁사 가격 조사.xlsx",
+   "folder": "다운로드",
+   "ext": "xlsx",
+   "group": "상품",
+   "text": "경쟁사 가격 조사\n상품 | 우리 가격 | A사 | B사 | C사 | 메모\n스테인리스 텀블러 500ml | 18900 | 19800 | 16900 | 22000 | 중간 가격대\n밀폐 유리 반찬통 4p | 21900 | 23900 | 19900 | 21000 | \n밀폐 양념통 6p(출시 예정) | 21900 | 24000 | 18900 |  | 데일리 키친\n유리 계량컵(출시 예정) | 12900 | 11900 | 13500 |  | 데일리 키친",
+   "ents": [
+    "김나연",
+    "스테인리스 텀블러",
+    "밀폐 유리 반찬통",
+    "데일리 키친"
+   ]
+  },
+  {
+   "id": "카톡 받은 파일/대표님 말씀 정리.txt",
+   "kind": "doc",
+   "title": "대표님 말씀 정리",
+   "file": "대표님 말씀 정리.txt",
+   "folder": "카톡 받은 파일",
+   "ext": "txt",
+   "group": "아이디어",
+   "text": "3/20 점심 때 한지우 대표.\n올해는 상품 수를 늘리기보다 재구매를 늘리는 쪽.\n브랜드 리뉴얼은 5월에 꼭.\n창고 이전은 상반기 매출 보고 결정.\n문서 정리 좀 하자. 찾는 데 시간이 너무 든다.",
+   "ents": [
+    "한지우",
+    "브랜드 리뉴얼",
+    "창고"
+   ]
+  },
+  {
+   "id": "E:창고",
+   "kind": "ent",
+   "title": "창고",
+   "group": "주제"
+  },
+  {
+   "id": "USB 백업/상세페이지 문구 초안_조리도구.docx",
+   "kind": "doc",
+   "title": "상세페이지 문구 초안 — 실리콘 조리도구 세트",
+   "file": "상세페이지 문구 초안_조리도구.docx",
+   "folder": "USB 백업",
+   "ext": "docx",
+   "group": "상품",
+   "text": "# 상세페이지 문구 초안 — 실리콘 조리도구 세트\n\n## 첫 문장\n매일 쓰는 다섯 가지를 한 세트로.\n\n## 특징\n- 냄비에 흠집을 내지 않는 실리콘\n- 걸어 둘 수 있는 고리\n- 새 색상 세 가지\n사양(내열 온도 등)은 제조사 사양 확인서가 오면 채운다. 정민서 작성.",
+   "ents": [
+    "실리콘 조리도구 세트",
+    "정민서",
+    "데일리 키친"
+   ]
+  }
+ ],
+ "links": [
+  {
+   "source": "문서/회사자료/데일리키친_출시기획서.docx",
+   "target": "E:데일리 키친"
+  },
+  {
+   "source": "문서/회사자료/데일리키친_출시기획서.docx",
+   "target": "E:김나연"
+  },
+  {
+   "source": "문서/회사자료/데일리키친_출시기획서.docx",
+   "target": "E:그린홈 제작소"
+  },
+  {
+   "source": "문서/회사자료/데일리키친_출시기획서.docx",
+   "target": "E:실리콘 조리도구 세트"
+  },
+  {
+   "source": "바탕화면/신상품 가격안 v3.xlsx",
+   "target": "E:데일리 키친"
+  },
+  {
+   "source": "바탕화면/신상품 가격안 v3.xlsx",
+   "target": "E:김나연"
+  },
+  {
+   "source": "바탕화면/신상품 가격안 v3.xlsx",
+   "target": "E:한지우"
+  },
+  {
+   "source": "다운로드/그린홈제작소_견적서_0311.xlsx",
+   "target": "E:그린홈 제작소"
+  },
+  {
+   "source": "다운로드/그린홈제작소_견적서_0311.xlsx",
+   "target": "E:데일리 키친"
+  },
+  {
+   "source": "다운로드/그린홈제작소_견적서_0311.xlsx",
+   "target": "E:김나연"
+  },
+  {
+   "source": "카톡 받은 파일/제조사 통화 정리.txt",
+   "target": "E:그린홈 제작소"
+  },
+  {
+   "source": "카톡 받은 파일/제조사 통화 정리.txt",
+   "target": "E:김나연"
+  },
+  {
+   "source": "카톡 받은 파일/제조사 통화 정리.txt",
+   "target": "E:데일리 키친"
+  },
+  {
+   "source": "카톡 받은 파일/제조사 통화 정리.txt",
+   "target": "E:KC 인증"
+  },
+  {
+   "source": "문서/회사자료/상품 사양 정리.docx",
+   "target": "E:스테인리스 텀블러"
+  },
+  {
+   "source": "문서/회사자료/상품 사양 정리.docx",
+   "target": "E:밀폐 유리 반찬통"
+  },
+  {
+   "source": "문서/회사자료/상품 사양 정리.docx",
+   "target": "E:김나연"
+  },
+  {
+   "source": "문서/회사자료/상품 사양 정리.docx",
+   "target": "E:최유나"
+  },
+  {
+   "source": "문서/2025 정리 안 함/2025 상품별 판매 결산.xlsx",
+   "target": "E:스테인리스 텀블러"
+  },
+  {
+   "source": "문서/2025 정리 안 함/2025 상품별 판매 결산.xlsx",
+   "target": "E:밀폐 유리 반찬통"
+  },
+  {
+   "source": "문서/2025 정리 안 함/2025 상품별 판매 결산.xlsx",
+   "target": "E:옷걸이 논슬립"
+  },
+  {
+   "source": "문서/2025 정리 안 함/2025 상품별 판매 결산.xlsx",
+   "target": "E:박서준"
+  },
+  {
+   "source": "바탕화면/새 폴더/아이디어 메모 - 구독 상품.txt",
+   "target": "E:대나무 칫솔"
+  },
+  {
+   "source": "바탕화면/새 폴더/아이디어 메모 - 구독 상품.txt",
+   "target": "E:아로마 디퓨저"
+  },
+  {
+   "source": "바탕화면/새 폴더/아이디어 메모 - 구독 상품.txt",
+   "target": "E:재구매 쿠폰 실험"
+  },
+  {
+   "source": "바탕화면/새 폴더/아이디어 메모 - 구독 상품.txt",
+   "target": "E:한지우"
+  },
+  {
+   "source": "문서/회사자료/3월 라이브방송 기획안.docx",
+   "target": "E:라이브방송"
+  },
+  {
+   "source": "문서/회사자료/3월 라이브방송 기획안.docx",
+   "target": "E:이도현"
+  },
+  {
+   "source": "문서/회사자료/3월 라이브방송 기획안.docx",
+   "target": "E:스테인리스 텀블러"
+  },
+  {
+   "source": "문서/회사자료/3월 라이브방송 기획안.docx",
+   "target": "E:밀폐 유리 반찬통"
+  },
+  {
+   "source": "문서/회사자료/3월 라이브방송 기획안.docx",
+   "target": "E:아로마 디퓨저"
+  },
+  {
+   "source": "바탕화면/라이브방송 결과 메모.txt",
+   "target": "E:라이브방송"
+  },
+  {
+   "source": "바탕화면/라이브방송 결과 메모.txt",
+   "target": "E:이도현"
+  },
+  {
+   "source": "바탕화면/라이브방송 결과 메모.txt",
+   "target": "E:스테인리스 텀블러"
+  },
+  {
+   "source": "바탕화면/라이브방송 결과 메모.txt",
+   "target": "E:오태호"
+  },
+  {
+   "source": "바탕화면/라이브방송 결과 메모.txt",
+   "target": "E:바른택배"
+  },
+  {
+   "source": "문서/회사자료/봄정리 기획전 계획.pptx",
+   "target": "E:봄 정리 기획전"
+  },
+  {
+   "source": "문서/회사자료/봄정리 기획전 계획.pptx",
+   "target": "E:이도현"
+  },
+  {
+   "source": "문서/회사자료/봄정리 기획전 계획.pptx",
+   "target": "E:정민서"
+  },
+  {
+   "source": "문서/회사자료/봄정리 기획전 계획.pptx",
+   "target": "E:리빙박스"
+  },
+  {
+   "source": "문서/회사자료/봄정리 기획전 계획.pptx",
+   "target": "E:옷걸이 논슬립"
+  },
+  {
+   "source": "다운로드/인스타 광고 성과_2월.xlsx",
+   "target": "E:이도현"
+  },
+  {
+   "source": "다운로드/인스타 광고 성과_2월.xlsx",
+   "target": "E:아로마 디퓨저"
+  },
+  {
+   "source": "다운로드/인스타 광고 성과_2월.xlsx",
+   "target": "E:스테인리스 텀블러"
+  },
+  {
+   "source": "문서/회사자료/재구매 쿠폰 실험 결과.docx",
+   "target": "E:재구매 쿠폰 실험"
+  },
+  {
+   "source": "문서/회사자료/재구매 쿠폰 실험 결과.docx",
+   "target": "E:이도현"
+  },
+  {
+   "source": "문서/회사자료/재구매 쿠폰 실험 결과.docx",
+   "target": "E:박서준"
+  },
+  {
+   "source": "USB 백업/브랜드소개서_최종.pptx",
+   "target": "E:브랜드 리뉴얼"
+  },
+  {
+   "source": "USB 백업/브랜드소개서_최종.pptx",
+   "target": "E:정민서"
+  },
+  {
+   "source": "USB 백업/브랜드소개서_최종.pptx",
+   "target": "E:한지우"
+  },
+  {
+   "source": "USB 백업/브랜드소개서_최종_진짜최종.pptx",
+   "target": "E:브랜드 리뉴얼"
+  },
+  {
+   "source": "USB 백업/브랜드소개서_최종_진짜최종.pptx",
+   "target": "E:정민서"
+  },
+  {
+   "source": "USB 백업/브랜드소개서_최종_진짜최종.pptx",
+   "target": "E:한지우"
+  },
+  {
+   "source": "문서/회사자료/브랜드 리뉴얼 방향.docx",
+   "target": "E:브랜드 리뉴얼"
+  },
+  {
+   "source": "문서/회사자료/브랜드 리뉴얼 방향.docx",
+   "target": "E:정민서"
+  },
+  {
+   "source": "문서/회사자료/브랜드 리뉴얼 방향.docx",
+   "target": "E:한지우"
+  },
+  {
+   "source": "문서/회사자료/브랜드 리뉴얼 방향.docx",
+   "target": "E:스튜디오 온"
+  },
+  {
+   "source": "문서/회사자료/고객 응대 기준.docx",
+   "target": "E:최유나"
+  },
+  {
+   "source": "문서/회사자료/고객 응대 기준.docx",
+   "target": "E:바른택배"
+  },
+  {
+   "source": "문서/회사자료/고객 응대 기준.docx",
+   "target": "E:밀폐 유리 반찬통"
+  },
+  {
+   "source": "문서/회사자료/고객 응대 기준.docx",
+   "target": "E:스테인리스 텀블러"
+  },
+  {
+   "source": "다운로드/3월 문의 유형 집계.xlsx",
+   "target": "E:최유나"
+  },
+  {
+   "source": "다운로드/3월 문의 유형 집계.xlsx",
+   "target": "E:라이브방송"
+  },
+  {
+   "source": "다운로드/3월 문의 유형 집계.xlsx",
+   "target": "E:밀폐 유리 반찬통"
+  },
+  {
+   "source": "카톡 받은 파일/반찬통 뚜껑 불량 건.txt",
+   "target": "E:밀폐 유리 반찬통"
+  },
+  {
+   "source": "카톡 받은 파일/반찬통 뚜껑 불량 건.txt",
+   "target": "E:김나연"
+  },
+  {
+   "source": "카톡 받은 파일/반찬통 뚜껑 불량 건.txt",
+   "target": "E:최유나"
+  },
+  {
+   "source": "카톡 받은 파일/반찬통 뚜껑 불량 건.txt",
+   "target": "E:한빛 유리"
+  },
+  {
+   "source": "바탕화면/고객 후기 모음.docx",
+   "target": "E:스테인리스 텀블러"
+  },
+  {
+   "source": "바탕화면/고객 후기 모음.docx",
+   "target": "E:규조토 발매트"
+  },
+  {
+   "source": "바탕화면/고객 후기 모음.docx",
+   "target": "E:아로마 디퓨저"
+  },
+  {
+   "source": "바탕화면/고객 후기 모음.docx",
+   "target": "E:최유나"
+  },
+  {
+   "source": "문서/회사자료/기업구매 문의 대응.docx",
+   "target": "E:박서준"
+  },
+  {
+   "source": "문서/회사자료/기업구매 문의 대응.docx",
+   "target": "E:스테인리스 텀블러"
+  },
+  {
+   "source": "문서/회사자료/기업구매 문의 대응.docx",
+   "target": "E:대나무 칫솔"
+  },
+  {
+   "source": "문서/회사자료/출고 작업 순서.docx",
+   "target": "E:오태호"
+  },
+  {
+   "source": "문서/회사자료/출고 작업 순서.docx",
+   "target": "E:바른택배"
+  },
+  {
+   "source": "다운로드/재고 현황_0327.xlsx",
+   "target": "E:오태호"
+  },
+  {
+   "source": "다운로드/재고 현황_0327.xlsx",
+   "target": "E:스테인리스 텀블러"
+  },
+  {
+   "source": "다운로드/재고 현황_0327.xlsx",
+   "target": "E:밀폐 유리 반찬통"
+  },
+  {
+   "source": "다운로드/재고 현황_0327.xlsx",
+   "target": "E:김나연"
+  },
+  {
+   "source": "문서/회사자료/택배 계약 조건_바른택배.docx",
+   "target": "E:바른택배"
+  },
+  {
+   "source": "문서/회사자료/택배 계약 조건_바른택배.docx",
+   "target": "E:오태호"
+  },
+  {
+   "source": "문서/회사자료/택배 계약 조건_바른택배.docx",
+   "target": "E:박서준"
+  },
+  {
+   "source": "바탕화면/새 폴더/포장재 견적 비교.xlsx",
+   "target": "E:한빛패키지"
+  },
+  {
+   "source": "바탕화면/새 폴더/포장재 견적 비교.xlsx",
+   "target": "E:오태호"
+  },
+  {
+   "source": "바탕화면/새 폴더/포장재 견적 비교.xlsx",
+   "target": "E:데일리 키친"
+  },
+  {
+   "source": "문서/2025 정리 안 함/창고 이전 검토 (보류).docx",
+   "target": "E:오태호"
+  },
+  {
+   "source": "문서/2025 정리 안 함/창고 이전 검토 (보류).docx",
+   "target": "E:한지우"
+  },
+  {
+   "source": "문서/회사자료/거래처 목록.xlsx",
+   "target": "E:그린홈 제작소"
+  },
+  {
+   "source": "문서/회사자료/거래처 목록.xlsx",
+   "target": "E:한빛 유리"
+  },
+  {
+   "source": "문서/회사자료/거래처 목록.xlsx",
+   "target": "E:한빛패키지"
+  },
+  {
+   "source": "문서/회사자료/거래처 목록.xlsx",
+   "target": "E:바른택배"
+  },
+  {
+   "source": "문서/회사자료/거래처 목록.xlsx",
+   "target": "E:스튜디오 온"
+  },
+  {
+   "source": "USB 백업/그린홈제작소 공급계약서 초안.docx",
+   "target": "E:그린홈 제작소"
+  },
+  {
+   "source": "USB 백업/그린홈제작소 공급계약서 초안.docx",
+   "target": "E:한지우"
+  },
+  {
+   "source": "USB 백업/그린홈제작소 공급계약서 초안.docx",
+   "target": "E:데일리 키친"
+  },
+  {
+   "source": "USB 백업/그린홈제작소 공급계약서 초안.docx",
+   "target": "E:KC 인증"
+  },
+  {
+   "source": "다운로드/스튜디오온_로고시안_설명.pptx",
+   "target": "E:스튜디오 온"
+  },
+  {
+   "source": "다운로드/스튜디오온_로고시안_설명.pptx",
+   "target": "E:브랜드 리뉴얼"
+  },
+  {
+   "source": "다운로드/스튜디오온_로고시안_설명.pptx",
+   "target": "E:정민서"
+  },
+  {
+   "source": "문서/회사자료/2026 월별 목표와 실적.xlsx",
+   "target": "E:박서준"
+  },
+  {
+   "source": "문서/회사자료/2026 월별 목표와 실적.xlsx",
+   "target": "E:한지우"
+  },
+  {
+   "source": "문서/회사자료/2026 월별 목표와 실적.xlsx",
+   "target": "E:라이브방송"
+  },
+  {
+   "source": "바탕화면/광고비 집행 내역 1분기.xlsx",
+   "target": "E:이도현"
+  },
+  {
+   "source": "바탕화면/광고비 집행 내역 1분기.xlsx",
+   "target": "E:라이브방송"
+  },
+  {
+   "source": "카톡 받은 파일/세무사 전달 사항.txt",
+   "target": "E:한지우"
+  },
+  {
+   "source": "카톡 받은 파일/세무사 전달 사항.txt",
+   "target": "E:박서준"
+  },
+  {
+   "source": "문서/회사자료/업무 분담표.xlsx",
+   "target": "E:한지우"
+  },
+  {
+   "source": "문서/회사자료/업무 분담표.xlsx",
+   "target": "E:박서준"
+  },
+  {
+   "source": "문서/회사자료/업무 분담표.xlsx",
+   "target": "E:김나연"
+  },
+  {
+   "source": "문서/회사자료/업무 분담표.xlsx",
+   "target": "E:이도현"
+  },
+  {
+   "source": "문서/회사자료/업무 분담표.xlsx",
+   "target": "E:최유나"
+  },
+  {
+   "source": "문서/회사자료/업무 분담표.xlsx",
+   "target": "E:정민서"
+  },
+  {
+   "source": "문서/회사자료/업무 분담표.xlsx",
+   "target": "E:오태호"
+  },
+  {
+   "source": "문서/회사자료/주간회의록_0323.docx",
+   "target": "E:박서준"
+  },
+  {
+   "source": "문서/회사자료/주간회의록_0323.docx",
+   "target": "E:데일리 키친"
+  },
+  {
+   "source": "문서/회사자료/주간회의록_0323.docx",
+   "target": "E:정민서"
+  },
+  {
+   "source": "문서/회사자료/주간회의록_0323.docx",
+   "target": "E:김나연"
+  },
+  {
+   "source": "문서/회사자료/주간회의록_0323.docx",
+   "target": "E:KC 인증"
+  },
+  {
+   "source": "문서/회사자료/주간회의록_0323.docx",
+   "target": "E:라이브방송"
+  },
+  {
+   "source": "바탕화면/신입 안내 메모.txt",
+   "target": "E:박서준"
+  },
+  {
+   "source": "바탕화면/신입 안내 메모.txt",
+   "target": "E:최유나"
+  },
+  {
+   "source": "바탕화면/신입 안내 메모.txt",
+   "target": "E:오태호"
+  },
+  {
+   "source": "문서/2025 정리 안 함/2025 워크숍 회고.docx",
+   "target": "E:한지우"
+  },
+  {
+   "source": "문서/2025 정리 안 함/2025 워크숍 회고.docx",
+   "target": "E:박서준"
+  },
+  {
+   "source": "문서/2025 정리 안 함/2025 워크숍 회고.docx",
+   "target": "E:재구매 쿠폰 실험"
+  },
+  {
+   "source": "문서/2025 정리 안 함/2025 워크숍 회고.docx",
+   "target": "E:브랜드 리뉴얼"
+  },
+  {
+   "source": "바탕화면/새 폴더/할 일 메모.txt",
+   "target": "E:박서준"
+  },
+  {
+   "source": "바탕화면/새 폴더/할 일 메모.txt",
+   "target": "E:바른택배"
+  },
+  {
+   "source": "바탕화면/새 폴더/할 일 메모.txt",
+   "target": "E:데일리 키친"
+  },
+  {
+   "source": "바탕화면/읽을 것 - 상세페이지 잘 쓰는 법.txt",
+   "target": "E:정민서"
+  },
+  {
+   "source": "바탕화면/읽을 것 - 상세페이지 잘 쓰는 법.txt",
+   "target": "E:데일리 키친"
+  },
+  {
+   "source": "다운로드/경쟁사 가격 조사.xlsx",
+   "target": "E:김나연"
+  },
+  {
+   "source": "다운로드/경쟁사 가격 조사.xlsx",
+   "target": "E:스테인리스 텀블러"
+  },
+  {
+   "source": "다운로드/경쟁사 가격 조사.xlsx",
+   "target": "E:밀폐 유리 반찬통"
+  },
+  {
+   "source": "다운로드/경쟁사 가격 조사.xlsx",
+   "target": "E:데일리 키친"
+  },
+  {
+   "source": "카톡 받은 파일/대표님 말씀 정리.txt",
+   "target": "E:한지우"
+  },
+  {
+   "source": "카톡 받은 파일/대표님 말씀 정리.txt",
+   "target": "E:브랜드 리뉴얼"
+  },
+  {
+   "source": "카톡 받은 파일/대표님 말씀 정리.txt",
+   "target": "E:창고"
+  },
+  {
+   "source": "USB 백업/상세페이지 문구 초안_조리도구.docx",
+   "target": "E:실리콘 조리도구 세트"
+  },
+  {
+   "source": "USB 백업/상세페이지 문구 초안_조리도구.docx",
+   "target": "E:정민서"
+  },
+  {
+   "source": "USB 백업/상세페이지 문구 초안_조리도구.docx",
+   "target": "E:데일리 키친"
+  }
+ ],
+ "colors": {
+  "상품": "#FF8A5C",
+  "마케팅": "#7DE0EC",
+  "브랜드": "#C084FC",
+  "고객": "#FACC15",
+  "운영": "#4ADE80",
+  "거래처": "#60A5FA",
+  "재무": "#F472B6",
+  "조직": "#A3A3A3",
+  "아이디어": "#FB923C"
+ }
+};
+const C = D.colors, ENT_C = '#FFFFFF';
+const nodes = D.nodes.map(n => ({ ...n })), links = D.links.map(l => ({ ...l }));
+const byId = Object.fromEntries(nodes.map(n => [n.id, n]));
+const nb = {}; links.forEach(l => { (nb[l.source] = nb[l.source] || []).push(l.target); (nb[l.target] = nb[l.target] || []).push(l.source); });
+nodes.forEach(n => { n.deg = (nb[n.id] || []).length; n.color = n.kind === 'doc' ? C[n.group] : ENT_C; });
+const docs = nodes.filter(n => n.kind === 'doc'), ents = nodes.filter(n => n.kind === 'ent');
+// 한 줄 요약 · 핵심 내용 — 원문에서 뽑는다
+docs.forEach(d => { const L = d.text.split('\n').map(s => s.trim()).filter(s => s && !s.startsWith('#') && !s.startsWith('[슬라이드') ); const body = L.filter(s => s !== d.title);
+  d.sum = (body.find(s => !s.includes(' | ') && s.length > 12) || body[0] || '').replace(/^- /, ''); d.keys = body.filter(s => s !== d.sum).slice(0, 5).map(s => s.replace(/^- /, '')); });
+const DUP = { 'USB 백업/브랜드소개서_최종.pptx':'예전 판입니다. 「최종_진짜최종」 쪽에 새 로고 슬라이드가 있고 숫자가 더 최근입니다(누적 주문 6만 → 7만 건, 재구매율 31% → 34%).',
+              'USB 백업/브랜드소개서_최종_진짜최종.pptx':'「브랜드소개서_최종.pptx」와 내용이 거의 같습니다. 이쪽이 최신 판으로 보입니다(새 로고 슬라이드 추가 · 숫자 갱신).' };
+hud.innerHTML = [[docs.length,'문서'],[ents.length,'연결점'],[links.length,'연결'],[Object.keys(DUP).length,'중복 의심']].map(s => `<div class="stat"><b>${s[0]}</b><span>${s[1]}</span></div>`).join('');
+st1.textContent = `문서 ${docs.length} · 연결점 ${ents.length} · 연결 ${links.length}`;
+
+let active = null, hidden = new Set(), query = '', focus = null, hover = false;
+const visible = n => n.kind === 'ent' ? (nb[n.id] || []).some(id => !hidden.has(byId[id].group)) : !hidden.has(n.group);
+const lit = n => { if (!visible(n)) return false; if (query) return match(n) || (nb[n.id] || []).some(id => match(byId[id])); if (active) return n.id === active || (nb[active] || []).includes(n.id); if (focus) return n.kind === 'doc' ? n.group === focus : (nb[n.id] || []).some(id => byId[id].group === focus); return true; };
+const match = n => (n.title + ' ' + (n.text || '') + ' ' + (n.file || '')).toLowerCase().includes(query);
+const fade = (hex, a) => { const v = parseInt(hex.slice(1), 16); return `rgba(${v >> 16},${(v >> 8) & 255},${v & 255},${a})`; };
+const shade = (hex, k) => { const v = parseInt(hex.slice(1), 16); return '#' + [v >> 16, (v >> 8) & 255, v & 255].map(c => Math.round(c * k).toString(16).padStart(2, '0')).join(''); };
+const G = ForceGraph3D()(document.getElementById('graph'))
+  .graphData({ nodes, links }).backgroundColor('rgba(0,0,0,0)').showNavInfo(false)
+  .nodeVal(n => n.kind === 'ent' ? 1.6 + n.deg * 1.1 : 4.2 + n.deg * 0.3).nodeRelSize(3.6).nodeOpacity(0.95).nodeResolution(18)
+  .nodeColor(n => lit(n) ? n.color : fade(n.color, 0.07)).nodeLabel(n => n.kind === 'doc' ? `${n.title}<br><span style="color:#aaa">${n.folder}</span>` : n.title)
+  .linkOpacity(0.6).linkColor(l => { const a = l.source.id || l.source, b = l.target.id || l.target; return (active && (a === active || b === active)) ? '#A882FF' : (lit(byId[a]) && lit(byId[b])) ? shade((byId[a].kind === 'doc' ? byId[a] : byId[b]).color, 0.62) : '#242424'; })
+  .linkWidth(l => { const a = l.source.id || l.source, b = l.target.id || l.target; return active && (a === active || b === active) ? 1.2 : 0.3; })
+  .linkDirectionalParticles(l => { const a = l.source.id || l.source, b = l.target.id || l.target; return active && (a === active || b === active) ? 3 : 0; }).linkDirectionalParticleWidth(1.6).linkDirectionalParticleColor(() => '#A882FF')
+  .enableNodeDrag(false).onNodeHover(n => { document.getElementById('graph').style.cursor = n ? 'pointer' : 'grab'; })
+  .onNodeClick(n => openNote(n.id)).onBackgroundClick(() => { active = null; focus = null; refresh(); home(); });
+// 마우스가 그래프 위에 있으면 자동 회전을 멈춘다 — 움직이는 공을 쫓아 누르지 않아도 된다
+const stageEl = document.querySelector('.stage'); stageEl.addEventListener('mouseenter', () => { hover = true; }); stageEl.addEventListener('mouseleave', () => { hover = false; if (spin){ const c = G.cameraPosition(); angle = Math.atan2(c.x, c.z); dist = Math.hypot(c.x, c.z); } });
+G.d3Force('charge').strength(-260); G.d3Force('link').distance(90).strength(0.06);
+// 주제 묶음마다 자리를 정해 그쪽으로 끌어당긴다 — 같은 묶음의 문서가 한 덩어리로 보인다
+const GROUPS = Object.keys(C), ANCHOR = {};
+GROUPS.forEach((g, i) => { const a = i / GROUPS.length * Math.PI * 2; ANCHOR[g] = { x:290 * Math.cos(a), y:215 * Math.sin(a), z:(i % 2 ? 90 : -90) }; });
+const cluster = (() => { let ns = []; const f = alpha => ns.forEach(n => { if (n.kind !== 'doc') return; const t = ANCHOR[n.group], k = alpha * 0.45; n.vx += (t.x - n.x) * k; n.vy += (t.y - n.y) * k; n.vz += (t.z - n.z) * k; }); f.initialize = n => { ns = n; }; return f; })();
+G.d3Force('cluster', cluster);
+function fit(){ const r = document.querySelector('.stage').getBoundingClientRect(); G.width(r.width).height(r.height); }
+fit(); addEventListener('resize', fit);
+// 이름표 — 공 아래에 글자를 겹쳐 그린다
+const labelBox = document.getElementById('labels');
+const light = hex => { const v = parseInt(hex.slice(1), 16); return 'rgb(' + [v >> 16, (v >> 8) & 255, v & 255].map(c => Math.round(c + (255 - c) * 0.35)).join(',') + ')'; };
+nodes.forEach(n => { const s = document.createElement('span'); const t = n.title.length > 16 ? n.title.slice(0, 15) + '…' : n.title;
+  if (n.kind === 'ent'){ s.className = 'ent' + (n.deg >= 8 ? ' hub' : ''); s.innerHTML = t + '<em>' + n.deg + '</em>'; } else { s.className = 'doc'; s.textContent = t; s.style.setProperty('--c', light(n.color)); }
+  s.addEventListener('click', e => { e.stopPropagation(); openNote(n.id); });
+  labelBox.appendChild(s); n._l = s; });
+const grpLabel = {}; GROUPS.forEach(g => { const s = document.createElement('span'); s.className = 'grp'; s.style.setProperty('--c', C[g]); s.textContent = g + ' ' + docs.filter(d => d.group === g).length; s.title = '누르면 이 묶음의 문서가 펼쳐집니다'; s.addEventListener('click', e => { e.stopPropagation(); focusGroup(g); }); labelBox.appendChild(s); grpLabel[g] = s; });
+function focusGroup(g){ active = null; focus = focus === g ? null : g; refresh(); if (!focus) return home(); busy = true; spin = false; spinBtn.textContent = '회전 켜기';
+  const t = ANCHOR[g], d = Math.hypot(t.x, t.y, t.z) || 1, k = 1 + 300 / d; G.cameraPosition({ x:t.x * k, y:t.y * k, z:t.z * k }, t, 900); setTimeout(() => busy = false, 950); }
+let spin = true, angle = 0, dist = 900, busy = false;
+(function loop(){ const w = labelBox.clientWidth, h = labelBox.clientHeight;
+  if (spin && !busy && !hover){ angle += 0.0018; G.cameraPosition({ x:dist * Math.sin(angle), z:dist * Math.cos(angle) }); }
+  nodes.forEach(n => { if (n.x === undefined) return; const p = G.graph2ScreenCoords(n.x, n.y, n.z); const on = p.x > 0 && p.x < w && p.y > 0 && p.y < h && visible(n);
+    const show = on && (n.kind === 'ent' || ((active || query || focus) && lit(n))); n._l.style.display = show ? '' : 'none'; if (show){ n._l.style.left = p.x + 'px'; n._l.style.top = p.y + 'px'; n._l.classList.toggle('dim', !lit(n)); } });
+  GROUPS.forEach(g => { const ds = docs.filter(d => d.group === g && d.x !== undefined), el = grpLabel[g]; if (!ds.length || hidden.has(g)){ el.style.display = 'none'; return; }
+    const c = ds.reduce((m, d) => ({ x:m.x + d.x / ds.length, y:m.y + d.y / ds.length, z:m.z + d.z / ds.length }), { x:0, y:0, z:0 }), p = G.graph2ScreenCoords(c.x, c.y, c.z);
+    el.style.display = ''; el.style.left = p.x + 'px'; el.style.top = (p.y - 34) + 'px'; el.classList.toggle('dim', !!(active || query) || (focus && focus !== g)); });
+  requestAnimationFrame(loop); })();
+function refresh(){ G.nodeColor(G.nodeColor()).linkColor(G.linkColor()).linkWidth(G.linkWidth()).linkDirectionalParticles(G.linkDirectionalParticles()); document.querySelectorAll('.file').forEach(f => f.classList.toggle('on', f.dataset.id === active)); }
+function home(){ busy = true; G.cameraPosition({ x:dist * Math.sin(angle), y:0, z:dist * Math.cos(angle) }, { x:0, y:0, z:0 }, 900); setTimeout(() => busy = false, 950); renderHome(); }
+function openNote(id){ const n = byId[id]; if (!n) return; active = id; busy = true; spin = false; spinBtn.textContent = '회전 켜기';
+  const d = Math.hypot(n.x, n.y, n.z) || 1, k = 1 + 220 / d; G.cameraPosition({ x:n.x * k, y:n.y * k, z:n.z * k }, n, 1100); refresh(); renderNote(n); }
+const dot = n => `<i style="--c:${n.color}"></i>`;
+function renderNote(n){
+  const rel = (nb[n.id] || []).map(id => byId[id]);
+  if (n.kind === 'ent'){ note.innerHTML = `<h1>${n.title}</h1><div class="path">연결점 · ${n.group}</div><h2>이 이름이 나오는 문서 ${rel.length}개</h2>${rel.map(r => `<div class="link" data-id="${r.id}">${dot(r)}${r.title}</div>`).join('')}`; return; }
+  const sib = [...new Set(rel.flatMap(e => (nb[e.id] || []).filter(id => id !== n.id)))].map(id => byId[id]).map(d => ({ d, w: rel.filter(e => nb[e.id].includes(d.id)).length })).sort((a,b) => b.w - a.w).slice(0, 8);
+  note.innerHTML = `<h1>${n.title}</h1><div class="path">내문서/${n.folder}/${n.file}</div>
+    ${DUP[n.id] ? `<div class="callout"><b>중복 의심</b> — ${DUP[n.id]}</div>` : ''}
+    <h2>한 줄 요약</h2><p>${n.sum}</p>
+    <h2>핵심 내용</h2><ul>${n.keys.map(k => `<li>${k}</li>`).join('')}</ul>
+    <h2>태그</h2><div><span class="tag" style="background:${fade(n.color, .18)};color:${n.color}">#${n.group}</span>${rel.map(e => `<span class="tag" data-id="${e.id}">#${e.title.replace(/ /g, '_')}</span>`).join('')}</div>
+    <h2>연결된 문서</h2>${sib.map(s => `<div class="link" data-id="${s.d.id}">${dot(s.d)}${s.d.title}<span style="margin-left:auto;color:var(--sub);font-size:12px">${s.w}</span></div>`).join('')}
+    <h2>원문</h2><pre>${n.text.replace(/</g, '&lt;')}</pre>`;
+}
+function renderHome(){
+  const top = [...ents].sort((a,b) => b.deg - a.deg).slice(0, 8);
+  note.innerHTML = `<h1>하루상점 세컨드 브레인</h1><div class="path">바탕화면 · 다운로드 · 문서 · USB 백업 · 카톡 받은 파일에 흩어져 있던 문서 40개</div>
+    <div class="callout ai" style="margin-top:16px"><b>AI가 읽은 요점</b><ol style="margin:8px 0 0;padding-left:18px"><li>4월의 중심은 <b>「데일리 키친」 출시(4/13)</b>입니다. 기획서 · 가격안 · 견적서 · 계약서 초안 · 회의록 등 ${nb['E:데일리 키친'].length}개 문서가 이어져 있고, KC 인증 서류가 일정의 관건입니다.</li><li><b>3/25 라이브방송</b>이 매출 · 재고 · 문의 문서에 함께 나옵니다. 텀블러 품절과 출고 지연이 같은 날에서 시작됐습니다.</li><li><b>김나연</b>에게 제조사 · 발주 · 사양 · 불량 확인이 몰려 있습니다(연결 ${byId['E:김나연'].deg}개).</li></ol></div>
+    <h2>내용이 어긋나는 곳</h2><ul><li>브랜드 소개서 두 파일의 숫자가 다릅니다: 누적 주문 6만 / 7만 건, 재구매율 31% / 34%</li><li>3월 매출: 「2026 월별 목표와 실적」은 1,360만 원인데 주별 자료로는 확인할 수 없습니다 — 확인 필요</li><li>초도 물량: 기획서는 「250과 300 가운데 정하는 중」, 견적서는 250세트 기준</li></ul>
+    <h2>가장 많이 연결된 것</h2><div class="rank">${top.map(e => `<span class="link" data-id="${e.id}" style="margin:0">${e.title}</span><span>문서 ${e.deg}개</span>`).join('')}</div>
+    <h2>쓰는 법</h2><p style="color:var(--sub)">왼쪽에서 문서를 고르거나 검색합니다. 그래프의 공을 누르면 그 문서의 요약과 연결된 문서가 여기에 열립니다. 색 범례를 누르면 그 묶음을 숨깁니다.</p>`;
+}
+let mode = 'group';
+function renderTree(){
+  const key = mode === 'group' ? 'group' : 'folder', groups = {};
+  docs.filter(d => !query || match(d)).forEach(d => (groups[d[key]] = groups[d[key]] || []).push(d));
+  tree.innerHTML = Object.keys(groups).sort().map(g => `<div class="fold">${g} <span style="color:var(--sub);font-weight:500">${groups[g].length}</span></div><div class="kids">${groups[g].map(d => `<div class="file ${d.id === active ? 'on' : ''}" data-id="${d.id}" title="${d.file}">${dot(d)}<span style="overflow:hidden;text-overflow:ellipsis">${d.title}</span><em>${d.ext}</em></div>`).join('')}</div>`).join('') || '<div class="file">검색 결과 없음</div>';
+}
+legend.innerHTML = Object.keys(C).map(g => `<button data-g="${g}"><i style="--c:${C[g]}"></i>${g}</button>`).join('') + `<button disabled style="opacity:.8"><i style="--c:#fff"></i>연결점(사람 · 거래처 · 상품 · 주제)</button>`;
+legend.addEventListener('click', e => { const b = e.target.closest('[data-g]'); if (!b) return; const g = b.dataset.g; hidden.has(g) ? hidden.delete(g) : hidden.add(g); b.classList.toggle('off'); G.nodeVisibility(visible).linkVisibility(l => visible(byId[l.source.id || l.source]) && visible(byId[l.target.id || l.target])); refresh(); });
+document.addEventListener('click', e => { const f = e.target.closest('[data-id]'); if (f) openNote(f.dataset.id); const fo = e.target.closest('.fold'); if (fo) fo.classList.toggle('shut'); });
+seg.addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; mode = b.dataset.m; [...seg.children].forEach(x => x.classList.toggle('on', x === b)); renderTree(); });
+q.addEventListener('input', () => { query = q.value.trim().toLowerCase(); active = null; renderTree(); refresh(); });
+homeBtn.onclick = () => { active = null; focus = null; refresh(); home(); };
+spinBtn.onclick = () => { spin = !spin; spinBtn.textContent = spin ? '회전 멈춤' : '회전 켜기'; if (spin){ const c = G.cameraPosition(); angle = Math.atan2(c.x, c.z); dist = Math.hypot(c.x, c.z); } };
+xlsBtn.onclick = () => { const wb = XLSX.utils.book_new(); const ws = XLSX.utils.json_to_sheet(docs.map(d => ({ '제목':d.title, '원본 위치':'내문서/' + d.folder + '/' + d.file, '묶음':d.group, '한 줄 요약':d.sum, '연결된 이름':d.ents.join(', '), '비고':DUP[d.id] ? '중복 의심' : '' })));
+  ws['!cols'] = [34,52,10,70,50,12].map(w => ({ wch:w })); XLSX.utils.book_append_sheet(wb, ws, '문서 색인'); XLSX.writeFile(wb, '하루상점_문서색인.xlsx'); };
+renderTree(); renderHome();
+</script>
+</body>
+</html>

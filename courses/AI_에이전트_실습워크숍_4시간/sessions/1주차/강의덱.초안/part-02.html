@@ -1,15 +1,12 @@
 <!-- B2-0 -->
-<!-- ============ B2-0 · kit 표준 파트 전환(slide part-divider · 헤더 없음) — 큐브 자리에 여정 지도(.journey) 유지.
-     번호는 「블록 n / 4」 고정: 셸 JS가 .pd-eyebrow · .pd-dots를 「PART n / 3」으로 덮으므로 그 두 클래스는 쓰지 않고 같은 모양을 인라인으로 준다 ============ -->
 <section class="slide part-divider" data-slide="B2-0">
   <div aria-hidden="true" style="position:absolute;top:132px;left:50%;transform:translateX(-50%);z-index:1;display:flex;align-items:center;gap:14px;margin:0"><span class="pd-dot"></span><span class="pd-dot is-active"></span><span class="pd-dot"></span><span class="pd-dot"></span></div>
   <p style="position:absolute;top:168px;left:50%;transform:translateX(-50%);z-index:1;margin:0;font-size:18px;font-weight:700;letter-spacing:.08em;color:var(--blue)">블록 2 / 4</p>
-  <h2 class="pd-title" style="top:204px"><span class="sr-only">블록 2 — </span>결과 글과 화면</h2>
-  <div class="journey" data-now="1" data-tag="지금 · 블록 2" style="bottom:34px"><span>기획</span><span>제작</span><span>공개</span><span>개선</span></div>
+  <h2 class="pd-title" style="top:204px"><span class="sr-only">블록 2 · </span>디자인 · 제작 · 공개</h2>
+  <div class="journey" data-now="2" data-tag="지금 · 블록 2" style="bottom:34px"><span>기획</span><span>디자인</span><span>제작</span><span>공개</span></div>
 </section>
 
 <!-- B2-1 -->
-<!-- ============ B2-1 · 블록 2 미리 보기(D44) — 간지 뒤 브리핑: 하는 일 카드 3(한 색) + 함께 배우는 개념 띠 ============ -->
 <section class="slide" data-slide="B2-1">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 18 V8 H18 M30 8 H40 V18 M40 30 V40 H30 M18 40 H8 V30" fill="none" style="stroke:var(--blue)" stroke-width="5"/><rect x="19" y="19" width="10" height="10" style="fill:var(--mint)"/></svg><span class="s-brand">FRAME</span>
@@ -18,81 +15,11 @@
   <p class="kick">블록 2 · 미리 보기</p>
   <h2 class="s-title">블록 2에서 <b class="kw">하는 일</b></h2>
   <div class="pcards" style="margin-top:44px">
-    <div class="pc"><span class="ic"><svg viewBox="0 0 24 24"><path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4M10 12h5M10 16h5"/></svg></span><b>결과 글 쓰기</b><p>유형별 결과 글을 쓰고 확인합니다.</p></div>
-    <div class="pc"><span class="ic"><svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="12" rx="2"/><path d="M8 21h8M12 17v4M8 10l2 2-2 2M13 14h3"/></svg></span><b>에이전트 실습 A</b><p>실습 하나를 골라 진행합니다.</p></div>
-    <div class="pc"><span class="ic"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 9h18M7 13h6M7 16h4"/></svg></span><b>점검 화면 만들기</b><p>문항 파일을 읽는 화면을 요청해 만듭니다.</p></div>
+    <div class="pc"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="8.5" cy="10" r="1.2"/><circle cx="12" cy="7.5" r="1.2"/><circle cx="15.5" cy="10" r="1.2"/><path d="M12 21a3 3 0 0 1 0-6h2.5"/></svg></span><b>색 고르고 design.md</b><p>색 세 가지와 분위기를 정해 문서로 남깁니다.</p></div>
+    <div class="pc"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 9h18M7 13h6M7 16h4"/></svg></span><b>앱 만들기</b><p>prd.md와 design.md를 읽혀 앱을 만들고 한 곳씩 고칩니다.</p></div>
+    <div class="pc"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg></span><b>공개 주소 만들기</b><p>폴더를 올려 누구나 열 수 있는 주소를 만듭니다.</p></div>
   </div>
   <div class="band t-mist"><span>함께 배우는 개념</span><b>컨텍스트 · 중간 유실 · 길어진 대화</b></div>
-</section>
-
-<!-- M1-4 -->
-<!-- ============ M1-4 · v2 — 실습 셸: 큰 번호 단계 + 필수·선택 / 요청문 터미널 + 막힐 때 펼침 ============ -->
-<section class="slide pr f-steps" data-slide="M1-4">
-  <header class="s-head">
-    <svg class="s-logo" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 18 V8 H18 M30 8 H40 V18 M40 30 V40 H30 M18 40 H8 V30" fill="none" style="stroke:var(--blue)" stroke-width="5"/><rect x="19" y="19" width="10" height="10" style="fill:var(--mint)"/></svg><span class="s-brand">FRAME</span>
-    <span class="s-line"></span><div class="s-team">메인 과제</div>
-  </header>
-  <div class="pr-wrap">
-    <div class="pr-bar"><span class="pr-no">메인 과제</span><span class="pr-name">AI 활용 습관 점검</span><span class="pr-name">기획 · 7분 · 4단계</span><span class="pr-steps" aria-label="4단계 중 1단계"><span class="cur" aria-current="step">① 기획</span><span>② 제작</span><span>③ 공개</span><span>④ 개선</span></span></div>
-    <div class="pr-top has-timer"><h2 class="s-title">유형별 <b class="kw">결과 글</b>을 씁니다</h2><button class="timer sm" type="button" data-min="7" aria-label="타이머 7분 — 누르면 시작, 다시 누르면 멈춤"><span class="tv">07:00</span><span class="tl">▶ 시작</span></button></div>
-    <div class="pr-main" style="margin-top:14px"><div class="pr-cols" style="--lc:540px">
-      <div class="pr-left" style="justify-content:flex-start;gap:14px">
-        <ol class="flow" style="gap:4px" data-w="todo"><li><button type="button" aria-pressed="false"><span class="n">1</span><span class="t"><span class="em-tag">00_AI습관점검/결과글.txt</span>를 엽니다.</span></button></li><li><button type="button" aria-pressed="false"><span class="n">2</span><span class="t">요청문 「결과 글 질문」을 보내 질문을 받습니다.</span></button></li><li><button type="button" aria-pressed="false"><span class="n">3</span><span class="t">내가 예상하는 유형을 포함해 두 유형 각각의 요약과 이번 주 해 볼 한 가지를 씁니다.</span></button></li><li><button type="button" aria-pressed="false"><span class="n">4</span><span class="t">저장합니다.<span class="tip" style="font-size:22px">먼저 끝나면 나머지 유형이나 <span class="em-tag">문항.txt</span>의 8문항까지 씁니다.</span></span></button></li></ol>
-        <dl class="facts" style="margin-top:4px;gap:8px">
-          <div class="f" style="grid-template-columns:auto 1fr;column-gap:14px"><dt style="padding-top:2px"><span class="pill m">필수</span></dt><dd>두 유형 각각의 요약(「~하는 편입니다」)과 이번 주 해 볼 한 가지</dd></div>
-          <div class="f" style="grid-template-columns:auto 1fr;column-gap:14px"><dt style="padding-top:2px"><span class="pill ghost">선택</span></dt><dd>나머지 두 유형 · 요청문 카드(강사 예시에서 골라 붙여도 됩니다). 개선 단계에서 채워도 됩니다.</dd></div>
-        </dl>
-      </div>
-      <div class="pr-right" style="justify-content:flex-start;gap:12px">
-        <details class="reveal pop" style="--rw:1136px"><summary><span>막힐 때 — 요청문 카드 예시</span><span class="hint">눌러서 열기</span></summary><div class="reveal-body" style="left:auto;right:0;min-height:344px"><span class="lab" style="margin-bottom:10px">요청문 카드 예시(골라 붙여도 됩니다)</span><div style="display:grid;grid-template-columns:1fr 1fr;gap:16px 32px"><p style="margin:0;font-size:22px;line-height:1.5;color:var(--ink)"><b style="display:block;font-weight:800;color:var(--pr-deep)">내 생각 먼저 · 확인하고 씀:</b>내 초안과 네 제안을 비교해서 달라진 곳과 그 근거를 표로 보여 줘.</p><p style="margin:0;font-size:22px;line-height:1.5;color:var(--ink)"><b style="display:block;font-weight:800;color:var(--pr-deep)">AI 먼저 · 확인하고 씀:</b>답을 주기 전에 내가 먼저 생각해 볼 질문 세 개를 물어봐 줘.</p><p style="margin:0;font-size:22px;line-height:1.5;color:var(--ink)"><b style="display:block;font-weight:800;color:var(--pr-deep)">내 생각 먼저 · 그대로 씀:</b>이 답에서 사실 확인이 필요한 문장을 골라 출처와 함께 목록으로 보여 줘.</p><p style="margin:0;font-size:22px;line-height:1.5;color:var(--ink)"><b style="display:block;font-weight:800;color:var(--pr-deep)">AI 먼저 · 그대로 씀:</b>결론을 말하기 전에 선택지 두세 개와 각각의 장단점을 먼저 보여 줘.</p></div></div></details>
-        <div class="term terminal-dark dense"><div class="terminal-bar"><span></span><span></span><span></span><b>요청문/00_AI습관점검.txt · 결과 글 질문</b><button class="copy" type="button" data-copy>복사</button></div><div class="terminal-copy"><p><span class="terminal-prompt">&gt;</span> 이번에는 'AI 활용 습관 점검'의 결과 글을 쓰려고 해. 유형은 네 개야.<br>내 생각 먼저 · 확인하고 씀 / AI 먼저 · 확인하고 씀 / 내 생각 먼저 · 그대로 씀 / AI 먼저 · 그대로 씀<br>그중 <span class="ph">〈내가 예상하는 유형〉</span>과 <span class="ph">〈다른 한 유형〉</span>에 대해서만 물어 줘. 유형마다 내 업무 장면을 묻는 질문을 하나씩, 한 번에 하나씩 해 줘.<br>결과 글은 내가 쓸 거야. 너는 내 대답을 요약 한 문장(「~하는 편입니다」)과 이번 주 해 볼 한 가지(「~합니다」)로 나눠 정리해서 채팅에만 보여 줘. 결과글.txt는 내가 채울게.<span class="terminal-cursor" aria-hidden="true"></span></p></div></div>
-      </div>
-    </div></div>
-  </div>
-</section>
-
-<!-- M1-5 -->
-<!-- ============ M1-5 · v2 — 왼쪽 확인 세 줄 / 오른쪽 살구 면 위 전·후 + 비워 둔 유형 ============ -->
-<section class="slide pr f-check" data-slide="M1-5">
-  <header class="s-head">
-    <svg class="s-logo" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 18 V8 H18 M30 8 H40 V18 M40 30 V40 H30 M18 40 H8 V30" fill="none" style="stroke:var(--blue)" stroke-width="5"/><rect x="19" y="19" width="10" height="10" style="fill:var(--mint)"/></svg><span class="s-brand">FRAME</span>
-    <span class="s-line"></span><div class="s-team">메인 과제</div>
-  </header>
-  <div class="bleed w50"></div>
-  <p class="kick">메인 과제 · ① 기획</p>
-  <h2 class="s-title"><b class="kw">결과 글</b>을 확인합니다</h2>
-  <span class="lab" style="margin-top:40px;margin-bottom:12px">결과 글 확인 3줄</span>
-  <ul class="ck-list" data-w="todo" style="gap:20px"><li><button type="button" aria-pressed="false" style="font-size:24px"><span class="bx" aria-hidden="true">☐</span><span class="t">요약이 <b class="kw">「~하는 편입니다」</b>로 끝납니다.</span></button></li><li><button type="button" aria-pressed="false" style="font-size:24px"><span class="bx" aria-hidden="true">☐</span><span class="t">이번 주에 해 볼 행동이 하나 들어 있습니다.</span></button></li><li><button type="button" aria-pressed="false" style="font-size:24px"><span class="bx" aria-hidden="true">☐</span><span class="t">요약은 내 문항이 묻는 습관만 적었습니다.</span></button></li></ul>
-  <p class="keep" style="margin-top:40px">쓰지 않은 유형은 비워 둡니다. 화면에는 「아직 쓰지 않은 결과입니다」가 나옵니다.</p>
-  <div class="on-bleed" style="justify-content:flex-start;gap:10px;padding-top:44px">
-    <div class="wcard" style="width:100%;display:flex;gap:16px;align-items:flex-start;padding:18px 22px"><span class="ic"><svg viewBox="0 0 48 48" aria-hidden="true" style="stroke:var(--red)"><path d="M15 15l18 18M33 15L15 33"/></svg></span><div><span class="pill ghost">전</span><p style="margin:10px 0 0;font-size:24px;font-weight:600;line-height:1.5;color:var(--ink)">「당신은 AI가 <span class="em-line">시키는 대로 하는 사람</span>입니다.」</p></div></div>
-    <svg viewBox="0 0 48 48" width="34" height="34" aria-hidden="true" style="flex:none;fill:none;stroke:var(--pr-deep);stroke-width:3;stroke-linecap:round;stroke-linejoin:round"><path d="M24 8v28M14 27l10 10 10-10"/></svg>
-    <div class="wcard" style="width:100%;display:flex;gap:16px;align-items:flex-start;padding:18px 22px"><span class="ic"><svg viewBox="0 0 48 48" aria-hidden="true" style="stroke:var(--mint-deep)"><path d="M12 25l8 8 16-17"/></svg></span><div><span class="pill pr">후</span><p style="margin:10px 0 0;font-size:24px;font-weight:600;line-height:1.5;color:var(--ink)">「AI 답을 먼저 받고, 대부분 그대로 <span class="em-line">쓰는 편입니다</span>. 이번 주에는 AI 답을 내 말로 세 줄 요약해 본 뒤에 씁니다.」</p></div></div>
-    <div style="height:10px"></div>
-    <div style="width:100%;display:flex;align-items:center;gap:14px"><div style="flex:none;width:176px;padding:16px 14px;border-radius:16px;background:var(--pr-soft);text-align:center;font-size:20px;font-weight:700;line-height:1.35;color:var(--gray-700)">쓰지 않은 유형</div><svg viewBox="0 0 48 48" width="36" height="36" aria-hidden="true" style="flex:none;fill:none;stroke:var(--pr-deep);stroke-width:3;stroke-linecap:round;stroke-linejoin:round"><path d="M8 24h28M27 14l10 10-10 10"/></svg><div class="wcard" style="flex:1 1 0;padding:14px 18px;text-align:center;font-size:22px;font-weight:700;line-height:1.4;color:var(--ink)">아직 쓰지 않은<br>결과입니다</div></div>
-  </div>
-</section>
-
-<!-- M1-6 -->
-<!-- ============ M1-6 · v2 — 위 제목 + 아래 폴더 모형(왼쪽) / 이어가기 카드 둘(오른쪽) ============ -->
-<section class="slide pr f-fix" data-slide="M1-6">
-  <header class="s-head">
-    <svg class="s-logo" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 18 V8 H18 M30 8 H40 V18 M40 30 V40 H30 M18 40 H8 V30" fill="none" style="stroke:var(--blue)" stroke-width="5"/><rect x="19" y="19" width="10" height="10" style="fill:var(--mint)"/></svg><span class="s-brand">FRAME</span>
-    <span class="s-line"></span><div class="s-team">메인 과제</div>
-  </header>
-  <p class="kick">메인 과제 · ① 기획</p>
-  <h2 class="s-title">저장하고 이어 갑니다</h2>
-  <p class="lede">두 파일을 저장합니다 — <span class="em-tag">문항.txt</span> · <span class="em-tag">결과글.txt</span></p>
-  <div style="display:flex;gap:44px;align-items:flex-start;margin-top:56px">
-    <div class="wcard" style="width:580px;padding:22px 28px 16px"><div style="display:flex;align-items:center;gap:12px;padding:4px 0 6px"><svg viewBox="0 0 48 48" width="40" height="40" aria-hidden="true" style="flex:none;fill:var(--pr-soft);stroke:var(--pr-deep);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round"><path d="M5 13h13l4 5h21v23H5z"/><path d="M5 20h38"/></svg><b style="font-size:26px;font-weight:800;color:var(--ink)">00_AI습관점검/</b></div><div style="display:flex;align-items:center;gap:12px;padding:13px 0 13px 44px"><svg viewBox="0 0 48 48" width="34" height="34" aria-hidden="true" style="flex:none;fill:none;stroke:var(--pr-deep);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round"><path d="M14 6h13l8 8v28H14z"/><path d="M27 6v8h8M19 24h12M19 31h12"/></svg><span class="em-tag" style="font-size:22px">문항.txt</span><span style="font-size:22px;font-weight:500;color:var(--gray-700)">— 내가 쓴 문항</span><span class="pill m" style="margin-left:auto">저장</span></div><div style="display:flex;align-items:center;gap:12px;padding:13px 0 13px 44px"><svg viewBox="0 0 48 48" width="34" height="34" aria-hidden="true" style="flex:none;fill:none;stroke:var(--pr-deep);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round"><path d="M14 6h13l8 8v28H14z"/><path d="M27 6v8h8M19 24h12M19 31h12"/></svg><span class="em-tag" style="font-size:22px">결과글.txt</span><span style="font-size:22px;font-weight:500;color:var(--gray-700)">— 내가 쓴 결과 글</span><span class="pill m" style="margin-left:auto">저장</span></div><div style="display:flex;align-items:center;gap:12px;padding:13px 0 13px 44px;opacity:.6"><svg viewBox="0 0 48 48" width="34" height="34" aria-hidden="true" style="flex:none;fill:none;stroke:var(--pr-deep);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round"><path d="M14 6h13l8 8v28H14z"/><path d="M27 6v8h8M19 24h12M19 31h12"/></svg><span class="em-tag" style="font-size:22px">시작안내.md</span></div></div>
-    <div style="flex:1 1 0;min-width:0">
-      <span class="lab" style="margin-bottom:10px">이어가기</span>
-      <div class="pcards" style="grid-auto-flow:row;grid-auto-columns:auto;gap:22px">
-        <div class="pc t-sky" style="flex-direction:row;align-items:center;gap:22px;padding:32px 30px"><span class="ic"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M38 18A15 15 0 0 0 10 16M10 30a15 15 0 0 0 28 2"/><path d="M38 8v10H28M10 40V30h10"/></svg></span><div><b>쓰지 못한 문항과 결과 글은</b><p><b class="kw">개선 단계</b>에서 채웁니다.</p></div></div>
-        <div class="pc t-sky" style="flex-direction:row;align-items:center;gap:22px;padding:32px 30px"><span class="ic"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M14 18h17a9 9 0 0 1 0 18H16"/><path d="M21 10l-8 8 8 8"/></svg></span><div><b>막히면</b><p><span class="em-tag">이어가기/00_AI습관점검/2_제작_시작점</span> 폴더로 이어 갑니다.</p></div></div>
-      </div>
-    </div>
-  </div>
 </section>
 
 <!-- C-10 -->
@@ -103,7 +30,7 @@
   </header>
   <div class="bleed w50 t-sky"></div>
   <p class="kick">개념 · 컨텍스트</p>
-  <h2 class="s-title"><b class="kw">컨텍스트</b> — AI가 답하는 <br>순간 볼 수 있는 정보 전체</h2>
+  <h2 class="s-title term"><b class="kw">컨텍스트</b>AI가 답하는 순간 볼 수 있는 정보 전체</h2>
   <div class="rule def" style="margin-top:28px"><span class="lab">정의</span><p>컨텍스트는 AI가 답하는 순간 볼 수 있는 정보 전체입니다. <b class="kw">대화 내용 · 첨부 파일 · 규칙</b>이 여기에 들어갑니다.</p></div>
   <div class="rule ana" style="margin-top:22px"><span class="lab">비유</span><p>시험장에 들고 갈 수 있는 요약 노트 한 장과 같습니다. 크기가 정해져 있어 무엇을 적을지 골라야 합니다.</p></div>
   <div class="on-bleed">
@@ -141,9 +68,9 @@
           <text x="92" y="327" font-size="26" font-weight="800" style="fill:var(--ink)">규칙</text>
           <path d="M290 304 h150 M290 330 h100" fill="none" stroke-width="7" stroke-linecap="round" style="stroke:var(--periwinkle)"/>
         </g>
-        <g data-show="0" class="is-on"><text x="20" y="404" font-size="22" font-weight="700" style="fill:var(--ink)">대화 내용 — 지금까지 주고받은 글입니다.</text></g>
-        <g data-show="1"><text x="20" y="404" font-size="22" font-weight="700" style="fill:var(--ink)">첨부 파일 — 대화에 올려 준 자료입니다.</text></g>
-        <g data-show="2"><text x="20" y="404" font-size="22" font-weight="700" style="fill:var(--ink)">규칙 — AI가 따르도록 적어 둔 지침입니다.</text></g>
+        <g data-show="0" class="is-on"><text x="20" y="404" font-size="22" font-weight="700" style="fill:var(--ink)"><tspan style="fill:var(--mint-deep);font-weight:800">대화 내용</tspan><tspan dx="14" style="font-weight:600">지금까지 주고받은 글입니다.</tspan></text></g>
+        <g data-show="1"><text x="20" y="404" font-size="22" font-weight="700" style="fill:var(--ink)"><tspan style="fill:var(--mint-deep);font-weight:800">첨부 파일</tspan><tspan dx="14" style="font-weight:600">대화에 올려 준 자료입니다.</tspan></text></g>
+        <g data-show="2"><text x="20" y="404" font-size="22" font-weight="700" style="fill:var(--ink)"><tspan style="fill:var(--mint-deep);font-weight:800">규칙</tspan><tspan dx="14" style="font-weight:600">AI가 따르도록 적어 둔 지침입니다.</tspan></text></g>
       </svg>
     </div>
     <p class="keep" style="width:488px;margin:0;font-size:22px;font-weight:600;color:var(--ink)">무엇을 넣고 뺄지 정하는 일을 <span class="kw">컨텍스트&nbsp;엔지니어링</span>이라고 부릅니다.</p>
@@ -157,7 +84,7 @@
     <span class="s-line"></span><div class="s-team">블록 2<br>컨텍스트</div>
   </header>
   <p class="kick">개념 · 컨텍스트</p>
-  <h2 class="s-title"><b class="kw">중간 유실</b> — 긴 자료의 가운데 정보를 <br>덜 활용하는 현상</h2>
+  <h2 class="s-title term"><b class="kw">중간 유실</b>긴 자료의 가운데 정보를 덜 활용하는 현상</h2>
   <div style="display:grid;grid-template-columns:360px 1fr;column-gap:40px;margin-top:20px;align-items:start">
     <div>
       <div class="rule def"><span class="lab">정의</span><p>AI에게 긴 자료를 주면 <b class="kw">앞부분과 끝부분</b> 정보는 잘 활용하고, <b class="kw">가운데 정보</b>는 활용하는 정도가 떨어집니다.</p></div>
@@ -174,15 +101,15 @@
         <g data-pick="2" tabindex="0" role="button" aria-label="스무 번째 위치 63.2"><rect class="hit" x="478" y="8" width="160" height="206"/><rect class="v-bar a-grow" x="498" y="62.24" width="120" height="113.76" rx="6"/><text x="558" y="52" font-size="28" font-weight="800" text-anchor="middle" style="fill:var(--ink)">63.2</text><text x="558" y="204" font-size="22" font-weight="700" text-anchor="middle" style="fill:var(--ink)">스무 번째</text></g>
         <text x="0" y="244" font-size="20" font-weight="700" style="fill:var(--gray-700)">답이 든 문서의 위치(20개 중)</text>
         <rect class="v-node" x="316" y="224" width="15" height="28" rx="3" data-hl="0"/><rect class="v-node" x="335" y="224" width="15" height="28" rx="3"/><rect class="v-node" x="354" y="224" width="15" height="28" rx="3"/><rect class="v-node" x="373" y="224" width="15" height="28" rx="3"/><rect class="v-node" x="392" y="224" width="15" height="28" rx="3"/><rect class="v-node" x="411" y="224" width="15" height="28" rx="3"/><rect class="v-node" x="430" y="224" width="15" height="28" rx="3"/><rect class="v-node" x="449" y="224" width="15" height="28" rx="3"/><rect class="v-node" x="468" y="224" width="15" height="28" rx="3"/><rect class="v-node" x="487" y="224" width="15" height="28" rx="3" data-hl="1"/><rect class="v-node" x="506" y="224" width="15" height="28" rx="3"/><rect class="v-node" x="525" y="224" width="15" height="28" rx="3"/><rect class="v-node" x="544" y="224" width="15" height="28" rx="3"/><rect class="v-node" x="563" y="224" width="15" height="28" rx="3"/><rect class="v-node" x="582" y="224" width="15" height="28" rx="3"/><rect class="v-node" x="601" y="224" width="15" height="28" rx="3"/><rect class="v-node" x="620" y="224" width="15" height="28" rx="3"/><rect class="v-node" x="639" y="224" width="15" height="28" rx="3"/><rect class="v-node" x="658" y="224" width="15" height="28" rx="3"/><rect class="v-node" x="677" y="224" width="15" height="28" rx="3" data-hl="2"/>
-        <g data-show="0"><text x="0" y="280" font-size="22" font-weight="700" style="fill:var(--ink)">첫 번째 · 정답률 75.8% — 문서 없이 56.1%보다 높음</text></g>
-        <g data-show="1" class="is-on"><text x="0" y="280" font-size="22" font-weight="700" style="fill:var(--ink)">열 번째 · 정답률 53.8% — 문서 없이 56.1%보다 낮음</text></g>
-        <g data-show="2"><text x="0" y="280" font-size="22" font-weight="700" style="fill:var(--ink)">스무 번째 · 정답률 63.2% — 문서 없이 56.1%보다 높음</text></g>
+        <g data-show="0"><text x="0" y="280" font-size="22" font-weight="700" style="fill:var(--ink)">첫 번째 · 정답률 75.8% · 문서 없이 56.1%보다 높음</text></g>
+        <g data-show="1" class="is-on"><text x="0" y="280" font-size="22" font-weight="700" style="fill:var(--ink)">열 번째 · 정답률 53.8% · 문서 없이 56.1%보다 낮음</text></g>
+        <g data-show="2"><text x="0" y="280" font-size="22" font-weight="700" style="fill:var(--ink)">스무 번째 · 정답률 63.2% · 문서 없이 56.1%보다 높음</text></g>
       </svg>
     </div>
   </div>
   <div class="band t-mist" style="--bb:54px;--bh:108px;gap:40px">
     <div class="rule ana" style="flex:1 1 0"><span class="lab">비유</span><p>긴 회의록을 한 번 훑으면 첫 안건과 마지막 결론은 기억나는데, 중간에 바뀐 결정은 흐릿합니다.</p></div>
-    <div class="rule do" style="flex:1 1 0"><span class="lab">대응(이 강의의 제안)</span><p>꼭 지킬 조건은 요청문 맨 앞이나 맨 뒤에 씁니다. 긴 자료는 나눠서 줍니다.</p></div>
+    <div class="rule do" style="flex:1 1 0"><span class="lab">대응</span><p>꼭 지킬 조건은 요청문 맨 앞이나 맨 뒤에 씁니다. 긴 자료는 나눠서 줍니다.</p></div>
   </div>
 </section>
 
@@ -193,7 +120,7 @@
     <span class="s-line"></span><div class="s-team">블록 2<br>컨텍스트</div>
   </header>
   <p class="kick">개념 · 컨텍스트</p>
-  <h2 class="s-title"><b class="kw">길어진 대화</b> — 앞 내용을 활용하는 <br>정도가 떨어지는 현상</h2>
+  <h2 class="s-title term"><b class="kw">길어진 대화</b>앞 내용을 활용하는 정도가 떨어지는 현상</h2>
   <div style="display:grid;grid-template-columns:560px 1fr;column-gap:48px;margin-top:22px;align-items:start">
     <div>
       <div class="rule def"><span class="lab">정의</span><p>대화와 자료가 <b class="kw">길어질수록</b> AI가 앞 내용을 정확히 활용하는 정도가 떨어집니다.</p></div>
@@ -270,141 +197,493 @@
   </div>
 </section>
 
-<!-- SLOT-A -->
-<!-- ============ SLOT-A · v2 — 여정 지도(지금 = 에이전트 실습) 위 글 + 허브 카드 축소 모형 ============ -->
-<section class="slide f-slot" data-slide="SLOT-A" data-return-to="R-A">
-  <div class="journey" data-now="2" data-tag="지금 · 실습 시간 A"><span>기획</span><span>에이전트 실습</span><span>제작</span><span>공개</span><span>개선</span></div>
+<!-- C-DOCS -->
+<section class="slide" data-slide="C-DOCS">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 18 V8 H18 M30 8 H40 V18 M40 30 V40 H30 M18 40 H8 V30" fill="none" style="stroke:var(--blue)" stroke-width="5"/><rect x="19" y="19" width="10" height="10" style="fill:var(--mint)"/></svg><span class="s-brand">FRAME</span>
-    <span class="s-line"></span><div class="s-team">블록 2<br>에이전트 실습</div>
+    <span class="s-line"></span><div class="s-team">블록 2<br>문서</div>
   </header>
-  <p class="kick" style="max-width:560px">에이전트 실습</p>
-  <h2 class="s-title" style="max-width:560px">에이전트 실습 시간 A</h2>
-  <p class="lede" style="max-width:560px">실습 하나를 끝냅니다.</p>
-  <p class="keep" style="margin-top:18px;max-width:560px">실습은 <b>목표</b> · <b>진행</b> · <b>확인</b> · <b>고치기</b> 네 장으로 이어집니다.</p>
-  <p class="keep" style="margin-top:18px;font-weight:700;color:var(--ink)">이번 시간에 할 실습:</p>
-  <div style="display:flex;align-items:center;gap:16px;margin-top:8px">
-    <span class="ic"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M14 6h13l8 8v28H14z"/><path d="M27 6v8h8M19 24h12M19 31h12"/></svg></span><b style="font-size:24px;font-weight:800">01 회의 메모</b><span style="font-size:22px;font-weight:700;color:var(--gray-700)">또는</span><span class="ic"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M10 40V8M10 10h26l-6 8 6 8H10"/></svg></span><b style="font-size:24px;font-weight:800">04 주간 보고서</b>
+  <p class="kick">개념 · 문서</p>
+  <h2 class="s-title">에이전트가 읽는 <b class="kw">두 문서</b></h2>
+  <div class="pcards" style="margin-top:26px;gap:24px">
+    <div class="pc t-mint" style="padding:26px 30px 26px;gap:10px"><div style="display:flex;align-items:center;gap:14px;width:100%"><span class="em-tag" style="font-size:28px;font-weight:800">prd.md</span><span class="pill" style="margin-left:auto">블록 1에서 완성</span></div><b style="font-size:34px;margin-top:6px">무엇을 만드나</b><p style="color:var(--ink)">prd.md는 앱이 할 일을 적은 문서입니다.</p><ul style="margin:6px 0 0;padding-left:22px;display:grid;gap:4px"><li style="font-size:22px;font-weight:600;line-height:1.5;color:var(--ink)">누가 쓰나 · 어떤 장면인가</li><li style="font-size:22px;font-weight:600;line-height:1.5;color:var(--ink)">문항과 결과 글</li><li style="font-size:22px;font-weight:600;line-height:1.5;color:var(--ink)">화면 조건</li></ul></div>
+    <div class="pc t-sky" style="padding:26px 30px 26px;gap:10px"><div style="display:flex;align-items:center;gap:14px;width:100%"><span class="em-tag" style="font-size:28px;font-weight:800">design.md</span><span class="pill m" style="margin-left:auto">지금부터 만듭니다</span></div><b style="font-size:34px;margin-top:6px">어떻게 보이나</b><p style="color:var(--ink)">design.md는 앱의 색 · 글자 · 모양을 적은 문서입니다.</p><ul style="margin:6px 0 0;padding-left:22px;display:grid;gap:4px"><li style="font-size:22px;font-weight:600;line-height:1.5;color:var(--ink)">배경 · 메인 · 포인트 색</li><li style="font-size:22px;font-weight:600;line-height:1.5;color:var(--ink)">글꼴과 글자 크기</li><li style="font-size:22px;font-weight:600;line-height:1.5;color:var(--ink)">모서리 · 버튼 · 분위기</li></ul></div>
   </div>
-  <p class="keep" style="margin-top:18px">끝나면 점검 페이지 폴더로 돌아옵니다.</p>
-  <div class="on-bleed" style="bottom:auto;height:430px;width:46%;padding:70px 72px 0 0;justify-content:flex-start">
-    <button class="slot-mini" type="button" data-go="HUB" data-vt-key="hub" aria-label="실습 허브 열기"><span class="mini-card" data-pr="P1"><span class="mini-no">1</span><span class="mini-name">회의 메모</span></span><span class="mini-card" data-pr="P2"><span class="mini-no">2</span><span class="mini-name">폴더 정리</span></span><span class="mini-card" data-pr="P3"><span class="mini-no">3</span><span class="mini-name">문의 답장</span></span><span class="mini-card" data-pr="P4"><span class="mini-no">4</span><span class="mini-name">주간 보고서</span></span></button><span class="slot-hint">카드를 누르면 허브로 이동합니다</span>
+  <div class="band t-mist" style="--bb:60px;--bh:128px;flex-direction:column;align-items:flex-start;justify-content:center;gap:6px">
+    <span style="font-size:23px;color:var(--ink)"><b class="kw">비유</b>&nbsp; 집을 지을 때 prd.md는 「방이 몇 개이고 누가 사는가」, design.md는 「벽지와 조명」입니다.</span>
+    <span style="font-size:22px;color:var(--gray-700)">두 문서는 폴더에 남습니다. 새 대화를 열어도 에이전트가 다시 읽으므로 같은 말을 반복하지 않아도 됩니다.</span>
   </div>
 </section>
 
-<!-- R-A -->
-<!-- ============ R-A · v2 — 여정 지도(지금 = 제작으로 돌아옴) 위 세 단계 + 요청문 터미널 ============ -->
-<section class="slide pr f-return" data-slide="R-A">
-  <div class="journey" data-now="3" data-tag="지금 · 돌아오기"><span>기획</span><span>에이전트 실습</span><span>제작</span><span>공개</span><span>개선</span></div>
+<!-- DS-1 -->
+<section class="slide" data-slide="DS-1">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 18 V8 H18 M30 8 H40 V18 M40 30 V40 H30 M18 40 H8 V30" fill="none" style="stroke:var(--blue)" stroke-width="5"/><rect x="19" y="19" width="10" height="10" style="fill:var(--mint)"/></svg><span class="s-brand">FRAME</span>
+    <span class="s-line"></span><div class="s-team">블록 2<br>디자인</div>
+  </header>
+  <div class="bleed w50 t-mist"></div>
+  <p class="kick">디자인 · 색 비율</p>
+  <h2 class="s-title">색은 <b class="kw">60 · 30 · 10</b>으로 <br>나눠 씁니다</h2>
+  <div style="display:flex;height:74px;margin-top:34px;max-width:520px;border-radius:16px;overflow:hidden;box-shadow:var(--sh-card)" role="img" aria-label="배경 60, 메인 30, 포인트 10 비율 막대">
+    <span style="flex:6;background:#F7F4EA;display:grid;place-items:center;font-size:26px;font-weight:800;color:var(--ink)">60</span>
+    <span style="flex:3;background:#1F4E5F;display:grid;place-items:center;font-size:26px;font-weight:800;color:var(--white)">30</span>
+    <span style="flex:1;background:#F2A65A;display:grid;place-items:center;font-size:22px;font-weight:800;color:var(--ink)">10</span>
+  </div>
+  <dl class="facts" style="margin-top:28px;gap:18px">
+    <div class="f" style="grid-template-columns:128px 1fr"><dt style="font-size:22px;color:var(--ink)">배경 60</dt><dd>화면 전체의 바탕. 밝고 조용한 색</dd></div>
+    <div class="f" style="grid-template-columns:128px 1fr"><dt style="font-size:22px;color:var(--ink)">메인 30</dt><dd>제목 · 진행 막대처럼 앱의 인상을 정하는 색</dd></div>
+    <div class="f" style="grid-template-columns:128px 1fr"><dt style="font-size:22px;color:var(--ink)">포인트 10</dt><dd>누를 버튼처럼 <b class="kw">눈이 가야 하는 한두 곳</b></dd></div>
+  </dl>
+  <div class="on-bleed" style="gap:14px">
+    <div style="width:400px;padding:30px 28px;border-radius:26px;background:#F7F4EA;box-shadow:var(--sh-pop);position:relative">
+      <div style="background:#fff;border-radius:18px;padding:24px 24px 26px">
+        <span style="font-size:14px;font-weight:800;letter-spacing:.06em;color:#1F4E5F">AI 활용 습관 점검</span>
+        <div style="height:9px;border-radius:9px;background:#DCE8EA;margin:12px 0 18px;overflow:hidden"><i style="display:block;width:62%;height:100%;background:#1F4E5F;border-radius:9px"></i></div>
+        <p style="margin:0;font-size:24px;font-weight:800;line-height:1.4;color:#1B1B1B">AI가 알려 준 숫자를 원본 문서에서 다시 본다.</p>
+        <div style="display:grid;gap:9px;margin-top:16px"><span style="display:block;padding:11px 16px;border-radius:12px;background:#F7F4EA;font-size:18px;font-weight:700;color:#1B1B1B">가끔</span><span style="display:block;padding:11px 16px;border-radius:12px;background:#F7F4EA;font-size:18px;font-weight:700;color:#1B1B1B">자주</span></div>
+        <span style="display:block;margin-top:16px;padding:13px;border-radius:12px;background:#F2A65A;text-align:center;font-size:19px;font-weight:800;color:#1B1B1B">다음</span>
+      </div>
+    </div>
+    <p style="margin:0;display:flex;gap:22px;font-size:20px;font-weight:700;color:var(--gray-700)"><span><i style="display:inline-block;width:14px;height:14px;border-radius:4px;background:#F7F4EA;box-shadow:var(--sh-ic);margin-right:8px"></i>바탕</span><span><i style="display:inline-block;width:14px;height:14px;border-radius:4px;background:#1F4E5F;margin-right:8px"></i>제목 · 진행 막대</span><span><i style="display:inline-block;width:14px;height:14px;border-radius:4px;background:#F2A65A;margin-right:8px"></i>버튼 하나</span></p>
+  </div>
+</section>
+
+<!-- DS-2 -->
+<section class="slide" data-slide="DS-2">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 18 V8 H18 M30 8 H40 V18 M40 30 V40 H30 M18 40 H8 V30" fill="none" style="stroke:var(--blue)" stroke-width="5"/><rect x="19" y="19" width="10" height="10" style="fill:var(--mint)"/></svg><span class="s-brand">FRAME</span>
+    <span class="s-line"></span><div class="s-team">블록 2<br>디자인</div>
+  </header>
+  <p class="kick">디자인 · 색의 인상</p>
+  <h2 class="s-title">색마다 주는 <b class="kw">인상</b>이 다릅니다</h2>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);grid-auto-rows:204px;gap:18px;margin-top:24px" role="group" aria-label="여섯 색의 인상. 파랑은 신뢰와 안정, 빨강은 열정과 긴급, 노랑은 밝음과 주의, 초록은 자연과 안심, 흰색은 깨끗함과 여백, 검정은 고급과 격식.">
+    <div style="position:relative;overflow:hidden;border-radius:28px;background:linear-gradient(135deg,#1D4ED8,#3B82F6);padding:22px 26px 20px;display:flex;flex-direction:column;--st:#FFFFFF;--fl:rgba(255,255,255,.2)"><i style="position:absolute;right:-46px;top:-46px;width:230px;height:230px;border-radius:50%;background:rgba(255,255,255,.2)"></i><svg viewBox="0 0 160 160" width="128" height="128" aria-hidden="true" style="position:absolute;right:22px;top:22px"><path d="M80 16 130 36v42c0 34-22 56-50 66-28-10-50-32-50-66V36z" style="fill:var(--fl);stroke:var(--st)" stroke-width="6" stroke-linejoin="round"/><path d="M56 80l17 17 32-36" fill="none" style="stroke:var(--st)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/></svg><b style="position:relative;font-size:38px;font-weight:800;line-height:1.2;letter-spacing:-.03em;color:#FFFFFF">파랑</b><span style="position:relative;margin-top:6px;font-size:25px;font-weight:800;line-height:1.3;color:#FFFFFF">신뢰 · 안정</span><span style="position:relative;margin-top:auto;display:flex;gap:8px;flex-wrap:wrap"><span style="padding:5px 14px;border-radius:999px;background:rgba(255,255,255,.2);font-size:18px;font-weight:700;line-height:1.3;color:#FFFFFF;white-space:nowrap">금융</span><span style="padding:5px 14px;border-radius:999px;background:rgba(255,255,255,.2);font-size:18px;font-weight:700;line-height:1.3;color:#FFFFFF;white-space:nowrap">IT</span><span style="padding:5px 14px;border-radius:999px;background:rgba(255,255,255,.2);font-size:18px;font-weight:700;line-height:1.3;color:#FFFFFF;white-space:nowrap">공공</span></span></div>
+    <div style="position:relative;overflow:hidden;border-radius:28px;background:linear-gradient(135deg,#B91C1C,#EF4444);padding:22px 26px 20px;display:flex;flex-direction:column;--st:#FFFFFF;--fl:rgba(255,255,255,.2)"><i style="position:absolute;right:-46px;top:-46px;width:230px;height:230px;border-radius:50%;background:rgba(255,255,255,.2)"></i><svg viewBox="0 0 160 160" width="128" height="128" aria-hidden="true" style="position:absolute;right:22px;top:22px"><path d="M82 14c10 26 40 40 40 78a42 42 0 0 1-84 0c0-20 10-32 20-42 2 14 8 20 14 20-6-22 2-42 10-56z" style="fill:var(--fl);stroke:var(--st)" stroke-width="6" stroke-linejoin="round"/><path d="M80 86c8 10 16 16 16 28a16 16 0 0 1-32 0c0-10 8-16 16-28z" style="fill:var(--st)"/></svg><b style="position:relative;font-size:38px;font-weight:800;line-height:1.2;letter-spacing:-.03em;color:#FFFFFF">빨강</b><span style="position:relative;margin-top:6px;font-size:25px;font-weight:800;line-height:1.3;color:#FFFFFF">열정 · 긴급</span><span style="position:relative;margin-top:auto;display:flex;gap:8px;flex-wrap:wrap"><span style="padding:5px 14px;border-radius:999px;background:rgba(255,255,255,.2);font-size:18px;font-weight:700;line-height:1.3;color:#FFFFFF;white-space:nowrap">할인</span><span style="padding:5px 14px;border-radius:999px;background:rgba(255,255,255,.2);font-size:18px;font-weight:700;line-height:1.3;color:#FFFFFF;white-space:nowrap">음식</span><span style="padding:5px 14px;border-radius:999px;background:rgba(255,255,255,.2);font-size:18px;font-weight:700;line-height:1.3;color:#FFFFFF;white-space:nowrap">경고</span></span></div>
+    <div style="position:relative;overflow:hidden;border-radius:28px;background:linear-gradient(135deg,#FACC15,#FDE047);padding:22px 26px 20px;display:flex;flex-direction:column;--st:#1B1B1B;--fl:rgba(255,255,255,.45)"><i style="position:absolute;right:-46px;top:-46px;width:230px;height:230px;border-radius:50%;background:rgba(255,255,255,.45)"></i><svg viewBox="0 0 160 160" width="128" height="128" aria-hidden="true" style="position:absolute;right:22px;top:22px"><circle cx="80" cy="80" r="30" style="fill:var(--fl);stroke:var(--st)" stroke-width="6"/><g style="stroke:var(--st)" stroke-width="7" stroke-linecap="round"><path d="M80 14v18M80 128v18M14 80h18M128 80h18M33 33l13 13M114 114l13 13M127 33l-13 13M46 114l-13 13"/></g></svg><b style="position:relative;font-size:38px;font-weight:800;line-height:1.2;letter-spacing:-.03em;color:#1B1B1B">노랑</b><span style="position:relative;margin-top:6px;font-size:25px;font-weight:800;line-height:1.3;color:#1B1B1B">밝음 · 주의</span><span style="position:relative;margin-top:auto;display:flex;gap:8px;flex-wrap:wrap"><span style="padding:5px 14px;border-radius:999px;background:rgba(27,27,27,.1);font-size:18px;font-weight:700;line-height:1.3;color:#1B1B1B;white-space:nowrap">어린이</span><span style="padding:5px 14px;border-radius:999px;background:rgba(27,27,27,.1);font-size:18px;font-weight:700;line-height:1.3;color:#1B1B1B;white-space:nowrap">안내 표지</span></span></div>
+    <div style="position:relative;overflow:hidden;border-radius:28px;background:linear-gradient(135deg,#15803D,#22C55E);padding:22px 26px 20px;display:flex;flex-direction:column;--st:#FFFFFF;--fl:rgba(255,255,255,.2)"><i style="position:absolute;right:-46px;top:-46px;width:230px;height:230px;border-radius:50%;background:rgba(255,255,255,.2)"></i><svg viewBox="0 0 160 160" width="128" height="128" aria-hidden="true" style="position:absolute;right:22px;top:22px"><path d="M26 134C26 66 70 24 138 24c0 68-44 110-112 110z" style="fill:var(--fl);stroke:var(--st)" stroke-width="6" stroke-linejoin="round"/><path d="M26 134 104 56M58 102V70M58 102h32M82 78V54M82 78h26" fill="none" style="stroke:var(--st)" stroke-width="5" stroke-linecap="round"/></svg><b style="position:relative;font-size:38px;font-weight:800;line-height:1.2;letter-spacing:-.03em;color:#FFFFFF">초록</b><span style="position:relative;margin-top:6px;font-size:25px;font-weight:800;line-height:1.3;color:#FFFFFF">자연 · 안심</span><span style="position:relative;margin-top:auto;display:flex;gap:8px;flex-wrap:wrap"><span style="padding:5px 14px;border-radius:999px;background:rgba(255,255,255,.2);font-size:18px;font-weight:700;line-height:1.3;color:#FFFFFF;white-space:nowrap">건강</span><span style="padding:5px 14px;border-radius:999px;background:rgba(255,255,255,.2);font-size:18px;font-weight:700;line-height:1.3;color:#FFFFFF;white-space:nowrap">환경</span><span style="padding:5px 14px;border-radius:999px;background:rgba(255,255,255,.2);font-size:18px;font-weight:700;line-height:1.3;color:#FFFFFF;white-space:nowrap">완료</span></span></div>
+    <div style="position:relative;overflow:hidden;border-radius:28px;background:#FFFFFF;box-shadow:var(--sh-card);padding:22px 26px 20px;display:flex;flex-direction:column;--st:#9AA5AB;--fl:#F3F5F6"><i style="position:absolute;right:-46px;top:-46px;width:230px;height:230px;border-radius:50%;background:#F3F5F6"></i><svg viewBox="0 0 160 160" width="128" height="128" aria-hidden="true" style="position:absolute;right:22px;top:22px"><rect x="22" y="30" width="116" height="100" rx="14" fill="none" style="stroke:var(--st)" stroke-width="4"/><circle cx="80" cy="80" r="7" style="fill:var(--st)"/><path d="M126 14c2 10 6 14 16 16-10 2-14 6-16 16-2-10-6-14-16-16 10-2 14-6 16-16z" style="fill:var(--st)"/></svg><b style="position:relative;font-size:38px;font-weight:800;line-height:1.2;letter-spacing:-.03em;color:#1B1B1B">흰색</b><span style="position:relative;margin-top:6px;font-size:25px;font-weight:800;line-height:1.3;color:#1B1B1B">깨끗함 · 여백</span><span style="position:relative;margin-top:auto;display:flex;gap:8px;flex-wrap:wrap"><span style="padding:5px 14px;border-radius:999px;background:#EEF1F3;font-size:18px;font-weight:700;line-height:1.3;color:#1B1B1B;white-space:nowrap">바탕</span><span style="padding:5px 14px;border-radius:999px;background:#EEF1F3;font-size:18px;font-weight:700;line-height:1.3;color:#1B1B1B;white-space:nowrap">의료</span><span style="padding:5px 14px;border-radius:999px;background:#EEF1F3;font-size:18px;font-weight:700;line-height:1.3;color:#1B1B1B;white-space:nowrap">미니멀</span></span></div>
+    <div style="position:relative;overflow:hidden;border-radius:28px;background:linear-gradient(135deg,#0A0A0A,#2B2B2B);padding:22px 26px 20px;display:flex;flex-direction:column;--st:#E8D9A8;--fl:rgba(232,217,168,.14)"><i style="position:absolute;right:-46px;top:-46px;width:230px;height:230px;border-radius:50%;background:rgba(232,217,168,.14)"></i><svg viewBox="0 0 160 160" width="128" height="128" aria-hidden="true" style="position:absolute;right:22px;top:22px"><path d="M44 30h72l28 34-64 76-64-76z" style="fill:var(--fl);stroke:var(--st)" stroke-width="5" stroke-linejoin="round"/><path d="M16 64h128M44 30l20 34 16 76 16-76 20-34M64 64l16-34 16 34" fill="none" style="stroke:var(--st)" stroke-width="4" stroke-linejoin="round"/></svg><b style="position:relative;font-size:38px;font-weight:800;line-height:1.2;letter-spacing:-.03em;color:#FFFFFF">검정</b><span style="position:relative;margin-top:6px;font-size:25px;font-weight:800;line-height:1.3;color:#FFFFFF">고급 · 격식</span><span style="position:relative;margin-top:auto;display:flex;gap:8px;flex-wrap:wrap"><span style="padding:5px 14px;border-radius:999px;background:rgba(255,255,255,.14);font-size:18px;font-weight:700;line-height:1.3;color:#FFFFFF;white-space:nowrap">명품</span><span style="padding:5px 14px;border-radius:999px;background:rgba(255,255,255,.14);font-size:18px;font-weight:700;line-height:1.3;color:#FFFFFF;white-space:nowrap">기술</span><span style="padding:5px 14px;border-radius:999px;background:rgba(255,255,255,.14);font-size:18px;font-weight:700;line-height:1.3;color:#FFFFFF;white-space:nowrap">글자</span></span></div>
+  </div>
+  <p class="keep" style="margin-top:18px;font-size:22px;color:var(--ink)">내 앱을 쓰는 사람에게 <b class="kw">어떤 인상</b>을 주고 싶은지 먼저 정합니다. <span style="color:var(--gray-700)">인상은 문화와 쓰는 자리에 따라 달라집니다.</span></p>
+</section>
+
+<!-- DS-3 -->
+<section class="slide" data-slide="DS-3">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 18 V8 H18 M30 8 H40 V18 M40 30 V40 H30 M18 40 H8 V30" fill="none" style="stroke:var(--blue)" stroke-width="5"/><rect x="19" y="19" width="10" height="10" style="fill:var(--mint)"/></svg><span class="s-brand">FRAME</span>
+    <span class="s-line"></span><div class="s-team">블록 2<br>디자인</div>
+  </header>
+  <p class="kick">디자인 · 색 고르기 · 4분</p>
+  <div class="pr-top has-timer"><h2 class="s-title"><b class="kw">Color Hunt</b>에서 팔레트를 고릅니다</h2><button class="timer sm" type="button" data-min="4" aria-label="타이머 4분 — 누르면 시작, 다시 누르면 멈춤" style="margin-top:16px"><span class="tv">04:00</span><span class="tl">▶ 시작</span></button></div>
+  <div style="display:grid;grid-template-columns:724px 1fr;column-gap:36px;margin-top:22px;align-items:start">
+    <div class="ch" role="img" aria-label="Color Hunt 화면 모형. 왼쪽에 New, Popular, Random, Collection 메뉴와 색 분류가 있고 가운데에 네 줄 팔레트 카드가 있습니다. 색에 마우스를 올리면 색 코드가 보입니다.">
+      <div class="ch-top"><span class="ch-logo"><svg viewBox="0 0 30 34" aria-hidden="true"><path d="M3 4h24v12a12 12 0 0 1-24 0z" fill="#FFD66B" stroke="#111" stroke-width="2.2" stroke-linejoin="round"/><path d="M9.5 20h11v6.5a5.5 5.5 0 0 1-11 0z" fill="#FF6B8B" stroke="#111" stroke-width="2.2"/><path d="M9 11.5h.01M21 11.5h.01" stroke="#111" stroke-width="3.2" stroke-linecap="round"/><path d="M5 2v4M25 2v4" stroke="#111" stroke-width="2.2" stroke-linecap="round"/></svg>Color Hunt</span>
+        <span class="ch-search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6"/><path d="M15 15l5.5 5.5"/></svg>Search palettes</span><span class="ch-url">colorhunt.co</span></div>
+      <div class="ch-body">
+        <div class="ch-nav"><b class="on"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3c.6 4.8 4.2 8.4 9 9-4.8.6-8.4 4.2-9 9-.6-4.8-4.2-8.4-9-9 4.8-.6 8.4-4.2 9-9z" fill="#111" stroke="none"/></svg>New</b><b><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21a7 7 0 0 0 7-7c0-3-2-5-3-7-1 2-2 3-3.500 3.500C12.500 8 11 5 11 3 8 5.500 5 9.500 5 14a7 7 0 0 0 7 7z"/></svg>Popular</b><b><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7a5 5 0 1 0 5 5"/></svg>Random</b><b><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.400-7-9.600A4 4 0 0 1 12 8a4 4 0 0 1 7 2.400C19 15.600 12 20 12 20z"/></svg>Collection</b>
+          <hr><span>Pastel</span><span>Vintage</span><span>Retro</span><span>Neon</span><span>Light</span><span>Dark</span><span>Warm</span><span>Cold</span></div>
+        <div class="ch-grid">
+          <div class="ch-item"><div class="ch-pal" style="outline:3px solid var(--blue);outline-offset:4px;"><i style="height:41%;background:#F9F7F7"><span style="position:absolute;left:0;bottom:0;padding:3px 6px;border-radius:0 6px 0 0;background:rgba(0,0,0,.1);color:#fff;font-size:12px;font-style:normal;line-height:1.3;white-space:nowrap">#F9F7F7</span></i><i style="height:26%;background:#DBE2EF"><span style="position:absolute;left:0;bottom:0;padding:3px 6px;border-radius:0 6px 0 0;background:rgba(0,0,0,.1);color:#fff;font-size:12px;font-style:normal;line-height:1.3;white-space:nowrap">#DBE2EF</span></i><i style="height:18%;background:#3F72AF"><span style="position:absolute;left:0;bottom:0;padding:3px 6px;border-radius:0 6px 0 0;background:rgba(0,0,0,.1);color:#fff;font-size:12px;font-style:normal;line-height:1.3;white-space:nowrap">#3F72AF</span></i><i style="height:15%;background:#112D4E"><span style="position:absolute;left:0;bottom:0;padding:3px 6px;border-radius:0 6px 0 0;background:rgba(0,0,0,.1);color:#fff;font-size:12px;font-style:normal;line-height:1.3;white-space:nowrap">#112D4E</span></i></div><div class="ch-meta"><span class="ch-like"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-9.6A4 4 0 0 1 12 8a4 4 0 0 1 7 2.4C19 15.6 12 20 12 20z"/></svg>38,214</span><span style="white-space:nowrap">Popular</span></div></div>
+          <div class="ch-item"><div class="ch-pal" style=""><i style="height:41%;background:#FFF5E4"></i><i style="height:26%;background:#FFE3E1"></i><i style="height:18%;background:#FFD1D1"></i><i style="height:15%;background:#FF9494"></i></div><div class="ch-meta"><span class="ch-like"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-9.6A4 4 0 0 1 12 8a4 4 0 0 1 7 2.4C19 15.6 12 20 12 20z"/></svg>21,907</span><span style="white-space:nowrap">2 days</span></div></div>
+          <div class="ch-item"><div class="ch-pal" style=""><i style="height:41%;background:#222831"></i><i style="height:26%;background:#393E46"></i><i style="height:18%;background:#00ADB5"></i><i style="height:15%;background:#EEEEEE"></i></div><div class="ch-meta"><span class="ch-like"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-9.6A4 4 0 0 1 12 8a4 4 0 0 1 7 2.4C19 15.6 12 20 12 20z"/></svg>45,120</span><span style="white-space:nowrap">3 days</span></div></div>
+          <div class="ch-item"><div class="ch-pal" style=""><i style="height:41%;background:#F7F4EA"></i><i style="height:26%;background:#DCE8EA"></i><i style="height:18%;background:#1F4E5F"></i><i style="height:15%;background:#F2A65A"></i></div><div class="ch-meta"><span class="ch-like"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-9.6A4 4 0 0 1 12 8a4 4 0 0 1 7 2.4C19 15.6 12 20 12 20z"/></svg>1,284</span><span style="white-space:nowrap">4 days</span></div></div>
+          <div class="ch-item"><div class="ch-pal" style=""><i style="height:41%;background:#E3FDFD"></i><i style="height:26%;background:#CBF1F5"></i><i style="height:18%;background:#A6E3E9"></i><i style="height:15%;background:#71C9CE"></i></div><div class="ch-meta"><span class="ch-like"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-9.6A4 4 0 0 1 12 8a4 4 0 0 1 7 2.4C19 15.6 12 20 12 20z"/></svg>30,455</span><span style="white-space:nowrap">5 days</span></div></div>
+          <div class="ch-item"><div class="ch-pal" style=""><i style="height:41%;background:#2C3639"></i><i style="height:26%;background:#3F4E4F"></i><i style="height:18%;background:#A27B5C"></i><i style="height:15%;background:#DCD7C9"></i></div><div class="ch-meta"><span class="ch-like"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-9.6A4 4 0 0 1 12 8a4 4 0 0 1 7 2.4C19 15.6 12 20 12 20z"/></svg>12,673</span><span style="white-space:nowrap">1 week</span></div></div>
+          <div class="ch-item"><div class="ch-pal" style=""><i style="height:41%;background:#FFFBE9"></i><i style="height:26%;background:#E3CAA5"></i><i style="height:18%;background:#CEAB93"></i><i style="height:15%;background:#AD8B73"></i></div><div class="ch-meta"><span class="ch-like"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-9.6A4 4 0 0 1 12 8a4 4 0 0 1 7 2.4C19 15.6 12 20 12 20z"/></svg>18,340</span><span style="white-space:nowrap">1 week</span></div></div>
+          <div class="ch-item"><div class="ch-pal" style=""><i style="height:41%;background:#F4EEFF"></i><i style="height:26%;background:#DCD6F7"></i><i style="height:18%;background:#A6B1E1"></i><i style="height:15%;background:#424874"></i></div><div class="ch-meta"><span class="ch-like"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-9.6A4 4 0 0 1 12 8a4 4 0 0 1 7 2.4C19 15.6 12 20 12 20z"/></svg>27,861</span><span style="white-space:nowrap">2 weeks</span></div></div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <ol class="flow" data-w="todo" style="gap:6px"><li><button type="button" aria-pressed="false"><span class="n">1</span><span class="t">주소창에 <span class="em-tag">colorhunt.co</span>를 엽니다.</span></button></li><li><button type="button" aria-pressed="false"><span class="n">2</span><span class="t"><b>Popular</b>나 색 분류에서 마음에 드는 팔레트를 고릅니다.</span></button></li><li><button type="button" aria-pressed="false"><span class="n">3</span><span class="t">색 위에 마우스를 올리면 <b>#으로 시작하는 색 코드</b>가 보입니다. 누르면 복사됩니다.</span></button></li><li><button type="button" aria-pressed="false"><span class="n">4</span><span class="t">네 색 가운데 <b>배경 · 메인 · 포인트</b> 세 가지를 정합니다.</span></button></li></ol>
+      <div class="rule do" style="margin-top:14px"><span class="lab">고르는 기준</span><p style="font-size:22px">가장 밝은 색을 배경으로, 가장 눈에 띄는 색을 포인트로 둡니다.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- DS-4 -->
+<section class="slide pr f-steps" data-slide="DS-4">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 18 V8 H18 M30 8 H40 V18 M40 30 V40 H30 M18 40 H8 V30" fill="none" style="stroke:var(--blue)" stroke-width="5"/><rect x="19" y="19" width="10" height="10" style="fill:var(--mint)"/></svg><span class="s-brand">FRAME</span>
     <span class="s-line"></span><div class="s-team">메인 과제</div>
   </header>
-  <p class="kick">메인 과제 · 3분 · 3단계</p>
-  <div class="pr-top has-timer"><h2 class="s-title">점검 페이지 <b class="kw">폴더</b>로 돌아옵니다</h2><button class="timer sm" type="button" data-min="3" aria-label="타이머 3분 — 누르면 시작, 다시 누르면 멈춤"><span class="tv">03:00</span><span class="tl">▶ 시작</span></button></div>
-  <div style="display:grid;grid-template-columns:480px 1fr;column-gap:44px;margin-top:22px;align-items:start">
-    <div>
-      <ol class="flow" data-w="todo"><li><button type="button" aria-pressed="false"><span class="n">1</span><span class="t">에이전트 앱에서 새 대화를 엽니다.<span class="tip">(메뉴 이름은 도구마다 다름)</span></span></button></li><li><button type="button" aria-pressed="false"><span class="n">2</span><span class="t"><span class="em-tag">00_AI습관점검</span> 폴더를 엽니다.</span></button></li><li><button type="button" aria-pressed="false"><span class="n">3</span><span class="t">요청문 「이어서 하기」로 어디까지 했는지 확인합니다.</span></button></li></ol>
-    </div>
-    <div>
-      <div class="term terminal-dark"><div class="terminal-bar"><span></span><span></span><span></span><b>요청문/00_AI습관점검.txt · 이어서 하기</b><button class="copy" type="button" data-copy>복사</button></div><div class="terminal-copy"><p><span class="terminal-prompt">&gt;</span> 이 폴더에서 'AI 활용 습관 점검' 페이지를 어디까지 만들었는지 알려 줘.<br>문항.txt에 문항이 몇 개 있는지, 결과글.txt에서 글이 채워진 유형이 어느 것인지, index.html · style.css · app.js · content.js가 있는지 확인해서 세 줄로 말해 줘.<br>확인만 하고 파일은 그대로 둬.<span class="terminal-cursor" aria-hidden="true"></span></p></div></div>
-    </div>
+  <div class="pr-wrap">
+    <div class="pr-bar"><span class="pr-no">메인 과제</span><span class="pr-name">AI 활용 습관 점검</span><span class="pr-steps" aria-label="4단계 중 2단계"><span>① 기획</span><span class="cur" aria-current="step">② 디자인</span><span>③ 제작</span><span>④ 공개</span></span></div>
+    <div class="pr-top has-timer"><h2 class="s-title">고른 색으로 <b class="kw">design.md</b>를 만듭니다</h2><button class="timer sm" type="button" data-min="5" aria-label="타이머 5분 — 누르면 시작, 다시 누르면 멈춤" style="margin-top:16px"><span class="tv">05:00</span><span class="tl">▶ 시작</span></button></div>
+    <div class="pr-main"><div class="pr-cols" style="--lc:600px">
+      <div class="pr-left" style="justify-content:flex-start;gap:20px">
+        <div class="term lg terminal-dark"><div class="terminal-bar"><span></span><span></span><span></span><b>요청 틀</b><button class="copy" type="button" data-copy>복사</button></div><div class="terminal-copy"><p><span class="terminal-prompt">&gt;</span> 이 앱의 design.md를 만들어 줘.<br>배경(60): <span class="ph">〈#색 코드〉</span> · 메인(30): <span class="ph">〈#색 코드〉</span> · 포인트(10): <span class="ph">〈#색 코드〉</span><br>주고 싶은 인상: <span class="ph">〈예: 차분하고 믿음직하게〉</span><br>글자가 잘 읽히는 조합인지 확인하고, 더 정해야 할 것은 나에게 물어봐 줘.<span class="terminal-cursor" aria-hidden="true"></span></p></div></div>
+        <ol class="flow" data-w="todo" style="gap:6px"><li><button type="button" aria-pressed="false"><span class="n">1</span><span class="t">색 코드 세 개와 인상을 넣어 보냅니다.</span></button></li><li><button type="button" aria-pressed="false"><span class="n">2</span><span class="t">에이전트의 질문(글꼴 · 모서리 · 버튼 모양)에 답합니다.</span></button></li><li><button type="button" aria-pressed="false"><span class="n">3</span><span class="t">폴더에 <span class="em-tag">design.md</span>가 생겼는지 봅니다.</span></button></li></ol>
+      </div>
+      <div class="pr-right" style="justify-content:flex-start">
+        <div class="wcard" style="padding:20px 26px 22px">
+          <div style="display:flex;justify-content:space-between;align-items:baseline"><span class="em-tag" style="font-size:22px">design.md</span><span style="font-size:18px;font-weight:700;color:var(--gray-700)">앱의 모양을 적은 한 장</span></div>
+          <p style="margin:14px 0 8px;font-size:18px;font-weight:800;color:var(--pr-deep)">1. 색</p>
+          <div style="display:grid;grid-template-columns:54px 1fr auto;gap:10px 16px;align-items:center;font-size:22px;font-weight:700;color:var(--ink)">
+            <i style="display:block;height:38px;border-radius:10px;background:#F7F4EA;box-shadow:var(--sh-ic)"></i><span>배경 60</span><span style="color:var(--gray-700)">#F7F4EA</span>
+            <i style="display:block;height:38px;border-radius:10px;background:#1F4E5F"></i><span>메인 30</span><span style="color:var(--gray-700)">#1F4E5F</span>
+            <i style="display:block;height:38px;border-radius:10px;background:#F2A65A"></i><span>포인트 10</span><span style="color:var(--gray-700)">#F2A65A</span>
+          </div>
+          <p style="margin:16px 0 4px;font-size:18px;font-weight:800;color:var(--pr-deep)">2. 인상 · 3. 글자 · 4. 모양</p>
+          <p style="margin:0;font-size:22px;font-weight:500;line-height:1.5;color:var(--gray-700)">차분하게 · 여백 넉넉히 · 모서리 둥글게</p>
+        </div>
+      </div>
+    </div></div>
   </div>
-  <p class="keep" style="margin-top:16px"><b>이어가기 위치</b> — <span class="em-tag">이어가기/00_AI습관점검/2_제작_시작점</span></p>
+</section>
+
+<!-- PL-1 -->
+<section class="slide" data-slide="PL-1">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 18 V8 H18 M30 8 H40 V18 M40 30 V40 H30 M18 40 H8 V30" fill="none" style="stroke:var(--blue)" stroke-width="5"/><rect x="19" y="19" width="10" height="10" style="fill:var(--mint)"/></svg><span class="s-brand">FRAME</span>
+    <span class="s-line"></span><div class="s-team">블록 2<br>제작 전에</div>
+  </header>
+  <div class="bleed w50 t-sky"></div>
+  <p class="kick">메인 과제 · 제작 전에</p>
+  <h2 class="s-title">바로 만들게 하지 않고 <br><b class="kw">계획부터</b> 받습니다</h2>
+  <div style="max-width:520px;margin-top:22px"><div class="term lg terminal-dark"><div class="terminal-bar"><span></span><span></span><span></span><b>요청 끝에 붙이는 두 줄</b><button class="copy" type="button" data-copy>복사</button></div><div class="terminal-copy"><p><span class="terminal-prompt">&gt;</span> 만들기 전에 계획을 먼저 보여 줘.<br>내가 승인하기 전에는 아무것도 만들지 마.<span class="terminal-cursor" aria-hidden="true"></span></p></div></div></div>
+  <div style="display:grid;gap:14px;margin-top:24px;max-width:520px">
+    <div style="display:grid;grid-template-columns:56px 1fr;gap:16px;align-items:center"><span class="ic" style="width:56px;height:56px"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l9 16H3z"/><path d="M12 10v4M12 17h.01"/></svg></span><p style="margin:0;font-size:23px;font-weight:600;line-height:1.45;color:var(--ink)">바로 만들게 하면 <b class="kw">엉뚱한 것</b>을 만들 수 있습니다.</p></div>
+    <div style="display:grid;grid-template-columns:56px 1fr;gap:16px;align-items:center"><span class="ic" style="width:56px;height:56px"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h3"/></svg></span><p style="margin:0;font-size:23px;font-weight:600;line-height:1.45;color:var(--ink)">계획은 몇 줄이라 <b class="kw">읽고 고치기</b> 쉽습니다.</p></div>
+    <div style="display:grid;grid-template-columns:56px 1fr;gap:16px;align-items:center"><span class="ic" style="width:56px;height:56px"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><p style="margin:0;font-size:23px;font-weight:600;line-height:1.45;color:var(--ink)">다 만든 뒤에 고치는 것보다 빠릅니다.</p></div>
+  </div>
+  <div class="on-bleed" style="gap:14px;align-items:stretch;padding:50px 50px 70px">
+    <span class="lab" style="margin:0;font-size:18px">도구를 만든 두 회사의 공식 문서</span>
+    <div class="wcard" style="padding:18px 24px 20px"><div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap"><b style="font-size:24px;font-weight:800;color:var(--ink)">Anthropic</b><span style="font-size:18px;font-weight:700;color:var(--gray-700)">Claude Code 문서 · Best practices</span></div><p style="margin:8px 0 0;font-size:21px;font-weight:500;line-height:1.5;color:var(--ink)">탐색 → 계획 → 구현 순서를 권합니다. 곧바로 만들게 하면 다른 문제를 풀어 버릴 수 있다고 설명합니다.</p></div>
+    <div class="wcard" style="padding:18px 24px 20px"><div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap"><b style="font-size:24px;font-weight:800;color:var(--ink)">OpenAI</b><span style="font-size:18px;font-weight:700;color:var(--gray-700)">Codex 문서 · Best practices</span></div><p style="margin:8px 0 0;font-size:21px;font-weight:500;line-height:1.5;color:var(--ink)">복잡하거나 모호한 일은 먼저 계획하게 하라고 권합니다. 에이전트에게 나를 인터뷰하게 하는 방법도 함께 소개합니다.</p></div>
+    <p style="margin:0;font-size:20px;font-weight:600;line-height:1.5;color:var(--gray-700)">두 도구 모두 계획 전용 모드가 있습니다(켜는 법은 도구마다 다름). 오타 수정처럼 작고 분명한 일은 바로 시켜도 됩니다.</p>
+    <p style="margin:0;font-size:17px;font-weight:600;color:var(--gray-700)">2026년 10월 2일 확인</p>
+  </div>
 </section>
 
 <!-- M2-1 -->
-<!-- ============ M2-1 · 오른쪽 면 + 전후 — 종이 두 장이 점검 화면이 된다 ============ -->
-<section class="slide pr" data-slide="M2-1">
+<section class="slide pr f-steps" data-slide="M2-1">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 18 V8 H18 M30 8 H40 V18 M40 30 V40 H30 M18 40 H8 V30" fill="none" style="stroke:var(--blue)" stroke-width="5"/><rect x="19" y="19" width="10" height="10" style="fill:var(--mint)"/></svg><span class="s-brand">FRAME</span>
-    <span class="s-line"></span><div class="s-team">블록 2 · 메인 과제</div>
+    <span class="s-line"></span><div class="s-team">메인 과제</div>
   </header>
   <div class="bleed w40 t-apricot"></div>
-  <p class="kick">메인 과제 · ② 제작</p>
-  <h2 class="s-title">문항 파일을 읽는 <br><b class="kw">점검 화면</b>을 만듭니다</h2>
-  <dl class="facts" style="margin-top:48px;gap:30px">
-    <div class="f" style="grid-template-columns:150px 1fr"><dt style="font-size:20px;color:var(--pr-deep)">전</dt><dd><span class="em-tag">문항.txt</span> · <span class="em-tag">결과글.txt</span> — 글만 있는 파일</dd></div>
-    <div class="f" style="grid-template-columns:150px 1fr"><dt style="font-size:20px;color:var(--pr-deep)">후</dt><dd>문항에 답하면 유형 글이 나오는 점검 화면(<span class="em-tag">index.html</span>)</dd></div>
-    <div class="f" style="grid-template-columns:150px 1fr"><dt style="font-size:20px;color:var(--pr-deep)">화면이 하는 일</dt><dd><span style="white-space:nowrap">문항 한 화면에 하나</span> <b style="color:var(--pr-deep)">→</b> <span style="white-space:nowrap">답 0~3점</span> <b style="color:var(--pr-deep)">→</b> <span style="white-space:nowrap">축 평균 1.75 이상이면 높은 쪽</span> <b style="color:var(--pr-deep)">→</b> <span style="white-space:nowrap">그 유형의 결과 글</span></dd></div>
-  </dl>
+  <div class="pr-bar" style="max-width:640px"><span class="pr-no">메인 과제</span><span class="pr-steps" aria-label="4단계 중 3단계"><span>① 기획</span><span>② 디자인</span><span class="cur" aria-current="step">③ 제작</span><span>④ 공개</span></span></div>
+  <h2 class="s-title">두 문서를 읽혀 <b class="kw">앱</b>을 만듭니다</h2>
+  <div style="max-width:650px;margin-top:18px"><div class="term lg terminal-dark"><div class="terminal-bar"><span></span><span></span><span></span><b>요청 틀</b><button class="copy" type="button" data-copy>복사</button></div><div class="terminal-copy"><p><span class="terminal-prompt">&gt;</span> prd.md와 design.md를 읽고 앱을 만들어 줘.<br>만들기 전에 계획을 먼저 보여 줘.<br>내가 승인하기 전에는 아무것도 만들지 마.<span class="terminal-cursor" aria-hidden="true"></span></p></div></div></div>
+  <ol class="flow" data-w="todo" style="margin-top:18px;gap:4px;max-width:650px"><li><button type="button" aria-pressed="false"><span class="n">1</span><span class="t">요청을 보냅니다.</span></button></li><li><button type="button" aria-pressed="false"><span class="n">2</span><span class="t">에이전트가 보여 주는 <b>계획</b>을 끝까지 읽습니다.</span></button></li><li><button type="button" aria-pressed="false"><span class="n">3</span><span class="t">계획이 두 문서와 맞으면 진행을 승인합니다.</span></button></li><li><button type="button" aria-pressed="false"><span class="n">4</span><span class="t">폴더의 <span class="em-tag">index.html</span>을 더블클릭해 엽니다.</span></button></li></ol>
+  <div style="position:absolute;left:72px;bottom:60px"><button class="timer sm" type="button" data-min="10" aria-label="타이머 10분 — 누르면 시작, 다시 누르면 멈춤"><span class="tv">10:00</span><span class="tl">▶ 시작</span></button></div>
   <div class="on-bleed" style="gap:12px">
-    <div style="position:relative;width:400px;height:146px;flex:none">
-      <div class="paper" style="--r:-5deg;position:absolute;left:6px;top:14px"><b>문항.txt</b><i></i><i></i><i></i></div>
-      <div class="paper" style="--r:4deg;position:absolute;left:222px;top:2px"><b>결과글.txt</b><i></i><i></i><i></i></div>
+    <div style="position:relative;width:400px;height:138px;flex:none">
+      <div class="paper" style="--r:-5deg;position:absolute;left:6px;top:10px"><b>prd.md</b><i></i><i></i><i></i></div>
+      <div class="paper" style="--r:4deg;position:absolute;left:222px;top:0"><b>design.md</b><i></i><i></i><i></i></div>
     </div>
     <svg width="36" height="34" viewBox="0 0 36 34" aria-hidden="true" style="flex:none"><path d="M18 3v22M8 16l10 10 10-10" fill="none" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--pr-deep)"/></svg>
-    <p class="keep" style="max-width:400px;text-align:center;color:var(--ink);font-weight:600">에이전트가 두 파일의 내용을 <span class="em-tag">content.js</span>로 옮기고 화면을 만듭니다.</p>
-    <div class="win browser" style="width:400px;flex:none">
-      <div class="win-bar"><i></i><i></i><i></i><span class="win-url">index.html</span></div>
-      <div class="win-body">
-        <p class="keep" style="margin:8px 0 14px;color:var(--ink);font-weight:700">AI가 알려 준 날짜나 숫자를 원본 문서에서 다시 본다.</p>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px"><span class="pill ghost" style="justify-content:center">거의 없다 0</span><span class="pill ghost" style="justify-content:center">가끔 1</span><span class="pill pr" style="justify-content:center">자주 2</span><span class="pill ghost" style="justify-content:center">거의 항상 3</span></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- M2-2 -->
-<!-- ============ M2-2 · 실습 진행 — 큰 번호 단계 + 긴 요청문 터미널 + 타이머 ============ -->
-<section class="slide pr f-steps" data-slide="M2-2">
-  <header class="s-head">
-    <svg class="s-logo" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 18 V8 H18 M30 8 H40 V18 M40 30 V40 H30 M18 40 H8 V30" fill="none" style="stroke:var(--blue)" stroke-width="5"/><rect x="19" y="19" width="10" height="10" style="fill:var(--mint)"/></svg><span class="s-brand">FRAME</span>
-    <span class="s-line"></span><div class="s-team">블록 2 · 메인 과제</div>
-  </header>
-  <div class="pr-wrap">
-    <div class="pr-bar"><span class="pr-no">메인 과제</span><span class="pr-name">AI 활용 습관 점검</span><span class="pr-steps" aria-label="4단계 중 2단계"><span>① 기획</span><span class="cur" aria-current="step">② 제작</span><span>③ 공개</span><span>④ 개선</span></span></div>
-    <div class="pr-top"><h2 class="s-title"><b class="kw">화면 제작 요청</b>을 보내고 <span class="em-line">계획</span>을 읽습니다</h2></div>
-    <div class="pr-main" style="margin-top:6px">
-      <div class="pr-cols" style="--lc:350px">
-        <div class="pr-left" style="justify-content:space-between">
-    <ol class="flow" data-w="todo">
-      <li><button type="button" aria-pressed="false"><span class="n">1</span><span class="t">요청문 <b>「화면 제작」</b>을 복사해 보냅니다.</span></button></li>
-      <li><button type="button" aria-pressed="false"><span class="n">2</span><span class="t">에이전트가 보여 주는 <b>계획</b>을 끝까지 읽습니다.</span></button></li>
-      <li><button type="button" aria-pressed="false"><span class="n">3</span><span class="t">계획이 요청과 맞으면 진행을 승인합니다.<span class="tip">(승인 화면 문구는 도구마다 다름)</span></span></button></li>
-      <li><button type="button" aria-pressed="false"><span class="n">4</span><span class="t">끝나면 폴더에 <span class="em-tag">index.html</span> · <span class="em-tag">style.css</span> · <span class="em-tag">app.js</span> · <span class="em-tag">content.js</span>가 있는지 봅니다.</span></button></li>
-    </ol>
-    <button class="timer" style="margin-bottom:10px" type="button" data-min="9" aria-label="타이머 9분 — 누르면 시작, 다시 누르면 멈춤"><span class="tv">09:00</span><span class="tl">▶ 시작</span></button>
-        </div>
-        <div class="pr-right" style="justify-content:flex-start">
-    <div class="term terminal-dark dense xdense fill">
-  <div class="terminal-bar"><span></span><span></span><span></span><b>요청문/00_AI습관점검.txt · 화면 제작</b><button class="copy" type="button" data-copy>복사</button></div>
-  <div class="terminal-copy"><p><span class="terminal-prompt">&gt;</span> 이 폴더의 문항.txt와 결과글.txt를 읽고 'AI 활용 습관 점검' 페이지를 만들어 줘. 만들기 전에 계획을 먼저 보여 줘.<br>파일은 content.js · index.html · style.css · app.js야. 문항.txt와 결과글.txt의 문장은 그대로 content.js의 window.CHECK_CONTENT에 옮겨 줘. index.html을 더블클릭해서 열어도 동작하고 인터넷 연결 없이 돌아가게 해 줘.<br>문항은 한 화면에 하나씩 보여 주고, 답은 거의 없다 0 · 가끔 1 · 자주 2 · 거의 항상 3 중에서 고르게 해 줘.<br>시작 축과 마무리 축의 점수 평균이 각각 1.75 이상이면 높은 쪽이야. 시작이 높으면 내 생각 먼저, 낮으면 AI 먼저. 마무리가 높으면 확인하고 씀, 낮으면 그대로 씀. 두 축을 합쳐 유형 네 개 중 하나를 골라 줘.<br>결과 화면에는 그 유형의 요약 · 이번 주 해 볼 한 가지 · 요청문 카드를 보여 줘. 요청문 카드는 맨 앞에 &gt; 를 붙인 터미널 모양으로 보여 주고, 복사 버튼은 &gt; 를 뺀 요청문만 복사하게 해 줘. 카드가 비어 있으면 숨겨 줘.<br>결과 글이 비어 있는 유형은 요약 자리에 「아직 쓰지 않은 결과입니다. 결과 글을 채우면 이 자리에 나옵니다.」라고 보여 줘.<br>「다른 유형 결과 보기」 버튼으로 네 유형의 결과 글을 모두 열어 볼 수 있게 해 줘. 「결과 내려받기」 버튼은 내 결과를 텍스트 파일로 저장하게 해 줘.<br>결과 화면 맨 아래에 이 문장을 넣어 줘: 내가 쓴 문항으로 만든 자기 점검입니다. 유형은 지금의 습관을 적은 것이고 바뀔 수 있습니다.<br>휴대폰 폭(375px)에서도 가로로 넘치지 않게 해 줘.<span class="terminal-cursor" aria-hidden="true"></span></p></div>
-</div>
-        </div>
-      </div>
-    </div>
+    <img src="자료/img/main2.png" alt="만들어진 앱의 문항 화면" width="340" style="display:block;width:340px;height:auto;border-radius:16px;box-shadow:var(--sh-pop);">
   </div>
 </section>
 
 <!-- M2-3 -->
-<!-- ============ M2-3 · 오른쪽 면 + 결과 화면 모형(누를 곳 동그라미) + 체크 ============ -->
 <section class="slide pr f-check" data-slide="M2-3">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 18 V8 H18 M30 8 H40 V18 M40 30 V40 H30 M18 40 H8 V30" fill="none" style="stroke:var(--blue)" stroke-width="5"/><rect x="19" y="19" width="10" height="10" style="fill:var(--mint)"/></svg><span class="s-brand">FRAME</span>
-    <span class="s-line"></span><div class="s-team">블록 2 · 메인 과제</div>
+    <span class="s-line"></span><div class="s-team">메인 과제</div>
   </header>
   <div class="bleed w40 t-apricot"></div>
-  <p class="kick">메인 과제 · ② 제작 · 2분</p>
+  <p class="kick">메인 과제 · ③ 제작 · 3분</p>
   <h2 class="s-title"><b class="kw">브라우저</b>로 열어 눌러 봅니다</h2>
-  <p class="lede"><span class="em-tag">index.html</span>을 더블클릭해 브라우저로 엽니다.</p>
-    <ul class="ck-list" data-w="todo" style="margin-top:38px;gap:20px">
-      <li><button type="button" aria-pressed="false"><span class="bx" aria-hidden="true">☐</span><span class="t">화면의 문항이 <span class="em-tag">문항.txt</span>와 같은 문장입니다.</span></button></li>
-      <li><button type="button" aria-pressed="false"><span class="bx" aria-hidden="true">☐</span><span class="t">전부 <b class="kw">「거의&nbsp;항상」</b>으로 누르면 「내 생각 먼저 · 확인하고 씀」, 전부 <b class="kw">「거의&nbsp;없다」</b>로 누르면 「AI 먼저 · 그대로 씀」이 나옵니다.</span></button></li>
-      <li><button type="button" aria-pressed="false"><span class="bx" aria-hidden="true">☐</span><span class="t">「다른 유형 결과 보기」로 네 유형을 모두 열 수 있습니다.</span></button></li>
-      <li><button type="button" aria-pressed="false"><span class="bx" aria-hidden="true">☐</span><span class="t">글을 쓰지 않은 유형에는 「아직 쓰지 않은 결과입니다」가 보입니다.</span></button></li>
-    </ul>
-  <div class="on-bleed">
-    <div class="win browser" style="width:400px;flex:none">
-      <div class="win-bar"><i></i><i></i><i></i><span class="win-url">index.html</span></div>
-      <div class="win-body">
-        <p class="keep" style="margin:10px 0 18px;color:var(--ink);font-weight:800"><span class="ring-host">내 생각 먼저 · 확인하고 씀</span></p>
-        <p class="keep" style="margin:0 0 18px">요약 · 이번 주 해 볼 한 가지 · 요청문 카드</p>
-        <p class="keep" style="margin:0 0 8px;color:var(--ink);font-weight:700"><span class="ring-host">다른 유형 결과 보기</span></p>
-        <p class="keep" style="margin:0 0 6px">결과 내려받기</p>
+  <ul class="ck-list" data-w="todo" style="margin-top:40px;gap:22px;max-width:650px"><li><button type="button" aria-pressed="false" style="font-size:24px"><span class="bx" aria-hidden="true">☐</span><span class="t">화면의 문항이 <span class="em-tag">prd.md</span>의 문장과 같습니다.</span></button></li><li><button type="button" aria-pressed="false" style="font-size:24px"><span class="bx" aria-hidden="true">☐</span><span class="t">전부 <b class="kw">「거의&nbsp;항상」</b>을 누르면 「내 생각 먼저 · 확인하고 씀」이 나옵니다.</span></button></li><li><button type="button" aria-pressed="false" style="font-size:24px"><span class="bx" aria-hidden="true">☐</span><span class="t">배경 · 메인 · 포인트 색이 <span class="em-tag">design.md</span>와 같습니다.</span></button></li><li><button type="button" aria-pressed="false" style="font-size:24px"><span class="bx" aria-hidden="true">☐</span><span class="t">창을 좁혀도 글자와 버튼이 가로로 넘치지 않습니다.</span></button></li></ul>
+  <div class="on-bleed"><img src="자료/img/main3.png" alt="결과 화면 예시" width="360" height="484" style="display:block;width:360px;height:484px;object-fit:cover;object-position:top;border-radius:16px;box-shadow:var(--sh-pop);"></div>
+</section>
+
+<!-- M2-4 -->
+<section class="slide pr f-steps" data-slide="M2-4">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 18 V8 H18 M30 8 H40 V18 M40 30 V40 H30 M18 40 H8 V30" fill="none" style="stroke:var(--blue)" stroke-width="5"/><rect x="19" y="19" width="10" height="10" style="fill:var(--mint)"/></svg><span class="s-brand">FRAME</span>
+    <span class="s-line"></span><div class="s-team">메인 과제</div>
+  </header>
+  <div class="pr-wrap">
+    <div class="pr-bar"><span class="pr-no">메인 과제</span><span class="pr-name">AI 활용 습관 점검</span><span class="pr-steps" aria-label="4단계 중 3단계"><span>① 기획</span><span>② 디자인</span><span class="cur" aria-current="step">③ 제작</span><span>④ 공개</span></span></div>
+    <div class="pr-top has-timer"><h2 class="s-title">고칠 곳은 <b class="kw">하나씩</b> 요청합니다</h2><button class="timer sm" type="button" data-min="7" aria-label="타이머 7분 — 누르면 시작, 다시 누르면 멈춤" style="margin-top:16px"><span class="tv">07:00</span><span class="tl">▶ 시작</span></button></div>
+    <div class="pr-main" style="margin-top:22px">
+      <ol class="flow" data-w="todo" style="flex-direction:row;gap:36px"><li style="flex:1 1 0;min-width:0"><button type="button" aria-pressed="false"><span class="n">1</span><span class="t">고칠 곳을 <b>한 군데</b>만 고릅니다.</span></button></li><li style="flex:1 1 0;min-width:0"><button type="button" aria-pressed="false"><span class="n">2</span><span class="t">「유지 · 변경 · 확인」 틀을 채워 보냅니다.</span></button></li><li style="flex:1 1 0;min-width:0"><button type="button" aria-pressed="false"><span class="n">3</span><span class="t">바뀐 화면에서 확인 문장대로 눌러 봅니다.</span></button></li></ol>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:30px;align-items:start">
+        <div class="term lg terminal-dark"><div class="terminal-bar"><span></span><span></span><span></span><b>요청 틀</b><button class="copy" type="button" data-copy>복사</button></div><div class="terminal-copy"><p><span class="terminal-prompt">&gt;</span> <b style="color:var(--mint)">유지:</b> <span class="ph">〈지금 잘 되는 것〉</span>은 그대로 둬.<br><b style="color:var(--mint)">변경:</b> <span class="ph">〈바꿀 곳 한 군데〉</span>만 <span class="ph">〈바꿀 내용〉</span>으로 바꿔 줘.<br><b style="color:var(--mint)">확인:</b> 바꾼 뒤 <span class="ph">〈무엇을 눌러 무엇이 보이면 되는지〉</span>를 알려 줘.<span class="terminal-cursor" aria-hidden="true"></span></p></div></div>
+        <div class="term lg terminal-dark"><div class="terminal-bar"><span></span><span></span><span></span><b>채운 예시</b></div><div class="terminal-copy"><p><span class="terminal-prompt">&gt;</span> <b style="color:var(--mint)">유지:</b> 문항과 결과 글 문장, 점수 계산은 그대로 둬.<br><b style="color:var(--mint)">변경:</b> 결과 화면의 유형 이름만 지금보다 크게 바꿔 줘.<br><b style="color:var(--mint)">확인:</b> 바꾼 뒤 어느 화면에서 보면 되는지 알려 줘.<span class="terminal-cursor" aria-hidden="true"></span></p></div></div>
       </div>
     </div>
   </div>
+</section>
+
+<!-- M2-5 -->
+<section class="slide pr f-fix" data-slide="M2-5">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 18 V8 H18 M30 8 H40 V18 M40 30 V40 H30 M18 40 H8 V30" fill="none" style="stroke:var(--blue)" stroke-width="5"/><rect x="19" y="19" width="10" height="10" style="fill:var(--mint)"/></svg><span class="s-brand">FRAME</span>
+    <span class="s-line"></span><div class="s-team">메인 과제</div>
+  </header>
+  <p class="kick">메인 과제 · 막히면</p>
+  <h2 class="s-title">막히면 <b class="kw">세 줄</b>로 알립니다</h2>
+  <div class="pcards" style="margin-top:26px">
+    <div class="pc" style="flex-direction:row;align-items:center;gap:18px;padding:18px 26px"><span class="ic" style="margin:0"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 21V4"/><path d="M6 5h11l-2.5 3.5L17 12H6"/></svg></span><b>무엇을</b></div>
+    <div class="pc" style="flex-direction:row;align-items:center;gap:18px;padding:18px 26px"><span class="ic" style="margin:0"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="M3 9h18M6.5 6.5h.01M9.5 6.5h.01"/></svg></span><b>어디서</b></div>
+    <div class="pc" style="flex-direction:row;align-items:center;gap:18px;padding:18px 26px"><span class="ic" style="margin:0"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12c3-5 6.5-7.5 9.5-7.5s6.5 2.5 9.5 7.5c-3 5-6.5 7.5-9.5 7.5S5.5 17 2.5 12z"/><circle cx="12" cy="12" r="3"/></svg></span><b>무엇이 보이나</b></div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:28px;align-items:start">
+    <div class="term  terminal-dark"><div class="terminal-bar"><span></span><span></span><span></span><b>요청 틀</b><button class="copy" type="button" data-copy>복사</button></div><div class="terminal-copy"><p><span class="terminal-prompt">&gt;</span> <b style="color:var(--mint)">무엇을:</b> <span class="ph">〈무엇을 하려고 했는지〉</span><br><b style="color:var(--mint)">어디서:</b> <span class="ph">〈어느 화면이나 파일에서〉</span><br><b style="color:var(--mint)">보이는 것:</b> <span class="ph">〈화면에 보이는 글자 그대로〉</span><br>원인을 먼저 말해 주고, 고칠 곳은 한 군데만 알려 줘.<span class="terminal-cursor" aria-hidden="true"></span></p></div></div>
+    <div class="term  terminal-dark"><div class="terminal-bar"><span></span><span></span><span></span><b>채운 예시</b></div><div class="terminal-copy"><p><span class="terminal-prompt">&gt;</span> <b style="color:var(--mint)">무엇을:</b> 결과 화면에서 복사 버튼을 눌렀어.<br><b style="color:var(--mint)">어디서:</b> index.html을 브라우저로 연 결과 화면이야.<br><b style="color:var(--mint)">보이는 것:</b> 버튼 글자가 바뀌지 않고 복사도 안 돼.<br>원인을 먼저 말해 주고, 고칠 곳은 한 군데만 알려 줘.<span class="terminal-cursor" aria-hidden="true"></span></p></div></div>
+  </div>
+  <p class="keep" style="margin-top:22px;color:var(--ink);font-weight:600">그래도 풀리지 않으면 같은 세 줄을 수업 채팅에 올립니다.</p>
+</section>
+
+<!-- M3-1 -->
+<section class="slide pr f-goal" data-slide="M3-1">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 18 V8 H18 M30 8 H40 V18 M40 30 V40 H30 M18 40 H8 V30" fill="none" style="stroke:var(--blue)" stroke-width="5"/><rect x="19" y="19" width="10" height="10" style="fill:var(--mint)"/></svg><span class="s-brand">FRAME</span>
+    <span class="s-line"></span><div class="s-team">메인 과제</div>
+  </header>
+  <div class="pr-wrap">
+    <div class="pr-bar"><span class="pr-no">메인 과제</span><span class="pr-name">AI 활용 습관 점검</span><span class="pr-steps" aria-label="4단계 중 4단계"><span>① 기획</span><span>② 디자인</span><span>③ 제작</span><span class="cur" aria-current="step">④ 공개</span></span></div>
+    <div class="pr-top"><h2 class="s-title">폴더를 올려 <b class="kw">공개 주소</b>를 만듭니다</h2></div>
+    <div class="pr-main" style="margin-top:30px;flex:none">
+      <div style="display:grid;grid-template-columns:430px 1fr 520px;align-items:start">
+        <div style="display:flex;flex-direction:column;gap:16px;align-items:flex-start">
+          <span class="pill ghost" style="font-size:20px">전</span>
+          <div class="wcard" style="width:100%;height:196px;box-sizing:border-box;display:grid;place-items:center">
+            <svg viewBox="0 0 24 24" style="width:124px;height:124px;stroke:var(--pr-deep);fill:var(--pr-soft);stroke-width:1.3;stroke-linecap:round;stroke-linejoin:round" aria-hidden="true"><path d="M3 6.5h6l2 2.5h10V19H3z"/></svg>
+          </div>
+          <p class="keep" style="font-size:24px;font-weight:700;color:var(--ink)">내 컴퓨터의 <span class="em-tag">메인과제_AI습관점검</span> 폴더</p>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:10px;padding-top:62px">
+          <span class="ic lg fill"><svg viewBox="0 0 24 24"><path d="M7 18a4 4 0 0 1-.6-7.9A5.5 5.5 0 0 1 17 8.5a4.5 4.5 0 0 1 .5 9.5"/><path d="M12 21v-9M8.5 15.5 12 12l3.5 3.5"/></svg></span>
+          <svg viewBox="0 0 120 24" style="width:120px;height:24px;stroke:var(--pr-deep);fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round" aria-hidden="true"><path d="M4 12h108M100 5l12 7-12 7"/></svg>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:16px;align-items:flex-start">
+          <span class="pill pr" style="font-size:20px">후</span>
+          <div class="win browser" style="width:100%">
+            <div class="win-bar"><i></i><i></i><i></i><span class="win-url">주소</span></div>
+            <div class="win-body" style="min-height:150px;display:grid;align-content:center;justify-items:center;gap:12px">
+              <b style="font-size:30px;font-weight:800;color:var(--ink)">점검 앱 첫 화면</b>
+              <i style="display:block;width:78%;height:14px;border-radius:5px;background:var(--pr-line)"></i>
+              <i style="display:block;width:54%;height:14px;border-radius:5px;background:var(--pr-line)"></i>
+            </div>
+          </div>
+          <p class="keep" style="font-size:24px;font-weight:700;color:var(--ink)">누구나 열 수 있는 <b class="kw">주소 한 줄</b></p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="band" style="--bb:78px;--bh:124px;gap:12px 14px">
+    <span class="lab" style="margin:0">순서</span>
+    <span class="pill" style="font-size:20px">올리기 전 확인</span><b>→</b><span class="pill" style="font-size:20px">로그인 확인</span><b>→</b><span class="pill" style="font-size:20px">폴더 끌어다 놓기</span><b>→</b><span class="pill" style="font-size:20px">다른 창에서 열기</span>
+    <span style="margin-left:auto;display:flex;align-items:baseline;gap:10px"><span class="lab" style="margin:0">공개</span><b style="font-size:34px;font-weight:800;color:var(--pr-deep)">약&nbsp;10분</b></span>
+  </div>
+</section>
+
+<!-- M3-2 -->
+<section class="slide pr f-list" data-slide="M3-2">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 18 V8 H18 M30 8 H40 V18 M40 30 V40 H30 M18 40 H8 V30" fill="none" style="stroke:var(--blue)" stroke-width="5"/><rect x="19" y="19" width="10" height="10" style="fill:var(--mint)"/></svg><span class="s-brand">FRAME</span>
+    <span class="s-line"></span><div class="s-team">메인 과제</div>
+  </header>
+  <div class="bleed w40 t-sky"></div>
+  <div class="pr-bar" style="max-width:640px"><span class="pr-no">메인 과제</span><span class="pr-steps" aria-label="4단계 중 4단계"><span>① 기획</span><span>② 디자인</span><span>③ 제작</span><span class="cur" aria-current="step">④ 공개</span></span></div>
+  <h2 class="s-title">올리기 전에 <b class="kw">확인할 곳</b></h2>
+  <ol class="flow" data-w="todo" style="margin-top:28px">
+    <li><button type="button" aria-pressed="false"><span class="n">1</span><span class="t"><b>키</b> · <span class="em-tag">index.html</span>에 비밀번호나 접속 키로 보이는 글자가 없는지</span></button></li>
+    <li><button type="button" aria-pressed="false"><span class="n">2</span><span class="t"><b>실명</b> · 화면 문구와 <span class="em-tag">prd.md</span>에 내 실명 · 연락처 · 회사 이름이 없는지</span></button></li>
+    <li><button type="button" aria-pressed="false"><span class="n">3</span><span class="t"><b>파일 이름</b> · <span class="em-tag">index.html</span>이 폴더 맨 위에 있는지</span></button></li>
+  </ol>
+  <div class="rule do" style="margin-top:30px"><span class="lab">공개 범위</span><p><b>폴더 안의 모든 파일이 올라가고, 주소를 아는 사람은 누구나 열 수 있습니다.</b></p></div>
+  <div class="on-bleed">
+    <div class="win file" style="width:100%">
+      <div class="win-bar"><i></i><i></i><i></i><b>폴더</b></div>
+      <div class="win-body"><pre class="code" style="line-height:2.4"><span class="dir">메인과제_AI습관점검/</span>
+├&nbsp; <span class="ring-host" style="line-height:1.35">index.html</span><span class="pill pr" style="margin-left:22px;padding:1px 11px;font-size:17px">1 · 3</span>
+├&nbsp; <span class="ring-host" style="line-height:1.35">prd.md</span><span class="pill pr" style="margin-left:22px;padding:1px 11px;font-size:17px">2</span>
+└&nbsp; design.md</pre></div>
+    </div>
+  </div>
+</section>
+
+<!-- M3-3 -->
+<section class="slide pr f-check" data-slide="M3-3">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 18 V8 H18 M30 8 H40 V18 M40 30 V40 H30 M18 40 H8 V30" fill="none" style="stroke:var(--blue)" stroke-width="5"/><rect x="19" y="19" width="10" height="10" style="fill:var(--mint)"/></svg><span class="s-brand">FRAME</span>
+    <span class="s-line"></span><div class="s-team">메인 과제</div>
+  </header>
+  <div class="bleed w50"></div>
+  <div class="pr-bar" style="max-width:520px"><span class="pr-no">메인 과제</span><span class="pr-steps" aria-label="4단계 중 4단계"><span>① 기획</span><span>② 디자인</span><span>③ 제작</span><span class="cur" aria-current="step">④ 공개</span></span></div>
+  <h2 class="s-title"><b class="kw">Netlify</b> 로그인을 <br>확인합니다</h2>
+  <ol class="flow" data-w="todo" style="margin-top:30px">
+    <li><button type="button" aria-pressed="false"><span class="n">1</span><span class="t">브라우저에서 <b>Netlify</b>에 로그인합니다.</span></button></li>
+    <li><button type="button" aria-pressed="false"><span class="n">2</span><span class="t">로그인된 첫 화면에서 폴더를 끌어다 놓는 영역을 찾습니다.</span></button></li>
+    <li><button type="button" aria-pressed="false"><span class="n">3</span><span class="t">보이지 않으면 채팅에 막힘 한 줄을 남깁니다.</span></button></li>
+  </ol>
+  <button class="timer" type="button" data-min="2" aria-label="타이머 2분 — 누르면 시작, 다시 누르면 멈춤" style="margin-top:56px"><span class="tv">02:00</span><span class="tl">▶ 시작</span></button>
+  <div class="on-bleed">
+    <div class="win browser" style="width:100%">
+      <div class="win-bar"><i></i><i></i><i></i><span class="win-url"><span class="pill pr" style="padding:1px 11px;margin-right:10px">1</span>로그인된 첫 화면</span></div>
+      <div class="win-body" style="padding-top:16px">
+        <div class="drop" style="margin:0;padding:72px 16px 66px">
+          <svg viewBox="0 0 24 24" style="display:block;margin:0 auto 18px;width:88px;height:88px;stroke:var(--pr-deep);fill:var(--pr-soft);stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round" aria-hidden="true"><path d="M3 6.5h6l2 2.5h10V19H3z"/></svg>
+          <span class="pill pr" style="padding:1px 11px;margin-right:10px">2</span><span class="ring-host" style="line-height:1.4">폴더를 끌어다 놓는 영역</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- M3-4 -->
+<section class="slide pr f-screen" data-slide="M3-4">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 18 V8 H18 M30 8 H40 V18 M40 30 V40 H30 M18 40 H8 V30" fill="none" style="stroke:var(--blue)" stroke-width="5"/><rect x="19" y="19" width="10" height="10" style="fill:var(--mint)"/></svg><span class="s-brand">FRAME</span>
+    <span class="s-line"></span><div class="s-team">메인 과제</div>
+  </header>
+  <div class="pr-wrap">
+    <div class="pr-bar"><span class="pr-no">메인 과제</span><span class="pr-name">AI 활용 습관 점검</span><span class="pr-steps" aria-label="4단계 중 4단계"><span>① 기획</span><span>② 디자인</span><span>③ 제작</span><span class="cur" aria-current="step">④ 공개</span></span></div>
+    <div class="pr-top has-timer"><h2 class="s-title">점검 앱 폴더를 끌어다 놓아 <br><b class="kw">주소</b>를 만듭니다</h2><button class="timer sm" style="margin-top:16px" type="button" data-min="6" aria-label="타이머 6분 — 누르면 시작, 다시 누르면 멈춤"><span class="tv">06:00</span><span class="tl">▶ 시작</span></button></div>
+    <div class="pr-main" style="flex:none;margin-top:0">
+      <ol class="flow" data-w="todo" style="position:absolute;left:0;right:0;top:268px;display:grid;grid-template-columns:1fr 1fr;gap:4px 44px">
+        <li><button type="button" aria-pressed="false"><span class="n">1</span><span class="t"><span class="em-tag">파일 탐색기</span>(macOS는 Finder)에서 <span class="em-tag">메인과제_AI습관점검</span> 폴더를 찾습니다.</span></button></li>
+        <li><button type="button" aria-pressed="false"><span class="n">2</span><span class="t">폴더를 <b>Netlify</b>의 끌어다 놓는 영역으로 끌어다 놓습니다.</span></button></li>
+        <li><button type="button" aria-pressed="false"><span class="n">3</span><span class="t">주소가 만들어질 때까지 기다립니다.</span></button></li>
+        <li><button type="button" aria-pressed="false"><span class="n">4</span><span class="t">사이트 이름을 알아보기 쉽게 바꿉니다(선택).</span></button></li>
+      </ol>
+    </div>
+  </div>
+  <div class="band t-sky" style="--bt:236px;--bb:auto;--bh:216px;flex-wrap:nowrap;gap:0">
+    <div class="win file" style="flex:none;width:276px">
+      <div class="win-bar"><i></i><i></i><i></i><b>파일 탐색기</b></div>
+      <div class="win-body" style="text-align:center;padding-top:6px">
+        <svg viewBox="0 0 24 24" style="display:block;margin:0 auto 6px;width:62px;height:62px;stroke:var(--pr-deep);fill:var(--pr-soft);stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round" aria-hidden="true"><path d="M3 6.5h6l2 2.5h10V19H3z"/></svg>
+        <span class="pill pr" style="padding:1px 11px;margin-right:8px;font-size:17px">1</span><b style="font-size:20px;font-weight:800;color:var(--ink)">메인과제_AI습관점검</b>
+      </div>
+    </div>
+    <div style="flex:none;width:120px;display:flex;flex-direction:column;align-items:center;gap:6px">
+      <b style="font-size:20px;font-weight:800;color:var(--pr-deep)">끌어다 놓기</b>
+      <svg viewBox="0 0 96 24" style="width:96px;height:24px;stroke:var(--pr-deep);fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round" aria-hidden="true"><path d="M4 12h84M76 5l12 7-12 7"/></svg>
+    </div>
+    <div class="win browser" style="flex:1 1 0;min-width:0">
+      <div class="win-bar"><i></i><i></i><i></i><span class="win-url">Netlify</span></div>
+      <div class="win-body" style="display:grid;grid-template-columns:1.25fr 28px 1fr 28px 1fr;align-items:center;padding:6px 20px 34px">
+        <div class="drop" style="margin:0;padding:16px 10px;font-size:20px;line-height:1.35"><span class="pill pr" style="padding:1px 11px;margin-right:6px;font-size:17px">2</span>폴더를 끌어다<br>놓는 영역</div>
+        <svg viewBox="0 0 24 24" style="width:24px;height:24px;stroke:var(--pr-deep);fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;font-size:20px;font-weight:700;line-height:1.35"><span><span class="pill pr" style="padding:1px 11px;margin-right:6px;font-size:17px">3</span>만들어진 주소</span><i style="display:block;width:100%;height:12px;border-radius:6px;background:var(--blue-soft)"></i></div>
+        <svg viewBox="0 0 24 24" style="width:24px;height:24px;stroke:var(--pr-deep);fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;font-size:20px;font-weight:700;line-height:1.35"><span><span class="pill pr" style="padding:1px 11px;margin-right:6px;font-size:17px">4</span>이름 바꾸기</span><span class="em-tag">사이트 이름</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- M3-5 -->
+<section class="slide pr f-check" data-slide="M3-5">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 18 V8 H18 M30 8 H40 V18 M40 30 V40 H30 M18 40 H8 V30" fill="none" style="stroke:var(--blue)" stroke-width="5"/><rect x="19" y="19" width="10" height="10" style="fill:var(--mint)"/></svg><span class="s-brand">FRAME</span>
+    <span class="s-line"></span><div class="s-team">메인 과제</div>
+  </header>
+  <div class="pr-wrap">
+    <div class="pr-bar"><span class="pr-no">메인 과제</span><span class="pr-name">AI 활용 습관 점검</span><span class="pr-steps" aria-label="4단계 중 4단계"><span>① 기획</span><span>② 디자인</span><span>③ 제작</span><span class="cur" aria-current="step">④ 공개</span></span></div>
+    <div class="pr-top has-timer"><h2 class="s-title">다른 창에서 <b class="kw">주소</b>를 열어 봅니다</h2><button class="timer sm" style="margin-top:16px" type="button" data-min="1" aria-label="타이머 1분 — 누르면 시작, 다시 누르면 멈춤"><span class="tv">01:00</span><span class="tl">▶ 시작</span></button></div>
+    <div class="pr-main" style="flex:none;margin-top:22px">
+      <ol class="flow" data-w="todo" style="flex-direction:row;gap:36px">
+        <li style="flex:1 1 0"><button type="button" aria-pressed="false"><span class="n">1</span><span class="t"><b>주소</b>를 복사합니다.</span></button></li>
+        <li style="flex:1 1 0"><button type="button" aria-pressed="false"><span class="n">2</span><span class="t">브라우저의 다른 창을 엽니다.</span></button></li>
+        <li style="flex:1 1 0"><button type="button" aria-pressed="false"><span class="n">3</span><span class="t">주소창에 붙여 넣습니다.</span></button></li>
+      </ol>
+    </div>
+  </div>
+  <div class="band t-mist" style="--bt:292px;--bb:auto;--bh:340px;flex-wrap:nowrap;gap:52px">
+    <div class="win browser" style="flex:0 0 600px">
+      <div class="win-bar"><i></i><i></i><i></i><span class="win-url">붙여 넣은 주소</span></div>
+      <div class="win-body" style="min-height:220px;display:grid;align-content:center;justify-items:center;gap:14px">
+        <b style="font-size:32px;font-weight:800;color:var(--ink)">점검 앱 첫 화면</b>
+        <i style="display:block;width:76%;height:14px;border-radius:6px;background:var(--pr-line)"></i>
+        <i style="display:block;width:52%;height:14px;border-radius:6px;background:var(--pr-line)"></i>
+      </div>
+    </div>
+    <div style="flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:30px">
+      <div style="display:flex;gap:18px;align-items:center"><svg width="54" height="54" viewBox="0 0 48 48" aria-hidden="true" style="flex:none"><circle cx="24" cy="24" r="22" style="fill:var(--mint-deep)"/><path d="M14 25l7 7 14-15" fill="none" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--white)"/></svg><p class="keep" style="color:var(--ink);font-weight:700;font-size:24px">점검 앱 첫 화면이 열리면 <b class="kw">공개가 끝났습니다.</b></p></div>
+      <div style="display:flex;gap:18px;align-items:center"><svg width="54" height="54" viewBox="0 0 48 48" aria-hidden="true" style="flex:none"><circle cx="24" cy="24" r="22" style="fill:var(--red)"/><path d="M17 17l14 14M31 17L17 31" fill="none" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--white)"/></svg><p class="keep" style="color:var(--ink);font-weight:700;font-size:24px">열리지 않으면 채팅에 막힘 한 줄을 남깁니다.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- D-01 -->
+<section class="slide cx-slide viz-screen l-dc-hero" data-slide="D-01">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 18 V8 H18 M30 8 H40 V18 M40 30 V40 H30 M18 40 H8 V30" fill="none" style="stroke:var(--blue)" stroke-width="5"/><rect x="19" y="19" width="10" height="10" style="fill:var(--mint)"/></svg><span class="s-brand">FRAME</span>
+    <span class="s-line"></span><div class="s-team">블록 2<br>공개 주소</div>
+  </header>
+  <p class="kick">강사 시연 · 공개 주소</p>
+  <h2 class="s-title"><b class="kw">ChatGPT Sites</b>로 같은 앱 만들기</h2>
+  <div class="band t-mist" style="--bb:auto;--bt:412px;--bh:232px"></div>
+  <div style="position:relative;z-index:1">
+    <div style="display:flex;align-items:center;gap:18px;margin-top:14px;flex-wrap:nowrap">
+      <p class="lede" style="margin:0;max-width:none"><b class="kw">강사 시연</b> · 3분 · 참가자는 보기만 합니다</p>
+      <span class="pill m" style="font-size:20px">공개 베타 기능입니다.</span>
+    </div>
+    <div style="display:grid;grid-template-columns:346px 49px 346px 49px 346px;grid-template-rows:190px 200px;column-gap:0;row-gap:10px;margin-top:24px;align-items:start">
+      <div><span class="ic fill" style="width:48px;height:48px;font-size:26px;font-weight:800;color:var(--on-mint)">1</span><p class="keep" style="margin-top:10px;font-weight:600;color:var(--ink)">같은 점검 앱을 ChatGPT에서 <span class="em-tag">website</span>(또는 <span class="em-tag">@Sites</span>)로 만들어 달라고 요청합니다.</p></div>
+      <span></span>
+      <div><span class="ic fill" style="width:48px;height:48px;font-size:26px;font-weight:800;color:var(--on-mint)">2</span><p class="keep" style="margin-top:10px;font-weight:600;color:var(--ink)">만들어진 화면을 검토용으로 저장하고 눌러 봅니다.</p></div>
+      <span></span>
+      <div><span class="ic fill" style="width:48px;height:48px;font-size:26px;font-weight:800;color:var(--on-mint)">3</span><p class="keep" style="margin-top:10px;font-weight:600;color:var(--ink)">배포하면 <span class="em-tag">이름.openai.chatgpt.site</span> 형태의 주소가 생기고, 공개 범위를 고릅니다.</p></div>
+
+      <svg width="346" height="200" viewBox="0 0 346 200" role="img" aria-label="요청을 보내는 화면의 모형. 대화 창에 요청 글이 있고 아래에 @Sites를 넣은 입력줄이 있습니다.">
+        <rect width="346" height="200" rx="18" style="fill:var(--t-card)"/>
+        <circle cx="24" cy="24" r="5" opacity=".5" style="fill:var(--gray-400)"/><circle cx="40" cy="24" r="5" opacity=".5" style="fill:var(--gray-400)"/><circle cx="56" cy="24" r="5" opacity=".5" style="fill:var(--gray-400)"/>
+        <text class="v-ax" x="76" y="30">요청을 보내는 화면</text>
+        <rect x="124" y="52" width="206" height="54" rx="14" style="fill:var(--blue-soft)"/>
+        <rect x="140" y="68" width="150" height="8" rx="4" style="fill:var(--line)"/><rect x="140" y="86" width="104" height="8" rx="4" style="fill:var(--line)"/>
+        <rect x="16" y="134" width="314" height="46" rx="23" style="fill:var(--blue-soft)"/>
+        <text class="v-txt" x="38" y="164">@Sites</text>
+        <circle cx="304" cy="157" r="15" style="fill:var(--blue)"/><path d="M297 157 H311 M305 150 L312 157 L305 164" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--white)"/>
+      </svg>
+      <svg width="49" height="200" viewBox="0 0 49 200" aria-hidden="true"><path class="v-edge hi" d="M6 100 H30"/><path style="fill:var(--blue)" d="M42 100 L29 91 V109 Z"/></svg>
+      <svg width="346" height="200" viewBox="0 0 346 200" role="img" aria-label="검토용 화면의 모형. 만들어진 페이지와 저장 단추가 있습니다.">
+        <rect width="346" height="200" rx="18" style="fill:var(--t-card)"/>
+        <circle cx="24" cy="24" r="5" opacity=".5" style="fill:var(--gray-400)"/><circle cx="40" cy="24" r="5" opacity=".5" style="fill:var(--gray-400)"/><circle cx="56" cy="24" r="5" opacity=".5" style="fill:var(--gray-400)"/>
+        <text class="v-ax" x="76" y="30">검토용 화면</text>
+        <rect x="20" y="58" width="150" height="12" rx="6" style="fill:var(--line)"/>
+        <rect x="244" y="46" width="84" height="32" rx="16" style="fill:var(--mint)"/><text class="v-ax" x="286" y="68" text-anchor="middle" style="fill:var(--on-mint)">저장</text>
+        <rect x="20" y="94" width="96" height="86" rx="10" style="fill:var(--blue-soft)"/><rect x="124" y="94" width="96" height="86" rx="10" style="fill:var(--blue-soft)"/><rect x="228" y="94" width="100" height="86" rx="10" style="fill:var(--blue-soft)"/>
+        <rect x="32" y="108" width="60" height="8" rx="4" style="fill:var(--line)"/><rect x="136" y="108" width="60" height="8" rx="4" style="fill:var(--line)"/><rect x="240" y="108" width="60" height="8" rx="4" style="fill:var(--line)"/>
+      </svg>
+      <svg width="49" height="200" viewBox="0 0 49 200" aria-hidden="true"><path class="v-edge hi" d="M6 100 H30"/><path style="fill:var(--blue)" d="M42 100 L29 91 V109 Z"/></svg>
+      <svg width="346" height="200" viewBox="0 0 346 200" role="img" aria-label="배포 화면의 모형. 만들어진 주소와 공개 범위를 고르는 선택 칸이 있습니다.">
+        <rect width="346" height="200" rx="18" style="fill:var(--t-card)"/>
+        <circle cx="24" cy="24" r="5" opacity=".5" style="fill:var(--gray-400)"/><circle cx="40" cy="24" r="5" opacity=".5" style="fill:var(--gray-400)"/><circle cx="56" cy="24" r="5" opacity=".5" style="fill:var(--gray-400)"/>
+        <text class="v-ax" x="76" y="30">배포 화면</text>
+        <rect x="16" y="46" width="314" height="40" rx="20" style="fill:var(--blue-soft)"/>
+        <text class="v-txt" x="34" y="73">이름.openai.chatgpt.site</text>
+        <text class="v-ax" x="20" y="118">공개 범위</text>
+        <rect x="20" y="132" width="96" height="40" rx="20" style="fill:var(--mint)"/><rect x="124" y="132" width="96" height="40" rx="20" style="fill:var(--blue-soft)"/><rect x="228" y="132" width="100" height="40" rx="20" style="fill:var(--blue-soft)"/>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- D-02 -->
+<section class="slide cx-slide viz-table l-td-table" data-slide="D-02">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 18 V8 H18 M30 8 H40 V18 M40 30 V40 H30 M18 40 H8 V30" fill="none" style="stroke:var(--blue)" stroke-width="5"/><rect x="19" y="19" width="10" height="10" style="fill:var(--mint)"/></svg><span class="s-brand">FRAME</span>
+    <span class="s-line"></span><div class="s-team">블록 2<br>공개 주소</div>
+  </header>
+  <p class="kick">강사 시연 · 공개 주소</p>
+  <h2 class="s-title"><b class="kw">Netlify</b>와 <b class="kw">ChatGPT Sites</b> 비교</h2>
+  <div class="band t-sky" style="--bb:auto;--bt:176px;--bh:140px"></div>
+  <table class="ftbl" style="position:relative;z-index:1;margin-top:26px;table-layout:fixed;border-spacing:0 8px;border-collapse:separate">
+    <colgroup><col style="width:206px"><col><col></colgroup>
+    <thead>
+      <tr>
+        <th scope="col"><span class="sr-only">비교 항목</span></th>
+        <th scope="col"><div style="display:flex;align-items:center;gap:20px"><svg width="200" height="120" viewBox="0 0 200 120" role="img" aria-label="Netlify로 만든 결과 화면의 축소 모형"><rect width="200" height="120" rx="12" style="fill:var(--t-card)"/><circle cx="14" cy="14" r="3.5" opacity=".5" style="fill:var(--gray-400)"/><circle cx="26" cy="14" r="3.5" opacity=".5" style="fill:var(--gray-400)"/><circle cx="38" cy="14" r="3.5" opacity=".5" style="fill:var(--gray-400)"/><rect x="14" y="28" width="172" height="22" rx="11" style="fill:var(--blue-soft)"/><rect x="14" y="62" width="84" height="8" rx="4" style="fill:var(--line)"/><rect x="14" y="80" width="52" height="28" rx="6" style="fill:var(--blue-soft)"/><rect x="74" y="80" width="52" height="28" rx="6" style="fill:var(--blue-soft)"/><rect x="134" y="80" width="52" height="28" rx="6" style="fill:var(--blue-soft)"/></svg><b style="font-size:28px;font-weight:800;color:var(--ink)">Netlify</b></div></th>
+        <th scope="col"><div style="display:flex;align-items:center;gap:20px"><svg width="200" height="120" viewBox="0 0 200 120" role="img" aria-label="ChatGPT Sites로 만든 결과 화면의 축소 모형"><rect width="200" height="120" rx="12" style="fill:var(--t-card)"/><circle cx="14" cy="14" r="3.5" opacity=".5" style="fill:var(--gray-400)"/><circle cx="26" cy="14" r="3.5" opacity=".5" style="fill:var(--gray-400)"/><circle cx="38" cy="14" r="3.5" opacity=".5" style="fill:var(--gray-400)"/><rect x="14" y="28" width="172" height="22" rx="11" style="fill:var(--blue-soft)"/><rect x="14" y="62" width="84" height="8" rx="4" style="fill:var(--line)"/><rect x="14" y="80" width="52" height="28" rx="6" style="fill:var(--blue-soft)"/><rect x="74" y="80" width="52" height="28" rx="6" style="fill:var(--blue-soft)"/><rect x="134" y="80" width="52" height="28" rx="6" style="fill:var(--blue-soft)"/></svg><b style="font-size:28px;font-weight:800;color:var(--ink)">ChatGPT Sites</b></div></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><th scope="row" style="font-size:24px;font-weight:800;color:var(--ink);padding-top:16px;padding-bottom:16px"><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--blue);vertical-align:-7px;margin-right:8px"><path d="M3 7.5A1.5 1.5 0 0 1 4.5 6H9l2 2.5h8.5A1.5 1.5 0 0 1 21 10v8.5a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 18.5z"/></svg>파일 위치</th><td style="font-size:22px;font-weight:600;padding-top:16px;padding-bottom:16px">내 폴더의 파일이 그대로 올라갑니다</td><td style="font-size:22px;font-weight:600;padding-top:16px;padding-bottom:16px">대화 결과로 만들어지고 <br>ChatGPT 안에서 관리됩니다</td></tr>
+      <tr><th scope="row" style="font-size:24px;font-weight:800;color:var(--ink);padding-top:16px;padding-bottom:16px"><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--blue);vertical-align:-7px;margin-right:8px"><path d="M4.5 19.5l1-4L16.5 4.5l3 3L8.5 18.5z M14.5 6.5l3 3"/></svg>고치는 방법</th><td style="font-size:22px;font-weight:600;padding-top:16px;padding-bottom:16px">파일을 고쳐 폴더를 다시 올립니다</td><td style="font-size:22px;font-weight:600;padding-top:16px;padding-bottom:16px">대화에서 고쳐 달라고 요청한 뒤 다시 배포합니다</td></tr>
+      <tr><th scope="row" style="font-size:24px;font-weight:800;color:var(--ink);padding-top:16px;padding-bottom:16px"><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--blue);vertical-align:-7px;margin-right:8px"><path d="M12 4.5a3.3 3.3 0 1 0 0 6.6a3.3 3.3 0 0 0 0-6.6z M5 20c0-3.8 3-6 7-6s7 2.2 7 6"/></svg>공유 범위</th><td style="font-size:22px;font-weight:600;padding-top:16px;padding-bottom:16px">주소를 아는 사람은 누구나</td><td style="font-size:22px;font-weight:600;padding-top:16px;padding-bottom:16px">소유자 · 지정 사용자 · 초대한 외부 뷰어 · 워크스페이스 · 공개(관리자 허용 시)</td></tr>
+      <tr><th scope="row" style="font-size:24px;font-weight:800;color:var(--ink);padding-top:16px;padding-bottom:16px"><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--blue);vertical-align:-7px;margin-right:8px"><path d="M12 3.8l2.5 5.3 5.7.7-4.2 4 1.1 5.7-5.1-2.8-5.1 2.8 1.1-5.7-4.2-4 5.7-.7z"/></svg>요금제</th><td style="font-size:22px;font-weight:600;padding-top:16px;padding-bottom:16px">계정 필요, 무료 플랜 있음(사용 한도 있음)</td><td style="font-size:22px;font-weight:600;padding-top:16px;padding-bottom:16px">공개 베타 기능</td></tr>
+    </tbody>
+  </table>
 </section>
 
 <!-- BR-2 -->
@@ -416,7 +695,7 @@
   <h2 class="s-title" style="text-align:center;padding-top:64px">쉬는 시간 <b class="kw">10분</b></h2>
   <div style="display:flex;justify-content:center;margin-top:60px"><button class="timer big" type="button" data-min="10" aria-label="타이머 10분 — 누르면 시작, 다시 누르면 멈춤"><span class="tv">10:00</span><span class="tl">▶ 시작</span></button></div>
   <div class="band t-sky" style="--bh:120px;--bb:74px;justify-content:space-between;flex-wrap:nowrap">
-    <span style="display:flex;align-items:center;gap:20px"><span class="ic fill" style="width:64px;height:64px"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="M3 9h18M6.5 6.5h.01M9.5 6.5h.01"/></svg></span><span style="font-size:32px;font-weight:800;color:var(--ink)"><span style="color:var(--gray-700);font-weight:600">돌아오면 —</span> 화면을 고칩니다</span></span>
+    <span style="display:flex;align-items:center;gap:20px"><span class="ic fill" style="width:64px;height:64px"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="M3 9h18M6.5 6.5h.01M9.5 6.5h.01"/></svg></span><span style="font-size:32px;font-weight:800;color:var(--ink)"><span style="color:var(--gray-700);font-weight:600">돌아오면</span> 에이전트 실습을 합니다</span></span>
     <span style="display:flex;align-items:center;gap:14px"><span class="pill" style="font-size:20px;padding:8px 20px">블록&nbsp;2</span><b>→</b><span class="pill m" style="font-size:20px;padding:8px 20px">블록&nbsp;3</span></span>
   </div>
 </section>
