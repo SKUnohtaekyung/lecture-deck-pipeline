@@ -1060,6 +1060,13 @@
 
     if (!deck.getCount()) return null;
 
+    /* ── 덱 엔진의 이동 훅(window.__deckShow)을 goTo로 바꿔 건다 ──
+       슬라이드 안 버튼(data-go 등)이 이 훅으로 점프하는 덱이 있다. 그대로 두면 옛 엔진이
+       화면만 넘기고 state.index는 출발 장에 남아, 다음 → 가 출발 장의 다음 장으로 간다. */
+    if (typeof global.__deckShow === 'function') {
+      global.__deckShow = function (i) { return deck.goTo(i); };
+    }
+
     /* ── 크롬 재바인딩: 옛 리스너를 떼되 마크업은 한 글자도 바꾸지 않는다 ── */
     function rebind(id) {
       var el = doc.getElementById(id);
