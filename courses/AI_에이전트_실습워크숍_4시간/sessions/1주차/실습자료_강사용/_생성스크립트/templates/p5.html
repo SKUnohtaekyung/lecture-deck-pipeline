@@ -1,549 +1,1433 @@
 <!doctype html>
+<!--
+영상도구.html — 세로 영상(1080×1920 · 30초 안팎)을 만드는 시작 파일
+
+■ 쓰는 순서
+ 1. 이 파일을 복사해 소개영상.html로 저장합니다(자기 주제로 만들면 내영상.html). 영상도구.html 자체는 고치지 않습니다.
+ 2. 복사한 파일에서 「여기만 고칩니다 (시작)」과 「여기만 고칩니다 (끝)」 표시 사이(장면 데이터 블록)만 고칩니다.
+    색 조합 · 분위기 · 전환과 장면 목록이 그 안에 있습니다. 전부 도구에 있는 이름으로 고릅니다.
+ 3. 재생기 · 움직임 · 점검 코드는 고치지 않습니다. 도구에 없는 움직임이 필요하면 만들기 전에 사용자에게 묻습니다.
+ 4. 브라우저로 열면 오른쪽 점검 패널이 결과를 보여 줍니다. 「고칠 곳」이 0이 될 때까지 장면 데이터를 고칩니다.
+    「점검 결과 복사」 버튼으로 결과를 복사해 대화에 붙여 넣을 수 있습니다.
+ 5. 오른쪽 「그림 · 장식 보기」 탭에서 그림 · 장식 · 색 조합 · 분위기 · 전환의 이름과 모양을 봅니다. 눌러 보면 이름이 복사되고,
+    색 조합 · 분위기 · 전환은 그 자리에서 미리 적용됩니다. 미리보기는 파일을 바꾸지 않습니다.
+ 6. 주소 끝에 ?t=12 를 붙여 열면 12초 지점에서 멈춘 채 열립니다.
+
+■ 맨 위에서 고르는 것 (모두 이름으로 고릅니다. 생략하면 괄호 안 값)
+| 키     | 값                                            | 뜻                                                                       |
+| 제목   | 글                                            | 영상 제목                                                                |
+| 색조합 | 크림(기본) · 하늘 · 숲 · 장미 · 먹 · 밤          | 배경 · 글자 · 포인트 3색 한 벌. 색 코드를 직접 정하려면 { 배경:'#FBF5EA', 글자:'#14202B', 포인트:'#FF8A5C' } |
+| 분위기 | 차분하게 · 경쾌하게(기본) · 또렷하게              | 속도 3단계 · 움직임의 가감속 · 튀는 정도 · 전환 시간 · 그림줄 간격을 한 번에 바꿉니다 |
+| 전환   | 밀어내기(기본) · 겹쳐넘기기 · 닦아내기 · 확대하기  | 장면 사이 전환. 영상 전체에 하나만 고르고 장면마다 섞지 않습니다                |
+| 장면   | 목록                                          | 장면 4~7개                                                               |
+
+색 조합 6벌: 글자색과 배경색, 글자색과 포인트색의 명도 대비가 모두 4.5:1 이상입니다(직접 적은 색은 점검 ⑰이 같은 기준으로 잽니다).
+| 이름 | 배경 | 글자 | 포인트 | 글자/배경 | 글자/포인트 |
+| 크림 | #FBF5EA | #14202B | #FF8A5C | 15.2 | 7.1 |
+| 하늘 | #EAF4FB | #0D2438 | #5BB8F5 | 14.2 | 7.3 |
+| 숲   | #EFF5E9 | #14291C | #8CCB4A | 13.9 | 7.9 |
+| 장미 | #FFF0F0 | #3B1420 | #FF7C8A | 14.5 | 6.5 |
+| 먹   | #F2F2EF | #121212 | #1FC3B1 | 16.7 | 8.5 |
+| 밤   | #111B26 | #F5EFE3 | #B83A22 | 15.2 | 5.0 |
+
+분위기 3개가 바꾸는 값
+| 이름     | 속도 빠르게 · 보통 · 느리게(초) | 가감속 | 튐   | 전환 시간 | 그림줄 간격 |
+| 차분하게 | 0.52 · 0.91 · 1.3              | 부드럽게 멈춤 | 없음 | 0.8초  | 0.6 |
+| 경쾌하게 | 0.4 · 0.7 · 1.0                | 보통          | 보통 | 0.5초  | 0.5 |
+| 또렷하게 | 0.28 · 0.49 · 0.7              | 빠르게 멈춤    | 작음 | 0.35초 | 0.35 |
+
+전환 4개 (이름 고정)
+밀어내기 새 장면이 옆에서 들어와 이전 장면을 밀어냄 · 겹쳐넘기기 새 장면이 이전 장면 위로 덮이며 들어옴 ·
+닦아내기 새 장면이 왼쪽에서 오른쪽으로 닦이듯 드러남 · 확대하기 이전 장면이 흐려지며 새 장면이 조금 커지며 나타남
+
+■ 장면 하나에 적는 것
+| 키   | 값                                    | 뜻                                              |
+| 구간 | 훅 · 맥락 · 본문 · 결말 · 행동 안내    | 이 장면의 역할. 이 순서로만 놓입니다            |
+| 시작 | 숫자(초)                              | 영상 처음부터 센 시작 시각. 첫 장면은 0         |
+| 끝   | 숫자(초)                              | 끝 시각. 다음 장면의 시작과 같은 값             |
+| 자막 | 글(40자 이내)                         | 화면 아래에 나오는 한 줄                        |
+| 근거 | 글                                    | 이 장면의 숫자 · 문구가 나온 파일과 대목        |
+| 바탕 | 기본 · 반전 (생략하면 기본)            | 반전은 배경색과 글자색을 맞바꿉니다             |
+| 장식 | 장식 이름 하나 또는 둘 (생략 가능)     | 배경 꾸밈. 장면 시작 때 한 번 천천히 나옵니다   |
+| 요소 | 목록                                  | 화면에 나올 것. 아래 표                         |
+
+■ 요소 하나에 적는 것
+| 키     | 값                          | 뜻                                                                          |
+| 종류   | 아래 종류 표                 | 어떤 모양으로 보일지                                                        |
+| 글     | 글                          | 화면에 나오는 글. 구분선은 빈 글('')                                         |
+| 곁글   | 글 (생략 가능)               | 목록줄 오른쪽 글 · 도넛 안 작은 글 · 카드 · 말풍선 · 큰도형의 보조 글 · 가격표의 가격 |
+| 값     | 숫자                        | 막대 · 도넛은 0~100(비율), 별점은 0~5                                        |
+| 이름   | 그림 이름                   | 그림, 카드(카드는 생략 가능). 이름은 아래 그림 목록                           |
+| 이름들 | 그림 이름 목록 2~5개         | 그림줄. 예: ['도마','집게','계량컵']                                         |
+| 글들   | 글 목록 (생략 가능)          | 그림줄. 그림 아래 이름표. 이름들과 같은 개수                                  |
+| 원배지 | true · false (생략하면 false) | 그림 · 그림줄. 그림 뒤에 포인트색 원을 깝니다                                 |
+| 모양   | 원 · 둥근네모 · 알약          | 큰도형. 생략하면 원                                                         |
+| 움직임 | 움직임 7개 중 하나           | 나오는 방식. 종류마다 쓸 수 있는 것이 정해져 있습니다                         |
+| 등장   | 숫자(초)                    | 장면이 시작하고 몇 초 뒤에 나오는지. 첫 장면 외에는 전환 시간보다 작은 값을 전환 시간으로 읽습니다(경쾌하게는 0.5초) |
+| 자리   | 위 · 가운데 · 아래           | 화면 어디에 놓일지. 좌표는 쓰지 않습니다                                     |
+| 속도   | 빠르게 · 보통 · 느리게       | 움직임이 걸리는 시간. 분위기에 따라 정해진 초입니다(경쾌하게는 0.4 · 0.7 · 1.0). 생략하면 보통 |
+| 크기   | 소 · 중 · 대 · 특대          | 글자 · 그림 · 도형 크기 단계 (생략하면 종류에 맞는 크기)                      |
+
+같은 자리에 요소가 여럿이면 적은 순서대로 위에서 아래로 쌓입니다. 한 자리 안에서는 가운데로 모입니다.
+
+■ 종류와 쓸 수 있는 움직임 (종류 15개)
+| 종류     | 쓰임                                              | 쓸 수 있는 움직임                           |
+| 작은글자 | 보조 설명 · 출처                                   | 올라오기 · 한글자씩 · 밑줄긋기 · 튀어나오기   |
+| 큰글자   | 장면의 핵심 한 문장                                | 올라오기 · 한글자씩 · 밑줄긋기 · 튀어나오기   |
+| 숫자     | 아주 큰 숫자 한 개 (글에 숫자 포함)                 | 숫자세기 · 올라오기 · 튀어나오기              |
+| 막대     | 비율 막대. 글은 막대 위 이름                        | 막대자라기                                  |
+| 목록줄   | 항목 한 줄. 곁글을 오른쪽에 붙임                    | 올라오기 · 한글자씩 · 튀어나오기              |
+| 꼬리표   | 포인트색 알약 모양의 짧은 글                        | 튀어나오기 · 올라오기                        |
+| 구분선   | 가로선                                             | 선그리기                                    |
+| 그림     | 선 그림 한 개. 크기 · 원배지 선택. 글은 이름표       | 선그리기 · 튀어나오기 · 올라오기              |
+| 그림줄   | 그림 2~5개를 한 줄에. 차례로 나옴                   | 튀어나오기 · 올라오기 · 선그리기              |
+| 도넛     | 비율 고리. 값은 비율, 글은 가운데 숫자               | 숫자세기 · 선그리기 · 튀어나오기              |
+| 별점     | 별 5개 중 값만큼 채움. 글은 아래 설명                | 튀어나오기 · 올라오기                        |
+| 카드     | 둥근 상자 안에 글 + 곁글, 이름을 주면 그림도 넣음     | 올라오기 · 튀어나오기                        |
+| 말풍선   | 후기 인용. 곁글은 출처                              | 튀어나오기 · 올라오기 · 한글자씩              |
+| 가격표   | 이름(글)과 가격(곁글) 한 쌍                         | 튀어나오기 · 올라오기 · 숫자세기              |
+| 큰도형   | 원 · 둥근네모 · 알약 가운데 글자                    | 튀어나오기 · 올라오기 · 숫자세기              |
+
+■ 움직임 7개 (이름 고정). 장면 전환은 밀어내기 하나로 고정.
+올라오기 아래에서 떠오름 · 한글자씩 글자가 차례로 나옴 · 숫자세기 0에서 글의 숫자까지 셈(도넛은 고리도 함께 참) ·
+막대자라기 막대가 비율까지 참 · 선그리기 선이 왼쪽에서 오른쪽으로 그려짐(그림은 획 순서대로) · 튀어나오기 작게 시작해 살짝 넘쳤다 맞춤 · 밑줄긋기 글 아래에 포인트색 밑줄이 그어짐
+
+■ 그림 이름 30개 (종류 그림 · 그림줄 · 카드의 이름 값)
+별 · 하트 · 체크 · 느낌표 · 물음표 · 화살표 · 장바구니 · 선물상자 · 택배상자 · 가격표 · 달력 · 시계 · 종 · 위치핀 · 전화 ·
+말풍선 · 사람 · 사람들 · 집 · 가게 · 엄지척 · 전구 · 리본 · 불꽃 · 컵 · 도마 · 집게 · 냄비 · 서랍 · 계량컵
+없는 그림이 필요하면 가장 가까운 이름을 쓰고 보고합니다. 이름과 모양은 화면 오른쪽 「그림 · 장식 보기」 탭에서 볼 수 있습니다.
+
+■ 장식 이름 10개 (장면의 장식 값. 위치 · 농담이 고정이고 장면 시작 때 한 번 나옵니다)
+큰원 · 겹원 · 띠 · 대각띠 · 점무늬 · 물결 · 모서리틀 · 격자 · 햇살 · 종이조각
+
+■ 값은 한곳에
+글꼴 굵기 2단계 · 글자 · 그림 · 도형 크기 단계 · 속도 기준값(경쾌하게)은 style 블록 맨 위 :root에 있습니다. 색은 장면 데이터의 색조합으로 고르므로 :root의 색(크림)은 바꾸지 않습니다.
+그림 · 장식 · 도형의 색은 고른 색 조합의 3색과 그 농담뿐입니다. 포인트색은 면 · 선 · 어두운 바탕 위의 글자에 쓰이고, 밝은 바탕 위의 글자색으로는 대비가 모자랍니다.
+
+■ 점검 패널이 보는 것 (17개 항목)
+① 장면 시간 이어짐 ② 전체 길이 28~32초 ③ 장면 수 4~7 ④ 7자당 1초(최소 1.5초) ⑤ 3초 넘는 무변화 구간 ⑥ 첫 장면 3초 이내 · 마지막 3~5초
+⑦ 구간 순서(훅으로 시작 · 행동 안내로 끝) ⑧ 근거 칸 ⑨ 도구에 없는 이름 ⑩ 값의 형식 ⑪ 화면 넘침 ⑫ 도구 코드 그대로
+⑬ 그림 · 도형 · 막대 · 장식이 하나도 없는 장면 ⑭ 도구에 없는 그림 · 장식 이름 ⑮ 한 장면에 그림 · 도형이 4개 넘음
+⑯ 도구에 없는 색 조합 · 분위기 · 전환 이름 ⑰ 색 대비 4.5:1 미만. 판정하지 못한 항목은 「미판정」으로 따로 셉니다.
+-->
 <html lang="ko">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>데일리 쿡 출시 소개 영상 · 30초</title>
+<title>영상도구</title>
+<script>window.__영상도구오류=[];window.addEventListener('error',function(e){window.__영상도구오류.push((e.message||'오류')+(e.lineno?' (줄 '+e.lineno+')':''));});</script>
+
+<script id="장면데이터">
+/* 아래 시작 표시와 끝 표시 사이만 고칩니다. 첫 줄 window.영상 = { 와 마지막 줄 }; 는 그대로 둡니다.
+   쉼표 · 따옴표 · 괄호가 하나라도 빠지면 영상이 열리지 않습니다. 글 안에는 작은따옴표(')를 쓰지 않고, 인용은 「 」로 씁니다. */
+/* ===== 여기만 고칩니다 (시작) ===== */
+window.영상 = {
+  제목: '데일리 쿡 출시 소개 영상',
+  색조합: '크림',
+  분위기: '경쾌하게',
+  전환: '겹쳐넘기기',
+  장면: [
+    {
+      구간: '훅',
+      시작: 0,
+      끝: 3,
+      바탕: '반전',
+      장식: '겹원',
+      자막: '서랍 속 도구는 많지만, 자주 쓰는 것은 세 가지였습니다',
+      근거: '신상품_소개글.docx 「2. 왜 세 가지인가」 — 「서랍 속 도구는 많지만 자주 쓰는 것은 세 가지였습니다」',
+      요소: [
+        { 종류: '큰글자', 글: '서랍 속 도구는 많지만', 움직임: '올라오기', 등장: 0.2, 자리: '위' },
+        { 종류: '그림', 이름: '서랍', 원배지: true, 크기: '특대', 움직임: '튀어나오기', 등장: 0.8, 자리: '가운데' },
+        { 종류: '큰글자', 글: '자주 쓰는 것은 세 가지', 움직임: '밑줄긋기', 등장: 1.5, 속도: '느리게', 자리: '아래' }
+      ]
+    },
+    {
+      구간: '맥락',
+      시작: 3,
+      끝: 8.5,
+      장식: '점무늬',
+      자막: '하루상점은 매일 쓰는 것을, 조금 더 좋게 만듭니다',
+      근거: '신상품_소개글.docx 「1. 하루상점」 — 「매일 쓰는 것을, 조금 더 좋게」 · 여름 신상품 「데일리 쿡」 3종',
+      요소: [
+        { 종류: '꼬리표', 글: '하루상점', 움직임: '튀어나오기', 등장: 0.5, 자리: '위' },
+        { 종류: '그림', 이름: '가게', 원배지: true, 크기: '대', 움직임: '선그리기', 등장: 1.0, 자리: '위' },
+        { 종류: '큰글자', 글: '매일 쓰는 것을, 조금 더 좋게', 움직임: '한글자씩', 등장: 1.6, 속도: '느리게', 자리: '가운데' },
+        { 종류: '구분선', 글: '', 움직임: '선그리기', 등장: 2.8, 자리: '가운데' },
+        { 종류: '작은글자', 글: '여름 신상품 「데일리 쿡」 3종', 움직임: '올라오기', 등장: 3.2, 자리: '가운데' },
+        { 종류: '그림', 이름: '리본', 원배지: true, 크기: '대', 움직임: '튀어나오기', 등장: 4.0, 자리: '아래' }
+      ]
+    },
+    {
+      구간: '본문',
+      시작: 8.5,
+      끝: 16,
+      바탕: '반전',
+      장식: '대각띠',
+      자막: '데일리 쿡 세 가지의 특징과 가격입니다',
+      근거: '가격표.xlsx — 도마 18,900원 · 집게 9,900원 · 계량컵 12,900원 / 신상품_소개글.docx 「3. 제품」 — 특징',
+      요소: [
+        { 종류: '큰글자', 글: '데일리 쿡 3종', 움직임: '올라오기', 등장: 0.5, 자리: '위' },
+        { 종류: '그림줄', 이름들: ['도마', '집게', '계량컵'], 원배지: true, 크기: '대', 움직임: '튀어나오기', 등장: 1.2, 자리: '아래' },
+        { 종류: '가격표', 글: '도마 · 양면', 곁글: '18,900원', 움직임: '튀어나오기', 등장: 2.4, 자리: '가운데' },
+        { 종류: '가격표', 글: '집게 · 한 손 잠금', 곁글: '9,900원', 움직임: '튀어나오기', 등장: 3.6, 자리: '가운데' },
+        { 종류: '가격표', 글: '계량컵 · 눈금 안쪽', 곁글: '12,900원', 움직임: '튀어나오기', 등장: 4.8, 자리: '가운데' }
+      ]
+    },
+    {
+      구간: '본문',
+      시작: 16,
+      끝: 21.5,
+      장식: '물결',
+      자막: '체험단 120명 가운데 87%가 다시 사고 싶다고 답했습니다',
+      근거: '체험단_설문결과.xlsx 「다시 사고 싶은가」 — 120명 가운데 104명 = 87% · 「후기」 시트 7번 「서랍 한 칸이 비었어요」. 소개글의 「열에 아홉」은 쓰지 않음(확인 필요)',
+      요소: [
+        { 종류: '큰글자', 글: '체험단 120명 중 104명', 움직임: '올라오기', 등장: 0.5, 자리: '위' },
+        { 종류: '도넛', 값: 87, 글: '87%', 곁글: '다시 사고 싶다', 크기: '대', 움직임: '숫자세기', 등장: 1.2, 속도: '느리게', 자리: '가운데' },
+        { 종류: '말풍선', 글: '「서랍 한 칸이 비었어요」', 곁글: '체험단 후기', 움직임: '튀어나오기', 등장: 3.0, 자리: '아래' }
+      ]
+    },
+    {
+      구간: '결말',
+      시작: 21.5,
+      끝: 26,
+      바탕: '반전',
+      장식: '종이조각',
+      자막: '세 가지를 묶은 세트는 36,900원입니다',
+      근거: '가격표.xlsx 「세 가지 세트」 — 36,900원(낱개 합계 41,700원)',
+      요소: [
+        { 종류: '그림', 이름: '선물상자', 원배지: true, 크기: '대', 움직임: '튀어나오기', 등장: 0.5, 자리: '위' },
+        { 종류: '큰도형', 모양: '원', 크기: '특대', 글: '36,900원', 곁글: '세 가지 세트', 움직임: '숫자세기', 등장: 1.1, 자리: '가운데' },
+        { 종류: '작은글자', 글: '낱개로 사면 41,700원', 크기: '중', 움직임: '올라오기', 등장: 2.4, 자리: '아래' }
+      ]
+    },
+    {
+      구간: '행동 안내',
+      시작: 26,
+      끝: 30,
+      장식: '모서리틀',
+      자막: '6월 15일 월요일 오전 10시, 하루상점 자사몰에서 출시합니다',
+      근거: '신상품_소개글.docx 「5. 출시」 — 2026년 6월 15일(월) 오전 10시 · 하루상점 자사몰에서 판매',
+      요소: [
+        { 종류: '그림줄', 이름들: ['달력', '시계'], 원배지: true, 크기: '대', 움직임: '튀어나오기', 등장: 0.5, 자리: '위' },
+        { 종류: '큰글자', 글: '6월 15일(월)', 움직임: '한글자씩', 등장: 1.2, 자리: '가운데' },
+        { 종류: '큰글자', 글: '오전 10시', 움직임: '밑줄긋기', 등장: 2.0, 자리: '가운데' },
+        { 종류: '큰도형', 모양: '알약', 크기: '중', 글: '하루상점 자사몰', 움직임: '튀어나오기', 등장: 2.6, 자리: '아래' }
+      ]
+    }
+  ]
+};
+/* ===== 여기만 고칩니다 (끝) ===== */
+</script>
+
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
 <style>
   :root{
-    --cream:#FBF5EA; --paper:#FFFFFF; --ink:#14202B; --ink-2:#51606E;
-    --petrol:#0E4A5A; --petrol-2:#0A3642; --coral:#FF8A5C; --coral-2:#F26B3A;
-    --aqua:#7DE0EC; --butter:#FFD98A; --wood:#F2C98A; --wood-2:#D9A85E; --leaf:#3BB58A;
-    --shell:#0B1116; --shell-2:#151D25; --line:rgba(255,255,255,.12);
+    /* ▼ 영상에 쓰는 기준값 — 한곳에 모았습니다. 색은 장면 데이터의 색조합으로 고르고, 여기 색은 기본(크림)입니다 ▼ */
+    --배경:#FBF5EA;   --글자:#14202B;   --포인트:#FF8A5C;
+    --굵기-보통:500;  --굵기-굵게:800;
+    --속도-빠르게:.4s;  --속도-보통:.7s;  --속도-느리게:1s;
+    --크기-소:44px;  --크기-중:60px;  --크기-대:100px;  --크기-특대:240px;
+    --그림-소:96px;  --그림-중:160px;  --그림-대:240px;  --그림-특대:360px;
+    --도형-소:220px;  --도형-중:320px;  --도형-대:440px;  --도형-특대:560px;
+    --글꼴:Pretendard, "Pretendard Variable", "Malgun Gothic", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+    /* ▲ 여기까지. 아래는 화면 바깥 조작부의 색이라 영상에는 쓰이지 않습니다 ▲ */
+    --셸:#0E1217;  --셸-2:#161C23;  --셸-3:#212A34;  --셸-글자:#E8EDF2;  --셸-흐림:#A3AFBB;  --셸-선:#2C3743;
+    --통과:#4CC38A;  --고칠:#FF7A6B;  --미판정:#E8B84A;  --칩-글자:#0E1217;  --그림자:rgba(0,0,0,.5);
   }
   *{ box-sizing:border-box; margin:0; padding:0; }
-  html,body{ height:100%; background:var(--shell); color:#fff; font-family:Pretendard, "Malgun Gothic", sans-serif; overflow:hidden; }
-  .app{ height:100%; display:grid; grid-template-rows:1fr auto; }
-  .viewport{ position:relative; display:grid; place-items:center; overflow:hidden; padding:18px 18px 6px; }
-  .frame{ position:relative; border-radius:14px; overflow:hidden; box-shadow:0 30px 80px rgba(0,0,0,.55), 0 0 0 1px var(--line); background:var(--cream); }
-  .stage{ position:absolute; left:0; top:0; width:1920px; height:1080px; transform-origin:0 0; overflow:hidden; color:var(--ink); font-variant-numeric:tabular-nums; }
+  html,body{ height:100%; background:var(--셸); color:var(--셸-글자); font-family:var(--글꼴); }
+  body{ overflow:hidden; }
+  button{ font-family:inherit; }
 
-  /* ── 장면 공통 ── */
-  .scene{ position:absolute; inset:0; opacity:0; overflow:hidden; }
-  .pad{ position:absolute; inset:0; padding:120px 140px; display:flex; flex-direction:column; justify-content:center; }
-  .rv{ display:block; overflow:hidden; padding-bottom:.12em; margin-bottom:-.12em; }
-  .rv > span{ display:inline-block; will-change:transform; }
-  .kick{ display:inline-flex; align-items:center; gap:14px; font-size:34px; font-weight:700; letter-spacing:.02em; padding:14px 28px; border-radius:999px; align-self:flex-start; }
-  .kick i{ width:14px; height:14px; border-radius:50%; background:currentColor; display:block; }
-  .deco{ position:absolute; border-radius:50%; will-change:transform; }
-  .wipe{ position:absolute; inset:0; transform:translateX(-101%); will-change:transform; z-index:20; }
-  .wipe.b{ z-index:19; }
+  /* ── 화면 배치 ── */
+  .app{ height:100%; display:grid; grid-template-columns:minmax(0,1fr) 460px; }
+  .player{ position:relative; display:grid; grid-template-rows:minmax(0,1fr) auto; height:100%; min-width:0; background:var(--셸); }
+  .viewport{ position:relative; display:grid; place-items:center; min-height:0; padding:12px; }
+  .큰오류{ display:none; position:absolute; left:16px; right:16px; top:16px; z-index:5; padding:16px 20px; border-radius:12px; background:var(--셸-3); border-left:4px solid var(--고칠); font-size:16px; line-height:1.7; }
+  .frame{ position:relative; overflow:hidden; border-radius:10px; box-shadow:0 0 0 1px var(--셸-선), 0 24px 60px var(--그림자); }
+  .stage{ position:absolute; left:0; top:0; width:1080px; height:1920px; transform-origin:0 0; overflow:hidden; background:var(--배경); color:var(--글자); font-family:var(--글꼴); font-variant-numeric:tabular-nums; }
 
-  /* ── 1 · 오프닝 ── */
-  #s1{ background:var(--cream); }
-  #s1 .center{ position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:26px; }
-  .mark{ width:300px; height:220px; overflow:visible; }
-  .word{ font-size:190px; font-weight:900; letter-spacing:-.04em; line-height:1; color:var(--petrol); display:flex; overflow:hidden; padding-bottom:.1em; }
-  .word span{ display:inline-block; }
-  .tag{ font-size:54px; font-weight:600; color:var(--ink-2); letter-spacing:-.01em; }
-  .tag b{ color:var(--coral-2); font-weight:800; }
-  #s1 .kick{ align-self:center; background:var(--petrol); color:#fff; margin-top:22px; }
+  /* ── 영상 안: 장면 ── */
+  .장면{ position:absolute; inset:0; overflow:hidden; visibility:hidden; --fg:var(--글자); --bg:var(--배경); background:var(--bg); color:var(--fg); }
+  .장면.반전{ --fg:var(--배경); --bg:var(--글자); }
+  .자리{ position:absolute; left:80px; width:920px; display:flex; flex-direction:column; align-items:flex-start; justify-content:center; gap:28px; }
+  .자리.위{ top:140px; height:490px; }
+  .자리.가운데{ top:660px; height:600px; }
+  .자리.아래{ top:1290px; height:320px; }
 
-  /* ── 2 · 질문 ── */
-  #s2{ background:var(--petrol); color:#fff; }
-  #s2 .q{ position:absolute; left:140px; right:140px; top:330px; transform-origin:0 0; }
-  #s2 .q .rv{ font-size:138px; font-weight:900; letter-spacing:-.045em; line-height:1.14; }
-  #s2 .q em{ font-style:normal; color:var(--aqua); }
-  .tools{ position:absolute; left:140px; top:480px; display:grid; grid-template-columns:repeat(6,150px); gap:24px; }
-  .tool{ width:150px; height:150px; }
-  .tool .in{ width:100%; height:100%; border-radius:38px; background:rgba(255,255,255,.10); display:grid; place-items:center; position:relative; }
-  .tool svg{ width:84px; height:84px; fill:none; stroke:#fff; stroke-width:3.2; stroke-linecap:round; stroke-linejoin:round; }
-  .tool.pick .in{ background:var(--coral); box-shadow:0 18px 40px rgba(0,0,0,.25); }
-  .tool .ring{ position:absolute; inset:-12px; border-radius:48px; border:5px solid var(--butter); opacity:0; }
-  #s2 .a{ position:absolute; right:120px; top:470px; width:580px; text-align:left; }
-  #s2 .a span.rv{ font-size:78px; font-weight:900; letter-spacing:-.04em; line-height:1.18; white-space:nowrap; }
-  #s2 .a span.rv b{ color:var(--butter); }
-  #s2 .a p{ margin-top:24px; font-size:34px; font-weight:500; color:rgba(255,255,255,.75); line-height:1.5; }
+  /* ── 영상 안: 장식(위치 · 농담 고정) ── */
+  .장식층{ position:absolute; left:0; top:0; width:1080px; height:1920px; pointer-events:none; opacity:0; }
+  .장식층 .a{ fill:var(--포인트); opacity:.18; }
+  .장식층 .f{ fill:var(--fg); opacity:.06; }
+  .장식층 .d{ fill:var(--포인트); opacity:.45; }
+  .장식층 .fd{ fill:var(--fg); opacity:.22; }
+  .장식층 .al{ fill:none; stroke:var(--포인트); stroke-width:12; stroke-linecap:round; stroke-linejoin:round; opacity:.5; }
+  .장식층 .fl{ fill:none; stroke:var(--fg); stroke-width:5; stroke-linecap:round; opacity:.14; }
+  .장면.반전 .장식층 .a{ opacity:.26; } .장면.반전 .장식층 .f{ opacity:.09; } .장면.반전 .장식층 .d{ opacity:.55; }
+  .장면.반전 .장식층 .fd{ opacity:.3; } .장면.반전 .장식층 .al{ opacity:.6; } .장면.반전 .장식층 .fl{ opacity:.2; }
 
-  /* ── 3 · 제품 ── */
-  #s3{ background:var(--cream); }
-  #s3 .pad{ justify-content:flex-start; padding-top:96px; }
-  #s3 .kick{ background:var(--coral); color:#fff; }
-  #s3 h2{ font-size:104px; font-weight:900; letter-spacing:-.045em; line-height:1.12; margin-top:26px; color:var(--ink); }
-  #s3 h2 b{ color:var(--petrol); }
-  .cards{ display:grid; grid-template-columns:repeat(3,1fr); gap:36px; margin-top:44px; }
-  .card{ background:var(--paper); border-radius:44px; padding:34px 40px 40px; box-shadow:0 24px 60px rgba(20,32,43,.10); position:relative; }
-  .card .art{ height:220px; border-radius:30px; display:grid; place-items:center; overflow:hidden; }
-  .card:nth-child(1) .art{ background:#FFF1DD; } .card:nth-child(2) .art{ background:#E3F6F8; } .card:nth-child(3) .art{ background:#FFE8DE; }
-  .card .art svg{ width:290px; height:220px; overflow:visible; }
-  .card h3{ font-size:56px; font-weight:900; letter-spacing:-.03em; margin-top:26px; }
-  .card p{ font-size:32px; font-weight:500; color:var(--ink-2); margin-top:8px; }
-  .price{ position:absolute; right:30px; top:30px; background:var(--ink); color:#fff; font-size:32px; font-weight:800; padding:12px 22px; border-radius:999px; box-shadow:0 10px 24px rgba(20,32,43,.25); }
-  .set{ position:absolute; left:140px; right:140px; bottom:138px; height:110px; border-radius:34px; background:var(--petrol); color:#fff; display:flex; align-items:center; justify-content:space-between; padding:0 46px; box-shadow:0 24px 50px rgba(14,74,90,.35); }
-  .set .l{ font-size:44px; font-weight:800; } .set .l small{ font-size:30px; font-weight:500; opacity:.75; margin-left:16px; }
-  .set .r{ display:flex; align-items:baseline; gap:24px; }
-  .set .was{ font-size:36px; font-weight:600; opacity:.7; position:relative; }
-  .set .was i{ position:absolute; left:-6px; right:-6px; top:52%; height:5px; border-radius:3px; background:var(--coral); transform-origin:0 50%; }
-  .set .now{ font-size:68px; font-weight:900; letter-spacing:-.03em; color:var(--butter); }
+  /* ── 영상 안: 요소(글) ── */
+  .요소{ position:relative; max-width:100%; opacity:0; word-break:keep-all; overflow-wrap:anywhere; }
+  .작은글자{ font-size:var(--크기-소); font-weight:var(--굵기-보통); line-height:1.4; letter-spacing:-.01em; }
+  .큰글자{ font-size:var(--크기-대); font-weight:var(--굵기-굵게); line-height:1.2; letter-spacing:-.04em; }
+  .숫자{ font-size:var(--크기-특대); font-weight:var(--굵기-굵게); line-height:1.05; letter-spacing:-.05em; white-space:nowrap; }
+  .꼬리표{ font-size:var(--크기-소); font-weight:var(--굵기-굵게); line-height:1.2; padding:.28em .85em; border-radius:999px; background:var(--포인트); color:var(--글자); transform-origin:0 50%; }
+  .목록줄{ display:flex; align-items:baseline; gap:24px; width:100%; padding-bottom:20px; font-size:var(--크기-중); font-weight:var(--굵기-보통); line-height:1.25; }
+  .목록줄::after{ content:""; position:absolute; left:0; right:0; bottom:0; height:3px; background:var(--fg); opacity:.22; }
+  .목록줄 .점{ flex:none; width:.36em; height:.36em; border-radius:50%; background:var(--포인트); align-self:center; }
+  .목록줄 .글{ flex:1; min-width:0; }
+  .목록줄 .곁글{ flex:none; font-weight:var(--굵기-굵게); white-space:nowrap; }
+  .장면.반전 .목록줄 .곁글{ color:var(--포인트); }
+  .막대{ width:100%; font-size:var(--크기-중); font-weight:var(--굵기-보통); line-height:1.25; }
+  .막대 .라벨{ margin-bottom:18px; }
+  .막대 .트랙{ height:52px; border-radius:26px; border:4px solid var(--fg); overflow:hidden; }
+  .막대 .채움{ display:block; height:100%; width:0; background:var(--포인트); }
+  .구분선{ width:100%; }
+  .구분선 .선{ display:block; height:10px; border-radius:5px; background:var(--포인트); transform-origin:0 50%; transform:scaleX(0); }
+  .크기-소{ font-size:var(--크기-소); } .크기-중{ font-size:var(--크기-중); } .크기-대{ font-size:var(--크기-대); } .크기-특대{ font-size:var(--크기-특대); }
+  .단어{ display:inline-block; white-space:nowrap; }
+  .자{ display:inline-block; }
+  .밑줄긋기 .글{ background-image:linear-gradient(var(--포인트), var(--포인트)); background-repeat:no-repeat; background-position:0 100%; background-size:0 .12em; -webkit-box-decoration-break:clone; box-decoration-break:clone; padding-bottom:.06em; }
+  .장면:not(.반전) .숫자 .글{ background-image:linear-gradient(var(--포인트), var(--포인트)); background-repeat:no-repeat; background-position:0 86%; background-size:100% 24%; }
+  .장면.반전 .숫자 .글{ color:var(--포인트); }
 
-  /* ── 4 · 숫자 ── */
-  #s4{ background:var(--ink); color:#fff; }
-  #s4 .kick{ background:rgba(255,255,255,.12); color:var(--aqua); }
-  .nums{ display:grid; grid-template-columns:1.05fr .95fr; gap:60px; align-items:center; margin-top:40px; }
-  .big{ font-size:340px; font-weight:900; letter-spacing:-.06em; line-height:.95; color:#fff; display:flex; align-items:baseline; gap:10px; }
-  .big small{ font-size:110px; font-weight:800; color:var(--aqua); letter-spacing:-.02em; }
-  .cap{ font-size:46px; font-weight:600; color:rgba(255,255,255,.72); margin-top:14px; }
-  .ringbox{ position:relative; width:520px; height:520px; justify-self:center; }
-  .ringbox svg{ width:100%; height:100%; transform:rotate(-90deg); }
-  .ringbox .mid{ position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; }
-  .ringbox .pct{ font-size:170px; font-weight:900; letter-spacing:-.05em; line-height:1; color:var(--butter); }
-  .ringbox .pct small{ font-size:80px; }
-  .ringbox .lbl{ font-size:38px; font-weight:600; color:rgba(255,255,255,.8); margin-top:6px; }
-  .quote{ position:absolute; left:140px; bottom:176px; background:var(--coral); color:var(--ink); border-radius:34px 34px 34px 8px; padding:26px 42px; font-size:50px; font-weight:800; letter-spacing:-.02em; box-shadow:0 24px 50px rgba(0,0,0,.35); }
-  .quote small{ font-size:30px; font-weight:600; opacity:.7; margin-left:20px; }
+  /* ── 영상 안: 그림 · 그림줄 ── */
+  .그림, .그림줄{ --s:var(--그림-중); --sz:calc(var(--s) * var(--k, 1)); }
+  .그림.크기-소, .그림줄.크기-소{ --s:var(--그림-소); } .그림.크기-중, .그림줄.크기-중{ --s:var(--그림-중); }
+  .그림.크기-대, .그림줄.크기-대{ --s:var(--그림-대); } .그림.크기-특대, .그림줄.크기-특대{ --s:var(--그림-특대); }
+  .그림{ display:flex; flex-direction:column; align-items:center; gap:14px; align-self:center; font-size:var(--크기-소); font-weight:var(--굵기-보통); }
+  .그림줄{ display:flex; justify-content:space-around; align-items:flex-start; width:100%; font-size:var(--크기-소); font-weight:var(--굵기-보통); }
+  .그림줄 .칸{ display:flex; flex-direction:column; align-items:center; gap:14px; }
+  .이름표{ max-width:calc(var(--sz, 160px) * 1.3); text-align:center; line-height:1.25; font-size:max(30px, calc(var(--sz, 160px) * .24)); }
+  .바탕{ --bs:var(--sz, 160px); position:relative; display:grid; place-items:center; width:var(--bs); height:var(--bs); color:var(--fg); }
+  .장면.반전 .바탕:not(.원배지){ color:var(--포인트); }
+  .바탕.원배지{ color:var(--글자); }
+  .바탕 .배지{ position:absolute; inset:0; border-radius:50%; background:var(--포인트); }
+  svg.아이콘{ width:100%; height:100%; overflow:visible; position:relative; }
+  .바탕.원배지 svg.아이콘{ width:58%; height:58%; }
+  svg.아이콘 path{ fill:none; stroke:currentColor; stroke-width:1.9; stroke-linecap:round; stroke-linejoin:round; stroke-dasharray:1; stroke-dashoffset:0; }
 
-  /* ── 5 · 출시일 ── */
-  #s5{ background:var(--coral); color:var(--ink); }
-  #s5 .pad{ flex-direction:row; align-items:center; justify-content:space-between; gap:80px; }
-  #s5 .kick{ background:var(--ink); color:#fff; }
-  #s5 .date{ font-size:250px; font-weight:900; letter-spacing:-.06em; line-height:1; margin-top:30px; color:#fff; text-shadow:0 10px 0 rgba(20,32,43,.14); }
-  #s5 .dow{ font-size:64px; font-weight:800; margin-top:28px; display:flex; align-items:center; gap:22px; }
-  #s5 .dow i{ width:70px; height:8px; border-radius:4px; background:var(--ink); display:block; transform-origin:0 50%; }
-  .cal{ width:640px; flex:none; background:var(--paper); border-radius:48px; padding:34px 40px 40px; box-shadow:0 40px 80px rgba(20,32,43,.28); transform-origin:50% 0; position:relative; }
-  .cal header{ display:flex; justify-content:space-between; align-items:baseline; border-bottom:4px solid #EEF0F3; padding-bottom:18px; }
-  .cal header b{ font-size:62px; font-weight:900; letter-spacing:-.03em; } .cal header span{ font-size:32px; font-weight:700; color:var(--ink-2); }
-  .cal .g{ display:grid; grid-template-columns:repeat(7,1fr); gap:8px 0; margin-top:20px; text-align:center; }
-  .cal .h{ font-size:26px; font-weight:700; color:#9AA4AE; padding-bottom:6px; }
-  .cal .d{ font-size:36px; font-weight:700; height:66px; display:grid; place-items:center; position:relative; }
-  .cal .d.on{ color:#fff; font-weight:900; }
-  .cal .d.on::before{ content:""; position:absolute; width:66px; height:66px; border-radius:50%; background:var(--petrol); z-index:0; transform:scale(var(--pop,0)); }
-  .cal .d.on b{ position:relative; z-index:1; }
-  .spark{ position:absolute; width:18px; height:18px; border-radius:50%; left:0; top:0; opacity:0; }
+  /* ── 영상 안: 도형 ── */
+  .도넛, .큰도형, .별점{ --s:var(--도형-대); }
+  .도넛.크기-소, .큰도형.크기-소, .별점.크기-소{ --s:var(--도형-소); } .도넛.크기-중, .큰도형.크기-중, .별점.크기-중{ --s:var(--도형-중); }
+  .도넛.크기-대, .큰도형.크기-대, .별점.크기-대{ --s:var(--도형-대); } .도넛.크기-특대, .큰도형.크기-특대, .별점.크기-특대{ --s:var(--도형-특대); }
+  .도넛{ align-self:center; width:var(--s); height:var(--s); transform-origin:50% 50%; }
+  .도넛 > svg{ width:100%; height:100%; transform:rotate(-90deg); }
+  .도넛 .트랙{ fill:none; stroke:var(--fg); stroke-width:12; opacity:.15; }
+  .도넛 .채움{ fill:none; stroke:var(--포인트); stroke-width:12; stroke-linecap:round; stroke-dasharray:100; stroke-dashoffset:100; }
+  .도넛 .안{ position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; }
+  .도넛 .글{ font-size:calc(var(--s) * .27 * var(--k, 1)); font-weight:var(--굵기-굵게); line-height:1; letter-spacing:-.04em; white-space:nowrap; }
+  .도넛 .곁글{ font-size:calc(var(--s) * .075 * var(--k, 1)); font-weight:var(--굵기-보통); margin-top:.5em; max-width:70%; line-height:1.25; }
+  .별점{ align-self:center; display:flex; flex-direction:column; align-items:center; gap:18px; font-size:var(--크기-소); font-weight:var(--굵기-보통); }
+  .별점 .줄{ display:flex; gap:calc(var(--s) * .066 * var(--k, 1)); }
+  .별점 .별{ position:relative; width:calc(var(--s) * .3 * var(--k, 1)); height:calc(var(--s) * .3 * var(--k, 1)); }
+  .별점 .별 svg{ position:absolute; inset:0; width:100%; height:100%; overflow:visible; stroke:var(--fg); stroke-width:1.6; stroke-linejoin:round; }
+  .별점 .별 .윤곽{ fill:none; opacity:.4; }
+  .별점 .별 .채움별{ fill:var(--포인트); }
+  .카드{ display:flex; align-items:center; gap:32px; width:100%; padding:36px 40px; border-radius:40px; font-size:var(--크기-중); line-height:1.25; transform-origin:0 50%; }
+  .카드::before{ content:""; position:absolute; inset:0; border-radius:inherit; background:var(--fg); opacity:.09; }
+  .카드 > *{ position:relative; }
+  .카드 .바탕{ --bs:1.9em; flex:none; }
+  .카드 .본문{ flex:1; min-width:0; }
+  .카드 .글{ font-weight:var(--굵기-굵게); }
+  .카드 .곁글{ margin-top:6px; font-size:.72em; font-weight:var(--굵기-보통); }
+  .말풍선{ padding:40px 52px; border-radius:48px 48px 48px 10px; background:var(--포인트); color:var(--글자); font-size:var(--크기-중); font-weight:var(--굵기-굵게); line-height:1.3; transform-origin:0 100%; }
+  .말풍선::after{ content:""; position:absolute; left:54px; bottom:-26px; width:0; height:0; border-left:20px solid transparent; border-right:20px solid transparent; border-top:28px solid var(--포인트); }
+  .말풍선 .곁글{ display:block; margin-top:14px; font-size:.62em; font-weight:var(--굵기-보통); }
+  .가격표{ display:flex; align-items:stretch; width:100%; border:4px solid var(--fg); border-radius:999px; overflow:hidden; font-size:var(--크기-중); line-height:1.2; transform-origin:0 50%; }
+  .가격표 .글{ flex:1; min-width:0; padding:22px 40px; display:flex; align-items:center; font-weight:var(--굵기-보통); }
+  .가격표 .곁글{ flex:none; padding:22px 44px; display:flex; align-items:center; background:var(--포인트); color:var(--글자); font-weight:var(--굵기-굵게); white-space:nowrap; }
+  .큰도형{ align-self:center; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; width:var(--s); height:var(--s); border-radius:50%; background:var(--포인트); color:var(--글자); transform-origin:50% 50%; }
+  .큰도형.모양-둥근네모{ width:calc(var(--s) * 1.6); max-width:100%; height:calc(var(--s) * .8); border-radius:calc(var(--s) * .12); }
+  .큰도형.모양-알약{ width:calc(var(--s) * 1.8); max-width:100%; height:calc(var(--s) * .56); border-radius:999px; }
+  .큰도형 .글{ font-size:calc(var(--s) * .2 * var(--k, 1)); font-weight:var(--굵기-굵게); line-height:1.1; letter-spacing:-.03em; white-space:nowrap; }
+  .큰도형.모양-둥근네모 .글{ font-size:calc(var(--s) * .19 * var(--k, 1)); } .큰도형.모양-알약 .글{ font-size:calc(var(--s) * .17 * var(--k, 1)); }
+  .큰도형 .곁글{ font-size:calc(var(--s) * .075 * var(--k, 1)); font-weight:var(--굵기-보통); margin-top:.4em; }
 
-  /* ── 6 · 엔딩 ── */
-  #s6{ background:var(--cream); }
-  #s6 .center{ position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:20px; }
-  #s6 .mark{ width:210px; height:154px; }
-  #s6 .word{ font-size:130px; }
-  #s6 .end{ font-size:62px; font-weight:800; letter-spacing:-.03em; color:var(--ink); margin-top:10px; }
-  #s6 .end b{ color:var(--coral-2); }
-  #s6 .fine{ position:absolute; top:64px; left:0; right:0; text-align:center; font-size:26px; color:#9AA4AE; font-weight:500; }
-
-  /* ── 자막 ── */
-  .sub{ position:absolute; left:50%; bottom:44px; transform:translateX(-50%); z-index:30; max-width:1500px; padding:16px 34px; border-radius:18px; background:rgba(11,17,22,.78); color:#fff; font-size:38px; font-weight:600; letter-spacing:-.01em; white-space:nowrap; opacity:0; transition:opacity .2s; }
-  .sub.on{ opacity:1; } .no-sub .sub{ display:none; }
+  /* ── 영상 안: 자막 ── */
+  .자막{ position:absolute; left:50%; bottom:150px; transform:translateX(-50%); z-index:5; width:max-content; max-width:920px; padding:18px 32px; border-radius:20px; background:var(--글자); color:var(--배경); font-size:var(--크기-소); font-weight:var(--굵기-보통); line-height:1.4; text-align:center; word-break:keep-all; opacity:0; }
+  .자막끔 .자막{ display:none; }
 
   /* ── 조작 막대 ── */
-  .bar{ display:flex; align-items:center; gap:14px; padding:10px 22px 16px; }
-  .btn{ height:48px; min-width:48px; padding:0 14px; border-radius:12px; border:0; background:var(--shell-2); color:#fff; font:600 16px Pretendard, sans-serif; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; gap:8px; }
-  .btn:hover{ background:#202B35; } .btn:focus-visible{ outline:3px solid var(--aqua); outline-offset:2px; }
-  .btn.main{ background:var(--coral); color:var(--ink); min-width:112px; font-weight:800; }
-  .btn[aria-pressed="true"]{ background:#24424C; color:var(--aqua); }
-  .time{ font:600 16px/1 Pretendard, sans-serif; color:#B8C2CC; min-width:92px; text-align:center; font-variant-numeric:tabular-nums; }
-  .track{ position:relative; flex:1; height:48px; display:flex; align-items:center; }
-  .track input{ -webkit-appearance:none; appearance:none; width:100%; height:8px; border-radius:4px; background:linear-gradient(to right, var(--coral) var(--p,0%), #2A3540 var(--p,0%)); outline-offset:6px; cursor:pointer; }
-  .track input::-webkit-slider-thumb{ -webkit-appearance:none; width:22px; height:22px; border-radius:50%; background:#fff; box-shadow:0 2px 8px rgba(0,0,0,.5); }
-  .track input::-moz-range-thumb{ width:22px; height:22px; border:0; border-radius:50%; background:#fff; }
+  .bar{ display:flex; align-items:center; gap:10px; padding:8px 14px 14px; }
+  .btn{ height:44px; min-width:44px; padding:0 14px; border-radius:10px; border:0; background:var(--셸-3); color:var(--셸-글자); font-size:15px; font-weight:600; cursor:pointer; white-space:nowrap; }
+  .btn:hover{ background:var(--셸-선); }
+  .btn:focus-visible{ outline:3px solid var(--포인트); outline-offset:2px; }
+  .btn.재생{ background:var(--포인트); color:var(--글자); font-weight:800; min-width:104px; }
+  .btn[aria-pressed="true"]{ outline:2px solid var(--포인트); outline-offset:-2px; }
+  .btn.sm{ height:36px; font-size:14px; }
+  .time{ min-width:98px; text-align:center; font-size:14px; font-weight:600; color:var(--셸-흐림); font-variant-numeric:tabular-nums; }
+  .track{ position:relative; flex:1; min-width:80px; height:44px; display:flex; align-items:center; }
+  .track input{ -webkit-appearance:none; appearance:none; width:100%; height:8px; border-radius:4px; background:linear-gradient(to right, var(--포인트) var(--p,0%), var(--셸-선) var(--p,0%)); outline-offset:6px; cursor:pointer; }
+  .track input::-webkit-slider-thumb{ -webkit-appearance:none; width:22px; height:22px; border-radius:50%; background:var(--셸-글자); }
+  .track input::-moz-range-thumb{ width:22px; height:22px; border:0; border-radius:50%; background:var(--셸-글자); }
   .marks{ position:absolute; left:11px; right:11px; top:50%; height:0; pointer-events:none; }
-  .marks i{ position:absolute; top:-8px; width:2px; height:16px; background:rgba(255,255,255,.45); border-radius:1px; }
+  .marks i{ position:absolute; top:-9px; width:2px; height:18px; background:var(--셸-흐림); border-radius:1px; }
+  #panelBtn{ display:none; }
+  .player:fullscreen{ grid-template-rows:minmax(0,1fr); }
+  .player:fullscreen .bar{ position:absolute; left:0; right:0; bottom:0; background:var(--셸); opacity:0; transition:opacity .2s; }
+  .player:fullscreen .bar:hover, .player:fullscreen .bar:focus-within{ opacity:1; }
 
-  /* ── 장면표 · 근거 ── */
-  .sheet{ position:fixed; right:18px; top:18px; bottom:90px; width:420px; background:#fff; color:var(--ink); border-radius:18px; box-shadow:0 30px 80px rgba(0,0,0,.5); padding:22px; overflow:auto; transform:translateX(120%); transition:transform .35s cubic-bezier(.16,1,.3,1); z-index:50; }
-  .sheet.open{ transform:none; }
-  .sheet h2{ font-size:20px; font-weight:800; } .sheet > p{ font-size:14px; color:var(--ink-2); margin:6px 0 14px; line-height:1.5; }
-  .row{ display:grid; grid-template-columns:64px 1fr; gap:12px; padding:12px; border-radius:12px; cursor:pointer; border:0; background:none; width:100%; text-align:left; font:inherit; color:inherit; }
-  .row:hover, .row.now{ background:#F3F6F8; } .row.now{ box-shadow:inset 4px 0 0 var(--coral); }
-  .row time{ font-size:14px; font-weight:800; color:var(--petrol); font-variant-numeric:tabular-nums; padding-top:2px; }
-  .row b{ display:block; font-size:16px; font-weight:800; } .row span{ display:block; font-size:14px; color:var(--ink); margin-top:4px; line-height:1.45; }
-  .row em{ display:block; font-style:normal; font-size:13px; color:var(--ink-2); margin-top:6px; padding-top:6px; border-top:1px dashed #D9DEE3; line-height:1.45; }
-  @media (max-width:760px){ .btn span{ display:none; } .sheet{ left:12px; right:12px; width:auto; } }
+  /* ── 점검 · 장면표 패널 ── */
+  .panel{ min-width:0; height:100%; overflow:auto; padding:18px 20px 28px; background:var(--셸-2); border-left:1px solid var(--셸-선); font-size:14px; line-height:1.5; }
+  .panel h2{ font-size:18px; font-weight:800; }
+  .panel .머리줄{ display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .panel .구분{ margin-top:26px; padding-top:20px; border-top:1px solid var(--셸-선); }
+  .흐림{ color:var(--셸-흐림); }
+  .요약{ margin-top:10px; font-size:16px; font-weight:700; display:flex; flex-wrap:wrap; gap:6px 14px; }
+  .요약 .고칠{ color:var(--고칠); } .요약 .통과{ color:var(--통과); } .요약 .미판정{ color:var(--미판정); }
+  .버튼줄{ display:flex; align-items:center; gap:12px; margin-top:12px; }
+  .점검목록{ list-style:none; margin-top:14px; display:grid; gap:10px; }
+  .항목{ background:var(--셸-3); border-radius:10px; padding:12px 14px; }
+  .항목 .줄{ display:flex; align-items:center; gap:10px; }
+  .항목 b{ font-size:15px; font-weight:700; }
+  .칩{ flex:none; border-radius:999px; padding:2px 10px; font-size:12px; font-weight:800; color:var(--칩-글자); }
+  .항목.고칠 .칩{ background:var(--고칠); } .항목.통과 .칩{ background:var(--통과); } .항목.미판정 .칩{ background:var(--미판정); }
+  .항목 .기준{ margin-top:4px; font-size:12.5px; color:var(--셸-흐림); }
+  .항목 .건{ list-style:none; margin-top:8px; display:grid; gap:4px; font-size:13px; }
+  .항목 .건 li{ padding-left:12px; position:relative; }
+  .항목 .건 li::before{ content:""; position:absolute; left:0; top:.62em; width:5px; height:5px; border-radius:50%; background:var(--셸-흐림); }
+  .항목.고칠 .건 li::before{ background:var(--고칠); } .항목.미판정 .건 li::before{ background:var(--미판정); }
+  .항목 .수{ margin-top:6px; font-size:12px; color:var(--셸-흐림); }
+  .행{ display:block; width:100%; text-align:left; border:0; border-radius:10px; background:none; color:inherit; font:inherit; padding:10px 12px; cursor:pointer; }
+  .행:hover{ background:var(--셸-3); } .행.now{ background:var(--셸-3); box-shadow:inset 4px 0 0 var(--포인트); }
+  .행 .번호{ display:block; font-size:14px; font-weight:800; }
+  .행 .칸{ display:grid; grid-template-columns:64px 1fr; gap:8px; margin-top:4px; font-size:13px; }
+  .행 .칸 span:first-child{ color:var(--셸-흐림); }
+  .오류상자{ margin-top:12px; padding:12px 14px; border-radius:10px; background:var(--셸-3); border-left:4px solid var(--고칠); font-size:14px; line-height:1.6; }
+
+  .탭줄{ display:flex; gap:6px; }
+  .탭{ height:36px; padding:0 14px; border:0; border-radius:10px; background:transparent; color:var(--셸-흐림); font-size:14px; font-weight:700; cursor:pointer; }
+  .탭.on{ background:var(--셸-3); color:var(--셸-글자); }
+  .탭:focus-visible{ outline:3px solid var(--포인트); outline-offset:2px; }
+  [hidden]{ display:none !important; }
+  .갤러리제목{ margin:20px 0 8px; font-size:15px; font-weight:800; }
+  .그리드{ display:grid; grid-template-columns:repeat(5, minmax(0, 1fr)); gap:8px; }
+  .셀{ display:grid; justify-items:center; align-content:start; gap:6px; padding:10px 2px 8px; border:0; border-radius:10px; background:var(--셸-3); color:var(--셸-글자); font-size:12.5px; font-weight:600; cursor:pointer; }
+  .셀:hover{ background:var(--셸-선); }
+  .셀 svg.아이콘{ width:40px; height:40px; }
+  .미리{ --fg:var(--배경); position:relative; width:60px; height:107px; background:var(--글자); border-radius:6px; overflow:hidden; }
+  .미리 .장식층 .a{ opacity:.3; } .미리 .장식층 .f{ opacity:.12; } .미리 .장식층 .d{ opacity:.6; } .미리 .장식층 .fd{ opacity:.35; } .미리 .장식층 .al{ opacity:.7; stroke-width:16; } .미리 .장식층 .fl{ opacity:.3; stroke-width:7; }
+  .미리 .장식층{ position:absolute; left:0; top:0; width:100%; height:100%; opacity:1; }
+  .종류행{ padding:8px 10px; border-radius:10px; background:var(--셸-3); font-size:13px; margin-bottom:6px; }
+  .종류행 b{ font-size:14px; margin-right:6px; }
+  .칩줄{ display:flex; width:100%; height:18px; border-radius:6px; overflow:hidden; box-shadow:0 0 0 1px var(--셸-선); }
+  .칩줄 i{ flex:1; }
+  .목록행{ display:block; width:100%; text-align:left; border:0; border-radius:10px; background:var(--셸-3); color:var(--셸-글자); font:inherit; font-size:13px; padding:10px 12px; margin-bottom:6px; cursor:pointer; }
+  .목록행:hover{ background:var(--셸-선); } .목록행 b{ font-size:14px; margin-right:8px; } .목록행 span{ color:var(--셸-흐림); }
+  .미리보기줄{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin:10px 0; padding:8px 10px; border-radius:10px; background:var(--셸-3); font-size:13px; }
+  @media (max-width:960px){
+    .app{ grid-template-columns:minmax(0,1fr); }
+    .panel{ display:none; position:fixed; inset:0 0 70px 0; z-index:50; border-left:0; }
+    .app.panel-open .panel{ display:block; }
+    #panelBtn{ display:inline-block; }
+    #replay, #prev, #next{ min-width:44px; padding:0 10px; }
+  }
 </style>
 </head>
 <body>
+<noscript>이 파일은 자바스크립트가 켜진 브라우저에서 열립니다.</noscript>
 <div class="app" id="app">
-  <div class="viewport" id="viewport">
-    <div class="frame" id="frame">
-      <div class="stage" id="stage">
-
-        <!-- 1 · 오프닝 -->
-        <section class="scene" id="s1">
-          <div class="deco d1" style="width:900px;height:900px;left:-300px;top:-380px;background:#FFE9C9"></div>
-          <div class="deco d2" style="width:620px;height:620px;right:-200px;bottom:-260px;background:#DDF3F5"></div>
-          <div class="center">
-            <svg class="mark" viewBox="0 0 300 220" aria-hidden="true">
-              <g class="rays" stroke="#FFB48F" stroke-width="10" stroke-linecap="round">
-                <path d="M150 12 V40"/><path d="M62 52 L82 72"/><path d="M238 52 L218 72"/><path d="M24 132 H52"/><path d="M276 132 H248"/>
-              </g>
-              <g class="sun"><circle cx="150" cy="140" r="64" fill="#FF8A5C"/></g>
-              <rect x="0" y="150" width="300" height="80" fill="#FBF5EA"/>
-              <path class="hz" d="M10 152 H290" stroke="#0E4A5A" stroke-width="14" stroke-linecap="round" pathLength="1" stroke-dasharray="1" fill="none"/>
-            </svg>
-            <div class="word" aria-label="하루상점"><span>하</span><span>루</span><span>상</span><span>점</span></div>
-            <p class="tag rv"><span>매일 쓰는 것을, <b>조금 더 좋게</b></span></p>
-            <div class="kick"><i></i>2026 여름 · 신상품</div>
-          </div>
-        </section>
-
-        <!-- 2 · 질문 -->
-        <section class="scene" id="s2">
-          <div class="deco d1" style="width:1100px;height:1100px;right:-420px;top:-520px;background:var(--petrol-2)"></div>
-          <div class="q">
-            <span class="rv"><span>주방 서랍 속 도구,</span></span>
-            <span class="rv"><span><em>몇 개나</em> 쓰고 계신가요?</span></span>
-          </div>
-          <div class="tools" id="tools"></div>
-          <div class="a">
-            <span class="rv"><span>자주 쓰는 건</span></span>
-            <span class="rv"><span><b>세 가지</b>였습니다.</span></span>
-            <p class="rv"><span>고객 설문에서 가장 많이 꼽힌<br>도마 · 집게 · 계량컵</span></p>
-          </div>
-        </section>
-
-        <!-- 3 · 제품 -->
-        <section class="scene" id="s3">
-          <div class="deco d1" style="width:760px;height:760px;right:-240px;top:-360px;background:#FFE9C9"></div>
-          <div class="pad">
-            <div class="kick"><i></i>데일리 쿡</div>
-            <h2><span class="rv"><span>자주 쓰는 <b>세 가지</b>만, 제대로.</span></span></h2>
-            <div class="cards">
-              <article class="card">
-                <div class="art"><svg viewBox="0 0 330 250" aria-hidden="true">
-                  <g transform="rotate(-8 165 125)">
-                    <rect x="52" y="52" width="226" height="150" rx="26" fill="#D9A85E"/>
-                    <rect x="52" y="44" width="226" height="150" rx="26" fill="#F2C98A"/>
-                    <circle cx="84" cy="76" r="11" fill="#FFF1DD"/>
-                    <path d="M112 150 H250 M112 172 H214" stroke="#E3B670" stroke-width="5" stroke-linecap="round"/>
-                    <g class="veg"><circle cx="150" cy="110" r="30" fill="#FF8A5C"/><circle cx="150" cy="110" r="19" fill="#FFB79A"/></g>
-                    <g class="veg"><circle cx="208" cy="100" r="24" fill="#FF8A5C"/><circle cx="208" cy="100" r="15" fill="#FFB79A"/></g>
-                    <g class="veg"><path d="M232 150 q22 -26 40 -6 q-18 18 -40 6z" fill="#3BB58A"/></g>
-                  </g>
-                </svg></div>
-                <span class="price">18,900원</span>
-                <h3>도마</h3><p>양면 · 미끄럼 방지 받침</p>
-              </article>
-              <article class="card">
-                <div class="art"><svg viewBox="0 0 330 250" aria-hidden="true">
-                  <g transform="translate(165 40)">
-                    <g class="arm l"><rect x="-13" y="0" width="26" height="176" rx="13" fill="#0E4A5A"/><rect x="-16" y="150" width="32" height="40" rx="14" fill="#7DE0EC"/></g>
-                    <g class="arm r"><rect x="-13" y="0" width="26" height="176" rx="13" fill="#14606F"/><rect x="-16" y="150" width="32" height="40" rx="14" fill="#7DE0EC"/></g>
-                    <circle cx="0" cy="6" r="20" fill="#0A3642"/><circle cx="0" cy="6" r="7" fill="#7DE0EC"/>
-                  </g>
-                </svg></div>
-                <span class="price">9,900원</span>
-                <h3>집게</h3><p>한 손 잠금 · 실리콘 끝</p>
-              </article>
-              <article class="card">
-                <div class="art"><svg viewBox="0 0 330 250" aria-hidden="true">
-                  <defs><clipPath id="cupclip"><path d="M96 50 H224 L210 206 H110 Z"/></clipPath></defs>
-                  <path d="M222 86 q52 4 46 46 q-6 34 -50 30" fill="none" stroke="#0E4A5A" stroke-width="14" stroke-linecap="round"/>
-                  <path d="M96 50 H224 L210 206 H110 Z" fill="#fff"/>
-                  <g clip-path="url(#cupclip)"><rect class="liq" x="90" y="96" width="140" height="116" fill="#7DE0EC"/><rect class="liq" x="90" y="96" width="140" height="12" fill="#B6EEF4"/></g>
-                  <path d="M96 50 H224 L210 206 H110 Z" fill="none" stroke="#0E4A5A" stroke-width="12" stroke-linejoin="round"/>
-                  <path class="tick" d="M122 96 H158 M124 132 H148 M127 168 H158" stroke="#0E4A5A" stroke-width="7" stroke-linecap="round"/>
-                </svg></div>
-                <span class="price">12,900원</span>
-                <h3>계량컵</h3><p>500mL · 눈금이 안쪽에</p>
-              </article>
-            </div>
-          </div>
-          <div class="set"><div class="l">세 가지 세트<small>도마 + 집게 + 계량컵</small></div><div class="r"><span class="was">41,700원<i></i></span><span class="now">36,900원</span></div></div>
-        </section>
-
-        <!-- 4 · 숫자 -->
-        <section class="scene" id="s4">
-          <div class="deco d1" style="width:900px;height:900px;left:-380px;bottom:-520px;background:#1B2A37"></div>
-          <div class="pad" style="justify-content:flex-start;padding-top:110px">
-            <div class="kick"><i></i>먼저 써 본 분들</div>
-            <div class="nums">
-              <div>
-                <div class="big"><span data-count="120" data-t="18.2" data-d="1.5">0</span><small>명</small></div>
-                <p class="cap rv"><span>사전 체험단이 2주 동안 썼습니다</span></p>
-              </div>
-              <div class="ringbox">
-                <svg viewBox="0 0 200 200" aria-hidden="true">
-                  <circle cx="100" cy="100" r="84" fill="none" stroke="rgba(255,255,255,.12)" stroke-width="18"/>
-                  <circle class="arc" cx="100" cy="100" r="84" fill="none" stroke="#FFD98A" stroke-width="18" stroke-linecap="round" pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"/>
-                </svg>
-                <div class="mid"><div class="pct"><span data-count="87" data-t="19.5" data-d="1.4">0</span><small>%</small></div><div class="lbl">다시 사고 싶다</div></div>
-              </div>
-            </div>
-          </div>
-          <div class="quote">「서랍 한 칸이 비었어요」<small>체험단 후기에서</small></div>
-        </section>
-
-        <!-- 5 · 출시일 -->
-        <section class="scene" id="s5">
-          <div class="deco d1" style="width:980px;height:980px;left:-420px;top:-460px;background:var(--coral-2);opacity:.55"></div>
-          <div class="pad">
-            <div>
-              <div class="kick"><i></i>출시일</div>
-              <div class="date"><span class="rv"><span>6월 15일</span></span></div>
-              <div class="dow"><i></i><span class="rv"><span>월요일 오전 10시</span></span></div>
-            </div>
-            <div class="cal" id="cal"><header><b>6월</b><span>2026</span></header><div class="g" id="calg"></div></div>
-          </div>
-        </section>
-
-        <!-- 6 · 엔딩 -->
-        <section class="scene" id="s6">
-          <div class="deco d1" style="width:820px;height:820px;left:-280px;bottom:-420px;background:#FFE9C9"></div>
-          <div class="deco d2" style="width:560px;height:560px;right:-180px;top:-240px;background:#DDF3F5"></div>
-          <div class="center">
-            <svg class="mark" viewBox="0 0 300 220" aria-hidden="true">
-              <g class="sun"><circle cx="150" cy="140" r="64" fill="#FF8A5C"/></g>
-              <rect x="0" y="150" width="300" height="80" fill="#FBF5EA"/>
-              <path d="M10 152 H290" stroke="#0E4A5A" stroke-width="14" stroke-linecap="round"/>
-            </svg>
-            <div class="word"><span>하</span><span>루</span><span>상</span><span>점</span></div>
-            <p class="end rv"><span><b>6월 15일</b>, 데일리 쿡을 만나 보세요</span></p>
-          </div>
-          <p class="fine">실습용 가상 브랜드입니다 · 숫자와 문구는 소개자료 폴더의 문서에서 가져왔습니다</p>
-        </section>
-
-        <div class="wipe b" style="background:var(--butter)"></div>
-        <div class="wipe a" style="background:var(--ink)"></div>
-        <div class="sub" id="sub" aria-live="off"></div>
+  <section class="player" id="player" aria-label="영상 재생기">
+    <div class="viewport" id="viewport">
+      <div class="큰오류" id="stageErr" role="alert"></div>
+      <div class="frame" id="frame">
+        <div class="stage" id="stage">
+          <div id="scenes"></div>
+          <div class="자막" id="caption" aria-live="off"></div>
+        </div>
       </div>
     </div>
-  </div>
-
-  <div class="bar">
-    <button class="btn main" id="play" type="button" aria-label="재생">▶ 재생</button>
-    <button class="btn" id="replay" type="button" aria-label="처음부터">⟲ <span>처음부터</span></button>
-    <div class="track"><input id="seek" type="range" min="0" max="30" step="0.01" value="0" aria-label="재생 위치"><div class="marks" id="marks"></div></div>
-    <div class="time" id="time">0.0 / 30.0초</div>
-    <button class="btn" id="cc" type="button" aria-pressed="true">자막</button>
-    <button class="btn" id="sheetBtn" type="button" aria-pressed="false">장면표 · 근거</button>
-    <button class="btn" id="fs" type="button" aria-label="전체 화면">⛶</button>
-  </div>
+    <div class="bar" id="bar">
+      <button class="btn 재생" id="play" type="button" aria-label="재생">▶ 재생</button>
+      <button class="btn" id="replay" type="button" aria-label="처음부터">⟲ 처음부터</button>
+      <button class="btn" id="prev" type="button" aria-label="이전 장면">◀ 장면</button>
+      <button class="btn" id="next" type="button" aria-label="다음 장면">장면 ▶</button>
+      <div class="track"><input id="seek" type="range" min="0" max="30" step="0.01" value="0" aria-label="재생 위치"><div class="marks" id="marks"></div></div>
+      <div class="time" id="time">0.0 / 30.0초</div>
+      <button class="btn" id="cc" type="button" aria-pressed="true">자막</button>
+      <button class="btn" id="panelBtn" type="button">점검 · 장면표</button>
+      <button class="btn" id="fs" type="button" aria-label="전체 화면">⛶ 전체 화면</button>
+    </div>
+  </section>
+  <aside class="panel" id="panel" aria-label="점검과 장면표">
+    <div class="머리줄"><div class="탭줄" role="tablist"><button class="탭 on" id="tabCheck" type="button">점검 · 장면표</button><button class="탭" id="tabGallery" type="button">그림 · 장식 보기</button></div><button class="btn sm" id="panelClose" type="button">닫기</button></div>
+    <div id="viewCheck">
+      <p class="요약" id="summary" role="status"></p>
+      <div class="버튼줄"><button class="btn sm" id="copyReport" type="button">점검 결과 복사</button><span class="흐림" id="copyMsg" aria-live="polite"></span></div>
+      <div id="errBox"></div>
+      <ul class="점검목록" id="checks"></ul>
+      <h2 class="구분">장면표 · 근거</h2>
+      <p class="흐림" style="margin:6px 0 10px">장면 데이터에서 자동으로 만들어집니다. 장면을 누르면 그 장면이 다 나온 시점으로 이동해 멈춥니다.</p>
+      <div id="rows"></div>
+    </div>
+    <div id="viewGallery" hidden></div>
+  </aside>
 </div>
-
-<aside class="sheet" id="sheet" aria-label="장면표와 근거">
-  <h2>장면표 · 근거</h2>
-  <p>장면을 누르면 그 시점으로 이동합니다. 화면의 숫자와 문구가 소개글의 어느 문장에서 왔는지 적었습니다.</p>
-  <div id="rows"></div>
-</aside>
 
 <script>
 (function(){
   'use strict';
-  var DUR = 30;
-  var OUT = 'cubic-bezier(.16,1,.3,1)', SPRING = 'cubic-bezier(.34,1.56,.64,1)', INOUT = 'cubic-bezier(.76,0,.24,1)';
-  var stage = document.getElementById('stage'), frame = document.getElementById('frame'), viewport = document.getElementById('viewport');
-  function $(s, r){ return [].slice.call((r || stage).querySelectorAll(s)); }
 
-  /* ── 장면표: 시간 · 자막 · 근거(소개글.md) ── */
-  var SCENES = [
-    { id:'s1', t:0,    name:'오프닝',  sub:'하루상점이 여름 신상품을 소개합니다',          src:'신상품_소개글 1문단 — 「매일 쓰는 것을, 조금 더 좋게」' },
-    { id:'s2', t:4.5,  name:'질문',    sub:'서랍 속 도구 가운데 자주 쓰는 것은 세 가지였습니다', src:'신상품_소개글 2문단 — 고객 설문에서 가장 많이 꼽힌 도구: 도마 · 집게 · 계량컵' },
-    { id:'s3', t:10.5, name:'제품',    sub:'데일리 쿡 — 도마, 집게, 계량컵',                src:'가격표.xlsx — 도마 18,900원 · 집게 9,900원 · 계량컵 12,900원 · 세트 36,900원' },
-    { id:'s4', t:17.5, name:'체험단',  sub:'사전 체험단 120명 가운데 87%가 다시 사고 싶다고 답했습니다', src:'체험단_설문결과.xlsx — 응답 120명 가운데 104명(87%) · 후기 7번 「서랍 한 칸이 비었어요」. 소개글의 「열에 아홉」은 쓰지 않았습니다(확인 필요)' },
-    { id:'s5', t:23.5, name:'출시일',  sub:'6월 15일 월요일 오전 10시에 출시합니다',         src:'신상품_소개글 5문단 — 출시 2026년 6월 15일(월) 오전 10시' },
-    { id:'s6', t:27.8, name:'엔딩',    sub:'6월 15일, 하루상점에서 만나 보세요',             src:'신상품_소개글 5문단' }
-  ];
+  /* ── 도구가 아는 이름들 (이 목록에 없는 이름은 점검 패널이 알려 줍니다) ── */
+  var KINDS   = ['작은글자','큰글자','숫자','막대','목록줄','꼬리표','구분선','그림','그림줄','도넛','별점','카드','말풍선','가격표','큰도형'];
+  var MOTIONS = ['올라오기','한글자씩','숫자세기','막대자라기','선그리기','튀어나오기','밑줄긋기'];
+  var ZONES   = ['위','가운데','아래'];
+  var PARTS   = ['훅','맥락','본문','결말','행동 안내'];
+  var SPEEDS  = ['빠르게','보통','느리게'];
+  var SIZES   = ['소','중','대','특대'];
+  var BGS     = ['기본','반전'];
+  var SHAPES  = ['원','둥근네모','알약'];
+  var COMBOS = {      /* 배경 · 글자 · 포인트. 글자/배경, 글자/포인트 명도 대비가 모두 4.5:1 이상 */
+    '크림':{ 배경:'#FBF5EA', 글자:'#14202B', 포인트:'#FF8A5C' }, '하늘':{ 배경:'#EAF4FB', 글자:'#0D2438', 포인트:'#5BB8F5' },
+    '숲':{ 배경:'#EFF5E9', 글자:'#14291C', 포인트:'#8CCB4A' },   '장미':{ 배경:'#FFF0F0', 글자:'#3B1420', 포인트:'#FF7C8A' },
+    '먹':{ 배경:'#F2F2EF', 글자:'#121212', 포인트:'#1FC3B1' },   '밤':{ 배경:'#111B26', 글자:'#F5EFE3', 포인트:'#B83A22' }
+  };
+  var COMBO_NAMES = Object.keys(COMBOS);
+  var COMBO_ALIAS = { '기본':'크림','베이지':'크림','주황':'크림','파랑':'하늘','블루':'하늘','초록':'숲','그린':'숲','분홍':'장미','핑크':'장미','빨강':'장미','흑백':'먹','검정':'먹','회색':'먹','다크':'밤','어둡게':'밤','검은색':'밤' };
+  var MOODS = {       /* 배율: 속도 단계에 곱함 · 곡선: 멈추는 부드러움 · 튐: 넘쳤다 돌아오는 정도 · 전환: 초 · 간격: 그림줄 차례 간격 */
+    '차분하게':{ 배율:1.3, 곡선:2.5, 튐:0, 전환:.8, 간격:.6, 설명:'부드럽게 멈추고 튀지 않습니다' },
+    '경쾌하게':{ 배율:1, 곡선:3, 튐:1.70158, 전환:.5, 간격:.5, 설명:'보통으로 멈추고 살짝 튑니다' },
+    '또렷하게':{ 배율:.7, 곡선:4, 튐:.9, 전환:.35, 간격:.35, 설명:'빠르게 멈추고 조금 튑니다' }
+  };
+  var MOOD_NAMES = Object.keys(MOODS);
+  var MOOD_ALIAS = { '차분':'차분하게','조용하게':'차분하게','느긋하게':'차분하게','경쾌':'경쾌하게','신나게':'경쾌하게','밝게':'경쾌하게','또렷':'또렷하게','빠르게':'또렷하게','힘있게':'또렷하게','선명하게':'또렷하게' };
+  var TRANSITIONS = ['밀어내기','겹쳐넘기기','닦아내기','확대하기'];
+  var TRANS_NOTE = { '밀어내기':'새 장면이 옆에서 들어와 이전 장면을 밀어냅니다', '겹쳐넘기기':'새 장면이 이전 장면 위로 덮이며 들어옵니다',
+    '닦아내기':'새 장면이 왼쪽에서 오른쪽으로 닦이듯 드러납니다', '확대하기':'이전 장면이 흐려지며 새 장면이 조금 커지며 나타납니다' };
+  var TRANS_ALIAS = { '밀기':'밀어내기','슬라이드':'밀어내기','겹치기':'겹쳐넘기기','덮기':'겹쳐넘기기','페이드':'겹쳐넘기기','닦기':'닦아내기','와이프':'닦아내기','줌':'확대하기','확대':'확대하기' };
+  var COMBO_DEFAULT = '크림', MOOD_DEFAULT = '경쾌하게', TRANS_DEFAULT = '밀어내기';
+  var TOP_KEYS = ['제목','색조합','분위기','전환','장면'];
+  var KINDMOTION = {
+    '작은글자':['올라오기','한글자씩','밑줄긋기','튀어나오기'], '큰글자':['올라오기','한글자씩','밑줄긋기','튀어나오기'],
+    '숫자':['숫자세기','올라오기','튀어나오기'], '막대':['막대자라기'], '목록줄':['올라오기','한글자씩','튀어나오기'],
+    '꼬리표':['튀어나오기','올라오기'], '구분선':['선그리기'],
+    '그림':['선그리기','튀어나오기','올라오기'], '그림줄':['튀어나오기','올라오기','선그리기'],
+    '도넛':['숫자세기','선그리기','튀어나오기'], '별점':['튀어나오기','올라오기'], '카드':['올라오기','튀어나오기'],
+    '말풍선':['튀어나오기','올라오기','한글자씩'], '가격표':['튀어나오기','올라오기','숫자세기'], '큰도형':['튀어나오기','올라오기','숫자세기']
+  };
+  var VISUAL   = ['그림','그림줄','도넛','별점','카드','말풍선','가격표','큰도형','막대'];     /* 시각 요소로 세는 종류 */
+  var TEXTREQ  = ['작은글자','큰글자','숫자','막대','목록줄','꼬리표','도넛','카드','말풍선','가격표','큰도형'];   /* 글이 꼭 있어야 하는 종류 */
+  var MAX_VISUAL = 4;                    /* 한 장면의 그림 · 도형 상한(그림줄은 1개). 가운데 자리 600px에 도형 4개가 들어가는 실측에 맞춤 */
+  var SCENE_KEYS = ['구간','시작','끝','자막','근거','바탕','장식','요소'];
+  var EL_KEYS    = ['종류','글','곁글','값','이름','이름들','글들','원배지','모양','움직임','등장','자리','속도','크기'];
+  var TRANS = 0.5;                       /* 장면 전환(밀어내기) 시간 */
+  var PH = /^\s*여기에/;                 /* 자리 표시 문구 */
+  var SPEED_FALLBACK = { '빠르게':.4, '보통':.7, '느리게':1 };
 
-  var SUBS = [
-    [0.9, 4.0, '하루상점이 여름 신상품을 소개합니다'],
-    [5.2, 8.3, '주방 서랍 속 도구, 몇 개나 쓰고 계신가요?'],
-    [8.9, 10.0, '자주 쓰는 것은 세 가지였습니다'],
-    [11.2, 14.8, '데일리 쿡 — 도마, 집게, 계량컵'],
-    [15.1, 17.0, '세 가지 세트는 36,900원입니다'],
-    [18.2, 23.0, '사전 체험단 120명 가운데 87%가 다시 사고 싶다고 답했습니다'],
-    [24.2, 27.3, '6월 15일 월요일 오전 10시에 출시합니다'],
-    [28.6, 30.1, '6월 15일, 하루상점에서 만나 보세요']
-  ];
+  /* ── 그림 30개: 24×24 칸 · 한 굵기 · 선 · 둥근 끝 ── */
+  function C(cx, cy, r){ return 'M' + (cx - r) + ' ' + cy + 'a' + r + ' ' + r + ' 0 1 0 ' + (2 * r) + ' 0a' + r + ' ' + r + ' 0 1 0 ' + (-2 * r) + ' 0'; }
+  function RR(x, y, w, hh, r){ return 'M' + (x + r) + ' ' + y + 'h' + (w - 2 * r) + 'a' + r + ' ' + r + ' 0 0 1 ' + r + ' ' + r + 'v' + (hh - 2 * r) + 'a' + r + ' ' + r + ' 0 0 1 ' + (-r) + ' ' + r + 'h' + (-(w - 2 * r)) + 'a' + r + ' ' + r + ' 0 0 1 ' + (-r) + ' ' + (-r) + 'v' + (-(hh - 2 * r)) + 'a' + r + ' ' + r + ' 0 0 1 ' + r + ' ' + (-r) + 'z'; }
+  var ICONS = {
+    '별':['M12 3.2l2.7 5.6 6.1.8-4.5 4.3 1.1 6.1-5.4-3-5.4 3 1.1-6.1L3.2 9.6l6.1-.8z'],
+    '하트':['M12 20.2S4.2 15.6 4.2 9.9a4.4 4.4 0 0 1 7.8-2.8 4.4 4.4 0 0 1 7.8 2.8c0 5.7-7.8 10.3-7.8 10.3z'],
+    '체크':['M4.5 12.8l5 5L19.5 6.5'],
+    '느낌표':['M12 4v10.5','M12 19.6v.1'],
+    '물음표':['M8.6 9.3a3.5 3.5 0 1 1 5.1 3.1c-1.1.7-1.7 1.4-1.7 2.7','M12 19.6v.1'],
+    '화살표':['M4 12h15.5','M13.5 6l6 6-6 6'],
+    '장바구니':['M3 4.5h2.6l2 10.5h10.6l1.9-8H6.4', C(9.5, 19.5, 1.4), C(17, 19.5, 1.4)],
+    '선물상자':['M4.5 11.5v8.5h15v-8.5','M3 7.5h18v4H3z','M12 7.5V20','M12 7.5C9.2 7.5 7.4 6 7.4 4.8S9 3.4 10.1 4.4C11.2 5.4 12 7.5 12 7.5z','M12 7.5c2.8 0 4.6-1.5 4.6-2.7S15 3.4 13.9 4.4C12.8 5.4 12 7.5 12 7.5z'],
+    '택배상자':['M3.5 7.8L12 3.6l8.5 4.2v8.6L12 20.6l-8.5-4.2z','M3.5 7.8L12 12l8.5-4.2','M12 12v8.6','M7.8 5.7l8.5 4.2'],
+    '가격표':['M3.5 12.4V4.5h7.9l9.2 9.2a1.7 1.7 0 0 1 0 2.4l-5.3 5.3a1.7 1.7 0 0 1-2.4 0z', C(8, 9, 1.2)],
+    '달력':[RR(3.5, 5, 17, 15.5, 2.5),'M3.5 10h17','M8 3v4','M16 3v4'],
+    '시계':[C(12, 12, 8.7),'M12 7v5l3.2 2'],
+    '종':['M6 17v-6a6 6 0 0 1 12 0v6l1.6 2H4.4z','M10 21.5a2 2 0 0 0 4 0'],
+    '위치핀':['M12 21.3s-6.6-6-6.6-11.3a6.6 6.6 0 0 1 13.2 0c0 5.3-6.6 11.3-6.6 11.3z', C(12, 10, 2.4)],
+    '전화':['M5.2 4h3.4l1.7 4.4-2.2 1.5a11 11 0 0 0 5 5l1.5-2.2 4.4 1.7v3.4a2 2 0 0 1-2.1 2A15.5 15.5 0 0 1 3.2 6.1 2 2 0 0 1 5.2 4z'],
+    '말풍선':['M5.5 4.5h13a2 2 0 0 1 2 2v7.6a2 2 0 0 1-2 2H11l-4.5 4v-4h-1a2 2 0 0 1-2-2V6.5a2 2 0 0 1 2-2z'],
+    '사람':[C(12, 8, 4),'M4.5 20.5c.9-4.1 3.7-6.2 7.5-6.2s6.6 2.1 7.5 6.2'],
+    '사람들':[C(9, 8.5, 3.4),'M2.6 19.6c.7-3.4 3.1-5.1 6.4-5.1s5.7 1.7 6.4 5.1', C(17.2, 9.4, 2.7),'M16.7 14.6c2.7 0 4.6 1.5 5.2 4.5'],
+    '집':['M3.5 11.2L12 4l8.5 7.2','M5.6 9.8v10.7h12.8V9.8','M10 20.5v-6h4v6'],
+    '가게':['M3.6 9.6L5 4.2h14l1.4 5.4','M3.6 9.6c0 1.6 1.2 2.8 2.8 2.8s2.8-1.2 2.8-2.8c0 1.6 1.2 2.8 2.8 2.8s2.8-1.2 2.8-2.8c0 1.6 1.2 2.8 2.8 2.8s2.8-1.2 2.8-2.8','M5.2 12.8v7.7h13.6v-7.7','M10 20.5v-4.6h4v4.6'],
+    '엄지척':['M3.8 11h3.7v9.5H3.8z','M7.5 11l3.1-6.4c1.6 0 2.6 1.3 2.3 2.9L12.3 10h5.6a2 2 0 0 1 2 2.4l-1.2 6.5a2 2 0 0 1-2 1.6H7.5'],
+    '전구':['M9.2 17.5h5.6','M10.2 20.7h3.6','M12 3.4a6 6 0 0 0-3.6 10.8c.7.6 1 1.3 1 2.2h5.2c0-.9.3-1.6 1-2.2A6 6 0 0 0 12 3.4z'],
+    '리본':[C(12, 9, 5.5),'M8.6 13.6L6.6 21.2 12 18.2l5.4 3-2-7.6'],
+    '불꽃':['M12 21.2a6.6 6.6 0 0 0 6.6-6.6c0-3.7-2.7-5.6-3.7-9.2-1.8 1.2-3.2 3.3-3.4 5.7-1-.6-1.6-1.6-1.8-2.9-2.1 1.5-4.3 3.3-4.3 6.4A6.6 6.6 0 0 0 12 21.2z'],
+    '컵':['M5 6.5h11v9a4.5 4.5 0 0 1-4.5 4.5h-2A4.5 4.5 0 0 1 5 15.5z','M16 9h1.4a2.6 2.6 0 0 1 0 5.2H16','M8.6 2.8v1.8','M12.4 2.8v1.8'],
+    '도마':['M5.5 6h8.5a2 2 0 0 1 2 2v1.5h3a1.5 1.5 0 0 1 1.5 1.5v2a1.5 1.5 0 0 1-1.5 1.5h-3V16a2 2 0 0 1-2 2H5.5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z','M7 10h5','M7 13.5h3'],
+    '집게':['M12 6C8 8.6 7.4 15 9 21','M12 6c4 2.6 4.6 9 3 15','M12 6V3','M9.6 3h4.8'],
+    '냄비':['M4.5 10h15v7a3.5 3.5 0 0 1-3.5 3.5H8A3.5 3.5 0 0 1 4.5 17z','M3 10h18','M4.5 13H2.5','M19.5 13h2','M12 10V7.5','M10.3 7.5h3.4'],
+    '서랍':[RR(3.5, 4, 17, 16, 2),'M3.5 12h17','M10 8h4','M10 16h4'],
+    '계량컵':['M5.5 4.5h11l-1.2 15a1.5 1.5 0 0 1-1.5 1.4H8.2a1.5 1.5 0 0 1-1.5-1.4z','M16.4 8h2.2a2 2 0 0 1 2 2v2.4a2 2 0 0 1-2 2h-3','M7.2 9h3','M7.6 13h2.6','M8 17h2']
+  };
+  var ICON_NAMES = Object.keys(ICONS);
+  var ICON_ALIAS = { '쇼핑카트':'장바구니','카트':'장바구니','쇼핑':'장바구니','박스':'택배상자','상자':'택배상자','배송':'택배상자','택배':'택배상자','선물':'선물상자','가격':'가격표','태그':'가격표','할인':'가격표',
+    '캘린더':'달력','날짜':'달력','출시일':'달력','알람':'시계','시간':'시계','벨':'종','알림':'종','위치':'위치핀','핀':'위치핀','지도':'위치핀','통화':'전화','채팅':'말풍선','대화':'말풍선','후기':'말풍선','리뷰':'말풍선',
+    '고객':'사람','사용자':'사람','체험단':'사람들','팀':'사람들','매장':'가게','상점':'가게','쇼핑몰':'가게','홈':'집','좋아요':'엄지척','추천':'엄지척','아이디어':'전구','팁':'전구','배지':'리본','메달':'리본','수상':'리본','왕관':'리본',
+    '불':'불꽃','인기':'불꽃','머그컵':'컵','커피':'컵','칼판':'도마','솥':'냄비','프라이팬':'냄비','수납':'서랍','서랍장':'서랍','눈금컵':'계량컵','측량컵':'계량컵' };
 
-  /* ── 2장면 도구 타일 · 5장면 달력을 만든다 ── */
-  var ICON = [
-    '<ellipse cx="24" cy="14" rx="7" ry="9"/><path d="M24 23V42"/>',
-    '<path d="M18 8V18M24 8V18M30 8V18M18 18Q24 26 30 18M24 23V42"/>',
-    '<path d="M14 12H34L31 40H17Z M20 22H26 M19.5 30H25"/>',
-    '<path d="M22 42V8Q32 14 30 28H22"/>',
-    '<ellipse cx="24" cy="16" rx="7" ry="11"/><path d="M24 5V42"/>',
-    '<rect x="12" y="12" width="24" height="28" rx="5"/><circle cx="24" cy="18" r="2"/>',
-    '<path d="M30 8V30A8 8 0 0 1 14 30H30"/>',
-    '<rect x="17" y="8" width="14" height="16" rx="3"/><path d="M24 24V42"/>',
-    '<circle cx="18" cy="36" r="5"/><circle cx="30" cy="36" r="5"/><path d="M20 32L30 8M28 32L18 8"/>',
-    '<path d="M20 6L14 42M28 6L34 42M20 6Q24 2 28 6"/>',
-    '<rect x="16" y="8" width="16" height="26" rx="3"/><path d="M21 15h.1M27 15h.1M21 21h.1M27 21h.1M21 27h.1M27 27h.1M24 34V42"/>',
-    '<circle cx="24" cy="14" r="8"/><circle cx="24" cy="14" r="3"/><path d="M24 22V42"/>'
-  ];
-  var PICK = { 2:1, 5:1, 9:1 };
-  document.getElementById('tools').innerHTML = ICON.map(function(p, i){
-    return '<div class="tool' + (PICK[i] ? ' pick' : '') + '"><div class="in"><svg viewBox="0 0 48 48">' + p + '</svg><span class="ring"></span></div></div>';
-  }).join('');
-  (function(){
-    var h = ['일','월','화','수','목','금','토'].map(function(d){ return '<div class="h">' + d + '</div>'; }).join('');
-    var cells = ''; for (var b = 0; b < 1; b++) cells += '<div class="d"></div>';          /* 2026년 6월 1일은 월요일 */
-    for (var d = 1; d <= 30; d++) cells += '<div class="d' + (d === 15 ? ' on' : '') + '"><b>' + d + '</b></div>';
-    document.getElementById('calg').innerHTML = h + cells;
-    var cal = document.getElementById('cal'), cols = ['#0E4A5A','#FFD98A','#7DE0EC','#FFFFFF','#14202B','#FFD98A','#7DE0EC','#0E4A5A'];
-    cols.forEach(function(c){ var s = document.createElement('i'); s.className = 'spark'; s.style.background = c; cal.appendChild(s); });
-  })();
-
-  /* ── 타임라인 엔진: 모든 움직임을 Web Animations로 만들고 시각 하나(t)로 움직인다 ── */
-  var anims = [];
-  function A(target, kf, start, dur, o){
-    o = o || {};
-    var els = typeof target === 'string' ? $(target) : [].concat(target);
-    els.forEach(function(el, i){
-      var a = el.animate(kf, { delay:(start + (o.stagger || 0) * i) * 1000, duration:dur * 1000, easing:o.ease || OUT, fill:o.fill || 'both' });
-      a.pause(); anims.push(a);
-    });
-  }
-  function up(sel, start, o){ A(sel, [{ transform:'translateY(112%)' }, { transform:'none' }], start, (o && o.dur) || .85, o); }
-  function pop(sel, start, o){ A(sel, [{ transform:'scale(0)', opacity:0 }, { transform:'scale(1)', opacity:1 }], start, (o && o.dur) || .6, Object.assign({ ease:SPRING }, o)); }
-  function rise(sel, start, o){ A(sel, [{ transform:'translateY(' + ((o && o.y) || 90) + 'px)', opacity:0 }, { transform:'none', opacity:1 }], start, (o && o.dur) || .9, o); }
-
-  /* 장면 전환 — 두 겹 가림막이 지나가는 동안 장면을 바꾼다 */
-  var WIPE = [{ transform:'translateX(-101%)', offset:0 }, { transform:'translateX(0)', offset:.42, easing:'linear' }, { transform:'translateX(0)', offset:.58 }, { transform:'translateX(101%)', offset:1 }];
-  SCENES.forEach(function(s, i){
-    var el = document.getElementById(s.id), end = i < SCENES.length - 1 ? SCENES[i + 1].t : DUR + 1;
-    A(el, [{ opacity:0 }, { opacity:1 }], s.t, .001, { ease:'linear' });
-    if (end <= DUR) A(el, [{ opacity:1 }, { opacity:0 }], end, .001, { ease:'linear', fill:'forwards' });
-    if (i > 0){
-      A('.wipe.b', WIPE, s.t - .58, 1, { ease:INOUT, fill:'none' });
-      A('.wipe.a', WIPE, s.t - .5, 1, { ease:INOUT, fill:'none' });
+  /* ── 장식 10개: 위치 · 농담 고정, 장면 시작 때 한 번 나온다 ── */
+  var DECO_NAMES = ['큰원','겹원','띠','대각띠','점무늬','물결','모서리틀','격자','햇살','종이조각'];
+  var DECO_ALIAS = { '원':'큰원','동그라미':'큰원','줄무늬':'띠','사선':'대각띠','대각선':'대각띠','점':'점무늬','도트':'점무늬','파도':'물결','웨이브':'물결','프레임':'모서리틀','테두리':'모서리틀','모서리':'모서리틀',
+    '그리드':'격자','빛':'햇살','광선':'햇살','색종이':'종이조각','컨페티':'종이조각','꽃가루':'종이조각','폭죽':'종이조각' };
+  function decoInner(name, i){
+    var s = '', r, c, k, d;
+    if (name === '큰원') s = (i % 2 === 0) ? '<circle class="a" cx="960" cy="-20" r="380"/><circle class="f" cx="960" cy="-20" r="240"/>' : '<circle class="a" cx="120" cy="1940" r="380"/><circle class="f" cx="120" cy="1940" r="240"/>';
+    else if (name === '겹원') s = '<circle class="a" cx="60" cy="1810" r="260"/><circle class="f" cx="330" cy="1900" r="180"/><circle class="a" cx="1010" cy="130" r="150"/><circle class="f" cx="880" cy="40" r="90"/>';
+    else if (name === '띠') s = '<rect class="a" x="0" y="0" width="1080" height="64"/><rect class="f" x="0" y="1856" width="1080" height="64"/><rect class="a" x="0" y="1830" width="1080" height="12"/>';
+    else if (name === '대각띠') s = '<polygon class="a" points="1080,300 1080,420 660,0 780,0"/><polygon class="f" points="1080,470 1080,520 500,0 560,0"/><polygon class="a" points="0,1560 0,1680 240,1920 120,1920"/><polygon class="f" points="0,1720 0,1770 150,1920 90,1920"/>';
+    else if (name === '점무늬'){ for (r = 0; r < 5; r++) for (c = 0; c < 5; c++) s += '<circle class="d" cx="' + (820 + c * 46) + '" cy="' + (56 + r * 46) + '" r="8"/>'; for (r = 0; r < 4; r++) for (c = 0; c < 4; c++) s += '<circle class="d" cx="' + (60 + c * 46) + '" cy="' + (1700 + r * 46) + '" r="8"/>'; }
+    else if (name === '물결'){ d = function(y, amp){ var t = 'M0 ' + y + 'q67.5 ' + (-amp) + ' 135 0'; for (k = 0; k < 7; k++) t += 't135 0'; return t; }; s = '<path class="al" d="' + d(1850, 46) + '"/><path class="fl" d="' + d(1892, 46) + '"/><path class="al" d="' + d(56, 40) + '"/>'; }
+    else if (name === '모서리틀') s = '<path class="al" d="M44 150V44H150M930 44H1036V150M44 1770V1876H150M930 1876H1036V1770"/>';
+    else if (name === '격자'){ for (k = 0; k < 5; k++) s += '<path class="fl" d="M' + (740 + k * 85) + ' 0V340"/><path class="fl" d="M740 ' + (k * 85) + 'H1080"/><path class="fl" d="M' + (k * 85) + ' 1580V1920"/><path class="fl" d="M0 ' + (1580 + k * 85) + 'H340"/>'; }
+    else if (name === '햇살'){ for (k = 0; k < 5; k++){ var th = (100 + k * 18) * Math.PI / 180; s += '<path class="al" d="M' + f(1040 + 300 * Math.cos(th)) + ' ' + f(300 * Math.sin(th)) + 'L' + f(1040 + 560 * Math.cos(th)) + ' ' + f(560 * Math.sin(th)) + '"/>'; } }
+    else if (name === '종이조각'){
+      [[60,60,26,14,25,'d'],[200,30,16,16,0,'fd'],[340,90,22,12,-30,'d'],[520,36,14,14,45,'fd'],[700,70,24,12,10,'d'],[860,28,18,18,0,'d'],[990,100,28,14,-20,'fd'],
+       [30,300,16,16,0,'d'],[1042,420,20,12,35,'fd'],[22,1500,24,12,-25,'d'],[1050,1360,16,16,0,'fd'],[40,1700,26,13,40,'fd'],[180,1862,18,18,0,'d'],[400,1884,22,12,-35,'fd'],
+       [640,1856,14,14,0,'d'],[820,1886,26,13,20,'fd'],[1000,1846,18,18,0,'d']].forEach(function(q){
+        s += (q[2] === q[3]) ? '<circle class="' + q[5] + '" cx="' + q[0] + '" cy="' + q[1] + '" r="' + (q[2] / 2) + '"/>' : '<rect class="' + q[5] + '" x="' + (-q[2] / 2) + '" y="' + (-q[3] / 2) + '" width="' + q[2] + '" height="' + q[3] + '" transform="translate(' + q[0] + ' ' + q[1] + ') rotate(' + q[4] + ')"/>';
+      });
     }
-    A($('.deco.d1', el), [{ transform:'translate(-50px,30px) scale(1)' }, { transform:'translate(50px,-30px) scale(1.08)' }], s.t - .6, end - s.t + 1.2, { ease:'linear' });
-    A($('.deco.d2', el), [{ transform:'translate(40px,-20px)' }, { transform:'translate(-40px,30px)' }], s.t - .6, end - s.t + 1.2, { ease:'linear' });
-  });
-
-  /* 1 · 오프닝 */
-  A('#s1 .hz', [{ strokeDashoffset:1 }, { strokeDashoffset:0 }], .3, .8, { ease:INOUT });
-  A('#s1 .sun', [{ transform:'translateY(110px)' }, { transform:'none' }], .7, 1.1, { ease:SPRING });
-  A('#s1 .rays path', [{ opacity:0, transform:'scale(.4)' }, { opacity:1, transform:'scale(1)' }], 1.35, .5, { stagger:.06, ease:SPRING });
-  $('#s1 .rays path').forEach(function(p){ p.style.transformOrigin = '150px 140px'; });
-  up('#s1 .word span', 1.45, { stagger:.08 });
-  up('#s1 .tag > span', 2.3);
-  pop('#s1 .kick', 2.95);
-
-  /* 2 · 질문 */
-  up('#s2 .q .rv > span', 4.95, { stagger:.22 });
-  A('#s2 .q', [{ transform:'none' }, { transform:'translateY(-210px) scale(.62)' }], 6.9, .9, { ease:INOUT });
-  pop('#s2 .tool', 7.3, { stagger:.045, dur:.55 });
-  A($('#s2 .tool').filter(function(e){ return !e.classList.contains('pick'); }).map(function(e){ return e.firstChild; }),
-    [{ opacity:1, transform:'scale(1)' }, { opacity:.2, transform:'scale(.84)' }], 8.5, .6);
-  A('#s2 .tool.pick .in', [{ transform:'scale(1)' }, { transform:'scale(1.12)' }], 8.5, .6, { ease:SPRING });
-  A('#s2 .tool.pick .ring', [{ opacity:0, transform:'scale(.7)' }, { opacity:1, transform:'scale(1)' }], 8.6, .5, { ease:SPRING, stagger:.1 });
-  up('#s2 .a .rv > span', 8.9, { stagger:.16 });
-
-  /* 3 · 제품 */
-  pop('#s3 .kick', 10.9);
-  up('#s3 h2 .rv > span', 11.1);
-  rise('#s3 .card', 11.8, { stagger:.18, y:140 });
-  $('#s3 .veg').forEach(function(g){ g.style.transformBox = 'fill-box'; g.style.transformOrigin = '50% 50%'; });
-  pop('#s3 .veg', 12.7, { stagger:.14 });
-  $('#s3 .arm').forEach(function(g){ g.style.transformOrigin = '0px 6px'; });
-  A('#s3 .arm.l', [{ transform:'rotate(4deg)' }, { transform:'rotate(17deg)', offset:.35 }, { transform:'rotate(5deg)', offset:.7 }, { transform:'rotate(14deg)' }], 12.9, 1.6, { ease:INOUT });
-  A('#s3 .arm.r', [{ transform:'rotate(-4deg)' }, { transform:'rotate(-17deg)', offset:.35 }, { transform:'rotate(-5deg)', offset:.7 }, { transform:'rotate(-14deg)' }], 12.9, 1.6, { ease:INOUT });
-  $('#s3 .liq').forEach(function(r){ r.style.transformBox = 'fill-box'; r.style.transformOrigin = '50% 100%'; });
-  A('#s3 .liq', [{ transform:'translateY(118px)' }, { transform:'none' }], 13.1, 1.4, { ease:OUT });
-  pop('#s3 .price', 13.7, { stagger:.14 });
-  rise('#s3 .set', 15.0, { y:160 });
-  A('#s3 .was i', [{ transform:'scaleX(0)' }, { transform:'scaleX(1)' }], 15.7, .45, { ease:INOUT });
-  A('#s3 .now', [{ transform:'scale(.6)', opacity:0 }, { transform:'scale(1)', opacity:1 }], 16.0, .6, { ease:SPRING });
-
-  /* 4 · 숫자 */
-  pop('#s4 .kick', 17.9);
-  rise('#s4 .big', 18.1, { y:120 });
-  up('#s4 .cap > span', 18.9);
-  pop('#s4 .ringbox', 19.2, { dur:.7 });
-  A('#s4 .arc', [{ strokeDashoffset:100 }, { strokeDashoffset:13 }], 19.5, 1.4, { ease:OUT });
-  A('#s4 .quote', [{ transform:'translateY(60px) scale(.8)', opacity:0 }, { transform:'none', opacity:1 }], 21.2, .7, { ease:SPRING });
-  $('#s4 .quote')[0].style.transformOrigin = '0 100%';
-
-  /* 5 · 출시일 */
-  pop('#s5 .kick', 23.9);
-  up('#s5 .date .rv > span', 24.1, { dur:1 });
-  A('#s5 .dow i', [{ transform:'scaleX(0)' }, { transform:'scaleX(1)' }], 24.8, .5, { ease:INOUT });
-  up('#s5 .dow .rv > span', 24.9);
-  A('#cal', [{ transform:'perspective(1600px) rotateX(-80deg) translateY(-60px)', opacity:0 }, { transform:'perspective(1600px) rotateX(0) translateY(0)', opacity:1 }], 24.3, 1, { ease:SPRING });
-  A('#calg .d b', [{ opacity:0, transform:'translateY(14px)' }, { opacity:1, transform:'none' }], 24.9, .35, { stagger:.014 });
-  A('#calg .d.on', [{ '--pop':0 }, { '--pop':1 }], 25.7, .5, { ease:SPRING });
-  (function(){
-    var on = $('#calg .d.on')[0], cal = document.getElementById('cal');
-    var x = on.offsetLeft + on.offsetWidth / 2 - 9, y = on.offsetTop + on.offsetHeight / 2 - 9;
-    $('.spark', cal).forEach(function(s, i, all){
-      var ang = i / all.length * Math.PI * 2, r = 120 + (i % 2) * 46;
-      A(s, [{ transform:'translate(' + x + 'px,' + y + 'px) scale(.2)', opacity:0 }, { opacity:1, offset:.2 },
-            { transform:'translate(' + (x + Math.cos(ang) * r) + 'px,' + (y + Math.sin(ang) * r) + 'px) scale(1)', opacity:0 }], 25.85, .9, { ease:OUT });
-    });
-  })();
-
-  /* 6 · 엔딩 */
-  A('#s6 .sun', [{ transform:'translateY(110px)' }, { transform:'none' }], 28.05, .8, { ease:SPRING });
-  up('#s6 .word span', 28.2, { stagger:.06, dur:.7 });
-  up('#s6 .end > span', 28.65, { dur:.7 });
-
-  if (CSS.registerProperty){ try { CSS.registerProperty({ name:'--pop', syntax:'<number>', inherits:true, initialValue:'0' }); } catch (e) {} }
-
-  /* ── 시각 적용 ── */
-  var counters = $('[data-count]').map(function(el){ return { el:el, to:+el.dataset.count, t:+el.dataset.t, d:+el.dataset.d }; });
-  var sub = document.getElementById('sub'), seek = document.getElementById('seek'), timeEl = document.getElementById('time');
-  var playBtn = document.getElementById('play'), rows = document.getElementById('rows');
-  var t = 0, playing = false, last = 0;
-  function sceneAt(x){ var k = 0; for (var i = 0; i < SCENES.length; i++) if (x >= SCENES[i].t) k = i; return k; }
-  function setTime(x){
-    t = Math.max(0, Math.min(DUR, x));
-    var ms = t * 1000;
-    for (var i = 0; i < anims.length; i++) anims[i].currentTime = ms;
-    counters.forEach(function(c){
-      var p = Math.max(0, Math.min(1, (t - c.t) / c.d)); p = 1 - Math.pow(1 - p, 3);
-      c.el.textContent = Math.round(c.to * p);
-    });
-    var k = sceneAt(t), cue = null;
-    for (var j = 0; j < SUBS.length; j++) if (t >= SUBS[j][0] && t < SUBS[j][1]) cue = SUBS[j];
-    if (cue) sub.textContent = cue[2];
-    sub.classList.toggle('on', !!cue);
-    seek.value = t; seek.style.setProperty('--p', (t / DUR * 100) + '%');
-    timeEl.textContent = t.toFixed(1) + ' / ' + DUR.toFixed(1) + '초';
-    [].forEach.call(rows.children, function(r, i){ r.classList.toggle('now', i === k); });
+    return s;
   }
+  function decoMarkup(name, i){ return '<svg class="장식층" viewBox="0 0 1080 1920" aria-hidden="true">' + decoInner(name, i) + '</svg>'; }
+  function lev(a, b){ var m = a.length, n = b.length, d = [], i, j; for (i = 0; i <= m; i++) d[i] = [i]; for (j = 1; j <= n; j++) d[0][j] = j; for (i = 1; i <= m; i++) for (j = 1; j <= n; j++) d[i][j] = Math.min(d[i-1][j] + 1, d[i][j-1] + 1, d[i-1][j-1] + (a[i-1] === b[j-1] ? 0 : 1)); return d[m][n]; }
+  function suggest(name, list, alias){
+    var k = str(name).replace(/\s+/g, ''), out = [];
+    if (alias[k] && list.indexOf(alias[k]) >= 0) out.push(alias[k]);
+    list.map(function(n){ var sc = lev(k, n); if (k && (n.indexOf(k) >= 0 || k.indexOf(n) >= 0)) sc -= 3; return { n:n, s:sc }; }).sort(function(a, b){ return a.s - b.s; }).forEach(function(o){ if (out.length < 3 && out.indexOf(o.n) < 0) out.push(o.n); });
+    return out;
+  }
+
+  var KIT_SUM = '329af6d9';                      /* 도구 코드 점검용 값 — 고치지 않습니다 */
+  var SELF = document.currentScript ? document.currentScript.textContent : '';
+  var RAW = window.영상;
+  var 읽기오류 = window.__영상도구오류 || [];
+  function $(id){ return document.getElementById(id); }
+  var stage = $('stage'), frame = $('frame'), viewport = $('viewport'), scenesRoot = $('scenes'), capEl = $('caption');
+  var seek = $('seek'), timeEl = $('time'), playBtn = $('play'), app = $('app'), player = $('player'), rowsEl = $('rows');
+  var cs = getComputedStyle(document.documentElement);
+  var SPEED = {}, SPEED_BASE = {};
+  SPEEDS.forEach(function(n){ var v = parseFloat(cs.getPropertyValue('--속도-' + n)); SPEED_BASE[n] = (isFinite(v) && v > 0) ? v : SPEED_FALLBACK[n]; SPEED[n] = SPEED_BASE[n]; });
+
+  /* ── 작은 도구 ── */
+  function h(tag, cls, text){ var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+  function isNum(x){ return typeof x === 'number' && isFinite(x); }
+  function toNum(x, d){ if (isNum(x)) return x; if (typeof x === 'string' && x.trim() !== '' && isFinite(Number(x))) return Number(x); return d; }
+  function str(x){ return x == null ? '' : String(x); }
+  function strip(s){ return str(s).replace(/\s+/g, ''); }
+  function canon(v, list){ var k = strip(v); if (!k) return null; for (var i = 0; i < list.length; i++) if (strip(list[i]) === k) return list[i]; return null; }
+  function g(x){ return String(Math.round(x * 100) / 100); }
+  function f(x){ return String(Math.round(x * 1000) / 1000); }
+  function count(x){ return typeof x === 'string' ? x.replace(/\s/g, '').length : 0; }
+  function clamp01(x){ return x < 0 ? 0 : (x > 1 ? 1 : x); }
+  var EASE = { pow:3, over:1.70158, stagger:.5 };      /* 분위기가 바꾸는 값 */
+  function outC(x){ return 1 - Math.pow(1 - x, EASE.pow); }
+  function inOut(x){ return x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2; }
+  function backO(x){ var c1 = EASE.over, c3 = c1 + 1, y = x - 1; return 1 + c3 * y * y * y + c1 * y * y; }
+
+  /* ── 색 조합 · 분위기 · 전환 ── */
+  function hexToRgb(v){
+    var m = /^#?([0-9a-f]{3}|[0-9a-f]{6})$/i.exec(str(v).trim()); if (!m) return null;
+    var x = m[1]; if (x.length === 3) x = x.replace(/./g, function(c){ return c + c; });
+    return [parseInt(x.substr(0, 2), 16), parseInt(x.substr(2, 2), 16), parseInt(x.substr(4, 2), 16)];
+  }
+  function hex6(v){ return '#' + hexToRgb(v).map(function(n){ return ('0' + n.toString(16)).slice(-2); }).join(''); }
+  function lum(rgb){ var a = rgb.map(function(v){ v /= 255; return v <= .03928 ? v / 12.92 : Math.pow((v + .055) / 1.055, 2.4); }); return .2126 * a[0] + .7152 * a[1] + .0722 * a[2]; }
+  function contrast(c1, c2){ var l1 = lum(hexToRgb(c1)), l2 = lum(hexToRgb(c2)); return (Math.max(l1, l2) + .05) / (Math.min(l1, l2) + .05); }
+  function resolveCombo(v){        /* 읽을 수 없으면 기본 색으로 그리고, 점검 ⑯ · ⑰이 알려 준다 */
+    var dflt = { 이름:COMBO_DEFAULT, 색:COMBOS[COMBO_DEFAULT] };
+    if (v == null) return dflt;
+    if (typeof v === 'string'){ var nm = canon(v, COMBO_NAMES) || COMBO_ALIAS[strip(v)]; return nm ? { 이름:nm, 색:COMBOS[nm] } : dflt; }
+    if (typeof v === 'object' && !Array.isArray(v) && hexToRgb(v.배경) && hexToRgb(v.글자) && hexToRgb(v.포인트)) return { 이름:'직접 적은 색', 색:{ 배경:hex6(v.배경), 글자:hex6(v.글자), 포인트:hex6(v.포인트) } };
+    return dflt;
+  }
+  function settingsFrom(R){
+    R = (R && typeof R === 'object') ? R : {};
+    return { combo:resolveCombo(R.색조합), mood:canon(R.분위기, MOOD_NAMES) || MOOD_ALIAS[strip(R.분위기)] || MOOD_DEFAULT, trans:canon(R.전환, TRANSITIONS) || TRANS_ALIAS[strip(R.전환)] || TRANS_DEFAULT };
+  }
+  var DATA = settingsFrom(RAW), TRANSNAME = TRANS_DEFAULT;
+  function applyCombo(c){ var st = document.documentElement.style; st.setProperty('--배경', c.배경); st.setProperty('--글자', c.글자); st.setProperty('--포인트', c.포인트); }
+  function applyMood(name){
+    var m = MOODS[name] || MOODS[MOOD_DEFAULT];
+    SPEEDS.forEach(function(n){ SPEED[n] = SPEED_BASE[n] * m.배율; });
+    TRANS = m.전환; EASE.pow = m.곡선; EASE.over = m.튐; EASE.stagger = m.간격;
+  }
+  function applyAll(c, m, t){ applyCombo(c); applyMood(m); TRANSNAME = t; }
+  function recomputeTimes(){
+    M.scenes.forEach(function(s){ s.els.forEach(function(e){
+      e.dur = SPEED[e.속도]; e.total = e.dur + (e.종류 === '그림줄' ? Math.max(0, e.이름들.length - 1) * e.dur * EASE.stagger : 0);
+      e.abs = s.시작 + Math.max(s.i > 0 ? TRANS : 0, e.등장);
+    }); });
+  }
+
+  /* ── 장면 데이터를 읽어 모델을 만든다 ── */
+  var M = { scenes:[], dur:1, title:'' };
+  var cur = 0, playing = false, last = 0;
+
+  function parseNum(text){
+    var m = /^([^\d]*)(\d[\d,]*(?:\.\d+)?)([\s\S]*)$/.exec(text);
+    if (!m) return null;
+    return { pre:m[1], suf:m[3], val:parseFloat(m[2].replace(/,/g, '')), dec:(m[2].split('.')[1] || '').length, comma:m[2].indexOf(',') >= 0 };
+  }
+  function fmtNum(v, o){
+    var s = v.toFixed(o.dec);
+    if (o.comma){ var p = s.split('.'); p[0] = p[0].replace(/\B(?=(\d{3})+(?!\d))/g, ','); s = p.join('.'); }
+    return s;
+  }
+
+  function rawDeco(v){
+    if (v == null) return [];
+    if (Array.isArray(v)) return v.filter(function(x){ return typeof x === 'string'; });
+    if (typeof v === 'string') return v.split(/[,·\/]|\s+/).filter(Boolean);
+    return [];
+  }
+  function iconOf(x){ return canon(x, ICON_NAMES) || ICON_ALIAS[strip(x)] || '별'; }
+  function normalize(){
+    var list = (RAW && Array.isArray(RAW.장면)) ? RAW.장면 : [];
+    var prevEnd = 0;
+    M.title = RAW && RAW.제목 ? str(RAW.제목) : '';
+    M.scenes = list.map(function(r, i){
+      r = (r && typeof r === 'object') ? r : {};
+      var st = toNum(r.시작, prevEnd), en = toNum(r.끝, st + 3);
+      if (!(en > st)) en = st + 0.5;
+      prevEnd = en;
+      var s = { i:i, raw:r, 구간:canon(r.구간, PARTS), 구간원문:str(r.구간), 시작:st, 끝:en, 자막:str(r.자막), 근거:str(r.근거), 반전:canon(r.바탕, BGS) === '반전', els:[], decoNames:[] };
+      s.decoNames = rawDeco(r.장식).map(function(x){ return canon(x, DECO_NAMES) || DECO_ALIAS[strip(x)] || null; }).filter(Boolean).slice(0, 2);
+      s.els = (Array.isArray(r.요소) ? r.요소 : []).map(function(q){ return normEl(q, s); });
+      return s;
+    });
+    M.dur = M.scenes.length ? Math.max.apply(null, M.scenes.map(function(s){ return s.끝; })) : 1;
+  }
+  function normEl(q, s){
+    q = (q && typeof q === 'object') ? q : {};
+    var kind = canon(q.종류, KINDS) || '큰글자';
+    var mo = canon(q.움직임, MOTIONS);
+    if (!mo || KINDMOTION[kind].indexOf(mo) < 0) mo = KINDMOTION[kind][0];
+    var e = { raw:q, 종류:kind, 움직임:mo, 자리:canon(q.자리, ZONES) || '가운데', 속도:canon(q.속도, SPEEDS) || '보통', 크기:canon(q.크기, SIZES),
+              글:str(q.글), 곁글:str(q.곁글), 값:Math.max(0, Math.min(kind === '별점' ? 5 : 100, toNum(q.값, 0))), 등장:Math.max(0, toNum(q.등장, 0)), scale:1,
+              이름:iconOf(q.이름), 이름유무:str(q.이름).trim() !== '', 이름들:(Array.isArray(q.이름들) ? q.이름들 : []).map(iconOf).slice(0, 5),
+              글들:(Array.isArray(q.글들) ? q.글들 : []).map(str), 원배지:(q.원배지 === true || q.원배지 === '예' || q.원배지 === 'true'), 모양:canon(q.모양, SHAPES) || '원' };
+    e.dur = SPEED[e.속도];
+    e.total = e.dur + (kind === '그림줄' ? Math.max(0, e.이름들.length - 1) * e.dur * EASE.stagger : 0);
+    e.abs = s.시작 + Math.max(s.i > 0 ? TRANS : 0, e.등장);
+    return e;
+  }
+
+  /* ── 화면을 만든다 ── */
+  var NS = 'http://www.w3.org/2000/svg';
+  function svgEl(tag, attrs){ var el = document.createElementNS(NS, tag); for (var k in attrs) el.setAttribute(k, attrs[k]); return el; }
+  function iconSvg(name){
+    var svg = svgEl('svg', { viewBox:'0 0 24 24', 'class':'아이콘', 'aria-hidden':'true' });
+    var paths = ICONS[name].map(function(d){ var p = svgEl('path', { d:d, pathLength:'1' }); svg.appendChild(p); return p; });
+    return { svg:svg, paths:paths };
+  }
+  function iconItem(name, badge){
+    var box = h('span', '바탕' + (badge ? ' 원배지' : '')), bd = null;
+    if (badge){ bd = h('i', '배지'); box.appendChild(bd); }
+    var ic = iconSvg(name); box.appendChild(ic.svg);
+    return { box:box, badge:bd, paths:ic.paths };
+  }
+  function setPlain(span, text){
+    span.textContent = '';
+    text.split('\n').forEach(function(ln, i){ if (i) span.appendChild(document.createElement('br')); span.appendChild(document.createTextNode(ln)); });
+  }
+  function setSplit(span, text){
+    var chars = [];
+    span.textContent = '';
+    text.split('\n').forEach(function(ln, i){
+      if (i) span.appendChild(document.createElement('br'));
+      ln.split(/\s+/).filter(Boolean).forEach(function(w, wi){
+        if (wi) span.appendChild(document.createTextNode(' '));
+        var ws = h('span', '단어');
+        Array.from(w).forEach(function(ch){ var c = h('span', '자', ch); ws.appendChild(c); chars.push(c); });
+        span.appendChild(ws);
+      });
+    });
+    return chars;
+  }
+  function makeEl(e){
+    var kind = e.종류, mo = e.움직임;
+    var n = h('div', '요소 ' + kind + (e.크기 ? ' 크기-' + e.크기 : '') + (kind === '큰도형' ? ' 모양-' + e.모양 : '') + ' ' + mo);
+    n.setAttribute('data-종류', kind); n.setAttribute('data-움직임', mo);
+    e.chars = null; e.num = null; e.numEl = null;
+    function fill(span, text, split){ if (split && mo === '한글자씩') e.chars = setSplit(span, text); else setPlain(span, text); }
+    function num(span, text){ if (mo === '숫자세기'){ e.num = parseNum(text); e.numEl = span; } }
+    if (kind === '구분선'){ e.line = h('i', '선'); n.appendChild(e.line); }
+    else if (kind === '그림'){
+      e.item = iconItem(e.이름, e.원배지); e.item.node = n; n.appendChild(e.item.box);
+      if (e.글) n.appendChild(h('span', '이름표', e.글));
+    }
+    else if (kind === '그림줄'){
+      e.items = e.이름들.map(function(nm, i){
+        var cell = h('div', '칸'), it = iconItem(nm, e.원배지);
+        it.node = cell; cell.appendChild(it.box);
+        if (e.글들[i]) cell.appendChild(h('span', '이름표', e.글들[i]));
+        n.appendChild(cell); return it;
+      });
+    }
+    else if (kind === '도넛'){
+      var ring = svgEl('svg', { viewBox:'0 0 100 100', 'aria-hidden':'true' });
+      ring.appendChild(svgEl('circle', { 'class':'트랙', cx:50, cy:50, r:42 }));
+      e.ring = svgEl('circle', { 'class':'채움', cx:50, cy:50, r:42, pathLength:100 }); ring.appendChild(e.ring);
+      n.appendChild(ring);
+      var inner = h('div', '안'); e.txt = h('span', '글'); inner.appendChild(e.txt);
+      if (e.곁글) inner.appendChild(h('span', '곁글', e.곁글));
+      n.appendChild(inner); setPlain(e.txt, e.글); num(e.txt, e.글);
+    }
+    else if (kind === '별점'){
+      var row = h('div', '줄'); e.stars = [];
+      for (var i = 0; i < 5; i++){
+        var st = h('span', '별'), o1 = svgEl('svg', { viewBox:'0 0 24 24', 'class':'윤곽' }), o2 = svgEl('svg', { viewBox:'0 0 24 24', 'class':'채움별' });
+        o1.appendChild(svgEl('path', { d:ICONS['별'][0] })); o2.appendChild(svgEl('path', { d:ICONS['별'][0] }));
+        o2.style.clipPath = 'inset(0 ' + f((1 - Math.max(0, Math.min(1, e.값 - i))) * 100) + '% 0 0)';
+        st.appendChild(o1); st.appendChild(o2); row.appendChild(st); e.stars.push(st);
+      }
+      n.appendChild(row);
+      if (e.글){ e.txt = h('span', '글'); setPlain(e.txt, e.글); n.appendChild(e.txt); }
+    }
+    else if (kind === '카드'){
+      if (e.이름유무){ e.item = iconItem(e.이름, true); e.item.node = n; n.appendChild(e.item.box); }
+      var body = h('div', '본문'); e.txt = h('div', '글'); body.appendChild(e.txt);
+      if (e.곁글) body.appendChild(h('div', '곁글', e.곁글));
+      n.appendChild(body); setPlain(e.txt, e.글);
+    }
+    else if (kind === '말풍선'){
+      e.txt = h('span', '글'); n.appendChild(e.txt); fill(e.txt, e.글, true);
+      if (e.곁글) n.appendChild(h('span', '곁글', e.곁글));
+    }
+    else if (kind === '가격표'){
+      e.txt = h('span', '글'); e.txt2 = h('span', '곁글'); setPlain(e.txt, e.글); setPlain(e.txt2, e.곁글);
+      n.appendChild(e.txt); n.appendChild(e.txt2); num(e.txt2, e.곁글);
+    }
+    else if (kind === '큰도형'){
+      e.txt = h('span', '글'); setPlain(e.txt, e.글); n.appendChild(e.txt);
+      if (e.곁글) n.appendChild(h('span', '곁글', e.곁글));
+      num(e.txt, e.글);
+    }
+    else {
+      if (kind === '막대'){
+        var lab = h('div', '라벨'); e.txt = h('span', '글'); lab.appendChild(e.txt); n.appendChild(lab);
+        var tr = h('div', '트랙'); e.fill = h('i', '채움'); tr.appendChild(e.fill); n.appendChild(tr);
+      } else if (kind === '목록줄'){
+        n.appendChild(h('i', '점')); e.txt = h('span', '글'); n.appendChild(e.txt);
+        if (e.곁글) n.appendChild(h('span', '곁글', e.곁글));
+      } else { e.txt = h('span', '글'); n.appendChild(e.txt); }
+      fill(e.txt, e.글, true); if (!e.chars) num(e.txt, e.글);
+    }
+    e.node = n;
+    return n;
+  }
+  function decoNode(name, i){ var t = document.createElement('div'); t.innerHTML = decoMarkup(name, i); return t.firstChild; }
+  function build(){
+    scenesRoot.textContent = '';
+    M.scenes.forEach(function(s){
+      var sec = h('section', '장면' + (s.반전 ? ' 반전' : ''));
+      sec.setAttribute('data-장면', String(s.i + 1));
+      s.decos = s.decoNames.map(function(nm){ var d = decoNode(nm, s.i); sec.appendChild(d); return d; });
+      s.zones = {};
+      ZONES.forEach(function(z){ var d = h('div', '자리 ' + z); s.zones[z] = d; sec.appendChild(d); });
+      s.els.forEach(function(e){ s.zones[e.자리].appendChild(makeEl(e)); });
+      s.node = sec; scenesRoot.appendChild(sec);
+    });
+    seek.max = String(M.dur);
+    $('marks').innerHTML = M.scenes.slice(1).map(function(s){ return '<i style="left:' + f(s.시작 / M.dur * 100) + '%"></i>'; }).join('');
+    document.title = M.title || '영상도구';
+  }
+
+  /* ── 시각 t 하나로 화면 전체를 그린다 ── */
+  function sceneAt(t){ var k = 0; for (var i = 0; i < M.scenes.length; i++) if (t >= M.scenes[i].시작) k = i; return k; }
+  function genericMotion(n, mo, p){
+    if (mo === '올라오기'){ var o = outC(p); n.style.opacity = p > 0 ? f(o) : '0'; n.style.transform = 'translateY(' + f((1 - o) * 70) + 'px)'; return true; }
+    if (mo === '튀어나오기'){ n.style.opacity = p > 0 ? f(clamp01(p * 4)) : '0'; n.style.transform = 'scale(' + f(.4 + .6 * backO(p)) + ')'; return true; }
+    return false;
+  }
+  function applyIcon(it, mo, p){
+    var n = it.node, N = it.paths.length, k;
+    if (mo === '선그리기'){
+      n.style.opacity = p > 0 ? '1' : '0'; n.style.transform = 'none';
+      if (it.badge){ it.badge.style.opacity = p > 0 ? f(clamp01(p * 4)) : '0'; it.badge.style.transform = 'scale(' + f(.6 + .4 * outC(clamp01(p * 3))) + ')'; }
+      for (k = 0; k < N; k++){ var lp = clamp01((p - k / N) * N); it.paths[k].style.opacity = lp > 0 ? '1' : '0'; it.paths[k].style.strokeDashoffset = f(1 - outC(lp)); }
+    } else {
+      genericMotion(n, mo, p);
+      if (it.badge){ it.badge.style.opacity = '1'; it.badge.style.transform = 'none'; }
+      for (k = 0; k < N; k++){ it.paths[k].style.opacity = '1'; it.paths[k].style.strokeDashoffset = '0'; }
+    }
+  }
+  function drawEl(e, t){
+    var p = clamp01((t - e.abs) / e.dur), n = e.node, mo = e.움직임, kind = e.종류, i;
+    if (kind === '그림줄'){
+      n.style.opacity = '1'; n.style.transform = 'none';
+      for (i = 0; i < e.items.length; i++) applyIcon(e.items[i], mo, clamp01((t - e.abs - i * e.dur * EASE.stagger) / e.dur));
+      return;
+    }
+    if (kind === '그림'){ applyIcon(e.item, mo, p); return; }
+    if (kind === '별점' && mo === '튀어나오기'){
+      n.style.opacity = p > 0 ? '1' : '0'; n.style.transform = 'none';
+      for (i = 0; i < 5; i++){ var sp = clamp01((p - i * .13) / .5); e.stars[i].style.opacity = f(clamp01(sp * 4)); e.stars[i].style.transform = 'scale(' + f(.2 + .8 * backO(sp)) + ')'; }
+      return;
+    }
+    if (!genericMotion(n, mo, p)){
+      n.style.transform = 'none';
+      if (mo === '한글자씩'){
+        n.style.opacity = p > 0 ? '1' : '0';
+        var cs2 = e.chars || [], N = Math.max(1, cs2.length);
+        for (i = 0; i < cs2.length; i++){ var cp = outC(clamp01((p - (i / N) * .7) / .3)); cs2[i].style.opacity = f(cp); cs2[i].style.transform = 'translateY(' + f((1 - cp) * .35) + 'em)'; }
+      }
+      else if (mo === '숫자세기') n.style.opacity = p > 0 ? f(clamp01(p * 6)) : '0';
+      else if (mo === '막대자라기') n.style.opacity = p > 0 ? f(clamp01(p * 5)) : '0';
+      else if (mo === '선그리기') n.style.opacity = p > 0 ? '1' : '0';
+      else if (mo === '밑줄긋기') n.style.opacity = p > 0 ? f(clamp01(p * 5)) : '0';
+    }
+    if (e.num && e.numEl) e.numEl.textContent = e.num.pre + fmtNum(e.num.val * outC(p), e.num) + e.num.suf;
+    if (kind === '막대') e.fill.style.width = f(outC(p) * e.값) + '%';
+    if (kind === '구분선') e.line.style.transform = 'scaleX(' + f(outC(p)) + ')';
+    if (kind === '도넛'){
+      var fp = (mo === '숫자세기' || mo === '선그리기') ? outC(p) : 1;
+      e.ring.style.strokeDashoffset = f(100 - fp * e.값);
+      e.txt.style.opacity = mo === '선그리기' ? f(clamp01(p * 3)) : '1';
+    }
+    if (mo === '밑줄긋기') e.txt.style.backgroundSize = f(outC(clamp01((p - .15) / .85)) * 100) + '% .12em';
+  }
+  function transStyle(nd, name, role, q){        /* role 1: 들어오는 장면 · -1: 나가는 장면 · 0: 전환 중이 아님 */
+    var tf = 'none', op = '1', cp = 'none', z = role === 1 ? '2' : '1';
+    if (role !== 0){
+      if (name === '밀어내기') tf = 'translateX(' + f(role === 1 ? (1 - q) * 100 : -q * 100) + '%)';
+      else if (name === '겹쳐넘기기'){ if (role === 1) tf = 'translateX(' + f((1 - q) * 100) + '%)'; else { tf = 'translateX(' + f(-q * 22) + '%)'; op = f(1 - q * .5); } }
+      else if (name === '닦아내기'){ if (role === 1) cp = 'inset(0 ' + f((1 - q) * 100) + '% 0 0)'; }
+      else if (name === '확대하기'){ if (role === 1){ op = f(q); tf = 'scale(' + f(.86 + .14 * q) + ')'; } else { op = f(1 - q); tf = 'scale(' + f(1 + .08 * q) + ')'; } }
+    }
+    nd.style.transform = tf; nd.style.opacity = op; nd.style.clipPath = cp; nd.style.zIndex = z;
+  }
+  function draw(x){
+    var t = Math.max(0, Math.min(M.dur, x));
+    cur = t;
+    if (!M.scenes.length) return;
+    var k = sceneAt(t), nextS = M.scenes[k];
+    M.scenes.forEach(function(s, j){
+      var vis = false, role = 0, q = 0;
+      if (j === k){ vis = true; if (j > 0 && t < s.시작 + TRANS){ role = 1; q = inOut(clamp01((t - s.시작) / TRANS)); } }
+      else if (j === k - 1 && t < nextS.시작 + TRANS){ vis = true; role = -1; q = inOut(clamp01((t - nextS.시작) / TRANS)); }
+      s.node.style.visibility = vis ? 'visible' : 'hidden';
+      transStyle(s.node, TRANSNAME, role, q);
+      var local = t - s.시작, o = outC(clamp01((local - .15) / 1.1));
+      s.decos.forEach(function(d){ d.style.opacity = f(o); d.style.transform = 'translateY(' + f((1 - o) * 36) + 'px)'; });
+      s.els.forEach(function(e){ drawEl(e, t); });
+    });
+    var local2 = t - nextS.시작;
+    capEl.textContent = nextS.자막;
+    capEl.style.opacity = (nextS.자막 && local2 > .2) ? f(clamp01((local2 - .2) / .25)) : '0';
+    seek.value = String(t);
+    seek.style.setProperty('--p', f(t / M.dur * 100) + '%');
+    timeEl.textContent = t.toFixed(1) + ' / ' + M.dur.toFixed(1) + '초';
+    [].forEach.call(rowsEl.children, function(r, i){ r.classList.toggle('now', i === k); });
+  }
+
+  /* ── 글이 칸보다 길면 글자 크기를 줄여 맞춘다(그림 · 도형은 크기 배율 --k) ── */
+  function fitAll(){
+    M.scenes.forEach(function(s){ s.els.forEach(function(e){ e.node.style.fontSize = ''; e.node.style.removeProperty('--k'); e.scale = 1; }); });
+    var keep = cur;
+    draw(M.dur);
+    M.scenes.forEach(function(s){ s.els.forEach(function(e){
+      var n = e.node, base = parseFloat(getComputedStyle(n).fontSize), k = 1, guard = 0;
+      while (n.scrollWidth > n.clientWidth + 1 && k > .5 && guard++ < 24){ k *= .94; n.style.fontSize = (base * k).toFixed(2) + 'px'; n.style.setProperty('--k', k.toFixed(3)); }
+      e.scale = k;
+    }); });
+    draw(keep);
+  }
+
+  /* ── 점검 ── */
+  function kitHash(text){ var x = 2166136261; for (var i = 0; i < text.length; i++){ x ^= text.charCodeAt(i); x = Math.imul(x, 16777619) >>> 0; } return ('00000000' + x.toString(16)).slice(-8); }
+  function runChecks(){
+    var items = [];
+    function item(no, name, rule){ var o = { no:no, name:name, rule:rule, n:0, fail:[], skip:[] }; items.push(o); return o; }
+    function judge(o, ok, msg){ o.n++; if (!ok) o.fail.push(msg); }
+    function skip(o, msg){ o.skip.push(msg); }
+    var c1 = item('①', '장면 시간 이어짐', '첫 장면은 0초에서 시작하고, 앞 장면의 끝과 다음 장면의 시작이 같습니다.');
+    var c2 = item('②', '전체 길이', '28~32초.');
+    var c3 = item('③', '장면 수', '4~7개.');
+    var c4 = item('④', '글자 수와 노출 시간', '7자당 1초, 한 장면은 최소 1.5초(이 수업의 기준). 자막은 글자 수에 넣지 않습니다.');
+    var c5 = item('⑤', '화면 변화 간격', '3초 넘게 아무 움직임도 시작하지 않는 구간이 없습니다.');
+    var c6 = item('⑥', '첫 장면과 마지막 장면', '첫 장면은 3초 이내, 마지막 장면은 3~5초.');
+    var c7 = item('⑦', '구간 순서', '훅으로 시작해 행동 안내로 끝나고, 사이는 맥락 → 본문 → 결말 순서입니다. 본문은 하나 이상이고 훅 · 결말 · 행동 안내는 한 번씩입니다.');
+    var c8 = item('⑧', '근거 칸', '모든 장면에 파일과 대목이 적혀 있습니다.');
+    var c9 = item('⑨', '도구에 있는 이름', '움직임 7개 · 종류 15개 · 자리 3개 · 구간 5개 등 도구가 아는 이름만 씁니다. 종류마다 쓸 수 있는 움직임이 정해져 있습니다.');
+    var c10 = item('⑩', '값의 형식', '필수 값이 있고, 시간은 숫자이며, 요소의 움직임이 장면이 끝나기 전에 끝납니다. 자막은 40자 이내, 「여기에…」 자리 표시 문구가 남지 않습니다.');
+    var c11 = item('⑪', '화면 넘침', '글이 자리 안에 들어갑니다. 실제 화면에서 잰 값이라 글꼴이 바뀌면 조금 달라질 수 있습니다.');
+    var c12 = item('⑫', '도구 코드 그대로', '재생기 · 움직임 · 점검 코드(스크립트)가 영상도구 원본과 같습니다. 장면 데이터는 고쳐도 됩니다. 스타일(CSS)은 비교하지 않습니다.');
+    var c13 = item('⑬', '시각 요소', '장면마다 그림 · 도형 · 막대 · 장식 가운데 하나 이상이 있습니다.');
+    var c14 = item('⑭', '그림 · 장식 이름', '그림과 장식은 도구에 있는 이름에서 고릅니다. 없는 이름은 가까운 이름을 알려 줍니다.');
+    var c15 = item('⑮', '시각 요소 수', '한 장면의 그림 · 도형은 ' + MAX_VISUAL + '개까지(그림줄은 1개). 가운데 자리에 도형 ' + MAX_VISUAL + '개가 들어가는 실측 기준입니다.');
+    var c16 = item('⑯', '색 조합 · 분위기 · 전환', '도구에 있는 이름에서 고릅니다. 전환은 영상 전체에 하나이고 장면마다 섞지 않습니다.');
+    var c17 = item('⑰', '색 대비', '글자색과 배경색, 글자색과 포인트색의 명도 대비가 4.5:1 이상입니다. 직접 적은 색도 같습니다.');
+
+    /* ⑫ 도구 코드 그대로 — 이 스크립트 글자에서 KIT_SUM 줄만 비운 값의 해시를 원본 값과 견준다 */
+    if (!KIT_SUM || !SELF) skip(c12, '원본 값이나 스크립트 글자를 읽지 못해 판정하지 못했습니다');
+    else judge(c12, kitHash(SELF.replace(/\r\n?/g, '\n').replace(/var KIT_SUM = '[0-9a-f]*';/, "var KIT_SUM = '';")) === KIT_SUM, '재생기 · 움직임 · 점검 코드가 영상도구 원본과 다릅니다. 영상도구.html을 다시 복사해 장면 데이터만 옮겨 넣습니다');
+    var raw = (RAW && typeof RAW === 'object' && Array.isArray(RAW.장면)) ? RAW.장면 : null;
+    if (!raw){
+      items.forEach(function(o){ if (o !== c12) skip(o, '장면 데이터를 읽지 못해 판정하지 못했습니다'); });
+      return items;
+    }
+    var S = raw.map(function(r, i){
+      r = (r && typeof r === 'object') ? r : {};
+      var ok = isNum(r.시작) && isNum(r.끝) && r.끝 > r.시작;
+      return { i:i, r:r, ok:ok, 시작:r.시작, 끝:r.끝, 구간:canon(r.구간, PARTS), els:Array.isArray(r.요소) ? r.요소.map(function(q){ return (q && typeof q === 'object') ? q : {}; }) : null };
+    });
+    function L(s){ return '장면 ' + (s.i + 1) + (s.구간 ? '(' + s.구간 + ')' : ''); }
+    function Q(s, j, q){ var k = canon(q.종류, KINDS); return L(s) + ' · 요소 ' + (j + 1) + (k ? '(' + k + ')' : ''); }
+    function absRaw(s, q){ return (s.ok && isNum(q.등장) && q.등장 >= 0) ? s.시작 + Math.max(s.i > 0 ? TRANS : 0, q.등장) : NaN; }
+    function durRaw(q){ var sp = SPEED[canon(q.속도, SPEEDS) || '보통']; return sp + ((canon(q.종류, KINDS) === '그림줄' && Array.isArray(q.이름들)) ? Math.max(0, q.이름들.length - 1) * sp * EASE.stagger : 0); }
+    function strOk(x){ return typeof x === 'string' && x.trim() !== ''; }
+    var allOk = S.length > 0 && S.every(function(s){ return s.ok; });
+    var total = allOk ? Math.max.apply(null, S.map(function(s){ return s.끝; })) - Math.min.apply(null, S.map(function(s){ return s.시작; })) : NaN;
+
+    /* ① 시간 이어짐 */
+    if (!S.length) skip(c1, '장면이 없어 판정하지 못했습니다');
+    S.forEach(function(s, i){
+      if (!s.ok){ skip(c1, L(s) + ': 시작 · 끝을 숫자로 읽지 못했거나 끝이 시작보다 늦지 않아 판정하지 못했습니다'); return; }
+      if (i === 0){ judge(c1, s.시작 === 0, L(s) + ': 첫 장면의 시작은 0이어야 하는데 ' + g(s.시작) + '초입니다'); return; }
+      var p = S[i - 1];
+      if (!p.ok){ skip(c1, L(s) + ': 앞 장면의 시간을 읽지 못해 판정하지 못했습니다'); return; }
+      var d = s.시작 - p.끝;
+      judge(c1, Math.abs(d) < 1e-6, L(s) + ': 시작 ' + g(s.시작) + '초가 앞 장면의 끝 ' + g(p.끝) + '초와 맞지 않습니다(' + (d > 0 ? g(d) + '초 비어 있음' : g(-d) + '초 겹침') + ')');
+    });
+    /* ② 전체 길이 */
+    if (!S.length) skip(c2, '장면이 없어 판정하지 못했습니다');
+    else if (!allOk) skip(c2, '시작 · 끝을 읽지 못한 장면이 있어 판정하지 못했습니다');
+    else judge(c2, total >= 28 - 1e-6 && total <= 32 + 1e-6, '전체 길이가 ' + g(total) + '초입니다(28~32초)');
+    /* ③ 장면 수 */
+    judge(c3, S.length >= 4 && S.length <= 7, '장면이 ' + S.length + '개입니다(4~7개)');
+    /* ④ 글자 수와 노출 시간 */
+    S.forEach(function(s){
+      if (!s.ok || !s.els){ skip(c4, L(s) + ': 시간이나 요소 목록을 읽지 못해 판정하지 못했습니다'); return; }
+      var chars = 0; s.els.forEach(function(q){ chars += count(q.글) + count(q.곁글); if (Array.isArray(q.글들)) q.글들.forEach(function(x){ chars += count(x); }); });
+      var need = Math.max(1.5, chars / 7), len = s.끝 - s.시작;
+      judge(c4, len >= need - 1e-6, L(s) + ': 화면 글자 ' + chars + '자는 ' + g(Math.ceil(need * 10) / 10) + '초가 필요한데 장면은 ' + g(len) + '초입니다');
+    });
+    /* ⑤ 화면 변화 간격 */
+    (function(){
+      var pts = [], bad = !allOk;
+      S.forEach(function(s){
+        if (!s.ok || !s.els){ bad = true; return; }
+        pts.push(s.시작);
+        s.els.forEach(function(q){ var a = absRaw(s, q); if (isNaN(a)) bad = true; else pts.push(a); });
+      });
+      if (!S.length){ skip(c5, '장면이 없어 판정하지 못했습니다'); return; }
+      if (bad){ skip(c5, '시간이나 등장 값을 읽지 못한 장면 · 요소가 있어 판정하지 못했습니다'); return; }
+      var end = Math.max.apply(null, S.map(function(s){ return s.끝; }));
+      pts.push(end); pts.sort(function(a, b){ return a - b; });
+      for (var i = 1; i < pts.length; i++){
+        var gap = pts[i] - pts[i - 1];
+        if (gap < 1e-9) continue;
+        judge(c5, gap <= 3 + 1e-6, g(pts[i - 1]) + '초부터 ' + g(pts[i]) + '초까지 ' + g(gap) + '초 동안 아무 움직임도 시작하지 않습니다');
+      }
+    })();
+    /* ⑥ 첫 장면 · 마지막 장면 */
+    if (!S.length) skip(c6, '장면이 없어 판정하지 못했습니다');
+    else {
+      var a0 = S[0], z0 = S[S.length - 1];
+      if (a0.ok) judge(c6, a0.끝 - a0.시작 <= 3 + 1e-6, '첫 장면이 ' + g(a0.끝 - a0.시작) + '초입니다(3초 이내)'); else skip(c6, '첫 장면의 시간을 읽지 못해 판정하지 못했습니다');
+      if (z0.ok){ var zl = z0.끝 - z0.시작; judge(c6, zl >= 3 - 1e-6 && zl <= 5 + 1e-6, '마지막 장면이 ' + g(zl) + '초입니다(3~5초)'); } else skip(c6, '마지막 장면의 시간을 읽지 못해 판정하지 못했습니다');
+    }
+    /* ⑦ 구간 순서 */
+    (function(){
+      var seen = {}, prevRank = -1, prevName = '', unknown = false;
+      S.forEach(function(s){
+        if (!s.구간){ unknown = true; skip(c7, '장면 ' + (s.i + 1) + ': 구간 이름을 알 수 없어 순서를 판정하지 못했습니다(⑨ 참고)'); return; }
+        var rank = PARTS.indexOf(s.구간);
+        seen[s.구간] = (seen[s.구간] || 0) + 1;
+        if (prevRank >= 0) judge(c7, rank >= prevRank, L(s) + ': 구간 「' + s.구간 + '」이 앞 장면의 「' + prevName + '」 뒤에 올 수 없습니다(훅 → 맥락 → 본문 → 결말 → 행동 안내)');
+        prevRank = rank; prevName = s.구간;
+      });
+      if (!unknown && S.length){
+        judge(c7, S[0].구간 === '훅', '첫 장면의 구간은 「훅」이어야 합니다(지금은 「' + S[0].구간 + '」)');
+        judge(c7, S[S.length - 1].구간 === '행동 안내', '마지막 장면의 구간은 「행동 안내」여야 합니다(지금은 「' + S[S.length - 1].구간 + '」)');
+        judge(c7, !!seen['본문'], '「본문」 구간이 없습니다');
+        ['훅','결말','행동 안내'].forEach(function(p){ if (seen[p] > 1) judge(c7, false, '「' + p + '」 구간 장면이 ' + seen[p] + '개입니다(한 번만)'); });
+      }
+      if (!S.length) skip(c7, '장면이 없어 판정하지 못했습니다');
+    })();
+    /* ⑧ 근거 칸 */
+    S.forEach(function(s){
+      var v = typeof s.r.근거 === 'string' ? s.r.근거.trim() : '';
+      judge(c8, v !== '' && !PH.test(v), L(s) + ': ' + (v === '' ? '근거 칸이 비어 있습니다' : '근거가 자리 표시 문구 그대로입니다') + '. 파일 이름과 대목을 적습니다');
+    });
+    /* ⑨ 도구에 있는 이름 */
+    S.forEach(function(s){
+      var r = s.r;
+      judge(c9, !!s.구간, '장면 ' + (s.i + 1) + ': 구간 「' + (str(r.구간) || '(없음)') + '」은 도구에 없습니다. ' + PARTS.join(' · ') + ' 가운데 고릅니다');
+      if (r.바탕 != null) judge(c9, !!canon(r.바탕, BGS), L(s) + ': 바탕 「' + str(r.바탕) + '」은 도구에 없습니다. 기본 · 반전 가운데 고릅니다');
+      Object.keys(r).forEach(function(k){ if (SCENE_KEYS.indexOf(k) < 0 && k !== '전환') judge(c9, false, L(s) + ': 도구에 없는 키 「' + k + '」. 장면에는 ' + SCENE_KEYS.join(' · ') + '만 씁니다'); });
+      (s.els || []).forEach(function(q, j){
+        var kind = canon(q.종류, KINDS), mo = canon(q.움직임, MOTIONS), w = Q(s, j, q);
+        judge(c9, !!kind, w + ': 종류 「' + str(q.종류) + '」은 도구에 없습니다. ' + KINDS.join(' · ') + ' 가운데 고릅니다');
+        judge(c9, !!mo, w + ': 움직임 「' + str(q.움직임) + '」은 도구에 없습니다. ' + MOTIONS.join(' · ') + ' 가운데 고릅니다. 새 움직임이 필요하면 만들기 전에 사용자에게 묻습니다');
+        if (kind && mo) judge(c9, KINDMOTION[kind].indexOf(mo) >= 0, w + ': 「' + kind + '」에 쓸 수 없는 움직임입니다(' + mo + '). 쓸 수 있는 것: ' + KINDMOTION[kind].join(' · '));
+        judge(c9, !!canon(q.자리, ZONES), w + ': 자리 「' + str(q.자리) + '」은 도구에 없습니다. ' + ZONES.join(' · ') + ' 가운데 고릅니다');
+        if (q.속도 != null) judge(c9, !!canon(q.속도, SPEEDS), w + ': 속도 「' + str(q.속도) + '」은 도구에 없습니다. ' + SPEEDS.join(' · ') + ' 가운데 고릅니다');
+        if (q.크기 != null) judge(c9, !!canon(q.크기, SIZES), w + ': 크기 「' + str(q.크기) + '」은 도구에 없습니다. ' + SIZES.join(' · ') + ' 가운데 고릅니다');
+        if (q.모양 != null) judge(c9, !!canon(q.모양, SHAPES), w + ': 모양 「' + str(q.모양) + '」은 도구에 없습니다. ' + SHAPES.join(' · ') + ' 가운데 고릅니다');
+        Object.keys(q).forEach(function(k){ if (EL_KEYS.indexOf(k) < 0) judge(c9, false, w + ': 도구에 없는 키 「' + k + '」. 요소에는 ' + EL_KEYS.join(' · ') + '만 씁니다'); });
+      });
+    });
+    /* ⑩ 값의 형식 */
+    judge(c10, typeof RAW.제목 === 'string' && RAW.제목.trim() !== '' && !PH.test(RAW.제목), '제목: 영상 제목을 글로 적습니다(비어 있거나 자리 표시 문구입니다)');
+    S.forEach(function(s){
+      var r = s.r;
+      judge(c10, isNum(r.시작) && isNum(r.끝), L(s) + ': 시작 · 끝은 따옴표 없는 숫자(초)로 적습니다');
+      if (isNum(r.시작) && isNum(r.끝)) judge(c10, r.끝 > r.시작, L(s) + ': 끝 ' + g(r.끝) + '초가 시작 ' + g(r.시작) + '초보다 늦어야 합니다');
+      var cap = typeof r.자막 === 'string' ? r.자막.trim() : '';
+      judge(c10, cap !== '' && !PH.test(cap) && cap.length <= 40, L(s) + ': 자막이 ' + (cap === '' ? '비어 있습니다' : PH.test(cap) ? '자리 표시 문구 그대로입니다' : cap.length + '자입니다(40자 이내)'));
+      if (r.장식 != null){ var dl = rawDeco(r.장식); judge(c10, (typeof r.장식 === 'string' || Array.isArray(r.장식)) && dl.length >= 1 && dl.length <= 2, L(s) + ': 장식은 이름 하나 또는 둘만 적습니다'); }
+      if (!s.els || !s.els.length){ judge(c10, false, L(s) + ': 요소 목록이 비어 있습니다'); return; }
+      s.els.forEach(function(q, j){
+        var kind = canon(q.종류, KINDS), w = Q(s, j, q);
+        if (TEXTREQ.indexOf(kind) >= 0) judge(c10, typeof q.글 === 'string' && q.글.trim() !== '' && !PH.test(q.글), w + ': 글이 ' + (typeof q.글 === 'string' && q.글.trim() !== '' ? '자리 표시 문구 그대로입니다' : '비어 있습니다'));
+        if (q.곁글 != null) judge(c10, typeof q.곁글 === 'string' && !PH.test(q.곁글.trim()), w + ': 곁글이 글이 아니거나 자리 표시 문구 그대로입니다');
+        judge(c10, isNum(q.등장) && q.등장 >= 0, w + ': 등장은 0 이상의 숫자(초)로 적습니다');
+        if (s.ok && isNum(q.등장) && q.등장 >= 0){
+          var a = absRaw(s, q), dd = durRaw(q);
+          judge(c10, a + dd <= s.끝 + 1e-6, w + ': 움직임이 ' + g(a + dd) + '초에 끝나 장면 끝 ' + g(s.끝) + '초를 넘습니다. 등장은 장면이 시작하고 몇 초 뒤인지 적습니다');
+        }
+        if (kind === '막대' || kind === '도넛') judge(c10, isNum(q.값) && q.값 >= 0 && q.값 <= 100, w + ': 값은 0~100 사이 숫자로 적습니다');
+        if (kind === '별점') judge(c10, isNum(q.값) && q.값 >= 0 && q.값 <= 5, w + ': 별점의 값은 0~5 사이 숫자로 적습니다');
+        if (kind === '그림' || kind === '카드' && q.이름 != null) judge(c10, strOk(q.이름), w + ': 이름은 그림 이름을 글로 적습니다');
+        if (kind === '그림줄'){
+          var nm = q.이름들;
+          judge(c10, Array.isArray(nm) && nm.length >= 2 && nm.length <= 5 && nm.every(strOk), w + ': 이름들은 그림 이름 2~5개의 목록으로 적습니다');
+          if (q.글들 != null) judge(c10, Array.isArray(q.글들) && Array.isArray(nm) && q.글들.length === nm.length && q.글들.every(function(x){ return typeof x === 'string'; }), w + ': 글들은 이름들과 같은 개수의 글 목록으로 적습니다');
+        }
+        if (kind === '가격표') judge(c10, strOk(q.곁글), w + ': 가격표에는 가격을 곁글로 적습니다');
+        if (kind && q.원배지 != null) judge(c10, typeof q.원배지 === 'boolean', w + ': 원배지는 따옴표 없이 true 또는 false로 적습니다');
+        if (canon(q.움직임, MOTIONS) === '숫자세기'){ var tt = kind === '가격표' ? q.곁글 : q.글; judge(c10, typeof tt === 'string' && /\d/.test(tt), w + ': 숫자세기에 쓸 숫자가 ' + (kind === '가격표' ? '곁글' : '글') + '에 없습니다'); }
+      });
+    });
+    /* ⑪ 화면 넘침 */
+    var drawn = M.scenes.length && M.scenes[0].zones;
+    M.scenes.forEach(function(s){
+      if (!drawn) return;
+      ZONES.forEach(function(z){
+        var zn = s.zones[z], kids = zn.children;
+        if (!kids.length) return;
+        if (!zn.clientHeight){ skip(c11, '장면 ' + (s.i + 1) + ' 「' + z + '」: 화면이 아직 그려지지 않아 판정하지 못했습니다'); return; }
+        var need = 0; [].forEach.call(kids, function(c){ need += c.offsetHeight; });
+        need += (parseFloat(getComputedStyle(zn).rowGap) || 0) * (kids.length - 1);
+        judge(c11, need <= zn.clientHeight + 1, '장면 ' + (s.i + 1) + ' 「' + z + '」 자리: 요소가 ' + Math.round(need - zn.clientHeight) + 'px 넘칩니다(요소 ' + kids.length + '개). 줄이거나 다른 자리로 옮깁니다');
+      });
+      s.els.forEach(function(e, j){
+        if (e.scale < 1) judge(c11, e.scale >= .7, '장면 ' + (s.i + 1) + ' · 요소 ' + (j + 1) + ': 칸에 맞추려고 ' + Math.round(e.scale * 100) + '%로 줄였습니다. 글을 줄이거나 크기를 낮춥니다');
+      });
+    });
+    if (!drawn) skip(c11, '그릴 장면이 없어 판정하지 못했습니다');
+    /* ⑬ 시각 요소 · ⑭ 그림 · 장식 이름 · ⑮ 시각 요소 수 */
+    S.forEach(function(s){
+      if (!s.els){ skip(c13, L(s) + ': 요소 목록을 읽지 못해 판정하지 못했습니다'); skip(c15, L(s) + ': 요소 목록을 읽지 못해 판정하지 못했습니다'); return; }
+      var nv = s.els.filter(function(q){ return VISUAL.indexOf(canon(q.종류, KINDS)) >= 0; }).length;
+      judge(c13, nv + rawDeco(s.r.장식).length > 0, L(s) + ': 그림 · 도형 · 막대 · 장식이 하나도 없습니다. 글만 있는 장면입니다');
+      judge(c15, nv <= MAX_VISUAL, L(s) + ': 그림 · 도형이 ' + nv + '개입니다(' + MAX_VISUAL + '개까지). 줄이거나 장면을 나눕니다');
+    });
+    S.forEach(function(s){
+      rawDeco(s.r.장식).forEach(function(nm){ judge(c14, !!canon(nm, DECO_NAMES), L(s) + ': 장식 「' + nm + '」은 도구에 없습니다. 가까운 이름: ' + suggest(nm, DECO_NAMES, DECO_ALIAS).join(' · ')); });
+      (s.els || []).forEach(function(q, j){
+        var kind = canon(q.종류, KINDS), names = [];
+        if (kind === '그림' || (kind === '카드' && strOk(q.이름))) names = [q.이름];
+        if (kind === '그림줄' && Array.isArray(q.이름들)) names = q.이름들;
+        names.forEach(function(nm){ if (typeof nm !== 'string') return; judge(c14, !!canon(nm, ICON_NAMES), Q(s, j, q) + ': 그림 「' + nm + '」은 도구에 없습니다. 가까운 이름: ' + suggest(nm, ICON_NAMES, ICON_ALIAS).join(' · ') + '. 가장 가까운 것을 쓰고 보고합니다'); });
+      });
+    });
+    /* 맨 위 키 · ⑯ 색 조합 · 분위기 · 전환 · ⑰ 색 대비 */
+    Object.keys(RAW).forEach(function(k){ if (TOP_KEYS.indexOf(k) < 0) judge(c9, false, '맨 위: 도구에 없는 키 「' + k + '」. 맨 위에는 ' + TOP_KEYS.join(' · ') + '만 씁니다'); });
+    function pickName(c, label, v, list, alias){
+      if (v == null) judge(c, true, '');
+      else if (typeof v === 'string') judge(c, !!canon(v, list), label + ' 「' + v + '」은 도구에 없습니다. 가까운 이름: ' + suggest(v, list, alias).join(' · '));
+      else judge(c, false, label + '은 이름 하나로 적습니다(' + list.join(' · ') + ')');
+    }
+    var cv = RAW.색조합;
+    if (cv != null && typeof cv === 'object' && !Array.isArray(cv)){
+      judge(c16, true, '');
+      Object.keys(cv).forEach(function(k){ if (['배경','글자','포인트'].indexOf(k) < 0) judge(c16, false, '색조합에 도구에 없는 키 「' + k + '」. 배경 · 글자 · 포인트만 씁니다'); });
+    } else pickName(c16, '색조합', cv, COMBO_NAMES, COMBO_ALIAS);
+    pickName(c16, '분위기', RAW.분위기, MOOD_NAMES, MOOD_ALIAS);
+    pickName(c16, '전환', RAW.전환, TRANSITIONS, TRANS_ALIAS);
+    S.forEach(function(s){ if (Object.prototype.hasOwnProperty.call(s.r, '전환')) judge(c16, false, L(s) + ': 전환은 영상 전체에 하나만 고릅니다. 장면 안의 전환 키는 지웁니다'); });
+    (function(){
+      var cols = null;
+      if (cv == null) cols = COMBOS[COMBO_DEFAULT];
+      else if (typeof cv === 'string'){ var nm = canon(cv, COMBO_NAMES); if (!nm){ skip(c17, '색조합 이름을 몰라 판정하지 못했습니다(⑯ 참고)'); return; } cols = COMBOS[nm]; }
+      else if (typeof cv === 'object' && !Array.isArray(cv)){
+        var okc = true;
+        ['배경','글자','포인트'].forEach(function(k){ if (!hexToRgb(cv[k])){ okc = false; judge(c17, false, '색조합의 「' + k + '」 값 「' + str(cv[k]) + '」을 읽지 못했습니다. #RRGGBB 꼴로 적습니다'); } });
+        if (!okc) return;
+        cols = cv;
+      } else { skip(c17, '색조합 모양을 읽지 못해 판정하지 못했습니다(⑯ 참고)'); return; }
+      var r1 = contrast(cols.글자, cols.배경), r2 = contrast(cols.글자, cols.포인트);
+      judge(c17, r1 >= 4.5, '글자색과 배경색의 대비가 ' + r1.toFixed(2) + ':1입니다(4.5:1 이상). 글자색을 더 어둡게 하거나 배경색을 더 밝게 합니다');
+      judge(c17, r2 >= 4.5, '글자색과 포인트색의 대비가 ' + r2.toFixed(2) + ':1입니다(4.5:1 이상). 포인트색 위에 꼬리표 · 가격 · 큰도형의 글자가 놓입니다');
+    })();
+    items.forEach(function(o){ if (!o.n && !o.fail.length && !o.skip.length) o.skip.push('판정할 대상이 없었습니다'); });   /* 대상 0건은 통과가 아니라 미판정 */
+    return items;
+  }
+  function verdict(o){ return o.fail.length ? '고칠 곳' : (o.skip.length ? '미판정' : '통과'); }
+  function summarize(items){
+    var c = { '고칠 곳':0, '통과':0, '미판정':0 };
+    items.forEach(function(o){ c[verdict(o)]++; });
+    return c;
+  }
+  function reportText(items){
+    var c = summarize(items), out = ['영상도구 점검 결과 — 고칠 곳 ' + c['고칠 곳'] + ' · 통과 ' + c['통과'] + ' · 미판정 ' + c['미판정'] + ' (총 ' + items.length + '개 항목)'];
+    ['고칠 곳', '미판정', '통과'].forEach(function(v){
+      items.filter(function(o){ return verdict(o) === v; }).forEach(function(o){
+        out.push('[' + v + '] ' + o.no + ' ' + o.name + ' — 판정 ' + o.n + '건 · 미판정 ' + o.skip.length + '건');
+        o.fail.forEach(function(m){ out.push('  - ' + m); });
+        o.skip.forEach(function(m){ out.push('  - (미판정) ' + m); });
+      });
+    });
+    return out.join('\n');
+  }
+  function renderChecks(items){
+    var c = summarize(items), sum = $('summary');
+    sum.textContent = '';
+    $('checks').textContent = '';
+    if (!items.length){
+      sum.appendChild(h('span', '고칠', '점검하지 못했습니다. 위쪽 오류 내용을 확인합니다'));
+      document.documentElement.setAttribute('data-점검', '점검하지 못함');
+      document.title = (M.title || '영상도구') + ' · 점검하지 못함';
+      return '점검하지 못함';
+    }
+    sum.appendChild(h('span', '고칠', '고칠 곳 ' + c['고칠 곳']));
+    sum.appendChild(h('span', '통과', '통과 ' + c['통과']));
+    sum.appendChild(h('span', '미판정', '미판정 ' + c['미판정']));
+    sum.appendChild(h('span', '흐림', '(총 ' + items.length + '개 항목)'));
+    var ul = $('checks'); ul.textContent = '';
+    items.forEach(function(o){
+      var v = verdict(o), li = h('li', '항목 ' + (v === '고칠 곳' ? '고칠' : v));
+      var line = h('div', '줄'); line.appendChild(h('span', '칩', v)); line.appendChild(h('b', '', o.no + ' ' + o.name)); li.appendChild(line);
+      li.appendChild(h('p', '기준', o.rule));
+      if (o.fail.length || o.skip.length){
+        var ml = h('ul', '건');
+        o.fail.forEach(function(m){ ml.appendChild(h('li', '', m)); });
+        o.skip.forEach(function(m){ ml.appendChild(h('li', '', '미판정: ' + m)); });
+        li.appendChild(ml);
+      }
+      li.appendChild(h('p', '수', '판정 ' + o.n + '건 · 미판정 ' + o.skip.length + '건'));
+      ul.appendChild(li);
+    });
+    var head = '고칠 곳 ' + c['고칠 곳'] + ' · 통과 ' + c['통과'] + ' · 미판정 ' + c['미판정'];
+    document.documentElement.setAttribute('data-점검', head);
+    document.title = (M.title || '영상도구') + ' · ' + head;
+    return head;
+  }
+  function renderErrors(){
+    var box = $('errBox'); box.textContent = '';
+    var msgs = [];
+    if (!RAW || typeof RAW !== 'object') msgs.push('장면 데이터를 읽지 못했습니다. 「여기만 고칩니다」 구간의 쉼표 · 따옴표 · 괄호와, 첫 줄 window.영상 = { 가 그대로 있는지 확인합니다.');
+    else if (!Array.isArray(RAW.장면)) msgs.push('window.영상 안에 장면 목록(장면: [ ... ])이 없습니다.');
+    읽기오류.forEach(function(m){ msgs.push('브라우저가 알려 준 오류: ' + m); });
+    var se = $('stageErr'); se.textContent = ''; se.style.display = msgs.length ? 'block' : 'none';
+    if (msgs.length){
+      var d = h('div', '오류상자');
+      msgs.forEach(function(m){ d.appendChild(h('div', '', m)); se.appendChild(h('div', '', m)); });
+      box.appendChild(d);
+    }
+    return msgs;
+  }
+
+  /* ── 장면표 · 근거 ── */
+  function shownTime(s){
+    var m = s.시작 + TRANS;
+    s.els.forEach(function(e){ m = Math.max(m, e.abs + e.total); });
+    return Math.min(m, s.끝 - 0.02);
+  }
+  function visualNames(s){
+    var a = [];
+    s.els.forEach(function(e){
+      if (e.종류 === '그림') a.push('그림 ' + e.이름);
+      else if (e.종류 === '그림줄') a.push('그림줄 ' + e.이름들.join('·'));
+      else if (VISUAL.indexOf(e.종류) >= 0) a.push(e.종류);
+    });
+    s.decoNames.forEach(function(d){ a.push('장식 ' + d); });
+    return a.join(' · ');
+  }
+  function renderRows(){
+    rowsEl.textContent = '';
+    M.scenes.forEach(function(s){
+      var b = h('button', '행'); b.type = 'button';
+      b.appendChild(h('span', '번호', (s.i + 1) + '. ' + (s.구간 || s.구간원문 || '구간 없음') + ' · ' + g(s.시작) + '~' + g(s.끝) + '초'));
+      var texts = s.els.map(function(e){ return (e.글 + (e.곁글 ? ' ' + e.곁글 : '') + (e.글들.length ? ' ' + e.글들.join(' ') : '')).replace(/\n/g, ' ').trim(); }).filter(Boolean);
+      var mos = []; s.els.forEach(function(e){ if (mos.indexOf(e.움직임) < 0) mos.push(e.움직임); });
+      [['화면 글자', texts.join(' / ')], ['그림 · 장식', visualNames(s)], ['자막', s.자막], ['움직임', mos.join(' · ')], ['근거', s.근거]].forEach(function(p){
+        var row = h('div', '칸'); row.appendChild(h('span', '', p[0])); row.appendChild(h('span', '', p[1] || '(없음)')); b.appendChild(row);
+      });
+      b.addEventListener('click', function(){ setPlaying(false); draw(shownTime(s)); });
+      rowsEl.appendChild(b);
+    });
+  }
+
+  /* ── 그림 · 장식 보기 ── */
+  var KIND_NOTE = { '그림':'선 그림 한 개. 크기 · 원배지 선택', '그림줄':'그림 2~5개를 한 줄에. 차례로 나옴', '도넛':'비율 고리. 값은 비율, 글은 가운데 숫자', '별점':'별 5개 중 값만큼 채움',
+    '카드':'둥근 상자 안에 글 + 곁글, 이름을 주면 그림도 넣음', '말풍선':'후기 인용. 곁글은 출처', '가격표':'이름(글)과 가격(곁글) 한 쌍', '큰도형':'원 · 둥근네모 · 알약 가운데 글자', '막대':'비율 막대' };
+  function renderGallery(){
+    var g2 = $('viewGallery'); g2.textContent = '';
+    g2.appendChild(h('p', '흐림', '이름을 누르면 복사됩니다. 에이전트에게 이름으로 시킵니다. 예: 3장면 위쪽에 장바구니 그림을 크게 넣어 줘. 색 조합 · 분위기 · 전환은 누르면 이 화면에서 미리 적용됩니다.'));
+    var pv = h('div', '미리보기줄'); pv.id = 'galPrev'; pv.hidden = true; pv.appendChild(h('span', '', ''));
+    var pvb = h('button', 'btn sm', '미리보기 끝내기'); pvb.type = 'button'; pvb.addEventListener('click', function(){ PREVIEW.combo = PREVIEW.mood = PREVIEW.trans = null; applyPreview(); });
+    pv.appendChild(pvb); g2.appendChild(pv);
+    var msg = h('p', '흐림', ''); msg.id = 'galMsg'; msg.setAttribute('aria-live', 'polite'); msg.style.minHeight = '1.5em'; g2.appendChild(msg);
+    g2.appendChild(h('h3', '갤러리제목', '그림 ' + ICON_NAMES.length + '개'));
+    var grid = h('div', '그리드');
+    ICON_NAMES.forEach(function(nm){
+      var b = h('button', '셀'); b.type = 'button'; b.setAttribute('data-그림', nm); b.appendChild(iconSvg(nm).svg); b.appendChild(h('span', '', nm));
+      b.addEventListener('click', function(){ copyText(nm, msg, '「' + nm + '」 이름을 복사했습니다'); });
+      grid.appendChild(b);
+    });
+    g2.appendChild(grid);
+    g2.appendChild(h('h3', '갤러리제목', '장식 ' + DECO_NAMES.length + '개 (장면에 하나 또는 둘)'));
+    var grid2 = h('div', '그리드');
+    DECO_NAMES.forEach(function(nm){
+      var b = h('button', '셀'); b.type = 'button'; b.setAttribute('data-장식', nm);
+      var box = h('span', '미리'); box.appendChild(decoNode(nm, 0)); b.appendChild(box); b.appendChild(h('span', '', nm));
+      b.addEventListener('click', function(){ copyText(nm, msg, '「' + nm + '」 이름을 복사했습니다'); });
+      grid2.appendChild(b);
+    });
+    g2.appendChild(grid2);
+    g2.appendChild(h('h3', '갤러리제목', '색 조합 ' + COMBO_NAMES.length + '벌 (영상 전체에 하나 · 누르면 미리 적용)'));
+    var gridC = h('div', '그리드');
+    COMBO_NAMES.forEach(function(nm){
+      var c = COMBOS[nm], b = h('button', '셀 색'); b.type = 'button'; b.setAttribute('data-색조합', nm);
+      var bar = h('span', '칩줄'); [c.배경, c.글자, c.포인트].forEach(function(col){ var i = h('i'); i.style.background = col; bar.appendChild(i); });
+      b.appendChild(bar); b.appendChild(h('span', '', nm)); b.appendChild(h('span', '흐림', contrast(c.글자, c.배경).toFixed(1) + ' · ' + contrast(c.글자, c.포인트).toFixed(1)));
+      b.addEventListener('click', function(){ PREVIEW.combo = nm; applyPreview(); copyText(nm, msg, '「' + nm + '」 이름을 복사했습니다'); });
+      gridC.appendChild(b);
+    });
+    g2.appendChild(gridC);
+    g2.appendChild(h('h3', '갤러리제목', '분위기 ' + MOOD_NAMES.length + '개 (속도 · 가감속 · 튐을 한 번에)'));
+    MOOD_NAMES.forEach(function(nm){
+      var m = MOODS[nm], b = h('button', '목록행'); b.type = 'button'; b.setAttribute('data-분위기', nm);
+      b.appendChild(h('b', '', nm));
+      b.appendChild(h('span', '', '속도 ' + SPEEDS.map(function(sp){ return g(SPEED_BASE[sp] * m.배율); }).join(' · ') + '초 · 전환 ' + g(m.전환) + '초 · ' + m.설명));
+      b.addEventListener('click', function(){ PREVIEW.mood = nm; applyPreview(); copyText(nm, msg, '「' + nm + '」 이름을 복사했습니다'); });
+      g2.appendChild(b);
+    });
+    g2.appendChild(h('h3', '갤러리제목', '전환 ' + TRANSITIONS.length + '개 (영상 전체에 하나)'));
+    TRANSITIONS.forEach(function(nm){
+      var b = h('button', '목록행'); b.type = 'button'; b.setAttribute('data-전환', nm);
+      b.appendChild(h('b', '', nm)); b.appendChild(h('span', '', TRANS_NOTE[nm]));
+      b.addEventListener('click', function(){ PREVIEW.trans = nm; applyPreview(); if (M.scenes.length > 1){ draw(Math.max(0, M.scenes[1].시작 - .3)); setPlaying(true); } copyText(nm, msg, '「' + nm + '」 이름을 복사했습니다'); });
+      g2.appendChild(b);
+    });
+    g2.appendChild(h('h3', '갤러리제목', '도형과 그림 종류'));
+    Object.keys(KIND_NOTE).forEach(function(k){
+      var row = h('div', '종류행'); row.appendChild(h('b', '', k)); row.appendChild(document.createTextNode(KIND_NOTE[k] + ' — ' + KINDMOTION[k].join(' · ')));
+      g2.appendChild(row);
+    });
+  }
+  function showTab(which){
+    var g2 = which === 'gallery';
+    $('viewCheck').hidden = g2; $('viewGallery').hidden = !g2;
+    $('tabCheck').classList.toggle('on', !g2); $('tabGallery').classList.toggle('on', g2);
+    $('tabCheck').setAttribute('aria-selected', String(!g2)); $('tabGallery').setAttribute('aria-selected', String(g2));
+  }
+
+  /* ── 재생 · 조작 ── */
+  var raf = 0;
   function setPlaying(on){
-    playing = on; playBtn.textContent = on ? '❚❚ 멈춤' : (t >= DUR ? '⟲ 다시 보기' : '▶ 재생');
+    playing = on;
+    playBtn.textContent = on ? '❚❚ 멈춤' : (cur >= M.dur ? '⟲ 다시 보기' : '▶ 재생');
     playBtn.setAttribute('aria-label', on ? '멈춤' : '재생');
-    if (on){ last = performance.now(); requestAnimationFrame(tick); }
+    cancelAnimationFrame(raf);
+    if (on){ last = performance.now(); raf = requestAnimationFrame(tick); }
   }
   function tick(now){
     if (!playing) return;
-    setTime(t + (now - last) / 1000); last = now;
-    if (t >= DUR){ setPlaying(false); return; }
-    requestAnimationFrame(tick);
+    draw(cur + Math.min(.25, (now - last) / 1000)); last = now;
+    if (cur >= M.dur){ setPlaying(false); return; }
+    raf = requestAnimationFrame(tick);
   }
-  function toggle(){ if (!playing && t >= DUR) setTime(0); setPlaying(!playing); }
-
-  /* ── 조작 ── */
-  playBtn.addEventListener('click', toggle);
-  document.getElementById('replay').addEventListener('click', function(){ setTime(0); setPlaying(true); });
-  seek.addEventListener('input', function(){ setPlaying(false); setTime(+seek.value); });
-  document.getElementById('cc').addEventListener('click', function(e){
-    var on = e.currentTarget.getAttribute('aria-pressed') !== 'true';
-    e.currentTarget.setAttribute('aria-pressed', on); stage.classList.toggle('no-sub', !on);
-  });
-  var sheet = document.getElementById('sheet');
-  document.getElementById('sheetBtn').addEventListener('click', function(e){
-    var on = !sheet.classList.contains('open'); sheet.classList.toggle('open', on); e.currentTarget.setAttribute('aria-pressed', on);
-  });
-  document.getElementById('fs').addEventListener('click', function(){
-    var app = document.getElementById('app');
-    if (document.fullscreenElement) document.exitFullscreen(); else if (app.requestFullscreen) app.requestFullscreen();
-  });
-  document.addEventListener('keydown', function(e){
-    if (e.target.tagName === 'BUTTON' && (e.key === ' ' || e.key === 'Enter')) return;
-    if (e.key === ' ' || e.key === 'k'){ e.preventDefault(); toggle(); }
-    else if (e.key === 'ArrowRight'){ setPlaying(false); setTime(t + 1); }
-    else if (e.key === 'ArrowLeft'){ setPlaying(false); setTime(t - 1); }
-    else if (e.key === 'Home'){ setTime(0); }
-  });
-  rows.innerHTML = SCENES.map(function(s, i){
-    var end = i < SCENES.length - 1 ? SCENES[i + 1].t : DUR;
-    return '<button class="row" type="button" data-t="' + s.t + '"><time>' + s.t.toFixed(1) + '초</time><div><b>' + (i + 1) + '. ' + s.name + ' · ' + (end - s.t).toFixed(1) + '초</b><span>' + s.sub + '</span><em>근거: ' + s.src + '</em></div></button>';
-  }).join('');
-  rows.addEventListener('click', function(e){ var r = e.target.closest('.row'); if (r){ setPlaying(false); setTime(+r.dataset.t + 2.2); } });
-  document.getElementById('marks').innerHTML = SCENES.slice(1).map(function(s){ return '<i style="left:' + (s.t / DUR * 100) + '%"></i>'; }).join('');
-
-  /* ── 화면 크기에 맞춘다(1920×1080 고정 무대) ── */
+  function toggle(){ if (!playing && cur >= M.dur) draw(0); setPlaying(!playing); }
+  function jumpScene(dir){
+    if (!M.scenes.length) return;
+    var k = sceneAt(cur), target;
+    if (dir < 0) target = (cur - M.scenes[k].시작 > .6 || k === 0) ? M.scenes[k].시작 : M.scenes[k - 1].시작;
+    else target = k < M.scenes.length - 1 ? M.scenes[k + 1].시작 : M.dur;
+    draw(target); setPlaying(playing && target < M.dur);
+  }
   function fit(){
-    var w = viewport.clientWidth - 36, h = viewport.clientHeight - 24, k = Math.min(w / 1920, h / 1080);
-    frame.style.width = 1920 * k + 'px'; frame.style.height = 1080 * k + 'px'; stage.style.transform = 'scale(' + k + ')';
+    var w = viewport.clientWidth - 24, hh = viewport.clientHeight - 24, k = Math.max(.05, Math.min(w / 1080, hh / 1920));
+    frame.style.width = (1080 * k) + 'px'; frame.style.height = (1920 * k) + 'px'; stage.style.transform = 'scale(' + k + ')';
   }
-  window.addEventListener('resize', fit); fit();
 
-  var start = /[?&]t=([\d.]+)/.exec(location.search);
-  setTime(start ? +start[1] : 0);
-  if (!start && !/[?&]paused\b/.test(location.search)) setPlaying(true);
+  playBtn.addEventListener('click', toggle);
+  $('replay').addEventListener('click', function(){ draw(0); setPlaying(true); });
+  $('prev').addEventListener('click', function(){ jumpScene(-1); });
+  $('next').addEventListener('click', function(){ jumpScene(1); });
+  seek.addEventListener('input', function(){ setPlaying(false); draw(+seek.value); });
+  $('cc').addEventListener('click', function(e){
+    var on = e.currentTarget.getAttribute('aria-pressed') !== 'true';
+    e.currentTarget.setAttribute('aria-pressed', String(on)); stage.classList.toggle('자막끔', !on);
+  });
+  $('fs').addEventListener('click', function(){
+    if (document.fullscreenElement) document.exitFullscreen(); else if (player.requestFullscreen) player.requestFullscreen();
+  });
+  $('panelBtn').addEventListener('click', function(){ app.classList.toggle('panel-open'); });
+  $('panelClose').addEventListener('click', function(){ app.classList.remove('panel-open'); });
+  document.addEventListener('fullscreenchange', fit);
+  document.addEventListener('keydown', function(e){
+    if (e.target && e.target.tagName === 'BUTTON' && (e.key === ' ' || e.key === 'Enter')) return;
+    if (e.key === ' ' || e.key === 'k'){ e.preventDefault(); toggle(); }
+    else if (e.key === 'ArrowRight'){ setPlaying(false); draw(cur + 1); }
+    else if (e.key === 'ArrowLeft'){ setPlaying(false); draw(cur - 1); }
+    else if (e.key === 'Home'){ draw(0); }
+  });
+  window.addEventListener('resize', fit);
+
+  /* ── 복사 ── */
+  var report = null, reportItems = [];
+  function copyText(text, msgEl, okMsg){
+    function ok(){ msgEl.textContent = okMsg; setTimeout(function(){ msgEl.textContent = ''; }, 2000); }
+    function fallback(){
+      var ta = document.createElement('textarea'); ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0'; document.body.appendChild(ta); ta.select();
+      try { document.execCommand('copy'); ok(); } catch (err) { msgEl.textContent = '복사하지 못했습니다'; }
+      document.body.removeChild(ta);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(ok, fallback); else fallback();
+  }
+  $('copyReport').addEventListener('click', function(){ copyText(reportText(reportItems), $('copyMsg'), '복사했습니다'); });
+  $('tabCheck').addEventListener('click', function(){ showTab('check'); });
+  $('tabGallery').addEventListener('click', function(){ showTab('gallery'); });
+
+  /* ── 시작 ── */
+  function refresh(){
+    fit();
+    try {
+      if (M.scenes.length) fitAll();
+      reportItems = runChecks();
+    } catch (err) {
+      읽기오류.push('점검 중 오류: ' + err.message);
+      reportItems = [];
+    }
+    report = renderChecks(reportItems);
+  }
+  var PREVIEW = { combo:null, mood:null, trans:null };
+  function applyPreview(){
+    applyAll(PREVIEW.combo ? COMBOS[PREVIEW.combo] : DATA.combo.색, PREVIEW.mood || DATA.mood, PREVIEW.trans || DATA.trans);
+    recomputeTimes();
+    draw(cur);
+    var on = !!(PREVIEW.combo || PREVIEW.mood || PREVIEW.trans), box = $('galPrev');
+    if (box){ box.hidden = !on; box.firstChild.textContent = '미리보기 중: ' + (PREVIEW.combo || DATA.combo.이름) + ' · ' + (PREVIEW.mood || DATA.mood) + ' · ' + (PREVIEW.trans || DATA.trans) + '. 파일은 바뀌지 않습니다.'; }
+  }
+  try {
+    applyAll(DATA.combo.색, DATA.mood, DATA.trans);
+    normalize(); build(); renderRows();
+  } catch (err) {
+    읽기오류.push('화면을 만드는 중 오류: ' + err.message);
+    M.scenes = []; M.dur = 1;
+  }
+  renderGallery();
+  refresh();
+  renderErrors();
+  console.info('[영상도구 점검] ' + report);
+  reportItems.forEach(function(o){ if (verdict(o) !== '통과') console.info('  ' + o.no + ' ' + o.name + ' — ' + verdict(o) + ' ' + o.fail.concat(o.skip).length + '건'); });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(function(){ var keep = cur; refresh(); draw(keep); renderErrors(); });
+
+  window.영상도구 = { 그리기:draw, 점검:function(){ return { 요약:summarize(reportItems), 항목:reportItems.map(function(o){ return { 번호:o.no, 이름:o.name, 판정:verdict(o), 건:o.n, 고칠:o.fail.slice(), 미판정:o.skip.slice() }; }), 글:reportText(reportItems) }; },
+                    길이:function(){ return M.dur; }, 현재:function(){ return cur; }, 모델:M, 목록:{ 그림:ICON_NAMES.slice(), 장식:DECO_NAMES.slice(), 종류:KINDS.slice(), 색조합:COMBO_NAMES.slice(), 분위기:MOOD_NAMES.slice(), 전환:TRANSITIONS.slice() }, 설정:function(){ return { 색조합:DATA.combo.이름, 분위기:DATA.mood, 전환:DATA.trans }; }, 미리보기:function(c, m, t){ PREVIEW.combo = c || null; PREVIEW.mood = m || null; PREVIEW.trans = t || null; applyPreview(); } };
+
+  var q = /[?&]t=([\d.]+)/.exec(location.search);
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  draw(q ? +q[1] : 0);
+  setPlaying(false);
+  if (!q && !/[?&]paused\b/.test(location.search) && !reduce && M.scenes.length) setPlaying(true);
 })();
 </script>
 </body>

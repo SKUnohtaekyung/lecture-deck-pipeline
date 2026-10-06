@@ -11,6 +11,7 @@ OUT = ensure(os.path.join(INST, '완성예시'))
 JOBS = [('p1.html', 'p1.json', '실습1_실행보드.html'), ('p2.html', 'p2.json', '실습2_세컨드브레인.html'),
         ('p3.html', 'p3.json', '실습3_응대센터.html'), ('p4.html', 'p4.json', '실습4_주간대시보드.html'),
         ('p5.html', None, '실습5_모션그래픽.html'), ('p6.html', 'p6.json', '실습6_안내문.html'), ('p7.html', 'p7.json', '실습7_퀴즈게임.html'),
+        ('p8.html', None, '실습8_스킬만들기.html'),
         ('main.html', None, '메인과제_AI습관점검_index.html')]
 
 

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""실습 자료 전체를 다시 만들고 zip 여덟 개(메인 과제 1 + 실습 7)로 묶는다.
+"""실습 자료 전체를 다시 만들고 zip 아홉 개(메인 과제 1 + 실습 8)로 묶는다.
 실행: python gen_all.py   (필요: openpyxl · python-docx · python-pptx)"""
 import os
 import shutil
@@ -12,6 +12,7 @@ import gen_p4
 import gen_p5
 import gen_p6
 import gen_p7
+import gen_p8
 from gen_common import BASE, write_text
 
 MAIN = os.path.join(BASE, '메인과제_AI습관점검')
@@ -119,7 +120,7 @@ def zip_dir(folder, zip_path):
 
 def main():
     for name in ('실습1_실행보드', '실습2_세컨드브레인', '실습3_응대센터', '실습4_주간대시보드',
-                 '실습5_모션그래픽', '실습6_안내문', '실습7_퀴즈게임', '메인과제_AI습관점검'):
+                 '실습5_모션그래픽', '실습6_안내문', '실습7_퀴즈게임', '실습8_스킬만들기', '메인과제_AI습관점검'):
         p = os.path.join(BASE, name)
         if os.path.isdir(p):
             shutil.rmtree(p)
@@ -131,6 +132,7 @@ def main():
     gen_p5.main()
     gen_p6.main()
     gen_p7.main()
+    gen_p8.main()
     for name in sorted(os.listdir(BASE)):
         p = os.path.join(BASE, name)
         if os.path.isdir(p):

@@ -509,6 +509,13 @@
     .hub-grid.g7 .hub-name{ font-size:22px; }
     .hub-grid.g7 .hub-no{ display:inline; margin-right:8px; font-size:22px; letter-spacing:0; }
     .hub-grid.g7 .hub-done{ position:absolute; top:18px; right:18px; padding:2px 10px; border-radius:var(--r-pill); background:var(--white); font-size:16px; }
+    /* 실습이 여덟 개(g8) — 카드 4×2, 안내(.hub-note)는 아래 한 줄. 썸네일은 76px로 낮추고, 사진이 없는 카드는 인라인 그림(.hub-art)을 같은 자리에 둔다 */
+    .hub-grid.g7 .hub-card .hub-art{ display:block; width:100%; height:132px; border-radius:12px; box-shadow:var(--sh-card); }
+    .hub-grid.g7.g8{ grid-template-rows:1fr 1fr auto; gap:12px 14px; margin-top:12px; }
+    .hub-grid.g7.g8 .hub-card{ gap:8px; padding:10px 12px; }
+    .hub-grid.g7.g8 .hub-card img, .hub-grid.g7.g8 .hub-card .hub-art{ height:76px; }
+    .hub-grid.g7.g8 .hub-note{ grid-column:1 / -1; flex-direction:row; align-items:center; justify-content:space-between; gap:24px; padding:0 8px; }
+    .hub-grid.g7.g8 .hub-note .back{ flex:none; padding:8px 26px; }
     .hub-note{ display:flex; flex-direction:column; justify-content:center; align-items:flex-start; gap:14px; padding:0 8px; }
     .hub-note p{ margin:0; font-size:var(--fs-box-desc); font-weight:500; line-height:1.5; color:var(--gray-700); }
     .hub-note p b{ color:var(--ink); font-weight:800; }
@@ -554,6 +561,22 @@
     .pr-right{ display:flex; flex-direction:column; gap:16px; min-height:0; }
     .pr-right .tail{ margin-top:auto; }
     .fx-back{ margin-top:auto; display:flex; align-items:center; justify-content:space-between; gap:24px; }   /* ④ 아래 줄: 안내 한 줄 + 허브로 단추 */
+    /* 실습 1~4 — ③의 계획 요청문이 한 줄 늘고 ④ 아래 줄에 요청문 창이 들어간다. 글자는 그대로 두고 여백만 줄인다(인라인 style이 있어 !important) */
+    :is([data-slide="P1-2B"],[data-slide="P2-2B"],[data-slide="P3-2B"],[data-slide="P4-2B"]) .pr-main{ margin-top:6px !important; }
+    :is([data-slide="P1-2B"],[data-slide="P2-2B"],[data-slide="P3-2B"],[data-slide="P4-2B"]) .pr-left{ gap:4px !important; }
+    :is([data-slide="P1-2B"],[data-slide="P2-2B"],[data-slide="P3-2B"],[data-slide="P4-2B"]) .pr-left p[style*="margin:2px 0 8px"]{ margin-bottom:4px !important; }
+    :is([data-slide="P1-3"],[data-slide="P2-3"],[data-slide="P3-3"],[data-slide="P4-3"]) .pr-main{ margin-top:14px !important; }
+    :is([data-slide="P1-3"],[data-slide="P2-3"],[data-slide="P3-3"],[data-slide="P4-3"]) .pcards .pc{ padding-top:18px !important; padding-bottom:18px !important; }
+    :is([data-slide="P1-3"],[data-slide="P2-3"],[data-slide="P3-3"],[data-slide="P4-3"]) .pcards .pc .ic{ width:52px; height:52px; margin-bottom:0; }
+    :is([data-slide="P1-3"],[data-slide="P2-3"],[data-slide="P3-3"],[data-slide="P4-3"]) .fx-back{ align-items:flex-end; }
+    /* 실습 6 · 7 — 위와 같은 사정(계획 요청문 한 줄 추가 · ④ 아래 줄의 요청문 창). 실습 1~4 규칙은 고치지 않고 대상 장만 더한다 */
+    :is([data-slide="P6-2B"],[data-slide="P7-2B"]) .pr-main{ margin-top:6px !important; }
+    :is([data-slide="P6-2B"],[data-slide="P7-2B"]) .pr-left{ gap:4px !important; }
+    :is([data-slide="P6-2B"],[data-slide="P7-2B"]) .pr-left p[style*="margin:2px 0 8px"]{ margin-bottom:4px !important; }
+    :is([data-slide="P6-3"],[data-slide="P7-3"]) .pr-main{ margin-top:14px !important; }
+    :is([data-slide="P6-3"],[data-slide="P7-3"]) .pcards .pc{ padding-top:18px !important; padding-bottom:18px !important; }
+    :is([data-slide="P6-3"],[data-slide="P7-3"]) .pcards .pc .ic{ width:52px; height:52px; margin-bottom:0; }
+    :is([data-slide="P6-3"],[data-slide="P7-3"]) .fx-back{ align-items:flex-end; }
 
     /* F-pr-goal ① 목표 — 전후 미리보기 + 시간·준비물·결과물 */
     .pv{ flex:1 1 auto; display:grid; grid-template-columns:392px 96px 1fr; align-items:center; gap:12px; }
@@ -860,6 +883,27 @@
     .rc-name{ font-size:25px; font-weight:800; line-height:1.3; color:var(--ink); }
     .rc-desc{ font-size:22px; font-weight:600; line-height:1.4; color:var(--gray-700); }
 
+    /* ══════════ P5-C2 — 30초 영상의 다섯 구간(가로 시간 막대). 1초 = 격자 1칸(30칸) · 면은 ::before · 면 색은 페트롤 + 아쿠아 두 가지 ══════════ */
+    .tl5-def{ margin:0; display:flex; align-items:baseline; gap:14px; font-size:24px; font-weight:600; line-height:1.5; color:var(--ink); }
+    .tl5-def b{ position:relative; z-index:0; flex:none; padding:0 16px; font-weight:800; color:var(--on-mint); }
+    .tl5-def b::before{ content:""; position:absolute; inset:1px 0; z-index:-1; border-radius:999px; background:var(--mint); }
+    .tl5{ margin-top:64px; }
+    .tl5-ax{ position:relative; height:30px; }
+    .tl5-ax span{ position:absolute; top:0; left:calc(var(--t) / 30 * 100%); transform:translateX(-50%); font-size:22px; font-weight:700; line-height:30px; font-variant-numeric:tabular-nums; white-space:nowrap; color:var(--gray-700); }
+    .tl5-ax span:first-child{ transform:none; } .tl5-ax span:last-child{ transform:translateX(-100%); }
+    .tl5-row{ display:grid; grid-template-columns:repeat(30,1fr); }
+    .tl5-bar{ margin-top:10px; height:112px; }
+    .tl5-bar b{ position:relative; z-index:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px; font-size:32px; font-weight:800; line-height:1.2; letter-spacing:-.02em; color:var(--white); }
+    .tl5-bar b::before{ content:""; position:absolute; inset:0 2px; z-index:-1; border-radius:16px; background:var(--blue); }
+    .tl5-bar b.hl{ color:var(--on-mint); } .tl5-bar b.hl::before{ background:var(--mint); }
+    .tl5-bar small{ font-size:22px; font-weight:600; }
+    .tl5-mk{ margin-top:22px; }
+    .tl5-mk i{ position:relative; z-index:0; justify-self:center; padding:0 16px; font-style:normal; font-size:22px; font-weight:800; line-height:40px; white-space:nowrap; color:var(--ink); }
+    .tl5-mk i::before{ content:""; position:absolute; inset:0; z-index:-1; border-radius:999px; background:var(--white); box-shadow:inset 0 0 0 2.5px var(--blue); }
+    .tl5-mk i::after{ content:""; position:absolute; left:50%; bottom:100%; height:18px; border-left:2.5px solid var(--blue); }
+    .tl5-ds{ margin-top:16px; }
+    .tl5-ds p{ margin:0; text-align:center; font-size:24px; font-weight:700; line-height:1.4; white-space:nowrap; color:var(--ink); }
+
   </style>
 </head>
 <body>
@@ -875,7 +919,7 @@
     <svg class="s-logo" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 18 V8 H18 M30 8 H40 V18 M40 30 V40 H30 M18 40 H8 V30" fill="none" style="stroke:var(--blue)" stroke-width="5"/><rect x="19" y="19" width="10" height="10" style="fill:var(--mint)"/></svg>
     <div class="brand-stack"><span class="s-brand"><svg viewBox="-3 -3 130 52" role="img" aria-label="FRAME" style="height:30px;width:auto;display:block"><defs><clipPath id="frame-band"><rect x="-10" y="1.5" width="150" height="45"/></clipPath></defs><g clip-path="url(#frame-band)" style="fill:none;stroke:var(--blue);stroke-width:5;stroke-linejoin:miter;stroke-linecap:square;stroke-miterlimit:1.5"><path d="M4 44 V4 H30 V44"/><path d="M4 23 H19"/><path d="M30 4 H41 A9.5 9.5 0 0 1 41 23 H30"/><path d="M37 23 L47 44 L59 4 L71 44 H79 V4 L92 28 L105 4 V44 H123"/><path d="M50.6 32 H67.4"/><path d="M105 4 H123"/><path d="M105 24 H120"/></g></svg></span></div>
   </header>
-  <p class="cover-lead">AI 에이전트 실습 · 2시간</p>
+  <p class="cover-lead">AI 에이전트 실습</p>
   <div class="cover-title"><h1 class="ko" style="font-size:132px;line-height:1;letter-spacing:-.04em">AGENT</h1></div>
   <p class="cv-desc">개념을 배우고, 점검 앱을 직접 만들어 공개합니다.</p>
   <div class="cv3d" role="img" aria-label="기둥으로 짠 틀 안에 정육면체가 든 입체 그림. 둘레에 prd.md, design.md, AGENTS.md, index.html 파일 카드가 떠 있습니다. 끌면 돌아가고 누르면 카드가 펼쳐집니다.">
