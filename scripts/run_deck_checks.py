@@ -184,13 +184,19 @@ def _rel(p: str) -> str:
 
 
 class Runner:
-    def __init__(self, week: str):
+    def __init__(self, week: str, variant: str | None = None):
         self.num = _week_num(week)
         self.week = f"{self.num}주차"
         self.session = _session_dir(self.num)
-        self.deck = os.path.join(self.session, "강의덱.html")
+        # 변형 덱(2026-10-06): 같은 shard에서 `assemble_deck.py --variant <이름>`으로 뽑은
+        # `강의덱_<이름>.html`. 덱·노트·렌더 증거·기준선을 기본 덱과 따로 둔다 — 장 구성이
+        # 다른 덱에 기본 덱의 증거나 기준선을 물려주면 그것이 곧 거짓 PASS다.
+        self.variant = variant
+        stem = f"강의덱_{variant}" if variant else "강의덱"
+        self.evidence = f"deck-audit_{variant}.json" if variant else EVIDENCE
+        self.deck = os.path.join(self.session, f"{stem}.html")
         self.shard = os.path.join(self.session, "강의덱.초안")
-        self.notes = os.path.join(self.session, "강의덱_발표자노트.html")
+        self.notes = os.path.join(self.session, f"{stem}_발표자노트.html")
         # 과목 인식 증거 경로(B03). 과목이 자기 `sessions/_verify/`를 선언했으면
         # 그쪽, 아니면 구경로 — 기존 과목의 측정분은 구경로에 있고 불변이다.
         if _course_paths is None:                 # 해석기를 못 읽은 경우만 구경로
@@ -218,9 +224,17 @@ class Runner:
             return {}
         try:
             with open(path, encoding="utf-8") as fh:
-                return json.load(fh)
+                data = json.load(fh)
         except Exception:
             return {}
+        if self.variant and isinstance(data, dict):
+            # 변형 덱은 계약의 `variants.<이름>`에 등재한 waiver·기준선만 쓴다.
+            # 등재가 없으면 빈 값 — 기본 덱의 것을 상속하지 않는다(위 __init__ 주석).
+            own = (data.get("variants") or {}).get(self.variant) or {}
+            data = dict(data)
+            data["known_violations"] = own.get("known_violations") or {}
+            data["warn_baseline"] = own.get("warn_baseline") or {}
+        return data
 
     # ── 단계 실행 ────────────────────────────────────────────────────
     def _py(self, name: str, script: str, *args: str, allow_warn: bool = True) -> bool:
@@ -268,7 +282,8 @@ class Runner:
         if not os.path.isdir(self.shard):
             self.steps.append(("조립", False, f"shard 폴더 없음: {_rel(self.shard)}"))
             return False
-        return self._py("조립 (assemble_deck)", "assemble_deck.py", _rel(self.shard))
+        extra = ["--variant", self.variant] if self.variant else []
+        return self._py("조립 (assemble_deck)", "assemble_deck.py", _rel(self.shard), *extra)
 
     def static_gates(self, parts: str | None) -> bool:
         ok = True
@@ -314,6 +329,12 @@ class Runner:
     #   FAIL한다(waiver 없으면 베이스라인 0 = 1건이라도 FAIL). 스크립트의
     #   --strict는 단독 실행·테스트용으로 남는다.
     def _draft_gates(self, kv: dict) -> bool:
+        if self.variant:
+            # 초안 대조 3종은 주차 번호로 «N주차_초안.md ↔ 강의덱.html»을 본다. 변형 덱에는
+            # 그 짝이 없으므로 돌리지 않고, 돌리지 않았다는 사실을 단계로 남긴다(미판정).
+            self.steps.append(("초안 대조 3종 (제목 생존 · 동기화 · 보고 신선도)", True,
+                               f"변형 덱 «{self.variant}» — 미판정 3건(초안 대조는 기본 덱에서만 한다 · 통과가 아니다)"))
+            return True
         ok = True
         for label, script, wkey, count_re in (
             ("초안 제목 생존 (check_title_survival)", "check_title_survival.py",
@@ -389,7 +410,7 @@ class Runner:
             # AmbiguousCourseError로 러너가 죽는다) — 그래서 cur는 항상 있다.
             cur = _course_paths.resolve_course(None, ROOT)
             cur_name = os.path.basename(cur) if cur else None
-            ev_path = os.path.join(self.verify_dir, EVIDENCE)
+            ev_path = os.path.join(self.verify_dir, self.evidence)
             owner = _course_paths.evidence_owner(ev_path)
             if owner is None:
                 # 「아직 안 쟀다」와 「쟀는데 주인을 못 읽겠다」는 다른 사건이다.
@@ -410,7 +431,7 @@ class Runner:
                 print(msg)
                 print("\u2500" * 68)
                 return False
-        data, err = self._load_evidence(EVIDENCE)
+        data, err = self._load_evidence(self.evidence)
         if err:
             self.steps.append(("렌더·타이포 감사", False, err))
             print("\n" + "─" * 68)
@@ -422,7 +443,7 @@ class Runner:
             print("        그 상태의 「결함 0」은 측정 무효다(감사기가 INVALID로 막는다)")
             print("  3) 콘솔에서:")
             print("     await (await fetch('/scripts/audit_all.js')).text().then(eval)")
-            print(f"  4) 출력 JSON을 그대로 저장: {_rel(os.path.join(self.verify_dir, EVIDENCE))}")
+            print(f"  4) 출력 JSON을 그대로 저장: {_rel(os.path.join(self.verify_dir, self.evidence))}")
             print("─" * 68)
             return False
 
@@ -442,8 +463,12 @@ class Runner:
             with open(self.deck, encoding="utf-8") as fh:
                 # `class="slide` 부분일치로 세면 `.slide-num` 같은 이웃 클래스까지 잡힌다
                 # (실측: 110장 덱이 111로 세어졌다). 섹션 태그의 slide 낱말만 센다.
+                # HTML 주석 안의 마크업 예시는 장이 아니다(실측 2026-10-06: shell 주석의
+                # `<section class="slide ...">` 한 줄 때문에 99장 덱이 100으로 세어졌다).
+                # 조립기(assemble_deck)도 같은 이유로 주석을 걷어 내고 센다.
                 deck_slides = len(re.findall(
-                    r'<section[^>]*\bclass="[^"]*\bslide\b', fh.read(), re.I))
+                    r'<section[^>]*\bclass="[^"]*\bslide\b',
+                    re.sub(r"<!--.*?-->", "", fh.read(), flags=re.S), re.I))
         # ⚠️ 종전 조건은 `if deck_slides and n_slides`였다 — 정규식이 한 장도 못 세면
         # `deck_slides == 0`이 **falsy**라 장수 대조가 통째로 건너뛰어졌다. 「0장을 셌다」는
         # 「덱이 없다」와 다른 사건이고, 전자는 **검사가 눈이 먼 상태**다(눈먼 0 방지).
@@ -545,7 +570,7 @@ class Runner:
         정적 게이트를 건너뛴 실행도 그 문구와 함께 exit 0을 냈다 —
         **부분 실행이 완전 통과로 읽히는** 정확히 그 실패 유형이다."""
         print("\n" + "=" * 68)
-        print(f"러너 요약 — {self.week}")
+        print(f"러너 요약 — {self.week}" + (f" · 변형 덱 «{self.variant}»" if self.variant else ""))
         print("=" * 68)
         # ── 구조 WARN 래칫(P1) — 최상단 노출. 세어지지 않는 WARN은 침묵과 같다 ──
         if ran_static:
@@ -649,6 +674,8 @@ def main() -> int:
     ap.add_argument("week", help="주차 (예: 2주차)")
     ap.add_argument("--assemble", action="store_true", help="shard에서 덱을 먼저 재조립한다")
     ap.add_argument("--parts", help="verify_deck의 part-divider 수")
+    ap.add_argument("--variant", help="변형 덱 이름 — 강의덱_<이름>.html · deck-audit_<이름>.json · "
+                                      "계약 variants.<이름>을 본다(초안 대조 3종은 미판정)")
     ap.add_argument("--render-only", action="store_true", help="렌더 증거만 판정한다")
     ap.add_argument("--skip-render", action="store_true",
                     help="⚠️ 렌더 증거 검사를 생략한다(조립 중간 점검용). "
@@ -659,7 +686,7 @@ def main() -> int:
         print("[사용법] --render-only 와 --skip-render 는 함께 쓸 수 없다")
         return 2
 
-    r = Runner(a.week)
+    r = Runner(a.week, a.variant)
     if not os.path.isdir(r.session):
         print(f"[실패] 주차 폴더를 찾을 수 없다: {_rel(r.session)}")
         return 2

@@ -78,25 +78,19 @@ def find_contracts(root: str):
     return sorted(found)
 
 
-def lint_contract(path: str):
-    """(문제 목록) — 비어 있으면 통과."""
+def _lint_waiver_block(data: dict, where: str):
+    """known_violations·warn_baseline 한 벌의 문제 목록. where는 메시지 머리말."""
     problems = []
-    try:
-        with open(path, encoding="utf-8") as fh:
-            data = json.load(fh)
-    except Exception as exc:
-        return [f"JSON 파싱 실패: {exc}"]
-
     kv = data.get("known_violations")
     if kv is not None and not isinstance(kv, dict):
-        return ["known_violations가 객체가 아님"]
+        return [where + "known_violations가 객체가 아님"]
     for key, entry in (kv or {}).items():
         if not isinstance(entry, dict):
-            problems.append(f"waiver '{key}': 객체가 아님(사유·일자를 담을 수 없음)")
+            problems.append(f"{where}waiver '{key}': 객체가 아님(사유·일자를 담을 수 없음)")
             continue
         if not waiver_entry_valid(entry):
             problems.append(
-                f"waiver '{key}': reason(비어 있지 않은 사유)·date(YYYY-MM-DD) 필수 — "
+                f"{where}waiver '{key}': reason(비어 있지 않은 사유)·date(YYYY-MM-DD) 필수 — "
                 f"현재 reason={entry.get('reason')!r} date={entry.get('date')!r}")
 
     wb = data.get("warn_baseline")
@@ -104,7 +98,7 @@ def lint_contract(path: str):
         if not isinstance(wb, dict) or not isinstance(wb.get("static_gates"), int) \
                 or not (isinstance(wb.get("date"), str) and _DATE_RE.match(wb["date"])):
             problems.append(
-                "warn_baseline: {static_gates: 정수, date: YYYY-MM-DD} 형식이어야 함 — "
+                where + "warn_baseline: {static_gates: 정수, date: YYYY-MM-DD} 형식이어야 함 — "
                 f"현재 {wb!r}")
         # 렌더·품질 WARN 래칫 기준선(P4 배치3 · 배치4) — 선택 키이나, 있으면 정수여야 한다.
         # 형식이 깨진 채 두면 러너가 «미등재»로 읽어 FAIL하므로 여기서 먼저 잡는다.
@@ -112,7 +106,31 @@ def lint_contract(path: str):
             for opt_key, label in (("render", "렌더"), ("quality", "품질")):
                 if opt_key in wb and not isinstance(wb.get(opt_key), int):
                     problems.append(
-                        f"warn_baseline.{opt_key}: 정수여야 함({label} WARN 래칫 기준선) — 현재 {wb.get(opt_key)!r}")
+                        f"{where}warn_baseline.{opt_key}: 정수여야 함({label} WARN 래칫 기준선) — 현재 {wb.get(opt_key)!r}")
+
+    return problems
+
+
+def lint_contract(path: str):
+    """(문제 목록) — 비어 있으면 통과."""
+    try:
+        with open(path, encoding="utf-8") as fh:
+            data = json.load(fh)
+    except Exception as exc:
+        return [f"JSON 파싱 실패: {exc}"]
+
+    problems = _lint_waiver_block(data, "")
+    # 변형 덱(run_deck_checks --variant)의 waiver·기준선도 같은 규약을 따른다.
+    variants = data.get("variants")
+    if variants is not None:
+        if not isinstance(variants, dict):
+            problems.append("variants가 객체가 아님")
+        else:
+            for name, block in variants.items():
+                if not isinstance(block, dict):
+                    problems.append(f"variants.{name}: 객체가 아님")
+                else:
+                    problems += _lint_waiver_block(block, f"variants.{name} · ")
 
     # 품질 게이트 강등(2026-08-18 신설) — `verify_deck_quality.py`의 상시 FAIL 규칙을
     # 그 주차만 WARN으로 내리는 열쇠다. **무사유 강등이 들어오면 게이트가 무력해지므로**

@@ -8,6 +8,9 @@
   - **`deck.contract.json`의 `layout_families`에 등재할 것**: 템플릿이 제공하는 `.roadmap`과, 이 주차가 새로 만든 구도 클래스 전부. 미등재 구도는 `full`로 뭉개져 「동일 구도 연속」 FAIL 오탐이 난다.
 - `part-01.html`, `part-02.html`, … — 파트별 섹션 조각(`part-divider` + 본문 `<section class="slide">`). head/body/html 없이 섹션만.
 - `order.txt`(선택) — 병합 순서. 없으면 파일명 오름차순(zero-pad: `part-01`, `part-02`, …). 있으면 한 줄에 파일명 하나씩 그 순서로 병합한다.
+- `variants/`(이 과목 · 2026-10-06) — 길이별 조립표. `2h.txt` · `4h.txt`가 넣을 장을 `data-slide` ID로 나올 순서대로 적고, `minutes.tsv`가 장별 분을 가진다. 조립: `python scripts/assemble_deck.py <이 폴더> --variant 2h` → 상위 폴더에 `강의덱_2h.html`. 블록 합계가 상한(50분)을 넘거나, 뺀 장으로 가는 `data-go` 링크가 남으면 조립이 실패한다. 조립표 문법은 `scripts/assemble_deck.py` 「변형 조립」 주석이 정본이고, 계획은 `plans/FRAME-길이별-조립/`.
+  - 장을 추가 · 삭제 · 개명하면 `variants/*.txt`와 `minutes.tsv`도 함께 고친다. `4h.txt`로 조립한 결과는 `--variant` 없이 조립한 `강의덱.html`과 바이트가 같아야 한다.
+  - 길이별로 문구가 달라야 하는 장은 `variants/<이름>.html`에 같은 ID로 적으면 그 조립에서만 대신 들어간다.
 - 조립: `python scripts/assemble_deck.py courses/<과목>/sessions/N주차/강의덱.초안` → 상위 폴더에 `강의덱.html` 생성. `--watch`는 저장 시 자동 재조립, `--watch --livereload`는 미리보기 브라우저까지 3초 주기로 자동 새로고침.
 - CSS 경로(`../../../../kit/styles/…`)는 **출력 위치 `courses/<과목>/sessions/N주차/강의덱.html` 기준 4단계**다. shell을 다른 깊이로 옮기면 경로를 맞춘다.
   - ⚠️ **경로가 틀려도 정적 검증은 전부 PASS한다.** CSS 404는 브라우저에서만 드러나고(전 슬라이드 동시 표시·로고 0×0), 유일한 정적 신호는 `verify_deck.py`의 「글래스 내비게이션 토큰/효과 없음」 FAIL이다 — 그 FAIL을 「기존 결함」으로 넘기지 말 것. 조립 후 로컬 http로 열어 `document.styleSheets.length`와 «보이는 슬라이드가 1장인지»를 확인한다.

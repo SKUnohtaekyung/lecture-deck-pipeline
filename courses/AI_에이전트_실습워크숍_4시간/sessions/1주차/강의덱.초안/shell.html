@@ -791,6 +791,75 @@
     .cv-card .opt.on{ box-shadow:inset 0 0 0 2px #1F4E5F; }
     .cv-card .go{ display:block; height:22px; margin-top:10px; border-radius:7px; background:#F2A65A; }
 
+    /* ══════════ LLM · 에이전트 개념 3장(C-LA1~3) — 위아래 비교(.la-*) · 요청 1개 + 단계 두 줄(.tl-*) · 카드 3열(.pc.la) ══════════
+       좌우 분할 없음 · 연출 없음 · 색은 토큰만. 본문 글자는 22px 이상. 모두 이 블록 안에서만 쓰는 이름이다. */
+    .la-row{ display:flex; align-items:center; justify-content:space-between; gap:32px; margin-top:16px; }
+    .la-term{ margin:0; font-size:36px; font-weight:800; line-height:1.2; letter-spacing:-.03em; color:var(--ink); }
+    .la-def{ margin:4px 0 0; font-size:24px; font-weight:500; line-height:1.45; color:var(--ink); }
+    .la-band{ --tint:var(--t-mint); position:relative; z-index:0; margin:14px -72px 0; padding:12px 72px 8px; }   /* 화면 폭 띠 — 슬라이드 좌우 패딩 72px만큼 밖으로 */
+    .la-band::before{ content:""; position:absolute; inset:0; z-index:-1; background:var(--tint); }
+    .la-head{ display:flex; align-items:baseline; gap:24px; }
+    .la-head .la-def{ margin:0; }
+    .la-band svg{ display:block; width:100%; height:auto; margin-top:4px; }
+    .la-ana{ margin:14px 0 0; display:flex; align-items:baseline; gap:16px; font-size:24px; font-weight:600; line-height:1.4; color:var(--ink); }
+    .la-ana > span:first-child{ flex:none; font-size:22px; font-weight:800; color:var(--gray-400); }
+
+    .tl{ margin-top:16px; display:grid; gap:16px; }
+    .tl-lane{ display:flex; align-items:stretch; }
+    .tl-name{ flex:0 0 172px; align-self:center; margin:0; font-size:28px; font-weight:800; line-height:1.2; letter-spacing:-.02em; color:var(--ink); }
+    .tl-name small{ display:block; margin-top:4px; font-size:22px; font-weight:600; letter-spacing:0; color:var(--gray-700); }
+    .tl-step{ position:relative; z-index:0; flex:1 1 0; min-width:0; min-height:124px; padding:12px 18px 14px; }
+    .tl-step::before{ content:""; position:absolute; inset:0; z-index:-1; border-radius:20px; background:var(--t-card); box-shadow:var(--sh-card); }
+    .tl-step.ai::before{ background:var(--blue); }     /* AI가 하는 단계는 주색 면 · 사람이 하는 단계는 흰 면 */
+    .tl-step .who{ display:block; margin:0 0 4px; font-size:22px; font-weight:800; line-height:1.2; color:var(--gray-700); }
+    .tl-step.ai .who{ color:var(--mint); }
+    .tl-step p{ margin:0; font-size:23px; font-weight:700; line-height:1.35; color:var(--ink); }
+    .tl-step.ai p{ color:var(--white); }
+    .tl-arr{ flex:0 0 36px; align-self:center; width:36px; height:24px; }
+
+    .la-cards{ margin-top:16px; }
+    .pc.la{ padding:20px 24px 22px; gap:8px; }
+    .pc.la .la-h{ align-self:stretch; display:flex; align-items:center; gap:14px; }
+    .pc.la .la-h b{ font-size:28px; }
+    .pc.la .la-lab{ margin:6px 0 0; font-size:22px; font-weight:700; line-height:1.3; color:var(--gray-700); }
+    .pc.la .la-out{ position:relative; z-index:0; align-self:stretch; display:flex; align-items:center; gap:12px; min-height:68px; padding:10px 16px; }
+    .pc.la .la-out::before{ content:""; position:absolute; inset:0; z-index:-1; border-radius:18px; background:var(--t-card); box-shadow:var(--sh-card); }
+    .pc.la .la-out b{ font-size:26px; line-height:1.25; }
+    .pc.la .ic{ margin:0; }
+    .pc.la .la-out .ic{ width:48px; height:48px; }
+    .pc.la .la-out .ic svg{ width:26px; height:26px; }
+    .la-note{ margin:20px 0 0; display:flex; align-items:center; gap:14px; font-size:24px; font-weight:700; line-height:1.4; color:var(--ink); }
+    .la-note .ic{ width:52px; height:52px; } .la-note .ic svg{ width:28px; height:28px; }
+
+    /* ══════════ 에이전트에 넣는 자료(C-18) · 마무리 요약(F-02) — 위아래 쌓기 · 연출 없음 · 색은 토큰만 ══════════
+       C-18: 폴더 → 서버 흐름(.dg-row) + 넣기 전 점검 세 칸(.dg-chks) + 대응 띠(.dg-do). 흰 카드와 민트 계열 띠만 쓴다.
+       F-02: 요청 방식 · 확인 습관 두 묶음 표(.rc-row). 모두 이 블록 안에서만 쓰는 이름이다. */
+    .dg-row{ display:flex; align-items:center; margin-top:14px; }
+    .dg-node{ position:relative; z-index:0; flex:none; display:flex; align-items:center; gap:14px; height:70px; box-sizing:border-box; padding:0 22px; }
+    .dg-node::before{ content:""; position:absolute; inset:0; z-index:-1; border-radius:22px; background:var(--t-card); box-shadow:var(--sh-card); }
+    .dg-node svg{ flex:none; width:44px; height:44px; fill:none; stroke:var(--blue); stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round; }
+    .dg-node b{ display:block; font-size:26px; font-weight:800; line-height:1.25; color:var(--ink); }
+    .dg-node span{ display:block; font-size:22px; font-weight:600; line-height:1.25; color:var(--gray-700); }
+    .dg-line{ flex:1 1 auto; display:flex; flex-direction:column; align-items:center; }
+    .dg-line span{ font-size:22px; font-weight:700; line-height:1.3; color:var(--ink); }
+    .dg-line svg{ display:block; width:300px; height:24px; }
+    .dg-lab{ margin:8px 0 0; font-size:20px; font-weight:800; line-height:1.4; letter-spacing:.02em; color:var(--mint-deep); }
+    .dg-chks{ display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:4px; }
+    .dg-chk{ position:relative; z-index:0; min-height:121px; box-sizing:border-box; padding:12px 20px; }
+    .dg-chk::before{ content:""; position:absolute; inset:0; z-index:-1; border-radius:22px; background:var(--t-card); box-shadow:var(--sh-card); }
+    .dg-chk b{ display:flex; align-items:center; gap:10px; font-size:24px; font-weight:800; line-height:1.3; color:var(--ink); }
+    .dg-chk b svg{ flex:none; width:28px; height:28px; fill:none; stroke:var(--blue); stroke-width:2.4; stroke-linecap:round; stroke-linejoin:round; }
+    .dg-chk p{ margin:4px 0 0; font-size:22px; font-weight:600; line-height:1.4; color:var(--ink); }
+    .dg-do{ display:flex; align-items:center; gap:12px; font-size:24px; font-weight:700; line-height:1.3; color:var(--ink); white-space:nowrap; }
+    .dg-do svg{ flex:none; width:34px; height:34px; fill:none; stroke:var(--blue); stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round; }
+
+    .rc-row{ display:grid; grid-template-columns:140px 40px 336px 1fr; gap:14px; align-items:center; padding:7px 0; }
+    .rc-first{ margin-top:12px; }
+    .rc-pill{ justify-self:start; font-size:20px; }
+    .rc-n{ font-size:30px; font-weight:800; line-height:1; text-align:center; }
+    .rc-name{ font-size:25px; font-weight:800; line-height:1.3; color:var(--ink); }
+    .rc-desc{ font-size:22px; font-weight:600; line-height:1.4; color:var(--gray-700); }
+
   </style>
 </head>
 <body>

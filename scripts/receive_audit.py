@@ -42,6 +42,7 @@ def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("week", help="주차 (예: 1주차) — <증거루트>/<주차>/deck-audit.json 에 저장 (증거루트는 과목별 · 실제 경로는 [대기]/[저장] 줄에 찍힌다)")
     ap.add_argument("--port", type=int, default=8798)
+    ap.add_argument("--variant", help="변형 덱 이름 — deck-audit_<이름>.json 에 저장한다")
     a = ap.parse_args()
 
     week = a.week if a.week.endswith("주차") else f"{a.week}주차"
@@ -53,7 +54,7 @@ def main() -> int:
             # 과목 미지정 — 종전과 같은 구경로로 가되 **조용히 가지 않는다**.
             print(f"[경고] 과목을 특정하지 못해 구경로로 진행한다: {warn}")
             print(f"       권장: {_course_paths.COURSE_ENV}=<과목명> 을 지정하라")
-    out_path = os.path.join(out_dir, "deck-audit.json")
+    out_path = os.path.join(out_dir, f"deck-audit_{a.variant}.json" if a.variant else "deck-audit.json")
 
     # ⚠️ 이 스크립트는 **덮어쓴다**(아래 wb). 그래서 쓰기 전에 «덮어쓸 파일이
     #    누구 것인가»를 묻는다. «마커를 선언했는가»가 아니라 **실소유**로 가른다 —
@@ -109,7 +110,7 @@ def main() -> int:
     print(f"[저장] {os.path.relpath(out_path, ROOT)} — schema={schema} · slideCount={n_slides}")
     if schema != "deck-audit/1":
         print("[WARN] schema가 deck-audit/1이 아니다 — audit_all.js 출력을 그대로 보냈는지 확인하라")
-    print("다음: python scripts/run_deck_checks.py " + week)
+    print("다음: python scripts/run_deck_checks.py " + week + (f" --variant {a.variant}" if a.variant else ""))
     return 0
 
 

@@ -50,6 +50,134 @@ def _draft(root: Path, parts: dict[str, str], *, shell: str = SHELL, order=None)
         (root / "order.txt").write_text("\n".join(order), encoding="utf-8")
 
 
+VPART = (
+    '<section class="slide" data-slide="A">가<button data-go="B">이동</button></section>\n'
+    '<!-- <section class="slide" data-slide="X">주석 안</section> -->\n'
+    '<section class="slide" data-slide="B">나<section>안쪽</section></section>\n'
+    '<section class="slide" data-slide="C">다</section>\n'
+)
+
+
+def _variant(root: Path, name: str, manifest: str, *, minutes: str | None = None, override: str | None = None) -> None:
+    (root / "variants").mkdir(exist_ok=True)
+    (root / "variants" / f"{name}.txt").write_text(manifest, encoding="utf-8")
+    if minutes is not None:
+        (root / "variants" / "minutes.tsv").write_text(minutes, encoding="utf-8")
+    if override is not None:
+        (root / "variants" / f"{name}.html").write_text(override, encoding="utf-8")
+
+
+class AssembleVariantTests(unittest.TestCase):
+    def _run(self, manifest, **kwargs):
+        allow = kwargs.pop("allow_over_time", False)
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp) / "강의덱.초안"
+            root.mkdir()
+            _draft(root, {"part-01.html": VPART})
+            _variant(root, "v", manifest, **kwargs)
+            ok, errors, log = assemble(root, variant="v", allow_over_time=allow)
+            out = root.parent / "강의덱_v.html"
+            return ok, errors, log, (out.read_text(encoding="utf-8") if out.is_file() else "")
+
+    def test_selects_listed_slides_in_listed_order(self):
+        ok, errors, _log, html = self._run("# 주석\n[블록]\nC 메모\nB\n")
+        self.assertTrue(ok, errors)
+        self.assertLess(html.index("다</section>"), html.index("나<section>"))
+        self.assertNotIn('data-slide="A"', html)
+        self.assertIn("안쪽", html)  # 중첩 section이 장 경계를 끊지 않는다
+        self.assertLess(html.index("표지"), html.index("다</section>"))
+        self.assertLess(html.index("나<section>"), html.index("마무리"))
+
+    def test_full_manifest_matches_plain_assembly(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp) / "강의덱.초안"
+            root.mkdir()
+            _draft(root, {"part-01.html": VPART})
+            _variant(root, "all", "A\nB\nC\n")
+            plain, full = root.parent / "plain.html", root.parent / "full.html"
+            self.assertTrue(assemble(root, plain)[0])
+            self.assertTrue(assemble(root, full, variant="all")[0])
+            self.assertEqual(plain.read_text(encoding="utf-8"), full.read_text(encoding="utf-8"))
+
+    def test_unknown_or_repeated_slide_fails(self):
+        ok, errors, _log, html = self._run("B\nZZ\n")
+        self.assertFalse(ok)
+        self.assertIn("ZZ", errors[0])
+        self.assertEqual(html, "")
+        ok, errors, _log, _html = self._run("B\nB\n")
+        self.assertFalse(ok)
+        self.assertIn("twice", errors[0])
+
+    def test_link_to_left_out_slide_fails(self):
+        ok, errors, _log, _html = self._run("A\nC\n")
+        self.assertFalse(ok)
+        self.assertIn("B", errors[0])
+
+    def test_time_gate_counts_extras_and_skips_optional(self):
+        minutes = "# 분\nB\t30\nC\t25\n"
+        ok, errors, _log, _html = self._run("@limit 50\n[하나]\nB\nC\n", minutes=minutes)
+        self.assertFalse(ok)
+        self.assertIn("55 > 50", errors[0])
+        ok, errors, log, _html = self._run("@limit 50\n[하나]\nB\n?C\n+20 실습\n", minutes=minutes)
+        self.assertTrue(ok, errors)
+        self.assertTrue(any("50 / 50" in line for line in log), log)
+        self.assertTrue(any("optional slides 1" in line for line in log), log)
+
+    def test_over_time_can_be_allowed_and_missing_minutes_are_counted(self):
+        ok, errors, log, html = self._run("@limit 10\n[하나]\nB\nC\n", minutes="B\t30\n", allow_over_time=True)
+        self.assertTrue(ok, errors)
+        self.assertIn('data-slide="C"', html)
+        self.assertTrue(any("unjudged slides 1" in line for line in log), log)
+        self.assertTrue(any("[WARN]" in line for line in log), log)
+
+    def test_override_file_replaces_slide(self):
+        ok, errors, log, html = self._run("B\nC\n", override='<section class="slide" data-slide="C">다른 다</section>')
+        self.assertTrue(ok, errors)
+        self.assertIn("다른 다", html)
+        self.assertNotIn(">다</section>", html)
+        self.assertTrue(any("replaced 1" in line for line in log), log)
+
+    def test_section_without_id_fails(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp) / "강의덱.초안"
+            root.mkdir()
+            _draft(root, {"part-01.html": PART1})
+            _variant(root, "v", "P1\n")
+            ok, errors, _log = assemble(root, variant="v")
+            self.assertFalse(ok)
+            self.assertIn("no data-slide", errors[0])
+
+    def test_title_directive_replaces_shell_title(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp) / "강의덱.초안"
+            root.mkdir()
+            _draft(root, {"part-01.html": VPART}, shell=SHELL.replace("<head>", "<head><title>원래 제목</title>"))
+            _variant(root, "v", "@title 짧은 판 · 2시간\nB\n")
+            ok, errors, _log = assemble(root, variant="v")
+            self.assertTrue(ok, errors)
+            html = (root.parent / "강의덱_v.html").read_text(encoding="utf-8")
+            self.assertIn("<title>짧은 판 · 2시간</title>", html)
+            self.assertNotIn("원래 제목", html)
+            self.assertNotIn("@title", html)
+        ok, errors, _log, _html = self._run("@title 제목\nB\n")  # 기본 SHELL에는 <title>이 없다
+        self.assertFalse(ok)
+        self.assertIn("no <title>", errors[0])
+
+    def test_contract_lint_covers_variant_waivers(self):
+        from scripts.verify_contract_waivers import lint_contract
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "deck.contract.json"
+            good = {"static_gates": 1, "date": "2026-10-06"}
+            path.write_text(json.dumps({"variants": {"2h": {"warn_baseline": good}}}), encoding="utf-8")
+            self.assertEqual(lint_contract(str(path)), [])
+            bad = {"variants": {"2h": {"warn_baseline": {"static_gates": "x"},
+                                        "known_violations": {"k": {"reason": "", "date": "2026-10-06"}}}}}
+            path.write_text(json.dumps(bad), encoding="utf-8")
+            problems = lint_contract(str(path))
+            self.assertEqual(len(problems), 2, problems)
+            self.assertTrue(all(p.startswith("variants.2h") for p in problems), problems)
+
+
 class AssembleTests(unittest.TestCase):
     def test_marker_replaced_parts_in_name_order(self):
         with tempfile.TemporaryDirectory() as tmp:
