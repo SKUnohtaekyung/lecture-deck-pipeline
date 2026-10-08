@@ -37,6 +37,48 @@ try:
 except Exception:                                # 해석기를 못 읽으면 구경로
     _course_paths = None
 
+# 슬라이드는 1280×720 고정이다. 창이 그보다 작으면 슬라이드 일부가 창 밖에 놓인다.
+MIN_VIEWPORT = (1280, 720)
+
+
+def viewport_problem(data):
+    """감사 증거를 잰 창이 슬라이드보다 작으면 사유 문자열, 아니면 빈 문자열.
+
+    왜: `audit_render.js`의 «가려짐» 판정은 글자 줄 위의 점을
+    `document.elementFromPoint`로 찍어 본다. 창 밖의 점은 null이라 건너뛰고, 표본이
+    4개 미만이면 그 요소를 판정하지 않는다(같은 파일 「뷰포트 밖 — 판정하지 않는다」).
+    그래서 작은 창에서 나온 `occl: 0`은 «가려짐 없음»이 아니라 «보지 못함»일 수 있다.
+    `--scale`=1·슬라이드 1280×720 assert는 이 경우를 잡지 못한다(슬라이드 크기는 맞다).
+    실측: FRAME 1주차 증거가 423×308 창에서 저장돼 있었다(2026-10-08).
+
+    `env.viewport`가 없거나 모양이 다르면 판단하지 않는다(빈 문자열) — 그 기록이
+    생기기 전의 증거를 소급해 무효로 만들지 않는다. 호출자가 «기록 없음»을 따로 알린다."""
+    vp = viewport_of(data)
+    if vp is None:
+        return ""
+    w, h = vp
+    if w < MIN_VIEWPORT[0] or h < MIN_VIEWPORT[1]:
+        return ("창 %s×%s가 슬라이드(%d×%d)보다 작다 — 창 밖에 놓인 글자는 «가려짐» 판정에서 "
+                "빠지므로 결함 0을 믿을 수 없다. 창을 %d×%d 이상으로 키우고 다시 재라"
+                % (_fmt(w), _fmt(h), MIN_VIEWPORT[0], MIN_VIEWPORT[1], MIN_VIEWPORT[0], MIN_VIEWPORT[1]))
+    return ""
+
+
+def viewport_of(data):
+    """증거의 `env.viewport`를 (폭, 높이)로. 없거나 숫자 둘이 아니면 None."""
+    env = data.get("env") if isinstance(data, dict) else None
+    vp = env.get("viewport") if isinstance(env, dict) else None
+    if not isinstance(vp, (list, tuple)) or len(vp) != 2:
+        return None
+    for v in vp:
+        if isinstance(v, bool) or not isinstance(v, (int, float)) or v != v or v <= 0:
+            return None
+    return vp[0], vp[1]
+
+
+def _fmt(n):
+    return str(int(n)) if float(n).is_integer() else str(n)
+
 
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -105,6 +147,12 @@ def main() -> int:
     if isinstance(data, dict) and data.get("INVALID"):
         print(f"[FAIL] 측정 무효(INVALID): {data['INVALID']} — 창 크기(≥1280×720)·--scale을 확인하고 재측정하라")
         return 1
+    _vp_err = viewport_problem(data)
+    if _vp_err:
+        print(f"[FAIL] 측정 무효(뷰포트): {_vp_err}")
+        return 1
+    if viewport_of(data) is None:
+        print("[미판정] 증거에 창 크기(env.viewport) 기록이 없다 — 창이 충분히 컸는지 판정하지 못했다")
     schema = data.get("schema") if isinstance(data, dict) else None
     n_slides = data.get("slideCount") if isinstance(data, dict) else None
     print(f"[저장] {os.path.relpath(out_path, ROOT)} — schema={schema} · slideCount={n_slides}")

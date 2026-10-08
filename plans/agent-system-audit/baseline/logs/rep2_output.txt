@@ -1,0 +1,55 @@
+== re-reads: main(any>=3 / full>=3) ; sub(any>=3 / full>=3 / full>=2)
+2f7e8a36 0 0 | 0 0 0
+32f8c13f 1 0 | 4 0 0
+0b1569d9 0 0 | 15 11 31
+6b29a7ad 0 0 | 0 0 0
+44015b3c 0 0 | 0 0 0
+671720eb 2 0 | 103 0 0
+c93120d9 1 0 | 0 0 0
+3ee8fe9a 0 0 | 8 0 0
+ecda9c81 0 0 | 0 0 0
+b6e30e2b 2 0 | 0 0 0
+b2dd90d0 2 0 | 13 0 0
+91187ca9 0 0 | 0 0 0
+f45fd5ac 0 0 | 2 0 0
+
+== FRAME tools: [('Bash', 286), ('Read', 65), ('Write', 56), ('mcp__Claude_Browser__browser_batch', 47), ('WebFetch', 17), ('Edit', 15), ('mcp__Claude_Browser__javascript_tool', 15), ('mcp__Claude_Browser__computer', 8), ('Grep', 7), ('Agent', 6), ('WebSearch', 6), ('mcp__Claude_Browser__preview_start', 5), ('ToolSearch', 4), ('SendUserFile', 3)]
+ bash scripts top: [('<inline python>', 70), ('build_notes.py', 32), ('assemble_deck.py', 21), ('presenter-runtime.js', 17), ('shoot_ids.py', 16), ('sheet.py', 15), ('build_ex5.py', 14), ('inject_presenter.py', 12), ('verify_presenter_deck.py', 11), ('verify_deck.py', 10), ('restore.py', 9), ('build_parts.py', 9), ('verify_notes.py', 9), ('inline_deck.py', 9), ('audit_live.py', 8), ('run_deck_checks.py', 7), ('gen_all.py', 7), ('notes_data.py', 6), ('build_release.py', 6), ('show.py', 6), ('dump_ment.py', 6), ('time_check.py', 5), ('live_assemble.py', 4), ('audit_context_budget.py', 4), ('build_contract.py', 4), ('gen_rules.py', 4), ('fix7.py', 4), ('build_shell.py', 3)]
+ edit targets: {'tmp/': 45, 'other': 5, 'plans/': 10, 'courses other': 11}
+ key reads(main): {'MEMORY.md': 1, 'PROGRESS.md': 1, 'profile.md': 2, 'references/phases': 1, 'AGENTS.md': 1, '재개_인계': 1, 'PLAN.md': 2}
+
+== AC3 tools: [('Bash', 508), ('Edit', 238), ('Agent', 122), ('Read', 95), ('mcp__Claude_Browser__browser_batch', 65), ('mcp__Claude_Browser__javascript_tool', 58), ('Grep', 39), ('SendMessage', 31), ('Write', 26), ('mcp__Claude_Browser__preview_start', 13), ('mcp__Claude_Browser__resize_window', 13), ('mcp__visualize__show_widget', 8), ('mcp__Claude_Browser__computer', 8), ('AskUserQuestion', 7)]
+ bash scripts top: [('<inline python>', 154), ('run_deck_checks.py', 51), ('receive_audit.py', 39), ('analyze_agent_usage.py', 21), ('verify_deck.py', 20), ('assemble_deck.py', 15), ('verify_deck_quality.py', 13), ('verify_notes.py', 12), ('build_release.py', 9), ('audit_context_budget.py', 8), ('hook_slide_guard.py', 6), ('report_draft_sync.py', 6), ('verify_presenter_deck.py', 6), ('preserve_diff.py', 6), ('audit_all.js', 5), ('inject_presenter.py', 5), ('dropped.py', 5), ('ac_check.py', 5), ('_gate.py', 4), ('audit_render.js', 4), ('verify_skill_setup.py', 3), ('inline_deck.py', 3), ('verify_distributable.py', 3), ('analyze.py', 3), ('a5_notesync.py', 3), ('verify_contract_waivers.py', 3), ('_대조.py', 3), ('cli.js', 2)]
+ edit targets: {'courses other': 192, 'tmp/': 13, 'plans/': 36, 'shell.html': 6, 'other': 6, 'MEMORY': 9, 'shard part-*': 2}
+ key reads(main): {'MEMORY.md': 5, 'profile.md': 2, '재개_인계': 2, '검증-명령-지도': 2, '/SKILL.md': 3, 'skills/하네스': 1}
+
+== MEMORY.md reads per session (main: total/full)
+2f7e8a36 0 0 sub MEMORY reads 0 sub skill-doc reads 0
+32f8c13f 2 0 sub MEMORY reads 0 sub skill-doc reads 0
+0b1569d9 1 0 sub MEMORY reads 0 sub skill-doc reads 0
+6b29a7ad 0 0 sub MEMORY reads 0 sub skill-doc reads 0
+44015b3c 0 0 sub MEMORY reads 0 sub skill-doc reads 0
+671720eb 1 0 sub MEMORY reads 10 sub skill-doc reads 35
+c93120d9 0 0 sub MEMORY reads 0 sub skill-doc reads 0
+3ee8fe9a 1 0 sub MEMORY reads 0 sub skill-doc reads 0
+ecda9c81 0 0 sub MEMORY reads 0 sub skill-doc reads 0
+b6e30e2b 0 0 sub MEMORY reads 0 sub skill-doc reads 0
+b2dd90d0 1 0 sub MEMORY reads 1 sub skill-doc reads 0
+91187ca9 0 0 sub MEMORY reads 0 sub skill-doc reads 0
+f45fd5ac 0 0 sub MEMORY reads 6 sub skill-doc reads 2
+
+== OLD dir by month: sessions, human, mainCalls, Agent calls, Skill calls, slash, hookctx, harness/리서치/검토 SKILL reads
+2026-07 {'sessions': 36, 'human': 309, 'calls': 5422, 'subcalls': 6532, 'agent': 163} 
+   models {'opus-5': 15, 'sonnet-5': 5, 'fable-5': 4, 'opus-4-8': 12} 
+   skill {'create-slides': 3, 'vibecoding-deck': 3, 'artifact-design': 1, '리서치': 2, 'update-config': 1, '하네스': 2, '(sub)리서치': 2, 'claude-api': 1, 'ui-ux-pro-max': 1} 
+   slash {} 
+   hook {'course': 215, 'other': 272, 'checklist': 21} 
+   agents [('general-purpose', 113), ('Explore', 37), ('default', 8), ('Plan', 2)] 
+   docreads {'skills/리서치': 36, 'skills/검토': 17, 'skills/하네스': 5, 'ui-ux-pro-max': 3, 'bash search.py': 3}
+2026-08 {'sessions': 22, 'human': 125, 'calls': 3089, 'subcalls': 1537, 'agent': 56} 
+   models {'opus-5': 19, 'fable-5': 2, '<synthetic>': 1} 
+   skill {'하네스': 2, 'create-slides': 1, 'dataviz': 1, 'artifact-diagramming': 1} 
+   slash {} 
+   hook {'course': 79, 'other': 61} 
+   agents [('general-purpose', 32), ('Explore', 15), ('instruction-reviewer', 1)] 
+   docreads {'skills/검토': 2, 'skills/리서치': 8, 'skills/하네스': 4, 'bash search.py': 1}

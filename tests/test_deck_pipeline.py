@@ -1086,6 +1086,70 @@ class RunnerEvidenceAbsenceTests(unittest.TestCase):
         self.assertFalse(ok)
         self.assertIn("INVALID", r.steps[-1][2])
 
+    # 음성 6 — 슬라이드보다 작은 창에서 잰 증거는 «결함 0»이어도 통과가 아니다(2026-10-08).
+    # 감사기의 «가려짐» 판정이 창 밖의 글자를 건너뛰기 때문이다(audit_render.js).
+    def _evidence(self, viewport="omit"):
+        ev = {"schema": "deck-audit/1", "slideCount": 1,
+              "url": "http://localhost:8799/courses/바이브코딩/sessions/2주차/강의덱.html",
+              "render": {"totals": {k: 0 for k, _label in RENDER_DEFECT_KEYS}}, "typography": {}}
+        if viewport != "omit":
+            ev["env"] = {"viewport": viewport}
+        return ev
+
+    def test_negative6_small_viewport_evidence_is_not_a_pass(self):
+        for vp in ([423, 308], [1279, 720], [1280, 719], [1279.5, 900]):
+            ok, r, out = self._run(payload=self._evidence(vp))
+            self.assertFalse(ok, vp)
+            self.assertIn("뷰포트", r.steps[-1][2], vp)
+
+    def test_viewport_at_or_above_slide_size_is_not_rejected_for_viewport(self):
+        for vp in ([1280, 720], [1400, 860], [1600, 1000]):
+            ok, r, out = self._run(payload=self._evidence(vp))
+            self.assertNotIn("뷰포트", " ".join(str(s[2]) for s in r.steps), vp)
+            self.assertNotIn("창 크기(env.viewport) 기록이 없다", out, vp)
+
+    def test_missing_viewport_is_reported_as_unjudged_not_rejected(self):
+        for vp in ("omit", None, [1280], "1280x720", [0, 0], [True, True]):
+            ok, r, out = self._run(payload=self._evidence(vp))
+            self.assertNotIn("뷰포트", " ".join(str(s[2]) for s in r.steps), repr(vp))
+            self.assertIn("창 크기(env.viewport) 기록이 없다", out, repr(vp))
+
+    def test_small_and_large_viewport_differ_only_by_the_viewport_verdict(self):
+        ok_big, r_big, _ = self._run(payload=self._evidence([1280, 720]))
+        ok_small, r_small, _ = self._run(payload=self._evidence([1279, 720]))
+        # 같은 수치인데 창 크기만 다르다 — 큰 창은 감사 단계를 통과하고 작은 창은 거기서 멈춘다.
+        self.assertEqual(r_big.steps[0][:2], ("렌더·타이포 감사", True), r_big.steps)
+        self.assertEqual(r_small.steps[0][:2], ("렌더·타이포 감사", False), r_small.steps)
+        self.assertIn("뷰포트", r_small.steps[0][2])
+        self.assertFalse(ok_small)
+
+
+class ViewportProblemTests(unittest.TestCase):
+    def test_boundaries(self):
+        from scripts.receive_audit import viewport_of, viewport_problem
+        self.assertEqual(viewport_problem({"env": {"viewport": [1280, 720]}}), "")
+        self.assertIn("423×308", viewport_problem({"env": {"viewport": [423, 308]}}))
+        self.assertTrue(viewport_problem({"env": {"viewport": [5000, 719]}}))
+        self.assertTrue(viewport_problem({"env": {"viewport": [1279, 5000]}}))
+        for shapeless in ({}, {"env": None}, {"env": {}}, {"env": {"viewport": "x"}},
+                          {"env": {"viewport": [1, 2, 3]}}, {"env": {"viewport": [float("nan"), 720]}},
+                          [], None, {"env": {"viewport": [-1280, 720]}}):
+            self.assertEqual(viewport_problem(shapeless), "", repr(shapeless))
+            self.assertIsNone(viewport_of(shapeless), repr(shapeless))
+
+    def test_stored_evidence_in_repo_matches_expectation(self):
+        """저장소에 있는 증거 중 슬라이드보다 작은 창에서 잰 것을 센다 — 눈먼 0이 아니게 대상 수도 본다."""
+        from scripts.receive_audit import viewport_of, viewport_problem
+        roots = [REPO / "sessions" / "_verify"] + sorted((REPO / "courses").glob("*/sessions/_verify"))
+        files = [f for r in roots for f in sorted(r.glob("*주차/deck-audit*.json"))]
+        self.assertGreaterEqual(len(files), 5)
+        judged = 0
+        for f in files:
+            data = json.loads(f.read_text(encoding="utf-8"))
+            if viewport_of(data) is not None:
+                judged += 1
+        self.assertGreaterEqual(judged, 5, "창 크기를 판정할 수 있는 증거가 있어야 한다")
+
 
 class ReceiveAuditDestructiveWriteTests(unittest.TestCase):
     """A3 — 수신기의 파괴적 쓰기(`wb`) 앞에 선 fail-closed 게이트.
@@ -1141,6 +1205,24 @@ class ReceiveAuditDestructiveWriteTests(unittest.TestCase):
             (d / "_verify").mkdir(exist_ok=True)
         for w in weeks:
             (d / ("%s주차" % w)).mkdir(exist_ok=True)
+
+    # 작은 창에서 잰 증거는 수신 단계에서 바로 실패로 알린다(2026-10-08)
+    def test_receiver_rejects_small_viewport_evidence(self):
+        with _repo_tempdir() as tmp:
+            root = Path(tmp)
+            self._seed(root, "가과목", marker=True, weeks=(1,))
+            small = dict(_audit("/courses/가과목/sessions/1주차/강의덱.html"), env={"viewport": [423, 308]})
+            rc, out, _h = self._run(root, "1주차", course="가과목", payload=small)
+            self.assertEqual(rc, 1, out)
+            self.assertIn("뷰포트", out)
+            big = dict(_audit("/courses/가과목/sessions/1주차/강의덱.html"), env={"viewport": [1280, 720]})
+            rc2, out2, _h2 = self._run(root, "1주차", course="가과목", payload=big)
+            self.assertEqual(rc2, 0, out2)
+            self.assertNotIn("뷰포트", out2)
+            rc3, out3, _h3 = self._run(root, "1주차", course="가과목",
+                                       payload=_audit("/courses/가과목/sessions/1주차/강의덱.html"))
+            self.assertEqual(rc3, 0, out3)
+            self.assertIn("미판정", out3)
 
     # 음성 2 — 남의 증거를 덮어쓰려 하면 exit 2 · 쓰기 0
     def test_negative2_refuses_to_overwrite_another_courses_evidence(self):

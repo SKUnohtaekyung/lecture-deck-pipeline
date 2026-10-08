@@ -17,6 +17,19 @@
     ]
   },
   "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "compact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \"$CLAUDE_PROJECT_DIR/scripts/hook_slide_guard.py\" --mode reset-state",
+            "timeout": 15,
+            "statusMessage": "압축 뒤 지침 재주입 준비"
+          }
+        ]
+      }
+    ],
     "PreToolUse": [
       {
         "matcher": "Write|Edit",

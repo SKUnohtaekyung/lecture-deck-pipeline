@@ -24,6 +24,7 @@ python scripts/install_hooks.py --check   # 설정만 확인(바꾸지 않음)
 | `*.css` | `scripts/hook_slide_guard.py --mode css-lint --stdin-paths` | 차단 |
 | `courses/**/강의덱.html` | 같은 커밋에 그 덱의 `강의덱.초안/`(shard) 변경이 함께 staged됐는지 확인 | 차단(생성물 단독 커밋 금지) |
 | `courses/**/강의덱_발표자노트.html` | 같은 주차 덱 경로를 유도해 `scripts/verify_notes.py` 실행. 경로를 유도할 수 없으면(덱 파일이 없음 등) 건너뛰고 경고만 | 유도 성공 시 차단 / 실패 시 경고만 |
+| `STATE.md` | 색인 표의 열 구성·40행 상한·빈 칸·확인일 형식·문서 머리에 선언한 크기 상한(staged 내용 기준). staged가 아니면 「해당 없음」으로 건너뜀 | 차단 |
 | 항상 | `tmp/` 밖에 쌓인 미추적 잡파일 스캔 | 경고만(차단 아님) |
 
 - 실행할 스크립트가 없으면 그 검사는 건너뛰고 경고한다(하드 실패 금지).

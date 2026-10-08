@@ -6,7 +6,7 @@
 
 ## 강제 계층
 
-- 훅 배선은 `.claude/settings.json`(PreToolUse `checklist`·`course`·`generated-guard`·`tmp-guard` / PostToolUse `css-lint`)이고, 검사 로직은 전부 `scripts/hook_slide_guard.py` **한 벌**이다. 플랫폼별로 복제하지 않는다.
+- 훅 배선은 `.claude/settings.json`(PreToolUse `checklist`·`course`·`generated-guard`·`tmp-guard` / PostToolUse `css-lint` / SessionStart(`compact`) `reset-state`)이고, 검사 로직은 전부 `scripts/hook_slide_guard.py` **한 벌**이다. 플랫폼별로 복제하지 않는다.
 - 역할·도구·모델 제한은 `.claude/agents/*.md`가 정본이다. `/리서치` 워커는 `research-worker`(tools 화이트리스트 · `model: sonnet` · `maxTurns`)를 쓰고, 실행 후 `python scripts/analyze_agent_usage.py --tool-audit --session <세션ID>`로 감사한다(0 통과 / 3 위반). 규정 상세는 `.claude/skills/리서치/SKILL.md` 「워커 실행 통제」.
 - 무엇이 실제로 막히는지는 `AGENTS.md` 「무엇이 기계로 강제되는가」 표가 정본이다.
 

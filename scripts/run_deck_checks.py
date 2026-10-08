@@ -83,6 +83,7 @@ except Exception:                                # pragma: no cover - 경로 헬
     _course_paths = None
 
 from verify_deck import find_deck_contract
+from receive_audit import viewport_of, viewport_problem
 from verify_contract_waivers import waiver_entry_valid
 
 EVIDENCE = "deck-audit.json"
@@ -392,6 +393,13 @@ class Runner:
         # 검출기의 fail-closed 반환을 통과로 세지 않는다
         if isinstance(data, dict) and data.get("INVALID"):
             return None, "측정 무효(INVALID): " + "; ".join(map(str, data["INVALID"]))
+        # 창이 슬라이드보다 작으면 «가려짐» 판정이 창 밖 글자를 건너뛴다 — 그 0은 통과가 아니다.
+        vp_err = viewport_problem(data)
+        if vp_err:
+            return None, "측정 무효(뷰포트): " + vp_err
+        if isinstance(data, dict) and data.get("schema") == "deck-audit/1" and viewport_of(data) is None:
+            print(f"  [미판정] {_rel(path)} 에 창 크기(env.viewport) 기록이 없다 — "
+                  "창이 충분히 컸는지 판정하지 못했다(통과가 아니다)")
         return data, ""
 
     def render_evidence(self) -> bool:

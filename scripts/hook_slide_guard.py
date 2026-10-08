@@ -15,6 +15,9 @@
   --mode course           : 과목 경로 편집 시 그 과목 지침을 컨텍스트로 주입한다.
   --mode generated-guard  : 조립 생성물(강의덱.html 등) 직접 편집을 감지한다.
   --mode tmp-guard        : 저장소 밖(시스템 임시 폴더 등) 쓰기를 감지한다.
+  --mode reset-state      : SessionStart(matcher=compact) — 컨텍스트 압축 뒤 이 세션의
+                            «이미 주입함» 기록을 지워, 다음 편집에서 checklist·course가
+                            다시 주입되게 한다. 아무것도 출력하지 않는다.
 
 공통 플래그:
   --host claude|codex (기본 claude) : 출력 형식 선택. codex는 차단 시 Claude 형식과
@@ -37,6 +40,8 @@ import sys
 import json
 import re
 import os
+import time
+import hashlib
 
 
 def emit(obj):
@@ -276,7 +281,120 @@ def log_observation(mode, path, verdict, reason=""):
         pass
 
 
-def mode_checklist(path):
+def _reinject_seconds():
+    """같은 주입을 다시 내기까지의 간격(초). 기본 30분.
+    환경변수 HOOK_REINJECT_MINUTES로 바꾼다(0 이하면 매번 주입 = 종전 동작).
+    숫자가 아니거나 유한하지 않은 값(nan·inf)은 기본값으로 본다 — `inf`를 받아들이면
+    한 번 넣은 뒤 영원히 다시 넣지 않게 된다."""
+    try:
+        minutes = float(os.environ.get("HOOK_REINJECT_MINUTES", "30"))
+    except Exception:
+        return 1800.0
+    if minutes != minutes or minutes in (float("inf"), float("-inf")):
+        return 1800.0
+    return max(0.0, minutes) * 60.0
+
+
+def _usable(value):
+    return isinstance(value, str) and bool(value.strip())
+
+
+def _state_file(session_id, agent_id=None):
+    """(상태 폴더, 상태 파일 경로). 세션 하나(서브에이전트면 그 에이전트 하나)에 파일 하나.
+
+    파일 이름은 [세션 ID, 에이전트 ID]를 JSON으로 적은 글의 해시다.
+      · 글자를 걸러 이름을 만들면 `a/b`와 `a:b`가 한 파일을 쓴다.
+      · 둘을 구분자로 이어 붙이면 구분자를 품은 세션 ID가 (세션, 에이전트) 쌍과 겹친다.
+      · UTF-8로 못 옮기는 글자를 `?`로 바꾸면 서로 다른 ID가 겹친다(JSON은 \\uXXXX로 구별해 적는다).
+    어느 쪽이든 뒤에 온 창이 첫 주입을 놓친다."""
+    ident = json.dumps([session_id, agent_id if _usable(agent_id) else None], ensure_ascii=True)
+    name = hashlib.sha256(ident.encode("ascii")).hexdigest()[:32]
+    state_dir = os.path.join(get_repo_root(), "tmp", "hook-state")
+    return state_dir, os.path.join(state_dir, name + ".json")
+
+
+STATE_KEEP_SECONDS = 7 * 24 * 3600
+
+
+def mode_reset_state(session_id):
+    """컨텍스트 압축 뒤 호출된다. 이 세션(메인 창)의 주입 기록을 지운다.
+
+    왜: 압축되면 앞서 넣은 지침이 창에서 사라진다. 기록이 남아 있으면 재주입 간격이
+    지날 때까지 지침 없이 편집하게 된다 — 이 훅이 막으려던 «잊어버림»이다.
+    서브에이전트의 기록(다른 파일)은 건드리지 않는다. 부모의 압축은 서브에이전트의
+    창을 지우지 않는다.
+
+    겸해서 7일 넘게 안 쓰인 상태 파일을 치운다 — 지우는 곳이 여기뿐이라 그냥 두면 쌓인다.
+    stdout에 아무것도 쓰지 않는다(SessionStart의 stdout은 컨텍스트에 들어간다)."""
+    try:
+        if not _usable(session_id):
+            return
+        state_dir, state_path = _state_file(session_id)
+        if os.path.isfile(state_path):
+            os.remove(state_path)
+        cutoff = time.time() - STATE_KEEP_SECONDS
+        for name in os.listdir(state_dir):
+            full = os.path.join(state_dir, name)
+            if name.endswith(".json") and os.path.isfile(full) and os.path.getmtime(full) < cutoff:
+                os.remove(full)
+    except Exception:
+        pass
+
+
+def _read_state(state_path):
+    try:
+        with open(state_path, encoding="utf-8") as fh:
+            state = json.load(fh)
+        return state if isinstance(state, dict) else {}
+    except Exception:
+        return {}
+
+
+def injected_recently(who, key):
+    """이 창에서 같은 주입(key)을 재주입 간격 안에 냈으면 True — 호출자는 주입을 건너뛴다.
+    `who`는 (session_id, agent_id)다. 읽기만 한다 — 기록은 주입을 낸 뒤 mark_injected()가 한다.
+
+    왜: `course`는 과목 경로를 편집할 때마다 같은 지침을 다시 넣는다. 한 세션에서
+    187회·63,206자가 실측됐다(plans/agent-system-audit). 창에 이미 있는 글을 또 넣는 것이다.
+
+    왜 «세션당 1회»가 아니라 간격인가: 컨텍스트가 압축되면 앞서 넣은 지침이 창에서
+    사라진다. 압축은 SessionStart(compact) 훅이 reset-state로 알려 주지만, 그 훅이 돌지
+    않는 환경에서도 간격이 지나면 다시 넣는다.
+
+    판단할 수 없으면 False(주입한다)다 — session_id가 없거나 문자열이 아니거나, 상태를
+    읽지 못하면 종전처럼 매번 주입한다. 이 훅의 목적은 잊어버림 방지이므로 실패는 주입 쪽으로 기운다."""
+    try:
+        session_id, agent_id = who if isinstance(who, tuple) and len(who) == 2 else (who, None)
+        ttl = _reinject_seconds()
+        if not _usable(session_id) or ttl <= 0:
+            return False
+        _dir, state_path = _state_file(session_id, agent_id)
+        last = _read_state(state_path).get(key)
+        if isinstance(last, bool) or not isinstance(last, (int, float)):
+            return False
+        return 0 <= time.time() - last < ttl
+    except Exception:
+        return False
+
+
+def mark_injected(who, key):
+    """주입을 **낸 뒤에** 그 시각을 적는다. 먼저 적으면 출력이 실패했을 때 기록만 남아
+    간격 동안 지침 없이 건너뛴다. 적지 못하면 다음에 또 주입될 뿐이다."""
+    try:
+        session_id, agent_id = who if isinstance(who, tuple) and len(who) == 2 else (who, None)
+        if not _usable(session_id) or _reinject_seconds() <= 0:
+            return
+        state_dir, state_path = _state_file(session_id, agent_id)
+        state = _read_state(state_path)
+        state[key] = time.time()
+        os.makedirs(state_dir, exist_ok=True)
+        with open(state_path, "w", encoding="utf-8") as fh:
+            json.dump(state, fh, ensure_ascii=False)
+    except Exception:
+        pass
+
+
+def mode_checklist(path, session_id=None):
     if not path.lower().endswith((".html", ".css")):
         return
     if not is_target(path):
@@ -285,7 +403,10 @@ def mode_checklist(path):
                             "TARGET_HINTS 미매치지만 '%s' 포함 — 사전 점검 7항 주입이 "
                             "스킵됐다(0판정 가드)" % CANDIDATE_HINT)
         return
+    if injected_recently(session_id, "checklist"):
+        return
     emit_context(CHECKLIST)
+    mark_injected(session_id, "checklist")
 
 
 def scan_css_violations(path):
@@ -359,7 +480,7 @@ def mode_css_lint_stdin():
         sys.exit(0)
 
 
-def mode_course(path):
+def mode_course(path, session_id=None):
     """과목 경로에서 편집하면 그 과목의 슬라이드 지침을 컨텍스트로 주입한다.
 
     왜: 지침 파일이 있어도 열지 않으면 없는 것과 같다. 2026-07-28에 개념KB의
@@ -397,6 +518,9 @@ def mode_course(path):
             text = fh.read()
     except Exception:
         return
+    inject_key = "course:" + str(guide).replace("\\", "/")
+    if injected_recently(session_id, inject_key):
+        return
     heads = [l.strip() for l in text.splitlines() if l.startswith("## ")]
     m = re.search(r"^##\s*4\..*?$(.*?)(?=^##\s|\Z)", text, re.M | re.S)
     tail = (m.group(1).strip() if m else "")[:900]
@@ -413,6 +537,7 @@ def mode_course(path):
         "⚠️ 대상 서술·범위·관통 문장은 이 지침이 정본이다. 킷의 교육원칙 요약에는 과목 값이 없다.",
     ]
     emit_context("\n".join(body))
+    mark_injected(session_id, inject_key)
 
 
 def mode_generated_guard(path, host, enforce):
@@ -488,16 +613,23 @@ def main():
         return
 
     payload = read_payload()
+    if mode == "reset-state":
+        mode_reset_state(payload.get("session_id") if isinstance(payload, dict) else None)
+        return
     path = get_path(payload)
     if not path:
         return
+    # 서브에이전트는 창이 따로다. 부모가 받은 지침을 서브에이전트는 보지 못하므로
+    # 페이로드에 에이전트 식별자(agent_id)가 있으면 그 단위로 따로 센다.
+    session_id = ((payload.get("session_id"), payload.get("agent_id"))
+                  if isinstance(payload, dict) else (None, None))
     try:
         if mode == "checklist":
-            mode_checklist(path)
+            mode_checklist(path, session_id)
         elif mode == "css-lint":
             mode_css_lint(path, host)
         elif mode == "course":
-            mode_course(path)
+            mode_course(path, session_id)
         elif mode == "generated-guard":
             mode_generated_guard(path, host, enforce)
         elif mode == "tmp-guard":

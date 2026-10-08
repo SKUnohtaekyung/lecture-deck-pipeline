@@ -1,0 +1,61 @@
+sid|start|model|first|humanN|slash|mainCalls|mainIn(M)|subN|subCalls|subIn(M)|Agent|Skill|course|rereadMain|rereadSub|compact
+2f7e8a36|2026-09-08|fable-5-1|74458|12|{}|221|112.4|0|0|0.0|62|{}|[('AC3', 209), ('VC', 2)]|0|0|0
+32f8c13f|2026-09-11|opus-5|74193|7|{}|100|29.1|8|157|35.4|8|{}|[('AC3', 83), ('VC', 3)]|1|4|0
+0b1569d9|2026-10-01|opus-5-5|75207|14|{}|95|18.7|6|288|41.8|6|{}|[('FRAME', 24), ('VO', 1)]|0|15|0
+6b29a7ad|2026-10-01|opus-5-5|75944|2|{}|9|0.7|0|0|0.0|0|{}|[]|0|0|0
+44015b3c|2026-09-11|opus-5|75098|2|{}|131|21.3|0|0|0.0|0|{}|[('AC3', 61), ('VC', 2)]|0|0|0
+671720eb|2026-09-08|fable-5-1|74458|11|{}|232|119.3|100|3323|496.9|37|{'anthropic-skills:explain-usage': 1}|[('AC3', 206), ('VC', 2)]|2|103|1
+c93120d9|2026-10-02|opus-5-5|76447|16|{}|137|34.3|0|0|0.0|0|{}|[('FRAME', 80)]|1|0|0
+3ee8fe9a|2026-09-11|opus-5|74605|7|{}|84|28.0|5|128|28.5|5|{'create-slides': 1}|[('AC3', 69), ('VC', 3)]|0|8|0
+ecda9c81|2026-09-11|sonnet-5|86635|4|{}|13|1.2|0|0|0.0|0|{}|[]|0|0|0
+b6e30e2b|2026-10-06|opus-5-5|77683|20|{}|225|80.4|0|0|0.0|0|{}|[('FRAME', 127)]|2|0|1
+b2dd90d0|2026-09-11|opus-5|74157|14|{}|130|54.2|10|296|51.2|10|{'create-slides': 1}|[('AC3', 105)]|2|13|0
+91187ca9|2026-09-29|sonnet-5-5|74044|1|{}|3|0.2|0|0|0.0|0|{}|[]|0|0|0
+f45fd5ac|2026-10-07|opus-5-5|89578|3|{}|26|6.1|11|315|43.7|11|{}|[('FRAME', 4)]|0|2|0
+
+== Agent types per session
+2f7e8a36 {('instruction-reviewer', 'opus'): 7, ('general-purpose', 'opus'): 11, ('general-purpose', '-'): 1, ('Explore', '-'): 1, ('ac3-reviewer', '-'): 14, ('Plan', '-'): 1, ('ac3-research-worker', '-'): 1, ('ac3-clerk', '-'): 1, ('ac3-writer', '-'): 21, ('ac3-writer', 'sonnet'): 4}
+32f8c13f {('ac3-research-worker', '-'): 4, ('ac3-writer', 'sonnet'): 2, ('ac3-writer', '-'): 1, ('ac3-reviewer', '-'): 1}
+0b1569d9 {('frame-builder', '-'): 6}
+671720eb {('ac3-writer', 'sonnet'): 15, ('ac3-writer', '-'): 14, ('ac3-reviewer', '-'): 8}
+3ee8fe9a {('ac3-writer', '-'): 4, ('ac3-reviewer', '-'): 1}
+b2dd90d0 {('ac3-writer', '-'): 6, ('ac3-writer', 'sonnet'): 4}
+f45fd5ac {('general-purpose', 'sonnet'): 11}
+
+== hook ctx (count/chars) & hook_success by (event,mode,hasStdout)
+2f7e8a36 {'course': 98} {'course': 33124} | {'Sess:nonrepo:empty': 7, 'PreT:nonrepo:empty': 295, 'Post:nonrepo:empty': 4, 'PreT:nonrepo:out': 98, 'Stop:nonrepo:empty': 51}
+32f8c13f {'checklist': 6, 'course': 7, 'other': 6} {'checklist': 4074, 'course': 2366, 'other': 876} | {'Sess:nonrepo:empty': 1, 'PreT:nonrepo:empty': 139, 'Post:nonrepo:empty': 6, 'Stop:nonrepo:empty': 15, 'PreT:nonrepo:out': 13}
+0b1569d9 {'other': 1} {'other': 162} | {'Sess:nonrepo:empty': 2, 'PreT:nonrepo:empty': 109, 'Post:nonrepo:empty': 2, 'Stop:nonrepo:empty': 16}
+6b29a7ad {} {} | {'Sess:nonrepo:empty': 1, 'PreT:nonrepo:empty': 7, 'Post:nonrepo:empty': 7, 'Stop:nonrepo:empty': 2}
+44015b3c {} {} | {'Sess:nonrepo:empty': 2, 'PreT:nonrepo:empty': 142, 'Post:nonrepo:empty': 2, 'Stop:nonrepo:empty': 1}
+671720eb {'course': 187} {'course': 63206} | {'Sess:nonrepo:empty': 9, 'PreT:nonrepo:empty': 701, 'Post:nonrepo:empty': 9, 'PreT:nonrepo:out': 187, 'Stop:nonrepo:empty': 83}
+c93120d9 {'other': 3} {'other': 558} | {'Sess:nonrepo:empty': 3, 'Post:nonrepo:empty': 12, 'PreT:nonrepo:empty': 158, 'Stop:nonrepo:empty': 16}
+3ee8fe9a {'course': 4} {'course': 1352} | {'Sess:nonrepo:empty': 1, 'PreT:nonrepo:empty': 150, 'Post:nonrepo:empty': 7, 'Stop:nonrepo:empty': 12, 'PreT:nonrepo:out': 4}
+ecda9c81 {} {} | {'Sess:nonrepo:empty': 1, 'PreT:nonrepo:empty': 8, 'Post:nonrepo:empty': 8, 'Stop:nonrepo:empty': 5}
+b6e30e2b {'other': 4} {'other': 648} | {'Sess:nonrepo:empty': 3, 'Post:nonrepo:empty': 11, 'PreT:nonrepo:empty': 286, 'Stop:nonrepo:empty': 20}
+b2dd90d0 {'course': 15, 'checklist': 3, 'other': 3} {'course': 5070, 'checklist': 2037, 'other': 482} | {'Sess:nonrepo:empty': 2, 'PreT:nonrepo:empty': 188, 'Post:nonrepo:empty': 4, 'Stop:nonrepo:empty': 28, 'PreT:nonrepo:out': 18}
+91187ca9 {} {} | {'Sess:nonrepo:empty': 1, 'Post:nonrepo:empty': 2, 'PreT:nonrepo:empty': 2, 'Stop:nonrepo:empty': 1}
+f45fd5ac {} {} | {'Sess:nonrepo:empty': 1, 'PreT:nonrepo:empty': 35, 'Post:nonrepo:empty': 1, 'Stop:nonrepo:empty': 9}
+
+== start attachments chars
+2f7e8a36 {'environment': 512, 'deferred_tools_delta': 8195, 'agent_listing_delta': 3059, 'mcp_instructions_delta': 3276, 'skill_listing': 26089, 'instructions': 11224, 'session_context': 1489, 'prompt_snapshot': 17010} instr: [('CLAUDE.md', 1310), ('AGENTS.md', 9875)]
+32f8c13f {'environment': 512, 'deferred_tools_delta': 10551, 'agent_listing_delta': 3788, 'mcp_instructions_delta': 3276, 'skill_listing': 26089, 'instructions': 11224, 'session_context': 1656, 'prompt_snapshot': 11211} instr: [('CLAUDE.md', 1310), ('AGENTS.md', 9875)]
+0b1569d9 {'environment': 512, 'deferred_tools_delta': 12041, 'agent_listing_delta': 3763, 'mcp_instructions_delta': 5297, 'skill_listing': 27103, 'instructions': 11224, 'session_context': 3530, 'prompt_snapshot': 15218} instr: [('CLAUDE.md', 1310), ('AGENTS.md', 9875)]
+6b29a7ad {'environment': 512, 'deferred_tools_delta': 12041, 'agent_listing_delta': 4714, 'mcp_instructions_delta': 5297, 'skill_listing': 27103, 'instructions': 11224, 'session_context': 3529, 'prompt_snapshot': 15646} instr: [('CLAUDE.md', 1310), ('AGENTS.md', 9875)]
+44015b3c {'environment': 512, 'deferred_tools_delta': 10551, 'agent_listing_delta': 3788, 'mcp_instructions_delta': 3276, 'skill_listing': 26089, 'instructions': 11224, 'session_context': 1208, 'prompt_snapshot': 14493} instr: [('CLAUDE.md', 1310), ('AGENTS.md', 9875)]
+671720eb {'environment': 512, 'deferred_tools_delta': 8195, 'agent_listing_delta': 3059, 'mcp_instructions_delta': 3276, 'skill_listing': 26089, 'instructions': 11224, 'session_context': 1489, 'prompt_snapshot': 17010} instr: [('CLAUDE.md', 1310), ('AGENTS.md', 9875)]
+c93120d9 {'environment': 512, 'deferred_tools_delta': 11959, 'agent_listing_delta': 4714, 'mcp_instructions_delta': 5297, 'skill_listing': 27103, 'instructions': 11224, 'session_context': 988, 'prompt_snapshot': 15665} instr: [('CLAUDE.md', 1310), ('AGENTS.md', 9875)]
+3ee8fe9a {'environment': 512, 'deferred_tools_delta': 10551, 'agent_listing_delta': 3788, 'mcp_instructions_delta': 3276, 'skill_listing': 26089, 'instructions': 11224, 'session_context': 2745, 'prompt_snapshot': 11211} instr: [('CLAUDE.md', 1310), ('AGENTS.md', 9875)]
+ecda9c81 {'environment': 512, 'deferred_tools_delta': 10551, 'agent_listing_delta': 4003, 'mcp_instructions_delta': 3276, 'skill_listing': 26089, 'instructions': 11224, 'session_context': 923, 'prompt_snapshot': 32754} instr: [('CLAUDE.md', 1310), ('AGENTS.md', 9875)]
+b6e30e2b {'environment': 512, 'deferred_tools_delta': 12399, 'agent_listing_delta': 4821, 'mcp_instructions_delta': 5297, 'skill_listing': 27374, 'instructions': 11224, 'session_context': 1217, 'prompt_snapshot': 17616} instr: [('CLAUDE.md', 1310), ('AGENTS.md', 9875)]
+b2dd90d0 {'environment': 512, 'deferred_tools_delta': 10551, 'agent_listing_delta': 3788, 'mcp_instructions_delta': 3276, 'skill_listing': 26089, 'instructions': 11224, 'session_context': 1656, 'prompt_snapshot': 11211} instr: [('CLAUDE.md', 1310), ('AGENTS.md', 9875)]
+91187ca9 {'environment': 512, 'deferred_tools_delta': 12041, 'agent_listing_delta': 3763, 'mcp_instructions_delta': 5297, 'skill_listing': 27078, 'instructions': 11224, 'session_context': 3446, 'prompt_snapshot': 13909} instr: [('CLAUDE.md', 1310), ('AGENTS.md', 9875)]
+f45fd5ac {'environment': 512, 'deferred_tools_delta': 13043, 'agent_listing_delta': 4821, 'mcp_instructions_delta': 5297, 'skill_listing': 27597, 'instructions': 11224, 'session_context': 3524, 'prompt_snapshot': 18563} instr: [('CLAUDE.md', 1310), ('AGENTS.md', 9875)]
+
+== sub skills / sub Skill tool
+32f8c13f subSkill {} subFirst median 17123
+0b1569d9 subSkill {} subFirst median 19622
+671720eb subSkill {'workflow-authoring': 1} subFirst median 18468
+3ee8fe9a subSkill {} subFirst median 18480
+b2dd90d0 subSkill {} subFirst median 18853
+f45fd5ac subSkill {} subFirst median 62731

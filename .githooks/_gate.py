@@ -431,6 +431,137 @@ def check_frozen_evidence(root, staged):
 # 메인
 # ---------------------------------------------------------------------------
 
+# 열린 과업의 정본 STATE.md — 색인이 다시 이력 더미가 되지 않게 막는다(2026-10-08).
+# 근거: MEMORY.md `## 미해결`이 547행까지 불어나 끝난 일·낡은 수치·규칙이 섞였고,
+# 과업 서술 72개 중 열린 것은 27개뿐이었다(plans/agent-system-audit/).
+STATE_FILE = "STATE.md"
+STATE_MAX_ROWS = 40
+STATE_COLUMNS = ["ID", "범위", "한 줄 상태", "다음 행동", "담당", "상세 위치", "확인일"]
+_STATE_DATE_RE = re.compile(r"^(\d{4})-(\d{2})-(\d{2})$")
+_STATE_CAP_RE = re.compile(r"파일\s*(\d+(?:\.\d+)?)\s*KB")
+_STATE_SEP_CELL_RE = re.compile(r"^:?-+:?$")
+_STATE_PIPE_RE = re.compile(r"(?<!\\)\|")
+
+
+def _state_cells(line):
+    """표 행 한 줄을 셀 목록으로. 표 행이 아니면 None.
+    마크다운 규칙대로 앞 공백을 허용하고(들여쓴 행도 표 행이다), 역슬래시로 이스케이프한
+    파이프는 셀 안의 글자로 본다."""
+    t = line.strip()
+    if not _STATE_PIPE_RE.search(t):
+        return None  # 구분자가 하나도 없으면 표 행이 아니다
+    # 맨 앞·맨 뒤의 `|`는 마크다운에서 생략할 수 있다 — 있을 때만 떼고 나눈다.
+    if t.startswith("|"):
+        t = t[1:]
+    if t.endswith("|") and not t.endswith("\\|"):
+        t = t[:-1]
+    return [c.strip().replace("\\|", "|") for c in _STATE_PIPE_RE.split(t)]
+
+
+def _state_date_ok(value):
+    if value == "확인 필요":
+        return True
+    m = _STATE_DATE_RE.match(value)
+    if not m:
+        return False
+    y, mo, d = (int(x) for x in m.groups())
+    if not (1 <= mo <= 12 and 1 <= d <= 31):
+        return False
+    days = [31, 29 if (y % 4 == 0 and (y % 100 != 0 or y % 400 == 0)) else 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+    return d <= days[mo - 1]
+
+
+def state_violations(raw):
+    """STATE.md 바이트를 받아 (색인 행 수, 바이트, 상한 KB 또는 None, 위반 목록)을 돌려준다.
+
+    보는 것: 색인 표의 열 구성 · 행 수 상한 · 빈 칸 · 확인일 형식 · 문서 머리에 선언된
+    크기 상한. 보지 않는 것: 서술이 저장소 현실과 맞는지(그것은 사람·에이전트의 대조 몫이다).
+
+    행을 세는 범위: 색인 머리 행(열 이름이 STATE_COLUMNS와 같은 행)이 나온 뒤부터 다음
+    제목 줄(`#`)까지의 **모든** 표 행이다. 빈 줄로 표를 쪼개거나, 행을 들여쓰거나, 같은
+    머리의 표를 하나 더 두어도 전부 센다 — 세는 범위를 좁게 잡으면 상한을 넘긴 색인이
+    «0행»으로 통과한다."""
+    size = len(raw)
+    violations = []
+    try:
+        text = raw.decode("utf-8").replace("\r\n", "\n")
+    except Exception as exc:
+        return 0, size, None, ["UTF-8로 읽을 수 없다: %s" % exc]
+    if text.startswith("﻿"):
+        text = text[1:]
+    rows = []
+    headers = 0
+    in_index = False
+    for line in text.split("\n"):
+        if line.lstrip().startswith("#"):
+            in_index = False
+            continue
+        cells = _state_cells(line)
+        if cells is None:
+            continue
+        if cells == STATE_COLUMNS:
+            headers += 1
+            in_index = True
+            continue
+        if not in_index:
+            continue
+        if cells and all(_STATE_SEP_CELL_RE.match(c) for c in cells):
+            continue  # 구분선
+        rows.append(cells)
+    if headers == 0:
+        violations.append("색인 표를 찾지 못했다 — 머리 행이 `| %s |`여야 한다" % " | ".join(STATE_COLUMNS))
+    if len(rows) > STATE_MAX_ROWS:
+        violations.append("색인 %d행 — 상한 %d행 초과. 끝난 과업을 지우거나 상세를 plans/<주제>/로 옮긴다"
+                          % (len(rows), STATE_MAX_ROWS))
+    for row in rows:
+        rid = row[0] if row and row[0] else "(ID 없음)"
+        if len(row) != len(STATE_COLUMNS):
+            violations.append("%s: 열 %d개 — %d개여야 한다" % (rid, len(row), len(STATE_COLUMNS)))
+            continue
+        empty = [STATE_COLUMNS[i] for i, c in enumerate(row) if not c]
+        if empty:
+            violations.append("%s: 빈 칸 — %s" % (rid, ", ".join(empty)))
+        if row[-1] and not _state_date_ok(row[-1]):
+            violations.append("%s: 확인일 `%s` — 실제 날짜(YYYY-MM-DD)이거나 `확인 필요`여야 한다" % (rid, row[-1]))
+    m = _STATE_CAP_RE.search(text)
+    cap = float(m.group(1)) if m else None
+    if cap is None:
+        violations.append("크기 상한 선언이 없다 — 문서 머리에 `파일 NKB`를 적는다")
+    elif size > cap * 1024:
+        violations.append("파일 %d바이트 — 선언한 상한 %gKB(%d바이트) 초과" % (size, cap, int(cap * 1024)))
+    return len(rows), size, cap, violations
+
+
+def check_state_file(root, staged):
+    """STATE.md가 staged일 때만 — 색인 행 수·크기·빈 칸·확인일 형식. 위반이면 차단."""
+    name = "열린 과업 색인 (STATE.md)"
+    tree = _commit_tree_root(root)
+    if STATE_FILE not in staged:
+        # staged 목록은 삭제를 담지 않는다(--diff-filter=ACMR). 삭제는 따로 물어 알린다 —
+        # 열린 과업의 정본이 사라지는 것을 «해당 없음»으로 넘기지 않는다.
+        try:
+            r = subprocess.run(["git", "diff", "--cached", "--name-only", "--diff-filter=D", "--", STATE_FILE],
+                               cwd=tree, capture_output=True)
+            deleted = r.returncode == 0 and bool((r.stdout or b"").strip())
+        except Exception:
+            deleted = False
+        if deleted:
+            return Result(name, "WARN", "%s가 삭제로 staged됐다 — 열린 과업의 정본이 사라진다(차단 아님)" % STATE_FILE)
+        return Result(name, "SKIP", "해당 없음 — staged 안에 %s 변경 없음" % STATE_FILE)
+    try:
+        r = subprocess.run(["git", "show", ":" + STATE_FILE], cwd=tree, capture_output=True)
+    except Exception as exc:
+        return Result(name, "ERROR", "staged 내용을 읽지 못했다: %s" % exc)
+    if r.returncode != 0:
+        return Result(name, "ERROR", "staged 내용을 읽지 못했다(git show 종료코드 %d)" % r.returncode)
+    n_rows, size, cap, violations = state_violations(r.stdout or b"")
+    head = "색인 %d행(상한 %d) · %d바이트(상한 %s)" % (
+        n_rows, STATE_MAX_ROWS, size, ("%gKB" % cap) if cap is not None else "미선언")
+    if violations:
+        return Result(name, "FAIL", head + "\n" + "\n".join("- " + v for v in violations))
+    return Result(name, "PASS", head)
+
+
 def main():
     root = repo_root()
 
@@ -447,7 +578,8 @@ def main():
         return 0
 
     checks = [check_kit, check_skill, check_css, check_deck_generated, check_notes,
-              check_contract_waivers, check_frozen_evidence, check_tmp_litter]
+              check_contract_waivers, check_state_file,
+              check_frozen_evidence, check_tmp_litter]
     results = []
     for check in checks:
         try:
