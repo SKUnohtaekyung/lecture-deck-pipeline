@@ -254,11 +254,27 @@
       return next;
     }
 
+    function hookStep(d) {
+      try { return typeof global.__deckStep === 'function' && global.__deckStep(d) === true; } catch (e) { return false; }
+    }
+    function hookSkip(el) {
+      try { return typeof global.__deckSkip === 'function' && global.__deckSkip(el) === true; } catch (e) { return false; }
+    }
+    function stepTo(d) {
+      if (hookStep(d)) return state.index;
+      var i = state.index + d;
+      while (i >= 0 && i < slides.length && hookSkip(slides[i])) i += d;
+      return (i >= 0 && i < slides.length) ? goTo(i) : state.index;
+    }
+
     return {
       /* ── 이동 ── */
       goTo: goTo,
-      next: function () { return state.index < slides.length - 1 ? goTo(state.index + 1) : state.index; },
-      prev: function () { return state.index > 0 ? goTo(state.index - 1) : state.index; },
+      /* 덱이 선택적으로 내놓는 두 갈고리(없으면 종전과 같다):
+           __deckStep(±1) → true면 장 안에서 한 단계만 움직였다는 뜻이라 장을 넘기지 않는다.
+           __deckSkip(el) → true인 장은 방향키로 지나친다(목록 · 번호 이동으로는 열 수 있다). */
+      next: function () { return stepTo(1); },
+      prev: function () { return stepTo(-1); },
       first: function () { return goTo(0); },
       last: function () { return goTo(slides.length - 1); },
 
@@ -336,6 +352,8 @@
     title:       'pvTitle',
     nextTitle:   'pvNextTitle',
     note:        'pvNote',
+    noteView:    'pvNoteView',
+    noteEdit:    'pvNoteEdit',
     noteBadge:   'pvNoteBadge',
     noteReset:   'pvNoteReset',
     noteSmaller: 'pvNoteSmaller',
@@ -407,6 +425,47 @@
     '  window.__pvSetDisconnected = setDisconnected;',
     '  /* UI 조작은 전부 명령 메시지 1건으로 부모에 전달된다(팝업은 상태를 소유하지 않는다). */',
     '  /* 팝업 안에서만 끝나는 조작(글자 크기·창 닫기)은 부모에 보내지 않는다. */',
+    '  /* 노트 보기 — 목록(- ) · 굵게(**) · 코드(`) · 제목(#)만 DOM으로 그린다. innerHTML은 쓰지 않는다. */',
+    '  function mdInline(parent, text){',
+    '    var re = /(\\*\\*([^*]+)\\*\\*|`([^`]+)`)/g, last = 0, m;',
+    '    while ((m = re.exec(text))){',
+    '      if (m.index > last) parent.appendChild(document.createTextNode(text.slice(last, m.index)));',
+    '      var el = document.createElement(m[2] != null ? "strong" : "code");',
+    '      el.textContent = m[2] != null ? m[2] : m[3];',
+    '      parent.appendChild(el); last = re.lastIndex;',
+    '    }',
+    '    if (last < text.length) parent.appendChild(document.createTextNode(text.slice(last)));',
+    '  }',
+    '  function renderNoteView(){',
+    '    var note = document.getElementById(CFG.ids.note), view = document.getElementById(CFG.ids.noteView);',
+    '    if (!note || !view) return;',
+    '    while (view.firstChild) view.removeChild(view.firstChild);',
+    '    var lines = String(note.value || "").split(/\\r?\\n/), ul = null;',
+    '    for (var i=0;i<lines.length;i++){',
+    '      var t = lines[i].replace(/^\\s+/, "");',
+    '      if (!t){ ul = null; continue; }',
+    '      var li = /^[-*]\\s+(.*)$/.exec(t), h = /^#{1,4}\\s+(.*)$/.exec(t);',
+    '      if (li){',
+    '        if (!ul){ ul = document.createElement("ul"); view.appendChild(ul); }',
+    '        var item = document.createElement("li"); mdInline(item, li[1]); ul.appendChild(item);',
+    '      } else {',
+    '        ul = null; var p = document.createElement("p");',
+    '        if (h){ p.className = "pv-note-h"; mdInline(p, h[1]); } else { mdInline(p, t); }',
+    '        view.appendChild(p);',
+    '      }',
+    '    }',
+    '    if (!view.firstChild){ var e0 = document.createElement("p"); e0.className = "pv-note-empty"; e0.textContent = "노트가 없습니다. 눌러서 적습니다."; view.appendChild(e0); }',
+    '  }',
+    '  function noteMode(edit){',
+    '    var note = document.getElementById(CFG.ids.note), view = document.getElementById(CFG.ids.noteView), btn = document.getElementById(CFG.ids.noteEdit);',
+    '    if (!note || !view) return;',
+    '    if (!edit) renderNoteView();',
+    '    note.hidden = !edit; view.hidden = !!edit;',
+    '    if (btn) btn.textContent = edit ? "완료" : "편집";',
+    '    if (edit){ try { note.focus(); } catch(e){} }',
+    '  }',
+    '  /* 부모가 글상자 값을 바꾼 뒤 부른다. 편집 중이면 그리지 않는다(끝낼 때 그린다). */',
+    '  window.__pvNoteRender = function(){ var note = document.getElementById(CFG.ids.note); if (note && note.hidden) renderNoteView(); };',
     '  function noteScale(delta){',
     '    var note = document.getElementById(CFG.ids.note);',
     '    if (!note) return;',
@@ -414,6 +473,7 @@
     '    var next = Math.min(1.9, Math.max(0.75, Math.round((cur + delta) * 100) / 100));',
     '    note.setAttribute("data-pv-scale", String(next));',
     '    note.style.fontSize = (17 * next).toFixed(1) + "px";',
+    '    var nv1 = document.getElementById(CFG.ids.noteView); if (nv1) nv1.style.fontSize = note.style.fontSize;',
     '    try { if (window.opener && !window.opener.closed) send("NOTE_SCALE", {scale: next}); } catch(e){}',
     '  }',
     '  window.__pvNoteScale = function(v){',
@@ -421,10 +481,13 @@
     '    if (!note) return;',
     '    note.setAttribute("data-pv-scale", String(v));',
     '    note.style.fontSize = (17 * v).toFixed(1) + "px";',
+    '    var nv2 = document.getElementById(CFG.ids.noteView); if (nv2) nv2.style.fontSize = note.style.fontSize;',
     '  };',
     '  document.addEventListener("click", function(e){',
     '    var local = e.target;',
     '    while (local && local !== document.body && !local.id) local = local.parentNode;',
+    '    if (local && local.id === CFG.ids.noteEdit) { var n0 = document.getElementById(CFG.ids.note); noteMode(!!(n0 && n0.hidden)); return; }',
+    '    if (local && local.id === CFG.ids.noteView) { if (!disconnected) noteMode(true); return; }',
     '    if (local && local.id === CFG.ids.noteSmaller) { noteScale(-0.12); return; }',
     '    if (local && local.id === CFG.ids.noteLarger)  { noteScale(0.12); return; }',
     '    if (local && local.id === CFG.ids.quit) { try { window.close(); } catch(err){} return; }',
@@ -449,6 +512,7 @@
     '  }, false);',
     '  /* 팝업 안에서도 같은 단축키를 쓴다. 입력 요소에 포커스가 있으면 전부 무동작. */',
     '  document.addEventListener("keydown", function(e){',
+    '    if (e.key === "Escape" && e.target && e.target.id === CFG.ids.note) { noteMode(false); e.preventDefault(); return; }',
     '    if (disconnected) return;',
     '    var t = e.target || {};',
     '    var tag = (t.tagName || "").toLowerCase();',
@@ -651,10 +715,12 @@
               '<div class="pv-notes-head">' +
                 '<h2 class="pv-h">슬라이드 노트</h2>' +
                 '<span class="pv-chip pv-chip--soft" id="' + PID.noteBadge + '">기본 멘트</span>' +
+                '<button type="button" class="pv-tbtn" id="' + PID.noteEdit + '" title="노트 고치기(Esc로 끝냄)">편집</button>' +
                 '<button type="button" class="pv-tbtn" id="' + PID.noteReset + '" data-pv-cmd="NOTE_RESET" title="기본 멘트로 되돌리기">' +
                   icon('undo') + '<span>기본 멘트</span></button>' +
               '</div>' +
-              '<textarea class="pv-note" id="' + PID.note + '" spellcheck="false" aria-label="발표자 노트"></textarea>' +
+              '<div class="pv-note pv-note-view" id="' + PID.noteView + '" tabindex="0" role="document" aria-label="발표자 노트" title="눌러서 고치기"></div>' +
+              '<textarea class="pv-note" id="' + PID.note + '" spellcheck="false" aria-label="발표자 노트 편집" hidden></textarea>' +
               '<div class="pv-notes-foot">' +
                 '<p class="pv-save" id="' + PID.save + '" role="status"></p>' +
                 '<span class="pv-fontsize">' +
@@ -1238,6 +1304,9 @@
       box.value = notes.displayText(slideId);          /* value 경로 — innerHTML 사용 금지 */
       box.setAttribute('data-pv-scale', String(noteScale));
       box.style.fontSize = (17 * noteScale).toFixed(1) + 'px';
+      var noteView = pdoc.getElementById(PID.noteView);
+      if (noteView) noteView.style.fontSize = box.style.fontSize;
+      try { var pwin = pdoc.defaultView; if (pwin && pwin.__pvNoteRender) pwin.__pvNoteRender(); } catch (e) { /* 그리지 못해도 글상자에는 값이 있다 */ }
       setNoteBadge();
       if (!notes.storageAvailable()) {
         setSaveStatus('저장 안 됨 — 브라우저가 저장을 막고 있습니다. 창을 닫으면 편집 내용이 사라집니다.', 'warn');

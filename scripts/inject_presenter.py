@@ -47,7 +47,8 @@ RUNTIME_CSS = ROOT / "kit" / "runtime" / "presenter-ui.css"
 TAG_RE = re.compile(r"<(/?)([a-zA-Z][\w-]*)((?:[^>\"']|\"[^\"]*\"|'[^']*')*)>", re.S)
 VOID = {"area", "base", "br", "col", "embed", "hr", "img", "input", "link",
         "meta", "param", "source", "track", "wbr"}
-NOTE_KINDS = {"pn-joke": "joke", "pn-demo": "demo", "pn-hint": "hint"}
+NOTE_KINDS = {"pn-joke": "joke", "pn-demo": "demo", "pn-hint": "hint", "pn-md": "md"}
+# "md" — 줄바꿈을 살리는 간결 노트(마크다운 목록). 런타임에 라벨 상수가 없어 「[라벨]」 머리말 없이 본문만 보인다.
 
 
 class InjectError(Exception):
@@ -223,7 +224,12 @@ def parse_notes(notes_html: str) -> list[dict]:
                             body = body[:l_s] + body[n.end():]
                             break
                 break
-            text = _text_of(body)
+            if kind == "md":
+                # 줄(<p> · <li> · <br>)마다 줄바꿈을 남긴다 — 발표자 화면의 글상자가 그대로 보여 준다.
+                parts = re.split(r"</p\s*>|</li\s*>|<br\s*/?>", body, flags=re.I)
+                text = "\n".join(t for t in (_text_of(x) for x in parts) if t)
+            else:
+                text = _text_of(body)
             if text:
                 items.append({"kind": kind, "text": text})
         per_block.append(items)

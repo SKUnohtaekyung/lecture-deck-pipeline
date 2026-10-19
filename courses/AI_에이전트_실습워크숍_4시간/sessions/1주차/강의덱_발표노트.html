@@ -1,0 +1,2026 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>발표자 노트 — FRAME 1주차</title>
+<!--
+  발표자 노트 — FRAME 1주차 (2026-10-02 개편 구성)
+  형식: kit/starter/presenter-notes-template.html. 덱 99장과 같은 순서이며 pn-no = 덱 쪽 번호.
+  · 🎙 전체 대본(개념 장) · 📌 요점(그 밖의 장)은 class pn-joke pn-say.
+  · 🔑 강사용 확인 · ⚠ 확인은 class pn-demo 와 보조 class(pn-answer · pn-caution)를 함께 쓴다.
+  · 생성: tmp/frame/rev/gen_docs.py — 이 파일을 직접 고치면 다음 생성 때 덮어쓴다.
+-->
+<style>
+  :root{
+    --blue:#0E4A5A; --mint-deep:#0F7A64; --coral-deep:#A15C00; --ink:#14202B;
+    --gray-700:#33414E; --gray-400:#56636F; --white:#F6F8FA;
+    --surface:#EBF0F4; --line:#D5DDE4; --paper:#EEF4F6;
+    --blue-soft:#E6F0F3; --mint-soft:#E4F8FA; --coral-soft:#FEF5E3;
+    --r-lg:20px; --r-md:14px; --r-pill:999px;
+    --font-mono:"D2Coding","JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+    --font:"Pretendard",system-ui,-apple-system,"Malgun Gothic",sans-serif;
+  }
+  *{ box-sizing:border-box; }
+  body{ margin:0; padding:32px 20px 64px; background:var(--paper); color:var(--ink);
+    font-family:var(--font); line-height:1.6; -webkit-font-smoothing:antialiased; }
+  .pn-wrap{ max-width:840px; margin:0 auto; }
+
+  /* 헤더 */
+  .pn-head{ border-bottom:2px solid var(--blue); padding-bottom:16px; margin-bottom:28px; }
+  .pn-kicker{ font-size:14px; font-weight:800; color:var(--blue); letter-spacing:.02em; }
+  .pn-title{ font-size:30px; font-weight:800; margin:6px 0 4px; }
+  .pn-note{ font-size:15px; color:var(--gray-700); margin:0 0 6px; }
+  .pn-legend{ display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }
+  .pn-legend span{ font-size:13px; font-weight:700; border-radius:var(--r-pill); padding:4px 11px; border:1px solid var(--line); }
+  .lg-say{ background:var(--surface); color:var(--blue); }
+  .lg-joke{ background:var(--blue-soft); color:var(--blue); }
+  .lg-demo{ background:var(--coral-soft); color:var(--coral-deep); }
+  .lg-hint{ background:var(--mint-soft); color:var(--mint-deep); }
+  .pn-blocks{ border-collapse:collapse; margin-top:14px; font-size:14px; width:100%; }
+  .pn-blocks th, .pn-blocks td{ border:1px solid var(--line); padding:5px 10px; text-align:left; background:var(--white); }
+  .pn-blocks th{ background:var(--surface); }
+
+  /* 블록 구분 */
+  .pn-block{ font-size:14px; font-weight:800; color:var(--blue); background:var(--blue-soft);
+    border-radius:var(--r-md); padding:8px 14px; margin:26px 0 12px; }
+
+  /* 슬라이드 블록 */
+  .pn-slide, .pn-pre{ border:1px solid var(--line); border-radius:var(--r-lg); background:var(--white);
+    padding:18px 20px; margin:0 0 16px; break-inside:avoid; }
+  .pn-slide-head, .pn-pre-head{ display:flex; flex-wrap:wrap; align-items:baseline; gap:6px 12px; margin-bottom:10px; }
+  .pn-no, .pn-pre-tag{ flex:0 0 auto; font-size:14px; font-weight:800; color:var(--white); background:var(--blue);
+    border-radius:var(--r-pill); padding:3px 11px; }
+  .pn-id{ flex:0 0 auto; font-size:13px; font-weight:800; color:var(--blue); background:var(--blue-soft);
+    border-radius:var(--r-pill); padding:2px 9px; font-family:var(--font-mono); }
+  .pn-slide-title, .pn-pre-title{ font-size:19px; font-weight:800; margin:0; flex:1 1 280px; }
+  .pn-time{ flex:0 0 auto; font-size:13px; font-weight:700; color:var(--gray-700); margin-left:auto; }
+
+  /* 멘트 항목 — 종류별 좌측 컬러 바 + 라벨 */
+  .pn-item{ border-left:4px solid var(--line); padding:8px 0 8px 14px; margin:8px 0; }
+  .pn-item .lbl{ display:inline-block; font-size:12px; font-weight:800; margin-bottom:3px; }
+  .pn-item p{ margin:0; font-size:16px; color:var(--gray-700); }
+  .pn-item p + p{ margin-top:8px; }
+  .pn-item ul{ margin:0; padding-left:20px; font-size:16px; color:var(--gray-700); }
+  .pn-item li{ margin:3px 0; }
+  .pn-item code{ font-family:var(--font-mono); font-size:14.5px; background:var(--surface); border-radius:6px; padding:0 4px; }
+  .pn-item .tag{ display:inline-block; font-size:12px; font-weight:800; color:var(--blue); background:var(--blue-soft);
+    border-radius:var(--r-pill); padding:0 8px; margin-right:4px; }
+  .pn-joke{ border-left-color:var(--blue); } .pn-joke .lbl{ color:var(--blue); }
+  .pn-say{ background:var(--paper); border-radius:0 var(--r-md) var(--r-md) 0; }
+  .pn-say p, .pn-say li{ color:var(--ink); }
+  .pn-demo{ border-left-color:var(--coral-deep); } .pn-demo .lbl{ color:var(--coral-deep); }
+  .pn-answer{ background:var(--coral-soft); border-radius:0 var(--r-md) var(--r-md) 0; }
+  .pn-caution{ background:var(--surface); border-radius:0 var(--r-md) var(--r-md) 0; }
+  .pn-hint{ border-left-color:var(--mint-deep); background:var(--mint-soft);
+    border-radius:0 var(--r-md) var(--r-md) 0; }
+  .pn-hint .lbl{ color:var(--mint-deep); }
+  .pn-hint .hlabel{ font-size:13px; font-weight:800; color:var(--mint-deep); margin-top:2px; }
+  .pn-hint .prompt{ font-family:var(--font-mono); font-size:14.5px; color:var(--ink);
+    background:var(--white); border:1px solid var(--line); border-radius:var(--r-md);
+    padding:10px 12px; margin-top:4px; white-space:pre-wrap; }
+  .pn-refs{ margin:8px 0 0; font-size:12.5px; color:var(--gray-400); }
+
+  @media print{
+    body{ background:var(--white); padding:0 8mm; }
+    .pn-slide{ box-shadow:none; }
+  }
+</style>
+</head>
+<body>
+<div class="pn-wrap">
+
+  <header class="pn-head">
+    <div class="pn-kicker">발표자 노트 · 1주차</div>
+    <h1 class="pn-title">FRAME — AI 에이전트 실습 4시간</h1>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <p class="pn-note">강사용 참고 문서입니다. 쪽 번호는 덱의 장 순서와 같고, 덱은 123장입니다. 123장 모두에 노트가 있습니다(표지는 쪽 번호가 없어 「표지」로 표시).</p>
+    <p class="pn-note">개념 장 0장은 전체 대본(🎙)이고, 나머지는 요점(📌)입니다. 대본은 화면의 정의 → 비유 → 근거 → 대응 순서를 따르므로 그대로 읽어도 됩니다.</p>
+    <p class="pn-note">수강생 화면(덱)에는 💬 애드리브 · 👀 시연 큐 · 🔑 확인 값 · 🗣 힌트가 보이지 않습니다. 여기서는 모두 펼쳐 둡니다.</p>
+    <p class="pn-note">실습은 일곱 가지 가운데 강사가 정한 하나만 합니다. 수업 시작 때 메인과제_AI습관점검.zip을, 블록 3 시작 때 고른 실습의 zip 하나를 채팅에 올립니다.</p>
+    <div class="pn-legend">
+      <span class="lg-say">🎙 전체 대본 · 📌 요점</span>
+      <span class="lg-joke">💬 애드리브</span>
+      <span class="lg-demo">👀 시연·관찰 큐 · 🔑 강사용 확인 · ⚠ 확인</span>
+      <span class="lg-hint">🗣 막힐 때 힌트</span>
+    </div>
+    <table class="pn-blocks">
+      <tr><th>구간</th><th>쪽</th><th>장 합계</th><th>내용</th></tr>
+      <tr><td>블록 1</td><td>1~34쪽</td><td>61분 30초</td><td>기획</td></tr>
+      <tr><td>블록 2</td><td>35~62쪽</td><td>59분</td><td>디자인 · 제작 · 공개</td></tr>
+      <tr><td>블록 3</td><td>63~71쪽</td><td>45분(본 장 13분 + 실습 ① ~ ③ 진행 32분)</td><td>에이전트 실습</td></tr>
+      <tr><td>블록 4</td><td>72~83쪽</td><td>35분 30초(본 장 20분 30초 + 실습 ④ 진행 15분)</td><td>내 일에 맞게 · 마무리</td></tr>
+      <tr><td>허브 구간</td><td>84~123쪽</td><td>실습 하나에 47분(개념 장이 있는 실습은 2분이 더 있음)</td><td></td></tr>
+    </table>
+    <p class="pn-note">블록 상한은 55분이고(2026-10-06 조정), 휴식 10분 세 번은 시간표 밖입니다. 늦어지면 강사 시연 두 장(D-01 · D-02)을 건너뜁니다.</p>
+  </header>
+
+  <div class="pn-block">블록 1 · 1~34쪽 · 61분 30초</div>
+  <section class="pn-pre" id="p1">
+    <div class="pn-pre-head">
+      <span class="pn-pre-tag">표지</span>
+      <span class="pn-id">COVER</span>
+      <h3 class="pn-pre-title">AGENT</h3>
+      <span class="pn-time">블록 1 · 이 장 30초 · 누적 30초</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **오늘**: 4시간 동안 개념을 배우고, 웹페이지 하나와 업무 결과물 하나를 만든다</p>
+      <p>- **멘트**: "채팅창에 「1」만 입력해 주세요"</p>
+      <p>- **시연**: 표지 그림은 끌면 돌고, 누르면 카드가 벌어진다</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p2">
+    <div class="pn-slide-head">
+      <span class="pn-no">2</span>
+      <span class="pn-id">O-01</span>
+      <h2 class="pn-slide-title">오늘 4시간의 흐름</h2>
+      <span class="pn-time">블록 1 · 이 장 1분 · 누적 1분 30초</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **구성**: 50분 블록 4개 + 휴식 10분 3번</p>
+      <p>- 블록 1 기획 → 2 디자인 · 제작 · 공개 → 3 에이전트 실습 → 4 내 일에 맞게 · 마무리</p>
+      <p>- **만드는 것 둘**: 블록 1~2 메인 과제, 블록 3~4 실습 결과물</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p3">
+    <div class="pn-slide-head">
+      <span class="pn-no">3</span>
+      <span class="pn-id">M1-0</span>
+      <h2 class="pn-slide-title">오늘 만드는 것 두 가지</h2>
+      <span class="pn-time">블록 1 · 이 장 1분 · 누적 2분 30초</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **첫째**: 내가 기획한 웹페이지 하나 — 내용과 색은 내가, 화면은 에이전트가</p>
+      <p>- **둘째**: 업무 자료로 만드는 결과물 하나 — 실습 8개 중 강사가 정한 하나</p>
+      <p>- **시연**: 두 그림을 차례로 짚는다</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p4">
+    <div class="pn-slide-head">
+      <span class="pn-no">4</span>
+      <span class="pn-id">O-02</span>
+      <h2 class="pn-slide-title">도구별 사용 조건</h2>
+      <span class="pn-time">블록 1 · 이 장 1분 · 누적 3분 30초</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- 도구마다 **요금제 · 운영체제 · 읽는 파일**이 다르다</p>
+      <p>- **Claude Code는 무료 플랜에 없다** → 해당자는 채팅에 남기게 한다</p>
+      <p>- Netlify 로그인은 공개 단계에서 한다</p>
+      <p>- **확인**: 무료 한도는 수업 당일 다시 본 내용으로 말한다</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p5">
+    <div class="pn-slide-head">
+      <span class="pn-no">5</span>
+      <span class="pn-id">O-02B</span>
+      <h2 class="pn-slide-title">모델과 추론 강도는 다른 설정입니다</h2>
+      <span class="pn-time">블록 1 · 이 장 2분 · 누적 5분 30초</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **모델** = 누가 일하는가 / **추론 강도** = 답하기 전에 얼마나 생각하는가</p>
+      <p>- 그림: 선 하나가 모델, 점 다섯 개가 추론 수준(낮음 → Max)</p>
+      <p>- 추론 강도를 올리면 **점수와 비용이 함께 오른다**</p>
+      <p>- Luna는 Max에서 52.7%, Astra는 낮음에서 62.2% — 대신 Luna 비용은 약 1/9</p>
+      <p>- 오늘은 기본 설정. 답이 얕으면 한 단계 올린다</p>
+      <p>- **확인**: OpenAI가 직접 잰 값 · 평가 하나의 결과. Sol은 Max(64.4%)에서 Astra 낮음을 넘는다 → 「절대 못 따라온다」고 말하지 않는다</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p6">
+    <div class="pn-slide-head">
+      <span class="pn-no">6</span>
+      <span class="pn-id">O-02C</span>
+      <h2 class="pn-slide-title">작업공간 · 폴더 · 파일</h2>
+      <span class="pn-time">블록 1 · 이 장 1분 30초 · 누적 7분</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **파일** = 결과물 / **폴더** = 파일을 담는 위치 / **작업공간** = 에이전트가 지금 다루는 범위</p>
+      <p>- 폴더를 열면 그 폴더가 작업공간이 된다</p>
+      <p>- 그래서 다음 장의 첫 단계가 「폴더 열기」</p>
+      <p>- **확인**: 폴더 밖 파일을 묻는지 · 막는지는 도구와 설정마다 다르다</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p7">
+    <div class="pn-slide-head">
+      <span class="pn-no">7</span>
+      <span class="pn-id">O-03</span>
+      <h2 class="pn-slide-title">자료를 받아 압축을 풀고 에이전트 앱에서 폴더를 엽니다</h2>
+      <span class="pn-time">블록 1 · 이 장 5분 · 누적 12분</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **순서**: zip 받기 → 압축 풀기 → 에이전트 앱 → **압축을 푼 폴더** 열기</p>
+      <p>- 폴더 안에는 <code>prd.md</code> 하나</p>
+      <p>- **시연**: 강사 화면에서 같은 순서를 한 번 보여 준다</p>
+      <p>- **멘트**: "폴더가 열렸으면 채팅에 「열림」이라고 남겨 주세요"</p>
+      <p>- **확인**: Windows 메뉴 이름(「압축 풀기」 / 「모두 압축 풀기」)을 강사 PC에서 확인</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p8">
+    <div class="pn-slide-head">
+      <span class="pn-no">8</span>
+      <span class="pn-id">C-01</span>
+      <h2 class="pn-slide-title">다음 말 예측 · 글 뒤에 올 조각을 확률로 고르는 방식</h2>
+      <span class="pn-time">블록 1 · 이 장 2분 · 누적 14분</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **정의**: 지금까지의 글 뒤에 올 조각을 **확률로 하나씩** 골라 잇는다</p>
+      <p>- 직전 단어만이 아니라 **글 전체**를 보고 고른다</p>
+      <p>- 그래서 **같은 질문에도 답이 다를 수 있다**</p>
+      <p>- 그림: Google의 예시. 1등도 9.4%, 다섯 후보 합이 22.9%</p>
+      <p>- **시연**: 「다음 말 뽑기」를 두세 번 눌러 빈칸이 바뀌는 것을 보여 준다</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p9">
+    <div class="pn-slide-head">
+      <span class="pn-no">9</span>
+      <span class="pn-id">C-01B</span>
+      <h2 class="pn-slide-title">AI는 다음에 올 말을 하나씩 고릅니다</h2>
+      <span class="pn-time">블록 1 · 이 장 2분 · 누적 16분</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **클릭 네 번** — 막대가 자라고 1등이 문장에 붙은 뒤 다음을 누른다</p>
+      <p>- AI는 답을 **찾아오지 않는다**. 확률 높은 말을 이어 붙인다</p>
+      <p>- 1443년(만든 해) vs 1446년(알린 해): 후보가 비슷하면 **틀린 쪽을 고르기도** 한다 → 다음 장 환각</p>
+      <p>- **확인**: 이 장의 확률 숫자는 설명용 예시 값</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p10">
+    <div class="pn-slide-head">
+      <span class="pn-no">10</span>
+      <span class="pn-id">C-04</span>
+      <h2 class="pn-slide-title">환각 Hallucination · 사실이 아닌 내용을 사실처럼 만드는 현상</h2>
+      <span class="pn-time">블록 1 · 이 장 2분 · 누적 18분</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **정의**: 사실이 아닌 내용을 사실처럼 만들어 낸다</p>
+      <p>- **문맥에 맞는 말 ≠ 정답**</p>
+      <p>- 사례: 2023년 뉴욕 연방법원, 없는 판례를 인용한 변호사에게 5,000달러 제재</p>
+      <p>- **시연**: 「출처 확인」을 눌러 검색 결과가 없는 장면</p>
+      <p>- **확인**: 판례 건수 · 되물었을 때의 답은 판결문 확인 전에는 말하지 않는다</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p11">
+    <div class="pn-slide-head">
+      <span class="pn-no">11</span>
+      <span class="pn-id">C-05</span>
+      <h2 class="pn-slide-title">답을 받은 뒤 확인할 곳</h2>
+      <span class="pn-time">블록 1 · 이 장 30초 · 누적 18분 30초</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- 답은 매번 다를 수 있다. **같은 답이 또 나와도 맞다는 증거가 아니다**</p>
+      <p>- **숫자 · 이름 · 인용은 원본에서 찾아 확인**한다</p>
+      <p>- 이 확인은 블록 3 실습과 마무리 점검표에서 다시 쓴다</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p12">
+    <div class="pn-slide-head">
+      <span class="pn-no">12</span>
+      <span class="pn-id">C-06</span>
+      <h2 class="pn-slide-title">아첨 · 듣기 좋은 쪽으로 기우는 경향</h2>
+      <span class="pn-time">블록 1 · 이 장 2분 · 누적 20분 30초</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **정의**: 정확한 평가보다 **듣기 좋은 답**으로 기운다</p>
+      <p>- 질문에 내 의견을 넣으면 답이 그쪽으로 간다</p>
+      <p>- **잘 모르는 영역일수록 아첨을 알아채지 못한다**</p>
+      <p>- **대응**: 내 생각을 밝히지 않고 장단점부터 요청한다</p>
+      <p>- **시연**: 「맞죠?」 토글로 두 답을 비교</p>
+      <p>- **확인**: OpenAI 원문 문장과 개선 수치는 확인한 것만 말한다</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p13">
+    <div class="pn-slide-head">
+      <span class="pn-no">13</span>
+      <span class="pn-id">C-06B</span>
+      <h2 class="pn-slide-title">아첨을 줄이는 요청문</h2>
+      <span class="pn-time">블록 1 · 이 장 1분 30초 · 누적 22분</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- 대화 **맨 앞에 붙여 넣는** 다섯 줄</p>
+      <p>- 사실만 따지기 · 단정은 질문으로 · 근거와 확인 방법 · 약점 먼저 · 되물어도 답 유지</p>
+      <p>- **아첨을 없애지는 못한다. 줄일 뿐이다**</p>
+      <p>- 그래서 숫자 · 날짜 · 이름 하나는 원본과 직접 대조</p>
+      <p>- **시연**: 복사해서 새 대화에 붙여 넣는다</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p14">
+    <div class="pn-slide-head">
+      <span class="pn-no">14</span>
+      <span class="pn-id">C-07</span>
+      <h2 class="pn-slide-title">프롬프트 · AI에게 건네는 요청문</h2>
+      <span class="pn-time">블록 1 · 이 장 1분 30초 · 누적 23분 30초</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **네 칸**: 목적 · 입력 · 출력 · 확인 (이 강의의 구분)</p>
+      <p>- 칸이 정해져 있으면 **빠진 칸이 바로 보인다**</p>
+      <p>- **시연**: 네 칸을 하나씩 눌러 예시 요청문의 어느 부분인지 보여 준다</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p15">
+    <div class="pn-slide-head">
+      <span class="pn-no">15</span>
+      <span class="pn-id">C-08</span>
+      <h2 class="pn-slide-title">요청문의 확인 칸에 적는 것</h2>
+      <span class="pn-time">블록 1 · 이 장 1분 · 누적 24분 30초</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- 「메모 정리해 줘」 한 줄 vs 네 칸을 채운 요청문</p>
+      <p>- **확인 칸**에 적는 것: 근거 표시(어느 파일) · 서로 다른 내용은 따로 · 저장할 파일 이름</p>
+      <p>- 확인 칸이 있으면 **결과를 대조할 곳**이 생긴다</p>
+      <p>- **시연**: 전후 토글</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p16">
+    <div class="pn-slide-head">
+      <span class="pn-no">16</span>
+      <span class="pn-id">C-LA1</span>
+      <h2 class="pn-slide-title">LLM과 에이전트 · 글을 이어 쓰는 모델과, 그 모델에 도구와 반복 실행을 붙인 프로그램</h2>
+      <span class="pn-time">블록 1 · 이 장 1분 30초 · 누적 26분</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **LLM** = 글을 받아 이어질 글을 만드는 모델</p>
+      <p>- **에이전트** = LLM + **도구** + **반복 실행**</p>
+      <p>- 채팅 앱도 일부 도구를 붙인 것. 에이전트는 **내 폴더의 파일을 직접 읽고 고친다**</p>
+      <p>- 비유: 길을 알려 주는 것 vs 직접 운전해 가는 것</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p17">
+    <div class="pn-slide-head">
+      <span class="pn-no">17</span>
+      <span class="pn-id">C-LA2</span>
+      <h2 class="pn-slide-title">같은 요청, 다른 결과 · 회의록 정리를 채팅과 에이전트에 맡겼을 때 거치는 단계</h2>
+      <span class="pn-time">블록 1 · 이 장 2분 · 누적 28분</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- 채팅 앱: 올리기 · 내려받기 · 폴더에 넣기를 **사람이** 한다</p>
+      <p>- 에이전트: 읽기 · 계획 · 만들기 · 확인을 **AI가** 하고, 사람은 결과를 열어 본다</p>
+      <p>- **시연**: 흰 칸이 사람, 파란 칸이 AI</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p18">
+    <div class="pn-slide-head">
+      <span class="pn-no">18</span>
+      <span class="pn-id">C-14</span>
+      <h2 class="pn-slide-title">에이전트 · 읽기 · 계획 · 실행 · 확인을 되풀이하는 프로그램</h2>
+      <span class="pn-time">블록 1 · 이 장 2분 · 누적 30분</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **정의**: 읽기 → 계획 → 실행 → 확인을 **되풀이**한다</p>
+      <p>- 오늘 쓰는 세 도구는 모두 에이전트</p>
+      <p>- 차이는 **파일을 바꾸기 전에 묻는 방식**: Codex(폴더 밖 · 네트워크는 물음) · Claude Code(모드 선택) · Antigravity(허용 · 확인 · 거부 목록)</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p19">
+    <div class="pn-slide-head">
+      <span class="pn-no">19</span>
+      <span class="pn-id">C-LA3</span>
+      <h2 class="pn-slide-title">일상 예시 · 같은 일을 채팅 앱에 물을 때와 에이전트에 맡길 때 손에 남는 것</h2>
+      <span class="pn-time">블록 1 · 이 장 1분 30초 · 누적 31분 30초</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- 채팅 앱: 답을 받아 **내가 옮긴다** / 에이전트: 폴더 안 파일이 **직접 생기고 바뀐다**</p>
+      <p>- 세 예시(여행 계획 · 엑셀 정리 · 웹페이지)가 같은 짝</p>
+      <p>- 에이전트는 파일을 실제로 바꾼다 → **작업 전 폴더 복사 · 결과는 직접 열어 확인**</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p20">
+    <div class="pn-slide-head">
+      <span class="pn-no">20</span>
+      <span class="pn-id">MHUB</span>
+      <h2 class="pn-slide-title">메인 과제 세 가지</h2>
+      <span class="pn-time">블록 1 · 이 장 1분 · 누적 32분 30초</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- 메인 과제 세 가지 중 **하나를 전원이 함께** 만든다</p>
+      <p>- **시연**: 오늘 할 과제의 카드를 누른다 → 이후 방향키는 그 과제의 장만 지난다</p>
+      <p>- 축제 여행 계획은 준비 중(눌리지 않음)</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p21">
+    <div class="pn-slide-head">
+      <span class="pn-no">21</span>
+      <span class="pn-id">M1-A</span>
+      <h2 class="pn-slide-title">AI 활용 습관 점검 웹페이지를 만듭니다</h2>
+      <span class="pn-time">블록 1 · 이 장 1분 · 누적 33분 30초</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- 만드는 것: **AI 활용 습관 점검 웹페이지**</p>
+      <p>- 화면 셋: 첫 화면 → 문항 10개 → 결과 리포트</p>
+      <p>- 결과: 유형 · 점수 · 잘하고 있는 것 · 이번 주 해 볼 한 가지</p>
+      <p>- **시연**: 완성 예시를 열어 세 화면을 넘겨 본다</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p22">
+    <div class="pn-slide-head">
+      <span class="pn-no">22</span>
+      <span class="pn-id">M1-1</span>
+      <h2 class="pn-slide-title">질문 두 가지로 네 유형을 나눕니다</h2>
+      <span class="pn-time">블록 1 · 이 장 2분 · 누적 35분 30초</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- 묻는 것 둘: **시작**(AI를 켜기 전에 내 생각을 두는가) · **마무리**(받은 답을 확인하는가)</p>
+      <p>- 높음 / 낮음으로 나누면 **네 유형**</p>
+      <p>- 틀은 모두 같고, 문항 · 말투 · 색은 각자 정한다</p>
+      <p>- 유형은 **지금의 습관**이지 사람에 대한 평가가 아니다</p>
+      <p>- 점수 기준(평균 1.75)은 묻는 분이 있을 때만 말한다</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p23">
+    <div class="pn-slide-head">
+      <span class="pn-no">23</span>
+      <span class="pn-id">M1-S</span>
+      <h2 class="pn-slide-title">에이전트와 나누는 대화</h2>
+      <span class="pn-time">블록 1 · 이 장 2분 · 누적 37분 30초</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **클릭 열 번**. 왼쪽 「대화 순서」에서 지금 단계가 밝아진다</p>
+      <p>- 순서: 분석 요청 → 인터뷰 → 답하고 꼬리 질문 → 확인하고 승인</p>
+      <p>- 질문은 **세 개씩** 온다</p>
+      <p>- 에이전트가 정리해 보여 주고 **내가 승인한 뒤에** <code>prd.md</code>를 고친다</p>
+      <p>- 실제 문장은 사람마다 다르다. 순서만 같다</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p24">
+    <div class="pn-slide-head">
+      <span class="pn-no">24</span>
+      <span class="pn-id">T1-A</span>
+      <h2 class="pn-slide-title">내가 정한 주제의 유형 테스트를 만듭니다</h2>
+      <span class="pn-time">블록 1 · 이 장 1분 · 시간이 남을 때만</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- 만드는 것: **내가 정한 주제의 유형 테스트**</p>
+      <p>- 주제 · 유형 · 가르는 기준을 내가 정한다</p>
+      <p>- 결과: 유형과 설명 · 유형별 점수 · 전체 유형 보기</p>
+      <p>- **시연**: 완성 예시(나의 캠핑 유형)를 열어 세 화면을 넘겨 본다</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p25">
+    <div class="pn-slide-head">
+      <span class="pn-no">25</span>
+      <span class="pn-id">T1-1</span>
+      <h2 class="pn-slide-title">유형을 정하고, 가르는 기준을 정합니다</h2>
+      <span class="pn-time">블록 1 · 이 장 2분 · 시간이 남을 때만</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- 순서: **주제 → 유형 → 가르는 기준 → 문항**</p>
+      <p>- 기본값 유형 6개 · 문항 10개. 인터뷰에서 바꿀 수 있다</p>
+      <p>- 보기마다 가까운 유형이 정해져 있고, **가장 많이 나온 유형**이 결과</p>
+      <p>- 다른 검사의 이름과 문항은 가져오지 않는다(<code>prd.md</code>에 적혀 있음)</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p26">
+    <div class="pn-slide-head">
+      <span class="pn-no">26</span>
+      <span class="pn-id">T1-S</span>
+      <h2 class="pn-slide-title">에이전트와 나누는 대화</h2>
+      <span class="pn-time">블록 1 · 이 장 2분 · 시간이 남을 때만</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **클릭 열 번**. 왼쪽 「대화 순서」에서 지금 단계가 밝아진다</p>
+      <p>- 분석 요청 뒤 **주제부터 같이 정한다**</p>
+      <p>- 질문은 **세 개씩**, 모호하면 꼬리 질문</p>
+      <p>- 정리 → **내 승인** → <code>prd.md</code> 수정</p>
+      <p>- 실제 문장은 사람마다 다르다. 순서만 같다</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p27">
+    <div class="pn-slide-head">
+      <span class="pn-no">27</span>
+      <span class="pn-id">M1-W</span>
+      <h2 class="pn-slide-title">요청문을 외우지 않고, 묻는 방법을 익힙니다</h2>
+      <span class="pn-time">블록 1 · 이 장 1분 30초 · 누적 39분</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- 요청문을 외우지 않는다. **묻는 방법 네 가지**를 익힌다</p>
+      <p>- 모르면 AI에게 묻기 · 요청문도 써 달라고 하기 · 먼저 질문받기 · **결정은 내가**</p>
+      <p>- **멘트**: "모르는 낱말이 나오면 저보다 에이전트에게 먼저 물어보세요"</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p28">
+    <div class="pn-slide-head">
+      <span class="pn-no">28</span>
+      <span class="pn-id">C-MD</span>
+      <h2 class="pn-slide-title">md 파일 · 기호 몇 개로 제목과 목록을 표시하는 글 파일</h2>
+      <span class="pn-time">블록 1 · 이 장 1분 30초 · 누적 40분 30초</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **md** = 기호 몇 개(<code>#</code> · <code>-</code> · <code>**</code>)로 제목과 목록을 표시하는 글 파일</p>
+      <p>- 메모장으로 열리고 **AI가 구조를 잘 읽는다**</p>
+      <p>- 오늘 만드는 <code>prd.md</code> · <code>design.md</code> · <code>AGENTS.md</code>가 모두 md</p>
+      <p>- **시연**: 위 창(적은 글)과 아래 창(보이는 모습)을 한 줄씩 짝지어 짚는다</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p29">
+    <div class="pn-slide-head">
+      <span class="pn-no">29</span>
+      <span class="pn-id">C-PRD</span>
+      <h2 class="pn-slide-title">PRD · 무엇을 만들지 적은 한 장짜리 문서</h2>
+      <span class="pn-time">블록 1 · 이 장 1분 30초 · 누적 42분</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **PRD** = 무엇을 만들지 적은 한 장짜리 문서</p>
+      <p>- 답하는 질문 넷: 누가 쓰나 · 무엇을 하나 · 어떻게 되면 완성인가 · 하지 않는 것</p>
+      <p>- 이것을 md로 저장한 것이 <code>prd.md</code>. 받은 폴더에 틀이 있다</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p30">
+    <div class="pn-slide-head">
+      <span class="pn-no">30</span>
+      <span class="pn-id">M1-2</span>
+      <h2 class="pn-slide-title">prd.md를 분석해 달라고 합니다</h2>
+      <span class="pn-time">블록 1 · 이 장 4분 · 누적 46분</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **타이머 4분**</p>
+      <p>- 화면의 요청을 **그대로** 보낸다</p>
+      <p>- 답에서 볼 것 셋: 무엇을 만드나 · 정해진 것 · **내가 정할 것**</p>
+      <p>- **빈칸은 미리 채우지 않는다** — 다음 장 인터뷰에서 에이전트가 묻는다</p>
+      <p>- 모르는 말은 「더 쉽게 설명해 줘」</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p31">
+    <div class="pn-slide-head">
+      <span class="pn-no">31</span>
+      <span class="pn-id">M1-3</span>
+      <h2 class="pn-slide-title">AI에게 인터뷰받아 prd.md를 다듬습니다</h2>
+      <span class="pn-time">블록 1 · 이 장 12분 30초 · 누적 58분 30초</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **타이머 12분**</p>
+      <p>- 질문은 **세 개씩, 최대 10번**</p>
+      <p>- 답하기 어려우면 「선택지를 보여 줘」</p>
+      <p>- 에이전트가 정리하면 **틀린 곳을 바로잡은 뒤** 승인한다</p>
+      <p>- 시간이 다 되면 「지금까지 답한 내용으로 정리해 줘」</p>
+      <p>- **확인**: 되짚기 없이 바로 고치면 → 「방금 바꾼 내용을 먼저 정리해서 보여 줘」</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p32">
+    <div class="pn-slide-head">
+      <span class="pn-no">32</span>
+      <span class="pn-id">M1-4</span>
+      <h2 class="pn-slide-title">prd.md를 읽고 내가 결정합니다</h2>
+      <span class="pn-time">블록 1 · 이 장 3분 · 누적 61분 30초</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- <code>prd.md</code>를 끝까지 읽고 **내가 결정**한다</p>
+      <p>- 문항: 실제 행동 하나 · 「~한다」로 끝남 · **방향이 모두 같음**</p>
+      <p>- 결과 글: 「~하는 편입니다」 · 이번 주 해 볼 행동 하나</p>
+      <p>- 고칠 곳은 **직접 고치지 않고 말로 요청**한다</p>
+      <p>- **시연**: 고치기 전 문장에 행동이 둘 들어 있는 곳을 짚는다</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p33">
+    <div class="pn-slide-head">
+      <span class="pn-no">33</span>
+      <span class="pn-id">T1-4</span>
+      <h2 class="pn-slide-title">prd.md를 읽고 내가 결정합니다</h2>
+      <span class="pn-time">블록 1 · 이 장 3분 · 시간이 남을 때만</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **타이머 3분**</p>
+      <p>- 볼 것 셋: 문항이 행동 하나를 묻나 · **「이렇게 답하면 이 유형」 한 줄**이 있나 · 깎아내리는 말이 없나</p>
+      <p>- 확인용 답 예시가 비어 있으면 채워 달라고 한다</p>
+      <p>- **멘트**: "고칠 곳이 보이면 직접 고치지 말고 말로 요청하세요"</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p34">
+    <div class="pn-slide-head">
+      <span class="pn-no">34</span>
+      <span class="pn-id">BR-1</span>
+      <h2 class="pn-slide-title">쉬는 시간 10분</h2>
+      <span class="pn-time">블록 1 · 휴식 10분(시간표 밖)</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **타이머 10분**</p>
+      <p>- 쉬기 전에 <code>prd.md</code>가 저장됐는지 확인하게 한다</p>
+      <p>- 돌아오면 색을 고르고 만든다</p>
+    </div>
+  </section>
+
+  <div class="pn-block">블록 2 · 35~62쪽 · 59분</div>
+  <section class="pn-slide" id="p35">
+    <div class="pn-slide-head">
+      <span class="pn-no">35</span>
+      <span class="pn-id">B2-0</span>
+      <h2 class="pn-slide-title">블록 2 · 디자인 · 제작 · 공개</h2>
+      <span class="pn-time">블록 2 · 이 장 30초 · 누적 30초</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- 블록 2: **디자인 → 제작 → 공개**</p>
+      <p>- 출발점은 블록 1에서 만든 <code>prd.md</code></p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p36">
+    <div class="pn-slide-head">
+      <span class="pn-no">36</span>
+      <span class="pn-id">B2-1</span>
+      <h2 class="pn-slide-title">블록 2에서 하는 일</h2>
+      <span class="pn-time">블록 2 · 이 장 30초 · 누적 1분</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- 할 일 셋: <code>design.md</code> 만들기 · 만들고 한 곳씩 고치기 · **공개 주소** 만들기</p>
+      <p>- 그 전에 컨텍스트 개념부터 본다</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p37">
+    <div class="pn-slide-head">
+      <span class="pn-no">37</span>
+      <span class="pn-id">C-10</span>
+      <h2 class="pn-slide-title">컨텍스트 · AI가 답하는 순간 볼 수 있는 정보 전체</h2>
+      <span class="pn-time">블록 2 · 이 장 1분 30초 · 누적 2분 30초</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **컨텍스트** = AI가 답하는 순간 볼 수 있는 정보 전체(대화 · 파일 · 규칙)</p>
+      <p>- 크기가 정해져 있다 → **무엇을 넣을지 골라야** 한다</p>
+      <p>- **시연**: 층을 하나씩 눌러 대화 · 파일 · 규칙이 한 창에 담기는 것을 보여 준다</p>
+      <p>- **확인**: Karpathy의 정의 문장은 인용하지 않는다(원문 확인 전)</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p38">
+    <div class="pn-slide-head">
+      <span class="pn-no">38</span>
+      <span class="pn-id">C-11</span>
+      <h2 class="pn-slide-title">중간 유실 · 긴 자료의 가운데 정보를 덜 활용하는 현상</h2>
+      <span class="pn-time">블록 2 · 이 장 1분 30초 · 누적 4분</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- 긴 자료는 **앞과 끝은 잘 쓰고, 가운데는 덜 쓴다**</p>
+      <p>- Liu 외(2023): 첫 번째 75.8% · 스무 번째 63.2% · **열 번째 53.8%**(문서 없이 56.1%보다 낮음)</p>
+      <p>- 2023년 모델의 결과 → 지금 모델은 더 나을 수 있다</p>
+      <p>- **대응**: 꼭 지킬 조건은 **맨 앞이나 맨 뒤**에. 긴 자료는 나눠서</p>
+      <p>- **시연**: 막대를 눌러 위치를 바꿔 본다</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p39">
+    <div class="pn-slide-head">
+      <span class="pn-no">39</span>
+      <span class="pn-id">C-NOTE</span>
+      <h2 class="pn-slide-title">AI는 노트 한 장만 들고 시험장에 들어갑니다</h2>
+      <span class="pn-time">블록 2 · 이 장 2분 · 누적 6분</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **클릭 다섯 번**: 노트가 참 → 가운데가 흐려짐 → 새 노트 → 가운데 지움</p>
+      <p>- AI는 **노트에 적힌 것만** 보고 답한다</p>
+      <p>- 가득 차면 **가운데부터** 놓친다</p>
+      <p>- 방법 둘: **새 채팅**에 중요한 것만 옮기기 / **대화 줄이기**</p>
+      <p>- **확인**: 대화를 줄이는 기능의 이름은 도구마다 다르다</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p40">
+    <div class="pn-slide-head">
+      <span class="pn-no">40</span>
+      <span class="pn-id">C-12</span>
+      <h2 class="pn-slide-title">길어진 대화 · 내용을 활용하는 정도가 떨어지는 현상</h2>
+      <span class="pn-time">블록 2 · 이 장 1분 · 누적 7분</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- 대화와 자료가 **길어질수록** 내용을 정확히 쓰는 정도가 떨어진다</p>
+      <p>- 2025년 연구 시점의 모델 기준. 최신 모델에서 얼마나 줄었는지는 확인하지 못했다</p>
+      <p>- **대응**: 주제가 바뀌면 새 대화로</p>
+      <p>- **시연**: 서류를 추가할 때마다 가운데부터 흐려지는 것</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p41">
+    <div class="pn-slide-head">
+      <span class="pn-no">41</span>
+      <span class="pn-id">C-13</span>
+      <h2 class="pn-slide-title">새 대화로 넘길 때 쓰는 요청문</h2>
+      <span class="pn-time">블록 2 · 이 장 1분 · 누적 8분</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- 새 대화로 넘길 때는 **요약을 한 번 거친다**</p>
+      <p>- 요청: 「지금까지 정한 내용을 다섯 줄로 요약해 줘. 정한 것 · 남은 일 · 파일 이름」</p>
+      <p>- 오늘은 정한 것을 <code>prd.md</code> · <code>design.md</code>에 남긴다 → 새 대화에서는 **「두 문서를 읽어 줘」** 한 줄</p>
+      <p>- **시연**: 복사 버튼</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p42">
+    <div class="pn-slide-head">
+      <span class="pn-no">42</span>
+      <span class="pn-id">C-DOCS</span>
+      <h2 class="pn-slide-title">에이전트가 읽는 두 문서</h2>
+      <span class="pn-time">블록 2 · 이 장 1분 · 누적 9분</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- <code>prd.md</code> = 할 일(블록 1에서 완성) / <code>design.md</code> = 색 · 글자 · 모양(지금 만든다)</p>
+      <p>- 두 문서는 **폴더에 남는다** → 새 대화에서도 읽히면 된다</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p43">
+    <div class="pn-slide-head">
+      <span class="pn-no">43</span>
+      <span class="pn-id">DS-1</span>
+      <h2 class="pn-slide-title">색은 60 · 30 · 10으로 나눠 씁니다</h2>
+      <span class="pn-time">블록 2 · 이 장 1분 · 누적 10분</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- 색은 **60 · 30 · 10**</p>
+      <p>- 배경 60(바탕) · 메인 30(인상을 정하는 색) · **포인트 10(눌러야 할 한두 곳만)**</p>
+      <p>- **시연**: 앱 모형에서 바탕 → 제목과 진행 막대 → 버튼 하나</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p44">
+    <div class="pn-slide-head">
+      <span class="pn-no">44</span>
+      <span class="pn-id">DS-2</span>
+      <h2 class="pn-slide-title">색마다 주는 인상이 다릅니다</h2>
+      <span class="pn-time">블록 2 · 이 장 1분 · 누적 11분</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- 색마다 주는 인상이 다르다. 이 표는 **출발점**</p>
+      <p>- 먼저 정할 것: **어떤 인상을 주고 싶은가**</p>
+      <p>- **멘트**: "prd.md에 적은 말투와 어울리는 색을 떠올려 보세요"</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p45">
+    <div class="pn-slide-head">
+      <span class="pn-no">45</span>
+      <span class="pn-id">DS-3</span>
+      <h2 class="pn-slide-title">Color Hunt에서 팔레트를 고릅니다</h2>
+      <span class="pn-time">블록 2 · 이 장 4분 30초 · 누적 15분 30초</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **타이머 4분**</p>
+      <p>- colorhunt.co → 팔레트 하나 → 색을 누르면 **색 코드 복사**</p>
+      <p>- 가장 밝은 색 = 배경, 가장 눈에 띄는 색 = 포인트</p>
+      <p>- **멘트**: "색 코드를 메모장에 붙여 두세요"</p>
+      <p>- **확인**: 화면의 Color Hunt는 모형이다. 실제 사이트를 당일 한 번 열어 본다</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p46">
+    <div class="pn-slide-head">
+      <span class="pn-no">46</span>
+      <span class="pn-id">DS-4</span>
+      <h2 class="pn-slide-title">색은 에이전트에게 먼저 묻습니다</h2>
+      <span class="pn-time">블록 2 · 이 장 7분 · 누적 22분 30초</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **타이머 7분**. 요청은 **세 번**</p>
+      <p>- ① 어울리는 색 방향 세 가지 추천 → 하나 고르기</p>
+      <p>- ② Color Hunt에서 무엇을 검색하고 어떻게 고를지 묻기 → 색 코드 복사</p>
+      <p>- ③ 그 팔레트로 <code>design.md</code> 만들기(글꼴 · 모서리 · 버튼은 에이전트가 묻는다)</p>
+      <p>- 끝나면 <code>design.md</code>를 열어 **색 세 줄**을 확인</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p47">
+    <div class="pn-slide-head">
+      <span class="pn-no">47</span>
+      <span class="pn-id">PL-1</span>
+      <h2 class="pn-slide-title">바로 만들게 하지 않고 계획부터 받습니다</h2>
+      <span class="pn-time">블록 2 · 이 장 1분 30초 · 누적 24분</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- 바로 만들게 하지 않는다. **계획부터** 받는다</p>
+      <p>- 붙이는 두 줄: 「계획을 먼저 보여 줘. **내가 승인하기 전에는 아무것도 만들지 마**」</p>
+      <p>- 이유: 엉뚱한 것을 막는다 · 계획은 읽고 고치기 쉽다 · 다 만든 뒤 고치는 것보다 빠르다</p>
+      <p>- Anthropic · OpenAI 공식 문서도 같은 순서를 권한다</p>
+      <p>- **확인**: 계획 모드를 켜는 방법은 리허설에서 확인한 것만 말한다</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p48">
+    <div class="pn-slide-head">
+      <span class="pn-no">48</span>
+      <span class="pn-id">M2-1</span>
+      <h2 class="pn-slide-title">두 문서를 읽혀 앱을 만듭니다</h2>
+      <span class="pn-time">블록 2 · 이 장 10분 · 누적 34분</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **타이머 10분**</p>
+      <p>- 먼저 **작업 폴더를 복사**해 둔다(되돌릴 사본)</p>
+      <p>- 계획이 오면 끝까지 읽는다: 문항 수 · 유형 수 · **색이 design.md와 같은가** · 파일 구성</p>
+      <p>- 맞으면 「진행해 줘」, 다르면 다른 곳을 말해 계획을 고치게 한다</p>
+      <p>- **확인**: 계획 없이 만들기 시작하면 멈추게 하고 계획을 다시 요청</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p49">
+    <div class="pn-slide-head">
+      <span class="pn-no">49</span>
+      <span class="pn-id">M2-V</span>
+      <h2 class="pn-slide-title">만든 결과를 보는 두 가지 방법</h2>
+      <span class="pn-time">블록 2 · 이 장 2분 · 누적 36분</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **파일로 열기**: <code>index.html</code> 더블클릭 · 주소가 <code>file</code>로 시작 · 파일 하나짜리에 맞음</p>
+      <p>- **미리보기**: 「미리보기로 보여 줘」 · 주소가 <code>localhost</code> · 파일이 여러 개일 때</p>
+      <p>- 둘 다 **남에게 보이는 주소가 아니다** → 공개는 Netlify</p>
+      <p>- **시연**: 같은 파일을 두 방법으로 열어 주소창을 비교</p>
+      <p>- **확인**: 미리보기 기능의 이름은 도구마다 다르다</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p50">
+    <div class="pn-slide-head">
+      <span class="pn-no">50</span>
+      <span class="pn-id">M2-3</span>
+      <h2 class="pn-slide-title">브라우저로 열어 눌러 봅니다</h2>
+      <span class="pn-time">블록 2 · 이 장 3분 · 누적 39분</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- 눌러 볼 것 넷: 문항이 <code>prd.md</code>와 같은가 · **전부 「거의 항상」 → 「내 생각 먼저 · 확인하고 씀」** · 색 · 좁은 창</p>
+      <p>- 다른 유형이 나오면 원인은 둘: **문항 방향이 섞임** / **점수 계산이 prd.md와 다름**</p>
+      <p>- 고치는 것은 다음 장에서</p>
+      <p>- **시연**: 전부 「거의 항상」으로 눌러 결과 화면을 보여 준다</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p51">
+    <div class="pn-slide-head">
+      <span class="pn-no">51</span>
+      <span class="pn-id">T2-3</span>
+      <h2 class="pn-slide-title">브라우저로 열어 눌러 봅니다</h2>
+      <span class="pn-time">블록 2 · 이 장 3분 · 시간이 남을 때만</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **3분**, 볼 것 넷</p>
+      <p>- 문항과 유형 이름이 <code>prd.md</code>와 같은가(에이전트가 문장을 바꿔 넣기도 한다)</p>
+      <p>- **「확인용 답 예시」대로 눌러 그 유형이 나오는가** — 두 유형 이상</p>
+      <p>- 좁은 창 · 공유 문구 복사 · 다시 하기</p>
+      <p>- **멘트**: "다르게 나오면 고치지 말고 다음 장으로 갑니다"</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p52">
+    <div class="pn-slide-head">
+      <span class="pn-no">52</span>
+      <span class="pn-id">M2-4</span>
+      <h2 class="pn-slide-title">고칠 곳은 하나씩 요청합니다</h2>
+      <span class="pn-time">블록 2 · 이 장 7분 · 누적 46분</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **타이머 7분**, 두세 번 되풀이</p>
+      <p>- 요청은 세 부분: **유지**(잘 되는 것) · **변경**(한 군데) · **확인**(무엇을 보면 되나)</p>
+      <p>- **한 번에 한 곳만** — 여러 곳을 바꾸면 어디가 왜 바뀌었는지 못 찾는다</p>
+      <p>- **시연**: 틀을 채워 보내고, 확인 문장대로 눌러 본다</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p53">
+    <div class="pn-slide-head">
+      <span class="pn-no">53</span>
+      <span class="pn-id">M2-5</span>
+      <h2 class="pn-slide-title">막히면 세 줄로 알립니다</h2>
+      <span class="pn-time">블록 2 · 이 장 30초 · 누적 46분 30초</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- 막히면 **세 줄**: 무엇을 하려 했나 · 어디서 · **화면에 무엇이 보이나**(글자 그대로)</p>
+      <p>- 에이전트가 못 풀면 같은 세 줄을 수업 채팅에</p>
+      <p>- 길게 설명하지 않는다. 막힌 참가자가 있을 때 띄워 둔다</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p54">
+    <div class="pn-slide-head">
+      <span class="pn-no">54</span>
+      <span class="pn-id">M3-1</span>
+      <h2 class="pn-slide-title">폴더를 올려 공개 주소를 만듭니다</h2>
+      <span class="pn-time">블록 2 · 이 장 30초 · 누적 47분</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- 목표는 **주소 한 줄**</p>
+      <p>- 순서: 올리기 전 확인 → 로그인 → 폴더 끌어다 놓기 → 다른 창에서 열기 (10분쯤)</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p55">
+    <div class="pn-slide-head">
+      <span class="pn-no">55</span>
+      <span class="pn-id">M3-2</span>
+      <h2 class="pn-slide-title">올리기 전에 확인할 곳</h2>
+      <span class="pn-time">블록 2 · 이 장 1분 · 누적 48분</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- 올리기 전 세 곳: **키**(비밀번호 · 접속 키) · **실명**(이름 · 연락처 · 회사) · **파일 이름**(<code>index.html</code>이 맨 위)</p>
+      <p>- **폴더 안의 모든 파일이 올라간다** — <code>prd.md</code> · <code>design.md</code>도</p>
+      <p>- 공개하면 주소를 아는 누구나 연다</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p56">
+    <div class="pn-slide-head">
+      <span class="pn-no">56</span>
+      <span class="pn-id">M3-3</span>
+      <h2 class="pn-slide-title">Netlify 로그인을 확인합니다</h2>
+      <span class="pn-time">블록 2 · 이 장 2분 · 누적 50분</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **타이머 2분**</p>
+      <p>- 사전 준비 계정으로 로그인 → **폴더를 끌어다 놓는 영역**을 찾는다</p>
+      <p>- 안 되는 분은 채팅에 막힘 한 줄</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p57">
+    <div class="pn-slide-head">
+      <span class="pn-no">57</span>
+      <span class="pn-id">M3-4</span>
+      <h2 class="pn-slide-title">앱 폴더를 끌어다 놓아 주소를 만듭니다</h2>
+      <span class="pn-time">블록 2 · 이 장 6분 · 누적 56분</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **타이머 6분**</p>
+      <p>- **폴더 전체**를 끌어다 놓는다(파일 하나가 아니다)</p>
+      <p>- 사이트 이름 바꾸기는 선택</p>
+      <p>- **멘트**: "반응이 없으면 채팅에 남겨 주세요. 폴더 자체를 놓았는지 같이 봅니다"</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p58">
+    <div class="pn-slide-head">
+      <span class="pn-no">58</span>
+      <span class="pn-id">M3-4B</span>
+      <h2 class="pn-slide-title">공개로 바꿉니다</h2>
+      <span class="pn-time">블록 2 · 이 장 2분 · 누적 58분</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **타이머 2분**</p>
+      <p>- 2026-07-28 이후에 만든 팀은 **기본 비공개** → **Make public**</p>
+      <p>- 버튼이 없으면: Project configuration → General → Visitor access → Project visibility</p>
+      <p>- 이미 공개인 계정은 그대로 다음 장으로</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p59">
+    <div class="pn-slide-head">
+      <span class="pn-no">59</span>
+      <span class="pn-id">M3-5</span>
+      <h2 class="pn-slide-title">다른 창에서 주소를 열어 봅니다</h2>
+      <span class="pn-time">블록 2 · 이 장 1분 · 누적 59분</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **타이머 1분**</p>
+      <p>- 주소를 **로그인하지 않은 시크릿 창**에서 연다(방문자와 같은 조건)</p>
+      <p>- 첫 화면이 열리면 끝. 「권한 없음」이 나오면 앞 장으로</p>
+      <p>- 주소를 **수업 채팅에** 올리게 한다</p>
+      <p>- **시연**: 올라온 주소 두세 개를 열어 서로 다른 것을 보여 준다</p>
+      <p>- **확인**: 지울 때 쓰는 Delete project의 위치는 리허설에서 확인</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p60">
+    <div class="pn-slide-head">
+      <span class="pn-no">60</span>
+      <span class="pn-id">D-01</span>
+      <h2 class="pn-slide-title">ChatGPT Sites로 같은 앱 만들기</h2>
+      <span class="pn-time">블록 2 · 이 장 3분 · 시간이 남을 때만</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **시간이 남을 때만** 하는 강사 시연. 참가자는 보기만 한다</p>
+      <p>- 요청에 website나 @Sites → 검토 화면 → 배포하면 주소</p>
+      <p>- 공개 베타. Free · Go에서는 쓸 수 없다</p>
+      <p>- 블록 2가 50분을 넘기면 이 장과 다음 장은 **건너뛴다**</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p61">
+    <div class="pn-slide-head">
+      <span class="pn-no">61</span>
+      <span class="pn-id">D-02</span>
+      <h2 class="pn-slide-title">Netlify와 ChatGPT Sites 비교</h2>
+      <span class="pn-time">블록 2 · 이 장 1분 · 시간이 남을 때만</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **Netlify**: 내 파일이 그대로 올라감 · 고치려면 파일을 고쳐 다시 올림</p>
+      <p>- **ChatGPT Sites**: 대화 결과로 만들어짐 · 대화에서 고쳐 다시 배포</p>
+      <p>- 공유 범위: Netlify는 주소를 아는 누구나 / Sites는 다섯 가지 중 선택</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p62">
+    <div class="pn-slide-head">
+      <span class="pn-no">62</span>
+      <span class="pn-id">BR-2</span>
+      <h2 class="pn-slide-title">쉬는 시간 10분</h2>
+      <span class="pn-time">블록 2 · 휴식 10분(시간표 밖)</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **타이머 10분**</p>
+      <p>- 쉬기 전에 주소를 채팅에 올렸는지 확인하게 한다</p>
+      <p>- 쉬는 동안 **오늘 할 실습의 zip 링크**를 채팅에 올릴 준비</p>
+    </div>
+  </section>
+
+  <div class="pn-block">블록 3 · 63~71쪽 · 45분(본 장 13분 + 실습 ① ~ ③ 진행 32분)</div>
+  <section class="pn-slide" id="p63">
+    <div class="pn-slide-head">
+      <span class="pn-no">63</span>
+      <span class="pn-id">B3-0</span>
+      <h2 class="pn-slide-title">블록 3 · 에이전트 실습</h2>
+      <span class="pn-time">블록 3 · 이 장 30초 · 누적 30초</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- 블록 3: **에이전트 실습**</p>
+      <p>- 메인 과제 공개까지 끝났다</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p64">
+    <div class="pn-slide-head">
+      <span class="pn-no">64</span>
+      <span class="pn-id">B3-1</span>
+      <h2 class="pn-slide-title">블록 3에서 하는 일</h2>
+      <span class="pn-time">블록 3 · 이 장 30초 · 누적 1분</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- 할 일 셋: 규칙 파일 배우기 · **업무 자료 폴더를 에이전트에게 맡기기** · 결과 화면 열기</p>
+      <p>- 그 전에 하네스 개념부터 본다</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p65">
+    <div class="pn-slide-head">
+      <span class="pn-no">65</span>
+      <span class="pn-id">C-15</span>
+      <h2 class="pn-slide-title">하네스 · 도구 · 규칙 · 권한 · 확인 절차의 설계</h2>
+      <span class="pn-time">블록 3 · 이 장 2분 · 누적 3분</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **하네스** = 도구 · 규칙 · 권한 · 확인 절차의 설계</p>
+      <p>- **에이전트 = 모델 + 하네스**. 하네스는 모델을 뺀 나머지 전부</p>
+      <p>- 목적: **같은 실수가 되풀이되지 않게**</p>
+      <p>- 비유: 힘은 말이 내고, 방향과 범위는 마구가 정한다</p>
+      <p>- **시연**: 에이전트 → 모델 → 하네스 순서로 짚는다</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p66">
+    <div class="pn-slide-head">
+      <span class="pn-no">66</span>
+      <span class="pn-id">C-16</span>
+      <h2 class="pn-slide-title">규칙 파일 · 작업을 시작할 때 읽는 지시 문서</h2>
+      <span class="pn-time">블록 3 · 이 장 2분 · 누적 5분</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **규칙 파일** = 작업을 시작할 때 읽는 지시 문서</p>
+      <p>- 없으면 요청마다 조건을 다시 적는다 / 있으면 **한 번만 적고 요청은 짧게**</p>
+      <p>- **시연**: 왼쪽 세 줄과 오른쪽 세 줄을 짝지어 짚는다</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p67">
+    <div class="pn-slide-head">
+      <span class="pn-no">67</span>
+      <span class="pn-id">C-16B</span>
+      <h2 class="pn-slide-title">도구마다 읽는 파일 이름이 다릅니다</h2>
+      <span class="pn-time">블록 3 · 이 장 1분 30초 · 누적 6분 30초</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- Codex → <code>AGENTS.md</code> / Claude Code → <code>CLAUDE.md</code> / Antigravity → <code>AGENTS.md</code> · <code>GEMINI.md</code></p>
+      <p>- 오늘은 **두 파일을 같은 내용으로** 만든다 → 어느 도구에서도 같은 규칙</p>
+      <p>- 안에 적을 것: **자료를 다 읽고 · 계획을 먼저 보여 주고 · 모르면 묻는다**</p>
+      <p>- **확인**: Antigravity 2.0 앱에서 적용되는지는 리허설에서 본 대로 말한다</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p68">
+    <div class="pn-slide-head">
+      <span class="pn-no">68</span>
+      <span class="pn-id">C-18</span>
+      <h2 class="pn-slide-title">내 자료를 넣기 전에 볼 것 세 가지</h2>
+      <span class="pn-time">블록 3 · 이 장 1분 30초 · 누적 8분</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- 폴더를 열면 읽은 내용이 **AI 회사의 서버로 간다**</p>
+      <p>- 오늘 실습 폴더는 전부 **가상** 자료</p>
+      <p>- 내 업무 자료라면 먼저 셋: **회사 규정 · 개인정보 · 데이터 설정**</p>
+      <p>- 대응: 사본 폴더에 필요한 파일만 · 이름과 연락처는 가명으로</p>
+      <p>- **확인**: 도구별 학습 설정의 세부는 말하지 않는다. 각자 설정 화면에서 보게 한다</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p69">
+    <div class="pn-slide-head">
+      <span class="pn-no">69</span>
+      <span class="pn-id">C-19</span>
+      <h2 class="pn-slide-title">프롬프트 인젝션 · AI가 읽는 문서 속 지시문을 따르는 문제</h2>
+      <span class="pn-time">블록 3 · 이 장 2분 · 누적 10분</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **프롬프트 인젝션** = 읽는 문서 속 지시문을 사용자가 시킨 것처럼 따르는 문제</p>
+      <p>- 숨긴 글씨가 아니어도 생긴다. **완전히 막는 방법은 아직 없다**</p>
+      <p>- 그래서 지우기 · 밖으로 보내기 같은 **민감한 행동은 사람이 승인**</p>
+      <p>- **시연**: 「숨은 글 보기」</p>
+      <p>- 오늘 실습이 3번이면 확인 단계에서 다시 만난다(여기서는 말하지 않는다)</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p70">
+    <div class="pn-slide-head">
+      <span class="pn-no">70</span>
+      <span class="pn-id">SLOT</span>
+      <h2 class="pn-slide-title">오늘의 에이전트 실습</h2>
+      <span class="pn-time">블록 3 · 이 장 3분 · 누적 13분</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- 여덟 가지 중 **강사가 정한 하나**</p>
+      <p>- 실습 zip을 받아 압축을 풀고 **그 폴더를 새로 연다**(메인 과제 폴더와 다름)</p>
+      <p>- 이 블록에서는 **③ 만들기까지**. ④ 내 일에 맞게는 쉬는 시간 뒤</p>
+      <p>- **시연**: 카드 → 허브 → 같은 실습. 끝나면 「수업으로 돌아가기」</p>
+      <p>- **확인**: zip은 고른 것 하나만 올린다. 폴더가 열렸는지 채팅으로 확인한 뒤 넘어간다</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p71">
+    <div class="pn-slide-head">
+      <span class="pn-no">71</span>
+      <span class="pn-id">BR-3</span>
+      <h2 class="pn-slide-title">쉬는 시간 10분</h2>
+      <span class="pn-time">블록 3 · 휴식 10분(시간표 밖)</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **타이머 10분**</p>
+      <p>- 쉬기 전에 만든 HTML 파일이 폴더에 있는지 확인하게 한다</p>
+    </div>
+  </section>
+
+  <div class="pn-block">블록 4 · 72~83쪽 · 35분 30초(본 장 20분 30초 + 실습 ④ 진행 15분)</div>
+  <section class="pn-slide" id="p72">
+    <div class="pn-slide-head">
+      <span class="pn-no">72</span>
+      <span class="pn-id">B4-0</span>
+      <h2 class="pn-slide-title">블록 4 · 내 일에 맞게 · 마무리</h2>
+      <span class="pn-time">블록 4 · 이 장 30초 · 누적 30초</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- 블록 4: **내 일에 맞게 · 마무리**</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p73">
+    <div class="pn-slide-head">
+      <span class="pn-no">73</span>
+      <span class="pn-id">B4-1</span>
+      <h2 class="pn-slide-title">블록 4에서 하는 일</h2>
+      <span class="pn-time">블록 4 · 이 장 30초 · 누적 1분</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- 할 일 셋: 내 업무에 맞게 바꾸기 · **오피스 파일로 내려받기** · 요청 방식과 점검표 정리</p>
+      <p>- 사이에 AI와 생각에 관한 연구 다섯 가지</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p74">
+    <div class="pn-slide-head">
+      <span class="pn-no">74</span>
+      <span class="pn-id">SLOT-B</span>
+      <h2 class="pn-slide-title">결과물을 내 일에 맞게 바꿉니다</h2>
+      <span class="pn-time">블록 4 · 이 장 1분 · 누적 2분</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- 쉬기 전에 만든 화면을 다시 연다</p>
+      <p>- 바꿀 곳은 **하나씩** — 「유지 · 변경 · 확인」</p>
+      <p>- **시연**: 카드 → 그 실습의 「④ 내 일에 맞게」. 15분 뒤 「허브로」 → 「수업으로 돌아가기」</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p75">
+    <div class="pn-slide-head">
+      <span class="pn-no">75</span>
+      <span class="pn-id">SH-1</span>
+      <h2 class="pn-slide-title">결과 화면을 채팅에 올립니다</h2>
+      <span class="pn-time">블록 4 · 이 장 5분 · 누적 7분</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **타이머 5분**</p>
+      <p>- 결과 화면을 캡처해 채팅에 + **바꾼 곳 한 줄**</p>
+      <p>- **보기 좋은 것과 내용이 맞는 것은 별개** → 숫자 · 날짜 · 이름은 원본에서 한 번 확인</p>
+      <p>- 발표는 시키지 않는다</p>
+      <p>- **멘트**: "같은 폴더를 받았는데 화면이 다 다릅니다. 규칙 파일에 적은 것이 달라서입니다"</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p76">
+    <div class="pn-slide-head">
+      <span class="pn-no">76</span>
+      <span class="pn-id">C-20</span>
+      <h2 class="pn-slide-title">답을 바로 받을 때와 힌트를 받을 때</h2>
+      <span class="pn-time">블록 4 · 이 장 1분 30초 · 누적 8분 30초</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- 답을 바로 받은 학생: 연습 점수는 올랐지만 **AI 없이 본 시험은 더 낮았다**</p>
+      <p>- 힌트만 받은 학생은 그 차이가 줄었다</p>
+      <p>- 고등학생 수학 수업, 약 천 명(Bastani 외 2025)</p>
+      <p>- **대응**: 배우려는 일에는 **「답 말고 힌트를 먼저 줘」**</p>
+      <p>- **확인**: 원문 미확인 → 수치는 말하지 않고 방향만 말한다</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p77">
+    <div class="pn-slide-head">
+      <span class="pn-no">77</span>
+      <span class="pn-id">C-21</span>
+      <h2 class="pn-slide-title">생각의 외주화 · 생각하는 일을 AI에게 맡기는 것</h2>
+      <span class="pn-time">블록 4 · 이 장 2분 · 누적 10분 30초</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **생각의 외주화** = 판단 · 정리 · 글쓰기를 AI에게 맡기는 것</p>
+      <p>- MIT 연구(2025): LLM을 쓴 집단은 뇌 연결성이 약했고, 자기 글에 대한 소유감과 기억이 낮았다</p>
+      <p>- 참가자 54명 · 에세이 과제라는 조건 안에서 읽는다</p>
+      <p>- **확인**: 「멍청해진다」 「뇌 손상」 같은 표현은 쓰지 않는다</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p78">
+    <div class="pn-slide-head">
+      <span class="pn-no">78</span>
+      <span class="pn-id">C-22</span>
+      <h2 class="pn-slide-title">AI를 믿는 정도와 비판적으로 생각하는 정도</h2>
+      <span class="pn-time">블록 4 · 이 장 1분 30초 · 누적 12분</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- 지식노동자 319명 설문(CHI 2025) — 이 조건은 화면에 없으니 **말로 밝힌다**</p>
+      <p>- **AI를 더 믿을수록** 비판적으로 생각하는 활동을 덜 했다고 답했다</p>
+      <p>- **자기 능력을 더 믿을수록** 더 했다고 답했다</p>
+      <p>- 함께 나타난다는 것이지 **원인과 결과가 아니다**</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p79">
+    <div class="pn-slide-head">
+      <span class="pn-no">79</span>
+      <span class="pn-id">C-23</span>
+      <h2 class="pn-slide-title">자동화 편향 · 기계의 답을 확인 없이 받아들이는 경향</h2>
+      <span class="pn-time">블록 4 · 이 장 1분 30초 · 누적 13분 30초</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **자동화 편향** = 기계의 답을 확인 없이 받아들이는 경향</p>
+      <p>- 화면 둘째 줄의 오타 「금요일깨지」 — 빨간 줄이 없으면 맞다고 여긴다</p>
+      <p>- Goddard 외(2012): 도구를 쓴 쪽이 틀린 조언을 따를 가능성 **26% 증가**(상대 증가)</p>
+      <p>- 병원의 의사결정 지원 도구 연구라는 조건</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p80">
+    <div class="pn-slide-head">
+      <span class="pn-no">80</span>
+      <span class="pn-id">C-24</span>
+      <h2 class="pn-slide-title">체감과 실측 · 빨라졌다는 느낌과 잰 시간의 차이</h2>
+      <span class="pn-time">블록 4 · 이 장 2분 · 누적 15분 30초</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- 예상 **24% 빨라짐** · 체감 **20% 빨라짐** · 실제 **19% 더 걸림**</p>
+      <p>- METR(2025): 숙련 개발자 16명 · 자기 저장소</p>
+      <p>- **빨라졌다는 느낌과 잰 시간은 다를 수 있다**</p>
+      <p>- **확인**: 「AI를 쓰면 느려진다」로 일반화하지 않는다. 조건을 같이 말한다</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p81">
+    <div class="pn-slide-head">
+      <span class="pn-no">81</span>
+      <span class="pn-id">F-02</span>
+      <h2 class="pn-slide-title">오늘 쓴 요청 방식과 확인 습관 여덟 가지</h2>
+      <span class="pn-time">블록 4 · 이 장 2분 · 누적 17분 30초</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **요청 방식 다섯**: 인터뷰로 문서 · 계획 먼저 · 고칠 곳은 하나씩 · 막히면 세 줄 · 기준은 파일로</p>
+      <p>- **확인 습관 셋**: 답은 매번 다를 수 있다 · 숫자와 이름은 원본에서 · 읽는 문서 속 지시문</p>
+      <p>- **시연**: 한 줄씩 짚으며 오늘 어느 장면에서 썼는지 말한다</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p82">
+    <div class="pn-slide-head">
+      <span class="pn-no">82</span>
+      <span class="pn-id">F-03</span>
+      <h2 class="pn-slide-title">혼자 할 때 쓰는 점검표</h2>
+      <span class="pn-time">블록 4 · 이 장 1분 30초 · 누적 19분</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- 혼자 할 때 옆에 두는 점검표</p>
+      <p>- **내 자료로 할 때는 「자료 넣기 전」 칸부터**</p>
+      <p>- 마지막 칸 「다음에 바꿔 볼 것」은 각자 적는다</p>
+      <p>- **멘트**: "마지막 칸은 비워 두고 가셔도 됩니다"</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p83">
+    <div class="pn-slide-head">
+      <span class="pn-no">83</span>
+      <span class="pn-id">F-04</span>
+      <h2 class="pn-slide-title">오늘 가져가는 것</h2>
+      <span class="pn-time">블록 4 · 이 장 1분 30초 · 누적 20분 30초</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- 가져가는 것 셋: **내 웹페이지 주소** · 실습 결과물 · 규칙 파일</p>
+      <p>- 새 일에는 같은 순서: **자료 확인 → 인터뷰 → 규칙 파일**</p>
+      <p>- 오늘 만든 <code>AGENTS.md</code>는 가상 회사 기준이라 참고용</p>
+      <p>- **멘트**: "하지 않은 실습 일곱 가지도 방법은 같습니다. 폴더와 규칙 파일만 바꾸면 됩니다"</p>
+    </div>
+  </section>
+
+  <div class="pn-block">허브 구간 · 84~123쪽 · 실습 하나에 47분(개념 장이 있는 실습은 2분이 더 있음)</div>
+  <section class="pn-slide" id="p84">
+    <div class="pn-slide-head">
+      <span class="pn-no">84</span>
+      <span class="pn-id">HUB</span>
+      <h2 class="pn-slide-title">에이전트 실습 여덟 가지</h2>
+      <span class="pn-time">허브 구간</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- 행성 하나가 실습 하나. **끌면 시점이 돈다**</p>
+      <p>- 행성이나 이름을 누르면 그 실습으로 간다. 진행한 실습에는 ✓</p>
+      <p>- 실습마다 네 단계: ① 목표 → ② 규칙 → ③ 만들기 → ④ 내 일에 맞게</p>
+      <p>- 끝나면 오른쪽 아래 **「수업으로 돌아가기」**(실습 장에서 들어왔을 때만 보인다)</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p85">
+    <div class="pn-slide-head">
+      <span class="pn-no">85</span>
+      <span class="pn-id">P1-1</span>
+      <h2 class="pn-slide-title">회의록 다섯 개를 실행 보드 한 화면으로</h2>
+      <span class="pn-time">허브 구간</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- 회의 자료에서 **할 일 · 담당 · 기한**을 뽑아 한 화면으로</p>
+      <p>- 받는 것: 워드 5개(회의록 4 · 통화 메모 1) + <code>품질기준.md</code></p>
+      <p>- 만들 것: <code>실행보드.html</code> — 화면에 넣을 것은 **인터뷰에서 내가 정한다**</p>
+      <p>- **시연**: 「완성 예시 열기」로 30초쯤 눌러 보인다</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p86">
+    <div class="pn-slide-head">
+      <span class="pn-no">86</span>
+      <span class="pn-id">P1-2</span>
+      <h2 class="pn-slide-title">자료를 확인하고 인터뷰받아 규칙 파일을 만듭니다</h2>
+      <span class="pn-time">허브 구간</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **타이머 15분** — 자료 파악 3분 · 인터뷰 요청 1분 · 인터뷰 11분</p>
+      <p>- 요청 둘을 **그대로** 보낸다. 내 상황은 미리 적지 않는다</p>
+      <p>- 질문은 **세 개씩, 최대 10번**. 모르겠으면 「예를 들어 줘」</p>
+      <p>- 에이전트가 되짚으면 확인하고 **승인** → <code>AGENTS.md</code> · <code>CLAUDE.md</code> 저장</p>
+      <p>- 강조 기준은 **숫자나 조건**으로 답한다(예: 기한 3일 전)</p>
+      <p>- **확인**: 인터뷰 없이 바로 만들면 멈추게 한다 → 「아직 만들지 말고 품질기준.md의 순서대로 나를 인터뷰해 줘」</p>
+      <p>- 길어지면: 「지금까지 답한 내용으로 정리해 줘」</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p87">
+    <div class="pn-slide-head">
+      <span class="pn-no">87</span>
+      <span class="pn-id">P1-2B</span>
+      <h2 class="pn-slide-title">규칙대로 만들고 확인합니다</h2>
+      <span class="pn-time">허브 구간</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **타이머 15분** — 계획 3분 · 제작 7분 · 확인 5분</p>
+      <p>- 계획에서 **내 답이 화면 어디에 반영되는지** 짚어 읽고, 빠진 답은 승인 전에 말한다</p>
+      <p>- 맞으면 승인 → <code>실행보드.html</code>을 더블클릭</p>
+      <p>- **사람이 하는 확인(원본 대조)**: 「상세페이지 5종」의 기한을 <code>회의록_0323_주간.docx</code>에서 찾는다 → **4월 3일(금)**</p>
+      <p>- 어긋남이 되풀이되면 화면이 아니라 **규칙을 고친다**</p>
+      <p>- 끝나면 「허브로」 → 「수업으로 돌아가기」</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p88">
+    <div class="pn-slide-head">
+      <span class="pn-no">88</span>
+      <span class="pn-id">P1-3</span>
+      <h2 class="pn-slide-title">결과물을 내 일에 맞게 바꿉니다</h2>
+      <span class="pn-time">허브 구간</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **타이머 15분**</p>
+      <p>- ① 규칙 한 줄을 더해 화면에 반영: 「AGENTS.md에 〈규칙 한 줄〉을 추가하고 화면에 반영해 줘」</p>
+      <p>- ② 「엑셀로 내려받기」 → 할 일 목록과 미정 사항 시트가 있는지 연다</p>
+      <p>- ③ 내 일에: 매주 쌓이는 회의록 · 흩어진 업무 지시 · 이사나 행사 준비</p>
+      <p>- 내 자료로 다시 할 때는 <code>품질기준.md</code>를 내 폴더에 복사해 시작한다</p>
+      <p>- 끝나면 「허브로」 → 「수업으로 돌아가기」</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p89">
+    <div class="pn-slide-head">
+      <span class="pn-no">89</span>
+      <span class="pn-id">P2-C</span>
+      <h2 class="pn-slide-title">세컨드 브레인 · 머릿속 대신 기록에 맡겨 두는 두 번째 기억</h2>
+      <span class="pn-time">허브 구간 · 이 장 2분</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **세컨드 브레인** = 자료를 한곳에 모아 서로 이어 두고 꺼내 쓰는 저장소</p>
+      <p>- 옵시디언의 선은 **직접 건 링크**, 오늘 화면의 선은 **같은 이름이 나온 문서끼리** 이은 것</p>
+      <p>- 오늘은 옵시디언을 설치하지 않는다. 비슷한 화면을 에이전트에게 만들게 한다</p>
+      <p>- **시연**: 공(문서) · 선(연결) · 알약(주제 묶음)을 차례로 짚는다</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p90">
+    <div class="pn-slide-head">
+      <span class="pn-no">90</span>
+      <span class="pn-id">P2-1</span>
+      <h2 class="pn-slide-title">흩어진 문서 40개를 3D 지식 지도로</h2>
+      <span class="pn-time">허브 구간</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- 흩어진 파일 **40개**를 읽어 연결해 보는 지도로</p>
+      <p>- 받는 것: <code>내문서/</code>의 워드 · 엑셀 · PPT · 메모 40개 + <code>품질기준.md</code></p>
+      <p>- 만들 것: <code>세컨드브레인.html</code> — **묶는 기준과 잇는 기준**은 인터뷰에서 내가 정한다</p>
+      <p>- **시연**: 「완성 예시 열기」로 공을 눌러 본다</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p91">
+    <div class="pn-slide-head">
+      <span class="pn-no">91</span>
+      <span class="pn-id">P2-2</span>
+      <h2 class="pn-slide-title">자료를 확인하고 인터뷰받아 규칙 파일을 만듭니다</h2>
+      <span class="pn-time">허브 구간</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **타이머 15분** — 자료 파악 3분 · 인터뷰 요청 1분 · 인터뷰 11분</p>
+      <p>- 요청 둘을 **그대로** 보낸다. 내 상황은 미리 적지 않는다</p>
+      <p>- 질문은 **세 개씩, 최대 10번**. 모르겠으면 「예를 들어 줘」</p>
+      <p>- 에이전트가 되짚으면 확인하고 **승인** → <code>AGENTS.md</code> · <code>CLAUDE.md</code> 저장</p>
+      <p>- 강조 기준은 **숫자나 조건**으로 답한다(예: 연결 5개 이상)</p>
+      <p>- **확인**: 인터뷰 없이 바로 만들면 멈추게 한다 → 「아직 만들지 말고 품질기준.md의 순서대로 나를 인터뷰해 줘」</p>
+      <p>- 길어지면: 「지금까지 답한 내용으로 정리해 줘」</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p92">
+    <div class="pn-slide-head">
+      <span class="pn-no">92</span>
+      <span class="pn-id">P2-2B</span>
+      <h2 class="pn-slide-title">규칙대로 만들고 확인합니다</h2>
+      <span class="pn-time">허브 구간</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **타이머 15분** — 계획 3분 · 제작 7분 · 확인 5분</p>
+      <p>- 계획에서 **내 답이 화면 어디에 반영되는지** 짚어 읽고, 빠진 답은 승인 전에 말한다</p>
+      <p>- 맞으면 승인 → <code>세컨드브레인.html</code>을 더블클릭</p>
+      <p>- **사람이 하는 확인(원본 대조)**: 문서 공 하나의 한 줄 요약을 읽고, 「원본 위치」의 파일을 열어 **숫자와 이름**을 찾는다</p>
+      <p>- 어긋남이 되풀이되면 화면이 아니라 **규칙을 고친다**</p>
+      <p>- 끝나면 「허브로」 → 「수업으로 돌아가기」</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p93">
+    <div class="pn-slide-head">
+      <span class="pn-no">93</span>
+      <span class="pn-id">P2-3</span>
+      <h2 class="pn-slide-title">결과물을 내 일에 맞게 바꿉니다</h2>
+      <span class="pn-time">허브 구간</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **타이머 15분**</p>
+      <p>- ① 규칙 한 줄을 더해 화면에 반영: 「AGENTS.md에 〈규칙 한 줄〉을 추가하고 화면에 반영해 줘」</p>
+      <p>- ② 문서 색인을 엑셀로 내려받아 연다</p>
+      <p>- ③ 내 일에: 내 문서 · 다운로드 폴더 · 인수인계 받은 폴더 · 공부 노트</p>
+      <p>- 내 자료로 다시 할 때는 <code>품질기준.md</code>를 내 폴더에 복사해 시작한다</p>
+      <p>- 끝나면 「허브로」 → 「수업으로 돌아가기」</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p94">
+    <div class="pn-slide-head">
+      <span class="pn-no">94</span>
+      <span class="pn-id">P3-1</span>
+      <h2 class="pn-slide-title">문의 60건을 응대 센터 한 화면으로</h2>
+      <span class="pn-time">허브 구간</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- 문의 **60건**을 유형 · 긴급도로 나누고 답장 초안을 받는다</p>
+      <p>- 받는 것: <code>문의내역.xlsx</code> · <code>응대기준.docx</code> · <code>품질기준.md</code></p>
+      <p>- 만들 것: <code>응대센터.html</code> — 화면에 넣을 것은 **인터뷰에서 내가 정한다**</p>
+      <p>- **시연**: 「완성 예시 열기」</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p95">
+    <div class="pn-slide-head">
+      <span class="pn-no">95</span>
+      <span class="pn-id">P3-2</span>
+      <h2 class="pn-slide-title">자료를 확인하고 인터뷰받아 규칙 파일을 만듭니다</h2>
+      <span class="pn-time">허브 구간</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **타이머 15분** — 자료 파악 3분 · 인터뷰 요청 1분 · 인터뷰 11분</p>
+      <p>- 요청 둘을 **그대로** 보낸다. 내 상황은 미리 적지 않는다</p>
+      <p>- 질문은 **세 개씩, 최대 10번**. 모르겠으면 「예를 들어 줘」</p>
+      <p>- 에이전트가 되짚으면 확인하고 **승인** → <code>AGENTS.md</code> · <code>CLAUDE.md</code> 저장</p>
+      <p>- 긴급으로 볼 기준과 쓰지 않을 표현을 **구체적으로** 답한다</p>
+      <p>- **확인**: 인터뷰 없이 바로 만들면 멈추게 한다 → 「아직 만들지 말고 품질기준.md의 순서대로 나를 인터뷰해 줘」</p>
+      <p>- 길어지면: 「지금까지 답한 내용으로 정리해 줘」</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p96">
+    <div class="pn-slide-head">
+      <span class="pn-no">96</span>
+      <span class="pn-id">P3-2B</span>
+      <h2 class="pn-slide-title">규칙대로 만들고 확인합니다</h2>
+      <span class="pn-time">허브 구간</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **타이머 15분** — 계획 3분 · 제작 7분 · 확인 5분</p>
+      <p>- 계획에서 **내 답이 화면 어디에 반영되는지** 짚어 읽고, 빠진 답은 승인 전에 말한다</p>
+      <p>- 맞으면 승인 → <code>응대센터.html</code>을 더블클릭</p>
+      <p>- **사람이 하는 확인(원본 대조)**: 접수번호 **Q-051**의 답장 초안이 약속한 것을 <code>응대기준.docx</code>에서 찾는다. 없는 약속은 고치게 한다</p>
+      <p>- 어긋남이 되풀이되면 화면이 아니라 **규칙을 고친다**</p>
+      <p>- 끝나면 「허브로」 → 「수업으로 돌아가기」</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p97">
+    <div class="pn-slide-head">
+      <span class="pn-no">97</span>
+      <span class="pn-id">P3-3</span>
+      <h2 class="pn-slide-title">결과물을 내 일에 맞게 바꿉니다</h2>
+      <span class="pn-time">허브 구간</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **타이머 15분**</p>
+      <p>- ① 규칙 한 줄을 더해 화면에 반영: 「AGENTS.md에 〈규칙 한 줄〉을 추가하고 화면에 반영해 줘」</p>
+      <p>- ② 문의 목록과 답장 초안을 오피스 파일로 내려받아 연다</p>
+      <p>- ③ 내 일에: 고객 문의 · 리뷰 · 민원 분류 · 설문 주관식 · 사내 문의 응대</p>
+      <p>- 내 자료로 다시 할 때는 <code>품질기준.md</code>를 내 폴더에 복사해 시작한다</p>
+      <p>- 끝나면 「허브로」 → 「수업으로 돌아가기」</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p98">
+    <div class="pn-slide-head">
+      <span class="pn-no">98</span>
+      <span class="pn-id">P4-1</span>
+      <h2 class="pn-slide-title">매출 엑셀을 주간 대시보드로</h2>
+      <span class="pn-time">허브 구간</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- 12주 치 주문과 주간 메모로 **회의에 띄울 대시보드**와 보고 PPT</p>
+      <p>- 받는 것: <code>매출.xlsx</code> · <code>주간메모.docx</code> · <code>지난주보고.pptx</code> · <code>품질기준.md</code></p>
+      <p>- 만들 것: <code>주간대시보드.html</code> — 화면에 넣을 것은 **인터뷰에서 내가 정한다**</p>
+      <p>- **시연**: 「완성 예시 열기」</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p99">
+    <div class="pn-slide-head">
+      <span class="pn-no">99</span>
+      <span class="pn-id">P4-2</span>
+      <h2 class="pn-slide-title">자료를 확인하고 인터뷰받아 규칙 파일을 만듭니다</h2>
+      <span class="pn-time">허브 구간</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **타이머 15분** — 자료 파악 3분 · 인터뷰 요청 1분 · 인터뷰 11분</p>
+      <p>- 요청 둘을 **그대로** 보낸다. 내 상황은 미리 적지 않는다</p>
+      <p>- 질문은 **세 개씩, 최대 10번**. 모르겠으면 「예를 들어 줘」</p>
+      <p>- 에이전트가 되짚으면 확인하고 **승인** → <code>AGENTS.md</code> · <code>CLAUDE.md</code> 저장</p>
+      <p>- 강조 기준은 **숫자나 조건**으로 답한다(예: 달성률 80% 미만)</p>
+      <p>- **확인**: 인터뷰 없이 바로 만들면 멈추게 한다 → 「아직 만들지 말고 품질기준.md의 순서대로 나를 인터뷰해 줘」</p>
+      <p>- 길어지면: 「지금까지 답한 내용으로 정리해 줘」</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p100">
+    <div class="pn-slide-head">
+      <span class="pn-no">100</span>
+      <span class="pn-id">P4-2B</span>
+      <h2 class="pn-slide-title">규칙대로 만들고 확인합니다</h2>
+      <span class="pn-time">허브 구간</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **타이머 15분** — 계획 3분 · 제작 7분 · 확인 5분</p>
+      <p>- 계획에서 **내 답이 화면 어디에 반영되는지** 짚어 읽고, 빠진 답은 승인 전에 말한다</p>
+      <p>- 맞으면 승인 → <code>주간대시보드.html</code>을 더블클릭</p>
+      <p>- **사람이 하는 확인(원본 대조)**: 「이번 주 매출」 카드를 <code>매출.xlsx</code> 주별집계 시트의 **12주차 행**과 대조</p>
+      <p>- 어긋남이 되풀이되면 화면이 아니라 **규칙을 고친다**</p>
+      <p>- 끝나면 「허브로」 → 「수업으로 돌아가기」</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p101">
+    <div class="pn-slide-head">
+      <span class="pn-no">101</span>
+      <span class="pn-id">P4-3</span>
+      <h2 class="pn-slide-title">결과물을 내 일에 맞게 바꿉니다</h2>
+      <span class="pn-time">허브 구간</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **타이머 15분**</p>
+      <p>- ① 규칙 한 줄을 더해 화면에 반영: 「AGENTS.md에 〈규칙 한 줄〉을 추가하고 화면에 반영해 줘」</p>
+      <p>- ② 보고 PPT로 내려받아 연다</p>
+      <p>- ③ 내 일에: 매주 하는 매출 · 실적 보고 · 광고 성과 · 재고 · 가계부</p>
+      <p>- 내 자료로 다시 할 때는 <code>품질기준.md</code>를 내 폴더에 복사해 시작한다</p>
+      <p>- 끝나면 「허브로」 → 「수업으로 돌아가기」</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p102">
+    <div class="pn-slide-head">
+      <span class="pn-no">102</span>
+      <span class="pn-id">P5-C</span>
+      <h2 class="pn-slide-title">스토리보드 · 영상을 만들기 전에 장면을 순서대로 적은 표</h2>
+      <span class="pn-time">허브 구간</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **스토리보드(장면표)** = 장면마다 시간 · 화면 · 자막을 순서대로 적은 표</p>
+      <p>- 순서를 먼저 정하면 만드는 도중에 헤매지 않는다</p>
+      <p>- 모션그래픽 = 글자 · 도형 · 숫자를 움직여 만드는 영상</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p103">
+    <div class="pn-slide-head">
+      <span class="pn-no">103</span>
+      <span class="pn-id">P5-C2</span>
+      <h2 class="pn-slide-title">30초 영상의 다섯 구간</h2>
+      <span class="pn-time">허브 구간</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- 30초 영상의 다섯 구간: **훅 → 맥락 → 본문 → 결말 → 행동 안내**</p>
+      <p>- **훅**: 첫 1~3초, 계속 볼 이유</p>
+      <p>- **행동 안내(CTA)**: 마지막 3~5초, **할 행동 하나만**</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p104">
+    <div class="pn-slide-head">
+      <span class="pn-no">104</span>
+      <span class="pn-id">P5-1</span>
+      <h2 class="pn-slide-title">소개글 한 편을 30초 영상으로</h2>
+      <span class="pn-time">허브 구간</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- 소개글 · 가격표 · 설문 결과로 **30초 소개 영상**</p>
+      <p>- 받는 것: 워드 1 · 엑셀 2 · <code>품질기준.md</code> · <code>영상도구.html</code></p>
+      <p>- <code>영상도구.html</code>에 재생기 · 움직임 · 그림 · 장식이 들어 있다</p>
+      <p>- **시연**: 「완성 예시 열기」로 한 번 재생</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p105">
+    <div class="pn-slide-head">
+      <span class="pn-no">105</span>
+      <span class="pn-id">P5-2</span>
+      <h2 class="pn-slide-title">자료를 확인하고 인터뷰받아 규칙 파일을 만듭니다</h2>
+      <span class="pn-time">허브 구간</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **타이머 15분** — 자료 파악 3분 · 인터뷰 요청 1분 · 인터뷰 11분</p>
+      <p>- 요청 둘을 **그대로** 보낸다. 내 상황은 미리 적지 않는다</p>
+      <p>- 질문은 **세 개씩, 최대 10번**. 모르겠으면 「예를 들어 줘」</p>
+      <p>- 에이전트가 되짚으면 확인하고 **승인** → <code>AGENTS.md</code> · <code>CLAUDE.md</code> 저장</p>
+      <p>- 분위기 · 색 조합 · 전환의 이름은 영상 도구의 **「그림 · 장식 보기」 탭**을 열어 직접 보고 답한다. 넣을 숫자는 **파일 이름과 함께**</p>
+      <p>- **확인**: 인터뷰 없이 바로 만들면 멈추게 한다 → 「아직 만들지 말고 품질기준.md의 순서대로 나를 인터뷰해 줘」</p>
+      <p>- 길어지면: 「지금까지 답한 내용으로 정리해 줘」</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p106">
+    <div class="pn-slide-head">
+      <span class="pn-no">106</span>
+      <span class="pn-id">P5-2B</span>
+      <h2 class="pn-slide-title">규칙대로 만들고 확인합니다</h2>
+      <span class="pn-time">허브 구간</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **타이머 15분**</p>
+      <p>- **장면표부터** 받는다. 승인 전에는 만들지 않게 한다</p>
+      <p>- **훅과 마지막 행동 안내 문장은 내가 쓴다** — 에이전트는 하나씩 묻고 받아 적는다</p>
+      <p>- 승인 뒤 1번 장면만 먼저 만들어 본다</p>
+      <p>- **사람이 하는 확인(원본 대조)**: 「다시 사고 싶다」는 설문 엑셀로 직접 계산 → 120명 중 104명 = **87%**. 소개글 표현과 다르면 계산 결과를 쓴다</p>
+      <p>- 끝나면 「허브로」 → 「수업으로 돌아가기」</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p107">
+    <div class="pn-slide-head">
+      <span class="pn-no">107</span>
+      <span class="pn-id">P5-3</span>
+      <h2 class="pn-slide-title">내 주제로 한 편 더 만듭니다</h2>
+      <span class="pn-time">허브 구간</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **타이머 15분**</p>
+      <p>- 같은 영상 도구로 **내 주제** 한 편 더: 「〈내 가게 · 모임 · 행사〉 소개 영상을 내영상.html로 만들자. 나를 인터뷰해 줘」</p>
+      <p>- 내 일에: 가게 · 모임 · 행사 소개, 발표 첫머리 30초 요약</p>
+      <p>- 오늘 만든 <code>AGENTS.md</code>를 내 폴더에 복사해 두고 시작한다</p>
+      <p>- 끝나면 「허브로」 → 「수업으로 돌아가기」</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p108">
+    <div class="pn-slide-head">
+      <span class="pn-no">108</span>
+      <span class="pn-id">P6-C</span>
+      <h2 class="pn-slide-title">일괄 처리 · 같은 작업을 명단의 한 줄마다 되풀이하는 방식</h2>
+      <span class="pn-time">허브 구간</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **일괄 처리** = 같은 작업을 명단의 한 줄마다 되풀이</p>
+      <p>- 장수가 많으면 한 장씩 읽어 확인할 수 없다</p>
+      <p>- 그래서 **명단의 줄 수 = 만든 것 + 확인 필요 + 제외**를 계산으로 확인한다</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p109">
+    <div class="pn-slide-head">
+      <span class="pn-no">109</span>
+      <span class="pn-id">P6-1</span>
+      <h2 class="pn-slide-title">명단 30명에게 안내문을 한 장씩</h2>
+      <span class="pn-time">허브 구간</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- 명단 **30명**에게 안내문을 한 사람에 한 장씩</p>
+      <p>- 받는 것: 엑셀 2개(고객명단 · 등급별 혜택) · 워드 1개(안내문 양식) · <code>품질기준.md</code></p>
+      <p>- 만들 것: <code>안내문.html</code> — **등급별 인사말은 내가 직접 쓴다**</p>
+      <p>- **시연**: 「완성 예시 열기」</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p110">
+    <div class="pn-slide-head">
+      <span class="pn-no">110</span>
+      <span class="pn-id">P6-2</span>
+      <h2 class="pn-slide-title">자료를 확인하고 인터뷰받아 규칙 파일을 만듭니다</h2>
+      <span class="pn-time">허브 구간</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **타이머 15분** — 자료 파악 3분 · 인터뷰 요청 1분 · 인터뷰 11분</p>
+      <p>- 요청 둘을 **그대로** 보낸다. 내 상황은 미리 적지 않는다</p>
+      <p>- 질문은 **세 개씩, 최대 10번**. 모르겠으면 「예를 들어 줘」</p>
+      <p>- 에이전트가 되짚으면 확인하고 **승인** → <code>AGENTS.md</code> · <code>CLAUDE.md</code> 저장</p>
+      <p>- 인사말은 에이전트가 후보를 먼저 내지 않는다. **내가 먼저 쓴다**</p>
+      <p>- **확인**: 인터뷰 없이 바로 만들면 멈추게 한다 → 「아직 만들지 말고 품질기준.md의 순서대로 나를 인터뷰해 줘」</p>
+      <p>- 길어지면: 「지금까지 답한 내용으로 정리해 줘」</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p111">
+    <div class="pn-slide-head">
+      <span class="pn-no">111</span>
+      <span class="pn-id">P6-2B</span>
+      <h2 class="pn-slide-title">규칙대로 만들고 확인합니다</h2>
+      <span class="pn-time">허브 구간</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **타이머 15분** — 계획 3분 · 제작 7분 · 확인 5분</p>
+      <p>- 계획에서 **내 답이 화면 어디에 반영되는지** 짚어 읽고, 빠진 답은 승인 전에 말한다</p>
+      <p>- 계획의 **장수가 명단과 맞으면** 승인 → <code>안내문.html</code>을 더블클릭</p>
+      <p>- **사람이 하는 확인(원본 대조)**: 안내문 + 확인 필요 + 제외 = **명단 인원**인지 보고, 세 명을 골라 명단과 대조</p>
+      <p>- 어긋남이 되풀이되면 화면이 아니라 **규칙을 고친다**</p>
+      <p>- 끝나면 「허브로」 → 「수업으로 돌아가기」</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p112">
+    <div class="pn-slide-head">
+      <span class="pn-no">112</span>
+      <span class="pn-id">P6-3</span>
+      <h2 class="pn-slide-title">결과물을 내 일에 맞게 바꿉니다</h2>
+      <span class="pn-time">허브 구간</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **타이머 15분**</p>
+      <p>- ① 규칙 한 줄을 더해 화면에 반영: 「AGENTS.md에 〈규칙 한 줄〉을 추가하고 화면에 반영해 줘」</p>
+      <p>- ② 안내문 묶음을 오피스 파일로 내려받아 연다</p>
+      <p>- ③ 내 일에: 회비 안내문 · 초대장 · 수료증 · 이름표 · 거래처별 안내문</p>
+      <p>- 내 자료로 다시 할 때는 <code>품질기준.md</code>를 내 폴더에 복사해 시작한다</p>
+      <p>- 끝나면 「허브로」 → 「수업으로 돌아가기」</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p113">
+    <div class="pn-slide-head">
+      <span class="pn-no">113</span>
+      <span class="pn-id">P7-C</span>
+      <h2 class="pn-slide-title">상태 · 프로그램이 진행하는 동안 기억하고 있는 값</h2>
+      <span class="pn-time">허브 구간</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **상태** = 프로그램이 진행하는 동안 기억하는 값</p>
+      <p>- 게임을 요청할 때는 **상태와 규칙을 숫자로** 말한다</p>
+      <p>- 「재미있게」보다 「정답 100점, 남은 1초에 5점」</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p114">
+    <div class="pn-slide-head">
+      <span class="pn-no">114</span>
+      <span class="pn-id">P7-1</span>
+      <h2 class="pn-slide-title">문제은행 한 장을 퀴즈 게임으로</h2>
+      <span class="pn-time">허브 구간</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- 문제은행 한 장을 **퀴즈 게임**으로, 공개 링크까지</p>
+      <p>- 받는 것: <code>문제은행.xlsx</code>(13문제) · <code>품질기준.md</code></p>
+      <p>- 만들 것: <code>우리말퀴즈.html</code> — **문제 수 · 제한 시간 · 점수 방식**은 인터뷰에서 내가 정한다</p>
+      <p>- **시연**: 「완성 예시 열기」로 한 문제 풀어 본다</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p115">
+    <div class="pn-slide-head">
+      <span class="pn-no">115</span>
+      <span class="pn-id">P7-2</span>
+      <h2 class="pn-slide-title">자료를 확인하고 인터뷰받아 규칙 파일을 만듭니다</h2>
+      <span class="pn-time">허브 구간</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **타이머 15분** — 자료 파악 3분 · 인터뷰 요청 1분 · 인터뷰 11분</p>
+      <p>- 요청 둘을 **그대로** 보낸다. 내 상황은 미리 적지 않는다</p>
+      <p>- 질문은 **세 개씩, 최대 10번**. 모르겠으면 「예를 들어 줘」</p>
+      <p>- 에이전트가 되짚으면 확인하고 **승인** → <code>AGENTS.md</code> · <code>CLAUDE.md</code> 저장</p>
+      <p>- 점수는 **숫자로** 답한다(예: 정답 100점, 남은 1초에 2점). 문제는 12개까지</p>
+      <p>- **확인**: 인터뷰 없이 바로 만들면 멈추게 한다 → 「아직 만들지 말고 품질기준.md의 순서대로 나를 인터뷰해 줘」</p>
+      <p>- 길어지면: 「지금까지 답한 내용으로 정리해 줘」</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p116">
+    <div class="pn-slide-head">
+      <span class="pn-no">116</span>
+      <span class="pn-id">P7-2B</span>
+      <h2 class="pn-slide-title">규칙대로 만들고 확인합니다</h2>
+      <span class="pn-time">허브 구간</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **타이머 15분** — 계획 3분 · 제작 7분 · 확인 5분</p>
+      <p>- 계획에서 **내 답이 화면 어디에 반영되는지** 짚어 읽고, 빠진 답은 승인 전에 말한다</p>
+      <p>- 맞으면 승인 → <code>우리말퀴즈.html</code>로 **한 판 해 본다**</p>
+      <p>- **사람이 하는 확인(원본 대조)**: 게임에 들어간 문제의 **정답과 풀이**를 문제은행과 하나씩 대조한 표를 받는다(쓰지 않는 문제 1개)</p>
+      <p>- 어긋남이 되풀이되면 화면이 아니라 **규칙을 고친다**</p>
+      <p>- 끝나면 「허브로」 → 「수업으로 돌아가기」</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p117">
+    <div class="pn-slide-head">
+      <span class="pn-no">117</span>
+      <span class="pn-id">P7-3</span>
+      <h2 class="pn-slide-title">결과물을 내 일에 맞게 바꿉니다</h2>
+      <span class="pn-time">허브 구간</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **타이머 15분**</p>
+      <p>- ① 규칙 한 줄을 더해 화면에 반영: 「AGENTS.md에 〈규칙 한 줄〉을 추가하고 화면에 반영해 줘」</p>
+      <p>- ② 공개 링크로 올려 보낸다</p>
+      <p>- ③ 내 일에: 가족 모임 · 동창회 퀴즈 · 신입 교육 · 안전 수칙 확인 문제</p>
+      <p>- 내 자료로 다시 할 때는 <code>품질기준.md</code>를 내 폴더에 복사해 시작한다</p>
+      <p>- 끝나면 「허브로」 → 「수업으로 돌아가기」</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p118">
+    <div class="pn-slide-head">
+      <span class="pn-no">118</span>
+      <span class="pn-id">P8-C</span>
+      <h2 class="pn-slide-title">스킬 · 되풀이하는 일의 순서를 담은 폴더</h2>
+      <span class="pn-time">허브 구간</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **스킬** = 되풀이하는 일의 순서와 참고 자료를 담은 폴더</p>
+      <p>- 에이전트는 **이름과 설명만 먼저** 읽고, 그 일을 맡았을 때 본문을 연다</p>
+      <p>- 비유: 책꽂이의 레시피 카드 — 평소엔 제목만, 그 요리를 할 때 한 장을 꺼낸다</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p119">
+    <div class="pn-slide-head">
+      <span class="pn-no">119</span>
+      <span class="pn-id">P8-C2</span>
+      <h2 class="pn-slide-title">규칙 파일과 스킬이 읽히는 때</h2>
+      <span class="pn-time">허브 구간</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **규칙 파일**: 작업을 시작할 때마다 읽힌다 · 어느 일에나 적용</p>
+      <p>- **스킬**: 그 일을 맡았을 때만 열린다 · 한 가지 일의 순서</p>
+      <p>- 화면의 「스킬로 둘 만한 일」 세 가지를 짚는다</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p120">
+    <div class="pn-slide-head">
+      <span class="pn-no">120</span>
+      <span class="pn-id">P8-1</span>
+      <h2 class="pn-slide-title">리뷰 답글을 스킬로 만듭니다</h2>
+      <span class="pn-time">허브 구간</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- 리뷰 답글 쓰기를 **스킬**로 만든다</p>
+      <p>- 받는 것: <code>리뷰/</code>(고객리뷰 10건 · 응대기준) · <code>스킬_틀/</code> · <code>품질기준.md</code></p>
+      <p>- 만들 것: 스킬 폴더 <code>review-reply</code>와 <code>답글.html</code></p>
+      <p>- <code>SKILL.md</code> = 일하는 순서 / <code>references</code> = 참고 자료</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p121">
+    <div class="pn-slide-head">
+      <span class="pn-no">121</span>
+      <span class="pn-id">P8-2</span>
+      <h2 class="pn-slide-title">스킬 없이 해 보고, 인터뷰로 만듭니다</h2>
+      <span class="pn-time">허브 구간</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **타이머 15분**</p>
+      <p>- ① **먼저 스킬 없이** 3번 리뷰 답글 → 나온 답을 메모장에 붙여 둔다(뒤에서 비교할 기준)</p>
+      <p>- ② 인터뷰 요청을 **그대로** 보낸다. 질문은 세 개씩, 최대 10번</p>
+      <p>- 불만 리뷰의 **사과는 바꾸지 않는다**(응대기준). 사과 다음에 할 말만 내가 정한다</p>
+      <p>- 승인하면 **두 곳에 저장**: <code>.agents/skills/review-reply/</code> · <code>.claude/skills/review-reply/</code></p>
+      <p>- **확인**: 쿠폰 · 보상 같은 약속을 넣자고 하면 담당자 확인으로 넘기는 규칙으로 적는지 본다</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p122">
+    <div class="pn-slide-head">
+      <span class="pn-no">122</span>
+      <span class="pn-id">P8-2B</span>
+      <h2 class="pn-slide-title">새 대화에서 스킬을 쓰고 확인합니다</h2>
+      <span class="pn-time">허브 구간</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **타이머 15분**</p>
+      <p>- **새 대화**를 열고 5 · 7 · 9번 리뷰 답글을 요청한다</p>
+      <p>- 스킬이 쓰이지 않았으면: 「리뷰 답글 스킬을 써서 다시 해 줘」</p>
+      <p>- 메모장의 답(스킬 없음)과 새 답을 **나란히** 놓고 말투 · 길이 · 근거 표시를 비교</p>
+      <p>- **사람이 하는 확인(원본 대조)**: 답글의 기한 · 금액 · 약속을 <code>응대기준.md</code>와 대조</p>
+      <p>- 끝나면 「허브로」 → 「수업으로 돌아가기」</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p123">
+    <div class="pn-slide-head">
+      <span class="pn-no">123</span>
+      <span class="pn-id">P8-3</span>
+      <h2 class="pn-slide-title">내 일의 스킬을 만듭니다</h2>
+      <span class="pn-time">허브 구간</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **타이머 15분**</p>
+      <p>- ① 스킬에 **규칙 한 줄**을 더하고 5번 답글을 다시 쓴다 → 더한 규칙이 답글에 나타나는지 본다</p>
+      <p>- ② <code>review-reply</code>를 본보기로 **내가 매주 하는 일의 스킬**을 하나 더 만든다: 「…스킬을 만들자. 나를 인터뷰해 줘」</p>
+      <p>- 끝나면 「허브로」 → 「수업으로 돌아가기」</p>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>

@@ -2,71 +2,134 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>AI 활용 습관 점검</title>
 <style>
-/* design.md — 배경 60 · 메인 30 · 포인트 10 */
-:root{ --bg:#F7F4EA; --card:#FFFFFF; --main:#1F4E5F; --main-soft:#DCE8EA; --point:#F2A65A; --ink:#1B1B1B; --sub:#5F6B6D; --r:20px; }
-*{ box-sizing:border-box; }
-body{ margin:0; min-height:100vh; display:grid; place-items:center; background:var(--bg); color:var(--ink); font-family:"Pretendard","Malgun Gothic",-apple-system,sans-serif; line-height:1.6; padding:24px 16px; }
-.app{ width:min(560px,100%); }
-.card{ background:var(--card); border-radius:var(--r); padding:36px 32px; box-shadow:0 12px 40px rgba(31,78,95,.12); }
-.eyebrow{ font-size:13px; font-weight:800; letter-spacing:.06em; color:var(--main); }
-h1{ margin:10px 0 12px; font-size:32px; line-height:1.3; letter-spacing:-.03em; }
-p{ margin:0 0 12px; color:var(--sub); }
-button{ font:inherit; cursor:pointer; border:0; }
-.cta{ width:100%; margin-top:18px; padding:16px; border-radius:14px; background:var(--point); color:var(--ink); font-size:18px; font-weight:800; transition:transform .15s; }
-.cta:hover{ transform:translateY(-2px); }
-.ghost{ background:none; color:var(--main); font-weight:700; text-decoration:underline; text-underline-offset:4px; padding:8px 0; }
-.prog{ height:8px; border-radius:99px; background:var(--main-soft); overflow:hidden; }
-.prog i{ display:block; height:100%; background:var(--main); border-radius:99px; transition:width .3s; }
-.axis{ display:inline-block; margin:22px 0 8px; padding:3px 12px; border-radius:99px; background:var(--main-soft); color:var(--main); font-size:13px; font-weight:800; }
-.qtext{ font-size:24px; font-weight:800; line-height:1.45; letter-spacing:-.02em; min-height:105px; }
-.opts{ display:grid; gap:10px; margin-top:18px; }
-.opt{ display:flex; justify-content:space-between; align-items:center; padding:15px 18px; border-radius:14px; background:var(--bg); font-size:17px; font-weight:700; color:var(--ink); border:2px solid transparent; transition:border-color .15s,transform .15s; }
-.opt:hover{ border-color:var(--main); transform:translateX(3px); }
-.opt span{ font-size:13px; color:var(--sub); font-weight:600; }
-.type{ font-size:30px; font-weight:800; color:var(--main); letter-spacing:-.03em; line-height:1.3; margin:8px 0 14px; }
-.map{ display:block; width:100%; height:auto; margin:6px 0 16px; }
-.box{ background:var(--bg); border-radius:14px; padding:16px 18px; margin-top:12px; }
-.box b{ display:block; font-size:13px; color:var(--main); letter-spacing:.03em; margin-bottom:4px; }
-.prompt{ background:var(--main); color:#fff; border-radius:14px; padding:16px 18px; margin-top:12px; display:flex; gap:12px; align-items:flex-start; justify-content:space-between; }
-.prompt code{ font-family:inherit; font-size:15px; }
-.prompt button{ flex:none; background:var(--point); color:var(--ink); font-weight:800; font-size:13px; padding:7px 12px; border-radius:9px; }
-.foot{ margin-top:16px; font-size:13px; color:var(--sub); text-align:center; }
-.row{ display:flex; justify-content:space-between; gap:12px; margin-top:14px; }
-[hidden]{ display:none !important; }
+  /* design.md — 배경 60 · 메인 30 · 포인트 10 */
+  :root{ --bg:#F7F4EA; --card:#FFFFFF; --main:#1F4E5F; --main-soft:#DCE8EA; --point:#F2A65A; --point-deep:#B86A14; --ink:#1B1B1B; --sub:#5F6B6D; --line:#E6E0CF; --r:20px; }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; }
+  body{ min-height:100vh; background:var(--bg); color:var(--ink); font-family:"Pretendard","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif; line-height:1.6; word-break:keep-all; }
+  header{ display:flex; align-items:center; justify-content:space-between; max-width:1160px; margin:0 auto; padding:24px 32px 0; font-weight:800; color:var(--main); }
+  header span{ font-size:15px; font-weight:600; color:var(--sub); }
+  main{ max-width:1160px; margin:0 auto; padding:32px; }
+  h1{ margin:0; font-size:clamp(34px,4.6vw,56px); line-height:1.2; letter-spacing:-.03em; color:var(--main); }
+  h2{ margin:0; font-size:clamp(24px,2.6vw,34px); line-height:1.35; letter-spacing:-.02em; }
+  h3{ margin:0 0 8px; font-size:15px; font-weight:800; letter-spacing:.02em; color:var(--main); }
+  p{ margin:0; font-size:18px; }
+  .sub{ color:var(--sub); }
+  .card{ background:var(--card); border-radius:var(--r); padding:28px 30px; box-shadow:0 10px 30px rgba(31,78,95,.08); }
+  button{ font:inherit; cursor:pointer; border:0; }
+  .btn{ display:inline-flex; align-items:center; gap:8px; padding:14px 30px; border-radius:999px; background:var(--main); color:#fff; font-size:18px; font-weight:800; transition:transform .15s, box-shadow .15s, background-color .15s; }
+  .btn:hover{ transform:translateY(-2px); box-shadow:0 8px 18px rgba(31,78,95,.25); }
+  .btn:active{ transform:translateY(0) scale(.98); box-shadow:none; }
+  .btn.ghost{ background:var(--main-soft); color:var(--main); }
+  .btn.small{ padding:8px 18px; font-size:15px; }
+  :focus-visible{ outline:3px solid var(--point); outline-offset:3px; }
+  [hidden]{ display:none !important; }
+  .fade{ animation:fade .35s ease both; }
+  @keyframes fade{ from{ opacity:0; transform:translateY(10px); } }
+
+  /* ① 첫 화면 */
+  .hero{ display:grid; grid-template-columns:1.1fr .9fr; gap:48px; align-items:center; min-height:calc(100vh - 160px); }
+  .hero p{ margin:18px 0 28px; font-size:20px; max-width:30em; }
+  .hero ul{ margin:28px 0 0; padding:0; list-style:none; display:flex; flex-wrap:wrap; gap:10px; }
+  .hero li{ padding:6px 14px; border-radius:999px; background:var(--card); font-size:15px; font-weight:700; color:var(--main); }
+  .preview{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  .preview div{ aspect-ratio:1.25; display:grid; place-items:center; padding:14px; border-radius:var(--r); background:var(--card); font-size:17px; font-weight:800; text-align:center; color:var(--main); }
+  .preview div:nth-child(2){ background:var(--main); color:#fff; }
+
+  /* ② 문항 화면 */
+  .quiz{ max-width:860px; margin:0 auto; padding-top:4vh; }
+  .top{ display:flex; align-items:center; justify-content:space-between; font-size:16px; font-weight:800; color:var(--main); }
+  .track{ height:10px; margin:12px 0 28px; border-radius:999px; background:var(--main-soft); overflow:hidden; }
+  .track i{ display:block; height:100%; border-radius:999px; background:var(--point); transition:width .35s ease; }
+  .axis{ display:inline-block; margin-bottom:12px; padding:4px 14px; border-radius:999px; background:var(--main-soft); font-size:15px; font-weight:800; color:var(--main); }
+  .opts{ display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:28px; }
+  .opt{ display:flex; justify-content:space-between; align-items:center; padding:20px 24px; border-radius:16px; background:var(--bg); border:2px solid transparent; font-size:19px; font-weight:700; color:var(--ink); text-align:left; transition:transform .15s, border-color .15s, background-color .15s; }
+  .opt span{ font-size:14px; font-weight:700; color:var(--sub); }
+  .opt:hover{ border-color:var(--main); transform:translateY(-2px); }
+  .opt:active{ transform:scale(.98); }
+  .opt.on{ background:var(--main); color:#fff; } .opt.on span{ color:#fff; }
+
+  /* ③ 결과 화면 */
+  .result{ display:grid; grid-template-columns:1fr 1fr; gap:24px; align-items:start; }
+  .type{ margin:6px 0 12px; font-size:clamp(30px,3.4vw,44px); font-weight:800; line-height:1.25; letter-spacing:-.03em; color:var(--main); }
+  .map{ display:block; width:100%; height:auto; margin-top:18px; }
+  .bars{ display:grid; gap:14px; margin-top:20px; }
+  .bars .row{ display:grid; grid-template-columns:120px 1fr 52px; gap:12px; align-items:center; font-size:16px; font-weight:700; }
+  .bars .bar{ position:relative; height:14px; border-radius:999px; background:var(--main-soft); }
+  .bars .bar i{ display:block; height:100%; border-radius:999px; background:var(--main); transition:width .6s ease; }
+  .bars .bar b{ position:absolute; top:-4px; bottom:-4px; left:58.33%; width:2px; background:var(--point-deep); }
+  .side{ display:grid; gap:16px; }
+  .box{ padding:20px 24px; border-radius:var(--r); background:var(--card); }
+  .box.do{ background:var(--main); color:#fff; } .box.do h3{ color:var(--point); }
+  .prompt{ display:flex; gap:14px; align-items:flex-start; justify-content:space-between; }
+  .prompt p{ font-weight:700; }
+  .four{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .four button{ padding:12px 14px; border-radius:14px; background:var(--bg); font-size:15px; font-weight:800; color:var(--main); text-align:left; border:2px solid transparent; transition:border-color .15s; }
+  .four button:hover{ border-color:var(--main); }
+  .four button.on{ background:var(--main-soft); border-color:var(--main); }
+  .actions{ display:flex; flex-wrap:wrap; gap:12px; margin-top:4px; }
+
+  @media (max-width:860px){
+    header, main{ padding-left:18px; padding-right:18px; }
+    .hero, .result{ grid-template-columns:1fr; gap:24px; min-height:0; }
+    .opts{ grid-template-columns:1fr; }
+    .bars .row{ grid-template-columns:96px 1fr 44px; }
+  }
 </style>
 </head>
 <body>
-<div class="app">
-  <section class="card" id="sStart">
-    <div class="eyebrow">AI 활용 습관 점검</div>
-    <h1>보고서를 쓸 때,<br>나는 AI를 어떻게 쓰고 있을까요</h1>
-    <p>문항 10개에 답하면 지금의 습관이 네 유형 가운데 어디에 가까운지 보여 드립니다. 2분이면 됩니다.</p>
-    <p>이름이나 연락처는 묻지 않고, 답은 어디에도 보내지 않습니다.</p>
-    <button class="cta" id="startBtn">시작하기</button>
+<header><b>AI 활용 습관 점검</b><span>답은 어디에도 보내지 않습니다</span></header>
+<main>
+  <!-- ① 첫 화면 -->
+  <section id="sStart" class="hero fade">
+    <div>
+      <h1>주간 보고를 쓸 때,<br>나는 AI를 어떻게 쓰고 있을까</h1>
+      <p class="sub">문항 10개에 답하면 내 습관이 네 유형 가운데 어디에 가까운지와, 이번 주에 해 볼 한 가지를 보여 드립니다.</p>
+      <button class="btn" id="startBtn" type="button">시작하기</button>
+      <ul><li>문항 10개</li><li>2분</li><li>사람을 평가하지 않습니다</li></ul>
+    </div>
+    <div class="preview" aria-hidden="true"><div>AI 먼저 ·<br>확인하고 씀</div><div>내 생각 먼저 ·<br>확인하고 씀</div><div>AI 먼저 ·<br>그대로 씀</div><div>내 생각 먼저 ·<br>그대로 씀</div></div>
   </section>
-  <section class="card" id="sQuiz" hidden>
-    <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:700;color:var(--sub);margin-bottom:8px"><span id="step"></span><button class="ghost" id="backBtn" style="padding:0">이전 문항</button></div>
-    <div class="prog"><i id="bar"></i></div>
-    <span class="axis" id="axis"></span>
-    <div class="qtext" id="qtext"></div>
-    <div class="opts" id="opts"></div>
+
+  <!-- ② 문항 화면 -->
+  <section id="sQuiz" class="quiz" hidden>
+    <div class="top"><span id="step" aria-live="polite"></span><button class="btn ghost small" id="backBtn" type="button">이전 문항</button></div>
+    <div class="track" aria-hidden="true"><i id="bar" style="width:0"></i></div>
+    <div class="card" id="qcard">
+      <span class="axis" id="axis"></span>
+      <h2 id="qtext"></h2>
+      <div class="opts" id="opts"></div>
+    </div>
   </section>
-  <section class="card" id="sResult" hidden>
-    <div class="eyebrow">지금의 습관은</div>
-    <div class="type" id="rType"></div>
-    <svg class="map" viewBox="0 0 400 220" id="map" role="img" aria-label="두 축 위의 내 위치"></svg>
-    <p id="rSum" style="color:var(--ink);font-size:17px;font-weight:600"></p>
-    <div class="box"><b>이번 주 해 볼 한 가지</b><span id="rDo"></span></div>
-    <div class="prompt"><code id="rPrompt"></code><button id="copyBtn">복사</button></div>
-    <div class="row"><button class="ghost" id="againBtn">다시 하기</button><button class="ghost" id="otherBtn">다른 유형 보기</button></div>
-    <div class="foot">유형은 지금의 습관을 적은 것이고 바뀔 수 있습니다.</div>
+
+  <!-- ③ 결과 화면 -->
+  <section id="sResult" class="result" hidden>
+    <div class="card">
+      <p class="sub" id="rLead">나의 습관은</p>
+      <p class="type" id="rType"></p>
+      <p id="rSum"></p>
+      <svg class="map" id="map" viewBox="0 0 380 222" role="img" aria-label="두 축 위의 내 위치"></svg>
+      <div class="bars" id="bars">
+        <div class="row"><span>시작</span><span class="bar"><i id="bS"></i><b></b></span><span id="nS"></span></div>
+        <div class="row"><span>마무리</span><span class="bar"><i id="bE"></i><b></b></span><span id="nE"></span></div>
+      </div>
+      <p class="sub" id="barNote" style="margin-top:10px;font-size:15px">세로선(1.75점)을 넘으면 「내 생각 먼저」 · 「확인하고 씀」입니다.</p>
+    </div>
+    <div class="side">
+      <div class="box"><h3>잘하고 있는 것</h3><p id="rGood"></p></div>
+      <div class="box do"><h3>이번 주에 해 볼 한 가지</h3><p id="rDo" style="font-size:20px;font-weight:700"></p></div>
+      <div class="box"><h3>이 유형에게 권하는 요청 한 줄</h3><div class="prompt"><p id="rPrompt"></p><button class="btn small" id="copyBtn" type="button">복사</button></div></div>
+      <div class="box"><h3>네 유형 한눈에 보기</h3><div class="four" id="four"></div></div>
+      <div class="actions"><button class="btn ghost" id="againBtn" type="button">다시 하기</button></div>
+    </div>
   </section>
-</div>
+</main>
+
 <script>
-// prd.md의 문항과 결과 글
+// prd.md 「3. 문항」 · 「4. 유형별 결과 글」
 const Q = [
   ['start','보고서 주제를 받으면 AI에 묻기 전에 내 결론을 한 줄로 적어 둔다.'],
   ['start','AI에게 초안을 맡기기 전에 목차를 내가 먼저 잡는다.'],
@@ -80,43 +143,50 @@ const Q = [
   ['end','AI 답이 내 생각과 다르면 어느 쪽이 맞는지 따로 찾아본다.'],
 ];
 const OPT = [['거의 없다',0],['가끔',1],['자주',2],['거의 항상',3]];
+const CUT = 1.75;
 const TYPES = {
-  '11':{ name:'내 생각 먼저 · 확인하고 씀', sum:'보고서의 방향을 내가 먼저 잡고, 받은 답은 확인한 뒤에 쓰는 편입니다.', act:'확인에 걸린 시간을 한 번 재서, AI 없이 쓸 때와 비교해 봅니다.', prompt:'내 초안과 네 제안을 비교해서 달라진 곳과 그 근거를 표로 보여 줘.' },
-  '01':{ name:'AI 먼저 · 확인하고 씀', sum:'AI 초안에서 시작하고, 보고서에 넣기 전에 확인하는 편입니다.', act:'AI를 켜기 전에 내 결론을 한 줄 적어 둡니다.', prompt:'답을 주기 전에 내가 먼저 생각해 볼 질문 세 개를 물어봐 줘.' },
-  '10':{ name:'내 생각 먼저 · 그대로 씀', sum:'방향은 내가 잡지만, 받은 답은 대부분 그대로 쓰는 편입니다.', act:'틀리면 곤란한 숫자 하나를 골라 원본 문서에서 확인합니다.', prompt:'이 답에서 사실 확인이 필요한 문장을 골라 출처와 함께 목록으로 보여 줘.' },
-  '00':{ name:'AI 먼저 · 그대로 씀', sum:'AI 초안에서 시작하고, 대부분 그대로 쓰는 편입니다.', act:'AI 답을 내 말로 세 줄 요약해 본 뒤에 씁니다.', prompt:'결론을 말하기 전에 선택지 두세 개와 각각의 장단점을 먼저 보여 줘.' },
+  '11':{ name:'내 생각 먼저 · 확인하고 씀', sum:'보고서의 방향을 내가 먼저 잡고, 받은 답은 확인한 뒤에 쓰는 편입니다. 시작과 마무리를 모두 내가 쥐고 있습니다.', good:'방향을 먼저 정하고, 숫자와 출처를 다시 봅니다.', act:'확인에 걸린 시간을 한 번 재서, AI 없이 쓸 때와 비교해 봅니다.', prompt:'내 초안과 네 제안을 비교해서 달라진 곳과 그 근거를 표로 보여 줘.' },
+  '01':{ name:'AI 먼저 · 확인하고 씀', sum:'AI 초안에서 시작하고, 보고서에 넣기 전에 확인하는 편입니다. 틀린 내용은 걸러 내지만 방향은 AI가 먼저 잡습니다.', good:'받은 답을 그대로 넣지 않고 다시 봅니다.', act:'AI를 켜기 전에 내 결론을 한 줄 적어 둡니다.', prompt:'답을 주기 전에 내가 먼저 생각해 볼 질문 세 개를 물어봐 줘.' },
+  '10':{ name:'내 생각 먼저 · 그대로 씀', sum:'방향은 내가 잡지만, 받은 답은 대부분 그대로 쓰는 편입니다. 내 생각이 들어가지만 틀린 숫자가 섞일 수 있습니다.', good:'AI에 묻기 전에 내 결론을 먼저 세웁니다.', act:'틀리면 곤란한 숫자 하나를 골라 원본 문서에서 확인합니다.', prompt:'이 답에서 사실 확인이 필요한 문장을 골라 출처와 함께 목록으로 보여 줘.' },
+  '00':{ name:'AI 먼저 · 그대로 씀', sum:'AI 초안에서 시작하고, 대부분 그대로 쓰는 편입니다. 빠르지만 방향과 사실 확인을 모두 AI에 맡기게 됩니다.', good:'AI를 자주 써서 빠르게 초안을 만듭니다.', act:'AI 답을 내 말로 세 줄 요약해 본 뒤에 씁니다.', prompt:'결론을 말하기 전에 선택지 두세 개와 각각의 장단점을 먼저 보여 줘.' },
 };
 const $ = id => document.getElementById(id);
-let i = 0, ans = [];
-function go(id){ ['sStart','sQuiz','sResult'].forEach(s => $(s).hidden = s !== id); }
+let i = 0, ans = [], mine = null;
+function go(id){ ['sStart','sQuiz','sResult'].forEach(s => { $(s).hidden = s !== id; if (s === id){ $(s).classList.remove('fade'); void $(s).offsetWidth; $(s).classList.add('fade'); } }); window.scrollTo(0, 0); }
 function ask(){
-  $('step').textContent = (i+1) + ' / ' + Q.length; $('bar').style.width = (i/Q.length*100) + '%'; $('backBtn').hidden = i === 0;
+  $('step').textContent = (i + 1) + ' / ' + Q.length; $('bar').style.width = (i / Q.length * 100) + '%'; $('backBtn').hidden = i === 0;
   $('axis').textContent = Q[i][0] === 'start' ? '시작 — AI를 켜기 전' : '마무리 — 답을 받은 뒤'; $('qtext').textContent = Q[i][1];
-  $('opts').innerHTML = OPT.map(o => '<button class="opt" data-v="' + o[1] + '">' + o[0] + '<span>' + o[1] + '점</span></button>').join('');
+  $('opts').innerHTML = OPT.map(o => '<button class="opt' + (ans[i] === o[1] ? ' on' : '') + '" type="button" data-v="' + o[1] + '">' + o[0] + '<span>' + o[1] + '점</span></button>').join('');
+  $('qcard').classList.remove('fade'); void $('qcard').offsetWidth; $('qcard').classList.add('fade');
 }
-function avg(k){ const v = Q.map((q,j) => q[0] === k ? ans[j] : null).filter(x => x !== null); return v.reduce((a,b) => a+b, 0) / v.length; }
+function avg(k){ const v = Q.map((q, j) => q[0] === k ? ans[j] : null).filter(x => x !== null); return v.reduce((a, b) => a + b, 0) / v.length; }
 function result(key, s, e){
-  const t = TYPES[key]; $('rType').textContent = t.name; $('rSum').textContent = t.sum; $('rDo').textContent = t.act; $('rPrompt').textContent = t.prompt;
-  const th = 60 + (1.75/3)*300, tv = 190 - (1.75/3)*160, hx = key[0] === '1', hy = key[1] === '1';
+  const t = TYPES[key], own = s !== null;
+  $('rLead').textContent = own ? '나의 습관은' : '다른 유형 보기'; $('rType').textContent = t.name; $('rSum').textContent = t.sum; $('rGood').textContent = t.good; $('rDo').textContent = t.act; $('rPrompt').textContent = t.prompt;
+  $('bars').hidden = !own; $('barNote').hidden = !own;
+  if (own){ $('bS').style.width = (s / 3 * 100) + '%'; $('bE').style.width = (e / 3 * 100) + '%'; $('nS').textContent = s.toFixed(1) + '점'; $('nE').textContent = e.toFixed(1) + '점'; }
+  const th = 60 + (CUT / 3) * 300, tv = 190 - (CUT / 3) * 160, hx = key[0] === '1', hy = key[1] === '1';
   const zx = hx ? th : 60, zw = hx ? 360 - th : th - 60, zy = hy ? 30 : tv, zh = hy ? tv - 30 : 190 - tv;
   let me = '';
-  if (s !== null){ const x = 60 + (s/3)*300, y = 190 - (e/3)*160; me = '<circle cx="' + x + '" cy="' + y + '" r="16" fill="var(--point)" opacity=".3"/><circle cx="' + x + '" cy="' + y + '" r="8" fill="var(--point)" stroke="#fff" stroke-width="3"/><text x="' + x + '" y="' + (y-20) + '" font-size="12" font-weight="800" fill="var(--ink)" text-anchor="middle">나</text>'; }
+  if (own){ const x = 60 + (s / 3) * 300, y = 190 - (e / 3) * 160; me = '<circle cx="' + x + '" cy="' + y + '" r="16" fill="var(--point)" opacity=".3"/><circle cx="' + x + '" cy="' + y + '" r="8" fill="var(--point)" stroke="#fff" stroke-width="3"/><text x="' + x + '" y="' + (y - 20) + '" font-size="12" font-weight="800" fill="var(--ink)" text-anchor="middle">나</text>'; }
   $('map').innerHTML = '<rect x="60" y="30" width="300" height="160" rx="12" fill="var(--bg)"/><rect x="' + zx + '" y="' + zy + '" width="' + zw + '" height="' + zh + '" rx="12" fill="var(--main-soft)"/>'
     + '<line x1="' + th + '" y1="30" x2="' + th + '" y2="190" stroke="var(--main)" stroke-dasharray="4 5" opacity=".5"/><line x1="60" y1="' + tv + '" x2="360" y2="' + tv + '" stroke="var(--main)" stroke-dasharray="4 5" opacity=".5"/>'
     + '<text x="210" y="212" font-size="12" font-weight="700" fill="var(--sub)" text-anchor="middle">시작 — AI 먼저 ← → 내 생각 먼저</text>'
     + '<text x="14" y="110" font-size="12" font-weight="700" fill="var(--sub)" transform="rotate(-90 14 110)" text-anchor="middle">마무리 — 그대로 ← → 확인</text>' + me;
-  go('sResult');
+  $('four').innerHTML = Object.keys(TYPES).map(k => '<button type="button" data-k="' + k + '" class="' + (k === key ? 'on' : '') + '">' + TYPES[k].name + (mine && k === mine.key ? ' · 나' : '') + '</button>').join('');
+  if ($('sResult').hidden) go('sResult');
 }
-$('startBtn').onclick = () => { i = 0; ans = []; go('sQuiz'); ask(); };
+$('startBtn').onclick = () => { i = 0; ans = []; mine = null; go('sQuiz'); ask(); };
 $('backBtn').onclick = () => { if (i > 0){ i--; ask(); } };
 $('opts').onclick = ev => { const b = ev.target.closest('.opt'); if (!b) return; ans[i] = +b.dataset.v; i++;
-  if (i < Q.length) return ask(); const s = avg('start'), en = avg('end'); result((s >= 1.75 ? '1' : '0') + (en >= 1.75 ? '1' : '0'), s, en); };
+  if (i < Q.length) return ask(); const s = avg('start'), e = avg('end'); mine = { key:(s >= CUT ? '1' : '0') + (e >= CUT ? '1' : '0'), s:s, e:e }; result(mine.key, s, e); };
+$('four').onclick = ev => { const b = ev.target.closest('button'); if (!b) return; const k = b.dataset.k; if (mine && k === mine.key) result(k, mine.s, mine.e); else result(k, null, null); };
 $('againBtn').onclick = () => go('sStart');
-let peek = 0; $('otherBtn').onclick = () => { const keys = Object.keys(TYPES); peek = (peek + 1) % keys.length; result(keys[peek], null, null); };
+$('copyBtn').onclick = () => { const t = $('rPrompt').textContent, done = () => { $('copyBtn').textContent = '복사됨'; setTimeout(() => $('copyBtn').textContent = '복사', 1500); };
+  if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(t).then(done, done); else done(); };
 // 주소 끝에 #q 또는 #r 을 붙이면 문항 화면 · 결과 화면부터 보여 준다(발표 자료 캡처용)
 if (location.hash === '#q'){ i = 5; ans = [3,2,3,2,3]; go('sQuiz'); ask(); }
-if (location.hash === '#r'){ ans = [3,2,3,2,3,1,1,2,1,1]; result('10', avg('start'), avg('end')); }
-$('copyBtn').onclick = () => navigator.clipboard.writeText($('rPrompt').textContent).then(() => { $('copyBtn').textContent = '복사됨'; setTimeout(() => $('copyBtn').textContent = '복사', 1500); });
+if (location.hash === '#r'){ ans = [3,2,3,2,3,1,1,2,1,1]; const s = avg('start'), e = avg('end'); mine = { key:'10', s:s, e:e }; result('10', s, e); }
 </script>
 </body>
 </html>

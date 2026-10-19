@@ -420,6 +420,16 @@
   line-height: 1.66;
   resize: none;
 }
+/* 노트 보기(마크다운을 그린 것) — 눌러서 편집하면 같은 자리에 글상자가 나온다 */
+.presenter-console .pv-note[hidden]{ display: none; }
+.presenter-console .pv-note-view{ overflow-y: auto; cursor: text; }
+.presenter-console .pv-note-view p{ margin: 0 0 .45em; }
+.presenter-console .pv-note-view ul{ margin: 0 0 .5em; padding-left: 1.15em; list-style: disc; }
+.presenter-console .pv-note-view li{ margin: 0 0 .34em; }
+.presenter-console .pv-note-view strong{ font-weight: 800; }
+.presenter-console .pv-note-view code{ font-family: ui-monospace, Consolas, Menlo, monospace; font-size: .92em; padding: 1px 5px; border-radius: 5px; border: 1px solid var(--pv-line-strong); }
+.presenter-console .pv-note-view .pv-note-h{ font-weight: 800; }
+.presenter-console .pv-note-view .pv-note-empty{ color: var(--pv-fg-faint); }
 .presenter-console .pv-notes-foot{ display: flex; align-items: center; gap: 10px; }
 .presenter-console .pv-save{ margin: 0; font-size: 12.5px; font-weight: 600; color: var(--pv-fg-faint); }
 .presenter-console .pv-save[data-pv-tone="ok"]{ color: var(--pv-ok); }
