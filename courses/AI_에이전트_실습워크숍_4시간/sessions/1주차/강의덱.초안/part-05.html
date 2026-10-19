@@ -1,21 +1,27 @@
-<!-- EX-5 실습 허브(우주) -->
-<section class="slide sp dark f-hub" data-slide="HUB">
-  <canvas class="sp-cv" aria-hidden="true"></canvas>
+<!-- EX-5 실습 허브 「궤도에서 정렬로」(2026-10-20 · plans/FRAME-실습강화/PLAN.md §4-0) — 별 · 궤도 · 행성은 shell 스크립트가 카드(data-ic)에서 만든다 -->
+<section class="slide orb dark f-hub" data-slide="HUB">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 18 V8 H18 M30 8 H40 V18 M40 30 V40 H30 M18 40 H8 V30" fill="none" style="stroke:var(--blue)" stroke-width="5"/><rect x="19" y="19" width="10" height="10" style="fill:var(--mint)"/></svg><span class="s-brand">FRAME</span>
     <span class="s-line"></span><div class="s-team">에이전트 실습</div>
   </header>
-  <div class="sp-top"><h2 class="s-title">에이전트 실습 여덟 가지</h2></div>
-  <button class="sp-pl" type="button" data-pr="P1" data-go="P1-1"><span class="sp-hit"></span><span class="sp-lab"><span class="sp-name"><i>01</i>프로젝트 실행 보드</span><span class="sp-meta">회의록 5개 → 칸반 · 타임라인</span></span></button>
-  <button class="sp-pl" type="button" data-pr="P2" data-go="P2-C"><span class="sp-hit"></span><span class="sp-lab"><span class="sp-name"><i>02</i>세컨드 브레인 3D</span><span class="sp-meta">문서 40개 → 3D 지식 지도</span></span></button>
-  <button class="sp-pl" type="button" data-pr="P3" data-go="P3-1"><span class="sp-hit"></span><span class="sp-lab"><span class="sp-name"><i>03</i>고객 응대 센터</span><span class="sp-meta">문의 60건 → 분류 · 답장 초안</span></span></button>
-  <button class="sp-pl" type="button" data-pr="P4" data-go="P4-1"><span class="sp-hit"></span><span class="sp-lab"><span class="sp-name"><i>04</i>주간 경영 대시보드</span><span class="sp-meta">매출 엑셀 → 대시보드 · PPT</span></span></button>
-  <button class="sp-pl" type="button" data-pr="P5" data-go="P5-C"><span class="sp-hit"></span><span class="sp-lab"><span class="sp-name"><i>05</i>모션그래픽 소개 영상</span><span class="sp-meta">소개글 → 30초 영상</span></span></button>
-  <button class="sp-pl" type="button" data-pr="P6" data-go="P6-C"><span class="sp-hit"></span><span class="sp-lab"><span class="sp-name"><i>06</i>안내문 일괄 생성</span><span class="sp-meta">명단 30명 → 한 사람에 한 장</span></span></button>
-  <button class="sp-pl" type="button" data-pr="P7" data-go="P7-C"><span class="sp-hit"></span><span class="sp-lab"><span class="sp-name"><i>07</i>우리말 퀴즈 게임</span><span class="sp-meta">문제은행 → 게임 · 공개 링크</span></span></button>
-  <button class="sp-pl" type="button" data-pr="P8" data-go="P8-C"><span class="sp-hit"></span><span class="sp-lab"><span class="sp-name"><i>08</i>나만의 스킬 만들기</span><span class="sp-meta">리뷰 10건 → 스킬 · 답글 카드</span></span></button>
-  <button class="back sp-back" type="button" data-return>수업으로 돌아가기</button>
-  <p class="sp-tip" aria-hidden="true">끌면 돌아갑니다</p>
+  <div class="orb-top">
+    <p class="kick">실습 허브</p>
+    <h2 class="s-title">에이전트 실습 <b class="kw">여덟 가지</b></h2>
+  </div>
+  <div class="orb-tools">
+    <button class="orb-btn" type="button" data-orb-replay>궤도 다시 보기</button>
+    <button class="orb-btn is-back" type="button" data-return>수업으로 돌아가기</button>
+  </div>
+  <div class="orb-grid">
+    <button class="orb-card" type="button" data-go="P1-1" data-pr="P1" data-vt-key="p1" data-ic="board"><span class="lab"><span class="no">01</span><span class="nm">프로젝트 실행 보드</span><span class="mt"><span class="ln">회의록 5개</span><span class="ln">→ 칸반 · 타임라인</span></span></span><span class="fl" aria-hidden="true"></span><span class="dn">✓ 진행함</span></button>
+    <button class="orb-card" type="button" data-go="P2-C" data-pr="P2" data-vt-key="p2" data-ic="brain"><span class="lab"><span class="no">02</span><span class="nm">세컨드 브레인 3D</span><span class="mt"><span class="ln">문서 40개</span><span class="ln">→ 3D 지식 지도</span></span></span><span class="fl" aria-hidden="true"></span><span class="dn">✓ 진행함</span></button>
+    <button class="orb-card" type="button" data-go="P3-1" data-pr="P3" data-vt-key="p3" data-ic="chat"><span class="lab"><span class="no">03</span><span class="nm">고객 응대 센터</span><span class="mt"><span class="ln">문의 60건</span><span class="ln">→ 분류 · 답장 초안</span></span></span><span class="fl" aria-hidden="true"></span><span class="dn">✓ 진행함</span></button>
+    <button class="orb-card" type="button" data-go="P4-1" data-pr="P4" data-vt-key="p4" data-ic="bars"><span class="lab"><span class="no">04</span><span class="nm">주간 경영 대시보드</span><span class="mt"><span class="ln">매출 엑셀</span><span class="ln">→ 대시보드 · PPT</span></span></span><span class="fl" aria-hidden="true"></span><span class="dn">✓ 진행함</span></button>
+    <button class="orb-card" type="button" data-go="P5-C" data-pr="P5" data-vt-key="p5" data-ic="video"><span class="lab"><span class="no">05</span><span class="nm">모션그래픽 소개 영상</span><span class="mt"><span class="ln">소개글</span><span class="ln">→ 30초 영상</span></span></span><span class="fl" aria-hidden="true"></span><span class="dn">✓ 진행함</span></button>
+    <button class="orb-card" type="button" data-go="P6-C" data-pr="P6" data-vt-key="p6" data-ic="papers"><span class="lab"><span class="no">06</span><span class="nm">안내문 일괄 생성</span><span class="mt"><span class="ln">명단 30명</span><span class="ln">→ 한 사람에 한 장</span></span></span><span class="fl" aria-hidden="true"></span><span class="dn">✓ 진행함</span></button>
+    <button class="orb-card" type="button" data-go="P7-C" data-pr="P7" data-vt-key="p7" data-ic="quiz"><span class="lab"><span class="no">07</span><span class="nm">우리말 퀴즈 게임</span><span class="mt"><span class="ln">문제은행</span><span class="ln">→ 게임 · 공개 링크</span></span></span><span class="fl" aria-hidden="true"></span><span class="dn">✓ 진행함</span></button>
+    <button class="orb-card" type="button" data-go="P8-C" data-pr="P8" data-vt-key="p8" data-ic="skill"><span class="lab"><span class="no">08</span><span class="nm">나만의 스킬 만들기</span><span class="mt"><span class="ln">리뷰 10건</span><span class="ln">→ 스킬 · 답글 카드</span></span></span><span class="fl" aria-hidden="true"></span><span class="dn">✓ 진행함</span></button>
+  </div>
 </section>
 
 <!-- P1-1 -->
