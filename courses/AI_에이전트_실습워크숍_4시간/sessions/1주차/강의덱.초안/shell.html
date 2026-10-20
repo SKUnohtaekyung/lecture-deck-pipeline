@@ -1783,6 +1783,9 @@
     .mini-card .orb-disc{ width:40px; height:40px; }
     .slot-mini.m7 .mini-card.is-done .mini-name::after{ content:none; }   /* 진행함 ✓는 이름 뒤가 아니라 원판 모서리 표로 — 이름이 두 줄로 꺾이지 않게 */
     .slot-mini.m7 .mini-card.is-done::after{ content:"✓"; position:absolute; left:40px; top:5px; width:20px; height:20px; border-radius:50%; background:var(--mint-deep); color:var(--white); font-size:13px; font-weight:800; line-height:20px; text-align:center; }
+    /* 실습 9개(5줄)일 때 — 안내 문구가 바닥 진행 표와 겹치지 않게 카드 여백 · 간격을 줄인다(2026-10-21) */
+    .slot-mini.m7.m9{ gap:8px; }
+    .slot-mini.m7.m9 .mini-card{ padding:6px 14px; }
     @media screen{ html:has(.slide.agx.is-active) body{ background:linear-gradient(90deg, #111418 50%, #0B0D10 50%); } }
     .slide.agx{ box-shadow:none; border-radius:0; overflow:visible; }
     .agx .cxw::before{ content:""; position:absolute; left:0; right:0; top:-400px; height:400px; background:linear-gradient(90deg, #111418 286px, #0B0D10 286px); }
@@ -1949,9 +1952,6 @@
       var t0 = performance.now();
       (function step(now){ var t = (now - t0) / 1000; render(Math.min(t, T.end)); if (t < T.end && slide.classList.contains('is-active')) raf = requestAnimationFrame(step); else if (t < T.end) settle(); })(t0);
     }
-    var replay = slide.querySelector('[data-orb-replay]');
-    if (replay){ replay.addEventListener('click', function(e){ e.stopPropagation(); play(); });
-      replay.addEventListener('keydown', function(e){ if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); e.stopPropagation(); play(); } }); }
 
     /* ── 장이 켜질 때 — 실습 장(P숫자…)에서 왔으면 판을 바로 보이고, 아니면 오프닝 ── */
     var slides = [].slice.call(document.querySelectorAll('.deck .slide')), prevId = null;

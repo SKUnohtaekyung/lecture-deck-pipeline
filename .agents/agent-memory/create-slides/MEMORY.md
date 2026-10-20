@@ -157,7 +157,7 @@
 함께 있던 역사 기록은 `_dev/설계기록/MEMORY-이력-2026-10.md`, 이관 전 원문 전체는 `_dev/설계기록/MEMORY-스냅샷-2026-10-08.md`에 있다.
 
 <!-- 원 소절: ▶ FRAME 길이별 조립(2 · 4 · 6시간) —  · 스냅샷 L155~156 -->
-한 벌의 조각에서 길이별 덱을 뽑는다 — `assemble_deck.py --variant <이름>` · 러너 `--variant`. 확정 결정 · 사용자 답 대기(Codex 실행 · 영수증 이미지 · 블록 1 시간) · 명령 · 함정은 인계 문서에 있다. ⚠️ 러너는 두 덱 모두 FAIL이다(이전부터 있던 정적 FAIL 4 · 품질 FAIL 1 · 렌더 결함 · 기준선 0). ⚠️ `CREATE_SLIDES_COURSE`를 켠 채 회귀를 돌리면 4건 ERROR — 회귀는 변수 없이 돌린다.
+한 벌의 조각에서 길이별 덱을 뽑는다 — `assemble_deck.py --variant <이름>` · 러너 `--variant`. 확정 결정 · 사용자 답 대기(Codex 실행 · 블록 1 시간 · 영수증 실습은 2026-10-21 삭제) · 명령 · 함정은 인계 문서에 있다. ⚠️ 러너는 두 덱 모두 FAIL이다(이전부터 있던 정적 FAIL 4 · 품질 FAIL 1 · 렌더 결함 · 기준선 0). ⚠️ `CREATE_SLIDES_COURSE`를 켠 채 회귀를 돌리면 4건 ERROR — 회귀는 변수 없이 돌린다.
 
 <!-- 원 소절: ▶ FRAME 개편 — `AI_에이전트_실습워크숍_4시 · 스냅샷 L159~164 -->
 > **재개는 `plans/FRAME-개편/PLAN.md` + `PROGRESS.md`부터** — 잠긴 결정 D1~D39 · §16 디자인 원칙 · 게이트 G0→G1a→**G1b(초안)**→GR(사용자 리허설)→G2. 초안 정본은 `tmp/frame/draft/{concepts,main-task,agent-practice}.md` → `gen/merge_draft.py`로 `sessions/1주차/1주차_초안.md`(82행) 병합(병합본 직접 편집 금지). 자료는 `plans/FRAME-개편/gen/`의 생성기로만 만든다(gen_prompts · gen_01~04 · check_d1/02/01_03_04 · pack_zip). 가상 회사 이름은 **도담수납**(가온리빙은 실존 회사와 겹쳐 폐기). D6 드라이런: Sonnet 에이전트가 함정 4개를 첫 요청에서 모두 피함 → ③의 이어가기 대조 경로로 운영, 도구별 결과는 GR 체크리스트(`리허설_체크리스트.md`). 남은 일: G1b 제출 → GR → Phase E 조립(콘텐츠 리뷰 HTML · 이미지-에셋 재생성 · profile §3-G 장수 갱신). 커밋은 사용자 확인 뒤. 보기 페이지 `tmp/frame/view/`(launch `deck-verify` 8799).

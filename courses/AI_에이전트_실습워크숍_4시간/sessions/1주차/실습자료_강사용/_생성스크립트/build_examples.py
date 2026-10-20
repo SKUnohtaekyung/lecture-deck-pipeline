@@ -10,9 +10,10 @@ TPL = os.path.join(HERE, 'templates')
 OUT = ensure(os.path.join(INST, '완성예시'))
 JOBS = [('p1.html', 'p1.json', '실습1_실행보드.html'), ('p2.html', 'p2.json', '실습2_세컨드브레인.html'),
         ('p3.html', 'p3.json', '실습3_응대센터.html'), ('p4.html', 'p4.json', '실습4_주간대시보드.html'),
-        ('p5.html', None, '실습5_모션그래픽.html'), ('p6.html', 'p6.json', '실습6_안내문.html'), ('p7.html', 'p7.json', '실습7_퀴즈게임.html'),
-        ('p8.html', None, '실습8_스킬만들기.html'),
+        ('p6.html', 'p6.json', '실습6_안내문.html'), ('p7.html', 'p7.json', '실습7_퀴즈게임.html'),
         ('main.html', None, '메인과제_AI습관점검_index.html')]
+# 2026-10-21: 실습 ⑤ v3 · ⑧ v2 · ⑨는 완성 도구 없이 학생이 처음부터 만든다(plans/FRAME-실습강화/P3-P4-P7-설계.md §0 F3).
+# 그 완성 예시는 템플릿이 아니라 대리 시험 결과물을 완성예시/에 복사해 둔다. 1판 예시는 _archive/실습_1판_2026-10-21/완성예시/.
 
 
 def main():

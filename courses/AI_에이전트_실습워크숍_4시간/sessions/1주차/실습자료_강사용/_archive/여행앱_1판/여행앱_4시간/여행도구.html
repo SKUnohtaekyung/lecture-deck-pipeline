@@ -1,0 +1,1730 @@
+<!-- 에이전트는 이 파일을 열지 않습니다. 고치는 파일은 계획.js · 확장.js뿐입니다. -->
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>여행 도구</title>
+<script>
+/* 오류 수집: 계획.js · 확장.js · 오프라인응답 파일이 안 읽히거나 문법 오류가 나도 도구는 계속 동작하고, 점검 패널이 알려 줍니다. */
+window.__신호큐 = [];
+window.__지도신호 = function (k, v) { window.__신호큐.push([k, v]); };
+window.__오류 = [];
+window.__로드실패 = [];
+window.addEventListener('error', function (e) {
+  var t = e.target;
+  if (t && t !== window && t.getAttribute) {
+    var s = t.getAttribute('src') || t.getAttribute('href') || '';
+    if (s && !/unpkg\.com/.test(s)) window.__로드실패.push(s);
+    return;
+  }
+  var f = String(e.filename || '').split('/').pop();
+  try { f = decodeURIComponent(f); } catch (x) { /* 그대로 */ }
+  window.__오류.push({ 파일: f, 줄: e.lineno, 메시지: String(e.message || '') });
+}, true);
+</script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" media="print" onload="this.media='all';window.__지도신호('css','ok')" onerror="window.__지도신호('css','fail')">
+<style>
+/* ===== 색 토큰: 색조합 6벌(계획.화면.색조합이 data-theme으로 들어옵니다). 원색 값은 이 블록의 정의 줄에만 둡니다. ===== */
+:root,[data-theme="바다"]{--bg:#E6F1F7;--on-bg:#10303F;--main:#0B4F6C;--on-main:#FFFFFF;--surface:#FFFFFF;--ink:#16232E;--ink2:#44525F;--tint:#E6F1F7;--line:#B9CBD6;--a1:#1A65A0;--a2:#0D6B64;--a3:#B03A0C}
+[data-theme="숲"]{--bg:#EBF2E6;--on-bg:#17301F;--main:#25542F;--on-main:#FFFFFF;--surface:#FFFFFF;--ink:#17261B;--ink2:#43524A;--tint:#E9F2E3;--line:#BFD0B8;--a1:#44700D;--a2:#923010;--a3:#0C6A84}
+[data-theme="노을"]{--bg:#FBEEE4;--on-bg:#3A1A20;--main:#8A2D3B;--on-main:#FFFFFF;--surface:#FFFFFF;--ink:#2A1B1D;--ink2:#5A4548;--tint:#FBEBDF;--line:#E3C5B2;--a1:#B33C0B;--a2:#B0164F;--a3:#43549C}
+[data-theme="돌담"]{--bg:#ECEAE5;--on-bg:#2B2824;--main:#3F3A34;--on-main:#FFFFFF;--surface:#FFFFFF;--ink:#25221E;--ink2:#53504A;--tint:#EDEBE6;--line:#CBC7BD;--a1:#80531A;--a2:#3F6250;--a3:#4A5D70}
+[data-theme="밤하늘"]{--bg:#14213D;--on-bg:#E8EDF7;--main:#1F2F57;--on-main:#FFFFFF;--surface:#FFFFFF;--ink:#141B2B;--ink2:#454E63;--tint:#ECF0F8;--line:#BCC6DD;--a1:#2A5BBF;--a2:#0D6B64;--a3:#9E4C08}
+[data-theme="귤밭"]{--bg:#FFF1DA;--on-bg:#3A2208;--main:#9A4306;--on-main:#FFFFFF;--surface:#FFFFFF;--ink:#2B1D0E;--ink2:#5C4A36;--tint:#FEEFD6;--line:#E8CFA3;--a1:#397015;--a2:#B01818;--a3:#1B5784}
+/* 상태색(색조합과 무관 · 글자와 함께 쓰고 색만으로 뜻을 전하지 않습니다) */
+:root{--ok-bg:#DDF3E5;--ok-ink:#14532D;--fix-bg:#FBE3E3;--fix-ink:#8A1C1C;--unk-bg:#E9ECF0;--unk-ink:#3B434D;--info-bg:#E2EDFB;--info-ink:#1D4A86;--warn-bg:#FFF0CC;--warn-ink:#5C3B00;
+  --on-accent:#FFFFFF;--shadow:rgba(0,0,0,.35);--pin-gray:#5F6B7A;
+  --ic-sun:#F5A524;--ic-cloud:#E3EAF2;--ic-dark:#AEB9C6;--ic-rain:#3B86D6;--ic-snow:#CFE6FA;--ic-bolt:#F5C542}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 "Malgun Gothic","Apple SD Gothic Neo","Noto Sans KR",system-ui,sans-serif;overflow-wrap:break-word}
+h1,h2,h3,p,ol,ul,dl,dd{margin:0}
+ol,ul{padding:0;list-style:none}
+button,input,textarea{font:inherit;color:inherit}
+img,svg{max-width:100%}
+:focus-visible{outline:3px solid var(--a1);outline-offset:2px}
+.top :focus-visible{outline-color:var(--on-main)}
+.skip{position:absolute;left:-9999px;top:0}
+.skip:focus{left:8px;top:8px;background:var(--surface);color:var(--ink);padding:8px 12px;z-index:2000;border-radius:6px}
+.small{font-size:14px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* 위 띠 */
+.top{background:var(--main);color:var(--on-main);border-bottom:6px solid var(--a1)}
+.top-in{max-width:1280px;margin:0 auto;padding:20px 16px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px 24px;align-items:start}
+.eyebrow{font-size:15px;font-weight:700}
+.top h1{font-size:32px;line-height:1.25;margin:2px 0 4px;font-weight:800}
+.top h1.빈값{font-style:italic}
+.lead{font-size:18px}
+.hello{font-size:18px;font-weight:700;margin-top:6px}
+.top-meta{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px}
+.chip{display:inline-flex;flex-wrap:wrap;gap:4px 8px;align-items:center;background:var(--surface);color:var(--ink);border-radius:999px;padding:3px 12px;font-size:15px;font-weight:600;border:1px solid var(--line)}
+.chip b{color:var(--ink2);font-weight:700}
+.mode{display:flex;gap:8px}
+.mode button{min-height:44px;padding:6px 16px;border:2px solid var(--on-main);border-radius:8px;background:var(--main);color:var(--on-main);font-weight:700;cursor:pointer}
+.mode button[aria-pressed="true"]{background:var(--surface);color:var(--ink)}
+.mode button[aria-pressed="true"]::before{content:"✓ "}
+.bands{max-width:1280px;margin:12px auto 0;padding:0 16px;display:grid;gap:8px}
+.bands:empty{display:none}
+.band{padding:10px 14px;border-radius:8px;font-weight:700;border:2px solid var(--info-ink);background:var(--info-bg);color:var(--info-ink)}
+.band.warn{background:var(--warn-bg);color:var(--warn-ink);border-color:var(--warn-ink)}
+
+/* 배치: 가운데 좁은 카드가 아니라 1280px를 채우는 대시보드 */
+.shell{max-width:1280px;margin:16px auto;padding:0 16px;display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:16px;align-items:start}
+.main{display:grid;gap:16px;min-width:0}
+.card{background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:16px;min-width:0}
+.card[hidden]{display:none}
+.ph{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 12px;margin-bottom:12px;padding-left:10px;border-left:6px solid var(--a1)}
+.ph h2{font-size:20px;line-height:1.3}
+.ph .meta{font-size:15px;color:var(--ink2)}
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:16px;grid-auto-flow:dense}
+.grid>[data-p="날씨"]{grid-column:span 12}
+.grid>[data-p="목록"]{grid-column:span 7}
+.grid>[data-p="담은 곳"]{grid-column:span 5}
+.grid>[data-p="지도"]{grid-column:span 6}
+.grid>[data-p="일정표"]{grid-column:span 6}
+.aside{position:sticky;top:12px;max-height:calc(100vh - 24px);overflow:auto}
+@media (max-width:1020px){
+  .shell{grid-template-columns:minmax(0,1fr)}
+  .aside{position:static;max-height:none}
+  .grid{grid-template-columns:minmax(0,1fr)}
+  .grid>[data-p]{grid-column:1/-1}
+  .top-in{grid-template-columns:minmax(0,1fr)}
+  .top h1{font-size:26px}
+}
+
+/* 단추 · 입력 */
+.btn{min-height:44px;padding:6px 14px;border:2px solid var(--main);border-radius:8px;background:var(--surface);color:var(--main);font-weight:700;cursor:pointer}
+.btn:hover{background:var(--tint)}
+.btn.primary{background:var(--main);color:var(--on-main)}
+.btn.primary:hover{background:var(--main);text-decoration:underline}
+.btn.sm{min-height:40px;padding:4px 12px}
+.btn[aria-disabled="true"]{border-style:dashed}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+input[type=password],input[type=text]{min-height:44px;padding:6px 10px;border:2px solid var(--ink2);border-radius:8px;background:var(--surface);color:var(--ink);flex:1 1 220px;min-width:0}
+label{font-weight:700}
+.note{color:var(--ink2)}
+.state{display:inline-block;padding:1px 10px;border-radius:6px;border:1px solid var(--ink2);font-weight:700;font-size:15px}
+.state.ok{background:var(--ok-bg);color:var(--ok-ink);border-color:var(--ok-ink)}
+.state.fix{background:var(--fix-bg);color:var(--fix-ink);border-color:var(--fix-ink)}
+.state.unk{background:var(--unk-bg);color:var(--unk-ink);border-color:var(--unk-ink)}
+.state.info{background:var(--info-bg);color:var(--info-ink);border-color:var(--info-ink)}
+.spin{display:inline-block;width:14px;height:14px;border:3px solid var(--ink2);border-top-color:transparent;border-radius:50%;vertical-align:-2px;margin-right:6px;animation:도는중 1s linear infinite}
+@keyframes 도는중{to{transform:rotate(360deg)}}
+#키안내줄{margin-top:8px}
+
+/* 날씨 */
+.days{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.day{border:2px solid var(--line);border-radius:10px;padding:10px 12px;background:var(--surface);display:grid;gap:2px;justify-items:start}
+.day.none{border-style:dashed;border-color:var(--ink2)}
+.day .dt{font-weight:800}
+.day .tmp{font-size:20px;font-weight:800}
+.day .tmp small{font-size:16px;font-weight:700;color:var(--ink2)}
+.day .wl{font-weight:700}
+.wicon{display:inline-block;width:44px;height:44px}
+.wicon.s{width:24px;height:24px;vertical-align:middle}
+.ic .sun{fill:var(--ic-sun)}.ic .cloud{fill:var(--ic-cloud)}.ic .dark{fill:var(--ic-dark)}.ic .rain{stroke:var(--ic-rain);fill:none}.ic .snow{fill:var(--ic-snow)}.ic .bolt{fill:var(--ic-bolt)}
+.ic *{stroke:var(--ink2);stroke-width:1.6;stroke-linejoin:round;stroke-linecap:round}
+.ic .rain{stroke:var(--ic-rain);stroke-width:3}
+
+/* 목록 */
+.tabs{display:flex;gap:8px}
+.tabs button{min-height:40px;padding:4px 14px;border:2px solid var(--main);border-radius:8px;background:var(--surface);color:var(--main);font-weight:700;cursor:pointer}
+.tabs button[aria-pressed="true"]{background:var(--main);color:var(--on-main)}
+.cut{margin-bottom:10px;padding:8px 12px;border-radius:8px;background:var(--tint);border:1px solid var(--line)}
+.cut details{margin-top:6px}
+.scroll{max-height:720px;overflow:auto;padding:2px}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+.item{border:1px solid var(--line);border-radius:10px;padding:10px;display:grid;gap:6px;align-content:start;background:var(--surface)}
+.item h3{font-size:17px;line-height:1.35}
+.thumb{aspect-ratio:16/9;background:var(--tint);border-radius:8px;overflow:hidden;display:grid;place-items:center}
+.thumb img{width:100%;height:100%;object-fit:cover}
+.noimg{font-size:14px;color:var(--ink2);font-weight:700}
+.tags{display:flex;flex-wrap:wrap;gap:6px}
+.tag{font-size:14px;font-weight:700;padding:0 8px;border-radius:6px;background:var(--tint);color:var(--ink);border:1px solid var(--ink2)}
+.tag.nocoord{background:var(--fix-bg);color:var(--fix-ink);border-color:var(--fix-ink)}
+.tag.during{background:var(--ok-bg);color:var(--ok-ink);border-color:var(--ok-ink)}
+.item .btn{justify-self:start}
+.empty{padding:14px;border:2px dashed var(--ink2);border-radius:10px;color:var(--ink)}
+
+/* 담은 곳 · 일정표 */
+.picks{display:grid;gap:8px}
+.pick{border:1px solid var(--line);border-radius:10px;padding:8px 10px;display:grid;gap:4px}
+.pick .t{font-weight:800}
+.sched{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+.sday{border:2px solid var(--c,var(--a1));border-radius:10px;padding:10px;display:grid;gap:8px;align-content:start}
+.sday h3{font-size:17px;color:var(--c,var(--a1))}
+.sday .wd{display:flex;gap:8px;align-items:center;font-weight:700}
+.stop{display:grid;grid-template-columns:30px minmax(0,1fr);gap:8px;align-items:start}
+.stop .no{width:28px;height:28px;border-radius:50%;background:var(--c,var(--a1));color:var(--on-accent);display:grid;place-items:center;font-weight:800;font-size:15px}
+.stop .tm{font-weight:800}
+.stop .ck{display:inline-block;font-size:14px;font-weight:700;padding:0 6px;border-radius:6px;border:1px solid var(--ink2)}
+.stop .ck.ok{background:var(--ok-bg);color:var(--ok-ink);border-color:var(--ok-ink)}
+.stop .ck.fix{background:var(--fix-bg);color:var(--fix-ink);border-color:var(--fix-ink)}
+.d1{--c:var(--a1)}.d2{--c:var(--a2)}.d3{--c:var(--a3)}
+
+/* 지도 */
+.mapbox{position:relative}
+#지도영역{height:440px;border-radius:10px;background:var(--tint);border:1px solid var(--line);z-index:0}
+.mapnote{margin-bottom:8px;padding:8px 12px;border-radius:8px;background:var(--warn-bg);color:var(--warn-ink);border:2px solid var(--warn-ink);font-weight:700}
+.mapnote[hidden]{display:none}
+.leaflet-container{font:inherit;background:var(--tint)}
+.pin{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--c,var(--a1));color:var(--on-accent);border:2px solid var(--on-accent);font-weight:800;font-size:15px;box-shadow:0 1px 4px var(--shadow)}
+.pin.center{background:var(--main);font-size:18px}
+.pin.picked{width:20px;height:20px;border-radius:4px;background:var(--pin-gray);transform:rotate(45deg)}
+.route{fill:none;stroke-width:4}
+.route.d1{stroke:var(--a1)}
+.route.d2{stroke:var(--a2);stroke-dasharray:10 8}
+.route.d3{stroke:var(--a3);stroke-dasharray:2 8;stroke-linecap:round}
+.legend{margin-top:8px;display:flex;flex-wrap:wrap;gap:6px 14px;font-size:15px}
+.credit{margin-top:8px;font-size:14px;color:var(--ink2)}
+table{border-collapse:collapse;width:100%}
+th,td{border:1px solid var(--line);padding:4px 8px;text-align:left;vertical-align:top}
+.scrollx{overflow-x:auto}
+
+/* 창구 */
+.wins{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+@media (max-width:760px){.wins{grid-template-columns:minmax(0,1fr)}}
+details.win{border:1px solid var(--line);border-radius:10px;padding:8px 12px;background:var(--surface)}
+details.win>summary,details.sub>summary{cursor:pointer;display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;font-weight:700;min-height:36px}
+.wname{font-size:18px;font-weight:800}
+.winbody{display:grid;gap:8px;margin-top:8px}
+code.url{display:block;padding:6px 8px;background:var(--tint);border-radius:6px;font:14px/1.5 Consolas,"Courier New",monospace;word-break:break-all}
+pre.raw{margin:6px 0;padding:8px;background:var(--tint);border-radius:6px;font:14px/1.5 Consolas,"Courier New",monospace;max-height:260px;overflow:auto;white-space:pre-wrap;word-break:break-all}
+dl.kv{display:grid;grid-template-columns:auto minmax(0,1fr);gap:2px 10px}
+dl.kv dt{font-weight:700}
+.cand{display:grid;gap:4px}
+.cand label{font-weight:400;display:flex;gap:8px;align-items:flex-start}
+
+/* 점검 */
+.sum{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.chk{display:grid;grid-template-columns:78px minmax(0,1fr);gap:8px;padding:8px 0;border-top:1px solid var(--line)}
+.chk .badge{align-self:start;text-align:center;font-size:14px;font-weight:800;padding:1px 4px;border-radius:6px;border:1px solid var(--ink2)}
+.chk.ok .badge{background:var(--ok-bg);color:var(--ok-ink);border-color:var(--ok-ink)}
+.chk.fix .badge{background:var(--fix-bg);color:var(--fix-ink);border-color:var(--fix-ink)}
+.chk.unk .badge{background:var(--unk-bg);color:var(--unk-ink);border-color:var(--unk-ink)}
+.chk.info .badge{background:var(--info-bg);color:var(--info-ink);border-color:var(--info-ink)}
+.chk b{display:block}
+.chk p{color:var(--ink)}
+#복사대체{margin-top:10px}
+#복사대체 textarea{width:100%;min-height:140px;border:2px solid var(--ink2);border-radius:8px;padding:8px;background:var(--surface);color:var(--ink)}
+.ext{min-height:48px}
+.ext-empty{color:var(--ink2)}
+#알림{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:var(--main);color:var(--on-main);padding:10px 18px;border-radius:8px;font-weight:700;z-index:3000;max-width:90vw}
+#알림[hidden]{display:none}
+.foot{max-width:1280px;margin:0 auto 24px;padding:0 16px}
+.foot .card{font-size:14px}
+.err{margin-top:10px;padding:8px 12px;border-radius:8px;background:var(--fix-bg);color:var(--fix-ink);border:2px solid var(--fix-ink);font-weight:700}
+
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+html.no-anim *,html.no-anim *::before,html.no-anim *::after{animation:none!important;transition:none!important}
+@media print{
+  body{background:var(--surface);color:var(--ink)}
+  .top{background:var(--surface);color:var(--ink);border-bottom:2px solid var(--ink)}
+  .mode,.btn,.tabs,#키칸,#복사대체,#알림,.skip{display:none!important}
+  .shell{display:block;max-width:none}
+  .aside{position:static;max-height:none;margin-top:12px}
+  .grid{display:block}
+  .card{break-inside:avoid;margin-bottom:12px;border-color:var(--ink2)}
+  .scroll{max-height:none;overflow:visible}
+  #지도영역{height:320px}
+  details>*{display:block}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#본문">본문으로 건너뛰기</a>
+<noscript><p class="err">이 도구는 JavaScript가 켜져 있어야 동작합니다.</p></noscript>
+
+<header class="top" id="상단">
+  <div class="top-in">
+    <div>
+      <p class="eyebrow">여행 도구</p>
+      <h1 id="제목"></h1>
+      <p class="lead" id="한줄"></p>
+      <p class="hello" id="첫화면"></p>
+    </div>
+    <div class="mode" role="group" aria-label="데이터 모드">
+      <button type="button" id="모드실시간" aria-pressed="true">실시간</button>
+      <button type="button" id="모드오프라인" aria-pressed="false">오프라인</button>
+    </div>
+    <div class="top-meta" id="메타"></div>
+  </div>
+</header>
+<div class="bands" id="띠들" aria-live="polite"></div>
+
+<div class="shell" id="본문">
+  <div class="main">
+    <section class="card" id="키칸" aria-labelledby="키제목">
+      <div class="ph"><h2 id="키제목">TourAPI 키</h2><span class="meta" id="키상태"></span></div>
+      <div class="row">
+        <label for="키입력">인증키</label>
+        <input id="키입력" type="password" autocomplete="off" spellcheck="false" placeholder="축제 · 관광지를 부를 때 필요합니다">
+        <button type="button" class="btn primary" id="키저장">저장</button>
+        <button type="button" class="btn" id="키지움">지우기</button>
+        <label class="row" style="font-weight:400"><input type="checkbox" id="키보임"> 입력 글자 보이기</label>
+      </div>
+      <p class="note" style="margin-top:8px">Encoding 키 / Decoding 키 어느 쪽이든 됩니다. 키는 이 브라우저에만 저장됩니다. 파일에는 쓰지 않습니다.</p>
+      <p id="키안내줄" class="note" role="status"></p>
+    </section>
+
+    <div class="grid" id="패널들">
+      <section class="card" data-p="날씨" aria-labelledby="날씨제목">
+        <div class="ph"><h2 id="날씨제목">날씨</h2><span class="meta" id="날씨메타"></span></div>
+        <div id="날씨본문"></div>
+      </section>
+      <section class="card" data-p="목록" aria-labelledby="목록제목">
+        <div class="ph"><h2 id="목록제목">목록</h2><div class="tabs" role="group" aria-label="목록 종류" id="목록탭"></div></div>
+        <div id="목록본문"></div>
+      </section>
+      <section class="card" data-p="담은 곳" aria-labelledby="담은제목">
+        <div class="ph"><h2 id="담은제목">담은 곳</h2><span class="meta" id="담은메타"></span></div>
+        <div id="담은본문"></div>
+      </section>
+      <section class="card" data-p="지도" aria-labelledby="지도제목">
+        <div class="ph"><h2 id="지도제목">지도</h2><span class="meta" id="지도메타"></span></div>
+        <p class="mapnote" id="지도안내" role="status">지도를 불러오는 중입니다.</p>
+        <div class="mapbox"><div id="지도영역" role="region" aria-label="여행지 지도"></div></div>
+        <div class="legend" id="범례"></div>
+        <details class="sub" style="margin-top:8px"><summary>핀 좌표 표 (지도를 못 볼 때)</summary><div class="scrollx" id="핀표"></div></details>
+        <p class="credit">지도 © OpenStreetMap contributors</p>
+      </section>
+      <section class="card" data-p="일정표" aria-labelledby="일정제목">
+        <div class="ph"><h2 id="일정제목">일정표</h2><span class="meta" id="일정메타"></span></div>
+        <div id="일정본문"></div>
+      </section>
+    </div>
+
+    <section class="card" id="확장칸" aria-labelledby="확장제목">
+      <div class="ph"><h2 id="확장제목">내 기능</h2><span class="meta" id="확장메타"></span></div>
+      <div class="ext" id="확장내용"></div>
+    </section>
+
+    <section class="card" id="창구칸" aria-labelledby="창구제목">
+      <div class="ph"><h2 id="창구제목">창구</h2><span class="meta">요청 주소 · 상태 코드 · 응답 원문 (키는 ●●●●로 가립니다)</span></div>
+      <div class="wins" id="창구본문"></div>
+    </section>
+  </div>
+
+  <aside class="card aside" id="점검칸" aria-labelledby="점검제목">
+    <div class="ph"><h2 id="점검제목">점검</h2><span class="meta" id="점검시각"></span></div>
+    <div class="sum" id="점검요약" role="status"></div>
+    <button type="button" class="btn primary" id="결과복사">결과 복사</button>
+    <p class="note small" style="margin-top:6px">복사한 글을 에이전트 대화에 붙입니다. 키는 들어가지 않습니다.</p>
+    <div id="복사대체" hidden><p class="note">복사하지 못했습니다. 아래 글을 직접 선택해 복사하세요.</p><textarea readonly id="복사글칸" aria-label="복사할 글"></textarea></div>
+    <ol id="점검목록"></ol>
+    <div id="도구오류"></div>
+  </aside>
+</div>
+
+<footer class="foot"><div class="card">
+  <p>날씨: Weather data by Open-Meteo.com · 지도: © OpenStreetMap contributors · 관광 정보: 한국관광공사 TourAPI · 지명: Nominatim(OpenStreetMap)</p>
+</div></footer>
+<div id="알림" role="status" hidden></div>
+
+<!-- 에이전트가 고치는 파일 -->
+<script src="계획.js"></script>
+<script src="확장.js"></script>
+<!-- 오프라인 모드가 읽는 응답 파일(도구용 · 열지 않습니다) -->
+<script src="오프라인응답/지명.js"></script>
+<script src="오프라인응답/날씨.js"></script>
+<script src="오프라인응답/축제.js"></script>
+<script src="오프라인응답/관광지.js"></script>
+
+<script>
+(function () {
+'use strict';
+
+/* =====
+   이름표(API이름표.md · 화면이름표.md와 같은 이름)
+   ===== */
+var 창구이름 = ['지명찾기', '날씨', '축제', '관광지'];
+var 패널이름 = ['날씨', '목록', '담은 곳', '일정표', '지도'];
+var 색조합이름 = ['바다', '숲', '노을', '돌담', '밤하늘', '귤밭'];
+var 허용최상위 = ['모드', '제목', '한줄', '여행지', '날짜', '누구와', '하고싶은것', '창구', '화면', '일정', '하지않을것'];
+var 필수최상위 = ['제목', '여행지', '날짜', '창구', '화면', '일정'];
+var 상태뜻 = {
+  200: '성공',
+  400: '요청 값이 범위 밖입니다',
+  403: '권한 없음',
+  404: '주소 없음',
+  429: '너무 자주 불렀습니다'
+};
+var 연결실패뜻 = '연결 실패 또는 CORS — 브라우저가 응답을 넘기지 않았습니다';
+var 코드뜻 = {
+  '30': '등록되지 않은 서비스 키입니다 (키를 다시 확인합니다)',
+  '22': '요청 횟수를 넘었습니다 (개발계정은 하루 1,000회)'
+};
+var 키저장 = 'frame.app.key';
+var 담은곳저장 = 'frame.app.picked';
+var 지명저장 = 'frame.app.geo:';
+var 투어기본 = 'https://apis.data.go.kr/B551011/KorService2/';
+var 먼거리km = 40;
+var 반경m = 20000;
+
+/* =====
+   순수 함수(화면과 무관 · 테스트용으로 window.__순수에 둡니다)
+   ===== */
+function 문자열(v) { return v === null || v === undefined ? '' : String(v); }
+function 두자리(n) { return (n < 10 ? '0' : '') + n; }
+function 숫자(v) {
+  if (v === null || v === undefined) return null;
+  if (typeof v === 'string' && v.trim() === '') return null;
+  var n = Number(v);
+  return isFinite(n) ? n : null;
+}
+function 좌표(mapx, mapy) {
+  var 경도 = 숫자(mapx), 위도 = 숫자(mapy);
+  if (경도 === null || 위도 === null || 경도 === 0 || 위도 === 0) return null;
+  return { 위도: 위도, 경도: 경도 };
+}
+function 하버사인(a, b) {
+  var R = 6371, rad = Math.PI / 180;
+  var dLat = (b.위도 - a.위도) * rad, dLon = (b.경도 - a.경도) * rad;
+  var x = Math.pow(Math.sin(dLat / 2), 2) + Math.cos(a.위도 * rad) * Math.cos(b.위도 * rad) * Math.pow(Math.sin(dLon / 2), 2);
+  return 2 * R * Math.asin(Math.min(1, Math.sqrt(x)));
+}
+function 키붙일값(k) {
+  k = 문자열(k).trim();
+  if (!k) return '';
+  if (k.indexOf('%') < 0 && /[+\/=]/.test(k)) return encodeURIComponent(k);
+  return k;
+}
+function 키모양(k) {
+  k = 문자열(k).trim();
+  if (!k) return '';
+  if (k.indexOf('%') >= 0) return 'Encoding 키';
+  if (/[+\/=]/.test(k)) return 'Decoding 키';
+  return '기호 없는 키';
+}
+function 키변형(k) {
+  k = 문자열(k).trim();
+  var out = [];
+  if (k.length < 8) return out;
+  out.push(k);
+  var a = 키붙일값(k); if (out.indexOf(a) < 0) out.push(a);
+  try { var d = decodeURIComponent(k); if (out.indexOf(d) < 0) out.push(d); } catch (e) { /* 무시 */ }
+  try { var e2 = encodeURIComponent(k); if (out.indexOf(e2) < 0) out.push(e2); } catch (e) { /* 무시 */ }
+  return out.filter(function (v) { return v.length >= 8; });
+}
+function 키가리기(t, k) {
+  t = 문자열(t);
+  키변형(k).forEach(function (v) { t = t.split(v).join('●●●●'); });
+  return t;
+}
+function XML오류(t) {
+  function pick(tag) {
+    var m = new RegExp('<' + tag + '>\\s*([^<]*?)\\s*</' + tag + '>').exec(t);
+    return m ? m[1] : '';
+  }
+  return { 인증메시지: pick('returnAuthMsg'), 오류메시지: pick('errMsg'), 코드: pick('returnReasonCode'), 앞부분: t.slice(0, 160) };
+}
+function 날짜해석(s) {
+  var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(문자열(s));
+  if (!m) return null;
+  var y = +m[1], mo = +m[2], d = +m[3];
+  var t = Date.UTC(y, mo - 1, d), dt = new Date(t);
+  if (dt.getUTCFullYear() !== y || dt.getUTCMonth() !== mo - 1 || dt.getUTCDate() !== d) return null;
+  return t;
+}
+function 날짜문자(t) {
+  var d = new Date(t);
+  return d.getUTCFullYear() + '-' + 두자리(d.getUTCMonth() + 1) + '-' + 두자리(d.getUTCDate());
+}
+function 요일(s) {
+  var t = 날짜해석(s);
+  return t === null ? '' : '일월화수목금토'.charAt(new Date(t).getUTCDay());
+}
+function 날짜목록(시작, 끝, 최대) {
+  var a = 날짜해석(시작), b = 날짜해석(끝), out = [];
+  if (a === null || b === null || b < a) return out;
+  for (var t = a; t <= b && out.length < (최대 || 31); t += 86400000) out.push(날짜문자(t));
+  return out;
+}
+function 압축(s) { return 문자열(s).replace(/-/g, ''); }
+function 풀기(s8) {
+  s8 = 문자열(s8);
+  return /^\d{8}$/.test(s8) ? s8.slice(0, 4) + '-' + s8.slice(4, 6) + '-' + s8.slice(6) : s8;
+}
+function 허용범위(reason) {
+  var m = /from (\d{4}-\d{2}-\d{2}) to (\d{4}-\d{2}-\d{2})/.exec(문자열(reason));
+  return m ? { 부터: m[1], 까지: m[2] } : null;
+}
+function WMO(c) {
+  c = 숫자(c);
+  if (c === null) return { 이름: '알 수 없음', 그림: '흐림' };
+  if (c <= 1) return { 이름: '맑음', 그림: '맑음' };
+  if (c === 2) return { 이름: '구름', 그림: '구름' };
+  if (c === 3 || c === 45 || c === 48) return { 이름: '흐림', 그림: '흐림' };
+  if (c >= 51 && c <= 67) return { 이름: '비', 그림: '비' };
+  if ((c >= 71 && c <= 77) || c === 85 || c === 86) return { 이름: '눈', 그림: '눈' };
+  if ((c >= 80 && c <= 82) || c >= 95) return { 이름: '소나기/뇌우', 그림: '소나기' };
+  return { 이름: '흐림', 그림: '흐림' };
+}
+/* TourAPI 응답: 0건이면 items가 "", 1건이면 item이 객체 */
+function 투어해석(json) {
+  var r = json && json.response;
+  if (!r) return { 오류: '응답에 response가 없습니다', 목록: [] };
+  var h = r.header || {}, b = r.body || {}, list = [];
+  var items = b.items;
+  if (items !== '' && items !== null && items !== undefined) {
+    var it = items.item;
+    if (it !== null && it !== undefined && it !== '') list = Array.isArray(it) ? it : [it];
+  }
+  var 코드 = 문자열(h.resultCode);
+  return { 코드: 코드, 메시지: 문자열(h.resultMsg), 성공: 코드 === '0000' || 코드 === '00', 전체수: 숫자(b.totalCount), 목록: list };
+}
+function 항목정리(it, 종류) {
+  var id = 숫자(it.contentid);
+  var 주소 = [it.addr1, it.addr2].map(문자열).map(function (s) { return s.trim(); }).filter(Boolean).join(' ');
+  return {
+    종류: 종류, contentid: id === 0 ? null : id, 이름: 문자열(it.title).trim(), 주소: 주소,
+    시작일: 문자열(it.eventstartdate), 종료일: 문자열(it.eventenddate),
+    좌표: 좌표(it.mapx, it.mapy), 사진: 문자열(it.firstimage).trim(), 전화: 문자열(it.tel).trim(),
+    dist: 숫자(it.dist), 거리: null
+  };
+}
+function 축제거르기(항목들, 중심, 시작) {
+  var 결과 = { 남은: [], 끝난: [], 먼: [], 좌표없음: 0 };
+  항목들.forEach(function (it) {
+    if (시작 && it.종료일 && it.종료일 < 시작) { 결과.끝난.push(it); return; }
+    if (!it.좌표) { it.거리 = null; 결과.좌표없음++; 결과.남은.push(it); return; }
+    it.거리 = 중심 ? 하버사인(중심, it.좌표) : null;
+    if (중심 && it.거리 > 먼거리km) { 결과.먼.push(it); return; }
+    결과.남은.push(it);
+  });
+  return 결과;
+}
+window.__순수 = {
+  숫자: 숫자, 좌표: 좌표, 하버사인: 하버사인, 키붙일값: 키붙일값, 키모양: 키모양, 키가리기: 키가리기, XML오류: XML오류,
+  날짜해석: 날짜해석, 날짜목록: 날짜목록, 요일: 요일, 허용범위: 허용범위, WMO: WMO, 투어해석: 투어해석, 항목정리: 항목정리, 축제거르기: 축제거르기
+};
+if (typeof document === 'undefined') return;
+
+/* =====
+   작은 도구
+   ===== */
+function $(s, r) { return (r || document).querySelector(s); }
+function h(tag, attrs) {
+  var e = document.createElement(tag);
+  if (attrs) Object.keys(attrs).forEach(function (k) {
+    var v = attrs[k];
+    if (v === null || v === undefined || v === false) return;
+    if (k === 'class') e.className = v;
+    else if (k === 'text') e.textContent = v;
+    else if (k.slice(0, 2) === 'on') e.addEventListener(k.slice(2), v);
+    else if (v === true) e.setAttribute(k, '');
+    else e.setAttribute(k, v);
+  });
+  for (var i = 2; i < arguments.length; i++) 붙이기(e, arguments[i]);
+  return e;
+}
+function 붙이기(e, c) {
+  if (c === null || c === undefined || c === false) return;
+  if (Array.isArray(c)) { c.forEach(function (x) { 붙이기(e, x); }); return; }
+  e.appendChild(c.nodeType ? c : document.createTextNode(String(c)));
+}
+function 비우고(e, kids) { e.textContent = ''; 붙이기(e, kids); }
+function 지금문자() {
+  var d = new Date();
+  return d.getFullYear() + '-' + 두자리(d.getMonth() + 1) + '-' + 두자리(d.getDate()) + ' ' + 두자리(d.getHours()) + ':' + 두자리(d.getMinutes());
+}
+function 오늘() { return 지금문자().slice(0, 10); }
+function 저장읽기(k) { try { return window.localStorage.getItem(k); } catch (e) { return null; } }
+function 저장쓰기(k, v) { try { window.localStorage.setItem(k, v); return true; } catch (e) { return false; } }
+function 저장지우기(k) { try { window.localStorage.removeItem(k); } catch (e) { /* 무시 */ } }
+function 기간글(a, b) {
+  a = 풀기(a); b = 풀기(b);
+  if (!a && !b) return '기간 정보 없음';
+  return a + ' ~ ' + b;
+}
+function 거리글(km) { return km === null || km === undefined ? '' : (km < 10 ? km.toFixed(1) : Math.round(km)) + 'km'; }
+function 줄임(글, n) { 글 = 문자열(글); return 글.length > n ? 글.slice(0, n) + '…(이하 생략 · 「이 응답 복사」로 전체를 복사합니다)' : 글; }
+
+/* =====
+   날씨 그림 6종(WMO 코드 → 맑음 · 구름 · 흐림 · 비 · 눈 · 소나기/뇌우)
+   ===== */
+var 구름길 = 'M15 35h19a8 8 0 0 0 1-15.9 11 11 0 0 0-21.2 2.6A7 7 0 0 0 15 35z';
+var 햇살 = '<g class="sun"><circle cx="24" cy="24" r="8"/></g><path d="M24 8v4M24 36v4M8 24h4M36 24h4M12.7 12.7l2.8 2.8M32.5 32.5l2.8 2.8M12.7 35.3l2.8-2.8M32.5 15.5l2.8-2.8" fill="none"/>';
+var 그림모음 = {
+  '맑음':햇살,
+  '구름': '<g class="sun"><circle cx="17" cy="17" r="7"/></g><path d="M17 5v3M5 17h3M8.5 8.5l2 2M25.5 8.5l-2 2" fill="none"/><path class="cloud" transform="translate(5 4)" d="' + 구름길 + '"/>',
+  '흐림': '<path class="dark" transform="translate(-5 -5)" d="' + 구름길 + '"/><path class="cloud" transform="translate(3 3)" d="' + 구름길 + '"/>',
+  '비': '<path class="cloud" transform="translate(0 -7)" d="' + 구름길 + '"/><path class="rain" d="M17 34l-2 6M25 34l-2 6M33 34l-2 6"/>',
+  '눈': '<path class="cloud" transform="translate(0 -7)" d="' + 구름길 + '"/><g class="snow"><circle cx="16" cy="36" r="2.4"/><circle cx="25" cy="39" r="2.4"/><circle cx="33" cy="35" r="2.4"/></g>',
+  '소나기': '<path class="dark" transform="translate(0 -8)" d="' + 구름길 + '"/><path class="bolt" d="M26 25l-7 10h6l-3 9 10-13h-6z"/><path class="rain" d="M13 36l-2 5M36 36l-2 5"/>'
+};
+function 날씨그림(그림, 작게, 이름) {
+  var s = h('span', { class: 'wicon ic' + (작게 ? ' s' : ''), 'aria-hidden': 'true' });
+  s.innerHTML = '<svg viewBox="0 0 48 48" width="100%" height="100%" focusable="false">' + (그림모음[그림] || 그림모음['흐림']) + '</svg>';
+  return s;
+}
+
+/* =====
+   상태
+   ===== */
+var 상태 = {
+  모드: '실시간', 키: '', 세대: 0,
+  P: null, 읽힘: false, 문제: [],
+  지명: { 이름: '', 후보: [], 선택: 0, 시도: false },
+  호출: { 지명찾기: null, 날씨: null, 축제: null, 관광지: null },
+  진행: { 지명찾기: false, 날씨: false, 축제: false, 관광지: false },
+  날씨: { 일별: {}, 허용범위: null, 받음: false, 범위밖전체: false },
+  축제: { 원본: null, 전체수: null },
+  관광지: { 원본: null, 전체수: null },
+  담은곳: [], 탭: '축제', 열림: {},
+  확장: { 상태: '미호출', 메시지: '' }, 확장키: '',
+  키안내: false, 도구오류: [], 점검결과: []
+};
+
+/* =====
+   계획.js 읽기(깨져 있어도 도구는 계속 동작합니다)
+   ===== */
+function 정규화(raw) {
+  var 문제 = [];
+  var 객체 = function (v) { return v && typeof v === 'object' && !Array.isArray(v); };
+  var P = {
+    모드: '', 제목: '', 한줄: '', 누구와: '', 하고싶은것: [], 창구: ['날씨', '축제', '관광지'], 하지않을것: [],
+    여행지: { 이름: '', 위도: null, 경도: null }, 날짜: { 시작: '', 끝: '' },
+    화면: { 순서: ['날씨', '목록', '지도', '일정표'], 색조합: '', 첫화면문구: '' }, 일정: []
+  };
+  if (!객체(raw)) return { P: P, 읽힘: false, 문제: ['window.계획이 없거나 객체가 아닙니다'] };
+  var 모름 = Object.keys(raw).filter(function (k) { return 허용최상위.indexOf(k) < 0; });
+  if (모름.length) 문제.push('이름표에 없는 이름: ' + 모름.join(' · '));
+  var 빠짐 = 필수최상위.filter(function (k) { return !(k in raw); });
+  if (빠짐.length) 문제.push('빠진 이름: ' + 빠짐.join(' · '));
+  ['제목', '한줄', '누구와', '모드'].forEach(function (k) {
+    if (k in raw) { if (typeof raw[k] === 'string') P[k] = raw[k]; else 문제.push(k + '은 글자여야 합니다'); }
+  });
+  ['하고싶은것', '하지않을것'].forEach(function (k) {
+    if (k in raw) { if (Array.isArray(raw[k])) P[k] = raw[k].map(문자열); else 문제.push(k + '은 목록([ ])이어야 합니다'); }
+  });
+  if ('창구' in raw) { if (Array.isArray(raw.창구)) P.창구 = raw.창구.map(문자열); else 문제.push('창구는 목록([ ])이어야 합니다'); }
+  if ('여행지' in raw) {
+    if (객체(raw.여행지)) { P.여행지.이름 = 문자열(raw.여행지.이름); P.여행지.위도 = raw.여행지.위도; P.여행지.경도 = raw.여행지.경도; }
+    else 문제.push('여행지는 { 이름, 위도, 경도 }여야 합니다');
+  }
+  if ('날짜' in raw) {
+    if (객체(raw.날짜)) { P.날짜.시작 = 문자열(raw.날짜.시작); P.날짜.끝 = 문자열(raw.날짜.끝); }
+    else 문제.push('날짜는 { 시작, 끝 }이어야 합니다');
+  }
+  if ('화면' in raw) {
+    if (객체(raw.화면)) {
+      if ('순서' in raw.화면) { if (Array.isArray(raw.화면.순서)) P.화면.순서 = raw.화면.순서.map(문자열); else 문제.push('화면.순서는 목록([ ])이어야 합니다'); }
+      P.화면.색조합 = 문자열(raw.화면.색조합); P.화면.첫화면문구 = 문자열(raw.화면.첫화면문구);
+    } else 문제.push('화면은 { 순서, 색조합, 첫화면문구 }여야 합니다');
+  }
+  if ('일정' in raw) {
+    if (Array.isArray(raw.일정)) {
+      P.일정 = raw.일정.map(function (d) {
+        var 항목 = d && Array.isArray(d.항목) ? d.항목 : [];
+        if (!d || !Array.isArray(d.항목)) 문제.push('일정의 각 날은 { 날, 항목: [ ] }여야 합니다');
+        return {
+          날: d ? d.날 : undefined,
+          항목: 항목.map(function (it) {
+            it = it || {};
+            return { 시각: 문자열(it.시각), 이름: 문자열(it.이름), contentid: 문자열(it.contentid).trim(), 메모: 문자열(it.메모) };
+          })
+        };
+      });
+    } else 문제.push('일정은 목록([ ])이어야 합니다');
+  }
+  return { P: P, 읽힘: true, 문제: 문제 };
+}
+
+/* 파생값 */
+function 좌표쌍(v) {
+  var la = 숫자(v.위도), lo = 숫자(v.경도);
+  return la !== null && lo !== null ? { 위도: la, 경도: lo } : null;
+}
+function 중심() {
+  var c = 좌표쌍(상태.P.여행지);
+  if (c) return { 위도: c.위도, 경도: c.경도, 출처: '계획.js' };
+  var G = 상태.지명, 후보 = G.후보[G.선택];
+  return 후보 ? { 위도: 후보.위도, 경도: 후보.경도, 출처: '지명찾기 ' + (G.선택 + 1) + '번 후보' } : null;
+}
+function 오프라인자료() { return window.오프라인응답 || null; }
+function 여행날짜() {
+  var d = 상태.P.날짜;
+  if (날짜해석(d.시작) !== null && 날짜해석(d.끝) !== null && 날짜해석(d.끝) >= 날짜해석(d.시작)) return { 시작: d.시작, 끝: d.끝, 출처: '계획.js' };
+  if (!d.시작 && !d.끝 && 상태.모드 === '오프라인') {
+    var o = 오프라인자료();
+    if (o && o.날짜 && 날짜해석(o.날짜.시작) !== null && 날짜해석(o.날짜.끝) !== null) return { 시작: o.날짜.시작, 끝: o.날짜.끝, 출처: '도구' };
+    var t = o && o.날씨 && o.날씨.응답 && o.날씨.응답.daily && o.날씨.응답.daily.time;
+    if (t && t.length) return { 시작: t[0], 끝: t[t.length - 1], 출처: '도구' };
+  }
+  return null;
+}
+function 일수() { var d = 여행날짜(); return d ? 날짜목록(d.시작, d.끝).length : 0; }
+function 키허용() { return 상태.모드 === '오프라인' || !!상태.키; }
+function 창구씀(n) { return 상태.P.창구.indexOf(n) >= 0; }
+function 순서() {
+  var s = 상태.P.화면.순서.filter(function (n) { return 패널이름.indexOf(n) >= 0; });
+  if (!상태.P.화면.순서.length) s = ['날씨', '목록', '지도', '일정표'];
+  if (s.indexOf('담은 곳') < 0) {
+    var i = s.indexOf('목록');
+    s.splice(i < 0 ? s.length : i + 1, 0, '담은 곳');
+  }
+  return s;
+}
+function 축제결과() {
+  var raw = 상태.축제.원본;
+  if (!raw) return null;
+  var d = 여행날짜();
+  return 축제거르기(raw, 중심(), d ? 압축(d.시작) : '');
+}
+function 관광지결과() {
+  var raw = 상태.관광지.원본;
+  if (!raw) return null;
+  var c = 중심();
+  var 좌표없음 = 0;
+  raw.forEach(function (it) {
+    if (!it.좌표) { 좌표없음++; it.거리 = null; return; }
+    it.거리 = it.dist !== null ? it.dist / 1000 : (c ? 하버사인(c, it.좌표) : null);
+  });
+  return { 남은: raw, 좌표없음: 좌표없음 };
+}
+function 겹침(it, d) {
+  if (!d || !it.시작일 || !it.종료일) return null;
+  return it.시작일 <= 압축(d.끝) && it.종료일 >= 압축(d.시작);
+}
+
+/* =====
+   담은 곳(localStorage frame.app.picked)
+   ===== */
+function 담은곳읽기() {
+  var out = [];
+  try {
+    var a = JSON.parse(저장읽기(담은곳저장) || '[]');
+    if (Array.isArray(a)) a.forEach(function (p) {
+      if (p && typeof p === 'object' && 문자열(p.이름)) out.push({
+        종류: 문자열(p.종류), contentid: 숫자(p.contentid), 이름: 문자열(p.이름), 주소: 문자열(p.주소),
+        시작일: 문자열(p.시작일), 종료일: 문자열(p.종료일), 위도: 숫자(p.위도), 경도: 숫자(p.경도)
+      });
+    });
+  } catch (e) { /* 깨진 값은 비어 있는 것으로 */ }
+  return out;
+}
+function 담은곳쓰기() { 저장쓰기(담은곳저장, JSON.stringify(상태.담은곳)); }
+function 같은곳(p, it) { return p.종류 === it.종류 && p.contentid === it.contentid && p.이름 === it.이름; }
+function 담겼나(it) { return 상태.담은곳.some(function (p) { return 같은곳(p, it); }); }
+function 담기토글(it) {
+  var i = -1;
+  상태.담은곳.forEach(function (p, k) { if (i < 0 && 같은곳(p, it)) i = k; });
+  if (i >= 0) 상태.담은곳.splice(i, 1);
+  else 상태.담은곳.push({
+    종류: it.종류, contentid: it.contentid, 이름: it.이름, 주소: it.주소, 시작일: it.시작일, 종료일: it.종료일,
+    위도: it.좌표 ? it.좌표.위도 : null, 경도: it.좌표 ? it.좌표.경도 : null
+  });
+  담은곳쓰기();
+  갱신();
+}
+
+/* =====
+   요청 · 응답 기록
+   ===== */
+function 기록완성(rec) {
+  if (rec.상태 === null) {
+    rec.판정 = 'fix';
+    rec.요약 = rec.오류 || 연결실패뜻;
+    return rec;
+  }
+  var 뜻 = 상태뜻[rec.상태] || (rec.상태 >= 500 ? '서버 오류' : '그 밖의 상태 코드');
+  rec.요약 = rec.상태 + ' ' + 뜻;
+  rec.판정 = rec.상태 === 200 ? 'ok' : 'fix';
+  var 글 = 문자열(rec.원문);
+  if (/^\s*</.test(글)) {
+    var x = XML오류(글);
+    rec.xml = x;
+    rec.판정 = 'fix';
+    var 이름 = x.인증메시지 || x.오류메시지 || '알 수 없는 XML 응답';
+    rec.요약 = rec.상태 + ' ' + 뜻 + ' · XML 오류: ' + 이름 + (x.코드 ? ' (코드 ' + x.코드 + ')' : '');
+    if (코드뜻[x.코드]) rec.오류 = 코드뜻[x.코드];
+  } else if (글) {
+    try { rec.데이터 = JSON.parse(글); } catch (e) {
+      rec.데이터 = null;
+      if (rec.상태 === 200) { rec.판정 = 'fix'; rec.오류 = '응답이 JSON이 아닙니다'; rec.요약 = rec.상태 + ' ' + 뜻 + ' · JSON이 아닌 응답'; }
+    }
+  }
+  return rec;
+}
+async function 가져오기(이름, 실제주소, 표시주소, 키값) {
+  var rec = { 이름: 이름, 출처: '실시간', 주소: 키가리기(표시주소, 키값), 상태: null, 요약: '', 판정: 'unk', ms: null, 원문: '', 데이터: null, 오류: '', 시각: 지금문자() };
+  var t0 = Date.now();
+  var ctl = typeof AbortController === 'function' ? new AbortController() : null;
+  var 타이머 = setTimeout(function () { if (ctl) ctl.abort(); }, 15000);
+  try {
+    var r = await fetch(실제주소, ctl ? { signal: ctl.signal } : undefined);
+    rec.상태 = r.status;
+    rec.원문 = await r.text();
+  } catch (e) {
+    if (rec.상태 === null) rec.오류 = (e && e.name === 'AbortError') ? '15초 안에 응답이 오지 않았습니다 — 연결 실패 또는 CORS일 수 있습니다' : 연결실패뜻;
+    else rec.오류 = '응답 본문을 끝까지 읽지 못했습니다';
+  }
+  clearTimeout(타이머);
+  rec.ms = Date.now() - t0;
+  rec.원문 = 키가리기(rec.원문, 키값);
+  return 기록완성(rec);
+}
+function 오프라인기록(이름, 부분, 데이터) {
+  var o = 오프라인자료();
+  return {
+    이름: 이름, 출처: '오프라인', 주소: 부분.요청 || '(오프라인 응답 파일)', 상태: 200, 요약: '200 성공 (오프라인 응답 파일)', 판정: 'ok',
+    ms: 0, 원문: JSON.stringify(데이터), 데이터: 데이터, 오류: '', 시각: o && o.만든시각 ? o.만든시각 + ' (만든 시각)' : ''
+  };
+}
+function 오류기록(이름, 이유, 출처) {
+  return { 이름: 이름, 출처: 출처 || '실시간', 주소: '(부르지 않았습니다)', 상태: null, 요약: 이유, 판정: 'fix', ms: null, 원문: '', 데이터: null, 오류: 이유, 시각: 지금문자() };
+}
+function 사유(r) {
+  if (r.오류 && r.요약.indexOf(r.오류) < 0) return r.요약 + ' — ' + r.오류;
+  return r.요약;
+}
+function 예쁘게(rec) {
+  if (rec.데이터 !== null && rec.데이터 !== undefined) { try { return JSON.stringify(rec.데이터, null, 2); } catch (e) { /* 원문 */ } }
+  return rec.원문;
+}
+
+/* =====
+   창구 4개
+   ===== */
+var 지명마지막 = 0;
+async function 지명간격() {
+  var 기다림 = 지명마지막 + 1000 - Date.now();
+  지명마지막 = Date.now() + Math.max(0, 기다림);
+  if (기다림 > 0) await new Promise(function (r) { setTimeout(r, 기다림); });
+}
+function 지명캐시읽기(이름) {
+  try { var v = JSON.parse(저장읽기(지명저장 + 이름) || 'null'); if (v && Array.isArray(v.응답)) return v; } catch (e) { /* 없음 */ }
+  return null;
+}
+function 후보만들기(arr) {
+  return (Array.isArray(arr) ? arr : []).map(function (c) {
+    return { 위도: 숫자(c.lat), 경도: 숫자(c.lon), 이름: 문자열(c.display_name) };
+  }).filter(function (c) { return c.위도 !== null && c.경도 !== null; });
+}
+var 창구 = {
+  async 지명찾기(세대, 강제) {
+    var 이름 = 상태.P.여행지.이름.trim();
+    var G = 상태.지명;
+    G.시도 = true;
+    if (!이름) { G.이름 = ''; G.후보 = []; 상태.호출.지명찾기 = 오류기록('지명찾기', '여행지 이름이 비어 있어 부르지 않았습니다'); return; }
+    G.이름 = 이름;
+    상태.진행.지명찾기 = true; 갱신();
+    var rec, 후보 = null;
+    if (상태.모드 === '오프라인') {
+      var o = 오프라인자료(), 부분 = o && o.지명 && o.지명[이름];
+      if (부분) { 후보 = 부분.응답; rec = 오프라인기록('지명찾기', 부분, 부분.응답); }
+      else rec = 오류기록('지명찾기', "오프라인 응답에 '" + 이름 + "' 지명이 없습니다 (저장된 지명: " + (Object.keys((o && o.지명) || {}).join(' · ') || '없음') + ')', '오프라인');
+    } else {
+      var 캐시 = 강제 ? null : 지명캐시읽기(이름);
+      if (캐시) {
+        후보 = 캐시.응답;
+        rec = { 이름: '지명찾기', 출처: '저장된 결과', 주소: 캐시.요청 || '(저장된 결과)', 상태: 200, 요약: '저장된 결과를 씀 — 다시 부르지 않았습니다 (frame.app.geo:' + 이름 + ')', 판정: 'ok', ms: 0, 원문: JSON.stringify(후보), 데이터: 후보, 오류: '', 시각: 캐시.시각 || '' };
+      } else {
+        await 지명간격();
+        var 주소 = 'https://nominatim.openstreetmap.org/search?q=' + encodeURIComponent(이름) + '&format=json&limit=5&countrycodes=kr&accept-language=ko';
+        rec = await 가져오기('지명찾기', 주소, 주소, '');
+        if (rec.판정 === 'ok' && Array.isArray(rec.데이터)) {
+          후보 = rec.데이터;
+          if (후보.length) 저장쓰기(지명저장 + 이름, JSON.stringify({ 요청: 주소, 응답: 후보, 시각: 지금문자() }));
+        } else if (rec.판정 === 'ok') { rec.판정 = 'fix'; rec.오류 = '응답이 목록([ ])이 아닙니다'; }
+      }
+    }
+    if (세대 !== 상태.세대) return;
+    상태.진행.지명찾기 = false;
+    상태.호출.지명찾기 = rec;
+    G.후보 = 후보만들기(후보); G.선택 = 0;
+    if (rec.판정 === 'ok' && !G.후보.length) rec.오류 = rec.오류 || '후보 0건 — 이름을 바꿔 봅니다';
+  },
+
+  async 날씨(세대) {
+    var c = 중심(), d = 여행날짜(), ds = d ? 날짜목록(d.시작, d.끝) : [];
+    var W = 상태.날씨;
+    W.일별 = {}; W.허용범위 = null; W.받음 = false; W.범위밖전체 = false;
+    if (!c || !ds.length) {
+      상태.호출.날씨 = 오류기록('날씨', !c ? '여행지 좌표가 없어 부르지 않았습니다' : '여행 날짜가 올바르지 않아 부르지 않았습니다');
+      return;
+    }
+    상태.진행.날씨 = true; 갱신();
+    var rec;
+    if (상태.모드 === '오프라인') {
+      var o = 오프라인자료(), 부분 = o && o.날씨;
+      if (부분 && 부분.응답 && 부분.응답.daily) {
+        rec = 오프라인기록('날씨', 부분, 부분.응답);
+        var t = 부분.응답.daily.time || [];
+        W.허용범위 = t.length ? { 부터: t[0], 까지: t[t.length - 1] } : null;
+      } else rec = 오류기록('날씨', '오프라인 응답에 날씨가 없습니다 (오프라인응답/날씨.js)', '오프라인');
+    } else {
+      var 요청 = function (s, e) {
+        var 주소 = 'https://api.open-meteo.com/v1/forecast?latitude=' + c.위도 + '&longitude=' + c.경도 +
+          '&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max,weather_code&timezone=Asia/Seoul&start_date=' + s + '&end_date=' + e;
+        return 가져오기('날씨', 주소, 주소, '');
+      };
+      rec = await 요청(ds[0], ds[ds.length - 1]);
+      if (rec.상태 === 400) {
+        var 범위 = 허용범위(rec.데이터 && rec.데이터.reason);
+        if (범위) {
+          W.허용범위 = 범위;
+          var s2 = ds[0] > 범위.부터 ? ds[0] : 범위.부터;
+          var e2 = ds[ds.length - 1] < 범위.까지 ? ds[ds.length - 1] : 범위.까지;
+          if (s2 <= e2) { var 첫째 = rec; rec = await 요청(s2, e2); rec.이전 = 첫째; }
+          else { rec.범위밖전체 = true; }
+        }
+      }
+    }
+    if (세대 !== 상태.세대) return;
+    상태.진행.날씨 = false;
+    상태.호출.날씨 = rec;
+    if (rec.판정 === 'ok' && !(rec.데이터 && rec.데이터.daily && Array.isArray(rec.데이터.daily.time))) { rec.판정 = 'fix'; rec.오류 = '응답에 daily.time이 없습니다'; rec.요약 += ' · daily 없음'; }
+    if (rec.판정 === 'ok' && rec.데이터 && rec.데이터.daily && Array.isArray(rec.데이터.daily.time)) {
+      var dl = rec.데이터.daily;
+      dl.time.forEach(function (day, i) {
+        var w = WMO(dl.weather_code ? dl.weather_code[i] : null);
+        W.일별[day] = {
+          날짜: day, 최고: 숫자(dl.temperature_2m_max && dl.temperature_2m_max[i]), 최저: 숫자(dl.temperature_2m_min && dl.temperature_2m_min[i]),
+          강수확률: 숫자(dl.precipitation_probability_max && dl.precipitation_probability_max[i]), 코드: 숫자(dl.weather_code && dl.weather_code[i]),
+          이름: w.이름, 그림: w.그림
+        };
+      });
+      W.받음 = true;
+    } else if (rec.범위밖전체) {
+      W.받음 = true; W.범위밖전체 = true;
+    }
+  },
+
+  async 축제(세대) {
+    var d = 여행날짜();
+    if (!d) { 상태.호출.축제 = 오류기록('축제', '여행 시작일이 올바르지 않아 부르지 않았습니다'); return; }
+    상태.진행.축제 = true; 갱신();
+    var rec;
+    if (상태.모드 === '오프라인') {
+      var o = 오프라인자료(), 부분 = o && o.축제;
+      rec = 부분 && 부분.응답 ? 오프라인기록('축제', 부분, 부분.응답) : 오류기록('축제', '오프라인 응답에 축제가 없습니다 (오프라인응답/축제.js)', '오프라인');
+    } else {
+      var 공통 = '&MobileOS=ETC&MobileApp=FRAMEtrip&_type=json&numOfRows=100&pageNo=1&eventStartDate=' + 압축(d.시작) + '&arrange=C';
+      var 실제 = 투어기본 + 'searchFestival2?serviceKey=' + 키붙일값(상태.키) + 공통;
+      var 표시 = 투어기본 + 'searchFestival2?serviceKey=●●●●' + 공통;
+      rec = await 가져오기('축제', 실제, 표시, 상태.키);
+    }
+    if (세대 !== 상태.세대) return;
+    상태.진행.축제 = false;
+    상태.호출.축제 = rec;
+    상태.축제.원본 = null;
+    투어받기(rec, '축제', 상태.축제);
+  },
+
+  async 관광지(세대) {
+    var c = 중심();
+    if (!c) { 상태.호출.관광지 = 오류기록('관광지', '여행지 좌표가 없어 부르지 않았습니다'); return; }
+    상태.진행.관광지 = true; 갱신();
+    var rec;
+    if (상태.모드 === '오프라인') {
+      var o = 오프라인자료(), 부분 = o && o.관광지;
+      rec = 부분 && 부분.응답 ? 오프라인기록('관광지', 부분, 부분.응답) : 오류기록('관광지', '오프라인 응답에 관광지가 없습니다 (오프라인응답/관광지.js)', '오프라인');
+    } else {
+      var 공통 = '&MobileOS=ETC&MobileApp=FRAMEtrip&_type=json&mapX=' + c.경도 + '&mapY=' + c.위도 + '&radius=' + 반경m + '&contentTypeId=12&arrange=E&numOfRows=50&pageNo=1';
+      var 실제 = 투어기본 + 'locationBasedList2?serviceKey=' + 키붙일값(상태.키) + 공통;
+      var 표시 = 투어기본 + 'locationBasedList2?serviceKey=●●●●' + 공통;
+      rec = await 가져오기('관광지', 실제, 표시, 상태.키);
+    }
+    if (세대 !== 상태.세대) return;
+    상태.진행.관광지 = false;
+    상태.호출.관광지 = rec;
+    상태.관광지.원본 = null;
+    투어받기(rec, '관광지', 상태.관광지);
+  }
+};
+function 투어받기(rec, 종류, 저장칸) {
+  if (rec.판정 !== 'ok' || !rec.데이터) return;
+  var r = 투어해석(rec.데이터);
+  if (r.오류) { rec.판정 = 'fix'; rec.오류 = ''; rec.요약 += ' · ' + r.오류; return; }
+  if (!r.성공) { rec.판정 = 'fix'; rec.오류 = ''; rec.요약 += ' · 결과 코드 ' + r.코드 + ' ' + r.메시지; return; }
+  저장칸.원본 = r.목록.map(function (it) { return 항목정리(it, 종류); });
+  저장칸.전체수 = r.전체수;
+}
+async function 전체부르기(옵션) {
+  var 세대 = ++상태.세대;
+  var 지명다시 = !옵션 || 옵션.지명 !== false;
+  상태.날씨 = { 일별: {}, 허용범위: null, 받음: false, 범위밖전체: false };
+  상태.축제 = { 원본: null, 전체수: null };
+  상태.관광지 = { 원본: null, 전체수: null };
+  ['날씨', '축제', '관광지'].forEach(function (n) { 상태.호출[n] = null; 상태.진행[n] = false; });
+  if (지명다시) {
+    상태.지명 = { 이름: '', 후보: [], 선택: 0, 시도: false };
+    상태.호출.지명찾기 = null; 상태.진행.지명찾기 = false;
+    if (!좌표쌍(상태.P.여행지)) await 창구.지명찾기(세대, false);
+    else 상태.지명.시도 = true;
+  }
+  if (세대 !== 상태.세대) return;
+  갱신();
+  var 일 = [];
+  if (창구씀('날씨')) 일.push(창구.날씨(세대));
+  if (창구씀('축제') && 키허용()) 일.push(창구.축제(세대));
+  if (창구씀('관광지') && 키허용()) 일.push(창구.관광지(세대));
+  await Promise.all(일.map(function (p) { return p.catch(function (e) { 도구오류추가('창구 호출', e); }); }));
+  갱신();
+}
+async function 수동부르기(이름) {
+  if ((이름 === '축제' || 이름 === '관광지') && !키허용()) {
+    상태.키안내 = true; 갱신();
+    var 입력 = $('#키입력'); if (입력) 입력.focus();
+    return;
+  }
+  var 세대 = 상태.세대;
+  try {
+    if (이름 === '지명찾기') { await 창구.지명찾기(세대, true); await 전체부르기({ 지명: false }); }
+    else await 창구[이름](세대);
+  } catch (e) { 도구오류추가(이름, e); }
+  갱신();
+}
+function 도구오류추가(곳, e) {
+  var 글 = 곳 + ': ' + (e && e.message ? e.message : String(e));
+  if (상태.도구오류.indexOf(글) < 0) 상태.도구오류.push(글);
+  if (window.console) console.error(곳, e);
+  갱신();
+}
+
+/* =====
+   일정 해석 · 장소 찾기
+   ===== */
+function 장소찾기(id) {
+  var key = 문자열(id).trim();
+  if (!key) return null;
+  var 찾음 = null;
+  상태.담은곳.forEach(function (p) {
+    if (!찾음 && p.contentid !== null && String(p.contentid) === key) 찾음 = { 출처: '담은 곳', 이름: p.이름, 좌표: p.위도 !== null && p.경도 !== null ? { 위도: p.위도, 경도: p.경도 } : null };
+  });
+  [상태.축제.원본, 상태.관광지.원본].forEach(function (list) {
+    if (!찾음 && list) list.forEach(function (it) {
+      if (!찾음 && it.contentid !== null && String(it.contentid) === key) 찾음 = { 출처: it.종류 + ' 응답', 이름: it.이름, 좌표: it.좌표 };
+    });
+  });
+  return 찾음;
+}
+function 일정해석() {
+  var d = 여행날짜();
+  return 상태.P.일정.map(function (일) {
+    var 날 = 일.날;
+    var 날짜 = d && typeof 날 === 'number' && 날 >= 1 ? 날짜문자(날짜해석(d.시작) + (날 - 1) * 86400000) : '';
+    return {
+      날: 날, 날짜: 날짜,
+      항목: 일.항목.map(function (it) {
+        var f = 장소찾기(it.contentid);
+        return { 시각: it.시각, 이름: it.이름, contentid: it.contentid, 메모: it.메모, 찾음: f ? f.출처 : '', 위도: f && f.좌표 ? f.좌표.위도 : null, 경도: f && f.좌표 ? f.좌표.경도 : null };
+      })
+    };
+  });
+}
+function 날씨배열() {
+  var d = 여행날짜();
+  return (d ? 날짜목록(d.시작, d.끝, 16) : []).map(function (day) {
+    var w = 상태.날씨.일별[day];
+    return w ? { 날짜: day, 예보: true, 최고: w.최고, 최저: w.최저, 강수확률: w.강수확률, 코드: w.코드, 이름: w.이름 } : { 날짜: day, 예보: false, 이름: 상태.날씨.받음 ? '예보 없음' : '미수신' };
+  });
+}
+
+/* =====
+   점검 14항목
+   ===== */
+function 통과(설명) { return { 판정: '통과', 설명: 설명 }; }
+function 고침(설명) { return { 판정: '고칠 곳', 설명: 설명 }; }
+function 미정(설명) { return { 판정: '미판정', 설명: 설명 }; }
+function 정보(설명) { return { 판정: '정보', 설명: 설명 }; }
+function 점검() {
+  var P = 상태.P, R = [];
+  function 더(번호, 이름, r) { R.push({ 번호: 번호, 이름: 이름, 판정: r.판정, 설명: r.설명 }); }
+  var 오류파일 = function (re) { return window.__오류.filter(function (e) { return re.test(e.파일); }); };
+  var 로드못함 = function (re) { return window.__로드실패.some(function (s) { return re.test(s); }); };
+  var 모드 = 상태.모드, c = 중심(), dts = 여행날짜();
+
+  /* ① */
+  (function () {
+    var 오류 = 오류파일(/계획\.js/);
+    if (로드못함(/계획\.js/)) 더('①', '계획.js 읽힘', 고침('계획.js를 읽지 못했습니다. 여행도구.html과 같은 폴더에 계획.js가 있어야 합니다'));
+    else if (오류.length) 더('①', '계획.js 읽힘', 고침('계획.js에 오류가 있습니다. ' + 오류[0].줄 + '줄: ' + 오류[0].메시지));
+    else if (!상태.읽힘) 더('①', '계획.js 읽힘', 고침((상태.문제[0] || 'window.계획이 없습니다') + ' — 계획.js 첫 줄이 window.계획 = { … }; 이어야 하고, 문법 오류가 있으면 읽히지 않습니다' + (window.__오류.length ? ' (스크립트 오류 ' + window.__오류.length + '건: ' + (window.__오류[0].메시지 || '내용 없음') + ')' : '')));
+    else if (상태.문제.length) 더('①', '계획.js 읽힘', 고침(상태.문제.slice(0, 3).join(' · ')));
+    else 더('①', '계획.js 읽힘', 통과('window.계획을 읽었고 이름이 이름표와 맞습니다'));
+  })();
+
+  /* ② */
+  (function () {
+    var v = P.여행지;
+    if (!v.이름 && !좌표쌍(v)) { 더('②', '여행지 좌표', 고침('여행지 이름이 비어 있습니다. 계획.js의 여행지.이름을 채웁니다')); return; }
+    if (c) {
+      if (c.위도 < 33 || c.위도 > 39 || c.경도 < 124 || c.경도 > 132) { 더('②', '여행지 좌표', 고침('좌표가 한국 범위 밖입니다 (위도 ' + c.위도 + ' · 경도 ' + c.경도 + '). 위도 33~39, 경도 124~132 안이어야 합니다')); return; }
+      더('②', '여행지 좌표', 통과('위도 ' + c.위도 + ' · 경도 ' + c.경도 + ' (' + c.출처 + ')'));
+      return;
+    }
+    if (상태.진행.지명찾기 || !상태.지명.시도) { 더('②', '여행지 좌표', 미정('지명찾기를 부르는 중이거나 아직 부르지 않았습니다')); return; }
+    var r = 상태.호출.지명찾기;
+    더('②', '여행지 좌표', 고침("'" + v.이름 + "'의 좌표를 얻지 못했습니다 (" + (r ? (r.오류 || r.요약) : '결과 없음') + '). 이름을 바꾸거나 위도 · 경도를 계획.js에 적습니다'));
+  })();
+
+  /* ③ */
+  (function () {
+    var d = P.날짜, s = 날짜해석(d.시작), e = 날짜해석(d.끝);
+    if (!d.시작 && !d.끝 && dts && dts.출처 === '도구') { 더('③', '날짜', 통과('날짜를 비워 두어 도구가 오프라인 응답의 날짜(' + dts.시작 + ' ~ ' + dts.끝 + ' · ' + 일수() + '일)를 씁니다')); return; }
+    if (s === null || e === null) { 더('③', '날짜', 고침('날짜는 "YYYY-MM-DD" 형식입니다 (시작 "' + d.시작 + '" · 끝 "' + d.끝 + '"). 계획.js의 날짜를 고칩니다')); return; }
+    if (e < s) { 더('③', '날짜', 고침('끝 날짜(' + d.끝 + ')가 시작(' + d.시작 + ')보다 앞입니다')); return; }
+    if (모드 === '실시간' && d.시작 < 오늘()) { 더('③', '날짜', 고침('시작 날짜(' + d.시작 + ')가 오늘(' + 오늘() + ')보다 앞입니다. 오늘 이후로 바꿉니다')); return; }
+    더('③', '날짜', 통과(d.시작 + ' ~ ' + d.끝 + ' (' + 일수() + '일)' + (모드 === '오프라인' ? ' · 오프라인이라 오늘 이후 여부는 보지 않았습니다' : '')));
+  })();
+
+  /* ④ */
+  (function () {
+    var 나쁜창구 = P.창구.filter(function (n) { return 창구이름.indexOf(n) < 0; });
+    var 나쁜순서 = P.화면.순서.filter(function (n) { return 패널이름.indexOf(n) < 0; });
+    var 색 = P.화면.색조합, 나쁜색 = 색 && 색조합이름.indexOf(색) < 0;
+    var 말 = [];
+    if (나쁜창구.length) 말.push('창구에 이름표에 없는 이름: ' + 나쁜창구.join(' · '));
+    if (나쁜순서.length) 말.push('화면.순서에 이름표에 없는 이름: ' + 나쁜순서.join(' · ') + ' (키 · 창구 · 점검은 고정 칸이라 순서에 넣지 않습니다)');
+    if (나쁜색) 말.push('색조합 "' + 색 + '"은 이름표에 없습니다 (' + 색조합이름.join(' · ') + ')');
+    if (!P.창구.length) 말.push('창구가 비어 있습니다 (날씨 · 축제 · 관광지 가운데 쓸 것)');
+    if (말.length) 더('④', '이름표의 이름', 고침(말.join(' / ')));
+    else 더('④', '이름표의 이름', 통과('창구 ' + P.창구.length + '개 · 패널 ' + P.화면.순서.length + '개 · 색조합(' + (색 || '바다 · 기본') + ') 모두 이름표에 있습니다'));
+  })();
+
+  /* ⑤ */
+  (function () {
+    if (모드 === '오프라인') { 더('⑤', '키 상태', 정보('오프라인 모드입니다. 키 없이 오프라인응답 파일을 읽습니다')); return; }
+    if (!상태.키) { 더('⑤', '키 상태', 미정('키가 없어 축제 · 관광지를 부르지 않았습니다. 키 칸에 넣습니다')); return; }
+    var 호출들 = ['축제', '관광지'].map(function (n) { return 상태.호출[n]; }).filter(Boolean);
+    var 나쁨 = 호출들.filter(function (r) { return r.xml || r.상태 === 401 || r.상태 === 403; });
+    if (나쁨.length) { 더('⑤', '키 상태', 고침('키 오류: ' + 사유(나쁨[0]))); return; }
+    if (호출들.some(function (r) { return r.판정 === 'ok'; })) 더('⑤', '키 상태', 통과('키가 저장돼 있고(' + 상태.키.length + '자 · ' + 키모양(상태.키) + ') 호출이 통과했습니다'));
+    else 더('⑤', '키 상태', 미정('키는 있으나 아직 호출 결과가 없습니다'));
+  })();
+
+  /* ⑥ ⑦ */
+  (function () {
+    var r = 상태.호출.날씨;
+    if (!창구씀('날씨')) { 더('⑥', '날씨 수신', 미정('계획.창구에 날씨가 없어 부르지 않았습니다')); 더('⑦', '예보 없음 날짜', 미정('날씨를 부르지 않았습니다')); return; }
+    if (상태.진행.날씨 || !r) { 더('⑥', '날씨 수신', 미정('아직 받지 못했습니다')); 더('⑦', '예보 없음 날짜', 미정('날씨를 받은 뒤에 셉니다')); return; }
+    if (상태.날씨.받음) {
+      var 받은 = Object.keys(상태.날씨.일별).length;
+      더('⑥', '날씨 수신', 통과(r.요약 + ' · 예보 ' + 받은 + '일 받음'));
+      var 없음 = 날씨배열().filter(function (x) { return !x.예보; });
+      var 범위 = 상태.날씨.허용범위;
+      더('⑦', '예보 없음 날짜', 정보('예보 없음 ' + 없음.length + '일' + (없음.length ? ' (' + 없음.map(function (x) { return x.날짜; }).join(' · ') + ')' : '') + (범위 ? (모드 === '오프라인' ? ' · 오프라인 응답 범위 ' : ' · 허용 범위 ') + 범위.부터 + ' ~ ' + 범위.까지 : '')));
+    } else {
+      더('⑥', '날씨 수신', 고침('날씨를 받지 못했습니다: ' + 사유(r)));
+      더('⑦', '예보 없음 날짜', 미정('날씨를 받지 못해 세지 못했습니다'));
+    }
+  })();
+
+  /* ⑧ ⑨ */
+  function 투어항목(번호, 이름, 종류) {
+    var r = 상태.호출[종류];
+    if (!창구씀(종류)) { 더(번호, 이름, 미정('계획.창구에 ' + 종류 + '가 없어 부르지 않았습니다')); return; }
+    if (!키허용()) { 더(번호, 이름, 미정('키가 없어 부르지 않았습니다. 키를 넣거나 오프라인으로 봅니다')); return; }
+    if (상태.진행[종류] || !r) { 더(번호, 이름, 미정('아직 받지 못했습니다')); return; }
+    var 칸 = 상태[종류];
+    if (r.판정 !== 'ok' || !칸.원본) { 더(번호, 이름, 고침(종류 + '를 받지 못했습니다: ' + 사유(r))); return; }
+    if (종류 === '축제') {
+      var f = 축제결과();
+      var 줄 = '받은 ' + 칸.원본.length + '건 → 남은 ' + f.남은.length + '건 (끝난 축제 ' + f.끝난.length + ' · 먼 축제 ' + f.먼.length + ' · 좌표 없음 ' + f.좌표없음 + ')';
+      if (!f.남은.length) 더(번호, 이름, 고침(줄 + '. 남은 축제가 없습니다. 여행 날짜나 여행지를 확인합니다'));
+      else 더(번호, 이름, 통과(줄));
+    } else {
+      var g = 관광지결과();
+      if (!g.남은.length) 더(번호, 이름, 고침('받은 0건. 여행지 좌표를 확인합니다'));
+      else 더(번호, 이름, 통과('받은 ' + 칸.원본.length + '건 (좌표 없음 ' + g.좌표없음 + ')'));
+    }
+  }
+  투어항목('⑧', '축제 수신 · 거른 개수', '축제');
+  투어항목('⑨', '관광지 수신', '관광지');
+
+  /* ⑩ */
+  (function () {
+    var f = 축제결과(), g = 관광지결과();
+    var 담은없음 = 상태.담은곳.filter(function (p) { return p.위도 === null || p.경도 === null; }).length;
+    if (!f && !g && !상태.담은곳.length) { 더('⑩', '좌표 없는 항목', 미정('받은 축제 · 관광지나 담은 곳이 없어 세지 못했습니다')); return; }
+    더('⑩', '좌표 없는 항목', 정보('축제 ' + (f ? f.좌표없음 : '미수신') + ' · 관광지 ' + (g ? g.좌표없음 : '미수신') + ' · 담은 곳 ' + 담은없음 + ' (지도에서 뺍니다)'));
+  })();
+
+  /* ⑪ */
+  (function () {
+    var 일정 = 일정해석(), 전체 = [];
+    일정.forEach(function (d) { d.항목.forEach(function (it) { 전체.push({ 날: d.날, it: it }); }); });
+    if (!전체.length) { 더('⑪', '일정 장소가 응답에 있음', 미정('일정이 비어 있습니다')); return; }
+    var 없음 = 전체.filter(function (x) { return !x.it.찾음; });
+    if (!없음.length) { 더('⑪', '일정 장소가 응답에 있음', 통과('일정 ' + 전체.length + '곳의 contentid가 모두 담은 곳 · 응답에 있습니다')); return; }
+    var 이름들 = 없음.slice(0, 4).map(function (x) { return (x.it.이름 || '(이름 없음)') + (x.it.contentid ? '(' + x.it.contentid + ')' : '(contentid 없음)'); }).join(' · ');
+    var 도착 = (!창구씀('축제') || 상태.축제.원본 !== null) && (!창구씀('관광지') || 상태.관광지.원본 !== null);
+    if (!도착 && !상태.담은곳.length) { 더('⑪', '일정 장소가 응답에 있음', 미정('대조할 응답이 모두 도착하지 않았습니다. 대조하지 못한 곳 ' + 없음.length + '개: ' + 이름들)); return; }
+    더('⑪', '일정 장소가 응답에 있음', 고침('응답에 없는 장소 ' + 없음.length + '곳 — 지어낸 장소일 수 있습니다: ' + 이름들 + '. 응답에 있던 contentid만 일정에 넣습니다'));
+  })();
+
+  /* ⑫ */
+  (function () {
+    var 일정 = P.일정;
+    if (!일정.length) { 더('⑫', '일정 날짜가 여행 날짜 안', 미정('일정이 비어 있습니다')); return; }
+    var n = 일수();
+    if (!n) { 더('⑫', '일정 날짜가 여행 날짜 안', 미정('여행 날짜가 올바르지 않아 비교하지 못했습니다')); return; }
+    var 나쁨 = [], 본 = {};
+    일정.forEach(function (d) {
+      if (typeof d.날 !== 'number' || d.날 !== Math.floor(d.날) || d.날 < 1 || d.날 > n) 나쁨.push('날 ' + 문자열(d.날));
+      else if (본[d.날]) 나쁨.push('날 ' + d.날 + ' 중복');
+      else 본[d.날] = true;
+    });
+    if (나쁨.length) 더('⑫', '일정 날짜가 여행 날짜 안', 고침('여행은 ' + n + '일입니다. 맞지 않는 날: ' + 나쁨.join(' · ')));
+    else 더('⑫', '일정 날짜가 여행 날짜 안', 통과('일정 ' + 일정.length + '일이 모두 여행 ' + n + '일 안에 있습니다'));
+  })();
+
+  /* ⑬ */
+  (function () {
+    var 오류 = 오류파일(/확장\.js/);
+    var e = 상태.확장;
+    if (로드못함(/확장\.js/)) 더('⑬', '확장.js 오류 없음', 고침('확장.js를 읽지 못했습니다. 여행도구.html과 같은 폴더에 확장.js가 있어야 합니다'));
+    else if (오류.length) 더('⑬', '확장.js 오류 없음', 고침('확장.js에 오류가 있습니다. ' + 오류[0].줄 + '줄: ' + 오류[0].메시지));
+    else if (window.__오류.some(function (x) { return !x.파일 || /^Script error/i.test(x.메시지); })) 더('⑬', '확장.js 오류 없음', 고침('브라우저가 파일 이름을 숨긴 스크립트 오류가 ' + window.__오류.filter(function (x) { return !x.파일; }).length + '건 있습니다. 확장.js(단추 · 이벤트 처리 함수) 또는 계획.js의 문법 오류일 수 있습니다'));
+    else if (e.상태 === '오류') 더('⑬', '확장.js 오류 없음', 고침('확장 함수를 부르다 오류가 났습니다: ' + e.메시지));
+    else if (e.상태 === '없음') 더('⑬', '확장.js 오류 없음', 고침('window.여행앱확장 함수가 없습니다. 확장.js에 문법 오류가 있거나 틀이 지워졌습니다'));
+    else if (e.상태 === '그림') 더('⑬', '확장.js 오류 없음', 통과('확장 칸에 내용이 그려졌고 오류가 없습니다'));
+    else if (e.상태 === '비어있음') 더('⑬', '확장.js 오류 없음', 미정('확장 함수는 오류 없이 실행됐지만 칸이 비어 있습니다 (블록 4 전이면 정상)'));
+    else 더('⑬', '확장.js 오류 없음', 미정('아직 확장 함수를 부르지 않았습니다'));
+  })();
+
+  /* ⑭ */
+  (function () {
+    var 소스 = [];
+    try { 소스.push(['계획.js', JSON.stringify(window.계획 || {})]); } catch (e) { /* 순환 등 */ }
+    if (typeof window.여행앱확장 === 'function') { try { 소스.push(['확장.js', Function.prototype.toString.call(window.여행앱확장)]); } catch (e) { /* 무시 */ } }
+    var 후보 = 키변형(상태.키), 나쁨 = [], 길이 = 0;
+    소스.forEach(function (s) {
+      길이 += s[1].length;
+      if (후보.some(function (v) { return s[1].indexOf(v) >= 0; })) 나쁨.push(s[0] + '에 저장된 키가 들어 있습니다');
+      else if (/[A-Za-z0-9%+\/=]{40,}/.test(s[1])) 나쁨.push(s[0] + '에 키처럼 보이는 긴 글자(영문 · 숫자 · % + / = 40자 이상)가 있습니다');
+    });
+    if (!소스.length) 더('⑭', '파일에 키 문자열 없음', 미정('검사할 계획.js · 확장.js 글이 없습니다'));
+    else if (나쁨.length) 더('⑭', '파일에 키 문자열 없음', 고침(나쁨.join(' / ') + '. 키는 화면의 키 칸에만 넣고 파일에서 지웁니다'));
+    else 더('⑭', '파일에 키 문자열 없음', 통과('계획.js · 확장.js 글 ' + 길이 + '자를 검사했고 키가 없습니다'));
+  })();
+
+  return R;
+}
+
+/* =====
+   결과 복사 글(키는 넣지 않습니다)
+   ===== */
+function 복사글() {
+  var R = 상태.점검결과.length ? 상태.점검결과 : 점검();
+  var n = function (k) { return R.filter(function (r) { return r.판정 === k; }).length; };
+  var P = 상태.P, c = 중심(), d = 여행날짜(), L = [];
+  L.push('[여행 앱 점검 결과] ' + 지금문자() + ' · ' + 상태.모드 + ' 모드');
+  L.push('고칠 곳 ' + n('고칠 곳') + ' · 통과 ' + n('통과') + ' · 미판정 ' + n('미판정') + ' · 정보 ' + n('정보') + ' (' + R.length + '항목)');
+  R.forEach(function (r) { L.push(r.번호 + ' ' + r.이름 + ' · ' + r.판정 + ' — ' + r.설명); });
+  var 고칠 = R.filter(function (r) { return r.판정 === '고칠 곳'; });
+  L.push('');
+  L.push('[고칠 곳] ' + (고칠.length ? '' : '없음'));
+  고칠.forEach(function (r) { L.push('- ' + r.번호 + ' ' + r.설명); });
+  L.push('');
+  L.push('[여행] ' + (P.여행지.이름 || '(여행지 미정)') + (c ? ' (위도 ' + c.위도 + ' · 경도 ' + c.경도 + ' · ' + c.출처 + ')' : ' (좌표 없음)') +
+    ' · ' + (d ? d.시작 + ' ~ ' + d.끝 + (d.출처 === '도구' ? ' (도구가 정한 날짜)' : '') : '날짜 미정') + (P.누구와 ? ' · 누구와 ' + P.누구와 : ''));
+  L.push('[창구] ' + 창구이름.map(function (nm) { var r = 상태.호출[nm]; return nm + ' ' + (r ? r.요약 : '호출 전'); }).join(' / '));
+  var 날 = 날씨배열();
+  L.push('[날씨] ' + (날.length ? 날.map(function (x) {
+    return x.날짜 + '(' + 요일(x.날짜) + ') ' + (x.예보 ? x.이름 + ' 최고 ' + (x.최고 === null ? '-' : x.최고) + '°C 최저 ' + (x.최저 === null ? '-' : x.최저) + '°C 강수확률 ' + (x.강수확률 === null ? '-' : x.강수확률 + '%') : '예보 없음');
+  }).join(' / ') : '날짜 미정'));
+  var f = 축제결과();
+  if (f) L.push('[축제] 받은 ' + 상태.축제.원본.length + '건 → 남은 ' + f.남은.length + '건 (끝난 축제 ' + f.끝난.length + ' · 먼 축제 ' + f.먼.length + ' · 좌표 없음 ' + f.좌표없음 + ')');
+  var o = 오프라인자료();
+  if (상태.모드 === '오프라인' && o && o.예시) L.push('[주의] 예시 데이터입니다. 실제 행사가 아닙니다 (' + (o.예시창구 || []).join(' · ') + ')');
+  L.push('');
+  L.push('[담은 곳 ' + 상태.담은곳.length + '곳]');
+  상태.담은곳.forEach(function (p, i) {
+    L.push((i + 1) + '. [' + p.종류 + '] ' + p.이름 + ' · contentid ' + (p.contentid === null ? '없음' : p.contentid) +
+      ' · ' + (p.위도 !== null ? '위도 ' + p.위도 + ' 경도 ' + p.경도 : '좌표 없음') + (p.시작일 || p.종료일 ? ' · 기간 ' + 기간글(p.시작일, p.종료일) : '') + (p.주소 ? ' · ' + p.주소 : ''));
+  });
+  return 키가리기(L.join('\n'), 상태.키);
+}
+
+/* =====
+   복사 · 알림
+   ===== */
+var 알림타이머 = null;
+function 알림(글) {
+  var e = $('#알림'); e.textContent = 글; e.hidden = false;
+  clearTimeout(알림타이머); 알림타이머 = setTimeout(function () { e.hidden = true; }, 2600);
+}
+async function 복사(글, 대체표시) {
+  var ok = false;
+  try { if (navigator.clipboard && navigator.clipboard.writeText) { await navigator.clipboard.writeText(글); ok = true; } } catch (e) { /* 아래 대체 */ }
+  if (!ok) {
+    try {
+      var ta = h('textarea', { 'aria-hidden': 'true', style: 'position:fixed;left:-9999px;top:0' });
+      ta.value = 글; document.body.appendChild(ta); ta.select(); ok = document.execCommand('copy'); ta.remove();
+    } catch (e) { ok = false; }
+  }
+  if (ok) { 알림('복사했습니다'); if (대체표시) $('#복사대체').hidden = true; }
+  else {
+    알림('복사하지 못했습니다. 아래 글을 직접 복사하세요');
+    if (대체표시) { var 칸 = $('#복사글칸'); 칸.value = 글; $('#복사대체').hidden = false; 칸.focus(); 칸.select(); }
+  }
+}
+
+/* =====
+   그리기
+   ===== */
+function 칩(라벨, 값) { return h('span', { class: 'chip' }, 라벨 ? h('b', { text: 라벨 }) : null, 값); }
+function 상태칸(rec, 진행, 키필요) {
+  if (진행) return h('span', { class: 'state info' }, h('span', { class: 'spin', 'aria-hidden': 'true' }), '불러오는 중');
+  if (!rec) return h('span', { class: 'state ' + (키필요 ? 'unk' : 'unk') }, 키필요 ? '키를 넣거나 오프라인으로' : '아직 부르지 않음');
+  return h('span', { class: 'state ' + (rec.판정 === 'ok' ? 'ok' : 'fix') }, rec.요약);
+}
+
+function 렌더상단() {
+  var P = 상태.P;
+  document.documentElement.setAttribute('data-theme', 색조합이름.indexOf(P.화면.색조합) >= 0 ? P.화면.색조합 : '바다');
+  var 제목 = $('#제목');
+  제목.textContent = P.제목 || '제목이 아직 없습니다 (계획.js의 제목)';
+  제목.className = P.제목 ? '' : '빈값';
+  $('#한줄').textContent = P.한줄;
+  $('#첫화면').textContent = P.화면.첫화면문구;
+  document.title = (P.제목 ? P.제목 + ' · ' : '') + '여행 도구';
+  var d = 여행날짜(), c = 중심();
+  var 칩들 = [
+    칩('여행지', (P.여행지.이름 || '미정') + (c ? ' · ' + c.위도.toFixed(4) + ', ' + c.경도.toFixed(4) : ' · 좌표 없음')),
+    칩('날짜', d ? d.시작 + '(' + 요일(d.시작) + ') ~ ' + d.끝 + '(' + 요일(d.끝) + ') · ' + 일수() + '일' + (d.출처 === '도구' ? ' · 도구가 정함' : '') : '미정')
+  ];
+  if (P.누구와) 칩들.push(칩('누구와', P.누구와));
+  P.하고싶은것.slice(0, 6).forEach(function (x) { 칩들.push(칩('', x)); });
+  비우고($('#메타'), 칩들);
+  $('#모드실시간').setAttribute('aria-pressed', 상태.모드 === '실시간' ? 'true' : 'false');
+  $('#모드오프라인').setAttribute('aria-pressed', 상태.모드 === '오프라인' ? 'true' : 'false');
+  var o = 오프라인자료(), 띠 = [];
+  if (상태.모드 === '오프라인') {
+    띠.push(h('div', { class: 'band' }, o ? '오프라인 응답 · 만든 시각 ' + (o.만든시각 || '알 수 없음') : '오프라인 응답 파일을 읽지 못했습니다 (오프라인응답 폴더의 .js 4개)'));
+    if (o && o.예시) 띠.push(h('div', { class: 'band warn' }, '예시 데이터 — 실제 행사가 아닙니다', h('span', { class: 'small' }, ' (' + (o.예시창구 || []).join(' · ') + ')')));
+  }
+  비우고($('#띠들'), 띠);
+}
+
+function 렌더키() {
+  var 안내 = [];
+  if (상태.모드 === '오프라인') 안내.push('오프라인 모드에서는 키가 필요하지 않습니다.');
+  else if (!상태.키) 안내.push('키를 넣으면 축제 · 관광지를 부릅니다.');
+  $('#키상태').textContent = 상태.키 ? '저장됨 · ' + 상태.키.length + '자 · ' + 키모양(상태.키) + (키모양(상태.키) === 'Decoding 키' ? ' (붙일 때 인코딩합니다)' : ' (그대로 붙입니다)') : '저장된 키 없음';
+  var 줄 = $('#키안내줄');
+  if (상태.키안내 && !상태.키 && 상태.모드 === '실시간') 줄.textContent = '키를 넣거나 오프라인으로 봅니다. 축제 · 관광지는 키가 있어야 부를 수 있습니다.';
+  else 줄.textContent = 안내.join(' ');
+}
+
+function 렌더날씨() {
+  var 본문 = $('#날씨본문'), d = 여행날짜(), W = 상태.날씨, r = 상태.호출.날씨;
+  var 범위 = W.허용범위;
+  $('#날씨메타').textContent = 상태.모드 === '오프라인' ? '출처: 오프라인 응답 파일' : '출처: Open-Meteo.com';
+  if (!d) { 비우고(본문, h('p', { class: 'empty' }, '여행 날짜가 없습니다. 계획.js의 날짜(시작 · 끝)가 "YYYY-MM-DD" 형식이어야 날씨를 부릅니다.')); return; }
+  var 줄 = [];
+  var 날 = 날씨배열();
+  var 없음 = 날.filter(function (x) { return !x.예보; }).length;
+  if (상태.진행.날씨) 줄.push(h('p', { class: 'note' }, h('span', { class: 'spin', 'aria-hidden': 'true' }), '날씨를 불러오는 중입니다.'));
+  else if (!r) 줄.push(h('p', { class: 'note' }, 중심() ? '아직 부르지 않았습니다.' : '여행지 좌표를 기다리는 중입니다.'));
+  else if (r.판정 !== 'ok' && !W.받음) 줄.push(h('p', { class: 'err', role: 'alert' }, '날씨를 받지 못했습니다: ' + 사유(r)));
+  else if (없음) 줄.push(h('p', { class: 'note' }, '예보 없음 ' + 없음 + '일' + (범위 ? ' (' + (상태.모드 === '오프라인' ? '오프라인 응답이 가진 날짜 ' : '예보 허용 범위 ') + 범위.부터 + ' ~ ' + 범위.까지 + ')' : '') + '. 평년값이나 짐작으로 채우지 않습니다.'));
+  var 카드들 = 날.map(function (x) {
+    if (x.예보) {
+      var w = 상태.날씨.일별[x.날짜];
+      return h('div', { class: 'day' },
+        h('span', { class: 'dt', text: x.날짜.slice(5) + '(' + 요일(x.날짜) + ')' }),
+        날씨그림(w.그림, false), h('span', { class: 'wl', text: x.이름 }),
+        h('span', { class: 'tmp' }, x.최고 === null ? '-' : x.최고 + '°', ' ', h('small', null, '/ ' + (x.최저 === null ? '-' : x.최저 + '°'))),
+        h('span', { text: '강수 확률 ' + (x.강수확률 === null ? '-' : x.강수확률 + '%') }));
+    }
+    var 라벨 = W.받음 ? '예보 없음' : (!r || 상태.진행.날씨 ? '대기 중' : '받지 못함');
+    var 설명 = W.받음 ? (범위 ? (상태.모드 === '오프라인' ? '오프라인 응답에 없는 날짜' : '예보 허용 범위 밖') : '이 날짜의 예보가 응답에 없습니다') : '';
+    return h('div', { class: 'day none' },
+      h('span', { class: 'dt', text: x.날짜.slice(5) + '(' + 요일(x.날짜) + ')' }),
+      h('span', { class: 'wl', text: 라벨 }), 설명 ? h('span', { class: 'small', text: 설명 }) : null);
+  });
+  비우고(본문, [줄, h('div', { class: 'days' }, 카드들)]);
+}
+
+function 그림자리() { return h('span', { class: 'noimg', text: '사진 없음' }); }
+function 카드(it) {
+  var d = 여행날짜(), 담음 = 담겼나(it), 겹 = it.종류 === '축제' ? 겹침(it, d) : null;
+  var 태그 = [];
+  if (겹 === true) 태그.push(h('span', { class: 'tag during', text: '여행 중 열림' }));
+  if (겹 === false) 태그.push(h('span', { class: 'tag', text: '여행 기간 밖' }));
+  if (it.거리 !== null) 태그.push(h('span', { class: 'tag', text: '여행지에서 ' + 거리글(it.거리) }));
+  if (!it.좌표) 태그.push(h('span', { class: 'tag nocoord', text: '좌표 없음' }));
+  if (it.contentid === null) 태그.push(h('span', { class: 'tag nocoord', text: 'contentid 없음' }));
+  var 썸 = h('div', { class: 'thumb' });
+  if (it.사진) {
+    var img = h('img', { src: it.사진, alt: '', loading: 'lazy', referrerpolicy: 'no-referrer' });
+    img.addEventListener('error', function () { 비우고(썸, 그림자리()); });
+    썸.appendChild(img);
+  } else 썸.appendChild(그림자리());
+  return h('article', { class: 'item' },
+    썸, h('h3', { text: it.이름 || '(이름 없음)' }),
+    it.종류 === '축제' ? h('p', { text: '기간 ' + 기간글(it.시작일, it.종료일) }) : null,
+    it.주소 ? h('p', { class: 'small', text: it.주소 }) : h('p', { class: 'small', text: '주소 없음' }),
+    h('p', { class: 'small', text: 'contentid ' + (it.contentid === null ? '없음' : it.contentid) }),
+    h('div', { class: 'tags' }, 태그),
+    h('button', { type: 'button', class: 'btn sm', 'aria-pressed': 담음 ? 'true' : 'false', 'data-fid': '담기:' + it.종류 + ':' + it.contentid + ':' + it.이름, onclick: function () { 담기토글(it); } }, 담음 ? '담음 · 빼기' : '담기'));
+}
+function 렌더목록() {
+  var 탭 = $('#목록탭'), 본문 = $('#목록본문');
+  var 위 = 본문.querySelector('.scroll') ? 본문.querySelector('.scroll').scrollTop : 0;
+  var f = 축제결과(), g = 관광지결과();
+  var 개수 = { 축제: f ? f.남은.length : null, 관광지: g ? g.남은.length : null };
+  비우고(탭, ['축제', '관광지'].map(function (n) {
+    return h('button', { type: 'button', 'aria-pressed': 상태.탭 === n ? 'true' : 'false', 'data-fid': '탭:' + n, onclick: function () { 상태.탭 = n; 갱신(); } },
+      n + (개수[n] === null ? '' : ' ' + 개수[n]));
+  }));
+  var 종류 = 상태.탭, r = 상태.호출[종류], 안 = [];
+  if (!창구씀(종류)) 안.push(h('p', { class: 'empty' }, '계획.창구에 ' + 종류 + '가 없어 부르지 않았습니다.'));
+  else if (!키허용()) {
+    안.push(h('div', { class: 'empty' }, h('p', null, '키를 넣거나 오프라인으로 봅니다. ' + 종류 + '는 TourAPI 키가 있어야 받을 수 있습니다.'),
+      h('div', { class: 'row', style: 'margin-top:8px' },
+        h('button', { type: 'button', class: 'btn sm', onclick: function () { var i = $('#키입력'); if (i) i.focus(); } }, '키 칸으로'),
+        h('button', { type: 'button', class: 'btn sm', onclick: function () { 모드바꾸기('오프라인'); } }, '오프라인으로 보기'))));
+  } else if (상태.진행[종류]) 안.push(h('p', { class: 'note' }, h('span', { class: 'spin', 'aria-hidden': 'true' }), 종류 + ' 목록을 불러오는 중입니다.'));
+  else if (!r) 안.push(h('p', { class: 'note' }, '아직 부르지 않았습니다. 창구 칸의 「부르기」를 누릅니다.'));
+  else if (r.판정 !== 'ok' || !상태[종류].원본) 안.push(h('p', { class: 'err', role: 'alert' }, 종류 + '를 받지 못했습니다: ' + 사유(r)));
+  else if (종류 === '축제') {
+    var 칸 = h('div', { class: 'cut' }, h('b', null, '끝난 축제 ' + f.끝난.length + '건 · 먼 축제 ' + f.먼.length + '건 뺌 · 좌표 없음 ' + f.좌표없음 + '건은 지도에서 뺌'),
+      h('span', { class: 'small' }, ' (받은 ' + 상태.축제.원본.length + '건 · 남은 ' + f.남은.length + '건 · 여행지에서 ' + 먼거리km + 'km 넘으면 먼 축제)'));
+    if (f.끝난.length || f.먼.length) {
+      칸.appendChild(h('details', null, h('summary', null, '뺀 축제 보기'),
+        h('ul', null, f.끝난.map(function (x) { return h('li', { class: 'small', text: '끝난 축제 · ' + x.이름 + ' (' + 기간글(x.시작일, x.종료일) + ')' }); }),
+          f.먼.map(function (x) { return h('li', { class: 'small', text: '먼 축제 · ' + x.이름 + ' (' + 거리글(x.거리) + ')' }); }))));
+    }
+    안.push(칸);
+    var 정렬 = f.남은.slice().sort(function (a, b) {
+      var ka = 겹침(a, 여행날짜()) === true ? 0 : 1, kb = 겹침(b, 여행날짜()) === true ? 0 : 1;
+      if (ka !== kb) return ka - kb;
+      return (a.거리 === null ? 1e9 : a.거리) - (b.거리 === null ? 1e9 : b.거리);
+    });
+    안.push(정렬.length ? h('div', { class: 'scroll', tabindex: '0', role: 'region', 'aria-label': '축제 목록' }, h('div', { class: 'cards' }, 정렬.map(카드))) : h('p', { class: 'empty' }, '남은 축제가 없습니다. 여행 날짜나 여행지를 확인합니다.'));
+  } else {
+    안.push(h('div', { class: 'cut' }, h('b', null, '관광지 ' + g.남은.length + '건 · 좌표 없음 ' + g.좌표없음 + '건은 지도에서 뺌'), h('span', { class: 'small' }, ' (여행지에서 반경 ' + (반경m / 1000) + 'km)')));
+    안.push(g.남은.length ? h('div', { class: 'scroll', tabindex: '0', role: 'region', 'aria-label': '관광지 목록' }, h('div', { class: 'cards' }, g.남은.map(카드))) : h('p', { class: 'empty' }, '받은 관광지가 없습니다.'));
+  }
+  비우고(본문, 안);
+  var 새 = 본문.querySelector('.scroll'); if (새) 새.scrollTop = 위;
+}
+
+function 렌더담은곳() {
+  $('#담은메타').textContent = 상태.담은곳.length + '곳';
+  var 안;
+  if (!상태.담은곳.length) 안 = h('p', { class: 'empty' }, '담은 곳이 없습니다. 목록에서 「담기」를 누르면 여기에 모이고, 「결과 복사」에 들어갑니다.');
+  else 안 = h('div', { class: 'picks' }, 상태.담은곳.map(function (p) {
+    return h('div', { class: 'pick' },
+      h('span', { class: 't', text: p.이름 }),
+      h('span', { class: 'small', text: p.종류 + ' · contentid ' + (p.contentid === null ? '없음' : p.contentid) + (p.시작일 || p.종료일 ? ' · ' + 기간글(p.시작일, p.종료일) : '') }),
+      h('span', { class: 'small', text: p.위도 !== null ? '위도 ' + p.위도 + ' · 경도 ' + p.경도 : '좌표 없음 (지도에서 뺌)' }),
+      h('button', { type: 'button', class: 'btn sm', 'data-fid': '빼기:' + p.종류 + ':' + p.contentid + ':' + p.이름, onclick: function () { 담기토글({ 종류: p.종류, contentid: p.contentid, 이름: p.이름 }); } }, '빼기'));
+  }));
+  비우고($('#담은본문'), 안);
+}
+
+function 렌더일정표() {
+  var 일정 = 일정해석(), d = 여행날짜();
+  $('#일정메타').textContent = 일정.length ? 일정.length + '일' : '';
+  if (!일정.length) {
+    비우고($('#일정본문'), h('p', { class: 'empty' }, '일정이 비어 있습니다. 에이전트가 「결과 복사」 글을 읽고 계획.js의 일정에 날마다 { 시각, 이름, contentid, 메모 }를 채웁니다.'));
+    return;
+  }
+  비우고($('#일정본문'), h('div', { class: 'sched' }, 일정.map(function (일, i) {
+    var w = 일.날짜 ? 상태.날씨.일별[일.날짜] : null;
+    var 색 = 'd' + ((i % 3) + 1);
+    return h('section', { class: 'sday ' + 색, 'aria-label': 문자열(일.날) + '일차' },
+      h('h3', { text: 문자열(일.날) + '일차' + (일.날짜 ? ' · ' + 일.날짜.slice(5) + '(' + 요일(일.날짜) + ')' : '') }),
+      h('div', { class: 'wd' }, w ? [날씨그림(w.그림, true), w.이름 + ' ' + (w.최고 === null ? '-' : w.최고) + '° / ' + (w.최저 === null ? '-' : w.최저) + '°'] : (d ? '예보 없음' : '날짜 미정')),
+      일.항목.length ? 일.항목.map(function (it, k) {
+        return h('div', { class: 'stop' },
+          h('span', { class: 'no', 'aria-hidden': 'true', text: String(k + 1) }),
+          h('div', null,
+            h('span', { class: 'tm', text: (it.시각 || '시각 없음') + ' ' }), w ? 날씨그림(w.그림, true) : null,
+            h('div', { text: it.이름 || '(이름 없음)' }),
+            it.메모 ? h('div', { class: 'small', text: it.메모 }) : null,
+            h('span', { class: 'ck ' + (it.찾음 ? 'ok' : 'fix'), text: it.찾음 ? it.찾음 + '에서 확인' : '응답에 없음 · 고칠 곳' })));
+      }) : h('p', { class: 'small', text: '항목 없음' }));
+  })));
+}
+
+/* ----- 지도(Leaflet) ----- */
+var 지도 = null, 지도층 = null, 타일오류 = 0, 타일성공 = 0;
+var 라이브러리 = { js: null, css: null };
+function 핀자료() {
+  var c = 중심(), out = { 중심: c, 담은: [], 일정: [] };
+  상태.담은곳.forEach(function (p) { if (p.위도 !== null && p.경도 !== null) out.담은.push(p); });
+  일정해석().forEach(function (일, i) {
+    var 점 = [];
+    일.항목.forEach(function (it, k) { if (it.위도 !== null) 점.push({ 번호: k + 1, 이름: it.이름, 시각: it.시각, 메모: it.메모, 위도: it.위도, 경도: it.경도 }); });
+    out.일정.push({ 날: 일.날, 색: 'd' + ((i % 3) + 1), 점: 점 });
+  });
+  return out;
+}
+function 팝업(줄들) {
+  var e = document.createElement('div');
+  줄들.forEach(function (t, i) { var p = document.createElement(i ? 'div' : 'strong'); p.textContent = t; e.appendChild(p); });
+  return e;
+}
+function 지도준비() {
+  var 안내 = $('#지도안내'), 패널 = $('[data-p="지도"]');
+  if (!패널 || 패널.hidden) return;
+  if (!지도 && window.L && 라이브러리.js === 'ok' && 라이브러리.css === 'ok') {
+    try {
+      var 줄임 = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches || document.documentElement.classList.contains('no-anim');
+      지도 = window.L.map('지도영역', { scrollWheelZoom: false, zoomAnimation: !줄임, fadeAnimation: !줄임, markerZoomAnimation: !줄임 }).setView([36.5, 127.8], 7);
+      var 타일 = window.L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '© OpenStreetMap contributors' }).addTo(지도);
+      타일.on('tileload', function () { 타일성공++; 안내.hidden = true; });
+      타일.on('tileerror', function () {
+        타일오류++;
+        if (타일오류 >= 3 && 타일성공 === 0) { 안내.textContent = '지도 그림을 불러오지 못했습니다. 핀과 선은 그대로 보입니다. (파일을 더블클릭해 연 경우 지도 서버가 그림을 막을 수 있습니다. 공개 링크에서는 열립니다.)'; 안내.hidden = false; }
+      });
+      지도층 = window.L.layerGroup().addTo(지도);
+      안내.hidden = true;
+    } catch (e) { 안내.textContent = '지도를 만들지 못했습니다: ' + e.message; 안내.hidden = false; 지도 = null; }
+  } else if (!지도) {
+    if (라이브러리.js === 'fail' || 라이브러리.css === 'fail') { 안내.textContent = '지도 라이브러리(Leaflet)를 불러오지 못했습니다. 인터넷 연결을 확인합니다. 아래 핀 좌표 표와 다른 패널은 그대로 동작합니다.'; 안내.hidden = false; }
+    else { 안내.textContent = '지도를 불러오는 중입니다. 오래 걸리면 인터넷 연결을 확인합니다. 다른 패널은 그대로 동작합니다.'; 안내.hidden = false; }
+  }
+}
+function 지도그리기() {
+  var 패널 = $('[data-p="지도"]'), 자료 = 핀자료();
+  var 표 = $('#핀표'), 행 = [];
+  var c = 자료.중심;
+  if (c) 행.push(['여행지', '★', 상태.P.여행지.이름, c.위도, c.경도]);
+  자료.담은.forEach(function (p) { 행.push(['담은 곳', '◆', p.이름, p.위도, p.경도]); });
+  자료.일정.forEach(function (일) { 일.점.forEach(function (p) { 행.push([일.날 + '일차', String(p.번호), p.이름, p.위도, p.경도]); }); });
+  비우고(표, 행.length ? h('table', null, h('tr', null, ['구분', '번호', '이름', '위도', '경도'].map(function (t) { return h('th', { text: t }); })),
+    행.map(function (r) { return h('tr', null, r.map(function (t) { return h('td', { text: String(t) }); })); })) : h('p', { class: 'note', text: '핀이 없습니다.' }));
+  비우고($('#범례'), [h('span', null, '★ 여행지'), h('span', null, '◆ 담은 곳(회색)'), h('span', null, '번호 원 = 일정 순서 (1일차 실선 · 2일차 긴 점선 · 3일차 점선)')]);
+  $('#지도메타').textContent = '핀 ' + 행.length + '개';
+  if (!지도 || !패널 || 패널.hidden) return;
+  지도층.clearLayers();
+  var L = window.L, 모두 = [];
+  function 점찍기(클래스, html, w, p, 줄들) {
+    var m = L.marker([p.위도, p.경도], { icon: L.divIcon({ className: '', html: html, iconSize: [w, w], iconAnchor: [w / 2, w / 2] }), keyboard: true, title: 줄들[0] });
+    m.bindPopup(팝업(줄들)); m.addTo(지도층); 모두.push([p.위도, p.경도]);
+    return m;
+  }
+  if (c) 점찍기('center', '<span class="pin center" aria-hidden="true">★</span>', 30, c, ['여행지 ' + 상태.P.여행지.이름]);
+  자료.담은.forEach(function (p) { 점찍기('picked', '<span class="pin picked" aria-hidden="true"></span>', 24, p, ['담은 곳 ' + p.이름, p.종류]); });
+  자료.일정.forEach(function (일) {
+    var 선 = 일.점.map(function (p) { return [p.위도, p.경도]; });
+    if (선.length > 1) L.polyline(선, { className: 'route ' + 일.색, weight: 4 }).addTo(지도층);
+    일.점.forEach(function (p) {
+      var e = document.createElement('span'); e.className = 'pin ' + 일.색; e.setAttribute('aria-hidden', 'true'); e.textContent = String(p.번호);
+      var 줄들 = [일.날 + '일차 ' + p.번호 + '번 ' + p.이름, p.시각 || '시각 없음'].concat(p.메모 ? [p.메모] : []);
+      var m = L.marker([p.위도, p.경도], { icon: L.divIcon({ className: '', html: e.outerHTML, iconSize: [30, 30], iconAnchor: [15, 15] }), keyboard: true, title: 줄들[0] });
+      m.bindPopup(팝업(줄들)); m.addTo(지도층); 모두.push([p.위도, p.경도]);
+    });
+  });
+  지도.invalidateSize();
+  if (모두.length > 1) 지도.fitBounds(모두, { padding: [30, 30], maxZoom: 15 });
+  else if (c) 지도.setView([c.위도, c.경도], 12);
+}
+window.__지도신호 = function (k, v) {
+  라이브러리[k] = v;
+  if (!상태.P) return;
+  안전('지도', function () { 지도준비(); 지도그리기(); });
+};
+
+/* ----- 창구 칸 ----- */
+var 창구설명 = {
+  지명찾기: '장소 이름으로 좌표를 찾습니다(Nominatim). 계획.js의 위도 · 경도가 null이면 자동으로 한 번 부릅니다. 결과는 이 브라우저에 저장해 다시 부르지 않고, 연속 호출은 1초 간격입니다.',
+  날씨: '여행 날짜의 최고 · 최저 기온, 강수 확률, 날씨 코드를 받습니다(Open-Meteo). 키가 필요하지 않습니다.',
+  축제: '여행 시작일 이후의 축제를 받습니다(TourAPI searchFestival2). 받은 뒤 도구가 끝난 축제와 먼 축제를 거릅니다. 키가 필요합니다.',
+  관광지: '여행지 좌표 반경 ' + (반경m / 1000) + 'km의 관광지를 받습니다(TourAPI locationBasedList2). 키가 필요합니다.'
+};
+function 창구카드(이름) {
+  var r = 상태.호출[이름], 진행 = 상태.진행[이름];
+  var 키필요 = (이름 === '축제' || 이름 === '관광지') && !키허용();
+  var 열림키 = 'w:' + 이름;
+  var 본 = h('div', { class: 'winbody' });
+  본.appendChild(h('p', { class: 'small', text: 창구설명[이름] }));
+  본.appendChild(h('div', { class: 'row' },
+    h('button', { type: 'button', class: 'btn sm', 'data-fid': '부르기:' + 이름, onclick: function () { 수동부르기(이름); } }, r ? '다시 부르기' : '부르기'),
+    키필요 ? h('span', { class: 'note', text: '키를 넣거나 오프라인으로' }) : null));
+  if (r) {
+    본.appendChild(h('dl', { class: 'kv' },
+      h('dt', { text: '요청 주소' }), h('dd', null, h('code', { class: 'url', text: r.주소 })),
+      h('dt', { text: '상태' }), h('dd', { text: r.요약 }),
+      h('dt', { text: '걸린 시간' }), h('dd', { text: r.ms === null ? '-' : r.ms + 'ms' + (r.출처 === '오프라인' ? ' (파일)' : '') }),
+      h('dt', { text: '출처' }), h('dd', { text: r.출처 + (r.시각 ? ' · ' + r.시각 : '') })));
+    if (r.오류) 본.appendChild(h('p', { class: 'err', text: r.오류 }));
+    if (r.xml) 본.appendChild(h('p', { class: 'small', text: 'XML 응답에서 읽은 값 — returnAuthMsg: ' + (r.xml.인증메시지 || '없음') + ' · errMsg: ' + (r.xml.오류메시지 || '없음') + ' · returnReasonCode: ' + (r.xml.코드 || '없음') }));
+    if (r.이전) 본.appendChild(h('p', { class: 'small', text: '첫 요청은 ' + r.이전.요약 + (r.이전.데이터 && r.이전.데이터.reason ? ' (' + r.이전.데이터.reason + ')' : '') + ' → 허용 범위 안의 날짜로 다시 불렀습니다.' }));
+    if (r.범위밖전체) 본.appendChild(h('p', { class: 'small', text: '여행 날짜 전체가 예보 범위 밖이라 다시 부르지 않았습니다. 전부 「예보 없음」입니다.' }));
+    var 원 = 예쁘게(r);
+    if (원) {
+      var 안 = h('details', { class: 'sub', open: !!상태.열림['raw:' + 이름] ? true : null },
+        h('summary', { text: '응답 원문 (' + 원.length + '자)' }),
+        h('pre', { class: 'raw', tabindex: '0', text: 줄임(원, 20000) }),
+        h('button', { type: 'button', class: 'btn sm', 'data-fid': '응답복사:' + 이름, onclick: function () { 복사(r.원문 || 원, false); } }, '이 응답 복사'));
+      안.addEventListener('toggle', function () { 상태.열림['raw:' + 이름] = 안.open; });
+      본.appendChild(안);
+    }
+  } else if (!진행) {
+    본.appendChild(h('p', { class: 'note', text: '아직 부르지 않았습니다.' }));
+  }
+  if (이름 === '지명찾기' && 상태.지명.후보.length) {
+    var G = 상태.지명;
+    본.appendChild(h('div', { class: 'cand', role: 'radiogroup', 'aria-label': '지명찾기 후보' },
+      h('b', { text: '후보 ' + G.후보.length + '건 — 선택한 후보를 여행지 좌표로 씁니다 (기본은 첫 후보)' }),
+      G.후보.map(function (c, i) {
+        var 입력 = h('input', { type: 'radio', name: '지명후보', value: String(i), checked: i === G.선택 ? true : null, 'data-fid': '후보:' + i });
+        입력.addEventListener('change', function () { G.선택 = i; 전체부르기({ 지명: false }); });
+        return h('label', null, 입력, h('span', null, (i + 1) + '. ' + c.이름 + ' (' + c.위도 + ', ' + c.경도 + ')'));
+      })));
+  }
+  var det = h('details', { class: 'win', open: 상태.열림[열림키] ? true : null },
+    h('summary', null, h('span', { class: 'wname', text: 이름 }), 상태칸(r, 진행, 키필요 && !r)), 본);
+  det.addEventListener('toggle', function () { 상태.열림[열림키] = det.open; });
+  return det;
+}
+function 렌더창구() { 비우고($('#창구본문'), 창구이름.map(창구카드)); }
+
+/* ----- 점검 칸 ----- */
+function 렌더점검() {
+  var R = 점검();
+  상태.점검결과 = R;
+  var n = function (k) { return R.filter(function (r) { return r.판정 === k; }).length; };
+  var cls = { '통과': 'ok', '고칠 곳': 'fix', '미판정': 'unk', '정보': 'info' };
+  $('#점검시각').textContent = 지금문자().slice(11);
+  비우고($('#점검요약'), ['고칠 곳', '통과', '미판정', '정보'].map(function (k) { return h('span', { class: 'state ' + cls[k], text: k + ' ' + n(k) }); }));
+  비우고($('#점검목록'), R.map(function (r) {
+    return h('li', { class: 'chk ' + cls[r.판정] }, h('span', { class: 'badge', text: r.판정 }), h('div', null, h('b', { text: r.번호 + ' ' + r.이름 }), h('p', { text: r.설명 })));
+  }));
+  비우고($('#도구오류'), 상태.도구오류.length ? h('p', { class: 'err', role: 'alert' }, '도구 안에서 오류가 났습니다. 이 글을 강사에게 보여 주세요: ' + 상태.도구오류.join(' / ')) : null);
+}
+
+/* ----- 확장 칸 ----- */
+function 확장호출() {
+  var 영역 = $('#확장내용');
+  var 자료 = null;
+  try {
+    자료 = JSON.parse(JSON.stringify({ 계획: window.계획 || null, 날씨: 날씨배열(), 담은곳: 상태.담은곳, 일정: 일정해석() }));
+  } catch (e) { 자료 = { 계획: null, 날씨: 날씨배열(), 담은곳: 상태.담은곳, 일정: 일정해석() }; }
+  var 키 = JSON.stringify(자료);
+  if (키 === 상태.확장키 && 상태.확장.상태 !== '미호출') return;
+  상태.확장키 = 키;
+  영역.textContent = '';
+  if (typeof window.여행앱확장 !== 'function') {
+    상태.확장 = { 상태: '없음', 메시지: 'window.여행앱확장이 함수가 아닙니다' };
+    영역.appendChild(h('p', { class: 'err', text: 'window.여행앱확장 함수가 없습니다. 확장.js를 확인합니다.' }));
+    $('#확장메타').textContent = '함수 없음';
+    return;
+  }
+  try {
+    window.여행앱확장(영역, 자료);
+    if (영역.childNodes.length) { 상태.확장 = { 상태: '그림', 메시지: '' }; $('#확장메타').textContent = '확장.js가 그린 칸'; }
+    else {
+      상태.확장 = { 상태: '비어있음', 메시지: '' };
+      영역.appendChild(h('p', { class: 'ext-empty', text: '아직 비어 있습니다. 블록 4에서 확장.js에 내 기능을 만들면 여기에 나타납니다.' }));
+      $('#확장메타').textContent = '비어 있음';
+    }
+  } catch (e) {
+    상태.확장 = { 상태: '오류', 메시지: e && e.message ? e.message : String(e) };
+    영역.textContent = '';
+    영역.appendChild(h('p', { class: 'err', role: 'alert', text: '확장.js 실행 중 오류가 났습니다: ' + 상태.확장.메시지 }));
+    $('#확장메타').textContent = '오류';
+  }
+}
+
+/* ----- 전체 ----- */
+function 안전(이름, fn) { try { fn(); } catch (e) { 도구오류추가(이름, e); } }
+function 그리기() {
+  var a = document.activeElement, fid = a && a.getAttribute ? a.getAttribute('data-fid') : '';
+  var 순 = 순서();
+  안전('상단', 렌더상단);
+  안전('키', 렌더키);
+  패널이름.forEach(function (n) {
+    var el = $('[data-p="' + n + '"]');
+    var i = 순.indexOf(n);
+    el.hidden = i < 0;
+    el.style.order = String(i < 0 ? 99 : i);
+  });
+  안전('날씨', 렌더날씨);
+  안전('목록', 렌더목록);
+  안전('담은 곳', 렌더담은곳);
+  안전('일정표', 렌더일정표);
+  안전('지도', function () { 지도준비(); 지도그리기(); });
+  안전('창구', 렌더창구);
+  안전('확장', 확장호출);
+  안전('점검', 렌더점검);
+  if (fid) {
+    var 다시 = null;
+    Array.prototype.forEach.call(document.querySelectorAll('[data-fid]'), function (x) { if (!다시 && x.getAttribute('data-fid') === fid) 다시 = x; });
+    if (다시 && 다시 !== document.activeElement) 다시.focus();
+  }
+}
+var 예약 = null;
+function 갱신() {
+  if (예약) return;
+  예약 = setTimeout(function () { 예약 = null; 그리기(); }, 0);
+}
+function 모드바꾸기(m) {
+  if (상태.모드 === m) return;
+  상태.모드 = m; 상태.키안내 = false;
+  전체부르기();
+  갱신();
+}
+
+/* =====
+   시작
+   ===== */
+function 시작() {
+  var 읽음 = 정규화(window.계획);
+  상태.P = 읽음.P; 상태.읽힘 = 읽음.읽힘; 상태.문제 = 읽음.문제;
+  상태.키 = (저장읽기(키저장) || '').trim();
+  상태.담은곳 = 담은곳읽기();
+  var 쿼리 = '';
+  try { 쿼리 = new URLSearchParams(window.location.search).get('모드') || ''; } catch (e) { /* 무시 */ }
+  상태.모드 = (쿼리 || 상태.P.모드) === '오프라인' ? '오프라인' : '실시간';
+
+  $('#모드실시간').addEventListener('click', function () { 모드바꾸기('실시간'); });
+  $('#모드오프라인').addEventListener('click', function () { 모드바꾸기('오프라인'); });
+  $('#키보임').addEventListener('change', function (ev) { $('#키입력').type = ev.target.checked ? 'text' : 'password'; });
+  $('#키저장').addEventListener('click', function () {
+    var 값 = $('#키입력').value.trim();
+    if (!값) { $('#키안내줄').textContent = '키 칸이 비어 있습니다. 키를 붙여 넣고 저장을 누릅니다.'; return; }
+    if (/\s/.test(값)) { $('#키안내줄').textContent = '키에 공백이 들어 있습니다. 앞뒤 공백 없이 키만 붙여 넣습니다.'; return; }
+    if (!저장쓰기(키저장, 값)) { $('#키안내줄').textContent = '이 브라우저가 저장을 막았습니다. 시크릿 창이면 일반 창에서 엽니다.'; return; }
+    상태.키 = 값; 상태.키안내 = false; $('#키입력').value = '';
+    알림('키를 저장했습니다');
+    전체부르기({ 지명: false });
+    갱신();
+  });
+  $('#키지움').addEventListener('click', function () {
+    저장지우기(키저장); 상태.키 = ''; $('#키입력').value = '';
+    상태.축제 = { 원본: null, 전체수: null }; 상태.관광지 = { 원본: null, 전체수: null };
+    상태.호출.축제 = null; 상태.호출.관광지 = null;
+    알림('키를 지웠습니다');
+    갱신();
+  });
+  $('#결과복사').addEventListener('click', function () { 복사(복사글(), true); });
+
+  window.여행앱 = {
+    상태: 상태,
+    점검: function () { 상태.점검결과 = 점검(); return 상태.점검결과; },
+    호출: function (이름) {
+      if (창구이름.indexOf(이름) < 0) return Promise.reject(new Error('이름표에 없는 창구: ' + 이름));
+      return 수동부르기(이름).then(function () { return 상태.호출[이름]; });
+    }
+  };
+
+  /* 지도 신호 큐(헤드 스크립트가 받아 둔 신호) */
+  (window.__신호큐 || []).forEach(function (s) { 라이브러리[s[0]] = s[1]; });
+  window.__신호큐 = [];
+  if (window.L && 라이브러리.js === null) 라이브러리.js = 'ok';
+
+  그리기();
+  전체부르기().catch(function (e) { 도구오류추가('시작', e); });
+  setTimeout(function () { 지도준비(); }, 12000);
+}
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', 시작);
+else 시작();
+})();
+</script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" async integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="" onload="window.__지도신호('js','ok')" onerror="window.__지도신호('js','fail')"></script>
+</body>
+</html>

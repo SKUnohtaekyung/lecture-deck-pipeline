@@ -103,7 +103,7 @@ _INTRO = '이 폴더는 하루상점(온라인 생활용품 쇼핑몰, 직원 7�
 def write_rules(folder, spec, quality=None, intro=None, whole=None):
     """quality를 주면 공통 2절(대시보드 화면 기준)을 그 글로 바꾼다 — 영상 · 문서 묶음 · 게임처럼 결과물 종류가 다른 실습용.
     intro를 주면 첫머리의 자료 소개 한 줄을 바꾼다.
-    whole을 주면 공통부(COMMON) 전체를 그 글로 갈아 끼운다 — 규칙 파일을 만드는 인터뷰가 맞지 않는 실습 8(스킬 만들기)용.
+    whole을 주면 공통부(COMMON) 전체를 그 글로 갈아 끼운다 — 규칙 파일을 만드는 인터뷰가 맞지 않는 실습용(지금 쓰는 곳 없음 · 1판 실습 8에서 썼다).
     whole은 quality · intro와 함께 쓰지 않는다. 셋 다 주지 않으면 COMMON을 그대로 쓴다."""
     common = COMMON
     if whole is not None:

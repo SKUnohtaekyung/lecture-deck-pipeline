@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """4시간 덱의 배포본과 발표본을 한 번에 다시 만든다.
 
-    python plans/FRAME-길이별-조립/build_presenter.py
+    python plans/FRAME-길이별-조립/build_presenter.py [--variant 4h-app]
 
 순서
   1) assemble_deck.py        조각 → 강의덱.html
@@ -11,12 +11,18 @@
   3) verify_distributable.py  배포본 자립성
   4) build_presenter_notes.py 1주차_발표노트.md → 강의덱_발표노트.html(간결한 노트)
   5) inject_presenter.py      배포본 + 간결한 노트 → 강의덱_발표.html
+`--variant 4h-app`(여행 앱 트랙): 같은 순서로 강의덱_4h-app.html → 강의덱_4h-app_배포.html → 1주차_발표노트_여행앱.md →
+강의덱_4h-app_발표노트.html → 강의덱_4h-app_발표.html을 만든다. deckId는 workshop-4h-app, 사이드카는
+_verify/1주차/강의덱_4h-app_발표.meta.json. 메인 산출물(강의덱.html · 강의덱_배포.html · 강의덱_발표노트.html · 강의덱_발표.html)은 건드리지 않는다.
 verify_deck.py(구조 검증)는 돌리지 않는다 — 2026-10-06 「검사기 보류」 결정.
 종료코드: 0 전부 통과 · 1 어느 단계든 실패(그 단계에서 멈춘다).
 """
 import os
 import subprocess
 import sys
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import build_notes as bn  # noqa: E402  (--variant 해석을 한 곳에 둔다)
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 S = os.path.join(ROOT, "courses", "AI_에이전트_실습워크숍_4시간", "sessions", "1주차")
@@ -35,9 +41,21 @@ def run(*args):
 
 
 def main():
-    deck, dist, pres = (os.path.join(S, n) for n in ("강의덱.html", "강의덱_배포.html", "강의덱_발표.html"))
-    tmp = os.path.join(S, "강의덱.__bundle.html")
-    if run("scripts/assemble_deck.py", os.path.join(S, "강의덱.초안")): return 1
+    variant, err = bn.parse_variant(sys.argv[1:])
+    if err:
+        print(err); return 2
+    meta, deck_id = META, DECK_ID
+    if variant:
+        pre = "강의덱_%s" % variant
+        names = (pre + ".html", pre + "_배포.html", pre + "_발표.html", pre + "_발표노트.html", pre + ".__bundle.html")
+        meta = os.path.join(os.path.dirname(META), pre + "_발표.meta.json")
+        deck_id = "workshop-" + variant
+        var_args = ["--variant", variant]
+    else:
+        names = ("강의덱.html", "강의덱_배포.html", "강의덱_발표.html", "강의덱_발표노트.html", "강의덱.__bundle.html")
+        var_args = []
+    deck, dist, pres, notes, tmp = (os.path.join(S, n) for n in names)
+    if run("scripts/assemble_deck.py", os.path.join(S, "강의덱.초안"), *var_args): return 1
     html = open(deck, encoding="utf-8", newline="").read()
     if html.count(FONT_LINK) != 1:
         print("  D2Coding 링크를 찾지 못했다(shell.html이 바뀌었는지 확인)"); return 1
@@ -47,9 +65,9 @@ def main():
     finally:
         if os.path.exists(tmp): os.remove(tmp)
     if run("scripts/verify_distributable.py", dist): return 1
-    if run("plans/FRAME-길이별-조립/build_presenter_notes.py"): return 1
-    if run("scripts/inject_presenter.py", dist, "--notes", os.path.join(S, "강의덱_발표노트.html"), "--deck-id", DECK_ID, "--output", pres, "--meta", META, "--force"): return 1
-    print("RESULT 배포본 %dKB · 발표본 %dKB" % (os.path.getsize(dist) // 1024, os.path.getsize(pres) // 1024))
+    if run("plans/FRAME-길이별-조립/build_presenter_notes.py", *var_args): return 1
+    if run("scripts/inject_presenter.py", dist, "--notes", notes, "--deck-id", deck_id, "--output", pres, "--meta", meta, "--force"): return 1
+    print("RESULT 배포본 %dKB · 발표본 %dKB%s" % (os.path.getsize(dist) // 1024, os.path.getsize(pres) // 1024, " · 변형 %s" % variant if variant else ""))
     return 0
 
 

@@ -1,0 +1,1610 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>발표자 노트 — FRAME 1주차 · 여행 앱</title>
+<!--
+  발표자 노트 — FRAME 1주차 · 여행 앱 4시간 트랙(2판)
+  덱 `강의덱_4h-app.html`과 같은 순서이며 pn-no = 덱 쪽 번호. 범례 · 표기는 메인 노트와 같다.
+  생성: plans/FRAME-길이별-조립/build_notes.py --variant 4h-app — 이 파일을 직접 고치면 다음 생성 때 덮어쓴다.
+-->
+<style>
+  :root{
+    --blue:#0E4A5A; --mint-deep:#0F7A64; --coral-deep:#A15C00; --ink:#14202B;
+    --gray-700:#33414E; --gray-400:#56636F; --white:#F6F8FA;
+    --surface:#EBF0F4; --line:#D5DDE4; --paper:#EEF4F6;
+    --blue-soft:#E6F0F3; --mint-soft:#E4F8FA; --coral-soft:#FEF5E3;
+    --r-lg:20px; --r-md:14px; --r-pill:999px;
+    --font-mono:"D2Coding","JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+    --font:"Pretendard",system-ui,-apple-system,"Malgun Gothic",sans-serif;
+  }
+  *{ box-sizing:border-box; }
+  body{ margin:0; padding:32px 20px 64px; background:var(--paper); color:var(--ink);
+    font-family:var(--font); line-height:1.6; -webkit-font-smoothing:antialiased; }
+  .pn-wrap{ max-width:840px; margin:0 auto; }
+
+  /* 헤더 */
+  .pn-head{ border-bottom:2px solid var(--blue); padding-bottom:16px; margin-bottom:28px; }
+  .pn-kicker{ font-size:14px; font-weight:800; color:var(--blue); letter-spacing:.02em; }
+  .pn-title{ font-size:30px; font-weight:800; margin:6px 0 4px; }
+  .pn-note{ font-size:15px; color:var(--gray-700); margin:0 0 6px; }
+  .pn-legend{ display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }
+  .pn-legend span{ font-size:13px; font-weight:700; border-radius:var(--r-pill); padding:4px 11px; border:1px solid var(--line); }
+  .lg-say{ background:var(--surface); color:var(--blue); }
+  .lg-joke{ background:var(--blue-soft); color:var(--blue); }
+  .lg-demo{ background:var(--coral-soft); color:var(--coral-deep); }
+  .lg-hint{ background:var(--mint-soft); color:var(--mint-deep); }
+  .pn-blocks{ border-collapse:collapse; margin-top:14px; font-size:14px; width:100%; }
+  .pn-blocks th, .pn-blocks td{ border:1px solid var(--line); padding:5px 10px; text-align:left; background:var(--white); }
+  .pn-blocks th{ background:var(--surface); }
+
+  /* 블록 구분 */
+  .pn-block{ font-size:14px; font-weight:800; color:var(--blue); background:var(--blue-soft);
+    border-radius:var(--r-md); padding:8px 14px; margin:26px 0 12px; }
+
+  /* 슬라이드 블록 */
+  .pn-slide, .pn-pre{ border:1px solid var(--line); border-radius:var(--r-lg); background:var(--white);
+    padding:18px 20px; margin:0 0 16px; break-inside:avoid; }
+  .pn-slide-head, .pn-pre-head{ display:flex; flex-wrap:wrap; align-items:baseline; gap:6px 12px; margin-bottom:10px; }
+  .pn-no, .pn-pre-tag{ flex:0 0 auto; font-size:14px; font-weight:800; color:var(--white); background:var(--blue);
+    border-radius:var(--r-pill); padding:3px 11px; }
+  .pn-id{ flex:0 0 auto; font-size:13px; font-weight:800; color:var(--blue); background:var(--blue-soft);
+    border-radius:var(--r-pill); padding:2px 9px; font-family:var(--font-mono); }
+  .pn-slide-title, .pn-pre-title{ font-size:19px; font-weight:800; margin:0; flex:1 1 280px; }
+  .pn-time{ flex:0 0 auto; font-size:13px; font-weight:700; color:var(--gray-700); margin-left:auto; }
+
+  /* 멘트 항목 — 종류별 좌측 컬러 바 + 라벨 */
+  .pn-item{ border-left:4px solid var(--line); padding:8px 0 8px 14px; margin:8px 0; }
+  .pn-item .lbl{ display:inline-block; font-size:12px; font-weight:800; margin-bottom:3px; }
+  .pn-item p{ margin:0; font-size:16px; color:var(--gray-700); }
+  .pn-item p + p{ margin-top:8px; }
+  .pn-item ul{ margin:0; padding-left:20px; font-size:16px; color:var(--gray-700); }
+  .pn-item li{ margin:3px 0; }
+  .pn-item code{ font-family:var(--font-mono); font-size:14.5px; background:var(--surface); border-radius:6px; padding:0 4px; }
+  .pn-item .tag{ display:inline-block; font-size:12px; font-weight:800; color:var(--blue); background:var(--blue-soft);
+    border-radius:var(--r-pill); padding:0 8px; margin-right:4px; }
+  .pn-joke{ border-left-color:var(--blue); } .pn-joke .lbl{ color:var(--blue); }
+  .pn-say{ background:var(--paper); border-radius:0 var(--r-md) var(--r-md) 0; }
+  .pn-say p, .pn-say li{ color:var(--ink); }
+  .pn-demo{ border-left-color:var(--coral-deep); } .pn-demo .lbl{ color:var(--coral-deep); }
+  .pn-answer{ background:var(--coral-soft); border-radius:0 var(--r-md) var(--r-md) 0; }
+  .pn-caution{ background:var(--surface); border-radius:0 var(--r-md) var(--r-md) 0; }
+  .pn-hint{ border-left-color:var(--mint-deep); background:var(--mint-soft);
+    border-radius:0 var(--r-md) var(--r-md) 0; }
+  .pn-hint .lbl{ color:var(--mint-deep); }
+  .pn-hint .hlabel{ font-size:13px; font-weight:800; color:var(--mint-deep); margin-top:2px; }
+  .pn-hint .prompt{ font-family:var(--font-mono); font-size:14.5px; color:var(--ink);
+    background:var(--white); border:1px solid var(--line); border-radius:var(--r-md);
+    padding:10px 12px; margin-top:4px; white-space:pre-wrap; }
+  .pn-refs{ margin:8px 0 0; font-size:12.5px; color:var(--gray-400); }
+
+  @media print{
+    body{ background:var(--white); padding:0 8mm; }
+    .pn-slide{ box-shadow:none; }
+  }
+</style>
+</head>
+<body>
+<div class="pn-wrap">
+
+  <header class="pn-head">
+    <div class="pn-kicker">발표자 노트 · 1주차</div>
+    <h1 class="pn-title">FRAME — AI 에이전트 실습 · 여행 앱 4시간</h1>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <p class="pn-note">강사용 참고 문서입니다. 쪽 번호는 덱의 장 순서와 같고, 덱은 49장입니다. 49장 모두에 노트가 있습니다(표지는 쪽 번호가 없어 「표지」로 표시).</p>
+    <p class="pn-note">개념 장 9장은 전체 대본(🎙)이고, 나머지는 요점(📌)입니다. 대본은 화면의 정의 → 비유 → 근거 → 대응 순서를 따르므로 그대로 읽어도 됩니다.</p>
+    <p class="pn-note">수강생 화면(덱)에는 💬 애드리브 · 👀 시연 큐 · 🔑 확인 값 · 🗣 힌트가 보이지 않습니다. 여기서는 모두 펼쳐 둡니다.</p>
+    <div class="pn-legend">
+      <span class="lg-say">🎙 전체 대본 · 📌 요점</span>
+      <span class="lg-joke">💬 애드리브</span>
+      <span class="lg-demo">👀 시연·관찰 큐 · 🔑 강사용 확인 · ⚠ 확인</span>
+      <span class="lg-hint">🗣 막힐 때 힌트</span>
+    </div>
+    <table class="pn-blocks">
+      <tr><th>구간</th><th>쪽</th><th>장 합계</th><th>내용</th></tr>
+      <tr><td>블록 1</td><td>1~16쪽</td><td>49분</td><td>기획</td></tr>
+      <tr><td>블록 2</td><td>17~26쪽</td><td>39분</td><td>첫 화면 · 날씨</td></tr>
+      <tr><td>블록 3</td><td>27~37쪽</td><td>37분 30초</td><td>제작</td></tr>
+      <tr><td>블록 4</td><td>38~49쪽</td><td>39분</td><td>공개 · 기능 하나</td></tr>
+    </table>
+    <p class="pn-note">블록 상한은 62분이고, 휴식 10분 세 번은 시간표 밖입니다.</p>
+  </header>
+
+  <div class="pn-block">블록 1 · 1~16쪽 · 49분</div>
+  <section class="pn-pre" id="p1">
+    <div class="pn-pre-head">
+      <span class="pn-pre-tag">표지</span>
+      <span class="pn-id">COVER</span>
+      <h3 class="pn-pre-title">AGENT</h3>
+      <span class="pn-time">블록 1 · 이 장 30초 · 누적 30초</span>
+    </div>
+    <div class="pn-item pn-joke pn-say">
+      <span class="lbl">📌 요점</span>
+      <ul>
+        <li>안녕하세요.</li>
+        <li>오늘은 4시간 동안 API로 날씨를 받아 오는 여행 계획 앱을 처음부터 만듭니다.</li>
+        <li>시작 전에 채팅창을 열어 두라고 안내합니다.</li>
+      </ul>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰</span>
+      <p>표지 오른쪽 그림은 마우스로 끌면 돌아가고, 누르면 카드가 벌어진다. 카드 네 장(prd.md · design.md · 관광지.js · index.html)은 오늘 쓰고 만드는 파일 이름이다. prd.md와 관광지.js는 받은 파일이고, design.md와 index.html은 오늘 만든다. 참가자가 들어오는 동안 띄워 둔다.</p>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 애드리브</span>
+      <p>"채팅창에 「1」만 입력해 주세요. 채팅이 잘 보이는지 확인합니다."</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p2">
+    <div class="pn-slide-head">
+      <span class="pn-no">2</span>
+      <span class="pn-id">AP-0</span>
+      <h2 class="pn-slide-title">여행 계획 앱을 처음부터 만듭니다</h2>
+      <span class="pn-time">블록 1 · 이 장 2분 · 누적 2분 30초</span>
+    </div>
+    <div class="pn-item pn-joke pn-say">
+      <span class="lbl">📌 요점</span>
+      <ul>
+        <li>오늘 만드는 앱입니다.</li>
+        <li>왼쪽은 마지막에 만나는 화면의 예시 그림입니다.</li>
+        <li>위쪽 띠에서 지역과 날짜를 고르면 날씨 띠, 관광지 카드, 지도 핀, 날짜별 일정표가 나옵니다.</li>
+        <li>완성된 도구를 받지 않고 이 화면을 처음부터 만듭니다.</li>
+        <li>오른쪽은 네 단계입니다.</li>
+        <li>기획에서는 prd.md와 design.md로 무엇을 만들지 정합니다.</li>
+        <li>첫 화면에서는 index.html을 만들고 날씨.js로 날씨를 받아 붙입니다.</li>
+        <li>제작에서는 담기, 일정, 지도를 만듭니다.</li>
+        <li>공개에서는 공개 주소를 만들고 기능을 하나 더합니다.</li>
+        <li>지역은 강릉, 경주, 전주, 부산, 제주 다섯 곳이고, 관광지 자료는 강사가 준비해 두었습니다.</li>
+      </ul>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰</span>
+      <p>그림을 위에서 아래로 짚는다. 지역 · 날짜 띠, 날씨 띠, 관광지 · 지도 · 일정표. 그다음 오른쪽 네 칸을 위에서 아래로 읽는다.</p>
+    </div>
+    <div class="pn-item pn-demo pn-answer">
+      <span class="lbl">🔑 강사용 확인</span>
+      <p>그림의 지역 · 날짜 · 날씨 · 장소는 모두 예시다. 완성 화면은 참가자마다 다르다.</p>
+    </div>
+    <div class="pn-item pn-demo pn-caution">
+      <span class="lbl">⚠ 말하기 전에 확인</span>
+      <p>지금 <code>관광지.js</code>는 OpenStreetMap 기여자 자료의 시제품이다(2026-10-20 생성). 한국관광공사 TourAPI 자료로 바꾸려면 키가 필요하다(S48). 수업 전에 준비된 <code>관광지.js</code>를 확인한다.</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p3">
+    <div class="pn-slide-head">
+      <span class="pn-no">3</span>
+      <span class="pn-id">O-02</span>
+      <h2 class="pn-slide-title">도구별 사용 조건</h2>
+      <span class="pn-time">블록 1 · 이 장 1분 · 누적 3분 30초</span>
+    </div>
+    <div class="pn-item pn-joke pn-say">
+      <span class="lbl">📌 요점</span>
+      <ul>
+        <li>오늘은 세 도구 중 하나를 씁니다.</li>
+        <li>요금제, 운영체제, 그 도구가 읽는 파일 이름이 서로 다릅니다.</li>
+        <li>Claude Code는 무료 플랜에 포함되지 않습니다.</li>
+        <li>해당하는 분은 채팅에 남겨 달라고 합니다.</li>
+        <li>계정은 사전 준비 안내로 만들어 두셨어야 합니다.</li>
+        <li>Netlify 계정도 같고, 공개 단계에서 로그인합니다.</li>
+        <li>계정이 없거나 로그인이 안 되는 분도 채팅에 남겨 달라고 합니다.</li>
+      </ul>
+    </div>
+    <div class="pn-item pn-demo pn-caution">
+      <span class="lbl">⚠ 말하기 전에 확인</span>
+      <p>무료 사용 한도는 제공처가 바꿀 수 있으므로, 수업 당일 다시 확인한 내용을 말한다(출처.md 10번).</p>
+    </div>
+    <p class="pn-refs">출처: S28 · S29 · S30 · S31</p>
+  </section>
+
+  <section class="pn-slide" id="p4">
+    <div class="pn-slide-head">
+      <span class="pn-no">4</span>
+      <span class="pn-id">O-02B</span>
+      <h2 class="pn-slide-title">모델과 추론 강도는 다른 설정입니다</h2>
+      <span class="pn-time">블록 1 · 이 장 2분 · 누적 5분 30초</span>
+    </div>
+    <div class="pn-item pn-joke pn-say">
+      <span class="lbl">📌 요점</span>
+      <ul>
+        <li>모델과 추론 강도는 서로 다른 설정입니다.</li>
+        <li>모델은 누가 일하는가이고, 추론 강도는 답하기 전에 얼마나 생각하는가입니다.</li>
+        <li>오른쪽 그림은 OpenAI가 발표한 평가 결과입니다.</li>
+        <li>같은 세대의 세 모델을 비교했습니다.</li>
+        <li>큰 모델 Astra, 중간 Sol, 작은 모델 Luna입니다.</li>
+        <li>가로는 작업 하나에 든 비용, 세로는 점수입니다.</li>
+        <li>선 하나가 모델 하나이고, 선 위의 점 다섯 개가 추론 수준 낮음부터 Max까지입니다.</li>
+        <li>같은 모델에서 추론 수준을 올리면 점이 오른쪽 위로 갑니다.</li>
+        <li>점수가 오르고 비용도 함께 오릅니다.</li>
+        <li>모델이 다르면 선이 통째로 다릅니다.</li>
+        <li>작은 모델은 끝까지 올려도 52.7%이고, 큰 모델은 가장 낮은 단계에서 62.2%입니다.</li>
+        <li>대신 작은 모델의 비용은 약 9분의 1입니다.</li>
+        <li>그래서 쉬운 일은 작은 모델로, 어려운 일은 큰 모델로 합니다.</li>
+        <li>오늘은 기본 설정으로 하고, 답이 얕으면 추론 강도를 한 단계 올립니다.</li>
+      </ul>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰</span>
+      <p>아래 선(Luna)부터 위 선(Astra)까지 차례로 짚는다. 가로 눈금은 한 칸이 10배라는 점을 말한다.</p>
+    </div>
+    <div class="pn-item pn-demo pn-caution">
+      <span class="lbl">⚠ 말하기 전에 확인</span>
+      <p>이 숫자는 OpenAI가 자사 모델 발표에서 직접 측정해 밝힌 값이고, 평가 하나(OSWorld 2.0 · 컴퓨터 사용)의 결과다. 중간 모델 Sol은 Max(64.4%)에서 큰 모델의 낮음(62.2%)을 넘는다. 「작은 모델은 절대 못 따라온다」고 말하지 않는다. 설정 메뉴의 이름과 고를 수 있는 모델은 도구와 요금제마다 다르다.</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p5">
+    <div class="pn-slide-head">
+      <span class="pn-no">5</span>
+      <span class="pn-id">O-02C</span>
+      <h2 class="pn-slide-title">작업공간 · 폴더 · 파일</h2>
+      <span class="pn-time">블록 1 · 이 장 1분 30초 · 누적 7분</span>
+    </div>
+    <div class="pn-item pn-joke pn-say">
+      <span class="lbl">📌 요점</span>
+      <ul>
+        <li>작업공간, 폴더, 파일을 구분합니다.</li>
+        <li>파일은 실제 결과물이고, 폴더는 파일을 담아 두는 위치입니다.</li>
+        <li>작업공간은 에이전트가 지금 다루는 범위입니다.</li>
+        <li>에이전트 앱에서 폴더를 열면 그 폴더가 작업공간이 됩니다.</li>
+        <li>에이전트는 그 안의 파일을 읽고, 그 안에 새 파일을 만듭니다.</li>
+        <li>오늘 폴더에는 받은 파일 다섯 개가 있습니다.</li>
+        <li>그림에는 prd.md와 관광지.js만 그렸고, 나머지 셋은 AGENTS.md, CLAUDE.md, 자료설명.md입니다.</li>
+        <li>만들 파일 index.html은 오늘 만듭니다.</li>
+        <li>폴더 밖 파일은 허락을 받은 뒤에 다룹니다.</li>
+        <li>그래서 다음 장에서 폴더를 여는 것이 첫 단계입니다.</li>
+      </ul>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰</span>
+      <p>오른쪽 그림에서 점선이 작업공간, 흰 상자가 폴더, 안의 세 줄이 파일이다.</p>
+    </div>
+    <div class="pn-item pn-demo pn-caution">
+      <span class="lbl">⚠ 말하기 전에 확인</span>
+      <p>폴더 밖 파일을 다루는 방식은 도구와 설정에 따라 다르다. Codex는 작업 폴더 밖의 파일 수정과 네트워크가 필요한 명령에서 승인을 묻는다(S66). Antigravity의 폴더 밖 파일 처리는 확인하지 못했다(미확인).</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p6">
+    <div class="pn-slide-head">
+      <span class="pn-no">6</span>
+      <span class="pn-id">AP-1</span>
+      <h2 class="pn-slide-title">자료를 받아 폴더를 엽니다</h2>
+      <span class="pn-time">블록 1 · 이 장 3분 · 누적 10분</span>
+    </div>
+    <div class="pn-item pn-joke pn-say">
+      <span class="lbl">📌 요점</span>
+      <ul>
+        <li>자료를 받아 폴더를 엽니다.</li>
+        <li>받은 압축 파일을 풀면 여행앱_4시간 폴더가 생깁니다.</li>
+        <li>에이전트 앱에서 그 폴더를 열고, 안에 파일 다섯 개가 있는지 확인합니다.</li>
+        <li>파일은 두 무리입니다.</li>
+        <li>AGENTS.md와 CLAUDE.md는 강사가 세팅한 파일이고, 에이전트가 작업할 때 읽는 일하는 규칙입니다.</li>
+        <li>CLAUDE.md는 Claude Code가 읽는 같은 규칙입니다.</li>
+        <li>열어 보지 않아도 됩니다.</li>
+        <li>prd.md, 자료설명.md, 관광지.js는 나와 에이전트가 함께 쓰는 자료입니다.</li>
+        <li>오른쪽 아래 점선 칸의 design.md, index.html, 날씨.js는 아직 없는 파일입니다.</li>
+        <li>오늘 단계마다 에이전트와 함께 만듭니다.</li>
+        <li>타이머는 3분입니다.</li>
+      </ul>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰</span>
+      <p>타이머 3분. 폴더가 열렸는지, 파일 다섯 개가 보이는지 돌아다니며 본다.</p>
+    </div>
+    <div class="pn-item pn-demo pn-answer">
+      <span class="lbl">🔑 강사용 확인</span>
+      <p>폴더의 <code>AGENTS.md</code>(Claude Code는 <code>CLAUDE.md</code>)를 에이전트가 작업할 때 읽는다는 서술은 설계 §10-6을 따랐다. Codex 데스크톱과 Antigravity에서 실제로 읽는지는 드라이런에서 확인한다.</p>
+    </div>
+    <div class="pn-item pn-demo pn-caution">
+      <span class="lbl">⚠ 말하기 전에 확인</span>
+      <p>(미확인) Codex 데스크톱이 Git이 아닌 폴더를 읽기 전용으로 여는지는 확인하지 못했다(S66은 CLI 기준 권장 설정). 파일이 만들어지지 않으면 폴더 권한 표시부터 본다.</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p7">
+    <div class="pn-slide-head">
+      <span class="pn-no">7</span>
+      <span class="pn-id">C-LA1</span>
+      <h2 class="pn-slide-title">LLM과 에이전트 · 글을 이어 쓰는 모델과, 그 모델에 도구와 반복 실행을 붙인 프로그램</h2>
+      <span class="pn-time">블록 1 · 이 장 1분 30초 · 누적 11분 30초</span>
+    </div>
+    <div class="pn-item pn-joke pn-say">
+      <span class="lbl">🎙 전체 대본</span>
+      <p><span class="tag">정의</span> LLM은 글을 받아 이어질 글을 만드는 모델이고, 에이전트는 그 LLM에 도구와 반복 실행을 붙인 프로그램입니다.</p>
+    </div>
+    <div class="pn-item pn-joke pn-say">
+      <span class="lbl">📌 요점</span>
+      <ul>
+        <li>위 그림은 글을 넣으면 글이 나오는 LLM 하나의 흐름입니다.</li>
+        <li>아래 그림은 LLM이 도구 네 개를 쓰고 결과를 보며 되풀이하는 구조입니다.</li>
+      </ul>
+    </div>
+    <div class="pn-item pn-joke pn-say">
+      <span class="lbl">📌 요점</span>
+      <ul>
+        <li>채팅 앱도 LLM에 파일을 올리고 내려받는 일 같은 일부 도구를 붙인 프로그램입니다.</li>
+        <li>에이전트는 여기에 내 컴퓨터의 폴더 안 파일을 직접 읽고 고치며, 결과를 스스로 확인해 되풀이하는 일까지 맡깁니다.</li>
+      </ul>
+    </div>
+    <div class="pn-item pn-joke pn-say">
+      <span class="lbl">🎙 전체 대본</span>
+      <p><span class="tag">비유</span> LLM은 길을 알려 주는 것, 에이전트는 직접 운전해 가는 것입니다.</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p8">
+    <div class="pn-slide-head">
+      <span class="pn-no">8</span>
+      <span class="pn-id">C-14</span>
+      <h2 class="pn-slide-title">에이전트 · 읽기 · 계획 · 실행 · 확인을 되풀이하는 프로그램</h2>
+      <span class="pn-time">블록 1 · 이 장 2분 · 누적 13분 30초</span>
+    </div>
+    <div class="pn-item pn-joke pn-say">
+      <span class="lbl">🎙 전체 대본</span>
+      <p><span class="tag">정의</span> 에이전트는 결과를 보며 다음 행동을 정해 읽기, 계획, 실행, 확인을 되풀이하는 AI 프로그램입니다.</p>
+      <p><span class="tag">비유</span> 내비게이션과 같습니다. 목적지를 넣으면 길을 고르고, 막히면 다시 계산합니다. 에이전트도 결과를 보고 다음 행동을 정합니다. 읽기, 계획, 실행, 확인을 되풀이하면서 다음에 할 일을 그때그때 정합니다.</p>
+      <p><span class="tag">구분</span> Anthropic은 LLM과 도구를 미리 정한 코드 경로로 엮은 시스템을 워크플로라 부르고, 에이전트는 LLM이 스스로 과정과 도구 사용을 정하는 시스템으로 구분합니다(S72).</p>
+      <p><span class="tag">도구</span> 오늘 쓰는 도구 세 가지는 모두 에이전트입니다. 파일을 바꾸기 전에 묻는 방식이 다릅니다. Codex는 기본 설정에서 작업 폴더 안 수정은 바로 하고, 폴더 밖이나 네트워크는 묻습니다(S28). Claude Code는 모드를 고를 수 있습니다(S29). Antigravity는 허용 · 확인 · 거부 목록으로 정합니다(S30).</p>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰</span>
+      <p>순환 도식의 단계가 차례로 켜지는 것을 보여 준다.</p>
+    </div>
+    <p class="pn-refs">출처: S28 · S29 · S30 · S72</p>
+  </section>
+
+  <section class="pn-slide" id="p9">
+    <div class="pn-slide-head">
+      <span class="pn-no">9</span>
+      <span class="pn-id">A1</span>
+      <h2 class="pn-slide-title">API · 프로그램끼리 요청을 주고받는 정해진 방식</h2>
+      <span class="pn-time">블록 1 · 이 장 3분 · 누적 16분 30초</span>
+    </div>
+    <div class="pn-item pn-joke pn-say">
+      <span class="lbl">🎙 전체 대본</span>
+      <p><span class="tag">정의</span> API는 한 프로그램이 다른 프로그램의 기능이나 자료를 쓸 수 있게 정해 둔 요청 방식입니다. 사람은 화면을 눌러 쓰고, 프로그램은 API로 요청합니다(S42).</p>
+      <p><span class="tag">비유</span> 택배 접수 창구와 같습니다. 송장 칸을 채워 내면 정해진 모양의 접수증이 돌아오고, 창구 안에서 무슨 일이 일어나는지는 몰라도 됩니다.</p>
+      <p><span class="tag">요청</span> 왼쪽은 날씨 창구에 보내는 주소 한 줄입니다. 기본 주소 뒤에 물음표를 붙이고, 이름=값 네 쌍을 &amp;로 잇습니다. 네 쌍은 위도, 경도, 가져올 항목, 시간대입니다(S46).</p>
+      <p><span class="tag">응답</span> 오른쪽은 돌아온 응답의 일부입니다. 상태 번호 200은 성공입니다. 내용은 JSON이고, 이름 · 값 · 목록 [ ]으로 이루어집니다(S46 · S47). 오늘 앱의 날씨는 이 주소를 에이전트가 불러서 받아 옵니다.</p>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰</span>
+      <p>주소를 브라우저 주소 칸에 붙여 열고, 응답 글자가 그대로 나오는 것을 보여 준다(키 없음). 요청의 조각을 밑줄 색으로 짚는다.</p>
+    </div>
+    <div class="pn-item pn-demo pn-answer">
+      <span class="lbl">🔑 강사용 확인</span>
+      <p>응답의 날짜와 기온 값(20.4 · 14.9)은 2026-10-20에 열어 본 값이다. 수업 당일 같은 주소를 다시 열어 값을 바꿔 말한다(S45).</p>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 애드리브</span>
+      <p>「API는 웹 주소 아닌가요?」 주소는 API를 부르는 방법 가운데 하나입니다. 브라우저 안의 기능처럼 주소 없이 부르는 API도 있습니다(S42).</p>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 애드리브</span>
+      <p>「응답이 왔으면 성공이죠?」 상태 번호를 먼저 봅니다. 200은 성공이고, 403 권한 없음 · 404 찾을 수 없음 · 429 너무 자주 요청함도 응답으로 옵니다(S46 · S56).</p>
+    </div>
+    <div class="pn-item pn-demo pn-caution">
+      <span class="lbl">⚠ 말하기 전에 확인</span>
+      <p>시연 주소는 키 없이 열린다. 수업 직전에 한 번 열어 응답이 오는지 본다.</p>
+    </div>
+    <p class="pn-refs">출처: S42, S45, S46, S47, S56</p>
+  </section>
+
+  <section class="pn-slide" id="p10">
+    <div class="pn-slide-head">
+      <span class="pn-no">10</span>
+      <span class="pn-id">C-PRD</span>
+      <h2 class="pn-slide-title">PRD · 무엇을 만들지 적은 한 장짜리 문서</h2>
+      <span class="pn-time">블록 1 · 이 장 1분 30초 · 누적 18분</span>
+    </div>
+    <div class="pn-item pn-joke pn-say">
+      <span class="lbl">🎙 전체 대본</span>
+      <p><span class="tag">정의</span> PRD는 제품 요구사항 문서입니다. 누가 쓰고, 무엇을 하고, 어떻게 되면 완성인지를 적은 한 장짜리 문서입니다.</p>
+      <p><span class="tag">비유</span> 공사 전에 쓰는 인테리어 의뢰서와 같습니다. 방 개수와 꼭 필요한 것을 적어 두면 시공하는 사람이 다시 묻지 않습니다.</p>
+      <p><span class="tag">화면</span> PRD가 답하는 질문은 네 가지입니다. 누가 쓰나, 무엇을 하나, 어떻게 되면 완성인가, 하지 않는 것은 무엇인가입니다. 오른쪽 예시는 오늘 만드는 여행 계획 앱의 답입니다.</p>
+      <p><span class="tag">연결</span> 이 PRD를 md 파일로 저장한 것이 prd.md입니다. 받은 폴더에 틀이 들어 있고, 다음 장부터 채웁니다.</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p11">
+    <div class="pn-slide-head">
+      <span class="pn-no">11</span>
+      <span class="pn-id">AP-S</span>
+      <h2 class="pn-slide-title">에이전트와 나누는 대화</h2>
+      <span class="pn-time">블록 1 · 이 장 2분 · 누적 20분</span>
+    </div>
+    <div class="pn-item pn-joke pn-say">
+      <span class="lbl">📌 요점</span>
+      <ul>
+        <li>에이전트와 나눌 대화를 미리 봅니다.</li>
+        <li>순서는 네 단계입니다.</li>
+        <li>prd.md를 분석해 달라고 하고, 인터뷰를 받고, 답하고 꼬리 질문을 받고, 확인하고 승인합니다.</li>
+        <li>첫 요청에 에이전트는 정해진 것과 내가 정할 것을 나눠 알려 줍니다.</li>
+        <li>두 번째 요청으로 인터뷰를 시작하면 질문 세 개가 오고, 질문마다 비유가 한 줄씩 붙습니다.</li>
+        <li>첫 묶음은 누가 어떤 때 여는 앱인지, 가장 먼저 알고 싶은 것, 다 쓰고 나면 남아야 하는 것입니다.</li>
+        <li>어디로 가는 여행인지는 묻지 않습니다.</li>
+        <li>그 값은 앱을 쓰는 사람이 화면에서 고릅니다.</li>
+        <li>답에 모호한 곳이 있으면 꼬리 질문이 하나 옵니다.</li>
+        <li>다 묻고 나면 에이전트가 이해한 것을 정리해 보여 주고, 내가 승인한 뒤에 prd.md를 고칩니다.</li>
+        <li>묶음은 모두 세 개이고, 화면은 첫 묶음과 꼬리 질문, 묶음 3 뒤의 정리와 승인을 보여 줍니다.</li>
+        <li>묶음 2와 3의 질문은 화면에서 생략했습니다.</li>
+        <li>정리는 prd.md의 칸 수(열 칸)만큼 한 줄씩 오고, 화면에는 세 줄만 보입니다.</li>
+      </ul>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰</span>
+      <p>클릭 열 번. 왼쪽 「대화 순서」에서 지금 단계가 밝아진다. 「처음부터」를 누르면 다시 시작한다.</p>
+    </div>
+    <div class="pn-item pn-demo pn-answer">
+      <span class="lbl">🔑 강사용 확인</span>
+      <p>화면의 부모 · 일정표 · 우산 표시는 예시 답이다. 실제 대화의 문장은 사람마다 다르다. 순서만 같다.</p>
+    </div>
+    <div class="pn-item pn-demo pn-caution">
+      <span class="lbl">⚠ 말하기 전에 확인</span>
+      <p>(미확인) 질문마다 비유를 붙이는 것은 AGENTS.md가 에이전트에게 하는 요청이고 강제 설정이 아니다(S73은 Claude Code 문서의 CLAUDE.md 서술). Codex와 Antigravity가 따르는지는 드라이런에서 확인한다.</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p12">
+    <div class="pn-slide-head">
+      <span class="pn-no">12</span>
+      <span class="pn-id">AP1-1</span>
+      <h2 class="pn-slide-title">prd.md를 분석해 달라고 합니다</h2>
+      <span class="pn-time">블록 1 · 이 장 4분 · 누적 24분</span>
+    </div>
+    <div class="pn-item pn-joke pn-say">
+      <span class="lbl">📌 요점</span>
+      <ul>
+        <li>첫 단계는 prd.md를 분석해 달라고 하는 것입니다.</li>
+        <li>에이전트 앱에서 여행앱_4시간 폴더를 열고 새 대화를 시작한 뒤, 화면의 요청을 그대로 보냅니다.</li>
+        <li>답에서 세 가지를 봅니다.</li>
+        <li>무엇을 만드는 문서인지, 이미 정해진 것, 내가 정할 것입니다.</li>
+        <li>모르는 말이 있으면 「더 쉽게 설명해 줘」라고 합니다.</li>
+        <li>이 단계는 설명을 듣는 단계이고, 내가 정하는 칸은 다음 장의 인터뷰에서 에이전트가 묻습니다.</li>
+      </ul>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰</span>
+      <p>타이머 4분. 강사 화면에서 요청을 보내고 답을 같이 읽는다. 답에서 「내가 정할 것」 줄을 짚는다.</p>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 애드리브</span>
+      <p>(강사용 · 화면에는 쓰지 않는다) 답에 강사 세팅이 나오지 않는 것은 AGENTS.md의 「분석 요청 응답 범위」 문장 때문이다. 폴더나 파일을 분석해 달라고 하면 prd.md · 자료설명.md · 관광지.js만 설명하고, 참가자가 AGENTS.md를 직접 물으면 그때 설명한다.</p>
+    </div>
+    <div class="pn-item pn-demo pn-caution">
+      <span class="lbl">⚠ 말하기 전에 확인</span>
+      <p>(미확인) 이 문장은 에이전트에게 하는 요청이고 강제가 아니다(S73은 Claude Code 문서의 CLAUDE.md 서술). 답에 AGENTS.md 이야기가 나오면 「prd.md와 자료설명.md, 관광지.js만 설명해 줘」라고 다시 요청하게 안내한다. Codex와 Antigravity에서의 동작은 드라이런에서 확인한다.</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p13">
+    <div class="pn-slide-head">
+      <span class="pn-no">13</span>
+      <span class="pn-id">AP1-2</span>
+      <h2 class="pn-slide-title">인터뷰로 prd.md를 채웁니다</h2>
+      <span class="pn-time">블록 1 · 이 장 12분 · 누적 36분</span>
+    </div>
+    <div class="pn-item pn-joke pn-say">
+      <span class="lbl">📌 요점</span>
+      <ul>
+        <li>prd.md의 내가 정하는 칸은 인터뷰를 받아 채웁니다.</li>
+        <li>요청은 한 줄이고, 인터뷰 규칙은 폴더의 AGENTS.md에 있어서 요청에 적지 않습니다.</li>
+        <li>에이전트는 질문을 한 번에 세 개씩, 질문마다 비유를 붙여 묻습니다.</li>
+        <li>묶음은 세 개입니다.</li>
+        <li>첫째 묶음은 누가 어떤 때 여는 앱인지, 가장 먼저 알고 싶은 것, 다 쓰고 나면 남아야 하는 것입니다.</li>
+        <li>둘째 묶음은 처음에 고르는 것, 관광지를 보여 주는 기준, 날씨를 쓰는 곳입니다.</li>
+        <li>셋째 묶음은 일정을 만드는 방식, 예보나 자료가 없을 때 알리는 방식, 이 앱이 하지 않을 것입니다.</li>
+        <li>질문이 어려우면 「모르겠다」나 「예를 들어 줘」라고 합니다.</li>
+        <li>그때만 에이전트가 선택지를 두세 개 보여 줍니다.</li>
+        <li>묶음 3까지 묻고 나면 에이전트가 이해한 것을 칸 수(열 칸)만큼 한 줄씩 정리해 보여 주고, 틀린 곳을 바로잡고 승인합니다.</li>
+        <li>prd.md가 바뀌면 열어서 확인합니다.</li>
+      </ul>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰</span>
+      <p>타이머 12분을 시작한다. 강사 화면에서 요청을 보내 첫 묶음 질문과 비유가 오는 것을 보여 준다.</p>
+    </div>
+    <div class="pn-item pn-demo pn-answer">
+      <span class="lbl">🔑 강사용 확인</span>
+      <p>질문은 꼬리 질문을 더해 최대 10번 안에 끝난다(설계 §10-6). 여행지와 날짜는 묻지 않는다. 앱을 쓰는 사람이 화면에서 고르는 값이다. 다만 앱이 고르게 해 줄 날짜 범위(며칠 앞까지, 일정은 최대 며칠)가 답에 없으면 꼬리 질문으로 한 번 묻는다. 화면의 날짜 칸 수가 이 범위로 정해지기 때문이다.</p>
+    </div>
+    <div class="pn-item pn-demo pn-caution">
+      <span class="lbl">⚠ 말하기 전에 확인</span>
+      <p>에이전트가 되짚기 없이 prd.md를 바로 고치는 경우가 있다. 그때는 「방금 바꾼 내용을 먼저 정리해서 보여 줘」라고 다시 요청하게 안내한다.</p>
+    </div>
+    <div class="pn-item pn-hint">
+      <span class="lbl">🗣 막힐 때 힌트</span>
+      <p class="hlabel">질문이 너무 많이 올 때</p>
+      <div class="prompt">질문은 한 번만 더 하고, 그다음에는 네가 이해한 것을 정리해서 보여 줘.</div>
+    </div>
+    <div class="pn-item pn-hint">
+      <span class="lbl">🗣 막힐 때 힌트</span>
+      <p class="hlabel">시간이 다 됐을 때</p>
+      <div class="prompt">지금까지 답한 내용으로 정리해 줘.</div>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p14">
+    <div class="pn-slide-head">
+      <span class="pn-no">14</span>
+      <span class="pn-id">AP1-3</span>
+      <h2 class="pn-slide-title">prd.md를 읽고 내가 결정합니다</h2>
+      <span class="pn-time">블록 1 · 이 장 3분 · 누적 39분</span>
+    </div>
+    <div class="pn-item pn-joke pn-say">
+      <span class="lbl">📌 요점</span>
+      <ul>
+        <li>prd.md를 처음부터 끝까지 읽고 열 칸을 봅니다.</li>
+        <li>대상, 사용 장면, 완성 기준, 처음에 고르는 것, 관광지를 보여 주는 기준, 날씨를 쓰는 곳, 일정을 만드는 방식, 예보가 없는 날, 자료가 없는 지역, 하지 않을 것이 내가 인터뷰에서 말한 대로 적혀 있는지 봅니다.</li>
+        <li>틀린 곳은 직접 고치지 않고 말로 요청합니다.</li>
+        <li>「〈칸〉을 〈내 말〉로 고쳐 줘」처럼 칸 이름과 내 말을 함께 적습니다.</li>
+        <li>화면 위쪽 예시는 날씨를 쓰는 곳 칸에 날짜별 기온만 보여 준다고 적혀 있는 경우입니다.</li>
+      </ul>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰</span>
+      <p>위쪽 예시를 읽고, 칸 이름과 내 말이 요청에 함께 들어간 곳을 짚는다. 3분 안에 열 칸을 한 번 훑는다.</p>
+    </div>
+    <div class="pn-item pn-demo pn-caution">
+      <span class="lbl">⚠ 말하기 전에 확인</span>
+      <p>열 칸의 이름이 prd.md의 「1. 내가 정하는 것」 칸 이름과 같은지 수업 전에 확인한다. 다르면 화면의 칸 이름을 prd.md에 맞춘다.</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p15">
+    <div class="pn-slide-head">
+      <span class="pn-no">15</span>
+      <span class="pn-id">AP1-4</span>
+      <h2 class="pn-slide-title">디자이너에게 인터뷰받아 design.md를 만듭니다</h2>
+      <span class="pn-time">블록 1 · 이 장 10분 · 누적 49분</span>
+    </div>
+    <div class="pn-item pn-joke pn-say">
+      <span class="lbl">📌 요점</span>
+      <ul>
+        <li>디자인은 디자이너 역할의 인터뷰로 정합니다.</li>
+        <li>요청은 한 줄이고, 디자인 인터뷰 규칙도 폴더의 AGENTS.md에 있습니다.</li>
+        <li>질문은 모두 합쳐 10개이고 한 번에 세 개까지 옵니다.</li>
+        <li>질문마다 비유가 함께 옵니다.</li>
+        <li>열 가지는 앱을 쓰는 장면과 기기, 첫인상 세 단어, 색 조합, 글자 크기와 읽기 편함, 첫 화면에서 가장 크게 보일 것, 관광지 카드 모양, 날씨 표현, 버튼 모양과 눌렀을 때 반응, 지도의 비중, 피하고 싶은 느낌입니다.</li>
+        <li>색은 에이전트가 후보 세 가지 조합을 보여 주고 내가 고릅니다.</li>
+        <li>다 물으면 에이전트가 design.md 초안을 보여 주고, 승인하면 저장합니다.</li>
+        <li>design.md에는 색, 글꼴, 모서리와 여백, 부품, 움직임, 피할 것의 여섯 절이 담깁니다.</li>
+      </ul>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰</span>
+      <p>타이머 10분. 강사 화면에서 요청을 보내 첫 묶음이 오는 것을 보여 준다. 색 질문에서 후보 세 가지가 오면 하나를 고르는 모습을 보여 준다.</p>
+    </div>
+    <div class="pn-item pn-demo pn-answer">
+      <span class="lbl">🔑 강사용 확인</span>
+      <p>색 질문 ③은 후보 셋과 비율(60 · 30 · 10)을 함께 묻는다(설계 §10-6). 이 장은 설계의 질문 열 개를 그대로 옮겼다.</p>
+    </div>
+    <div class="pn-item pn-demo pn-caution">
+      <span class="lbl">⚠ 말하기 전에 확인</span>
+      <p>질문 수는 AGENTS.md가 정한 규칙이고 강제 설정이 아니다(S73은 Claude Code 문서의 CLAUDE.md 서술). 질문이 10개를 넘게 오면 「지금까지 답한 내용으로 design.md 초안을 보여 줘」라고 안내한다.</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p16">
+    <div class="pn-slide-head">
+      <span class="pn-no">16</span>
+      <span class="pn-id">BR-1</span>
+      <h2 class="pn-slide-title">쉬는 시간 10분</h2>
+      <span class="pn-time">블록 1 · 휴식 10분(시간표 밖)</span>
+    </div>
+    <div class="pn-item pn-joke pn-say">
+      <span class="lbl">📌 요점</span>
+      <ul>
+        <li>10분 쉬겠습니다.</li>
+        <li>타이머가 0이 되면 돌아와 주세요.</li>
+        <li>prd.md와 design.md가 저장됐는지 확인하고 쉬라고 안내합니다.</li>
+        <li>돌아오면 첫 화면과 날씨를 만듭니다.</li>
+      </ul>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰</span>
+      <p>10:00 타이머를 시작한다.</p>
+    </div>
+  </section>
+
+  <div class="pn-block">블록 2 · 17~26쪽 · 39분</div>
+  <section class="pn-slide" id="p17">
+    <div class="pn-slide-head">
+      <span class="pn-no">17</span>
+      <span class="pn-id">AP2-0</span>
+      <h2 class="pn-slide-title">블록 2 · 첫 화면 · 날씨</h2>
+      <span class="pn-time">블록 2 · 이 장 30초 · 누적 30초</span>
+    </div>
+    <div class="pn-item pn-joke pn-say">
+      <span class="lbl">📌 요점</span>
+      <ul>
+        <li>블록 2를 시작합니다.</li>
+        <li>이 블록의 주제는 첫 화면과 날씨입니다.</li>
+        <li>블록 1에서 만든 prd.md와 design.md를 에이전트가 읽고 index.html을 처음부터 만듭니다.</li>
+        <li>이어서 에이전트에게 날씨를 받아 오게 하고, 받은 날씨를 화면에 붙입니다.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p18">
+    <div class="pn-slide-head">
+      <span class="pn-no">18</span>
+      <span class="pn-id">AP2-B</span>
+      <h2 class="pn-slide-title">블록 2에서 하는 일</h2>
+      <span class="pn-time">블록 2 · 이 장 30초 · 누적 1분</span>
+    </div>
+    <div class="pn-item pn-joke pn-say">
+      <span class="lbl">📌 요점</span>
+      <ul>
+        <li>블록 2에서 하는 일은 세 가지입니다.</li>
+        <li>첫째, 첫 화면을 만듭니다.</li>
+        <li>에이전트가 계획을 먼저 보여 주고, 승인하면 index.html을 만듭니다.</li>
+        <li>화면에는 지역 다섯 곳과 관광지 카드가 나옵니다.</li>
+        <li>둘째, 에이전트에게 날씨를 받아 오게 합니다.</li>
+        <li>에이전트가 인터넷에서 날씨를 불러 오기 전에 승인 창이 뜨고, 승인하면 날씨.js 파일이 생깁니다.</li>
+        <li>셋째, 날씨.js를 읽어 화면에 날짜별 날씨를 붙입니다.</li>
+        <li>이 블록에서 함께 배울 개념은 키와 승인입니다.</li>
+        <li>먼저 키를 설명합니다.</li>
+      </ul>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰</span>
+      <p>세 카드를 차례로 짚는다. 승인은 둘째 카드에서 처음 나온다고 말한다.</p>
+    </div>
+    <div class="pn-item pn-demo pn-answer">
+      <span class="lbl">🔑 강사용 확인</span>
+      <p>관광지는 강사가 준비한 관광지.js를 쓴다. TourAPI 키는 참가자가 받지 않는다(이 강의의 구성).</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p19">
+    <div class="pn-slide-head">
+      <span class="pn-no">19</span>
+      <span class="pn-id">A3</span>
+      <h2 class="pn-slide-title">API 키 · 요청하는 쪽을 서버에 알리는 긴 문자열</h2>
+      <span class="pn-time">블록 2 · 이 장 2분 30초 · 누적 3분 30초</span>
+    </div>
+    <div class="pn-item pn-joke pn-say">
+      <span class="lbl">🎙 전체 대본</span>
+      <p><span class="tag">정의</span> API 키는 누가 요청하는지 서버에 알리는 긴 문자열입니다. 창구에 따라 키가 필요한 곳과 필요 없는 곳이 있습니다(S43 · S48).</p>
+      <p><span class="tag">비유</span> 이름이 적힌 출입증과 같습니다. 출입증이 있어야 열리는 문도 있고, 없이 들어가는 문도 있습니다.</p>
+      <p><span class="tag">그림</span> 왼쪽은 키 없이 부르는 창구입니다. 오늘 날씨를 받아 오는 Open-Meteo가 여기에 속합니다. 키는 상업용 요금제에만 있고, 무료로는 비상업 용도에만 쓸 수 있습니다(S43 · S44). 오른쪽은 키가 있어야 부르는 창구입니다. 한국관광공사 TourAPI는 공공데이터포털에서 활용신청으로 키를 받습니다(S48). 오늘 쓰는 관광지.js는 강사가 미리 모아 둔 자료입니다. 아래 줄은 규칙입니다. 키는 파일에 쓰지 않습니다. 파일에 적은 키는 공개한 주소에서 누구나 볼 수 있습니다(S51).</p>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰</span>
+      <p>왼쪽 카드의 「출입증 없이」와 오른쪽 카드의 「강사가 미리 모아 둔 자료」를 차례로 짚는다.</p>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 애드리브</span>
+      <p>(강사용 · 화면에는 쓰지 않는다) 지금 관광지.js는 OpenStreetMap 기여자 자료의 시제품이다(2026-10-20 생성). 오른쪽 카드의 TourAPI는 키가 필요한 창구의 예이고, TourAPI 키로 받은 자료로 바꿀 수 있다(S48).</p>
+    </div>
+    <div class="pn-item pn-demo pn-answer">
+      <span class="lbl">🔑 강사용 확인</span>
+      <p>TourAPI는 개발 단계에서 자동 승인이고 개발계정은 하루 1,000회다(S48).</p>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 애드리브</span>
+      <p>「키는 비밀번호라서 숨겨지죠?」 파일에 적은 키는 공개한 주소에서 누구나 볼 수 있습니다. Google은 공개되는 키에 사용처 제한을 걸고, 제한 없는 키의 남용 비용은 키 주인이 진다고 적습니다(S51).</p>
+    </div>
+    <div class="pn-item pn-demo pn-caution">
+      <span class="lbl">⚠ 말하기 전에 확인</span>
+      <p>(이 강의의 정리) 「키는 파일에 쓰지 않는다」는 S51을 바탕으로 이 강의가 세운 규칙이다. S51 원문은 공개되는 키에 사용처 제한을 걸라고 적는다.</p>
+    </div>
+    <p class="pn-refs">출처: S43, S44, S48, S51</p>
+  </section>
+
+  <section class="pn-slide" id="p20">
+    <div class="pn-slide-head">
+      <span class="pn-no">20</span>
+      <span class="pn-id">PL-1</span>
+      <h2 class="pn-slide-title">계획부터 받습니다</h2>
+      <span class="pn-time">블록 2 · 이 장 1분 30초 · 누적 5분</span>
+    </div>
+    <div class="pn-item pn-joke pn-say">
+      <span class="lbl">📌 요점</span>
+      <ul>
+        <li>첫 화면을 만들기 전에 한 가지를 정합니다.</li>
+        <li>에이전트에게 바로 만들게 하지 않고 계획부터 받습니다.</li>
+        <li>요청 끝에 두 줄을 붙입니다.</li>
+        <li>「만들기 전에 계획을 먼저 보여 줘. 내가 승인하기 전에는 아무것도 만들지 마.」 이유는 세 가지입니다.</li>
+        <li>바로 만들게 하면 엉뚱한 것을 만들 수 있습니다.</li>
+        <li>계획은 몇 줄이라 읽고 고치기 쉽습니다.</li>
+        <li>다 만든 뒤에 고치는 것보다 빠릅니다.</li>
+        <li>요청을 보내면 에이전트가 계획을 보여 주고, 읽고 맞으면 「좋아」라고 답합니다.</li>
+        <li>그러면 에이전트가 만들기 시작합니다.</li>
+        <li>블록 1의 인터뷰에서도 정리를 승인한 뒤에 prd.md를 고쳤습니다.</li>
+        <li>오타 수정처럼 작고 분명한 일은 바로 시켜도 됩니다.</li>
+      </ul>
+    </div>
+    <div class="pn-item pn-demo pn-caution">
+      <span class="lbl">⚠ 말하기 전에 확인</span>
+      <p>이 장은 공식 문서를 인용하지 않는다. 앞 판에 있던 두 회사의 Best practices 인용 카드와 「두 도구 모두 계획 전용 모드」 문구는 출처.md에 근거가 없어 뺐다. 계획 전용 모드가 있는지, 켜는 방법이 무엇인지는 리허설에서 확인한 것만 말한다(미확인).</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p21">
+    <div class="pn-slide-head">
+      <span class="pn-no">21</span>
+      <span class="pn-id">AP2-1</span>
+      <h2 class="pn-slide-title">첫 화면을 만듭니다</h2>
+      <span class="pn-time">블록 2 · 이 장 10분 · 누적 15분</span>
+    </div>
+    <div class="pn-item pn-joke pn-say">
+      <span class="lbl">📌 요점</span>
+      <ul>
+        <li>첫 화면을 만드는 단계입니다.</li>
+        <li>화면의 요청을 그대로 보내면 에이전트가 prd.md와 design.md를 읽고, 어떻게 만들지 계획을 먼저 보여 줍니다.</li>
+        <li>계획을 읽고 마음에 들면 「좋아, 만들어 줘.」라고 답합니다.</li>
+        <li>그러면 에이전트가 index.html을 만듭니다.</li>
+        <li>폴더의 index.html을 더블클릭해 엽니다.</li>
+        <li>화면에 지역 다섯 곳과 관광지 카드가 나오는지 봅니다.</li>
+        <li>보이면 고칠 곳 하나를 골라 대화에 말로 전합니다.</li>
+        <li>브라우저 기능을 켜면 에이전트도 화면을 볼 수 있습니다.</li>
+        <li>오늘은 내가 열어 보고, 본 것을 말로 전합니다.</li>
+      </ul>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰</span>
+      <p>타이머 10분. 강사 화면에서 요청을 보내고 계획을 같이 읽은 뒤 승인한다. index.html을 더블클릭해 지역 다섯 곳과 카드가 보이는 것을 짚는다.</p>
+    </div>
+    <div class="pn-item pn-demo pn-answer">
+      <span class="lbl">🔑 강사용 확인</span>
+      <p>승인 문장은 「좋아, 만들어 줘.」다. 계획이 먼저 나왔는지 확인하고 보낸다.</p>
+    </div>
+    <div class="pn-item pn-demo pn-caution">
+      <span class="lbl">⚠ 말하기 전에 확인</span>
+      <p>화면 그림의 모양은 예시다. 참가자 화면은 design.md에 따라 다르다고 먼저 말한다.</p>
+    </div>
+    <div class="pn-item pn-demo pn-caution">
+      <span class="lbl">⚠ 말하기 전에 확인</span>
+      <p>계획은 AGENTS.md 「승인」 절에 따라 여덟 줄 이내로 나온다. 줄 수는 강제가 아니므로 더 길게 오면 「여덟 줄 이내로 줄여 줘」라고 안내한다.</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p22">
+    <div class="pn-slide-head">
+      <span class="pn-no">22</span>
+      <span class="pn-id">M2-V</span>
+      <h2 class="pn-slide-title">만든 결과를 보는 두 가지 방법</h2>
+      <span class="pn-time">블록 2 · 이 장 2분 · 누적 17분</span>
+    </div>
+    <div class="pn-item pn-joke pn-say">
+      <span class="lbl">📌 요점</span>
+      <ul>
+        <li>만든 결과를 보는 방법은 두 가지입니다.</li>
+        <li>여행 앱은 파일로 여는 쪽이 기본입니다.</li>
+        <li>여행앱_4시간 폴더에서 index.html을 더블클릭합니다.</li>
+        <li>주소창이 file로 시작합니다.</li>
+        <li>이 앱의 자료는 관광지.js와 날씨.js처럼 .js 파일이라 더블클릭으로도 읽힙니다.</li>
+        <li>둘째는 미리보기입니다.</li>
+        <li>에이전트에게 「미리보기로 보여 줘」라고 하면 에이전트가 내 컴퓨터에서 페이지를 띄워 보여 줍니다.</li>
+        <li>주소창이 localhost로 시작합니다.</li>
+        <li>자료를 .json이나 .csv 파일로 읽는 웹페이지는 이 방법으로 봅니다.</li>
+        <li>어느 쪽이든 남에게 보이는 주소가 아닙니다.</li>
+        <li>남에게 보여 주려면 공개 단계에서 Netlify에 올립니다.</li>
+      </ul>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰</span>
+      <p>강사 화면에서 index.html을 더블클릭으로 열어 주소창이 file로 시작하는 것을 보여 준다.</p>
+    </div>
+    <div class="pn-item pn-demo pn-caution">
+      <span class="lbl">⚠ 말하기 전에 확인</span>
+      <p>미리보기 기능의 이름과 localhost 뒤의 숫자는 도구마다 다르다.</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p23">
+    <div class="pn-slide-head">
+      <span class="pn-no">23</span>
+      <span class="pn-id">AP2-2</span>
+      <h2 class="pn-slide-title">에이전트에게 날씨를 받아 오게 합니다</h2>
+      <span class="pn-time">블록 2 · 이 장 8분 · 누적 25분</span>
+    </div>
+    <div class="pn-item pn-joke pn-say">
+      <span class="lbl">📌 요점</span>
+      <ul>
+        <li>날씨를 받아 오는 단계입니다.</li>
+        <li>요청 한 번으로 다섯 지역(강릉 · 경주 · 전주 · 부산 · 제주)의 날씨를 함께 받습니다.</li>
+        <li>주소는 자료설명.md에 미리 적혀 있습니다.</li>
+        <li>요청에 「부르기 전에 쓸 주소를 먼저 보여 줘」가 들어 있어서, 에이전트가 쓸 주소를 먼저 보여 줍니다.</li>
+        <li>주소를 읽고 「좋아」라고 답하면 에이전트가 인터넷을 쓰는 명령을 실행하려 하고, 그때 승인 창이 뜹니다.</li>
+        <li>승인 창에서 한 번 더 허락합니다.</li>
+        <li>Codex는 인터넷을 쓰는 명령을 실행하기 전에 승인을 묻습니다.</li>
+        <li>Antigravity는 승인 카드의 「Allow」를 누릅니다.</li>
+        <li>승인하면 받아 온 응답이 대화에 나타나고, 폴더에 날씨.js가 생깁니다.</li>
+        <li>오른쪽 그림은 모형이고 실제 모양은 도구마다 다릅니다.</li>
+      </ul>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰</span>
+      <p>타이머 8분. 강사 화면에서 쓸 주소를 읽고 「좋아」라고 답한 뒤, 승인 창이 뜨는 순간 멈추고 「이 명령은 인터넷을 쓰는 명령입니다」라고 말한 뒤 승인한다. 응답이 대화에 나타나는 것과 폴더에 날씨.js가 생기는 것을 짚는다.</p>
+    </div>
+    <div class="pn-item pn-demo pn-answer">
+      <span class="lbl">🔑 강사용 확인</span>
+      <p>Codex는 인터넷을 쓰는 명령을 실행하기 전에 승인을 묻고(S66 · S67), Antigravity는 승인 카드 「Allow」를 쓴다(S70). 도구 안의 버튼 문구는 모형에서 「승인」으로 적었다.</p>
+    </div>
+    <div class="pn-item pn-demo pn-caution">
+      <span class="lbl">⚠ 말하기 전에 확인</span>
+      <p>승인하지 않으면 실행되지 않는다(S66). 승인 창이 뜨면 읽고 누르게 한다.</p>
+    </div>
+    <div class="pn-item pn-demo pn-caution">
+      <span class="lbl">⚠ 말하기 전에 확인</span>
+      <p>Windows PowerShell에서 curl은 Invoke-WebRequest의 별칭이라 리눅스식 명령이 그대로 되지 않는다. 에이전트가 curl.exe나 Invoke-RestMethod를 쓰도록 AGENTS.md에 적혀 있다(S74).</p>
+    </div>
+    <div class="pn-item pn-demo pn-caution">
+      <span class="lbl">⚠ 말하기 전에 확인</span>
+      <p>(미확인) 승인 창이 뜨지 않는 참가자가 있을 수 있다. 권한 모드 설정에 따라 다르며, S67 · S70은 모드 이름만 확인했고 모드별 동작은 드라이런 전까지 미확인이다. AGENTS.md의 Windows 명령 항은 파일이 확정되면 대조한다.</p>
+    </div>
+    <p class="pn-refs">출처: S66, S67, S70, S74</p>
+  </section>
+
+  <section class="pn-slide" id="p24">
+    <div class="pn-slide-head">
+      <span class="pn-no">24</span>
+      <span class="pn-id">AP2-3</span>
+      <h2 class="pn-slide-title">화면에 날씨를 붙입니다</h2>
+      <span class="pn-time">블록 2 · 이 장 7분 · 누적 32분</span>
+    </div>
+    <div class="pn-item pn-joke pn-say">
+      <span class="lbl">📌 요점</span>
+      <ul>
+        <li>받아 온 날씨를 화면에 붙이는 단계입니다.</li>
+        <li>화면의 요청을 보내고 계획이 나오면 「좋아」라고 답합니다.</li>
+        <li>에이전트가 끝내면 index.html을 새로 고침합니다.</li>
+        <li>날짜별로 날씨가 보이는지 봅니다.</li>
+        <li>마지막으로 예보 없는 날의 표시를 봅니다.</li>
+        <li>날씨.js에는 예보가 있는 날까지(최대 16일) 들어 있어서, 여행 날짜가 날씨.js에 없으면 예보 없는 날이 됩니다.</li>
+        <li>그 날을 어떻게 보여 줄지는 블록 1의 인터뷰에서 정해 prd.md에 적었습니다.</li>
+        <li>화면이 prd.md에 적은 대로인지 확인합니다.</li>
+      </ul>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰</span>
+      <p>타이머 7분. 강사 화면에서 새로 고침해 날짜별 날씨를 짚고, 예보 없는 날의 표시를 prd.md의 문장과 나란히 놓고 본다.</p>
+    </div>
+    <div class="pn-item pn-demo pn-answer">
+      <span class="lbl">🔑 강사용 확인</span>
+      <p>자료설명.md의 주소는 16일(최대)을 부른다. 예보는 기본 7일, 최대 16일이다(S43). 예보 없는 날은 응답의 time에 없는 날짜이고, 비 오는 날의 기본값은 weather_code 61~67 · 80~82 · 95~99이다(자료설명.md · 2026-10-20에 연 Open-Meteo 문서의 코드표).</p>
+    </div>
+    <div class="pn-item pn-demo pn-caution">
+      <span class="lbl">⚠ 말하기 전에 확인</span>
+      <p>그림의 날짜와 기온은 모양 예시다. 참가자 화면의 숫자와 같을 필요가 없다고 먼저 말한다.</p>
+    </div>
+    <div class="pn-item pn-demo pn-caution">
+      <span class="lbl">⚠ 말하기 전에 확인</span>
+      <p>참가자가 고른 날짜가 16일 안이면 예보 없는 날이 화면에 나오지 않는다. 시연 때 17일 뒤 날짜를 골라 보인다.</p>
+    </div>
+    <p class="pn-refs">출처: S43</p>
+  </section>
+
+  <section class="pn-slide" id="p25">
+    <div class="pn-slide-head">
+      <span class="pn-no">25</span>
+      <span class="pn-id">M2-4</span>
+      <h2 class="pn-slide-title">고칠 곳은 하나씩 요청합니다</h2>
+      <span class="pn-time">블록 2 · 이 장 7분 · 누적 39분</span>
+    </div>
+    <div class="pn-item pn-joke pn-say">
+      <span class="lbl">📌 요점</span>
+      <ul>
+        <li>화면을 고칠 때는 세 부분으로 요청합니다.</li>
+        <li>유지는 지금 잘 되는 것, 변경은 바꿀 한 군데, 확인은 바꾼 뒤 무엇을 보면 되는지입니다.</li>
+        <li>한 번에 여러 곳을 바꾸라고 하면 어디가 왜 바뀌었는지 찾기 어렵습니다.</li>
+        <li>바꾸고 싶은 곳 하나를 고릅니다.</li>
+        <li>날씨 칸의 글자 크기나 첫 화면 문구처럼 작은 곳이어도 됩니다.</li>
+        <li>7분 동안 두세 번 되풀이합니다.</li>
+      </ul>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰</span>
+      <p>강사 화면에서 틀을 채워 보내고, 에이전트가 index.html을 고치면 새로 고쳐 확인 문장대로 본다. 타이머 7분을 시작한다.</p>
+    </div>
+    <div class="pn-item pn-hint">
+      <span class="lbl">🗣 막힐 때 힌트</span>
+      <p class="hlabel">채운 예시</p>
+      <div class="prompt">유지: 관광지 목록은 그대로 둬.
+변경: index.html에서 날씨 칸의 기온 글자만 더 크게 바꿔 줘.
+확인: 바꾼 뒤 날씨 칸에서 무엇이 보이면 되는지 알려 줘.</div>
+    </div>
+    <div class="pn-item pn-demo pn-caution">
+      <span class="lbl">⚠ 말하기 전에 확인</span>
+      <p>index.html을 고친 뒤 화면이 저절로 바뀌는지, 새로 고침이 필요한지는 드라이런에서 확인한다.</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p26">
+    <div class="pn-slide-head">
+      <span class="pn-no">26</span>
+      <span class="pn-id">BR-2</span>
+      <h2 class="pn-slide-title">쉬는 시간 10분</h2>
+      <span class="pn-time">블록 2 · 휴식 10분(시간표 밖)</span>
+    </div>
+    <div class="pn-item pn-joke pn-say">
+      <span class="lbl">📌 요점</span>
+      <ul>
+        <li>10분 쉬겠습니다.</li>
+        <li>폴더에 index.html과 날씨.js가 있는지 확인하고 쉬라고 안내합니다.</li>
+        <li>돌아오면 담기, 일정, 지도를 만듭니다.</li>
+      </ul>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰</span>
+      <p>10:00 타이머를 시작한다. 돌아오면 담기 · 일정 · 지도를 만든다고 알린다.</p>
+    </div>
+  </section>
+
+  <div class="pn-block">블록 3 · 27~37쪽 · 37분 30초</div>
+  <section class="pn-slide" id="p27">
+    <div class="pn-slide-head">
+      <span class="pn-no">27</span>
+      <span class="pn-id">AP3-0</span>
+      <h2 class="pn-slide-title">블록 3 · 제작</h2>
+      <span class="pn-time">블록 3 · 이 장 30초 · 누적 30초</span>
+    </div>
+    <div class="pn-item pn-joke pn-say">
+      <span class="lbl">📌 요점</span>
+      <ul>
+        <li>블록 3을 시작합니다.</li>
+        <li>단계는 ③ 제작입니다.</li>
+        <li>관광지 카드에 담기 단추를 넣고, 날짜별 일정을 만들고, 지도에 핀을 찍습니다.</li>
+        <li>마지막에 화면을 자료와 맞춰 봅니다.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p28">
+    <div class="pn-slide-head">
+      <span class="pn-no">28</span>
+      <span class="pn-id">AP3-B</span>
+      <h2 class="pn-slide-title">블록 3에서 하는 일</h2>
+      <span class="pn-time">블록 3 · 이 장 30초 · 누적 1분</span>
+    </div>
+    <div class="pn-item pn-joke pn-say">
+      <span class="lbl">📌 요점</span>
+      <ul>
+        <li>블록 3에서 하는 일은 세 가지입니다.</li>
+        <li>관광지 카드에 담기 단추를 넣습니다.</li>
+        <li>담은 곳으로 날짜별 일정을 만듭니다.</li>
+        <li>일정의 장소를 지도에 번호 핀으로 찍습니다.</li>
+        <li>마지막에 화면의 기온과 장소를 자료와 맞춰 봅니다.</li>
+        <li>먼저 자료가 없을 때 앱이 어떻게 보이는지를 개념으로 봅니다.</li>
+      </ul>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰</span>
+      <p>세 카드를 차례로 짚는다. 개념 한 가지가 먼저 나온다고 알린다.</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p29">
+    <div class="pn-slide-head">
+      <span class="pn-no">29</span>
+      <span class="pn-id">A5</span>
+      <h2 class="pn-slide-title">자료가 없을 때 · 예보 범위 밖 · 관광지.js의 빈 주소</h2>
+      <span class="pn-time">블록 3 · 이 장 2분 30초 · 누적 3분 30초</span>
+    </div>
+    <div class="pn-item pn-joke pn-say">
+      <span class="lbl">🎙 전체 대본</span>
+      <p><span class="tag">정의</span> 범위 밖이거나 값이 없는 항목은 응답에 없거나 빈칸으로 옵니다. 앱은 그 자리를 인터뷰에서 정한 대로 보여 줍니다.</p>
+      <p><span class="tag">비유</span> 앞쪽 몇 장만 인쇄된 탁상 달력과 같습니다. 인쇄된 범위 밖 장을 넘기면 빈 종이입니다.</p>
+      <p><span class="tag">띠</span> 날씨 예보는 최대 16일입니다(S43). 날씨.js에는 예보가 있는 날까지 들어 있고, 응답에 없는 날짜는 예보가 없습니다.</p>
+      <p><span class="tag">빈 값 둘</span> 하나는 관광지.js의 주소 빈 칸입니다. 장소는 있는데 주소 칸만 비어 있는 경우입니다. 다른 하나는 예보 범위 밖입니다. 그 날짜는 응답에 없습니다. 두 경우 모두 화면에 어떻게 보일지는 인터뷰에서 정했습니다. 예보가 없는 날과 자료가 없는 곳을 알리는 방식으로 물었던 것이고, 답이 prd.md의 예보 · 자료가 없을 때 칸에 적혀 있습니다.</p>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰</span>
+      <p>「예보 없음」 칸을 짚고, 아래 줄의 prd.md 칸을 열어 학생 화면의 같은 칸을 보여 준다.</p>
+    </div>
+    <div class="pn-item pn-demo pn-answer">
+      <span class="lbl">🔑 강사용 확인</span>
+      <p>(강사용 · 화면에는 쓰지 않는다) 날짜를 정해(start_date) 범위 밖을 부르면 오류 400과 허용 범위가 적힌 reason이 온다. 2026-10-20 실측 허용 범위는 「from 2026-07-18 to 2026-11-03」이다(S45). 수업 당일 범위 밖 날짜로 한 번 불러 reason 문구를 다시 읽어 준다.</p>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 애드리브</span>
+      <p>「날짜만 넣으면 날씨가 나오죠?」 예보 범위 밖 날짜는 응답에 없습니다. 그 자리에 무엇을 보일지는 prd.md에 정한 대로 합니다. 「비슷한 해의 평균을 넣으면 안 되나요?」 평년값을 내는 과거 재분석 · 기후 예측 API가 따로 있지만 예보가 아닙니다(S43 · S57).</p>
+    </div>
+    <div class="pn-item pn-demo pn-caution">
+      <span class="lbl">⚠ 말하기 전에 확인</span>
+      <p>(미확인) 띠의 16일은 예보 길이의 상한(S43)이고, 같은 날 실측한 허용 범위의 끝 2026-11-03은 오늘 + 14일이다. 둘이 어긋나는 이유는 확인하지 못했다. 띠는 상한을 그렸고 실제 끝은 reason에서 읽는다. 관광지.js 실측(2026-10-20 자료): 60곳 가운데 주소가 빈 곳 42곳(열에 일곱), 사진이 빈 곳 60곳, 설명이 빈 곳 59곳이고 좌표가 없는 곳은 0곳이다.</p>
+    </div>
+    <p class="pn-refs">출처: S43, S45, S57</p>
+  </section>
+
+  <section class="pn-slide" id="p30">
+    <div class="pn-slide-head">
+      <span class="pn-no">30</span>
+      <span class="pn-id">AP3-1</span>
+      <h2 class="pn-slide-title">담기 단추를 넣습니다</h2>
+      <span class="pn-time">블록 3 · 이 장 8분 · 누적 11분 30초</span>
+    </div>
+    <div class="pn-item pn-joke pn-say">
+      <span class="lbl">📌 요점</span>
+      <ul>
+        <li>관광지 카드에 담기 단추를 넣습니다.</li>
+        <li>요청을 보내면 에이전트가 계획을 먼저 보여 줍니다.</li>
+        <li>계획을 읽고 맞으면 「좋아」라고 답합니다.</li>
+        <li>에이전트가 index.html을 고치면 브라우저에서 새로 고칩니다.</li>
+        <li>카드에서 담기를 눌러 담았다는 표시가 보이는지 확인합니다.</li>
+        <li>그다음 브라우저 창을 닫았다가 index.html을 다시 열어, 담은 곳이 그대로 남아 있는지 봅니다.</li>
+        <li>시간은 8분입니다.</li>
+      </ul>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰</span>
+      <p>강사 화면에서 요청을 보내 계획이 먼저 오는 것을 보여 주고, 담기 → 창 닫기 → 다시 열기까지 한 번 해 보인다. 타이머 8분을 시작한다.</p>
+    </div>
+    <div class="pn-item pn-demo pn-answer">
+      <span class="lbl">🔑 강사용 확인</span>
+      <p>담은 직후에 보이는 것과 창을 닫았다 열어도 남는 것은 다른 확인이다. 둘 다 본다.</p>
+    </div>
+    <div class="pn-item pn-demo pn-caution">
+      <span class="lbl">⚠ 말하기 전에 확인</span>
+      <p>계획이 먼저 오지 않고 파일을 바로 고치기 시작하면 멈추게 하고 「계획을 먼저 보여 줘」라고 보내게 한다. 더블클릭으로 연 파일(file:)에서 담은 곳이 남는 방식은 브라우저마다 다르고, 파일을 옮기거나 이름을 바꾸면 안 보일 수 있다(개념노트 A6 · S58). 이 앱의 실제 동작은 드라이런에서 확인한다(미확인).</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p31">
+    <div class="pn-slide-head">
+      <span class="pn-no">31</span>
+      <span class="pn-id">AP3-2</span>
+      <h2 class="pn-slide-title">날짜별 일정을 만듭니다</h2>
+      <span class="pn-time">블록 3 · 이 장 10분 · 누적 21분 30초</span>
+    </div>
+    <div class="pn-item pn-joke pn-say">
+      <span class="lbl">📌 요점</span>
+      <ul>
+        <li>담은 곳으로 날짜별 일정을 만드는 기능을 넣습니다.</li>
+        <li>담은 곳이 비어 있으면 먼저 카드의 담기로 담습니다.</li>
+        <li>요청에는 조건이 둘 있습니다.</li>
+        <li>일정을 만드는 방식은 prd.md에 정한 대로이고, 장소는 관광지.js에 있는 것만 씁니다.</li>
+        <li>에이전트가 계획을 보여 주면 읽고, 맞으면 「좋아」라고 답합니다.</li>
+        <li>만든 뒤 세 가지를 봅니다.</li>
+        <li>첫째, 일정이 prd.md의 일정 방식대로 만들어졌는지 봅니다.</li>
+        <li>둘째, 비 오는 날이 prd.md의 날씨를 쓰는 곳 칸에 정한 대로 보이는지 봅니다.</li>
+        <li>셋째, 일정에 관광지.js에 없는 장소가 나오면 지어낸 장소입니다.</li>
+        <li>시간은 10분입니다.</li>
+      </ul>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰</span>
+      <p>일정이 만들어지면 prd.md의 일정 방식 칸을 열어 일정과 나란히 보여 준다. 타이머 10분을 시작한다.</p>
+    </div>
+    <div class="pn-item pn-demo pn-answer">
+      <span class="lbl">🔑 강사용 확인</span>
+      <p>장소는 관광지.js 안에서만 고른다. 거기에 없는 이름이 일정에 있으면 에이전트가 만들어 낸 것이다.</p>
+    </div>
+    <div class="pn-item pn-demo pn-caution">
+      <span class="lbl">⚠ 말하기 전에 확인</span>
+      <p>일정의 날짜가 날씨.js에 없으면 그 날은 날씨 정보가 없다. 이때 화면이 prd.md의 자료가 없을 때 칸대로 보이는지 확인한다(드라이런 전 · 미확인).</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p32">
+    <div class="pn-slide-head">
+      <span class="pn-no">32</span>
+      <span class="pn-id">AP3-3</span>
+      <h2 class="pn-slide-title">일정을 지도에 찍습니다</h2>
+      <span class="pn-time">블록 3 · 이 장 8분 · 누적 29분 30초</span>
+    </div>
+    <div class="pn-item pn-joke pn-say">
+      <span class="lbl">📌 요점</span>
+      <ul>
+        <li>일정의 장소를 지도에 날짜별 번호 핀으로 보여 달라고 요청합니다.</li>
+        <li>Leaflet은 지도를 그리는 도구의 이름이고, 하나만 쓰게 합니다.</li>
+        <li>핀 안에는 일차-순서 번호(예: 2-1)가 적힙니다.</li>
+        <li>번호가 그날 일정의 순서와 같은지 봅니다.</li>
+        <li>날짜는 번호로 구분하고, 핀 색은 design.md의 색에서 고릅니다.</li>
+        <li>에이전트가 계획을 보여 주면 읽고 「좋아」라고 답합니다.</li>
+        <li>지도 그림이 오지 않으면 핀만 보입니다.</li>
+        <li>더블클릭으로 연 파일에서는 브라우저에 따라 그림이 안 올 수 있습니다.</li>
+        <li>시간은 8분입니다.</li>
+      </ul>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰</span>
+      <p>강사 화면에서 일정의 장소가 일차-순서 번호 핀으로 찍힌 것을 보여 준다. 타이머 8분을 시작한다.</p>
+    </div>
+    <div class="pn-item pn-demo pn-answer">
+      <span class="lbl">🔑 강사용 확인</span>
+      <p>지도 그림(조각 이미지)과 핀(좌표)은 따로 온다. 그림이 없어도 핀은 남는다(개념노트 A7).</p>
+    </div>
+    <div class="pn-item pn-demo pn-caution">
+      <span class="lbl">⚠ 말하기 전에 확인</span>
+      <p>더블클릭으로 연 파일에서 지도 그림 요청이 막혔다는 후기가 있다(S55 · 경험 진술). 지도 그림 주소(tile.openstreetmap.fr)는 Referer 없는 curl 요청에도 지도가 왔다(설계 §10-7 · 실측). 더블클릭으로 연 파일과 공개 주소, 수업 PC에서의 실제 화면은 드라이런에서 확인한다(미확인).</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p33">
+    <div class="pn-slide-head">
+      <span class="pn-no">33</span>
+      <span class="pn-id">AP3-4</span>
+      <h2 class="pn-slide-title">화면을 자료와 대조합니다</h2>
+      <span class="pn-time">블록 3 · 이 장 5분 · 누적 34분 30초</span>
+    </div>
+    <div class="pn-item pn-joke pn-say">
+      <span class="lbl">📌 요점</span>
+      <ul>
+        <li>화면을 자료와 대조합니다.</li>
+        <li>눈으로 두 가지를 봅니다.</li>
+        <li>첫째, 화면의 날짜별 기온이 날씨.js의 같은 날 기온과 같은지 봅니다.</li>
+        <li>둘째, 일정의 장소 이름이 관광지.js에 있는 이름인지 봅니다.</li>
+        <li>하나라도 다르면 「〈항목〉이 날씨.js와 다르다.</li>
+        <li>왜 다른지 설명하고 고칠 계획을 보여 줘.」라고 보냅니다.</li>
+        <li>장소가 다르면 날씨.js 자리에 관광지.js를 넣어 같은 문장을 보냅니다.</li>
+        <li>에이전트가 이유를 설명하고 계획을 보여 주면 읽고, 맞으면 「좋아」라고 답합니다.</li>
+        <li>시간은 5분입니다.</li>
+      </ul>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰</span>
+      <p>강사 화면에서 한 날의 기온을 화면과 날씨.js에서 나란히 보여 주고, 일정의 장소 하나를 관광지.js에서 찾아 보여 준다. 타이머 5분을 시작한다.</p>
+    </div>
+    <div class="pn-item pn-demo pn-answer">
+      <span class="lbl">🔑 강사용 확인</span>
+      <p>대조는 두 가지다. 화면의 기온은 날씨.js와, 일정의 장소는 관광지.js와 맞춘다.</p>
+    </div>
+    <div class="pn-item pn-demo pn-caution">
+      <span class="lbl">⚠ 말하기 전에 확인</span>
+      <p>.js 파일을 더블클릭하면 Windows가 스크립트로 실행하려 할 수 있다(수업 PC에서 확인하지 못함 · 미확인). 파일은 에이전트 앱의 파일 목록이나 편집기로 연다. 화면의 표기(소수점 · 단위)가 날씨.js와 달라 보여도 같은 값인지를 본다.</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p34">
+    <div class="pn-slide-head">
+      <span class="pn-no">34</span>
+      <span class="pn-id">C-10</span>
+      <h2 class="pn-slide-title">컨텍스트 · AI가 답하는 순간 볼 수 있는 정보 전체</h2>
+      <span class="pn-time">블록 3 · 이 장 1분 30초 · 누적 36분</span>
+    </div>
+    <div class="pn-item pn-joke pn-say">
+      <span class="lbl">🎙 전체 대본</span>
+      <p><span class="tag">정의</span> 컨텍스트는 AI가 답하는 순간 볼 수 있는 정보 전체입니다. 대화 내용, 첨부 파일, 규칙이 여기에 들어갑니다.</p>
+      <p><span class="tag">비유</span> 시험장에 들고 갈 수 있는 요약 노트 한 장과 같습니다. 노트의 크기가 정해져 있어서 무엇을 적을지 골라야 합니다.</p>
+      <p><span class="tag">근거</span> Anthropic은 컨텍스트를 넣을수록 효용이 줄어드는 유한한 자원이라고 설명하고, 컨텍스트 엔지니어링을 프롬프트 엔지니어링의 다음 단계로 봅니다(S11).</p>
+      <p><span class="tag">용어</span> 무엇을 넣고 뺄지 정하는 일을 컨텍스트 엔지니어링이라고 부릅니다.</p>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰</span>
+      <p>층을 하나씩 눌러 대화 · 파일 · 규칙이 한 창에 담기는 것을 보여 준다.</p>
+    </div>
+    <div class="pn-item pn-demo pn-caution">
+      <span class="lbl">⚠ 말하기 전에 확인</span>
+      <p>Karpathy의 정의 문장은 원문 확인 전이라 인용하지 않는다(S16 사람 확인).</p>
+    </div>
+    <p class="pn-refs">출처: S11</p>
+  </section>
+
+  <section class="pn-slide" id="p35">
+    <div class="pn-slide-head">
+      <span class="pn-no">35</span>
+      <span class="pn-id">C-13</span>
+      <h2 class="pn-slide-title">새 대화로 넘길 때 쓰는 요청문</h2>
+      <span class="pn-time">블록 3 · 이 장 1분 · 누적 37분</span>
+    </div>
+    <div class="pn-item pn-joke pn-say">
+      <span class="lbl">🎙 전체 대본</span>
+      <p><span class="tag">흐름</span> 긴 대화를 새 대화로 넘길 때는 요약을 한 번 거칩니다. 긴 대화에서 인계 요약을 만들고, 그 요약을 새 대화의 첫 메시지로 붙여 넣습니다.</p>
+      <p><span class="tag">요청문</span> 화면의 요청문은 「지금까지 정한 내용을 새 대화에 붙여 넣을 수 있게 다섯 줄로 요약해 줘. 정한 것 · 남은 일 · 파일 이름을 나눠서 적어 줘.」입니다.</p>
+      <p><span class="tag">연결</span> 오늘은 정한 내용을 prd.md와 design.md에 남깁니다. 새 대화에서는 「prd.md와 design.md를 읽어 줘」라고 한 줄 말해 줍니다. 다음 장이 그 이야기입니다.</p>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰</span>
+      <p>요청문의 복사 버튼을 눌러 보인다.</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p36">
+    <div class="pn-slide-head">
+      <span class="pn-no">36</span>
+      <span class="pn-id">M2-5</span>
+      <h2 class="pn-slide-title">막히면 세 줄로 알립니다</h2>
+      <span class="pn-time">블록 3 · 이 장 30초 · 누적 37분 30초</span>
+    </div>
+    <div class="pn-item pn-joke pn-say">
+      <span class="lbl">📌 요점</span>
+      <ul>
+        <li>막혔을 때는 세 줄로 알립니다.</li>
+        <li>무엇을 하려고 했는지, 어느 화면이나 파일에서 했는지, 화면에 무엇이 보이는지입니다.</li>
+        <li>보이는 것은 화면의 글자를 그대로 옮겨 적습니다.</li>
+        <li>브라우저 기능을 켜면 에이전트도 화면을 볼 수 있습니다.</li>
+        <li>오늘은 내가 열어 보고, 본 것을 말로 전합니다.</li>
+        <li>에이전트가 풀어 주지 못하면 같은 세 줄을 수업 채팅에 올립니다.</li>
+      </ul>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰</span>
+      <p>이 장은 길게 설명하지 않는다. 앞 장의 실습에서 막힌 참가자가 있으면 이 장을 띄워 두고 세 줄을 받는다.</p>
+    </div>
+    <div class="pn-item pn-demo pn-caution">
+      <span class="lbl">⚠ 말하기 전에 확인</span>
+      <p>브라우저 기능의 무료 요금제와 Windows 앱 제공 여부는 확인하지 못했다(S69 · S71, 미확인). 켜지 않은 참가자도 본 것을 말로 전하는 방식으로 진행한다.</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p37">
+    <div class="pn-slide-head">
+      <span class="pn-no">37</span>
+      <span class="pn-id">BR-3</span>
+      <h2 class="pn-slide-title">쉬는 시간 10분</h2>
+      <span class="pn-time">블록 3 · 휴식 10분(시간표 밖)</span>
+    </div>
+    <div class="pn-item pn-joke pn-say">
+      <span class="lbl">📌 요점</span>
+      <ul>
+        <li>10분 쉬겠습니다.</li>
+        <li>폴더에 index.html, 관광지.js, 날씨.js가 있는지 확인하고 쉬라고 안내합니다.</li>
+        <li>돌아오면 먼저 앱이 직접 날씨를 받게 바꾸고, 공개하고, 기능 하나를 더합니다.</li>
+      </ul>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰</span>
+      <p>10:00 타이머를 시작한다.</p>
+    </div>
+  </section>
+
+  <div class="pn-block">블록 4 · 38~49쪽 · 39분</div>
+  <section class="pn-slide" id="p38">
+    <div class="pn-slide-head">
+      <span class="pn-no">38</span>
+      <span class="pn-id">AP4-0</span>
+      <h2 class="pn-slide-title">블록 4 · 공개 · 기능 하나</h2>
+      <span class="pn-time">블록 4 · 이 장 30초 · 누적 30초</span>
+    </div>
+    <div class="pn-item pn-joke pn-say">
+      <span class="lbl">📌 요점</span>
+      <ul>
+        <li>블록 4를 시작합니다.</li>
+        <li>단계는 ④ 공개입니다.</li>
+        <li>앱이 직접 날씨를 받게 바꾸고, 폴더를 올려 공개 주소를 만든 뒤, 기능 하나를 골라 넣습니다.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p39">
+    <div class="pn-slide-head">
+      <span class="pn-no">39</span>
+      <span class="pn-id">AP4-B</span>
+      <h2 class="pn-slide-title">블록 4에서 하는 일</h2>
+      <span class="pn-time">블록 4 · 이 장 30초 · 누적 1분</span>
+    </div>
+    <div class="pn-item pn-joke pn-say">
+      <span class="lbl">📌 요점</span>
+      <ul>
+        <li>블록 4에서 하는 일은 세 가지입니다.</li>
+        <li>블록 2에서 에이전트가 불러 저장한 날씨를, 이번에는 앱이 열릴 때 직접 받게 바꿉니다.</li>
+        <li>폴더를 올려 누구나 열 수 있는 주소를 만듭니다.</li>
+        <li>준비물 체크리스트, 날짜별 예상 경비, 여행까지 남은 날 가운데 기능 하나를 골라 넣습니다.</li>
+        <li>함께 배우는 개념은 API와 MCP입니다.</li>
+        <li>첫 번째 일을 마친 뒤에 설명합니다.</li>
+      </ul>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰</span>
+      <p>세 카드의 순서가 이 블록의 실습 순서인 것을 짚는다.</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p40">
+    <div class="pn-slide-head">
+      <span class="pn-no">40</span>
+      <span class="pn-id">AP4-1</span>
+      <h2 class="pn-slide-title">앱이 열릴 때 날씨를 직접 받게 합니다</h2>
+      <span class="pn-time">블록 4 · 이 장 8분 · 누적 9분</span>
+    </div>
+    <div class="pn-item pn-joke pn-say">
+      <span class="lbl">📌 요점</span>
+      <ul>
+        <li>블록 2에서는 에이전트가 날씨를 불러 날씨.js에 저장했습니다.</li>
+        <li>지금 앱은 그 저장본을 읽고 있습니다.</li>
+        <li>이번에는 앱이 열릴 때 날씨를 직접 받게 바꿉니다.</li>
+        <li>부르는 쪽이 에이전트에서 앱으로 바뀝니다.</li>
+        <li>화면의 요청을 보냅니다.</li>
+        <li>계획이 나오면 「좋아」라고 답하고, 승인을 묻는 화면이 나오면 내용을 읽고 답합니다.</li>
+        <li>에이전트가 끝나면 index.html을 새로 고쳐 날씨 칸을 봅니다.</li>
+        <li>앱이 직접 부를 수 있는 이유는 Open-Meteo가 키가 필요 없고(S43), 다른 주소의 페이지가 응답을 읽도록 허락하는 창구이기 때문입니다(S45 · S52). 인터넷이 안 될 때는 저장해 둔 날씨.js를 씁니다.</li>
+      </ul>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰</span>
+      <p>강사 화면에서 요청을 보내고, 끝나면 index.html을 새로 고쳐 날씨 칸을 보여 준다. 타이머 8분을 시작한다.</p>
+    </div>
+    <div class="pn-item pn-demo pn-answer">
+      <span class="lbl">🔑 강사용 확인</span>
+      <p>블록 2는 에이전트가 부른 것이고, 블록 4는 앱이 부르는 것이다. 부르는 쪽만 바뀌고 창구는 같다.</p>
+    </div>
+    <div class="pn-item pn-demo pn-caution">
+      <span class="lbl">⚠ 말하기 전에 확인</span>
+      <p>허락 표시(access-control-allow-origin: *)는 2026-10-20 curl 실측이다(S45). 더블클릭으로 연 파일(file:)에서 브라우저가 실제로 읽는지는 드라이런에서 확인한다(미확인). 이 요청에서 승인 창이 뜨는지도 도구와 설정에 따라 다르다(미확인).</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p41">
+    <div class="pn-slide-head">
+      <span class="pn-no">41</span>
+      <span class="pn-id">A9</span>
+      <h2 class="pn-slide-title">API와 MCP · 창구 자체와, 그 창구를 AI 앱의 도구로 잇는 규약</h2>
+      <span class="pn-time">블록 4 · 이 장 3분 · 누적 12분</span>
+    </div>
+    <div class="pn-item pn-joke pn-say">
+      <span class="lbl">🎙 전체 대본</span>
+      <p><span class="tag">정의</span> MCP는 Model Context Protocol의 줄임말입니다. AI 앱이 파일, 데이터베이스, API 같은 외부 시스템에 같은 방식으로 연결하도록 정한 공개 표준입니다(S63).</p>
+      <p><span class="tag">비유</span> USB-C 단자와 같습니다. 기기마다 다르던 충전 단자를 한 모양으로 맞춘 것처럼, AI 앱과 바깥 도구를 잇는 방식을 하나로 맞춥니다. 이 비유는 MCP 공식 문서에 적힌 비유입니다(S63).</p>
+      <p><span class="tag">화면</span> 세 줄은 모두 오른쪽 끝의 날씨 창구로 갑니다. 첫 줄은 블록 2입니다. 에이전트가 API 호출로 날씨 창구를 부르고 응답을 날씨.js에 저장했습니다. 둘째 줄은 블록 4입니다. 앱이 열릴 때 API 호출로 같은 창구를 직접 부릅니다. 셋째 줄은 오늘 앱에 없는 길입니다. AI 앱이 MCP로 MCP 서버에 닿고, MCP 서버가 API 호출로 창구를 부릅니다. API는 창구 자체이고, MCP 서버는 그 창구를 AI 앱이 도구로 쓰게 이어 주는 쪽입니다(S63, 이어 준다는 표현은 이 강의의 정리).</p>
+      <p><span class="tag">구조</span> AI 앱은 연결할 MCP 서버마다 client를 하나씩 두고, 서버는 도구, 자료, 요청 틀을 내놓습니다. 도구의 예로 API 호출이 적혀 있습니다(S63).</p>
+      <p><span class="tag">알아 둘 것</span> MCP 서버 안에서도 API를 부릅니다. MCP가 API를 대신하는 것은 아닙니다. 내 컴퓨터에서 도는 서버는 내 컴퓨터 권한으로 돌기 때문에 설치 전에 무엇을 실행하는지 확인합니다(S63). 공식 참조 서버는 시연용입니다(S64).</p>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰</span>
+      <p>세 줄의 오른쪽 끝 날씨 창구가 같은 상자인 것을 짚는다.</p>
+    </div>
+    <div class="pn-item pn-demo pn-caution">
+      <span class="lbl">⚠ 말하기 전에 확인</span>
+      <p>셋째 줄은 구조를 보이는 그림이다. 이 날씨 창구를 부르는 MCP 서버를 오늘 만들거나 쓰지는 않는다. 공식 튜토리얼의 날씨 서버는 미국 기상청 API를 부른다(S63). MCP 도구 설명 속 숨은 지시에 대한 항목은 공식 보안 문서에서 찾지 못했다(미확인).</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p42">
+    <div class="pn-slide-head">
+      <span class="pn-no">42</span>
+      <span class="pn-id">M3-1</span>
+      <h2 class="pn-slide-title">폴더를 올려 공개 주소를 만듭니다</h2>
+      <span class="pn-time">블록 4 · 이 장 30초 · 누적 12분 30초</span>
+    </div>
+    <div class="pn-item pn-joke pn-say">
+      <span class="lbl">📌 요점</span>
+      <ul>
+        <li>공개 단계의 목표는 주소 한 줄입니다.</li>
+        <li>내 컴퓨터에 있는 여행앱_4시간 폴더를 Netlify에 올리고 공개로 바꾸면 누구나 열 수 있는 주소가 생깁니다.</li>
+        <li>올리는 것은 폴더 전체입니다.</li>
+        <li>AGENTS.md, CLAUDE.md, prd.md, 자료설명.md, 관광지.js, 날씨.js, design.md, index.html 여덟 파일이 함께 올라갑니다.</li>
+        <li>순서는 올리기 전 확인, 로그인 확인, 폴더 끌어다 놓기, 공개로 바꾸기, 다른 창에서 열기입니다.</li>
+        <li>10분쯤 걸립니다.</li>
+      </ul>
+    </div>
+    <div class="pn-item pn-demo pn-caution">
+      <span class="lbl">⚠ 말하기 전에 확인</span>
+      <p>폴더 전체를 올리므로 AGENTS.md, CLAUDE.md, prd.md, 자료설명.md, design.md도 공개 주소 뒤에 파일 이름을 붙이면 열릴 수 있다. 강사 세팅 문서가 공개돼도 되는지는 리허설에서 확인한다(미확인).</p>
+    </div>
+    <p class="pn-refs">출처: S31</p>
+  </section>
+
+  <section class="pn-slide" id="p43">
+    <div class="pn-slide-head">
+      <span class="pn-no">43</span>
+      <span class="pn-id">M3-3</span>
+      <h2 class="pn-slide-title">Netlify 로그인을 확인합니다</h2>
+      <span class="pn-time">블록 4 · 이 장 2분 · 누적 14분 30초</span>
+    </div>
+    <div class="pn-item pn-joke pn-say">
+      <span class="lbl">📌 요점</span>
+      <ul>
+        <li>사전 준비에서 가입과 이메일 인증을 마친 계정으로 Netlify에 로그인합니다.</li>
+        <li>로그인하면 첫 화면이 나옵니다.</li>
+        <li>지금 찾을 것은 폴더를 끌어다 놓는 영역입니다.</li>
+        <li>보이지 않거나 로그인이 안 되는 분은 채팅에 막힘 한 줄을 남겨 달라고 합니다.</li>
+      </ul>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰</span>
+      <p>강사 화면에서 로그인된 첫 화면과 끌어다 놓는 영역을 보여 준다. 타이머 2분을 시작한다.</p>
+    </div>
+    <p class="pn-refs">출처: S31</p>
+  </section>
+
+  <section class="pn-slide" id="p44">
+    <div class="pn-slide-head">
+      <span class="pn-no">44</span>
+      <span class="pn-id">M3-4</span>
+      <h2 class="pn-slide-title">앱 폴더를 끌어다 놓아 주소를 만듭니다</h2>
+      <span class="pn-time">블록 4 · 이 장 6분 · 누적 20분 30초</span>
+    </div>
+    <div class="pn-item pn-joke pn-say">
+      <span class="lbl">📌 요점</span>
+      <ul>
+        <li>폴더를 올리는 방법은 끌어다 놓기입니다.</li>
+        <li>파일 탐색기(macOS는 Finder)에서 여행앱_4시간 폴더를 찾아, 폴더 전체를 Netlify 화면의 영역에 놓습니다.</li>
+        <li>폴더 안의 AGENTS.md, CLAUDE.md, prd.md, 자료설명.md, 관광지.js, 날씨.js, design.md, index.html 여덟 파일이 함께 올라갑니다.</li>
+        <li>올라가면 주소가 생깁니다.</li>
+        <li>사이트 이름 바꾸기는 선택입니다.</li>
+        <li>시간이 모자라면 건너뛰어도 됩니다.</li>
+      </ul>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰</span>
+      <p>강사 화면에서 끌어다 놓는 순서를 한 번 보여 준다. 타이머 6분을 시작한다.</p>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 애드리브</span>
+      <p>"놓았는데 반응이 없으면 채팅에 막힘 한 줄을 남겨 주세요. 폴더 자체를 놓았는지 같이 확인합니다."</p>
+    </div>
+    <p class="pn-refs">출처: S31</p>
+  </section>
+
+  <section class="pn-slide" id="p45">
+    <div class="pn-slide-head">
+      <span class="pn-no">45</span>
+      <span class="pn-id">M3-4B</span>
+      <h2 class="pn-slide-title">공개로 바꿉니다</h2>
+      <span class="pn-time">블록 4 · 이 장 2분 · 누적 22분 30초</span>
+    </div>
+    <div class="pn-item pn-joke pn-say">
+      <span class="lbl">📌 요점</span>
+      <ul>
+        <li>2026년 7월 28일 이후에 만든 Netlify 팀은 새 프로젝트가 기본 비공개입니다.</li>
+        <li>Netlify Drop으로 올린 것도 같습니다.</li>
+        <li>그 전에 만든 팀은 공개가 기본입니다.</li>
+        <li>올린 프로젝트 화면에서 Make public 버튼을 누르면 공개로 바뀝니다.</li>
+        <li>버튼이 보이지 않으면 Project configuration, General, Visitor access, Project visibility에서 공개를 고르고 저장합니다.</li>
+        <li>이미 공개로 나오는 계정은 그대로 다음 장으로 넘어갑니다.</li>
+        <li>비공개인 채로 주소를 열면 접근 권한이 없다는 안내 화면이 나옵니다.</li>
+      </ul>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰</span>
+      <p>강사 화면에서 Make public 버튼과 설정 경로를 한 번 보여 준다. 타이머 2분을 시작한다.</p>
+    </div>
+    <div class="pn-item pn-joke">
+      <span class="lbl">💬 애드리브</span>
+      <p>"공개로 바꾸는 단계에서 막히면 채팅에 막힘 한 줄을 남겨 주세요. 버튼이 안 보이는 분은 설정 경로로 같이 찾습니다."</p>
+    </div>
+    <p class="pn-refs">출처: S31</p>
+  </section>
+
+  <section class="pn-slide" id="p46">
+    <div class="pn-slide-head">
+      <span class="pn-no">46</span>
+      <span class="pn-id">M3-5</span>
+      <h2 class="pn-slide-title">다른 창에서 주소를 열어 봅니다</h2>
+      <span class="pn-time">블록 4 · 이 장 1분 · 누적 23분 30초</span>
+    </div>
+    <div class="pn-item pn-joke pn-say">
+      <span class="lbl">📌 요점</span>
+      <ul>
+        <li>만들어진 주소를 복사해 로그인하지 않은 시크릿 창에 붙여 넣어 봅니다.</li>
+        <li>주소를 받은 방문자와 같은 조건에서 확인하려는 것입니다.</li>
+        <li>여행 앱 첫 화면이 열리면 공개가 끝났습니다.</li>
+        <li>이어서 다른 창에서도 관광지와 날씨가 보이는지 확인합니다.</li>
+        <li>관광지.js와 날씨.js가 폴더와 함께 올라갔으므로 둘 다 보여야 합니다.</li>
+        <li>접근 권한이 없다는 Netlify 안내 화면이 나오면 아직 비공개이므로 앞 장 「공개로 바꿉니다」로 돌아갑니다.</li>
+        <li>주소를 수업 채팅에 올려 달라고 합니다.</li>
+        <li>수업 뒤 주소를 내리려면 Netlify 프로젝트 설정 맨 아래의 Delete project를 누릅니다.</li>
+      </ul>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰</span>
+      <p>채팅에 올라온 주소 가운데 두세 개를 열어 관광지와 날씨가 보이는 것, 참가자마다 고른 기능이 다른 것을 보여 준다. 타이머 1분을 시작한다.</p>
+    </div>
+    <div class="pn-item pn-demo pn-answer">
+      <span class="lbl">🔑 강사용 확인</span>
+      <p>관광지나 날씨 칸이 비어 있으면 올린 폴더에 관광지.js 또는 날씨.js가 빠졌을 수 있다. 폴더 전체를 올렸는지 확인한다.</p>
+    </div>
+    <div class="pn-item pn-demo pn-caution">
+      <span class="lbl">⚠ 말하기 전에 확인</span>
+      <p>Delete project 메뉴 이름과 위치는 리허설에서 확인한다. 공개 주소에서 앱이 날씨를 직접 받는 동작은 드라이런에서 확인한다(미확인).</p>
+    </div>
+    <p class="pn-refs">출처: S31</p>
+  </section>
+
+  <section class="pn-slide" id="p47">
+    <div class="pn-slide-head">
+      <span class="pn-no">47</span>
+      <span class="pn-id">AP4-2</span>
+      <h2 class="pn-slide-title">기능 하나를 골라 넣습니다</h2>
+      <span class="pn-time">블록 4 · 이 장 12분 · 누적 35분 30초</span>
+    </div>
+    <div class="pn-item pn-joke pn-say">
+      <span class="lbl">📌 요점</span>
+      <ul>
+        <li>블록 4의 마지막 실습입니다.</li>
+        <li>카드 세 장 가운데 하나를 고릅니다.</li>
+        <li>준비물 체크리스트, 날짜별 예상 경비, 여행까지 남은 날입니다.</li>
+        <li>어느 것을 넣을지는 각자 정합니다.</li>
+        <li>요청의 〈고른 기능〉 자리에 고른 기능의 이름을 적어 보냅니다.</li>
+        <li>에이전트가 계획을 먼저 보여 주면 읽고, 맞으면 「좋아, 만들어 줘.」라고 답합니다.</li>
+        <li>끝나면 index.html을 새로 고쳐 눌러 봅니다.</li>
+        <li>고칠 곳이 있으면 앞에서 본 유지 · 변경 · 확인 틀로 한 군데씩 요청합니다.</li>
+      </ul>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰</span>
+      <p>강사 화면에서 카드 하나를 골라 요청을 보내고, 계획이 먼저 오는 것을 보여 준다. 타이머 12분을 시작한다.</p>
+    </div>
+    <div class="pn-item pn-demo pn-answer">
+      <span class="lbl">🔑 강사용 확인</span>
+      <p>〈고른 기능〉 자리는 참가자가 정한다. 같은 요청 문장에 이름만 바뀐다.</p>
+    </div>
+    <div class="pn-item pn-demo pn-caution">
+      <span class="lbl">⚠ 말하기 전에 확인</span>
+      <p>세 기능의 만드는 시간은 다를 수 있다. 12분 안에 끝나는지는 드라이런에서 확인한다(미확인).</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p48">
+    <div class="pn-slide-head">
+      <span class="pn-no">48</span>
+      <span class="pn-id">AF-1</span>
+      <h2 class="pn-slide-title">오늘 만든 것</h2>
+      <span class="pn-time">블록 4 · 이 장 2분 · 누적 37분 30초</span>
+    </div>
+    <div class="pn-item pn-joke pn-say">
+      <span class="lbl">📌 요점</span>
+      <ul>
+        <li>오늘 만든 것을 블록 순서로 돌아봅니다.</li>
+        <li>기획에서 prd.md와 design.md를 만들었습니다.</li>
+        <li>첫 화면에서 index.html과 날씨.js를 만들었습니다.</li>
+        <li>제작에서 담기, 일정, 지도를 만들었습니다.</li>
+        <li>공개에서 공개 주소를 만들고 기능 하나를 더했습니다.</li>
+        <li>아래 줄은 그 블록에서 배운 개념입니다.</li>
+        <li>기획에서는 API와 요청과 응답을, 첫 화면에서는 키를, 제작에서는 자료가 없을 때를, 공개에서는 API와 MCP를 배웠습니다.</li>
+      </ul>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰</span>
+      <p>참가자가 자기 폴더에서 블록마다 만든 파일이나 화면을 하나씩 열어 본다.</p>
+    </div>
+    <div class="pn-item pn-demo pn-answer">
+      <span class="lbl">🔑 강사용 확인</span>
+      <p>개념 네 개는 블록마다 하나씩 배치했다. 상태 저장 · 좌표 · 프론트엔드와 백엔드는 질문이 나오면 답한다.</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p49">
+    <div class="pn-slide-head">
+      <span class="pn-no">49</span>
+      <span class="pn-id">AF-2</span>
+      <h2 class="pn-slide-title">다음에 해 볼 것</h2>
+      <span class="pn-time">블록 4 · 이 장 1분 30초 · 누적 39분</span>
+    </div>
+    <div class="pn-item pn-joke pn-say">
+      <span class="lbl">📌 요점</span>
+      <ul>
+        <li>오늘 만든 앱에서 이어 갈 수 있는 방향이 세 가지 있습니다.</li>
+        <li>첫째는 다른 공개 API 하나를 더하는 것입니다.</li>
+        <li>날씨처럼 요청 주소와 응답 모양을 확인한 뒤 앱에 붙입니다.</li>
+        <li>둘째는 여러 사람이 같은 일정을 보는 것입니다.</li>
+        <li>지금 담은 곳은 이 브라우저에만 있으므로, 서버의 데이터베이스에 저장하는 구조가 필요합니다.</li>
+        <li>셋째는 AI 앱에서 쓰는 것입니다.</li>
+        <li>날씨 창구를 MCP 서버로 이어 두면 AI 앱이 도구로 부를 수 있고, 설치 전에는 무엇을 실행하는지 확인합니다(S63). 어느 쪽으로 갈지는 각자 정합니다.</li>
+      </ul>
+    </div>
+    <div class="pn-item pn-demo">
+      <span class="lbl">👀 시연·관찰</span>
+      <p>카드 아래 줄의 이어지는 개념이 어느 블록의 장인지 짚으며 연결한다.</p>
+    </div>
+    <div class="pn-item pn-demo pn-caution">
+      <span class="lbl">⚠ 말하기 전에 확인</span>
+      <p>담은 곳이 이 브라우저에만 있다는 설명은 localStorage가 주소(출처)마다 따로 저장된다는 설명(S58)에 기댄다. 담기를 에이전트가 어떻게 구현하는지는 드라이런에서 확인한다(미확인).</p>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>

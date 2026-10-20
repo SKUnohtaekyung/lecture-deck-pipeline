@@ -1,0 +1,890 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>발표자 노트 — FRAME 1주차 · 여행 앱</title>
+<!--
+  발표자 노트 — FRAME 1주차 · 여행 앱 4시간 트랙(2판)
+  덱 `강의덱_4h-app.html`과 같은 순서이며 pn-no = 덱 쪽 번호. 범례 · 표기는 메인 노트와 같다.
+  생성: plans/FRAME-길이별-조립/build_notes.py --variant 4h-app — 이 파일을 직접 고치면 다음 생성 때 덮어쓴다.
+-->
+<style>
+  :root{
+    --blue:#0E4A5A; --mint-deep:#0F7A64; --coral-deep:#A15C00; --ink:#14202B;
+    --gray-700:#33414E; --gray-400:#56636F; --white:#F6F8FA;
+    --surface:#EBF0F4; --line:#D5DDE4; --paper:#EEF4F6;
+    --blue-soft:#E6F0F3; --mint-soft:#E4F8FA; --coral-soft:#FEF5E3;
+    --r-lg:20px; --r-md:14px; --r-pill:999px;
+    --font-mono:"D2Coding","JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+    --font:"Pretendard",system-ui,-apple-system,"Malgun Gothic",sans-serif;
+  }
+  *{ box-sizing:border-box; }
+  body{ margin:0; padding:32px 20px 64px; background:var(--paper); color:var(--ink);
+    font-family:var(--font); line-height:1.6; -webkit-font-smoothing:antialiased; }
+  .pn-wrap{ max-width:840px; margin:0 auto; }
+
+  /* 헤더 */
+  .pn-head{ border-bottom:2px solid var(--blue); padding-bottom:16px; margin-bottom:28px; }
+  .pn-kicker{ font-size:14px; font-weight:800; color:var(--blue); letter-spacing:.02em; }
+  .pn-title{ font-size:30px; font-weight:800; margin:6px 0 4px; }
+  .pn-note{ font-size:15px; color:var(--gray-700); margin:0 0 6px; }
+  .pn-legend{ display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }
+  .pn-legend span{ font-size:13px; font-weight:700; border-radius:var(--r-pill); padding:4px 11px; border:1px solid var(--line); }
+  .lg-say{ background:var(--surface); color:var(--blue); }
+  .lg-joke{ background:var(--blue-soft); color:var(--blue); }
+  .lg-demo{ background:var(--coral-soft); color:var(--coral-deep); }
+  .lg-hint{ background:var(--mint-soft); color:var(--mint-deep); }
+  .pn-blocks{ border-collapse:collapse; margin-top:14px; font-size:14px; width:100%; }
+  .pn-blocks th, .pn-blocks td{ border:1px solid var(--line); padding:5px 10px; text-align:left; background:var(--white); }
+  .pn-blocks th{ background:var(--surface); }
+
+  /* 블록 구분 */
+  .pn-block{ font-size:14px; font-weight:800; color:var(--blue); background:var(--blue-soft);
+    border-radius:var(--r-md); padding:8px 14px; margin:26px 0 12px; }
+
+  /* 슬라이드 블록 */
+  .pn-slide, .pn-pre{ border:1px solid var(--line); border-radius:var(--r-lg); background:var(--white);
+    padding:18px 20px; margin:0 0 16px; break-inside:avoid; }
+  .pn-slide-head, .pn-pre-head{ display:flex; flex-wrap:wrap; align-items:baseline; gap:6px 12px; margin-bottom:10px; }
+  .pn-no, .pn-pre-tag{ flex:0 0 auto; font-size:14px; font-weight:800; color:var(--white); background:var(--blue);
+    border-radius:var(--r-pill); padding:3px 11px; }
+  .pn-id{ flex:0 0 auto; font-size:13px; font-weight:800; color:var(--blue); background:var(--blue-soft);
+    border-radius:var(--r-pill); padding:2px 9px; font-family:var(--font-mono); }
+  .pn-slide-title, .pn-pre-title{ font-size:19px; font-weight:800; margin:0; flex:1 1 280px; }
+  .pn-time{ flex:0 0 auto; font-size:13px; font-weight:700; color:var(--gray-700); margin-left:auto; }
+
+  /* 멘트 항목 — 종류별 좌측 컬러 바 + 라벨 */
+  .pn-item{ border-left:4px solid var(--line); padding:8px 0 8px 14px; margin:8px 0; }
+  .pn-item .lbl{ display:inline-block; font-size:12px; font-weight:800; margin-bottom:3px; }
+  .pn-item p{ margin:0; font-size:16px; color:var(--gray-700); }
+  .pn-item p + p{ margin-top:8px; }
+  .pn-item ul{ margin:0; padding-left:20px; font-size:16px; color:var(--gray-700); }
+  .pn-item li{ margin:3px 0; }
+  .pn-item code{ font-family:var(--font-mono); font-size:14.5px; background:var(--surface); border-radius:6px; padding:0 4px; }
+  .pn-item .tag{ display:inline-block; font-size:12px; font-weight:800; color:var(--blue); background:var(--blue-soft);
+    border-radius:var(--r-pill); padding:0 8px; margin-right:4px; }
+  .pn-joke{ border-left-color:var(--blue); } .pn-joke .lbl{ color:var(--blue); }
+  .pn-say{ background:var(--paper); border-radius:0 var(--r-md) var(--r-md) 0; }
+  .pn-say p, .pn-say li{ color:var(--ink); }
+  .pn-demo{ border-left-color:var(--coral-deep); } .pn-demo .lbl{ color:var(--coral-deep); }
+  .pn-answer{ background:var(--coral-soft); border-radius:0 var(--r-md) var(--r-md) 0; }
+  .pn-caution{ background:var(--surface); border-radius:0 var(--r-md) var(--r-md) 0; }
+  .pn-hint{ border-left-color:var(--mint-deep); background:var(--mint-soft);
+    border-radius:0 var(--r-md) var(--r-md) 0; }
+  .pn-hint .lbl{ color:var(--mint-deep); }
+  .pn-hint .hlabel{ font-size:13px; font-weight:800; color:var(--mint-deep); margin-top:2px; }
+  .pn-hint .prompt{ font-family:var(--font-mono); font-size:14.5px; color:var(--ink);
+    background:var(--white); border:1px solid var(--line); border-radius:var(--r-md);
+    padding:10px 12px; margin-top:4px; white-space:pre-wrap; }
+  .pn-refs{ margin:8px 0 0; font-size:12.5px; color:var(--gray-400); }
+
+  @media print{
+    body{ background:var(--white); padding:0 8mm; }
+    .pn-slide{ box-shadow:none; }
+  }
+</style>
+</head>
+<body>
+<div class="pn-wrap">
+
+  <header class="pn-head">
+    <div class="pn-kicker">발표자 노트 · 1주차</div>
+    <h1 class="pn-title">FRAME — AI 에이전트 실습 · 여행 앱 4시간</h1>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <p class="pn-note">강사용 참고 문서입니다. 쪽 번호는 덱의 장 순서와 같고, 덱은 49장입니다. 49장 모두에 노트가 있습니다(표지는 쪽 번호가 없어 「표지」로 표시).</p>
+    <p class="pn-note">개념 장 0장은 전체 대본(🎙)이고, 나머지는 요점(📌)입니다. 대본은 화면의 정의 → 비유 → 근거 → 대응 순서를 따르므로 그대로 읽어도 됩니다.</p>
+    <p class="pn-note">수강생 화면(덱)에는 💬 애드리브 · 👀 시연 큐 · 🔑 확인 값 · 🗣 힌트가 보이지 않습니다. 여기서는 모두 펼쳐 둡니다.</p>
+    <div class="pn-legend">
+      <span class="lg-say">🎙 전체 대본 · 📌 요점</span>
+      <span class="lg-joke">💬 애드리브</span>
+      <span class="lg-demo">👀 시연·관찰 큐 · 🔑 강사용 확인 · ⚠ 확인</span>
+      <span class="lg-hint">🗣 막힐 때 힌트</span>
+    </div>
+    <table class="pn-blocks">
+      <tr><th>구간</th><th>쪽</th><th>장 합계</th><th>내용</th></tr>
+      <tr><td>블록 1</td><td>1~16쪽</td><td>49분</td><td>기획</td></tr>
+      <tr><td>블록 2</td><td>17~26쪽</td><td>39분</td><td>첫 화면 · 날씨</td></tr>
+      <tr><td>블록 3</td><td>27~37쪽</td><td>37분 30초</td><td>제작</td></tr>
+      <tr><td>블록 4</td><td>38~49쪽</td><td>39분</td><td>공개 · 기능 하나</td></tr>
+    </table>
+    <p class="pn-note">블록 상한은 62분이고, 휴식 10분 세 번은 시간표 밖입니다.</p>
+  </header>
+
+  <div class="pn-block">블록 1 · 1~16쪽 · 49분</div>
+  <section class="pn-pre" id="p1">
+    <div class="pn-pre-head">
+      <span class="pn-pre-tag">표지</span>
+      <span class="pn-id">COVER</span>
+      <h3 class="pn-pre-title">AGENT</h3>
+      <span class="pn-time">블록 1 · 이 장 30초 · 누적 30초</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **4시간** 동안 여행 계획 앱을 **처음부터** 만든다</p>
+      <p>- 카드 넷: prd.md · design.md · 관광지.js · index.html</p>
+      <p>- 받은 것 둘 · 만들 것 둘</p>
+      <p>- 채팅창에 「1」 입력으로 확인</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p2">
+    <div class="pn-slide-head">
+      <span class="pn-no">2</span>
+      <span class="pn-id">AP-0</span>
+      <h2 class="pn-slide-title">여행 계획 앱을 처음부터 만듭니다</h2>
+      <span class="pn-time">블록 1 · 이 장 2분 · 누적 2분 30초</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **처음부터 만든다**. 완성된 도구를 받지 않는다. 그림은 마지막 모습의 **예시**</p>
+      <p>- 그림: 지역 · 날짜 고르기 → 날씨 띠 → 관광지 카드 · 지도 핀 → 날짜별 일정표</p>
+      <p>- 네 단계: **① 기획** <code>prd.md</code> · <code>design.md</code> / **② 첫 화면** <code>index.html</code> · <code>날씨.js</code> / **③ 제작** 담기 · 일정 · 지도 / **④ 공개** 공개 주소 · 기능 하나</p>
+      <p>- 지역 다섯 곳(강릉 · 경주 · 전주 · 부산 · 제주)의 관광지 자료는 **강사가 준비**</p>
+      <p>- ⚠ 지금 <code>관광지.js</code>는 OpenStreetMap 기여자 자료의 시제품. TourAPI 자료로 바꾸려면 키가 필요하다</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p3">
+    <div class="pn-slide-head">
+      <span class="pn-no">3</span>
+      <span class="pn-id">O-02</span>
+      <h2 class="pn-slide-title">도구별 사용 조건</h2>
+      <span class="pn-time">블록 1 · 이 장 1분 · 누적 3분 30초</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- 도구마다 **요금제 · 운영체제 · 읽는 파일**이 다르다</p>
+      <p>- **Claude Code는 무료 플랜에 없다** → 해당자는 채팅에 남기게 한다</p>
+      <p>- Netlify 로그인은 공개 단계에서 한다</p>
+      <p>- **확인**: 무료 한도는 수업 당일 다시 본 내용으로 말한다</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p4">
+    <div class="pn-slide-head">
+      <span class="pn-no">4</span>
+      <span class="pn-id">O-02B</span>
+      <h2 class="pn-slide-title">모델과 추론 강도는 다른 설정입니다</h2>
+      <span class="pn-time">블록 1 · 이 장 2분 · 누적 5분 30초</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **모델** = 누가 일하는가 / **추론 강도** = 답하기 전에 얼마나 생각하는가</p>
+      <p>- 그림: 선 하나가 모델, 점 다섯 개가 추론 수준(낮음 → Max)</p>
+      <p>- 추론 강도를 올리면 **점수와 비용이 함께 오른다**</p>
+      <p>- Luna는 Max에서 52.7%, Astra는 낮음에서 62.2% — 대신 Luna 비용은 약 1/9</p>
+      <p>- 오늘은 기본 설정. 답이 얕으면 한 단계 올린다</p>
+      <p>- **확인**: OpenAI가 직접 잰 값 · 평가 하나의 결과. Sol은 Max(64.4%)에서 Astra 낮음을 넘는다 → 「절대 못 따라온다」고 말하지 않는다</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p5">
+    <div class="pn-slide-head">
+      <span class="pn-no">5</span>
+      <span class="pn-id">O-02C</span>
+      <h2 class="pn-slide-title">작업공간 · 폴더 · 파일</h2>
+      <span class="pn-time">블록 1 · 이 장 1분 30초 · 누적 7분</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- 작업공간 = 에이전트가 **지금 다루는 범위**</p>
+      <p>- 폴더 안: prd.md **받은 파일**(이 밖에 AGENTS.md · CLAUDE.md · 자료설명.md) · 관광지.js **받은 자료** · index.html **만들 파일**</p>
+      <p>- 폴더 밖 파일은 **허락을 받은 뒤**에 다룬다</p>
+      <p>- 다음 장에서 폴더를 여는 것이 첫 단계</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p6">
+    <div class="pn-slide-head">
+      <span class="pn-no">6</span>
+      <span class="pn-id">AP-1</span>
+      <h2 class="pn-slide-title">자료를 받아 폴더를 엽니다</h2>
+      <span class="pn-time">블록 1 · 이 장 3분 · 누적 10분</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **타이머 3분**. 압축 풀기 → 에이전트 앱에서 폴더 열기 → 파일 **다섯 개** 확인</p>
+      <p>- 강사가 세팅한 <code>AGENTS.md</code> · <code>CLAUDE.md</code> = 에이전트가 작업할 때 읽는 일하는 규칙(CLAUDE.md는 Claude Code용 같은 규칙). **열어 보지 않아도 된다**</p>
+      <p>- 함께 쓰는 자료: <code>prd.md</code> · <code>자료설명.md</code> · <code>관광지.js</code></p>
+      <p>- 점선 칸 <code>design.md</code> · <code>index.html</code> · <code>날씨.js</code>는 **오늘 만들 파일**</p>
+      <p>- ⚠ 폴더가 읽기 전용으로 열리면 파일이 만들어지지 않는다 → 권한 표시부터 본다(미확인)</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p7">
+    <div class="pn-slide-head">
+      <span class="pn-no">7</span>
+      <span class="pn-id">C-LA1</span>
+      <h2 class="pn-slide-title">LLM과 에이전트 · 글을 이어 쓰는 모델과, 그 모델에 도구와 반복 실행을 붙인 프로그램</h2>
+      <span class="pn-time">블록 1 · 이 장 1분 30초 · 누적 11분 30초</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **LLM** = 글을 받아 이어질 글을 만드는 모델</p>
+      <p>- **에이전트** = LLM + **도구** + **반복 실행**</p>
+      <p>- 채팅 앱도 일부 도구를 붙인 것. 에이전트는 **내 폴더의 파일을 직접 읽고 고친다**</p>
+      <p>- 비유: 길을 알려 주는 것 vs 직접 운전해 가는 것</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p8">
+    <div class="pn-slide-head">
+      <span class="pn-no">8</span>
+      <span class="pn-id">C-14</span>
+      <h2 class="pn-slide-title">에이전트 · 읽기 · 계획 · 실행 · 확인을 되풀이하는 프로그램</h2>
+      <span class="pn-time">블록 1 · 이 장 2분 · 누적 13분 30초</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **정의**: **결과를 보며 다음 행동을 정해** 읽기 → 계획 → 실행 → 확인을 되풀이한다</p>
+      <p>- 비유는 **내비게이션**: 길을 고르고, 막히면 다시 계산</p>
+      <p>- 오늘 쓰는 세 도구는 모두 에이전트</p>
+      <p>- 차이는 **파일을 바꾸기 전에 묻는 방식**: Codex(폴더 밖 · 네트워크는 물음) · Claude Code(모드 선택) · Antigravity(허용 · 확인 · 거부 목록)</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p9">
+    <div class="pn-slide-head">
+      <span class="pn-no">9</span>
+      <span class="pn-id">A1</span>
+      <h2 class="pn-slide-title">API · 프로그램끼리 요청을 주고받는 정해진 방식</h2>
+      <span class="pn-time">블록 1 · 이 장 3분 · 누적 16분 30초</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **API** = 한 프로그램이 다른 프로그램의 기능을 쓰게 정해 둔 **요청 방식**</p>
+      <p>- 비유: 택배 접수 창구. 송장 칸을 채우면 정해진 접수증이 돌아온다</p>
+      <p>- 요청 = 기본 주소 + <code>?이름=값&amp;이름=값</code>. 네 쌍: 위도 · 경도 · 항목 · 시간대</p>
+      <p>- 응답 = 상태 번호 **200**(성공) + JSON(**이름** · **값** · <code>[ ]</code> 목록)</p>
+      <p>- **시연**: 주소를 브라우저 주소 칸에 붙여 응답 글자를 그대로 보여 준다. 기온은 10-20 실측, 당일 값으로 다시 말한다</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p10">
+    <div class="pn-slide-head">
+      <span class="pn-no">10</span>
+      <span class="pn-id">C-PRD</span>
+      <h2 class="pn-slide-title">PRD · 무엇을 만들지 적은 한 장짜리 문서</h2>
+      <span class="pn-time">블록 1 · 이 장 1분 30초 · 누적 18분</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **PRD** = 무엇을 만들지 적은 한 장짜리 문서</p>
+      <p>- 답하는 질문 넷: 누가 쓰나 · 무엇을 하나 · 어떻게 되면 완성인가 · 하지 않는 것</p>
+      <p>- 이것을 md로 저장한 것이 <code>prd.md</code>. 받은 폴더에 틀이 있다</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p11">
+    <div class="pn-slide-head">
+      <span class="pn-no">11</span>
+      <span class="pn-id">AP-S</span>
+      <h2 class="pn-slide-title">에이전트와 나누는 대화</h2>
+      <span class="pn-time">블록 1 · 이 장 2분 · 누적 20분</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **클릭 열 번**. 왼쪽 「대화 순서」에서 지금 단계가 밝아진다</p>
+      <p>- 순서: 분석 요청 → 인터뷰 → 답하고 꼬리 질문 → 확인하고 승인</p>
+      <p>- 질문은 **세 개씩**, 질문마다 **비유 한 줄**</p>
+      <p>- 묶음 3까지 묻고 나서 에이전트가 정리해 보여 주고 **내가 승인한 뒤에** <code>prd.md</code>를 고친다(칸 수만큼, 열 칸)</p>
+      <p>- 화면의 답은 예시. 묶음은 모두 세 개, 화면은 첫 묶음과 꼬리 질문 · 정리 승인(묶음 2 · 3은 생략)</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p12">
+    <div class="pn-slide-head">
+      <span class="pn-no">12</span>
+      <span class="pn-id">AP1-1</span>
+      <h2 class="pn-slide-title">prd.md를 분석해 달라고 합니다</h2>
+      <span class="pn-time">블록 1 · 이 장 4분 · 누적 24분</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **타이머 4분**</p>
+      <p>- 화면의 요청을 **그대로** 보낸다</p>
+      <p>- 답에서 볼 것 셋: 무엇을 만드나 · 정해진 것 · **내가 정할 것**</p>
+      <p>- 빈칸은 미리 채우지 않는다. 다음 장 인터뷰에서 에이전트가 묻는다</p>
+      <p>- (강사용) 답에 강사 세팅이 안 나오는 것은 <code>AGENTS.md</code>의 「분석 요청 응답 범위」 문장 때문. 요청이며 강제가 아니다</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p13">
+    <div class="pn-slide-head">
+      <span class="pn-no">13</span>
+      <span class="pn-id">AP1-2</span>
+      <h2 class="pn-slide-title">인터뷰로 prd.md를 채웁니다</h2>
+      <span class="pn-time">블록 1 · 이 장 12분 · 누적 36분</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **타이머 12분**. 요청은 **한 줄**, 인터뷰 규칙은 <code>AGENTS.md</code>가 갖고 있다</p>
+      <p>- 질문은 **세 개씩**, 최대 **10번**. 묶음 셋: 누가 · 왜 / 입력과 결과 / 일정과 예외. 날짜 범위(며칠 앞까지, 최대 며칠)가 답에 없으면 꼬리 질문으로 한 번 묻는다</p>
+      <p>- 질문마다 **비유**가 함께 온다. 어려우면 「모르겠다」 · 「예를 들어 줘」</p>
+      <p>- 묶음 3까지 묻고 난 뒤 에이전트가 **열 칸**을 정리하면 **틀린 곳을 바로잡은 뒤** 승인한다</p>
+      <p>- **확인**: 되짚기 없이 바로 고치면 → 「방금 바꾼 내용을 먼저 정리해서 보여 줘」</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p14">
+    <div class="pn-slide-head">
+      <span class="pn-no">14</span>
+      <span class="pn-id">AP1-3</span>
+      <h2 class="pn-slide-title">prd.md를 읽고 내가 결정합니다</h2>
+      <span class="pn-time">블록 1 · 이 장 3분 · 누적 39분</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- <code>prd.md</code>를 끝까지 읽고 **내가 결정**한다. 3분</p>
+      <p>- 열 칸: 대상 · 사용 장면 · 완성 기준 / 처음에 고르는 것 · 관광지를 보여 주는 기준 · 날씨를 쓰는 곳 / 일정을 만드는 방식 · 예보가 없는 날 · 자료가 없는 지역 · 하지 않을 것</p>
+      <p>- 고칠 곳은 **직접 고치지 않고 말로 요청**: 「〈칸〉을 〈내 말〉로 고쳐 줘」</p>
+      <p>- **시연**: 위쪽 예시에서 칸 이름과 내 말이 함께 들어간 곳을 짚는다</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p15">
+    <div class="pn-slide-head">
+      <span class="pn-no">15</span>
+      <span class="pn-id">AP1-4</span>
+      <h2 class="pn-slide-title">디자이너에게 인터뷰받아 design.md를 만듭니다</h2>
+      <span class="pn-time">블록 1 · 이 장 10분 · 누적 49분</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **타이머 10분**. 요청은 **한 줄**: 「UI/UX 디자이너로서 나를 인터뷰해서 <code>design.md</code>를 만들어 줘.」</p>
+      <p>- 질문은 **모두 합쳐 10개**, 한 번에 세 개까지, 질문마다 비유</p>
+      <p>- **색은 후보 세 가지**를 보여 주면 내가 고른다</p>
+      <p>- 다 물으면 초안 → **승인** → 저장</p>
+      <p>- <code>design.md</code> 여섯 절: 색 · 글꼴 · 모서리와 여백 · 부품 · 움직임 · 피할 것</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p16">
+    <div class="pn-slide-head">
+      <span class="pn-no">16</span>
+      <span class="pn-id">BR-1</span>
+      <h2 class="pn-slide-title">쉬는 시간 10분</h2>
+      <span class="pn-time">블록 1 · 휴식 10분(시간표 밖)</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **쉬는 시간 10분** · 타이머 시작</p>
+      <p>- prd.md · design.md **저장 확인**</p>
+      <p>- 돌아오면 **첫 화면과 날씨**</p>
+    </div>
+  </section>
+
+  <div class="pn-block">블록 2 · 17~26쪽 · 39분</div>
+  <section class="pn-slide" id="p17">
+    <div class="pn-slide-head">
+      <span class="pn-no">17</span>
+      <span class="pn-id">AP2-0</span>
+      <h2 class="pn-slide-title">블록 2 · 첫 화면 · 날씨</h2>
+      <span class="pn-time">블록 2 · 이 장 30초 · 누적 30초</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- 블록 2는 **첫 화면 · 날씨**</p>
+      <p>- 출발점은 블록 1에서 만든 <code>prd.md</code> · <code>design.md</code></p>
+      <p>- 순서: **첫 화면** → **날씨 받아 오기** → **화면에 붙이기**</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p18">
+    <div class="pn-slide-head">
+      <span class="pn-no">18</span>
+      <span class="pn-id">AP2-B</span>
+      <h2 class="pn-slide-title">블록 2에서 하는 일</h2>
+      <span class="pn-time">블록 2 · 이 장 30초 · 누적 1분</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- 할 일 셋: **첫 화면** · **날씨 받아 오기** · **화면에 날씨 붙이기**</p>
+      <p>- 에이전트가 만들고, **승인은 내가** 한다</p>
+      <p>- 날씨는 에이전트가 불러 오고 <code>날씨.js</code>로 남는다</p>
+      <p>- 함께 배우는 개념: **키 · 승인**</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p19">
+    <div class="pn-slide-head">
+      <span class="pn-no">19</span>
+      <span class="pn-id">A3</span>
+      <h2 class="pn-slide-title">API 키 · 요청하는 쪽을 서버에 알리는 긴 문자열</h2>
+      <span class="pn-time">블록 2 · 이 장 2분 30초 · 누적 3분 30초</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **API 키** = 누가 요청하는지 서버에 알리는 긴 문자열</p>
+      <p>- 비유: 이름이 적힌 **출입증**. 있어야 열리는 문도, 없이 들어가는 문도 있다</p>
+      <p>- **키 없음**: Open-Meteo 날씨(오늘 에이전트가 부른다) / **키 있음**: TourAPI(키가 필요한 창구의 예). 오늘 쓰는 <code>관광지.js</code>는 **강사가 미리 모아 둔 자료**(강사용: 지금은 OpenStreetMap 기여자 자료의 시제품이고, TourAPI 키로 받은 자료로 바꿀 수 있다)</p>
+      <p>- 키는 **파일에 쓰지 않는다**: 공개한 주소에서 누구나 볼 수 있다</p>
+      <p>- **흔한 말**: 「키는 비밀번호라 숨겨진다」 → 파일에 적으면 보인다</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p20">
+    <div class="pn-slide-head">
+      <span class="pn-no">20</span>
+      <span class="pn-id">PL-1</span>
+      <h2 class="pn-slide-title">계획부터 받습니다</h2>
+      <span class="pn-time">블록 2 · 이 장 1분 30초 · 누적 5분</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- 요청 끝에 두 줄: **계획을 먼저** · 승인 전에는 **만들지 않는다**</p>
+      <p>- 이유 셋: 엉뚱한 결과 · 읽고 고치기 쉬움 · 더 빠름</p>
+      <p>- 순서: 요청 → 계획 → 「좋아」 → 만들기</p>
+      <p>- 작고 분명한 일은 **바로** 시켜도 된다</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p21">
+    <div class="pn-slide-head">
+      <span class="pn-no">21</span>
+      <span class="pn-id">AP2-1</span>
+      <h2 class="pn-slide-title">첫 화면을 만듭니다</h2>
+      <span class="pn-time">블록 2 · 이 장 10분 · 누적 15분</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **타이머 10분**</p>
+      <p>- 요청은 **계획을 먼저**(여덟 줄 이내) 보여 달라는 말. 읽고 좋으면 **「좋아, 만들어 줘.」**</p>
+      <p>- <code>index.html</code> 더블클릭 → **지역 다섯 곳 · 관광지 카드**가 보이는지</p>
+      <p>- 고칠 곳 **하나**를 대화에 말로 전한다</p>
+      <p>- 화면은 **내가 열어 보고** 말로 전한다. 브라우저 기능을 켜면 에이전트도 화면을 볼 수 있다</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p22">
+    <div class="pn-slide-head">
+      <span class="pn-no">22</span>
+      <span class="pn-id">M2-V</span>
+      <h2 class="pn-slide-title">만든 결과를 보는 두 가지 방법</h2>
+      <span class="pn-time">블록 2 · 이 장 2분 · 누적 17분</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- 방법 1 **파일로 열기**: index.html 더블클릭</p>
+      <p>- 자료가 **.js**라 더블클릭으로도 읽힌다</p>
+      <p>- 방법 2 **미리보기**: 이름과 localhost 숫자는 도구마다 다르다</p>
+      <p>- 어느 쪽도 **남에게 보이는 주소가 아니다**</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p23">
+    <div class="pn-slide-head">
+      <span class="pn-no">23</span>
+      <span class="pn-id">AP2-2</span>
+      <h2 class="pn-slide-title">에이전트에게 날씨를 받아 오게 합니다</h2>
+      <span class="pn-time">블록 2 · 이 장 8분 · 누적 25분</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **타이머 8분**</p>
+      <p>- 요청 한 번으로 **다섯 지역**을 함께 받는다 · **쓸 주소를 먼저** 보여 달라고 한다 → 읽고 **「좋아」** → 승인 창에서 **승인**</p>
+      <p>- **승인 창**: Codex는 인터넷을 쓰는 명령을 실행 전에 묻는다 · Antigravity는 승인 카드 **「Allow」**</p>
+      <p>- 승인하면 **응답이 대화에 보이고** <code>날씨.js</code>가 생긴다. 승인하지 않으면 실행되지 않는다</p>
+      <p>- Windows PowerShell의 <code>curl</code>은 별칭 → 에이전트는 <code>curl.exe</code> · <code>Invoke-RestMethod</code>를 쓴다</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p24">
+    <div class="pn-slide-head">
+      <span class="pn-no">24</span>
+      <span class="pn-id">AP2-3</span>
+      <h2 class="pn-slide-title">화면에 날씨를 붙입니다</h2>
+      <span class="pn-time">블록 2 · 이 장 7분 · 누적 32분</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **타이머 7분**</p>
+      <p>- 요청을 보내고 계획이 나오면 **「좋아」**. 끝나면 <code>index.html</code>을 **새로 고침**</p>
+      <p>- **날짜별** 날씨가 보이는지 본다</p>
+      <p>- <code>날씨.js</code>는 **예보가 있는 날까지(최대 16일)**. 응답에 없는 날짜가 예보 없는 날 · 비 오는 날 기본값은 weather_code 61~67 · 80~82 · 95~99(자료설명.md)</p>
+      <p>- 예보 없는 날의 표시는 **<code>prd.md</code>에 적은 대로**</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p25">
+    <div class="pn-slide-head">
+      <span class="pn-no">25</span>
+      <span class="pn-id">M2-4</span>
+      <h2 class="pn-slide-title">고칠 곳은 하나씩 요청합니다</h2>
+      <span class="pn-time">블록 2 · 이 장 7분 · 누적 39분</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **타이머 7분**</p>
+      <p>- **유지 · 변경 · 확인** 세 부분</p>
+      <p>- 고칠 곳은 **한 군데**</p>
+      <p>- 확인 문장대로 눌러 본다</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p26">
+    <div class="pn-slide-head">
+      <span class="pn-no">26</span>
+      <span class="pn-id">BR-2</span>
+      <h2 class="pn-slide-title">쉬는 시간 10분</h2>
+      <span class="pn-time">블록 2 · 휴식 10분(시간표 밖)</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **쉬는 시간 10분** · 타이머 시작</p>
+      <p>- 폴더에 **index.html · 날씨.js** 확인</p>
+      <p>- 돌아오면 **담기 · 일정 · 지도**</p>
+    </div>
+  </section>
+
+  <div class="pn-block">블록 3 · 27~37쪽 · 37분 30초</div>
+  <section class="pn-slide" id="p27">
+    <div class="pn-slide-head">
+      <span class="pn-no">27</span>
+      <span class="pn-id">AP3-0</span>
+      <h2 class="pn-slide-title">블록 3 · 제작</h2>
+      <span class="pn-time">블록 3 · 이 장 30초 · 누적 30초</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **블록 3 · 제작** 단계 시작</p>
+      <p>- 관광지 카드에 **담기** 단추를 넣는다</p>
+      <p>- 날짜별 **일정**과 지도 핀을 만든다</p>
+      <p>- 마지막에 화면을 **자료와 대조**한다</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p28">
+    <div class="pn-slide-head">
+      <span class="pn-no">28</span>
+      <span class="pn-id">AP3-B</span>
+      <h2 class="pn-slide-title">블록 3에서 하는 일</h2>
+      <span class="pn-time">블록 3 · 이 장 30초 · 누적 1분</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- 할 일 셋: **담기** · 날짜별 **일정** · 지도 **핀**</p>
+      <p>- 개념은 **자료가 없을 때** 한 가지</p>
+      <p>- 마지막에 화면의 기온과 장소를 자료와 맞춘다</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p29">
+    <div class="pn-slide-head">
+      <span class="pn-no">29</span>
+      <span class="pn-id">A5</span>
+      <h2 class="pn-slide-title">자료가 없을 때 · 예보 범위 밖 · 관광지.js의 빈 주소</h2>
+      <span class="pn-time">블록 3 · 이 장 2분 30초 · 누적 3분 30초</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- 정의: 범위 밖이거나 값이 없으면 **응답에 없거나 빈칸**으로 온다</p>
+      <p>- 앱은 그 자리를 **인터뷰에서 정한 대로** 보여 준다</p>
+      <p>- 비유: 앞쪽 몇 장만 인쇄된 **탁상 달력**</p>
+      <p>- 예보는 오늘부터 **최대 16일** · 그 밖은 「예보 없음」</p>
+      <p>- 빈 값 둘: 관광지.js의 **주소 빈 칸** · **예보 범위 밖**(그 날짜가 응답에 없음). 강사용: 날짜를 정해 범위 밖을 부르면 오류 400과 허용 범위(reason)가 온다(S45)</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p30">
+    <div class="pn-slide-head">
+      <span class="pn-no">30</span>
+      <span class="pn-id">AP3-1</span>
+      <h2 class="pn-slide-title">담기 단추를 넣습니다</h2>
+      <span class="pn-time">블록 3 · 이 장 8분 · 누적 11분 30초</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **타이머 8분**</p>
+      <p>- 순서: 요청 → **계획** → 「좋아」 → 새로 고침 → 창을 닫았다 열기</p>
+      <p>- 요청: 관광지 카드에 **'담기' 단추**를 넣고 창을 닫았다 열어도 남게</p>
+      <p>- 볼 것: 담았다는 **표시** · 닫았다 열어도 **남는지**</p>
+      <p>- 담은 직후와 닫았다 연 뒤는 **다른 확인**</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p31">
+    <div class="pn-slide-head">
+      <span class="pn-no">31</span>
+      <span class="pn-id">AP3-2</span>
+      <h2 class="pn-slide-title">날짜별 일정을 만듭니다</h2>
+      <span class="pn-time">블록 3 · 이 장 10분 · 누적 21분 30초</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **타이머 10분**</p>
+      <p>- 요청 조건 둘: **prd.md에 정한 방식** · 관광지.js에 있는 장소만. 계획이 나오면 **「좋아」**</p>
+      <p>- 볼 것: **일정 방식** · **비 오는 날**(날씨를 쓰는 곳 칸)</p>
+      <p>- 관광지.js에 **없는 장소**가 나오면 지어낸 것</p>
+      <p>- 담은 곳이 비어 있으면 먼저 **「담기」**</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p32">
+    <div class="pn-slide-head">
+      <span class="pn-no">32</span>
+      <span class="pn-id">AP3-3</span>
+      <h2 class="pn-slide-title">일정을 지도에 찍습니다</h2>
+      <span class="pn-time">블록 3 · 이 장 8분 · 누적 29분 30초</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **타이머 8분**</p>
+      <p>- 날짜별 **번호 핀** · 핀 안의 번호는 **일차-순서**(예: 2-1) · 색은 design.md에서 고른다</p>
+      <p>- 지도는 **Leaflet 하나만**</p>
+      <p>- 계획이 나오면 **「좋아」**</p>
+      <p>- 더블클릭으로 연 파일에서는 브라우저에 따라 지도 그림이 안 올 수 있다 · 안 오면 **핀만** 보인다</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p33">
+    <div class="pn-slide-head">
+      <span class="pn-no">33</span>
+      <span class="pn-id">AP3-4</span>
+      <h2 class="pn-slide-title">화면을 자료와 대조합니다</h2>
+      <span class="pn-time">블록 3 · 이 장 5분 · 누적 34분 30초</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **타이머 5분**</p>
+      <p>- 대조 둘: 화면의 **기온** ↔ 날씨.js · 일정의 **장소** ↔ 관광지.js</p>
+      <p>- 다르면: 「〈항목〉이 날씨.js와 다르다. 왜 다른지 설명하고 고칠 **계획**을 보여 줘.」</p>
+      <p>- 장소가 다르면 날씨.js 자리에 **관광지.js**</p>
+      <p>- 계획을 읽고 맞으면 「좋아」</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p34">
+    <div class="pn-slide-head">
+      <span class="pn-no">34</span>
+      <span class="pn-id">C-10</span>
+      <h2 class="pn-slide-title">컨텍스트 · AI가 답하는 순간 볼 수 있는 정보 전체</h2>
+      <span class="pn-time">블록 3 · 이 장 1분 30초 · 누적 36분</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **컨텍스트** = AI가 답하는 순간 볼 수 있는 정보 전체(대화 · 파일 · 규칙)</p>
+      <p>- 크기가 정해져 있다 → **무엇을 넣을지 골라야** 한다</p>
+      <p>- **시연**: 층을 하나씩 눌러 대화 · 파일 · 규칙이 한 창에 담기는 것을 보여 준다</p>
+      <p>- **확인**: Karpathy의 정의 문장은 인용하지 않는다(원문 확인 전)</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p35">
+    <div class="pn-slide-head">
+      <span class="pn-no">35</span>
+      <span class="pn-id">C-13</span>
+      <h2 class="pn-slide-title">새 대화로 넘길 때 쓰는 요청문</h2>
+      <span class="pn-time">블록 3 · 이 장 1분 · 누적 37분</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- 새 대화로 넘길 때는 **요약을 한 번 거친다**</p>
+      <p>- 요청: 「지금까지 정한 내용을 다섯 줄로 요약해 줘. 정한 것 · 남은 일 · 파일 이름」</p>
+      <p>- 오늘은 정한 것을 <code>prd.md</code> · <code>design.md</code>에 남긴다 → 새 대화에서는 **「두 문서를 읽어 줘」** 한 줄</p>
+      <p>- **시연**: 복사 버튼</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p36">
+    <div class="pn-slide-head">
+      <span class="pn-no">36</span>
+      <span class="pn-id">M2-5</span>
+      <h2 class="pn-slide-title">막히면 세 줄로 알립니다</h2>
+      <span class="pn-time">블록 3 · 이 장 30초 · 누적 37분 30초</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- 세 줄: **무엇을 · 어디서 · 무엇이 보이나**</p>
+      <p>- 보이는 것은 화면의 **글자 그대로**</p>
+      <p>- 브라우저 기능을 켜면 에이전트도 화면을 볼 수 있다 · 오늘은 **내가 열어 보고 말로 전한다**</p>
+      <p>- 풀리지 않으면 같은 세 줄을 **수업 채팅**에</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p37">
+    <div class="pn-slide-head">
+      <span class="pn-no">37</span>
+      <span class="pn-id">BR-3</span>
+      <h2 class="pn-slide-title">쉬는 시간 10분</h2>
+      <span class="pn-time">블록 3 · 휴식 10분(시간표 밖)</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **쉬는 시간 10분** · 타이머 시작</p>
+      <p>- 폴더에 **index.html · 관광지.js · 날씨.js** 확인</p>
+      <p>- 돌아오면 **공개하고 기능 하나**</p>
+    </div>
+  </section>
+
+  <div class="pn-block">블록 4 · 38~49쪽 · 39분</div>
+  <section class="pn-slide" id="p38">
+    <div class="pn-slide-head">
+      <span class="pn-no">38</span>
+      <span class="pn-id">AP4-0</span>
+      <h2 class="pn-slide-title">블록 4 · 공개 · 기능 하나</h2>
+      <span class="pn-time">블록 4 · 이 장 30초 · 누적 30초</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **블록 4 · 공개 · 기능 하나** 단계 시작</p>
+      <p>- 순서: 앱이 직접 날씨를 받게 → 공개 주소 → 기능 하나</p>
+      <p>- 마지막 단계는 **④ 공개**</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p39">
+    <div class="pn-slide-head">
+      <span class="pn-no">39</span>
+      <span class="pn-id">AP4-B</span>
+      <h2 class="pn-slide-title">블록 4에서 하는 일</h2>
+      <span class="pn-time">블록 4 · 이 장 30초 · 누적 1분</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- 할 일 셋: 앱이 **직접 날씨를** · **공개 주소** · 기능 하나 고르기</p>
+      <p>- 개념 하나: **API와 MCP**</p>
+      <p>- 개념은 첫 번째 일을 마친 뒤에 설명한다</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p40">
+    <div class="pn-slide-head">
+      <span class="pn-no">40</span>
+      <span class="pn-id">AP4-1</span>
+      <h2 class="pn-slide-title">앱이 열릴 때 날씨를 직접 받게 합니다</h2>
+      <span class="pn-time">블록 4 · 이 장 8분 · 누적 9분</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **타이머 8분**</p>
+      <p>- 블록 2는 **에이전트가** 불러 날씨.js에 저장 · 블록 4는 **앱이** 열릴 때 직접 부름</p>
+      <p>- 요청 한 번 → 계획이 나오면 **「좋아」** · 승인을 묻는 화면은 **읽고 답한다**</p>
+      <p>- 이유: 키가 필요 없고, 브라우저의 직접 호출을 **허락**하는 창구다(S43 · S45 · S52)</p>
+      <p>- 인터넷이 안 될 때는 저장해 둔 **날씨.js**</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p41">
+    <div class="pn-slide-head">
+      <span class="pn-no">41</span>
+      <span class="pn-id">A9</span>
+      <h2 class="pn-slide-title">API와 MCP · 창구 자체와, 그 창구를 AI 앱의 도구로 잇는 규약</h2>
+      <span class="pn-time">블록 4 · 이 장 3분 · 누적 12분</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **API는 창구 자체**, MCP는 그 창구를 AI 앱의 도구로 잇는 규약</p>
+      <p>- USB-C 비유는 **MCP 공식 문서의 비유**(S63)</p>
+      <p>- 세 줄: 에이전트가 부름 · 앱이 부름 · **MCP 서버를 거침**</p>
+      <p>- 세 줄 모두 오른쪽 끝은 **같은 날씨 창구**</p>
+      <p>- 셋째 줄은 오늘 앱에 없다 · MCP 서버 안에서도 API를 부른다</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p42">
+    <div class="pn-slide-head">
+      <span class="pn-no">42</span>
+      <span class="pn-id">M3-1</span>
+      <h2 class="pn-slide-title">폴더를 올려 공개 주소를 만듭니다</h2>
+      <span class="pn-time">블록 4 · 이 장 30초 · 누적 12분 30초</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- 공개 단계의 목표: **주소 한 줄**</p>
+      <p>- 올리는 것은 **폴더 전체** 여덟 파일</p>
+      <p>- 순서 다섯: 확인 → 로그인 → 끌어다 놓기 → 공개 → 다른 창</p>
+      <p>- 약 **10분**</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p43">
+    <div class="pn-slide-head">
+      <span class="pn-no">43</span>
+      <span class="pn-id">M3-3</span>
+      <h2 class="pn-slide-title">Netlify 로그인을 확인합니다</h2>
+      <span class="pn-time">블록 4 · 이 장 2분 · 누적 14분 30초</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **타이머 2분**</p>
+      <p>- Netlify 로그인 → **끌어다 놓는 영역** 찾기</p>
+      <p>- 안 보이면 채팅에 **막힘 한 줄**</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p44">
+    <div class="pn-slide-head">
+      <span class="pn-no">44</span>
+      <span class="pn-id">M3-4</span>
+      <h2 class="pn-slide-title">앱 폴더를 끌어다 놓아 주소를 만듭니다</h2>
+      <span class="pn-time">블록 4 · 이 장 6분 · 누적 20분 30초</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **타이머 6분**</p>
+      <p>- **폴더 전체**를 끌어다 놓는다</p>
+      <p>- 주소가 만들어질 때까지 기다린다</p>
+      <p>- 사이트 이름 바꾸기는 **선택**</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p45">
+    <div class="pn-slide-head">
+      <span class="pn-no">45</span>
+      <span class="pn-id">M3-4B</span>
+      <h2 class="pn-slide-title">공개로 바꿉니다</h2>
+      <span class="pn-time">블록 4 · 이 장 2분 · 누적 22분 30초</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **타이머 2분**</p>
+      <p>- **Make public** 버튼</p>
+      <p>- 안 보이면 Project visibility에서 **공개** 선택</p>
+      <p>- 이미 공개면 그대로 다음 장</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p46">
+    <div class="pn-slide-head">
+      <span class="pn-no">46</span>
+      <span class="pn-id">M3-5</span>
+      <h2 class="pn-slide-title">다른 창에서 주소를 열어 봅니다</h2>
+      <span class="pn-time">블록 4 · 이 장 1분 · 누적 23분 30초</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **타이머 1분**</p>
+      <p>- 로그인하지 않은 **시크릿 창**에서 연다</p>
+      <p>- **관광지와 날씨**가 보이는지 확인</p>
+      <p>- 「접근 권한이 없다」 → **공개로 바꿉니다** 장으로</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p47">
+    <div class="pn-slide-head">
+      <span class="pn-no">47</span>
+      <span class="pn-id">AP4-2</span>
+      <h2 class="pn-slide-title">기능 하나를 골라 넣습니다</h2>
+      <span class="pn-time">블록 4 · 이 장 12분 · 누적 35분 30초</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- **타이머 12분**</p>
+      <p>- 카드 셋 가운데 **하나**: 준비물 체크리스트 · 날짜별 예상 경비 · 여행까지 남은 날</p>
+      <p>- 〈고른 기능〉 자리는 **참가자가 정한다**</p>
+      <p>- 계획을 **먼저** 보여 달라고 한다</p>
+      <p>- 고칠 곳은 **한 군데씩**</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p48">
+    <div class="pn-slide-head">
+      <span class="pn-no">48</span>
+      <span class="pn-id">AF-1</span>
+      <h2 class="pn-slide-title">오늘 만든 것</h2>
+      <span class="pn-time">블록 4 · 이 장 2분 · 누적 37분 30초</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- 블록마다 **만든 것**과 **배운 개념**</p>
+      <p>- 기획 API · 첫 화면 키 · 제작 자료가 없을 때 · 공개 API와 MCP</p>
+      <p>- 참가자가 자기 폴더에서 파일을 하나씩 열어 본다</p>
+    </div>
+  </section>
+
+  <section class="pn-slide" id="p49">
+    <div class="pn-slide-head">
+      <span class="pn-no">49</span>
+      <span class="pn-id">AF-2</span>
+      <h2 class="pn-slide-title">다음에 해 볼 것</h2>
+      <span class="pn-time">블록 4 · 이 장 1분 30초 · 누적 39분</span>
+    </div>
+    <div class="pn-item pn-md">
+      <p>- 방향 셋: 다른 공개 API · **서버와 데이터베이스** · **MCP 서버**</p>
+      <p>- 지금 담은 곳은 **이 브라우저에만** 있다</p>
+      <p>- 어느 쪽으로 갈지는 각자 정한다</p>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>

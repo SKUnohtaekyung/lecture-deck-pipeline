@@ -1,0 +1,982 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>여행 계획</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<style>
+:root {
+  --bg: #F2FAFC;
+  --main: #0B4F6C;
+  --accent: #C2410C;
+  --accent-hover: #9A3412;
+  --accent-press: #7C2D12;
+  --card: #FFFFFF;
+  --on-accent: #FFFFFF;
+  --tint: rgba(11, 79, 108, 0.12);
+  --tint-press: rgba(11, 79, 108, 0.28);
+  --line: rgba(11, 79, 108, 0.35);
+  --pin-1: var(--main);
+  --pin-2: var(--accent);
+  --pin-3: #0F766E;
+  --pin-4: #A16207;
+  --shadow: rgba(0, 0, 0, 0.35);
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--main);
+  font-family: system-ui, -apple-system, "Segoe UI", "Malgun Gothic", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+  font-size: 18px;
+  line-height: 1.6;
+}
+.wrap { max-width: 1120px; margin: 0 auto; padding: 24px 16px 40px; }
+h1, h2 { font-size: 28px; line-height: 1.3; margin: 0 0 16px; }
+h3 { font-size: 28px; line-height: 1.3; margin: 0 0 8px; }
+section { margin-bottom: 32px; }
+p { margin: 0 0 8px; }
+
+.chips { display: flex; flex-wrap: wrap; gap: 12px; }
+.btn {
+  min-height: 52px;
+  padding: 8px 24px;
+  border-radius: 999px;
+  border: 2px solid var(--main);
+  background: var(--card);
+  color: var(--main);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.12s, color 0.12s;
+}
+.btn:hover { background: var(--tint); }
+.btn:active { background: var(--tint-press); }
+.btn[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.btn[aria-pressed="true"]:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+.btn[aria-pressed="true"]:active { background: var(--accent-press); border-color: var(--accent-press); }
+.btn:disabled { opacity: 0.55; border-style: dashed; cursor: not-allowed; }
+.btn:focus-visible, input:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+
+.dates { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 16px; margin-top: 20px; max-width: 560px; }
+.field label { display: block; font-weight: 700; margin-bottom: 4px; }
+.field input {
+  width: 100%;
+  min-height: 52px;
+  padding: 8px 16px;
+  border: 2px solid var(--main);
+  border-radius: 16px;
+  background: var(--card);
+  color: var(--main);
+  font: inherit;
+}
+
+.days { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 150px), 1fr)); gap: 12px; }
+.day {
+  min-width: 0;
+  padding: 12px;
+  background: var(--card);
+  border: 2px solid var(--line);
+  border-radius: 16px;
+}
+.day p { margin: 0; line-height: 1.35; }
+.day .date { font-weight: 700; }
+.day .icon { font-size: 48px; line-height: 1.2; margin-top: 4px; }
+.day .kind { font-weight: 700; }
+.day .temp { font-size: 36px; font-weight: 700; line-height: 1.25; margin-top: 4px; }
+.day .temp small { font-size: 18px; font-weight: 400; margin-right: 6px; }
+.day .pop { margin-top: 4px; }
+.day.weekend { border-color: var(--main); }
+.day.weekend .icon { font-size: 64px; }
+.day.weekend .temp { font-size: 48px; }
+.day.rain { border-color: var(--accent); }
+.day.rain .kind { color: var(--accent); }
+.day.none { border-style: dashed; background: transparent; }
+.day.none .kind { font-size: 22px; margin-top: 8px; }
+@media (min-width: 360px) {
+  .day.weekend { grid-column: span 2; }
+}
+
+.tag.in { background: var(--accent); color: var(--on-accent); margin-left: 8px; }
+
+.actions { padding: 0 20px 20px; margin-top: auto; }
+.btn.full { width: 100%; }
+.btn.small { min-height: 44px; padding: 4px 20px; }
+.picked { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.picked li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  padding: 12px 16px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+}
+.picked .grow { flex: 1 1 160px; min-width: 0; overflow-wrap: anywhere; font-weight: 700; }
+.pickdate {
+  min-height: 44px;
+  max-width: 100%;
+  padding: 4px 12px;
+  border: 2px solid var(--main);
+  border-radius: 16px;
+  background: var(--card);
+  color: var(--main);
+  font: inherit;
+}
+.pickdate:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+
+.plan { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 16px; }
+.plan-day { min-width: 0; padding: 16px; background: var(--card); border: 2px solid var(--line); border-radius: 16px; }
+.plan-day.rain { border-color: var(--accent); }
+.plan-day h3 { margin-bottom: 4px; }
+.plan-day .sub { font-weight: 700; margin-bottom: 8px; }
+.plan-day ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.plan-day li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 10px;
+  padding: 8px 12px;
+  border-radius: 16px;
+  background: var(--tint);
+}
+.plan-day .num {
+  flex: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--main);
+  color: var(--card);
+  font-weight: 700;
+  text-align: center;
+  line-height: 36px;
+}
+.plan-day .grow { flex: 1 1 120px; min-width: 0; overflow-wrap: anywhere; font-weight: 700; }
+
+.mapbox { margin-top: 24px; }
+#map { position: relative; z-index: 0; height: 320px; border: 2px solid var(--line); border-radius: 16px; overflow: hidden; }
+.legend { list-style: none; margin: 0 0 12px; padding: 0; display: flex; flex-wrap: wrap; gap: 8px 16px; }
+.legend .dot { display: inline-block; width: 20px; height: 20px; border-radius: 50%; margin-right: 6px; vertical-align: -3px; }
+.pin-icon { background: none; border: 0; }
+.pin {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 3px solid var(--card);
+  color: var(--on-accent);
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1;
+  box-shadow: 0 1px 4px var(--shadow);
+}
+.c0 { background: var(--pin-1); }
+.c1 { background: var(--pin-2); }
+.c2 { background: var(--pin-3); }
+.c3 { background: var(--pin-4); }
+
+.note {
+  padding: 16px 20px;
+  border: 2px dashed var(--line);
+  border-radius: 16px;
+  background: var(--card);
+}
+.note.warn { border-style: solid; border-color: var(--accent); }
+.summary { font-weight: 700; margin-bottom: 16px; }
+
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); gap: 20px; }
+.card {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  overflow: hidden;
+}
+.art {
+  aspect-ratio: 16 / 9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--tint);
+  font-size: 72px;
+  line-height: 1;
+}
+.art img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.body { padding: 16px 20px 20px; overflow-wrap: anywhere; }
+.tag { display: inline-block; padding: 2px 14px; border-radius: 999px; background: var(--tint); font-weight: 700; }
+.addr, .desc { margin-top: 8px; }
+
+footer { margin-top: 40px; padding-top: 16px; border-top: 1px solid var(--line); }
+footer p { margin-bottom: 4px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .btn { transition: none; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>여행 계획</h1>
+
+  <section id="choose" aria-labelledby="choose-title">
+    <h2 id="choose-title">지역과 날짜</h2>
+    <div class="chips" id="regions" role="group" aria-label="지역 고르기"></div>
+    <div class="dates">
+      <div class="field">
+        <label for="start">시작하는 날</label>
+        <input type="date" id="start">
+      </div>
+      <div class="field">
+        <label for="end">끝나는 날</label>
+        <input type="date" id="end">
+      </div>
+    </div>
+  </section>
+
+  <section id="weather" aria-labelledby="weather-title" hidden>
+    <h2 id="weather-title">날짜별 날씨</h2>
+    <p id="weather-source"></p>
+    <p class="note" id="weather-note" hidden></p>
+    <div class="days" id="days"></div>
+  </section>
+
+  <section id="picked" aria-labelledby="picked-title">
+    <h2 id="picked-title">담은 곳</h2>
+    <p class="note" id="picked-note" role="status"></p>
+    <ul class="picked" id="picked-list"></ul>
+  </section>
+
+  <section id="plan" aria-labelledby="plan-title" hidden>
+    <h2 id="plan-title">일정</h2>
+    <p class="note" id="plan-note"></p>
+    <div class="plan" id="plan-days"></div>
+    <div class="mapbox">
+      <h3>지도</h3>
+      <p class="note" id="map-note"></p>
+      <ul class="legend" id="legend"></ul>
+      <div id="map" role="region" aria-label="일정 장소 지도" hidden></div>
+    </div>
+  </section>
+
+  <section id="places" aria-labelledby="places-title">
+    <h2 id="places-title">관광지</h2>
+    <p class="note" id="status" role="status"></p>
+    <div class="grid" id="cards"></div>
+  </section>
+
+  <footer>
+    <p>날씨: Open-Meteo.com</p>
+    <p id="source-places"></p>
+    <p>지도: © OpenStreetMap contributors · Tiles style by Humanitarian OpenStreetMap Team hosted by OpenStreetMap France</p>
+  </footer>
+</div>
+
+<script src="관광지.js"></script>
+<script src="날씨.js"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  var 분류그림 = { '관광지': '🧭', '테마공원': '🎡', '박물관': '🏛️', '미술관': '🖼️', '동물원': '🦁', '수족관': '🐠', '유적': '🏯', '전망': '🔭' };
+  var 기본그림 = '📍';
+  var 요일 = ['일', '월', '화', '수', '목', '금', '토'];
+
+  var 자료 = window.관광지;
+  var $ = function (id) { return document.getElementById(id); };
+  var 상태 = { 지역: '', 시작: '', 끝: '' };
+  var 최대일수 = 31;
+
+  if (!자료 || !자료.지역) {
+    $('status').textContent = '관광지 자료를 불러오지 못했습니다. 관광지.js가 index.html과 같은 폴더에 있는지 확인해 주세요.';
+    $('status').className = 'note warn';
+    return;
+  }
+
+  $('source-places').textContent = '관광지: ' + 자료.출처;
+
+  // 담은 곳 · 일정: 브라우저 저장 칸(localStorage)에 적어 둔다
+  var 담은키 = '여행앱-담은곳';
+  var 일정키 = '여행앱-일정';
+  var 하루최대 = 3;
+  var 담은곳 = [];
+  var 일정 = {};   // { 지역이름: { '2026-10-24': [장소 id, ...] } }
+  var 저장가능 = true;
+  var 장소표 = {};
+  자료.지역.forEach(function (지역) {
+    (지역.장소 || []).forEach(function (장소) { 장소표[장소.id] = { 장소: 장소, 지역: 지역.이름 }; });
+  });
+
+  function 꺼내기(키) {
+    var 글 = null;
+    try {
+      글 = window.localStorage.getItem(키);
+    } catch (e) {
+      저장가능 = false;
+      return null;
+    }
+    if (!글) return null;
+    try { return JSON.parse(글); } catch (e) { return null; }
+  }
+  function 넣기(키, 값) {
+    try {
+      window.localStorage.setItem(키, JSON.stringify(값));
+    } catch (e) {
+      저장가능 = false;
+    }
+  }
+
+  function 저장읽기() {
+    var 값 = 꺼내기(담은키);
+    if (Array.isArray(값)) {
+      담은곳 = 값.filter(function (id, i) {
+        return typeof id === 'string' && 장소표[id] && 값.indexOf(id) === i;
+      });
+    }
+    var 저장일정 = 꺼내기(일정키);
+    var 본것 = {};
+    일정 = {};
+    if (!저장일정 || typeof 저장일정 !== 'object' || Array.isArray(저장일정)) return;
+    Object.keys(저장일정).forEach(function (지역이름) {
+      var 날들 = 저장일정[지역이름];
+      if (!날들 || typeof 날들 !== 'object') return;
+      Object.keys(날들).forEach(function (날) {
+        if (날짜읽기(날) === null || !Array.isArray(날들[날])) return;
+        var 쓸것 = 날들[날].filter(function (id) {
+          if (typeof id !== 'string' || 본것[id]) return false;
+          if (담은곳.indexOf(id) < 0 || !장소표[id] || 장소표[id].지역 !== 지역이름) return false;
+          본것[id] = true;
+          return true;
+        }).slice(0, 하루최대);
+        if (쓸것.length) {
+          일정[지역이름] = 일정[지역이름] || {};
+          일정[지역이름][날] = 쓸것;
+        }
+      });
+    });
+  }
+
+  function 담았나(id) { return 담은곳.indexOf(id) >= 0; }
+
+  function 배치날짜(id) {
+    var 날들 = 일정[장소표[id].지역] || {};
+    var 키 = Object.keys(날들);
+    for (var i = 0; i < 키.length; i++) {
+      if (날들[키[i]].indexOf(id) >= 0) return 키[i];
+    }
+    return '';
+  }
+
+  // 일정에서 id를 지운다(저장은 부른 쪽에서)
+  function 일정에서지우기(id) {
+    var 날들 = 일정[장소표[id].지역];
+    if (!날들) return;
+    Object.keys(날들).forEach(function (날) {
+      날들[날] = 날들[날].filter(function (x) { return x !== id; });
+      if (!날들[날].length) delete 날들[날];
+    });
+  }
+
+  // 날이 빈 글이면 일정에서만 뺀다. 이미 세 곳이 찬 날이면 놓지 않는다.
+  function 배치하기(id, 날) {
+    var 지역이름 = 장소표[id].지역;
+    if (날) {
+      var 지금 = (일정[지역이름] || {})[날] || [];
+      if (지금.length >= 하루최대 && 지금.indexOf(id) < 0) {
+        일정다시그리기();
+        return;
+      }
+    }
+    일정에서지우기(id);
+    if (날) {
+      일정[지역이름] = 일정[지역이름] || {};
+      (일정[지역이름][날] = 일정[지역이름][날] || []).push(id);
+    }
+    넣기(일정키, 일정);
+    일정다시그리기();
+  }
+
+  function 담기바꾸기(id) {
+    var i = 담은곳.indexOf(id);
+    if (i >= 0) {
+      일정에서지우기(id);
+      담은곳.splice(i, 1);
+      넣기(일정키, 일정);
+    } else {
+      담은곳.push(id);
+    }
+    넣기(담은키, 담은곳);
+    담음표시갱신();
+  }
+
+  function 담음표시갱신() {
+    Array.prototype.forEach.call(document.querySelectorAll('.pick'), function (b) {
+      var 담음 = 담았나(b.dataset.id);
+      b.setAttribute('aria-pressed', 담음 ? 'true' : 'false');
+      b.textContent = 담음 ? '담음 ✓' : '담기';
+    });
+    일정다시그리기();
+  }
+
+  function 일정다시그리기() {
+    담은곳그리기();
+    일정그리기();
+  }
+
+  // 지금 고른 지역 · 날짜가 올바르면 날짜 목록('YYYY-MM-DD'), 아니면 빈 목록
+  function 고른날짜들() {
+    var 시작 = 날짜읽기(상태.시작);
+    var 끝 = 날짜읽기(상태.끝);
+    if (!상태.지역 || 시작 === null || 끝 === null || 끝 < 시작) return [];
+    if (일수(상태.시작, 상태.끝) > 최대일수) return [];
+    var 목록 = [];
+    for (var t = 시작; t <= 끝; t += 86400000) 목록.push(날짜글(t));
+    return 목록;
+  }
+
+  function 날짜고르기(id, 날들) {
+    var 선택 = document.createElement('select');
+    선택.className = 'pickdate';
+    선택.setAttribute('aria-label', 장소표[id].장소.이름 + ' 날짜 정하기');
+    var 현재 = 배치날짜(id);
+    var 지역일정 = 일정[상태.지역] || {};
+    var 기본 = document.createElement('option');
+    기본.value = '';
+    기본.textContent = '날짜 정하기';
+    선택.appendChild(기본);
+    날들.forEach(function (날) {
+      var 수 = (지역일정[날] || []).length;
+      var 옵션 = document.createElement('option');
+      옵션.value = 날;
+      옵션.textContent = 날짜표시(날) + ' (' + 수 + '/' + 하루최대 + ')' + (수 >= 하루최대 && 현재 !== 날 ? ' · 가득' : '');
+      if (수 >= 하루최대 && 현재 !== 날) 옵션.disabled = true;
+      if (현재 === 날) 옵션.selected = true;
+      선택.appendChild(옵션);
+    });
+    선택.addEventListener('change', function () { 배치하기(id, 선택.value); });
+    return 선택;
+  }
+
+  function 담은곳그리기() {
+    var 목록 = $('picked-list');
+    var 메모 = $('picked-note');
+    while (목록.firstChild) 목록.removeChild(목록.firstChild);
+    var 날들 = 고른날짜들();
+    var 글 = 담은곳.length
+      ? '담은 곳 ' + 담은곳.length + '곳' + (날들.length ? '' : ' · 지역과 날짜를 고르면 날짜를 정할 수 있습니다.')
+      : '아직 담은 곳이 없습니다. 카드의 「담기」를 누르면 여기에 모입니다.';
+    if (!저장가능) 글 += ' · 이 브라우저에서는 저장할 수 없어 이 창을 닫으면 사라집니다.';
+    메모.textContent = 글;
+    담은곳.forEach(function (id) {
+      var 항목 = 장소표[id];
+      var li = document.createElement('li');
+      var 이름 = document.createElement('span');
+      이름.className = 'grow';
+      이름.textContent = 항목.장소.이름;
+      li.appendChild(이름);
+      var 지역태그 = document.createElement('span');
+      지역태그.className = 'tag';
+      지역태그.textContent = 항목.지역;
+      li.appendChild(지역태그);
+      if (날들.length && 항목.지역 === 상태.지역) li.appendChild(날짜고르기(id, 날들));
+      var 빼기 = document.createElement('button');
+      빼기.type = 'button';
+      빼기.className = 'btn small';
+      빼기.textContent = '빼기';
+      빼기.setAttribute('aria-label', 항목.장소.이름 + ' 담은 곳에서 빼기');
+      빼기.addEventListener('click', function () { 담기바꾸기(id); });
+      li.appendChild(빼기);
+      목록.appendChild(li);
+    });
+  }
+
+  function 일정그리기() {
+    var 구역 = $('plan');
+    var 칸 = $('plan-days');
+    var 메모 = $('plan-note');
+    while (칸.firstChild) 칸.removeChild(칸.firstChild);
+    var 날들 = 고른날짜들();
+    if (!날들.length) { 구역.hidden = true; return; }
+    구역.hidden = false;
+    var 지역일정 = 일정[상태.지역] || {};
+    var 합 = 0;
+    날들.forEach(function (날) {
+      var 목록 = 지역일정[날] || [];
+      합 += 목록.length;
+      var 예보 = 예보찾기(상태.지역, 날);
+      var 비 = !!(예보 && 예보.종류 && 예보.종류.비);
+      var 상자 = document.createElement('div');
+      상자.className = 'plan-day' + (비 ? ' rain' : '');
+      var 제목 = document.createElement('h3');
+      제목.textContent = 날짜표시(날);
+      상자.appendChild(제목);
+      var 부제 = document.createElement('p');
+      부제.className = 'sub';
+      부제.textContent = (예보 && 예보.종류 ? 예보.종류.그림 + ' ' + 예보.종류.이름 : (예보 ? '날씨 코드 ' + 예보.코드 : '예보 없음')) + ' · ' + 목록.length + '/' + 하루최대 + '곳';
+      상자.appendChild(부제);
+      if (!목록.length) {
+        var 빈 = document.createElement('p');
+        빈.textContent = '아직 놓은 곳이 없습니다.';
+        상자.appendChild(빈);
+      } else {
+        var ol = document.createElement('ol');
+        목록.forEach(function (id, 순서) {
+          var 항목 = 장소표[id];
+          var li = document.createElement('li');
+          var 번호 = document.createElement('span');
+          번호.className = 'num';
+          번호.textContent = String(순서 + 1);
+          li.appendChild(번호);
+          var 이름 = document.createElement('span');
+          이름.className = 'grow';
+          이름.textContent = 항목.장소.이름;
+          li.appendChild(이름);
+          if (비 && 항목.장소.실내 === true) {
+            var 실내 = document.createElement('span');
+            실내.className = 'tag in';
+            실내.textContent = '실내';
+            li.appendChild(실내);
+          }
+          var 빼기 = document.createElement('button');
+          빼기.type = 'button';
+          빼기.className = 'btn small';
+          빼기.textContent = '일정에서 빼기';
+          빼기.setAttribute('aria-label', 항목.장소.이름 + ' 일정에서 빼기');
+          빼기.addEventListener('click', function () { 배치하기(id, ''); });
+          li.appendChild(빼기);
+          ol.appendChild(li);
+        });
+        상자.appendChild(ol);
+      }
+      칸.appendChild(상자);
+    });
+    메모.textContent = 합
+      ? '일정에 놓은 곳 ' + 합 + '곳 · 하루 최대 ' + 하루최대 + '곳'
+      : '「담은 곳」에서 날짜를 정하면 여기에 들어갑니다. 하루 최대 ' + 하루최대 + '곳입니다.';
+    지도그리기(날들, 지역일정);
+  }
+
+  // 지도: Leaflet 1.9.4 하나. 그림 주소와 출처 문구는 자료설명.md의 것
+  var 타일주소 = 'https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png';
+  var 지도출처 = '© OpenStreetMap contributors · Tiles style by Humanitarian OpenStreetMap Team hosted by OpenStreetMap France';
+  var 핀색수 = 4;
+  var 지도 = null;
+  var 핀층 = null;
+
+  function 지도그리기(날들, 지역일정) {
+    var 상자 = $('map');
+    var 메모 = $('map-note');
+    var 범례 = $('legend');
+    while (범례.firstChild) 범례.removeChild(범례.firstChild);
+
+    var 핀들 = [];
+    날들.forEach(function (날, 날순서) {
+      (지역일정[날] || []).forEach(function (id, 순서) {
+        var 장소 = 장소표[id].장소;
+        if (typeof 장소.위도 === 'number' && typeof 장소.경도 === 'number') {
+          핀들.push({ 날: 날, 색: 날순서 % 핀색수, 번호: 순서 + 1, 장소: 장소 });
+        }
+      });
+    });
+    if (!핀들.length) {
+      상자.hidden = true;
+      메모.textContent = '일정에 장소를 놓으면 핀이 나옵니다.';
+      메모.hidden = false;
+      return;
+    }
+    if (!window.L) {
+      상자.hidden = true;
+      메모.textContent = '지도를 불러오지 못했습니다. 인터넷에 연결한 뒤 다시 열어 주세요. 일정 목록은 그대로 쓸 수 있습니다.';
+      메모.hidden = false;
+      return;
+    }
+    메모.hidden = true;
+    상자.hidden = false;
+    if (!지도) {
+      지도 = window.L.map(상자, { scrollWheelZoom: false });
+      window.L.tileLayer(타일주소, { maxZoom: 19, attribution: 지도출처 }).addTo(지도);
+      핀층 = window.L.layerGroup().addTo(지도);
+    }
+    지도.invalidateSize();
+    핀층.clearLayers();
+
+    var 좌표들 = [];
+    var 쓴날 = {};
+    핀들.forEach(function (핀) {
+      var 점 = [핀.장소.위도, 핀.장소.경도];
+      좌표들.push(점);
+      쓴날[핀.날] = 핀.색;
+      var 아이콘 = window.L.divIcon({
+        className: 'pin-icon',
+        html: '<span class="pin c' + 핀.색 + '">' + 핀.번호 + '</span>',
+        iconSize: [40, 40],
+        iconAnchor: [20, 20]
+      });
+      var 말풍선 = document.createElement('div');
+      말풍선.textContent = 날짜표시(핀.날) + ' ' + 핀.번호 + '번 · ' + 핀.장소.이름;
+      window.L.marker(점, { icon: 아이콘, title: 날짜표시(핀.날) + ' ' + 핀.번호 + '번 ' + 핀.장소.이름 }).bindPopup(말풍선).addTo(핀층);
+    });
+
+    날들.forEach(function (날) {
+      if (쓴날[날] === undefined) return;
+      var li = document.createElement('li');
+      var 점 = document.createElement('span');
+      점.className = 'dot c' + 쓴날[날];
+      li.appendChild(점);
+      li.appendChild(document.createTextNode(날짜표시(날)));
+      범례.appendChild(li);
+    });
+
+    if (좌표들.length === 1) {
+      지도.setView(좌표들[0], 15);
+    } else {
+      지도.fitBounds(좌표들, { padding: [40, 40], maxZoom: 16 });
+    }
+  }
+
+  function 날짜읽기(글) {
+    var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(글 || '');
+    if (!m) return null;
+    return Date.UTC(+m[1], +m[2] - 1, +m[3]);
+  }
+  function 날짜표시(글) {
+    var t = 날짜읽기(글);
+    if (t === null) return '';
+    var d = new Date(t);
+    return (d.getUTCMonth() + 1) + '월 ' + d.getUTCDate() + '일(' + 요일[d.getUTCDay()] + ')';
+  }
+  function 일수(시작, 끝) {
+    return Math.round((날짜읽기(끝) - 날짜읽기(시작)) / 86400000) + 1;
+  }
+
+  // 날씨 코드 묶음(자료설명.md의 표): 맞는 묶음이 없으면 null
+  function 날씨종류(코드) {
+    if (코드 === 0) return { 이름: '맑음', 그림: '☀️', 비: false };
+    if (코드 >= 1 && 코드 <= 3) return { 이름: '구름', 그림: '⛅', 비: false };
+    if (코드 === 45 || 코드 === 48) return { 이름: '안개', 그림: '🌫️', 비: false };
+    if ((코드 >= 51 && 코드 <= 67) || (코드 >= 80 && 코드 <= 82)) return { 이름: '비', 그림: '🌧️', 비: true };
+    if ((코드 >= 71 && 코드 <= 77) || 코드 === 85 || 코드 === 86) return { 이름: '눈', 그림: '❄️', 비: false };
+    if (코드 >= 95 && 코드 <= 99) return { 이름: '뇌우', 그림: '⛈️', 비: true };
+    return null;
+  }
+
+  function 지역번호(이름) {
+    for (var i = 0; i < 자료.지역.length; i++) {
+      if (자료.지역[i].이름 === 이름) return i;
+    }
+    return -1;
+  }
+
+  // 한 지역 · 한 날의 예보. 응답에 그 날이 없으면 null(예보 없음).
+  function 예보찾기(지역이름, 날짜글) {
+    var 목록 = window.날씨;
+    var 번호 = 지역번호(지역이름);
+    if (!Array.isArray(목록) || 번호 < 0 || !목록[번호]) return null;
+    var 응답 = 목록[번호];
+    var 지역 = 자료.지역[번호];
+    if (typeof 응답.latitude === 'number' && typeof 지역.위도 === 'number' && Math.abs(응답.latitude - 지역.위도) > 0.5) return null;
+    var 일 = 응답.daily;
+    if (!일 || !일.time) return null;
+    var i = 일.time.indexOf(날짜글);
+    if (i < 0) return null;
+    var 코드 = 일.weather_code ? 일.weather_code[i] : null;
+    var 최고 = 일.temperature_2m_max ? 일.temperature_2m_max[i] : null;
+    var 최저 = 일.temperature_2m_min ? 일.temperature_2m_min[i] : null;
+    var 확률 = 일.precipitation_probability_max ? 일.precipitation_probability_max[i] : null;
+    if (코드 === null || 코드 === undefined) return null;
+    return { 코드: 코드, 최고: 최고, 최저: 최저, 확률: 확률, 종류: 날씨종류(코드) };
+  }
+
+  function 날짜글(시각) {
+    return new Date(시각).toISOString().slice(0, 10);
+  }
+
+  function 숫자(값) {
+    return (typeof 값 === 'number') ? Math.round(값) + '°' : '-';
+  }
+
+  function 날씨칸만들기(날짜, 예보) {
+    var 칸 = document.createElement('div');
+    칸.className = 'day';
+    var 요일번호 = new Date(날짜읽기(날짜)).getUTCDay();
+    if (요일번호 === 0 || 요일번호 === 6) 칸.classList.add('weekend');
+
+    function 줄(클래스, 글) {
+      var p = document.createElement('p');
+      p.className = 클래스;
+      p.textContent = 글;
+      칸.appendChild(p);
+      return p;
+    }
+    줄('date', 날짜표시(날짜));
+    if (!예보) {
+      칸.classList.add('none');
+      줄('kind', '예보 없음');
+      return 칸;
+    }
+    var 종류 = 예보.종류;
+    if (종류 && 종류.비) 칸.classList.add('rain');
+    var 그림 = 줄('icon', 종류 ? 종류.그림 : '❔');
+    그림.setAttribute('aria-hidden', 'true');
+    줄('kind', 종류 ? 종류.이름 : '날씨 코드 ' + 예보.코드);
+    var 높 = 줄('temp', '');
+    var s1 = document.createElement('small'); s1.textContent = '최고'; 높.appendChild(s1);
+    높.appendChild(document.createTextNode(숫자(예보.최고)));
+    var 낮 = 줄('temp', '');
+    var s2 = document.createElement('small'); s2.textContent = '최저'; 낮.appendChild(s2);
+    낮.appendChild(document.createTextNode(숫자(예보.최저)));
+    줄('pop', '강수 확률 ' + (typeof 예보.확률 === 'number' ? 예보.확률 + '%' : '-'));
+    return 칸;
+  }
+
+  // 고른 날짜의 날씨 칸을 그리고, 비 오는 날이 하나라도 있으면 true
+  function 날씨그리기(지역이름, 시작글, 끝글) {
+    var 구역 = $('weather');
+    var 칸들 = $('days');
+    var 메모 = $('weather-note');
+    while (칸들.firstChild) 칸들.removeChild(칸들.firstChild);
+    구역.hidden = false;
+    if (!Array.isArray(window.날씨)) {
+      메모.textContent = '날씨 자료를 불러오지 못했습니다. 날씨.js가 index.html과 같은 폴더에 있는지 확인해 주세요.';
+      메모.hidden = false;
+      return false;
+    }
+    메모.hidden = true;
+    var 비옴 = false;
+    for (var t = 날짜읽기(시작글); t <= 날짜읽기(끝글); t += 86400000) {
+      var 글 = 날짜글(t);
+      var 예보 = 예보찾기(지역이름, 글);
+      if (예보 && 예보.종류 && 예보.종류.비) 비옴 = true;
+      칸들.appendChild(날씨칸만들기(글, 예보));
+    }
+    return 비옴;
+  }
+
+  // 날씨 새로 받기: 자료설명.md의 주소(날씨.js를 만들 때 쓴 것과 같은 주소). 안 되면 날씨.js를 그대로 쓴다.
+  var 날씨주소 = 'https://api.open-meteo.com/v1/forecast?latitude=37.7519,35.8562,35.8242,35.1796,33.4996&longitude=128.8761,129.2247,127.148,129.0756,126.5312&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max,weather_code&timezone=Asia/Seoul&forecast_days=16';
+  var 기다림 = 8000;
+
+  function 날씨출처표시(글) {
+    $('weather-source').textContent = 글;
+  }
+
+  function 응답맞나(목록) {
+    if (!Array.isArray(목록) || 목록.length !== 자료.지역.length) return false;
+    return 목록.every(function (항목) {
+      var 일 = 항목 && 항목.daily;
+      return !!(일 && Array.isArray(일.time) && Array.isArray(일.weather_code) &&
+        Array.isArray(일.temperature_2m_max) && Array.isArray(일.temperature_2m_min) &&
+        Array.isArray(일.precipitation_probability_max) && 일.weather_code.length === 일.time.length);
+    });
+  }
+
+  function 날씨새로받기() {
+    var 저장있음 = Array.isArray(window.날씨);
+    var 저장글 = 저장있음 ? '저장된 날씨(날씨.js)' : '날씨 자료 없음';
+    if (typeof window.fetch !== 'function') {
+      날씨출처표시('날씨: 이 브라우저는 새로 받을 수 없어 ' + 저장글 + '를 씁니다.');
+      return;
+    }
+    날씨출처표시('날씨: 인터넷에서 새로 받는 중입니다. 받기 전에는 ' + 저장글 + '를 보입니다.');
+    var 제어 = (typeof window.AbortController === 'function') ? new window.AbortController() : null;
+    var 시계 = setTimeout(function () { if (제어) 제어.abort(); }, 기다림);
+    function 실패(이유) {
+      clearTimeout(시계);
+      날씨출처표시('날씨: 인터넷에서 받지 못해 ' + 저장글 + '를 씁니다. (' + 이유 + ')');
+    }
+    window.fetch(날씨주소, 제어 ? { signal: 제어.signal } : {})
+      .then(function (응답) {
+        if (!응답.ok) throw new Error('상태 번호 ' + 응답.status);
+        return 응답.json();
+      })
+      .then(function (목록) {
+        if (!응답맞나(목록)) throw new Error('받은 응답의 모양이 다릅니다');
+        clearTimeout(시계);
+        window.날씨 = 목록;
+        날씨출처표시('날씨: 방금 인터넷에서 새로 받았습니다.');
+        그리기();
+      })
+      .catch(function (오류) {
+        var 이유 = 오류 && 오류.name === 'AbortError'
+          ? (기다림 / 1000) + '초 안에 응답이 없었습니다'
+          : (오류 && 오류.message === 'Failed to fetch' ? '인터넷에 연결되어 있지 않습니다' : (오류 && 오류.message) || '알 수 없는 오류');
+        실패(이유);
+      });
+  }
+
+  function 지역찾기(이름) {
+    for (var i = 0; i < 자료.지역.length; i++) {
+      if (자료.지역[i].이름 === 이름) return 자료.지역[i];
+    }
+    return null;
+  }
+
+  function 지역단추만들기() {
+    var 칸 = $('regions');
+    자료.지역.forEach(function (지역) {
+      var 있음 = 지역.장소 && 지역.장소.length > 0;
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'btn';
+      b.setAttribute('aria-pressed', 'false');
+      b.dataset.region = 지역.이름;
+      b.textContent = 있음 ? 지역.이름 : 지역.이름 + ' (자료 없음)';
+      if (!있음) b.disabled = true;
+      b.addEventListener('click', function () {
+        상태.지역 = 지역.이름;
+        그리기();
+      });
+      칸.appendChild(b);
+    });
+  }
+
+  function 카드만들기(장소, 실내표시) {
+    var 카드 = document.createElement('article');
+    카드.className = 'card';
+
+    var 그림칸 = document.createElement('div');
+    그림칸.className = 'art';
+    function 그림넣기() {
+      그림칸.textContent = 분류그림[장소.분류] || 기본그림;
+      그림칸.setAttribute('role', 'img');
+      그림칸.setAttribute('aria-label', 장소.분류 || '장소');
+    }
+    if (장소.사진) {
+      var img = document.createElement('img');
+      img.alt = 장소.이름 + ' 사진';
+      img.addEventListener('error', function () {
+        while (그림칸.firstChild) 그림칸.removeChild(그림칸.firstChild);
+        그림넣기();
+      });
+      img.src = 장소.사진;
+      그림칸.appendChild(img);
+    } else {
+      그림넣기();
+    }
+    카드.appendChild(그림칸);
+
+    var 몸 = document.createElement('div');
+    몸.className = 'body';
+    var 이름 = document.createElement('h3');
+    이름.textContent = 장소.이름;
+    몸.appendChild(이름);
+    if (장소.분류) {
+      var 분류 = document.createElement('p');
+      var 태그 = document.createElement('span');
+      태그.className = 'tag';
+      태그.textContent = 장소.분류;
+      분류.appendChild(태그);
+      if (실내표시 && 장소.실내 === true) {
+        var 실내 = document.createElement('span');
+        실내.className = 'tag in';
+        실내.textContent = '실내';
+        분류.appendChild(실내);
+      }
+      몸.appendChild(분류);
+    }
+    if (장소.주소) {
+      var 주소 = document.createElement('p');
+      주소.className = 'addr';
+      주소.textContent = 장소.주소;
+      몸.appendChild(주소);
+    }
+    if (장소.설명) {
+      var 설명 = document.createElement('p');
+      설명.className = 'desc';
+      설명.textContent = 장소.설명;
+      몸.appendChild(설명);
+    }
+    카드.appendChild(몸);
+
+    var 행동 = document.createElement('div');
+    행동.className = 'actions';
+    var 담기 = document.createElement('button');
+    담기.type = 'button';
+    담기.className = 'btn pick full';
+    담기.dataset.id = 장소.id;
+    담기.setAttribute('aria-label', 장소.이름 + ' 담기');
+    담기.setAttribute('aria-pressed', 담았나(장소.id) ? 'true' : 'false');
+    담기.textContent = 담았나(장소.id) ? '담음 ✓' : '담기';
+    담기.addEventListener('click', function () { 담기바꾸기(장소.id); });
+    행동.appendChild(담기);
+    카드.appendChild(행동);
+    return 카드;
+  }
+
+  function 안내(글, 경고) {
+    var s = $('status');
+    s.textContent = 글;
+    s.className = 경고 ? 'note warn' : 'note';
+    s.hidden = !글;
+  }
+
+  function 그리기() {
+    지역그리기();
+    일정다시그리기();
+  }
+
+  function 지역그리기() {
+    Array.prototype.forEach.call($('regions').children, function (b) {
+      b.setAttribute('aria-pressed', b.dataset.region === 상태.지역 ? 'true' : 'false');
+    });
+    var 칸 = $('cards');
+    while (칸.firstChild) 칸.removeChild(칸.firstChild);
+
+    $('weather').hidden = true;
+    var 시작 = 날짜읽기(상태.시작);
+    var 끝 = 날짜읽기(상태.끝);
+    if (!상태.지역 || 시작 === null || 끝 === null) {
+      안내('지역과 날짜를 고르면 관광지가 나옵니다.', false);
+      return;
+    }
+    if (끝 < 시작) {
+      안내('끝나는 날이 시작하는 날보다 앞입니다. 날짜를 다시 골라 주세요.', true);
+      return;
+    }
+    if (일수(상태.시작, 상태.끝) > 최대일수) {
+      안내('날짜는 최대 ' + 최대일수 + '일까지 고를 수 있습니다. 끝나는 날을 다시 골라 주세요.', true);
+      return;
+    }
+    var 지역 = 지역찾기(상태.지역);
+    var 비옴 = 날씨그리기(상태.지역, 상태.시작, 상태.끝);
+    var 문장 = 상태.지역 + ' · ' + 날짜표시(상태.시작) + ' ~ ' + 날짜표시(상태.끝) + ' · ' + 일수(상태.시작, 상태.끝) + '일 · 장소 ' + 지역.장소.length + '곳';
+    if (비옴) 문장 += ' · 비 오는 날이 있어 실내 장소를 위로 올렸습니다.';
+    안내(문장, false);
+    $('status').className = 'note summary';
+
+    var 장소들 = 지역.장소.map(function (장소, 순서) { return { 장소: 장소, 순서: 순서 }; });
+    if (비옴) {
+      장소들.sort(function (a, b) {
+        var 가 = a.장소.실내 === true ? 0 : 1;
+        var 나 = b.장소.실내 === true ? 0 : 1;
+        return (가 - 나) || (a.순서 - b.순서);
+      });
+    }
+    장소들.forEach(function (항목) { 칸.appendChild(카드만들기(항목.장소, 비옴)); });
+  }
+
+  $('start').addEventListener('change', function () {
+    상태.시작 = this.value;
+    $('end').min = this.value;
+    그리기();
+  });
+  $('end').addEventListener('change', function () {
+    상태.끝 = this.value;
+    그리기();
+  });
+
+  저장읽기();
+  지역단추만들기();
+  그리기();
+  날씨새로받기();
+})();
+</script>
+</body>
+</html>
