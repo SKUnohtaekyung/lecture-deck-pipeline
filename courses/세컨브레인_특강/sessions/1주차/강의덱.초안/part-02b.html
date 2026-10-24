@@ -1,0 +1,527 @@
+<!-- ═══ part-02b · 파트 1 뒷부분 17장 (v3) ═══════════════════════════════════════════════════
+     C1-10 · C1-11 · C1-12 · C1-13 · C1-14 · P2-1 · P2-2 · P2-2a~d · P2-3 · P2-4 · P2-5 · P2-6 · B1-9 · BR-1
+     원고: 1주차_v3원고_A.md 파트 1 뒤쪽. 앞 장은 part-02, 파트 2는 part-03. 조립은 파일 이름 순서(part-02 → part-02b → part-03)다.
+     그림은 인라인 SVG(.ill 문법)이고 글자는 22px 이상이다. 화면 장의 캡처는 자료/images/crop/ 에 잘라 둔 것을 쓴다(자르기: tmp/sb/V21-P2B/crop.py). -->
+
+<!-- C1-10 -->
+<section class="slide" data-slide="C1-10" data-kind="video" data-part="1">
+  <header class="s-head">
+    <span class="n-mark" aria-hidden="true"></span>
+    <nav class="n-crumb"><span>세컨드 브레인</span><span>파트 1 · 세컨드 브레인과 연결</span><b>플러그인 · MCP</b></nav>
+    <span class="s-tools"></span>
+    <span class="s-pageno"></span>
+  </header>
+  <div class="n-page">
+    <h1 class="n-title">잠깐 영상 보고 갈게요 · ChatGPT와 노션이 연결됩니다</h1>
+    <div class="n-body">
+      <figure class="n-frame">
+        <video class="n-video" src="자료/video/mcp.mp4" poster="자료/video/mcp.png" muted playsinline preload="auto"></video>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- C1-11 -->
+<section class="slide" data-slide="C1-11" data-kind="diagram" data-part="1">
+  <header class="s-head">
+    <span class="n-mark" aria-hidden="true"></span>
+    <nav class="n-crumb"><span>세컨드 브레인</span><span>파트 1 · 세컨드 브레인과 연결</span><b>플러그인 · MCP</b></nav>
+    <span class="s-tools"></span>
+    <span class="s-pageno"></span>
+  </header>
+  <div class="n-page">
+    <h1 class="n-title">MCP는 AI 앱과 외부 앱을 잇는 공개 표준입니다</h1>
+    <div class="n-body">
+      <div class="n-callout cl-blue n-def"><span class="n-callout-icon">📌</span><div><b class="n-label">정의</b><b>MCP</b>(Model Context Protocol)는 ChatGPT 같은 AI 앱을 노션 같은 외부 앱과 이어 주는 공개된 표준입니다.</div></div>
+      <svg class="ill" viewBox="0 0 1136 392" role="img" aria-label="호스트인 ChatGPT 안의 클라이언트가 MCP로 노션 MCP 서버와 이어지고, 서버가 노션 페이지에 닿는 세 층 구조 그림">
+        <rect class="paper" x="24" y="24" width="500" height="262" rx="26"/>
+        <text class="lbl lbl-lg lbl-b" x="52" y="76">호스트 · ChatGPT</text>
+        <text class="lbl lbl-sm lbl-mute" x="52" y="106">Host</text>
+        <rect class="f" x="52" y="140" width="190" height="112" rx="14"/>
+        <path class="s" d="M72 172 H178 M72 200 H214 M72 228 H150"/>
+        <path class="s" d="M242 196 H296"/>
+        <rect class="f" x="300" y="130" width="200" height="132" rx="16"/>
+        <text class="lbl lbl-b lbl-c" x="400" y="190">클라이언트</text>
+        <text class="lbl lbl-sm lbl-mute lbl-c" x="400" y="222">Client</text>
+        <path class="s" d="M500 196 H660" style="stroke-width:7"/>
+        <rect class="blue" x="548" y="168" width="88" height="56" rx="28"/>
+        <text class="lbl lbl-b lbl-w lbl-c" x="592" y="204">MCP</text>
+        <rect class="f" x="660" y="110" width="290" height="172" rx="20"/>
+        <text class="lbl lbl-b lbl-c" x="805" y="188">서버 · 노션 MCP 서버</text>
+        <text class="lbl lbl-sm lbl-mute lbl-c" x="805" y="220">Server</text>
+        <path class="s" d="M950 196 H990"/>
+        <rect class="f" x="990" y="100" width="122" height="192" rx="10"/>
+        <path class="s" d="M1012 142 H1090 M1012 174 H1090 M1012 202 H1068 M1012 230 H1086"/>
+        <text class="lbl lbl-c" x="1051" y="330">노션</text>
+        <path class="s dash" d="M40 292 V318"/>
+        <text class="lbl lbl-b" x="24" y="346">호스트</text>
+        <text class="lbl lbl-mute" x="24" y="378">연결을 조정</text>
+        <path class="s dash" d="M316 266 V318"/>
+        <text class="lbl lbl-b" x="300" y="346">클라이언트</text>
+        <text class="lbl lbl-mute" x="300" y="378">서버 하나와 연결을 유지</text>
+        <path class="s dash" d="M676 288 V318"/>
+        <text class="lbl lbl-b" x="660" y="346">서버</text>
+        <text class="lbl lbl-mute" x="660" y="378">기능을 내줌</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- C1-12 -->
+<section class="slide" data-slide="C1-12" data-kind="diagram" data-part="1">
+  <header class="s-head">
+    <span class="n-mark" aria-hidden="true"></span>
+    <nav class="n-crumb"><span>세컨드 브레인</span><span>파트 1 · 세컨드 브레인과 연결</span><b>플러그인 · MCP</b></nav>
+    <span class="s-tools"></span>
+    <span class="s-pageno"></span>
+  </header>
+  <div class="n-page">
+    <h1 class="n-title">노션 서버는 검색 · 페이지 만들기 · 페이지 고치기 도구를 내줍니다</h1>
+    <div class="n-body">
+      <svg class="ill" viewBox="0 0 1136 420" role="img" aria-label="ChatGPT가 호출하면 노션 MCP 서버가 검색, 페이지 만들기, 페이지 고치기 세 도구를 내주는 그림">
+        <path class="s" d="M214 210 C 400 210 520 78 706 78"/>
+        <path class="s" d="M214 210 H706"/>
+        <path class="s" d="M214 210 C 400 210 520 342 706 342"/>
+        <path class="ar" d="M722 78 l-22 -11 v22 z"/>
+        <path class="ar" d="M722 210 l-22 -11 v22 z"/>
+        <path class="ar" d="M722 342 l-22 -11 v22 z"/>
+        <rect class="f" x="24" y="140" width="190" height="140" rx="22"/>
+        <text class="lbl lbl-lg lbl-b lbl-c" x="119" y="220">ChatGPT</text>
+        <circle class="f" cx="470" cy="210" r="125"/>
+        <text class="lbl lbl-lg lbl-b lbl-c" x="470" y="204">노션</text>
+        <text class="lbl lbl-lg lbl-b lbl-c" x="470" y="242">MCP 서버</text>
+        <text class="lbl lbl-b lbl-c" x="288" y="184">호출</text>
+        <rect class="f" x="724" y="30" width="388" height="96" rx="16"/>
+        <text class="lbl lbl-lg" x="750" y="92">🔍</text>
+        <text class="lbl lbl-lg lbl-b" x="812" y="72">검색</text>
+        <text class="lbl lbl-sm lbl-mute" x="812" y="104">search</text>
+        <rect class="f" x="724" y="162" width="388" height="96" rx="16"/>
+        <text class="lbl lbl-lg" x="750" y="224">📄</text>
+        <text class="lbl lbl-lg lbl-b" x="812" y="204">페이지 만들기</text>
+        <text class="lbl lbl-sm lbl-mute" x="812" y="236">create-pages</text>
+        <rect class="f" x="724" y="294" width="388" height="96" rx="16"/>
+        <text class="lbl lbl-lg" x="750" y="356">✏️</text>
+        <text class="lbl lbl-lg lbl-b" x="812" y="336">페이지 고치기</text>
+        <text class="lbl lbl-sm lbl-mute" x="812" y="368">update-page</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- C1-13 -->
+<section class="slide" data-slide="C1-13" data-kind="diagram" data-part="1">
+  <header class="s-head">
+    <span class="n-mark" aria-hidden="true"></span>
+    <nav class="n-crumb"><span>세컨드 브레인</span><span>파트 1 · 세컨드 브레인과 연결</span><b>플러그인 · MCP</b></nav>
+    <span class="s-tools"></span>
+    <span class="s-pageno"></span>
+  </header>
+  <div class="n-page">
+    <h1 class="n-title">MCP는 어느 기기든 꽂히는 USB-C 포트와 같습니다</h1>
+    <div class="n-body">
+      <svg class="ill" viewBox="0 0 1136 440" role="img" aria-label="가운데 USB-C 포트 양쪽에 ChatGPT와 노션의 케이블이 꽂혀 있고, 다른 앱 두 개가 같은 모양의 플러그로 꽂히려는 그림">
+        <path class="s dash" d="M610 108 C 610 70 700 62 760 62"/>
+        <rect class="s dash" x="590" y="108" width="40" height="62" rx="14"/>
+        <rect class="s dash" x="760" y="24" width="200" height="76" rx="16"/>
+        <text class="lbl lbl-mute lbl-c" x="860" y="72">다른 앱</text>
+        <path class="s dash" d="M610 334 C 610 372 700 380 760 380"/>
+        <rect class="s dash" x="590" y="272" width="40" height="62" rx="14"/>
+        <rect class="s dash" x="760" y="342" width="200" height="76" rx="16"/>
+        <text class="lbl lbl-mute lbl-c" x="860" y="390">다른 앱</text>
+        <rect class="f" x="478" y="176" width="180" height="90" rx="45"/>
+        <rect class="paper" x="518" y="208" width="100" height="26" rx="13"/>
+        <rect class="blue" x="478" y="112" width="84" height="48" rx="24"/>
+        <text class="lbl lbl-b lbl-w lbl-c" x="520" y="144">MCP</text>
+        <rect class="f" x="24" y="160" width="200" height="122" rx="20"/>
+        <text class="lbl lbl-lg lbl-b lbl-c" x="124" y="232">ChatGPT</text>
+        <path class="s" d="M224 221 H400" style="stroke-width:6"/>
+        <rect class="f" x="400" y="203" width="78" height="36" rx="12"/>
+        <rect class="f" x="912" y="160" width="200" height="122" rx="20"/>
+        <text class="lbl lbl-lg lbl-b lbl-c" x="1012" y="232">노션</text>
+        <path class="s" d="M912 221 H736" style="stroke-width:6"/>
+        <rect class="f" x="658" y="203" width="78" height="36" rx="12"/>
+      </svg>
+      <p>같은 모양이면 어떤 앱이든 꽂힙니다</p>
+    </div>
+  </div>
+</section>
+
+<!-- C1-14 -->
+<section class="slide" data-slide="C1-14" data-kind="diagram" data-part="1">
+  <header class="s-head">
+    <span class="n-mark" aria-hidden="true"></span>
+    <nav class="n-crumb"><span>세컨드 브레인</span><span>파트 1 · 세컨드 브레인과 연결</span><b>플러그인 · MCP</b></nav>
+    <span class="s-tools"></span>
+    <span class="s-pageno"></span>
+  </header>
+  <div class="n-page">
+    <h1 class="n-title">노션에 쓰는 작업은 내가 승인해야 실행됩니다</h1>
+    <div class="n-body">
+      <svg class="ill" viewBox="0 0 1136 410" role="img" aria-label="요청 말풍선에서 승인 카드로, 승인을 누르면 노션 페이지에 줄이 생기는 세 칸 흐름 그림">
+        <path class="f" d="M50 150 H234 a26 26 0 0 1 26 26 V244 a26 26 0 0 1 -26 26 H118 L66 308 L76 270 H50 a26 26 0 0 1 -26 -26 V176 a26 26 0 0 1 26 -26 z"/>
+        <text class="lbl lbl-lg lbl-b lbl-c" x="142" y="222">요청</text>
+        <path class="s" d="M272 210 H330"/>
+        <path class="ar" d="M344 210 l-22 -11 v22 z"/>
+        <rect class="f" x="540" y="22" width="40" height="30" rx="6"/>
+        <path class="s" d="M548 22 V14 a12 12 0 0 1 24 0 V22"/>
+        <rect class="f" x="350" y="64" width="420" height="292" rx="24"/>
+        <text class="lbl lbl-lg lbl-b" x="380" y="122">Notion 사용 승인</text>
+        <text class="lbl" x="380" y="170">노션 「경주 여행」 페이지에 씁니다</text>
+        <rect class="f" x="380" y="250" width="160" height="62" rx="31"/>
+        <text class="lbl lbl-lg lbl-c" x="460" y="290">거부</text>
+        <rect class="dot" x="560" y="250" width="180" height="62" rx="31"/>
+        <text class="lbl lbl-lg lbl-b lbl-w lbl-c" x="650" y="290">승인</text>
+        <path class="s sb" d="M786 210 H836" style="stroke-width:5"/>
+        <path class="blue" d="M852 210 l-24 -13 v26 z"/>
+        <rect class="f" x="868" y="108" width="244" height="236" rx="14"/>
+        <text class="lbl lbl-b" x="892" y="158">여행 개요</text>
+        <circle class="dot" cx="900" cy="198" r="4"/><path class="s" d="M918 198 H1090"/>
+        <circle class="dot" cx="900" cy="234" r="4"/><path class="s" d="M918 234 H1090"/>
+        <circle class="dot" cx="900" cy="270" r="4"/><path class="s" d="M918 270 H1060"/>
+        <text class="lbl lbl-lg lbl-b lbl-c" x="990" y="392">실행</text>
+      </svg>
+      <p>카드의 내용을 읽고 「승인」을 누릅니다</p>
+    </div>
+  </div>
+</section>
+
+<!-- P2-1 -->
+<section class="slide lay-diagram" data-slide="P2-1" data-kind="practice" data-stage="1" data-part="1" data-practice="2">
+  <header class="s-head">
+    <span class="n-mark" aria-hidden="true"></span>
+    <nav class="n-crumb"><span>세컨드 브레인</span><span>파트 1 · 세컨드 브레인과 연결</span><b>실습 2 · ChatGPT와 노션 연결하기</b></nav>
+    <span class="s-tools"></span>
+    <span class="s-pageno"></span>
+  </header>
+  <div class="n-page">
+    <h1 class="n-title">ChatGPT에 노션을 연결하고 노션 페이지에 첫 세 줄을 씁니다</h1>
+    <div class="n-props"><span class="n-stage is-on" aria-current="step">①목표</span><span class="n-stage">②진행</span><span class="n-stage">③결과</span><span class="n-stage">④고치기</span></div>
+    <div class="n-body">
+      <svg class="ill" viewBox="0 0 1136 380" role="img" aria-label="전에는 ChatGPT 창과 노션 창이 떨어져 있고, 후에는 MCP로 이어져 노션 경주 여행 페이지에 여행 개요 세 줄이 있는 그림">
+        <rect class="paper" x="24" y="16" width="60" height="42" rx="8"/>
+        <text class="lbl lbl-b lbl-c" x="54" y="46">전</text>
+        <rect class="f" x="24" y="84" width="216" height="270" rx="16"/>
+        <path class="s" d="M24 128 H240"/>
+        <text class="lbl lbl-b" x="44" y="116">ChatGPT</text>
+        <rect class="paper" x="112" y="148" width="108" height="44" rx="14"/>
+        <path class="s" d="M44 228 H206 M44 258 H176"/>
+        <rect class="f" x="44" y="296" width="176" height="38" rx="19"/>
+        <path class="s" d="M240 219 H256 M288 219 H304"/>
+        <rect class="f" x="304" y="84" width="216" height="270" rx="16"/>
+        <path class="s" d="M304 128 H520"/>
+        <text class="lbl lbl-b" x="324" y="116">노션</text>
+        <text class="lbl lbl-lg" x="324" y="188">🧳</text>
+        <text class="lbl lbl-lg lbl-b" x="366" y="188">경주 여행</text>
+        <path class="s dash" d="M324 232 H500 M324 262 H470"/>
+        <path class="s" d="M548 219 H590" style="stroke-width:8"/>
+        <path class="ar" d="M612 219 l-28 -18 v36 z"/>
+        <rect class="paper" x="640" y="16" width="60" height="42" rx="8"/>
+        <text class="lbl lbl-b lbl-c" x="670" y="46">후</text>
+        <rect class="f" x="640" y="84" width="190" height="270" rx="16"/>
+        <path class="s" d="M640 128 H830"/>
+        <text class="lbl lbl-b" x="660" y="116">ChatGPT</text>
+        <rect class="paper" x="716" y="148" width="94" height="44" rx="14"/>
+        <path class="s" d="M660 228 H796 M660 258 H760"/>
+        <rect class="f" x="660" y="296" width="150" height="38" rx="19"/>
+        <rect class="blue" x="830" y="194" width="82" height="50" rx="25"/>
+        <text class="lbl lbl-b lbl-w lbl-c" x="871" y="227">MCP</text>
+        <rect class="f" x="912" y="84" width="200" height="270" rx="16"/>
+        <path class="s" d="M912 128 H1112"/>
+        <text class="lbl lbl-b" x="932" y="116">노션</text>
+        <text class="lbl lbl-lg" x="932" y="186">🧳</text>
+        <text class="lbl lbl-lg lbl-b" x="974" y="186">경주 여행</text>
+        <text class="lbl lbl-b" x="932" y="226">여행 개요</text>
+        <circle class="dot" cx="942" cy="258" r="4"/><text class="lbl" x="960" y="266">날짜</text>
+        <circle class="dot" cx="942" cy="290" r="4"/><text class="lbl" x="960" y="298">인원</text>
+        <circle class="dot" cx="942" cy="322" r="4"/><text class="lbl" x="960" y="330">교통</text>
+      </svg>
+      <p style="text-align:center">승인 화면을 두 번 만납니다. 연결할 때 한 번, 처음 쓸 때 한 번입니다</p>
+    </div>
+  </div>
+</section>
+
+<!-- P2-2 -->
+<section class="slide lay-diagram" data-slide="P2-2" data-kind="practice" data-stage="2" data-part="1" data-practice="2">
+  <header class="s-head">
+    <span class="n-mark" aria-hidden="true"></span>
+    <nav class="n-crumb"><span>세컨드 브레인</span><span>파트 1 · 세컨드 브레인과 연결</span><b>실습 2 · ChatGPT와 노션 연결하기</b></nav>
+    <span class="s-tools"><button class="n-timer" type="button" data-min="11" aria-label="타이머, 누르면 시작하고 다시 누르면 멈춥니다">⏱ 11:00</button></span>
+    <span class="s-pageno"></span>
+  </header>
+  <div class="n-page">
+    <h1 class="n-title">연결은 다섯 단계를 차례로 누르면 끝납니다</h1>
+    <div class="n-props"><span class="n-stage">①목표</span><span class="n-stage is-on" aria-current="step">②진행</span><span class="n-stage">③결과</span><span class="n-stage">④고치기</span></div>
+    <div class="n-body">
+      <svg class="ill" viewBox="0 0 1136 300" role="img" aria-label="플러그인, Notion, 설치, 연결, 계속하기 다섯 점이 한 줄로 이어진 순서 그림">
+        <path class="s" d="M110 170 H1026" style="stroke-width:6"/>
+        <circle class="f" cx="110" cy="170" r="30"/>
+        <circle class="f" cx="339" cy="170" r="30"/>
+        <circle class="f" cx="568" cy="170" r="30"/>
+        <circle class="f" cx="797" cy="170" r="30"/>
+        <circle class="blue" cx="1026" cy="170" r="34"/>
+        <text class="serif t-h2 lbl-c" x="110" y="108">1</text>
+        <text class="serif t-h2 lbl-c" x="339" y="108">2</text>
+        <text class="serif t-h2 lbl-c" x="568" y="108">3</text>
+        <text class="serif t-h2 lbl-c" x="797" y="108">4</text>
+        <text class="serif t-h2 lbl-c" x="1026" y="108">5</text>
+        <text class="lbl lbl-lg lbl-b lbl-c" x="110" y="252">플러그인</text>
+        <text class="lbl lbl-lg lbl-b lbl-c" x="339" y="252">Notion</text>
+        <text class="lbl lbl-lg lbl-b lbl-c" x="568" y="252">설치</text>
+        <text class="lbl lbl-lg lbl-b lbl-c" x="797" y="252">연결</text>
+        <text class="lbl lbl-lg lbl-b lbl-c" x="1026" y="252">계속하기</text>
+      </svg>
+      <p style="text-align:center">그다음 요청문을 보내고 승인합니다</p>
+    </div>
+  </div>
+</section>
+
+<!-- P2-2a -->
+<section class="slide" data-slide="P2-2a" data-kind="shot" data-part="1" data-practice="2">
+  <header class="s-head">
+    <span class="n-mark" aria-hidden="true"></span>
+    <nav class="n-crumb"><span>세컨드 브레인</span><span>파트 1 · 세컨드 브레인과 연결</span><b>실습 2 · ChatGPT와 노션 연결하기</b></nav>
+    <span class="s-tools"></span>
+    <span class="s-pageno"></span>
+  </header>
+  <div class="n-page">
+    <h1 class="n-title">ChatGPT의 플러그인 화면입니다</h1>
+    <div class="n-props"><span class="n-stage">①목표</span><span class="n-stage is-on" aria-current="step">②진행</span><span class="n-stage">③결과</span><span class="n-stage">④고치기</span></div>
+    <div class="n-body">
+      <figure class="n-frame is-browser" data-url="chatgpt.com">
+        <img src="자료/images/crop/P2-2a_05.png" alt="ChatGPT의 플러그인 화면을 왼쪽 목록과 플러그인 검색창 둘레만 잘라 키운 모습" loading="eager">
+        <span class="n-ring" style="left:23.4%;top:47.3%;width:47%;height:9.2%"><b style="left:auto;right:-15px">1</b></span>
+        <span class="n-ring" style="left:78.8%;top:34.6%;width:39.4%;height:11.5%"><b>2</b></span>
+      </figure>
+      <p>① 왼쪽 「플러그인」 → ② 검색창에 Notion 입력</p>
+    </div>
+  </div>
+</section>
+
+<!-- P2-2b -->
+<section class="slide" data-slide="P2-2b" data-kind="shot" data-part="1" data-practice="2">
+  <header class="s-head">
+    <span class="n-mark" aria-hidden="true"></span>
+    <nav class="n-crumb"><span>세컨드 브레인</span><span>파트 1 · 세컨드 브레인과 연결</span><b>실습 2 · ChatGPT와 노션 연결하기</b></nav>
+    <span class="s-tools"></span>
+    <span class="s-pageno"></span>
+  </header>
+  <div class="n-page">
+    <h1 class="n-title">Notion을 누르면 나오는 화면입니다</h1>
+    <div class="n-props"><span class="n-stage">①목표</span><span class="n-stage is-on" aria-current="step">②진행</span><span class="n-stage">③결과</span><span class="n-stage">④고치기</span></div>
+    <div class="n-body">
+      <figure class="n-frame is-browser" data-url="chatgpt.com">
+        <img src="자료/images/crop/P2-2b_06.png" alt="ChatGPT 안의 Notion 플러그인 페이지의 위쪽을 잘라 키운 모습. 오른쪽에 플러그인 설치 단추" loading="eager">
+        <span class="n-ring" style="left:88.4%;top:14.6%;width:19.5%;height:10.9%"><b style="left:-38px;top:-30px">1</b></span>
+      </figure>
+      <p>① 오른쪽 위 「+ 플러그인 설치」</p>
+    </div>
+  </div>
+</section>
+
+<!-- P2-2c -->
+<section class="slide" data-slide="P2-2c" data-kind="shot" data-part="1" data-practice="2">
+  <header class="s-head">
+    <span class="n-mark" aria-hidden="true"></span>
+    <nav class="n-crumb"><span>세컨드 브레인</span><span>파트 1 · 세컨드 브레인과 연결</span><b>실습 2 · ChatGPT와 노션 연결하기</b></nav>
+    <span class="s-tools"></span>
+    <span class="s-pageno"></span>
+  </header>
+  <div class="n-page">
+    <h1 class="n-title">ChatGPT와 Notion을 잇는 연결 창입니다</h1>
+    <div class="n-props"><span class="n-stage">①목표</span><span class="n-stage is-on" aria-current="step">②진행</span><span class="n-stage">③결과</span><span class="n-stage">④고치기</span></div>
+    <div class="n-body">
+      <figure class="n-frame is-browser" data-url="chatgpt.com">
+        <img src="자료/images/crop/P2-2c_07_edit.png" alt="ChatGPT와 Notion을 잇는 연결 대화상자의 아래쪽을 잘라 키운 모습. ChatGPT로 계속, Notion 연결, 취소 단추" loading="eager">
+        <span class="n-ring" style="left:49.7%;top:64.7%;width:88.9%;height:14.9%"><b>1</b></span>
+        <span class="n-ring is-skip" style="left:49.7%;top:47.7%;width:88.9%;height:14.4%"></span>
+      </figure>
+      <p>① 「Notion 연결 ↗」(새 창이 열립니다)</p>
+    </div>
+  </div>
+</section>
+
+<!-- P2-2d -->
+<section class="slide" data-slide="P2-2d" data-kind="shot" data-part="1" data-practice="2">
+  <header class="s-head">
+    <span class="n-mark" aria-hidden="true"></span>
+    <nav class="n-crumb"><span>세컨드 브레인</span><span>파트 1 · 세컨드 브레인과 연결</span><b>실습 2 · ChatGPT와 노션 연결하기</b></nav>
+    <span class="s-tools"></span>
+    <span class="s-pageno"></span>
+  </header>
+  <div class="n-page">
+    <h1 class="n-title">Notion MCP에 연결하는 동의 화면입니다</h1>
+    <div class="n-props"><span class="n-stage">①목표</span><span class="n-stage is-on" aria-current="step">②진행</span><span class="n-stage">③결과</span><span class="n-stage">④고치기</span></div>
+    <div class="n-body">
+      <figure class="n-frame is-browser" data-url="새 창 · Notion">
+        <img src="자료/images/crop/P2-2d_08.png" alt="Notion MCP에 연결하는 동의 화면의 가운데를 잘라 키운 모습. 태경님의 워크스페이스 선택 상자와 계속하기 단추" loading="eager">
+        <span class="n-ring" style="left:49.9%;top:19.1%;width:73%;height:21.4%"><b style="left:-30px;top:-14px">1</b></span>
+        <span class="n-ring" style="left:49.9%;top:88.1%;width:73%;height:14.1%"><b>2</b></span>
+        <span class="n-ring is-skip" style="left:38.4%;top:62.3%;width:48%;height:9.7%"></span>
+      </figure>
+      <p>① 워크스페이스 이름 → ② 「계속하기」</p>
+    </div>
+  </div>
+</section>
+
+<!-- P2-3 -->
+<section class="slide lay-diagram" data-slide="P2-3" data-kind="practice" data-stage="2" data-part="1" data-practice="2">
+  <header class="s-head">
+    <span class="n-mark" aria-hidden="true"></span>
+    <nav class="n-crumb"><span>세컨드 브레인</span><span>파트 1 · 세컨드 브레인과 연결</span><b>실습 2 · ChatGPT와 노션 연결하기</b></nav>
+    <span class="s-tools"></span>
+    <span class="s-pageno"></span>
+  </header>
+  <div class="n-page">
+    <h1 class="n-title">채팅창에 요청문을 보냅니다</h1>
+    <div class="n-props"><span class="n-stage">①목표</span><span class="n-stage is-on" aria-current="step">②진행</span><span class="n-stage">③결과</span><span class="n-stage">④고치기</span></div>
+    <div class="n-body">
+      <div style="display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:36px;align-items:start;width:100%">
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <ol class="n-steps" style="counter-reset:st 6">
+            <li><b>프로젝트 「경주 여행」의 채팅창에 요청문을 보냅니다</b></li>
+          </ol>
+          <figure class="n-code is-lg"><figcaption><span>요청문 · 7단계</span><button class="n-copy" type="button">복사</button></figcaption><pre>내 노션 「경주 여행」 페이지 맨 위에 「여행 개요」 제목을 만들고, 그 아래에 세 줄을 적어 주세요. 세 줄은 날짜는 11월 8~9일, 인원은 2명, 교통은 KTX 경주역(구 신경주역)입니다. 다 적으면 어느 페이지에 적었는지 알려 주세요.</pre></figure>
+        </div>
+        <svg class="ill" viewBox="0 0 360 300" role="img" aria-label="ChatGPT 채팅창 아래쪽 입력 줄에 글자가 입력되고, 위쪽 화살표가 보내기를 가리키는 그림">
+          <rect class="f" x="8" y="8" width="344" height="284" rx="18"/>
+          <path class="s" d="M8 54 H352"/>
+          <text class="lbl lbl-b" x="28" y="39">ChatGPT</text>
+          <text class="lbl lbl-b lbl-c" x="298" y="112">보내기</text>
+          <path class="s sb" d="M298 200 V150" style="stroke-width:5"/>
+          <path class="blue" d="M298 128 l-14 22 h28 z"/>
+          <rect class="f" x="28" y="200" width="304" height="68" rx="34"/>
+          <path class="s" d="M54 234 H110 M122 234 H190"/>
+          <path class="s" d="M200 218 V250" style="stroke-width:3.5"/>
+          <circle class="f" cx="298" cy="234" r="24"/>
+          <path class="s" d="M298 246 V222 M286 234 L298 222 L310 234"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- P2-4 -->
+<section class="slide lay-diagram" data-slide="P2-4" data-kind="practice" data-stage="2" data-part="1" data-practice="2">
+  <header class="s-head">
+    <span class="n-mark" aria-hidden="true"></span>
+    <nav class="n-crumb"><span>세컨드 브레인</span><span>파트 1 · 세컨드 브레인과 연결</span><b>실습 2 · ChatGPT와 노션 연결하기</b></nav>
+    <span class="s-tools"></span>
+    <span class="s-pageno"></span>
+  </header>
+  <div class="n-page">
+    <h1 class="n-title">승인 카드가 뜨면 내용을 읽고 「승인」을 누릅니다</h1>
+    <div class="n-props"><span class="n-stage">①목표</span><span class="n-stage is-on" aria-current="step">②진행</span><span class="n-stage">③결과</span><span class="n-stage">④고치기</span></div>
+    <div class="n-body">
+      <ol class="n-steps" style="counter-reset:st 7">
+        <li><b>승인 카드가 뜨면 「승인」을 누릅니다</b></li>
+      </ol>
+      <svg class="ill" viewBox="0 0 1136 372" role="img" aria-label="Notion 사용 승인 카드. 노션 경주 여행 페이지에 씁니다라는 글과 거부, 승인 두 단추">
+        <rect class="f" x="208" y="16" width="720" height="340" rx="28"/>
+        <text class="t-h2" x="252" y="90">Notion 사용 승인</text>
+        <text class="lbl lbl-lg" x="252" y="152">노션 「경주 여행」 페이지에 씁니다</text>
+        <rect class="f" x="484" y="248" width="190" height="72" rx="36"/>
+        <text class="lbl lbl-lg lbl-c" x="579" y="293">거부</text>
+        <rect class="dot" x="690" y="248" width="194" height="72" rx="36"/>
+        <text class="lbl lbl-lg lbl-b lbl-w lbl-c" x="787" y="293">승인</text>
+        <rect class="s sb" x="680" y="238" width="214" height="92" rx="46" style="stroke-width:3.5"/>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- P2-5 -->
+<section class="slide lay-diagram" data-slide="P2-5" data-kind="practice" data-stage="3" data-part="1" data-practice="2">
+  <header class="s-head">
+    <span class="n-mark" aria-hidden="true"></span>
+    <nav class="n-crumb"><span>세컨드 브레인</span><span>파트 1 · 세컨드 브레인과 연결</span><b>실습 2 · ChatGPT와 노션 연결하기</b></nav>
+    <span class="s-tools"></span>
+    <span class="s-pageno"></span>
+  </header>
+  <div class="n-page">
+    <h1 class="n-title">노션 「경주 여행」 맨 위에 「여행 개요」 세 줄이 적혀 있습니다</h1>
+    <div class="n-props"><span class="n-stage">①목표</span><span class="n-stage">②진행</span><span class="n-stage is-on" aria-current="step">③결과</span><span class="n-stage">④고치기</span></div>
+    <div class="n-body">
+      <div class="n-result" style="width:min(880px,100%)">
+        <h2 class="n-title">🧳 경주 여행</h2>
+        <h3>여행 개요</h3>
+        <ul>
+          <li><b>날짜</b> 11월 8~9일</li>
+          <li><b>인원</b> 2명</li>
+          <li><b>교통</b> KTX 경주역(구 신경주역)</li>
+        </ul>
+        <p class="n-time">▏</p>
+      </div>
+      <p style="text-align:center">ChatGPT가 쓴 문장은 조금 다를 수 있습니다</p>
+    </div>
+  </div>
+</section>
+
+<!-- P2-6 -->
+<section class="slide lay-diagram" data-slide="P2-6" data-kind="practice" data-stage="4" data-part="1" data-practice="2">
+  <header class="s-head">
+    <span class="n-mark" aria-hidden="true"></span>
+    <nav class="n-crumb"><span>세컨드 브레인</span><span>파트 1 · 세컨드 브레인과 연결</span><b>실습 2 · ChatGPT와 노션 연결하기</b></nav>
+    <span class="s-tools"></span>
+    <span class="s-pageno"></span>
+  </header>
+  <div class="n-page">
+    <h1 class="n-title">세 줄이 적히지 않았거나 엉뚱한 곳에 적혔을 때 고칩니다</h1>
+    <div class="n-props"><span class="n-stage">①목표</span><span class="n-stage">②진행</span><span class="n-stage">③결과</span><span class="n-stage is-on" aria-current="step">④고치기</span></div>
+    <div class="n-body">
+      <div style="display:grid;grid-template-columns:34fr 38fr 28fr;gap:8px;align-items:start;width:100%">
+        <details class="n-toggle" open><summary>채팅에는 세 줄이 있는데 노션은 그대로입니다</summary><div><p>요청문을 보내고 승인 카드가 뜨면 「승인」을 누릅니다</p><figure class="n-code"><figcaption><span>고쳐 보낼 요청문</span><button class="n-copy" type="button">복사</button></figcaption><pre>방금 말한 세 줄을 노션 「경주 여행」 페이지에 직접 적어 주세요. 적은 뒤 페이지 이름을 알려 주세요.</pre></figure></div></details>
+        <details class="n-toggle" open><summary>세 줄이 다른 페이지에 적혔습니다</summary><div><p>요청문을 보냅니다</p><figure class="n-code"><figcaption><span>고쳐 보낼 요청문</span><button class="n-copy" type="button">복사</button></figcaption><pre>방금 세 줄을 적은 노션 페이지 이름을 알려 주세요. 그 페이지의 세 줄은 지우고, 같은 세 줄을 노션 「경주 여행」 페이지 맨 위에 적어 주세요.</pre></figure></div></details>
+        <details class="n-toggle" open><summary>승인 카드를 닫았거나 거절했습니다</summary><div><p>요청문을 보냅니다</p><figure class="n-code"><figcaption><span>고쳐 보낼 요청문</span><button class="n-copy" type="button">복사</button></figcaption><pre>승인 카드를 닫았습니다. 노션 「경주 여행」 페이지 맨 위에 「여행 개요」 세 줄을 다시 적어 주세요.</pre></figure></div></details>
+      </div>
+    </div>
+    <button class="n-btn is-corner" type="button" data-go="HUB">← 실습 목록으로</button>
+  </div>
+</section>
+
+<!-- B1-9 -->
+<section class="slide" data-slide="B1-9" data-kind="summary" data-part="1">
+  <header class="s-head">
+    <span class="n-mark" aria-hidden="true"></span>
+    <nav class="n-crumb"><span>세컨드 브레인</span><span>파트 1 · 세컨드 브레인과 연결</span><b>파트 1 정리</b></nav>
+    <span class="s-tools"></span>
+    <span class="s-pageno"></span>
+  </header>
+  <div class="n-page">
+    <div class="n-icon">✅</div>
+    <h1 class="n-title">파트 1이 끝나면 노션에 「경주 여행」이 있고 ChatGPT가 노션에 쓸 수 있습니다</h1>
+    <div class="n-body">
+      <div style="display:grid;grid-template-columns:440px minmax(0,1fr);gap:48px;align-items:center">
+        <div class="n-side"><div class="n-side-ws">태경님의 워크스페이스</div><a class="n-side-item">개인 페이지</a><a class="n-side-item">📄 메모</a><a class="n-side-item is-new">📄 경주 여행 <span class="n-tag tg-blue" style="margin-left:auto">이번 파트에 생김</span></a></div>
+        <svg class="ill" viewBox="0 0 480 220" role="img" aria-label="플러그인 연결됨, 여행 개요 세 줄 두 개의 둥근 칩" style="max-width:520px">
+          <rect class="f" x="8" y="20" width="460" height="72" rx="36"/>
+          <circle class="st-green" cx="52" cy="56" r="20"/>
+          <path class="s" d="M42 56 L50 64 L64 48"/>
+          <text class="lbl lbl-lg lbl-b" x="92" y="66">플러그인 연결됨</text>
+          <rect class="f" x="8" y="124" width="460" height="72" rx="36"/>
+          <circle class="st-green" cx="52" cy="160" r="20"/>
+          <path class="s" d="M42 160 L50 168 L64 152"/>
+          <text class="lbl lbl-lg lbl-b" x="92" y="170">여행 개요 세 줄</text>
+        </svg>
+      </div>
+      <p>다음 · <span class="n-mention" data-go="B2-0">📥 파트 2 · 모으기</span></p>
+    </div>
+  </div>
+</section>
+
+<!-- BR-1 -->
+<section class="slide" data-slide="BR-1" data-kind="break" data-part="1">
+  <header class="s-head">
+    <span class="n-mark" aria-hidden="true"></span>
+    <nav class="n-crumb"><span>세컨드 브레인</span><span>파트 1 · 세컨드 브레인과 연결</span><b>쉬는 시간</b></nav>
+    <span class="s-tools"></span>
+    <span class="s-pageno"></span>
+  </header>
+  <div class="n-page">
+    <div class="n-icon n-tile st-orange">☕</div>
+    <h1 class="n-title">쉬는 시간입니다</h1>
+    <div class="n-body">
+      <button class="n-timer is-big" type="button" data-min="10" aria-label="타이머, 누르면 시작하고 다시 누르면 멈춥니다">10:00</button>
+      <p class="n-h2">돌아오면 파트 2에서 경주 명소를 조사합니다</p>
+    </div>
+  </div>
+</section>
