@@ -24,6 +24,11 @@ verify_notes.py — 강의덱과 발표자노트 페이지 정합성 검증.
 해당하는 슬라이드도 배열 안에서 자리를 차지하지만 번호를 화면에 붙이지 않을
 뿐이다(그래서 노트의 표시 번호는 그 인덱스와 정확히 대응한다).
 
+ID 대조 모드(2026-10-24): kit 셸이 아닌 덱(가드 JS 없음)이라도 노트 블록
+`section.pn-slide[data-slide]`와 덱 `.slide[data-slide]`가 모두 있으면 번호 규칙을
+추측하지 않고 ID로 대조한다 — 노트 ID가 덱에 있는가([ID부재]) · 그 덱 위치가
+pn-no와 같은가([ID번호]) + 기존 제목 전방일치·단조증가. 둘 다 없으면 종전대로 중단.
+
 사용:
   python scripts/verify_notes.py <덱.html> <노트.html>
     [--snapshot <경로>] [--baseline <경로>]
@@ -236,6 +241,8 @@ class NotesParser(HTMLParser):
     def __init__(self):
         super().__init__(convert_charrefs=True)
         self.entries = []  # [(raw_no:str, title:str)]
+        self.ids = []  # entries와 같은 순서 · 감싼 section.pn-slide의 data-slide(없으면 "")
+        self._cur_id = ""
         self._active = False
         self._cur_no = None
         self._capturing_no = False
@@ -249,6 +256,8 @@ class NotesParser(HTMLParser):
             if k:
                 attrs[k.lower()] = v if v is not None else ""
         classes = set((attrs.get("class") or "").split())
+        if "pn-slide" in classes:
+            self._cur_id = attrs.get("data-slide", "")
         if tag == "div" and "pn-slide-head" in classes:
             self._active = True
             self._cur_no = None
@@ -270,6 +279,7 @@ class NotesParser(HTMLParser):
             self._capturing_title = False
             if self._active and self._cur_no is not None:
                 self.entries.append((self._cur_no, title))
+                self.ids.append(self._cur_id)
             self._active = False
 
     def handle_data(self, data):
@@ -311,15 +321,6 @@ def main():
     print(f"deck : {deck_path}")
     print(f"notes: {notes_path}")
 
-    guard_m = PAGENO_GUARD_RE.search(deck_html)
-    if not guard_m:
-        print("FAIL: 덱 JS에서 s-pageno 생성 가드 조건(if(!/\\b(...)\\b/.test(s.className)){...s-pageno...})을 "
-              "찾지 못했다 — 페이지 번호 규칙을 추측하지 않고 중단한다.")
-        sys.exit(1)
-    exclude_alt = guard_m.group(1)
-    exclude_re = re.compile(r"\b(" + exclude_alt + r")\b")
-    print(f"pageno 제외 클래스(덱 JS에서 직접 추출): {exclude_alt}")
-
     slide_parser = SlideParser()
     slide_parser.feed(deck_html)
     slide_parser.close()
@@ -327,6 +328,32 @@ def main():
 
     if not slides:
         print("FAIL: 덱에서 .slide 요소를 하나도 찾지 못했다.")
+        sys.exit(1)
+
+    notes_parser = NotesParser()
+    notes_parser.feed(notes_html)
+    notes_parser.close()
+    entries = notes_parser.entries
+
+    # ── ID 대조 모드(2026-10-24) ──────────────────────────────────────────
+    # kit 셸이 아닌 덱(예: 세컨브레인_특강 노션 셸)에는 s-pageno 가드 JS가 없다.
+    # 그래도 노트 블록마다 section.pn-slide[data-slide]가 있고 덱 .slide마다
+    # data-slide가 있으면, 번호 규칙을 추측하지 않고 ID로 직접 대조할 수 있다.
+    # 노트 ID의 덱 위치(1-기반)가 pn-no와 같아야 한다([ID번호]) — 이것이 kit 모드의
+    # 「표시 번호」 검사를 대신한다. 가드도 ID도 없으면 종전대로 중단한다.
+    guard_m = PAGENO_GUARD_RE.search(deck_html)
+    id_mode = False
+    if guard_m:
+        exclude_alt = guard_m.group(1)
+        exclude_re = re.compile(r"\b(" + exclude_alt + r")\b")
+        print(f"pageno 제외 클래스(덱 JS에서 직접 추출): {exclude_alt}")
+    elif entries and all(notes_parser.ids) and all(sl["data_slide"] for sl in slides):
+        id_mode = True
+        exclude_re = None
+        print(f"pageno 가드 없음 → ID 대조 모드(노트 {len(entries)}건 · 덱 {len(slides)}장 모두 data-slide 보유)")
+    else:
+        print("FAIL: 덱 JS에서 s-pageno 생성 가드 조건(if(!/\\b(...)\\b/.test(s.className)){...s-pageno...})을 "
+              "찾지 못했고, 노트·덱이 모두 data-slide를 갖추지도 않았다 — 페이지 번호 규칙을 추측하지 않고 중단한다.")
         sys.exit(1)
 
     # 표시 페이지 번호 -> (슬라이드 인덱스, 제목). i(0-based)+1이 화면 번호.
@@ -337,15 +364,10 @@ def main():
     for i, sl in enumerate(slides):
         no = i + 1
         deck_title_by_no[no] = sl["title"] if sl["title"] is not None else ""
-        if not exclude_re.search(sl["classes_raw"]):
+        if exclude_re is None or not exclude_re.search(sl["classes_raw"]):
             deck_visible_nos.add(no)
 
     print(f"deck slides: {len(slides)}개 (표시 페이지번호 {len(deck_visible_nos)}개)")
-
-    notes_parser = NotesParser()
-    notes_parser.feed(notes_html)
-    notes_parser.close()
-    entries = notes_parser.entries
     print(f"notes entries: {len(entries)}개")
 
     # ── 0판정 가드(2026-08-24) ──────────────────────────────────────────
@@ -398,6 +420,19 @@ def main():
             mismatches.append(
                 f"[제목전방일치] pn-no={raw_no} — 노트 제목 {title!r} vs 덱 제목 {deck_title!r}"
             )
+
+    # ④ ID 대조 모드 전용: 노트 ID가 덱에 있고, 그 덱 위치가 pn-no와 같은가.
+    if id_mode:
+        deck_no_by_id = {sl["data_slide"]: i + 1 for i, sl in enumerate(slides)}
+        for (raw_no, title), sid in zip(entries, notes_parser.ids):
+            if sid not in deck_no_by_id:
+                mismatches.append(f"[ID부재] 노트 data-slide={sid} — 덱에 없는 ID (제목: {title!r})")
+            elif str(deck_no_by_id[sid]) != raw_no:
+                mismatches.append(
+                    f"[ID번호] data-slide={sid} — 노트 pn-no={raw_no} vs 덱 위치 {deck_no_by_id[sid]}"
+                )
+        missing = [sl["data_slide"] for sl in slides if sl["data_slide"] not in set(notes_parser.ids)]
+        print(f"ID 대조: 덱 장 중 노트 없는 장 {len(missing)}개" + (f" ({', '.join(missing[:10])})" if missing else ""))
 
     # ② 단조 증가 검사 (정수로 파싱된 것만, 원래 등장 순서 그대로)
     prev = None
