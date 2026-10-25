@@ -241,6 +241,9 @@
     .slide.pr .em-ring{ stroke:var(--pr-deep); }
     .ring-host{ position:relative; display:inline-block; }
     .ring-host > .ring-svg{ position:absolute; pointer-events:none; overflow:visible; }
+    /* 캡처 위 빨간 동그라미 — 이미지는 그리지 않고 <i class="ring">를 % 좌표로 얹는다(--red는 kit 토큰) */
+    .shot{ position:relative; display:block; width:700px; }
+    .shot .ring{ position:absolute; border:4px solid var(--red); border-radius:50%; box-shadow:0 0 0 3px rgba(255,255,255,.85); pointer-events:none; }
     .terminal-dark .em-ring{ stroke:var(--mint); }                      /* 어두운 터미널 위에서는 아쿠아 */
 
     /* ── 5. 등장 연출 — 요소별 떠오름 · 형광펜 칠하기 · 팝 · 선 그리기는 없앴다(2026-10-01 사용자 지시 「넘길 때 애니메이션이 많다」).
@@ -971,8 +974,7 @@
   </header>
   <p class="kick">운영 · 시간표</p>
   <h2 class="s-title">오늘 <b class="kw">4시간</b>의 흐름</h2>
-  <p class="lede">블록 <b class="kw">4개</b> · 블록마다 <b class="kw">50분</b> · 사이에 10분 휴식 3번</p>
-  <div class="cols-dot">
+  <div class="cols-dot" style="margin-top:72px">
     <div><b><small>블록&nbsp;1</small>기획</b><ul><li>AI와 에이전트 개념</li><li>오늘 만들 앱</li><li>prd.md 쓰기</li></ul></div>
     <div><b><small>블록&nbsp;2</small>디자인 · 제작 · 공개</b><ul><li>색 고르기 · design.md</li><li>앱 만들기</li><li>공개 주소 만들기</li></ul></div>
     <div><b><small>블록&nbsp;3</small>에이전트 실습</b><ul><li>규칙 파일</li><li class="a">실습 결과물 만들기</li></ul></div>
@@ -1067,12 +1069,103 @@
     <div style="width:100%;box-sizing:border-box;padding:18px 22px 22px;border-radius:24px;border:3px dashed var(--blue)">
       <p style="margin:0 0 12px;font-size:22px;font-weight:800;color:var(--blue)">작업공간 · 에이전트 앱에서 연 폴더</p>
       <div class="wcard" style="padding:16px 20px 18px">
-        <p style="margin:0 0 10px;font-size:22px;font-weight:800;color:var(--ink)">폴더 · <span data-mt-habit="메인과제_AI습관점검" data-mt-type="메인과제_유형테스트" data-mt-fest="메인과제_축제여행">메인과제_AI습관점검</span></p>
+        <p style="margin:0 0 10px;font-size:22px;font-weight:800;color:var(--ink)">폴더 · <span data-mt-habit="메인과제_AI습관점검" data-mt-type="메인과제_유형테스트">메인과제_AI습관점검</span></p>
         <div style="display:grid;gap:8px"><span style="display:flex;align-items:center;gap:12px;padding:10px 16px;border-radius:12px;background:var(--t-mist);font-size:22px;font-weight:700;color:var(--ink)"><span class="em-tag">prd.md</span><span style="font-size:20px;font-weight:500;color:var(--gray-700)">받은 파일</span></span><span style="display:flex;align-items:center;gap:12px;padding:10px 16px;border-radius:12px;background:var(--t-mist);font-size:22px;font-weight:700;color:var(--ink)"><span class="em-tag">design.md</span><span style="font-size:20px;font-weight:500;color:var(--gray-700)">만들 파일</span></span><span style="display:flex;align-items:center;gap:12px;padding:10px 16px;border-radius:12px;background:var(--t-mist);font-size:22px;font-weight:700;color:var(--ink)"><span class="em-tag">index.html</span><span style="font-size:20px;font-weight:500;color:var(--gray-700)">만들 파일</span></span></div>
       </div>
     </div>
     <p style="margin:14px 0 0;font-size:22px;font-weight:600;color:var(--gray-700)">폴더 밖 파일은 허락을 받은 뒤에 다룹니다.</p>
   </div>
+</section>
+
+<!-- DL-1 -->
+<section class="slide cx-slide l-vf-numbered-stack" data-slide="DL-1">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 18 V8 H18 M30 8 H40 V18 M40 30 V40 H30 M18 40 H8 V30" fill="none" style="stroke:var(--blue)" stroke-width="5"/><rect x="19" y="19" width="10" height="10" style="fill:var(--mint)"/></svg><span class="s-brand">FRAME</span>
+    <span class="s-line"></span><div class="s-team">운영</div>
+  </header>
+  <p class="kick">운영 · 준비 · 설치 1/3</p>
+  <h2 class="s-title">ChatGPT 데스크톱 앱을 내려받습니다</h2>
+  <div style="display:grid;grid-template-columns:1fr 700px;column-gap:36px;margin-top:22px;align-items:start">
+    <ol style="list-style:none;margin:0;padding:0;display:grid;gap:20px">
+      <li style="display:grid;grid-template-columns:54px 1fr;column-gap:12px;align-items:start"><b class="kw" style="font-size:46px;line-height:1.0">1</b><p style="margin:0;font-size:25px;line-height:1.5;font-weight:600;color:var(--ink)">브라우저에서 <span class="em-tag">chatgpt.com/download</span>를 엽니다</p></li>
+      <li style="display:grid;grid-template-columns:54px 1fr;column-gap:12px;align-items:start"><b class="kw" style="font-size:46px;line-height:1.0">2</b><p style="margin:0;font-size:25px;line-height:1.5;font-weight:600;color:var(--ink)"><span class="em-tag">Windows용 다운로드</span>를 누릅니다<br><span style="font-size:22px;font-weight:500;color:var(--gray-700)">(Mac은 macOS용 단추)</span></p></li>
+      <li style="display:grid;grid-template-columns:54px 1fr;column-gap:12px;align-items:start"><b class="kw" style="font-size:46px;line-height:1.0">3</b><p style="margin:0;font-size:25px;line-height:1.5;font-weight:600;color:var(--ink)">오늘 쓰는 ChatGPT는 <b class="kw">컴퓨터에 설치하는 데스크톱 앱</b>입니다. 웹 브라우저로 여는 <b class="kw">chatgpt.com과는 다릅니다</b>. Codex는 이 앱 안에 있습니다</p></li>
+    </ol>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div class="shot"><img src="자료/img/dl1.png" alt="chatgpt.com/ko-KR/download 주소와 Windows용 다운로드 단추에 빨간 동그라미를 친 ChatGPT 데스크톱 다운로드 화면" width="700" height="404" style="display:block;width:700px;height:404px;object-fit:cover;object-position:top;border-radius:16px;box-shadow:var(--sh-pop);"><i class="ring" aria-hidden="true" style="left:7.5%;top:0%;width:21%;height:6%"></i><i class="ring" aria-hidden="true" style="left:51%;top:63.5%;width:15%;height:9%"></i></div>
+      <p style="margin:0;font-size:18px;font-weight:600;color:var(--gray-700)">다운로드 화면입니다. 빨간 동그라미는 주소와 누를 단추입니다.</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- DL-2 -->
+<section class="slide cx-slide l-vf-numbered-stack" data-slide="DL-2">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 18 V8 H18 M30 8 H40 V18 M40 30 V40 H30 M18 40 H8 V30" fill="none" style="stroke:var(--blue)" stroke-width="5"/><rect x="19" y="19" width="10" height="10" style="fill:var(--mint)"/></svg><span class="s-brand">FRAME</span>
+    <span class="s-line"></span><div class="s-team">운영</div>
+  </header>
+  <p class="kick">운영 · 준비 · 설치 2/3</p>
+  <h2 class="s-title">Microsoft Store에서 설치가 진행됩니다</h2>
+  <div style="display:grid;grid-template-columns:1fr 700px;column-gap:36px;margin-top:22px;align-items:start">
+    <ol style="list-style:none;margin:0;padding:0;display:grid;gap:20px">
+      <li style="display:grid;grid-template-columns:54px 1fr;column-gap:12px;align-items:start"><b class="kw" style="font-size:46px;line-height:1.0">1</b><p style="margin:0;font-size:25px;line-height:1.5;font-weight:600;color:var(--ink)">단추를 누르면 Microsoft Store 창이 열립니다</p></li>
+      <li style="display:grid;grid-template-columns:54px 1fr;column-gap:12px;align-items:start"><b class="kw" style="font-size:46px;line-height:1.0">2</b><p style="margin:0;font-size:25px;line-height:1.5;font-weight:600;color:var(--ink)"><span class="em-tag">ChatGPT · OpenAI</span>인지 확인합니다</p></li>
+      <li style="display:grid;grid-template-columns:54px 1fr;column-gap:12px;align-items:start"><b class="kw" style="font-size:46px;line-height:1.0">3</b><p style="margin:0;font-size:25px;line-height:1.5;font-weight:600;color:var(--ink)"><span class="em-tag">업데이트 확인 중</span>이 끝나고 설치가 되면 앱을 엽니다</p></li>
+    </ol>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div class="shot"><img src="자료/img/dl2.png" alt="Microsoft Store 창에서 ChatGPT · OpenAI 앱 이름과 업데이트 확인 중 줄에 빨간 동그라미를 친 화면" width="700" height="437" style="display:block;width:700px;height:437px;object-fit:cover;object-position:top;border-radius:16px;box-shadow:var(--sh-pop);"><i class="ring" aria-hidden="true" style="left:29%;top:29.4%;width:17%;height:15.8%"></i><i class="ring" aria-hidden="true" style="left:16.5%;top:47.3%;width:24%;height:7.4%"></i></div>
+      <p style="margin:0;font-size:18px;font-weight:600;color:var(--gray-700)">Microsoft Store 창입니다. 빨간 동그라미는 앱 이름과 진행 상태입니다.</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- DL-3 -->
+<section class="slide cx-slide l-vf-numbered-stack" data-slide="DL-3">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 18 V8 H18 M30 8 H40 V18 M40 30 V40 H30 M18 40 H8 V30" fill="none" style="stroke:var(--blue)" stroke-width="5"/><rect x="19" y="19" width="10" height="10" style="fill:var(--mint)"/></svg><span class="s-brand">FRAME</span>
+    <span class="s-line"></span><div class="s-team">운영</div>
+  </header>
+  <p class="kick">운영 · 준비 · 설치 3/3</p>
+  <h2 class="s-title">앱을 열고 Codex로 바꿉니다</h2>
+  <div style="display:grid;grid-template-columns:1fr 700px;column-gap:36px;margin-top:22px;align-items:start">
+    <ol style="list-style:none;margin:0;padding:0;display:grid;gap:20px">
+      <li style="display:grid;grid-template-columns:54px 1fr;column-gap:12px;align-items:start"><b class="kw" style="font-size:46px;line-height:1.0">1</b><p style="margin:0;font-size:25px;line-height:1.5;font-weight:600;color:var(--ink)">설치된 ChatGPT 앱을 엽니다<br><span style="font-size:22px;font-weight:500;color:var(--gray-700)">(시작 메뉴의 ChatGPT · 브라우저 창과 다릅니다)</span></p></li>
+      <li style="display:grid;grid-template-columns:54px 1fr;column-gap:12px;align-items:start"><b class="kw" style="font-size:46px;line-height:1.0">2</b><p style="margin:0;font-size:25px;line-height:1.5;font-weight:600;color:var(--ink)">ChatGPT 계정으로 로그인합니다</p></li>
+      <li style="display:grid;grid-template-columns:54px 1fr;column-gap:12px;align-items:start"><b class="kw" style="font-size:46px;line-height:1.0">3</b><p style="margin:0;font-size:25px;line-height:1.5;font-weight:600;color:var(--ink)">왼쪽 위 <span class="em-tag">ChatGPT</span> 메뉴를 눌러 <span class="em-tag">Codex</span>를 고릅니다<br><span style="font-size:22px;font-weight:500;color:var(--gray-700)">(단축키 <span class="em-tag">Alt+3</span>)</span></p></li>
+    </ol>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div class="shot"><img src="자료/img/dl3.png" alt="설치한 ChatGPT 앱 첫 화면에서 왼쪽 위 ChatGPT 메뉴에 빨간 동그라미를 친 화면. 여기서 Codex를 고른다" width="700" height="428" style="display:block;width:700px;height:428px;object-fit:cover;object-position:top;border-radius:16px;box-shadow:var(--sh-pop);"><i class="ring" aria-hidden="true" style="left:7.4%;top:11.7%;width:11.8%;height:6.4%"></i></div>
+      <p style="margin:0;font-size:18px;font-weight:600;color:var(--gray-700)">앱 첫 화면입니다. 빨간 동그라미는 ChatGPT 메뉴입니다. 여기서 Codex를 고릅니다.</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- DL-ALL -->
+<section class="slide cx-slide l-vf-numbered-stack" data-slide="DL-ALL">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 18 V8 H18 M30 8 H40 V18 M40 30 V40 H30 M18 40 H8 V30" fill="none" style="stroke:var(--blue)" stroke-width="5"/><rect x="19" y="19" width="10" height="10" style="fill:var(--mint)"/></svg><span class="s-brand">FRAME</span>
+    <span class="s-line"></span><div class="s-team">운영</div>
+  </header>
+  <p class="kick">운영 · 준비 · 설치</p>
+  <h2 class="s-title">설치 세 단계 한눈에</h2>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:36px">
+    <div>
+      <img src="자료/img/dl1.png" alt="chatgpt.com/ko-KR/download 다운로드 화면" width="360" height="208" style="display:block;width:360px;height:208px;object-fit:cover;object-position:top;border-radius:16px;box-shadow:var(--sh-pop);">
+      <div style="display:flex;align-items:center;gap:12px;margin-top:18px"><span class="pill m">1</span><b style="font-size:25px;font-weight:800;line-height:1.3;color:var(--ink)">내려받기</b></div>
+    </div>
+    <div>
+      <img src="자료/img/dl2.png" alt="Microsoft Store의 ChatGPT 설치 창" width="360" height="208" style="display:block;width:360px;height:208px;object-fit:cover;object-position:top;border-radius:16px;box-shadow:var(--sh-pop);">
+      <div style="display:flex;align-items:center;gap:12px;margin-top:18px"><span class="pill m">2</span><b style="font-size:25px;font-weight:800;line-height:1.3;color:var(--ink)">Store에서 설치</b></div>
+    </div>
+    <div>
+      <img src="자료/img/dl3.png" alt="설치한 ChatGPT 앱 첫 화면" width="360" height="208" style="display:block;width:360px;height:208px;object-fit:cover;object-position:top;border-radius:16px;box-shadow:var(--sh-pop);">
+      <div style="display:flex;align-items:center;gap:12px;margin-top:18px"><span class="pill m">3</span><b style="font-size:25px;font-weight:800;line-height:1.3;color:var(--ink)">앱을 열고 Codex</b></div>
+    </div>
+  </div>
+  <div class="band t-mint"><span>오늘은 <b class="kw">설치한 ChatGPT 앱</b>에서 합니다. 웹 브라우저의 chatgpt.com과는 다릅니다.</span></div>
 </section>
 
 <!-- O-03 -->
@@ -1086,10 +1179,10 @@
   <h2 class="s-title">자료를 받아 압축을 풀고 <br>에이전트 앱에서 폴더를 엽니다</h2>
   <p class="lede"><b class="kw">5분</b> · 4단계</p>
   <ol style="list-style:none;margin:26px 0 0;padding:0;display:grid;gap:20px">
-    <li style="display:grid;grid-template-columns:54px 1fr;column-gap:12px;align-items:start"><b class="kw" style="font-size:46px;line-height:1.0">1</b><p style="margin:0;font-size:25px;line-height:1.5;font-weight:600;color:var(--ink)">채팅에 올라온 링크로<br><span class="em-tag"><span data-mt-habit="메인과제_AI습관점검.zip" data-mt-type="메인과제_유형테스트.zip" data-mt-fest="메인과제_축제여행.zip">메인과제_AI습관점검.zip</span></span>을 내려받습니다.</p></li>
+    <li style="display:grid;grid-template-columns:54px 1fr;column-gap:12px;align-items:start"><b class="kw" style="font-size:46px;line-height:1.0">1</b><p style="margin:0;font-size:25px;line-height:1.5;font-weight:600;color:var(--ink)">채팅에 올라온 링크로<br><span class="em-tag"><span data-mt-habit="메인과제_AI습관점검.zip" data-mt-type="메인과제_유형테스트.zip">메인과제_AI습관점검.zip</span></span>을 내려받습니다.</p></li>
     <li style="display:grid;grid-template-columns:54px 1fr;column-gap:12px;align-items:start"><b class="kw" style="font-size:46px;line-height:1.0">2</b><p style="margin:0;font-size:25px;line-height:1.5;font-weight:600;color:var(--ink)">zip의 압축을 풉니다.<br><span style="font-size:22px;font-weight:500;color:var(--gray-700)">Windows는 마우스 오른쪽 버튼 → 압축 풀기, Mac은 두 번 누르기</span></p></li>
     <li style="display:grid;grid-template-columns:54px 1fr;column-gap:12px;align-items:start"><b class="kw" style="font-size:46px;line-height:1.0">3</b><p style="margin:0;font-size:25px;line-height:1.5;font-weight:600;color:var(--ink)">에이전트 앱을 엽니다.</p></li>
-    <li style="display:grid;grid-template-columns:54px 1fr;column-gap:12px;align-items:start"><b class="kw" style="font-size:46px;line-height:1.0">4</b><p style="margin:0;font-size:25px;line-height:1.5;font-weight:600;color:var(--ink)">앱의 폴더 열기 메뉴로<br>압축을 푼 <span class="em-tag"><span data-mt-habit="메인과제_AI습관점검" data-mt-type="메인과제_유형테스트" data-mt-fest="메인과제_축제여행">메인과제_AI습관점검</span></span> 폴더를 엽니다.<br><span style="font-size:22px;font-weight:500;color:var(--gray-700)">(메뉴 이름은 도구마다 다름)</span></p></li>
+    <li style="display:grid;grid-template-columns:54px 1fr;column-gap:12px;align-items:start"><b class="kw" style="font-size:46px;line-height:1.0">4</b><p style="margin:0;font-size:25px;line-height:1.5;font-weight:600;color:var(--ink)">앱의 폴더 열기 메뉴로<br>압축을 푼 <span class="em-tag"><span data-mt-habit="메인과제_AI습관점검" data-mt-type="메인과제_유형테스트">메인과제_AI습관점검</span></span> 폴더를 엽니다.<br><span style="font-size:22px;font-weight:500;color:var(--gray-700)">(메뉴 이름은 도구마다 다름)</span></p></li>
   </ol>
   <div class="on-bleed" style="padding:56px 34px 72px;gap:30px">
     <div style="display:flex;align-items:flex-start;gap:8px">
@@ -1104,7 +1197,7 @@
     <div class="win app" style="width:100%">
       <div class="win-bar"><i></i><i></i><i></i><b>에이전트 앱 · 화면 모형</b></div>
       <div class="win-body" style="grid-template-columns:230px 1fr">
-        <div class="win-side"><p>작업 폴더</p><p class="path"><span data-mt-habit="메인과제_AI습관점검" data-mt-type="메인과제_유형테스트" data-mt-fest="메인과제_축제여행">메인과제_AI습관점검</span></p><p class="path" style="padding-left:16px">prd.md</p><p>대화</p><p class="path">새 대화</p></div>
+        <div class="win-side"><p>작업 폴더</p><p class="path"><span data-mt-habit="메인과제_AI습관점검" data-mt-type="메인과제_유형테스트">메인과제_AI습관점검</span></p><p class="path" style="padding-left:16px">prd.md</p><p>대화</p><p class="path">새 대화</p></div>
         <div class="win-main" style="min-height:190px;display:flex;flex-direction:column;justify-content:flex-end;padding:14px 16px 16px"><p class="win-url" style="flex:0 0 auto;margin-left:0">메시지 입력</p></div>
       </div>
     </div>
@@ -1515,12 +1608,11 @@
   <div class="hub-wrap">
     <div class="hub-top">
       <p class="kick">메인 과제 허브</p>
-      <h2 class="s-title">메인 과제 <b class="kw">세 가지</b></h2>
+      <h2 class="s-title">메인 과제 <b class="kw">두 가지</b></h2>
     </div>
     <div class="mh3">
       <button class="mh3-card c-habit" type="button" data-main-pick="habit" data-go="M1-A"><svg class="mh3-art" viewBox="0 0 360 214" preserveAspectRatio="xMidYMid slice" role="img" aria-label="네 칸 가운데 한 칸이 칠해진 결과 페이지" focusable="false"><rect width="360" height="214" fill="#0F6B73"/><circle cx="318" cy="24" r="62" fill="#17858C"/><circle cx="20" cy="200" r="46" fill="#0B5560"/><rect x="46" y="26" width="268" height="170" rx="12" fill="#FFFFFF"/><rect x="46" y="26" width="268" height="24" rx="12" fill="#EEF2F5"/><rect x="46" y="40" width="268" height="10" fill="#EEF2F5"/><circle cx="62" cy="38" r="4" fill="#FF8A5C"/><circle cx="76" cy="38" r="4" fill="#FFC94D"/><circle cx="90" cy="38" r="4" fill="#3FB8A8"/><rect x="64" y="64" width="50" height="50" rx="8" fill="#E3EEF1"/><rect x="120" y="64" width="50" height="50" rx="8" fill="#3FB8A8"/><rect x="64" y="120" width="50" height="50" rx="8" fill="#E3EEF1"/><rect x="120" y="120" width="50" height="50" rx="8" fill="#E3EEF1"/><path d="M134 90l8 8 15-17" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><rect x="188" y="64" width="92" height="12" rx="6" fill="#08323D"/><rect x="188" y="88" width="108" height="10" rx="5" fill="#E3EEF1"/><rect x="188" y="88" width="84" height="10" rx="5" fill="#3FB8A8"/><rect x="188" y="108" width="108" height="10" rx="5" fill="#E3EEF1"/><rect x="188" y="108" width="52" height="10" rx="5" fill="#FF8A5C"/><rect x="188" y="128" width="108" height="10" rx="5" fill="#E3EEF1"/><rect x="188" y="128" width="70" height="10" rx="5" fill="#5FA8E6"/><rect x="188" y="150" width="76" height="22" rx="11" fill="#FF8A5C"/></svg><span class="mh3-today">오늘의 과제</span><span class="mh3-body"><span class="mh3-name">AI 활용 습관 점검</span><span class="mh3-desc">문항 10개에 답하면 내 습관 유형과 이번 주에 해 볼 한 가지를 보여 줍니다.</span><span class="mh3-chips"><span>문항 10개</span><span>유형 4개</span><span>결과 리포트</span></span></span></button>
       <button class="mh3-card c-type" type="button" data-main-pick="type" data-go="T1-A"><svg class="mh3-art" viewBox="0 0 360 214" preserveAspectRatio="xMidYMid slice" role="img" aria-label="여러 유형 가운데 하나가 뽑힌 결과 페이지" focusable="false"><rect width="360" height="214" fill="#FF7A4D"/><circle cx="36" cy="30" r="58" fill="#FF9670"/><circle cx="336" cy="196" r="52" fill="#E85F33"/><rect x="46" y="26" width="268" height="170" rx="12" fill="#FFFFFF"/><rect x="46" y="26" width="268" height="24" rx="12" fill="#EEF2F5"/><rect x="46" y="40" width="268" height="10" fill="#EEF2F5"/><circle cx="62" cy="38" r="4" fill="#FF8A5C"/><circle cx="76" cy="38" r="4" fill="#FFC94D"/><circle cx="90" cy="38" r="4" fill="#3FB8A8"/><circle cx="100" cy="104" r="34" fill="#FFC94D"/><circle cx="89" cy="98" r="4.5" fill="#08323D"/><circle cx="111" cy="98" r="4.5" fill="#08323D"/><path d="M87 113q13 12 26 0" fill="none" stroke="#08323D" stroke-width="4" stroke-linecap="round"/><rect x="64" y="150" width="72" height="12" rx="6" fill="#08323D"/><rect x="74" y="170" width="52" height="8" rx="4" fill="#D5DEE3"/><g><rect x="160" y="64" width="62" height="32" rx="9" fill="#FFC94D"/><rect x="230" y="64" width="62" height="32" rx="9" fill="#DCEBFB"/><rect x="160" y="104" width="62" height="32" rx="9" fill="#DDF3EF"/><rect x="230" y="104" width="62" height="32" rx="9" fill="#FFE0D3"/><rect x="160" y="144" width="62" height="32" rx="9" fill="#E7E1FF"/><rect x="230" y="144" width="62" height="32" rx="9" fill="#FFE3F1"/></g><g fill="#FFFFFF"><circle cx="176" cy="80" r="6"/></g><g><circle cx="246" cy="80" r="6" fill="#5FA8E6"/><circle cx="176" cy="120" r="6" fill="#3FB8A8"/><circle cx="246" cy="120" r="6" fill="#FF8A5C"/><circle cx="176" cy="160" r="6" fill="#8C7BEA"/><circle cx="246" cy="160" r="6" fill="#E84393"/></g><rect x="160" y="64" width="62" height="32" rx="9" fill="none" stroke="#08323D" stroke-width="3"/></svg><span class="mh3-today">오늘의 과제</span><span class="mh3-body"><span class="mh3-name">내가 정한 주제의 유형 테스트</span><span class="mh3-desc">주제부터 내가 정합니다. 문항에 답하면 여러 유형 가운데 하나를 보여 줍니다.</span><span class="mh3-chips"><span>주제 자유</span><span>유형 6개부터</span><span>공유 문구</span></span></span></button>
-      <button class="mh3-card c-fest" type="button" data-main-pick="fest" aria-disabled="true"><svg class="mh3-art" viewBox="0 0 360 214" preserveAspectRatio="xMidYMid slice" role="img" aria-label="지도와 일정표가 있는 여행 계획 페이지" focusable="false"><rect width="360" height="214" fill="#2F7FD6"/><circle cx="330" cy="30" r="60" fill="#4C96E6"/><circle cx="24" cy="190" r="50" fill="#2368B8"/><rect x="46" y="26" width="268" height="170" rx="12" fill="#FFFFFF"/><rect x="46" y="26" width="268" height="24" rx="12" fill="#EEF2F5"/><rect x="46" y="40" width="268" height="10" fill="#EEF2F5"/><circle cx="62" cy="38" r="4" fill="#FF8A5C"/><circle cx="76" cy="38" r="4" fill="#FFC94D"/><circle cx="90" cy="38" r="4" fill="#3FB8A8"/><rect x="62" y="62" width="118" height="118" rx="10" fill="#DFF1E6"/><path d="M62 130q34-26 60-4t58-18v72H62z" fill="#BFE3F5"/><path d="M82 160q20-44 44-34t34-40" fill="none" stroke="#08323D" stroke-width="3" stroke-dasharray="2 7" stroke-linecap="round"/><g fill="#FF6B4A"><path d="M82 146c-8 0-13 6-13 12 0 9 13 20 13 20s13-11 13-20c0-6-5-12-13-12z"/><path d="M160 72c-8 0-13 6-13 12 0 9 13 20 13 20s13-11 13-20c0-6-5-12-13-12z"/></g><circle cx="82" cy="158" r="4.5" fill="#FFFFFF"/><circle cx="160" cy="84" r="4.5" fill="#FFFFFF"/><circle cx="126" cy="126" r="7" fill="#FFC94D" stroke="#08323D" stroke-width="2.5"/><g><rect x="194" y="62" width="34" height="30" rx="7" fill="#FFC94D"/><rect x="236" y="68" width="62" height="8" rx="4" fill="#08323D"/><rect x="236" y="82" width="44" height="7" rx="3.5" fill="#D5DEE3"/><rect x="194" y="102" width="34" height="30" rx="7" fill="#FF8A5C"/><rect x="236" y="108" width="54" height="8" rx="4" fill="#08323D"/><rect x="236" y="122" width="62" height="7" rx="3.5" fill="#D5DEE3"/><rect x="194" y="142" width="34" height="30" rx="7" fill="#3FB8A8"/><rect x="236" y="148" width="60" height="8" rx="4" fill="#08323D"/><rect x="236" y="162" width="38" height="7" rx="3.5" fill="#D5DEE3"/></g></svg><span class="mh3-soon">준비 중</span><span class="mh3-body"><span class="mh3-name">축제 여행 계획</span><span class="mh3-desc">가고 싶은 축제를 고르면 일정표와 준비물을 한 페이지로 정리합니다.</span><span class="mh3-chips"><span>일정표</span><span>지도</span><span>준비물</span></span></span></button>
     </div>
   </div>
 </section>
@@ -1754,11 +1846,11 @@
     <span class="s-line"></span><div class="s-team">메인 과제</div>
   </header>
   <div class="pr-wrap">
-    <div class="pr-bar"><span class="pr-no">메인 과제</span><span class="pr-name" data-mt-habit="AI 활용 습관 점검" data-mt-type="유형 테스트" data-mt-fest="축제 여행 계획">AI 활용 습관 점검</span><span class="pr-steps" aria-label="4단계 중 1단계"><span class="cur" aria-current="step">① 기획</span><span>② 디자인</span><span>③ 제작</span><span>④ 공개</span></span></div>
+    <div class="pr-bar"><span class="pr-no">메인 과제</span><span class="pr-name" data-mt-habit="AI 활용 습관 점검" data-mt-type="유형 테스트">AI 활용 습관 점검</span><span class="pr-steps" aria-label="4단계 중 1단계"><span class="cur" aria-current="step">① 기획</span><span>② 디자인</span><span>③ 제작</span><span>④ 공개</span></span></div>
     <div class="pr-top has-timer"><h2 class="s-title"><b class="kw">prd.md</b>를 분석해 달라고 합니다</h2><button class="timer sm" type="button" data-min="4" aria-label="타이머 4분 — 누르면 시작, 다시 누르면 멈춤" style="margin-top:16px"><span class="tv">04:00</span><span class="tl">▶ 시작</span></button></div>
     <div class="pr-main"><div class="pr-cols" style="--lc:520px">
       <div class="pr-left" style="justify-content:flex-start;gap:22px">
-        <ol class="flow" style="gap:6px"><li><button type="button" tabindex="-1"><span class="n">1</span><span class="t">에이전트 앱에서 <span class="em-tag"><span data-mt-habit="메인과제_AI습관점검" data-mt-type="메인과제_유형테스트" data-mt-fest="메인과제_축제여행">메인과제_AI습관점검</span></span> 폴더를 엽니다.</span></button></li><li><button type="button" tabindex="-1"><span class="n">2</span><span class="t">오른쪽 요청을 그대로 보냅니다.</span></button></li><li><button type="button" tabindex="-1"><span class="n">3</span><span class="t">답에 모르는 말이 있으면 <b>「더 쉽게 설명해 줘」</b></span></button></li><li><button type="button" tabindex="-1"><span class="n">4</span><span class="t"><b>내가 정할 것</b>이 무엇인지 확인합니다.</span></button></li></ol>
+        <ol class="flow" style="gap:6px"><li><button type="button" tabindex="-1"><span class="n">1</span><span class="t">에이전트 앱에서 <span class="em-tag"><span data-mt-habit="메인과제_AI습관점검" data-mt-type="메인과제_유형테스트">메인과제_AI습관점검</span></span> 폴더를 엽니다.</span></button></li><li><button type="button" tabindex="-1"><span class="n">2</span><span class="t">오른쪽 요청을 그대로 보냅니다.</span></button></li><li><button type="button" tabindex="-1"><span class="n">3</span><span class="t">답에 모르는 말이 있으면 <b>「더 쉽게 설명해 줘」</b></span></button></li><li><button type="button" tabindex="-1"><span class="n">4</span><span class="t"><b>내가 정할 것</b>이 무엇인지 확인합니다.</span></button></li></ol>
         <div class="rule"><span class="lab">빈칸을 미리 채우지 않습니다</span><p style="font-size:22px;line-height:1.6">대상 · 장면 · 말투 같은 것은 다음 장의 인터뷰에서 에이전트가 묻습니다.</p></div>
       </div>
       <div class="pr-right" style="justify-content:flex-start;gap:18px">
@@ -1783,7 +1875,7 @@
     <span class="s-line"></span><div class="s-team">메인 과제</div>
   </header>
   <div class="pr-wrap">
-    <div class="pr-bar"><span class="pr-no">메인 과제</span><span class="pr-name" data-mt-habit="AI 활용 습관 점검" data-mt-type="유형 테스트" data-mt-fest="축제 여행 계획">AI 활용 습관 점검</span><span class="pr-steps" aria-label="4단계 중 1단계"><span class="cur" aria-current="step">① 기획</span><span>② 디자인</span><span>③ 제작</span><span>④ 공개</span></span></div>
+    <div class="pr-bar"><span class="pr-no">메인 과제</span><span class="pr-name" data-mt-habit="AI 활용 습관 점검" data-mt-type="유형 테스트">AI 활용 습관 점검</span><span class="pr-steps" aria-label="4단계 중 1단계"><span class="cur" aria-current="step">① 기획</span><span>② 디자인</span><span>③ 제작</span><span>④ 공개</span></span></div>
     <div class="pr-top has-timer"><h2 class="s-title">AI에게 <b class="kw">인터뷰받아</b> prd.md를 다듬습니다</h2><button class="timer sm" type="button" data-min="12" aria-label="타이머 12분 — 누르면 시작, 다시 누르면 멈춤" style="margin-top:16px"><span class="tv">12:00</span><span class="tl">▶ 시작</span></button></div>
     <div class="pr-main" style="margin-top:10px"><div class="pr-cols" style="--lc:600px;column-gap:36px">
       <div class="pr-left" style="justify-content:flex-start;gap:12px">
@@ -2195,7 +2287,7 @@
     <span class="s-line"></span><div class="s-team">메인 과제</div>
   </header>
   <div class="pr-wrap">
-    <div class="pr-bar"><span class="pr-no">메인 과제</span><span class="pr-name" data-mt-habit="AI 활용 습관 점검" data-mt-type="유형 테스트" data-mt-fest="축제 여행 계획">AI 활용 습관 점검</span><span class="pr-steps" aria-label="4단계 중 2단계"><span>① 기획</span><span class="cur" aria-current="step">② 디자인</span><span>③ 제작</span><span>④ 공개</span></span></div>
+    <div class="pr-bar"><span class="pr-no">메인 과제</span><span class="pr-name" data-mt-habit="AI 활용 습관 점검" data-mt-type="유형 테스트">AI 활용 습관 점검</span><span class="pr-steps" aria-label="4단계 중 2단계"><span>① 기획</span><span class="cur" aria-current="step">② 디자인</span><span>③ 제작</span><span>④ 공개</span></span></div>
     <div class="pr-top has-timer"><h2 class="s-title">색은 <b class="kw">에이전트에게 먼저</b> 묻습니다</h2><button class="timer sm" type="button" data-min="7" aria-label="타이머 7분 — 누르면 시작, 다시 누르면 멈춤" style="margin-top:16px"><span class="tv">07:00</span><span class="tl">▶ 시작</span></button></div>
     <div class="pr-main" style="margin-top:20px"><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;height:100%">
       <div class="wcard" style="display:flex;flex-direction:column;gap:12px;padding:18px 22px 20px"><div style="display:flex;align-items:center;gap:12px"><span class="ic fill" style="width:44px;height:44px;font-size:22px;font-weight:800;color:var(--ink)">1</span><b style="font-size:24px;font-weight:800;line-height:1.3;color:var(--ink)">어울리는 색 방향 묻기</b></div><div class="term terminal-dark" style="flex:none"><div class="terminal-bar"><span></span><span></span><span></span><b>요청</b><button class="copy" type="button" data-copy>복사</button></div><div class="terminal-copy"><p><span class="terminal-prompt">&gt;</span> prd.md를 읽고 이 앱에 어울리는 색 방향을 세 가지 추천해 줘. 방향마다 주는 인상을 한 줄로 적어 줘.</p></div></div><p style="margin:auto 0 0;font-size:20px;font-weight:600;line-height:1.45;color:var(--gray-700)"><b style="color:var(--pr-deep)">돌아오는 것</b> 색 방향 세 가지와 인상. 하나를 고릅니다.</p></div>
@@ -2239,7 +2331,7 @@
   <div class="pr-bar" style="max-width:640px"><span class="pr-no">메인 과제</span><button class="timer sm" type="button" data-min="10" aria-label="타이머 10분 — 누르면 시작, 다시 누르면 멈춤" style="position:absolute;left:156px;top:53px"><span class="tv">10:00</span><span class="tl">▶ 시작</span></button><span class="pr-steps" aria-label="4단계 중 3단계"><span>① 기획</span><span>② 디자인</span><span class="cur" aria-current="step">③ 제작</span><span>④ 공개</span></span></div>
   <h2 class="s-title">두 문서를 읽혀 <b class="kw">앱</b>을 만듭니다</h2>
   <div style="max-width:650px;margin-top:10px"><div class="term lg terminal-dark"><div class="terminal-bar"><span></span><span></span><span></span><b>요청 틀</b><button class="copy" type="button" data-copy>복사</button></div><div class="terminal-copy"><p><span class="terminal-prompt">&gt;</span> prd.md와 design.md를 읽고 앱을 만들어 줘.<br>만들기 전에 계획을 먼저 보여 줘.<br>내가 승인하기 전에는 아무것도 만들지 마.<span class="terminal-cursor" aria-hidden="true"></span></p></div></div></div>
-  <ol class="flow" style="margin-top:10px;gap:0;max-width:650px"><li><button type="button" aria-pressed="false"><span class="n">1</span><span class="t">작업 전에 폴더를 <b>복사</b>해 둡니다(되돌릴 사본).</span></button></li><li><button type="button" aria-pressed="false"><span class="n">2</span><span class="t">요청을 보냅니다.</span></button></li><li><button type="button" aria-pressed="false"><span class="n">3</span><span class="t">에이전트가 보여 주는 <b>계획</b>을 끝까지 읽고 네 가지를 봅니다.<span class="tip" style="font-size:22px" data-mt-habit="문항 10개 · 유형 4개 · 색 3가지 · index.html 하나" data-mt-type="문항 8개 · 유형 4개 · 색 3가지 · index.html 하나" data-mt-fest="찾기 화면 · 일정표 · 색 3가지">문항 10개 · 유형 4개 · 색 3가지 · index.html 하나</span></span></button></li><li><button type="button" aria-pressed="false"><span class="n">4</span><span class="t">계획이 두 문서와 맞으면 <b>「진행해 줘」</b>라고 답합니다.</span></button></li><li><button type="button" aria-pressed="false"><span class="n">5</span><span class="t">폴더의 <span class="em-tag">index.html</span>을 더블클릭해 엽니다.</span></button></li></ol>
+  <ol class="flow" style="margin-top:10px;gap:0;max-width:650px"><li><button type="button" aria-pressed="false"><span class="n">1</span><span class="t">작업 전에 폴더를 <b>복사</b>해 둡니다(되돌릴 사본).</span></button></li><li><button type="button" aria-pressed="false"><span class="n">2</span><span class="t">요청을 보냅니다.</span></button></li><li><button type="button" aria-pressed="false"><span class="n">3</span><span class="t">에이전트가 보여 주는 <b>계획</b>을 끝까지 읽고 네 가지를 봅니다.<span class="tip" style="font-size:22px" data-mt-habit="문항 10개 · 유형 4개 · 색 3가지 · index.html 하나" data-mt-type="문항 8개 · 유형 4개 · 색 3가지 · index.html 하나">문항 10개 · 유형 4개 · 색 3가지 · index.html 하나</span></span></button></li><li><button type="button" aria-pressed="false"><span class="n">4</span><span class="t">계획이 두 문서와 맞으면 <b>「진행해 줘」</b>라고 답합니다.</span></button></li><li><button type="button" aria-pressed="false"><span class="n">5</span><span class="t">폴더의 <span class="em-tag">index.html</span>을 더블클릭해 엽니다.</span></button></li></ol>
   <div class="on-bleed" style="gap:12px">
     <div style="position:relative;width:400px;height:138px;flex:none">
       <div class="paper" style="--r:-5deg;position:absolute;left:6px;top:10px"><b>prd.md</b><i></i><i></i><i></i></div>
@@ -2300,7 +2392,7 @@
     <span class="s-line"></span><div class="s-team">메인 과제</div>
   </header>
   <div class="pr-wrap">
-    <div class="pr-bar"><span class="pr-no">메인 과제</span><span class="pr-name" data-mt-habit="AI 활용 습관 점검" data-mt-type="유형 테스트" data-mt-fest="축제 여행 계획">AI 활용 습관 점검</span><span class="pr-steps" aria-label="4단계 중 3단계"><span>① 기획</span><span>② 디자인</span><span class="cur" aria-current="step">③ 제작</span><span>④ 공개</span></span></div>
+    <div class="pr-bar"><span class="pr-no">메인 과제</span><span class="pr-name" data-mt-habit="AI 활용 습관 점검" data-mt-type="유형 테스트">AI 활용 습관 점검</span><span class="pr-steps" aria-label="4단계 중 3단계"><span>① 기획</span><span>② 디자인</span><span class="cur" aria-current="step">③ 제작</span><span>④ 공개</span></span></div>
     <div class="pr-top has-timer"><h2 class="s-title">고칠 곳은 <b class="kw">하나씩</b> 요청합니다</h2><button class="timer sm" type="button" data-min="7" aria-label="타이머 7분 — 누르면 시작, 다시 누르면 멈춤" style="margin-top:16px"><span class="tv">07:00</span><span class="tl">▶ 시작</span></button></div>
     <div class="pr-main" style="margin-top:22px">
       <ol class="flow" style="flex-direction:row;gap:36px"><li style="flex:1 1 0;min-width:0"><button type="button" aria-pressed="false"><span class="n">1</span><span class="t">고칠 곳을 <b>한 군데</b>만 고릅니다.</span></button></li><li style="flex:1 1 0;min-width:0"><button type="button" aria-pressed="false"><span class="n">2</span><span class="t">「유지 · 변경 · 확인」 틀을 채워 보냅니다.</span></button></li><li style="flex:1 1 0;min-width:0"><button type="button" aria-pressed="false"><span class="n">3</span><span class="t">바뀐 화면에서 확인 문장대로 눌러 봅니다.</span></button></li></ol>
@@ -2339,7 +2431,7 @@
     <span class="s-line"></span><div class="s-team">메인 과제</div>
   </header>
   <div class="pr-wrap">
-    <div class="pr-bar"><span class="pr-no">메인 과제</span><span class="pr-name" data-mt-habit="AI 활용 습관 점검" data-mt-type="유형 테스트" data-mt-fest="축제 여행 계획">AI 활용 습관 점검</span><span class="pr-steps" aria-label="4단계 중 4단계"><span>① 기획</span><span>② 디자인</span><span>③ 제작</span><span class="cur" aria-current="step">④ 공개</span></span></div>
+    <div class="pr-bar"><span class="pr-no">메인 과제</span><span class="pr-name" data-mt-habit="AI 활용 습관 점검" data-mt-type="유형 테스트">AI 활용 습관 점검</span><span class="pr-steps" aria-label="4단계 중 4단계"><span>① 기획</span><span>② 디자인</span><span>③ 제작</span><span class="cur" aria-current="step">④ 공개</span></span></div>
     <div class="pr-top"><h2 class="s-title">폴더를 올려 <b class="kw">공개 주소</b>를 만듭니다</h2></div>
     <div class="pr-main" style="margin-top:30px;flex:none">
       <div style="display:grid;grid-template-columns:430px 1fr 520px;align-items:start">
@@ -2348,7 +2440,7 @@
           <div class="wcard" style="width:100%;height:196px;box-sizing:border-box;display:grid;place-items:center">
             <svg viewBox="0 0 24 24" style="width:124px;height:124px;stroke:var(--pr-deep);fill:var(--pr-soft);stroke-width:1.3;stroke-linecap:round;stroke-linejoin:round" aria-hidden="true"><path d="M3 6.5h6l2 2.5h10V19H3z"/></svg>
           </div>
-          <p class="keep" style="font-size:24px;font-weight:700;color:var(--ink)">내 컴퓨터의 <span class="em-tag"><span data-mt-habit="메인과제_AI습관점검" data-mt-type="메인과제_유형테스트" data-mt-fest="메인과제_축제여행">메인과제_AI습관점검</span></span> 폴더</p>
+          <p class="keep" style="font-size:24px;font-weight:700;color:var(--ink)">내 컴퓨터의 <span class="em-tag"><span data-mt-habit="메인과제_AI습관점검" data-mt-type="메인과제_유형테스트">메인과제_AI습관점검</span></span> 폴더</p>
         </div>
         <div style="display:flex;flex-direction:column;align-items:center;gap:10px;padding-top:62px">
           <span class="ic lg fill"><svg viewBox="0 0 24 24"><path d="M7 18a4 4 0 0 1-.6-7.9A5.5 5.5 0 0 1 17 8.5a4.5 4.5 0 0 1 .5 9.5"/><path d="M12 21v-9M8.5 15.5 12 12l3.5 3.5"/></svg></span>
@@ -2394,7 +2486,7 @@
   <div class="on-bleed">
     <div class="win file" style="width:100%">
       <div class="win-bar"><i></i><i></i><i></i><b>폴더</b></div>
-      <div class="win-body"><pre class="code" style="line-height:2.4"><span class="dir"><span data-mt-habit="메인과제_AI습관점검" data-mt-type="메인과제_유형테스트" data-mt-fest="메인과제_축제여행">메인과제_AI습관점검</span>/</span>
+      <div class="win-body"><pre class="code" style="line-height:2.4"><span class="dir"><span data-mt-habit="메인과제_AI습관점검" data-mt-type="메인과제_유형테스트">메인과제_AI습관점검</span>/</span>
 ├&nbsp; <span class="ring-host" style="line-height:1.35">index.html</span><span class="pill pr" style="margin-left:22px;padding:1px 11px;font-size:17px">1 · 3</span>
 ├&nbsp; <span class="ring-host" style="line-height:1.35">prd.md</span><span class="pill pr" style="margin-left:22px;padding:1px 11px;font-size:17px">2</span>
 └&nbsp; design.md</pre></div>
@@ -2437,11 +2529,11 @@
     <span class="s-line"></span><div class="s-team">메인 과제</div>
   </header>
   <div class="pr-wrap">
-    <div class="pr-bar"><span class="pr-no">메인 과제</span><span class="pr-name" data-mt-habit="AI 활용 습관 점검" data-mt-type="유형 테스트" data-mt-fest="축제 여행 계획">AI 활용 습관 점검</span><span class="pr-steps" aria-label="4단계 중 4단계"><span>① 기획</span><span>② 디자인</span><span>③ 제작</span><span class="cur" aria-current="step">④ 공개</span></span></div>
+    <div class="pr-bar"><span class="pr-no">메인 과제</span><span class="pr-name" data-mt-habit="AI 활용 습관 점검" data-mt-type="유형 테스트">AI 활용 습관 점검</span><span class="pr-steps" aria-label="4단계 중 4단계"><span>① 기획</span><span>② 디자인</span><span>③ 제작</span><span class="cur" aria-current="step">④ 공개</span></span></div>
     <div class="pr-top has-timer"><h2 class="s-title">앱 폴더를 끌어다 놓아 <br><b class="kw">주소</b>를 만듭니다</h2><button class="timer sm" style="margin-top:16px" type="button" data-min="6" aria-label="타이머 6분 — 누르면 시작, 다시 누르면 멈춤"><span class="tv">06:00</span><span class="tl">▶ 시작</span></button></div>
     <div class="pr-main" style="flex:none;margin-top:0">
       <ol class="flow" style="position:absolute;left:0;right:0;top:268px;display:grid;grid-template-columns:1fr 1fr;gap:4px 44px">
-        <li><button type="button" aria-pressed="false"><span class="n">1</span><span class="t"><span class="em-tag">파일 탐색기</span>(macOS는 Finder)에서 <span class="em-tag"><span data-mt-habit="메인과제_AI습관점검" data-mt-type="메인과제_유형테스트" data-mt-fest="메인과제_축제여행">메인과제_AI습관점검</span></span> 폴더를 찾습니다.</span></button></li>
+        <li><button type="button" aria-pressed="false"><span class="n">1</span><span class="t"><span class="em-tag">파일 탐색기</span>(macOS는 Finder)에서 <span class="em-tag"><span data-mt-habit="메인과제_AI습관점검" data-mt-type="메인과제_유형테스트">메인과제_AI습관점검</span></span> 폴더를 찾습니다.</span></button></li>
         <li><button type="button" aria-pressed="false"><span class="n">2</span><span class="t">폴더를 <b>Netlify</b>의 끌어다 놓는 영역으로 끌어다 놓습니다.</span></button></li>
         <li><button type="button" aria-pressed="false"><span class="n">3</span><span class="t">주소가 만들어질 때까지 기다립니다.</span></button></li>
         <li><button type="button" aria-pressed="false"><span class="n">4</span><span class="t">사이트 이름을 알아보기 쉽게 바꿉니다(선택).</span></button></li>
@@ -2453,7 +2545,7 @@
       <div class="win-bar"><i></i><i></i><i></i><b>파일 탐색기</b></div>
       <div class="win-body" style="text-align:center;padding-top:6px">
         <svg viewBox="0 0 24 24" style="display:block;margin:0 auto 6px;width:62px;height:62px;stroke:var(--pr-deep);fill:var(--pr-soft);stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round" aria-hidden="true"><path d="M3 6.5h6l2 2.5h10V19H3z"/></svg>
-        <span class="pill pr" style="padding:1px 11px;margin-right:8px;font-size:17px">1</span><b style="font-size:20px;font-weight:800;color:var(--ink)"><span data-mt-habit="메인과제_AI습관점검" data-mt-type="메인과제_유형테스트" data-mt-fest="메인과제_축제여행">메인과제_AI습관점검</span></b>
+        <span class="pill pr" style="padding:1px 11px;margin-right:8px;font-size:17px">1</span><b style="font-size:20px;font-weight:800;color:var(--ink)"><span data-mt-habit="메인과제_AI습관점검" data-mt-type="메인과제_유형테스트">메인과제_AI습관점검</span></b>
       </div>
     </div>
     <div style="flex:none;width:120px;display:flex;flex-direction:column;align-items:center;gap:6px">
@@ -2480,7 +2572,7 @@
     <span class="s-line"></span><div class="s-team">메인 과제</div>
   </header>
   <div class="pr-wrap">
-    <div class="pr-bar"><span class="pr-no">메인 과제</span><span class="pr-name" data-mt-habit="AI 활용 습관 점검" data-mt-type="유형 테스트" data-mt-fest="축제 여행 계획">AI 활용 습관 점검</span><span class="pr-steps" aria-label="4단계 중 4단계"><span>① 기획</span><span>② 디자인</span><span>③ 제작</span><span class="cur" aria-current="step">④ 공개</span></span></div>
+    <div class="pr-bar"><span class="pr-no">메인 과제</span><span class="pr-name" data-mt-habit="AI 활용 습관 점검" data-mt-type="유형 테스트">AI 활용 습관 점검</span><span class="pr-steps" aria-label="4단계 중 4단계"><span>① 기획</span><span>② 디자인</span><span>③ 제작</span><span class="cur" aria-current="step">④ 공개</span></span></div>
     <div class="pr-top has-timer"><h2 class="s-title"><b class="kw">공개</b>로 바꿉니다</h2><button class="timer sm" style="margin-top:16px" type="button" data-min="2" aria-label="타이머 2분 — 누르면 시작, 다시 누르면 멈춤"><span class="tv">02:00</span><span class="tl">▶ 시작</span></button></div>
     <div class="pr-main" style="flex:none;margin-top:22px">
       <ol class="flow">
@@ -2511,7 +2603,7 @@
     <span class="s-line"></span><div class="s-team">메인 과제</div>
   </header>
   <div class="pr-wrap">
-    <div class="pr-bar"><span class="pr-no">메인 과제</span><span class="pr-name" data-mt-habit="AI 활용 습관 점검" data-mt-type="유형 테스트" data-mt-fest="축제 여행 계획">AI 활용 습관 점검</span><span class="pr-steps" aria-label="4단계 중 4단계"><span>① 기획</span><span>② 디자인</span><span>③ 제작</span><span class="cur" aria-current="step">④ 공개</span></span></div>
+    <div class="pr-bar"><span class="pr-no">메인 과제</span><span class="pr-name" data-mt-habit="AI 활용 습관 점검" data-mt-type="유형 테스트">AI 활용 습관 점검</span><span class="pr-steps" aria-label="4단계 중 4단계"><span>① 기획</span><span>② 디자인</span><span>③ 제작</span><span class="cur" aria-current="step">④ 공개</span></span></div>
     <div class="pr-top has-timer"><h2 class="s-title">다른 창에서 <b class="kw">주소</b>를 열어 봅니다</h2><button class="timer sm" style="margin-top:16px" type="button" data-min="1" aria-label="타이머 1분 — 누르면 시작, 다시 누르면 멈춤"><span class="tv">01:00</span><span class="tl">▶ 시작</span></button></div>
     <div class="pr-main" style="flex:none;margin-top:22px">
       <ol class="flow" style="flex-direction:row;gap:36px">
@@ -2731,9 +2823,9 @@
     <div style="display:grid;grid-template-columns:178px 32px 1fr;align-items:center"><span class="pill ghost" style="justify-content:center;font-size:21px;padding:9px 16px">Codex</span><svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true" style="justify-self:center;fill:none;stroke:var(--blue);stroke-width:3;stroke-linecap:round;stroke-linejoin:round"><path d="M4 12h15M13 6l6 6-6 6"/></svg><span class="em-tag" style="justify-self:start;font-size:24px;font-weight:800">AGENTS.md</span></div>
     <div style="display:grid;grid-template-columns:178px 32px 1fr;align-items:center"><span class="pill ghost" style="justify-content:center;font-size:21px;padding:9px 16px">Antigravity</span><svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true" style="justify-self:center;fill:none;stroke:var(--blue);stroke-width:3;stroke-linecap:round;stroke-linejoin:round"><path d="M4 12h15M13 6l6 6-6 6"/></svg><span style="justify-self:start;display:flex;gap:8px;flex-wrap:nowrap"><span class="em-tag" style="font-size:24px;font-weight:800">AGENTS.md</span><span class="em-tag" style="font-size:24px;font-weight:800">GEMINI.md</span></span></div>
     <div style="display:grid;grid-template-columns:178px 32px 1fr;align-items:center"><span class="pill ghost" style="justify-content:center;font-size:21px;padding:9px 16px">Claude Code</span><svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true" style="justify-self:center;fill:none;stroke:var(--blue);stroke-width:3;stroke-linecap:round;stroke-linejoin:round"><path d="M4 12h15M13 6l6 6-6 6"/></svg><span class="em-tag" style="justify-self:start;font-size:24px;font-weight:800">CLAUDE.md</span></div>
-    <p class="keep" style="margin:0;font-size:22px">CLAUDE.md가 없으면 <b>AGENTS.md도 읽습니다</b>(최신 버전).</p>
+    <p class="keep" style="margin:0;font-size:22px">CLAUDE.md가 없으면 <b>AGENTS.md를 읽습니다</b>(v2.1.277 이상).</p>
   </div>
-  <p class="keep" style="margin-top:26px;font-size:23px;color:var(--ink)">오늘 실습에서 두 파일을 <b class="kw">같은 내용</b>으로 직접 만듭니다. 어떤 도구를 써도 같은 규칙을 읽습니다.</p>
+  <p class="keep" style="margin-top:26px;font-size:23px;color:var(--ink)">오늘 실습에서 <b class="kw">AGENTS.md</b>를 직접 만듭니다. 어떤 도구를 써도 같은 규칙을 읽습니다.</p>
   <div class="on-bleed" style="align-items:stretch;padding:56px 56px 72px">
     <div class="win file"><div class="win-bar"><i></i><i></i><i></i><b>오늘 만들 AGENTS.md · 안에 적을 것</b></div>
       <div class="win-body" style="padding:10px 26px 26px;display:grid;gap:22px">
@@ -3178,7 +3270,7 @@
     <button class="orb-card" type="button" data-go="P5-C" data-pr="P5" data-vt-key="p5" data-ic="video"><span class="lab"><span class="no">05</span><span class="nm">모션그래픽 소개 영상</span><span class="mt"><span class="ln">내 주제</span><span class="ln">→ 짧은 소개 영상</span></span></span><span class="fl" aria-hidden="true"></span><span class="dn">✓ 진행함</span></button>
     <button class="orb-card" type="button" data-go="P6-C" data-pr="P6" data-vt-key="p6" data-ic="papers"><span class="lab"><span class="no">06</span><span class="nm">안내문 일괄 생성</span><span class="mt"><span class="ln">명단 30명</span><span class="ln">→ 한 사람에 한 장</span></span></span><span class="fl" aria-hidden="true"></span><span class="dn">✓ 진행함</span></button>
     <button class="orb-card" type="button" data-go="P7-C" data-pr="P7" data-vt-key="p7" data-ic="quiz"><span class="lab"><span class="no">07</span><span class="nm">우리말 퀴즈 게임</span><span class="mt"><span class="ln">문제은행</span><span class="ln">→ 게임 · 공개 링크</span></span></span><span class="fl" aria-hidden="true"></span><span class="dn">✓ 진행함</span></button>
-    <button class="orb-card" type="button" data-go="P8-C" data-pr="P8" data-vt-key="p8" data-ic="slides"><span class="lab"><span class="no">08</span><span class="nm">강의 교안 스킬</span><span class="mt"><span class="ln">내 주제</span><span class="ln">→ 강의 교안 덱</span></span></span><span class="fl" aria-hidden="true"></span><span class="dn">✓ 진행함</span></button>
+    <button class="orb-card" type="button" data-go="P8-C" data-pr="P8" data-vt-key="p8" data-ic="slides"><span class="lab"><span class="no">08</span><span class="nm">강의 교안 스킬</span><span class="mt"><span class="ln">스킬 만들기</span><span class="ln">→ 내 강의 덱</span></span></span><span class="fl" aria-hidden="true"></span><span class="dn">✓ 진행함</span></button>
     <button class="orb-card" type="button" data-go="P9-C" data-pr="P9" data-vt-key="p9" data-ic="card"><span class="lab"><span class="no">09</span><span class="nm">인스타그램 카드뉴스</span><span class="mt"><span class="ln">내 주제</span><span class="ln">→ 카드뉴스 · Canva</span></span></span><span class="fl" aria-hidden="true"></span><span class="dn">✓ 진행함</span></button>
   </div>
 </section>
@@ -3230,7 +3322,7 @@
           <div style="display:grid;gap:11px;margin-top:10px">
             <div style="display:grid;grid-template-columns:44px 1fr;gap:14px;align-items:start"><span class="ic fill" style="width:44px;height:44px;font-size:22px;font-weight:800;color:var(--ink)">3</span><div><b style="display:block;font-size:23px;font-weight:800;line-height:1.3;color:var(--ink)">인터뷰</b><span style="font-size:20px;font-weight:500;line-height:1.4;color:var(--gray-700)">넣을 재료 · 첫 화면 · 강조 기준 · 색을<br>에이전트가 묻고, 내가 정합니다</span></div></div>
             <div style="display:grid;grid-template-columns:44px 1fr;gap:14px;align-items:start"><span class="ic fill" style="width:44px;height:44px;font-size:22px;font-weight:800;color:var(--ink)">4</span><div><b style="display:block;font-size:23px;font-weight:800;line-height:1.3;color:var(--ink)">되짚기</b><span style="font-size:20px;font-weight:500;line-height:1.4;color:var(--gray-700)">「이렇게 이해했고 규칙에 이렇게 적겠다」</span></div></div>
-            <div style="display:grid;grid-template-columns:44px 1fr;gap:14px;align-items:start"><span class="ic fill" style="width:44px;height:44px;font-size:22px;font-weight:800;color:var(--ink)">5</span><div><b style="display:block;font-size:23px;font-weight:800;line-height:1.3;color:var(--ink)">규칙 파일 저장</b><span style="font-size:20px;font-weight:500;line-height:1.4;color:var(--gray-700)">내가 승인하면 AGENTS.md · CLAUDE.md</span></div></div>
+            <div style="display:grid;grid-template-columns:44px 1fr;gap:14px;align-items:start"><span class="ic fill" style="width:44px;height:44px;font-size:22px;font-weight:800;color:var(--ink)">5</span><div><b style="display:block;font-size:23px;font-weight:800;line-height:1.3;color:var(--ink)">규칙 파일 저장</b><span style="font-size:20px;font-weight:500;line-height:1.4;color:var(--gray-700)">내가 승인하면 AGENTS.md</span></div></div>
           </div>
         </div>
         <div style="display:flex;align-items:center;gap:8px;flex-wrap:nowrap"><span style="padding:7px 16px;border-radius:999px;background:var(--white);box-shadow:var(--sh-card);font-size:20px;font-weight:800;color:var(--ink);white-space:nowrap">품질기준.md</span><b style="font-size:24px;color:var(--pr-deep)">+</b><span style="padding:7px 16px;border-radius:999px;background:var(--white);box-shadow:var(--sh-card);font-size:20px;font-weight:800;color:var(--ink);white-space:nowrap">내 답</span><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true" style="flex:none;fill:none;stroke:var(--pr-deep);stroke-width:3;stroke-linecap:round;stroke-linejoin:round"><path d="M4 12h15M13 6l6 6-6 6"/></svg><span style="padding:7px 16px;border-radius:999px;background:var(--pr-fill);box-shadow:var(--sh-card);font-size:20px;font-weight:800;color:var(--ink);white-space:nowrap">AGENTS.md</span></div>
@@ -3358,7 +3450,7 @@
           <div style="display:grid;gap:11px;margin-top:10px">
             <div style="display:grid;grid-template-columns:44px 1fr;gap:14px;align-items:start"><span class="ic fill" style="width:44px;height:44px;font-size:22px;font-weight:800;color:var(--ink)">3</span><div><b style="display:block;font-size:23px;font-weight:800;line-height:1.3;color:var(--ink)">인터뷰</b><span style="font-size:20px;font-weight:500;line-height:1.4;color:var(--gray-700)">넣을 재료 · 첫 화면 · 강조 기준 · 색을<br>에이전트가 묻고, 내가 정합니다</span></div></div>
             <div style="display:grid;grid-template-columns:44px 1fr;gap:14px;align-items:start"><span class="ic fill" style="width:44px;height:44px;font-size:22px;font-weight:800;color:var(--ink)">4</span><div><b style="display:block;font-size:23px;font-weight:800;line-height:1.3;color:var(--ink)">되짚기</b><span style="font-size:20px;font-weight:500;line-height:1.4;color:var(--gray-700)">「이렇게 이해했고 규칙에 이렇게 적겠다」</span></div></div>
-            <div style="display:grid;grid-template-columns:44px 1fr;gap:14px;align-items:start"><span class="ic fill" style="width:44px;height:44px;font-size:22px;font-weight:800;color:var(--ink)">5</span><div><b style="display:block;font-size:23px;font-weight:800;line-height:1.3;color:var(--ink)">규칙 파일 저장</b><span style="font-size:20px;font-weight:500;line-height:1.4;color:var(--gray-700)">내가 승인하면 AGENTS.md · CLAUDE.md</span></div></div>
+            <div style="display:grid;grid-template-columns:44px 1fr;gap:14px;align-items:start"><span class="ic fill" style="width:44px;height:44px;font-size:22px;font-weight:800;color:var(--ink)">5</span><div><b style="display:block;font-size:23px;font-weight:800;line-height:1.3;color:var(--ink)">규칙 파일 저장</b><span style="font-size:20px;font-weight:500;line-height:1.4;color:var(--gray-700)">내가 승인하면 AGENTS.md</span></div></div>
           </div>
         </div>
         <div style="display:flex;align-items:center;gap:8px;flex-wrap:nowrap"><span style="padding:7px 16px;border-radius:999px;background:var(--white);box-shadow:var(--sh-card);font-size:20px;font-weight:800;color:var(--ink);white-space:nowrap">품질기준.md</span><b style="font-size:24px;color:var(--pr-deep)">+</b><span style="padding:7px 16px;border-radius:999px;background:var(--white);box-shadow:var(--sh-card);font-size:20px;font-weight:800;color:var(--ink);white-space:nowrap">내 답</span><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true" style="flex:none;fill:none;stroke:var(--pr-deep);stroke-width:3;stroke-linecap:round;stroke-linejoin:round"><path d="M4 12h15M13 6l6 6-6 6"/></svg><span style="padding:7px 16px;border-radius:999px;background:var(--pr-fill);box-shadow:var(--sh-card);font-size:20px;font-weight:800;color:var(--ink);white-space:nowrap">AGENTS.md</span></div>
@@ -3468,7 +3560,7 @@
           <div style="display:grid;gap:11px;margin-top:10px">
             <div style="display:grid;grid-template-columns:44px 1fr;gap:14px;align-items:start"><span class="ic fill" style="width:44px;height:44px;font-size:22px;font-weight:800;color:var(--ink)">3</span><div><b style="display:block;font-size:23px;font-weight:800;line-height:1.3;color:var(--ink)">인터뷰</b><span style="font-size:20px;font-weight:500;line-height:1.4;color:var(--gray-700)">넣을 재료 · 첫 화면 · 긴급으로 볼 기준 · 쓰지 않을 표현 · 색을<br>에이전트가 묻고, 내가 정합니다</span></div></div>
             <div style="display:grid;grid-template-columns:44px 1fr;gap:14px;align-items:start"><span class="ic fill" style="width:44px;height:44px;font-size:22px;font-weight:800;color:var(--ink)">4</span><div><b style="display:block;font-size:23px;font-weight:800;line-height:1.3;color:var(--ink)">되짚기</b><span style="font-size:20px;font-weight:500;line-height:1.4;color:var(--gray-700)">「이렇게 이해했고 규칙에 이렇게 적겠다」</span></div></div>
-            <div style="display:grid;grid-template-columns:44px 1fr;gap:14px;align-items:start"><span class="ic fill" style="width:44px;height:44px;font-size:22px;font-weight:800;color:var(--ink)">5</span><div><b style="display:block;font-size:23px;font-weight:800;line-height:1.3;color:var(--ink)">규칙 파일 저장</b><span style="font-size:20px;font-weight:500;line-height:1.4;color:var(--gray-700)">내가 승인하면 AGENTS.md · CLAUDE.md</span></div></div>
+            <div style="display:grid;grid-template-columns:44px 1fr;gap:14px;align-items:start"><span class="ic fill" style="width:44px;height:44px;font-size:22px;font-weight:800;color:var(--ink)">5</span><div><b style="display:block;font-size:23px;font-weight:800;line-height:1.3;color:var(--ink)">규칙 파일 저장</b><span style="font-size:20px;font-weight:500;line-height:1.4;color:var(--gray-700)">내가 승인하면 AGENTS.md</span></div></div>
           </div>
         </div>
         <div style="display:flex;align-items:center;gap:8px;flex-wrap:nowrap"><span style="padding:7px 16px;border-radius:999px;background:var(--white);box-shadow:var(--sh-card);font-size:20px;font-weight:800;color:var(--ink);white-space:nowrap">품질기준.md</span><b style="font-size:24px;color:var(--pr-deep)">+</b><span style="padding:7px 16px;border-radius:999px;background:var(--white);box-shadow:var(--sh-card);font-size:20px;font-weight:800;color:var(--ink);white-space:nowrap">내 답</span><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true" style="flex:none;fill:none;stroke:var(--pr-deep);stroke-width:3;stroke-linecap:round;stroke-linejoin:round"><path d="M4 12h15M13 6l6 6-6 6"/></svg><span style="padding:7px 16px;border-radius:999px;background:var(--pr-fill);box-shadow:var(--sh-card);font-size:20px;font-weight:800;color:var(--ink);white-space:nowrap">AGENTS.md</span></div>
@@ -3578,7 +3670,7 @@
           <div style="display:grid;gap:11px;margin-top:10px">
             <div style="display:grid;grid-template-columns:44px 1fr;gap:14px;align-items:start"><span class="ic fill" style="width:44px;height:44px;font-size:22px;font-weight:800;color:var(--ink)">3</span><div><b style="display:block;font-size:23px;font-weight:800;line-height:1.3;color:var(--ink)">인터뷰</b><span style="font-size:20px;font-weight:500;line-height:1.4;color:var(--gray-700)">넣을 재료 · 첫 화면 · 강조 기준 · 색을<br>에이전트가 묻고, 내가 정합니다</span></div></div>
             <div style="display:grid;grid-template-columns:44px 1fr;gap:14px;align-items:start"><span class="ic fill" style="width:44px;height:44px;font-size:22px;font-weight:800;color:var(--ink)">4</span><div><b style="display:block;font-size:23px;font-weight:800;line-height:1.3;color:var(--ink)">되짚기</b><span style="font-size:20px;font-weight:500;line-height:1.4;color:var(--gray-700)">「이렇게 이해했고 규칙에 이렇게 적겠다」</span></div></div>
-            <div style="display:grid;grid-template-columns:44px 1fr;gap:14px;align-items:start"><span class="ic fill" style="width:44px;height:44px;font-size:22px;font-weight:800;color:var(--ink)">5</span><div><b style="display:block;font-size:23px;font-weight:800;line-height:1.3;color:var(--ink)">규칙 파일 저장</b><span style="font-size:20px;font-weight:500;line-height:1.4;color:var(--gray-700)">내가 승인하면 AGENTS.md · CLAUDE.md</span></div></div>
+            <div style="display:grid;grid-template-columns:44px 1fr;gap:14px;align-items:start"><span class="ic fill" style="width:44px;height:44px;font-size:22px;font-weight:800;color:var(--ink)">5</span><div><b style="display:block;font-size:23px;font-weight:800;line-height:1.3;color:var(--ink)">규칙 파일 저장</b><span style="font-size:20px;font-weight:500;line-height:1.4;color:var(--gray-700)">내가 승인하면 AGENTS.md</span></div></div>
           </div>
         </div>
         <div style="display:flex;align-items:center;gap:8px;flex-wrap:nowrap"><span style="padding:7px 16px;border-radius:999px;background:var(--white);box-shadow:var(--sh-card);font-size:20px;font-weight:800;color:var(--ink);white-space:nowrap">품질기준.md</span><b style="font-size:24px;color:var(--pr-deep)">+</b><span style="padding:7px 16px;border-radius:999px;background:var(--white);box-shadow:var(--sh-card);font-size:20px;font-weight:800;color:var(--ink);white-space:nowrap">내 답</span><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true" style="flex:none;fill:none;stroke:var(--pr-deep);stroke-width:3;stroke-linecap:round;stroke-linejoin:round"><path d="M4 12h15M13 6l6 6-6 6"/></svg><span style="padding:7px 16px;border-radius:999px;background:var(--pr-fill);box-shadow:var(--sh-card);font-size:20px;font-weight:800;color:var(--ink);white-space:nowrap">AGENTS.md</span></div>
@@ -3689,7 +3781,7 @@
   <p class="keep" style="margin-top:30px;font-size:24px;line-height:1.5;font-weight:600;color:var(--ink)"><b>30초 기준의 기본 틀입니다.</b> 길이와 장면 수는 내가 정하고, 구간은 이 틀로 시작해 바꾸고 싶으면 말합니다.</p>
 </section>
 
-<!-- P5-1 목표 · 결과물 그림(세로 영상 화면 모형 · 다섯 구간 띠 · 저장 단추) + 준비물 + 오늘 만들 파일 -->
+<!-- P5-1 목표 · 완성 예시(그림 + 열기 링크) + 준비물 + 오늘 만들 파일 -->
 <section class="slide pr f-goal" data-slide="P5-1">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 18 V8 H18 M30 8 H40 V18 M40 30 V40 H30 M18 40 H8 V30" fill="none" style="stroke:var(--blue)" stroke-width="5"/><rect x="19" y="19" width="10" height="10" style="fill:var(--mint)"/></svg><span class="s-brand">FRAME</span>
@@ -3698,45 +3790,20 @@
   <div class="pr-wrap">
     <div class="pr-bar"><span class="pr-no">실습 5</span><span class="pr-name">모션그래픽</span><span class="pr-steps" aria-label="4단계 중 1단계"><span class="cur" aria-current="step">① 목표</span><span>② 규칙</span><span>③ 만들기</span><span>④ 내 일에 맞게</span></span></div>
     <div class="pr-top"><h2 class="s-title" data-vt-key="p5">내 주제를 <b class="kw">소개 영상</b>으로</h2></div>
-    <div class="pr-main" style="margin-top:20px"><div class="pr-cols" style="--lc:430px;column-gap:40px">
-      <div class="pr-left" style="justify-content:flex-start;gap:16px">
+    <div class="pr-main" style="margin-top:20px"><div class="pr-cols" style="--lc:400px;column-gap:36px">
+      <div class="pr-left" style="justify-content:flex-start;gap:10px">
         <p class="pr-lead" style="margin:0;font-size:22px;color:var(--gray-700)">내 주제 하나를 영상으로 소개합니다. 길이 · 화면 · 색 · 움직임은 내가 정하고, 질문에 답하며 파일을 하나씩 만듭니다.</p>
         <div class="wcard" style="padding:16px 22px 18px"><span class="lab" style="font-size:18px">폴더에 들어 있는 준비물</span>
-          <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px"><span class="em-tag" style="font-size:22px">품질기준.md</span><span class="em-tag" style="font-size:22px">모션이름표.md</span><span class="em-tag" style="font-size:22px">예시/</span></div>
-          <p style="margin:10px 0 0;font-size:22px;line-height:1.45;font-weight:500;color:var(--gray-700)">내 주제가 없으면 예시 폴더로 시작합니다.</p>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px"><span class="em-tag" style="font-size:22px">품질기준.md</span><span class="em-tag" style="font-size:22px">모션이름표.md</span><span class="em-tag" style="font-size:22px">예시/</span><span class="em-tag" style="font-size:22px">영상_틀.html</span><span class="em-tag" style="font-size:22px">기법모음.md</span></div>
         </div>
-        <div class="pc" style="padding:16px 22px 18px;gap:0"><span class="lab" style="font-size:18px">오늘 만들 파일 다섯 개</span>
-          <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:10px"><span style="padding:3px 12px;border-radius:12px;background:var(--white);box-shadow:var(--sh-card);font-size:22px;font-weight:700;color:var(--ink);white-space:nowrap">AGENTS.md</span><span style="padding:3px 12px;border-radius:12px;background:var(--white);box-shadow:var(--sh-card);font-size:22px;font-weight:700;color:var(--ink);white-space:nowrap">CLAUDE.md</span><span style="padding:3px 12px;border-radius:12px;background:var(--white);box-shadow:var(--sh-card);font-size:22px;font-weight:700;color:var(--ink);white-space:nowrap">design.md</span><span style="padding:3px 12px;border-radius:12px;background:var(--white);box-shadow:var(--sh-card);font-size:22px;font-weight:700;color:var(--ink);white-space:nowrap">장면표.md</span><span style="padding:3px 12px;border-radius:12px;background:var(--white);box-shadow:var(--sh-card);font-size:22px;font-weight:700;color:var(--ink);white-space:nowrap">영상.html</span></div>
+        <div class="pc" style="padding:16px 22px 18px;gap:0"><span class="lab" style="font-size:18px">오늘 만들 파일 네 개</span>
+          <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:10px"><span style="padding:3px 12px;border-radius:12px;background:var(--white);box-shadow:var(--sh-card);font-size:22px;font-weight:700;color:var(--ink);white-space:nowrap">AGENTS.md</span><span style="padding:3px 12px;border-radius:12px;background:var(--white);box-shadow:var(--sh-card);font-size:22px;font-weight:700;color:var(--ink);white-space:nowrap">design.md</span><span style="padding:3px 12px;border-radius:12px;background:var(--white);box-shadow:var(--sh-card);font-size:22px;font-weight:700;color:var(--ink);white-space:nowrap">장면표.md</span><span style="padding:3px 12px;border-radius:12px;background:var(--white);box-shadow:var(--sh-card);font-size:22px;font-weight:700;color:var(--ink);white-space:nowrap">영상.html</span></div>
         </div>
+        <a class="back" href="실습자료_강사용/완성예시/실습5_모션그래픽/영상.html" target="_blank" rel="noopener" style="margin-top:auto;align-self:flex-start;text-decoration:none;font-size:20px;padding:10px 24px">완성 예시 열기 ↗</a>
       </div>
-      <div class="pr-right" style="gap:14px">
-        <div style="display:flex;align-items:flex-start;gap:30px">
-          <div style="flex:none;display:flex;flex-direction:column;align-items:center;gap:6px">
-            <div role="img" aria-label="세로 영상 화면 모형 예시. 휴대폰 앱에 올리는 세로 영상은 위쪽 8분의 1과 아래쪽 6분의 1을 글자를 두지 않는 여백으로 비우고, 가운데에 첫 문장이 놓인다. 화면 방향은 내가 정한다." style="position:relative;width:190px;height:338px;box-sizing:border-box;border:6px solid var(--ink);border-radius:26px;overflow:hidden;background:var(--white);box-shadow:var(--sh-pop)">
-              <div style="position:absolute;left:0;right:0;top:0;height:41px;display:flex;align-items:center;justify-content:center;background:var(--pr-soft);font-size:18px;font-weight:700;color:var(--gray-700)">위 여백</div>
-              <div style="position:absolute;left:0;right:0;top:41px;bottom:54px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px"><span style="font-size:22px;font-weight:800;line-height:1.3;color:var(--ink)">〈내 첫 문장〉</span><span style="width:96px;height:5px;border-radius:3px;background:var(--pr-fill)"></span></div>
-              <div style="position:absolute;left:0;right:0;bottom:0;height:54px;display:flex;align-items:center;justify-content:center;background:var(--pr-soft);font-size:18px;font-weight:700;color:var(--gray-700)">아래 여백</div>
-            </div>
-            <span style="font-size:18px;font-weight:700;color:var(--gray-700)">예시 그림 · 세로 기본</span>
-          </div>
-          <div style="flex:1 1 auto;min-width:0;display:flex;flex-direction:column;gap:10px">
-            <span class="lab" style="font-size:18px">영상.html 화면의 단추</span>
-            <div style="display:flex;flex-wrap:wrap;gap:10px"><span style="padding:8px 18px;border-radius:999px;background:var(--white);box-shadow:var(--sh-card);font-size:22px;font-weight:700;color:var(--ink);white-space:nowrap">▶ 재생</span></div>
-            <span style="align-self:flex-start;padding:10px 22px;border-radius:999px;background:var(--pr-fill);box-shadow:var(--sh-card);font-size:22px;font-weight:800;color:var(--ink);white-space:nowrap">영상 파일로 저장</span>
-            <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true" style="margin-left:60px;fill:none;stroke:var(--pr-deep);stroke-width:3;stroke-linecap:round;stroke-linejoin:round"><path d="M12 4v15M6 13l6 6 6-6"/></svg>
-            <span style="align-self:flex-start;padding:8px 18px;border-radius:14px;background:var(--pr-soft);font-size:22px;font-weight:800;color:var(--ink);white-space:nowrap">영상 파일 (.webm)</span>
-          </div>
-        </div>
-        <div>
-          <div style="display:grid;grid-template-columns:repeat(30,1fr);gap:0" role="img" aria-label="다섯 구간 띠 예시. 30초를 훅 3초, 맥락 5초, 본문 13초, 결말 4초, 행동 안내 5초로 나눈 기본 틀이다. 길이와 구간은 내가 정한다.">
-            <b style="grid-column:1/4;margin-right:3px;padding:8px 0;border-radius:14px;background:var(--pr-fill);font-size:22px;font-weight:800;line-height:1.3;text-align:center;color:var(--ink)">훅</b>
-            <b style="grid-column:4/9;margin-right:3px;padding:8px 0;border-radius:14px;background:var(--pr-soft);font-size:22px;font-weight:800;line-height:1.3;text-align:center;color:var(--ink)">맥락</b>
-            <b style="grid-column:9/22;margin-right:3px;padding:8px 0;border-radius:14px;background:var(--pr-soft);font-size:22px;font-weight:800;line-height:1.3;text-align:center;color:var(--ink)">본문</b>
-            <b style="grid-column:22/26;margin-right:3px;padding:8px 0;border-radius:14px;background:var(--pr-soft);font-size:22px;font-weight:800;line-height:1.3;text-align:center;color:var(--ink)">결말</b>
-            <b style="grid-column:26/31;padding:8px 0;border-radius:14px;background:var(--pr-fill);font-size:22px;font-weight:800;line-height:1.3;text-align:center;color:var(--ink);white-space:nowrap">행동 안내</b>
-          </div>
-          <div style="display:flex;justify-content:space-between;margin-top:6px"><span style="font-size:18px;font-weight:700;color:var(--gray-700)">0초</span><span style="font-size:18px;font-weight:700;color:var(--gray-700)">예시 그림 · 길이와 구간은 내가 정합니다</span><span style="font-size:18px;font-weight:700;color:var(--gray-700)">30초</span></div>
-        </div>
+      <div class="pr-right" style="gap:10px">
+        <img src="자료/img/p5.png" alt="완성 예시 영상의 세 장면. 훅, 숫자, 행동 안내가 세로 화면으로 나란히 놓여 있다" width="700" height="437" style="display:block;width:700px;height:437px;object-fit:cover;border-radius:16px;box-shadow:var(--sh-pop);">
+        <p style="margin:0;font-size:18px;font-weight:600;color:var(--gray-700)">완성 예시입니다. 인터뷰 답에 따라 각자 다른 영상이 나옵니다.</p>
       </div>
     </div></div>
   </div>
@@ -3754,7 +3821,7 @@
     <div class="pr-main" style="margin-top:14px"><div class="pr-cols" style="--lc:500px;column-gap:36px">
       <div class="pr-left" style="justify-content:flex-start;gap:12px">
         <div style="display:grid;grid-template-columns:54px 1fr;column-gap:10px;align-items:start"><span style="font-size:44px;font-weight:800;line-height:1;letter-spacing:-.03em;color:var(--pr-deep);text-align:center">1</span><div><p style="margin:2px 0 8px;font-size:24px;font-weight:800;line-height:1.3;color:var(--ink)">내용 인터뷰 요청 <span style="font-size:18px;font-weight:700;color:var(--gray-700)">· 1분</span></p><div class="term dense terminal-dark"><div class="terminal-bar"><span></span><span></span><span></span><b>요청 틀</b><button class="copy" type="button" data-copy>복사</button></div><div class="terminal-copy"><p><span class="terminal-prompt">&gt;</span> 품질기준.md를 읽고 일하는 순서대로 나를 인터뷰해 줘.<span class="terminal-cursor" aria-hidden="true"></span></p></div></div></div></div>
-        <div style="display:grid;grid-template-columns:54px 1fr;column-gap:10px;align-items:start"><span style="font-size:44px;font-weight:800;line-height:1;letter-spacing:-.03em;color:var(--pr-deep);text-align:center">2</span><div><p style="margin:2px 0 4px;font-size:24px;font-weight:800;line-height:1.3;color:var(--ink)">내용 인터뷰에 답하기 <span style="font-size:18px;font-weight:700;color:var(--gray-700)">· 9분</span></p><p style="margin:0;font-size:22px;font-weight:500;line-height:1.5;color:var(--gray-700)">묻는 대로 답한 뒤 정리를 읽고 승인하면 <span class="em-tag">AGENTS.md</span> · <span class="em-tag">CLAUDE.md</span>가 저장됩니다.</p></div></div>
+        <div style="display:grid;grid-template-columns:54px 1fr;column-gap:10px;align-items:start"><span style="font-size:44px;font-weight:800;line-height:1;letter-spacing:-.03em;color:var(--pr-deep);text-align:center">2</span><div><p style="margin:2px 0 4px;font-size:24px;font-weight:800;line-height:1.3;color:var(--ink)">내용 인터뷰에 답하기 <span style="font-size:18px;font-weight:700;color:var(--gray-700)">· 9분</span></p><p style="margin:0;font-size:22px;font-weight:500;line-height:1.5;color:var(--gray-700)">묻는 대로 답한 뒤 정리를 읽고 승인하면 <span class="em-tag">AGENTS.md</span>가 저장됩니다.</p></div></div>
         <div style="display:grid;grid-template-columns:54px 1fr;column-gap:10px;align-items:start"><span style="font-size:44px;font-weight:800;line-height:1;letter-spacing:-.03em;color:var(--pr-deep);text-align:center">3</span><div><p style="margin:2px 0 4px;font-size:24px;font-weight:800;line-height:1.3;color:var(--ink)">디자이너 인터뷰 <span style="font-size:18px;font-weight:700;color:var(--gray-700)">· 10분</span></p><div class="term dense terminal-dark"><div class="terminal-bar"><span></span><span></span><span></span><b>요청 틀</b><button class="copy" type="button" data-copy>복사</button></div><div class="terminal-copy"><p><span class="terminal-prompt">&gt;</span> 모션 디자이너로서 나를 인터뷰해 줘.<span class="terminal-cursor" aria-hidden="true"></span></p></div></div><p style="margin:8px 0 0;font-size:22px;font-weight:500;line-height:1.5;color:var(--gray-700)">초안을 승인하면 design.md가 저장됩니다.</p></div></div>
       </div>
       <div class="pr-right" style="justify-content:flex-start;gap:14px">
@@ -3767,7 +3834,7 @@
           </div>
           <div style="display:flex;align-items:center;gap:12px;margin-top:12px;padding-top:10px;border-top:2px solid var(--pr-line)"><span style="flex:none;padding:2px 12px;border-radius:999px;background:var(--pr-fill);font-size:18px;font-weight:800;color:var(--ink)">비유</span><span style="font-size:22px;font-weight:600;line-height:1.4;color:var(--ink)">질문마다 비유가 함께 옵니다.</span></div>
         </div>
-        <div class="wcard" style="padding:14px 22px 16px"><span class="lab" style="font-size:18px">모션 디자이너 인터뷰 · 질문 9개 · 못 정하면 기본값</span>
+        <div class="wcard" style="padding:14px 22px 16px"><span class="lab" style="font-size:18px">모션 디자이너 인터뷰 · 질문 9개 · 모르면 보기 중 내가 고름</span>
           <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px"><span style="padding:2px 12px;border-radius:999px;background:var(--pr-soft);font-size:18px;font-weight:700;color:var(--ink)">보는 자리</span><span style="padding:2px 12px;border-radius:999px;background:var(--pr-soft);font-size:18px;font-weight:700;color:var(--ink)">첫인상 세 단어</span><span style="padding:2px 12px;border-radius:999px;background:var(--pr-fill);font-size:18px;font-weight:800;color:var(--ink)">색</span><span style="padding:2px 12px;border-radius:999px;background:var(--pr-soft);font-size:18px;font-weight:700;color:var(--ink)">글자</span><span style="padding:2px 12px;border-radius:999px;background:var(--pr-soft);font-size:18px;font-weight:700;color:var(--ink)">전환 · 빠르기</span><span style="padding:2px 12px;border-radius:999px;background:var(--pr-soft);font-size:18px;font-weight:700;color:var(--ink)">나타남 · 세기</span><span style="padding:2px 12px;border-radius:999px;background:var(--pr-soft);font-size:18px;font-weight:700;color:var(--ink)">강조 방식</span><span style="padding:2px 12px;border-radius:999px;background:var(--pr-soft);font-size:18px;font-weight:700;color:var(--ink)">그림 쓰임</span><span style="padding:2px 12px;border-radius:999px;background:var(--pr-soft);font-size:18px;font-weight:700;color:var(--ink)">피할 느낌</span></div>
           <p style="margin:10px 0 0;font-size:22px;font-weight:600;line-height:1.4;color:var(--ink)">색은 내가 말하거나 세 조합에서 고릅니다.</p>
         </div>
@@ -3788,7 +3855,7 @@
     <div class="pr-main" style="margin-top:14px"><div class="pr-cols" style="--lc:690px;column-gap:32px">
       <div class="pr-left" style="justify-content:flex-start;gap:14px">
         <div style="display:grid;grid-template-columns:54px 1fr;column-gap:10px;align-items:start"><span style="font-size:44px;font-weight:800;line-height:1;letter-spacing:-.03em;color:var(--pr-deep);text-align:center">4</span><div><p style="margin:2px 0 6px;font-size:24px;font-weight:800;line-height:1.3;color:var(--ink)">장면표 받고 승인하기 <span style="font-size:18px;font-weight:700;color:var(--gray-700)">· 4분</span></p><div class="term dense terminal-dark"><div class="terminal-bar"><span></span><span></span><span></span><b>요청 틀</b><button class="copy" type="button" data-copy>복사</button></div><div class="terminal-copy"><p><span class="terminal-prompt">&gt;</span> AGENTS.md · design.md · 모션이름표.md를 읽고 장면표.md를 보여 줘. 내가 승인하기 전에는 영상을 만들지 마.<span class="terminal-cursor" aria-hidden="true"></span></p></div></div></div></div>
-        <div style="display:grid;grid-template-columns:54px 1fr;column-gap:10px;align-items:start"><span style="font-size:44px;font-weight:800;line-height:1;letter-spacing:-.03em;color:var(--pr-deep);text-align:center">5</span><div><p style="margin:2px 0 6px;font-size:24px;font-weight:800;line-height:1.3;color:var(--ink)">첫 장면 계획 확인 → 「좋아」 <span style="font-size:18px;font-weight:700;color:var(--gray-700)">· 4분</span></p><div class="term dense terminal-dark"><div class="terminal-bar"><span></span><span></span><span></span><b>요청 틀</b><button class="copy" type="button" data-copy>복사</button></div><div class="terminal-copy"><p><span class="terminal-prompt">&gt;</span> 장면표를 승인할게. 영상.html의 첫 장면 계획부터 보여 줘.<span class="terminal-cursor" aria-hidden="true"></span></p></div></div></div></div>
+        <div style="display:grid;grid-template-columns:54px 1fr;column-gap:10px;align-items:start"><span style="font-size:44px;font-weight:800;line-height:1;letter-spacing:-.03em;color:var(--pr-deep);text-align:center">5</span><div><p style="margin:2px 0 6px;font-size:24px;font-weight:800;line-height:1.3;color:var(--ink)">첫 장면 계획 확인 → 「좋아」 <span style="font-size:18px;font-weight:700;color:var(--gray-700)">· 4분</span></p><div class="term dense terminal-dark"><div class="terminal-bar"><span></span><span></span><span></span><b>요청 틀</b><button class="copy" type="button" data-copy>복사</button></div><div class="terminal-copy"><p><span class="terminal-prompt">&gt;</span> 장면표 승인할게. 영상_틀.html에 장면만 채워 첫 장면부터 보여 줘.<span class="terminal-cursor" aria-hidden="true"></span></p></div></div></div></div>
         <div style="display:grid;grid-template-columns:54px 1fr;column-gap:10px;align-items:start"><span style="font-size:44px;font-weight:800;line-height:1;letter-spacing:-.03em;color:var(--pr-deep);text-align:center">6</span><div><p style="margin:2px 0 6px;font-size:24px;font-weight:800;line-height:1.3;color:var(--ink)">승인하고 나머지 만들기 <span style="font-size:18px;font-weight:700;color:var(--gray-700)">· 4분</span></p><div class="term dense terminal-dark"><div class="terminal-bar"><span></span><span></span><span></span><b>요청 틀</b><button class="copy" type="button" data-copy>복사</button></div><div class="terminal-copy"><p><span class="terminal-prompt">&gt;</span> 첫 장면이 좋아. 나머지 장면도 만들어 줘.<span class="terminal-cursor" aria-hidden="true"></span></p></div></div></div></div>
       </div>
       <div class="pr-right" style="justify-content:flex-start;gap:12px">
@@ -3808,7 +3875,7 @@
   </div>
 </section>
 
-<!-- P5-3 내 일에 맞게 · 영상 파일로 저장 단추 요청 → 저장 흐름 → 안 되면 Win + Alt + R → 고칠 곳 하나 · 타이머 10분 · 허브로 -->
+<!-- P5-3 내 일에 맞게 · 영상 파일로 저장 단추 요청 → 저장 흐름 → 안 되면 화면 녹화(Windows·맥) → 고칠 곳 하나 · 타이머 10분 · 허브로 -->
 <section class="slide pr f-fix" data-slide="P5-3">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 18 V8 H18 M30 8 H40 V18 M40 30 V40 H30 M18 40 H8 V30" fill="none" style="stroke:var(--blue)" stroke-width="5"/><rect x="19" y="19" width="10" height="10" style="fill:var(--mint)"/></svg><span class="s-brand">FRAME</span>
@@ -3817,26 +3884,27 @@
   <div class="pr-wrap">
     <div class="pr-bar"><span class="pr-no">실습 5</span><span class="pr-name">모션그래픽</span><span class="pr-steps" aria-label="4단계 중 4단계"><span>① 목표</span><span>② 규칙</span><span>③ 만들기</span><span class="cur" aria-current="step">④ 내 일에 맞게</span></span></div>
     <div class="pr-top has-timer"><h2 class="s-title">영상 파일 저장과 <b class="kw">한 곳</b> 고치기</h2><button class="timer sm" type="button" data-min="10" aria-label="타이머 10분 — 누르면 시작, 다시 누르면 멈춤" style="margin-top:16px"><span class="tv">10:00</span><span class="tl">▶ 시작</span></button></div>
-    <div class="pr-main" style="margin-top:14px"><div class="pr-cols" style="--lc:560px;column-gap:36px">
-      <div class="pr-left" style="justify-content:flex-start;gap:14px">
-        <div style="display:grid;grid-template-columns:54px 1fr;column-gap:10px;align-items:start"><span style="font-size:44px;font-weight:800;line-height:1;letter-spacing:-.03em;color:var(--pr-deep);text-align:center">8</span><div><p style="margin:2px 0 6px;font-size:24px;font-weight:800;line-height:1.3;color:var(--ink)">저장 단추 넣기 <span style="font-size:18px;font-weight:700;color:var(--gray-700)">· 2분</span></p><div class="term dense terminal-dark"><div class="terminal-bar"><span></span><span></span><span></span><b>요청 틀</b><button class="copy" type="button" data-copy>복사</button></div><div class="terminal-copy"><p><span class="terminal-prompt">&gt;</span> 영상.html에 「영상 파일로 저장」 단추를 넣어 줘. 누르면 브라우저의 화면 공유 창이 열리고, 내가 이 탭을 고르면 재생하며 녹화해 .webm 파일로 저장해 줘. 녹화 중에는 단추가 화면에 보이지 않게 해 줘.<span class="terminal-cursor" aria-hidden="true"></span></p></div></div></div></div>
+    <div class="pr-main" style="margin-top:6px"><div class="pr-cols" style="--lc:560px;column-gap:36px">
+      <div class="pr-left" style="justify-content:flex-start;gap:6px">
+        <div style="display:grid;grid-template-columns:54px 1fr;column-gap:10px;align-items:start"><span style="font-size:44px;font-weight:800;line-height:1;letter-spacing:-.03em;color:var(--pr-deep);text-align:center">8</span><div><p style="margin:2px 0 6px;font-size:24px;font-weight:800;line-height:1.3;color:var(--ink)">저장 단추 누르기 <span style="font-size:18px;font-weight:700;color:var(--gray-700)">· 2분</span></p><div class="term dense terminal-dark"><div class="terminal-bar"><span></span><span></span><span></span><b>요청 틀</b><button class="copy" type="button" data-copy>복사</button></div><div class="terminal-copy"><p><span class="terminal-prompt">&gt;</span> 저장 단추를 누를게. 저장이 안 되면 원인과 다른 방법을 알려 줘.<span class="terminal-cursor" aria-hidden="true"></span></p></div></div></div></div>
         <div style="display:grid;grid-template-columns:54px 1fr;column-gap:10px;align-items:start"><span style="font-size:44px;font-weight:800;line-height:1;letter-spacing:-.03em;color:var(--pr-deep);text-align:center">9</span><div><p style="margin:2px 0 8px;font-size:24px;font-weight:800;line-height:1.3;color:var(--ink)">영상 파일로 저장하기 <span style="font-size:18px;font-weight:700;color:var(--gray-700)">· 3분</span></p>
-          <div role="img" aria-label="저장 흐름. 단추를 누르고 화면 공유 창이 열리면 이 탭을 고르고, 영상이 재생되며 녹화되고, 끝나면 .webm 파일이 저장된다." style="display:flex;align-items:center;gap:6px;flex-wrap:nowrap"><span style="flex:none;padding:8px 14px;border-radius:999px;background:var(--pr-fill);box-shadow:var(--sh-card);font-size:22px;font-weight:800;color:var(--ink);white-space:nowrap">단추</span><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" style="flex:none;fill:none;stroke:var(--pr-deep);stroke-width:3;stroke-linecap:round;stroke-linejoin:round"><path d="M4 12h15M13 6l6 6-6 6"/></svg><span style="flex:none;padding:8px 14px;border-radius:999px;background:var(--white);box-shadow:var(--sh-card);font-size:22px;font-weight:700;color:var(--ink);white-space:nowrap">이 탭</span><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" style="flex:none;fill:none;stroke:var(--pr-deep);stroke-width:3;stroke-linecap:round;stroke-linejoin:round"><path d="M4 12h15M13 6l6 6-6 6"/></svg><span style="flex:none;padding:8px 14px;border-radius:999px;background:var(--white);box-shadow:var(--sh-card);font-size:22px;font-weight:700;color:var(--ink);white-space:nowrap">재생</span><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" style="flex:none;fill:none;stroke:var(--pr-deep);stroke-width:3;stroke-linecap:round;stroke-linejoin:round"><path d="M4 12h15M13 6l6 6-6 6"/></svg><span style="flex:none;padding:8px 14px;border-radius:14px;background:var(--pr-soft);font-size:22px;font-weight:800;color:var(--ink);white-space:nowrap">.webm 저장</span></div>
-          <p style="margin:8px 0 0;font-size:22px;font-weight:500;line-height:1.45;color:var(--gray-700)">단추를 눌러 화면 공유 창이 열리면 이 탭을 고릅니다. 열리지 않으면 오른쪽의 Win + Alt + R로 대신합니다.</p>
+          <div role="img" aria-label="저장 흐름. 단추를 누르고 화면 공유 창이 열리면 이 탭을 고르고, 영상이 재생되며 녹화되고, 끝나면 영상.mp4 파일이 저장된다." style="display:flex;align-items:center;gap:6px;flex-wrap:nowrap"><span style="flex:none;padding:8px 14px;border-radius:999px;background:var(--pr-fill);box-shadow:var(--sh-card);font-size:22px;font-weight:800;color:var(--ink);white-space:nowrap">단추</span><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" style="flex:none;fill:none;stroke:var(--pr-deep);stroke-width:3;stroke-linecap:round;stroke-linejoin:round"><path d="M4 12h15M13 6l6 6-6 6"/></svg><span style="flex:none;padding:8px 14px;border-radius:999px;background:var(--white);box-shadow:var(--sh-card);font-size:22px;font-weight:700;color:var(--ink);white-space:nowrap">이 탭</span><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" style="flex:none;fill:none;stroke:var(--pr-deep);stroke-width:3;stroke-linecap:round;stroke-linejoin:round"><path d="M4 12h15M13 6l6 6-6 6"/></svg><span style="flex:none;padding:8px 14px;border-radius:999px;background:var(--white);box-shadow:var(--sh-card);font-size:22px;font-weight:700;color:var(--ink);white-space:nowrap">재생</span><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" style="flex:none;fill:none;stroke:var(--pr-deep);stroke-width:3;stroke-linecap:round;stroke-linejoin:round"><path d="M4 12h15M13 6l6 6-6 6"/></svg><span style="flex:none;padding:8px 14px;border-radius:14px;background:var(--pr-soft);font-size:22px;font-weight:800;color:var(--ink);white-space:nowrap">영상.mp4 저장</span></div>
+          <p style="margin:8px 0 0;font-size:22px;font-weight:500;line-height:1.45;color:var(--gray-700)">「영상 파일로 저장」을 누르고 공유 창에서 「이 탭」을 고릅니다. 재생이 끝나면 영상.mp4가 저장됩니다.</p>
         </div></div>
+        <div class="wcard" style="padding:8px 20px 8px"><p style="margin:0;font-size:22px;font-weight:500;line-height:1.4;color:var(--ink)">더 매끈한 영상은 <b>리모션(Remotion)</b>으로 MP4를 한 프레임씩 뽑아 만듭니다. Node.js 설치가 필요해 오늘은 쓰지 않고, 직원 4명 이상 회사는 라이선스가 필요합니다.</p></div>
       </div>
       <div class="pr-right" style="justify-content:flex-start;gap:12px">
         <div style="display:grid;grid-template-columns:62px 1fr;column-gap:10px;align-items:start"><span style="font-size:44px;font-weight:800;line-height:1;letter-spacing:-.03em;color:var(--pr-deep);text-align:center">10</span><div><p style="margin:2px 0 6px;font-size:24px;font-weight:800;line-height:1.3;color:var(--ink)">고칠 곳 하나 <span style="font-size:18px;font-weight:700;color:var(--gray-700)">· 5분</span></p><div class="term dense terminal-dark"><div class="terminal-bar"><span></span><span></span><span></span><b>요청 틀</b><button class="copy" type="button" data-copy>복사</button></div><div class="terminal-copy"><p><span class="terminal-prompt">&gt;</span> <span class="ph">〈장면〉</span>의 <span class="ph">〈무엇〉</span>을 <span class="ph">〈어떻게〉</span> 바꿔 줘.<span class="terminal-cursor" aria-hidden="true"></span></p></div></div></div></div>
         <div class="pc" style="padding:14px 22px 16px;gap:6px"><span class="lab" style="font-size:18px">이렇게 채웁니다</span>
           <ul style="margin:0;padding:0;list-style:none;display:grid;gap:6px"><li style="font-size:22px;line-height:1.45;font-weight:600;color:var(--ink)">「2번 장면의 글자를 더 크게 바꿔 줘」</li><li style="font-size:22px;line-height:1.45;font-weight:600;color:var(--ink)">「4번 장면의 숫자를 숫자세기로 바꿔 줘」</li></ul>
         </div>
-        <div class="wcard" style="padding:14px 22px 16px"><span class="lab" style="font-size:18px">저장이 안 되면 · Windows 화면 녹화</span>
-          <div style="display:flex;align-items:center;gap:8px;margin-top:8px"><span style="padding:3px 14px;border-radius:10px;background:var(--pr-soft);box-shadow:var(--sh-card);font-size:22px;font-weight:800;color:var(--ink)">Win</span><b style="font-size:22px;color:var(--pr-deep)">+</b><span style="padding:3px 14px;border-radius:10px;background:var(--pr-soft);box-shadow:var(--sh-card);font-size:22px;font-weight:800;color:var(--ink)">Alt</span><b style="font-size:22px;color:var(--pr-deep)">+</b><span style="padding:3px 14px;border-radius:10px;background:var(--pr-soft);box-shadow:var(--sh-card);font-size:22px;font-weight:800;color:var(--ink)">R</span><span style="margin-left:8px;font-size:22px;font-weight:600;line-height:1.35;color:var(--ink)">녹화 시작</span></div>
-          <p style="margin:8px 0 0;font-size:22px;font-weight:500;line-height:1.45;color:var(--gray-700)">영상은 동영상 › 캡처 폴더에 저장됩니다.</p>
+        <div class="wcard" style="padding:14px 22px 16px"><span class="lab" style="font-size:18px">저장이 안 되면 · 화면 녹화</span>
+          <div role="group" aria-label="Windows: Win + Alt + R" style="display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin-top:8px"><span style="font-size:22px;font-weight:700;line-height:1.35;color:var(--ink)">Windows:</span><span style="padding:3px 12px;border-radius:10px;background:var(--pr-soft);box-shadow:var(--sh-card);font-size:22px;font-weight:800;color:var(--ink)">Win</span><b style="font-size:22px;color:var(--pr-deep)">+</b><span style="padding:3px 12px;border-radius:10px;background:var(--pr-soft);box-shadow:var(--sh-card);font-size:22px;font-weight:800;color:var(--ink)">Alt</span><b style="font-size:22px;color:var(--pr-deep)">+</b><span style="padding:3px 12px;border-radius:10px;background:var(--pr-soft);box-shadow:var(--sh-card);font-size:22px;font-weight:800;color:var(--ink)">R</span></div>
+          <div role="group" aria-label="맥: Shift + Command + 5 → 선택 부분 기록" style="display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin-top:6px"><span style="font-size:22px;font-weight:700;line-height:1.35;color:var(--ink)">맥:</span><span style="padding:3px 12px;border-radius:10px;background:var(--pr-soft);box-shadow:var(--sh-card);font-size:22px;font-weight:800;color:var(--ink)">Shift</span><b style="font-size:22px;color:var(--pr-deep)">+</b><span style="padding:3px 12px;border-radius:10px;background:var(--pr-soft);box-shadow:var(--sh-card);font-size:22px;font-weight:800;color:var(--ink)">Command</span><b style="font-size:22px;color:var(--pr-deep)">+</b><span style="padding:3px 12px;border-radius:10px;background:var(--pr-soft);box-shadow:var(--sh-card);font-size:22px;font-weight:800;color:var(--ink)">5</span><span style="font-size:22px;font-weight:600;line-height:1.35;color:var(--ink)">→ 선택 부분 기록</span></div>
         </div>
       </div>
     </div>
-      <div class="fx-back"><p class="keep" style="color:var(--ink);font-weight:600">고친 뒤 영상.html을 다시 열어 그 장면을 확인합니다.</p><button class="back" type="button" data-go="HUB">허브로</button></div>
+      <div class="fx-back"><p class="keep" style="color:var(--ink);font-weight:600">고친 뒤 영상.html?check=1 로 열면 문제 자리가 빨갛게 보입니다.</p><button class="back" type="button" data-go="HUB">허브로</button></div>
     </div>
   </div>
 </section>
@@ -3905,7 +3973,7 @@
           <div style="display:grid;gap:11px;margin-top:10px">
             <div style="display:grid;grid-template-columns:44px 1fr;gap:14px;align-items:start"><span class="ic fill" style="width:44px;height:44px;font-size:22px;font-weight:800;color:var(--ink)">3</span><div><b style="display:block;font-size:23px;font-weight:800;line-height:1.3;color:var(--ink)">인터뷰</b><span style="font-size:20px;font-weight:500;line-height:1.4;color:var(--gray-700)">가장 크게 보일 것 · 맺음말 · 확인 필요 명단 · 색을<br>에이전트가 묻고, 내가 정합니다</span></div></div>
             <div style="display:grid;grid-template-columns:44px 1fr;gap:14px;align-items:start"><span class="ic fill" style="width:44px;height:44px;font-size:22px;font-weight:800;color:var(--ink)">4</span><div><b style="display:block;font-size:23px;font-weight:800;line-height:1.3;color:var(--ink)">되짚기</b><span style="font-size:20px;font-weight:500;line-height:1.4;color:var(--gray-700)">「이렇게 이해했고 규칙에 이렇게 적겠다」</span></div></div>
-            <div style="display:grid;grid-template-columns:44px 1fr;gap:14px;align-items:start"><span class="ic fill" style="width:44px;height:44px;font-size:22px;font-weight:800;color:var(--ink)">5</span><div><b style="display:block;font-size:23px;font-weight:800;line-height:1.3;color:var(--ink)">규칙 파일 저장</b><span style="font-size:20px;font-weight:500;line-height:1.4;color:var(--gray-700)">내가 승인하면 AGENTS.md · CLAUDE.md</span></div></div>
+            <div style="display:grid;grid-template-columns:44px 1fr;gap:14px;align-items:start"><span class="ic fill" style="width:44px;height:44px;font-size:22px;font-weight:800;color:var(--ink)">5</span><div><b style="display:block;font-size:23px;font-weight:800;line-height:1.3;color:var(--ink)">규칙 파일 저장</b><span style="font-size:20px;font-weight:500;line-height:1.4;color:var(--gray-700)">내가 승인하면 AGENTS.md</span></div></div>
           </div>
         </div>
         <div style="display:flex;align-items:center;gap:8px;flex-wrap:nowrap"><span style="padding:7px 16px;border-radius:999px;background:var(--white);box-shadow:var(--sh-card);font-size:20px;font-weight:800;color:var(--ink);white-space:nowrap">품질기준.md</span><b style="font-size:24px;color:var(--pr-deep)">+</b><span style="padding:7px 16px;border-radius:999px;background:var(--white);box-shadow:var(--sh-card);font-size:20px;font-weight:800;color:var(--ink);white-space:nowrap">내 답</span><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true" style="flex:none;fill:none;stroke:var(--pr-deep);stroke-width:3;stroke-linecap:round;stroke-linejoin:round"><path d="M4 12h15M13 6l6 6-6 6"/></svg><span style="padding:7px 16px;border-radius:999px;background:var(--pr-fill);box-shadow:var(--sh-card);font-size:20px;font-weight:800;color:var(--ink);white-space:nowrap">AGENTS.md</span></div>
@@ -4032,7 +4100,7 @@
           <div style="display:grid;gap:11px;margin-top:10px">
             <div style="display:grid;grid-template-columns:44px 1fr;gap:14px;align-items:start"><span class="ic fill" style="width:44px;height:44px;font-size:22px;font-weight:800;color:var(--ink)">3</span><div><b style="display:block;font-size:23px;font-weight:800;line-height:1.3;color:var(--ink)">인터뷰</b><span style="font-size:20px;font-weight:500;line-height:1.4;color:var(--gray-700)">빨리 맞히면 점수를 더 줄지 · 찬스 · 등급 이름과 기준 점수 · 쓸 분류를<br>에이전트가 묻고, 내가 정합니다</span></div></div>
             <div style="display:grid;grid-template-columns:44px 1fr;gap:14px;align-items:start"><span class="ic fill" style="width:44px;height:44px;font-size:22px;font-weight:800;color:var(--ink)">4</span><div><b style="display:block;font-size:23px;font-weight:800;line-height:1.3;color:var(--ink)">되짚기</b><span style="font-size:20px;font-weight:500;line-height:1.4;color:var(--gray-700)">「이렇게 이해했고 규칙에 이렇게 적겠다」</span></div></div>
-            <div style="display:grid;grid-template-columns:44px 1fr;gap:14px;align-items:start"><span class="ic fill" style="width:44px;height:44px;font-size:22px;font-weight:800;color:var(--ink)">5</span><div><b style="display:block;font-size:23px;font-weight:800;line-height:1.3;color:var(--ink)">규칙 파일 저장</b><span style="font-size:20px;font-weight:500;line-height:1.4;color:var(--gray-700)">내가 승인하면 AGENTS.md · CLAUDE.md</span></div></div>
+            <div style="display:grid;grid-template-columns:44px 1fr;gap:14px;align-items:start"><span class="ic fill" style="width:44px;height:44px;font-size:22px;font-weight:800;color:var(--ink)">5</span><div><b style="display:block;font-size:23px;font-weight:800;line-height:1.3;color:var(--ink)">규칙 파일 저장</b><span style="font-size:20px;font-weight:500;line-height:1.4;color:var(--gray-700)">내가 승인하면 AGENTS.md</span></div></div>
           </div>
         </div>
         <div style="display:flex;align-items:center;gap:8px;flex-wrap:nowrap"><span style="padding:7px 16px;border-radius:999px;background:var(--white);box-shadow:var(--sh-card);font-size:20px;font-weight:800;color:var(--ink);white-space:nowrap">품질기준.md</span><b style="font-size:24px;color:var(--pr-deep)">+</b><span style="padding:7px 16px;border-radius:999px;background:var(--white);box-shadow:var(--sh-card);font-size:20px;font-weight:800;color:var(--ink);white-space:nowrap">내 답</span><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true" style="flex:none;fill:none;stroke:var(--pr-deep);stroke-width:3;stroke-linecap:round;stroke-linejoin:round"><path d="M4 12h15M13 6l6 6-6 6"/></svg><span style="padding:7px 16px;border-radius:999px;background:var(--pr-fill);box-shadow:var(--sh-card);font-size:20px;font-weight:800;color:var(--ink);white-space:nowrap">AGENTS.md</span></div>
@@ -4147,18 +4215,18 @@
   <h2 class="s-title"><b class="kw">규칙 파일</b>과 <b class="kw">스킬</b>이 읽히는 때</h2>
   <div class="pcards" style="margin-top:24px;grid-auto-columns:unset;grid-template-columns:1fr 1fr;grid-auto-flow:row;align-items:stretch">
     <div class="pc t-mist" style="padding:22px 28px 22px;gap:8px"><b><span style="color:var(--blue)">규칙 파일</span> <span style="font-size:22px;font-weight:700;color:var(--gray-700)">AGENTS.md</span></b><p style="font-weight:600;color:var(--ink)">작업에 들어가면 읽힙니다.</p><p style="font-weight:600;color:var(--ink)">어느 일에나 적용되는 약속입니다.</p><p><span style="font-size:18px;font-weight:800;color:var(--gray-700)">비유</span>&nbsp; 가게 문에 붙인 이용 안내문</p></div>
-    <div class="pc t-mist" style="padding:22px 28px 22px;gap:8px"><b><span style="color:var(--mint-deep)">스킬</span> <span style="font-size:22px;font-weight:700;color:var(--gray-700)">SKILL.md</span></b><p style="font-weight:600;color:var(--ink)">맞는 일일 때 본문을 읽습니다.</p><p style="font-weight:600;color:var(--ink)">한 가지 일을 하는 순서입니다.</p><p><span style="font-size:18px;font-weight:800;color:var(--gray-700)">비유</span>&nbsp; 꺼내 쓰는 레시피 카드</p></div>
+    <div class="pc t-mist" style="padding:22px 28px 22px;gap:8px"><b><span style="color:var(--mint-deep)">스킬</span> <span style="font-size:22px;font-weight:700;color:var(--gray-700)">SKILL.md</span></b><p style="font-weight:600;color:var(--ink)">맞는 일일 때 본문이 읽힙니다.</p><p style="font-weight:600;color:var(--ink)">한 가지 일을 하는 순서입니다.</p><p><span style="font-size:18px;font-weight:800;color:var(--gray-700)">비유</span>&nbsp; 꺼내 쓰는 레시피 카드</p></div>
   </div>
   <p style="margin:22px 0 0;font-size:18px;font-weight:800;color:var(--mint-deep)">스킬로 만들 수 있는 일</p>
   <div style="margin-top:8px;display:grid;grid-template-columns:repeat(3,1fr);gap:18px">
-    <div class="wcard" style="padding:14px 22px 16px"><div style="display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:2px 10px"><b style="font-size:24px;font-weight:800;line-height:1.3;color:var(--ink)">강의 교안 만들기</b><span style="font-size:18px;font-weight:800;color:var(--mint-deep)">오늘 씁니다</span></div><span style="display:block;margin-top:6px;font-size:18px;font-weight:800;line-height:1.4;color:var(--gray-700)">언제 쓰나</span><p style="margin:0;font-size:22px;font-weight:600;line-height:1.45;color:var(--ink)">강의 슬라이드가 필요할 때</p></div>
+    <div class="wcard" style="padding:14px 22px 16px"><div style="display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:2px 10px"><b style="font-size:24px;font-weight:800;line-height:1.3;color:var(--ink)">강의 교안 만들기</b><span style="font-size:18px;font-weight:800;color:var(--mint-deep)">오늘 만듭니다</span></div><span style="display:block;margin-top:6px;font-size:18px;font-weight:800;line-height:1.4;color:var(--gray-700)">언제 쓰나</span><p style="margin:0;font-size:22px;font-weight:600;line-height:1.45;color:var(--ink)">강의 슬라이드가 필요할 때</p></div>
     <div class="wcard" style="padding:14px 22px 16px"><div style="display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:2px 10px"><b style="font-size:24px;font-weight:800;line-height:1.3;color:var(--ink)">월요일마다 쓰는 주간 보고</b></div><span style="display:block;margin-top:6px;font-size:18px;font-weight:800;line-height:1.4;color:var(--gray-700)">언제 쓰나</span><p style="margin:0;font-size:22px;font-weight:600;line-height:1.45;color:var(--ink)">월요일마다 보고를 쓸 때</p></div>
     <div class="wcard" style="padding:14px 22px 16px"><div style="display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:2px 10px"><b style="font-size:24px;font-weight:800;line-height:1.3;color:var(--ink)">행사 안내문 만들기</b></div><span style="display:block;margin-top:6px;font-size:18px;font-weight:800;line-height:1.4;color:var(--gray-700)">언제 쓰나</span><p style="margin:0;font-size:22px;font-weight:600;line-height:1.45;color:var(--ink)">행사 일정이 정해졌을 때</p></div>
   </div>
   <p class="keep" style="margin-top:22px;color:var(--ink);font-weight:600">스킬은 폴더에 둡니다. Codex · Antigravity는 <span class="em-tag">.agents/skills/</span>, Claude Code는 <span class="em-tag">.claude/skills/</span>입니다.</p>
 </section>
 
-<!-- P8-1 강의 교안 스킬로 내 강의 덱 · 목표(이미 들어 있는 폴더 + 오늘 만드는 파일 + 결과물 덱 화면 모형) -->
+<!-- P8-1 오늘은 강의 교안 스킬을 직접 만듭니다 · ① 목표(오늘 만드는 것 둘 · 받은 실습 폴더의 준비물 세 파일 · 만들어질 폴더 그림) -->
 <section class="slide pr f-goal" data-slide="P8-1">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 18 V8 H18 M30 8 H40 V18 M40 30 V40 H30 M18 40 H8 V30" fill="none" style="stroke:var(--blue)" stroke-width="5"/><rect x="19" y="19" width="10" height="10" style="fill:var(--mint)"/></svg><span class="s-brand">FRAME</span>
@@ -4166,61 +4234,49 @@
   </header>
   <div class="pr-wrap">
     <div class="pr-bar"><span class="pr-no">실습 8</span><span class="pr-name">강의 교안 스킬</span><span class="pr-steps" aria-label="4단계 중 1단계"><span class="cur" aria-current="step">① 목표</span><span>② 규칙</span><span>③ 만들기</span><span>④ 내 일에 맞게</span></span></div>
-    <div class="pr-top"><h2 class="s-title" data-vt-key="p8">강의 교안 <b class="kw">스킬</b>로 내 강의 덱</h2></div>
-    <div class="pr-main" style="margin-top:20px"><div class="pr-cols" style="--lc:440px;column-gap:40px">
+    <div class="pr-top"><h2 class="s-title" data-vt-key="p8">오늘은 강의 교안 <b class="kw">스킬</b>을 직접 만듭니다</h2></div>
+    <div class="pr-main" style="margin-top:20px"><div class="pr-cols" style="--lc:600px;column-gap:40px">
       <div class="pr-left" style="justify-content:flex-start;gap:0">
-        <svg viewBox="0 0 440 424" width="440" height="424" role="img" aria-label="내 작업 폴더 안에 두 곳의 스킬 폴더가 이미 들어 있다. .agents/skills/lecture-deck/(Codex · Antigravity)와 .claude/skills/lecture-deck/(Claude Code)이고, 각각 SKILL.md와 파일 다섯 개가 든 references/ 폴더를 담고 있다." style="display:block;overflow:visible">
-          <g style="filter:drop-shadow(0 4px 8px var(--t-shadow))"><rect x="2" y="2" width="436" height="414" rx="22" style="fill:var(--t-card)"/></g>
-          <rect x="24" y="24" width="236" height="42" rx="21" style="fill:var(--pr-fill)"/>
-          <text x="142" y="53" font-size="22" font-weight="800" text-anchor="middle" style="fill:var(--ink)">이미 들어 있습니다</text>
-          <g fill="none" style="stroke:var(--pr-deep)" stroke-width="2.600" stroke-linejoin="round">
-            <path transform="translate(24,88) scale(.85)" d="M0 4a4 4 0 0 1 4-4h10l5 6h17a4 4 0 0 1 4 4v18a4 4 0 0 1-4 4H4a4 4 0 0 1-4-4Z"/>
-            <path transform="translate(52,140) scale(.85)" d="M0 4a4 4 0 0 1 4-4h10l5 6h17a4 4 0 0 1 4 4v18a4 4 0 0 1-4 4H4a4 4 0 0 1-4-4Z"/>
-            <path transform="translate(104,200) scale(.8)" d="M0 0h13l7 7v21H0ZM13 0v7h7"/>
-            <path transform="translate(104,236) scale(.8)" d="M0 4a4 4 0 0 1 4-4h10l5 6h17a4 4 0 0 1 4 4v18a4 4 0 0 1-4 4H4a4 4 0 0 1-4-4Z"/>
-            <path transform="translate(52,282) scale(.85)" d="M0 4a4 4 0 0 1 4-4h10l5 6h17a4 4 0 0 1 4 4v18a4 4 0 0 1-4 4H4a4 4 0 0 1-4-4Z"/>
-            <path transform="translate(104,342) scale(.8)" d="M0 0h13l7 7v21H0ZM13 0v7h7"/>
-            <path transform="translate(104,378) scale(.8)" d="M0 4a4 4 0 0 1 4-4h10l5 6h17a4 4 0 0 1 4 4v18a4 4 0 0 1-4 4H4a4 4 0 0 1-4-4Z"/>
-          </g>
-          <path d="M40 120V300M40 156H48M40 298H48M84 176V216H100M84 216V252H100M84 318V358H100M84 358V394H100" fill="none" style="stroke:var(--pr-line)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-          <g font-size="22" font-weight="800" style="fill:var(--ink)"><text x="68" y="110">내 작업 폴더/</text><text x="94" y="162">.agents/skills/lecture-deck/</text><text x="94" y="304">.claude/skills/lecture-deck/</text></g>
-          <g font-size="22" font-weight="700" style="fill:var(--ink)"><text x="130" y="222">SKILL.md</text><text x="146" y="260">references/</text><text x="130" y="364">SKILL.md</text><text x="146" y="402">references/</text></g>
-          <g font-size="18" font-weight="600" style="fill:var(--gray-700)"><text x="94" y="188">Codex · Antigravity</text><text x="94" y="330">Claude Code</text><text x="270" y="260">파일 다섯</text><text x="270" y="402">파일 다섯</text></g>
-        </svg>
+        <p style="margin:0 0 8px;font-size:18px;font-weight:800;color:var(--pr-deep)">오늘 만드는 것 둘</p>
+        <div class="wcard" style="padding:14px 22px 16px"><div style="display:grid;gap:12px">
+          <div style="display:grid;grid-template-columns:36px 1fr;gap:12px;align-items:center"><span class="ic fill" style="width:36px;height:36px;font-size:22px;font-weight:800;color:var(--ink)">1</span><div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 10px"><b style="font-size:24px;font-weight:800;line-height:1.3;color:var(--ink)">스킬 폴더</b><span class="em-tag" style="font-size:22px">.agents/skills/lecture-deck/</span></div></div>
+          <div style="display:grid;grid-template-columns:36px 1fr;gap:12px;align-items:center"><span class="ic fill" style="width:36px;height:36px;font-size:22px;font-weight:800;color:var(--ink)">2</span><div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 10px"><b style="font-size:24px;font-weight:800;line-height:1.3;color:var(--ink)">내 강의 덱</b><span style="font-size:22px;font-weight:600;line-height:1.4;color:var(--gray-700)">그 스킬로 만들고, 1장 승인 뒤 나머지</span></div></div>
+        </div></div>
+        <p style="margin:16px 0 8px;font-size:18px;font-weight:800;color:var(--pr-deep)">받은 실습 폴더의 준비물 세 파일</p>
+        <div class="wcard" style="padding:12px 22px 14px"><div style="display:grid;grid-template-columns:auto 1fr;column-gap:16px;row-gap:4px;align-items:baseline">
+          <span class="em-tag" style="font-size:22px">품질기준.md</span><span style="font-size:22px;font-weight:600;line-height:1.4;color:var(--gray-700)">에이전트가 따를 기준</span>
+          <span class="em-tag" style="font-size:22px">규칙예시.md</span><span style="font-size:22px;font-weight:600;line-height:1.4;color:var(--gray-700)">규칙 다섯 개의 예시</span>
+          <span class="em-tag" style="font-size:22px">디자인시스템_틀.md</span><span style="font-size:22px;font-weight:600;line-height:1.4;color:var(--gray-700)">디자인 시스템의 빈 틀</span>
+        </div></div>
+        <p style="margin:16px 0 0;font-size:24px;font-weight:800;line-height:1.45;color:var(--ink)">스킬 폴더는 <b class="kw">비어 있습니다.</b> 오늘 직접 만듭니다.</p>
       </div>
       <div class="pr-right" style="gap:0">
-        <p style="margin:0 0 8px;font-size:18px;font-weight:800;color:var(--pr-deep)">오늘 만드는 파일 · 장 수와 색, 글꼴은 내가 정합니다</p>
-        <div style="display:flex;align-items:center;gap:10px">
-          <div style="flex:1;background:var(--pr-soft);border-radius:16px;padding:10px 16px"><b style="display:block;font-size:22px;font-weight:800;line-height:1.3;color:var(--ink)">개요.md</b><span style="font-size:18px;font-weight:600;color:var(--gray-700)">내용 정리</span></div>
-          <svg viewBox="0 0 28 20" width="28" height="20" aria-hidden="true" style="flex:none"><path d="M2 10H24M16 3L24 10L16 17" fill="none" style="stroke:var(--pr-deep)" stroke-width="3.500" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <div style="flex:1;background:var(--pr-soft);border-radius:16px;padding:10px 16px"><b style="display:block;font-size:22px;font-weight:800;line-height:1.3;color:var(--ink)">design.md</b><span style="font-size:18px;font-weight:600;color:var(--gray-700)">디자인 규칙</span></div>
-          <svg viewBox="0 0 28 20" width="28" height="20" aria-hidden="true" style="flex:none"><path d="M2 10H24M16 3L24 10L16 17" fill="none" style="stroke:var(--pr-deep)" stroke-width="3.500" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <div style="flex:1;background:var(--pr-soft);border-radius:16px;padding:10px 16px"><b style="display:block;font-size:22px;font-weight:800;line-height:1.3;color:var(--ink)">강의덱.html</b><span style="font-size:18px;font-weight:600;color:var(--gray-700)">덱 한 파일</span></div>
-        </div>
-        <svg viewBox="0 0 656 322" width="656" height="322" role="img" aria-label="예시 그림. 1280 × 720 크기의 덱 화면 한 장. 위쪽에 장 제목, 가운데에 정보 카드 세 개, 맨 아래에 진행 막대와 장 번호 3 / 10이 있다. 오른쪽 방향키로 장을 넘긴다." style="display:block;margin-top:20px;overflow:visible">
-          <text x="0" y="18" font-size="18" font-weight="800" style="fill:var(--pr-deep)">기본 1280 × 720 · 한 번에 한 장</text>
-          <text x="656" y="18" font-size="18" font-weight="600" text-anchor="end" style="fill:var(--gray-700)">예시 그림</text>
-          <g style="filter:drop-shadow(0 5px 9px var(--t-shadow))"><rect x="2" y="32" width="480" height="270" rx="14" style="fill:var(--pr-soft)"/></g>
-          <text x="30" y="82" font-size="22" font-weight="800" style="fill:var(--ink)">예시 장 제목</text>
-          <g style="fill:var(--t-card)"><rect x="30" y="102" width="130" height="118" rx="10"/><rect x="177" y="102" width="130" height="118" rx="10"/><rect x="324" y="102" width="130" height="118" rx="10"/></g>
-          <g style="fill:var(--pr-fill)"><circle cx="54" cy="128" r="10"/><circle cx="201" cy="128" r="10"/><circle cx="348" cy="128" r="10"/></g>
-          <g style="fill:var(--pr-line)"><rect x="44" y="152" width="100" height="8" rx="4"/><rect x="44" y="170" width="80" height="8" rx="4"/><rect x="44" y="188" width="60" height="8" rx="4"/><rect x="191" y="152" width="100" height="8" rx="4"/><rect x="191" y="170" width="80" height="8" rx="4"/><rect x="191" y="188" width="60" height="8" rx="4"/><rect x="338" y="152" width="100" height="8" rx="4"/><rect x="338" y="170" width="80" height="8" rx="4"/><rect x="338" y="188" width="60" height="8" rx="4"/></g>
-          <text x="454" y="252" font-size="22" font-weight="800" text-anchor="end" style="fill:var(--ink)">3 / 10</text>
-          <rect x="30" y="268" width="424" height="10" rx="5" style="fill:var(--pr-line)"/>
-          <rect x="30" y="268" width="127" height="10" rx="5" style="fill:var(--pr-fill)"/>
-          <path d="M462 245H498M462 273H498" fill="none" style="stroke:var(--pr-deep)" stroke-width="2.500" stroke-linecap="round"/>
-          <g font-size="22" font-weight="800" style="fill:var(--pr-deep)"><text x="506" y="252">장 번호</text><text x="506" y="280">진행 막대</text></g>
-          <text x="506" y="110" font-size="22" font-weight="800" style="fill:var(--ink)">방향키</text>
-          <g fill="none" style="stroke:var(--pr-deep)" stroke-width="3"><rect x="506" y="124" width="44" height="40" rx="9"/><rect x="558" y="124" width="44" height="40" rx="9"/></g>
-          <g font-size="22" font-weight="800" text-anchor="middle" style="fill:var(--ink)"><text x="528" y="152">←</text><text x="580" y="152">→</text></g>
-          <text x="506" y="196" font-size="22" font-weight="600" style="fill:var(--gray-700)">장을 넘깁니다</text>
+        <svg viewBox="0 0 440 424" width="440" height="424" role="img" aria-label="만들어질 모습. 내 작업 폴더 안에 .agents/skills/lecture-deck/ 폴더가 생기고, 그 안에 SKILL.md 파일과 references 폴더 안의 design-systems 폴더(후보 01~03), memory 폴더가 들어간다. Claude Code를 쓰면 같은 폴더를 .claude/skills/lecture-deck/에 복사한다." style="display:block;overflow:visible">
+          <g style="filter:drop-shadow(0 4px 8px var(--t-shadow))"><rect x="2" y="2" width="436" height="414" rx="22" style="fill:var(--t-card)"/></g>
+          <rect x="24" y="24" width="236" height="42" rx="21" style="fill:var(--pr-fill)"/>
+          <text x="142" y="53" font-size="22" font-weight="800" text-anchor="middle" style="fill:var(--ink)">만들어질 모습</text>
+          <g fill="none" style="stroke:var(--pr-deep)" stroke-width="2.600" stroke-linejoin="round">
+            <path transform="translate(24,88) scale(.85)" d="M0 4a4 4 0 0 1 4-4h10l5 6h17a4 4 0 0 1 4 4v18a4 4 0 0 1-4 4H4a4 4 0 0 1-4-4Z"/>
+            <path transform="translate(52,132) scale(.85)" d="M0 4a4 4 0 0 1 4-4h10l5 6h17a4 4 0 0 1 4 4v18a4 4 0 0 1-4 4H4a4 4 0 0 1-4-4Z"/>
+            <path transform="translate(104,172) scale(.8)" d="M0 0h13l7 7v21H0ZM13 0v7h7"/>
+            <path transform="translate(104,206) scale(.8)" d="M0 4a4 4 0 0 1 4-4h10l5 6h17a4 4 0 0 1 4 4v18a4 4 0 0 1-4 4H4a4 4 0 0 1-4-4Z"/>
+            <path transform="translate(128,240) scale(.8)" d="M0 4a4 4 0 0 1 4-4h10l5 6h17a4 4 0 0 1 4 4v18a4 4 0 0 1-4 4H4a4 4 0 0 1-4-4Z"/>
+            <path transform="translate(104,274) scale(.8)" d="M0 4a4 4 0 0 1 4-4h10l5 6h17a4 4 0 0 1 4 4v18a4 4 0 0 1-4 4H4a4 4 0 0 1-4-4Z"/>
+          </g>
+          <path d="M40 116V148H48M84 160V290M84 188H100M84 222H100M84 290H100M118 232V256H124" fill="none" style="stroke:var(--pr-line)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          <g font-size="22" font-weight="800" style="fill:var(--ink)"><text x="68" y="110">내 작업 폴더/</text><text x="94" y="154">.agents/skills/lecture-deck/</text></g>
+          <g font-size="22" font-weight="700" style="fill:var(--ink)"><text x="130" y="194">SKILL.md</text><text x="146" y="230">references/</text><text x="170" y="264">design-systems/</text><text x="146" y="298">memory/</text></g>
+          <text x="428" y="264" font-size="22" font-weight="600" text-anchor="end" style="fill:var(--gray-700)">01~03</text>
+          <rect x="24" y="322" width="392" height="74" rx="14" style="fill:var(--pr-soft)"/>
+          <text x="40" y="352" font-size="22" font-weight="800" style="fill:var(--ink)">Claude Code면 같은 폴더를 복사</text>
+          <text x="40" y="380" font-size="22" font-weight="600" style="fill:var(--gray-700)">.claude/skills/lecture-deck/</text>
         </svg>
       </div>
     </div></div>
   </div>
 </section>
 
-<!-- P8-2 스킬을 불러 씁니다 · ② 규칙(요청 · 내용 인터뷰 묶음 세 개 · 도구별 부르기 표 · 타이머 15분) -->
+<!-- P8-2 스킬 인터뷰에 답해 SKILL.md를 만듭니다 · ② 규칙(요청 · 질문 묶음 세 개 · 정리 승인 · SKILL.md 뼈대 · 타이머 10분) -->
 <section class="slide pr f-steps" data-slide="P8-2">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 18 V8 H18 M30 8 H40 V18 M40 30 V40 H30 M18 40 H8 V30" fill="none" style="stroke:var(--blue)" stroke-width="5"/><rect x="19" y="19" width="10" height="10" style="fill:var(--mint)"/></svg><span class="s-brand">FRAME</span>
@@ -4228,113 +4284,154 @@
   </header>
   <div class="pr-wrap">
     <div class="pr-bar"><span class="pr-no">실습 8</span><span class="pr-name">강의 교안 스킬</span><span class="pr-steps" aria-label="4단계 중 2단계"><span>① 목표</span><span class="cur" aria-current="step">② 규칙</span><span>③ 만들기</span><span>④ 내 일에 맞게</span></span></div>
-    <div class="pr-top has-timer"><h2 class="s-title"><b class="kw">스킬</b>을 불러 씁니다</h2><button class="timer sm" type="button" data-min="15" aria-label="타이머 15분 — 누르면 시작, 다시 누르면 멈춤" style="margin-top:16px"><span class="tv">15:00</span><span class="tl">▶ 시작</span></button></div>
+    <div class="pr-top has-timer"><h2 class="s-title">스킬 인터뷰에 답해 <b class="kw">SKILL.md</b>를 만듭니다</h2><button class="timer sm" type="button" data-min="10" aria-label="타이머 10분 — 누르면 시작, 다시 누르면 멈춤" style="margin-top:16px"><span class="tv">10:00</span><span class="tl">▶ 시작</span></button></div>
     <div class="pr-main" style="margin-top:14px">
-      <div class="pr-cols" style="--lc:560px;column-gap:36px;flex:0 0 auto">
-        <div class="pr-left" style="justify-content:flex-start;gap:0">
-          <div style="display:grid;grid-template-columns:54px 1fr;column-gap:10px;align-items:start"><span style="font-size:44px;font-weight:800;line-height:1;letter-spacing:-.03em;color:var(--pr-deep);text-align:center">1</span><div><p style="margin:2px 0 8px;font-size:24px;font-weight:800;line-height:1.3;color:var(--ink)">요청 보내기</p><div class="term lg terminal-dark"><div class="terminal-bar"><span></span><span></span><span></span><b>요청</b><button class="copy" type="button" data-copy>복사</button></div><div class="terminal-copy"><p><span class="terminal-prompt">&gt;</span> lecture-deck 스킬로 <span class="ph">〈내 주제〉</span> 강의 교안을 만들어 줘.<span class="terminal-cursor" aria-hidden="true"></span></p></div></div></div></div>
+      <div class="pr-cols" style="--lc:600px;column-gap:36px;flex:0 0 auto">
+        <div class="pr-left" style="justify-content:flex-start;gap:12px">
+          <div style="display:grid;grid-template-columns:54px 1fr;column-gap:10px;align-items:start"><span style="font-size:44px;font-weight:800;line-height:1;letter-spacing:-.03em;color:var(--pr-deep);text-align:center">1</span><div><p style="margin:2px 0 8px;font-size:24px;font-weight:800;line-height:1.3;color:var(--ink)">요청 보내기</p><div class="term lg terminal-dark"><div class="terminal-bar"><span></span><span></span><span></span><b>요청</b><button class="copy" type="button" data-copy>복사</button></div><div class="terminal-copy"><p><span class="terminal-prompt">&gt;</span> 품질기준.md를 읽고, 강의 교안 스킬을 만들기 위해 나를 인터뷰해 줘. 한 번에 질문 세 개씩.<span class="terminal-cursor" aria-hidden="true"></span></p></div></div></div></div>
+          <div style="display:grid;grid-template-columns:54px 1fr;column-gap:10px;align-items:start"><span style="font-size:44px;font-weight:800;line-height:1;letter-spacing:-.03em;color:var(--pr-deep);text-align:center">2</span><div><p style="margin:2px 0 8px;font-size:24px;font-weight:800;line-height:1.3;color:var(--ink)">질문에 답하기 <span style="font-size:18px;font-weight:700;color:var(--gray-700)">· 세 개씩 · 질문마다 비유가 옵니다</span></p><div class="wcard" style="padding:14px 20px 14px"><div style="display:grid;gap:8px"><div style="display:grid;grid-template-columns:36px 1fr;gap:12px;align-items:center"><span class="ic fill" style="width:36px;height:36px;font-size:22px;font-weight:800;color:var(--ink)">1</span><span style="font-size:22px;font-weight:600;line-height:1.4;color:var(--ink)">자주 만드는 강의 · 듣는 사람 · 분과 장</span></div><div style="display:grid;grid-template-columns:36px 1fr;gap:12px;align-items:center"><span class="ic fill" style="width:36px;height:36px;font-size:22px;font-weight:800;color:var(--ink)">2</span><span style="font-size:22px;font-weight:600;line-height:1.4;color:var(--ink)">꼭 들어가는 장 · 넣지 않을 것 · 말투</span></div><div style="display:grid;grid-template-columns:36px 1fr;gap:12px;align-items:center"><span class="ic fill" style="width:36px;height:36px;font-size:22px;font-weight:800;color:var(--ink)">3</span><span style="font-size:22px;font-weight:600;line-height:1.4;color:var(--ink)">받은 덱에서 꼭 확인할 것 세 가지</span></div></div></div></div></div>
         </div>
         <div class="pr-right" style="gap:0">
-          <div style="display:grid;grid-template-columns:54px 1fr;column-gap:10px;align-items:start"><span style="font-size:44px;font-weight:800;line-height:1;letter-spacing:-.03em;color:var(--pr-deep);text-align:center">2</span><div><p style="margin:2px 0 8px;font-size:24px;font-weight:800;line-height:1.3;color:var(--ink)">질문에 답하기 <span style="font-size:18px;font-weight:700;color:var(--gray-700)">· 세 개씩 · 질문마다 비유가 옵니다</span></p>
-            <div class="wcard" style="padding:14px 20px 14px"><div style="display:grid;gap:8px">
-              <div style="display:grid;grid-template-columns:36px 1fr;gap:12px;align-items:center"><span class="ic fill" style="width:36px;height:36px;font-size:22px;font-weight:800;color:var(--ink)">1</span><span style="font-size:22px;font-weight:600;line-height:1.4;color:var(--ink)">누가 듣나 · 듣고 할 일 · 몇 분과 몇 장</span></div>
-              <div style="display:grid;grid-template-columns:36px 1fr;gap:12px;align-items:center"><span class="ic fill" style="width:36px;height:36px;font-size:22px;font-weight:800;color:var(--ink)">2</span><span style="font-size:22px;font-weight:600;line-height:1.4;color:var(--ink)">넣고 뺄 내용 · 쉬운 예 · 말투</span></div>
-              <div style="display:grid;grid-template-columns:36px 1fr;gap:12px;align-items:center"><span class="ic fill" style="width:36px;height:36px;font-size:22px;font-weight:800;color:var(--ink)">3</span><span style="font-size:22px;font-weight:600;line-height:1.4;color:var(--ink)">글의 양 · 첫 장 · 마지막 장의 행동</span></div>
-            </div></div></div></div>
-          <div style="display:grid;grid-template-columns:54px 1fr;column-gap:10px;align-items:start;margin-top:12px"><span style="font-size:44px;font-weight:800;line-height:1;letter-spacing:-.03em;color:var(--pr-deep);text-align:center">3</span><p style="margin:6px 0 0;font-size:24px;font-weight:800;line-height:1.3;color:var(--ink)">개요.md 읽고 승인 <span style="font-size:18px;font-weight:700;color:var(--gray-700)">· 안 물은 값은 「기본값」 줄로 보입니다</span></p></div>
+          <div style="display:grid;grid-template-columns:54px 1fr;column-gap:10px;align-items:start"><span style="font-size:44px;font-weight:800;line-height:1;letter-spacing:-.03em;color:var(--pr-deep);text-align:center">3</span><p style="margin:6px 0 0;font-size:24px;font-weight:800;line-height:1.3;color:var(--ink)">정리를 읽고 승인 <span style="font-size:18px;font-weight:700;color:var(--gray-700)">· 승인하면 SKILL.md로 저장</span></p></div>
+          <div class="win file" style="margin-top:10px"><div class="win-bar"><i></i><i></i><i></i><b>SKILL.md 뼈대 · 예시 그림</b></div><div class="win-body" style="padding:6px 22px 18px;display:grid;gap:8px"><div style="display:grid;grid-template-columns:140px 1fr;column-gap:12px;align-items:baseline"><b style="font-size:22px;font-weight:800;line-height:1.4;color:var(--ink)">이름</b><span style="font-size:22px;font-weight:600;line-height:1.4;color:var(--gray-700)">lecture-deck</span></div><div style="display:grid;grid-template-columns:140px 1fr;column-gap:12px;align-items:baseline"><b style="font-size:22px;font-weight:800;line-height:1.4;color:var(--ink)">설명</b><span style="font-size:22px;font-weight:600;line-height:1.4;color:var(--gray-700)">언제 쓰는지 한두 문장</span></div><div style="display:grid;grid-template-columns:140px 1fr;column-gap:12px;align-items:baseline"><b style="font-size:22px;font-weight:800;line-height:1.4;color:var(--ink)">내 강의</b><span style="font-size:22px;font-weight:600;line-height:1.4;color:var(--gray-700)">인터뷰 답을 적습니다</span></div><div style="display:grid;grid-template-columns:140px 1fr;column-gap:12px;align-items:baseline"><b style="font-size:22px;font-weight:800;line-height:1.4;color:var(--ink)">디자인 시스템</b><span style="font-size:22px;font-weight:600;line-height:1.4;color:var(--gray-700)">한 줄 · 뒤에서 고릅니다</span></div><div style="display:grid;grid-template-columns:140px 1fr;column-gap:12px;align-items:baseline"><b style="font-size:22px;font-weight:800;line-height:1.4;color:var(--ink)">일하는 순서</b><span style="font-size:22px;font-weight:600;line-height:1.4;color:var(--gray-700)">7단계 + 점검 조건</span></div><div style="display:grid;grid-template-columns:140px 1fr;column-gap:12px;align-items:baseline"><b style="font-size:22px;font-weight:800;line-height:1.4;color:var(--ink)">내 규칙</b><span style="font-size:22px;font-weight:600;line-height:1.4;color:var(--gray-700)">비어 있음 · 뒤에서 채웁니다</span></div><div style="display:grid;grid-template-columns:140px 1fr;column-gap:12px;align-items:baseline"><b style="font-size:22px;font-weight:800;line-height:1.4;color:var(--ink)">memory</b><span style="font-size:22px;font-weight:600;line-height:1.4;color:var(--gray-700)">두 줄 · 뒤에서 적습니다</span></div></div></div>
         </div>
       </div>
-      <div class="wcard" style="margin-top:8px;padding:10px 20px 10px">
-        <div style="display:grid;grid-template-columns:140px 304px 1fr;column-gap:16px;align-items:center;row-gap:4px">
-          <span class="lab" style="font-size:18px;margin:0">도구</span><span class="lab" style="font-size:18px;margin:0">스킬 위치</span><span class="lab" style="font-size:18px;margin:0">부르기</span>
-          <b style="font-size:22px;font-weight:800;color:var(--ink);white-space:nowrap">Codex</b><span><span class="em-tag" style="font-size:22px">.agents/skills/lecture-deck/</span></span><span style="font-size:22px;font-weight:600;color:var(--ink);white-space:nowrap">설명이 요청과 맞으면 스스로 씁니다. <span class="em-tag">$lecture-deck</span>으로도 부릅니다</span>
-          <b style="font-size:22px;font-weight:800;color:var(--ink);white-space:nowrap">Antigravity</b><span><span class="em-tag" style="font-size:22px">.agents/skills/lecture-deck/</span></span><span style="font-size:22px;font-weight:600;color:var(--ink)"><span class="em-tag">/lecture-deck</span> 또는 이름을 말합니다</span>
-          <b style="font-size:22px;font-weight:800;color:var(--ink);white-space:nowrap">Claude Code</b><span><span class="em-tag" style="font-size:22px">.claude/skills/lecture-deck/</span></span><span style="font-size:22px;font-weight:600;color:var(--ink)"><span class="em-tag">/lecture-deck</span></span>
-        </div>
-      </div>
-      <p class="keep" style="margin-top:8px;color:var(--ink);font-weight:600">답이 떠오르지 않으면 「예를 들어 줘」로 보기를 받고, 맡기려면 「알아서 해 줘」라고 합니다.</p>
-      <p class="keep" style="margin-top:6px;color:var(--ink);font-weight:600">스킬이 보이지 않으면 Codex를 다시 시작하고, 그래도 안 되면 「스킬 폴더의 SKILL.md를 읽고 그 순서대로 만들어 줘」라고 합니다.</p>
     </div>
   </div>
 </section>
 
-<!-- P8-2B 개요 → 디자인 → 1장 → 나머지 · ③ 만들기(스킬의 다섯 단계 흐름 · 점검 항목 · 인쇄하면 PDF · 타이머 20분) -->
+<!-- P8-2B 디자이너 인터뷰로 디자인 시스템 후보 세 개를 받습니다 · ② 규칙(요청 · 질문 여섯 항목 · 정의 → 비유 · 후보 세 개 중 기본 하나 · 타이머 15분) -->
 <section class="slide pr f-steps" data-slide="P8-2B">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 18 V8 H18 M30 8 H40 V18 M40 30 V40 H30 M18 40 H8 V30" fill="none" style="stroke:var(--blue)" stroke-width="5"/><rect x="19" y="19" width="10" height="10" style="fill:var(--mint)"/></svg><span class="s-brand">FRAME</span>
     <span class="s-line"></span><div class="s-team">에이전트 실습</div>
   </header>
   <div class="pr-wrap">
-    <div class="pr-bar"><span class="pr-no">실습 8</span><span class="pr-name">강의 교안 스킬</span><span class="pr-steps" aria-label="4단계 중 3단계"><span>① 목표</span><span>② 규칙</span><span class="cur" aria-current="step">③ 만들기</span><span>④ 내 일에 맞게</span></span></div>
-    <div class="pr-top has-timer"><h2 class="s-title">개요 → 디자인 → 1장 → <b class="kw">나머지</b></h2><button class="timer sm" type="button" data-min="20" aria-label="타이머 20분 — 누르면 시작, 다시 누르면 멈춤" style="margin-top:16px"><span class="tv">20:00</span><span class="tl">▶ 시작</span></button></div>
-    <div class="pr-main" style="margin-top:16px">
-      <p style="margin:0 0 8px;font-size:18px;font-weight:800;color:var(--pr-deep)">스킬의 다섯 단계</p>
-      <div style="display:flex;align-items:stretch;gap:6px">
-        <div class="wcard" style="flex:1;min-width:0;padding:14px 16px 16px"><div style="display:flex;align-items:center;gap:10px"><span class="ic fill" style="width:40px;height:40px;font-size:22px;font-weight:800;color:var(--ink)">1</span><b style="font-size:24px;font-weight:800;line-height:1.2;color:var(--gray-700)">내용 인터뷰</b></div><div style="margin-top:10px"><span class="em-tag" style="font-size:22px">→ 개요.md</span></div><p style="margin:10px 0 0;font-size:22px;font-weight:600;line-height:1.4;color:var(--gray-700)">앞 장에서 마쳤습니다</p></div>
-        <svg viewBox="0 0 26 20" width="26" height="20" aria-hidden="true" style="flex:none;align-self:center"><path d="M2 10H21M14 3L21 10L14 17" fill="none" style="stroke:var(--pr-deep)" stroke-width="3.500" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        <div class="wcard" style="flex:1;min-width:0;padding:14px 16px 16px"><div style="display:flex;align-items:center;gap:10px"><span class="ic fill" style="width:40px;height:40px;font-size:22px;font-weight:800;color:var(--ink)">2</span><b style="font-size:24px;font-weight:800;line-height:1.2;color:var(--ink)">디자이너 인터뷰</b></div><div style="margin-top:10px"><span class="em-tag" style="font-size:22px">→ design.md</span></div><p style="margin:10px 0 0;font-size:22px;font-weight:600;line-height:1.4;color:var(--ink)">질문 10개에 답합니다</p></div>
-        <svg viewBox="0 0 26 20" width="26" height="20" aria-hidden="true" style="flex:none;align-self:center"><path d="M2 10H21M14 3L21 10L14 17" fill="none" style="stroke:var(--pr-deep)" stroke-width="3.500" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        <div class="wcard" style="flex:1;min-width:0;padding:14px 16px 16px"><div style="display:flex;align-items:center;gap:10px"><span class="ic fill" style="width:40px;height:40px;font-size:22px;font-weight:800;color:var(--ink)">3</span><b style="font-size:24px;font-weight:800;line-height:1.2;color:var(--ink)">1장</b></div><div style="margin-top:10px"><span class="em-tag" style="font-size:22px">→ 승인</span></div><p style="margin:10px 0 0;font-size:22px;font-weight:600;line-height:1.4;color:var(--ink)">열어 보고 승인합니다</p></div>
-        <svg viewBox="0 0 26 20" width="26" height="20" aria-hidden="true" style="flex:none;align-self:center"><path d="M2 10H21M14 3L21 10L14 17" fill="none" style="stroke:var(--pr-deep)" stroke-width="3.500" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        <div class="wcard" style="flex:1;min-width:0;padding:14px 16px 16px"><div style="display:flex;align-items:center;gap:10px"><span class="ic fill" style="width:40px;height:40px;font-size:22px;font-weight:800;color:var(--ink)">4</span><b style="font-size:24px;font-weight:800;line-height:1.2;color:var(--ink)">나머지</b></div><div style="margin-top:10px"><span class="em-tag" style="font-size:22px">→ 강의덱.html</span></div><p style="margin:10px 0 0;font-size:22px;font-weight:600;line-height:1.4;color:var(--ink)">방향키로 넘겨 봅니다</p></div>
-        <svg viewBox="0 0 26 20" width="26" height="20" aria-hidden="true" style="flex:none;align-self:center"><path d="M2 10H21M14 3L21 10L14 17" fill="none" style="stroke:var(--pr-deep)" stroke-width="3.500" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        <div class="wcard" style="flex:1;min-width:0;padding:14px 16px 16px"><div style="display:flex;align-items:center;gap:10px"><span class="ic fill" style="width:40px;height:40px;font-size:22px;font-weight:800;color:var(--ink)">5</span><b style="font-size:24px;font-weight:800;line-height:1.2;color:var(--ink)">점검</b></div><div style="margin-top:10px"><span class="em-tag" style="font-size:22px">→ 결과표</span></div><p style="margin:10px 0 0;font-size:22px;font-weight:600;line-height:1.4;color:var(--ink)">맞음 · 고침 · 미확인을 읽습니다</p></div>
-      </div>
-      <div style="margin-top:26px;display:grid;grid-template-columns:1.45fr 1fr;column-gap:24px;align-items:stretch">
-        <div class="wcard" style="padding:14px 22px 16px"><span class="lab" style="font-size:18px;margin:0 0 8px">점검 항목 · 일곱 가지 중 네 가지</span>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px 24px">
-            <div><b style="display:block;font-size:22px;font-weight:800;line-height:1.35;color:var(--ink)">넘침</b><span style="font-size:22px;font-weight:600;line-height:1.35;color:var(--gray-700)">스크롤 없음</span></div>
-            <div><b style="display:block;font-size:22px;font-weight:800;line-height:1.35;color:var(--ink)">글자 하한</b><span style="font-size:22px;font-weight:600;line-height:1.35;color:var(--gray-700)">24px 이상</span></div>
-            <div><b style="display:block;font-size:22px;font-weight:800;line-height:1.35;color:var(--ink)">디자인 일치</b><span style="font-size:22px;font-weight:600;line-height:1.35;color:var(--gray-700)">design.md와 같음</span></div>
-            <div><b style="display:block;font-size:22px;font-weight:800;line-height:1.35;color:var(--ink)">개요 일치</b><span style="font-size:22px;font-weight:600;line-height:1.35;color:var(--gray-700)">장 수 · 장 모양</span></div>
-          </div>
+    <div class="pr-bar"><span class="pr-no">실습 8</span><span class="pr-name">강의 교안 스킬</span><span class="pr-steps" aria-label="4단계 중 2단계"><span>① 목표</span><span class="cur" aria-current="step">② 규칙</span><span>③ 만들기</span><span>④ 내 일에 맞게</span></span></div>
+    <div class="pr-top has-timer"><h2 class="s-title">디자이너 인터뷰로 <b class="kw">디자인 시스템</b><br>후보 세 개를 받습니다</h2><button class="timer sm" type="button" data-min="15" aria-label="타이머 15분 — 누르면 시작, 다시 누르면 멈춤" style="margin-top:16px"><span class="tv">15:00</span><span class="tl">▶ 시작</span></button></div>
+    <div class="pr-main" style="margin-top:14px">
+      <div class="pr-cols" style="--lc:600px;column-gap:36px;flex:0 0 auto">
+        <div class="pr-left" style="justify-content:flex-start;gap:12px">
+          <div style="display:grid;grid-template-columns:54px 1fr;column-gap:10px;align-items:start"><span style="font-size:44px;font-weight:800;line-height:1;letter-spacing:-.03em;color:var(--pr-deep);text-align:center">1</span><div><p style="margin:2px 0 8px;font-size:24px;font-weight:800;line-height:1.3;color:var(--ink)">요청 보내기</p><div class="term lg terminal-dark"><div class="terminal-bar"><span></span><span></span><span></span><b>요청</b><button class="copy" type="button" data-copy>복사</button></div><div class="terminal-copy"><p><span class="terminal-prompt">&gt;</span> 디자이너로서 나를 인터뷰하고, 답으로 디자인시스템_틀.md를 채운 후보 세 개와 한 장짜리 시안을 만들어 줘.<span class="terminal-cursor" aria-hidden="true"></span></p></div></div></div></div>
+          <div style="display:grid;grid-template-columns:54px 1fr;column-gap:10px;align-items:start"><span style="font-size:44px;font-weight:800;line-height:1;letter-spacing:-.03em;color:var(--pr-deep);text-align:center">2</span><div><p style="margin:2px 0 8px;font-size:24px;font-weight:800;line-height:1.3;color:var(--ink)">질문에 답하기 <span style="font-size:18px;font-weight:700;color:var(--gray-700)">· 10개 이내</span></p><div class="wcard" style="padding:14px 20px 14px"><span class="lab" style="font-size:18px;margin:0 0 6px">색은 내가 말하고 · 모르면 「예를 들어 줘」 → 보기 셋 중 내가 고름</span><p style="margin:0;font-size:22px;font-weight:700;line-height:1.45;color:var(--ink)">분위기 · 주 색 · 글꼴 느낌 · 여백 · 움직임 · 하지 않을 것</p></div></div></div>
         </div>
-        <div class="wcard" style="padding:14px 22px 16px"><span class="lab" style="font-size:18px;margin:0 0 8px">인쇄하면 PDF</span>
-          <div style="display:flex;align-items:center;gap:16px;min-height:84px"><svg viewBox="0 0 64 56" width="64" height="56" role="img" aria-label="프린터" style="flex:none"><path d="M16 20V6h32v14M16 44H8V20h48v24h-8M16 34h32v18H16Z" fill="none" style="stroke:var(--pr-deep)" stroke-width="3.500" stroke-linejoin="round" stroke-linecap="round"/><circle cx="48" cy="28" r="2.500" style="fill:var(--pr-fill)"/></svg><div><b style="display:block;font-size:22px;font-weight:800;line-height:1.35;color:var(--ink)"><span class="em-tag">Ctrl + P</span></b><span style="font-size:22px;font-weight:600;line-height:1.35;color:var(--gray-700)">장마다 한 쪽으로 나옵니다</span></div></div>
+        <div class="pr-right" style="gap:0">
+          <div class="rule def"><span class="lab" style="font-size:18px">정의</span><p style="font-size:22px">디자인 시스템은 <b class="kw">색 · 글자 · 간격 · 모양</b>을 한 벌로 정해 둔 규칙입니다.</p></div>
+          <div class="rule ana" style="margin-top:6px"><p><span style="font-size:18px;font-weight:800;color:var(--gray-700)">비유</span>&nbsp; 가게 직원의 복장 규정과 같습니다.</p></div>
+          <div style="display:grid;grid-template-columns:54px 1fr;column-gap:10px;align-items:start;margin-top:12px"><span style="font-size:44px;font-weight:800;line-height:1;letter-spacing:-.03em;color:var(--pr-deep);text-align:center">3</span><p style="margin:6px 0 0;font-size:24px;font-weight:800;line-height:1.3;color:var(--ink)">시안 셋을 열어 보고 하나 고르기</p></div>
+          <span style="display:block;margin:10px 0 0 64px;font-size:18px;font-weight:800;color:var(--gray-700)">시안 html 세 개를 더블클릭해 열어 봅니다 · 예시 그림</span>
+          <div style="margin-left:64px"><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:6px"><div style="padding:10px 12px 10px;border-radius:14px;background:var(--white);box-shadow:var(--sh-card);display:grid;gap:6px;justify-items:start"><div style="display:flex;gap:6px"><i style="width:30px;height:30px;border-radius:50%;background:var(--blue);box-shadow:inset 0 0 0 2px var(--line)"></i><i style="width:30px;height:30px;border-radius:50%;background:var(--white);box-shadow:inset 0 0 0 2px var(--line)"></i><i style="width:30px;height:30px;border-radius:50%;background:var(--mint);box-shadow:inset 0 0 0 2px var(--line)"></i></div><b style="font-size:22px;font-weight:800;line-height:1.2;color:var(--ink)">후보 1</b></div><div style="padding:10px 12px 10px;border-radius:14px;background:var(--white);box-shadow:var(--sh-card);display:grid;gap:6px;justify-items:start"><div style="display:flex;gap:6px"><i style="width:30px;height:30px;border-radius:50%;background:var(--ink);box-shadow:inset 0 0 0 2px var(--line)"></i><i style="width:30px;height:30px;border-radius:50%;background:var(--white);box-shadow:inset 0 0 0 2px var(--line)"></i><i style="width:30px;height:30px;border-radius:50%;background:var(--coral);box-shadow:inset 0 0 0 2px var(--line)"></i></div><b style="font-size:22px;font-weight:800;line-height:1.2;color:var(--ink)">후보 2</b></div><div style="padding:10px 12px 10px;border-radius:14px;background:var(--white);box-shadow:var(--sh-card);display:grid;gap:6px;justify-items:start"><div style="display:flex;gap:6px"><i style="width:30px;height:30px;border-radius:50%;background:var(--white);box-shadow:inset 0 0 0 2px var(--line)"></i><i style="width:30px;height:30px;border-radius:50%;background:var(--blue);box-shadow:inset 0 0 0 2px var(--line)"></i><i style="width:30px;height:30px;border-radius:50%;background:var(--coral);box-shadow:inset 0 0 0 2px var(--line)"></i></div><b style="font-size:22px;font-weight:800;line-height:1.2;color:var(--ink)">후보 3</b></div></div></div>
+          <div style="margin:12px 0 0 64px"><span class="em-tag" style="font-size:24px">기본 디자인 시스템: 0N</span><p style="margin:6px 0 0;font-size:22px;font-weight:600;line-height:1.4;color:var(--gray-700)">나머지 후보는 지우지 않습니다</p></div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- P8-3 내 규칙을 스킬에 더합니다 · ④ 내 일에 맞게(SKILL.md 「내 규칙」 한 줄 · 사본 · 새 대화에서 확인 · 허브로 · 타이머 10분) -->
-<section class="slide pr f-fix" data-slide="P8-3">
+<!-- P8-2C 내 규칙 3~5개를 적습니다 · ② 규칙(규칙 정하기 시작 요청 · 규칙예시 다섯 줄 · 규칙/왜/확인 방법 틀 · 말버릇 열 개 요청 · 타이머 10분) -->
+<section class="slide pr f-steps" data-slide="P8-2C">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 18 V8 H18 M30 8 H40 V18 M40 30 V40 H30 M18 40 H8 V30" fill="none" style="stroke:var(--blue)" stroke-width="5"/><rect x="19" y="19" width="10" height="10" style="fill:var(--mint)"/></svg><span class="s-brand">FRAME</span>
+    <span class="s-line"></span><div class="s-team">에이전트 실습</div>
+  </header>
+  <div class="pr-wrap">
+    <div class="pr-bar"><span class="pr-no">실습 8</span><span class="pr-name">강의 교안 스킬</span><span class="pr-steps" aria-label="4단계 중 2단계"><span>① 목표</span><span class="cur" aria-current="step">② 규칙</span><span>③ 만들기</span><span>④ 내 일에 맞게</span></span></div>
+    <div class="pr-top has-timer"><h2 class="s-title">내 <b class="kw">규칙</b> 3~5개를 적습니다</h2><button class="timer sm" type="button" data-min="10" aria-label="타이머 10분 — 누르면 시작, 다시 누르면 멈춤" style="margin-top:16px"><span class="tv">10:00</span><span class="tl">▶ 시작</span></button></div>
+    <div class="pr-main" style="margin-top:14px">
+      <div class="pr-cols" style="--lc:580px;column-gap:32px;flex:0 0 auto">
+        <div class="pr-left" style="justify-content:flex-start;gap:0">
+          <div style="display:grid;grid-template-columns:54px 1fr;column-gap:10px;align-items:start"><span style="font-size:44px;font-weight:800;line-height:1;letter-spacing:-.03em;color:var(--pr-deep);text-align:center">1</span><div><p style="margin:2px 0 4px;font-size:24px;font-weight:800;line-height:1.3;color:var(--ink)">요청 보내기</p><div class="term lg terminal-dark"><div class="terminal-bar"><span></span><span></span><span></span><b>요청</b><button class="copy" type="button" data-copy>복사</button></div><div class="terminal-copy"><p><span class="terminal-prompt">&gt;</span> 규칙예시.md를 읽고 내 규칙 3~5개를 정하게 도와줘. 내 승인 뒤 SKILL.md 「내 규칙」에 적어 줘.<span class="terminal-cursor" aria-hidden="true"></span></p></div></div></div></div>
+          <div style="display:grid;grid-template-columns:54px 1fr;column-gap:10px;align-items:start;margin-top:10px"><span style="font-size:44px;font-weight:800;line-height:1;letter-spacing:-.03em;color:var(--pr-deep);text-align:center">2</span><div><p style="margin:2px 0 4px;font-size:24px;font-weight:800;line-height:1.3;color:var(--ink)">예시 다섯 줄에서 고르기 <span style="font-size:18px;font-weight:700;color:var(--gray-700)">· 이 수업 슬라이드의 실제 규칙</span></p><div class="wcard" style="padding:12px 20px 12px"><div style="display:grid;gap:4px"><div style="display:grid;grid-template-columns:36px 1fr;gap:12px;align-items:center"><span class="ic fill" style="width:36px;height:36px;font-size:22px;font-weight:800;color:var(--ink)">1</span><span style="font-size:22px;font-weight:600;line-height:1.4;color:var(--ink)">화면이 깨지지 않는다</span></div><div style="display:grid;grid-template-columns:36px 1fr;gap:12px;align-items:center"><span class="ic fill" style="width:36px;height:36px;font-size:22px;font-weight:800;color:var(--ink)">2</span><span style="font-size:22px;font-weight:600;line-height:1.4;color:var(--ink)">본문 글자는 22px보다 작게 쓰지 않는다</span></div><div style="display:grid;grid-template-columns:36px 1fr;gap:12px;align-items:center"><span class="ic fill" style="width:36px;height:36px;font-size:22px;font-weight:800;color:var(--ink)">3</span><span style="font-size:22px;font-weight:600;line-height:1.4;color:var(--ink)">글자와 배경의 대비는 4.5:1 이상</span></div><div style="display:grid;grid-template-columns:36px 1fr;gap:12px;align-items:center"><span class="ic fill" style="width:36px;height:36px;font-size:22px;font-weight:800;color:var(--ink)">4</span><span style="font-size:22px;font-weight:600;line-height:1.4;color:var(--ink)">AI가 자주 쓰는 말투를 쓰지 않는다</span></div><div style="display:grid;grid-template-columns:36px 1fr;gap:12px;align-items:center"><span class="ic fill" style="width:36px;height:36px;font-size:22px;font-weight:800;color:var(--ink)">5</span><span style="font-size:22px;font-weight:600;line-height:1.4;color:var(--ink)">새 말은 정의를 먼저, 비유는 그 다음</span></div></div></div></div></div>
+        </div>
+        <div class="pr-right" style="gap:0">
+          <div style="display:grid;grid-template-columns:54px 1fr;column-gap:10px;align-items:start"><span style="font-size:44px;font-weight:800;line-height:1;letter-spacing:-.03em;color:var(--pr-deep);text-align:center">3</span><div><p style="margin:2px 0 4px;font-size:24px;font-weight:800;line-height:1.3;color:var(--ink)">한 줄씩 적기 <span style="font-size:18px;font-weight:700;color:var(--gray-700)">· 에이전트와 함께 채움 · 규칙 / 왜 / 확인 방법</span></p><div class="wcard" style="padding:14px 20px 14px"><div style="display:grid;gap:8px"><div style="display:grid;grid-template-columns:130px 1fr;column-gap:12px;align-items:baseline"><b style="font-size:22px;font-weight:800;line-height:1.4;color:var(--ink)">규칙</b><span style="font-size:22px;font-weight:600;line-height:1.4;color:var(--gray-700)">〈한 줄〉</span></div><div style="display:grid;grid-template-columns:130px 1fr;column-gap:12px;align-items:baseline"><b style="font-size:22px;font-weight:800;line-height:1.4;color:var(--ink)">왜</b><span style="font-size:22px;font-weight:600;line-height:1.4;color:var(--gray-700)">〈이유〉</span></div><div style="display:grid;grid-template-columns:130px 1fr;column-gap:12px;align-items:baseline"><b style="font-size:22px;font-weight:800;line-height:1.4;color:var(--ink)">확인 방법</b><span style="font-size:22px;font-weight:600;line-height:1.4;color:var(--gray-700)">〈보면 아는 방법〉</span></div></div></div></div></div>
+          <div style="display:grid;grid-template-columns:54px 1fr;column-gap:10px;align-items:start;margin-top:14px"><span style="font-size:44px;font-weight:800;line-height:1;letter-spacing:-.03em;color:var(--pr-deep);text-align:center">4</span><div><p style="margin:2px 0 4px;font-size:24px;font-weight:800;line-height:1.3;color:var(--ink)">말투 규칙은 말버릇에서 고르기</p><div class="term lg terminal-dark"><div class="terminal-bar"><span></span><span></span><span></span><b>요청</b><button class="copy" type="button" data-copy>복사</button></div><div class="terminal-copy"><p><span class="terminal-prompt">&gt;</span> 네가 글을 쓸 때 자주 쓰는 말버릇 10개를 적어 줘. 내가 금지할 것을 고를게.<span class="terminal-cursor" aria-hidden="true"></span></p></div></div></div></div>
+          <p style="margin:12px 0 0 64px;font-size:24px;font-weight:800;line-height:1.4;color:var(--ink)">적어도 하나는 내 것으로.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- P8-2D 고친 것은 memory에 남깁니다 · ② 규칙(정의 → 비유 · memory 파일 예시 그림 · 요청 · 타이머 5분) -->
+<section class="slide pr f-steps" data-slide="P8-2D">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 18 V8 H18 M30 8 H40 V18 M40 30 V40 H30 M18 40 H8 V30" fill="none" style="stroke:var(--blue)" stroke-width="5"/><rect x="19" y="19" width="10" height="10" style="fill:var(--mint)"/></svg><span class="s-brand">FRAME</span>
+    <span class="s-line"></span><div class="s-team">에이전트 실습</div>
+  </header>
+  <div class="pr-wrap">
+    <div class="pr-bar"><span class="pr-no">실습 8</span><span class="pr-name">강의 교안 스킬</span><span class="pr-steps" aria-label="4단계 중 2단계"><span>① 목표</span><span class="cur" aria-current="step">② 규칙</span><span>③ 만들기</span><span>④ 내 일에 맞게</span></span></div>
+    <div class="pr-top has-timer"><h2 class="s-title">고친 것은 <b class="kw">memory</b>에 남깁니다</h2><button class="timer sm" type="button" data-min="5" aria-label="타이머 5분 — 누르면 시작, 다시 누르면 멈춤" style="margin-top:16px"><span class="tv">5:00</span><span class="tl">▶ 시작</span></button></div>
+    <div class="pr-main" style="margin-top:14px">
+      <div class="pr-cols" style="--lc:540px;column-gap:36px;flex:0 0 auto">
+        <div class="pr-left" style="justify-content:flex-start;gap:0">
+          <div class="rule def"><span class="lab" style="font-size:18px">정의</span><p style="font-size:24px">memory 폴더에는 강의 주제마다 파일이 하나 있고, 내가 <b class="kw">고친 것 · 고른 것 · 싫다고 한 것</b>이 내 말 그대로 적혀 있습니다.</p></div>
+          <div class="rule ana" style="margin-top:18px"><span class="lab" style="font-size:18px">비유</span><p>단골 가게가 손님 취향을 적어 두는 수첩과 같습니다.</p></div>
+          <p class="keep" style="margin-top:18px;color:var(--ink);font-weight:600">장을 만들기 전에 그 주제의 파일을 먼저 읽습니다.</p>
+          <p class="keep" style="margin-top:14px">파일 이름은 주제 이름을 띄어쓰기 없이 씁니다. 새 강의를 시작하면 memory 목록부터 보고 같은 주제가 있는지 묻습니다.</p>
+        </div>
+        <div class="pr-right" style="gap:0">
+          <svg viewBox="0 0 520 196" width="520" height="196" role="img" aria-label="예시 그림. memory 폴더 안 강의주제.md 파일의 모습. 고친 것, 고른 것, 싫다고 한 것의 세 줄이 있고, 각 줄에 내가 한 말을 그대로 적는다." style="display:block;overflow:visible">
+            <g style="filter:drop-shadow(0 4px 8px var(--t-shadow))"><rect x="2" y="2" width="516" height="192" rx="18" style="fill:var(--t-card)"/></g>
+            <path transform="translate(24,16) scale(.85)" d="M0 0h13l7 7v21H0ZM13 0v7h7" fill="none" style="stroke:var(--pr-deep)" stroke-width="2.600" stroke-linejoin="round"/>
+            <text x="58" y="38" font-size="22" font-weight="800" style="fill:var(--ink)">memory/강의주제.md</text>
+            <text x="496" y="36" font-size="18" font-weight="600" text-anchor="end" style="fill:var(--gray-700)">예시 그림</text>
+            <rect x="14" y="58" width="492" height="124" rx="12" style="fill:var(--pr-soft)"/>
+            <g font-size="22" font-weight="800" style="fill:var(--ink)"><text x="30" y="92">고친 것</text><text x="30" y="132">고른 것</text><text x="30" y="172">싫다고 한 것</text></g>
+            <g font-size="22" font-weight="600" style="fill:var(--gray-700)"><text x="190" y="92">〈내가 한 말 그대로〉</text><text x="190" y="132">〈내가 한 말 그대로〉</text><text x="190" y="172">〈내가 한 말 그대로〉</text></g>
+          </svg>
+          <div style="display:grid;grid-template-columns:54px 1fr;column-gap:10px;align-items:start;margin-top:14px"><span style="font-size:44px;font-weight:800;line-height:1;letter-spacing:-.03em;color:var(--pr-deep);text-align:center">1</span><div><p style="margin:2px 0 8px;font-size:24px;font-weight:800;line-height:1.3;color:var(--ink)">요청 보내기 <span style="font-size:18px;font-weight:700;color:var(--gray-700)">· 내용을 읽고 승인합니다</span></p><div class="term lg terminal-dark"><div class="terminal-bar"><span></span><span></span><span></span><b>요청</b><button class="copy" type="button" data-copy>복사</button></div><div class="terminal-copy"><p><span class="terminal-prompt">&gt;</span> SKILL.md에 memory 규칙을 적고 memory/README.md를 만들어 줘.<span class="terminal-cursor" aria-hidden="true"></span></p></div></div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- P8-3 스킬로 교안을 일곱 단계로 만듭니다 · ③ 만들기(B1~B7 표 · 요청 · 타이머 25분) -->
+<section class="slide pr f-steps" data-slide="P8-3">
+  <header class="s-head">
+    <svg class="s-logo" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 18 V8 H18 M30 8 H40 V18 M40 30 V40 H30 M18 40 H8 V30" fill="none" style="stroke:var(--blue)" stroke-width="5"/><rect x="19" y="19" width="10" height="10" style="fill:var(--mint)"/></svg><span class="s-brand">FRAME</span>
+    <span class="s-line"></span><div class="s-team">에이전트 실습</div>
+  </header>
+  <div class="pr-wrap">
+    <div class="pr-bar"><span class="pr-no">실습 8</span><span class="pr-name">강의 교안 스킬</span><span class="pr-steps" aria-label="4단계 중 3단계"><span>① 목표</span><span>② 규칙</span><span class="cur" aria-current="step">③ 만들기</span><span>④ 내 일에 맞게</span></span></div>
+    <div class="pr-top has-timer"><h2 class="s-title"><b class="kw">스킬</b>로 교안을 일곱 단계로 만듭니다</h2><button class="timer sm" type="button" data-min="25" aria-label="타이머 25분 — 누르면 시작, 다시 누르면 멈춤" style="margin-top:16px"><span class="tv">25:00</span><span class="tl">▶ 시작</span></button></div>
+    <div class="pr-main" style="margin-top:14px">
+      <div class="pr-cols" style="--lc:700px;column-gap:32px;flex:0 0 auto">
+        <div class="pr-left" style="justify-content:flex-start;gap:0">
+          <p style="margin:0 0 8px;font-size:18px;font-weight:800;color:var(--pr-deep)">B1~B7 = 1~7단계 · 단계마다 내 승인</p>
+          <div class="wcard" style="padding:14px 22px 14px"><div style="display:grid;gap:5px"><div style="display:grid;grid-template-columns:50px 190px 1fr auto;column-gap:12px;align-items:baseline"><b style="font-size:22px;font-weight:800;line-height:1.4;color:var(--pr-deep)">B1</b><b style="font-size:22px;font-weight:800;line-height:1.4;color:var(--ink)">강의 전반 인터뷰</b><span style="font-size:22px;font-weight:600;line-height:1.4;color:var(--gray-700)">네 묶음으로 자세히 묻기</span><span class="em-tag" style="font-size:22px">승인</span></div><div style="display:grid;grid-template-columns:50px 190px 1fr auto;column-gap:12px;align-items:baseline"><b style="font-size:22px;font-weight:800;line-height:1.4;color:var(--pr-deep)">B2</b><b style="font-size:22px;font-weight:800;line-height:1.4;color:var(--ink)">챕터 구축</b><span style="font-size:22px;font-weight:600;line-height:1.4;color:var(--gray-700)">챕터 표 → 개요.md</span><span class="em-tag" style="font-size:22px">승인</span></div><div style="display:grid;grid-template-columns:50px 190px 1fr auto;column-gap:12px;align-items:baseline"><b style="font-size:22px;font-weight:800;line-height:1.4;color:var(--pr-deep)">B3</b><b style="font-size:22px;font-weight:800;line-height:1.4;color:var(--ink)">리서치</b><span style="font-size:22px;font-weight:600;line-height:1.4;color:var(--gray-700)">챕터마다 사실과 출처</span><span class="em-tag" style="font-size:22px">승인</span></div><div style="display:grid;grid-template-columns:50px 190px 1fr auto;column-gap:12px;align-items:baseline"><b style="font-size:22px;font-weight:800;line-height:1.4;color:var(--pr-deep)">B4</b><b style="font-size:22px;font-weight:800;line-height:1.4;color:var(--ink)">디자인 초안</b><span style="font-size:22px;font-weight:600;line-height:1.4;color:var(--gray-700)">첫 장 시안 1~2개</span><span class="em-tag" style="font-size:22px">승인</span></div><div style="display:grid;grid-template-columns:50px 190px 1fr auto;column-gap:12px;align-items:baseline"><b style="font-size:22px;font-weight:800;line-height:1.4;color:var(--pr-deep)">B5</b><b style="font-size:22px;font-weight:800;line-height:1.4;color:var(--ink)">수정</b><span style="font-size:22px;font-weight:600;line-height:1.4;color:var(--gray-700)">고칠 것을 말하면 반영</span><span class="em-tag" style="font-size:22px">승인</span></div><div style="display:grid;grid-template-columns:50px 190px 1fr auto;column-gap:12px;align-items:baseline"><b style="font-size:22px;font-weight:800;line-height:1.4;color:var(--pr-deep)">B6</b><b style="font-size:22px;font-weight:800;line-height:1.4;color:var(--ink)">memory 기록</b><span style="font-size:22px;font-weight:600;line-height:1.4;color:var(--gray-700)">고친 것을 내 말 그대로</span><span class="em-tag" style="font-size:22px">승인</span></div><div style="display:grid;grid-template-columns:50px 190px 1fr auto;column-gap:12px;align-items:baseline"><b style="font-size:22px;font-weight:800;line-height:1.4;color:var(--pr-deep)">B7</b><b style="font-size:22px;font-weight:800;line-height:1.4;color:var(--ink)">나머지 장</b><span style="font-size:22px;font-weight:600;line-height:1.4;color:var(--gray-700)">10장씩 만들고 점검</span><span class="em-tag" style="font-size:22px">승인</span></div></div></div>
+        </div>
+        <div class="pr-right" style="gap:0">
+          <div style="display:grid;grid-template-columns:54px 1fr;column-gap:10px;align-items:start"><span style="font-size:44px;font-weight:800;line-height:1;letter-spacing:-.03em;color:var(--pr-deep);text-align:center">1</span><div><p style="margin:2px 0 8px;font-size:24px;font-weight:800;line-height:1.3;color:var(--ink)">요청 보내기</p><div class="term lg terminal-dark"><div class="terminal-bar"><span></span><span></span><span></span><b>요청</b><button class="copy" type="button" data-copy>복사</button></div><div class="terminal-copy"><p><span class="terminal-prompt">&gt;</span> lecture-deck 스킬로 <span class="ph">〈내 주제〉</span> 강의 교안을 만들어 줘. 1단계부터 순서대로, 단계마다 내 승인을 받고 진행해.<span class="terminal-cursor" aria-hidden="true"></span></p></div></div></div></div>
+        </div>
+      </div>
+      <p class="keep" style="margin-top:12px;color:var(--ink);font-weight:600">스킬이 반영되지 않은 것 같으면 새 대화를 열고 「SKILL.md를 읽고 그 순서대로 해 줘」라고 합니다.</p>
+    </div>
+  </div>
+</section>
+
+<!-- P8-3B 점검 결과표를 읽고 한 곳을 고칩니다 · ④ 내 일에 맞게(점검 일곱 조건 · 결과표 요청 · 한 곳 고치기 요청 · 허브로 · 타이머 10분) -->
+<section class="slide pr f-fix" data-slide="P8-3B">
   <header class="s-head">
     <svg class="s-logo" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 18 V8 H18 M30 8 H40 V18 M40 30 V40 H30 M18 40 H8 V30" fill="none" style="stroke:var(--blue)" stroke-width="5"/><rect x="19" y="19" width="10" height="10" style="fill:var(--mint)"/></svg><span class="s-brand">FRAME</span>
     <span class="s-line"></span><div class="s-team">에이전트 실습</div>
   </header>
   <div class="pr-wrap">
     <div class="pr-bar"><span class="pr-no">실습 8</span><span class="pr-name">강의 교안 스킬</span><span class="pr-steps" aria-label="4단계 중 4단계"><span>① 목표</span><span>② 규칙</span><span>③ 만들기</span><span class="cur" aria-current="step">④ 내 일에 맞게</span></span></div>
-    <div class="pr-top has-timer"><h2 class="s-title">내 규칙을 <b class="kw">스킬</b>에 더합니다</h2><button class="timer sm" type="button" data-min="10" aria-label="타이머 10분 — 누르면 시작, 다시 누르면 멈춤" style="margin-top:16px"><span class="tv">10:00</span><span class="tl">▶ 시작</span></button></div>
+    <div class="pr-top has-timer"><h2 class="s-title">점검 결과표를 읽고 <b class="kw">한 곳</b>을 고칩니다</h2><button class="timer sm" type="button" data-min="10" aria-label="타이머 10분 — 누르면 시작, 다시 누르면 멈춤" style="margin-top:16px"><span class="tv">10:00</span><span class="tl">▶ 시작</span></button></div>
     <div class="pr-main" style="margin-top:14px">
-      <div class="pr-cols" style="--lc:560px;column-gap:36px;flex:0 0 auto">
-        <div class="pr-left" style="justify-content:flex-start;gap:12px">
-          <div style="display:grid;grid-template-columns:54px 1fr;column-gap:10px;align-items:start"><span style="font-size:44px;font-weight:800;line-height:1;letter-spacing:-.03em;color:var(--pr-deep);text-align:center">1</span><div><p style="margin:2px 0 6px;font-size:24px;font-weight:800;line-height:1.3;color:var(--ink)">한 줄 적기 <span style="font-size:18px;font-weight:700;color:var(--gray-700)">· 「내 규칙」 맨 아래</span></p><p style="margin:0;font-size:22px;font-weight:600;line-height:1.5;color:var(--ink)"><span class="em-tag">.agents/skills/lecture-deck/SKILL.md</span></p></div></div>
-          <div style="display:grid;grid-template-columns:54px 1fr;column-gap:10px;align-items:start"><span style="font-size:44px;font-weight:800;line-height:1;letter-spacing:-.03em;color:var(--pr-deep);text-align:center">2</span><div><p style="margin:2px 0 6px;font-size:24px;font-weight:800;line-height:1.3;color:var(--ink)">사본에 넣기 <span style="font-size:18px;font-weight:700;color:var(--gray-700)">· 같은 줄</span></p><p style="margin:0;font-size:22px;font-weight:600;line-height:1.5;color:var(--ink)"><span class="em-tag">.claude/skills/lecture-deck/SKILL.md</span></p></div></div>
-          <div style="display:grid;grid-template-columns:54px 1fr;column-gap:10px;align-items:start"><span style="font-size:44px;font-weight:800;line-height:1;letter-spacing:-.03em;color:var(--pr-deep);text-align:center">3</span><div><p style="margin:2px 0 8px;font-size:24px;font-weight:800;line-height:1.3;color:var(--ink)">새 대화에서 다시 만들기 <span style="font-size:18px;font-weight:700;color:var(--gray-700)">· 1장은 열어 보고 승인</span></p><div class="term lg terminal-dark"><div class="terminal-bar"><span></span><span></span><span></span><b>요청</b><button class="copy" type="button" data-copy>복사</button></div><div class="terminal-copy"><p><span class="terminal-prompt">&gt;</span> lecture-deck 스킬로 강의덱.html을 다시 만들어 줘.<span class="terminal-cursor" aria-hidden="true"></span></p></div></div></div></div>
-          <div style="display:grid;grid-template-columns:54px 1fr;column-gap:10px;align-items:start"><span style="font-size:44px;font-weight:800;line-height:1;letter-spacing:-.03em;color:var(--pr-deep);text-align:center">4</span><p style="margin:6px 0 0;font-size:24px;font-weight:800;line-height:1.3;color:var(--ink)">덱에서 확인 <span style="font-size:18px;font-weight:700;color:var(--gray-700)">· 내 규칙이 나타났는지</span></p></div>
+      <div class="pr-cols" style="--lc:640px;column-gap:36px;flex:0 0 auto">
+        <div class="pr-left" style="justify-content:flex-start;gap:0">
+          <p style="margin:0 0 8px;font-size:18px;font-weight:800;color:var(--pr-deep)">점검 일곱 조건 + 내가 정한 세 가지 · 맞음 / 고침 / 미확인</p>
+          <div class="wcard" style="padding:14px 22px 14px"><div style="display:grid;gap:6px"><div style="display:grid;grid-template-columns:34px 130px 1fr;column-gap:10px;align-items:baseline"><b style="font-size:22px;font-weight:800;line-height:1.4;color:var(--pr-deep)">①</b><b style="font-size:22px;font-weight:800;line-height:1.4;color:var(--ink)">화면</b><span style="font-size:22px;font-weight:600;line-height:1.4;color:var(--gray-700)">1280×720 안 · 스크롤 없음</span></div><div style="display:grid;grid-template-columns:34px 130px 1fr;column-gap:10px;align-items:baseline"><b style="font-size:22px;font-weight:800;line-height:1.4;color:var(--pr-deep)">②</b><b style="font-size:22px;font-weight:800;line-height:1.4;color:var(--ink)">글자 하한</b><span style="font-size:22px;font-weight:600;line-height:1.4;color:var(--gray-700)">본문이 하한 이상 (기본 22px)</span></div><div style="display:grid;grid-template-columns:34px 130px 1fr;column-gap:10px;align-items:baseline"><b style="font-size:22px;font-weight:800;line-height:1.4;color:var(--pr-deep)">③</b><b style="font-size:22px;font-weight:800;line-height:1.4;color:var(--ink)">대비</b><span style="font-size:22px;font-weight:600;line-height:1.4;color:var(--gray-700)">글자와 배경 4.5:1 이상</span></div><div style="display:grid;grid-template-columns:34px 130px 1fr;column-gap:10px;align-items:baseline"><b style="font-size:22px;font-weight:800;line-height:1.4;color:var(--pr-deep)">④</b><b style="font-size:22px;font-weight:800;line-height:1.4;color:var(--ink)">말투</b><span style="font-size:22px;font-weight:600;line-height:1.4;color:var(--gray-700)">내 규칙의 말투 금지 0곳</span></div><div style="display:grid;grid-template-columns:34px 130px 1fr;column-gap:10px;align-items:baseline"><b style="font-size:22px;font-weight:800;line-height:1.4;color:var(--pr-deep)">⑤</b><b style="font-size:22px;font-weight:800;line-height:1.4;color:var(--ink)">디자인</b><span style="font-size:22px;font-weight:600;line-height:1.4;color:var(--gray-700)">고른 디자인 시스템과 같음</span></div><div style="display:grid;grid-template-columns:34px 130px 1fr;column-gap:10px;align-items:baseline"><b style="font-size:22px;font-weight:800;line-height:1.4;color:var(--pr-deep)">⑥</b><b style="font-size:22px;font-weight:800;line-height:1.4;color:var(--ink)">개요</b><span style="font-size:22px;font-weight:600;line-height:1.4;color:var(--gray-700)">개요.md의 챕터 · 장 수와 같음</span></div><div style="display:grid;grid-template-columns:34px 130px 1fr;column-gap:10px;align-items:baseline"><b style="font-size:22px;font-weight:800;line-height:1.4;color:var(--pr-deep)">⑦</b><b style="font-size:22px;font-weight:800;line-height:1.4;color:var(--ink)">인쇄</b><span style="font-size:22px;font-weight:600;line-height:1.4;color:var(--gray-700)">Ctrl+P에서 장마다 한 쪽</span></div></div></div>
         </div>
         <div class="pr-right" style="gap:0">
-          <svg viewBox="0 0 500 244" width="500" height="244" role="img" aria-label="예시 그림. SKILL.md 파일의 맨 아래 「## 내 규칙」 절에 「〈내가 정한 한 줄〉」 한 줄이 들어간 모습. 위쪽의 세 줄은 다른 절의 내용이다." style="display:block;overflow:visible">
-            <g style="filter:drop-shadow(0 4px 8px var(--t-shadow))"><rect x="2" y="2" width="496" height="240" rx="18" style="fill:var(--t-card)"/></g>
-            <path transform="translate(24,20) scale(.85)" d="M0 0h13l7 7v21H0ZM13 0v7h7" fill="none" style="stroke:var(--pr-deep)" stroke-width="2.600" stroke-linejoin="round"/>
-            <text x="58" y="42" font-size="22" font-weight="800" style="fill:var(--ink)">SKILL.md</text>
-            <text x="476" y="40" font-size="18" font-weight="600" text-anchor="end" style="fill:var(--gray-700)">예시 그림</text>
-            <g style="fill:var(--pr-line)"><rect x="24" y="66" width="300" height="9" rx="4.500"/><rect x="24" y="86" width="240" height="9" rx="4.500"/></g>
-            <text x="24" y="136" font-size="22" font-weight="800" style="fill:var(--ink)">## 내 규칙</text>
-            <rect x="14" y="150" width="472" height="46" rx="10" style="fill:var(--pr-soft)"/>
-            <text x="30" y="181" font-size="22" font-weight="700" style="fill:var(--pr-deep)">- 〈내가 정한 한 줄〉</text>
-            <text x="24" y="226" font-size="22" font-weight="600" style="fill:var(--gray-700)">한 줄에 규칙 하나, 확인할 수 있는 말로</text>
-          </svg>
-          <p style="margin:12px 0 6px;font-size:18px;font-weight:800;color:var(--pr-deep)">예시 · 쓸 규칙은 내가 정합니다</p>
-          <div style="display:grid;gap:6px">
-            <div style="background:var(--pr-soft);border-radius:12px;padding:4px 16px;font-size:22px;font-weight:700;line-height:1.4;color:var(--ink)">숫자 뒤에는 단위를 붙인다</div>
-            <div style="background:var(--pr-soft);border-radius:12px;padding:4px 16px;font-size:22px;font-weight:700;line-height:1.4;color:var(--ink)">장 제목은 15자 이내로 쓴다</div>
-            <div style="background:var(--pr-soft);border-radius:12px;padding:4px 16px;font-size:22px;font-weight:700;line-height:1.4;color:var(--ink)">강조 낱말은 장마다 하나만 굵게 쓴다</div>
-          </div>
+          <div style="display:grid;grid-template-columns:54px 1fr;column-gap:10px;align-items:start"><span style="font-size:44px;font-weight:800;line-height:1;letter-spacing:-.03em;color:var(--pr-deep);text-align:center">1</span><div><p style="margin:2px 0 8px;font-size:24px;font-weight:800;line-height:1.3;color:var(--ink)">결과표 받기</p><div class="term lg terminal-dark"><div class="terminal-bar"><span></span><span></span><span></span><b>요청</b><button class="copy" type="button" data-copy>복사</button></div><div class="terminal-copy"><p><span class="terminal-prompt">&gt;</span> 점검 결과표를 보여 줘.<span class="terminal-cursor" aria-hidden="true"></span></p></div></div></div></div>
+          <div style="display:grid;grid-template-columns:54px 1fr;column-gap:10px;align-items:start;margin-top:14px"><span style="font-size:44px;font-weight:800;line-height:1;letter-spacing:-.03em;color:var(--pr-deep);text-align:center">2</span><div><p style="margin:2px 0 8px;font-size:24px;font-weight:800;line-height:1.3;color:var(--ink)">한 곳 고치기 <span style="font-size:18px;font-weight:700;color:var(--gray-700)">· 고친 것은 memory에</span></p><div class="term lg terminal-dark"><div class="terminal-bar"><span></span><span></span><span></span><b>요청</b><button class="copy" type="button" data-copy>복사</button></div><div class="terminal-copy"><p><span class="terminal-prompt">&gt;</span> <span class="ph">〈장〉</span>의 <span class="ph">〈무엇〉</span>을 <span class="ph">〈어떻게〉</span> 바꿔 줘. 고친 것은 memory에 적어 줘.<span class="terminal-cursor" aria-hidden="true"></span></p></div></div></div></div>
         </div>
       </div>
-      <div class="fx-back"><p class="keep" style="color:var(--ink);font-weight:600">안 보이면 Codex는 앱을 다시 시작합니다.</p><button class="back" type="button" data-go="HUB">허브로</button></div>
+      <div class="fx-back"><p class="keep" style="color:var(--ink);font-weight:600">고친 것은 memory에 남고, 같은 주제를 만들 때 먼저 읽습니다.</p><button class="back" type="button" data-go="HUB">허브로</button></div>
     </div>
   </div>
 </section>
@@ -4401,7 +4498,7 @@
           <span style="font-size:18px;font-weight:800;color:var(--gray-700)">예시 그림 · 모양 · 장 수 · 색은 각자 다릅니다</span>
         </div>
         <div class="wcard" style="padding:16px 22px 18px"><span class="lab" style="font-size:18px">오늘 만들 파일</span>
-          <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:10px"><span style="padding:7px 16px;border-radius:999px;background:var(--white);box-shadow:var(--sh-card);font-size:22px;font-weight:800;line-height:1.3;color:var(--ink);white-space:nowrap">AGENTS.md</span><span style="padding:7px 16px;border-radius:999px;background:var(--white);box-shadow:var(--sh-card);font-size:22px;font-weight:800;line-height:1.3;color:var(--ink);white-space:nowrap">CLAUDE.md</span><span style="padding:7px 16px;border-radius:999px;background:var(--white);box-shadow:var(--sh-card);font-size:22px;font-weight:800;line-height:1.3;color:var(--ink);white-space:nowrap">카드문구.md</span><span style="padding:7px 16px;border-radius:999px;background:var(--white);box-shadow:var(--sh-card);font-size:22px;font-weight:800;line-height:1.3;color:var(--ink);white-space:nowrap">design.md</span><span style="padding:7px 16px;border-radius:999px;background:var(--white);box-shadow:var(--sh-card);font-size:22px;font-weight:800;line-height:1.3;color:var(--ink);white-space:nowrap">만들기안내.md</span><span style="padding:7px 16px;border-radius:999px;background:var(--pr-fill);box-shadow:var(--sh-card);font-size:22px;font-weight:800;line-height:1.3;color:var(--ink);white-space:nowrap">카드 PNG</span></div><p style="margin:12px 0 0;font-size:22px;line-height:1.45;color:var(--ink)">한도가 차면 새 대화에서 <b>「AGENTS.md를 읽고 지금 파일 상태에서 이어서 해 줘」</b></p>
+          <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:10px"><span style="padding:7px 16px;border-radius:999px;background:var(--white);box-shadow:var(--sh-card);font-size:22px;font-weight:800;line-height:1.3;color:var(--ink);white-space:nowrap">AGENTS.md</span><span style="padding:7px 16px;border-radius:999px;background:var(--white);box-shadow:var(--sh-card);font-size:22px;font-weight:800;line-height:1.3;color:var(--ink);white-space:nowrap">카드문구.md</span><span style="padding:7px 16px;border-radius:999px;background:var(--white);box-shadow:var(--sh-card);font-size:22px;font-weight:800;line-height:1.3;color:var(--ink);white-space:nowrap">design.md</span><span style="padding:7px 16px;border-radius:999px;background:var(--white);box-shadow:var(--sh-card);font-size:22px;font-weight:800;line-height:1.3;color:var(--ink);white-space:nowrap">만들기안내.md</span><span style="padding:7px 16px;border-radius:999px;background:var(--pr-fill);box-shadow:var(--sh-card);font-size:22px;font-weight:800;line-height:1.3;color:var(--ink);white-space:nowrap">카드 PNG</span></div><p style="margin:12px 0 0;font-size:22px;line-height:1.45;color:var(--ink)">한도가 차면 새 대화에서 <b>「AGENTS.md를 읽고 지금 파일 상태에서 이어서 해 줘」</b></p>
         </div>
       </div>
     </div></div>
@@ -4424,7 +4521,7 @@
         <div style="display:grid;grid-template-columns:54px 1fr;column-gap:10px;align-items:start"><span style="font-size:44px;font-weight:800;line-height:1;letter-spacing:-.03em;color:var(--pr-deep);text-align:center">3</span><div><p style="margin:2px 0 6px;font-size:24px;font-weight:800;line-height:1.3;color:var(--ink)">카드 문구 <span style="font-size:18px;font-weight:700;color:var(--gray-700)">· 8분 · 두 장씩 승인(5~7장이면 3~4번)</span></p><div class="term dense terminal-dark"><div class="terminal-bar"><span></span><span></span><span></span><b>요청 틀</b><button class="copy" type="button" data-copy>복사</button></div><div class="terminal-copy"><p><span class="terminal-prompt">&gt;</span> 카드문구.md를 써 줘. 두 장씩 보여 줘.<br>내가 「좋아」라고 하면 다음 두 장을 써 줘.<span class="terminal-cursor" aria-hidden="true"></span></p></div></div></div></div>
       </div>
       <div class="pr-right" style="justify-content:flex-start;gap:8px">
-        <div class="wcard" style="padding:16px 22px 18px"><span class="lab" style="font-size:18px">에이전트가 묻는 것 · 세 개씩 · 최대 10번 · 모르면 기본값</span>
+        <div class="wcard" style="padding:16px 22px 18px"><span class="lab" style="font-size:18px">에이전트가 묻는 것 · 세 개씩 · 최대 10번 · 모르면 보기</span>
           <div style="display:grid;gap:12px;margin-top:12px">
             <div style="display:grid;grid-template-columns:78px 1fr;column-gap:12px;align-items:baseline"><span style="justify-self:start;padding:2px 12px;border-radius:999px;background:var(--pr-soft);font-size:18px;font-weight:800;color:var(--pr-deep);white-space:nowrap">묶음 1</span><span style="font-size:22px;font-weight:600;line-height:1.4;color:var(--ink)">누구에게 무엇을 · 기억할 한 가지 · 넣을 사실</span></div>
             <div style="display:grid;grid-template-columns:78px 1fr;column-gap:12px;align-items:baseline"><span style="justify-self:start;padding:2px 12px;border-radius:999px;background:var(--pr-soft);font-size:18px;font-weight:800;color:var(--pr-deep);white-space:nowrap">묶음 2</span><span style="font-size:22px;font-weight:600;line-height:1.4;color:var(--ink)">가진 자료 · 장 수와 나누기 · 카드 모양</span></div>
@@ -4437,7 +4534,7 @@
           </div>
         </div>
         <div style="display:flex;flex-direction:column;align-items:flex-start;gap:6px"><span style="padding:5px 14px;border-radius:999px;background:var(--white);box-shadow:var(--sh-card);font-size:22px;font-weight:700;line-height:1.3;color:var(--ink);white-space:nowrap">웹 검색이 되면 주소와 날짜 · 안 되면 내가 준 자료만</span></div>
-        <div style="display:flex;align-items:center;gap:8px;flex-wrap:nowrap"><span style="padding:7px 16px;border-radius:999px;box-shadow:var(--sh-card);font-size:22px;font-weight:800;color:var(--ink);white-space:nowrap;background:var(--white)">품질기준.md</span><b style="font-size:24px;color:var(--pr-deep)">+</b><span style="padding:7px 16px;border-radius:999px;box-shadow:var(--sh-card);font-size:22px;font-weight:800;color:var(--ink);white-space:nowrap;background:var(--white)">내 답</span><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" style="flex:none;fill:none;stroke:var(--pr-deep);stroke-width:3;stroke-linecap:round;stroke-linejoin:round"><path d="M4 12h15M13 6l6 6-6 6"/></svg><span style="padding:7px 16px;border-radius:999px;box-shadow:var(--sh-card);font-size:22px;font-weight:800;color:var(--ink);white-space:nowrap;background:var(--pr-fill);line-height:1.3;padding:6px 18px">AGENTS.md<br>CLAUDE.md</span></div>
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:nowrap"><span style="padding:7px 16px;border-radius:999px;box-shadow:var(--sh-card);font-size:22px;font-weight:800;color:var(--ink);white-space:nowrap;background:var(--white)">품질기준.md</span><b style="font-size:24px;color:var(--pr-deep)">+</b><span style="padding:7px 16px;border-radius:999px;box-shadow:var(--sh-card);font-size:22px;font-weight:800;color:var(--ink);white-space:nowrap;background:var(--white)">내 답</span><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" style="flex:none;fill:none;stroke:var(--pr-deep);stroke-width:3;stroke-linecap:round;stroke-linejoin:round"><path d="M4 12h15M13 6l6 6-6 6"/></svg><span style="padding:7px 16px;border-radius:999px;box-shadow:var(--sh-card);font-size:22px;font-weight:800;color:var(--ink);white-space:nowrap;background:var(--pr-fill);line-height:1.3;padding:6px 18px">AGENTS.md</span></div>
       </div>
     </div></div>
   </div>
@@ -5146,7 +5243,7 @@
     @media print{ .sq-hint{ display:none; } }
 
     /* ── ① 메인 과제 허브(색 · 고른 카드는 진한 바탕) ── */
-    .mh3{ flex:1 1 auto; min-height:0; margin-top:26px; display:grid; grid-template-columns:repeat(3,1fr); gap:28px; }
+    .mh3{ flex:1 1 auto; min-height:0; margin-top:26px; display:grid; grid-template-columns:repeat(2,1fr); gap:28px; max-width:900px; margin-left:auto; margin-right:auto; }
     .mh3-card{ position:relative; display:flex; flex-direction:column; padding:0; border:0; border-radius:22px; overflow:hidden; background:var(--white); box-shadow:var(--sh-card); font:inherit; color:var(--ink); text-align:left; cursor:pointer; transition:transform .25s cubic-bezier(.2,.8,.2,1), box-shadow .25s, background-color .25s; }
     .mh3-card:hover{ transform:translateY(-6px); box-shadow:var(--sh-pop); }
     .mh3-card:focus-visible{ outline:3px solid var(--blue); outline-offset:4px; }
@@ -5156,14 +5253,12 @@
     .mh3-desc{ margin-top:8px; font-size:20px; font-weight:500; line-height:1.5; color:var(--gray-700); }
     .mh3-chips{ margin-top:auto; display:flex; flex-wrap:wrap; gap:8px; }
     .mh3-chips span{ padding:5px 13px; border-radius:999px; font-size:17px; font-weight:700; background:var(--chip); color:var(--chip-ink); }
-    .mh3-card.c-habit{ --chip:#DDF3EF; --chip-ink:#0B5A55; } .mh3-card.c-type{ --chip:#FFE6DA; --chip-ink:#A23A17; } .mh3-card.c-fest{ --chip:#DCEBFB; --chip-ink:#1B4F8C; }
+    .mh3-card.c-habit{ --chip:#DDF3EF; --chip-ink:#0B5A55; } .mh3-card.c-type{ --chip:#FFE6DA; --chip-ink:#A23A17; }
     .mh3-today{ position:absolute; left:18px; top:18px; display:none; padding:6px 14px; border-radius:999px; background:#FFFFFF; color:#08323D; font-size:17px; font-weight:800; box-shadow:0 4px 12px rgba(0,0,0,.18); }
     .mh3-card.is-picked{ background:#08323D; color:#FFFFFF; box-shadow:0 18px 40px rgba(8,50,61,.32); }
     .mh3-card.is-picked .mh3-desc{ color:#CFE7EC; }
     .mh3-card.is-picked .mh3-chips span{ background:rgba(255,255,255,.14); color:#FFFFFF; }
     .mh3-card.is-picked .mh3-today{ display:block; }
-    .mh3-soon{ position:absolute; right:18px; top:18px; padding:6px 14px; border-radius:999px; background:rgba(8,20,40,.55); color:#FFFFFF; font-size:17px; font-weight:800; }
-    .mh3-card[aria-disabled="true"]{ cursor:default; } .mh3-card[aria-disabled="true"]:hover{ transform:none; box-shadow:var(--sh-card); }
 
     /* ── ② 에이전트 창 대화 ── */
     .slide.agx{ background:#0B0D10; padding:0; }

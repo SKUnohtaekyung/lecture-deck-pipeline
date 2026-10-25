@@ -1,0 +1,624 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>내 영상</title>
+<!--
+  ==================== 여기부터 고칩니다 ====================
+  이 파일에서 고치는 곳은 「여기까지 고칩니다」 줄 위까지입니다.
+    ① 설정: 무대 방향 · 색 · 글꼴
+    ② 장면 목록: 장면마다 시작(초) · 끝(초) · 그리는 함수 그리기(t, 무대)
+       (장면에서 쓰는 모양 CSS는 바로 아래 <style> 안에 씁니다)
+  「여기까지 고칩니다」 줄 아래는 영상 틀입니다. 고치지 않습니다.
+  확인: 주소 끝에 ?check=1 → 점검 모드 · ?t=12 → 12초 화면에서 멈춤 · 둘을 함께 ?check=1&t=12
+  도구 설명(무대.글 · 무대.그림 · 진행 · 놓기)과 움직임 조각은 기법모음.md에 있습니다.
+-->
+<style>
+/* ② 장면에서 쓰는 모양(CSS). 색은 var(--바탕) · var(--글자) · var(--강조) 처럼 씁니다. */
+</style>
+<script>
+/* ① 설정 */
+var 설정 = {
+  방향: '세로',     /* '세로' 1080×1920 · '가로' 1920×1080 · '정사각' 1080×1080 */
+  앱여백: true,     /* 릴스 · 쇼츠처럼 앱 글자가 위아래를 덮는 곳에 올리면 true */
+  색: {             /* 참가자가 정한 색 코드. 예: '#FFFFFF' (색을 더 넣으면 var(--이름)으로 씀) */
+    바탕: '',
+    글자: '',
+    강조: ''
+  },
+  글꼴: '맑은 고딕' /* 컴퓨터에 깔린 글꼴 이름 */
+};
+
+/* ② 장면 목록. 장면마다 { 시작: 초, 끝: 초, 그리기: function (t, 무대) { ... } }
+   t = 이 장면이 시작한 뒤 지난 초. 무대 = 이 장면의 그림판. */
+var 장면들 = [
+  {
+    시작: 0, 끝: 3,
+    그리기: function (t, 무대) {
+      /* 예시 장면입니다. 지우고 내 장면으로 바꿉니다. */
+      var 제목 = 무대.글('제목', '첫 장면의 글', { y: 880, 크기: 96, 굵게: true });
+      var p = 진행(t, 0.2, 0.6);
+      놓기(제목, { y: 40 * (1 - p), 보임: p });
+    }
+  }
+];
+
+/* 모든 장면에 걸치는 그림(쓰지 않으면 그대로 둡니다). t = 영상 처음부터 지난 초 */
+var 바탕 = { 그리기: function (t, 무대) {} };
+var 맨위 = { 그리기: function (t, 무대) {} };
+</script>
+<!-- ==================== 여기까지 고칩니다 ====================
+     이 아래는 영상 틀입니다. 고치지 않습니다. -->
+<style>
+:root{--bar:140px}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;overflow:hidden;color:var(--글자);font-family:var(--ft-font)}
+#view{position:fixed;left:0;top:0;right:0;bottom:var(--bar)}
+#stage{position:absolute;left:0;top:0;transform-origin:0 0;background:var(--바탕);overflow:hidden}
+.ft-ly{position:absolute;left:0;top:0;width:100%;height:100%}
+#ft-check{pointer-events:none}
+.ft-text{position:absolute;line-height:1.3;word-break:keep-all;overflow-wrap:normal;letter-spacing:-0.01em;font-weight:400}
+.ft-text.in{position:relative}
+.ft-word{white-space:nowrap}
+.ft-piece{display:inline-block}
+.ft-mask{display:inline-block;overflow:hidden;vertical-align:top;padding:0 .02em}
+.ft-em{color:var(--강조)}
+.ft-pic{position:absolute}
+.ft-pic>svg{display:block}
+#bar{position:fixed;left:0;right:0;bottom:0;height:var(--bar);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;font-size:18px;line-height:1.4;text-align:center;padding:0 16px}
+#bar .row{display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:center}
+body.rec #bar,body.rec #ft-panel,body.rec #ft-check{visibility:hidden}
+#ft-panel{position:fixed;z-index:20;background:#FFFFFF;color:#111111;font:16px/1.45 var(--ft-font);padding:10px 16px;border:3px solid #C62828;overflow:auto}
+#ft-panel.ok{border-color:#2E7D32}
+#ft-panel.side{top:0;right:0;bottom:var(--bar);width:440px}
+#ft-panel.under{left:0;right:0;bottom:var(--bar);max-height:40vh}
+#ft-panel b{font-size:20px}
+#ft-panel ul{margin:4px 0 0;padding-left:20px}
+.ft-mark{position:absolute;border:5px solid #E00000;border-radius:6px}
+.ft-tag{position:absolute;left:-5px;bottom:100%;background:#E00000;color:#FFFFFF;font:700 28px/1.25 var(--ft-font);padding:2px 10px;white-space:nowrap;border-radius:4px 4px 0 0}
+.ft-tag.in{bottom:auto;top:0;border-radius:0 0 4px 0}
+.ft-safe{position:absolute;border:4px dashed #1E62D0}
+.ft-safe span{position:absolute;left:8px;top:6px;color:#1E62D0;background:#FFFFFF;font:700 24px/1.2 var(--ft-font);padding:2px 6px}
+@media print{#bar,#ft-panel{display:none}#view{bottom:0}}
+/* ---------- 페이지 꾸밈: 어두운 바탕 · 무대 테두리 · 이름표 · 단추 띠 (영상_틀.html · 완성 예시가 같은 코드) ---------- */
+:root{--pg:#15181C;--pg-band:#0D0F12;--pg-ink:#F2F4F6;--pg-sub:#C3CAD3;--pg-edge:#8A949F;--pg-shadow:rgba(0,0,0,.55);--pg-focus:#8AB4F8;--pg-rec:#FFFFFF}
+html,body{background:var(--pg)}
+#stage-edge{position:absolute;pointer-events:none;box-shadow:0 0 0 1px var(--pg-edge),0 18px 48px var(--pg-shadow)}
+#stage-tag{position:absolute;transform:translateY(-100%);pointer-events:none;white-space:nowrap;font:700 15px/1.2 "Malgun Gothic","맑은 고딕","Apple SD Gothic Neo","Noto Sans KR",sans-serif;color:var(--pg-ink);background:var(--pg-band);border:1px solid var(--pg-edge);border-radius:6px;padding:4px 10px}
+#bar{background:var(--pg-band);border-top:1px solid var(--pg-edge);color:var(--pg-ink)}
+#bar #msg{color:var(--pg-sub);text-wrap:balance;word-break:keep-all}
+#bar button{font:inherit;font-weight:700;font-size:20px;min-height:48px;padding:0 24px;border-radius:8px;border:2px solid var(--pg-ink);background:var(--pg-ink);color:var(--pg-band);cursor:pointer}
+#bar button.ghost{background:transparent;color:var(--pg-ink)}
+#bar button:focus-visible{outline:3px solid var(--pg-focus);outline-offset:3px}
+body.rec{background:var(--pg-rec)}
+body.rec #view{right:0!important;bottom:0!important}
+body.rec #bar,body.rec #stage-edge,body.rec #stage-tag,body.check #stage-tag{visibility:hidden}
+@media print{#stage-edge,#stage-tag{display:none}}
+</style>
+</head>
+<body>
+<div id="view"><div id="stage" role="img"></div><div id="stage-edge" aria-hidden="true"></div><div id="stage-tag" aria-hidden="true"></div></div>
+<div id="bar">
+  <div class="row">
+    <button id="play" type="button">처음부터 재생</button>
+    <button id="save" type="button" class="ghost">영상 파일로 저장</button>
+    <span id="guide">공유 창에서 「이 탭」을 고르세요</span>
+  </div>
+  <div id="msg" role="status">저장이 안 되면 화면 녹화를 씁니다. Windows는 Win + Alt + R, 맥은 Shift + Command + 5에서 「선택 부분 기록」을 고릅니다.</div>
+</div>
+<div id="ft-panel" hidden></div>
+<script>
+(function () {
+'use strict';
+function $(id) { return document.getElementById(id); }
+function clamp(x) { return x < 0 ? 0 : x > 1 ? 1 : x; }
+function r1(v) { return Math.round(v * 10) / 10; }
+function fmt(v) { return String(Math.round(v * 100) / 100); }
+
+/* ---------- 움직임 도우미(장면에서 씀) ---------- */
+function bez(x1, y1, x2, y2) {
+  var ax = 1 - 3 * x2 + 3 * x1, bx = 3 * x2 - 6 * x1, cx = 3 * x1, ay = 1 - 3 * y2 + 3 * y1, by = 3 * y2 - 6 * y1, cy = 3 * y1;
+  function X(t) { return ((ax * t + bx) * t + cx) * t; }
+  return function (p) {
+    if (p <= 0) return 0; if (p >= 1) return 1;
+    var t = p, i, x, dx;
+    for (i = 0; i < 8; i++) { x = X(t) - p; if (Math.abs(x) < 1e-6) break; dx = (3 * ax * t + 2 * bx) * t + cx; if (Math.abs(dx) < 1e-6) break; t -= x / dx; }
+    if (!(t >= 0 && t <= 1) || Math.abs(X(t) - p) > 1e-4) { var lo = 0, hi = 1; t = p; for (i = 0; i < 40; i++) { if (X(t) < p) lo = t; else hi = t; t = (lo + hi) / 2; } }
+    return ((ay * t + by) * t + cy) * t;
+  };
+}
+var 곡선 = { 부드럽게: bez(.22, 1, .36, 1), 양쪽: bez(.65, 0, .35, 1), 튕김: bez(.34, 1.56, .64, 1), 빨라짐: bez(.55, 0, 1, .45), 고르게: function (p) { return clamp(p); } };
+function 진행(t, a, d, c) {
+  var f = typeof c === 'function' ? c : (곡선[c] || 곡선.부드럽게);
+  return d > 0 ? f(clamp((t - a) / d)) : (t >= a ? 1 : 0);
+}
+function 사이(a, b, p) { return a + (b - a) * p; }
+function 놓기(e, v) {
+  if (!e) return e; v = v || {};
+  var s = v.크기 == null ? 1 : v.크기;
+  e.style.transform = 'translate(' + r1(v.x || 0) + 'px,' + r1(v.y || 0) + 'px) rotate(' + r1(v.회전 || 0) + 'deg) scale(' + Math.round(s * 1000) / 1000 + ')';
+  if (v.보임 != null) e.style.opacity = clamp(v.보임);
+  return e;
+}
+var probe = document.createElement('i'); probe.style.display = 'none'; document.body.appendChild(probe);
+function col(s) {
+  var m = /^rgba?\(([^)]+)\)$/.exec(String(s || '').trim());
+  if (!m) return null;
+  var p = m[1].split(/[\s,\/]+/).filter(Boolean).map(parseFloat);
+  return { r: p[0], g: p[1], b: p[2], a: p.length > 3 ? p[3] : 1 };
+}
+function anyCol(s) { var c = col(s); if (c) return c; probe.style.color = ''; probe.style.color = s; return col(getComputedStyle(probe).color); }
+function 색섞기(a, b, p) {
+  var x = anyCol(a), y = anyCol(b); p = clamp(p);
+  if (!x || !y) return p < 0.5 ? a : b;
+  return 'rgb(' + Math.round(사이(x.r, y.r, p)) + ',' + Math.round(사이(x.g, y.g, p)) + ',' + Math.round(사이(x.b, y.b, p)) + ')';
+}
+window.곡선 = 곡선; window.진행 = 진행; window.사이 = 사이; window.놓기 = 놓기; window.베지어 = bez; window.색섞기 = 색섞기;
+
+/* ---------- 설정 읽기 ---------- */
+var ERR = [], NOTE = [];
+var S = (window.설정 && typeof window.설정 === 'object') ? window.설정 : {};
+var LIST = Array.isArray(window.장면들) ? window.장면들 : [];
+if (!Array.isArray(window.장면들)) ERR.push('장면 목록을 읽지 못했습니다. 맨 위 칸의 쉼표 · 괄호 · 따옴표를 확인하세요.');
+var BGD = (window.바탕 && typeof window.바탕 === 'object') ? window.바탕 : {};
+var TOPD = (window.맨위 && typeof window.맨위 === 'object') ? window.맨위 : {};
+var DIRS = { '세로': [1080, 1920], '가로': [1920, 1080], '정사각': [1080, 1080] };
+if (S.방향 && !DIRS[S.방향]) NOTE.push('방향 「' + S.방향 + '」을 몰라 세로로 보입니다.');
+var WH = DIRS[S.방향] || DIRS['세로'], W = WH[0], H = WH[1];
+var app = S.앱여백 !== false && H > W;
+var SAFE = { 왼: W / 10, 오른: W - W / 10, 위: app ? H / 8 : H / 10, 아래: app ? H - H / 6 : H - H / 10 };
+SAFE.폭 = SAFE.오른 - SAFE.왼; SAFE.높이 = SAFE.아래 - SAFE.위;
+
+var root = document.documentElement, 색 = {}, k, unset = [];
+var C0 = (S.색 && typeof S.색 === 'object') ? S.색 : {};
+for (k in C0) if (C0[k]) 색[k] = C0[k];
+if (!색.바탕) { 색.바탕 = '#FFFFFF'; unset.push('바탕'); }
+if (!색.글자) { 색.글자 = '#111111'; unset.push('글자'); }
+if (!색.강조) { 색.강조 = 색.글자; unset.push('강조'); }
+if (unset.length) NOTE.push('색을 아직 정하지 않았습니다(' + unset.join(' · ') + '). 정하지 않은 색은 바탕 흰색 · 글자 검은색 · 강조는 글자색으로 보입니다.');
+window.색 = 색;
+for (k in 색) root.style.setProperty('--' + k, 색[k]);
+var accC = anyCol(색.강조) || { r: 0, g: 0, b: 0 };
+root.style.setProperty('--강조위', ratio({ r: 255, g: 255, b: 255 }, accC) >= ratio({ r: 17, g: 17, b: 17 }, accC) ? '#FFFFFF' : '#111111');
+root.style.setProperty('--ft-font', (S.글꼴 ? '"' + String(S.글꼴).replace(/"/g, '') + '",' : '') + '"Malgun Gothic","맑은 고딕","Apple SD Gothic Neo","Noto Sans KR",sans-serif');
+
+function lum(c) { function f(v) { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); } return 0.2126 * f(c.r) + 0.7152 * f(c.g) + 0.0722 * f(c.b); }
+function ratio(a, b) { var x = lum(a), y = lum(b); return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05); }
+function mixc(c, bg) { return { r: c.r * c.a + bg.r * (1 - c.a), g: c.g * c.a + bg.g * (1 - c.a), b: c.b * c.a + bg.b * (1 - c.a), a: 1 }; }
+
+/* ---------- 무대 ---------- */
+var stage = $('stage'), view = $('view'), msg = $('msg');
+stage.style.width = W + 'px'; stage.style.height = H + 'px';
+function layer(name, host) { var d = document.createElement('div'); d.className = 'ft-ly'; d.setAttribute('data-layer', name); host.appendChild(d); return d; }
+var bgL = layer('바탕', stage), content = layer('내용', stage);
+var scenes = LIST.map(function (d, i) { return { def: d || {}, i: i, el: layer('장면 ' + (i + 1), content) }; });
+var topL = layer('맨위', content), chkL = layer('점검', stage); chkL.id = 'ft-check';
+var stageBg = col(getComputedStyle(stage).backgroundColor) || { r: 255, g: 255, b: 255, a: 1 };
+
+function say(s) { msg.textContent = s; }
+var errSeen = {};
+function guard(key, fn) {
+  try { fn(); } catch (e) {
+    if (errSeen[key]) return; errSeen[key] = 1;
+    var m = key + '에서 오류: ' + (e && e.message ? e.message : e);
+    ERR.push(m); say(m); if (window.console) console.error(m);
+  }
+}
+
+var ALIGN = { '가운데': 'center', '왼쪽': 'left', '오른쪽': 'right' };
+function fill(e, text) {
+  var o = e._o, pieces = [], cur = null;
+  e._text = text; e.textContent = '';
+  String(text).split('**').forEach(function (run, ri) {
+    if (!run) return;
+    run.split(/(\n| +)/).forEach(function (tk) {
+      if (!tk) return;
+      if (tk === '\n') { e.appendChild(document.createElement('br')); cur = null; return; }
+      if (/^ +$/.test(tk)) { e.appendChild(document.createTextNode(tk)); cur = null; return; }
+      if (!cur) { cur = document.createElement('span'); cur.className = 'ft-word'; e.appendChild(cur); }
+      var host = cur;
+      if (ri % 2) { host = document.createElement('span'); host.className = 'ft-em'; cur.appendChild(host); }
+      var parts = o.나누기 === '글자' ? Array.from(tk) : o.나누기 === '단어' ? [tk] : null;
+      if (!parts) { host.appendChild(document.createTextNode(tk)); return; }
+      parts.forEach(function (s) {
+        var p = document.createElement('span'); p.className = 'ft-piece'; p.textContent = s; pieces.push(p);
+        if (o.가리개) { var m = document.createElement('span'); m.className = 'ft-mask'; m.appendChild(p); host.appendChild(m); }
+        else host.appendChild(p);
+      });
+    });
+  });
+  e.조각들 = pieces;
+}
+function tooBig(e) {
+  if (e.scrollWidth > e.clientWidth + 1) return true;
+  var lh = parseFloat(getComputedStyle(e).lineHeight) || e._size * 1.3;
+  return Math.round(e.scrollHeight / lh) > e._o.줄;
+}
+function fitText(e) {
+  var size = e._o.크기; e.style.fontSize = size + 'px'; e._size = size;
+  while (size > 44 && tooBig(e)) { size = Math.max(44, size - 2); e.style.fontSize = size + 'px'; e._size = size; }
+}
+function makeBoard(el, name) {
+  var cache = {};
+  return {
+    층: el, 이름: name, 폭: W, 높이: H, 안전: SAFE, 가운데: { x: W / 2, y: H / 2 }, 지금: 0,
+    글: function (key, text, o) {
+      text = text == null ? '' : String(text);
+      var e = cache['글:' + key];
+      if (!e) {
+        o = o || {};
+        e = document.createElement('div'); e.className = 'ft-text';
+        var host = o.안에 || el, inside = !!o.안에 && o.x == null && o.y == null;
+        if (inside) e.classList.add('in');
+        else {
+          var x = o.x != null ? o.x : (o.안에 ? 0 : SAFE.왼);
+          e.style.left = x + 'px'; e.style.top = (o.y != null ? o.y : (o.안에 ? 0 : SAFE.위)) + 'px';
+          e.style.width = (o.폭 != null ? o.폭 : Math.max(0, SAFE.오른 - x)) + 'px';
+        }
+        e.style.textAlign = ALIGN[o.정렬] || 'center';
+        if (o.굵게) e.style.fontWeight = '700';
+        if (o.색) e.style.color = o.색;
+        e._o = { 크기: o.크기 || 56, 줄: o.줄 || 2, 나누기: o.나누기 || '', 가리개: !!o.가리개 };
+        host.appendChild(e); cache['글:' + key] = e;
+        fill(e, o.맞춤글 != null ? String(o.맞춤글) : text); fitText(e);
+        if (o.맞춤글 != null) fill(e, text);
+      } else if (e._text !== text) fill(e, text);
+      return e;
+    },
+    그림: function (key, html, o) {
+      var e = cache['그림:' + key];
+      if (!e) {
+        o = o || {};
+        e = document.createElement('div'); e.className = 'ft-pic';
+        e.style.left = (o.x || 0) + 'px'; e.style.top = (o.y || 0) + 'px';
+        if (o.폭 != null) e.style.width = o.폭 + 'px';
+        if (o.높이 != null) e.style.height = o.높이 + 'px';
+        e.innerHTML = html || '';
+        (o.안에 || el).appendChild(e); cache['그림:' + key] = e;
+      }
+      return e;
+    }
+  };
+}
+var bgB = makeBoard(bgL, '바탕'), topB = makeBoard(topL, '맨위');
+scenes.forEach(function (sc) { sc.board = makeBoard(sc.el, '장면 ' + (sc.i + 1)); });
+
+/* ---------- 시간축 ---------- */
+var TOTAL = 0, TIMEP = {};
+scenes.forEach(function (sc, i) {
+  var d = sc.def, s = +d.시작, e = +d.끝, n = '장면 ' + (i + 1), pr = [];
+  if (!isFinite(s) || !isFinite(e)) pr.push('시작 · 끝 숫자가 없음');
+  else if (e <= s) pr.push('끝이 시작보다 빠름');
+  if (typeof d.그리기 !== 'function') pr.push('그리기 함수가 없음');
+  if (i === 0 && s > 0) pr.push('처음 ' + fmt(s) + '초가 빈 화면');
+  if (i > 0) {
+    var pe = +scenes[i - 1].def.끝;
+    if (s < pe - 1e-6) pr.push('앞 장면과 시간이 겹침(장면 사이 겹침은 전환 값으로 씀)');
+    else if (s > pe + 1e-6) pr.push('앞에 ' + fmt(s - pe) + '초 빈 화면');
+  }
+  if (isFinite(e)) TOTAL = Math.max(TOTAL, e);
+  TIMEP[n] = pr;
+});
+function tr(sc) { return sc.i > 0 ? Math.max(0, +sc.def.전환 || 0) : 0; }
+stage.setAttribute('aria-label', document.title + ', ' + fmt(TOTAL) + '초, ' + scenes.length + '장면');
+
+guard('바탕 준비', function () { if (typeof BGD.준비 === 'function') BGD.준비(bgB); });
+scenes.forEach(function (sc) { guard('장면 ' + (sc.i + 1) + ' 준비', function () { if (typeof sc.def.준비 === 'function') sc.def.준비(sc.board); }); });
+guard('맨위 준비', function () { if (typeof TOPD.준비 === 'function') TOPD.준비(topB); });
+
+function render(t, tb) {
+  t = Math.max(0, Math.min(TOTAL, t));
+  bgB.지금 = tb == null ? t : tb;
+  guard('바탕 그리기', function () { if (typeof BGD.그리기 === 'function') BGD.그리기(bgB.지금, bgB); });
+  topB.지금 = t;
+  guard('맨위 그리기', function () { if (typeof TOPD.그리기 === 'function') TOPD.그리기(t, topB); });
+  scenes.forEach(function (sc) {
+    var d = sc.def, s = +d.시작, e = +d.끝, L = sc.el;
+    var vis = t >= s - tr(sc) && (t < e || (e >= TOTAL && t >= TOTAL));
+    L.style.visibility = vis ? 'visible' : 'hidden';
+    L.style.clipPath = ''; L.style.opacity = ''; L.style.transform = ''; L.style.filter = '';
+    if (!vis || typeof d.그리기 !== 'function') return;
+    sc.board.지금 = t;
+    guard('장면 ' + (sc.i + 1) + ' 그리기', function () { d.그리기(t - s, sc.board); });
+  });
+  scenes.forEach(function (sc) {
+    var d = sc.def, s = +d.시작, T = tr(sc);
+    if (T > 0 && t >= s - T && t < s && typeof d.들어오기 === 'function') {
+      var prev = scenes[sc.i - 1];
+      guard('장면 ' + (sc.i + 1) + ' 들어오기', function () { d.들어오기((t - (s - T)) / T, sc.el, prev ? prev.el : null); });
+    }
+  });
+}
+function hold(sc) {
+  var d = sc.def; if (d.멈춤시각 != null && isFinite(+d.멈춤시각)) return +d.멈춤시각;
+  var nx = scenes[sc.i + 1]; if (!nx) return +d.끝;
+  return Math.max(+d.시작, +nx.def.시작 - tr(nx) - 0.05);
+}
+var LAST = scenes.length - 1, raf = 0, REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches, CHECK = false;
+function frame(t) {
+  if (!REDUCED || CHECK || LAST < 0) { content.style.opacity = 1; render(t); return; }
+  var i = 0; while (i < LAST && t >= +scenes[i].def.끝) i++;
+  var d = scenes[i].def, f = 1;
+  if (i > 0) f = Math.min(f, clamp((t - d.시작) / 0.35));
+  if (i < LAST) f = Math.min(f, clamp((d.끝 - t) / 0.35));
+  render(hold(scenes[i]), 0); content.style.opacity = f;
+}
+function play(done) {
+  cancelAnimationFrame(raf);
+  var t0 = performance.now();
+  (function tick() {
+    var t = (performance.now() - t0) / 1000;
+    if (t >= TOTAL) { frame(TOTAL); if (CHECK) liveMarks(TOTAL, true); if (done) done(); return; }
+    frame(t); if (CHECK) liveMarks(t, false);
+    raf = requestAnimationFrame(tick);
+  })();
+}
+var VW = W, VH = H, VT = TOTAL;
+/* ---------- 무대 놓기 · 영상 파일로 저장 (영상_틀.html · 완성 예시가 같은 코드) ---------- */
+var SC = 1, TAGH = 44, PAD = 20, edge = $('stage-edge'), stageTag = $('stage-tag');
+stageTag.textContent = '영상 영역 · ' + VW + '×' + VH;
+/* 무대를 화면 가운데에 맞춘다. 녹화 중에는 창 전체를 쓰고, 화면 픽셀에 딱 맞는 가장 큰 배율로 놓는다 */
+function fit() {
+  var cl = document.body.classList, rec = cl.contains('rec'), lab = !rec && !cl.contains('check');
+  var w = view.clientWidth, h = view.clientHeight, pad = rec ? 0 : PAD, top = lab ? TAGH : pad;
+  var s = Math.max(0.01, Math.min((w - 2 * pad) / VW, (h - top - pad) / VH));
+  if (rec) { var d = window.devicePixelRatio || 1; s = s >= 1 ? Math.floor(s) : Math.max(1, Math.floor(VW * s * d)) / (VW * d); }
+  SC = s;
+  var sw = VW * s, sh = VH * s, x = Math.round((w - sw) / 2), y = Math.round(top + (h - top - pad - sh) / 2);
+  stage.style.transform = 'translate(' + x + 'px,' + y + 'px) scale(' + s + ')';
+  edge.style.cssText = 'left:' + x + 'px;top:' + y + 'px;width:' + sw + 'px;height:' + sh + 'px';
+  stageTag.style.cssText = 'left:' + x + 'px;top:' + (y - 6) + 'px';
+}
+/* 영상 파일로 저장: 공유 창에서 「이 탭」을 고르면 무대만 잘라 처음부터 재생하며 녹화한다 */
+var REC_TYPES = ['video/mp4;codecs=avc1.42E01E', 'video/mp4', 'video/webm;codecs=vp9', 'video/webm'];
+$('save').onclick = async function () {
+  var fb = ' 저장이 안 되면 화면 녹화를 씁니다. Windows는 Win + Alt + R, 맥은 Shift + Command + 5에서 「선택 부분 기록」을 고릅니다.', body = document.body;
+  if (!(navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia && window.MediaRecorder)) { say('이 브라우저에서는 저장 단추를 쓸 수 없습니다.' + fb); return; }
+  var stream;
+  try {
+    stream = await navigator.mediaDevices.getDisplayMedia({ video: { frameRate: 30 }, audio: false, preferCurrentTab: true, selfBrowserSurface: 'include', surfaceSwitching: 'exclude', systemAudio: 'exclude', monitorTypeSurfaces: 'exclude' });
+  } catch (e) { say('화면 공유 창이 열리지 않았거나 취소했습니다.' + fb); return; }
+  var track = stream.getVideoTracks()[0], rec = null, chunks = [], done = false;
+  function finish() {
+    if (done) return; done = true;
+    stream.getTracks().forEach(function (k) { k.stop(); });
+    cancelAnimationFrame(raf); body.classList.remove('rec'); fit(); frame(VT);
+  }
+  /* 녹화 동안: 단추 띠 · 테두리 · 이름표를 숨기고, 무대 밖을 무대 바탕과 같은 색으로 덮는다 */
+  document.documentElement.style.setProperty('--pg-rec', getComputedStyle(stage).backgroundColor);
+  body.classList.add('rec'); cancelAnimationFrame(raf); fit(); frame(0);
+  /* 무대만 잘라 녹화(Region Capture). 지원하지 않거나 다른 탭을 고르면 탭 전체를 녹화한다 */
+  if (track && track.cropTo && window.CropTarget && CropTarget.fromElement) {
+    try { await track.cropTo(await CropTarget.fromElement(stage)); } catch (e) {}
+  }
+  var mime = REC_TYPES.filter(function (m) { return MediaRecorder.isTypeSupported(m); })[0] || '';
+  try { rec = new MediaRecorder(stream, mime ? { mimeType: mime, videoBitsPerSecond: 8000000 } : {}); }
+  catch (e) { finish(); say('이 브라우저에서는 저장 단추를 쓸 수 없습니다.' + fb); return; }
+  var type = rec.mimeType || mime || 'video/webm', ext = /mp4/i.test(type) ? 'mp4' : 'webm';
+  rec.ondataavailable = function (e) { if (e.data && e.data.size) chunks.push(e.data); };
+  rec.onstop = function () {
+    finish();
+    var url = URL.createObjectURL(new Blob(chunks, { type: type })), a = document.createElement('a');
+    a.href = url; a.download = '영상.' + ext;
+    body.appendChild(a); a.click(); a.remove();
+    setTimeout(function () { URL.revokeObjectURL(url); }, 60000);
+    say(ext === 'mp4' ? '영상.mp4를 저장했습니다. 저장 폴더를 확인하세요.' : '이 브라우저는 mp4 저장을 지원하지 않아 webm으로 저장했습니다. 최신 Chrome · Edge에서 열면 mp4로 저장됩니다.');
+  };
+  if (track) track.onended = function () { if (rec.state !== 'inactive') rec.stop(); else { finish(); say('화면 공유 창이 열리지 않았거나 취소했습니다.' + fb); } };
+  /* 0.5초 기다린 뒤 처음부터 재생하며 녹화하고, 총 길이 + 0.3초 뒤에 멈춘다 */
+  setTimeout(function () {
+    if (done) return;
+    rec.start();
+    play(function () { setTimeout(function () { if (rec.state !== 'inactive') rec.stop(); }, 300); });
+  }, 500);
+};
+window.addEventListener('resize', function () { if (CHECK) layoutPanel(); else fit(); });
+fit();
+$('play').onclick = function () { play(); };
+window.addEventListener('beforeprint', function () { cancelAnimationFrame(raf); content.style.opacity = 1; render(TOTAL); });
+
+/* ---------- 점검 모드(?check=1) ---------- */
+function effOp(el) { var o = 1; for (var q = el; q && q !== stage; q = q.parentElement) { o *= parseFloat(getComputedStyle(q).opacity); if (o < 0.01) break; } return o; }
+function blockOf(p) {
+  if (p instanceof SVGElement) return p.closest('text') || p;
+  var q = p;
+  while (q && q !== stage && !q.classList.contains('ft-ly')) {
+    if (getComputedStyle(q).display.indexOf('inline') !== 0) return q;
+    q = q.parentElement;
+  }
+  return p;
+}
+function backOf(p) {
+  for (var q = p; q && q !== stage; q = q.parentElement) {
+    var cs = getComputedStyle(q);
+    if (cs.backgroundImage && cs.backgroundImage !== 'none') return null;
+    var c = col(cs.backgroundColor);
+    if (c && c.a > 0) return c.a >= 1 ? c : mixc(c, stageBg);
+  }
+  return stageBg;
+}
+function overflowOf(el) {
+  if (el.classList && el.classList.contains('ft-text')) {
+    if (!tooBig(el)) return '';
+    return (el._size <= 44 && el._o.크기 > 44) ? '44px로도 넘침' : '넘침';
+  }
+  if (el instanceof SVGElement || !el.clientWidth) return '';
+  return el.scrollWidth > el.clientWidth + 2 ? '넘침' : '';
+}
+function whereOf(ly) { return ly.getAttribute('data-layer'); }
+function inspect() {
+  var s = SC, st = stage.getBoundingClientRect(), out = [], unk = { 흐림: 0, 바탕: 0 }, map = new Map(), blocks = [];
+  [bgL].concat(scenes.map(function (x) { return x.el; }), [topL]).forEach(function (ly) {
+    if (ly.style.visibility === 'hidden') return;
+    var tw = document.createTreeWalker(ly, NodeFilter.SHOW_TEXT), n;
+    while ((n = tw.nextNode())) {
+      if (!n.nodeValue.trim()) continue;
+      var p = n.parentElement;
+      if (!p || p.closest('defs,symbol,title,desc,style,script,template')) continue;
+      var cs = getComputedStyle(p);
+      if (cs.visibility !== 'visible' || cs.display === 'none') continue;
+      var rg = document.createRange(); rg.selectNodeContents(n);
+      var r = rg.getBoundingClientRect();
+      if (r.width < 1 || r.height < 1 || r.right < st.left || r.left > st.right || r.bottom < st.top || r.top > st.bottom) continue;
+      var op = effOp(p); if (op < 0.05) continue;
+      var b = blockOf(p), rec = map.get(b);
+      if (!rec) { rec = { el: b, ly: ly, x1: 1e9, y1: 1e9, x2: -1e9, y2: -1e9, size: 1e9, con: 1e9, faint: false, unk: false, text: '' }; map.set(b, rec); blocks.push(rec); }
+      rec.x1 = Math.min(rec.x1, r.left); rec.y1 = Math.min(rec.y1, r.top); rec.x2 = Math.max(rec.x2, r.right); rec.y2 = Math.max(rec.y2, r.bottom);
+      rec.text += n.nodeValue;
+      if (op < 0.95) { rec.faint = true; continue; }
+      var fs = parseFloat(cs.fontSize) || 0, kk = 1;
+      if (p instanceof SVGElement) { var m = p.getScreenCTM(); if (m) kk = Math.sqrt(Math.abs(m.a * m.d - m.b * m.c)) / s; }
+      else if (p.offsetHeight) kk = p.getBoundingClientRect().height / p.offsetHeight / s;
+      rec.size = Math.min(rec.size, fs * kk);
+      var fg = col(p instanceof SVGElement ? cs.fill : cs.color), bg = p instanceof SVGElement ? null : backOf(p);
+      if (!fg || !bg) { rec.unk = true; continue; }
+      if (fg.a < 1) fg = mixc(fg, bg);
+      rec.con = Math.min(rec.con, ratio(fg, bg));
+    }
+  });
+  blocks.forEach(function (b) {
+    var R = { x: (b.x1 - st.left) / s, y: (b.y1 - st.top) / s, w: (b.x2 - b.x1) / s, h: (b.y2 - b.y1) / s };
+    b.R = R; b.name = (b.el.textContent || b.text).replace(/\s+/g, ' ').trim().slice(0, 12);
+    var tags = [];
+    if (R.x < SAFE.왼 - 1 || R.x + R.w > SAFE.오른 + 1 || R.y < SAFE.위 - 1 || R.y + R.h > SAFE.아래 + 1) tags.push('여백 밖');
+    var ov = overflowOf(b.el); if (ov) tags.push(ov);
+    if (b.size < 43.5) tags.push('작은 글자 ' + Math.round(b.size) + 'px');
+    if (b.con < 4.5) tags.push('대비 ' + b.con.toFixed(1));
+    if (b.faint) unk.흐림++; else if (b.unk) unk.바탕++;
+    tags.forEach(function (tg) { out.push({ where: whereOf(b.ly), tag: tg, name: b.name, R: R }); });
+  });
+  for (var i = 0; i < blocks.length; i++) for (var j = i + 1; j < blocks.length; j++) {
+    var a = blocks[i], c = blocks[j];
+    if (a.el.contains(c.el) || c.el.contains(a.el)) continue;
+    var ix = Math.min(a.R.x + a.R.w, c.R.x + c.R.w) - Math.max(a.R.x, c.R.x), iy = Math.min(a.R.y + a.R.h, c.R.y + c.R.h) - Math.max(a.R.y, c.R.y);
+    if (ix > 4 && iy > 4) out.push({ where: whereOf(a.ly), tag: '겹침', name: a.name + ' · ' + c.name, R: a.R, R2: c.R });
+  }
+  return { probs: out, unk: unk };
+}
+function marks(list) {
+  chkL.textContent = '';
+  var sa = document.createElement('div'); sa.className = 'ft-safe';
+  sa.style.cssText = 'left:' + SAFE.왼 + 'px;top:' + SAFE.위 + 'px;width:' + SAFE.폭 + 'px;height:' + SAFE.높이 + 'px';
+  var sl = document.createElement('span'); sl.textContent = '글자 안전 여백'; sa.appendChild(sl); chkL.appendChild(sa);
+  var groups = new Map();
+  list.forEach(function (p) {
+    [p.R, p.R2].forEach(function (R) {
+      if (!R) return;
+      var key = [R.x, R.y, R.w, R.h].map(Math.round).join(','), g = groups.get(key);
+      if (!g) { g = { R: R, tags: [] }; groups.set(key, g); }
+      if (g.tags.indexOf(p.tag) < 0) g.tags.push(p.tag);
+    });
+  });
+  groups.forEach(function (g) {
+    var m = document.createElement('div'); m.className = 'ft-mark';
+    m.style.cssText = 'left:' + (g.R.x - 8) + 'px;top:' + (g.R.y - 8) + 'px;width:' + (g.R.w + 16) + 'px;height:' + (g.R.h + 16) + 'px';
+    var tg = document.createElement('span'); tg.className = 'ft-tag' + (g.R.y < 60 ? ' in' : ''); tg.textContent = g.tags.join(' · ');
+    m.appendChild(tg); chkL.appendChild(m);
+  });
+}
+/* 번쩍임: 넓게 칠한 상자의 밝기를 1/30초마다 세어, 밝아졌다 어두워지는 짝이 1초에 몇 번인지 본다 */
+function meanLum() {
+  var st = stage.getBoundingClientRect(), A = st.width * st.height, L = lum(stageBg);
+  [bgL].concat(scenes.map(function (x) { return x.el; }), [topL]).forEach(function (ly) {
+    if (ly.style.visibility === 'hidden') return;
+    var all = ly.querySelectorAll('*');
+    for (var i = 0; i < all.length; i++) {
+      var el = all[i], r = el.getBoundingClientRect();
+      var fr = Math.max(0, Math.min(r.right, st.right) - Math.max(r.left, st.left)) * Math.max(0, Math.min(r.bottom, st.bottom) - Math.max(r.top, st.top)) / A;
+      if (fr < 0.02) continue;
+      var cs = getComputedStyle(el), c = null;
+      if (cs.visibility !== 'visible') continue;
+      if (el instanceof SVGElement) { if (/^(rect|circle|ellipse|path|polygon)$/.test(el.tagName)) c = col(cs.fill); }
+      else if (cs.backgroundImage === 'none') c = col(cs.backgroundColor);
+      if (!c || c.a <= 0) continue;
+      L += (lum(c) - L) * Math.min(1, c.a * effOp(el) * fr);
+    }
+  });
+  return L;
+}
+function flashes(v, dt) {
+  var th = 0.1, ch = [], dir = 0, hi = v[0], lo = v[0], ext = v[0];
+  for (var k = 1; k < v.length; k++) {
+    var x = v[k];
+    if (dir === 0) { if (x > hi) hi = x; if (x < lo) lo = x; if (hi - lo >= th && lo < 0.8) { dir = x === hi ? 1 : -1; ext = x; ch.push(k); } }
+    else if (dir > 0) { if (x > ext) ext = x; else if (ext - x >= th && x < 0.8) { dir = -1; ext = x; ch.push(k); } }
+    else { if (x < ext) ext = x; else if (x - ext >= th && ext < 0.8) { dir = 1; ext = x; ch.push(k); } }
+  }
+  var w = Math.round(1 / dt), best = 0, j = 0;
+  for (var i = 0; i < ch.length; i++) { while (ch[i] - ch[j] >= w) j++; best = Math.max(best, Math.floor((i - j + 1) / 2)); }
+  return best;
+}
+var SCAN = [], FLASH = { done: false, max: 0 }, NOW = null, lastMark = 0;
+function panel() {
+  var pn = $('ft-panel'), keys = {}, total = 0, h = [], unkF = 0, unkB = 0;
+  function add(k) { if (!keys[k]) { keys[k] = 1; total++; } }
+  function esc(s) { return String(s).replace(/[&<>]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]; }); }
+  var rows = scenes.map(function (sc, i) {
+    var n = '장면 ' + (i + 1), r = SCAN[i] || { probs: [], unk: { 흐림: 0, 바탕: 0 } }, items = [];
+    TIMEP[n].forEach(function (m) { add(n + '|시간|' + m); items.push('시간: ' + m); });
+    r.probs.forEach(function (p) { add(p.where + '|' + p.tag + '|' + p.name); items.push(p.tag + ' 「' + p.name + '」' + (p.where !== n ? ' (' + p.where + ')' : '')); });
+    unkF += r.unk.흐림; unkB += r.unk.바탕;
+    return '<li>' + n + ' · ' + fmt(sc.def.시작) + '~' + fmt(sc.def.끝) + '초 (' + fmt(hold(sc)) + '초 모습): ' + (items.length ? esc(items.join(' · ')) : '문제 없음') + '</li>';
+  });
+  ERR.forEach(function (m) { add('E|' + m); });
+  if (FLASH.done && FLASH.max > 3) add('F');
+  if (NOW && NOW.frozen) NOW.probs.forEach(function (p) { add(p.where + '|' + p.tag + '|' + p.name); });
+  h.push('<b>' + (total ? '점검: 문제 ' + total + '곳' : '점검: 문제 없음') + '</b><ul>');
+  if (!scenes.length) h.push('<li>장면이 없습니다.</li>');
+  h.push(rows.join(''));
+  ERR.forEach(function (m) { h.push('<li>' + esc(m) + '</li>'); });
+  h.push('<li>번쩍임: ' + (FLASH.done ? '1초에 최대 ' + FLASH.max + '번' + (FLASH.max > 3 ? ' — 3번을 넘습니다' : ' (3번까지 괜찮음)') : '세는 중') + '</li>');
+  if (NOW) h.push('<li>지금 화면 ' + fmt(NOW.t) + '초: ' + (NOW.probs.length ? '문제 ' + NOW.probs.length + '곳 (빨간 테두리)' : '문제 없음') + '</li>');
+  if (unkF + unkB) h.push('<li>못 잰 곳 ' + (unkF + unkB) + '곳: 흐린 글자 ' + unkF + ' · 그림이나 무늬 위 글자 ' + unkB + ' (대비는 눈으로 확인)</li>');
+  h.push('<li>파란 점선: 글자 안전 여백 (가로 ' + fmt(SAFE.왼) + '~' + fmt(SAFE.오른) + ' · 세로 ' + fmt(SAFE.위) + '~' + fmt(SAFE.아래) + ')</li>');
+  NOTE.forEach(function (m) { h.push('<li>참고: ' + esc(m) + '</li>'); });
+  h.push('</ul>');
+  pn.innerHTML = h.join('');
+  pn.hidden = false; pn.classList.toggle('ok', !total);
+  pn.setAttribute('data-problems', total); pn.setAttribute('data-done', FLASH.done ? '1' : '0');
+  window.점검결과 = { 문제: total, 장면별: SCAN, 번쩍임: FLASH, 지금: NOW, 오류: ERR };
+  layoutPanel();
+}
+function layoutPanel() {
+  var pn = $('ft-panel'), wide = innerWidth > innerHeight;
+  pn.classList.toggle('side', wide); pn.classList.toggle('under', !wide);
+  if (wide) { view.style.right = pn.offsetWidth + 'px'; view.style.bottom = ''; }
+  else { view.style.right = ''; view.style.bottom = 'calc(var(--bar) + ' + pn.offsetHeight + 'px)'; }
+  fit();
+}
+function liveMarks(t, force) {
+  var now = performance.now();
+  if (!force && now - lastMark < 250) return;
+  lastMark = now;
+  var r = inspect(); NOW = { t: t, probs: r.probs, frozen: false }; marks(r.probs); panel();
+}
+function startCheck(qt) {
+  CHECK = true; document.body.classList.add('check');
+  say('점검 모드입니다. 빨간 테두리는 고칠 곳, 파란 점선은 글자 안전 여백입니다.');
+  panel();
+  SCAN = scenes.map(function (sc) { render(hold(sc)); return inspect(); });
+  panel();
+  var dt = 1 / 30, n = Math.floor(TOTAL / dt) + 1, kf = 0, vals = [];
+  (function step() {
+    var end = Math.min(n, kf + 45);
+    for (; kf < end; kf++) { render(kf * dt); vals.push(meanLum()); }
+    if (kf < n) { setTimeout(step, 0); return; }
+    FLASH = { done: true, max: vals.length > 1 ? flashes(vals, dt) : 0 };
+    if (qt != null) { render(qt); var r = inspect(); NOW = { t: qt, probs: r.probs, frozen: true }; marks(r.probs); panel(); }
+    else { render(0); liveMarks(0, true); play(); }
+  })();
+}
+
+/* ---------- 시작 ---------- */
+var qs = new URLSearchParams(location.search), qv = qs.get('t');
+var qt = (qv !== null && qv !== '' && isFinite(+qv)) ? Math.max(0, +qv) : null;
+if (ERR.length) say(ERR[0]);
+if (qs.get('check') === '1') startCheck(qt);
+else if (qt != null) { render(qt); }
+else if (root.classList.contains('no-anim')) { render(TOTAL); }
+else play();
+})();
+</script>
+</body>
+</html>

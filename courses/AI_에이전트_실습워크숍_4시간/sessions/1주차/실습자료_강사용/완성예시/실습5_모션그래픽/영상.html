@@ -1,0 +1,679 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>데일리 쿡 소개 영상</title>
+<style>
+:root{
+  --bg:#FAF7F0;      /* 바탕 */
+  --ink:#1B1F1E;     /* 글자 */
+  --acc:#0E4A5A;     /* 강조색 하나(자료의 색) */
+  --acc-d:#0B3743;   /* 강조색을 어둡게 */
+  --acc-m:#4A7783;   /* 강조색을 밝게(25%) */
+  --acc-l:#86A4AC;   /* 강조색을 밝게(50%) */
+  --acc-ll:#C3D2D6;  /* 강조색을 밝게(75%) */
+  --acc-lll:#E2E9EB; /* 강조색을 밝게(88%) */
+  --on-acc:#FFFFFF;  /* 단추 글자 */
+  --n0:#FFFFFF;      /* 중립색: 카드 */
+  --n1:#F3EEE4;
+  --n2:#E7E0D3;
+  --n3:#D6CEBF;
+  --n4:#BDB4A5;
+  --n5:#9C9385;
+  --acc-a16:rgba(14,74,90,.16);
+  --acc-a10:rgba(14,74,90,.10);
+  --acc-a06:rgba(14,74,90,.06);
+  --acc-a00:rgba(14,74,90,0);
+  --sh-a22:rgba(11,55,67,.22);
+  --sh-a12:rgba(11,55,67,.12);
+  --sh-a00:rgba(11,55,67,0);
+  --warm-a:rgba(231,224,211,.85);
+  --warm-a0:rgba(231,224,211,0);
+  --glint:rgba(255,255,255,.22);
+  --glint0:rgba(255,255,255,0);
+  --bar:140px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;overflow:hidden;color:var(--ink);font-family:"Malgun Gothic","맑은 고딕","Apple SD Gothic Neo","Noto Sans KR",sans-serif}
+#view{position:fixed;left:0;top:0;right:0;bottom:var(--bar)}
+#stage{position:absolute;left:0;top:0;width:1080px;height:1920px;transform-origin:0 0;background:var(--bg);overflow:hidden}
+#bg,#content,.scene,#props,#fx{position:absolute;left:0;top:0;width:1080px;height:1920px}
+#bg>div,.p,.g{position:absolute;left:0;top:0;will-change:transform,opacity}
+.blob{border-radius:50%}
+.ring{border-radius:50%;border:3px solid var(--acc-ll)}
+.dot{border-radius:50%;background:var(--acc-ll)}
+.scene{visibility:hidden}
+#fx{pointer-events:none}
+/* 글자 */
+.ln{position:absolute;left:108px;width:864px;text-align:center;white-space:nowrap;line-height:1.3;letter-spacing:-0.01em;font-weight:400}
+.ln.b{font-weight:700}
+.ln.rel{position:relative;left:auto;width:auto}
+.acc{color:var(--acc)}
+.bold{font-weight:700}
+.run{display:inline-block;position:relative}
+.mu{display:inline-block;overflow:hidden;vertical-align:top;padding:0 .02em}
+.mi{display:inline-block;transform:translateY(112%)}
+.lc{display:inline-block;opacity:0}
+.num{position:relative;display:inline-block}
+.num .gh{visibility:hidden}
+.num .c{position:absolute;right:0;top:0}
+.ul{position:absolute;left:-2%;right:-2%;bottom:-6px;height:14px;border-radius:7px;background:var(--acc);transform:scaleX(0);transform-origin:left center}
+.box{display:inline-block;position:relative}
+.box.pill{padding:10px 44px;border-radius:999px;background:var(--n0);border:4px solid var(--acc);color:var(--acc);box-shadow:0 14px 30px var(--sh-a12)}
+.box.btn{padding:28px 64px;border-radius:999px;background:var(--acc);color:var(--on-acc);overflow:hidden;box-shadow:0 24px 50px var(--sh-a22),inset 0 -6px 0 var(--acc-d)}
+.sheen{position:absolute;top:-20%;bottom:-20%;left:0;width:45%;background:linear-gradient(90deg,var(--glint0),var(--glint) 50%,var(--glint0));opacity:0}
+/* 장면 그림 */
+#card{left:130px;top:400px;width:820px;height:730px;border-radius:56px;background:linear-gradient(180deg,var(--n0),var(--n1));box-shadow:0 50px 90px var(--sh-a22),0 8px 20px var(--sh-a12);transform-origin:50% 100%}
+#pin{left:531px;top:1119px;width:18px;height:18px;border-radius:50%;background:var(--acc);box-shadow:0 0 0 5px var(--acc-lll)}
+#tag{left:230px;top:1128px;width:620px;height:290px;transform-origin:310px 0}
+#tag .str{position:absolute;left:308px;top:0;width:4px;height:62px;background:var(--acc-m);border-radius:2px}
+#tag .body{position:absolute;left:0;top:44px;width:620px;height:240px;border-radius:40px;background:var(--n0);box-shadow:0 30px 60px var(--sh-a22);display:flex;align-items:center;justify-content:center;padding-top:26px}
+#tag .body::before{content:"";position:absolute;inset:14px;border:3px dashed var(--acc-ll);border-radius:28px}
+#tag .hole{position:absolute;left:296px;top:52px;width:28px;height:28px;border-radius:50%;background:var(--bg);box-shadow:0 0 0 6px var(--acc-lll),inset 0 3px 4px var(--sh-a22)}
+#bubble{left:120px;top:1250px;width:840px;height:200px;border-radius:48px;background:var(--n0);box-shadow:0 36px 70px var(--sh-a22),0 6px 16px var(--sh-a12);display:flex;align-items:center;justify-content:center;transform-origin:20% 100%}
+#bubble .tail{position:absolute;left:96px;bottom:-22px;width:48px;height:48px;background:var(--n0);transform:rotate(45deg);border-radius:6px}
+#bubble svg{position:absolute;left:-26px;top:-70px}
+#avatar{left:118px;top:1488px;width:84px;height:84px;border-radius:50%;background:var(--acc-lll);box-shadow:0 10px 20px var(--sh-a12)}
+#disc{left:250px;top:270px;width:580px;height:580px;border-radius:50%;background:radial-gradient(circle at 40% 35%,var(--n0) 0%,var(--acc-lll) 55%,var(--acc-ll) 100%);box-shadow:0 40px 80px var(--sh-a12)}
+#disc2{left:200px;top:220px;width:680px;height:680px}
+#logobar{left:470px;top:1068px;width:140px;height:10px;border-radius:5px;background:var(--acc);transform:scaleX(0)}
+.hsh{width:300px;height:44px;border-radius:50%;background:radial-gradient(closest-side,var(--sh-a22),var(--sh-a00))}
+.cl{color:var(--n4)}
+/* 조작 막대 */
+#bar{position:fixed;left:0;right:0;bottom:0;height:var(--bar);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;font-size:18px;line-height:1.4;text-align:center;padding:0 16px}
+#bar .row{display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:center}
+body.rec #bar{visibility:hidden}
+@media print{#bar{display:none}#view{bottom:0}}
+/* ---------- 페이지 꾸밈: 어두운 바탕 · 무대 테두리 · 이름표 · 단추 띠 (영상_틀.html · 완성 예시가 같은 코드) ---------- */
+:root{--pg:#15181C;--pg-band:#0D0F12;--pg-ink:#F2F4F6;--pg-sub:#C3CAD3;--pg-edge:#8A949F;--pg-shadow:rgba(0,0,0,.55);--pg-focus:#8AB4F8;--pg-rec:#FFFFFF}
+html,body{background:var(--pg)}
+#stage-edge{position:absolute;pointer-events:none;box-shadow:0 0 0 1px var(--pg-edge),0 18px 48px var(--pg-shadow)}
+#stage-tag{position:absolute;transform:translateY(-100%);pointer-events:none;white-space:nowrap;font:700 15px/1.2 "Malgun Gothic","맑은 고딕","Apple SD Gothic Neo","Noto Sans KR",sans-serif;color:var(--pg-ink);background:var(--pg-band);border:1px solid var(--pg-edge);border-radius:6px;padding:4px 10px}
+#bar{background:var(--pg-band);border-top:1px solid var(--pg-edge);color:var(--pg-ink)}
+#bar #msg{color:var(--pg-sub);text-wrap:balance;word-break:keep-all}
+#bar button{font:inherit;font-weight:700;font-size:20px;min-height:48px;padding:0 24px;border-radius:8px;border:2px solid var(--pg-ink);background:var(--pg-ink);color:var(--pg-band);cursor:pointer}
+#bar button.ghost{background:transparent;color:var(--pg-ink)}
+#bar button:focus-visible{outline:3px solid var(--pg-focus);outline-offset:3px}
+body.rec{background:var(--pg-rec)}
+body.rec #view{right:0!important;bottom:0!important}
+body.rec #bar,body.rec #stage-edge,body.rec #stage-tag,body.check #stage-tag{visibility:hidden}
+@media print{#stage-edge,#stage-tag{display:none}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+ <defs>
+  <!-- 서랍 속 여러 도구(실루엣) -->
+  <symbol id="s-sp" viewBox="0 0 80 260"><path fill="currentColor" fill-rule="evenodd" d="M16 8h48a10 10 0 0 1 10 10v84a10 10 0 0 1-10 10H16A10 10 0 0 1 6 102V18A10 10 0 0 1 16 8zM24 24v68h7V24zM37 24v68h7V24zM50 24v68h7V24z"/><rect fill="currentColor" x="34" y="108" width="12" height="150" rx="6"/></symbol>
+  <symbol id="s-la" viewBox="0 0 80 260"><rect fill="currentColor" x="36" y="6" width="8" height="186" rx="4"/><circle fill="currentColor" cx="40" cy="214" r="38"/><circle fill="currentColor" opacity=".35" cx="40" cy="208" r="26"/></symbol>
+  <symbol id="s-wh" viewBox="0 0 80 260"><g fill="none" stroke="currentColor" stroke-width="5"><ellipse cx="40" cy="92" rx="12" ry="84"/><ellipse cx="40" cy="92" rx="24" ry="84"/><ellipse cx="40" cy="92" rx="34" ry="84"/></g><rect fill="currentColor" x="31" y="168" width="18" height="90" rx="9"/></symbol>
+  <symbol id="s-ws" viewBox="0 0 80 260"><ellipse fill="currentColor" cx="40" cy="52" rx="27" ry="46"/><rect fill="currentColor" x="34" y="88" width="12" height="170" rx="6"/></symbol>
+  <symbol id="s-pe" viewBox="0 0 80 260"><path fill="none" stroke="currentColor" stroke-width="9" stroke-linejoin="round" d="M22 128V44Q40 6 58 44v84"/><path stroke="currentColor" stroke-width="4" d="M40 30v96"/><rect fill="currentColor" x="26" y="122" width="28" height="136" rx="14"/></symbol>
+  <symbol id="s-rp" viewBox="0 0 80 260"><rect fill="currentColor" x="20" y="52" width="40" height="156" rx="18"/><rect fill="currentColor" x="34" y="4" width="12" height="56" rx="6"/><rect fill="currentColor" x="34" y="200" width="12" height="56" rx="6"/></symbol>
+  <symbol id="s-ss" viewBox="0 0 80 260"><path fill="currentColor" fill-rule="evenodd" d="M40 6c18 0 32 24 32 54S58 114 40 114 8 90 8 60 22 6 40 6zM30 40a5 5 0 1 0 0 .1zM50 40a5 5 0 1 0 0 .1zM40 60a5 5 0 1 0 0 .1zM30 80a5 5 0 1 0 0 .1zM50 80a5 5 0 1 0 0 .1z"/><rect fill="currentColor" x="35" y="108" width="10" height="150" rx="5"/></symbol>
+  <symbol id="s-fo" viewBox="0 0 80 260"><rect fill="currentColor" x="34" y="118" width="12" height="140" rx="6"/><path fill="currentColor" d="M18 70Q18 124 40 128Q62 124 62 70z"/><rect fill="currentColor" x="18" y="8" width="7" height="72" rx="3.5"/><rect fill="currentColor" x="36.5" y="8" width="7" height="72" rx="3.5"/><rect fill="currentColor" x="55" y="8" width="7" height="72" rx="3.5"/></symbol>
+  <symbol id="s-ma" viewBox="0 0 80 260"><rect fill="currentColor" x="35" y="4" width="10" height="176" rx="5"/><path fill="none" stroke="currentColor" stroke-width="9" stroke-linejoin="round" stroke-linecap="round" d="M8 196l16 50 16-50 16 50 16-50"/><rect fill="currentColor" x="10" y="180" width="60" height="12" rx="6"/></symbol>
+  <symbol id="s-pc" viewBox="0 0 80 260"><path fill="currentColor" fill-rule="evenodd" d="M40 10a38 38 0 1 1 0 76a38 38 0 1 1 0-76zM40 38a10 10 0 1 0 0 20a10 10 0 1 0 0-20z"/><rect fill="currentColor" x="33" y="80" width="14" height="178" rx="7"/></symbol>
+  <symbol id="s-br" viewBox="0 0 80 260"><rect fill="currentColor" x="36" y="4" width="8" height="166" rx="4"/><rect fill="currentColor" x="26" y="164" width="28" height="22" rx="4"/><path fill="currentColor" d="M24 186h32l6 70H18z"/></symbol>
+  <symbol id="s-sc" viewBox="0 0 80 260"><path fill="currentColor" d="M36 186L30 14q10-6 14 4l4 168z"/><path fill="currentColor" opacity=".8" d="M44 186l6-172q-10-6-14 4l-4 168z"/><g fill="none" stroke="currentColor" stroke-width="9"><circle cx="24" cy="216" r="20"/><circle cx="56" cy="216" r="20"/></g></symbol>
+  <symbol id="s-gr" viewBox="0 0 80 260"><path fill="currentColor" fill-rule="evenodd" d="M20 40h40l10 210H10zM30 80h6v6h-6zM44 80h6v6h-6zM28 116h6v6h-6zM46 116h6v6h-6zM26 152h6v6h-6zM48 152h6v6h-6zM24 188h6v6h-6zM50 188h6v6h-6z"/><path fill="none" stroke="currentColor" stroke-width="8" d="M26 42V22q14-16 28 0v20"/></symbol>
+  <symbol id="s-sv" viewBox="0 0 80 260"><circle fill="none" stroke="currentColor" stroke-width="7" cx="40" cy="48" r="36"/><g stroke="currentColor" stroke-width="2.5" opacity=".7"><path d="M14 36h52M8 50h64M12 64h56M26 18v62M40 12v72M54 18v62"/></g><rect fill="currentColor" x="35" y="82" width="10" height="176" rx="5"/></symbol>
+  <!-- 사람 아이콘 -->
+  <symbol id="s-person" viewBox="0 0 32 34"><circle cx="16" cy="8.5" r="7"/><path d="M3 34v-5q0-11 13-11t13 11v5z"/></symbol>
+  <!-- 그라데이션 -->
+  <linearGradient id="gBoard" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="300" y2="420"><stop offset="0" style="stop-color:var(--n0)"/><stop offset=".4" style="stop-color:var(--n1)"/><stop offset="1" style="stop-color:var(--n3)"/></linearGradient>
+  <linearGradient id="gTong" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="170" y2="0"><stop offset="0" style="stop-color:var(--acc-m)"/><stop offset=".5" style="stop-color:var(--acc)"/><stop offset="1" style="stop-color:var(--acc-d)"/></linearGradient>
+  <linearGradient id="gCup" gradientUnits="userSpaceOnUse" x1="48" y1="0" x2="272" y2="0"><stop offset="0" style="stop-color:var(--acc-ll)"/><stop offset=".3" style="stop-color:var(--n0)"/><stop offset=".62" style="stop-color:var(--acc-lll)"/><stop offset="1" style="stop-color:var(--acc-l)"/></linearGradient>
+  <linearGradient id="gFront" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:var(--n1)"/><stop offset="1" style="stop-color:var(--n2)"/></linearGradient>
+  <linearGradient id="gIn" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:var(--n5)"/><stop offset="1" style="stop-color:var(--n4)"/></linearGradient>
+  <linearGradient id="gBand" x1="0" y1="0" x2="1" y2="0"><stop offset="0" style="stop-color:var(--acc-a00)"/><stop offset="1" style="stop-color:var(--acc-a16)"/></linearGradient>
+ </defs>
+</svg>
+
+<div id="view"><div id="stage" role="img" aria-label="데일리 쿡 소개 영상, 30초, 6장면">
+ <div id="bg">
+  <div class="blob" id="b1" style="width:980px;height:980px;background:radial-gradient(closest-side,var(--acc-a16),var(--acc-a00))"></div>
+  <div class="blob" id="b2" style="width:860px;height:860px;background:radial-gradient(closest-side,var(--acc-a10),var(--acc-a00))"></div>
+  <div class="blob" id="b3" style="width:760px;height:760px;background:radial-gradient(closest-side,var(--warm-a),var(--warm-a0))"></div>
+  <div class="blob" id="b4" style="width:640px;height:640px;background:radial-gradient(closest-side,var(--acc-a06),var(--acc-a00))"></div>
+  <div class="ring" id="d1" style="width:150px;height:150px"></div>
+  <div class="dot" id="d2" style="width:30px;height:30px"></div>
+  <div class="ring" id="d3" style="width:80px;height:80px"></div>
+  <div class="dot" id="d4" style="width:20px;height:20px"></div>
+  <div class="ring" id="d5" style="width:240px;height:240px;border-width:2px"></div>
+  <div class="dot" id="d6" style="width:16px;height:16px"></div>
+ </div>
+
+ <div id="content">
+  <div class="scene" id="sc1"></div>
+  <div class="scene" id="sc2"></div>
+  <div class="scene" id="sc3">
+   <div class="g" id="card"></div>
+   <svg class="g" id="bind" width="1080" height="1920" viewBox="0 0 1080 1920" style="pointer-events:none"><path pathLength="1" d="M226 500H854A56 56 0 0 1 910 556V1034A56 56 0 0 1 854 1090H226A56 56 0 0 1 170 1034V556A56 56 0 0 1 226 500Z" fill="none" style="stroke:var(--acc)" stroke-width="6" stroke-linecap="round" stroke-dasharray="1" stroke-dashoffset="1"/></svg>
+   <div class="g" id="pin"></div>
+   <div class="g" id="tag"><div class="str"></div><div class="body" id="tagBody"></div><div class="hole"></div></div>
+  </div>
+  <div class="scene" id="sc4">
+   <svg class="g" id="ring" width="520" height="520" viewBox="0 0 520 520" style="left:280px;top:220px">
+    <circle cx="260" cy="260" r="172" style="fill:var(--n0)"/>
+    <g id="ticks"></g>
+    <circle cx="260" cy="260" r="206" fill="none" style="stroke:var(--acc-lll)" stroke-width="36"/>
+    <circle id="arc" cx="260" cy="260" r="206" fill="none" style="stroke:var(--acc)" stroke-width="36" stroke-linecap="round" transform="rotate(-90 260 260)" stroke-dasharray="1294.3" stroke-dashoffset="1294.3"/>
+    <circle id="arcDot" cx="260" cy="54" r="9" style="fill:var(--n0)"/>
+   </svg>
+   <svg class="g" id="grid" width="840" height="252" viewBox="0 0 840 252" style="left:120px;top:850px"></svg>
+   <div class="g" id="bubble"><div class="tail"></div>
+    <svg width="150" height="120" viewBox="0 0 150 120"><g fill="none" style="stroke:var(--acc-l)" stroke-width="16" stroke-linecap="round"><path class="q" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1" d="M62 20C34 30 22 52 24 80"/><path class="q" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1" d="M126 20C98 30 86 52 88 80"/></g><g style="fill:var(--acc-l)"><circle class="qd" cx="36" cy="88" r="18" opacity="0"/><circle class="qd" cx="100" cy="88" r="18" opacity="0"/></g></svg>
+   </div>
+   <div class="g" id="avatar"><svg width="84" height="84" viewBox="-6 -6 44 46"><use href="#s-person" style="fill:var(--acc)"/></svg></div>
+  </div>
+  <div class="scene" id="sc5"></div>
+  <div class="scene" id="sc6">
+   <svg class="g" id="disc2" viewBox="0 0 680 680"><circle cx="340" cy="340" r="330" fill="none" style="stroke:var(--acc-ll)" stroke-width="4" stroke-dasharray="4 22" stroke-linecap="round"/></svg>
+   <div class="g" id="disc"></div>
+   <div class="g" id="logobar"></div>
+  </div>
+
+  <svg id="fx" width="1080" height="1920" viewBox="0 0 1080 1920" style="opacity:0">
+   <g id="fxLine"><rect x="-120" y="-2600" width="120" height="5200" fill="url(#gBand)"/><rect x="-4" y="-2600" width="8" height="5200" style="fill:var(--acc)" opacity=".45"/></g>
+   <g id="fxCirc"><circle id="fxC2" cx="0" cy="0" r="10" fill="none" style="stroke:var(--acc-a10)" stroke-width="50"/><circle id="fxC1" cx="0" cy="0" r="10" fill="none" style="stroke:var(--acc)" stroke-width="8" opacity=".45"/></g>
+  </svg>
+
+  <div id="props">
+   <svg class="p" id="drBack" width="880" height="200" viewBox="0 0 880 200"><polygon points="70,30 810,30 880,180 0,180" style="fill:url(#gIn)"/><rect x="66" y="18" width="748" height="16" rx="6" style="fill:var(--n3)"/></svg>
+   <!-- 도구들이 여기 들어온다(스크립트) -->
+   <svg class="p" id="drFront" width="880" height="400" viewBox="0 0 880 400"><ellipse cx="440" cy="368" rx="430" ry="22" style="fill:var(--sh-a12)"/><rect x="0" y="0" width="880" height="340" rx="30" style="fill:url(#gFront)"/><rect x="0" y="0" width="880" height="24" rx="12" style="fill:var(--n0)" opacity=".9"/><rect x="40" y="56" width="800" height="244" rx="22" fill="none" style="stroke:var(--n3)" stroke-width="4"/><rect x="320" y="150" width="240" height="42" rx="21" style="fill:var(--acc)"/><rect x="338" y="157" width="204" height="9" rx="4.5" style="fill:var(--acc-m)"/></svg>
+  </div>
+ </div>
+</div><div id="stage-edge" aria-hidden="true"></div><div id="stage-tag" aria-hidden="true"></div></div>
+
+<!-- 주인공 세 도구(스크립트가 #props 안으로 옮긴다) -->
+<div hidden id="heroSrc">
+ <svg class="p" id="hBoard" width="300" height="420" viewBox="0 0 300 420" aria-hidden="true">
+  <rect x="21" y="60" width="272" height="350" rx="30" style="fill:var(--n5)"/>
+  <rect x="117" y="16" width="80" height="60" rx="26" style="fill:var(--n5)"/>
+  <rect x="110" y="8" width="80" height="62" rx="26" style="fill:url(#gBoard)"/>
+  <rect x="14" y="50" width="272" height="350" rx="30" style="fill:url(#gBoard)"/>
+  <circle cx="150" cy="32" r="12" style="fill:var(--n4)"/><circle cx="150" cy="34" r="8" style="fill:var(--n5)"/>
+  <rect x="36" y="72" width="228" height="306" rx="18" fill="none" style="stroke:var(--n3)" stroke-width="3"/>
+  <g fill="none" style="stroke:var(--n3)" stroke-width="2.5" stroke-linecap="round"><path d="M56 128C110 116 170 140 244 122"/><path d="M52 196C120 206 182 180 248 200"/><path d="M58 268C122 258 196 286 244 266"/><path d="M66 336C130 346 190 326 236 340"/></g>
+  <path d="M40 392L196 58h44L84 392z" style="fill:var(--n0)" opacity=".28"/>
+  <path d="M32 96Q32 66 62 66h60" fill="none" style="stroke:var(--n0)" stroke-width="6" stroke-linecap="round"/>
+  <rect x="40" y="396" width="48" height="16" rx="8" style="fill:var(--acc)"/><rect x="212" y="396" width="48" height="16" rx="8" style="fill:var(--acc)"/>
+ </svg>
+ <svg class="p" id="hTongs" width="170" height="470" viewBox="0 0 170 470" aria-hidden="true">
+  <path d="M56 70Q85 4 114 70" fill="none" style="stroke:var(--acc-d)" stroke-width="14" stroke-linecap="round"/>
+  <path d="M58 56L30 392Q28 410 40 412h12q8-2 10-18L82 74z" style="fill:url(#gTong)"/>
+  <path d="M112 56l28 336q2 18-10 20h-12q-8-2-10-18L88 74z" style="fill:url(#gTong)"/>
+  <path d="M30 350h34l-3 70q-2 32-17 36q-14-4-15-36z" style="fill:var(--acc-l)"/>
+  <path d="M140 350h-34l3 70q2 32 17 36q14-4 15-36z" style="fill:var(--acc-l)"/>
+  <g style="stroke:var(--acc-m)" stroke-width="3" stroke-linecap="round"><path d="M36 372h22M36 390h22M36 408h22M38 426h18"/><path d="M112 372h22M112 390h22M112 408h22M114 426h18"/></g>
+  <path d="M58 96L40 330" style="stroke:var(--acc-l)" stroke-width="4" stroke-linecap="round" opacity=".9"/>
+  <path d="M114 96l18 234" style="stroke:var(--acc-m)" stroke-width="3" stroke-linecap="round" opacity=".8"/>
+  <rect x="60" y="84" width="50" height="28" rx="11" style="fill:var(--acc-ll);stroke:var(--acc-d)" stroke-width="3"/>
+  <rect x="78" y="72" width="14" height="14" rx="4" style="fill:var(--n0)"/>
+ </svg>
+ <svg class="p" id="hCup" width="330" height="300" viewBox="0 0 330 300" aria-hidden="true">
+  <path d="M262 80c66 0 66 132-10 136" fill="none" style="stroke:var(--acc-l)" stroke-width="26" stroke-linecap="round"/>
+  <path d="M266 84c46 4 46 112-8 120" fill="none" style="stroke:var(--acc-lll)" stroke-width="7" stroke-linecap="round"/>
+  <path d="M48 50h224l-22 218q-2 18-20 18H90q-18 0-20-18z" style="fill:url(#gCup)"/>
+  <ellipse cx="160" cy="280" rx="80" ry="6" style="fill:var(--acc-l)" opacity=".45"/>
+  <g style="stroke:var(--acc)" stroke-linecap="round"><path stroke-width="5" d="M118 112h56M118 152h56M118 192h56M118 232h56"/><path stroke-width="4" d="M118 132h28M118 172h28M118 212h28"/></g>
+  <path d="M86 74l12 186" style="stroke:var(--n0)" stroke-width="14" stroke-linecap="round" opacity=".85"/>
+  <path d="M110 74l8 170" style="stroke:var(--n0)" stroke-width="4" stroke-linecap="round" opacity=".7"/>
+  <path d="M50 50L20 38q-6 14 32 26z" style="fill:var(--acc-lll);stroke:var(--acc-l)" stroke-width="3" stroke-linejoin="round"/>
+  <ellipse cx="160" cy="50" rx="112" ry="18" style="fill:var(--n0);stroke:var(--acc-l)" stroke-width="4"/>
+  <ellipse cx="160" cy="52" rx="96" ry="11" style="fill:var(--acc-ll)"/>
+ </svg>
+</div>
+
+<div id="bar">
+  <div class="row">
+    <button id="play" type="button">처음부터 재생</button>
+    <button id="save" type="button" class="ghost">영상 파일로 저장</button>
+    <span id="guide">공유 창에서 「이 탭」을 고르세요</span>
+  </div>
+  <div id="msg" role="status">저장이 안 되면 화면 녹화를 씁니다. Windows는 Win + Alt + R, 맥은 Shift + Command + 5에서 「선택 부분 기록」을 고릅니다.</div>
+</div>
+
+<script type="application/json" id="plan">
+{
+ "W":1080,"H":1920,"total":30,"T":0.6,"transition":"닦아내기",
+ "safe":{"l":108,"t":240,"r":972,"b":1600},
+ "scenes":[
+  {"id":1,"sec":"훅","s":0,"e":3,"hold":2.3,"lines":[
+   {"y":500,"px":80,"b":1,"in":"한 글자씩","unit":"char","a":0.1,"step":0.04,"d":0.35,"pulse":[1.15,0.5],"runs":[{"t":"고르기 "},{"t":"어려우셨죠?","acc":1}]}
+  ]},
+  {"id":2,"sec":"맥락","s":3,"e":8,"hold":6.8,"wipe":{"type":"up"},"lines":[
+   {"y":900,"px":72,"b":1,"in":"떠오름","unit":"word","a":3.55,"step":0.12,"d":0.5,"runs":[{"t":"어떤 걸 골라야"}]},
+   {"y":1010,"px":72,"b":1,"in":"떠오름","unit":"word","a":3.95,"step":0.12,"d":0.5,"runs":[{"t":"할지 "},{"t":"모르겠다","acc":1}]}
+  ]},
+  {"id":3,"sec":"본문","s":8,"e":14.5,"hold":13.7,"wipe":{"type":"circle","x":540,"y":800},"lines":[
+   {"y":300,"px":64,"b":1,"in":"떠오름","unit":"run","a":8.0,"d":0.5,"runs":[{"t":"도마","a":8.0},{"t":" + 집게","a":8.4},{"t":" + 계량컵","a":8.8}]},
+   {"y":500,"px":64,"b":1,"in":"튀어나옴","unit":"line","a":9.9,"d":0.5,"box":"pill","pad":[48,14],"runs":[{"t":"세 가지 세트"}]},
+   {"y":1302,"px":112,"b":1,"in":"떠오름","unit":"line","a":10.6,"d":0.3,"parent":"tagBody","runs":[{"t":"36,900","n":36900,"cd":[10.8,11.9],"acc":1},{"t":"원","acc":1}]}
+  ]},
+  {"id":4,"sec":"본문","s":14.5,"e":21,"hold":20.3,"wipe":{"type":"line","ang":12},"lines":[
+   {"y":480,"px":140,"b":1,"in":"튀어나옴","unit":"line","a":14.4,"d":0.5,"runs":[{"t":"87","n":87,"cd":[14.5,15.7],"acc":1},{"t":"%","acc":1}]},
+   {"y":770,"px":56,"b":0,"in":"떠오름","unit":"word","a":15.3,"step":0.1,"d":0.5,"runs":[{"t":"체험단 "},{"t":"120명","bold":1},{"t":" 중 "},{"t":"104명","bold":1,"acc":1}]},
+   {"y":1160,"px":56,"b":0,"in":"떠오름","unit":"word","a":16.6,"step":0.08,"d":0.5,"runs":[{"t":"다시 사고 싶다고 답했습니다"}]},
+   {"y":1350,"px":56,"b":1,"in":"스며듦","unit":"line","a":18.0,"d":0.5,"parent":"bubble","runs":[{"t":"「서랍 한 칸이 비었어요」"}]}
+  ]},
+  {"id":5,"sec":"결말","s":21,"e":25,"hold":24.3,"wipe":{"type":"circle","x":540,"y":1350},"lines":[
+   {"y":540,"px":68,"b":1,"in":"한 글자씩","unit":"char","a":20.8,"step":0.04,"d":0.35,"runs":[{"t":"서랍 속 도구는 많지만"}]},
+   {"y":660,"px":68,"b":1,"in":"한 글자씩","unit":"char","a":21.5,"step":0.04,"d":0.35,"runs":[{"t":"자주 쓰는 것은"}]},
+   {"y":780,"px":68,"b":1,"in":"한 글자씩","unit":"char","a":22.1,"step":0.04,"d":0.35,"runs":[{"t":"세 가지","acc":1,"ul":[22.8,0.5]},{"t":"였습니다."}]}
+  ]},
+  {"id":6,"sec":"행동","s":25,"e":30,"hold":30,"wipe":{"type":"up"},"lines":[
+   {"y":980,"px":112,"b":1,"in":"밀려듦","unit":"char","a":25.4,"step":0.09,"d":0.7,"runs":[{"t":"데일리 쿡","acc":1}]},
+   {"y":1270,"px":88,"b":1,"in":"튀어나옴","unit":"line","a":26.4,"d":0.5,"box":"btn","pad":[64,28],"pulse":[27.2,0.6],"sheen":[27.9,1.4],"runs":[{"t":"오늘 사 가세요"}]}
+  ]}
+ ]
+}
+</script>
+
+<script>
+(function(){
+var D=JSON.parse(document.getElementById('plan').textContent);
+function $(id){return document.getElementById(id)}
+var stage=$('stage'),view=$('view'),content=$('content'),props=$('props'),msg=$('msg'),raf=0;
+var LAST=D.scenes.length-1,T=D.T;
+function el(tag,cls,txt){var n=document.createElement(tag);if(cls)n.className=cls;if(txt!=null)n.textContent=txt;return n}
+/* SVG 요소는 svg 안에 글로 넣어 만든다(이름공간 주소 없이) */
+function sv(tag,attrs){var h='<'+tag;for(var k in attrs)h+=' '+k+'="'+attrs[k]+'"';var box=document.createElement('div');box.innerHTML='<svg>'+h+'></'+tag+'></svg>';return box.firstChild.firstChild}
+function clamp(x){return x<0?0:x>1?1:x}
+function lerp(a,b,p){return a+(b-a)*p}
+function say(s){msg.textContent=s}
+
+/* 이징: CSS cubic-bezier와 같은 곡선(선형 없음) */
+function bez(x1,y1,x2,y2){
+  var ax=1-3*x2+3*x1,bx=3*x2-6*x1,cx=3*x1,ay=1-3*y2+3*y1,by=3*y2-6*y1,cy=3*y1;
+  function X(t){return((ax*t+bx)*t+cx)*t}
+  return function(p){
+    if(p<=0)return 0;if(p>=1)return 1;
+    var t=p,i,x,dx;
+    for(i=0;i<8;i++){x=X(t)-p;if(Math.abs(x)<1e-6)break;dx=(3*ax*t+2*bx)*t+cx;if(Math.abs(dx)<1e-6)break;t-=x/dx}
+    if(!(t>=0&&t<=1)||Math.abs(X(t)-p)>1e-4){var lo=0,hi=1;t=p;for(i=0;i<40;i++){if(X(t)<p)lo=t;else hi=t;t=(lo+hi)/2}}
+    return((ay*t+by)*t+cy)*t;
+  };
+}
+var E={out:bez(.22,1,.36,1),io:bez(.65,0,.35,1),back:bez(.34,1.56,.64,1),inq:bez(.55,0,1,.45),soft:bez(.45,.05,.25,1)};
+function ep(t,a,d,f){return(f||E.out)(clamp((t-a)/d))}
+
+/* 정해진 난수(매번 같은 그림) */
+var seed=20260615;
+function rnd(){seed|=0;seed=seed+0x6D2B79F5|0;var r=Math.imul(seed^seed>>>15,1|seed);r=r+Math.imul(r^r>>>7,61|r)^r;return((r^r>>>14)>>>0)/4294967296}
+function rr(a,b){return a+(b-a)*rnd()}
+
+/* ---------- 글자 줄을 계획(JSON)에서 만든다 ---------- */
+D.scenes.forEach(function(S,i){
+  S.el=$('sc'+S.id);S.i=i;
+  S.lines.forEach(function(L){
+    var host=L.parent?$(L.parent):S.el;
+    L.el=el('div','ln'+(L.b?' b':'')+(L.parent?' rel':''));L.el.style.fontSize=L.px+'px';
+    if(!L.parent)L.el.style.top=(L.y-L.px*0.65)+'px';
+    var holder=L.el;
+    if(L.box){L.boxEl=el('span','box '+L.box);L.el.appendChild(L.boxEl);holder=L.boxEl}
+    host.appendChild(L.el);
+    L.units=[];L.nums=[];L.uls=[];
+    var k=0;
+    L.runs.forEach(function(R){
+      var s=el('span','run'+(R.acc?' acc':'')+(R.bold?' bold':''));holder.appendChild(s);
+      if(R.n!=null){
+        var nb=el('span','num');nb.appendChild(el('span','gh',R.t));R.cur=el('span','c','0');nb.appendChild(R.cur);s.appendChild(nb);L.nums.push(R);
+      }else if(L.unit==='char'||L.unit==='word'){
+        var parts=L.unit==='char'?R.t.split(''):R.t.split(/( )/);
+        parts.forEach(function(c){
+          if(c==='')return;
+          if(c===' '){s.appendChild(document.createTextNode(' '));return}
+          var u;
+          if(L['in']==='밀려듦'){u=el('span','lc',c);s.appendChild(u);L.units.push({el:u,a:L.a+k*L.step,k:k})}
+          else{var m=el('span','mu');u=el('span','mi',c);m.appendChild(u);s.appendChild(m);L.units.push({el:u,a:L.a+k*L.step})}
+          k++;
+        });
+      }else if(L.unit==='run'){
+        var m2=el('span','mu'),u2=el('span','mi',R.t.replace(/ /g,' '));m2.appendChild(u2);s.appendChild(m2);L.units.push({el:u2,a:R.a!=null?R.a:L.a+k*(L.step||0)});k++;
+      }else{s.textContent=R.t.replace(/ /g,' ')}
+      if(R.ul){R.ulEl=el('span','ul');s.appendChild(R.ulEl);L.uls.push(R)}
+    });
+    if(L.sheen){L.sheenEl=el('span','sheen');holder.appendChild(L.sheenEl)}
+    /* 다 나타나는 시각 */
+    var end=L.a+L.d;
+    L.units.forEach(function(u){end=Math.max(end,u.a+L.d)});
+    L.nums.forEach(function(R){end=Math.max(end,R.cd[1])});
+    L.full=end;
+  });
+});
+
+/* 한 줄을 시각 t에 맞춘다 */
+var SCAT=[[-150,-250,-38],[70,240,30],[-60,-210,-24],[0,0,0],[150,250,42]];
+function line(L,t){
+  var p=clamp((t-L.a)/L.d),op=1,tf='',fl='none';
+  if(L.unit==='line'){
+    if(L['in']==='튀어나옴'){op=clamp(p*3);tf='scale('+(0.72+0.28*E.back(p))+')'}
+    else if(L['in']==='스며듦'){var e=E.out(p);op=e;fl=p<1?'blur('+((1-e)*12)+'px)':'none'}
+    else{op=E.out(p)}
+  }
+  L.units.forEach(function(u){
+    var q=clamp((t-u.a)/L.d);
+    if(L['in']==='밀려듦'){
+      var o=SCAT[u.k%SCAT.length],e1=E.out(q),e2=E.back(q);
+      u.el.style.opacity=clamp(q*2.5);
+      u.el.style.transform='translate('+(o[0]*(1-e1))+'px,'+(o[1]*(1-e1))+'px) rotate('+(o[2]*(1-e1))+'deg) scale('+(0.4+0.6*e2)+')';
+    }else{u.el.style.transform='translateY('+((1-E.out(q))*112)+'%)'}
+  });
+  if(L.pulse){tf+=' scale('+(1+0.07*Math.sin(Math.PI*clamp((t-L.pulse[0])/L.pulse[1])))+')'}
+  L.nums.forEach(function(R){R.cur.textContent=Math.round(R.n*E.io(clamp((t-R.cd[0])/(R.cd[1]-R.cd[0])))).toLocaleString('en-US')});
+  L.uls.forEach(function(R){R.ulEl.style.transform='scaleX('+E.out(clamp((t-R.ul[0])/R.ul[1]))+')'});
+  if(L.sheenEl){var sp=(t-L.sheen[0])/L.sheen[1];L.sheenEl.style.opacity=(sp>0&&sp<1)?1:0;L.sheenEl.style.transform='translateX('+lerp(-120,240,E.soft(clamp(sp)))+'%) skewX(-18deg)'}
+  L.el.style.opacity=op;L.el.style.transform=tf||'none';L.el.style.filter=fl;
+}
+
+/* ---------- 닦아내기 전환의 모양 ---------- */
+D.scenes.forEach(function(S){
+  var W=S.wipe;if(!W)return;
+  if(W.type==='circle'){
+    W.R=Math.max(Math.hypot(W.x,W.y),Math.hypot(1080-W.x,W.y),Math.hypot(W.x,1920-W.y),Math.hypot(1080-W.x,1920-W.y))+60;
+  }else{
+    var a=W.type==='up'?-90:W.ang;W.deg=a;a=a*Math.PI/180;W.dx=Math.cos(a);W.dy=Math.sin(a);
+    W.L=540*Math.abs(W.dx)+960*Math.abs(W.dy)+140;
+  }
+});
+function f2(v){return Math.round(v*10)/10}
+function wipe(W,w,side){
+  if(W.type==='circle'){
+    var R=Math.max(0.5,W.R*w);
+    if(side==='new')return'circle('+f2(R)+'px at '+W.x+'px '+W.y+'px)';
+    return'path(evenodd,"M0 0H1080V1920H0Z M'+f2(W.x-R)+' '+W.y+'a'+f2(R)+' '+f2(R)+' 0 1 0 '+f2(2*R)+' 0a'+f2(R)+' '+f2(R)+' 0 1 0 '+f2(-2*R)+' 0Z")';
+  }
+  var s=-W.L+2*W.L*w,px=540+W.dx*s,py=960+W.dy*s,nx=-W.dy,ny=W.dx,g=side==='new'?-4000:4000;
+  function pt(a,b){return f2(px+nx*a+W.dx*b)+'px '+f2(py+ny*a+W.dy*b)+'px'}
+  return'polygon('+pt(3000,0)+','+pt(3000,g)+','+pt(-3000,g)+','+pt(-3000,0)+')';
+}
+var fx=$('fx'),fxLine=$('fxLine'),fxCirc=$('fxCirc'),fxC1=$('fxC1'),fxC2=$('fxC2');
+function fxDraw(W,w){
+  fx.style.opacity=Math.sin(Math.PI*clamp(w));
+  if(W.type==='circle'){
+    var R=Math.max(0.5,W.R*w);fxLine.style.display='none';fxCirc.style.display='';
+    fxC1.setAttribute('cx',W.x);fxC1.setAttribute('cy',W.y);fxC1.setAttribute('r',f2(R));
+    fxC2.setAttribute('cx',W.x);fxC2.setAttribute('cy',W.y);fxC2.setAttribute('r',f2(Math.max(0.5,R-25)));
+  }else{
+    var s=-W.L+2*W.L*w;fxCirc.style.display='none';fxLine.style.display='';
+    fxLine.setAttribute('transform','translate('+f2(540+W.dx*s)+' '+f2(960+W.dy*s)+') rotate('+W.deg+')');
+  }
+}
+
+/* ---------- 소품: 서랍 · 도구 ---------- */
+function place(n,w,h,q){
+  n.style.opacity=clamp(q.o);
+  n.style.transform='translate('+f2(q.x-w/2)+'px,'+f2(q.y-h/2)+'px) rotate('+f2(q.r)+'deg) scale('+(Math.round(q.s*1000)/1000)+')';
+}
+function P(x,y,r,s,o,sh){return{x:x,y:y,r:r||0,s:s==null?1:s,o:o==null?1:o,sh:sh||0}}
+function mix(A,B,p){return{x:lerp(A.x,B.x,p),y:lerp(A.y,B.y,p),r:lerp(A.r,B.r,p),s:lerp(A.s,B.s,p),o:lerp(A.o,B.o,p),sh:lerp(A.sh,B.sh,p)}}
+function chain(t,base,steps){
+  var q=base(t);
+  for(var i=0;i<steps.length;i++){var k=steps[i],p=(t-k[0])/(k[1]-k[0]);if(p<=0)break;q=mix(q,k[3](t),k[2](clamp(p)))}
+  return q;
+}
+var drBack=$('drBack'),drFront=$('drFront');
+function drawerDy(t){return 70*(1-E.out(clamp(t/0.6)))+900*E.inq(clamp((t-2.5)/0.9))}
+
+/* 실루엣 16개 */
+var SYM=['sp','la','wh','ws','pe','rp','ss','fo','ma','pc','br','sc','gr','sv','ws','la'];
+var COL=['--n4','--n5','--acc-l','--n3','--n5','--acc-ll','--n4','--acc-m','--n5','--n4','--acc-l','--n5','--n4','--acc-ll','--n5','--n4'];
+var S5=[[170,330,-20],[330,286,15],[540,316,-8],[750,296,22],[910,336,-14],[78,580,10],[1004,620,-12],[70,800,-25],[1010,830,18],[220,960,12],[540,990,-18],[860,955,-22]];
+var CL=[],ORBN=19,order=[];
+for(var i=0;i<ORBN;i++)order.push(i);
+for(i=ORBN-1;i>0;i--){var j=Math.floor(rnd()*(i+1)),tmp=order[i];order[i]=order[j];order[j]=tmp}
+function orbitSpec(k){return{th:-Math.PI/2+2*Math.PI*k/ORBN+rr(-0.08,0.08),rx:rr(405,470),ry:rr(560,640),spin:rr(6,14)*(rnd()<0.5?-1:1)}}
+function orbit(o,r0,sc,t){var th=o.th+0.11*(t-3);return P(540+o.rx*Math.cos(th),960+o.ry*Math.sin(th),r0+o.spin*(t-3),sc,1)}
+function wob(i,t){return(2.2+9*Math.exp(-3.2*t))*Math.sin(t*(7+i%5)+i*1.7)}
+
+SYM.forEach(function(sym,i){
+  var c={i:i,w:80,h:260,x:160+i*(760/15)+rr(-22,22),y:985+rr(0,55),r:rr(-38,38),s:rr(0.95,1.3)};
+  c.orb=orbitSpec(order[i]);
+  c.n=sv('svg',{'class':'p cl',width:80,height:260,viewBox:'0 0 80 260'});c.n.style.color='var('+COL[i]+')';
+  c.n.appendChild(sv('use',{href:'#s-'+sym}));
+  var sc=c.s*0.62;
+  c.steps=[
+    [2.55+i*0.015,3.35+i*0.015,E.io,function(t){return orbit(c.orb,c.r,sc,t)}],
+    [6.9+i*0.015,7.6+i*0.015,E.inq,function(){var b=orbit(c.orb,c.r,sc,6.9),dx=b.x-540,dy=b.y-960,L=Math.hypot(dx,dy)||1;return P(b.x+dx/L*1100,b.y+dy/L*1100,b.r+(i%2?150:-150),sc*0.9,1)}]
+  ];
+  if(i<S5.length){var f=S5[i];
+    c.steps.push([20.25,20.26,E.io,function(){return P(f[0],f[1]+60,f[2],0.5,0)}]);
+    c.steps.push([21.0+i*0.03,21.5+i*0.03,E.out,function(t){return P(f[0],f[1]+6*Math.sin(t*1.7+i),f[2],0.5,0.55)}]);
+    c.steps.push([21.6+i*0.04,22.5+i*0.04,E.inq,function(){return P(f[0]+(i%2?60:-60),f[1]+2300,f[2]+(i%2?120:-120),0.5,0)}]);
+  }
+  c.base=function(t){return P(c.x,c.y+drawerDy(t)+5*Math.exp(-3*t)*Math.sin(t*9+i),c.r+wob(i,t),c.s,1)};
+  CL.push(c);
+});
+
+/* 주인공 셋: 도마 · 집게 · 계량컵 */
+var HS=[
+ {id:'hBoard',w:300,h:420,dr:[420,1000,-14,0.72],k:order[16],tray:[330,840,-3,0.95],row:[330,1190,-4,0.6],cl:[452,560,-10,0.78],d:0},
+ {id:'hTongs',w:170,h:470,dr:[650,985,17,0.7],k:order[17],tray:[555,830,4,0.95],row:[540,1180,4,0.6],cl:[592,545,12,0.78],d:1},
+ {id:'hCup',w:330,h:300,dr:[285,1060,-10,0.62],k:order[18],tray:[775,935,0,0.78],row:[760,1225,0,0.55],cl:[650,652,0,0.66],d:2}
+];
+var src=$('heroSrc');
+HS.forEach(function(h){
+  var d=h.d,ph=d*1.9;
+  h.n=$(h.id);h.orb=orbitSpec(h.k);
+  h.shEl=el('div','p hsh');
+  function bob(a,t){return P(a[0],a[1]+5*Math.sin(t*2.2+ph),a[2],a[3],1,1)}
+  h.base=function(t){return P(h.dr[0],h.dr[1]+drawerDy(t),h.dr[2]+wob(20+d,t),h.dr[3],1)};
+  h.steps=[
+    [2.6+d*0.08,3.4+d*0.08,E.io,function(t){return orbit(h.orb,h.dr[2],0.62,t)}],
+    [7.35+d*0.35,8.15+d*0.35,E.back,function(t){return bob(h.tray,t)}],
+    [13.8+d*0.08,14.45+d*0.08,E.inq,function(){return P(1450+d*90,h.tray[1]-260,h.tray[2]+55,h.tray[3],1,0)}],
+    [18,18.01,E.io,function(){return P(h.row[0],2250,0,h.row[3],1,0)}],
+    [22.2+d*0.12,23.0+d*0.12,E.back,function(t){return bob(h.row,t)}],
+    [24.6+d*0.08,25.5+d*0.08,E.io,function(t){return bob(h.cl,t)}]
+  ];
+});
+/* 쌓는 순서: 서랍 뒤 → 그림자 → 도구(사이사이 주인공) → 서랍 앞 */
+HS.forEach(function(h){props.insertBefore(h.shEl,drFront)});
+CL.forEach(function(c,i){
+  props.insertBefore(c.n,drFront);
+  if(i===5)props.insertBefore(HS[0].n,drFront);
+  if(i===9)props.insertBefore(HS[1].n,drFront);
+  if(i===12)props.insertBefore(HS[2].n,drFront);
+});
+src.parentNode.removeChild(src);
+
+function drawProps(t){
+  var dy=drawerDy(t),dop=1-clamp((t-2.9)/0.5);
+  drBack.style.transform='translate(100px,'+f2(965+dy)+'px)';drBack.style.opacity=dop;
+  drFront.style.transform='translate(100px,'+f2(1128+dy)+'px)';drFront.style.opacity=dop;
+  drBack.style.visibility=drFront.style.visibility=dop>0?'visible':'hidden';
+  CL.forEach(function(c){var q=chain(t,c.base,c.steps);place(c.n,c.w,c.h,q)});
+  HS.forEach(function(h){
+    var q=chain(t,h.base,h.steps);place(h.n,h.w,h.h,q);
+    var sh=clamp(q.sh),gy=q.y+h.h*q.s/2-4,sx=h.w*q.s*1.15/300;
+    h.shEl.style.opacity=sh*q.o;
+    h.shEl.style.transform='translate('+f2(q.x-150)+'px,'+f2(gy-22)+'px) scale('+(Math.round(sx*1000)/1000)+',1)';
+  });
+}
+
+/* ---------- 장면별 그림 ---------- */
+var card=$('card'),bindP=$('bind').querySelector('path'),pin=$('pin'),tag=$('tag');
+var arc=$('arc'),arcDot=$('arcDot'),grid=$('grid'),ticks=$('ticks'),bubble=$('bubble'),avatar=$('avatar');
+var qs=bubble.querySelectorAll('.q'),qd=bubble.querySelectorAll('.qd');
+var disc=$('disc'),disc2=$('disc2'),logobar=$('logobar');
+var C=2*Math.PI*206;
+for(i=0;i<60;i++){var a=i*6*Math.PI/180;ticks.appendChild(sv('line',{x1:260+246*Math.cos(a),y1:260+246*Math.sin(a),x2:260+(i%5?254:260)*Math.cos(a),y2:260+(i%5?254:260)*Math.sin(a),'stroke-width':i%5?3:5,'stroke-linecap':'round',style:'stroke:var(--acc-ll)'}))}
+var PEO=[];
+for(i=0;i<120;i++){
+  var cx=21+(i%20)*42,cy=21+Math.floor(i/20)*42;
+  var g0=sv('use',{href:'#s-person',width:32,height:34,style:'fill:var(--n3)'}),g1=sv('use',{href:'#s-person',width:32,height:34,style:'fill:var(--acc)'});
+  grid.appendChild(g0);grid.appendChild(g1);PEO.push({cx:cx,cy:cy,g0:g0,g1:g1,i:i});
+}
+function sct(n,cx,cy,s){n.setAttribute('transform','translate('+cx+' '+cy+') scale('+(Math.round(s*1000)/1000)+') translate(-16 -17)')}
+
+var SCN=[
+ function(t){},
+ function(t){},
+ function(t){ /* 3: 세트 카드 · 묶음선 · 가격표 */
+   var e=ep(t,7.55,1.0);
+   card.style.transform='perspective(1400px) translateY('+f2((1-e)*90)+'px) rotateX('+f2((1-e)*26)+'deg) scale('+(0.94+0.06*e)+')';
+   card.style.opacity=clamp((t-7.4)/0.3);
+   bindP.setAttribute('stroke-dashoffset',1-ep(t,9.5,0.75,E.io));
+   pin.style.opacity=clamp((t-10.4)/0.2);
+   var p=t-10.6,th=p<0?-32:-32*Math.exp(-2.7*p)*Math.cos(2*Math.PI*0.95*p);
+   tag.style.opacity=clamp(p/0.2);
+   tag.style.transform='translateY('+f2(-40*(1-ep(t,10.6,0.35)))+'px) rotate('+f2(th)+'deg)';
+ },
+ function(t){ /* 4: 원 게이지 · 사람 점 · 말풍선 */
+   var g=E.io(clamp((t-14.5)/1.2))*0.87;
+   arc.setAttribute('stroke-dashoffset',f2(C*(1-g)));
+   var an=-Math.PI/2+g*2*Math.PI;arcDot.setAttribute('cx',f2(260+206*Math.cos(an)));arcDot.setAttribute('cy',f2(260+206*Math.sin(an)));
+   arcDot.style.opacity=g>0.02?1:0;
+   PEO.forEach(function(q){
+     var c=q.i%20,r=Math.floor(q.i/20);
+     sct(q.g0,q.cx,q.cy,E.back(clamp((t-15.55-c*0.02-r*0.03)/0.35)));
+     var f=q.i<104?E.back(clamp((t-16.2-q.i*0.01)/0.28)):0;
+     q.g1.style.opacity=f>0?1:0;sct(q.g1,q.cx,q.cy,f);
+   });
+   var b=ep(t,17.6,0.8);
+   bubble.style.opacity=clamp((t-17.6)/0.25);
+   bubble.style.transform='perspective(1200px) translateY('+f2((1-b)*130)+'px) rotateX('+f2(3+(1-b)*30)+'deg) rotateY(-4deg)';
+   var qq=ep(t,17.9,0.6,E.io);qs[0].setAttribute('stroke-dashoffset',1-qq);qs[1].setAttribute('stroke-dashoffset',1-ep(t,18.05,0.6,E.io));
+   qd[0].setAttribute('opacity',ep(t,18.3,0.3));qd[1].setAttribute('opacity',ep(t,18.45,0.3));
+   var av=ep(t,17.9,0.5,E.back);avatar.style.opacity=clamp((t-17.9)/0.2);avatar.style.transform='scale('+av+')';
+ },
+ function(t){},
+ function(t){ /* 6: 원판이 퍼짐 · 로고 밑줄 */
+   var d=ep(t,24.9,0.9,E.back);
+   disc.style.transform='scale('+(Math.round(d*1000)/1000)+')';disc.style.opacity=clamp((t-24.9)/0.2);
+   disc2.style.transform='rotate('+f2(t*5)+'deg) scale('+(0.9+0.1*ep(t,25.2,1.0))+')';disc2.style.opacity=ep(t,25.2,0.8);
+   logobar.style.transform='scaleX('+ep(t,26.3,0.5,E.io)+')';
+ }
+];
+
+/* ---------- 바탕: 떠다니는 도형(시차) ---------- */
+var BG=[['b1',-260,-60,1.0,0.0],['b2',420,1180,0.7,1.3],['b3',220,520,0.45,2.1],['b4',560,-180,0.85,3.0],['d1',960,150,0.5,0.7],['d2',36,1480,0.6,1.9],['d3',10,640,0.5,2.6],['d4',1030,1240,0.6,0.4],['d5',860,1640,0.45,1.1],['d6',1036,820,0.6,2.2]].map(function(b){return{n:$(b[0]),x:b[1],y:b[2],k:b[3],ph:b[4]}});
+var BOUND=D.scenes.slice(1).map(function(S){return S.s});
+function cam(t){var c=0;BOUND.forEach(function(s){c+=E.io(clamp((t-(s-0.7))/1.3))});return c}
+function drawBg(t){
+  var c=cam(t);
+  BG.forEach(function(b){
+    var x=b.x+30*b.k*Math.sin(t*0.27+b.ph)+70*b.k*Math.cos(c*0.95+b.ph);
+    var y=b.y+40*b.k*Math.cos(t*0.21+b.ph)+120*b.k*Math.sin(c*1.15+b.ph);
+    b.n.style.transform='translate('+f2(x)+'px,'+f2(y)+'px)';
+  });
+}
+
+/* ---------- 화면 전체를 시각 t에 맞춘다 ---------- */
+function render(t,tb){
+  t=Math.max(0,Math.min(D.total,t));
+  drawBg(tb==null?t:tb);
+  var fxOn=false;
+  D.scenes.forEach(function(S,i){
+    var vis=t>=(i?S.s-T:-1)&&(i===LAST||t<S.e);
+    S.el.style.visibility=vis?'visible':'hidden';
+    if(!vis)return;
+    var clip='none';
+    if(i>0&&t<S.s){var w=E.io(clamp((t-(S.s-T))/T));clip=wipe(S.wipe,w,'new');fxDraw(S.wipe,w);fxOn=true}
+    else if(i<LAST&&t>=S.e-T){var w2=E.io(clamp((t-(S.e-T))/T));clip=wipe(D.scenes[i+1].wipe,w2,'old')}
+    S.el.style.clipPath=clip;
+    SCN[i](t);
+    S.lines.forEach(function(L){line(L,t)});
+  });
+  if(!fxOn)fx.style.opacity=0;
+  drawProps(t);
+}
+
+/* 움직임 줄이기 설정: 장면마다 다 나타난 모습을 차례로 보이고, 장면 사이는 옅어졌다 나타난다 */
+var REDUCED=matchMedia('(prefers-reduced-motion: reduce)').matches;
+function frame(t){
+  if(!REDUCED){content.style.opacity=1;render(t);return}
+  var i=0;while(i<LAST&&t>=D.scenes[i].e)i++;
+  var S=D.scenes[i],f=1;
+  if(i>0)f=Math.min(f,clamp((t-S.s)/0.35));
+  if(i<LAST)f=Math.min(f,clamp((S.e-t)/0.35));
+  render(S.hold,0);content.style.opacity=f;
+}
+
+function play(done){
+  cancelAnimationFrame(raf);
+  var t0=performance.now();
+  (function tick(){
+    var t=(performance.now()-t0)/1000;
+    if(t>=D.total){frame(D.total);if(done)done();return}
+    frame(t);raf=requestAnimationFrame(tick);
+  })();
+}
+
+var VW=D.W,VH=D.H,VT=D.total;
+/* ---------- 무대 놓기 · 영상 파일로 저장 (영상_틀.html · 완성 예시가 같은 코드) ---------- */
+var SC = 1, TAGH = 44, PAD = 20, edge = $('stage-edge'), stageTag = $('stage-tag');
+stageTag.textContent = '영상 영역 · ' + VW + '×' + VH;
+/* 무대를 화면 가운데에 맞춘다. 녹화 중에는 창 전체를 쓰고, 화면 픽셀에 딱 맞는 가장 큰 배율로 놓는다 */
+function fit() {
+  var cl = document.body.classList, rec = cl.contains('rec'), lab = !rec && !cl.contains('check');
+  var w = view.clientWidth, h = view.clientHeight, pad = rec ? 0 : PAD, top = lab ? TAGH : pad;
+  var s = Math.max(0.01, Math.min((w - 2 * pad) / VW, (h - top - pad) / VH));
+  if (rec) { var d = window.devicePixelRatio || 1; s = s >= 1 ? Math.floor(s) : Math.max(1, Math.floor(VW * s * d)) / (VW * d); }
+  SC = s;
+  var sw = VW * s, sh = VH * s, x = Math.round((w - sw) / 2), y = Math.round(top + (h - top - pad - sh) / 2);
+  stage.style.transform = 'translate(' + x + 'px,' + y + 'px) scale(' + s + ')';
+  edge.style.cssText = 'left:' + x + 'px;top:' + y + 'px;width:' + sw + 'px;height:' + sh + 'px';
+  stageTag.style.cssText = 'left:' + x + 'px;top:' + (y - 6) + 'px';
+}
+/* 영상 파일로 저장: 공유 창에서 「이 탭」을 고르면 무대만 잘라 처음부터 재생하며 녹화한다 */
+var REC_TYPES = ['video/mp4;codecs=avc1.42E01E', 'video/mp4', 'video/webm;codecs=vp9', 'video/webm'];
+$('save').onclick = async function () {
+  var fb = ' 저장이 안 되면 화면 녹화를 씁니다. Windows는 Win + Alt + R, 맥은 Shift + Command + 5에서 「선택 부분 기록」을 고릅니다.', body = document.body;
+  if (!(navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia && window.MediaRecorder)) { say('이 브라우저에서는 저장 단추를 쓸 수 없습니다.' + fb); return; }
+  var stream;
+  try {
+    stream = await navigator.mediaDevices.getDisplayMedia({ video: { frameRate: 30 }, audio: false, preferCurrentTab: true, selfBrowserSurface: 'include', surfaceSwitching: 'exclude', systemAudio: 'exclude', monitorTypeSurfaces: 'exclude' });
+  } catch (e) { say('화면 공유 창이 열리지 않았거나 취소했습니다.' + fb); return; }
+  var track = stream.getVideoTracks()[0], rec = null, chunks = [], done = false;
+  function finish() {
+    if (done) return; done = true;
+    stream.getTracks().forEach(function (k) { k.stop(); });
+    cancelAnimationFrame(raf); body.classList.remove('rec'); fit(); frame(VT);
+  }
+  /* 녹화 동안: 단추 띠 · 테두리 · 이름표를 숨기고, 무대 밖을 무대 바탕과 같은 색으로 덮는다 */
+  document.documentElement.style.setProperty('--pg-rec', getComputedStyle(stage).backgroundColor);
+  body.classList.add('rec'); cancelAnimationFrame(raf); fit(); frame(0);
+  /* 무대만 잘라 녹화(Region Capture). 지원하지 않거나 다른 탭을 고르면 탭 전체를 녹화한다 */
+  if (track && track.cropTo && window.CropTarget && CropTarget.fromElement) {
+    try { await track.cropTo(await CropTarget.fromElement(stage)); } catch (e) {}
+  }
+  var mime = REC_TYPES.filter(function (m) { return MediaRecorder.isTypeSupported(m); })[0] || '';
+  try { rec = new MediaRecorder(stream, mime ? { mimeType: mime, videoBitsPerSecond: 8000000 } : {}); }
+  catch (e) { finish(); say('이 브라우저에서는 저장 단추를 쓸 수 없습니다.' + fb); return; }
+  var type = rec.mimeType || mime || 'video/webm', ext = /mp4/i.test(type) ? 'mp4' : 'webm';
+  rec.ondataavailable = function (e) { if (e.data && e.data.size) chunks.push(e.data); };
+  rec.onstop = function () {
+    finish();
+    var url = URL.createObjectURL(new Blob(chunks, { type: type })), a = document.createElement('a');
+    a.href = url; a.download = '영상.' + ext;
+    body.appendChild(a); a.click(); a.remove();
+    setTimeout(function () { URL.revokeObjectURL(url); }, 60000);
+    say(ext === 'mp4' ? '영상.mp4를 저장했습니다. 저장 폴더를 확인하세요.' : '이 브라우저는 mp4 저장을 지원하지 않아 webm으로 저장했습니다. 최신 Chrome · Edge에서 열면 mp4로 저장됩니다.');
+  };
+  if (track) track.onended = function () { if (rec.state !== 'inactive') rec.stop(); else { finish(); say('화면 공유 창이 열리지 않았거나 취소했습니다.' + fb); } };
+  /* 0.5초 기다린 뒤 처음부터 재생하며 녹화하고, 총 길이 + 0.3초 뒤에 멈춘다 */
+  setTimeout(function () {
+    if (done) return;
+    rec.start();
+    play(function () { setTimeout(function () { if (rec.state !== 'inactive') rec.stop(); }, 300); });
+  }, 500);
+};
+window.addEventListener('resize',fit);fit();
+
+$('play').onclick=function(){play()};
+window.addEventListener('beforeprint',function(){cancelAnimationFrame(raf);content.style.opacity=1;render(D.total)});
+
+/* 시작: ?t=초 는 그 시각을 정지 화면으로 보인다(캡처용) */
+var q=new URLSearchParams(location.search).get('t');
+if(q!==null&&q!==''&&isFinite(+q)){render(+q)}
+else if(document.documentElement.classList.contains('no-anim')){render(D.total)}
+else{play()}
+})();
+</script>
+</body>
+</html>

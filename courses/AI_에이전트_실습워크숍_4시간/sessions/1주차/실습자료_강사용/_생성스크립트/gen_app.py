@@ -5,12 +5,11 @@
 이 스크립트는 폴더 `실습자료/여행앱_4시간/`에 아래를 둔다.
 
   관광지.js                         이 스크립트가 만든다 — window.관광지 = { 만든날, 출처, 지역: [ { 이름, 위도, 경도, 장소: [ … ] } ] };
-  AGENTS.md · CLAUDE.md · prd.md · 자료설명.md   templates/app_text_v2/ 에서 복사한다(없으면 「없음」을 찍고 계속)
+  AGENTS.md · prd.md · 자료설명.md   templates/app_text_v2/ 에서 복사한다(없으면 「없음」을 찍고 계속)
   (같은 이름의 zip)                 실습자료/여행앱_4시간.zip
 
 1판 파일(여행도구.html · 계획.js · 확장.js · 오프라인응답/ · API이름표 · 화면이름표 · 품질기준)은 만들지도 복사하지도 않는다.
 1판 템플릿(app.html · app_text/)은 _archive/실습_1판_2026-10-21/templates/로 옮겼다. 폴더를 지우지 않는다(다른 도구가 같은 폴더에 쓴다).
-메인과제_축제여행/은 건드리지 않는다.
 
 자료 원천
   --source osm      (기본 · 키 없음 · 시제품) Overpass API. 각 지역 반경 15 km 안의 관광 · 역사 요소 가운데 이름이 있는 것.
@@ -22,6 +21,7 @@
 검증(node --check · 1판 파일 잔존 · 키 문자열)에서 걸리면 종료코드 1.
 
 실행:  python -I gen_app.py                      (OSM · 시제품)
+       python -I gen_app.py --texts-only         (관광지.js는 그대로 두고 문서 복사 · 검증 · zip만 다시 한다 · 네트워크 없음)
        python -I gen_app.py --source tourapi     (TOURAPI_KEY 필요)
        python -I gen_app.py --verify-centers     (중심 좌표를 Nominatim으로 대조해 찍기만 한다 · 바꾸지 않는다)
        python -I gen_app.py --cache DIR          (Overpass 원응답을 DIR에 저장하고, 있으면 다시 부르지 않는다 · 개발용)
@@ -50,9 +50,9 @@ TRACK = os.path.join(BASE, '여행앱_4시간')
 DATA = os.path.join(TRACK, '관광지.js')
 ZIP = TRACK + '.zip'
 
-TEXTS = ('AGENTS.md', 'CLAUDE.md', 'prd.md', '자료설명.md')   # app_text_v2 → 트랙 폴더, 같은 이름
-LIMITS = {'AGENTS.md': 8 * 1024, 'CLAUDE.md': 8 * 1024, 'prd.md': 3 * 1024, '자료설명.md': 3 * 1024}   # 크기 상한(2026-10-21 갱신: 자료설명.md 3,072 B)
-TOTAL_LIMIT = 13000                                           # AGENTS.md + prd.md + 자료설명.md 합계(관광지.js · CLAUDE.md 제외) — 파일 바이트(CRLF 포함)
+TEXTS = ('AGENTS.md', 'prd.md', '자료설명.md')   # app_text_v2 → 트랙 폴더, 같은 이름. 규칙 파일은 AGENTS.md 하나다
+LIMITS = {'AGENTS.md': 8 * 1024, 'prd.md': 3 * 1024, '자료설명.md': 3 * 1024}   # 크기 상한(2026-10-21 갱신: 자료설명.md 3,072 B)
+TOTAL_LIMIT = 13000                                           # AGENTS.md + prd.md + 자료설명.md 합계(관광지.js 제외) — 파일 바이트(CRLF 포함)
 V1_NAMES = ('여행도구.html', '계획.js', '확장.js', '오프라인응답', 'API이름표.md', '화면이름표.md', '품질기준.md')
 
 UA = 'FRAME-workshop-generator/1.0 (lecture materials)'
@@ -545,22 +545,19 @@ def write_data(text):
     os.replace(tmp, DATA)
 
 
-def sync_claude_md():
-    """CLAUDE.md는 AGENTS.md에서 만든다 — 첫 줄(제목)만 바꾸고 본문은 글자까지 같다(대리 시험 2026-10-21: 손으로 두 벌을 고치면 어긋난다).
-    줄바꿈(CRLF · LF)도 AGENTS.md를 따른다 — 줄바꿈을 바꾸지 않고 읽고 쓴다(2026-10-21: 예전에는 AGENTS.md가 CRLF여도 CLAUDE.md가 LF로 나왔다)."""
-    src = os.path.join(TEXT_V2, 'AGENTS.md')
-    if not os.path.isfile(src):
+def drop_stale_texts():
+    """트랙 폴더 맨 위의 .md 가운데 TEXTS · 1판 이름에 없는 것은 지난 판이 남긴 규칙 파일 사본이므로 지운다(관광지.js 같은 다른 파일은 건드리지 않는다)."""
+    if not os.path.isdir(TRACK):
         return
-    with open(src, encoding='utf-8', newline='') as f:
-        text = f.read()
-    head, nl, rest = text.partition('\n')
-    eol = '\r\n' if head.endswith('\r') else '\n'
-    with open(os.path.join(TEXT_V2, 'CLAUDE.md'), 'w', encoding='utf-8', newline='') as f:
-        f.write('Claude Code가 읽는 사본 · 내용은 AGENTS.md와 같다' + (eol + rest if nl else ''))
+    for name in sorted(os.listdir(TRACK)):
+        p = os.path.join(TRACK, name)
+        if os.path.isfile(p) and name.endswith('.md') and name not in TEXTS and name not in V1_NAMES:
+            os.remove(p)
+            out('  지움 여행앱_4시간/%s (규칙 파일은 AGENTS.md 하나)' % name)
 
 
 def copy_texts():
-    sync_claude_md()
+    drop_stale_texts()
     for name in TEXTS:
         src = os.path.join(TEXT_V2, name)
         if os.path.isfile(src):
@@ -629,6 +626,7 @@ def main(argv=None):
     ap = argparse.ArgumentParser(description='여행 앱 4시간(2판) 준비물 폴더 생성')
     ap.add_argument('--source', choices=('osm', 'tourapi'), default='osm', help='관광지 자료 원천(기본 osm · 키 없음)')
     ap.add_argument('--verify-centers', action='store_true', help='중심 좌표를 Nominatim으로 대조해 찍는다(바꾸지 않음)')
+    ap.add_argument('--texts-only', action='store_true', help='관광지.js를 새로 받지 않고 문서 복사 · 검증 · zip만 다시 한다(네트워크 없음)')
     ap.add_argument('--cache', metavar='DIR', help='Overpass 원응답 저장 · 재사용 폴더(개발용 · 저장소 안 tmp/ 권장)')
     args = ap.parse_args(argv)
     if hasattr(sys.stdout, 'reconfigure'):
@@ -640,19 +638,25 @@ def main(argv=None):
         verify_centers()
 
     failed = False
-    try:
-        regions = fetch_osm(args) if args.source == 'osm' else fetch_tourapi(args)
-        problems = validate(regions)
-        if problems:
-            raise ValueError('자료 검증 실패 %d건: %s' % (len(problems), ' / '.join(problems[:6])))
-    except Exception as e:                                       # noqa: BLE001
-        failed = True
-        out('경고: 관광지.js를 새로 만들지 못했습니다 — %s' % scrub(e, os.environ.get('TOURAPI_KEY', '').strip()))
-        if os.path.isfile(DATA):
-            out('  직전 관광지.js를 그대로 둡니다 (%d B)' % os.path.getsize(DATA))
-        else:
-            out('  직전 관광지.js도 없습니다')
-    if not failed:
+    if args.texts_only:
+        if not os.path.isfile(DATA):
+            out('경고: --texts-only는 관광지.js가 있어야 합니다')
+            return 2
+        out('관광지.js는 그대로 둡니다 (%d B) — 문서 복사 · 검증 · zip만 다시 합니다' % os.path.getsize(DATA))
+    else:
+        try:
+            regions = fetch_osm(args) if args.source == 'osm' else fetch_tourapi(args)
+            problems = validate(regions)
+            if problems:
+                raise ValueError('자료 검증 실패 %d건: %s' % (len(problems), ' / '.join(problems[:6])))
+        except Exception as e:                                   # noqa: BLE001
+            failed = True
+            out('경고: 관광지.js를 새로 만들지 못했습니다 — %s' % scrub(e, os.environ.get('TOURAPI_KEY', '').strip()))
+            if os.path.isfile(DATA):
+                out('  직전 관광지.js를 그대로 둡니다 (%d B)' % os.path.getsize(DATA))
+            else:
+                out('  직전 관광지.js도 없습니다')
+    if not failed and not args.texts_only:
         data = {'만든날': today.isoformat(), '출처': SRC_TEXT[args.source], '지역': regions}
         write_data(render(data))
         out('관광지.js 작성 — %d B' % os.path.getsize(DATA))

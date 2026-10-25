@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-"""실습 5 · 모션그래픽 v3 — 「내 주제 소개 영상」 준비물 폴더(2판 원칙: 완성 도구 HTML 없음 · 코드 틀 0 · md와 자료만).
-폴더: 품질기준.md · 모션이름표.md(templates/p5_v3/ 에서 복사) · 예시/(하루상점 「데일리 쿡」 소개글 · 가격표 · 체험단 설문 결과 + _AI용_텍스트사본/).
-학생은 인터뷰로 규칙 파일(AGENTS.md · CLAUDE.md)과 design.md를 만들고 영상.html을 처음부터 만든다. 주제가 없는 사람만 예시/ 자료를 쓴다.
+"""실습 5 · 모션그래픽 v4 — 「내 주제 소개 영상」 준비물 폴더(2판 원칙: 완성 도구 HTML 없음. 예외는 배관 틀 영상_틀.html 한 파일).
+폴더: 품질기준.md · 모션이름표.md · 영상_틀.html · 기법모음.md(templates/p5_v3/ 에서 복사) · 예시/(하루상점 「데일리 쿡」 소개글 · 가격표 · 체험단 설문 결과 + _AI용_텍스트사본/).
+학생은 인터뷰로 규칙 파일(AGENTS.md)과 design.md를 만들고, 영상_틀.html을 복사한 영상.html의 맨 위 칸을 채운다. 주제가 없는 사람만 예시/ 자료를 쓴다.
 자료의 함정: 소개글은 「열에 아홉」이라고 쓰지만 설문 결과는 120명 가운데 104명(87%)이다. 담당자 메모의 「주방용품 1위」는 근거 자료가 없다.
 1판의 영상도구.html 템플릿(p5_kit.html · p5.html)과 1판 폴더는 _archive/실습_1판_2026-10-21/ 에 있다.
 
@@ -15,9 +15,11 @@ OUT = os.path.join(BASE, '실습5_모션그래픽')
 EX = os.path.join(OUT, '예시')
 HERE = os.path.dirname(os.path.abspath(__file__))
 TPL = os.path.join(HERE, 'templates', 'p5_v3')
-TEXTS = ('품질기준.md', '모션이름표.md')               # 에이전트가 읽는 md(예시 자료는 따로 센다)
+TEXTS = ('품질기준.md', '모션이름표.md')               # 에이전트가 읽는 md(예시 자료는 따로 센다). 기법모음.md는 필요한 절만 읽으므로 합계에서 뺀다
+EXTRA = ('영상_틀.html', '기법모음.md')                 # 읽기 합계에 넣지 않고 폴더로만 복사하는 파일
 READ_LIMIT = 15 * 1024                                  # 에이전트 읽기 합계 상한(바이트)
 FORBID = ('.html', '.htm', '.js')                       # 2판 원칙: 완성 도구 · 코드 틀을 넣지 않는다
+ALLOW = ('영상_틀.html',)                               # 2026-10-25 사용자 결정 V2 — 배관 틀 하나만 예외
 
 
 def read_tpl(path):
@@ -29,7 +31,7 @@ def read_tpl(path):
 def check(out, read_names):
     """폴더 안 html · js 개수(0이어야 함)와 에이전트 읽기 합계를 확인한다. (전체 파일 수, 읽기 합계)를 돌려준다."""
     files = [os.path.join(d, f) for d, _, fs in os.walk(out) for f in fs]
-    bad = [p for p in files if p.lower().endswith(FORBID)]
+    bad = [p for p in files if p.lower().endswith(FORBID) and os.path.basename(p) not in ALLOW]
     assert not bad, 'html · js 파일이 들어 있다: %s' % bad
     total = sum(os.path.getsize(os.path.join(out, n)) for n in read_names)
     assert total <= READ_LIMIT, '에이전트 읽기 합계 %d바이트가 15KB를 넘는다' % total
@@ -65,6 +67,8 @@ def main():
         shutil.rmtree(OUT)                              # 이전 판의 파일이 남지 않게 폴더째 다시 만든다
     for name in TEXTS:
         write_text(os.path.join(OUT, name), read_tpl(os.path.join(TPL, name)))
+    for name in EXTRA:                                  # 없으면 그대로 실패한다(복사 단계에서 FileNotFoundError)
+        shutil.copyfile(os.path.join(TPL, name), os.path.join(OUT, name))
     txt = write_docx(os.path.join(EX, '신상품_소개글.docx'), '여름 신상품 「데일리 쿡」 소개글(영상 제작용)', INTRO,
                      '2026-05-28(목) · 작성 김나연(상품기획) · 검토 이도현(마케팅)')
     write_text(os.path.join(EX, COPY, '신상품_소개글.txt'), txt)
@@ -78,7 +82,7 @@ def main():
     n_files, read_total = check(OUT, TEXTS)
     total = sum(n for _, n in SURVEY)
     pct = round(SURVEY[0][1] / total * 100)
-    print('P5 v3 파일 %d개 · html/js 0개 · 에이전트 읽기 %.1f KB(품질기준 + 모션이름표) · 예시 소개자료 3개 · 체험단 %d명 · 다시 사고 싶다 %d%%' % (
+    print('P5 v4 파일 %d개 · 허용 외 html/js 0개 · 에이전트 읽기 %.1f KB(품질기준 + 모션이름표) · 예시 소개자료 3개 · 체험단 %d명 · 다시 사고 싶다 %d%%' % (
         n_files, read_total / 1024, total, pct))
 
 

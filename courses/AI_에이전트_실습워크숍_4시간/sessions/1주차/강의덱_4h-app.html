@@ -241,6 +241,9 @@
     .slide.pr .em-ring{ stroke:var(--pr-deep); }
     .ring-host{ position:relative; display:inline-block; }
     .ring-host > .ring-svg{ position:absolute; pointer-events:none; overflow:visible; }
+    /* 캡처 위 빨간 동그라미 — 이미지는 그리지 않고 <i class="ring">를 % 좌표로 얹는다(--red는 kit 토큰) */
+    .shot{ position:relative; display:block; width:700px; }
+    .shot .ring{ position:absolute; border:4px solid var(--red); border-radius:50%; box-shadow:0 0 0 3px rgba(255,255,255,.85); pointer-events:none; }
     .terminal-dark .em-ring{ stroke:var(--mint); }                      /* 어두운 터미널 위에서는 아쿠아 */
 
     /* ── 5. 등장 연출 — 요소별 떠오름 · 형광펜 칠하기 · 팝 · 선 그리기는 없앴다(2026-10-01 사용자 지시 「넘길 때 애니메이션이 많다」).
@@ -1097,7 +1100,7 @@
       <p style="margin:0 0 12px;font-size:22px;font-weight:800;color:var(--blue)">작업공간 · 에이전트 앱에서 연 폴더</p>
       <div class="wcard" style="padding:16px 20px 18px">
         <p style="margin:0 0 10px;font-size:22px;font-weight:800;color:var(--ink)">폴더 · 여행앱_4시간</p>
-        <div style="display:grid;gap:8px"><span style="display:flex;align-items:center;gap:12px;padding:10px 16px;border-radius:12px;background:var(--t-mist);font-size:22px;font-weight:700;color:var(--ink)"><span class="em-tag">prd.md</span><span style="font-size:22px;font-weight:500;color:var(--gray-700)">받은 파일 · 이 밖에 세 개</span></span><span style="display:flex;align-items:center;gap:12px;padding:10px 16px;border-radius:12px;background:var(--t-mist);font-size:22px;font-weight:700;color:var(--ink)"><span class="em-tag">관광지.js</span><span style="font-size:22px;font-weight:500;color:var(--gray-700)">받은 자료</span></span><span style="display:flex;align-items:center;gap:12px;padding:10px 16px;border-radius:12px;background:var(--t-mist);font-size:22px;font-weight:700;color:var(--ink)"><span class="em-tag">index.html</span><span style="font-size:22px;font-weight:500;color:var(--gray-700)">만들 파일</span></span></div>
+        <div style="display:grid;gap:8px"><span style="display:flex;align-items:center;gap:12px;padding:10px 16px;border-radius:12px;background:var(--t-mist);font-size:22px;font-weight:700;color:var(--ink)"><span class="em-tag">prd.md</span><span style="font-size:22px;font-weight:500;color:var(--gray-700)">받은 파일 · 이 밖에 두 개</span></span><span style="display:flex;align-items:center;gap:12px;padding:10px 16px;border-radius:12px;background:var(--t-mist);font-size:22px;font-weight:700;color:var(--ink)"><span class="em-tag">관광지.js</span><span style="font-size:22px;font-weight:500;color:var(--gray-700)">받은 자료</span></span><span style="display:flex;align-items:center;gap:12px;padding:10px 16px;border-radius:12px;background:var(--t-mist);font-size:22px;font-weight:700;color:var(--ink)"><span class="em-tag">index.html</span><span style="font-size:22px;font-weight:500;color:var(--gray-700)">만들 파일</span></span></div>
       </div>
     </div>
     <p style="margin:14px 0 0;font-size:22px;font-weight:600;color:var(--gray-700)">폴더 밖 파일은 허락을 받은 뒤에 다룹니다.</p>
@@ -1115,14 +1118,14 @@
     <div class="pr-top has-timer"><h2 class="s-title">자료를 받아 <b class="kw">폴더</b>를 엽니다</h2><button class="timer sm" type="button" data-min="3" aria-label="타이머 3분. 누르면 시작, 다시 누르면 멈춤" style="margin-top:16px"><span class="tv">03:00</span><span class="tl">▶ 시작</span></button></div>
     <div class="pr-main"><div class="pr-cols" style="--lc:480px">
       <div class="pr-left" style="justify-content:flex-start;gap:22px">
-        <ol class="flow" style="gap:8px"><li><button type="button" tabindex="-1"><span class="n">1</span><span class="t">받은 압축 파일을 풀어 <span class="em-tag">여행앱_4시간</span> 폴더를 만듭니다.</span></button></li><li><button type="button" tabindex="-1"><span class="n">2</span><span class="t">에이전트 앱에서 그 폴더를 엽니다.</span></button></li><li><button type="button" tabindex="-1"><span class="n">3</span><span class="t">폴더 안의 <b>파일 다섯 개</b>를 확인합니다.</span></button></li></ol>
+        <ol class="flow" style="gap:8px"><li><button type="button" tabindex="-1"><span class="n">1</span><span class="t">받은 압축 파일을 풀어 <span class="em-tag">여행앱_4시간</span> 폴더를 만듭니다.</span></button></li><li><button type="button" tabindex="-1"><span class="n">2</span><span class="t">에이전트 앱에서 그 폴더를 엽니다.</span></button></li><li><button type="button" tabindex="-1"><span class="n">3</span><span class="t">폴더 안의 <b>파일 네 개</b>를 확인합니다.</span></button></li></ol>
         <div class="rule"><span class="lab" style="font-size:18px">오른쪽 점선 칸</span><p style="font-size:22px;line-height:1.6">오늘 만들 파일입니다. 단계마다 에이전트와 함께 하나씩 만듭니다.</p></div>
       </div>
       <div class="pr-right" style="justify-content:flex-start;gap:14px">
         <div class="wcard" style="padding:18px 24px 20px">
           <div style="display:flex;align-items:center;gap:12px"><svg viewBox="0 0 24 24" width="36" height="36" aria-hidden="true" style="flex:none;fill:none;stroke:var(--pr-deep);stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><b style="font-size:26px;font-weight:800;color:var(--ink)">여행앱_4시간</b></div>
           <div style="display:grid;gap:14px;margin-top:14px">
-            <div style="border-left:5px solid var(--pr-fill);padding-left:18px"><b style="display:block;font-size:22px;font-weight:800;line-height:1.4;color:var(--pr-deep)">강사가 세팅한 파일</b><div style="display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:6px"><span class="em-tag" style="font-size:22px">AGENTS.md</span><span class="em-tag" style="font-size:22px">CLAUDE.md</span></div><p style="margin:6px 0 0;font-size:22px;line-height:1.4;color:var(--gray-700)">작업할 때 읽는 일하는 규칙 · CLAUDE.md는 Claude Code용 같은 규칙</p><p style="margin:0;font-size:22px;line-height:1.4;font-weight:700;color:var(--ink)">열어 보지 않아도 됩니다</p></div>
+            <div style="border-left:5px solid var(--pr-fill);padding-left:18px"><b style="display:block;font-size:22px;font-weight:800;line-height:1.4;color:var(--pr-deep)">강사가 세팅한 파일</b><div style="display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:6px"><span class="em-tag" style="font-size:22px">AGENTS.md</span></div><p style="margin:6px 0 0;font-size:22px;line-height:1.4;color:var(--gray-700)">작업할 때 읽는 일하는 규칙</p><p style="margin:0;font-size:22px;line-height:1.4;font-weight:700;color:var(--ink)">열어 보지 않아도 됩니다</p></div>
             <div style="border-left:5px solid var(--blue);padding-left:18px"><b style="display:block;font-size:22px;font-weight:800;line-height:1.4;color:var(--ink)">함께 쓰는 자료</b><div style="display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:6px"><span class="em-tag" style="font-size:22px">prd.md</span><span class="em-tag" style="font-size:22px">자료설명.md</span><span class="em-tag" style="font-size:22px">관광지.js</span></div></div>
             <div style="border:3px dashed var(--gray-400);border-radius:14px;padding:10px 18px 12px"><b style="display:block;font-size:22px;font-weight:800;line-height:1.4;color:var(--ink)">오늘 만들 파일</b><div style="display:flex;flex-wrap:wrap;gap:8px 12px;margin-top:8px"><span style="padding:2px 14px;border:2px dashed var(--gray-400);border-radius:10px;font-size:22px;font-weight:700;color:var(--ink);white-space:nowrap">design.md</span><span style="padding:2px 14px;border:2px dashed var(--gray-400);border-radius:10px;font-size:22px;font-weight:700;color:var(--ink);white-space:nowrap">index.html</span><span style="padding:2px 14px;border:2px dashed var(--gray-400);border-radius:10px;font-size:22px;font-weight:700;color:var(--ink);white-space:nowrap">날씨.js</span></div></div>
           </div>
@@ -1303,7 +1306,7 @@
     <aside class="ag-rail">
       <div class="ag-dots" aria-hidden="true"><i></i><i></i><i></i></div>
       <p class="ag-folder" style="margin-bottom:0">여행앱_4시간</p>
-      <ul class="ag-files"><li>AGENTS.md</li><li>CLAUDE.md</li><li class="hot">prd.md</li><li>자료설명.md</li><li>관광지.js</li></ul>
+      <ul class="ag-files"><li>AGENTS.md</li><li class="hot">prd.md</li><li>자료설명.md</li><li>관광지.js</li></ul>
       <p class="ag-sth" style="margin-bottom:0">대화 순서</p>
       <ol class="ag-stages">
         <li data-s="1" data-until="3"><b>1</b>분석을 요청한다</li>
@@ -2205,7 +2208,7 @@
           <span class="pill ghost" style="font-size:22px">전</span>
           <div class="wcard" style="width:100%;height:196px;box-sizing:border-box;display:flex;align-items:center;justify-content:center;gap:14px">
             <svg viewBox="0 0 24 24" style="flex:none;width:64px;height:64px;stroke:var(--pr-deep);fill:var(--pr-soft);stroke-width:1.3;stroke-linecap:round;stroke-linejoin:round" aria-hidden="true"><path d="M3 6.5h6l2 2.5h10V19H3z"/></svg>
-            <ul style="margin:0;padding:0;list-style:none;display:grid;grid-template-columns:auto auto;gap:4px 18px;font-size:22px;font-weight:700;line-height:1.4;color:var(--ink)"><li>AGENTS.md</li><li>CLAUDE.md</li><li>prd.md</li><li>자료설명.md</li><li>관광지.js</li><li>날씨.js</li><li>design.md</li><li>index.html</li></ul>
+            <ul style="margin:0;padding:0;list-style:none;display:grid;grid-template-columns:auto auto;gap:4px 18px;font-size:22px;font-weight:700;line-height:1.4;color:var(--ink)"><li>AGENTS.md</li><li>prd.md</li><li>자료설명.md</li><li>관광지.js</li><li>날씨.js</li><li>design.md</li><li>index.html</li></ul>
           </div>
           <p class="keep" style="font-size:24px;font-weight:700;color:var(--ink)">내 컴퓨터의 <span class="em-tag">여행앱_4시간</span> 폴더</p>
         </div>
@@ -3110,7 +3113,7 @@
     @media print{ .sq-hint{ display:none; } }
 
     /* ── ① 메인 과제 허브(색 · 고른 카드는 진한 바탕) ── */
-    .mh3{ flex:1 1 auto; min-height:0; margin-top:26px; display:grid; grid-template-columns:repeat(3,1fr); gap:28px; }
+    .mh3{ flex:1 1 auto; min-height:0; margin-top:26px; display:grid; grid-template-columns:repeat(2,1fr); gap:28px; max-width:900px; margin-left:auto; margin-right:auto; }
     .mh3-card{ position:relative; display:flex; flex-direction:column; padding:0; border:0; border-radius:22px; overflow:hidden; background:var(--white); box-shadow:var(--sh-card); font:inherit; color:var(--ink); text-align:left; cursor:pointer; transition:transform .25s cubic-bezier(.2,.8,.2,1), box-shadow .25s, background-color .25s; }
     .mh3-card:hover{ transform:translateY(-6px); box-shadow:var(--sh-pop); }
     .mh3-card:focus-visible{ outline:3px solid var(--blue); outline-offset:4px; }
@@ -3120,14 +3123,12 @@
     .mh3-desc{ margin-top:8px; font-size:20px; font-weight:500; line-height:1.5; color:var(--gray-700); }
     .mh3-chips{ margin-top:auto; display:flex; flex-wrap:wrap; gap:8px; }
     .mh3-chips span{ padding:5px 13px; border-radius:999px; font-size:17px; font-weight:700; background:var(--chip); color:var(--chip-ink); }
-    .mh3-card.c-habit{ --chip:#DDF3EF; --chip-ink:#0B5A55; } .mh3-card.c-type{ --chip:#FFE6DA; --chip-ink:#A23A17; } .mh3-card.c-fest{ --chip:#DCEBFB; --chip-ink:#1B4F8C; }
+    .mh3-card.c-habit{ --chip:#DDF3EF; --chip-ink:#0B5A55; } .mh3-card.c-type{ --chip:#FFE6DA; --chip-ink:#A23A17; }
     .mh3-today{ position:absolute; left:18px; top:18px; display:none; padding:6px 14px; border-radius:999px; background:#FFFFFF; color:#08323D; font-size:17px; font-weight:800; box-shadow:0 4px 12px rgba(0,0,0,.18); }
     .mh3-card.is-picked{ background:#08323D; color:#FFFFFF; box-shadow:0 18px 40px rgba(8,50,61,.32); }
     .mh3-card.is-picked .mh3-desc{ color:#CFE7EC; }
     .mh3-card.is-picked .mh3-chips span{ background:rgba(255,255,255,.14); color:#FFFFFF; }
     .mh3-card.is-picked .mh3-today{ display:block; }
-    .mh3-soon{ position:absolute; right:18px; top:18px; padding:6px 14px; border-radius:999px; background:rgba(8,20,40,.55); color:#FFFFFF; font-size:17px; font-weight:800; }
-    .mh3-card[aria-disabled="true"]{ cursor:default; } .mh3-card[aria-disabled="true"]:hover{ transform:none; box-shadow:var(--sh-card); }
 
     /* ── ② 에이전트 창 대화 ── */
     .slide.agx{ background:#0B0D10; padding:0; }

@@ -152,8 +152,8 @@ def main():
             zip_dir(p, p + '.zip')
             n = sum(len(f) for _, _, f in os.walk(p))
             print('zip %s.zip  파일 %d개  %.0f KB' % (name, n, os.path.getsize(p + '.zip') / 1024))
-    gen_p8.verify_zip(os.path.join(BASE, '실습8_강의교안스킬.zip'))     # 점으로 시작하는 스킬 폴더(.agents · .claude)가 zip에 들어갔는지
-    print('zip 실습8_강의교안스킬.zip  .agents · .claude 스킬 포함 확인')
+    gen_p8.verify_zip(os.path.join(BASE, '실습8_강의교안스킬.zip'))     # zip 항목이 md 세 파일뿐인지(스킬 폴더는 참가자가 만든다)
+    print('zip 실습8_강의교안스킬.zip  md 세 파일만 확인')
 
 
 if __name__ == '__main__':
